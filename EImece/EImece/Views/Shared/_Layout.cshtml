@@ -18,48 +18,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .header-text {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff7f00; /* A vibrant red color */
-            text-align: center;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-
-        .timer-container {
-            text-align: center;
-            margin-top: 1px;
-        }
-
-        .timer-box {
-            display: inline-block;
-            background-color: #fff;
-            border: 2px solid #ff7f00;
-            border-radius: 10px;
-            padding: 10px;
-            margin: 5px;
-            min-width: 100px;
-        }
-
-            .timer-box span {
-                display: block;
-                font-size: 2rem;
-                font-weight: bold;
-                color: #ff7f00;
-            }
-
-            .timer-box small {
-                font-size: 1rem;
-                color: #ff7f00;
-            }
-    </style>
 
     <meta property="og:locale" content='tr_TR' />
     <meta property="og:type" content='Website' />
@@ -161,28 +119,6 @@
             </div>
         </div>
     </div>
-    <!-- Main Section -->
-    <div class="container">
-        <h1 class="header-text">Yuvadan Kudret Narı Sezonu Başlıyor</h1>
-        <div class="timer-container">
-            <div class="timer-box">
-                <span id="days">00</span>
-                <small>Gün</small>
-            </div>
-            <div class="timer-box">
-                <span id="hours">00</span>
-                <small>Saat</small>
-            </div>
-            <div class="timer-box">
-                <span id="minutes">00</span>
-                <small>Dakika</small>
-            </div>
-            <div class="timer-box">
-                <span id="seconds">00</span>
-                <small>Saniye</small>
-            </div>
-        </div>
-    </div>
     <!-- Second line-->
     <header class="navbar navbar-expand-lg navbar-light bg-light px-0">
         <div class="container flex-sm-nowrap px-3">
@@ -234,33 +170,5 @@
     @Scripts.Render("~/bundles/mstore")
     @Scripts.Render("~/bundles/eimeceScripts")
     @RenderSection("scripts", required: false)
-
-    <script>
-        $(document).ready(function () {
-            // Set a specific target date (e.g., May 31, 2025)
-            const targetDate = new Date(2025, 4, 31); // Note: Month is 0-based (4 = May)
-
-            // Rest of the code remains the same...
-            const countdown = setInterval(function () {
-                const currentTime = new Date().getTime();
-                const timeRemaining = targetDate - currentTime;
-
-                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-                $("#days").text(days < 10 ? "0" + days : days);
-                $("#hours").text(hours < 10 ? "0" + hours : hours);
-                $("#minutes").text(minutes < 10 ? "0" + minutes : minutes);
-                $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
-
-                if (timeRemaining < 0) {
-                    clearInterval(countdown);
-                    $(".timer-container").html("<h2>Sezon Başladı!</h2>");
-                }
-            }, 1000);
-        });
-    </script>
 </body>
 </html>
