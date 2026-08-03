@@ -30,32 +30,17 @@ namespace EImece.Domain.Observability.Logging
             var enableEfSqlLogging = options != null && options.EnableEfSqlLogging;
             EfSqlLogger.Configure(enableEfSqlLogging);
 
+            // Configure Serilog with no file sinks so application-level logs are effectively disabled.
+            // Entity Framework SQL will still be routed to NLog (and from there to the database) via EfSqlLogger.
             var loggerConfiguration = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .MinimumLevel.Override(EfSqlLogger.LoggerName, enableEfSqlLogging ? LogEventLevel.Debug : LogEventLevel.Warning)
+                .MinimumLevel.Warning()
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty("Application", "EImece")
-                .Enrich.WithMachineName()
-                .WriteTo.File(
-                    formatter: new Serilog.Formatting.Compact.CompactJsonFormatter(),
-                    path: Path.Combine(logDirectory, "structured-.json"),
-                    rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: 14,
-                    shared: true);
+                .Enrich.WithMachineName();
 
-            if (enableEfSqlLogging)
-            {
-                loggerConfiguration = loggerConfiguration.WriteTo.Logger(lc => lc
-                    .Filter.ByIncludingOnly(e =>
-                        e.Properties.ContainsKey("SourceContext")
-                        && e.Properties["SourceContext"].ToString().IndexOf(EfSqlLogger.LoggerName, StringComparison.Ordinal) >= 0)
-                    .WriteTo.File(
-                        path: Path.Combine(logDirectory, "ef-sql-.log"),
-                        rollingInterval: RollingInterval.Day,
-                        retainedFileCountLimit: 7,
-                        shared: true,
-                        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}"));
-            }
+            // Do not write to any file sinks here — keep Serilog active but silent. EF SQL logging is handled
+            // by EfSqlLogger which writes to NLog (database target) and also to Serilog context; leaving Serilog
+            // without sinks ensures no file logs are produced.
 
             Log.Logger = loggerConfiguration.CreateLogger();
 
