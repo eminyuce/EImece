@@ -65,11 +65,11 @@ namespace EImece
         {
             if (custom == "User")
             {
-                HttpCookie cultureCookie = Request.Cookies[Constants.CultureCookieName];
+                HttpCookie cultureCookie = Request.Cookies[Domain.Constants.CultureCookieName];
                 String cultureCookieValue = "";
                 if (cultureCookie != null)
                 {
-                    cultureCookieValue = cultureCookie.Values[Constants.ELanguage].ToStr();
+                    cultureCookieValue = cultureCookie.Values[Domain.Constants.ELanguage].ToStr();
                 }
 
                 if (User.Identity.IsAuthenticated)
@@ -119,7 +119,7 @@ namespace EImece
             var identity = new ClaimsIdentity(DefaultAuthenticationTypes.ApplicationCookie);
             identity.AddClaim(new Claim(ClaimTypes.Name, "debug-admin"));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "debug-admin"));
-            identity.AddClaim(new Claim(ClaimTypes.Role, Constants.AdministratorRole));
+            identity.AddClaim(new Claim(ClaimTypes.Role, Domain.Constants.AdministratorRole));
             var principal = new ClaimsPrincipal(identity);
             Context.User = principal;
             Thread.CurrentPrincipal = principal;
