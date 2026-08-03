@@ -57,6 +57,19 @@ namespace EImece.Controllers
         public ActionResult AdminLogin(string returnUrl = "")
         {
             Logger.Info($"Entering AdminLogin with returnUrl: {returnUrl}");
+
+            // TEMPORARY: skip the admin login panel while BypassAdminAuth is enabled.
+            if (Domain.AppConfig.BypassAdminAuth)
+            {
+                Logger.Info("BypassAdminAuth enabled. Redirecting AdminLogin to Dashboard.");
+                if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
