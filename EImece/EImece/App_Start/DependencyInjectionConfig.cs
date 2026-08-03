@@ -379,7 +379,8 @@ namespace EImece.App_Start
             where TService : class
             where TImplementation : class, TService
         {
-            var underConstruction = PropertyInjector.TryGetUnderConstruction(typeof(TImplementation));
+            var underConstruction = PropertyInjector.TryGetUnderConstruction(typeof(TImplementation))
+                ?? PropertyInjector.TryGetUnderConstruction(typeof(TService));
             if (underConstruction is TService typed)
             {
                 return typed;

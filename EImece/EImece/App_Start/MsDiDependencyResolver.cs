@@ -28,6 +28,8 @@ namespace EImece.App_Start
                 return null;
             }
 
+            // Controllers need a request scope for scoped services (validateScopes: true).
+            DependencyInjectionConfig.BeginRequestScope();
             var provider = DependencyInjectionConfig.GetRequestServiceProvider() ?? _rootProvider;
             var service = provider.GetService(serviceType);
             if (service != null)
@@ -38,16 +40,10 @@ namespace EImece.App_Start
 
             if (serviceType.IsClass && !serviceType.IsAbstract && !serviceType.IsInterface)
             {
-                try
-                {
-                    // Controllers and other unregistered concretes: ActivatorUtilities + [Inject].
-                    return PropertyInjector.Create(serviceType, provider);
-                }
-                catch (InvalidOperationException)
-                {
-                    // Constructor dependencies could not be satisfied — let MVC fall back.
-                    return null;
-                }
+                // Controllers and other unregistered concretes: ctor + [Inject] property injection.
+                // Do not swallow failures — returning null makes MVC Activator.CreateInstance
+                // a controller with null [Inject] properties (NullReferenceException later).
+                return PropertyInjector.Create(serviceType, provider);
             }
 
             return null;
