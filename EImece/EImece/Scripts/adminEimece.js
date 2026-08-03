@@ -567,9 +567,50 @@ function setPreSelectedTreeNode(preSelectedNode) {
     }
 }
 
-/* Admin sidebar shell: mobile off-canvas toggle */
+/* Admin sidebar shell: desktop collapse + groups + mobile drawer */
 (function () {
-    function setSidebarOpen(isOpen) {
+    var STORAGE_COLLAPSED = "eimece.admin.sidebarCollapsed";
+    var STORAGE_GROUPS = "eimece.admin.sidebarGroups";
+    var MQ_DESKTOP = "(min-width: 992px)";
+
+    function isDesktop() {
+        return window.matchMedia && window.matchMedia(MQ_DESKTOP).matches;
+    }
+
+    function safeGet(key) {
+        try {
+            return window.localStorage.getItem(key);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function safeSet(key, value) {
+        try {
+            window.localStorage.setItem(key, value);
+        } catch (e) {
+            /* ignore quota / private mode */
+        }
+    }
+
+    function readGroupsState() {
+        try {
+            var raw = safeGet(STORAGE_GROUPS);
+            if (!raw) {
+                return {};
+            }
+            var parsed = JSON.parse(raw);
+            return parsed && typeof parsed === "object" ? parsed : {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    function writeGroupsState(state) {
+        safeSet(STORAGE_GROUPS, JSON.stringify(state || {}));
+    }
+
+    function setMobileDrawerOpen(isOpen) {
         var body = document.body;
         if (!body || !body.classList.contains("admin-app")) {
             return;
@@ -579,50 +620,201 @@ function setPreSelectedTreeNode(preSelectedNode) {
         } else {
             body.classList.remove("sidebar-open");
         }
-        var toggle = document.getElementById("adminSidebarToggle");
-        if (toggle) {
-            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        var overlay = document.getElementById("adminSidebarOverlay");
+        if (overlay) {
+            overlay.setAttribute("aria-hidden", isOpen ? "false" : "true");
         }
+        syncToggleAria();
     }
 
-    function initAdminSidebarToggle() {
+    function setSidebarCollapsed(collapsed) {
+        var body = document.body;
+        var sidebar = document.getElementById("adminSidebar");
+        if (!body || !body.classList.contains("admin-app") || !sidebar) {
+            return;
+        }
+        if (collapsed) {
+            body.classList.add("sidebar-collapsed");
+            sidebar.setAttribute("data-collapsed", "true");
+        } else {
+            body.classList.remove("sidebar-collapsed");
+            sidebar.setAttribute("data-collapsed", "false");
+        }
+        safeSet(STORAGE_COLLAPSED, collapsed ? "1" : "0");
+        syncToggleAria();
+    }
+
+    function syncToggleAria() {
         var toggle = document.getElementById("adminSidebarToggle");
-        var overlay = document.getElementById("adminSidebarOverlay");
         if (!toggle) {
             return;
         }
+        if (isDesktop()) {
+            var collapsed = document.body.classList.contains("sidebar-collapsed");
+            toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+            toggle.setAttribute("title", collapsed ? "Expand sidebar" : "Collapse sidebar");
+        } else {
+            var open = document.body.classList.contains("sidebar-open");
+            toggle.setAttribute("aria-expanded", open ? "true" : "false");
+            toggle.setAttribute("title", open ? "Close menu" : "Open menu");
+        }
+    }
 
-        toggle.addEventListener("click", function (e) {
-            e.preventDefault();
-            var isOpen = !document.body.classList.contains("sidebar-open");
-            setSidebarOpen(isOpen);
-        });
+    function setGroupOpen(groupEl, isOpen, persist) {
+        if (!groupEl) {
+            return;
+        }
+        var toggle = groupEl.querySelector(".admin-nav-group-toggle");
+        if (isOpen) {
+            groupEl.classList.add("is-open");
+        } else {
+            groupEl.classList.remove("is-open");
+        }
+        if (toggle) {
+            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        }
+        if (persist) {
+            var key = groupEl.getAttribute("data-group");
+            if (key) {
+                var state = readGroupsState();
+                state[key] = !!isOpen;
+                writeGroupsState(state);
+            }
+        }
+    }
 
-        if (overlay) {
-            overlay.addEventListener("click", function () {
-                setSidebarOpen(false);
+    function markActiveGroups() {
+        var groups = document.querySelectorAll("#adminSidebar .admin-nav-group");
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+            var hasActive = !!group.querySelector(".admin-nav-item.active");
+            if (hasActive) {
+                group.classList.add("has-active");
+                setGroupOpen(group, true, false);
+            } else {
+                group.classList.remove("has-active");
+            }
+        }
+    }
+
+    function restoreGroupState() {
+        var stored = readGroupsState();
+        var groups = document.querySelectorAll("#adminSidebar .admin-nav-group[data-group]");
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+            var key = group.getAttribute("data-group");
+            if (!key || !Object.prototype.hasOwnProperty.call(stored, key)) {
+                continue;
+            }
+            // Active route always wins: keep open if it has an active child
+            if (group.classList.contains("has-active")) {
+                setGroupOpen(group, true, false);
+                continue;
+            }
+            setGroupOpen(group, !!stored[key], false);
+        }
+    }
+
+    function initNavGroups() {
+        var toggles = document.querySelectorAll("#adminSidebar .admin-nav-group-toggle");
+        for (var i = 0; i < toggles.length; i++) {
+            toggles[i].addEventListener("click", function (e) {
+                e.preventDefault();
+                var group = this.closest ? this.closest(".admin-nav-group") : this.parentNode;
+                if (!group) {
+                    return;
+                }
+                // On desktop collapsed mode, expand sidebar so labels + children are usable
+                if (isDesktop() && document.body.classList.contains("sidebar-collapsed")) {
+                    setSidebarCollapsed(false);
+                    setGroupOpen(group, true, true);
+                    return;
+                }
+                var willOpen = !group.classList.contains("is-open");
+                setGroupOpen(group, willOpen, true);
+            });
+        }
+        markActiveGroups();
+        restoreGroupState();
+    }
+
+    function initAdminSidebarShell() {
+        var body = document.body;
+        if (!body || !body.classList.contains("admin-app")) {
+            return;
+        }
+
+        var toggle = document.getElementById("adminSidebarToggle");
+        var overlay = document.getElementById("adminSidebarOverlay");
+        var closeBtn = document.getElementById("adminSidebarClose");
+        var sidebar = document.getElementById("adminSidebar");
+
+        // Restore desktop collapsed preference
+        var storedCollapsed = safeGet(STORAGE_COLLAPSED) === "1";
+        if (isDesktop()) {
+            setSidebarCollapsed(storedCollapsed);
+        } else {
+            // Keep preference stored but do not apply icon-only on mobile
+            body.classList.remove("sidebar-collapsed");
+            if (sidebar) {
+                sidebar.setAttribute("data-collapsed", "false");
+            }
+            syncToggleAria();
+        }
+
+        initNavGroups();
+
+        if (toggle) {
+            toggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                if (isDesktop()) {
+                    var nextCollapsed = !body.classList.contains("sidebar-collapsed");
+                    setSidebarCollapsed(nextCollapsed);
+                } else {
+                    setMobileDrawerOpen(!body.classList.contains("sidebar-open"));
+                }
             });
         }
 
-        var sidebarLinks = document.querySelectorAll("#adminSidebar a");
+        if (overlay) {
+            overlay.addEventListener("click", function () {
+                setMobileDrawerOpen(false);
+            });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                setMobileDrawerOpen(false);
+            });
+        }
+
+        var sidebarLinks = document.querySelectorAll("#adminSidebar a.admin-nav-item");
         for (var i = 0; i < sidebarLinks.length; i++) {
             sidebarLinks[i].addEventListener("click", function () {
-                if (window.matchMedia && window.matchMedia("(max-width: 991px)").matches) {
-                    setSidebarOpen(false);
+                if (!isDesktop()) {
+                    setMobileDrawerOpen(false);
                 }
             });
         }
 
         window.addEventListener("resize", function () {
-            if (window.matchMedia && window.matchMedia("(min-width: 992px)").matches) {
-                setSidebarOpen(false);
+            if (isDesktop()) {
+                setMobileDrawerOpen(false);
+                setSidebarCollapsed(safeGet(STORAGE_COLLAPSED) === "1");
+            } else {
+                body.classList.remove("sidebar-collapsed");
+                if (sidebar) {
+                    sidebar.setAttribute("data-collapsed", "false");
+                }
+                syncToggleAria();
             }
         });
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initAdminSidebarToggle);
+        document.addEventListener("DOMContentLoaded", initAdminSidebarShell);
     } else {
-        initAdminSidebarToggle();
+        initAdminSidebarShell();
     }
 })();

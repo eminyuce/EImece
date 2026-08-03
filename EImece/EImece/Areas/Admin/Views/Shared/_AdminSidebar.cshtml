@@ -23,219 +23,258 @@
     var mediaOpen = groupOpen(new[] { "fileupload", "media", "images" });
     var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "metrics", "users" });
 }
-<aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="Admin navigation">
+<aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="Admin navigation" data-collapsed="false">
     <div class="admin-sidebar-brand">
         <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })" title="@companyNameSetting">
             <i class="fa fa-cubes" aria-hidden="true"></i>
             <span class="admin-sidebar-brand-text">@companyNameSetting</span>
         </a>
+        <button type="button"
+                class="admin-sidebar-close"
+                id="adminSidebarClose"
+                aria-label="Close sidebar"
+                title="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
     </div>
 
     <nav class="admin-sidebar-nav">
-        <div class="admin-nav-group">
-            <div class="admin-nav-group-title">Dashboard</div>
-            <ul>
-                <li class="@controllerActive("dashboard")">
-                    <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })">
-                        <i class="fa fa-home" aria-hidden="true"></i>
-                        <span>@AdminResource.AdminHome</span>
-                    </a>
-                </li>
-            </ul>
+        <a class="admin-nav-item @(controllerActive("dashboard"))"
+           href="@Url.Action("Index", "Dashboard", new { area = "admin" })"
+           title="@AdminResource.AdminHome">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <span class="admin-nav-label">@AdminResource.AdminHome</span>
+        </a>
+
+        <div class="admin-nav-group @(catalogOpen ? "is-open" : "")" data-group="catalog">
+            <button type="button"
+                    class="admin-nav-group-toggle"
+                    aria-expanded="@(catalogOpen ? "true" : "false")"
+                    title="Catalog">
+                <i class="fa fa-th-large" aria-hidden="true"></i>
+                <span class="admin-nav-label">Catalog</span>
+                <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @(controllerActive("products"))"
+                   href="@Url.Action("Index", "Products", new { area = "admin" })"
+                   title="@AdminResource.Products">
+                    <i class="fa fa-cube" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Products</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("productcategories"))"
+                   href="@Url.Action("Index", "ProductCategories", new { area = "admin" })"
+                   title="@AdminResource.ProductCategories">
+                    <i class="fa fa-sitemap" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.ProductCategories</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("brands"))"
+                   href="@Url.Action("Index", "Brands", new { area = "admin" })"
+                   title="@AdminResource.Brands">
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Brands</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("templates"))"
+                   href="@Url.Action("Index", "Templates", new { area = "admin" })"
+                   title="@AdminResource.ProductDynamicTemplates">
+                    <i class="fa fa-file-code-o" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.ProductDynamicTemplates</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("lists"))"
+                   href="@Url.Action("Index", "Lists", new { area = "admin" })"
+                   title="@AdminResource.ProductSpecTemplateItemList">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.ProductSpecTemplateItemList</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("coupons"))"
+                   href="@Url.Action("Index", "Coupons", new { area = "admin" })"
+                   title="@AdminResource.Coupons">
+                    <i class="fa fa-ticket" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Coupons</span>
+                </a>
+            </div>
         </div>
 
-        <div class="admin-nav-group @(catalogOpen ? "is-open" : "")">
-            <div class="admin-nav-group-title">Catalog</div>
-            <ul>
-                <li class="@controllerActive("products")">
-                    <a href="@Url.Action("Index", "Products", new { area = "admin" })">
-                        <i class="fa fa-cube" aria-hidden="true"></i>
-                        <span>@AdminResource.Products</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("productcategories")">
-                    <a href="@Url.Action("Index", "ProductCategories", new { area = "admin" })">
-                        <i class="fa fa-sitemap" aria-hidden="true"></i>
-                        <span>@AdminResource.ProductCategories</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("brands")">
-                    <a href="@Url.Action("Index", "Brands", new { area = "admin" })">
-                        <i class="fa fa-tags" aria-hidden="true"></i>
-                        <span>@AdminResource.Brands</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("templates")">
-                    <a href="@Url.Action("Index", "Templates", new { area = "admin" })">
-                        <i class="fa fa-file-code-o" aria-hidden="true"></i>
-                        <span>@AdminResource.ProductDynamicTemplates</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("lists")">
-                    <a href="@Url.Action("Index", "Lists", new { area = "admin" })">
-                        <i class="fa fa-list-alt" aria-hidden="true"></i>
-                        <span>@AdminResource.ProductSpecTemplateItemList</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("coupons")">
-                    <a href="@Url.Action("Index", "Coupons", new { area = "admin" })">
-                        <i class="fa fa-ticket" aria-hidden="true"></i>
-                        <span>@AdminResource.Coupons</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="admin-nav-group @(salesOpen ? "is-open" : "")" data-group="sales">
+            <button type="button"
+                    class="admin-nav-group-toggle"
+                    aria-expanded="@(salesOpen ? "true" : "false")"
+                    title="Sales">
+                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                <span class="admin-nav-label">Sales</span>
+                <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @(controllerActive("orders"))"
+                   href="@Url.Action("Index", "Orders", new { area = "admin" })"
+                   title="@AdminResource.Orders">
+                    <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Orders</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("customers"))"
+                   href="@Url.Action("Index", "Customers", new { area = "admin" })"
+                   title="@AdminResource.Customers">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Customers</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("shoppingcarts"))"
+                   href="@Url.Action("Index", "ShoppingCarts", new { area = "admin" })"
+                   title="Shopping Carts">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <span class="admin-nav-label">Shopping Carts</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("report"))"
+                   href="@Url.Action("Index", "Report", new { area = "admin" })"
+                   title="@AdminResource.Reports">
+                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Reports</span>
+                </a>
+            </div>
         </div>
 
-        <div class="admin-nav-group @(salesOpen ? "is-open" : "")">
-            <div class="admin-nav-group-title">Sales</div>
-            <ul>
-                <li class="@controllerActive("orders")">
-                    <a href="@Url.Action("Index", "Orders", new { area = "admin" })">
-                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                        <span>@AdminResource.Orders</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("customers")">
-                    <a href="@Url.Action("Index", "Customers", new { area = "admin" })">
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                        <span>@AdminResource.Customers</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("shoppingcarts")">
-                    <a href="@Url.Action("Index", "ShoppingCarts", new { area = "admin" })">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                        <span>Shopping Carts</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("report")">
-                    <a href="@Url.Action("Index", "Report", new { area = "admin" })">
-                        <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                        <span>@AdminResource.Reports</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="admin-nav-group @(contentOpen ? "is-open" : "")" data-group="content">
+            <button type="button"
+                    class="admin-nav-group-toggle"
+                    aria-expanded="@(contentOpen ? "true" : "false")"
+                    title="Content">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                <span class="admin-nav-label">Content</span>
+                <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @(controllerActive("menus"))"
+                   href="@Url.Action("Index", "Menus", new { area = "admin" })"
+                   title="@AdminResource.Menus">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Menus</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("mainpageimages"))"
+                   href="@Url.Action("Index", "MainPageImages", new { area = "admin" })"
+                   title="@AdminResource.MainPageImages">
+                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.MainPageImages</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("stories"))"
+                   href="@Url.Action("Index", "Stories", new { area = "admin" })"
+                   title="@AdminResource.Stories">
+                    <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Stories</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("storycategories"))"
+                   href="@Url.Action("Index", "StoryCategories", new { area = "admin" })"
+                   title="@AdminResource.StoryCategories">
+                    <i class="fa fa-folder-open" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.StoryCategories</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("tags"))"
+                   href="@Url.Action("Index", "Tags", new { area = "admin" })"
+                   title="@AdminResource.Tags">
+                    <i class="fa fa-tag" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Tags</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("tagcategories"))"
+                   href="@Url.Action("Index", "TagCategories", new { area = "admin" })"
+                   title="@AdminResource.TagCategories">
+                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.TagCategories</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("faq"))"
+                   href="@Url.Action("Index", "Faq", new { area = "admin" })"
+                   title="@AdminResource.Faq">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Faq</span>
+                </a>
+                <a class="admin-nav-item @(controllerActive("subscribers"))"
+                   href="@Url.Action("Index", "Subscribers", new { area = "admin" })"
+                   title="@AdminResource.Subscribers">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.Subscribers</span>
+                </a>
+            </div>
         </div>
 
-        <div class="admin-nav-group @(contentOpen ? "is-open" : "")">
-            <div class="admin-nav-group-title">Content</div>
-            <ul>
-                <li class="@controllerActive("menus")">
-                    <a href="@Url.Action("Index", "Menus", new { area = "admin" })">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                        <span>@AdminResource.Menus</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("mainpageimages")">
-                    <a href="@Url.Action("Index", "MainPageImages", new { area = "admin" })">
-                        <i class="fa fa-picture-o" aria-hidden="true"></i>
-                        <span>@AdminResource.MainPageImages</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("stories")">
-                    <a href="@Url.Action("Index", "Stories", new { area = "admin" })">
-                        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-                        <span>@AdminResource.Stories</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("storycategories")">
-                    <a href="@Url.Action("Index", "StoryCategories", new { area = "admin" })">
-                        <i class="fa fa-folder-open" aria-hidden="true"></i>
-                        <span>@AdminResource.StoryCategories</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("tags")">
-                    <a href="@Url.Action("Index", "Tags", new { area = "admin" })">
-                        <i class="fa fa-tag" aria-hidden="true"></i>
-                        <span>@AdminResource.Tags</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("tagcategories")">
-                    <a href="@Url.Action("Index", "TagCategories", new { area = "admin" })">
-                        <i class="fa fa-bookmark" aria-hidden="true"></i>
-                        <span>@AdminResource.TagCategories</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("faq")">
-                    <a href="@Url.Action("Index", "Faq", new { area = "admin" })">
-                        <i class="fa fa-question-circle" aria-hidden="true"></i>
-                        <span>@AdminResource.Faq</span>
-                    </a>
-                </li>
-                <li class="@controllerActive("subscribers")">
-                    <a href="@Url.Action("Index", "Subscribers", new { area = "admin" })">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                        <span>@AdminResource.Subscribers</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="admin-nav-group @(mediaOpen ? "is-open" : "")">
-            <div class="admin-nav-group-title">Media</div>
-            <ul>
-                <li class="@controllerActive("fileupload")">
-                    <a href="@Url.Action("Index", "FileUpload", new { area = "admin" })">
-                        <i class="fa fa-upload" aria-hidden="true"></i>
-                        <span>@AdminResource.FileUploadingPage</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="admin-nav-group @(mediaOpen ? "is-open" : "")" data-group="media">
+            <button type="button"
+                    class="admin-nav-group-toggle"
+                    aria-expanded="@(mediaOpen ? "true" : "false")"
+                    title="Media">
+                <i class="fa fa-photo" aria-hidden="true"></i>
+                <span class="admin-nav-label">Media</span>
+                <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @(controllerActive("fileupload"))"
+                   href="@Url.Action("Index", "FileUpload", new { area = "admin" })"
+                   title="@AdminResource.FileUploadingPage">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    <span class="admin-nav-label">@AdminResource.FileUploadingPage</span>
+                </a>
+            </div>
         </div>
 
         @if (UserRoleHelper.IsAdminManagementRoles())
         {
-            <div class="admin-nav-group @(systemOpen ? "is-open" : "")">
-                <div class="admin-nav-group-title">System</div>
-                <ul>
-                    <li class="@controllerActive("mailtemplates")">
-                        <a href="@Url.Action("Index", "MailTemplates", new { area = "admin" })">
-                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                            <span>@AdminResource.MailTemplates</span>
-                        </a>
-                    </li>
-                    <li class="@(actionActive("settings", "addwebsitelogo") != "" || actionActive("settings", "websitelogo") != "" ? "active" : "")">
-                        <a href="@Url.Action("AddWebSiteLogo", "Settings", new { area = "admin" })">
-                            <i class="fa fa-image" aria-hidden="true"></i>
-                            <span>@AdminResource.WebSiteLogo</span>
-                        </a>
-                    </li>
-                    <li class="@actionActive("adminsettings", "index")">
-                        <a href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
-                            <i class="fa fa-cogs" aria-hidden="true"></i>
-                            <span>@AdminResource.AdminSettings</span>
-                        </a>
-                    </li>
-                    <li class="@actionActive("adminsettings", "systemsettings")">
-                        <a href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })">
-                            <i class="fa fa-sliders" aria-hidden="true"></i>
-                            <span>@AdminResource.SystemSettings</span>
-                        </a>
-                    </li>
-                    <li class="@controllerActive("metrics")">
-                        <a href="@Url.Action("Index", "Metrics", new { area = "admin" })">
-                            <i class="fa fa-line-chart" aria-hidden="true"></i>
-                            <span>Metrics</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Health", new { area = "" })" target="_blank" rel="noopener noreferrer">
-                            <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                            <span>Health</span>
-                        </a>
-                    </li>
-                    <li class="@actionActive("users", "index")">
-                        <a href="@Url.Action("Index", "Users", new { area = "admin" })">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <span>@AdminResource.UsersManagement</span>
-                        </a>
-                    </li>
-                    <li class="@actionActive("users", "changepassword")">
-                        <a href="@Url.Action("changepassword", "Users", new { area = "admin" })">
-                            <i class="fa fa-key" aria-hidden="true"></i>
-                            <span>@AdminResource.ChangePassword</span>
-                        </a>
-                    </li>
-                </ul>
+            <div class="admin-nav-group @(systemOpen ? "is-open" : "")" data-group="system">
+                <button type="button"
+                        class="admin-nav-group-toggle"
+                        aria-expanded="@(systemOpen ? "true" : "false")"
+                        title="System">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                    <span class="admin-nav-label">System</span>
+                    <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
+                </button>
+                <div class="admin-nav-group-body">
+                    <a class="admin-nav-item @(controllerActive("mailtemplates"))"
+                       href="@Url.Action("Index", "MailTemplates", new { area = "admin" })"
+                       title="@AdminResource.MailTemplates">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.MailTemplates</span>
+                    </a>
+                    <a class="admin-nav-item @(actionActive("settings", "addwebsitelogo") != "" || actionActive("settings", "websitelogo") != "" ? "active" : "")"
+                       href="@Url.Action("AddWebSiteLogo", "Settings", new { area = "admin" })"
+                       title="@AdminResource.WebSiteLogo">
+                        <i class="fa fa-image" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.WebSiteLogo</span>
+                    </a>
+                    <a class="admin-nav-item @actionActive("adminsettings", "index")"
+                       href="@Url.Action("Index", "AdminSettings", new { area = "admin" })"
+                       title="@AdminResource.AdminSettings">
+                        <i class="fa fa-cogs" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.AdminSettings</span>
+                    </a>
+                    <a class="admin-nav-item @actionActive("adminsettings", "systemsettings")"
+                       href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })"
+                       title="@AdminResource.SystemSettings">
+                        <i class="fa fa-sliders" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.SystemSettings</span>
+                    </a>
+                    <a class="admin-nav-item @(controllerActive("metrics"))"
+                       href="@Url.Action("Index", "Metrics", new { area = "admin" })"
+                       title="Metrics">
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                        <span class="admin-nav-label">Metrics</span>
+                    </a>
+                    <a class="admin-nav-item"
+                       href="@Url.Action("Index", "Health", new { area = "" })"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       title="Health">
+                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                        <span class="admin-nav-label">Health</span>
+                    </a>
+                    <a class="admin-nav-item @actionActive("users", "index")"
+                       href="@Url.Action("Index", "Users", new { area = "admin" })"
+                       title="@AdminResource.UsersManagement">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.UsersManagement</span>
+                    </a>
+                    <a class="admin-nav-item @actionActive("users", "changepassword")"
+                       href="@Url.Action("changepassword", "Users", new { area = "admin" })"
+                       title="@AdminResource.ChangePassword">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.ChangePassword</span>
+                    </a>
+                </div>
             </div>
         }
     </nav>

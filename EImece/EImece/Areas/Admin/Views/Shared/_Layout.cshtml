@@ -31,6 +31,16 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 </head>
 <body class="admin-app">
+    <script>
+        (function () {
+            try {
+                if (window.matchMedia && window.matchMedia("(min-width: 992px)").matches
+                    && window.localStorage.getItem("eimece.admin.sidebarCollapsed") === "1") {
+                    document.body.classList.add("sidebar-collapsed");
+                }
+            } catch (e) { }
+        })();
+    </script>
 
     <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
     <input type="hidden" id="CookieLanguage" value="@AppConfig.MainLanguage" />
