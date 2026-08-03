@@ -29,6 +29,9 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
+
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 }
 
 <h2>@AdminResource.Tag</h2>
@@ -119,12 +122,15 @@ columns.Add(o => o.UpdatedDate)
 .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
 .SortInitialDirection(GridSortDirection.Descending);
 
+if (productPriceEnabled)
+{
 columns.Add()
 .Titled("Fiyat Guncelleme")
 .Encoded(false)
 .Sanitized(false)
 .Css("smallGridColumn")
 .RenderValueAs(o => PriceUpdates(o));
+}
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>

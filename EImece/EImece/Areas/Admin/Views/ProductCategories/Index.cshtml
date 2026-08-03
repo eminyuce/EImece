@@ -30,6 +30,9 @@
 
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
 
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+
 }
 
 <h2>@AdminResource.ProductCategory</h2>
@@ -137,12 +140,15 @@ columns.Add(r => r.ImageState)
 .Css("smallGridColumn")
 .RenderValueAs(o => GridImageColumn(o, controllerName));
 
+if (productPriceEnabled)
+{
 columns.Add()
 .Titled("Fiyat Guncelleme")
 .Encoded(false)
 .Sanitized(false)
 .Css("smallGridColumn")
 .RenderValueAs(o => PriceUpdates(o));
+}
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
         </div>

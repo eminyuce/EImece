@@ -26,6 +26,9 @@
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
 
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+
 }
 <h2>@AdminResource.Brands</h2>
 <hr class="adminLine" />
@@ -128,12 +131,15 @@ columns.Add()
 .SetWidth(30)
 .RenderValueAs(d => Html.Partial("pGridImageMainPage", d));
 
+if (productPriceEnabled)
+{
 columns.Add()
  .Titled("Fiyat Guncelleme")
  .Encoded(false)
  .Sanitized(false)
  .Css("smallGridColumn")
  .RenderValueAs(o => PriceUpdates(o));
+}
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>

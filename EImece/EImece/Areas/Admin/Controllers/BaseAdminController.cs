@@ -126,6 +126,12 @@ namespace EImece.Areas.Admin.Controllers
             return base.BeginExecute(requestContext, callback, state);
         }
 
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            base.OnActionExecuting(filterContext);
+        }
+
         [Inject]
         public FilesHelper FilesHelper
         {
