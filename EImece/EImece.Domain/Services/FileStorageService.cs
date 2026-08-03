@@ -235,37 +235,38 @@ namespace EImece.Domain.Services
 
         public override void DeleteBaseEntity(List<string> values)
         {
+            if (values == null || values.Count == 0)
+            {
+                return;
+            }
+
             try
             {
                 foreach (String v in values)
                 {
-                    var parts = v.Split("-".ToCharArray());
+                    if (string.IsNullOrWhiteSpace(v))
+                    {
+                        continue;
+                    }
+
+                    // Expected format: fileStorageId-contentId-mod[-imageType]
+                    var parts = v.Split('-');
+                    if (parts.Length < 3)
+                    {
+                        Logger.Error("DeleteBaseEntity skipped invalid media key '" + v + "'. Expected fileStorageId-contentId-mod[-imageType].");
+                        continue;
+                    }
+
                     var fileStorageId = parts[0].ToInt();
                     int contentId = parts[1].ToInt();
                     MediaModType? enumMod = EnumHelper.Parse<MediaModType>(parts[2].ToStr());
-                    EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(parts[3].ToStr());
-
-                    switch (enumMod.Value)
+                    if (!enumMod.HasValue || fileStorageId <= 0 || contentId <= 0)
                     {
-                        case MediaModType.Stories:
-                            StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == contentId && r.FileStorageId == fileStorageId);
-                            this.DeleteFileStorage(fileStorageId);
-                            break;
-
-                        case MediaModType.Products:
-                            ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == contentId && r.FileStorageId == fileStorageId);
-                            this.DeleteFileStorage(fileStorageId);
-                            break;
-
-                        case MediaModType.Menus:
-                            MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == contentId && r.FileStorageId == fileStorageId);
-                            this.DeleteFileStorage(fileStorageId);
-
-                            break;
-
-                        default:
-                            break;
+                        Logger.Error("DeleteBaseEntity skipped unparseable media key '" + v + "'.");
+                        continue;
                     }
+
+                    DeleteUploadImageByFileStorage(contentId, enumMod, fileStorageId);
                 }
             }
             catch (DbEntityValidationException ex)

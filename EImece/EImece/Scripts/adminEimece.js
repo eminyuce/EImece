@@ -441,8 +441,9 @@ function updateUrlParameter(originalURL, param, value) {
 
 function deleteItemsSuccess(data) {
     data.forEach(function (entry) {
-        var pp = $('[gridkey-id=' + entry + ']');
-        pp.parent().parent().remove();
+        // Quote attribute value — media keys are composite (id-contentId-mod-imageType).
+        var pp = $('[gridkey-id="' + entry + '"]');
+        pp.closest('tr').remove();
     });
 
     refresh(500);
