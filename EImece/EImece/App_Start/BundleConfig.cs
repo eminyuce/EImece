@@ -47,7 +47,8 @@ namespace EImece
                       "~/Content/Gridmvc.css",
                       "~/Content/deleteStyle.css",
                       "~/Content/checkBoxStyle.css",
-                      "~/Content/adminSite.css"
+                      "~/Content/adminSite.css",
+                      "~/Content/adminShell.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(

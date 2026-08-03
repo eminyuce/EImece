@@ -566,3 +566,63 @@ function setPreSelectedTreeNode(preSelectedNode) {
         $("#Content_" + productCategoryId).append("<span id='contentInside' class='contentSelected'>" + textSpan + "</span>");
     }
 }
+
+/* Admin sidebar shell: mobile off-canvas toggle */
+(function () {
+    function setSidebarOpen(isOpen) {
+        var body = document.body;
+        if (!body || !body.classList.contains("admin-app")) {
+            return;
+        }
+        if (isOpen) {
+            body.classList.add("sidebar-open");
+        } else {
+            body.classList.remove("sidebar-open");
+        }
+        var toggle = document.getElementById("adminSidebarToggle");
+        if (toggle) {
+            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        }
+    }
+
+    function initAdminSidebarToggle() {
+        var toggle = document.getElementById("adminSidebarToggle");
+        var overlay = document.getElementById("adminSidebarOverlay");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            var isOpen = !document.body.classList.contains("sidebar-open");
+            setSidebarOpen(isOpen);
+        });
+
+        if (overlay) {
+            overlay.addEventListener("click", function () {
+                setSidebarOpen(false);
+            });
+        }
+
+        var sidebarLinks = document.querySelectorAll("#adminSidebar a");
+        for (var i = 0; i < sidebarLinks.length; i++) {
+            sidebarLinks[i].addEventListener("click", function () {
+                if (window.matchMedia && window.matchMedia("(max-width: 991px)").matches) {
+                    setSidebarOpen(false);
+                }
+            });
+        }
+
+        window.addEventListener("resize", function () {
+            if (window.matchMedia && window.matchMedia("(min-width: 992px)").matches) {
+                setSidebarOpen(false);
+            }
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initAdminSidebarToggle);
+    } else {
+        initAdminSidebarToggle();
+    }
+})();
