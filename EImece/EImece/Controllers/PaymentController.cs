@@ -577,10 +577,10 @@ namespace EImece.Controllers
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                PaymentLogger.Info($"Decrypted orderGuid: {orderGuid}");
+                PaymentLogger.Info("Decrypted payment callback order reference successfully.");
                 ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
                 var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
-                PaymentLogger.Info($"Decrypted userId: {userId}");
+                PaymentLogger.Info("Decrypted payment callback user reference successfully.");
                 var order = ShoppingCartService.SaveShoppingCart(orderNumber, shoppingCart, checkoutForm, userId);
                 PaymentLogger.Info($"Order saved with ID: {order.Id}");
                 SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
@@ -762,7 +762,7 @@ namespace EImece.Controllers
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                PaymentLogger.Info($"Decrypted orderGuid: {orderGuid}");
+                PaymentLogger.Info("Decrypted BuyNow payment callback order reference successfully.");
                 var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
                 BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
                 PaymentLogger.Info("Deserialized BuyNow model from shopping cart.");
@@ -1082,7 +1082,7 @@ namespace EImece.Controllers
             if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
             {
                 var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                PaymentLogger.Info($"Decrypted orderGuid: {orderGuid}");
+                PaymentLogger.Info("Decrypted ShoppingWithoutAccount payment callback order reference successfully.");
                 var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
                 ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
                 BuyWithNoAccountCreation buyWithNoAccountCreation = JsonConvert.DeserializeObject<BuyWithNoAccountCreation>(item.ShoppingCartJson);

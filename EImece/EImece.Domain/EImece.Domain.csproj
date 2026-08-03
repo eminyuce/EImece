@@ -440,7 +440,9 @@
     <Compile Include="Helpers\AttributeHelper\ValidateCaptchaAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\ValidateRecaptchaAttribute.cs" />
     <Compile Include="Helpers\BackupService.cs" />
+    <Compile Include="Helpers\AuthenticatedAesCipher.cs" />
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
+    <Compile Include="Helpers\EncryptionSecretProvider.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\HtmlRequestHelper.cs" />
     <Compile Include="Helpers\ImageCompressor.cs" />
