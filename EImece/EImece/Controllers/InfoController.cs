@@ -2,7 +2,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using System;
 using System.Net;
 using System.Web.Mvc;

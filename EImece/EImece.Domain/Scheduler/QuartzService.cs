@@ -1,7 +1,7 @@
 ﻿using CronExpressionDescriptor;
 using EImece.Domain.Helpers;
 using EImece.Domain.Scheduler.Jobs;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using Quartz;
 using System;

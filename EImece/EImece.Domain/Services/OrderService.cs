@@ -2,7 +2,6 @@
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using Ninject;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace EImece.Domain.Services
 
         private readonly IOrderProductService OrderProductService;
 
-        [Inject]
         private ICustomerService CustomerService;
 
         public OrderService(IOrderRepository repository, ICustomerService customerService, IOrderProductService orderProductService) : base(repository)

@@ -26,6 +26,7 @@ namespace EImece
         {
             // Fail closed on missing/placeholder DB credentials before any request handling.
             ConnectionStringProvider.Initialize();
+            DependencyInjectionConfig.Register();
 
             //System.Net.ServicePointManager.SecurityProtocol
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // TLS 1.2 only; older protocols (TLS 1.0/1.1) removed for security
@@ -38,11 +39,14 @@ namespace EImece
             MvcHandler.DisableMvcResponseHeader = true;
 
             ObservabilityBootstrap.Configure();
-            GlobalFilters.Filters.Add(new Filters.MetricsActionFilter(
-                DependencyResolver.Current.GetService<Domain.Observability.Metrics.IApplicationMetrics>()));
-            GlobalFilters.Filters.Add(new Filters.StructuredExceptionFilter());
+            using (DependencyInjectionConfig.BeginAmbientScope())
+            {
+                GlobalFilters.Filters.Add(new Filters.MetricsActionFilter(
+                    DependencyResolver.Current.GetService<EImece.Domain.Observability.Metrics.IApplicationMetrics>()));
+                GlobalFilters.Filters.Add(new Filters.StructuredExceptionFilter());
 
-            var adresService = DependencyResolver.Current.GetService<AdresService>();
+                var adresService = DependencyResolver.Current.GetService<AdresService>();
+            }
             // To enable the Quartz scheduler, resolve QuartzService and await its async start.
             // Application_Start is not async, so block ONCE here at startup (no request thread,
             // no AspNetSynchronizationContext => deadlock-free):
@@ -50,6 +54,8 @@ namespace EImece
             //      .StartSchedulerServiceAsync().GetAwaiter().GetResult();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configuration.DependencyResolver =
+                new MsDiWebApiDependencyResolver(DependencyInjectionConfig.ServiceProvider);
         }
 
         public override string GetVaryByCustomString(HttpContext context, string custom)
@@ -87,7 +93,13 @@ namespace EImece
         /// </summary>
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            DependencyInjectionConfig.BeginRequestScope();
             Redirect301();
+        }
+
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            DependencyInjectionConfig.EndRequestScope();
         }
 
         /// <summary>

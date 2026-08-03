@@ -1,6 +1,6 @@
 ﻿using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Data;

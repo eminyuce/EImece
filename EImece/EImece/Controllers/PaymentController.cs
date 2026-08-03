@@ -15,7 +15,7 @@ using Iyzipay.Request;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using Resources;
 using System;

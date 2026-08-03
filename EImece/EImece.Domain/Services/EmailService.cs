@@ -1,6 +1,6 @@
 ﻿using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System.Threading.Tasks;
 

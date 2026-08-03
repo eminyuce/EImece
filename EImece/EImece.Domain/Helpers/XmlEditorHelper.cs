@@ -1,5 +1,5 @@
 ﻿using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using RazorEngine;
 using RazorEngine.Templating; // For extension methods.
 using System;

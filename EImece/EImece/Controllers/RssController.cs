@@ -3,7 +3,7 @@ using EImece.Domain.Helpers.ActionResultHelpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Text;

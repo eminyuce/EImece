@@ -3,7 +3,7 @@ using EImece.Domain.Models.UrlShortenModels;
 using EImece.Domain.Repositories.IRepositories;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using RestSharp;
 using System;
