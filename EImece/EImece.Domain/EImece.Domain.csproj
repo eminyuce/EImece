@@ -437,7 +437,9 @@
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
     <Compile Include="Helpers\BackupService.cs" />
+    <Compile Include="Helpers\AuthenticatedAesCipher.cs" />
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
+    <Compile Include="Helpers\EncryptionSecretProvider.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\HtmlRequestHelper.cs" />
     <Compile Include="Helpers\ImageCompressor.cs" />
