@@ -413,8 +413,54 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public JsonResult DeleteMediaGridItem(List<String> values)
         {
-            FileStorageService.DeleteBaseEntity(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
+            var normalizedValues = NormalizeMediaDeleteKeys(values);
+            FileStorageService.DeleteBaseEntity(normalizedValues);
+            return Json(normalizedValues, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Media bulk-delete keys must be fileStorageId-contentId-mod[-imageType].
+        /// Older pages sent only the fileStorageId; enrich those from the media page session.
+        /// </summary>
+        private List<string> NormalizeMediaDeleteKeys(List<string> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return values ?? new List<string>();
+            }
+
+            var currentSelectedModul = Session["CurrentSelectedModul"] as Dictionary<string, string>;
+            if (currentSelectedModul == null
+                || !currentSelectedModul.ContainsKey("contentId")
+                || !currentSelectedModul.ContainsKey("mod")
+                || !currentSelectedModul.ContainsKey("imageType"))
+            {
+                return values;
+            }
+
+            var contentId = currentSelectedModul["contentId"];
+            var mod = currentSelectedModul["mod"];
+            var imageType = currentSelectedModul["imageType"];
+            var normalized = new List<string>(values.Count);
+
+            foreach (var value in values)
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    continue;
+                }
+
+                if (value.IndexOf('-') >= 0)
+                {
+                    normalized.Add(value);
+                }
+                else
+                {
+                    normalized.Add(string.Format("{0}-{1}-{2}-{3}", value, contentId, mod, imageType));
+                }
+            }
+
+            return normalized;
         }
 
         [HttpPost]

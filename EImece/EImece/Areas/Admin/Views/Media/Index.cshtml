@@ -168,7 +168,9 @@
                            Sanitized(false)
                                           .RenderValueAs(d => Html.Partial("pGridCheckbox",
                                           new ViewDataDictionary(ViewData){
-            {"ItemId",String.Format("{0}", d.Id)}}));
+            // DeleteMediaGridItem / FileStorageService.DeleteBaseEntity expects:
+            // fileStorageId-contentId-mod-imageType
+            {"ItemId", String.Format("{0}-{1}-{2}-{3}", d.Id, Model.Id, Model.MediaMod, Model.ImageType)}}));
 
                    columns.Add(o => o.Id, true);
 
