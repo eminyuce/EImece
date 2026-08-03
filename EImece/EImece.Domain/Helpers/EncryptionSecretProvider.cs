@@ -159,7 +159,7 @@ namespace EImece.Domain.Helpers
             bytes = null;
             try
             {
-                bytes = Convert.FromBase64String(value);
+                bytes = System.Convert.FromBase64String(value);
                 return true;
             }
             catch (FormatException)
@@ -174,7 +174,7 @@ namespace EImece.Domain.Helpers
             {
                 var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(secret));
                 // Only enough to detect config changes; not reversible to the secret in practice for logging.
-                return Convert.ToBase64String(hash, 0, 8);
+                return System.Convert.ToBase64String(hash, 0, 8);
             }
         }
 

@@ -28,7 +28,7 @@ namespace EImece.Domain.Observability.Logging
             }
         }
 
-        public static void Attach(DbContext context)
+        public static void Attach(System.Data.Entity.DbContext context)
         {
             if (!_enabled || context == null)
             {

@@ -137,7 +137,7 @@ namespace EImece.Domain.Helpers
                 throw new ArgumentException("Cipher text is required.", "cipherText");
             }
 
-            var payload = Convert.FromBase64String(NormalizeBase64(cipherText));
+            var payload = System.Convert.FromBase64String(NormalizeBase64(cipherText));
             EnsureVersionedPayload(payload, SaltSize);
 
             var salt = new byte[SaltSize];
@@ -209,7 +209,7 @@ namespace EImece.Domain.Helpers
             var payload = new byte[payloadWithoutMac.Length + HmacSize];
             Buffer.BlockCopy(payloadWithoutMac, 0, payload, 0, payloadWithoutMac.Length);
             Buffer.BlockCopy(mac, 0, payload, payloadWithoutMac.Length, HmacSize);
-            return Convert.ToBase64String(payload);
+            return System.Convert.ToBase64String(payload);
         }
 
         private static string Unprotect(string cipherTextBase64, byte[] encKey, byte[] macKey, int expectedSaltLength)
@@ -217,7 +217,7 @@ namespace EImece.Domain.Helpers
             byte[] payload;
             try
             {
-                payload = Convert.FromBase64String(cipherTextBase64);
+                payload = System.Convert.FromBase64String(cipherTextBase64);
             }
             catch (FormatException ex)
             {
