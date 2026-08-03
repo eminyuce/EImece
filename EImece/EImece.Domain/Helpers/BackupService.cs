@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -16,7 +15,7 @@ namespace EImece.Domain.Helpers
 
         public BackupService(string backupFolderFullPath)
         {
-            _connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString; ;
+            _connectionString = ConnectionStringProvider.GetConnectionString();
             _backupFolderFullPath = backupFolderFullPath;
         }
 

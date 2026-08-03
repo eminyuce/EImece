@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy to ConnectionStrings.config next to App.config and fill in test DB values.
+  ConnectionStrings.config is gitignored. Prefer EIMECE_DB_CONNECTION_STRING for CI.
+  Keep Encrypt=True; TrustServerCertificate=False (valid SQL TLS cert required).
+-->
+<connectionStrings>
+  <add name="EImeceDbConnection"
+       connectionString="Data Source=localhost;Initial Catalog=EImece_Test;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
+       providerName="System.Data.SqlClient" />
+  <add name="EImeceDbConnectionNewSite"
+       connectionString="Data Source=localhost;Initial Catalog=EImece_Test;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
+       providerName="System.Data.SqlClient" />
+</connectionStrings>

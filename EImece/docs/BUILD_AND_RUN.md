@@ -108,15 +108,22 @@ Edit `EImece/Web.config` before starting the application.
 
 ### Database connection (required)
 
-Update the `EImeceDbConnection` connection string to point at your SQL Server instance and database:
+**Do not put real usernames/passwords in `Web.config`.** Secrets are resolved at runtime:
+
+1. Environment variable `EIMECE_DB_CONNECTION_STRING` (preferred), or
+2. A gitignored `ConnectionStrings.config` via `configSource` (see example file)
+
+Safe placeholders ship in `Web.config`. Startup fails if the connection string is missing or still a placeholder.
 
 ```xml
 <connectionStrings>
   <add name="EImeceDbConnection"
-       connectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;User ID=...;Password=..."
+       connectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
        providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```
+
+Full local / IIS / Azure / TLS / password-rotation steps: [SECURE_CONNECTION_STRINGS.md](SECURE_CONNECTION_STRINGS.md).
 
 The database schema must already exist (apply your usual EF migrations or restore a backup).
 
@@ -137,7 +144,7 @@ File uploads use `App_Data` under the web project (`StorageRoot` is resolved at 
 
 ### Test project configuration
 
-For unit tests, update connection strings in `EImece.Tests/App.config` to match your test database.
+For unit tests, set `EIMECE_DB_CONNECTION_STRING` or use a gitignored `EImece.Tests/ConnectionStrings.config` (copy from `ConnectionStrings.config.example`). Do not commit real credentials in `App.config`.
 
 ---
 

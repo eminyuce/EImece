@@ -84,6 +84,7 @@ namespace EImece.Domain
         public const string ProductPriceFilterSetting = "ProductPriceFilterSetting";
 
         public const string DbConnectionKey = "EImeceDbConnection";
+        public const string DbConnectionEnvironmentVariable = "EIMECE_DB_CONNECTION_STRING";
         public const string AdministratorRole = "Admin";
         public const string EditorRole = "NormalUser";
         public const string CustomerRole = "Customer";

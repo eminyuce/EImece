@@ -46,6 +46,8 @@ using Domain.Repositories;
         /// </summary>
         public static void Start()
         {
+            // Resolve secrets before any DbContext / Identity construction.
+            ConnectionStringProvider.Initialize();
             bootstrapper.Initialize(CreateKernel);
         }
 
@@ -147,7 +149,7 @@ using Domain.Repositories;
                   .InRequestScope();                       // or .InSingletonScope() in many cases
 
             var m = kernel.Bind<IEImeceContext>().To<EImeceContext>();
-            m.WithConstructorArgument("nameOrConnectionString", Domain.Constants.DbConnectionKey);
+            m.WithConstructorArgument("nameOrConnectionString", ConnectionStringProvider.GetConnectionString());
             m.InRequestScope();
 
             kernel.Bind<IEntityFactory>().To<EntityFactory>();

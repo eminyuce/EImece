@@ -4,7 +4,6 @@ using EImece.Domain.Helpers;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -48,7 +47,7 @@ namespace EImece.Domain.Repositories
                 ids.Add(id);
             }
 
-            string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
+            string connectionString = ConnectionStringProvider.GetConnectionString();
             var parameterList = new List<SqlParameter>();
             var parameterNames = new List<string>();
             for (var i = 0; i < ids.Count; i++)
@@ -68,7 +67,7 @@ namespace EImece.Domain.Repositories
 
         public void DeleteAppLog(int id)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
+            string connectionString = ConnectionStringProvider.GetConnectionString();
             String commandText = @"DELETE FROM dbo.AppLogs WHERE Id=@Id";
             var parameterList = new List<SqlParameter>();
             var commandType = CommandType.Text;
@@ -81,7 +80,7 @@ namespace EImece.Domain.Repositories
 
         public void RemoveAll(string eventLevel = "")
         {
-            string connectionString = ConfigurationManager.ConnectionStrings[Domain.Constants.DbConnectionKey].ConnectionString;
+            string connectionString = ConnectionStringProvider.GetConnectionString();
             String commandText = "";
             if (string.IsNullOrEmpty(eventLevel))
             {
@@ -118,7 +117,7 @@ namespace EImece.Domain.Repositories
             {
                 parameterList.Add(DatabaseUtility.GetSqlParameter("Search", "%" + search.Trim() + "%", SqlDbType.NVarChar));
             }
-            string connectionString = ConfigurationManager.ConnectionStrings[Constants.DbConnectionKey].ConnectionString;
+            string connectionString = ConnectionStringProvider.GetConnectionString();
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))
             {

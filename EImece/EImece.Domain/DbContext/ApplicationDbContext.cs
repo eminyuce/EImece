@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Services;
+﻿using EImece.Domain.Helpers;
+using EImece.Domain.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EImece.Domain.DbContext
@@ -6,7 +7,7 @@ namespace EImece.Domain.DbContext
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base(Domain.Constants.DbConnectionKey, throwIfV1Schema: false)
+            : base(ConnectionStringProvider.GetConnectionString(), throwIfV1Schema: false)
         {
         }
 

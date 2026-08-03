@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework;
+using EImece.Domain.Helpers;
 using System;
 using System.Data.Entity;
 
@@ -8,6 +9,7 @@ namespace EImece.Domain.DbContext
     public class EImeceContext : EntitiesContext, IEImeceContext
     {
         public EImeceContext()
+            : this(ConnectionStringProvider.GetConnectionString())
         {
         }
 

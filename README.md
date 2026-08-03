@@ -78,7 +78,7 @@ Views/
    git clone https://github.com/eminyuce/EImece.git
    ```
 2. Open the solution in **Visual Studio**.
-3. Update the connection string in `Web.config`.
+3. Configure the database connection **without committing secrets** — set `EIMECE_DB_CONNECTION_STRING` or use a gitignored `ConnectionStrings.config`. See [EImece/docs/SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md).
 4. Run the application and apply migrations if needed.
 
 ---
