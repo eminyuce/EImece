@@ -1,6 +1,7 @@
 ﻿@using EImece.Models
 @model LoginViewModel
 @using Resources;
+@using EImece.Domain.Helpers.HtmlHelpers;
 
 @{
     ViewBag.Title = "Admin Login";
@@ -74,18 +75,6 @@
                 background-color: var(--primary-dark);
             }
 
-        .captcha-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .captcha-img {
-            height: 45px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
         .footer-info {
             font-size: 0.8rem;
             color: #6c757d;
@@ -144,12 +133,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>@Html.LabelFor(m => m.Captcha)</label>
-                                <div class="captcha-container mb-2">
-                                    <img src="@Url.Action("GetCaptcha", "Images", new { prefix = "AdminLogin" })" alt="CAPTCHA" class="captcha-img">
-                                    @Html.TextBoxFor(m => m.Captcha, new { @class = "form-control", placeholder = "Buraya Yaziniz.", required = "required" })
-                                </div>
-                                @Html.ValidationMessageFor(m => m.Captcha, "", new { @class = "invalid-feedback d-block" })
+                                @Html.CaptchaWidget("AdminLogin", "invalid-feedback d-block text-danger", "Buraya Yaziniz.")
                             </div>
 
                             <button type="submit" class="btn btn-login btn-block btn-lg">

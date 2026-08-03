@@ -3,6 +3,7 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Services;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
@@ -177,6 +178,7 @@ namespace EImece.Controllers
         }
 
         [HttpPost]
+        [ValidateCaptcha(Prefix = "ProductReview")]
         public ActionResult Review(ProductComment productComment)
         {
             Logger.Info($"Entering Review POST action with productComment Email: {productComment?.Email}, ProductId: {productComment?.ProductId}");
@@ -185,6 +187,14 @@ namespace EImece.Controllers
                 Logger.Error("ProductComment is null.");
                 Logger.Info("Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (CaptchaService.HasValidationError(ModelState))
+            {
+                Logger.Error("Captcha validation failed for product review.");
+                TempData["RecaptchaError"] = CaptchaService.GetErrorMessage();
+                Logger.Info($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");
+                return RedirectToAction("Detail", new { id = productComment.SeoUrl });
             }
 
             Logger.Info($"Looking up user by email: {productComment.Email}");

@@ -844,7 +844,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guvenlik Sorusunu:.
+        ///   Looks up a localized string similar to Güvenlik doğrulaması.
         /// </summary>
         public static string ContactUsCaptcha {
             get {
@@ -853,7 +853,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lütfen Guvenlik Sorunu Cevaplayiniz..
+        ///   Looks up a localized string similar to Lütfen reCAPTCHA doğrulamasını tamamlayınız..
         /// </summary>
         public static string ContactUsCaptchaErrorMessage {
             get {
@@ -943,7 +943,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yanlış Toplam, Lütfen tekrar deneyin..
+        ///   Looks up a localized string similar to Yanlış toplam, lütfen tekrar deneyiniz..
         /// </summary>
         public static string ContactUsWrongSumForSecurityQuestion {
             get {
@@ -3873,6 +3873,15 @@ namespace Resources {
         public static string Reasons {
             get {
                 return ResourceManager.GetString("Reasons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen &quot;Ben robot değilim&quot; doğrulamasını tamamlayınız..
+        /// </summary>
+        public static string RecaptchaValidationFailed {
+            get {
+                return ResourceManager.GetString("RecaptchaValidationFailed", resourceCulture);
             }
         }
         

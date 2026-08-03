@@ -121,10 +121,10 @@
     <value>Adres</value>
   </data>
   <data name="ContactUsCaptcha" xml:space="preserve">
-    <value>Güvenlik sorusu:</value>
+    <value>Güvenlik doğrulaması</value>
   </data>
   <data name="ContactUsCaptchaErrorMessage" xml:space="preserve">
-    <value>Lütfen güvenlik sorusunu cevaplayınız.</value>
+    <value>Lütfen reCAPTCHA doğrulamasını tamamlayınız.</value>
   </data>
   <data name="ContactUsCompanyName" xml:space="preserve">
     <value>Firma Adı</value>
@@ -224,6 +224,9 @@
   </data>
   <data name="ContactUsWrongSumForSecurityQuestion" xml:space="preserve">
     <value>Yanlış toplam, lütfen tekrar deneyiniz.</value>
+  </data>
+  <data name="RecaptchaValidationFailed" xml:space="preserve">
+    <value>Lütfen "Ben robot değilim" doğrulamasını tamamlayınız.</value>
   </data>
   <data name="ProductsInfo" xml:space="preserve">
     <value>Ürün Bilgisi</value>
