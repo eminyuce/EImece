@@ -1,7 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;

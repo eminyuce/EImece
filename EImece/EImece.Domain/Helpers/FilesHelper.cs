@@ -6,7 +6,7 @@ using EImece.Domain.Services.IServices;
 using ImageProcessor;
 using ImageProcessor.Imaging.Formats;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;

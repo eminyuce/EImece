@@ -1,7 +1,7 @@
 ﻿using EImece.Domain.Caching;
 using EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle;
 using Newtonsoft.Json;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using System;
 using System.Web;
 

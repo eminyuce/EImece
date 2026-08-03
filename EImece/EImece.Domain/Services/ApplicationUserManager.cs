@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using Ninject;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,15 +10,11 @@ namespace EImece.Domain.Services
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        //public ApplicationUserManager(IUserStore<ApplicationUser> store)
-        //    : base(store)
-        //{
-        //}
-
+        // Former Ninject named bindings ("Email"/"Sms") — take concrete services instead.
         public ApplicationUserManager(IUserStore<ApplicationUser> store,
             IdentityFactoryOptions<ApplicationUserManager> options,
-            [Named("Email")] IIdentityMessageService emailService,
-            [Named("Sms")] IIdentityMessageService smsService) : base(store)
+            EmailService emailService,
+            SmsService smsService) : base(store)
         {
             var manager = this;
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
@@ -71,7 +66,7 @@ namespace EImece.Domain.Services
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            // The authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;

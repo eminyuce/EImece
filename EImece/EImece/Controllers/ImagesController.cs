@@ -3,7 +3,7 @@ using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services.IServices;
-using Ninject;
+using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Diagnostics;

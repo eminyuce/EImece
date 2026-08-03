@@ -1,0 +1,68 @@
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using EImece.Domain.DependencyInjection;
+
+namespace EImece.App_Start
+{
+    /// <summary>
+    /// MVC <see cref="IDependencyResolver"/> backed by Microsoft.Extensions.DependencyInjection.
+    /// Resolves from the current HTTP request scope when available; otherwise from the root provider.
+    /// Unregistered concrete types (e.g. controllers) are activated via ActivatorUtilities + property injection.
+    /// </summary>
+    public sealed class MsDiDependencyResolver : IDependencyResolver
+    {
+        private readonly IServiceProvider _rootProvider;
+
+        public MsDiDependencyResolver(IServiceProvider rootProvider)
+        {
+            _rootProvider = rootProvider ?? throw new ArgumentNullException(nameof(rootProvider));
+        }
+
+        public object GetService(Type serviceType)
+        {
+            if (serviceType == null)
+            {
+                return null;
+            }
+
+            var provider = DependencyInjectionConfig.GetRequestServiceProvider() ?? _rootProvider;
+            var service = provider.GetService(serviceType);
+            if (service != null)
+            {
+                // Registered services already receive property injection from their factories;
+                // controllers and other ActivatorUtilities-created types still need it here.
+                PropertyInjector.Inject(service, provider);
+                return service;
+            }
+
+            if (serviceType.IsClass && !serviceType.IsAbstract && !serviceType.IsInterface)
+            {
+                try
+                {
+                    return PropertyInjector.Create(serviceType, provider);
+                }
+                catch (InvalidOperationException)
+                {
+                    // Constructor dependencies could not be satisfied — let MVC fall back.
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public IEnumerable<object> GetServices(Type serviceType)
+        {
+            if (serviceType == null)
+            {
+                return Enumerable.Empty<object>();
+            }
+
+            var provider = DependencyInjectionConfig.GetRequestServiceProvider() ?? _rootProvider;
+            return provider.GetServices(serviceType);
+        }
+    }
+}
