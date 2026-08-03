@@ -1,94 +1,161 @@
-# 🛍️ EImece - ECommerce Web Application
+# EImece — ECommerce Web Application
 
-**EImece** is an open-source, full-featured eCommerce web application built with **ASP.NET MVC 5**, **Entity Framework 6**, and **Ninject**. It follows a clean architecture using the **Repository Pattern** and **Service Layer** for better scalability and maintainability.
+**EImece** is an open-source, full-featured eCommerce web application built with **ASP.NET MVC 5**, **Entity Framework 6**, and **Microsoft.Extensions.DependencyInjection**. It uses the **Repository Pattern** and a **Service Layer** for clear separation of concerns.
 
----
-
-## 🚀 Technologies Used
-
-- **C#** – Main programming language  
-- **ASP.NET MVC 5.2.3** – Web application framework  
-- **Entity Framework 6** – ORM for data access  
-- **SQL Server 2008** – Database system  
-- **Ninject** – Dependency injection  
-- **jQuery** – JavaScript library for dynamic UI  
-- **Bootstrap** – Responsive front-end design  
-- **Generic Repository Pattern** – Abstraction for data layer  
-- **Service Layer Pattern** – Separation of business logic  
+> The solution **compiles on Linux** (CI). The web app **runs on Windows** with IIS / IIS Express and SQL Server.
 
 ---
 
-## 💎 Highlight Feature: Iyzico Payment Integration
+## Technologies
 
-### ✅ Seamless Payment Experience with [Iyzico](https://www.iyzico.com/en)
-- Fully integrated with **Iyzico** for real-time, secure payment processing
-- Supports **guest** and **registered user** checkouts
-- Customers receive payment confirmation and **tracking numbers**
-- Iyzico provides **PCI-DSS compliant** infrastructure for safe transactions
-
-> This makes **EImece** production-ready for real-world commercial use in Turkey and beyond!
+| Area | Stack |
+|------|--------|
+| Runtime | .NET Framework **4.8.1** |
+| Web | ASP.NET MVC **5.3**, ASP.NET Identity, OWIN |
+| Data | Entity Framework **6.5**, SQL Server |
+| DI | **Microsoft.Extensions.DependencyInjection** |
+| Payments | [Iyzico](https://www.iyzico.com/en) (`Iyzipay`) |
+| Logging / telemetry | NLog, Application Insights **3.x**, optional OpenTelemetry |
+| Jobs | Quartz.NET (optional) |
+| Front end | jQuery, Bootstrap |
 
 ---
 
-## 🎯 Key Features
+## Highlight: Iyzico payments
 
-### 🏠 Home Page
-- Scrolling image banners with link support
-- Custom menu items and themed content pages
+- Real-time checkout via **Iyzico** (guest and registered users)
+- Payment confirmation and cargo / tracking numbers
+- PCI-DSS–compliant payment infrastructure through Iyzico
 
-### 🛒 Product Management
-- Product categorization and tagging
-- Image gallery support for each product
+---
+
+## Key features
+
+### Storefront
+- Banner carousels, custom menus, and themed content pages
+- Product categories, tags, brands, galleries, and filters (price, rating, brand)
+- Cart, guest/member checkout, order tracking
+- Contact form with email and WhatsApp support
+- Optional **Google reCAPTCHA v2** (legacy arithmetic captcha still available)
+
+### Admin
+- Customers, orders, cargo numbers, status, and internal notes
+- Media library management
+- Product FAQs visible on the customer account page
 - Price updates by category, tag, or brand
-- Product filtering by price, category, rating, and brand
 
-### 💳 Shopping & Payment
-- Add to cart functionality
-- **Secure payments via Iyzico**
-- Guest or member checkout options
-- Order tracking with cargo numbers
-- Fraud prevention and secure transaction handling
-
-### 👤 Customer & Order Management
-- Admin dashboard to manage customers and orders
-- Add cargo numbers, update status, and add internal notes
-- Display FAQs for each product on customer account page
-
-### 📞 Communication & Social Integration
-- Contact form with **email** and **WhatsApp** support
+### Operations & security
+- Health endpoints: `GET /health` and `GET /healthz`
+- Admin metrics: `GET /metrics` (authenticated administrators)
+- Security response headers (`SecurityHeadersHttpModule`)
+- DB credentials and encryption keys via environment variables (not committed secrets)
+- Structured request logging under `App_Data/logs/`
 
 ---
 
-## 📁 Project Structure
-Uses Repository + Service Layer for clean separation:
+## Solution structure
+
+| Project | Purpose |
+|---------|---------|
+| `EImece` | ASP.NET MVC 5 site and Admin area |
+| `EImece.Domain` | Entities, EF, repositories, services, observability, DI |
+| `Resources` | Localized strings |
+| `EImece.Tests` | MSTest unit / integration tests |
+| `EImece.MyConsole` | One-off maintenance utilities |
+
 ```
-Controllers/
-Models/
-Services/
-Repositories/
-Views/
+EImece/
+├── EImece/                 # Web app (Controllers, Views, Areas/Admin, Web.config)
+├── EImece.Domain/          # Domain, data access, services
+├── EImece.Tests/
+├── EImece.MyConsole/
+├── Resources/
+├── scripts/                # build.sh, restore-packages.py
+└── docs/                   # Detailed guides
 ```
 
 ---
 
-## 🧑‍💻 Getting Started
+## Getting started
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/eminyuce/EImece.git
-   ```
-2. Open the solution in **Visual Studio**.
-3. Configure the database connection **without committing secrets** — set `EIMECE_DB_CONNECTION_STRING` or use a gitignored `ConnectionStrings.config`. See [EImece/docs/SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md).
-4. Run the application and apply migrations if needed.
+### Prerequisites
+
+- **Windows** to run the site (Visual Studio 2019/2022 with ASP.NET workload, or IIS + .NET Framework 4.8.1)
+- **SQL Server** (Express, Developer, or full)
+- To **build** only (Windows or Linux): .NET SDK 8+ and Python 3
+
+### 1. Clone
+
+```bash
+git clone https://github.com/eminyuce/EImece.git
+cd EImece
+```
+
+### 2. Configure the database (no secrets in git)
+
+Prefer an environment variable:
+
+```powershell
+$env:EIMECE_DB_CONNECTION_STRING = "Data Source=localhost;Initial Catalog=EImece;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
+```
+
+Or use a gitignored `ConnectionStrings.config`. Full options (local, IIS, Azure, TLS):  
+[EImece/docs/SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md)
+
+Encryption secrets: prefer `EIMECE_ENCRYPTION_KEY` over storing keys in `Web.config`.
+
+### 3. Build
+
+**Visual Studio:** open `EImece/EImece.sln` → Rebuild Solution.
+
+**Command line (Windows Developer Prompt):**
+
+```powershell
+cd EImece
+nuget restore EImece.sln
+msbuild EImece.sln /t:Clean,Build /p:Configuration=Release
+```
+
+**Linux / CI:**
+
+```bash
+cd EImece
+chmod +x scripts/build.sh
+./scripts/build.sh
+```
+
+### 4. Run
+
+1. Set **EImece** as the startup project.
+2. Press **F5** (or host the `EImece/EImece` folder in IIS).
+3. Default IIS Express URL is typically `http://localhost:31544` (check project Web properties if different).
+4. Confirm: `GET http://localhost:31544/health` → HTTP 200 and `"Status": "UP"`.
+
+Step-by-step build, IIS, verification, and troubleshooting:  
+[EImece/docs/BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md)
+
+### Optional: reCAPTCHA
+
+See [EImece/RECAPTCHA.md](EImece/RECAPTCHA.md) to switch between Legacy captcha and Google reCAPTCHA v2.
 
 ---
 
-## 🤝 Contributions
-Have ideas to improve the platform? Fork the project, create a new branch, and submit a pull request!
+## Documentation
+
+| Doc | Contents |
+|-----|----------|
+| [BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md) | Build, run, health checks, tests, common errors |
+| [SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md) | Env vars, `configSource`, TLS, production |
+| [RECAPTCHA.md](EImece/RECAPTCHA.md) | Captcha providers and Web.config keys |
 
 ---
 
-## 📜 License
-Licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+## Contributing
 
- 
+Fork the repo, create a branch, and open a pull request. Keep secrets out of commits (`ConnectionStrings.config`, real API keys, encryption keys).
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).

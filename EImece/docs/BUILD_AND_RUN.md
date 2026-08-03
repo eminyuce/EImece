@@ -12,7 +12,7 @@ This document describes how to build the EImece solution (the C# equivalent of `
 | `EImece.Tests` | MSTest library | Unit and integration tests |
 | `EImece.MyConsole` | Console app | One-off maintenance / migration utilities |
 
-**Stack:** .NET Framework 4.7.2, ASP.NET MVC 5, Entity Framework 6, SQL Server, IIS / IIS Express.
+**Stack:** .NET Framework 4.8.1, ASP.NET MVC 5, Entity Framework 6, Microsoft.Extensions.DependencyInjection, SQL Server, IIS / IIS Express.
 
 > **Important:** The solution can be **compiled on Linux** for CI. The web application itself must **run on Windows** with IIS or IIS Express and a reachable SQL Server database.
 
@@ -32,7 +32,7 @@ The build script installs the .NET SDK automatically on Linux if it is missing.
 
 - Windows 10/11 or Windows Server
 - Visual Studio 2019/2022 with **ASP.NET and web development** workload  
-  — or full IIS + .NET Framework 4.7.2
+  — or full IIS + .NET Framework 4.8.1
 - **SQL Server** (Express, Developer, or full edition)
 - IIS Express (included with Visual Studio) or IIS
 
@@ -166,7 +166,7 @@ Visual Studio may assign a different port; check the browser address bar or proj
 
 ### Option B: IIS (staging / production-like)
 
-1. Install **IIS** and **ASP.NET 4.7** features on Windows.
+1. Install **IIS** and **ASP.NET 4.8** features on Windows.
 2. In IIS Manager, create a new **Application Pool**:
    - .NET CLR version: **v4.0**
    - Managed pipeline mode: **Integrated**
