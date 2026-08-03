@@ -63,14 +63,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            @Html.LabelFor(model => model.Captcha)
-        </div>
-        <div class="col-md-10">
-            <img width="180" height="50" rel="nofollow" src="@Url.Action("GetCaptcha", "Images", new { prefix = "ContactUsLogin" })" alt="Captcha" />
-        </div>
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Captcha, new { @class = "form-control", @placeholder = Resource.AnswerSecurityQuestion, @autocomplete = "false" })
-            @Html.ValidationMessageFor(model => model.Captcha, "", new { @class = "text-danger" })
+            @Html.CaptchaWidget("ContactUsLogin")
         </div>
     </div>
     <div class="form-group">

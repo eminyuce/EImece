@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Services;
+﻿using EImece.Domain.Observability.Logging;
+using EImece.Domain.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EImece.Domain.DbContext
@@ -8,6 +9,7 @@ namespace EImece.Domain.DbContext
         public ApplicationDbContext()
             : base(Domain.Constants.DbConnectionKey, throwIfV1Schema: false)
         {
+            EfSqlLogger.Attach(this);
         }
 
         public static ApplicationDbContext Create()

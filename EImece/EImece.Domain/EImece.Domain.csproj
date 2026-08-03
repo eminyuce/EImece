@@ -116,26 +116,26 @@
     <Reference Include="Microsoft.Extensions.Caching.Memory, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Caching.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.10.0.10\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Logging, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.8.0.0\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Logging, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.10.0.10\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.10.0.0\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Options, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Options.10.0.0\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Options, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.10.0.10\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Primitives.10.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.10.0.10\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Abstractions, Version=8.14.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.8.14.0\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
@@ -414,6 +414,7 @@
     <Compile Include="Observability\Http\IResilientHttpClient.cs" />
     <Compile Include="Observability\Http\ResilientHttpClient.cs" />
     <Compile Include="Observability\Logging\CorrelationIdContext.cs" />
+    <Compile Include="Observability\Logging\EfSqlLogger.cs" />
     <Compile Include="Observability\Logging\RequestLogContext.cs" />
     <Compile Include="Observability\Logging\SensitiveDataMasker.cs" />
     <Compile Include="Observability\Logging\StructuredLoggingBootstrap.cs" />
@@ -436,6 +437,8 @@
     <Compile Include="GenericRepository\QueryableExtensions.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\ValidateCaptchaAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\ValidateRecaptchaAttribute.cs" />
     <Compile Include="Helpers\BackupService.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipher.cs" />
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
@@ -588,6 +591,7 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
+    <Compile Include="Helpers\HtmlHelpers\CaptchaHtmlHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers\MVCHtmlHelpers.cs" />
     <Compile Include="Helpers\ImageUtilities.cs" />
@@ -633,6 +637,7 @@
     <Compile Include="Models\Enums\AddressType.cs" />
     <Compile Include="Models\Enums\BrowserType.cs" />
     <Compile Include="Models\Enums\EImeceImageType.cs" />
+    <Compile Include="Models\Enums\CaptchaProviderType.cs" />
     <Compile Include="Models\Enums\EImeceItemType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
@@ -810,6 +815,8 @@
     <Compile Include="Services\IServices\ITagCategoryService.cs" />
     <Compile Include="Services\IServices\ITagService.cs" />
     <Compile Include="Services\IServices\ITemplateService.cs" />
+    <Compile Include="Services\CaptchaService.cs" />
+    <Compile Include="Services\RecaptchaService.cs" />
     <Compile Include="Services\IyzicoService.cs" />
     <Compile Include="Services\ListItemService.cs" />
     <Compile Include="Services\ListService.cs" />

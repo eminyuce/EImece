@@ -1094,7 +1094,6 @@ namespace EImece.Domain.Helpers
                 gfx.SmoothingMode = SmoothingMode.AntiAlias;
                 gfx.FillRectangle(Brushes.White, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
-                //add noise
                 if (includenoise)
                 {
                     int i, r, x, y;
@@ -1118,15 +1117,12 @@ namespace EImece.Domain.Helpers
                     }
                 }
 
-                //add question
                 using (var captchaFont = new Font("Tahoma", 15))
                 {
                     gfx.DrawString(captcha, captchaFont, Brushes.Black, 2, 3);
                 }
 
-                //render as Jpeg
                 bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
-
                 return mem.GetBuffer();
             }
         }
