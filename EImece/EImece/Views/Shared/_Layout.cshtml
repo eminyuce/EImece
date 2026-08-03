@@ -17,7 +17,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@Html.Raw(ViewBag.Title)</title>
+    <title>@ViewBag.Title</title>
     <style>
         body {
             background-color: #f8f9fa;
@@ -72,14 +72,14 @@
 
     @if (!string.IsNullOrEmpty(ViewBag.Description))
     {
-        <meta name="description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
-        <meta name="og:description" content="@Html.Raw(((string)ViewBag.Description).Replace("\"", "'"))">
+        <meta name="description" content="@((string)ViewBag.Description)">
+        <meta name="og:description" content="@((string)ViewBag.Description)">
 
     }
 
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
     {
-        <meta name="keywords" content="@Html.Raw(((string)ViewBag.Keywords).Replace("\"", "'"))">
+        <meta name="keywords" content="@((string)ViewBag.Keywords)">
     }
     @{
         String seoId = (String)ViewBag.SeoId;

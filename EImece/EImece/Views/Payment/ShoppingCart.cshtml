@@ -63,7 +63,7 @@
                     {
                         <div class="alert alert-secondary">
                             <div class="pt-3 pb-2 text-center ">
-                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, Url.Action("Index", "Home")))
+                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))))
                             </div>
                         </div>
                     }
