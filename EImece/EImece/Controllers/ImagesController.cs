@@ -205,22 +205,17 @@ namespace EImece.Controllers
             return File(ms.ToArray(), savedImage.ContentType);
         }
 
-        //controller function to generate image
-        //returns image file (through url.action in img src attribute)
+        // Legacy arithmetic CAPTCHA image (used when CaptchaProvider=Legacy)
         public ActionResult GetCaptcha(string prefix, bool noisy = true)
         {
             var rand = new Random((int)DateTime.Now.Ticks);
-            //generate new question
             int a = rand.Next(1, 5);
             int b = rand.Next(1, 5);
             var captcha = string.Format("{0} + {1} = ?", a, b);
 
-            //store answer
             Session["Captcha" + prefix] = a + b;
 
-            //image stream
             FileContentResult img = null;
-
             try
             {
                 img = this.File(FilesHelper.GenerateCaptchaImg(captcha, true), ContentType);

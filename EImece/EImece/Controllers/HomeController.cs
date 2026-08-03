@@ -3,6 +3,7 @@ using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Services;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
@@ -27,7 +28,6 @@ namespace EImece.Controllers
 {
     public class HomeController : BaseController
     {
-        private const string CaptchaContactUsLogin = "CaptchaContactUsLogin";
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
         [Inject]
@@ -213,6 +213,8 @@ namespace EImece.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ValidateCaptcha(Prefix = "ContactUsLogin")]
         public ActionResult SendContactUs(ContactUsFormViewModel contact)
         {
             HomeLogger.Info("Entering SendContactUs POST action.");
@@ -228,11 +230,10 @@ namespace EImece.Controllers
                 ipAddress = Request.UserHostAddress;
             }
             contact.IPAddress = ipAddress;
-            if (Session[CaptchaContactUsLogin] == null || !Session[CaptchaContactUsLogin].ToString().Equals(contact.Captcha, StringComparison.InvariantCultureIgnoreCase))
+            if (CaptchaService.HasValidationError(ModelState))
             {
-                HomeLogger.Error($"Captcha validation failed. Session: {Session[CaptchaContactUsLogin]}, Input: {contact.Captcha}");
-                ModelState.AddModelError("Captcha", Resource.ContactUsWrongSumForSecurityQuestion);
-                ModelState.AddModelError("", Resource.ContactUsWrongSumForSecurityQuestion);
+                HomeLogger.Error("Captcha validation failed for SendContactUs.");
+                ModelState.AddModelError("", CaptchaService.GetErrorMessage());
                 if (contact.ItemType == EImeceItemType.Product)
                 {
                     HomeLogger.Info($"ItemType is Product with ID: {contact.ItemId}");

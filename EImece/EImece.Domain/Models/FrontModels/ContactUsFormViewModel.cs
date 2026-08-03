@@ -29,7 +29,6 @@ namespace EImece.Domain.Models.FrontModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ContactUsMessage))]
         public String Message { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.AnswerSecurityQuestion))]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ContactUsCaptcha))]
         public String Captcha { get; set; }
 

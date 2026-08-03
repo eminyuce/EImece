@@ -436,6 +436,8 @@
     <Compile Include="GenericRepository\QueryableExtensions.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\ValidateCaptchaAttribute.cs" />
+    <Compile Include="Helpers\AttributeHelper\ValidateRecaptchaAttribute.cs" />
     <Compile Include="Helpers\BackupService.cs" />
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
@@ -586,6 +588,7 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
+    <Compile Include="Helpers\HtmlHelpers\CaptchaHtmlHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers\MVCHtmlHelpers.cs" />
     <Compile Include="Helpers\ImageUtilities.cs" />
@@ -631,6 +634,7 @@
     <Compile Include="Models\Enums\AddressType.cs" />
     <Compile Include="Models\Enums\BrowserType.cs" />
     <Compile Include="Models\Enums\EImeceImageType.cs" />
+    <Compile Include="Models\Enums\CaptchaProviderType.cs" />
     <Compile Include="Models\Enums\EImeceItemType.cs" />
     <Compile Include="Models\Enums\EImeceLanguage.cs" />
     <Compile Include="Models\Enums\MediaModType.cs" />
@@ -808,6 +812,8 @@
     <Compile Include="Services\IServices\ITagCategoryService.cs" />
     <Compile Include="Services\IServices\ITagService.cs" />
     <Compile Include="Services\IServices\ITemplateService.cs" />
+    <Compile Include="Services\CaptchaService.cs" />
+    <Compile Include="Services\RecaptchaService.cs" />
     <Compile Include="Services\IyzicoService.cs" />
     <Compile Include="Services\ListItemService.cs" />
     <Compile Include="Services\ListService.cs" />
