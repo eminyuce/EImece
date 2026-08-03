@@ -146,9 +146,11 @@
             {"controllerName",controllerName}
            ,{"StateTypes","State"}
            ,{"IsNewRecordButtonEnabled",false}
+           ,{"IsSearchFormEnabled",false}
            ,{"orderingButton",true}
            ,{"selectAll",true}
-           ,{"deleteAll",false}
+           ,{"deleteAll",true}
+           ,{"ProductState",false}
             ,{"SetStateOnOrOff",true}})
 
                 <div class="panel panel-primary">
@@ -213,26 +215,24 @@
 @helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
 {
     var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
-<div class="row">
-    <div class="col-md-6">
-        <img src=@fileStorage.GetAdminCroppedImageUrl(150,0)>
-        <a href=@String.Format("/media/images/{0}", fileStorage.FileName)
-           title="@fileStorage.FileName"
-           download="@fileStorage.FileName"
-           data-gallery="">
+    var fullImageUrl = String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase);
+    var thumbImageUrl = String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase);
+    var downloadUrl = String.Format("/media/images/{0}", fileStorage.FileName);
+<div class="media-file-preview">
+    <div class="media-file-preview-thumb">
+        <a href="@downloadUrl" title="@fileStorage.FileName" download="@fileStorage.FileName" data-gallery="">
+            <img src="@fileStorage.GetAdminCroppedImageUrl(150,0)" alt="@fileStorage.FileName" />
         </a>
-        <div>
-            @fileStorage.FileName
-        </div>
+        <div class="media-file-preview-name">@fileStorage.FileName</div>
     </div>
-    <div class="col-md-6">
+    <div class="media-file-preview-meta">
         <div>
             @String.Format(AdminResource.OriginalWidthHeightFormat, imageSizes.OriginalWidth, imageSizes.OriginalHeight)
-            <a href=@String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">@AdminResource.FullImage</a>
+            <a href="@fullImageUrl" target="_blank">@AdminResource.FullImage</a>
         </div>
         <div>
             @String.Format(AdminResource.ThumbsWidthHeightFormat, imageSizes.Width, imageSizes.Height)
-            <a href=@String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase) target="_blank">@AdminResource.ThumbsImage</a>
+            <a href="@thumbImageUrl" target="_blank">@AdminResource.ThumbsImage</a>
         </div>
     </div>
 </div>
