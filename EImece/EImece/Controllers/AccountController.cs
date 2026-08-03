@@ -1,6 +1,5 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Services;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
