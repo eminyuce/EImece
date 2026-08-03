@@ -81,11 +81,11 @@ using Domain.Repositories;
         private static MapperConfiguration CreateAutoMapper(IKernel kernel)
         {
             var loggerFactory = kernel.Get<ILoggerFactory>();
-            // Option A: If you have Profiles in the same assembly (or known assemblies)
+            // AutoMapper 15+ requires ILoggerFactory for diagnostics
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new MappingProfile());
-            });
+            }, loggerFactory);
 
             // Optional: validate only in DEBUG or during tests
 #if DEBUG

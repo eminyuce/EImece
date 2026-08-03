@@ -30,25 +30,25 @@ namespace EImece.Domain.ApiRepositories
             }
         }
 
-        private static IRestResponse MakeGetRequest(string requestUrl)
+        private static RestResponse MakeGetRequest(string requestUrl)
         {
             var client = new RestClient(requestUrl);
-            var request = new RestRequest(Method.GET);
+            var request = new RestRequest("", Method.Get);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("authorization", "Bearer " + BitlyAPIAccessToken);
             request.AddHeader("content-type", "application/json");
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             return response;
         }
 
         public string GetGroup()
         {
             var client = new RestClient("https://api-ssl.bitly.com/v4/groups");
-            var request = new RestRequest(Method.GET);
+            var request = new RestRequest("", Method.Get);
             // request.AddHeader("postman-token", "3f3e65e2-8aa7-bda3-0faa-c19a1c30cb29");
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("authorization", "Bearer " + BitlyAPIAccessToken);
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
 
             return response.Content;
         }
@@ -75,13 +75,13 @@ namespace EImece.Domain.ApiRepositories
             code = "7fdfb003365667bdb57678f263664da57bf28773";
             redirectionUrl = " http://login.seatechnologyjobs.com/";
             var client = new RestClient("https://api-ssl.bitly.com/oauth/access_token");
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest("", Method.Post);
             //  request.AddHeader("postman-token", "72780a27-4dd7-b531-af52-28af12dcec33");
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             string bodyParameter = String.Format("client_id={0}&client_secret={1}&code={2}&redirect_uri={3}", clientId, clientSecret, code, redirectionUrl);
-            request.AddBody(bodyParameter);
-            IRestResponse response = client.Execute(request);
+            request.AddStringBody(bodyParameter, ContentType.FormUrlEncoded);
+            RestResponse response = client.Execute(request);
 
             return response.Content;
         }
@@ -97,13 +97,13 @@ namespace EImece.Domain.ApiRepositories
             string json = JsonConvert.SerializeObject(shortUrl, Formatting.Indented);
 
             var client = new RestClient("https://api-ssl.bitly.com/v4/shorten");
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest("", Method.Post);
             // request.AddHeader("postman-token", "93e96bcd-b2b6-a486-6939-8af2fe5f2f95");
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("authorization", "Bearer " + BitlyAPIAccessToken);
             request.AddHeader("content-type", "application/json");
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
+            request.AddStringBody(json, ContentType.Json);
+            RestResponse response = client.Execute(request);
             var statusCode = response.StatusCode;
             if (statusCode == System.Net.HttpStatusCode.OK)
             {
@@ -125,7 +125,7 @@ namespace EImece.Domain.ApiRepositories
         public BitlyUrlClickStats GetBitlyUrlStats(string bitLink)
         {
             var requestUrl = String.Format("https://api-ssl.bitly.com/v4/bitlinks/{0}/clicks", bitLink);
-            IRestResponse response = MakeGetRequest(requestUrl);
+            RestResponse response = MakeGetRequest(requestUrl);
             var statusCode = response.StatusCode;
             return JsonConvert.DeserializeObject<BitlyUrlClickStats>(response.Content);
         }
@@ -139,7 +139,7 @@ namespace EImece.Domain.ApiRepositories
         public BitlyUrlClickSummaryStats GetBitlyUrlSummaryStats(string bitLink)
         {
             var requestUrl = String.Format("https://api-ssl.bitly.com/v4/bitlinks/{0}/clicks/summary", bitLink);
-            IRestResponse response = MakeGetRequest(requestUrl);
+            RestResponse response = MakeGetRequest(requestUrl);
             var statusCode = response.StatusCode;
             if (statusCode == System.Net.HttpStatusCode.OK)
             {
