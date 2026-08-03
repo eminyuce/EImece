@@ -1,3 +1,4 @@
+using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 using Microsoft.ApplicationInsights.Extensibility;
 using NLog;

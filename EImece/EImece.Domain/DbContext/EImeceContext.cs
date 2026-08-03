@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework;
+using EImece.Domain.Observability.Logging;
 using System;
 using System.Data.Entity;
 
@@ -9,12 +10,14 @@ namespace EImece.Domain.DbContext
     {
         public EImeceContext()
         {
+            EfSqlLogger.Attach(this);
         }
 
         public EImeceContext(String nameOrConnectionString) : base(nameOrConnectionString)
         {
             this.Database.CommandTimeout = AppConfig.GetConfigInt("DatabaseCommandTimeoutSeconds", 120);
             this.Configuration.LazyLoadingEnabled = false;
+            EfSqlLogger.Attach(this);
         }
 
         public IDbSet<MailTemplate> MailTemplates { get; set; }

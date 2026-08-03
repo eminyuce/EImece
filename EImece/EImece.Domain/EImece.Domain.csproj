@@ -414,6 +414,7 @@
     <Compile Include="Observability\Http\IResilientHttpClient.cs" />
     <Compile Include="Observability\Http\ResilientHttpClient.cs" />
     <Compile Include="Observability\Logging\CorrelationIdContext.cs" />
+    <Compile Include="Observability\Logging\EfSqlLogger.cs" />
     <Compile Include="Observability\Logging\RequestLogContext.cs" />
     <Compile Include="Observability\Logging\SensitiveDataMasker.cs" />
     <Compile Include="Observability\Logging\StructuredLoggingBootstrap.cs" />
