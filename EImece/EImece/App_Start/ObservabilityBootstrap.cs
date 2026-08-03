@@ -33,15 +33,22 @@ namespace EImece.App_Start
                     ?? Environment.GetEnvironmentVariable("APPINSIGHTS_CONNECTIONSTRING")
                     ?? ConfigurationManager.AppSettings["APPLICATIONINSIGHTS_CONNECTION_STRING"];
 
+                var configuration = TelemetryConfiguration.CreateDefault();
+
                 if (string.IsNullOrWhiteSpace(connectionString))
                 {
+                    // Avoid request-time crashes from ApplicationInsightsHttpModule when no CS is configured.
+                    if (string.IsNullOrWhiteSpace(configuration.ConnectionString))
+                    {
+                        configuration.DisableTelemetry = true;
+                        Logger.Debug("Application Insights disabled: no connection string in environment/appSettings or ApplicationInsights.config.");
+                        return;
+                    }
+
                     Logger.Debug("Application Insights connection string not set in environment/appSettings; using ApplicationInsights.config.");
-                    // Ensure the singleton is materialized from ApplicationInsights.config (3.1.2+).
-                    TelemetryConfiguration.CreateDefault();
                     return;
                 }
 
-                var configuration = TelemetryConfiguration.CreateDefault();
                 configuration.ConnectionString = connectionString.Trim();
                 Logger.Info("Application Insights connection string applied from environment/appSettings.");
             }
