@@ -1,5 +1,6 @@
 @using Resources;
 @using Microsoft.AspNet.Identity;
+@using EImece.Domain;
 @{
     var companyNameSetting = ViewBag.CompanyNameSetting as string ?? "";
     var userName = User.Identity.GetUserName();
@@ -21,6 +22,10 @@
             @if (!string.IsNullOrWhiteSpace(pageTitle))
             {
                 <span class="admin-topbar-page">@pageTitle</span>
+            }
+            @if (AppConfig.BypassAdminAuth)
+            {
+                <span class="admin-topbar-page" style="color:#b32d2e;">TEMP: Admin auth bypass ON</span>
             }
         </div>
     </div>

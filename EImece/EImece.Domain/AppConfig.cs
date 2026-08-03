@@ -441,6 +441,18 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// TEMPORARY debug switch: when true, admin auth/login is bypassed and a debug Admin principal is injected.
+        /// Keep false in production (Web.Release.config forces false).
+        /// </summary>
+        public static bool BypassAdminAuth
+        {
+            get
+            {
+                return GetConfigBool("BypassAdminAuth", false);
+            }
+        }
+
         public static string DummyIdentityNumber
         {
             get

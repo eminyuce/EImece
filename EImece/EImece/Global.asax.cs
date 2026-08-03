@@ -3,9 +3,12 @@ using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services;
+using Microsoft.AspNet.Identity;
 using NLog;
 using System;
 using System.Net;
+using System.Security.Claims;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -95,6 +98,31 @@ namespace EImece
         {
             DependencyInjectionConfig.BeginRequestScope();
             Redirect301();
+        }
+
+        /// <summary>
+        /// TEMPORARY: when BypassAdminAuth is enabled, inject a debug Admin principal
+        /// so the admin sidebar/layout and role-gated menus can be smoke-tested without AdminLogin.
+        /// </summary>
+        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
+        {
+            if (!AppConfig.BypassAdminAuth)
+            {
+                return;
+            }
+
+            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return;
+            }
+
+            var identity = new ClaimsIdentity(DefaultAuthenticationTypes.ApplicationCookie);
+            identity.AddClaim(new Claim(ClaimTypes.Name, "debug-admin"));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "debug-admin"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, Constants.AdministratorRole));
+            var principal = new ClaimsPrincipal(identity);
+            Context.User = principal;
+            Thread.CurrentPrincipal = principal;
         }
 
         protected void Application_EndRequest(object sender, EventArgs e)
