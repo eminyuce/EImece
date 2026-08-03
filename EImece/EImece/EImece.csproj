@@ -1281,6 +1281,7 @@
     <Content Include="Areas\Admin\Views\Metrics\Index.cshtml" />
     <Content Include="ApplicationInsights.config" />
     <None Include="ApplicationInsights.config.example" />
+    <Content Include="ConnectionStrings.config" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1369,7 +1370,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ConnectionStrings.config.example" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

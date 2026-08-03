@@ -207,7 +207,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
-    <Content Include="ConnectionStrings.config.example" />
     <Content Include="dataFolder\emailTemplates\OrderConfirmationEmail.html" />
     <Content Include="dataFolder\BuyNowModel.txt" />
     <Content Include="dataFolder\siteMap2.xml">
