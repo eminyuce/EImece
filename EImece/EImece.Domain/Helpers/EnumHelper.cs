@@ -191,7 +191,7 @@ namespace EImece.Domain.Helpers
                 var attributes = (DescriptionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
                 return attributes.Length > 0 ? attributes[0].Description : value.ToString();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return String.Empty;
             }

@@ -228,11 +228,7 @@ namespace EImece.Domain.Helpers
                         switch (Ext.ToLower())
                         {
                             case ".xls":
-                                HSSFWorkbook workbookH = new HSSFWorkbook();
-                                NPOI.HPSF.DocumentSummaryInformation dsi = NPOI.HPSF.PropertySetFactory.CreateDocumentSummaryInformation();
-                                dsi.Company = "Cutcsa"; dsi.Manager = "Departamento Informatico";
-                                workbookH.DocumentSummaryInformation = dsi;
-                                workbook = workbookH;
+                                workbook = new HSSFWorkbook();
                                 break;
 
                             case ".xlsx": workbook = new XSSFWorkbook(); break;

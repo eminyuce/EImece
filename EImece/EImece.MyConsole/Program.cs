@@ -10,7 +10,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using Newtonsoft.Json;
 using System.Data.Entity.Migrations;
 
@@ -199,7 +198,6 @@ namespace EImece.MyConsole
         private static void NewMethod1()
         {
             string orderGuid = "fb348ba3-a29c-4824-94f2-8677be8b40ca";
-            string userId = "3bbd5c72-4e35-44a7-9eff-b5b8ff9b6c86";
 
             string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(orderGuid));
             Console.WriteLine(o);

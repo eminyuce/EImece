@@ -54,7 +54,7 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public virtual new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
+        public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
@@ -71,7 +71,7 @@ namespace EImece.Domain.Repositories
             return result;
         }
 
-        public virtual new async Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language)
+        public virtual async Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;

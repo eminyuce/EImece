@@ -217,7 +217,7 @@ namespace EImece.Domain.Helpers
                 CheckGsmNumber(gsmNumber);
                 return true;
             }
-            catch(Exception ex)
+            catch (ArgumentException)
             {
                 return false;
             }
@@ -226,7 +226,7 @@ namespace EImece.Domain.Helpers
         {
             if (string.IsNullOrWhiteSpace(gsmNumber))
             {
-                throw new Exception("gsmNumber is NULL or empty");
+                throw new ArgumentNullException(nameof(gsmNumber), "gsmNumber is NULL or empty");
             }
 
             // Remove spaces and non-digit characters
@@ -255,7 +255,7 @@ namespace EImece.Domain.Helpers
             }
             else
             {
-                throw new Exception("gsmNumber is not valid: " + gsmNumber);
+                throw new ArgumentException("gsmNumber is not valid: " + gsmNumber, nameof(gsmNumber));
             }
         }
 
@@ -263,7 +263,7 @@ namespace EImece.Domain.Helpers
         {
             if (string.IsNullOrEmpty(gsmNumber))
             {
-                throw new Exception("gsmNumber is NULL");
+                throw new ArgumentNullException(nameof(gsmNumber), "gsmNumber is NULL");
             }
 
             // Remove any non-digit characters
@@ -287,10 +287,10 @@ namespace EImece.Domain.Helpers
                     {
                         return "+" + digitsOnly;
                     }
-                    throw new Exception("gsmNumber is not valid:" + gsmNumber);
+                    throw new ArgumentException("gsmNumber is not valid:" + gsmNumber, nameof(gsmNumber));
 
                 default:
-                    throw new Exception("gsmNumber is not valid:" + gsmNumber);
+                    throw new ArgumentException("gsmNumber is not valid:" + gsmNumber, nameof(gsmNumber));
             }
         }
 

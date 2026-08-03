@@ -70,7 +70,7 @@ namespace EImece.Domain.Services
             return BaseContentRepository.SearchEntities(whereLambda, search, language);
         }
 
-        public virtual new async Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language)
+        public virtual async Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
             return await BaseContentRepository.SearchEntitiesAsync(whereLambda, search, language).ConfigureAwait(false);
         }

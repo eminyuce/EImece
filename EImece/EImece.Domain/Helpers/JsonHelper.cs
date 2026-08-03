@@ -17,9 +17,8 @@ namespace EImece.Domain.Helpers
             {
                 return JsonConvert.SerializeObject(JsonConvert.DeserializeObject<ShoppingCartSession>(obj), Formatting.Indented);
             }
-            catch(Exception ex)
+            catch (Exception)
             {
-
             }
             return obj;
 

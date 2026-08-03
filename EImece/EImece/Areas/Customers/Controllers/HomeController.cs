@@ -228,7 +228,7 @@ namespace EImece.Areas.Customers.Controllers
                 TempData["SuccessMessage"] = Resource.YourMessageHasBeenSentToSeller;
                 return RedirectToAction("SendMessageToSeller");
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 // Handle any errors (e.g., email sending failure)
                 TempData["ErrorMessage"] = Resource.EmailSendingFailed; // Add this to your Resource file

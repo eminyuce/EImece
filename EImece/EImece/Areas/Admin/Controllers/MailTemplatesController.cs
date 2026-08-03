@@ -4,7 +4,6 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-using Ninject;
 using NLog;
 using Resources;
 using System;
@@ -19,9 +18,6 @@ namespace EImece.Areas.Admin.Controllers
     public class MailTemplatesController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
 
         public ActionResult Index(String search = "")
         {

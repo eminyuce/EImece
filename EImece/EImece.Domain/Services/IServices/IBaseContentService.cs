@@ -18,6 +18,6 @@ namespace EImece.Domain.Services.IServices
 
         List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language);
 
-        new Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language);
+        Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language);
     }
 }
