@@ -275,28 +275,55 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public string GenerateRssEmailTemplate(MailTemplate rssTemplate)
         {
+            if (rssTemplate == null)
+            {
+                throw new ArgumentNullException(nameof(rssTemplate));
+            }
+
+            if (string.IsNullOrWhiteSpace(rssTemplate.Body))
+            {
+                return string.Empty;
+            }
+
             // Web sitesi URL'sini al
             string baseurl = GetSiteBaseUrl();
 
             // Razor Template için model oluştur
-           
             RazorEngineModel razorEngineModel = new RazorEngineModel();
             razorEngineModel["CompanyName"] = SettingService.GetSettingByKey(Constants.CompanyName);
             razorEngineModel["CompanyAddress"] = SettingService.GetSettingByKey(Constants.CompanyAddress);
             razorEngineModel["WebSiteCompanyEmailAddress"] = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
             razorEngineModel["BaseUrl"] = baseurl;
-            razorEngineModel["WebSiteIconUrl"] = $"{baseurl}/images/logo.jpg";
-         
+            razorEngineModel["WebSiteIconUrl"] = string.Format("{0}/images/logo.jpg", baseurl);
+
+            // CKEditor sometimes stores HTML-encoded Razor; decode once before compiling.
+            string templateBody = System.Net.WebUtility.HtmlDecode(rssTemplate.Body) ?? rssTemplate.Body;
 
             // Şablonu işle
-            var result = GetRenderOutput(rssTemplate.Body, razorEngineModel);
-            if(result.RazorErrors.IsNotEmpty())
+            var result = GetRenderOutput(templateBody, razorEngineModel);
+            if (result == null)
+            {
+                return templateBody;
+            }
+
+            if (result.RazorErrors != null && result.RazorErrors.IsNotEmpty())
             {
                 string errorList = string.Join(Environment.NewLine, result.RazorErrors.Select(e => e.ToString()));
-
-                throw new ArgumentException($"RazorEngine error:"+ errorList);
+                throw new ArgumentException("RazorEngine error:" + errorList);
             }
-            return result.Result;
+
+            if (result.GeneralError != null)
+            {
+                throw new ArgumentException("RazorEngine error: " + result.GeneralError.Message, result.GeneralError);
+            }
+
+            if (result.templateCompilationException != null)
+            {
+                throw new ArgumentException("RazorEngine compilation error: " + result.templateCompilationException.Message, result.templateCompilationException);
+            }
+
+            // Prefer rendered output; if empty, return the (decoded) source so download still works.
+            return string.IsNullOrEmpty(result.Result) ? templateBody : result.Result;
         }
 
         public RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel

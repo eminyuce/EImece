@@ -99,7 +99,7 @@ SetWidth(10).
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
-.Titled("State")
+.Titled("Aktif")
 .Sortable(true)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
@@ -107,14 +107,14 @@ Sanitized(false)
          o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
 columns.Add(o => o.CreatedDate)
-.Titled("CreatedDate")
+.Titled("Oluşturma")
 .Sortable(true)
 .Css("gridDateClass")
 .RenderValueAs(o => String.Format("{0}", o.CreatedDate.ToShortDateString()))
 .SortInitialDirection(GridSortDirection.Descending);
 
 columns.Add(o => o.UpdatedDate)
-.Titled("UpdatedDate")
+.Titled("Güncelleme")
 .Sortable(true)
 .Css("gridDateClass")
 .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.ToShortDateString()))
@@ -126,12 +126,12 @@ columns.Add()
                .SetWidth(30)
                .RenderValueAs(d =>
         @<b>
-    @if (d.Name.ToLower().Contains("rss"))
+    @if (d.Name != null && d.Name.ToLower().Contains("rss"))
     {
-        @Html.ActionLink("GenerateHtmlBody", "GenerateHtmlBody", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs glyphicon glyphicon-star" })
+        @Html.ActionLink("HTML İndir", "GenerateHtmlBody", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-xs", title = "Şablondan HTML gövde oluştur ve indir" })
     }
 
-    @Html.ActionLink("Backup", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs" })
+    @Html.ActionLink("Yedekle", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-xs", title = "Şablonun bir kopyasını oluştur" })
 </b>);
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)

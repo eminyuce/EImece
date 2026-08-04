@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using NLog;
 using Resources;
 using System;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -40,13 +41,63 @@ namespace EImece.Areas.Admin.Controllers
         }
         public ActionResult GenerateHtmlBody(int id = 0)
         {
-            // E-posta şablonunu al
-            var rssTemplate = MailTemplateService.GetSingle(id);
-            string body = RazorEngineHelper.GenerateRssEmailTemplate(rssTemplate);
-            byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            if (id <= 0)
+            {
+                SetErrorMessage("Geçersiz e-posta şablonu.");
+                return RedirectToAction("Index");
+            }
 
+            var rssTemplate = MailTemplateService.GetSingle(id);
+            if (rssTemplate == null)
+            {
+                return HttpNotFound();
+            }
+
+            string body = null;
+            string warning = null;
+
+            try
+            {
+                body = RazorEngineHelper.GenerateRssEmailTemplate(rssTemplate);
+            }
+            catch (Exception ex)
+            {
+                // Rendering can fail for CKEditor-encoded / incomplete Razor — still offer a download.
+                Logger.Error(ex, "GenerateHtmlBody render failed for MailTemplate Id={0}", id);
+                warning = ex.Message;
+                body = System.Net.WebUtility.HtmlDecode(rssTemplate.Body ?? string.Empty);
+            }
+
+            if (string.IsNullOrEmpty(body))
+            {
+                body = rssTemplate.Body ?? string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(body))
+            {
+                SetErrorMessage("HTML gövde oluşturulamadı: şablon içeriği boş.");
+                return RedirectToAction("Index");
+            }
+
+            if (!string.IsNullOrEmpty(warning))
+            {
+                // Prefix an HTML comment so the file still opens, and surface a soft status on next page if needed.
+                body = "<!-- HTML oluşturulurken uyarı: "
+                    + System.Net.WebUtility.HtmlEncode(warning)
+                    + " — ham şablon içeriği indirildi. -->"
+                    + Environment.NewLine
+                    + body;
+                SetErrorMessage("Şablon derlenemedi; ham HTML içeriği indirildi. Detay: " + warning);
+            }
+
+            byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(body);
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            string fileName = $"{rssTemplate.Name}_{timestamp}.html";
+            string safeName = string.IsNullOrWhiteSpace(rssTemplate.Name) ? ("MailTemplate-" + id) : rssTemplate.Name;
+            foreach (var c in Path.GetInvalidFileNameChars())
+            {
+                safeName = safeName.Replace(c, '_');
+            }
+            string fileName = string.Format("{0}_{1}.html", safeName, timestamp);
 
             return File(fileBytes, "text/html", fileName);
         }
