@@ -1,5 +1,4 @@
 using EImece.Domain.Core.Data;
-using EImece.Domain.Core.Identity;
 using EImece.Domain.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +10,7 @@ public static class DomainServiceCollectionExtensions
 {
     /// <summary>
     /// Registers EF Core DbContexts and thin repositories using Microsoft.Extensions.DependencyInjection.
+    /// Identity cookie auth is registered separately via AddEImeceIdentity (Phase 5).
     /// </summary>
     public static IServiceCollection AddEImeceData(
         this IServiceCollection services,
@@ -40,15 +40,9 @@ public static class DomainServiceCollectionExtensions
             });
         });
 
-        // Identity stores are registered here for model/DI readiness; cookie auth is Phase 5.
-        services.AddIdentityCore<ApplicationUser>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-            })
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
         services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
 
         return services;
     }
 }
+

@@ -100,6 +100,13 @@ public sealed class HealthController : ControllerBase
             {
                 Enabled = _quartz.IsEnabled
             },
+            Authentication = new
+            {
+                Scheme = "Identity.Application",
+                AdminLoginEnabled = _options.AdminLoginEnabled,
+                BypassAdminAuth = _options.BypassAdminAuth,
+                IsAuthenticated = User.Identity?.IsAuthenticated ?? false
+            },
             TimestampUtc = DateTime.UtcNow
         });
     }

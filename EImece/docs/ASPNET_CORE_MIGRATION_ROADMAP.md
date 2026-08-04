@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 4 complete (infrastructure: Options, NLog, cache, media, HttpClient, scheduler)  
+**Status:** Phase 5 complete (Identity cookies, roles/policies, security headers, data protection)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -241,14 +241,25 @@ EImece.sln
 - Full Quartz.NET cron package — optional later.  
 - Application Insights / OpenTelemetry Core packages — later hardening.
 
-### Phase 5 — Authentication and security
+### Phase 5 — Authentication and security ✅ (implemented)
 
-- ASP.NET Core Identity registration.  
-- Cookie auth parity with current login paths.  
-- Role policies for Admin / NormalUser / Customer.  
-- External providers as configured.  
-- Security headers middleware (replace HttpModule).  
-- Data protection keys for Linux-friendly persistence.
+**Completed**
+
+- `AddIdentity<ApplicationUser, IdentityRole>` with password/lockout parity to legacy.  
+- Cookie auth: `/Account/Login`, AccessDenied, 14-day sliding, 30-min stamp validation.  
+- Policies: `AdminOnly`, `AdminOrEditor`, `CustomerOnly` (roles Admin / NormalUser / Customer).  
+- Minimal `AccountController`: Login, AdminLogin (AdminLoginEnabled/BypassAdminAuth), Logout, AccessDenied, external challenge/callback.  
+- External providers (Google/Facebook/Microsoft/Twitter) registered only when ClientId+Secret set.  
+- `SecurityHeadersMiddleware` (legacy HttpModule parity).  
+- `BypassAdminAuthMiddleware` for `/Admin` debug principal.  
+- DataProtection keys persisted under `App_Data/DataProtection-Keys`.  
+- Proof endpoints: `/api/auth/me`, `/api/auth/admin-only`, Admin area shell.
+
+**Deferred**
+
+- Full Register / Manage / 2FA UI.  
+- Captcha on login.  
+- Full Admin/Customers area controllers (Phase 6).
 
 ### Phase 6 — Application layer
 
@@ -334,6 +345,6 @@ Expected health payload includes `orm: Entity Framework Core 8` and `database` s
 
 ## 11. Approval gate
 
-**Phases 1–4 complete.** Do not begin Phase 5 (Authentication and security) until approved.
+**Phases 1–5 complete.** Do not begin Phase 6 (Application layer) until approved.
 
-Reply with approval to proceed to **Phase 5 — Authentication and security** (ASP.NET Core Identity cookies, roles, external providers, security headers).
+Reply with approval to proceed to **Phase 6 — Application layer** (controllers, filters, routing, validation).

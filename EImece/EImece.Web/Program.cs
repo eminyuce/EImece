@@ -2,11 +2,12 @@ using EImece.Domain.Core.DependencyInjection;
 using EImece.Domain.Core.Media;
 using EImece.Web.DependencyInjection;
 using EImece.Web.Middleware;
+using Microsoft.AspNetCore.DataProtection;
 using NLog;
 using NLog.Web;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Info("EImece.Web starting (Phase 4 infrastructure)");
+logger.Info("EImece.Web starting (Phase 5 authentication & security)");
 
 try
 {
@@ -22,10 +23,18 @@ try
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
+    // Persist data-protection keys for Linux-friendly multi-instance hosting.
+    var keysPath = Path.Combine(builder.Environment.ContentRootPath, "App_Data", "DataProtection-Keys");
+    Directory.CreateDirectory(keysPath);
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
+        .SetApplicationName("EImece.Web");
+
     // Microsoft.Extensions.DependencyInjection composition root (same DI stack as legacy after Ninject removal).
     builder.Services.AddEImeceCore(builder.Configuration);
     builder.Services.AddEImeceInfrastructure(builder.Configuration);
     builder.Services.AddEImeceData(builder.Configuration);
+    builder.Services.AddEImeceIdentity(builder.Configuration);
     builder.Services.AddControllersWithViews();
 
     var app = builder.Build();
@@ -41,9 +50,12 @@ try
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
+    app.UseMiddleware<SecurityHeadersMiddleware>();
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<RequestLoggingMiddleware>();
     app.UseRouting();
+    app.UseAuthentication();
+    app.UseMiddleware<BypassAdminAuthMiddleware>();
     app.UseAuthorization();
 
     // Area route placeholders (Admin / Customers) — controllers migrate in Phase 6.

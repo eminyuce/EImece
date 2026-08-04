@@ -20,14 +20,14 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         ViewData["Title"] = "EImece Core Host";
-        ViewData["Phase"] = "Phase 4 — Infrastructure";
+        ViewData["Phase"] = "Phase 5 — Authentication & security";
         ViewData["Domain"] = _options.Domain;
         ViewData["SiteStatus"] = _options.SiteStatus;
         ViewData["SampleResource"] = Resources.Resource.ResourceManager != null
             ? "Resources assembly loaded"
             : "Resources assembly missing";
         ViewData["Orm"] = "Entity Framework Core 8";
-        ViewData["Infra"] = "NLog · MemoryCache · Media · HttpClient resilience · Scheduler (off)";
+        ViewData["Auth"] = $"Identity cookies · AdminLogin={_options.AdminLoginEnabled} · BypassAdminAuth={_options.BypassAdminAuth}";
         _logger.LogInformation("EImece.Web home served (domain={Domain})", _options.Domain);
         return View();
     }
