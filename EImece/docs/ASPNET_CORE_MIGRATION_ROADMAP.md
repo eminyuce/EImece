@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 1 complete (assessment only — no runtime code changes)  
+**Status:** Phase 2 in progress (parallel Core host + Resources SDK-style)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -166,36 +166,41 @@ EImece.sln
 
 ## 6. Phased plan (approval gate after each phase)
 
-### Phase 1 — Architecture assessment ✅ (this document)
+### Phase 1 — Architecture assessment ✅
 
 **Deliverables:** architecture map, risks, package matrix, roadmap.  
-**Code changes:** none (documentation only).
+**Code changes:** documentation only (`docs/ASPNET_CORE_MIGRATION_ROADMAP.md`).
 
-### Phase 2 — Solution modernization
+### Phase 2 — Solution modernization ✅ (implemented)
 
 **Objectives**
 
-- Create/convert SDK-style projects targeting `net8.0`.  
-- Move from `packages.config` to PackageReference.  
+- Create/convert SDK-style projects targeting modern TFMs.  
+- Move from `packages.config` to PackageReference where converted.  
 - Establish Minimal Hosting skeleton (`Program.cs`) that boots with health endpoint.  
-- Keep legacy projects buildable or clearly marked until cutover (prefer parallel Core host if needed).
+- Keep legacy MVC5 projects intact (parallel Core host).
 
-**Required changes**
+**Completed changes**
 
-- Convert `Resources`, `EImece.Domain`, web host to SDK-style.  
-- Add `EImece.Web` (or convert `EImece`) as `Microsoft.NET.Sdk.Web`.  
-- Stub DI registration without pulling System.Web.  
-- Baseline `appsettings.json` for connection string + feature flags.
+- Added parallel host `EImece.Web` (`Microsoft.NET.Sdk.Web`, `net8.0`) with Minimal Hosting.  
+- Converted `Resources` to SDK-style **PackageReference project** targeting `netstandard2.0` (consumable by net481 + net8). Removed unused EF6/`packages.config` from Resources.  
+- Baseline `appsettings.json` / `appsettings.Development.json` with ConnectionStrings, EImece, Iyzico, Captcha sections.  
+- Options stub (`EImeceOptions`, `IyzicoOptions`) + MS.DI `AddEImeceCore`.  
+- Health endpoints: `GET /health`, `GET /healthz`.  
+- Area route placeholder for Admin/Customers.  
+- `global.json` pins SDK 8.x; `scripts/build-core.sh` builds Core projects.  
+- **Deferred (intentional):** SDK-style conversion of `EImece.Domain` / legacy `EImece` web — Domain still depends on EF6 + System.Web; converting TFM belongs with Phase 3 (EF Core). Legacy `packages.config` projects remain until then.
 
-**Risks**
+**Risks encountered / decisions**
 
-- Domain still references System.Web / EF6 — Phase 2 may need temporary `net8.0` multi-target or a thin web skeleton that does not yet compile all Domain code.  
-- **Trade-off:** (A) Parallel Core host + leave legacy intact vs (B) in-place conversion that won’t fully compile until later phases. **Recommend A for safety.**
+- Chose **parallel Core host** (`EImece.Web`) over in-place conversion of the MVC5 project.  
+- Chose **netstandard2.0** for Resources (not net8-only) so legacy Domain can keep referencing it.  
+- Domain PackageReference conversion deferred to Phase 3 to avoid a non-compiling net8 Domain with EF6/System.Web.
 
 **Exit criteria**
 
-- `dotnet build` succeeds for the new Core solution skeleton.  
-- App starts and answers `/health` (even if business features are not wired).
+- [x] `dotnet build` succeeds for `Resources` + `EImece.Web`.  
+- [x] App starts in Debug and answers `/health`.
 
 ### Phase 3 — Domain and data layer
 
