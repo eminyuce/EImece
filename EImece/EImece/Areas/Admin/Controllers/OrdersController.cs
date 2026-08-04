@@ -20,7 +20,11 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Details(int id)
         {
-            var order = OrderService.GetOrderById(id); // Fetch order by ID
+            var order = OrderService.GetOrderById(id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
             return View(order);
         }
     }
