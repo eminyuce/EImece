@@ -1,8 +1,8 @@
 namespace EImece.Web.Configuration;
 
 /// <summary>
-/// Baseline Options mapping for settings formerly stored in Web.config appSettings.
-/// Full Options coverage lands in Phase 4; this stub establishes the pattern.
+/// Site-level Options formerly stored in Web.config appSettings.
+/// Cache/Captcha/Media/Quartz/Smtp/HttpClient live in dedicated Options classes (Phase 4).
 /// </summary>
 public sealed class EImeceOptions
 {
@@ -12,8 +12,8 @@ public sealed class EImeceOptions
     public bool UseSsl { get; set; }
     public string SiteStatus { get; set; } = "live";
     public bool IsSiteUnderConstruction { get; set; }
+    /// <summary>Mirrored into Quartz:IsEnabled when set.</summary>
     public bool QuartzSchedulerIsEnabled { get; set; }
-    public bool IsCacheActive { get; set; } = true;
     public string ApplicationLanguages { get; set; } = "tr-TR";
     public int MainLanguage { get; set; } = 1;
     public bool AdminLoginEnabled { get; set; } = true;

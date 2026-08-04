@@ -8,10 +8,11 @@
     <p><strong>@ViewData["Phase"]</strong></p>
     <p class="text-muted mb-1">Domain: @ViewData["Domain"] · SiteStatus: @ViewData["SiteStatus"]</p>
     <p class="text-muted mb-1">@ViewData["Orm"] · @ViewData["SampleResource"]</p>
+    <p class="text-muted mb-1">@ViewData["Infra"]</p>
     <p>
         <a class="btn btn-primary" href="/health">Health check</a>
     </p>
     <p class="small text-muted mt-4">
-        Legacy EF6 domain remains at <code>EImece.Domain</code>. Core data layer: <code>EImece.Domain.Core</code>.
+        Infrastructure: Options, NLog, cache, media file provider, resilient HttpClient, gated scheduler.
     </p>
 </div>

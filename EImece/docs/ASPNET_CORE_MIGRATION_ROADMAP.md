@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 3 complete (EF Core parallel domain layer)  
+**Status:** Phase 4 complete (infrastructure: Options, NLog, cache, media, HttpClient, scheduler)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -222,14 +222,24 @@ EImece.sln
 - Cookie auth / external logins (Phase 5 — Identity stores registered only).  
 - Automatic `Database.Migrate()` on startup (intentionally off).
 
-### Phase 4 — Infrastructure
+### Phase 4 — Infrastructure ✅ (implemented)
 
-- Options pattern replacing static `AppConfig` / `ConfigurationManager`.  
-- Logging (NLog.Extensions.Logging or Serilog.AspNetCore).  
-- Caching (`IMemoryCache` / existing LazyCache adapter).  
-- File providers for `~/media`.  
-- Hosted services for Quartz (optional, still off by default).  
-- Polly / HttpClientFactory for outbound HTTP.
+**Completed**
+
+- Expanded Options: `Cache`, `Captcha`, `Media`, `Observability`, `HttpClient`, `Quartz`, `Smtp` (+ existing `EImece` / `Iyzico`).  
+- **NLog.Web.AspNetCore** (`nlog.config` → console + rolling file under `App_Data/logs`).  
+- Correlation + request-logging middleware (gated by `Observability:EnableRequestLogging`).  
+- `IMemoryCache` + `IEimeceCacheProvider` / `MemoryCacheProvider` (single-flight GetOrAdd).  
+- `IMediaFileService` for `wwwroot/media/{images,tempFiles}` (legacy `~/media` parity).  
+- Named HttpClient `eimece-resilient` via `Microsoft.Extensions.Http.Resilience` (timeout/retry/circuit).  
+- `SchedulerHostedService` — no-op unless `Quartz:IsEnabled` / `EImece:QuartzSchedulerIsEnabled` (default **false**).  
+- Health reports media/cache/scheduler probes.
+
+**Deferred**
+
+- MailKit SMTP sender (SmtpOptions stub only) — Phase 8.  
+- Full Quartz.NET cron package — optional later.  
+- Application Insights / OpenTelemetry Core packages — later hardening.
 
 ### Phase 5 — Authentication and security
 
@@ -324,6 +334,6 @@ Expected health payload includes `orm: Entity Framework Core 8` and `database` s
 
 ## 11. Approval gate
 
-**Phases 1–3 complete.** Do not begin Phase 4 (Infrastructure) until approved.
+**Phases 1–4 complete.** Do not begin Phase 5 (Authentication and security) until approved.
 
-Reply with approval to proceed to **Phase 4 — Infrastructure** (Options, logging, file providers, caching, hosted services).
+Reply with approval to proceed to **Phase 5 — Authentication and security** (ASP.NET Core Identity cookies, roles, external providers, security headers).
