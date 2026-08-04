@@ -1,37 +1,22 @@
 ﻿@model System.Data.DataTable
 @{
-    ViewBag.Title = "Payment Method Report";
+    ViewBag.Title = "Ödeme Yöntemi";
+    ViewBag.ReportDescription = "Kart tipi, taksit ve ödeme yöntemine göre sipariş dağılımını gösterir.";
+    ViewBag.ReportKey = "PaymentMethod";
+    ViewBag.HasData = Model != null && Model.Rows.Count > 0;
+    ViewBag.EmptyMessage = "Bu rapor için henüz veri bulunamadı.";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <h2>@ViewBag.Title</h2>
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
 
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Card Type</th>
-                    <th>Card Association</th>
-                    <th>Installment</th>
-                    <th>Order Count</th>
-                    <th>Total Amount</th>
-                    <th>Currency</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (System.Data.DataRow row in Model.Rows)
-                {
-                <tr>
-                    <td>@row["CardType"]</td>
-                    <td>@row["CardAssociation"]</td>
-                    <td>@row["Installment"]</td>
-                    <td>@row["OrderCount"]</td>
-                    <td>@string.Format("{0:C}", row["TotalAmount"])</td>
-                    <td>@row["Currency"]</td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+@if (ViewBag.HasData)
+{
+    @Html.Partial("_ReportKpis", Model)
+    @Html.Partial("_ReportDataTable", Model)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}

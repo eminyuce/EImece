@@ -1,0 +1,13 @@
+@{
+    var title = ViewBag.EmptyTitle as string ?? "Sonuç bulunamadı";
+    var message = ViewBag.EmptyMessage as string
+        ?? "Seçilen kriterlere uygun veri bulunamadı. Filtreleri değiştirerek tekrar deneyin.";
+}
+
+<div class="report-empty-state">
+    <span class="report-empty-icon" aria-hidden="true">
+        <i class="fa fa-inbox"></i>
+    </span>
+    <p class="report-empty-title">@title</p>
+    <p class="report-empty-message">@message</p>
+</div>

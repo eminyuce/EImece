@@ -575,6 +575,7 @@
     <Content Include="Areas\Admin\Content\vs\loader.js" />
     <Content Include="Content\adminSearchResult.css" />
     <Content Include="Content\adminShell.css" />
+    <Content Include="Content\adminReports.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -1279,6 +1280,11 @@
     <Content Include="Areas\Admin\Views\Report\RegionalSales.cshtml" />
     <Content Include="Areas\Admin\Views\Report\ShipmentCompany.cshtml" />
     <Content Include="Areas\Admin\Views\Report\DataSetReportView.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\_ReportHeader.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\_ReportExportButtons.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\_ReportEmptyState.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\_ReportDataTable.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\_ReportKpis.cshtml" />
     <Content Include="Areas\Customers\Views\Home\CustomerOrderDetail.cshtml" />
     <Content Include="Areas\Admin\Views\Report\PriceAnalysis.cshtml" />
     <Content Include="Areas\Admin\Views\Report\ProductSummary.cshtml" />
@@ -1532,7 +1538,6 @@
     <Content Include="Scripts\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\logs\" />
     <Folder Include="Areas\Customers\Data\" />
     <Folder Include="media\images\thumbs\" />
     <Folder Include="Scripts\codemirror\addon\" />

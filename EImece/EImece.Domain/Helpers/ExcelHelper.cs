@@ -551,6 +551,89 @@ namespace EImece.Domain.Helpers
             return myExport.ExportToBytes();
         }
 
+        /// <summary>
+        /// CSV tuned for Turkish Excel: semicolon separator, UTF-8 BOM, tr-TR number/date formatting.
+        /// Avoids quoted amounts like "485,00" that break when the delimiter is also a comma.
+        /// </summary>
+        public static byte[] ExportReportCsv(DataTable dt)
+        {
+            // ; + sep=; so Excel (tr-TR) opens columns correctly while decimals can keep comma
+            var myExport = new CsvExport(";", includeColumnSeparatorDefinitionPreamble: true);
+            var culture = System.Globalization.CultureInfo.GetCultureInfo("tr-TR");
+
+            if (dt == null)
+            {
+                return myExport.ExportToBytes();
+            }
+
+            if (dt.Rows.Count == 0)
+            {
+                // Emit header-only CSV (one empty data row keeps column order in CsvExport)
+                myExport.AddRow();
+                foreach (DataColumn column in dt.Columns)
+                {
+                    myExport[ReportUiHelper.GetDisplayColumnName(column.ColumnName)] = string.Empty;
+                }
+                return myExport.ExportToBytes();
+            }
+
+            foreach (DataRow row in dt.Rows)
+            {
+                myExport.AddRow();
+                foreach (DataColumn column in dt.Columns)
+                {
+                    string header = ReportUiHelper.GetDisplayColumnName(column.ColumnName);
+                    myExport[header] = FormatReportCsvValue(row[column], column, culture);
+                }
+            }
+
+            return myExport.ExportToBytes();
+        }
+
+        private static object FormatReportCsvValue(object raw, DataColumn column, System.Globalization.CultureInfo culture)
+        {
+            if (raw == null || raw == DBNull.Value)
+            {
+                return string.Empty;
+            }
+
+            Type type = column != null ? column.DataType : raw.GetType();
+            type = Nullable.GetUnderlyingType(type) ?? type;
+
+            if (type == typeof(DateTime) || raw is DateTime)
+            {
+                var dtValue = (DateTime)raw;
+                if (dtValue.TimeOfDay.TotalSeconds == 0)
+                {
+                    return dtValue.ToString("dd.MM.yyyy", culture);
+                }
+                return dtValue.ToString("dd.MM.yyyy HH:mm:ss", culture);
+            }
+
+            if (type == typeof(decimal) || type == typeof(double) || type == typeof(float)
+                || raw is decimal || raw is double || raw is float)
+            {
+                decimal number = System.Convert.ToDecimal(raw, System.Globalization.CultureInfo.InvariantCulture);
+                string name = column != null ? column.ColumnName : string.Empty;
+                if (!string.IsNullOrEmpty(name)
+                    && (name.IndexOf("Count", StringComparison.OrdinalIgnoreCase) >= 0
+                        || name.IndexOf("Quantity", StringComparison.OrdinalIgnoreCase) >= 0
+                        || name.IndexOf("Installment", StringComparison.OrdinalIgnoreCase) >= 0))
+                {
+                    return number.ToString("0", culture);
+                }
+                // Money / totals: always 2 decimal places (tr-TR → 485,00)
+                return number.ToString("0.00", culture);
+            }
+
+            if (type == typeof(bool) || raw is bool)
+            {
+                return (bool)raw ? "Evet" : "Hayır";
+            }
+
+            return System.Convert.ToString(raw, culture) ?? string.Empty;
+        }
+
         public static byte[] GetExcelByteArrayFromDataTable(DataTable dt)
         {
             var dtList = new List<DataTable>();

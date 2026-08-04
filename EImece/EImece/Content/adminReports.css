@@ -1,0 +1,356 @@
+/* Admin report pages — Bootstrap 3 / adminShell compatible */
+
+.report-page {
+    margin-bottom: 24px;
+}
+
+.report-page-header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #d9e2ec;
+}
+
+.report-page-header .report-title {
+    margin-top: 0;
+    margin-bottom: 6px;
+    color: #102a43;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.report-page-header .report-description {
+    margin: 0 0 4px;
+    color: #627d98;
+    font-size: 13px;
+    max-width: 720px;
+}
+
+.report-page-header .report-back-link {
+    color: #334e68;
+}
+
+.report-page-header .report-back-link:hover,
+.report-page-header .report-back-link:focus {
+    color: #243b53;
+    text-decoration: none;
+}
+
+/* Export bar */
+.report-export-bar {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid #d9e2ec;
+    border-radius: 3px;
+}
+
+.report-export-bar .btn {
+    margin-right: 8px;
+}
+
+.report-export-bar .btn .fa {
+    margin-right: 6px;
+}
+
+.report-export-bar .btn.disabled,
+.report-export-bar .btn[disabled] {
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.report-export-hint {
+    display: inline-block;
+    margin-left: 4px;
+    color: #829ab1;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+/* Filter panel polish — compact fields with clear spacing */
+.report-filter-panel.panel {
+    margin-bottom: 18px;
+    border-color: #d9e2ec;
+    box-shadow: none;
+}
+
+.report-filter-panel > .panel-heading {
+    background: #f0f4f8;
+    border-color: #d9e2ec;
+    color: #334e68;
+    font-weight: 600;
+}
+
+.report-filter-panel .panel-body {
+    background: #fff;
+    padding: 14px 16px;
+}
+
+/* Horizontal strip of narrow fields with generous gaps */
+.report-filter-panel .row,
+.report-filter-panel .report-filter-row {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px 28px;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.report-filter-panel .row:before,
+.report-filter-panel .row:after {
+    display: none !important;
+    content: none !important;
+}
+
+.report-filter-panel .row > [class*="col-"],
+.report-filter-panel .report-filter-field {
+    float: none !important;
+    width: auto !important;
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.report-filter-panel .form-group {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.report-filter-panel .form-group > label,
+.report-filter-panel .control-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #486581;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Override Bootstrap .form-control { width:100% } — keep filters narrow */
+.report-filter-panel .form-control {
+    display: block !important;
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 0 !important;
+    height: 28px !important;
+    padding: 3px 6px !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+    box-sizing: border-box !important;
+}
+
+/* Native date inputs inflate when wide — force compact size */
+.report-filter-panel input[type="date"],
+.report-filter-panel input[type="date"].form-control {
+    width: 118px !important;
+    max-width: 118px !important;
+    min-width: 118px !important;
+}
+
+.report-filter-panel input[type="number"],
+.report-filter-panel input[type="number"].form-control {
+    width: 96px !important;
+    max-width: 96px !important;
+}
+
+.report-filter-panel input[type="text"],
+.report-filter-panel input[type="text"].form-control {
+    width: 120px !important;
+    max-width: 120px !important;
+}
+
+.report-filter-panel select.form-control,
+.report-filter-panel .report-filter-select {
+    width: 130px !important;
+    max-width: 130px !important;
+    height: 28px !important;
+    padding: 3px 6px !important;
+    font-size: 12px !important;
+}
+
+.report-filter-panel .checkbox {
+    margin-top: 2px;
+    margin-bottom: 0;
+    min-height: 28px;
+    padding-top: 4px;
+}
+
+.report-filter-panel .checkbox label {
+    font-weight: normal;
+    font-size: 12px;
+    color: #243b53;
+}
+
+.report-filter-panel .btn {
+    height: 28px;
+    padding: 3px 12px;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.report-filter-panel .report-filter-actions {
+    padding-bottom: 1px;
+}
+
+.report-filter-panel form > .btn,
+.report-filter-panel form > .alert,
+.report-filter-panel form > .text-danger,
+.report-filter-panel form > .validation-summary-errors {
+    margin-top: 14px;
+}
+
+.report-filter-panel .form-inline .form-group {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+.report-filter-panel .form-inline .form-control {
+    min-width: 0 !important;
+}
+
+/* KPI tiles */
+.report-kpi-row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 12px 0;
+    margin: 0 -12px 18px;
+}
+
+.report-kpi-tile {
+    display: table-cell;
+    vertical-align: top;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #d9e2ec;
+    border-left: 3px solid #62b0e8;
+    border-radius: 3px;
+}
+
+.report-kpi-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #627d98;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.report-kpi-value {
+    display: block;
+    color: #102a43;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+/* Results table */
+.report-results-panel.panel {
+    border-color: #d9e2ec;
+    box-shadow: none;
+}
+
+.report-results-panel > .panel-heading {
+    background: #fff;
+    border-color: #d9e2ec;
+    color: #334e68;
+    font-weight: 600;
+}
+
+.report-table-wrap {
+    max-height: 70vh;
+    overflow: auto;
+    background: #fff;
+}
+
+.report-table {
+    margin-bottom: 0;
+    background: #fff;
+}
+
+.report-table > thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f0f4f8;
+    color: #334e68;
+    border-bottom-width: 1px;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.report-table > tbody > tr > td {
+    vertical-align: middle;
+    color: #243b53;
+    font-size: 13px;
+}
+
+.report-table > tbody > tr:hover > td {
+    background-color: #f5f7fa;
+}
+
+.report-table .report-cell-numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.report-table .report-cell-date {
+    white-space: nowrap;
+}
+
+/* Empty state */
+.report-empty-state {
+    margin: 8px 0 18px;
+    padding: 28px 20px;
+    text-align: center;
+    background: #fff;
+    border: 1px dashed #bcccdc;
+    border-radius: 3px;
+}
+
+.report-empty-state .report-empty-icon {
+    display: block;
+    margin-bottom: 10px;
+    color: #829ab1;
+    font-size: 28px;
+}
+
+.report-empty-state .report-empty-title {
+    margin: 0 0 6px;
+    color: #334e68;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.report-empty-state .report-empty-message {
+    margin: 0;
+    color: #627d98;
+    font-size: 13px;
+}
+
+@media (max-width: 767px) {
+    .report-kpi-row {
+        display: block;
+        margin: 0 0 12px;
+        border-spacing: 0;
+    }
+
+    .report-kpi-tile {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .report-page-header .pull-right {
+        float: none !important;
+        margin-bottom: 10px;
+    }
+}

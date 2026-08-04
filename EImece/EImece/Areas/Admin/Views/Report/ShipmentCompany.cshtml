@@ -1,31 +1,22 @@
 ﻿@model System.Data.DataTable
 @{
-    ViewBag.Title = "Shipment Company Report";
+    ViewBag.Title = "Kargo Firması";
+    ViewBag.ReportDescription = "Kargo firmalarına göre sipariş sayısı ve toplam kargo maliyeti özetini gösterir.";
+    ViewBag.ReportKey = "ShipmentCompany";
+    ViewBag.HasData = Model != null && Model.Rows.Count > 0;
+    ViewBag.EmptyMessage = "Bu rapor için henüz veri bulunamadı.";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <h2>@ViewBag.Title</h2>
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
 
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Shipment Company</th>
-                    <th>Order Count</th>
-                    <th>Total Cargo Cost</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (System.Data.DataRow row in Model.Rows)
-                {
-                <tr>
-                    <td>@row["ShipmentCompanyName"]</td>
-                    <td>@row["OrderCount"]</td>
-                    <td>@string.Format("{0:C}", row["TotalCargoCost"])</td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+@if (ViewBag.HasData)
+{
+    @Html.Partial("_ReportKpis", Model)
+    @Html.Partial("_ReportDataTable", Model)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}

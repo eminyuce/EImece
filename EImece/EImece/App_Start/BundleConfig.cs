@@ -47,7 +47,8 @@ namespace EImece
                       "~/Content/deleteStyle.css",
                       "~/Content/checkBoxStyle.css",
                       "~/Content/adminSite.css",
-                      "~/Content/adminShell.css"
+                      "~/Content/adminShell.css",
+                      "~/Content/adminReports.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(

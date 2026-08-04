@@ -81,11 +81,24 @@ namespace EImece.Domain.Services
 
         #region Regional Sales Report
 
-        public DataTable GetRegionalSalesReport()
+        /// <summary>
+        /// Regional sales by city. Pass paymentStatus to filter (e.g. SUCCESS); null/empty = all statuses.
+        /// </summary>
+        public DataTable GetRegionalSalesReport(string paymentStatus = null)
         {
+            object statusValue = string.IsNullOrWhiteSpace(paymentStatus)
+                ? (object)DBNull.Value
+                : paymentStatus.Trim();
+
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@PaymentStatus", statusValue, SqlDbType.NVarChar)
+            };
+
             return DatabaseUtility.ExecuteDataTable(
                 "GetRegionalSalesReport",
-                CommandType.StoredProcedure
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
             );
         }
 

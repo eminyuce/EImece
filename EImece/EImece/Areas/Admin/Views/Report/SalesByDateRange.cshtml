@@ -1,63 +1,71 @@
 ﻿@model System.Data.DataTable
+@using System.Collections.Generic
+@using EImece.Domain.Helpers
 @{
-    ViewBag.Title = "Sales Report by Date Range";
+    ViewBag.Title = "Tarih Aralığına Göre Satışlar";
+    ViewBag.ReportDescription = "Seçilen tarih aralığındaki sipariş sayısı, toplam gelir ve ortalama sipariş tutarını gösterir.";
+    ViewBag.ReportKey = "SalesByDateRange";
+    ViewBag.HasData = Model != null && Model.Rows.Count > 0;
+    ViewBag.EmptyTitle = Model == null ? "Rapor henüz oluşturulmadı" : "Sonuç bulunamadı";
+    ViewBag.EmptyMessage = Model == null
+        ? "Tarih aralığını seçip raporu getirin."
+        : "Seçilen tarih aralığında satış verisi bulunamadı. Filtreleri değiştirerek tekrar deneyin.";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var exportFilters = new Dictionary<string, object>();
+    if (ViewBag.StartDate != null)
+    {
+        exportFilters["startDate"] = ViewBag.StartDate;
+    }
+    if (ViewBag.EndDate != null)
+    {
+        exportFilters["endDate"] = ViewBag.EndDate;
+    }
+    ViewBag.ExportFilters = exportFilters;
 }
 
-<div class="row">
-    <div class="col-md-12">
-        <h2>@ViewBag.Title</h2>
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
 
+<div class="panel panel-default report-filter-panel">
+    <div class="panel-heading">Filtreler</div>
+    <div class="panel-body">
         @using (Html.BeginForm("SalesByDateRange", "Report", FormMethod.Post, new { @class = "form-horizontal" }))
         {
-        @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            <label class="control-label col-md-2">Start Date</label>
-            <div class="col-md-3">
-                <input type="date" class="form-control" name="startDate" value="@ViewBag.StartDate" required />
+            <div class="report-filter-row">
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        <label for="startDate">Başlangıç Tarihi</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" value="@ViewBag.StartDate" required />
+                    </div>
+                </div>
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        <label for="endDate">Bitiş Tarihi</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate" value="@ViewBag.EndDate" required />
+                    </div>
+                </div>
+                <div class="report-filter-field report-filter-actions">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Raporu Getir</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">End Date</label>
-            <div class="col-md-3">
-                <input type="date" class="form-control" name="endDate" value="@ViewBag.EndDate" required />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-primary">Generate Report</button>
-            </div>
-        </div>
-        }
-
-        @if (Model != null)
-        {
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Currency</th>
-                        <th>Order Count</th>
-                        <th>Total Revenue</th>
-                        <th>Average Order Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (System.Data.DataRow row in Model.Rows)
-                        {
-                    <tr>
-                        <td>@row["Currency"]</td>
-                        <td>@row["OrderCount"]</td>
-                        <td>@row["TotalRevenue"]</td>
-                        <td>@row["AverageOrderValue"]</td>
-                    </tr>
-                        }
-                </tbody>
-            </table>
-        </div>
         }
     </div>
 </div>
+
+@if (ViewBag.HasData)
+{
+    @Html.Partial("_ReportKpis", Model)
+    @Html.Partial("_ReportDataTable", Model)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}

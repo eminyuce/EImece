@@ -1,77 +1,126 @@
 ﻿@model EImece.Domain.Models.AdminModels.DataSetReportViewModel
+@using System.Collections.Generic
+@using System.Data
+@using EImece.Domain.Helpers
 @{
-    ViewBag.Title = Model.ReportTitle;
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-}
+    var titleMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "PerformanceSystemReport", "Performans Sistem Raporu" },
+        { "FinancialReport", "Finansal Rapor" },
+        { "FraudRiskReport", "Sahtekarlık Risk Raporu" },
+        { "OrderVolumeReport", "Sipariş Hacmi Raporu" },
+        { "PaymentTransactionReport", "Ödeme İşlem Raporu" }
+    };
+    var descriptionMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "PerformanceSystemReport", "Seçilen tarih aralığındaki sistem performans özetlerini gösterir." },
+        { "FinancialReport", "Seçilen tarih aralığındaki finansal özetleri gösterir." },
+        { "FraudRiskReport", "Seçilen tarih aralığındaki sahtekarlık risk verilerini gösterir." },
+        { "OrderVolumeReport", "Seçilen tarih aralığındaki sipariş hacmi istatistiklerini gösterir." },
+        { "PaymentTransactionReport", "Seçilen tarih aralığındaki ödeme işlemlerini gösterir." }
+    };
 
-<div class="container">
-    <h2>@Model.ReportTitle</h2>
-
-    <p>
-        Report Date Range: @(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("yyyy-MM-dd") : "N/A")
-        to @(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") : "N/A")
-    </p>
-
-    @using (Html.BeginForm(Model.ReportActionName, "Report", FormMethod.Post, new { @class = "form-inline mb-3" }))
-        {
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.ReportActionName)
-
-    <div class="form-group mr-2">
-        @Html.LabelFor(m => m.StartDate, "Start Date:")
-        @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-    </div>
-
-    <div class="form-group mr-2">
-        @Html.LabelFor(m => m.EndDate, "End Date:")
-        @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-    </div>
-
-    <button type="submit" class="btn btn-primary">Update Date Range</button>
+    string reportKey = Model.ReportActionName ?? "Report";
+    string reportTitle;
+    if (!titleMap.TryGetValue(reportKey, out reportTitle))
+    {
+        reportTitle = Model.ReportTitle ?? "Rapor";
+    }
+    string reportDescription;
+    if (!descriptionMap.TryGetValue(reportKey, out reportDescription))
+    {
+        reportDescription = "Seçilen tarih aralığına göre rapor sonuçlarını gösterir.";
     }
 
-    @if (Model.ReportData != null && Model.ReportData.Tables.Count > 0)
+    bool hasData = false;
+    if (Model.ReportData != null)
     {
-        for (int i = 0; i < Model.ReportData.Tables.Count; i++)
+        foreach (DataTable table in Model.ReportData.Tables)
         {
-            var table = Model.ReportData.Tables[i];
-
-            if (Model.ReportData.Tables.Count > 1)
+            if (table != null && table.Rows.Count > 0)
             {
-    <h3>@table.TableName</h3>
+                hasData = true;
+                break;
             }
-
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    @foreach (System.Data.DataColumn column in table.Columns)
-                            {
-                    <th>@column.ColumnName</th>
-                            }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (System.Data.DataRow row in table.Rows)
-                        {
-                <tr>
-                    @foreach (var item in row.ItemArray)
-                                {
-                    <td>@(item != null ? item.ToString() : string.Empty)</td>
-                                }
-                </tr>
-                        }
-            </tbody>
-        </table>
-    </div>
         }
     }
-    else
-    {
-    <div class="alert alert-info">No data available for the selected criteria.</div>
-    }
 
-    <div class="mt-3">
-        @Html.ActionLink("Back to Reports Dashboard", "Index", "Report", new { area = "Admin" }, new { @class = "btn btn-secondary" })
+    ViewBag.Title = reportTitle;
+    ViewBag.ReportDescription = reportDescription;
+    ViewBag.ReportKey = reportKey;
+    ViewBag.HasData = hasData;
+    bool neverLoaded = Model.ReportData == null || Model.ReportData.Tables.Count == 0;
+    ViewBag.EmptyTitle = neverLoaded ? "Rapor henüz oluşturulmadı" : "Sonuç bulunamadı";
+    ViewBag.EmptyMessage = neverLoaded
+        ? "Tarih aralığını seçip raporu getirin."
+        : "Seçilen kriterlere uygun veri bulunamadı. Filtreleri değiştirerek tekrar deneyin.";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var exportFilters = new Dictionary<string, object>();
+    if (Model.StartDate.HasValue)
+    {
+        exportFilters["startDate"] = Model.StartDate.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.EndDate.HasValue)
+    {
+        exportFilters["endDate"] = Model.EndDate.Value.ToString("yyyy-MM-dd");
+    }
+    ViewBag.ExportFilters = exportFilters;
+}
+
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
+
+<div class="panel panel-default report-filter-panel">
+    <div class="panel-heading">Filtreler</div>
+    <div class="panel-body">
+        @using (Html.BeginForm(Model.ReportActionName, "Report", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ReportActionName)
+
+            <div class="report-filter-row">
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.StartDate, "Başlangıç Tarihi")
+                        @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.EndDate, "Bitiş Tarihi")
+                        @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+                <div class="report-filter-field report-filter-actions">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Raporu Getir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
+
+@if (hasData)
+{
+    var firstTable = Model.ReportData.Tables[0];
+    @Html.Partial("_ReportKpis", firstTable)
+
+    for (int i = 0; i < Model.ReportData.Tables.Count; i++)
+    {
+        var table = Model.ReportData.Tables[i];
+        var tableTitle = !string.IsNullOrWhiteSpace(table.TableName)
+            ? table.TableName
+            : (Model.ReportData.Tables.Count > 1 ? ("Tablo " + (i + 1)) : "Sonuçlar");
+        ViewBag.ReportTableTitle = tableTitle;
+        @Html.Partial("_ReportDataTable", table)
+    }
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}
