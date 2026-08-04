@@ -453,6 +453,18 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// When false, AdminLogin is unavailable and unauthenticated /admin requests redirect to the site home
+        /// instead of the login page. Set true to allow the normal admin login flow.
+        /// </summary>
+        public static bool AdminLoginEnabled
+        {
+            get
+            {
+                return GetConfigBool("AdminLoginEnabled", true);
+            }
+        }
+
         public static string DummyIdentityNumber
         {
             get

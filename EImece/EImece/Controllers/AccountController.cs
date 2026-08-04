@@ -58,6 +58,12 @@ namespace EImece.Controllers
         {
             Logger.Info($"Entering AdminLogin with returnUrl: {returnUrl}");
 
+            if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)
+            {
+                Logger.Info("AdminLoginEnabled is false. Redirecting AdminLogin to home.");
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+
             // TEMPORARY: skip the admin login panel while BypassAdminAuth is enabled.
             if (Domain.AppConfig.BypassAdminAuth)
             {
@@ -85,6 +91,13 @@ namespace EImece.Controllers
         public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl = "")
         {
             Logger.Info($"Entering AdminLogin POST with email: {model?.Email}, returnUrl: {returnUrl}");
+
+            if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)
+            {
+                Logger.Info("AdminLoginEnabled is false. Rejecting AdminLogin POST.");
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+
             if (model == null)
             {
                 Logger.Error("Model is null. Throwing ArgumentException.");

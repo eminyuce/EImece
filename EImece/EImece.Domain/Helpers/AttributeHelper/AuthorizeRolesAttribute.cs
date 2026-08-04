@@ -20,5 +20,17 @@ namespace EImece.Domain.Helpers.AttributeHelper
 
             return base.AuthorizeCore(httpContext);
         }
+
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        {
+            // When AdminLogin is disabled, do not send users to the login page — redirect home.
+            if (!EImece.Domain.AppConfig.AdminLoginEnabled && !EImece.Domain.AppConfig.BypassAdminAuth)
+            {
+                filterContext.Result = new RedirectResult("~/");
+                return;
+            }
+
+            base.HandleUnauthorizedRequest(filterContext);
+        }
     }
 }
