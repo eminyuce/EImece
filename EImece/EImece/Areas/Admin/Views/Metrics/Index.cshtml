@@ -1,157 +1,129 @@
-@model EImece.Areas.Admin.Models.MetricsIndexViewModel
+﻿@model EImece.Areas.Admin.Models.MetricsIndexViewModel
+@using EImece.Domain
 @using EImece.Domain.Helpers
 @using GridMvc.Html
 @using GridMvc.Sorting
-@using Resources
 
 @{
-    ViewBag.Title = "Metrics";
+    ViewBag.Title = "Metrikler";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = Model.PageSize;
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
     int gridPage = Request.QueryString["grid-page"].ToInt();
     var rowIndex = gridPage == 0 ? 0 : pageSizeNumber * (gridPage - 1);
 
-    var controllerName = "Metrics";
     var gridName = "MetricsGrid";
     var contents = Model.Metrics;
 }
 
-<h2>Application Metrics</h2>
+<h2>Uygulama Metrikleri</h2>
 <hr class="adminLine" />
 
-<!-- Search Form -->
+<div class="alert alert-info" style="margin-bottom: 15px;">
+    <p style="margin-bottom: 8px;">
+        Bu sayfa <strong>canlı performans ölçümlerini</strong> gösterir.
+        Her admin/site isteği, dış HTTP çağrısı ve veritabanı işlemi için sayım, hata ve süre tutulur.
+    </p>
+    <ul style="margin-bottom: 0; padding-left: 18px;">
+        <li>Veriler <strong>bellekte</strong> tutulur; uygulama yeniden başlayınca sıfırlanır.</li>
+        <li>İş raporları (satış, sipariş vb.) için <em>Raporlar</em> menüsünü kullanın.</li>
+        <li>Yavaş veya hatalı controller aksiyonlarını bulmak için Ort. / P95 sürelerine bakın.</li>
+    </ul>
+</div>
+
 <div class="panel panel-default" style="margin-bottom: 20px;">
     <div class="panel-body">
         <form method="get" class="form-inline">
             <div class="form-group">
-                <label for="search">Search Metric Name:</label>
-                <input type="text" id="search" name="search" class="form-control" placeholder="e.g., request:, db:, http:" value="@Model.SearchTerm" />
+                <label for="search">Metrik ara:</label>
+                <input type="text" id="search" name="search" class="form-control"
+                       placeholder="örn. request:, db:, http:, Orders"
+                       value="@Model.SearchTerm" />
             </div>
             <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-search"></span> Search
+                <span class="glyphicon glyphicon-search"></span> Ara
             </button>
             <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-default">
-                <span class="glyphicon glyphicon-refresh"></span> Clear
+                <span class="glyphicon glyphicon-refresh"></span> Temizle
             </a>
         </form>
     </div>
 </div>
 
-<!-- Results Info -->
-<div class="alert alert-info">
-    Showing <strong>@contents.Count</strong> of <strong>@Model.TotalCount</strong> metrics
+<div class="alert alert-success" style="padding: 8px 12px;">
+    Toplam <strong>@Model.TotalCount</strong> metrik
+    @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+    {
+        <span>(filtre: <code>@Model.SearchTerm</code>)</span>
+    }
 </div>
 
-<!-- Data Grid -->
-<div class="panel panel-primary">
-    <div style="border: 1px solid #ddd; padding: 10px;" class="table-responsive">
-        @Html.Grid(contents).Named(gridName).Columns(columns =>
-        {
-            columns.Add()
-                .Encoded(false)
-                .Sanitized(false)
-                .RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
-
-            columns.Add(m => m.Name)
-                .Titled("Metric Name")
-                .Filterable(true)
-                .Css("metric-name");
-
-            columns.Add(m => m.Count)
-                .Titled("Count")
-                .Filterable(false)
-                .RenderValueAs(m => m.Count.ToString("N0"));
-
-            columns.Add(m => m.ErrorCount)
-                .Titled("Errors")
-                .Filterable(false)
-                .RenderValueAs(m => string.Format("<span class='label label-{0}'>{1}</span>",
-                    m.ErrorCount > 0 ? "danger" : "success", m.ErrorCount.ToString("N0")));
-
-            columns.Add(m => m.AverageDurationMs)
-                .Titled("Avg Duration (ms)")
-                .Filterable(false)
-                .RenderValueAs(m => m.AverageDurationMs.ToString("F2"));
-
-            columns.Add(m => m.P95DurationMs)
-                .Titled("P95 Duration (ms)")
-                .Filterable(false)
-                .RenderValueAs(m => m.P95DurationMs.ToString("N0"));
-        })
-        .WithPaging(Model.PageSize)
-        .Sortable(true)
-        .Filterable(true)
+@if (contents == null || !contents.Any())
+{
+    <div class="alert alert-warning">
+        Henüz metrik kaydı yok. Site veya admin sayfalarında gezinince burada dolmaya başlar
+        (<code>EnableMetrics=true</code> olmalı).
     </div>
-</div>
+}
+else
+{
+    <div class="panel panel-primary">
+        <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
+            @Html.Grid(contents).Named(gridName).Columns(columns =>
+{
+columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
 
-<!-- Paging Controls -->
-<div class="pagination-container" style="margin-top: 20px; text-align: center;">
-    <nav>
-        <ul class="pagination">
-            @if (Model.HasPreviousPage)
-            {
-                <li>
-                    <a href="@Url.Action("Index", "Metrics", new { area = "Admin", search = Model.SearchTerm, page = Model.PageNumber - 1 })">
-                        <span aria-hidden="true">&laquo;</span> Previous
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="disabled">
-                    <span><span aria-hidden="true">&laquo;</span> Previous</span>
-                </li>
-            }
+columns.Add(m => m.Name)
+.Titled("Metrik adı")
+.Sortable(true)
+.Filterable(true)
+.Css("metric-name");
 
-            @for (int i = 1; i <= Model.TotalPages && i <= 10; i++)
-            {
-                <li class="@(i == Model.PageNumber ? "active" : "")">
-                    <a href="@Url.Action("Index", "Metrics", new { area = "Admin", search = Model.SearchTerm, page = i })">
-                        @i
-                    </a>
-                </li>
-            }
+columns.Add(m => m.Count)
+.Titled("Adet")
+.Sortable(true)
+.SortInitialDirection(GridSortDirection.Descending)
+.Filterable(false);
 
-            @if (Model.HasNextPage)
-            {
-                <li>
-                    <a href="@Url.Action("Index", "Metrics", new { area = "Admin", search = Model.SearchTerm, page = Model.PageNumber + 1 })">
-                        Next <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="disabled">
-                    <span>Next <span aria-hidden="true">&raquo;</span></span>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>
+columns.Add(m => m.ErrorCount)
+.Titled("Hata")
+.Sortable(true)
+.Filterable(false)
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(m => string.Format("<span class='label label-{0}'>{1}</span>",
+    m.ErrorCount > 0 ? "danger" : "success", m.ErrorCount.ToString("N0")));
+
+columns.Add(m => m.AverageDurationMs)
+.Titled("Ort. süre (ms)")
+.Sortable(true)
+.Filterable(false);
+
+columns.Add(m => m.P95DurationMs)
+.Titled("P95 süre (ms)")
+.Sortable(true)
+.Filterable(false);
+
+}).WithPaging(pageSizeNumber).Sortable(true).Filterable(true).WithMultipleFilters()
+        </div>
+    </div>
+}
 
 <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 4px;">
-    <h4>Metric Name Format:</h4>
-    <ul>
-        <li><code>request:*</code> - HTTP request metrics</li>
-        <li><code>http:METHOD:STATUS</code> - HTTP call metrics (e.g., http:GET:200)</li>
-        <li><code>db:*</code> - Database query metrics</li>
+    <h4 style="margin-top: 0;">Metrik adı formatı</h4>
+    <ul style="margin-bottom: 0;">
+        <li><code>request:Controller.Action</code> — sayfa / MVC aksiyon süreleri</li>
+        <li><code>http:METHOD:STATUS</code> — dış HTTP çağrıları (örn. <code>http:GET:200</code>)</li>
+        <li><code>db:...</code> — veritabanı sorgu süreleri</li>
     </ul>
 </div>
 
 <style>
     .metric-name {
-        font-family: monospace;
+        font-family: Consolas, Monaco, monospace;
         font-size: 11px;
-    }
-
-    .pagination-container {
-        display: flex;
-        justify-content: center;
-    }
-
-    .pagination {
-        margin: 0;
     }
 </style>

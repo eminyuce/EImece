@@ -16,13 +16,10 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         // GET: Admin/Metrics
-        public ActionResult Index(string search = "", int page = 1)
+        public ActionResult Index(string search = "")
         {
-            const int pageSize = 50;
-
             var snapshots = _applicationMetrics.GetSnapshots();
 
-            // Filter by search term if provided
             IQueryable<System.Collections.Generic.KeyValuePair<string, MetricSnapshot>> query = snapshots.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
@@ -30,11 +27,8 @@ namespace EImece.Areas.Admin.Controllers
                 query = query.Where(x => x.Key.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
-            // Convert to display items
-            var totalCount = query.Count();
             var metrics = query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+                .OrderBy(x => x.Key)
                 .Select(x => new MetricDisplayItem
                 {
                     Name = x.Key,
@@ -49,9 +43,9 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Metrics = metrics,
                 SearchTerm = search,
-                PageNumber = page,
-                PageSize = pageSize,
-                TotalCount = totalCount
+                PageNumber = 1,
+                PageSize = 50,
+                TotalCount = metrics.Count
             };
 
             return View(viewModel);
