@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>EImece.Web</RootNamespace>
+    <AssemblyName>EImece.Web</AssemblyName>
+    <!-- Parallel ASP.NET Core 8 host (Phase 2). Legacy MVC5 project remains EImece/EImece.csproj. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Resources\Resources.csproj" />
+  </ItemGroup>
+
+</Project>

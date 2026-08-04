@@ -1,5 +1,13 @@
 <Project>
   <PropertyGroup>
+    <!-- Shared defaults for SDK-style and modern builds -->
+    <LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
+    <NoWarn>$(NoWarn);NU1903;NU1904;NU1902</NoWarn>
+    <NuGetAudit>false</NuGetAudit>
+  </PropertyGroup>
+
+  <!-- Legacy .NET Framework 4.8.1 reference assemblies + VS Web targets (Linux CI / non-Windows). -->
+  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' or '$(TargetFrameworkVersion)' == 'v4.8.1'">
     <FrameworkPathOverride Condition="Exists('$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\mscorlib.dll')">$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\</FrameworkPathOverride>
     <VSToolsPath>$(MSBuildThisFileDirectory)build-tools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath</VSToolsPath>
     <!-- Linux CI: skip Web.Publishing (missing/unsupported). Windows: use real targets so VS publish works. -->
@@ -7,7 +15,15 @@
     <AspNetTargetsPath Condition="'$(OS)' == 'Windows_NT'">$(VSToolsPath)\Web\</AspNetTargetsPath>
     <SkipEnsureBindingRedirects>true</SkipEnsureBindingRedirects>
     <Disable_CopyWebApplication>true</Disable_CopyWebApplication>
-    <NoWarn>$(NoWarn);NU1903;NU1904;NU1902</NoWarn>
-    <NuGetAudit>false</NuGetAudit>
+  </PropertyGroup>
+
+  <!-- Non-SDK legacy csproj files do not set TargetFrameworkIdentifier; keep FrameworkPathOverride for them. -->
+  <PropertyGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true' and '$(TargetFramework)' == ''">
+    <FrameworkPathOverride Condition="Exists('$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\mscorlib.dll')">$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\</FrameworkPathOverride>
+    <VSToolsPath>$(MSBuildThisFileDirectory)build-tools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath</VSToolsPath>
+    <AspNetTargetsPath Condition="'$(OS)' != 'Windows_NT'">$(MSBuildThisFileDirectory)build-tools\no-publish\</AspNetTargetsPath>
+    <AspNetTargetsPath Condition="'$(OS)' == 'Windows_NT'">$(VSToolsPath)\Web\</AspNetTargetsPath>
+    <SkipEnsureBindingRedirects>true</SkipEnsureBindingRedirects>
+    <Disable_CopyWebApplication>true</Disable_CopyWebApplication>
   </PropertyGroup>
 </Project>
