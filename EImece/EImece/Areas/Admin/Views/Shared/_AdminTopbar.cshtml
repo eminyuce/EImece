@@ -13,10 +13,13 @@
                 id="adminSidebarToggle"
                 aria-controls="adminSidebar"
                 aria-expanded="true"
-                title="Toggle sidebar">
+                title="@AdminResource.ToggleSidebar"
+                data-label-toggle="@AdminResource.ToggleSidebar"
+                data-label-open="@AdminResource.OpenMenu"
+                data-label-close="@AdminResource.CloseMenu">
             <i class="fa fa-bars admin-toggle-icon-collapse" aria-hidden="true"></i>
             <i class="fa fa-indent admin-toggle-icon-expand" aria-hidden="true"></i>
-            <span class="sr-only">Toggle sidebar</span>
+            <span class="sr-only">@AdminResource.ToggleSidebar</span>
         </button>
         <div class="admin-topbar-title">
             <span class="admin-topbar-panel">@String.Format("{0} Yönetim Paneli", companyNameSetting)</span>

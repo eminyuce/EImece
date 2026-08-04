@@ -652,11 +652,13 @@ function setPreSelectedTreeNode(preSelectedNode) {
         if (isDesktop()) {
             var collapsed = document.body.classList.contains("sidebar-collapsed");
             toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
-            toggle.setAttribute("title", collapsed ? "Expand sidebar" : "Collapse sidebar");
+            toggle.setAttribute("title", toggle.getAttribute("data-label-toggle") || "Toggle sidebar");
         } else {
             var open = document.body.classList.contains("sidebar-open");
             toggle.setAttribute("aria-expanded", open ? "true" : "false");
-            toggle.setAttribute("title", open ? "Close menu" : "Open menu");
+            var openLabel = toggle.getAttribute("data-label-open") || "Open menu";
+            var closeLabel = toggle.getAttribute("data-label-close") || "Close menu";
+            toggle.setAttribute("title", open ? closeLabel : openLabel);
         }
     }
 
