@@ -20,7 +20,6 @@
     var catalogOpen = groupOpen(new[] { "products", "productcategories", "brands", "templates", "lists", "coupons" });
     var salesOpen = groupOpen(new[] { "orders", "customers", "shoppingcarts", "report" });
     var contentOpen = groupOpen(new[] { "menus", "mainpageimages", "stories", "storycategories", "tags", "tagcategories", "faq", "subscribers" });
-    var mediaOpen = groupOpen(new[] { "fileupload", "media", "images" });
     var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "metrics", "users" });
 }
 <aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="@AdminResource.AdminNavigation" data-collapsed="false">
@@ -189,25 +188,6 @@
                    title="@AdminResource.Subscribers">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                     <span class="admin-nav-label">@AdminResource.Subscribers</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="admin-nav-group @(mediaOpen ? "is-open" : "")" data-group="media">
-            <button type="button"
-                    class="admin-nav-group-toggle"
-                    aria-expanded="@(mediaOpen ? "true" : "false")"
-                    title="@AdminResource.Media">
-                <i class="fa fa-photo" aria-hidden="true"></i>
-                <span class="admin-nav-label">@AdminResource.Media</span>
-                <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
-            </button>
-            <div class="admin-nav-group-body">
-                <a class="admin-nav-item @(controllerActive("fileupload"))"
-                   href="@Url.Action("Index", "FileUpload", new { area = "admin" })"
-                   title="@AdminResource.FileUploadingPage">
-                    <i class="fa fa-upload" aria-hidden="true"></i>
-                    <span class="admin-nav-label">@AdminResource.FileUploadingPage</span>
                 </a>
             </div>
         </div>

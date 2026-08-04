@@ -69,7 +69,7 @@ else
 {
     <div class="panel panel-primary">
         <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
-            @Html.Grid(contents).Named(gridName).Columns(columns =>
+            @(Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 columns.Add()
 .Encoded(false)
@@ -107,7 +107,7 @@ columns.Add(m => m.P95DurationMs)
 .Sortable(true)
 .Filterable(false);
 
-}).WithPaging(pageSizeNumber).Sortable(true).Filterable(true).WithMultipleFilters()
+}).WithPaging(pageSizeNumber).Sortable(true).Filterable(true).WithMultipleFilters())
         </div>
     </div>
 }
