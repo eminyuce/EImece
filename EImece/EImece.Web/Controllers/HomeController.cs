@@ -20,13 +20,13 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         ViewData["Title"] = "EImece Core Host";
-        ViewData["Phase"] = "Phase 2 — Solution modernization";
+        ViewData["Phase"] = "Phase 3 — Domain & data layer (EF Core)";
         ViewData["Domain"] = _options.Domain;
         ViewData["SiteStatus"] = _options.SiteStatus;
-        // Smoke-test Resources project reference (netstandard2.0).
         ViewData["SampleResource"] = Resources.Resource.ResourceManager != null
             ? "Resources assembly loaded"
             : "Resources assembly missing";
+        ViewData["Orm"] = "Entity Framework Core 8";
         _logger.LogInformation("EImece.Web home served (domain={Domain})", _options.Domain);
         return View();
     }

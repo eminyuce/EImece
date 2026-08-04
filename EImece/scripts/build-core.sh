@@ -12,10 +12,12 @@ if ! command -v dotnet >/dev/null 2>&1; then
   bash /tmp/dotnet-install.sh --channel 8.0 --install-dir "${HOME}/.dotnet"
 fi
 
-echo "Building Resources + EImece.Web (Debug)..."
+echo "Building Resources + EImece.Domain.Core + EImece.Web (Debug)..."
+# Run restore/build from a neutral cwd — empty stub *.csproj files in ${ROOT} confuse the SDK.
+cd /tmp
 dotnet restore "${ROOT}/EImece.Web/EImece.Web.csproj"
-dotnet build "${ROOT}/Resources/Resources.csproj" -c Debug --no-restore 2>/dev/null || \
-  dotnet build "${ROOT}/Resources/Resources.csproj" -c Debug
+dotnet build "${ROOT}/Resources/Resources.csproj" -c Debug
+dotnet build "${ROOT}/EImece.Domain.Core/EImece.Domain.Core.csproj" -c Debug
 dotnet build "${ROOT}/EImece.Web/EImece.Web.csproj" -c Debug
 
 echo "Build succeeded."

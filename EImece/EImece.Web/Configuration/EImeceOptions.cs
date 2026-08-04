@@ -18,6 +18,7 @@ public sealed class EImeceOptions
     public int MainLanguage { get; set; } = 1;
     public bool AdminLoginEnabled { get; set; } = true;
     public bool BypassAdminAuth { get; set; }
+    public int DatabaseCommandTimeoutSeconds { get; set; } = 120;
 }
 
 public sealed class IyzicoOptions

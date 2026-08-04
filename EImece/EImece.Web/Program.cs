@@ -1,17 +1,19 @@
+using EImece.Domain.Core.DependencyInjection;
 using EImece.Web.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Microsoft.Extensions.DependencyInjection composition root (same DI stack as legacy after Ninject removal).
-builder.Services.AddEImeceCore(builder.Configuration);
-builder.Services.AddControllersWithViews();
-
-// Connection string env override parity with legacy ConnectionStringProvider.
+// Connection string env override parity with legacy ConnectionStringProvider (must run before DI).
 var envConnection = Environment.GetEnvironmentVariable("EIMECE_DB_CONNECTION_STRING");
 if (!string.IsNullOrWhiteSpace(envConnection))
 {
     builder.Configuration["ConnectionStrings:EImeceDbConnection"] = envConnection;
 }
+
+// Microsoft.Extensions.DependencyInjection composition root (same DI stack as legacy after Ninject removal).
+builder.Services.AddEImeceCore(builder.Configuration);
+builder.Services.AddEImeceData(builder.Configuration);
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

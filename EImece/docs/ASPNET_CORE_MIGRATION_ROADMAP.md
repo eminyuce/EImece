@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 2 in progress (parallel Core host + Resources SDK-style)  
+**Status:** Phase 3 complete (EF Core parallel domain layer)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -202,13 +202,25 @@ EImece.sln
 - [x] `dotnet build` succeeds for `Resources` + `EImece.Web`.  
 - [x] App starts in Debug and answers `/health`.
 
-### Phase 3 — Domain and data layer
+### Phase 3 — Domain and data layer ✅ (implemented)
 
-- EF Core `EImeceContext` + Identity `ApplicationDbContext`.  
-- Fluent configurations for key relationships.  
-- Repository/service compile against EF Core APIs.  
-- Initial EF Core migrations (or scaffold from existing DB).  
-- Preserve connection-string env override behavior.
+**Approach:** Parallel `EImece.Domain.Core` (`net8.0`) — legacy `EImece.Domain` (EF6) frozen.
+
+**Completed**
+
+- Clean POCOs for all business entities (no `System.Web` / `[AllowHtml]` / URL helpers).  
+- EF Core `EImeceDbContext` (36 DbSets including `ShortUrls`) + `ApplicationDbContext` (Identity).  
+- Fluent configs: Order dual Address FKs, Product/Order decimals, computed `Rating`, cascade Restrict.  
+- Thin `IReadRepository<T>` / `EfReadRepository<T>` (full repository port deferred).  
+- `AddEImeceData` MS.DI registration + `EIMECE_DB_CONNECTION_STRING` override preserved.  
+- Initial migration `InitialEImeceModel` + baselining docs for existing SQL Server schemas.  
+- Health endpoint probes `CanConnectAsync` + product count (host stays UP if DB offline).
+
+**Deferred**
+
+- Full EF6 generic repository / service rewrite (later phases).  
+- Cookie auth / external logins (Phase 5 — Identity stores registered only).  
+- Automatic `Database.Migrate()` on startup (intentionally off).
 
 ### Phase 4 — Infrastructure
 
@@ -300,34 +312,18 @@ Phase 1 is documentation-only. Verify:
 
 ---
 
-## 10. Phase 2 verification (Debug)
-
-Verified on this agent environment:
-
-```text
-GET http://localhost:5080/health  → 200 {"status":"UP","host":"EImece.Web","framework":"ASP.NET Core 8",...}
-GET http://localhost:5080/healthz → 200
-GET http://localhost:5080/        → 200 (migration status page + Resources loaded)
-Configuration: Debug (PDB present)
-```
-
-Run locally:
+## 10. Phase 2–3 verification (Debug)
 
 ```bash
-cd EImece
 ./scripts/build-core.sh
 dotnet run --project EImece.Web/EImece.Web.csproj -c Debug --launch-profile EImece.Web
+# http://localhost:5080/health
 ```
+
+Expected health payload includes `orm: Entity Framework Core 8` and `database` status (`UP` / `DOWN` / `UNAVAILABLE`).
 
 ## 11. Approval gate
 
-**Phase 1 + Phase 2 complete.** Do not begin Phase 3 (EF Core) until approved.
+**Phases 1–3 complete.** Do not begin Phase 4 (Infrastructure) until approved.
 
-Confirmed decisions from Phase 2:
-
-1. Parallel Core host (`EImece.Web`) — **done**  
-2. Keep project names/paths (no `src/` move yet) — **done**  
-3. Quartz remains disabled — **done** (config default false)  
-4. Admin grid strategy — deferred to Phase 6/7  
-
-Reply with approval to proceed to **Phase 3 — Domain and data layer (EF Core)**.
+Reply with approval to proceed to **Phase 4 — Infrastructure** (Options, logging, file providers, caching, hosted services).
