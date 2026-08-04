@@ -300,15 +300,34 @@ Phase 1 is documentation-only. Verify:
 
 ---
 
-## 10. Approval gate
+## 10. Phase 2 verification (Debug)
 
-**Stop here.** Do not begin Phase 2 (SDK-style / Core host scaffolding) until this roadmap is approved.
+Verified on this agent environment:
 
-When approving, please confirm or adjust:
+```text
+GET http://localhost:5080/health  → 200 {"status":"UP","host":"EImece.Web","framework":"ASP.NET Core 8",...}
+GET http://localhost:5080/healthz → 200
+GET http://localhost:5080/        → 200 (migration status page + Resources loaded)
+Configuration: Debug (PDB present)
+```
 
-1. Parallel Core host vs in-place conversion (recommendation: **parallel Core host**).  
-2. Keep project names/paths vs introduce `src/` layout (recommendation: **in-place names first**).  
-3. Admin grid strategy preference (DataTables vs commercial vs custom) — can decide in Phase 6 if needed.  
-4. Whether Quartz should remain disabled through migration (recommendation: **yes**).
+Run locally:
 
-Reply with approval (and any overrides) to proceed to **Phase 2 — Solution modernization**.
+```bash
+cd EImece
+./scripts/build-core.sh
+dotnet run --project EImece.Web/EImece.Web.csproj -c Debug --launch-profile EImece.Web
+```
+
+## 11. Approval gate
+
+**Phase 1 + Phase 2 complete.** Do not begin Phase 3 (EF Core) until approved.
+
+Confirmed decisions from Phase 2:
+
+1. Parallel Core host (`EImece.Web`) — **done**  
+2. Keep project names/paths (no `src/` move yet) — **done**  
+3. Quartz remains disabled — **done** (config default false)  
+4. Admin grid strategy — deferred to Phase 6/7  
+
+Reply with approval to proceed to **Phase 3 — Domain and data layer (EF Core)**.
