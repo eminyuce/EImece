@@ -2,7 +2,9 @@
   <PropertyGroup>
     <FrameworkPathOverride Condition="Exists('$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\mscorlib.dll')">$(MSBuildThisFileDirectory)build-tools\Microsoft.NETFramework.ReferenceAssemblies.net481.1.0.3\build\.NETFramework\v4.8.1\</FrameworkPathOverride>
     <VSToolsPath>$(MSBuildThisFileDirectory)build-tools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath</VSToolsPath>
-    <AspNetTargetsPath>$(MSBuildThisFileDirectory)build-tools\no-publish\</AspNetTargetsPath>
+    <!-- Linux CI: skip Web.Publishing (missing/unsupported). Windows: use real targets so VS publish works. -->
+    <AspNetTargetsPath Condition="'$(OS)' != 'Windows_NT'">$(MSBuildThisFileDirectory)build-tools\no-publish\</AspNetTargetsPath>
+    <AspNetTargetsPath Condition="'$(OS)' == 'Windows_NT'">$(VSToolsPath)\Web\</AspNetTargetsPath>
     <SkipEnsureBindingRedirects>true</SkipEnsureBindingRedirects>
     <Disable_CopyWebApplication>true</Disable_CopyWebApplication>
     <NoWarn>$(NoWarn);NU1903;NU1904;NU1902</NoWarn>

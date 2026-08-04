@@ -19,7 +19,16 @@ namespace EImece.Controllers
 
         /**
          *  icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
+         *  
          *  run it in command prompt to give permission to the app pool identity to write to the images folder as admin 
+         *  
+         *  
+         *  If the directory does not exist yet:
+
+mkdir "C:\inetpub\wwwroot\Eimece\App_Data\logs"
+
+icacls "C:\inetpub\wwwroot\Eimece\App_Data\logs" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
+
          */
 
         [HttpGet]
