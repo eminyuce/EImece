@@ -10,6 +10,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -38,6 +39,9 @@ namespace EImece
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Required for AntiForgeryToken with claims-based auth (including BypassAdminAuth debug principal).
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
 
             MvcHandler.DisableMvcResponseHeader = true;
 
@@ -119,6 +123,9 @@ namespace EImece
             var identity = new ClaimsIdentity(DefaultAuthenticationTypes.ApplicationCookie);
             identity.AddClaim(new Claim(ClaimTypes.Name, "debug-admin"));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "debug-admin"));
+            identity.AddClaim(new Claim(
+                "http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider",
+                "LocalDebug"));
             identity.AddClaim(new Claim(ClaimTypes.Role, Domain.Constants.AdministratorRole));
             var principal = new ClaimsPrincipal(identity);
             Context.User = principal;

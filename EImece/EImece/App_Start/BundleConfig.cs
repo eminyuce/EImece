@@ -30,7 +30,6 @@ namespace EImece
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-theme.css",
-                       "~/Content/bootstrap-theme.css.map",
                    "~/Content/site.css"
                       ));
 
@@ -53,8 +52,7 @@ namespace EImece
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
                   "~/Scripts/adminEimece.js",
-                  "~/Scripts/gridmvc.js",
-                  "~/MVCGridHandler.axd/script.js"));
+                  "~/Scripts/gridmvc.js"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                                 "~/Content/themes/base/accordion.css",
