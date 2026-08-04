@@ -107,10 +107,19 @@ namespace EImece
         /// <summary>
         /// TEMPORARY: when BypassAdminAuth is enabled, inject a debug Admin principal
         /// so the admin sidebar/layout and role-gated menus can be smoke-tested without AdminLogin.
+        /// Only applies to /admin requests so storefront logout/home stay anonymous.
         /// </summary>
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             if (!AppConfig.BypassAdminAuth)
+            {
+                return;
+            }
+
+            var path = (Context.Request.AppRelativeCurrentExecutionFilePath ?? Context.Request.Path ?? "")
+                .TrimStart('~')
+                .ToLowerInvariant();
+            if (!path.StartsWith("/admin", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }

@@ -279,32 +279,38 @@ namespace EImece.Controllers
 
         private void GetCustomerIfAuthenticated(ShoppingCartSession result)
         {
-            if (Request.IsAuthenticated)
-            {
-                var user = UserManager.FindByName(User.Identity.GetUserName());
-                if (user != null)
-                {
-                    PaymentLogger.Info($"User found with ID: {user.Id}");
-                    var c = CustomerService.GetUserId(user.Id);
-                    if (c == null)
-                    {
-                        PaymentLogger.Info("No customer found. Creating new customer.");
-                        c = new Customer();
-                        c.UserId = user.Id;
-                        c.CustomerType = (int)EImeceCustomerType.Normal;
-                    }
-                    result.Customer = c;
-                    c.IsSameAsShippingAddress = true;
-                }
-                else
-                {
-                    throw new ArgumentException("User cannot be null"+User.Identity.GetUserName());
-                }
-            }
-            else
+            if (!Request.IsAuthenticated)
             {
                 PaymentLogger.Info("Request is not authenticated. No customer assigned.");
+                return;
             }
+
+            var userName = User.Identity.GetUserName();
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                PaymentLogger.Info("Authenticated identity has no user name. No customer assigned.");
+                return;
+            }
+
+            var user = UserManager.FindByName(userName);
+            if (user == null)
+            {
+                // e.g. BypassAdminAuth debug principal, or deleted AspNet user — do not crash layout/cart.
+                PaymentLogger.Warn("No AspNet user for authenticated name '{0}'. Skipping customer assignment.", userName);
+                return;
+            }
+
+            PaymentLogger.Info($"User found with ID: {user.Id}");
+            var c = CustomerService.GetUserId(user.Id);
+            if (c == null)
+            {
+                PaymentLogger.Info("No customer found. Creating new customer.");
+                c = new Customer();
+                c.UserId = user.Id;
+                c.CustomerType = (int)EImeceCustomerType.Normal;
+            }
+            result.Customer = c;
+            c.IsSameAsShippingAddress = true;
         }
 
         private ShoppingCartSession GetShoppingCart()
