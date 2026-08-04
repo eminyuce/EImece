@@ -23,7 +23,7 @@
     var mediaOpen = groupOpen(new[] { "fileupload", "media", "images" });
     var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "metrics", "users" });
 }
-<aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="Admin navigation" data-collapsed="false">
+<aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="@AdminResource.AdminNavigation" data-collapsed="false">
     <div class="admin-sidebar-brand">
         <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })" title="@companyNameSetting">
             <i class="fa fa-cubes" aria-hidden="true"></i>
@@ -32,8 +32,8 @@
         <button type="button"
                 class="admin-sidebar-close"
                 id="adminSidebarClose"
-                aria-label="Close sidebar"
-                title="Close">
+                aria-label="@AdminResource.CloseSidebar"
+                title="@AdminResource.Close">
             <i class="fa fa-times" aria-hidden="true"></i>
         </button>
     </div>
@@ -50,9 +50,9 @@
             <button type="button"
                     class="admin-nav-group-toggle"
                     aria-expanded="@(catalogOpen ? "true" : "false")"
-                    title="Catalog">
+                    title="@AdminResource.Catalog">
                 <i class="fa fa-th-large" aria-hidden="true"></i>
-                <span class="admin-nav-label">Catalog</span>
+                <span class="admin-nav-label">@AdminResource.Catalog</span>
                 <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
             </button>
             <div class="admin-nav-group-body">
@@ -99,9 +99,9 @@
             <button type="button"
                     class="admin-nav-group-toggle"
                     aria-expanded="@(salesOpen ? "true" : "false")"
-                    title="Sales">
+                    title="@AdminResource.Sales">
                 <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                <span class="admin-nav-label">Sales</span>
+                <span class="admin-nav-label">@AdminResource.Sales</span>
                 <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
             </button>
             <div class="admin-nav-group-body">
@@ -119,9 +119,9 @@
                 </a>
                 <a class="admin-nav-item @(controllerActive("shoppingcarts"))"
                    href="@Url.Action("Index", "ShoppingCarts", new { area = "admin" })"
-                   title="Shopping Carts">
+                   title="@AdminResource.ShoppingCarts">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <span class="admin-nav-label">Shopping Carts</span>
+                    <span class="admin-nav-label">@AdminResource.ShoppingCarts</span>
                 </a>
                 <a class="admin-nav-item @(controllerActive("report"))"
                    href="@Url.Action("Index", "Report", new { area = "admin" })"
@@ -136,9 +136,9 @@
             <button type="button"
                     class="admin-nav-group-toggle"
                     aria-expanded="@(contentOpen ? "true" : "false")"
-                    title="Content">
+                    title="@AdminResource.Content">
                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                <span class="admin-nav-label">Content</span>
+                <span class="admin-nav-label">@AdminResource.Content</span>
                 <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
             </button>
             <div class="admin-nav-group-body">
@@ -197,9 +197,9 @@
             <button type="button"
                     class="admin-nav-group-toggle"
                     aria-expanded="@(mediaOpen ? "true" : "false")"
-                    title="Media">
+                    title="@AdminResource.Media">
                 <i class="fa fa-photo" aria-hidden="true"></i>
-                <span class="admin-nav-label">Media</span>
+                <span class="admin-nav-label">@AdminResource.Media</span>
                 <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
             </button>
             <div class="admin-nav-group-body">
@@ -218,9 +218,9 @@
                 <button type="button"
                         class="admin-nav-group-toggle"
                         aria-expanded="@(systemOpen ? "true" : "false")"
-                        title="System">
+                        title="@AdminResource.System">
                     <i class="fa fa-cogs" aria-hidden="true"></i>
-                    <span class="admin-nav-label">System</span>
+                    <span class="admin-nav-label">@AdminResource.System</span>
                     <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
                 </button>
                 <div class="admin-nav-group-body">
@@ -250,17 +250,17 @@
                     </a>
                     <a class="admin-nav-item @(controllerActive("metrics"))"
                        href="@Url.Action("Index", "Metrics", new { area = "admin" })"
-                       title="Metrics">
+                       title="@AdminResource.Metrics">
                         <i class="fa fa-line-chart" aria-hidden="true"></i>
-                        <span class="admin-nav-label">Metrics</span>
+                        <span class="admin-nav-label">@AdminResource.Metrics</span>
                     </a>
                     <a class="admin-nav-item"
                        href="@Url.Action("Index", "Health", new { area = "" })"
                        target="_blank"
                        rel="noopener noreferrer"
-                       title="Health">
+                       title="@AdminResource.Health">
                         <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                        <span class="admin-nav-label">Health</span>
+                        <span class="admin-nav-label">@AdminResource.Health</span>
                     </a>
                     <a class="admin-nav-item @actionActive("users", "index")"
                        href="@Url.Action("Index", "Users", new { area = "admin" })"

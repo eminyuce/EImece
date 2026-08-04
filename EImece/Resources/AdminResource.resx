@@ -1230,4 +1230,43 @@
   <data name="Medias" xml:space="preserve">
     <value>Medyalar</value>
   </data>
+  <data name="AdminNavigation" xml:space="preserve">
+    <value>Yönetim menüsü</value>
+  </data>
+  <data name="Catalog" xml:space="preserve">
+    <value>Katalog</value>
+  </data>
+  <data name="CloseSidebar" xml:space="preserve">
+    <value>Kenar çubuğunu kapat</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>İçerik</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Sağlık</value>
+  </data>
+  <data name="Media" xml:space="preserve">
+    <value>Medya</value>
+  </data>
+  <data name="Metrics" xml:space="preserve">
+    <value>Metrikler</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>Satışlar</value>
+  </data>
+  <data name="ShoppingCarts" xml:space="preserve">
+    <value>Alışveriş Sepetleri</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>Sistem</value>
+  </data>
+  <data name="OpenMenu" xml:space="preserve">
+    <value>Menüyü aç</value>
+  </data>
+  <data name="CloseMenu" xml:space="preserve">
+    <value>Menüyü kapat</value>
+  </data>
+  <data name="ToggleSidebar" xml:space="preserve">
+    <value>Kenar çubuğunu aç/kapat</value>
+  </data>
 </root>
