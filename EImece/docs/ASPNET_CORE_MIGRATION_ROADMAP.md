@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 5 complete (Identity cookies, roles/policies, security headers, data protection)  
+**Status:** Phase 6 complete (application layer: SEO routes, controllers, filters, validation)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -261,13 +261,25 @@ EImece.sln
 - Captcha on login.  
 - Full Admin/Customers area controllers (Phase 6).
 
-### Phase 6 — Application layer
+### Phase 6 — Application layer ✅ (implemented)
 
-- Controllers → ASP.NET Core MVC (Areas).  
-- Filters → attributes / endpoint filters / middleware.  
-- Routing parity (SEO product/story/sitemap routes).  
-- Model binding / validation.  
-- Preserve service-layer business rules.
+**Completed**
+
+- SEO routing parity (`/p/...`, `/c/pc/{id}`, `/s/...`, `/i/{id}`, `/b/...`, `sitemap.xml`, `robots.txt`, image route shells).  
+- `RouteOptions.LowercaseUrls` + `AppendTrailingSlash`.  
+- `BaseController` / `BaseAdminController` stubs (culture cookies, ViewData, TempData helpers).  
+- Storefront shells: Products, ProductCategories, Stories, Pages, Info, Payment (no Iyzico), SiteMap, Robot, Images (501), UnderConstruction.  
+- Admin shells: Home, Dashboard, Products, Orders (`AdminOrEditor`).  
+- Customers area Home (`CustomerOnly`).  
+- `UrlController` → `api/url` with ProblemDetails validation.  
+- `UnderConstructionFilter`, request localization (`tr-TR` default).  
+- ApiBehavior invalid model → `ValidationProblemDetails`.
+
+**Deferred**
+
+- Full Razor/theme views (Phase 7).  
+- Domain.Core service/business-rule port for controllers.  
+- Iyzico checkout + image pipeline (Phase 8).
 
 ### Phase 7 — Presentation layer
 
@@ -345,6 +357,6 @@ Expected health payload includes `orm: Entity Framework Core 8` and `database` s
 
 ## 11. Approval gate
 
-**Phases 1–5 complete.** Do not begin Phase 6 (Application layer) until approved.
+**Phases 1–6 complete.** Do not begin Phase 7 (Presentation layer) until approved.
 
-Reply with approval to proceed to **Phase 6 — Application layer** (controllers, filters, routing, validation).
+Reply with approval to proceed to **Phase 7 — Presentation layer** (Razor views, layouts, tag helpers, static files).

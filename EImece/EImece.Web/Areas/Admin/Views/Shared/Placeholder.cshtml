@@ -9,14 +9,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body class="p-4">
-    <h1>Admin area</h1>
-    <p>Phase 5 auth shell — full Admin UI migrates in Phase 6/7.</p>
-    <p>User: <strong>@ViewData["User"]</strong></p>
-    <p>BypassAdminAuth: <strong>@ViewData["Bypass"]</strong></p>
+    <nav class="mb-3">
+        <a href="/Admin/Home">Home</a> |
+        <a href="/Admin/Dashboard">Dashboard</a> |
+        <a href="/Admin/Products">Products</a> |
+        <a href="/Admin/Orders">Orders</a>
+    </nav>
+    <h1 class="h3">@ViewData["Title"]</h1>
+    <p>@ViewData["Message"]</p>
+    <p class="small text-muted">Admin user: @ViewData["AdminUser"]</p>
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
         @Html.AntiForgeryToken()
         <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
     </form>
-    <a class="btn btn-link" href="/api/auth/me">/api/auth/me</a>
 </body>
 </html>

@@ -1,13 +1,17 @@
+using System.Globalization;
 using EImece.Domain.Core.DependencyInjection;
 using EImece.Domain.Core.Media;
 using EImece.Web.DependencyInjection;
+using EImece.Web.Infrastructure.Routing;
 using EImece.Web.Middleware;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NLog.Web;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Info("EImece.Web starting (Phase 5 authentication & security)");
+logger.Info("EImece.Web starting (Phase 6 application layer)");
 
 try
 {
@@ -30,12 +34,46 @@ try
         .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
         .SetApplicationName("EImece.Web");
 
+    // SEO: lowercase URLs + trailing slash (legacy RouteConfig parity).
+    builder.Services.Configure<RouteOptions>(options =>
+    {
+        options.LowercaseUrls = true;
+        options.AppendTrailingSlash = true;
+    });
+
     // Microsoft.Extensions.DependencyInjection composition root (same DI stack as legacy after Ninject removal).
     builder.Services.AddEImeceCore(builder.Configuration);
     builder.Services.AddEImeceInfrastructure(builder.Configuration);
     builder.Services.AddEImeceData(builder.Configuration);
     builder.Services.AddEImeceIdentity(builder.Configuration);
-    builder.Services.AddControllersWithViews();
+
+    builder.Services.AddControllersWithViews()
+        .ConfigureApiBehaviorOptions(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                var problem = new ValidationProblemDetails(context.ModelState)
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Title = "One or more validation errors occurred."
+                };
+                return new BadRequestObjectResult(problem);
+            };
+        });
+
+    var defaultCulture = builder.Configuration["EImece:ApplicationLanguages"]?.Split(',')[0].Trim() ?? "tr-TR";
+    var supportedCultures = new[] { new CultureInfo(defaultCulture), new CultureInfo("en-US") };
+    builder.Services.Configure<RequestLocalizationOptions>(options =>
+    {
+        options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+        options.SupportedCultures = supportedCultures;
+        options.SupportedUICultures = supportedCultures;
+        options.RequestCultureProviders =
+        [
+            new CookieRequestCultureProvider { CookieName = RouteConstants.CultureCookieName },
+            new AcceptLanguageHeaderRequestCultureProvider()
+        ];
+    });
 
     var app = builder.Build();
 
@@ -50,6 +88,7 @@ try
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
+    app.UseRequestLocalization();
     app.UseMiddleware<SecurityHeadersMiddleware>();
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<RequestLoggingMiddleware>();
@@ -58,10 +97,11 @@ try
     app.UseMiddleware<BypassAdminAuthMiddleware>();
     app.UseAuthorization();
 
-    // Area route placeholders (Admin / Customers) — controllers migrate in Phase 6.
     app.MapControllerRoute(
         name: "areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+    app.MapEImeceSeoRoutes();
 
     app.MapControllerRoute(
         name: "default",

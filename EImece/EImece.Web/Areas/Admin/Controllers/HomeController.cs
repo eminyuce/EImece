@@ -1,27 +1,18 @@
-using EImece.Domain.Core.Identity;
 using EImece.Web.Configuration;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace EImece.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-[Authorize(Policy = AuthPolicies.AdminOrEditor)]
-public sealed class HomeController : Controller
+public sealed class HomeController : BaseAdminController
 {
-    private readonly EImeceOptions _options;
-
-    public HomeController(IOptions<EImeceOptions> options)
-    {
-        _options = options.Value;
-    }
+    public HomeController(IOptions<EImeceOptions> options) : base(options) { }
 
     public IActionResult Index()
     {
         ViewData["Title"] = "Admin";
-        ViewData["User"] = User.Identity?.Name ?? "(anonymous bypass)";
-        ViewData["Bypass"] = _options.BypassAdminAuth;
-        return View();
+        ViewData["Message"] =
+            $"Admin home · user={User.Identity?.Name ?? "(anonymous)"} · BypassAdminAuth={SiteOptions.BypassAdminAuth}";
+        return View("~/Areas/Admin/Views/Shared/Placeholder.cshtml");
     }
 }
