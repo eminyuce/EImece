@@ -1,0 +1,29 @@
+//componentList: textbox, dropdown,checkbox
+textbox:{
+    attrs:{
+                name: textboxnames,
+                unit: textboxunits,
+                values: textboxvalues,
+				display:textboxnames
+
+            },
+            children: null
+},
+dropdown:{
+    attrs:{
+                name: dropdownnames,
+                unit: dropdownunits,
+                values: dropdownvalues,
+				display:dropdownnames
+            },
+            children: null
+},
+checkbox:{
+    attrs:{
+                name: checkboxnames,
+                unit: checkboxunits,
+                values: checkboxvalues,
+				display:checkboxnames
+            },
+            children: null
+}

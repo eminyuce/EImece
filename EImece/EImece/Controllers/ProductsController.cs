@@ -44,24 +44,6 @@ namespace EImece.Controllers
             this.productCommentService = ProductCommentService;
         }
 
-        public ActionResult Index()
-        {
-            Logger.Info("Entering Index action.");
-            Logger.Info("Returning BadRequest status.");
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
-
-        // Uncomment and add logs if needed
-        // [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        // public ActionResult Index(int page = 1)
-        // {
-        //     Logger.Info($"Entering Index action with page: {page}");
-        //     var products = ProductService.GetMainPageProducts(page, CurrentLanguage);
-        //     Logger.Info($"Retrieved {products?.Records?.Count ?? 0} products for page: {page}, language: {CurrentLanguage}");
-        //     Logger.Info("Returning Index view.");
-        //     return View(products);
-        // }
-
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
         {

@@ -1,0 +1,89 @@
+﻿@model EImece.Domain.Entities.Menu
+@using EImece.Domain;
+@using EImece.Domain.Helpers;
+@using Resources;
+@{
+    var selectedTheme = Model.PageTheme.ToStr();
+
+}
+<div class="tab" id="SayfaDuzenleri">
+    <table class="TemaTable" style="width: 100%; text-align: center">
+        <tr>
+            <td>
+                <a href="~/Areas/Admin/Content/PageThemes/tema-01.gif" rel="prettyPhoto">
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-01.gif" />
+                </a>
+                <br />
+                <input id="@Constants.PageThemeT1"
+                       @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeT1) ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="@Constants.PageThemeT1" />
+
+                <label for="T1">Tema 1</label>
+            </td>
+            <td>
+                <a href="~/Areas/Admin/Content/PageThemes/tema-02.gif" rel="prettyPhoto">
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-02.gif" />
+                </a>
+                <br />
+                <input id="@Constants.PageThemeT2"
+                       @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeT2) ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="@Constants.PageThemeT2" /><label for="T2">Tema 2</label>
+            </td>
+            <td>
+                <a href="~/Areas/Admin/Content/PageThemes/tema-03.gif" rel="prettyPhoto">
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-03.gif" />
+                </a>
+                <br />
+                <input id="@Constants.PageThemeT3" @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeT3) ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="@Constants.PageThemeT3" /><label for="T3">Tema 3</label>
+            </td>
+            <td class="Hide">
+                <a href="~/Areas/Admin/Content/PageThemes/tema-04.gif" rel="prettyPhoto">
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-04.gif" />
+                </a>
+                <br />
+                <input id="@Constants.PageThemeT4"
+                       @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeT4) ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="@Constants.PageThemeT4" /><label for="T4">Tema 4</label>
+            </td>
+        </tr>
+        <tr class="Hide">
+            <td>
+                <a href="~/Areas/Admin/Content/PageThemes/tema-05.gif" rel="prettyPhoto">
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-05.gif" />
+                </a>
+                <br />
+                <input id="@Constants.PageThemeT5"
+                       @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeT5) ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="@Constants.PageThemeT5" /><label for="T5">Tema 5</label>
+            </td>
+            <td>
+                <a href="~/Areas/Admin/Content/PageThemes/tema-06.gif" rel="prettyPhoto">
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-06.gif" />
+                </a>
+                <br />
+                <input id="@Constants.PageThemeT6"
+                       @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeT6) ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="@Constants.PageThemeT6" /><label for="T6">Tema 6</label>
+            </td>
+            <td>
+                <a href="~/Areas/Admin/Content/PageThemes/tema-07.gif" rel="prettyPhoto">
+                    <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-07.gif" />
+                </a>
+                <br />
+                <input id="@Constants.PageThemeImageGallery"
+                       @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeImageGallery) ? "checked='checked'" : "")
+                       type="radio" name="PageTheme" value="@Constants.PageThemeImageGallery" /><label for="T7"> @AdminResource.ImageGallery</label>
+                </td>
+                <td>
+                    <a href="~/Areas/Admin/Content/PageThemes/tema-08.gif" rel="prettyPhoto">
+                        <img width="150" src="~/Areas/Admin/Content/PageThemes/tema-08.gif" />
+                    </a>
+                    <br />
+                    <input id="@Constants.PageThemeCommunication"
+                           @String.Format("{0}", selectedTheme.Equals(Constants.PageThemeCommunication) ? "checked='checked'" : "")
+                           type="radio" name="PageTheme" value="@Constants.PageThemeCommunication" /><label for="T8">@AdminResource.ContactForm</label>
+                    </td>
+                </tr>
+            </table>
+        </div>

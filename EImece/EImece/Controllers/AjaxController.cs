@@ -16,8 +16,6 @@ namespace EImece.Controllers
 {
     public class AjaxController : BaseController
     {
-        private AdresService adresService { get; set; }
-
         [Inject]
         public IOrderService OrderService { get; set; }
 
@@ -37,9 +35,8 @@ namespace EImece.Controllers
             return Json(html, JsonRequestBehavior.AllowGet);
         }
 
-        public AjaxController(AdresService adresService)
+        public AjaxController()
         {
-            this.adresService = adresService;
             turkishRegionService = new TurkishRegionService();
         }
 
@@ -111,40 +108,6 @@ namespace EImece.Controllers
             districts.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
             return Json(districts, JsonRequestBehavior.AllowGet);
-        }
-
-        // GET: Ajax
-        public JsonResult GetIller()
-        {
-            var allIller = from cust in adresService.GetTurkiyeAdres().IlRoot.Iller.il
-                           select new
-                           {
-                               id = cust.id,
-                               name = cust.il_adi
-                           };
-
-            return Json(
-                new
-                {
-                    allIller
-                }, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetIlceler(int il_id)
-        {
-            var allIceler = from cust in adresService.GetTurkiyeAdres().IlceRoot.ilceler.ilce
-                            where cust.il_id == il_id
-                            select new
-                            {
-                                id = cust.id,
-                                name = cust.ilce_adi
-                            };
-
-            return Json(
-                new
-                {
-                    items = allIceler
-                }, JsonRequestBehavior.AllowGet);
         }
     }
 }

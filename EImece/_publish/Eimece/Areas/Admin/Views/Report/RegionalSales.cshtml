@@ -1,0 +1,64 @@
+﻿@model System.Data.DataTable
+@using System.Collections.Generic
+@{
+    ViewBag.Title = "Bölgesel Satışlar";
+    ViewBag.ReportDescription = "Şehir bazında sipariş sayısı ve ciro özetini gösterir. Ödeme durumuna göre filtreleyebilirsiniz.";
+    ViewBag.ReportKey = "GetRegionalSalesReport";
+    ViewBag.HasData = Model != null && Model.Rows.Count > 0;
+    ViewBag.EmptyMessage = "Seçilen ödeme durumuna göre bölgesel satış verisi bulunamadı.";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var paymentStatus = ViewBag.PaymentStatus as string ?? "SUCCESS";
+    var exportFilters = new Dictionary<string, object>();
+    if (!string.IsNullOrWhiteSpace(paymentStatus))
+    {
+        exportFilters["paymentStatus"] = paymentStatus;
+    }
+    ViewBag.ExportFilters = exportFilters;
+}
+
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
+
+<div class="panel panel-default report-filter-panel">
+    <div class="panel-heading">Filtreler</div>
+    <div class="panel-body">
+        @using (Html.BeginForm("GetRegionalSalesReport", "Report", FormMethod.Post, new { @class = "form-horizontal", area = "Admin" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="report-filter-row">
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        <label for="paymentStatus">Ödeme Durumu</label>
+                        <select class="form-control report-filter-select" id="paymentStatus" name="paymentStatus">
+                            <option value="" @(string.IsNullOrEmpty(paymentStatus) ? "selected=\"selected\"" : null)>Tümü</option>
+                            <option value="SUCCESS" @(string.Equals(paymentStatus, "SUCCESS", StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>SUCCESS</option>
+                            <option value="FAILURE" @(string.Equals(paymentStatus, "FAILURE", StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>FAILURE</option>
+                            <option value="INIT_THREEDS" @(string.Equals(paymentStatus, "INIT_THREEDS", StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>INIT_THREEDS</option>
+                            <option value="CALLBACK_THREEDS" @(string.Equals(paymentStatus, "CALLBACK_THREEDS", StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>CALLBACK_THREEDS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="report-filter-field report-filter-actions">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Raporu Getir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (ViewBag.HasData)
+{
+    @Html.Partial("_ReportKpis", Model)
+    @Html.Partial("_ReportDataTable", Model)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}

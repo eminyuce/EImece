@@ -581,7 +581,6 @@ QUITE
         }
 
         [TestMethod]
-        [Timeout(TestTimeout.Infinite)]
         public void SaveExcelFile()
         {
             var filePath = @"C:\Users\Yuce\Desktop\products.xls";

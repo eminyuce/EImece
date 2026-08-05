@@ -1,0 +1,13 @@
+SELECT * INTO #Temp
+ from (
+SELECT  t.*,tg.Name as TagCategoryName2
+  FROM [eimece].[dbo].[Tags] t 
+  inner join [eimece].[dbo].[TagCategories] tg ON t.[TagCategoryId]=tg.Id where t.Lang=2
+   ) T inner join (
+  select Name TagCategoryName,Id TId FROM [eimece].[dbo].[TagCategories] where Lang=2
+  ) M on T.TagCategoryName2=M.TagCategoryName
+
+  select * from #Temp
+
+ update t set TagCategoryId=TId from   [eimece].[dbo].[Tags] t inner join #Temp y ON t.Id = y.Id
+  drop table #Temp

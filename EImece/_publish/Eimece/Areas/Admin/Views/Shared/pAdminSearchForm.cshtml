@@ -1,0 +1,35 @@
+﻿@using EImece.Domain;
+@using EImece.Domain.Helpers;
+@using Resources;
+@{
+
+    string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    string controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
+    string search = @Request.QueryString["search"].ToStr();
+    string idValue = ViewContext.RouteData.Values["id"].ToStr();
+    var IdValueExists = ViewData["IdValueExists"].ToBool(false);
+    var gridSearchButtonText = AdminResource.GridSearchButtonText;
+    var clear = AdminResource.Clear;
+}
+<input type="hidden" id="action" value="@action" />
+<input type="hidden" id="controller" value="@controller" />
+@using (Html.BeginForm(action, controller, FormMethod.Get, new { @class = "" }))
+{
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group">
+            <input type="text" class="form-control" id="searchTxtInput" name="search" value="@search" placeholder="Ara">
+
+            <div class="input-group-btn">
+                <button class="btn btn-primary" id="SearchButton" type="submit">@gridSearchButtonText </button>
+                @if (!String.IsNullOrEmpty(search))
+                    {
+                @Html.ActionLink(clear, action, controller, new { search = "", id = IdValueExists ? idValue : ""  }, new {  @class = "btn btn-default" })
+                    }
+            </div>
+        </div><!-- /input-group -->
+    </div><!-- /.col-lg-12 -->
+</div><!-- /.row -->
+
+}

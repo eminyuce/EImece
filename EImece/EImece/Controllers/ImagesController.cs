@@ -58,13 +58,6 @@ namespace EImece.Controllers
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public ActionResult Index333333(String id, String imageSize)
-        {
-            return GenerateImage(id, imageSize);
-        }
-
-        [AcceptVerbs(HttpVerbs.Get)]
-        [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public ActionResult Index(String id, String imageSize)
         {
             return GenerateImage(id, imageSize);
@@ -167,42 +160,6 @@ namespace EImece.Controllers
             //Logger.Info("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
             return this.File(fileContents, ContentType);
-        }
-
-        public ActionResult GetModifiedImage(String id, String imageSize)
-        {
-            int height = 0;
-            int width = 0;
-            if (String.IsNullOrEmpty(imageSize))
-            {
-                imageSize = "w150h150";
-            }
-
-            width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
-            height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
-
-            var fileStorageId = id.Replace(".jpg", "").ToInt();
-            var savedImage = FilesHelper.GetResizedImage(fileStorageId, width, height);
-            Image image = Image.FromStream(new MemoryStream(savedImage.ImageBytes));
-
-            using (Graphics g = Graphics.FromImage(image))
-            using (Font drawFont = new Font("Arial", 10))
-            using (SolidBrush drawBrush = new SolidBrush(Color.Black))
-            {
-                // do something with the Graphics (eg. write "Hello World!")
-                string text = "Hello World!";
-
-                // Create point for upper-left corner of drawing.
-                PointF stringPoint = new PointF(0, 0);
-
-                g.DrawString(text, drawFont, drawBrush, stringPoint);
-            }
-
-            MemoryStream ms = new MemoryStream();
-
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-            return File(ms.ToArray(), savedImage.ContentType);
         }
 
         // Legacy arithmetic CAPTCHA image (used when CaptchaProvider=Legacy)

@@ -1,0 +1,132 @@
+﻿@model EImece.Domain.Models.AdminModels.DataSetReportViewModel
+@using System.Collections.Generic
+@using System.Data
+@using EImece.Domain.Helpers
+@{
+    ViewBag.Title = "Ürün Envanteri";
+    ViewBag.ReportDescription = "Ürün envanterini durum, kampanya ve ana sayfa filtreleriyle listeler.";
+    ViewBag.ReportKey = "ProductInventory";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    bool hasData = false;
+    DataTable firstTable = null;
+    if (Model != null && Model.ReportData != null)
+    {
+        foreach (DataTable table in Model.ReportData.Tables)
+        {
+            if (table != null && table.Rows.Count > 0)
+            {
+                hasData = true;
+                if (firstTable == null)
+                {
+                    firstTable = table;
+                }
+            }
+        }
+        if (firstTable == null && Model.ReportData.Tables.Count > 0)
+        {
+            firstTable = Model.ReportData.Tables[0];
+        }
+    }
+
+    ViewBag.HasData = hasData;
+    ViewBag.EmptyMessage = "Seçilen filtrelere uygun envanter kaydı bulunamadı. Filtreleri değiştirerek tekrar deneyin.";
+
+    var exportFilters = new Dictionary<string, object>();
+    if (Model != null)
+    {
+        if (!string.IsNullOrWhiteSpace(Model.State))
+        {
+            exportFilters["state"] = Model.State;
+        }
+        if (Model.IsCampaign.HasValue)
+        {
+            exportFilters["isCampaign"] = Model.IsCampaign.Value;
+        }
+        if (Model.MainPage.HasValue)
+        {
+            exportFilters["mainPage"] = Model.MainPage.Value;
+        }
+    }
+    ViewBag.ExportFilters = exportFilters;
+}
+
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
+
+<div class="panel panel-default report-filter-panel">
+    <div class="panel-heading">Filtreler</div>
+    <div class="panel-body">
+        @using (Html.BeginForm("ProductInventory", "Report", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ReportActionName)
+
+            <div class="report-filter-row">
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.State, "Durum")
+                        @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "Örn. Active" })
+                        @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        <label for="IsCampaign">Kampanya</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="IsCampaign" name="IsCampaign" value="true"
+                                       @(Model != null && Model.IsCampaign.HasValue && Model.IsCampaign.Value ? "checked=\"checked\"" : null) />
+                                Kampanyalı ürünler
+                            </label>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.IsCampaign, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        <label for="MainPage">Ana Sayfa</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="MainPage" name="MainPage" value="true"
+                                       @(Model != null && Model.MainPage.HasValue && Model.MainPage.Value ? "checked=\"checked\"" : null) />
+                                Ana sayfada gösterilenler
+                            </label>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.MainPage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="report-filter-field report-filter-actions">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Raporu Getir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@if (hasData && firstTable != null)
+{
+    @Html.Partial("_ReportKpis", firstTable)
+    ViewBag.ReportTableTitle = "Sonuçlar";
+    @Html.Partial("_ReportDataTable", firstTable)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

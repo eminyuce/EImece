@@ -1,0 +1,43 @@
+﻿<div class="panel panel-success-zzz">
+
+    <div class="panel-body">
+
+        <section data-nwm-story-images>
+            <section class="sctnWrapper clearfix">
+
+                <section>
+                    <div>
+                        <h4>File Upload</h4>
+                        @*<div nwm-images-uploader=""></div>*@
+
+                        <div nwm-queue-uploader>
+                            <div class="FileUploader-dv-container" data-queueupload="">
+                                <div class="FileUploader-loader" queueupload-loader></div>
+                                <div queueupload-dragdrop>
+                                    <form action="" method="post" enctype="multipart/form-data" class="FileUploader-form">
+
+                                        <span>Submit a File: </span>
+                                        <input type="file" name="file" class="FileUploader-input-file" queueupload-in-file />
+                                        <a class="k-button" queueupload-inbtn-file>Add</a><br />
+
+                                        <span>Submit a URL: </span>
+                                        <input type="text" name="url" class="FileUploader-input-url" placeholder="Place URL Here" queueupload-in-url />
+                                        <a class="k-button" queueupload-inbtn-url>Add</a>
+
+                                        <div style="height:200px" class="FileUploader-dragdrop-container">
+                                            <strong>Or Drag and Drop Files/URLs into this panel</strong>
+                                        </div>
+                                    </form>
+                                    <div queueupload-list>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </div>
+</div>

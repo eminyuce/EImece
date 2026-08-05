@@ -1,0 +1,59 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+@{
+    ShoppingCartSession shoppingCart = Model;
+}
+
+@if (shoppingCart != null && shoppingCart.ShoppingCartItems.IsNotEmpty())
+{
+    var products = shoppingCart.ShoppingCartItems;
+    var customer = shoppingCart.Customer;
+<div id="cart">
+
+    <!-- Button -->
+    <div class="cart-btn">
+        <a href="@Url.Action("ShoppingCart","Payment")" class="button adc"><span id="HomePageTotalPrice">@shoppingCart.TotalPrice.CurrencySign()</span></a>
+    </div>
+
+    <div class="cart-list" style="display: none;">
+
+        <div class="arrow"></div>
+
+        <div class="cart-amount">
+            <span>@products.Count items in the shopping cart</span>
+        </div>
+        @foreach (var item in products)
+                {
+                    var product = item.Product;
+        <ul data-shopping-home-page-item="@item.ShoppingCartItemId">
+            <li>
+
+                @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
+                            {
+                <a href="@Url.Action("Detail","Products",new { id=product.Id })">
+                    <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+                </a>
+                            }
+
+                <a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a>
+                <span>@item.Quantity x @product.Price.CurrencySign()</span>
+                <div class="clearfix"></div>
+            </li>
+        </ul>
+                }
+        <div class="cart-buttons button">
+            <a href="@Url.Action("ShoppingCart","Payment")" class="view-cart"><span data-hover="View Cart"><span>View Cart</span></span></a>
+            <a href="@Url.Action("CheckoutBillingDetails","Payment")" class="checkout"><span data-hover="Checkout">Checkout</span></a>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+
+}
