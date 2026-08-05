@@ -1,0 +1,23 @@
+@model EImece.Web.Models.PaymentResultViewModel
+@{
+    ViewData["Title"] = Model.Success ? "Thank you" : "Payment result";
+}
+
+<div class="container px-3 py-4">
+    <div class="eimece-shell-card">
+        <h1 class="h3 mb-3">@(Model.Success ? "Thank you for your order" : "Payment result")</h1>
+        <p class="mb-2">@Model.Message</p>
+        @if (!string.IsNullOrWhiteSpace(Model.OrderGuid))
+        {
+            <p class="small text-muted mb-1">Order: @Model.OrderGuid</p>
+        }
+        @if (Model.RetrieveResult is not null)
+        {
+            <p class="small text-muted mb-1">PaymentId: @Model.RetrieveResult.PaymentId</p>
+            <p class="small text-muted mb-1">Status: @Model.RetrieveResult.PaymentStatus</p>
+            <p class="small text-muted mb-3">Conversation: @Model.RetrieveResult.ConversationId</p>
+        }
+        <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Home</a>
+        <a class="btn btn-outline-secondary" asp-action="Checkout">Checkout</a>
+    </div>
+</div>

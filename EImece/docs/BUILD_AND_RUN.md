@@ -2,6 +2,8 @@
 
 This document describes how to build the EImece solution (the C# equivalent of `mvn clean install`), run it locally or on IIS, and verify that everything is working.
 
+> **ASP.NET Core 8 host:** For `EImece.Web` / `EImece.Domain.Core`, use `scripts/build-core.sh`, `scripts/verify-core.sh`, and `docs/DEPLOYMENT.md`. The sections below remain the guide for the legacy MVC5 app.
+
 ## Solution overview
 
 | Project | Type | Purpose |

@@ -1,0 +1,27 @@
+@using Resources
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] ?? Resource.MyAccount) · EImece</title>
+    <link rel="stylesheet" href="~/Content/mstore/css/vendor.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/mstore/css/theme.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/eimece-core.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="navbar navbar-light bg-light border-bottom px-3">
+        <a class="navbar-brand font-weight-bold" asp-area="" asp-controller="Home" asp-action="Index">EImece</a>
+        <span class="navbar-text">@Resource.MyAccount</span>
+        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="mb-0">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+        </form>
+    </header>
+    <main class="container py-4">
+        @RenderBody()
+    </main>
+    <script src="~/Content/mstore/js/vendor.min.js" asp-append-version="true"></script>
+    <script src="~/Scripts/jquery-3.5.1.min.js" asp-append-version="true"></script>
+</body>
+</html>

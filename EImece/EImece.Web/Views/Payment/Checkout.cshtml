@@ -1,0 +1,44 @@
+@model EImece.Web.Models.PaymentCheckoutViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container px-3 py-4">
+    <h1 class="h3 mb-3">@Model.Title</h1>
+    <div class="eimece-shell-card mb-3">
+        <p class="mb-2">@Model.Notice</p>
+        <p class="small text-muted mb-0">
+            Iyzico: @(Model.IsIyzicoConfigured ? "configured" : "not configured") · @Model.IyzicoBaseUrl
+        </p>
+    </div>
+
+    <div class="eimece-shell-card mb-3">
+        <h2 class="h5">Demo basket</h2>
+        <ul class="mb-3">
+            @foreach (var item in Model.BasketItems)
+            {
+                <li>@item.Name — @item.Price.ToString("N2") TRY</li>
+            }
+        </ul>
+        <form asp-action="PlaceOrder" method="post">
+            @Html.AntiForgeryToken()
+            <button class="btn btn-primary" type="submit" disabled="@(!Model.IsIyzicoConfigured)">
+                Place order (Iyzico Checkout Form)
+            </button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Cart</a>
+        </form>
+    </div>
+
+    @if (Model.InitializeResult?.Success == true && !string.IsNullOrWhiteSpace(Model.InitializeResult.CheckoutFormContent))
+    {
+        <div class="eimece-shell-card">
+            <h2 class="h5 mb-3">Complete payment</h2>
+            <p class="small text-muted">Order @Model.OrderGuid · token ready</p>
+            @Html.Raw(Model.InitializeResult.CheckoutFormContent)
+        </div>
+    }
+    else if (Model.InitializeResult is { Success: false })
+    {
+        <div class="alert alert-warning">@Model.InitializeResult.ErrorMessage</div>
+    }
+</div>
