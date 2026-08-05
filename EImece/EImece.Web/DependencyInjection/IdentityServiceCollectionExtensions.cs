@@ -56,6 +56,8 @@ public static class IdentityServiceCollectionExtensions
             options.Cookie.Name = "EImece.Auth";
             options.Cookie.HttpOnly = true;
             options.Cookie.SameSite = SameSiteMode.Lax;
+            // SameAsRequest → Secure when HTTPS (reverse proxy must forward X-Forwarded-Proto).
+            options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             options.Events = new CookieAuthenticationEvents
             {
                 OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync

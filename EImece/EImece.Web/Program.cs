@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.IO.Compression;
 using EImece.Domain.Core.DependencyInjection;
 using EImece.Domain.Core.Media;
 using EImece.Web.DependencyInjection;
@@ -6,13 +7,15 @@ using EImece.Web.Infrastructure.Routing;
 using EImece.Web.Infrastructure.StaticFiles;
 using EImece.Web.Middleware;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using NLog;
 using NLog.Web;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Info("EImece.Web starting (Phase 8 integrations)");
+logger.Info("EImece.Web starting (Phase 9 testing/optimization/deployment)");
 
 try
 {
@@ -34,6 +37,30 @@ try
     builder.Services.AddDataProtection()
         .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
         .SetApplicationName("EImece.Web");
+
+    // Reverse-proxy awareness (nginx / IIS / ARR / Traefik).
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        // Operators should restrict KnownProxies/Networks in hardened environments.
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
+
+    builder.Services.AddResponseCompression(options =>
+    {
+        options.EnableForHttps = true;
+        options.Providers.Add<BrotliCompressionProvider>();
+        options.Providers.Add<GzipCompressionProvider>();
+        options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        [
+            "application/json",
+            "image/svg+xml",
+            "application/javascript"
+        ]);
+    });
+    builder.Services.Configure<BrotliCompressionProviderOptions>(o => o.Level = CompressionLevel.Fastest);
+    builder.Services.Configure<GzipCompressionProviderOptions>(o => o.Level = CompressionLevel.Fastest);
 
     // SEO: lowercase URLs + trailing slash (legacy RouteConfig parity).
     builder.Services.Configure<RouteOptions>(options =>
@@ -69,8 +96,18 @@ try
         options.IdleTimeout = TimeSpan.FromMinutes(30);
         options.Cookie.HttpOnly = true;
         options.Cookie.IsEssential = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+        options.Cookie.SameSite = SameSiteMode.Lax;
     });
     builder.Services.AddResponseCaching();
+
+    if (!builder.Environment.IsDevelopment())
+    {
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
+    }
 
     var defaultCulture = builder.Configuration["EImece:ApplicationLanguages"]?.Split(',')[0].Trim() ?? "tr-TR";
     var supportedCultures = new[] { new CultureInfo(defaultCulture), new CultureInfo("en-US") };
@@ -91,12 +128,15 @@ try
     // Ensure media folders exist (legacy ~/media/images + tempFiles).
     app.Services.GetRequiredService<IMediaFileService>().EnsureDirectories();
 
+    app.UseForwardedHeaders();
+
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Home/Error");
         app.UseHsts();
     }
 
+    app.UseResponseCompression();
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     // Legacy mstore / admin theme assets from ../EImece/Content and ../EImece/Scripts.
@@ -134,5 +174,5 @@ finally
     LogManager.Shutdown();
 }
 
-// Expose entry assembly for integration tests in later phases.
+// Expose entry assembly for integration tests.
 public partial class Program;

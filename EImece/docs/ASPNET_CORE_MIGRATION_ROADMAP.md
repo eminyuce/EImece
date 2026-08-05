@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 8 complete (integrations: MailKit, SkiaSharp images, Iyzico Checkout Form)  
+**Status:** Phase 9 complete (testing, optimization, deployment guidance)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -318,13 +318,22 @@ EImece.sln
 - reCAPTCHA server validation filter (options already present).  
 - Identity `IEmailSender` UI bridge for forgot-password emails.
 
-### Phase 9 — Testing, optimization, deployment
+### Phase 9 — Testing, optimization, deployment ✅ (implemented)
 
-- Functional verification checklist (catalog → cart → checkout → admin).  
-- Performance (EF queries, image cache, response compression).  
-- Security review (secrets, cookies, CSRF, headers).  
-- Deployment guidance (Kestrel + reverse proxy; Windows/Linux).  
-- Final cleanup of legacy System.Web artifacts.
+**Delivered**
+
+- `EImece.Web.Tests` (xUnit + `WebApplicationFactory`) smoke: health, images, captcha, home, checkout, email sink, headers.  
+- `scripts/verify-core.sh` — build + test (optional curl via `VERIFY_CORE_CURL=1`).  
+- Response compression (Brotli/Gzip) + forwarded headers for reverse proxies.  
+- Cookie `SecurePolicy` hardening (Always outside Development for auth cookie).  
+- Docs: `DEPLOYMENT.md`, `SECURITY_CHECKLIST.md`, `FUNCTIONAL_VERIFICATION.md`.  
+- Optional `EImece.Web/Dockerfile`; `UserSecretsId` on Web project.
+
+**Deferred / intentional**
+
+- Full end-to-end commerce against production SQL + live Iyzico (manual checklist only).  
+- Deleting legacy MVC5 / System.Web projects — frozen until cutover.  
+- CSP / Permissions-Policy beyond legacy header parity.
 
 ---
 
@@ -367,18 +376,21 @@ Phase 1 is documentation-only. Verify:
 
 ---
 
-## 10. Phase 2–3 verification (Debug)
+## 10. Core verification (Debug)
 
 ```bash
-./scripts/build-core.sh
+./scripts/verify-core.sh
+# or: ./scripts/build-core.sh && dotnet test EImece.Web.Tests/EImece.Web.Tests.csproj -c Debug
 dotnet run --project EImece.Web/EImece.Web.csproj -c Debug --launch-profile EImece.Web
 # http://localhost:5080/health
 ```
 
-Expected health payload includes `orm: Entity Framework Core 8` and `database` status (`UP` / `DOWN` / `UNAVAILABLE`).
+Expected health payload includes `orm: Entity Framework Core 8`, `database` status, and Phase 8+ `integrations`.
+
+See also: `docs/DEPLOYMENT.md`, `docs/SECURITY_CHECKLIST.md`, `docs/FUNCTIONAL_VERIFICATION.md`.
 
 ## 11. Approval gate
 
-**Phases 1–8 complete.** Do not begin Phase 9 (Testing, optimization, deployment) until approved.
+**Phases 1–9 complete** for the parallel ASP.NET Core host foundation.
 
-Reply with approval to proceed to **Phase 9 — Testing, optimization, deployment**.
+Remaining work is product cutover (full view/service port, staging e2e, retire MVC5) — track outside the numbered migration phases or as follow-up issues.

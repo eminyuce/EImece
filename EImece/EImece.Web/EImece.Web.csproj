@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>EImece.Web</RootNamespace>
     <AssemblyName>EImece.Web</AssemblyName>
+    <UserSecretsId>eimece-web-core-8</UserSecretsId>
     <!-- Parallel ASP.NET Core 8 host. Legacy MVC5 project remains EImece/EImece.csproj. -->
   </PropertyGroup>
 
