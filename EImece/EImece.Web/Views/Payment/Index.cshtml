@@ -1,0 +1,14 @@
+@using Resources
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<div class="container px-3 py-4">
+    <h1 class="h3 mb-3">Cart</h1>
+    <div class="eimece-shell-card">
+        <p class="mb-2">Shopping cart presentation shell.</p>
+        <p class="text-muted mb-3">Checkout and Iyzico payment wiring remain Phase 8. Route and layout are ready.</p>
+        <a class="btn btn-outline-primary" asp-controller="Products" asp-action="SearchProducts">@Resource.Products</a>
+        <a class="btn btn-primary" asp-action="Checkout">Checkout</a>
+    </div>
+</div>

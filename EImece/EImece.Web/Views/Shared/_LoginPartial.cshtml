@@ -1,0 +1,14 @@
+@using Resources
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <a class="text-light font-size-sm opacity-75" asp-area="Customers" asp-controller="Home" asp-action="Index">@Resource.MyAccount</a>
+    <span class="text-light opacity-50 mx-1">|</span>
+    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-link text-light font-size-sm opacity-75 p-0 align-baseline">Logout</button>
+    </form>
+}
+else
+{
+    <a class="text-light font-size-sm opacity-75" asp-controller="Account" asp-action="Login">@Resource.SignInOrUp</a>
+}
