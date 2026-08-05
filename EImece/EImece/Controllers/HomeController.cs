@@ -354,21 +354,6 @@ namespace EImece.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Language_OLD(string id)
-        {
-            HomeLogger.Info($"Entering Language_OLD action with id: {id}");
-            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
-            String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
-            HomeLogger.Info($"Setting culture to: {cultureName}");
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-            CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
-            MemoryCacheProvider.ClearAll();
-            HomeLogger.Info("Language set, cookie created, and cache cleared.");
-            HomeLogger.Info("Redirecting to Index.");
-            return RedirectToAction("Index", "Home");
-        }
-
         public ActionResult OrderConfirmationEmail(int orderId = 1)
         {
             HomeLogger.Info($"Entering OrderConfirmationEmail with orderId: {orderId}");

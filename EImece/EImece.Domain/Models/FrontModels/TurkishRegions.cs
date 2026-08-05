@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
-    internal class TurkishRegions
-    {
-    }
-
     public class City
     {
         [JsonProperty("name")]

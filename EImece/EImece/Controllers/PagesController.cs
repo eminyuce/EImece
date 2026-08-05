@@ -19,12 +19,6 @@ namespace EImece.Controllers
         [Inject]
         public IMenuService MenuService { get; set; }
 
-        // GET: Pages
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public ActionResult Detail(String id = "")
         {

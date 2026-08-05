@@ -91,11 +91,6 @@ namespace EImece.Controllers
             return View(shoppingCart);
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [ChildActionOnly]
         public ActionResult HomePageShoppingCart()
         {
@@ -437,12 +432,6 @@ namespace EImece.Controllers
             return Json(html, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CheckoutDelivery()
-        {
-            ShoppingCartSession shoppingCart = GetShoppingCart();
-            return View(shoppingCart);
-        }
-
         public ActionResult CheckoutPaymentOrderReview()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();
@@ -654,11 +643,6 @@ namespace EImece.Controllers
             }
             ShoppingCartService.DeleteByOrderGuid(shoppingCart.OrderGuid);
             PaymentLogger.Info($"Deleted shopping cart with OrderGuid: {shoppingCart.OrderGuid}");
-        }
-
-        public ActionResult PaymentSuccess(RetrieveCheckoutFormRequest model)
-        {
-            return Content("PaymentSuccess is done");
         }
 
         public ActionResult BuyNow(String id)

@@ -23,11 +23,6 @@ namespace EImece.Controllers
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
-        // GET: ProductCategory
-        public ActionResult Index()
-        {
-            return View();
-        }
         public ActionResult GetProductCategoryDto(String id)
         {
             var productCategory = ProductCategoryService.GetProductCategoryDto(id.GetId());

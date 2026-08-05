@@ -1,7 +1,5 @@
 ﻿using EImece.Domain;
-using EImece.Domain.Helpers;
-using EImece.Domain.Models.FrontModels;
-using NLog; // Added for logging
+using NLog;
 using System.Net;
 using System.Web.Mvc;
 
@@ -33,14 +31,5 @@ namespace EImece.Controllers
             }
         }
 
-        public ActionResult RefreshIpAddress()
-        {
-            Logger.Info("Entering RefreshIpAddress action.");
-            Logger.Info($"Refreshing offline data from file: {OfflineFileData.OfflineFilePath}");
-            OfflineHelper.OfflineData = new OfflineFileData(Server.MapPath(OfflineFileData.OfflineFilePath));
-            Logger.Info("Offline data refreshed successfully.");
-            Logger.Info("Redirecting to Home Index.");
-            return RedirectToAction("Index", "Home");
-        }
     }
 }
