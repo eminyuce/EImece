@@ -64,7 +64,7 @@ public sealed class QuartzOptions
     public string HelloJobCron { get; set; } = "0 0 0/24 * * ?";
 }
 
-/// <summary>Stub for Phase 8 email migration (MailKit). Not wired to a sender yet.</summary>
+/// <summary>SMTP settings for MailKitEmailSender (Phase 8). Empty Host → log-only sink.</summary>
 public sealed class SmtpOptions
 {
     public const string SectionName = "Smtp";
@@ -77,4 +77,10 @@ public sealed class SmtpOptions
     public bool EnableSsl { get; set; } = true;
     public string FromAddress { get; set; } = string.Empty;
     public string FromDisplayName { get; set; } = "EImece";
+
+    public bool CanSend =>
+        IsEnabled
+        && !string.IsNullOrWhiteSpace(Host)
+        && !string.IsNullOrWhiteSpace(FromAddress);
 }
+

@@ -1,8 +1,11 @@
 using EImece.Domain.Core.Caching;
+using EImece.Domain.Core.Captcha;
 using EImece.Domain.Core.Configuration;
+using EImece.Domain.Core.Email;
 using EImece.Domain.Core.Hosting;
 using EImece.Domain.Core.Http;
 using EImece.Domain.Core.Media;
+using EImece.Domain.Core.Payments;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
@@ -12,8 +15,7 @@ namespace EImece.Domain.Core.DependencyInjection;
 public static class InfrastructureServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers Phase 4 infrastructure: Options, cache, media, resilient HttpClient, scheduler hosted service.
-    /// Logging (NLog) is configured on the Web host.
+    /// Registers infrastructure: Options, cache, media/images, email, Iyzico, HttpClient, scheduler.
     /// </summary>
     public static IServiceCollection AddEImeceInfrastructure(
         this IServiceCollection services,
@@ -26,6 +28,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.Configure<HttpClientResilienceOptions>(configuration.GetSection(HttpClientResilienceOptions.SectionName));
         services.Configure<QuartzOptions>(configuration.GetSection(QuartzOptions.SectionName));
         services.Configure<SmtpOptions>(configuration.GetSection(SmtpOptions.SectionName));
+        services.Configure<IyzicoOptions>(configuration.GetSection(IyzicoOptions.SectionName));
 
         // Keep Quartz flag on EImece section in sync if present (Phase 2 key).
         var legacyQuartz = configuration.GetValue<bool?>("EImece:QuartzSchedulerIsEnabled");
@@ -37,6 +40,11 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddMemoryCache();
         services.AddSingleton<IEimeceCacheProvider, MemoryCacheProvider>();
         services.AddSingleton<IMediaFileService, MediaFileService>();
+        services.AddSingleton<IImageProcessingService, ImageProcessingService>();
+        services.AddSingleton<ICaptchaChallengeService, CaptchaChallengeService>();
+        services.AddSingleton<IEmailTemplateRenderer, FluidEmailTemplateRenderer>();
+        services.AddSingleton<IEmailSender, MailKitEmailSender>();
+        services.AddScoped<IIyzicoPaymentService, IyzicoPaymentService>();
 
         var httpOptions = configuration.GetSection(HttpClientResilienceOptions.SectionName).Get<HttpClientResilienceOptions>()
             ?? new HttpClientResilienceOptions();

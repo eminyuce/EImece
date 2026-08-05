@@ -20,13 +20,3 @@ public sealed class EImeceOptions
     public bool BypassAdminAuth { get; set; }
     public int DatabaseCommandTimeoutSeconds { get; set; } = 120;
 }
-
-public sealed class IyzicoOptions
-{
-    public const string SectionName = "Iyzico";
-
-    public string BaseUrl { get; set; } = "https://sandbox-api.iyzipay.com";
-    public string ApiKey { get; set; } = string.Empty;
-    public string SecretKey { get; set; } = string.Empty;
-    public string EnabledInstallments { get; set; } = "1,2,4,6,9";
-}

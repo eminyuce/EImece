@@ -52,6 +52,23 @@ public sealed class MediaFileService : IMediaFileService
             : File.OpenRead(full);
     }
 
+    public string? GetFullPath(string relativePath) => ResolveSafe(relativePath);
+
+    public async Task WriteAsync(string relativePath, byte[] content, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(content);
+        EnsureDirectories();
+        var full = ResolveSafe(relativePath)
+            ?? throw new InvalidOperationException("Invalid media path.");
+        var dir = Path.GetDirectoryName(full);
+        if (!string.IsNullOrEmpty(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+
+        await File.WriteAllBytesAsync(full, content, cancellationToken).ConfigureAwait(false);
+    }
+
     public IEnumerable<string> ListFiles(string relativeDirectory, string searchPattern = "*")
     {
         var full = ResolveSafe(relativeDirectory);

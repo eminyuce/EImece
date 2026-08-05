@@ -6,14 +6,13 @@ namespace EImece.Web.DependencyInjection;
 /// <summary>
 /// Composition-root helpers for the ASP.NET Core host.
 /// Preserves Microsoft.Extensions.DependencyInjection (no third-party IoC).
-/// Domain/repository registrations arrive in later phases.
+/// Iyzico/Smtp/Media Options are registered in AddEImeceInfrastructure (Domain.Core).
 /// </summary>
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddEImeceCore(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<EImeceOptions>(configuration.GetSection(EImeceOptions.SectionName));
-        services.Configure<IyzicoOptions>(configuration.GetSection(IyzicoOptions.SectionName));
 
         // Validate options early in Development to catch missing config.
         services.AddSingleton<IValidateOptions<EImeceOptions>, ValidateEImeceOptions>();

@@ -11,6 +11,8 @@ public interface IMediaFileService
     string UrlBase { get; }
     bool Exists(string relativePath);
     Stream? OpenRead(string relativePath);
+    string? GetFullPath(string relativePath);
+    Task WriteAsync(string relativePath, byte[] content, CancellationToken cancellationToken = default);
     void EnsureDirectories();
     IEnumerable<string> ListFiles(string relativeDirectory, string searchPattern = "*");
 }

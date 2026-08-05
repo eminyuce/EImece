@@ -3,6 +3,7 @@ using EImece.Domain.Core.Configuration;
 using EImece.Domain.Core.Data;
 using EImece.Domain.Core.Entities;
 using EImece.Domain.Core.Media;
+using EImece.Domain.Core.Payments;
 using EImece.Domain.Core.Repositories;
 using EImece.Web.Configuration;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace EImece.Web.Controllers;
 
 /// <summary>
 /// Parity with legacy GET /health and GET /healthz endpoints.
-/// Phase 4 adds media/cache/scheduler probes (host stays UP if DB is offline).
+/// Phase 8 adds email/Iyzico/image integration probes (host stays UP if DB is offline).
 /// </summary>
 [ApiController]
 [Route("[controller]")]
@@ -21,30 +22,36 @@ public sealed class HealthController : ControllerBase
     private readonly EImeceOptions _options;
     private readonly QuartzOptions _quartz;
     private readonly CacheOptions _cacheOptions;
+    private readonly SmtpOptions _smtp;
     private readonly IHostEnvironment _environment;
     private readonly EImeceDbContext _db;
     private readonly IReadRepository<Product> _products;
     private readonly IMediaFileService _media;
     private readonly IEimeceCacheProvider _cache;
+    private readonly IIyzicoPaymentService _iyzico;
 
     public HealthController(
         IOptions<EImeceOptions> options,
         IOptions<QuartzOptions> quartz,
         IOptions<CacheOptions> cacheOptions,
+        IOptions<SmtpOptions> smtp,
         IHostEnvironment environment,
         EImeceDbContext db,
         IReadRepository<Product> products,
         IMediaFileService media,
-        IEimeceCacheProvider cache)
+        IEimeceCacheProvider cache,
+        IIyzicoPaymentService iyzico)
     {
         _options = options.Value;
         _quartz = quartz.Value;
         _cacheOptions = cacheOptions.Value;
+        _smtp = smtp.Value;
         _environment = environment;
         _db = db;
         _products = products;
         _media = media;
         _cache = cache;
+        _iyzico = iyzico;
     }
 
     [HttpGet("/health")]
@@ -99,6 +106,26 @@ public sealed class HealthController : ControllerBase
             Scheduler = new
             {
                 Enabled = _quartz.IsEnabled
+            },
+            Integrations = new
+            {
+                Smtp = new
+                {
+                    Enabled = _smtp.IsEnabled,
+                    CanSend = _smtp.CanSend,
+                    Host = string.IsNullOrWhiteSpace(_smtp.Host) ? "(log sink)" : _smtp.Host,
+                    Engine = "MailKit + Fluid"
+                },
+                Iyzico = new
+                {
+                    Configured = _iyzico.IsConfigured,
+                    BaseUrl = _iyzico.BaseUrl
+                },
+                Images = new
+                {
+                    Engine = "SkiaSharp",
+                    ResizeRoute = "/images/{imageSize}/{id}"
+                }
             },
             Authentication = new
             {

@@ -12,7 +12,7 @@ using NLog;
 using NLog.Web;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Info("EImece.Web starting (Phase 7 presentation layer)");
+logger.Info("EImece.Web starting (Phase 8 integrations)");
 
 try
 {
@@ -62,6 +62,16 @@ try
             };
         });
 
+    builder.Services.AddDistributedMemoryCache();
+    builder.Services.AddSession(options =>
+    {
+        options.Cookie.Name = ".EImece.Session";
+        options.IdleTimeout = TimeSpan.FromMinutes(30);
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+    });
+    builder.Services.AddResponseCaching();
+
     var defaultCulture = builder.Configuration["EImece:ApplicationLanguages"]?.Split(',')[0].Trim() ?? "tr-TR";
     var supportedCultures = new[] { new CultureInfo(defaultCulture), new CultureInfo("en-US") };
     builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -91,11 +101,13 @@ try
     app.UseStaticFiles();
     // Legacy mstore / admin theme assets from ../EImece/Content and ../EImece/Scripts.
     app.UseLegacyThemeStaticFiles(app.Environment);
+    app.UseResponseCaching();
     app.UseRequestLocalization();
     app.UseMiddleware<SecurityHeadersMiddleware>();
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<RequestLoggingMiddleware>();
     app.UseRouting();
+    app.UseSession();
     app.UseAuthentication();
     app.UseMiddleware<BypassAdminAuthMiddleware>();
     app.UseAuthorization();

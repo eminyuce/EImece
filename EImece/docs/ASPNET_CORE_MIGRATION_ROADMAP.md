@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 7 complete (presentation: Razor layouts, mstore/admin static mapping, key shells)  
+**Status:** Phase 8 complete (integrations: MailKit, SkiaSharp images, Iyzico Checkout Form)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -299,13 +299,24 @@ EImece.sln
 - Modern bundling replacement for BundleConfig (assets served unbundled from legacy folders).  
 - Image pipeline UI (Phase 8).
 
-### Phase 8 — Integrations
+### Phase 8 — Integrations ✅ (implemented)
 
-- Iyzico payment flow end-to-end.  
-- Email (MailKit + new template engine).  
-- Image upload/resize pipeline (SkiaSharp).  
-- Background jobs if re-enabled.  
-- Captcha / WebPush / Excel (NPOI) as applicable.
+**Delivered**
+
+- Packages: `MailKit`, `Fluid.Core`, `SkiaSharp` (+ Linux native), `Iyzipay`.  
+- `MailKitEmailSender` + `FluidEmailTemplateRenderer` (empty SMTP host → log-only Debug sink).  
+- `ImageProcessingService` (resize / placeholder / captcha / upload) + live `ImagesController` routes.  
+- `IyzicoPaymentService` Checkout Form initialize/retrieve; `Payment/Checkout` + `PlaceOrder` + `PaymentResult` with demo basket.  
+- Session-backed legacy arithmetic captcha (`/images/getcaptcha`).  
+- `/health` integrations probe + Dev-only `POST /api/integrations/email/test`.  
+- Scheduler remains disabled by default (`SchedulerHostedService` HelloJob stub).
+
+**Deferred**
+
+- Full cart session / order persistence / guest checkout parity with legacy PaymentController.  
+- Quartz.NET job suite, WebPush, NPOI Excel admin import/export.  
+- reCAPTCHA server validation filter (options already present).  
+- Identity `IEmailSender` UI bridge for forgot-password emails.
 
 ### Phase 9 — Testing, optimization, deployment
 
@@ -368,6 +379,6 @@ Expected health payload includes `orm: Entity Framework Core 8` and `database` s
 
 ## 11. Approval gate
 
-**Phases 1–7 complete.** Do not begin Phase 8 (Integrations) until approved.
+**Phases 1–8 complete.** Do not begin Phase 9 (Testing, optimization, deployment) until approved.
 
-Reply with approval to proceed to **Phase 8 — Integrations** (Iyzico, MailKit, SkiaSharp images, background jobs).
+Reply with approval to proceed to **Phase 9 — Testing, optimization, deployment**.
