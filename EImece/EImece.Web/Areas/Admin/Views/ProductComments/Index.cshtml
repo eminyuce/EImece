@@ -1,0 +1,49 @@
+@model EImece.Web.Models.ProductCommentListViewModel
+@{
+    ViewData["Title"] = $"Yorumlar — {Model.ProductName}";
+}
+<h1 class="h4 mb-3">Ürün Yorumları: @Model.ProductName</h1>
+<p class="text-muted">ProductId: @Model.ProductId · <a asp-area="Admin" asp-controller="Products" asp-action="SaveOrEdit" asp-route-id="@Model.ProductId">Ürüne dön</a></p>
+
+@if (Model.Comments.Count == 0)
+{
+    <p class="text-muted">Yorum yok.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Konu</th>
+                    <th>Yorum</th>
+                    <th>Email</th>
+                    <th>Puan</th>
+                    <th>Tarih</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Comments)
+                {
+                    <tr>
+                        <td>@c.Id</td>
+                        <td>@c.Subject</td>
+                        <td>@c.Review</td>
+                        <td>@c.Email</td>
+                        <td>@c.Rating</td>
+                        <td>@c.CreatedDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <form method="post" asp-action="DeleteConfirmed" onsubmit="return confirm('Silinsin mi?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@c.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

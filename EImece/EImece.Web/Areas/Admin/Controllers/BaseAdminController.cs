@@ -1,6 +1,8 @@
 using EImece.Domain.Core.Identity;
 using EImece.Web.Configuration;
+using EImece.Web.Helpers;
 using EImece.Web.Infrastructure.Routing;
+using EImece.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +11,6 @@ using Microsoft.Extensions.Options;
 
 namespace EImece.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Admin base — role policy parity with legacy [AuthorizeRoles(Admin, NormalUser)].
-/// Fat [Inject] service graph deferred until Domain.Core services exist.
-/// </summary>
 [Area("Admin")]
 [Authorize(Policy = AuthPolicies.AdminOrEditor)]
 public abstract class BaseAdminController : Controller
@@ -27,7 +25,6 @@ public abstract class BaseAdminController : Controller
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         ViewData["AdminUser"] = User.Identity?.Name;
-        ViewData["Phase"] = "Phase 6 — Application layer";
         base.OnActionExecuting(context);
     }
 
@@ -54,5 +51,47 @@ public abstract class BaseAdminController : Controller
         ViewData["Title"] = title;
         ViewData["Message"] = message;
         return View("~/Areas/Admin/Views/Shared/Placeholder.cshtml");
+    }
+
+    protected IActionResult EntityList(AdminListViewModel model)
+        => View("~/Areas/Admin/Views/Shared/EntityList.cshtml", model);
+
+    protected AdminGridQuery GridQuery(string? search, int page = 1, int pageSize = 25, string? sort = null, string? sortDir = null)
+        => AdminGridQuery.From(search, page, pageSize, sort, sortDir);
+
+    protected static AdminListViewModel BuildList(
+        string title,
+        string controllerName,
+        IReadOnlyList<string> columns,
+        IEnumerable<IReadOnlyList<string?>> rows,
+        string? search = null,
+        string? notice = null,
+        bool showCreate = true,
+        string editAction = "SaveOrEdit",
+        int totalCount = -1,
+        AdminGridQuery? grid = null,
+        string? ajaxDeleteAction = null,
+        bool showExport = false)
+    {
+        var rowList = rows.ToList();
+        grid ??= AdminGridQuery.From(search);
+        return new AdminListViewModel
+        {
+            Title = title,
+            ControllerName = controllerName,
+            Columns = columns,
+            Rows = rowList,
+            TotalCount = totalCount >= 0 ? totalCount : rowList.Count,
+            Search = search ?? grid.Search,
+            Notice = notice,
+            ShowCreateLink = showCreate,
+            EditAction = editAction,
+            Page = grid.Page,
+            PageSize = grid.PageSize,
+            Sort = grid.Sort,
+            SortDir = grid.SortDir,
+            AjaxDeleteAction = ajaxDeleteAction,
+            ShowExportLink = showExport
+        };
     }
 }

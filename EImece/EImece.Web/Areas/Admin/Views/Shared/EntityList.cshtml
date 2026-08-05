@@ -1,0 +1,318 @@
+@model EImece.Web.Models.AdminListViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    var page = Model.Page < 1 ? 1 : Model.Page;
+    var totalPages = Model.TotalPages;
+    var gridName = Model.ResolvedGridName;
+    var bulk = Model.EnableBulkOps;
+    int ColIndex(string name) => Model.Columns.ToList().FindIndex(c => string.Equals(c, name, StringComparison.OrdinalIgnoreCase));
+    var positionCol = ColIndex("Position");
+    if (positionCol < 0) positionCol = ColIndex("Sırası");
+    var activeCol = ColIndex("IsActive");
+    if (activeCol < 0) activeCol = ColIndex("Aktif");
+    var mainPageCol = ColIndex("MainPage");
+    if (mainPageCol < 0) mainPageCol = ColIndex("Vitrin");
+
+    string SortUrl(string col)
+    {
+        var nextDir = string.Equals(Model.Sort, col, StringComparison.OrdinalIgnoreCase) && Model.SortDir == "asc"
+            ? "desc" : "asc";
+        return Url.Action("Index", Model.ControllerName, new
+        {
+            area = "Admin",
+            search = Model.Search,
+            page = 1,
+            pageSize = Model.PageSize,
+            sort = col,
+            sortDir = nextDir
+        }) ?? "#";
+    }
+    string PageUrl(int p) => Url.Action("Index", Model.ControllerName, new
+    {
+        area = "Admin",
+        search = Model.Search,
+        page = p,
+        pageSize = Model.PageSize,
+        sort = Model.Sort,
+        sortDir = Model.SortDir
+    }) ?? "#";
+}
+@if (string.Equals(Model.ControllerName, "Media", StringComparison.OrdinalIgnoreCase))
+{
+    <div class="eimece-shell-card mb-3">
+        <h2 class="h6">Dosya yükle</h2>
+        <form method="post" asp-area="Admin" asp-controller="Media" asp-action="Upload" enctype="multipart/form-data" class="row g-2 align-items-end">
+            @Html.AntiForgeryToken()
+            <div class="col-md-8">
+                <input type="file" name="file" class="form-control form-control-sm" required />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-upload"></i> Yükle</button>
+            </div>
+        </form>
+    </div>
+}
+
+@if (bulk)
+{
+    <div class="panel panel-info admin-grid-ops card mb-3" data-gridname="@gridName">
+        <div class="card-body">
+            <div class="admin-grid-toolbar d-flex flex-wrap gap-2 align-items-center">
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-outline-secondary" id="SelectAll"><i class="bi bi-check2-square"></i> Hepsi seç</button>
+                    <button type="button" class="btn btn-outline-secondary" id="DeselectAll"><i class="bi bi-square"></i> Seçilenleri Kaldır</button>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" id="DeleteAll"><i class="bi bi-trash"></i> Seçilen Kayıtları Sil</button>
+                <select class="form-select form-select-sm" style="width:auto" name="ItemStateSelection" id="ItemStateSelection">
+                    <option value="State">Yayında mı</option>
+                    @if (mainPageCol >= 0)
+                    {
+                        <option value="MainPage">Vitrinde mi?</option>
+                    }
+                </select>
+                <button type="button" class="btn btn-success btn-sm" id="SetStateOnAll"><i class="bi bi-check-lg"></i> Seçilenleri Yayınla</button>
+                <button type="button" class="btn btn-warning btn-sm" id="SetStateOffAll"><i class="bi bi-x-lg"></i> Seçilenleri Yayından Kaldır</button>
+                @if (positionCol >= 0)
+                {
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="OrderingAll"><i class="bi bi-sort-numeric-down"></i> Sıra Güncelle</button>
+                }
+            </div>
+            <div id="ErrorMessagePanel" style="display:none;" class="alert alert-danger mt-2 mb-0">
+                <span id="ErrorMessage"></span>
+            </div>
+        </div>
+    </div>
+    <span style="display:none;" id="AdminMultiSelectDeleteConfirmMessage">Seçilen kayıtlar silinsin / pasifleştirilsin mi?</span>
+}
+
+<div class="admin-datagrid" data-admin-grid data-gridname="@(gridName ?? "")">
+    <div class="admin-datagrid-toolbar">
+        <div class="toolbar-left">
+            <div>
+                <h1 class="h5 mb-0">@Model.Title</h1>
+                <span class="small text-muted">@Model.TotalCount kayıt</span>
+            </div>
+            @if (Model.ShowCreateLink)
+            {
+                <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="@Model.ControllerName" asp-action="@Model.CreateAction">
+                    <i class="bi bi-plus-lg"></i> Yeni Ekle
+                </a>
+            }
+            @if (Model.ShowExportLink)
+            {
+                <a class="btn btn-outline-success btn-sm"
+                   asp-area="Admin" asp-controller="@Model.ControllerName" asp-action="@Model.ExportAction">
+                    <i class="bi bi-file-earmark-excel"></i> Excel
+                </a>
+            }
+        </div>
+        <div class="toolbar-right">
+            <input type="search" class="form-control form-control-sm" style="width:9rem;"
+                   placeholder="Bu sayfada filtre…" data-grid-client-filter />
+            <form method="get" class="d-flex gap-1 align-items-center" asp-area="Admin" asp-controller="@Model.ControllerName" asp-action="Index">
+                <input type="hidden" name="page" value="1" />
+                <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                <input type="hidden" name="sort" value="@Model.Sort" />
+                <input type="hidden" name="sortDir" value="@Model.SortDir" />
+                <input type="hidden" id="controller" value="@Model.ControllerName" />
+                <input type="hidden" id="action" value="Index" />
+                <input class="form-control form-control-sm" style="min-width:10rem;" name="search" id="searchTxtInput" value="@Model.Search" placeholder="Sunucu araması…" />
+                <button class="btn btn-sm btn-outline-secondary" type="submit" id="SearchButton"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Notice))
+    {
+        <div class="alert alert-info m-3 mb-0">@Model.Notice</div>
+    }
+
+    @if (Model.Rows.Count == 0)
+    {
+        <div class="p-4 text-center text-muted">
+            <p class="mb-3">Kayıt bulunamadı.</p>
+            @if (Model.ShowCreateLink)
+            {
+                <a class="btn btn-primary" asp-area="Admin" asp-controller="@Model.ControllerName" asp-action="@Model.CreateAction">İlk kaydı ekle</a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-striped align-middle">
+                <thead>
+                    <tr>
+                        @if (bulk)
+                        {
+                            <th style="width:2.2rem;"></th>
+                        }
+                        <th>#</th>
+                        @for (var c = 0; c < Model.Columns.Count; c++)
+                        {
+                            var col = Model.Columns[c];
+                            var isSorted = string.Equals(Model.Sort, col, StringComparison.OrdinalIgnoreCase);
+                            <th>
+                                <a href="@SortUrl(col)">
+                                    @col
+                                    @if (isSorted)
+                                    {
+                                        <i class="bi @(Model.SortDir == "asc" ? "bi-caret-up-fill" : "bi-caret-down-fill")"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+                                    }
+                                </a>
+                            </th>
+                        }
+                        <th style="min-width:9rem;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var rowStart = (page - 1) * Model.PageSize;
+                    }
+                    @for (var i = 0; i < Model.Rows.Count; i++)
+                    {
+                        var row = Model.Rows[i];
+                        var id = row.Count > 0 ? row[0] : null;
+                        var activeText = Model.ShowActiveBadge && row.Count > 0 ? row[^1] : null;
+                        var inactive = string.Equals(activeText, "Hayır", StringComparison.OrdinalIgnoreCase)
+                                       || string.Equals(activeText, "No", StringComparison.OrdinalIgnoreCase)
+                                       || string.Equals(activeText, "False", StringComparison.OrdinalIgnoreCase);
+                        <tr data-grid-row class="@(inactive ? "grid-inactive" : null)">
+                            @if (bulk)
+                            {
+                                <td>
+                                    <input type="checkbox" class="form-check-input" name="checkboxGrid" gridkey-id="@id" value="@id" />
+                                </td>
+                            }
+                            <td><span class="badge text-bg-primary rounded-pill">@(rowStart + i + 1)</span></td>
+                            @for (var c = 0; c < row.Count; c++)
+                            {
+                                var cell = row[c];
+                                var isYesNo = cell == "Evet" || cell == "Hayır" || cell == "Yes" || cell == "No";
+                                var isActive = cell == "Evet" || cell == "Yes";
+                                <td>
+                                    @if (bulk && c == positionCol)
+                                    {
+                                        <input gridkey-id="@id" value="@cell" class="GridOrderingTextbox form-control form-control-sm" style="width:4rem" name="gridOrdering" type="number" />
+                                    }
+                                    else if (bulk && c == activeCol && isYesNo)
+                                    {
+                                        <span gridkey-id="@id" grid-data-value="@isActive.ToString().ToLowerInvariant()" name="spanState"
+                                              class="@(isActive ? "text-success" : "text-danger")">@(isActive ? "✓" : "✗")</span>
+                                        <span class="small text-muted ms-1">@cell</span>
+                                    }
+                                    else if (bulk && c == mainPageCol && isYesNo)
+                                    {
+                                        <span gridkey-id="@id" grid-data-value="@isActive.ToString().ToLowerInvariant()" name="spanMainPage"
+                                              class="@(isActive ? "text-success" : "text-danger")">@(isActive ? "✓" : "✗")</span>
+                                        <span class="small text-muted ms-1">@cell</span>
+                                    }
+                                    else if (Model.ShowActiveBadge && isYesNo && c == row.Count - 1 && activeCol < 0)
+                                    {
+                                        <span class="badge @(isActive ? "admin-badge-active" : "admin-badge-inactive")">@cell</span>
+                                    }
+                                    else
+                                    {
+                                        @cell
+                                    }
+                                </td>
+                            }
+                            <td class="text-nowrap admin-actions">
+                                @if (!string.IsNullOrEmpty(id))
+                                {
+                                    @if (Model.ShowEditButton)
+                                    {
+                                        <a class="btn btn-sm btn-outline-primary"
+                                           asp-area="Admin"
+                                           asp-controller="@Model.ControllerName"
+                                           asp-action="@Model.EditAction"
+                                           asp-route-id="@id"
+                                           title="Düzenle">
+                                            <i class="bi bi-pencil"></i> @(Model.EditAction == "Details" ? "Detay" : "Düzenle")
+                                        </a>
+                                    }
+                                    @if (Model.ShowDeleteButton && Model.EditAction != "Details")
+                                    {
+                                        <form method="post"
+                                              asp-area="Admin"
+                                              asp-controller="@Model.ControllerName"
+                                              asp-action="DeleteConfirmed"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Bu kaydı silmek / pasifleştirmek istediğinize emin misiniz?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil">
+                                                <i class="bi bi-trash"></i> Sil
+                                            </button>
+                                        </form>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="admin-datagrid-footer">
+            <div class="d-flex align-items-center gap-2">
+                <label class="small text-muted mb-0">Sayfa boyutu</label>
+                <select class="form-select form-select-sm" style="width:5rem;" data-grid-page-size>
+                    @foreach (var size in EImece.Web.Models.AdminListViewModel.PageSizeOptions)
+                    {
+                        if (size == Model.PageSize)
+                        {
+                            <option value="@size" selected>@size</option>
+                        }
+                        else
+                        {
+                            <option value="@size">@size</option>
+                        }
+                    }
+                </select>
+                <span class="small text-muted">
+                    Sayfa @(page) / @totalPages
+                </span>
+            </div>
+            <nav aria-label="Grid pager">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item @(page <= 1 ? "disabled" : null)">
+                        <a class="page-link" href="@PageUrl(Math.Max(1, page - 1))">Önceki</a>
+                    </li>
+                    @{
+                        var start = Math.Max(1, page - 2);
+                        var end = Math.Min(totalPages, page + 2);
+                    }
+                    @for (var p = start; p <= end; p++)
+                    {
+                        <li class="page-item @(p == page ? "active" : null)">
+                            <a class="page-link" href="@PageUrl(p)">@p</a>
+                        </li>
+                    }
+                    <li class="page-item @(page >= totalPages ? "disabled" : null)">
+                        <a class="page-link" href="@PageUrl(Math.Min(totalPages, page + 1))">Sonraki</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+@if (bulk)
+{
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="confirmMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="confirmOk">Tamam</button>
+                    <button type="button" class="btn btn-secondary" id="confirmCancel" data-bs-dismiss="modal">İptal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

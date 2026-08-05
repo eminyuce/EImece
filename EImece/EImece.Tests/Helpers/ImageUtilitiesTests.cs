@@ -10,6 +10,7 @@ using System.Linq;
 namespace EImece.Tests.Helpers
 {
     [TestClass]
+    [Ignore("Depends on external URLs and machine-specific paths; not part of legacy coverage suite.")]
     public class ImageUtilitiesTests
     {
         [TestMethod]

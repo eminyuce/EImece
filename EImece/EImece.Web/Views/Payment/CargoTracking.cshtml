@@ -1,0 +1,37 @@
+@model EImece.Web.Models.CargoTrackingViewModel
+@using Resources
+@{
+    ViewData["Title"] = "Kargo Takip";
+}
+<div class="container px-3 py-5">
+    @Html.AntiForgeryToken()
+    <h1 class="h3 mb-4">Kargo Takip</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="eimece-shell-card p-4">
+                <label class="form-label" for="TrackingNumberText">@Resource.OrderNumber</label>
+                <input type="text" id="TrackingNumberText" class="form-control mb-3" value="@Model.OrderNumber" placeholder="Sipariş numarası" />
+                <button type="button" id="TrackingNumberButton" class="btn btn-primary w-100">Sorgula</button>
+            </div>
+        </div>
+    </div>
+    <div id="trackingResult" class="mt-4"></div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('TrackingNumberButton')?.addEventListener('click', async function () {
+            const orderNumber = document.getElementById('TrackingNumberText')?.value;
+            if (!orderNumber) { alert('Sipariş numarası girin'); return; }
+            const form = new FormData();
+            form.append('orderNumber', orderNumber);
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+            if (token) form.append('__RequestVerificationToken', token);
+            const response = await fetch('@Url.Action("CargoTrackingResult")', {
+                method: 'POST',
+                body: form
+            });
+            document.getElementById('trackingResult').innerHTML = await response.text();
+        });
+    </script>
+}

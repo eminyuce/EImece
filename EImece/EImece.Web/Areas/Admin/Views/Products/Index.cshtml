@@ -1,0 +1,280 @@
+@model EImece.Web.Models.ProductsAdminViewModel
+@{
+    ViewData["Title"] = "Ürünler";
+    ViewBag.SelectedCategoryId = Model.CategoryId;
+    ViewBag.BrandId = Model.BrandId;
+    ViewBag.Search = Model.Search;
+    var rowStart = (Model.Page - 1) * Model.PageSize;
+    string PageUrl(int p) => Url.Action("Index", new
+    {
+        id = Model.CategoryId,
+        brandId = Model.BrandId,
+        search = Model.Search,
+        page = p,
+        pageSize = Model.PageSize,
+        sort = Model.Sort,
+        sortDir = Model.SortDir
+    })!;
+}
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h1 class="h4 mb-0">Ürün Sayfası</h1>
+    <span class="badge text-bg-secondary">@Model.TotalCount kayıt</span>
+</div>
+<hr class="mt-0" />
+
+<div class="row g-3">
+    <div class="col-lg-2">
+        <partial name="_CategoryTree" model="Model.CategoryTree" />
+    </div>
+    <div class="col-lg-10">
+        @if (!string.IsNullOrEmpty(Model.SelectedCategoryName))
+        {
+            <div class="mb-2">
+                <span>Seçili kategori:</span>
+                <strong class="text-danger">@Model.SelectedCategoryName</strong>
+                <a asp-action="Index" asp-route-id="0" asp-route-brandId="@Model.BrandId" class="ms-2" title="Filtreyi kaldır">
+                    <i class="bi bi-x-circle"></i>
+                </a>
+            </div>
+        }
+
+        @if (Model.Brands.Count > 0)
+        {
+            <div class="mb-3">
+                <span class="me-2">Markalar:</span>
+                @{ var bi = 1; }
+                @foreach (var b in Model.Brands)
+                {
+                    <a class="me-2 fw-semibold @(Model.BrandId == b.Id ? "text-decoration-underline" : "")"
+                       style="color:#c00"
+                       asp-action="Index"
+                       asp-route-id="@Model.CategoryId"
+                       asp-route-brandId="@b.Id"
+                       asp-route-search="@Model.Search">@(bi++). @b.Name</a>
+                }
+                @if (Model.BrandId > 0)
+                {
+                    <a asp-action="Index" asp-route-id="@Model.CategoryId" asp-route-brandId="0" class="small">Marka filtresini kaldır</a>
+                }
+            </div>
+        }
+
+        <div class="panel panel-info admin-grid-ops card mb-3" data-gridname="ProductGrid">
+            <div class="card-body">
+                <div class="row g-2 mb-3">
+                    <div class="col-md-3">
+                        <a class="btn btn-primary w-100" asp-action="SaveOrEdit">Yeni Giriş</a>
+                    </div>
+                    <div class="col-md-9">
+                        <form method="get" asp-action="Index" class="d-flex gap-2">
+                            <input type="hidden" name="id" value="@Model.CategoryId" />
+                            <input type="hidden" name="brandId" value="@Model.BrandId" />
+                            <input type="hidden" name="page" value="1" />
+                            <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                            <input class="form-control" name="search" value="@Model.Search" placeholder="Ürün adı / kodu ara…" />
+                            <button class="btn btn-outline-secondary" type="submit">Arama</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="admin-grid-toolbar d-flex flex-wrap gap-2 align-items-center">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary" id="SelectAll"><i class="bi bi-check2-square"></i> Hepsi seç</button>
+                        <button type="button" class="btn btn-outline-secondary" id="DeselectAll"><i class="bi bi-square"></i> Seçilenleri Kaldır</button>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm" id="DeleteAll"><i class="bi bi-trash"></i> Seçilen Kayıtları Sil</button>
+
+                    <select class="form-select form-select-sm" style="width:auto" name="ItemStateSelection" id="ItemStateSelection">
+                        <option value="State">Yayında mı</option>
+                        <option value="ImageState">Resmi Göster</option>
+                        <option value="MainPage">Vitrinde mi?</option>
+                        <option value="IsCampaign">Kampanyalı</option>
+                    </select>
+                    <button type="button" class="btn btn-success btn-sm" id="SetStateOnAll"><i class="bi bi-check-lg"></i> Seçilenleri Yayınla</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="SetStateOffAll"><i class="bi bi-x-lg"></i> Seçilenleri Yayından Kaldır</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="OrderingAll"><i class="bi bi-sort-numeric-down"></i> Sıra Güncelle</button>
+
+                    <select class="form-select form-select-sm" style="width:auto;min-width:12rem" name="ProductStateSelection" id="ProductStateSelection">
+                        @foreach (var st in Model.ProductStates)
+                        {
+                            <option value="@st.Value">@st.Text</option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-info btn-sm text-white" id="ProductStateChanged"><i class="bi bi-arrow-repeat"></i> Ürün Durumunu Güncelle</button>
+
+                    <a class="btn btn-outline-success btn-sm" asp-action="ExportExcel"><i class="bi bi-file-earmark-excel"></i> Excel</a>
+                    <a class="btn btn-link btn-sm" asp-action="MoveProductsInTrees">Ürünleri Bir Kategoriden Başka Kategoriye Taşımak</a>
+                </div>
+
+                <div id="ErrorMessagePanel" style="display:none;" class="alert alert-danger mt-2 mb-0">
+                    <span id="ErrorMessage"></span>
+                </div>
+            </div>
+        </div>
+        <span style="display:none;" id="AdminMultiSelectDeleteConfirmMessage">Seçilen kayıtlar silinsin / pasifleştirilsin mi?</span>
+        <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="Lütfen en az bir satır seçin." />
+
+        <div class="admin-datagrid" data-admin-grid data-gridname="ProductGrid">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th></th>
+                            <th>İsim</th>
+                            <th>Ürün Kategorisi</th>
+                            <th>Markalar</th>
+                            <th>Fiyat</th>
+                            <th>Ürün Kodu</th>
+                            <th>Ürün Durum</th>
+                            <th>Sırası</th>
+                            <th>Durum</th>
+                            <th>Resimler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.Products.Count == 0)
+                    {
+                        <tr><td colspan="11" class="text-center text-muted py-4">Kayıt yok.</td></tr>
+                    }
+                    else
+                    {
+                        for (var i = 0; i < Model.Products.Count; i++)
+                        {
+                            var p = Model.Products[i];
+                            <tr class="@(!p.IsActive ? "grid-inactive" : null)" data-grid-row>
+                                <td><span class="badge text-bg-primary rounded-pill">@(rowStart + i + 1)</span></td>
+                                <td>
+                                    <input type="checkbox" class="form-check-input" name="checkboxGrid" gridkey-id="@p.Id" value="@p.Id" />
+                                </td>
+                                <td style="min-width:14rem;">
+                                    <a href="/p/@p.CategorySlug/@p.SeoSlug/" target="_blank" rel="noopener">@p.Name</a>
+                                    @if (!string.IsNullOrWhiteSpace(p.NameLong))
+                                    {
+                                        <div class="small text-muted" style="max-width:220px">@p.NameLong</div>
+                                    }
+                                    <div class="gridToolBox mt-1">
+                                        <a class="btn btn-sm btn-outline-secondary" asp-action="Media" asp-route-id="@p.Id" title="Medya"><i class="bi bi-camera"></i></a>
+                                        <a class="btn btn-sm btn-primary" asp-action="SaveOrEdit" asp-route-id="@p.Id" title="Düzenle"><i class="bi bi-pencil"></i></a>
+                                        @if (p.TemplateId.HasValue && p.TemplateId > 0)
+                                        {
+                                            <a class="btn btn-sm btn-outline-secondary" asp-action="SaveOrEdit" asp-route-id="@p.Id" title="Özellikler"><i class="bi bi-plus"></i></a>
+                                        }
+                                        <form method="post" asp-action="Delete" class="d-inline" onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@p.Id" />
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Sil"><i class="bi bi-x-circle"></i></button>
+                                        </form>
+                                        @if (p.CommentCount > 0)
+                                        {
+                                            <a class="btn btn-sm btn-outline-secondary" asp-controller="ProductComments" asp-action="Index" asp-route-id="@p.Id" title="Yorumlar"><i class="bi bi-person"></i></a>
+                                        }
+                                    </div>
+                                </td>
+                                <td>@p.CategoryName</td>
+                                <td>@p.BrandName</td>
+                                <td>
+                                    @if (p.HasDiscount)
+                                    {
+                                        <span class="text-primary fw-semibold">@p.PriceWithDiscount.ToString("N2") ₺</span><br />
+                                        <span class="badge text-bg-warning">%@p.DiscountPercentage İndirim</span><br />
+                                        <del class="text-muted">@p.Price.ToString("N2") ₺</del>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-primary fw-semibold">@p.Price.ToString("N2") ₺</span>
+                                    }
+                                </td>
+                                <td>@p.ProductCode</td>
+                                <td><div Product-State-Id="@p.Id" name="ProductState">@p.StateLabel</div></td>
+                                <td>
+                                    <input gridkey-id="@p.Id" value="@p.Position" class="GridOrderingTextbox form-control form-control-sm" style="width:4rem" name="gridOrdering" type="number" />
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled small mb-0">
+                                        <li>
+                                            <span gridkey-id="@p.Id" grid-data-value="@p.IsActive.ToString().ToLowerInvariant()" name="spanState"
+                                                  class="@(p.IsActive ? "text-success" : "text-danger")">@(p.IsActive ? "✓" : "✗")</span> Yayında mı
+                                        </li>
+                                        <li>
+                                            <span gridkey-id="@p.Id" grid-data-value="@p.MainPage.ToString().ToLowerInvariant()" name="spanMainPage"
+                                                  class="@(p.MainPage ? "text-success" : "text-danger")">@(p.MainPage ? "✓" : "✗")</span> Vitrinde mi?
+                                        </li>
+                                        <li>
+                                            <span gridkey-id="@p.Id" grid-data-value="@p.IsCampaign.ToString().ToLowerInvariant()" name="spanIsCampaign"
+                                                  class="@(p.IsCampaign ? "text-success" : "text-danger")">@(p.IsCampaign ? "✓" : "✗")</span> Kampanyalı
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class="small">
+                                    @if (p.MainImageId.HasValue && p.MainImageId > 0)
+                                    {
+                                        <div>
+                                            Resim @(p.ImageState ? "gösteriliyor" : "gizli")
+                                            <span gridkey-id="@p.Id" grid-data-value="@p.ImageState.ToString().ToLowerInvariant()" name="spanImageState"
+                                                  class="@(p.ImageState ? "text-success" : "text-danger")">@(p.ImageState ? "✓" : "✗")</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <b>Resim Yok</b>
+                                        <span gridkey-id="@p.Id" grid-data-value="false" name="spanImageState" class="d-none"></span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.TotalPages > 1 || Model.TotalCount > 0)
+            {
+                <div class="admin-datagrid-footer">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="small text-muted">Sayfa @(Model.Page) / @Model.TotalPages</span>
+                        <form method="get" class="d-flex gap-1">
+                            <input type="hidden" name="id" value="@Model.CategoryId" />
+                            <input type="hidden" name="brandId" value="@Model.BrandId" />
+                            <input type="hidden" name="search" value="@Model.Search" />
+                            <select name="pageSize" class="form-select form-select-sm" style="width:5rem" onchange="this.form.submit()">
+                                @foreach (var size in new[] { 10, 25, 50, 100, 200 })
+                                {
+                                    if (size == Model.PageSize)
+                                    {
+                                        <option value="@size" selected>@size</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@size">@size</option>
+                                    }
+                                }
+                            </select>
+                        </form>
+                    </div>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item @(Model.Page <= 1 ? "disabled" : null)">
+                            <a class="page-link" href="@PageUrl(Math.Max(1, Model.Page - 1))">Önceki</a>
+                        </li>
+                        <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : null)">
+                            <a class="page-link" href="@PageUrl(Math.Min(Model.TotalPages, Model.Page + 1))">Sonraki</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" id="confirmMessage"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmOk">Tamam</button>
+                <button type="button" class="btn btn-secondary" id="confirmCancel" data-bs-dismiss="modal">İptal</button>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,11 +1,15 @@
 using EImece.Domain.Core.Caching;
 using EImece.Domain.Core.Captcha;
+using EImece.Domain.Core.Cart;
 using EImece.Domain.Core.Configuration;
 using EImece.Domain.Core.Email;
 using EImece.Domain.Core.Hosting;
 using EImece.Domain.Core.Http;
 using EImece.Domain.Core.Media;
 using EImece.Domain.Core.Payments;
+using EImece.Domain.Core.Admin;
+using EImece.Domain.Core.Reports;
+using EImece.Domain.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
@@ -45,6 +49,14 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddSingleton<IEmailTemplateRenderer, FluidEmailTemplateRenderer>();
         services.AddSingleton<IEmailSender, MailKitEmailSender>();
         services.AddScoped<IIyzicoPaymentService, IyzicoPaymentService>();
+        services.AddScoped<IReportService, ReportService>();
+        services.AddSingleton<IReportExportService, ReportExportService>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<IShoppingCartService, ShoppingCartService>();
+        services.AddScoped<IStorefrontService, StorefrontService>();
+        services.AddScoped<IProductAdminService, ProductAdminService>();
+        services.AddScoped<IGridOrderingService, GridOrderingService>();
+        services.AddSingleton<ITurkishRegionService, TurkishRegionService>();
 
         var httpOptions = configuration.GetSection(HttpClientResilienceOptions.SectionName).Get<HttpClientResilienceOptions>()
             ?? new HttpClientResilienceOptions();

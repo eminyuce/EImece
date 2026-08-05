@@ -8,9 +8,15 @@
     <Description>EF Core data layer + infrastructure abstractions for the ASP.NET Core host. Legacy EImece.Domain remains on EF6.</Description>
   </PropertyGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="Fluid.Core" Version="2.11.1" />
     <PackageReference Include="Iyzipay" Version="2.1.78" />
     <PackageReference Include="MailKit" Version="4.9.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.14">
       <PrivateAssets>all</PrivateAssets>

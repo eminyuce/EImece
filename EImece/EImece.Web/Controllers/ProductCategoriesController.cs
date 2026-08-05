@@ -1,4 +1,5 @@
 using EImece.Domain.Core.Data;
+using EImece.Domain.Core.Services;
 using EImece.Web.Configuration;
 using EImece.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,24 @@ public sealed class ProductCategoriesController : BaseController
     {
         if (!int.TryParse(id, out var categoryId))
         {
+            categoryId = SeoIdParser.Parse(id);
+        }
+
+        if (categoryId <= 0)
+        {
+            var categories = await _db.ProductCategories.AsNoTracking()
+                .Where(c => c.IsActive)
+                .OrderBy(c => c.Position)
+                .Take(50)
+                .Select(c => new ProductListItemViewModel { Id = c.Id, Name = c.Name, CategoryId = c.Id })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
             return View(new CategoryShellViewModel
             {
-                Name = "Categories",
-                Summary = "Category list shell — use /c/pc/{id}.",
-                Notice = "Provide a numeric category id."
+                Name = "Kategoriler",
+                Summary = $"{categories.Count} aktif kategori",
+                Products = categories
             });
         }
 
@@ -44,26 +58,43 @@ public sealed class ProductCategoriesController : BaseController
                 {
                     Id = categoryId,
                     Name = $"Category {categoryId}",
-                    Summary = "Category not found (or database offline).",
-                    Notice = $"Route OK: /c/pc/{categoryId}"
+                    Summary = "Category not found."
                 });
             }
+
+            var products = await _db.Products.AsNoTracking()
+                .Where(p => p.ProductCategoryId == categoryId && p.IsActive)
+                .OrderBy(p => p.Position)
+                .Take(48)
+                .Select(p => new ProductListItemViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ProductCode = p.ProductCode,
+                    CategoryId = categoryId,
+                    CategoryName = category.Name,
+                    CategorySlug = StorefrontMapping.Slug(category.Name)
+                })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return View(new CategoryShellViewModel
             {
                 Id = category.Id,
-                Name = category.Name ?? $"Category {category.Id}",
-                Summary = category.IsActive ? null : "This category is inactive."
+                Name = category.Name,
+                Summary = category.IsActive ? $"{products.Count} ürün" : "Inactive category",
+                Products = products
             });
         }
-        catch
+        catch (Exception ex)
         {
             return View(new CategoryShellViewModel
             {
                 Id = categoryId,
                 Name = $"Category {categoryId}",
-                Summary = "Database unavailable — presentation shell only.",
-                Notice = $"Route OK: /c/pc/{id}"
+                Summary = "Database unavailable.",
+                Notice = ex.Message
             });
         }
     }

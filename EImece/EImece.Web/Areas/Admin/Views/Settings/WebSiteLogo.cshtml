@@ -1,0 +1,25 @@
+@model EImece.Web.Models.WebSiteLogoViewModel
+@{
+    ViewData["Title"] = "Site Logosu";
+}
+<h1 class="h4 mb-3">Site Logosu</h1>
+@if (!string.IsNullOrEmpty(Model.CurrentLogoUrl))
+{
+    <div class="mb-3">
+        <img src="@Model.CurrentLogoUrl" alt="Logo" style="max-height:120px;" />
+    </div>
+}
+<form method="post" asp-action="UploadWebSiteLogo" enctype="multipart/form-data" class="eimece-shell-card">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="mb-3">
+        <label class="form-label">Logo resmi</label>
+        <input type="file" name="postedImage" class="form-control" accept="image/*" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Yükle</button>
+    <a class="btn btn-link" asp-action="Index">Ayarlar</a>
+</form>
+@if (!string.IsNullOrEmpty(Model.SettingValue))
+{
+    <p class="mt-2 small text-muted">Mevcut dosya: @Model.SettingValue</p>
+}

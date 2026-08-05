@@ -43,7 +43,12 @@ namespace EImece.Tests.Controllers
         public string JobId { get; set; }
     }
 
+    /// <summary>
+    /// Legacy live-SQL / DI smoke suite. Quarantined from the default unit run —
+    /// use Integration tests (EImece.Integration.Tests) for DB-backed coverage.
+    /// </summary>
     [TestClass]
+    [Ignore("Hits live SQL via Ninject; replaced by EImece.Integration.Tests LocalDB suite.")]
     [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class HomeControllerTest
     {
@@ -581,7 +586,7 @@ QUITE
         }
 
         [TestMethod]
-        [Timeout(TestTimeout.Infinite)]
+        [Timeout(int.MaxValue)]
         public void SaveExcelFile()
         {
             var filePath = @"C:\Users\Yuce\Desktop\products.xls";

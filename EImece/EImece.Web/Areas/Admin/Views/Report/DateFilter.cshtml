@@ -1,0 +1,21 @@
+@model EImece.Web.Models.ReportResultViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+<div class="eimece-shell-card" style="max-width:480px;">
+    <h1 class="h4">@Model.Title</h1>
+    <p class="text-muted">Tarih aralığı seçin.</p>
+    <form method="post" asp-action="@Model.ActionName">
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <label class="form-label">Başlangıç</label>
+            <input class="form-control" type="date" name="startDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Bitiş</label>
+            <input class="form-control" type="date" name="endDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Raporu Getir</button>
+        <a class="btn btn-link" asp-action="Index">İptal</a>
+    </form>
+</div>

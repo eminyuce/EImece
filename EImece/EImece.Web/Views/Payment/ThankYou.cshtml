@@ -1,0 +1,20 @@
+@model EImece.Web.Models.ThankYouViewModel
+@{
+    ViewData["Title"] = "Teşekkürler";
+}
+<div class="container px-3 py-5">
+    <div class="eimece-shell-card p-4 text-center">
+        <h1 class="h3 mb-3">Siparişiniz alındı</h1>
+        @if (Model.Order is not null)
+        {
+            <p class="lead">Sipariş no: <strong>@Model.Order.OrderNumber</strong></p>
+            <p class="text-muted">Ödeme durumu: @Model.Order.PaymentStatus</p>
+            <p class="text-muted">Toplam: @Model.Order.Price @Model.Order.Currency</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Notice))
+        {
+            <p>@Model.Notice</p>
+        }
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Ana sayfaya dön</a>
+    </div>
+</div>

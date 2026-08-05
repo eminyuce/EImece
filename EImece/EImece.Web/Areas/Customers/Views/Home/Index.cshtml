@@ -1,10 +1,52 @@
+@model EImece.Web.Models.CustomerAccountViewModel
 @using Resources
 @{
     ViewData["Title"] = Resource.MyAccount;
 }
+<div class="eimece-shell-card p-4">
+    <h1 class="h4 mb-2">@Resource.MyAccount</h1>
+    <p class="text-muted">@Model.UserName · @Model.Email</p>
 
-<div class="eimece-shell-card">
-    <h1 class="h4">@Resource.MyAccount</h1>
-    <p class="text-muted mb-2">Customer portal shell for @User.Identity?.Name</p>
-    <p class="mb-0">Orders, addresses, and profile pages migrate with Phase 7+ incremental view ports.</p>
+    <h2 class="h5 mt-4 mb-3">Siparişlerim</h2>
+    @if (Model.Orders.Count == 0)
+    {
+        <p class="text-muted">Henüz siparişiniz yok.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Sipariş No</th>
+                        <th>Tarih</th>
+                        <th>Durum</th>
+                        <th>Tutar</th>
+                        <th>Kargo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var o in Model.Orders)
+                {
+                    <tr>
+                        <td>@o.OrderNumber</td>
+                        <td>@o.CreatedDate.ToString("d")</td>
+                        <td>@o.PaymentStatus</td>
+                        <td>@o.Price</td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(o.ShipmentTrackingNumber))
+                            {
+                                @o.ShipmentTrackingNumber
+                            }
+                            else
+                            {
+                                <a asp-controller="Payment" asp-action="CargoTracking" asp-route-id="@o.OrderNumber">Takip</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>

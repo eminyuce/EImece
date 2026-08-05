@@ -1,0 +1,53 @@
+@model EImece.Web.Models.CheckoutBillingViewModel
+@{
+    ViewData["Title"] = "Fatura Bilgileri";
+}
+<div class="container px-3 py-4">
+    <h1 class="h3 mb-3">Fatura Bilgileri</h1>
+    @if (!string.IsNullOrWhiteSpace(Model.Notice))
+    {
+        <div class="alert alert-warning">@Model.Notice</div>
+    }
+    <form method="post" class="eimece-shell-card p-4">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Customer.Id" />
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Ad</label>
+                <input asp-for="Customer.Name" class="form-control" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Soyad</label>
+                <input asp-for="Customer.Surname" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">E-posta</label>
+                <input asp-for="Customer.Email" type="email" class="form-control" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Telefon</label>
+                <input asp-for="Customer.GsmNumber" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">İl</label>
+                <input asp-for="Customer.City" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">İlçe</label>
+                <input asp-for="Customer.Town" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Mahalle</label>
+                <input asp-for="Customer.District" class="form-control" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">Adres</label>
+                <input asp-for="Customer.Street" class="form-control" />
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Kaydet ve devam et</button>
+            <a asp-action="Index" class="btn btn-outline-secondary ms-2">Sepete dön</a>
+        </div>
+    </form>
+</div>

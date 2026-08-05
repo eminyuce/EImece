@@ -1,0 +1,35 @@
+@model EImece.Web.Models.AppLogsViewModel
+@{
+    ViewData["Title"] = "Uygulama Logları";
+}
+<h1 class="h4 mb-3">Uygulama Logları</h1>
+<p class="text-muted small">Dizin: @Model.LogDirectory</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2 class="h6">Log dosyaları</h2>
+        @if (Model.LogFiles.Count == 0)
+        {
+            <p class="text-muted">Log dosyası bulunamadı (NLog → App_Data/logs).</p>
+        }
+        else
+        {
+            <ul class="list-group list-group-flush">
+                @foreach (var f in Model.LogFiles)
+                {
+                    <li class="list-group-item px-0">
+                        <a asp-action="Index" asp-route-file="@f.FileName">@f.FileName</a>
+                        <span class="small text-muted d-block">@f.SizeBytes bytes · @f.LastWriteUtc.ToString("u")</span>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+    <div class="col-md-8">
+        @if (!string.IsNullOrEmpty(Model.SelectedLogName))
+        {
+            <h2 class="h6">@Model.SelectedLogName (son 200 satır)</h2>
+            <pre class="eimece-shell-card small" style="max-height:480px;overflow:auto;">@Model.SelectedLogContent</pre>
+        }
+    </div>
+</div>

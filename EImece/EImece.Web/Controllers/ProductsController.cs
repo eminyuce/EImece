@@ -1,4 +1,5 @@
 using EImece.Domain.Core.Data;
+using EImece.Domain.Core.Services;
 using EImece.Web.Configuration;
 using EImece.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,16 +8,15 @@ using Microsoft.Extensions.Options;
 
 namespace EImece.Web.Controllers;
 
-/// <summary>
-/// Storefront products — SEO routes under /p/... Full service logic migrates with Domain.Core services.
-/// </summary>
 public sealed class ProductsController : BaseController
 {
+    private readonly IStorefrontService _storefront;
     private readonly EImeceDbContext _db;
 
-    public ProductsController(IOptions<EImeceOptions> siteOptions, EImeceDbContext db)
+    public ProductsController(IOptions<EImeceOptions> siteOptions, IStorefrontService storefront, EImeceDbContext db)
         : base(siteOptions)
     {
+        _storefront = storefront;
         _db = db;
     }
 
@@ -24,78 +24,133 @@ public sealed class ProductsController : BaseController
     public async Task<IActionResult> Detail(string categoryName, string? id, CancellationToken cancellationToken)
     {
         var slug = string.IsNullOrWhiteSpace(categoryName) ? "category" : categoryName;
-
-        if (!int.TryParse(id, out var productId))
+        var productId = SeoIdParser.Parse(id);
+        if (productId <= 0)
         {
             return View(new ProductDetailViewModel
             {
-                Name = "Product",
+                Name = "Ürün",
                 CategorySlug = slug,
                 CategoryName = slug,
-                Summary = $"Invalid product id for category '{slug}'.",
-                Notice = "Shell view — route parsing failed."
+                Summary = "Geçersiz ürün kimliği."
             });
         }
 
         try
         {
-            var product = await _db.Products.AsNoTracking()
-                .Where(p => p.Id == productId)
-                .Select(p => new { p.Id, p.Name, p.ProductCode, p.Price, p.IsActive })
-                .FirstOrDefaultAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            if (product is null)
+            var product = await _storefront.GetProductDetailAsync(productId, cancellationToken).ConfigureAwait(false);
+            if (product is null || !product.IsActive)
             {
                 return View(new ProductDetailViewModel
                 {
                     Id = productId,
-                    Name = $"Product {productId}",
+                    Name = $"Ürün {productId}",
                     CategorySlug = slug,
                     CategoryName = slug,
-                    Summary = "Product not found (or database offline).",
-                    Notice = $"Route OK: /p/{slug}/{productId}"
+                    Summary = "Ürün bulunamadı."
                 });
             }
 
+            var categoryNameResolved = product.ProductCategory?.Name ?? slug;
             return View(new ProductDetailViewModel
             {
                 Id = product.Id,
-                Name = product.Name ?? $"Product {product.Id}",
+                Name = product.Name,
                 ProductCode = product.ProductCode,
                 Price = product.Price,
-                CategorySlug = slug,
-                CategoryName = slug,
-                Summary = product.IsActive ? null : "This product is inactive.",
-                Notice = null
+                ShortDescription = product.ShortDescription,
+                Description = product.Description,
+                CategoryId = product.ProductCategoryId,
+                CategorySlug = StorefrontMapping.Slug(categoryNameResolved),
+                CategoryName = categoryNameResolved,
+                Summary = product.ShortDescription
             });
         }
-        catch
+        catch (Exception ex)
         {
             return View(new ProductDetailViewModel
             {
                 Id = productId,
-                Name = $"Product {productId}",
+                Name = $"Ürün {productId}",
                 CategorySlug = slug,
                 CategoryName = slug,
-                Summary = "Database unavailable — presentation shell only.",
-                Notice = $"Route OK: /p/{slug}/{id}"
+                Summary = "Veritabanı kullanılamıyor.",
+                Notice = ex.Message
             });
         }
     }
 
     [HttpGet]
-    public IActionResult Tag(string? id)
-        => Placeholder("Product tag", $"Tag route /p/t/{id}", new { id });
-
-    [HttpGet]
-    public IActionResult SearchProducts(string? q)
+    public async Task<IActionResult> Tag(string? id, CancellationToken cancellationToken)
     {
-        ViewData["Query"] = q;
-        return View();
+        var tagId = SeoIdParser.Parse(id);
+        var model = new ProductTagViewModel { TagId = tagId, TagName = $"Etiket {tagId}" };
+        if (tagId <= 0)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            var tag = await _storefront.GetTagAsync(tagId, cancellationToken).ConfigureAwait(false);
+            if (tag is not null)
+            {
+                model.TagName = tag.Name;
+            }
+
+            var products = await _storefront.GetProductsByTagAsync(tagId, SiteOptions.MainLanguage, cancellationToken).ConfigureAwait(false);
+            model.Products = products.Select(StorefrontMapping.ToListItem).ToList();
+        }
+        catch
+        {
+            model.Products = Array.Empty<ProductListItemViewModel>();
+        }
+
+        return View(model);
     }
 
     [HttpGet]
-    public IActionResult AdvancedSearchProducts()
-        => Placeholder("Advanced search", "Advanced search route /p/advancedsearchproducts");
+    public async Task<IActionResult> SearchProducts(string? q, string? search, CancellationToken cancellationToken)
+    {
+        var query = string.IsNullOrWhiteSpace(q) ? search : q;
+        var model = new ProductSearchViewModel { Query = query };
+        try
+        {
+            var products = await _storefront.SearchProductsAsync(query, null, SiteOptions.MainLanguage, 48, cancellationToken).ConfigureAwait(false);
+            model.Products = products.Select(StorefrontMapping.ToListItem).ToList();
+        }
+        catch
+        {
+            model.Products = Array.Empty<ProductListItemViewModel>();
+        }
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> AdvancedSearchProducts(string? search, string? categoryId, CancellationToken cancellationToken)
+    {
+        int? catId = int.TryParse(categoryId, out var parsed) ? parsed : null;
+        var model = new ProductSearchViewModel { Query = search, CategoryId = catId };
+
+        try
+        {
+            model.Categories = await _db.ProductCategories.AsNoTracking()
+                .Where(c => c.IsActive && c.Lang == SiteOptions.MainLanguage)
+                .OrderBy(c => c.Position)
+                .Take(100)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            var products = await _storefront.SearchProductsAsync(search, catId, SiteOptions.MainLanguage, 48, cancellationToken).ConfigureAwait(false);
+            model.Products = products.Select(StorefrontMapping.ToListItem).ToList();
+        }
+        catch
+        {
+            model.Categories = Array.Empty<EImece.Domain.Core.Entities.ProductCategory>();
+            model.Products = Array.Empty<ProductListItemViewModel>();
+        }
+
+        return View(model);
+    }
 }

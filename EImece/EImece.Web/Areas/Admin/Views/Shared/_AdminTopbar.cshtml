@@ -1,13 +1,34 @@
-<div class="admin-topbar">
-    <div>
-        <strong>@(ViewData["Title"] ?? "Admin")</strong>
-        <span class="text-muted small ml-2">Phase 7</span>
+<header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button"
+                class="admin-sidebar-toggle"
+                id="adminSidebarToggle"
+                aria-controls="adminSidebar"
+                aria-expanded="true"
+                title="Menüyü aç/kapa"
+                data-label-toggle="Menüyü aç/kapa"
+                data-label-open="Menüyü aç"
+                data-label-close="Menüyü kapat">
+            <i class="bi bi-list" aria-hidden="true"></i>
+            <span class="visually-hidden">Menüyü aç/kapa</span>
+        </button>
+        <div class="admin-topbar-title">
+            <span class="admin-topbar-panel">Yuvadan.com.tr Yönetim Paneli</span>
+            @if (ViewData["Title"] is string pageTitle && !string.IsNullOrWhiteSpace(pageTitle))
+            {
+                <span class="admin-topbar-page">@pageTitle</span>
+            }
+            <span class="admin-topbar-page" style="color:#b32d2e;">TEMP: Admin auth bypass ON</span>
+        </div>
     </div>
-    <div class="d-flex align-items-center">
-        <span class="text-muted small mr-3">@User.Identity?.Name</span>
+    <div class="admin-topbar-right d-flex align-items-center gap-2 flex-wrap">
+        <a class="btn btn-sm btn-outline-secondary" asp-area="Admin" asp-controller="Dashboard" asp-action="OurSiteFeatures">Sitemizin Özellikleri</a>
+        <a class="btn btn-sm btn-outline-secondary" asp-area="Admin" asp-controller="Dashboard" asp-action="ClearCache">Yenile</a>
+        <a class="btn btn-sm btn-outline-primary" asp-area="" asp-controller="Home" asp-action="Index" target="_blank">Sitenizin Ana Sayfası</a>
+        <span class="text-muted small">@User.Identity?.Name</span>
         <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="mb-0">
             @Html.AntiForgeryToken()
-            <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Çıkış</button>
         </form>
     </div>
-</div>
+</header>

@@ -1,0 +1,21 @@
+@model EImece.Web.Models.SystemSettingsViewModel
+@{
+    ViewData["Title"] = "Sistem Ayarları";
+}
+<h1 class="h4 mb-3">Sistem Ayarları</h1>
+@if (Model.BypassAdminAuth)
+{
+    <div class="alert alert-warning">BypassAdminAuth etkin.</div>
+}
+<div class="eimece-shell-card">
+    <dl class="row mb-0">
+        <dt class="col-sm-4">Site Durumu</dt>
+        <dd class="col-sm-8">@Model.SiteStatus</dd>
+        <dt class="col-sm-4">Bakım Modu</dt>
+        <dd class="col-sm-8">@(Model.IsSiteUnderConstruction ? "Evet" : "Hayır")</dd>
+        <dt class="col-sm-4">Ana Dil</dt>
+        <dd class="col-sm-8">@Model.MainLanguage</dd>
+        <dt class="col-sm-4">DB Komut Zaman Aşımı (sn)</dt>
+        <dd class="col-sm-8">@Model.DatabaseCommandTimeoutSeconds</dd>
+    </dl>
+</div>

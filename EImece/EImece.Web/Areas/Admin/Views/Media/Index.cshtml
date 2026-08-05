@@ -1,0 +1,61 @@
+@model EImece.Web.Models.MediaListViewModel
+@{
+    ViewData["Title"] = "Medya";
+}
+<h1 class="h4 mb-3">Medya Dosyaları</h1>
+<p class="text-muted small">FileStorage kayıtları · contentId=@Model.ContentId mod=@Model.Mod imageType=@Model.ImageType</p>
+
+<form method="post" asp-action="Upload" enctype="multipart/form-data" class="mb-4 eimece-shell-card">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="contentId" value="@Model.ContentId" />
+    <input type="hidden" name="mod" value="@Model.Mod" />
+    <input type="hidden" name="imageType" value="@Model.ImageType" />
+    <div class="mb-3">
+        <label class="form-label">Dosya yükle</label>
+        <input type="file" name="file" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Yükle</button>
+</form>
+
+@if (Model.Files.Count == 0)
+{
+    <p class="text-muted">Medya kaydı yok.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Dosya</th>
+                    <th>URL</th>
+                    <th>Tip</th>
+                    <th>Boyut</th>
+                    <th>Aktif</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in Model.Files)
+                {
+                    <tr>
+                        <td>@f.Id</td>
+                        <td>@f.FileName</td>
+                        <td><a href="@f.FileUrl" target="_blank" rel="noopener">@f.FileUrl</a></td>
+                        <td>@f.MimeType</td>
+                        <td>@f.FileSize</td>
+                        <td>@(f.IsActive ? "Evet" : "Hayır")</td>
+                        <td>
+                            <form method="post" asp-action="DeleteConfirmed" class="d-inline" onsubmit="return confirm('Silinsin mi?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@f.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

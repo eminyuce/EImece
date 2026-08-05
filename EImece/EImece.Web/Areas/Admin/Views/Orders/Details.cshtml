@@ -1,0 +1,97 @@
+@model EImece.Web.Models.OrderDetailsViewModel
+@{
+    ViewData["Title"] = $"Sipariş #{Model.OrderNumber}";
+}
+<h1 class="h4 mb-3">Sipariş @Model.OrderNumber</h1>
+<p><a asp-action="Index">← Siparişler</a></p>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="eimece-shell-card">
+            <dl class="row mb-0 small">
+                <dt class="col-sm-4">Müşteri</dt><dd class="col-sm-8">@Model.Name</dd>
+                <dt class="col-sm-4">Ödeme</dt><dd class="col-sm-8">@Model.PaymentStatus</dd>
+                <dt class="col-sm-4">Tutar</dt><dd class="col-sm-8">@Model.PaidPrice / @Model.Price</dd>
+                <dt class="col-sm-4">Kargo</dt><dd class="col-sm-8">@Model.CargoPrice.ToString("N2")</dd>
+                <dt class="col-sm-4">Kupon</dt><dd class="col-sm-8">@Model.Coupon</dd>
+                <dt class="col-sm-4">Tarih</dt><dd class="col-sm-8">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="eimece-shell-card">
+            <div class="mb-3">
+                <label class="form-label">Durum</label>
+                <select class="form-select" data-change-order-status="@Model.Id">
+                    @foreach (var s in new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })
+                    {
+                        if (s == Model.OrderStatus)
+                        {
+                            <option value="@s" selected>@s</option>
+                        }
+                        else
+                        {
+                            <option value="@s">@s</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Admin Notu</label>
+                <textarea class="form-control" rows="3" data-textarea-admin-order-note="@Model.Id">@Model.AdminOrderNote</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Kargo Firması</label>
+                <input class="form-control" data-order-shipment-company-name="@Model.Id" value="@Model.ShipmentCompanyName" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Takip No</label>
+                <input class="form-control" data-order-shipment-tracking-number="@Model.Id" value="@Model.ShipmentTrackingNumber" />
+            </div>
+            <button type="button" class="btn btn-primary" data-save-admin-order-note="@Model.Id">Kaydet</button>
+            <span class="ms-2 small text-success" data-changed-order-result="@Model.Id"></span>
+        </div>
+    </div>
+</div>
+
+<form method="post" asp-action="Update" class="mb-4">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" name="OrderStatus" value="@Model.OrderStatus" />
+    <input type="hidden" name="AdminOrderNote" value="@Model.AdminOrderNote" />
+    <button type="submit" class="btn btn-outline-secondary btn-sm">Form ile de kaydet</button>
+</form>
+
+<h2 class="h6">Sipariş Kalemleri</h2>
+@if (Model.Lines.Count == 0)
+{
+    <p class="text-muted">Kalem yok.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Ürün</th>
+                    <th>Kod</th>
+                    <th>Adet</th>
+                    <th>Birim</th>
+                    <th>Toplam</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.Lines)
+                {
+                    <tr>
+                        <td>@line.ProductName</td>
+                        <td>@line.ProductCode</td>
+                        <td>@line.Quantity</td>
+                        <td>@line.Price.ToString("N2")</td>
+                        <td>@line.TotalPrice.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

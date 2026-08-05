@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using EImece.Domain.Core.Services;
 using EImece.Web.Configuration;
 using EImece.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,21 +10,46 @@ namespace EImece.Web.Controllers;
 public class HomeController : BaseController
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IStorefrontService _storefront;
 
-    public HomeController(ILogger<HomeController> logger, IOptions<EImeceOptions> options)
+    public HomeController(ILogger<HomeController> logger, IOptions<EImeceOptions> options, IStorefrontService storefront)
         : base(options)
     {
         _logger = logger;
+        _storefront = storefront;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         ViewData["Title"] = "EImece";
-        ViewData["Phase"] = "Phase 7 · Presentation";
         ViewData["Domain"] = SiteOptions.Domain;
         ViewData["SiteStatus"] = SiteOptions.SiteStatus;
-        _logger.LogInformation("EImece.Web home served (domain={Domain})", SiteOptions.Domain);
-        return View();
+
+        var model = new HomePageViewModel();
+        try
+        {
+            var lang = SiteOptions.MainLanguage;
+            var banners = await _storefront.GetMainPageBannersAsync(lang, cancellationToken).ConfigureAwait(false);
+            var products = await _storefront.GetHomeProductsAsync(lang, 12, cancellationToken).ConfigureAwait(false);
+
+            model.Banners = banners.Select(b => new MainPageBannerViewModel
+            {
+                Id = b.Id,
+                Name = b.Name,
+                Link = b.Link,
+                MainImageId = b.MainImageId
+            }).ToList();
+
+            model.Products = products.Select(StorefrontMapping.ToListItem).ToList();
+            _logger.LogInformation("Home served with {BannerCount} banners, {ProductCount} products", model.Banners.Count, model.Products.Count);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Home query failed");
+            model.Error = ex.Message;
+        }
+
+        return View(model);
     }
 
     [HttpPost]
@@ -39,14 +65,9 @@ public class HomeController : BaseController
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    public IActionResult Privacy() => View();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+        => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 }

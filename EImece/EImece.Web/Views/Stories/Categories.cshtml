@@ -1,0 +1,26 @@
+@model EImece.Web.Models.StoryCategoryViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="container px-3 py-4">
+    <h1 class="h3 mb-2">@Model.Name</h1>
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <p class="text-muted mb-4">@Model.Description</p>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Notice))
+    {
+        <div class="alert alert-warning">@Model.Notice</div>
+    }
+    <div class="row">
+        @foreach (var s in Model.Stories)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="eimece-shell-card h-100">
+                    <h3 class="h6"><a href="/s/@s.CategorySlug/@s.Id/">@s.Name</a></h3>
+                    <p class="small text-muted">@s.ShortDescription</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

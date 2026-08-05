@@ -1,0 +1,46 @@
+@model EImece.Web.Models.AdminSettingsViewModel
+@{
+    ViewData["Title"] = "Admin Ayarları";
+}
+<h1 class="h4 mb-3">Admin Ayarları</h1>
+@if (Model.BypassAdminAuth)
+{
+    <div class="alert alert-warning">
+        <strong>BypassAdminAuth</strong> etkin — geliştirme ortamında admin kimlik doğrulama atlanıyor. Üretimde kapatın.
+    </div>
+}
+<div class="eimece-shell-card mb-4">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Domain</dt>
+        <dd class="col-sm-9">@Model.Domain</dd>
+        <dt class="col-sm-3">Diller</dt>
+        <dd class="col-sm-9">@Model.ApplicationLanguages</dd>
+        <dt class="col-sm-3">Ana Dil</dt>
+        <dd class="col-sm-9">@Model.MainLanguage</dd>
+    </dl>
+</div>
+<h2 class="h6">Önemli Ayarlar (Settings)</h2>
+@if (Model.KeySettings.Count == 0)
+{
+    <p class="text-muted">Kayıt yok.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Id</th><th>Ad</th><th>Anahtar</th><th>Değer</th><th>Aktif</th></tr></thead>
+            <tbody>
+                @foreach (var s in Model.KeySettings)
+                {
+                    <tr>
+                        <td>@s.Id</td>
+                        <td>@s.Name</td>
+                        <td>@s.SettingKey</td>
+                        <td>@s.SettingValue</td>
+                        <td>@(s.IsActive ? "Evet" : "Hayır")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

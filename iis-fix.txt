@@ -1,0 +1,6 @@
+2026-08-05T08:06:00.9288431+03:00 icacls OK: C:\inetpub\wwwroot\Eimece_Core
+2026-08-05T08:06:00.9426801+03:00 icacls OK: C:\inetpub\wwwroot\Eimece_Core\App_Data
+2026-08-05T08:06:00.9608002+03:00 icacls OK: C:\inetpub\wwwroot\Eimece_Core\App_Data\DataProtection-Keys
+2026-08-05T08:06:00.9926600+03:00 icacls OK: C:\inetpub\wwwroot\Eimece_Core\wwwroot\media
+2026-08-05T08:06:01.0546531+03:00 App pool recycled
+2026-08-05T08:06:01.0556509+03:00 SUCCESS

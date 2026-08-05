@@ -30,6 +30,12 @@
             <p class="mb-4">@(Model.Summary ?? "Product detail shell — full markup migrates incrementally.")</p>
             <div class="d-flex flex-wrap" style="gap: .5rem;">
                 <a class="btn btn-primary" href="/b/@Model.CategorySlug/@Model.Id">Buy now</a>
+                <form method="post" asp-controller="Payment" asp-action="AddToCart" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="btn btn-outline-primary">Sepete Ekle</button>
+                </form>
                 <a class="btn btn-outline-secondary" asp-controller="Payment" asp-action="Index">Cart</a>
             </div>
             @if (!string.IsNullOrEmpty(Model.Notice))

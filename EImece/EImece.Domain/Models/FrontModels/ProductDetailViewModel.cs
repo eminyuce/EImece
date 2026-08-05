@@ -236,12 +236,12 @@ namespace EImece.Domain.Models.FrontModels
                     var groups = xdoc.Root.Descendants("group");
                     foreach (var group in groups)
                     {
-                        foreach (XElement field in group.Elements())
+                        foreach (XElement xmlField in group.Elements())
                         {
-                            var name = field.Attribute("name");
-                            var unit = field.Attribute("unit");
-                            var values = field.Attribute("values");
-                            var display = field.Attribute("display");
+                            var name = xmlField.Attribute("name");
+                            var unit = xmlField.Attribute("unit");
+                            var values = xmlField.Attribute("values");
+                            var display = xmlField.Attribute("display");
                             var dbValueObj = productSpecs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
                             var isValueExist = dbValueObj != null;
                             if (!isValueExist)

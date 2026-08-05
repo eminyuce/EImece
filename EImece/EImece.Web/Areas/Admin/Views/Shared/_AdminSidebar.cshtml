@@ -1,14 +1,103 @@
-<aside class="admin-sidebar">
-    <div class="mb-3 px-2">
-        <strong class="d-block" style="font-size: 1.25rem;">EImece</strong>
-        <span class="small opacity-75">Admin</span>
+@{
+    var currentController = ((string?)ViewContext.RouteData.Values["controller"] ?? "").ToLowerInvariant();
+    string Active(string controller) =>
+        string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    bool GroupOpen(params string[] controllers) =>
+        controllers.Any(c => string.Equals(currentController, c, StringComparison.OrdinalIgnoreCase));
+
+    var catalogOpen = GroupOpen("products", "productcategories", "brands", "templates", "lists", "coupons", "productcomments");
+    var salesOpen = GroupOpen("orders", "customers", "shoppingcarts", "report");
+    var contentOpen = GroupOpen("menus", "mainpageimages", "stories", "storycategories", "tags", "tagcategories", "faq", "subscribers");
+    var systemOpen = GroupOpen("mailtemplates", "settings", "adminsettings", "metrics", "users", "fileupload", "media", "images", "applogs", "importdata");
+}
+<aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="Admin menü" data-collapsed="false">
+    <div class="admin-sidebar-brand">
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" title="EImece Admin">
+            <i class="bi bi-boxes" aria-hidden="true"></i>
+            <span class="admin-sidebar-brand-text">EImece Admin</span>
+        </a>
+        <button type="button" class="admin-sidebar-close" id="adminSidebarClose" aria-label="Kapat" title="Kapat">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
     </div>
-    <nav>
-        <a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a>
-        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
-        <a asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
-        <a asp-area="Admin" asp-controller="Orders" asp-action="Index">Orders</a>
-        <hr class="border-secondary" />
-        <a asp-area="" asp-controller="Home" asp-action="Index">Storefront</a>
+
+    <nav class="admin-sidebar-nav">
+        <a class="admin-nav-item @Active("dashboard")" asp-area="Admin" asp-controller="Dashboard" asp-action="Index" title="Ana Sayfa">
+            <i class="bi bi-house" aria-hidden="true"></i>
+            <span class="admin-nav-label">Ana Sayfa</span>
+        </a>
+
+        <div class="admin-nav-group @(catalogOpen ? "is-open" : "")" data-group="catalog">
+            <button type="button" class="admin-nav-group-toggle" aria-expanded="@(catalogOpen ? "true" : "false")" title="Katalog">
+                <i class="bi bi-grid" aria-hidden="true"></i>
+                <span class="admin-nav-label">Katalog</span>
+                <i class="bi bi-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @Active("products")" asp-area="Admin" asp-controller="Products" asp-action="Index"><i class="bi bi-box"></i><span class="admin-nav-label">Ürünler</span></a>
+                <a class="admin-nav-item @Active("productcategories")" asp-area="Admin" asp-controller="ProductCategories" asp-action="Index"><i class="bi bi-diagram-3"></i><span class="admin-nav-label">Ürün Kategorileri</span></a>
+                <a class="admin-nav-item @Active("brands")" asp-area="Admin" asp-controller="Brands" asp-action="Index"><i class="bi bi-tags"></i><span class="admin-nav-label">Markalar</span></a>
+                <a class="admin-nav-item @Active("templates")" asp-area="Admin" asp-controller="Templates" asp-action="Index"><i class="bi bi-file-code"></i><span class="admin-nav-label">Şablonlar</span></a>
+                <a class="admin-nav-item @Active("lists")" asp-area="Admin" asp-controller="Lists" asp-action="Index"><i class="bi bi-list-ul"></i><span class="admin-nav-label">Listeler</span></a>
+                <a class="admin-nav-item @Active("coupons")" asp-area="Admin" asp-controller="Coupons" asp-action="Index"><i class="bi bi-ticket-perforated"></i><span class="admin-nav-label">Kuponlar</span></a>
+                <a class="admin-nav-item @Active("productcomments")" asp-area="Admin" asp-controller="ProductComments" asp-action="Index"><i class="bi bi-chat-dots"></i><span class="admin-nav-label">Ürün Yorumları</span></a>
+            </div>
+        </div>
+
+        <div class="admin-nav-group @(salesOpen ? "is-open" : "")" data-group="sales">
+            <button type="button" class="admin-nav-group-toggle" aria-expanded="@(salesOpen ? "true" : "false")" title="Satışlar">
+                <i class="bi bi-cart" aria-hidden="true"></i>
+                <span class="admin-nav-label">Satışlar</span>
+                <i class="bi bi-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @Active("orders")" asp-area="Admin" asp-controller="Orders" asp-action="Index"><i class="bi bi-receipt"></i><span class="admin-nav-label">Siparişler</span></a>
+                <a class="admin-nav-item @Active("customers")" asp-area="Admin" asp-controller="Customers" asp-action="Index"><i class="bi bi-people"></i><span class="admin-nav-label">Müşteriler</span></a>
+                <a class="admin-nav-item @Active("shoppingcarts")" asp-area="Admin" asp-controller="ShoppingCarts" asp-action="Index"><i class="bi bi-bag"></i><span class="admin-nav-label">Sepetler</span></a>
+                <a class="admin-nav-item @Active("report")" asp-area="Admin" asp-controller="Report" asp-action="Index"><i class="bi bi-graph-up"></i><span class="admin-nav-label">Raporlar</span></a>
+            </div>
+        </div>
+
+        <div class="admin-nav-group @(contentOpen ? "is-open" : "")" data-group="content">
+            <button type="button" class="admin-nav-group-toggle" aria-expanded="@(contentOpen ? "true" : "false")" title="İçerik">
+                <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+                <span class="admin-nav-label">İçerik</span>
+                <i class="bi bi-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @Active("menus")" asp-area="Admin" asp-controller="Menus" asp-action="Index"><i class="bi bi-list"></i><span class="admin-nav-label">Menüler</span></a>
+                <a class="admin-nav-item @Active("mainpageimages")" asp-area="Admin" asp-controller="MainPageImages" asp-action="Index"><i class="bi bi-images"></i><span class="admin-nav-label">Ana Sayfa</span></a>
+                <a class="admin-nav-item @Active("stories")" asp-area="Admin" asp-controller="Stories" asp-action="Index"><i class="bi bi-book"></i><span class="admin-nav-label">Hikayeler</span></a>
+                <a class="admin-nav-item @Active("storycategories")" asp-area="Admin" asp-controller="StoryCategories" asp-action="Index"><i class="bi bi-folder"></i><span class="admin-nav-label">Hikaye Kategorileri</span></a>
+                <a class="admin-nav-item @Active("tags")" asp-area="Admin" asp-controller="Tags" asp-action="Index"><i class="bi bi-hash"></i><span class="admin-nav-label">Etiketler</span></a>
+                <a class="admin-nav-item @Active("tagcategories")" asp-area="Admin" asp-controller="TagCategories" asp-action="Index"><i class="bi bi-collection"></i><span class="admin-nav-label">Etiket Kategorileri</span></a>
+                <a class="admin-nav-item @Active("faq")" asp-area="Admin" asp-controller="Faq" asp-action="Index"><i class="bi bi-question-circle"></i><span class="admin-nav-label">SSS</span></a>
+                <a class="admin-nav-item @Active("subscribers")" asp-area="Admin" asp-controller="Subscribers" asp-action="Index"><i class="bi bi-envelope"></i><span class="admin-nav-label">Aboneler</span></a>
+            </div>
+        </div>
+
+        <div class="admin-nav-group @(systemOpen ? "is-open" : "")" data-group="system">
+            <button type="button" class="admin-nav-group-toggle" aria-expanded="@(systemOpen ? "true" : "false")" title="Sistem">
+                <i class="bi bi-gear" aria-hidden="true"></i>
+                <span class="admin-nav-label">Sistem</span>
+                <i class="bi bi-chevron-down admin-nav-caret" aria-hidden="true"></i>
+            </button>
+            <div class="admin-nav-group-body">
+                <a class="admin-nav-item @Active("mailtemplates")" asp-area="Admin" asp-controller="MailTemplates" asp-action="Index"><i class="bi bi-mailbox"></i><span class="admin-nav-label">Mail Şablonları</span></a>
+                <a class="admin-nav-item @Active("settings")" asp-area="Admin" asp-controller="Settings" asp-action="Index"><i class="bi bi-sliders"></i><span class="admin-nav-label">Ayarlar</span></a>
+                <a class="admin-nav-item @Active("adminsettings")" asp-area="Admin" asp-controller="AdminSettings" asp-action="Index"><i class="bi bi-shield-lock"></i><span class="admin-nav-label">Admin Ayarları</span></a>
+                <a class="admin-nav-item @Active("metrics")" asp-area="Admin" asp-controller="Metrics" asp-action="Index"><i class="bi bi-speedometer2"></i><span class="admin-nav-label">Metrikler</span></a>
+                <a class="admin-nav-item @Active("users")" asp-area="Admin" asp-controller="Users" asp-action="Index"><i class="bi bi-person-badge"></i><span class="admin-nav-label">Kullanıcılar</span></a>
+                <a class="admin-nav-item @Active("media")" asp-area="Admin" asp-controller="Media" asp-action="Index"><i class="bi bi-folder2-open"></i><span class="admin-nav-label">Medya</span></a>
+                <a class="admin-nav-item @Active("images")" asp-area="Admin" asp-controller="Images" asp-action="Index"><i class="bi bi-image"></i><span class="admin-nav-label">Görseller</span></a>
+                <a class="admin-nav-item @Active("applogs")" asp-area="Admin" asp-controller="AppLogs" asp-action="Index"><i class="bi bi-journal-text"></i><span class="admin-nav-label">Loglar</span></a>
+                <a class="admin-nav-item @Active("importdata")" asp-area="Admin" asp-controller="ImportData" asp-action="Index"><i class="bi bi-upload"></i><span class="admin-nav-label">İçe Aktar</span></a>
+            </div>
+        </div>
+
+        <a class="admin-nav-item" asp-area="" asp-controller="Home" asp-action="Index" title="Mağaza">
+            <i class="bi bi-shop" aria-hidden="true"></i>
+            <span class="admin-nav-label">Mağaza</span>
+        </a>
     </nav>
 </aside>

@@ -1,0 +1,70 @@
+@model EImece.Web.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<h1 class="h4 mb-4">Gösterge Paneli</h1>
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="eimece-shell-card text-center">
+            <div class="display-6">@Model.ProductCount</div>
+            <div class="text-muted">Ürün</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="eimece-shell-card text-center">
+            <div class="display-6">@Model.OrderCount</div>
+            <div class="text-muted">Sipariş</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="eimece-shell-card text-center">
+            <div class="display-6">@Model.CustomerCount</div>
+            <div class="text-muted">Müşteri</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="eimece-shell-card text-center">
+            <div class="display-6">@Model.SubscriberCount</div>
+            <div class="text-muted">Abone</div>
+        </div>
+    </div>
+</div>
+<h2 class="h5">Son Siparişler</h2>
+@if (Model.RecentOrders.Count == 0)
+{
+    <p class="text-muted">Henüz sipariş yok.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Sipariş No</th>
+                    <th>Müşteri</th>
+                    <th>Ödeme</th>
+                    <th>Tutar</th>
+                    <th>Tarih</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var o in Model.RecentOrders)
+                {
+                    <tr>
+                        <td>@o.Id</td>
+                        <td>@o.OrderNumber</td>
+                        <td>@o.Name</td>
+                        <td>@o.PaymentStatus</td>
+                        <td>@o.PaidPrice</td>
+                        <td>@o.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary" asp-area="Admin" asp-controller="Orders" asp-action="Details" asp-route-id="@o.Id">Detay</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

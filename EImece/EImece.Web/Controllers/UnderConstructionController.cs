@@ -15,10 +15,8 @@ public sealed class UnderConstructionController : Controller
 
     public IActionResult Index()
     {
-        ViewData["Title"] = "Under construction";
-        ViewData["Message"] = _options.IsSiteUnderConstruction
-            ? "This site is temporarily under construction."
-            : "Under construction page (flag currently off).";
-        return View("~/Views/Shared/Placeholder.cshtml");
+        ViewData["Title"] = "Yapım aşamasında";
+        ViewData["IsUnderConstruction"] = _options.IsSiteUnderConstruction;
+        return View();
     }
 }

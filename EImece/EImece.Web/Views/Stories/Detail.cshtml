@@ -1,0 +1,32 @@
+@model EImece.Web.Models.StoryDetailViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="container px-3 py-4">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent px-0 mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Ana Sayfa</a></li>
+            <li class="breadcrumb-item"><a href="/s/categories/@Model.CategoryId/">@Model.CategoryName</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+    <article class="eimece-shell-card p-4">
+        <h1 class="h2 mb-2">@Model.Name</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.AuthorName))
+        {
+            <p class="text-muted">@Model.AuthorName</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+        {
+            <p class="lead">@Model.ShortDescription</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="story-body">@Html.Raw(Model.Description)</div>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Notice))
+        {
+            <p class="text-muted mt-3 mb-0">@Model.Notice</p>
+        }
+    </article>
+</div>

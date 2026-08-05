@@ -187,6 +187,74 @@ public sealed class AccountController : Controller
 
     [HttpGet]
     [AllowAnonymous]
+    public IActionResult Register() => View(new RegisterViewModel());
+
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(RegisterViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = new ApplicationUser
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            EmailConfirmed = true
+        };
+        var result = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+
+        if (!await _userManager.IsInRoleAsync(user, RoleNames.Customer).ConfigureAwait(false))
+        {
+            await _userManager.AddToRoleAsync(user, RoleNames.Customer).ConfigureAwait(false);
+        }
+
+        await _signInManager.SignInAsync(user, isPersistent: false).ConfigureAwait(false);
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult ForgotPassword() => View();
+
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ForgotPassword(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            ModelState.AddModelError(string.Empty, "Email required");
+            return View();
+        }
+
+        var user = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+        if (user is null)
+        {
+            return View("ForgotPasswordConfirmation");
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
+        _logger.LogInformation("Password reset token generated for {Email} (len={Len})", email, token.Length);
+        return View("ForgotPasswordConfirmation");
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
     public IActionResult ExternalLogin(string provider, string? returnUrl = null)
     {
         var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });

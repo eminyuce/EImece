@@ -1,0 +1,31 @@
+@model EImece.Web.Models.MetricsViewModel
+@{
+    ViewData["Title"] = "Metrikler";
+}
+<h1 class="h4 mb-4">Metrikler</h1>
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="eimece-shell-card">
+            <strong>Ürünler</strong>
+            <div class="display-6">@Model.ProductCount</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="eimece-shell-card">
+            <strong>Siparişler</strong>
+            <div class="display-6">@Model.OrderCount</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="eimece-shell-card">
+            <strong>Müşteriler</strong>
+            <div class="display-6">@Model.CustomerCount</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="eimece-shell-card">
+            <strong>Aboneler</strong>
+            <div class="display-6">@Model.SubscriberCount</div>
+        </div>
+    </div>
+</div>

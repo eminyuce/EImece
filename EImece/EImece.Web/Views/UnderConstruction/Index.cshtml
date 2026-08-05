@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Yapım aşamasında";
+    Layout = "_Layout";
+}
+<div class="container px-3 py-5 text-center">
+    <h1 class="h2 mb-3">Yapım aşamasında</h1>
+    <p class="lead text-muted">
+        @if (ViewData["IsUnderConstruction"] as bool? == true)
+        {
+            @:Site geçici olarak bakımda. Lütfen daha sonra tekrar deneyin.
+        }
+        else
+        {
+            @:Bu sayfa yapım aşamasındadır.
+        }
+    </p>
+</div>

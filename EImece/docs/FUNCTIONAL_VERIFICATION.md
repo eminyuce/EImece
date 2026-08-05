@@ -40,10 +40,15 @@ Covers: Debug build, xUnit smoke (`/health`, images, captcha, home, checkout she
 
 | Step | Action | Expected |
 |------|--------|----------|
-| 1 | `GET /Account/AdminLogin/` | Admin auth layout |
-| 2 | Sign in as Admin | Access `/Admin/` dashboard shell |
-| 3 | Confirm `BypassAdminAuth=false` in staging/prod | Unauthenticated `/Admin/` redirects to login |
-| 4 | Customer role | `/Customers/` requires Customer policy |
+| 1 | `GET /Account/AdminLogin/` | Admin auth layout (or Dashboard if BypassAdminAuth) |
+| 2 | Sign in as Admin | Access `/Admin/` dashboard |
+| 3 | Local IIS `:82` smoke | `ASPNETCORE_ENVIRONMENT=Development` + `EImece__BypassAdminAuth=true` in `web.config` |
+| 4 | Confirm `BypassAdminAuth=false` in staging/prod (`appsettings.Production.json`) | Unauthenticated `/Admin/` redirects to login |
+| 5 | Customer role | `/Customers/` requires Customer policy |
+| 6 | Reports | `/Admin/Report/` hub + Excel/CSV `Export` |
+| 7 | Catalog CRUD | Index + SaveOrEdit + Delete on Products/Brands/etc. |
+
+Baseline compare: legacy `:81` vs Core `:82` — see `publish/smoke-81.csv` and `publish/smoke-82.csv`.
 
 ## Performance spot checks
 
@@ -55,6 +60,8 @@ Covers: Debug build, xUnit smoke (`/health`, images, captcha, home, checkout she
 
 | Environment | Build | Smoke tests | Manual checklist | Approver | Date |
 |-------------|-------|-------------|------------------|----------|------|
-| Dev | ☐ | ☐ | ☐ | | |
+| Dev (IIS :82) | ☑ Release | ☑ 56/56 routes + export/images/ajax | ☑ See OLD_VS_NEW_VERIFICATION.md | Agent | 2026-08-05 |
 | Staging | ☐ | ☐ | ☐ | | |
 | Production | ☐ | ☐ | ☐ | | |
+
+Full Old vs New matrix: [OLD_VS_NEW_VERIFICATION.md](OLD_VS_NEW_VERIFICATION.md) · Summary: [MIGRATION_SUMMARY.md](MIGRATION_SUMMARY.md)

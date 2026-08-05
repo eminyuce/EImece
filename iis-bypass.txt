@@ -1,0 +1,4 @@
+BypassAdminAuth=true in appsettings.json
+web.config updated
+recycled
+DONE

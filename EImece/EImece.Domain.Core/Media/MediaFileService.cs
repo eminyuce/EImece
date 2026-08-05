@@ -18,8 +18,10 @@ public sealed class MediaFileService : IMediaFileService
         _options = options.Value;
         _logger = logger;
 
-        // Default RootRelativePath is "wwwroot/media" so ContentRoot resolves like legacy ~/media.
-        MediaRootPath = Path.GetFullPath(Path.Combine(environment.ContentRootPath, _options.RootRelativePath));
+        // AbsoluteRootPath allows IIS to share legacy media (e.g. C:\inetpub\wwwroot\Eimece\media).
+        MediaRootPath = !string.IsNullOrWhiteSpace(_options.AbsoluteRootPath)
+            ? Path.GetFullPath(_options.AbsoluteRootPath)
+            : Path.GetFullPath(Path.Combine(environment.ContentRootPath, _options.RootRelativePath));
         ImagesPath = Path.Combine(MediaRootPath, _options.ImagesSubPath);
         TempPath = Path.Combine(MediaRootPath, _options.TempSubPath);
         UrlBase = _options.UrlBase.EndsWith('/') ? _options.UrlBase : _options.UrlBase + "/";
@@ -32,10 +34,22 @@ public sealed class MediaFileService : IMediaFileService
 
     public void EnsureDirectories()
     {
-        Directory.CreateDirectory(MediaRootPath);
-        Directory.CreateDirectory(ImagesPath);
-        Directory.CreateDirectory(TempPath);
-        _logger.LogDebug("Media directories ensured under {MediaRoot}", MediaRootPath);
+        try
+        {
+            Directory.CreateDirectory(MediaRootPath);
+            Directory.CreateDirectory(ImagesPath);
+            Directory.CreateDirectory(TempPath);
+            _logger.LogDebug("Media directories ensured under {MediaRoot}", MediaRootPath);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            // Shared AbsoluteRootPath may be read-only to the Core app pool — do not crash startup.
+            _logger.LogWarning(ex, "Could not create media directories under {MediaRoot}; continuing with existing paths", MediaRootPath);
+        }
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Could not create media directories under {MediaRoot}; continuing with existing paths", MediaRootPath);
+        }
     }
 
     public bool Exists(string relativePath)

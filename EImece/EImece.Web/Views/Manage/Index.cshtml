@@ -1,0 +1,27 @@
+@model EImece.Web.Models.ManageIndexViewModel
+@{
+    ViewData["Title"] = "Hesap Yönetimi";
+}
+<div class="container px-3 py-4">
+    <h1 class="h3 mb-3">Hesap Yönetimi</h1>
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="alert alert-success">@Model.StatusMessage</div>
+    }
+    <div class="eimece-shell-card p-4">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Kullanıcı</dt>
+            <dd class="col-sm-9">@Model.UserName</dd>
+            <dt class="col-sm-3">E-posta</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+            <dt class="col-sm-3">Telefon</dt>
+            <dd class="col-sm-9">@(Model.PhoneNumber ?? "—")</dd>
+            <dt class="col-sm-3">Şifre</dt>
+            <dd class="col-sm-9">@(Model.HasPassword ? "Kayıtlı" : "Yok")</dd>
+        </dl>
+        <div class="mt-4 d-flex gap-2">
+            <a asp-area="Customers" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">Siparişlerim</a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary">Çıkış</a>
+        </div>
+    </div>
+</div>

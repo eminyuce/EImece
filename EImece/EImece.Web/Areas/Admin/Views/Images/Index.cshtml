@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Görseller";
+    var dbCount = ViewData["DbCount"] as int? ?? 0;
+    var diskFiles = ViewData["DiskFiles"] as IEnumerable<string?> ?? Array.Empty<string?>();
+    var imagesPath = ViewData["ImagesPath"] as string ?? "";
+}
+<h1 class="h4 mb-3">Görseller</h1>
+@if (TempData["Status"] != null)
+{
+    <div class="alert alert-success">@TempData["Status"]</div>
+}
+<p class="text-muted">DB FileStorage: <strong>@dbCount</strong> · Disk: <code>@imagesPath</code></p>
+<form asp-action="CompressImages" method="post" class="mb-3">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">İlk 100 görseli sıkıştır</button>
+</form>
+<ul class="list-unstyled small">
+    @foreach (var f in diskFiles)
+    {
+        <li>@f</li>
+    }
+</ul>

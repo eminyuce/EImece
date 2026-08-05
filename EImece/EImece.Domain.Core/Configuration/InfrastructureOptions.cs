@@ -29,6 +29,10 @@ public sealed class MediaOptions
 
     /// <summary>Relative to content root, e.g. "wwwroot/media" (legacy ~/media).</summary>
     public string RootRelativePath { get; set; } = "wwwroot/media";
+
+    /// <summary>Optional absolute root (IIS shared media). When set, overrides RootRelativePath.</summary>
+    public string? AbsoluteRootPath { get; set; }
+
     public string ImagesSubPath { get; set; } = "images";
     public string TempSubPath { get; set; } = "tempFiles";
     public bool IsImageFullSrcUnderMediaFolder { get; set; } = true;

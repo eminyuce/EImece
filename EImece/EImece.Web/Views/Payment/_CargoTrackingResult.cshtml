@@ -1,0 +1,21 @@
+@model EImece.Domain.Core.Entities.Order?
+@if (Model is null)
+{
+    <div class="alert alert-warning">Sipariş bulunamadı.</div>
+}
+else
+{
+    <div class="eimece-shell-card p-4">
+        <h2 class="h5">Sipariş @Model.OrderNumber</h2>
+        <p class="mb-1"><strong>Durum:</strong> @Model.PaymentStatus</p>
+        <p class="mb-1"><strong>Teslimat:</strong> @Model.DeliveryDate.ToString("d")</p>
+        @if (!string.IsNullOrWhiteSpace(Model.ShipmentTrackingNumber))
+        {
+            <p class="mb-1"><strong>Takip no:</strong> @Model.ShipmentTrackingNumber</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.ShipmentCompanyName))
+        {
+            <p class="mb-0"><strong>Kargo:</strong> @Model.ShipmentCompanyName</p>
+        }
+    </div>
+}

@@ -1,0 +1,22 @@
+@model EImece.Web.Models.ProductTagViewModel
+@using Resources
+@{
+    ViewData["Title"] = Model.TagName;
+}
+<div class="container px-3 py-4">
+    <h1 class="h3 mb-3">@Model.TagName</h1>
+    <p class="text-muted">@Model.Products.Count ürün</p>
+    <div class="row">
+        @foreach (var p in Model.Products)
+        {
+            <div class="col-md-3 mb-3">
+                <div class="eimece-shell-card h-100">
+                    <h3 class="h6">@p.Name</h3>
+                    <p class="small text-muted">@p.ProductCode</p>
+                    <p><strong>@p.Price.ToString("N2") ₺</strong></p>
+                    <a href="/p/@(p.CategorySlug ?? "urun")/@p.Id/">Detay →</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

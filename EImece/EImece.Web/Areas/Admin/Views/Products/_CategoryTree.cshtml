@@ -1,0 +1,20 @@
+@using EImece.Domain.Core.Admin
+@model List<CategoryTreeNode>
+@{
+    var selectedId = (int)(ViewBag.SelectedCategoryId ?? 0);
+    var brandId = (int)(ViewBag.BrandId ?? 0);
+    var search = ViewBag.Search as string;
+}
+<div class="card mb-3">
+    <div class="card-header py-2 fw-semibold">Kategoriler</div>
+    <div class="card-body p-2 product-category-tree">
+        <a class="d-block small mb-2 @(selectedId == 0 ? "fw-bold text-danger" : "")"
+           asp-action="Index" asp-route-id="0" asp-route-brandId="@brandId" asp-route-search="@search">
+            Tümü
+        </a>
+        @foreach (var node in Model)
+        {
+            <partial name="_CategoryTreeNode" model="node" />
+        }
+    </div>
+</div>

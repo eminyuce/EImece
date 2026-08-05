@@ -3,15 +3,30 @@
 @{
     ViewData["Title"] = Model.Name;
 }
-
 <div class="container px-3 py-4">
     <h1 class="h3 mb-2">@Model.Name</h1>
-    <p class="text-muted">@Resource.ProductCategories · /c/pc/@Model.Id</p>
-    <div class="eimece-shell-card">
-        <p class="mb-2">@(Model.Summary ?? "Category shell — product grid arrives with service/view migration.")</p>
-        @if (!string.IsNullOrEmpty(Model.Notice))
+    <p class="text-muted">@(Model.Summary ?? Resource.ProductCategories)</p>
+    @if (!string.IsNullOrEmpty(Model.Notice))
+    {
+        <div class="alert alert-warning">@Model.Notice</div>
+    }
+    <div class="row">
+        @foreach (var p in Model.Products)
         {
-            <p class="small text-muted mb-0">@Model.Notice</p>
+            <div class="col-md-3 mb-3">
+                <div class="eimece-shell-card h-100">
+                    <h3 class="h6">@p.Name</h3>
+                    @if (p.Price > 0)
+                    {
+                        <p><strong>@p.Price.ToString("N2") ₺</strong></p>
+                        <a href="/p/@(Model.Name)/@p.Id/">Detay →</a>
+                    }
+                    else
+                    {
+                        <a href="/c/pc/@p.Id/">Kategori →</a>
+                    }
+                </div>
+            </div>
         }
     </div>
 </div>

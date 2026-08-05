@@ -1,0 +1,42 @@
+@model EImece.Web.Models.MoveProductsViewModel
+@{
+    ViewData["Title"] = "Ürün Taşı";
+    ViewBag.SelectedCategoryId = Model.CategoryId;
+    ViewBag.BrandId = 0;
+}
+<h1 class="h4">Ürünleri Kategoriye Taşı</h1>
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert-success">@Model.Message</div>
+}
+<div class="row g-3">
+    <div class="col-md-4">
+        <partial name="_CategoryTree" model="Model.CategoryTree" />
+        <p class="small text-muted">Hedef kategoriyi sol ağaçtan seçin, sonra seçili ürünleri taşıyın.</p>
+    </div>
+    <div class="col-md-8">
+        <form method="post" asp-action="MoveProducts" class="mb-3">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.CategoryId" />
+            <input type="hidden" name="oldCategoryId" value="@(Model.OldCategoryId > 0 ? Model.OldCategoryId : Model.CategoryId)" />
+            <div class="mb-2">
+                <label class="form-label">Ürün Id listesi (virgülle)</label>
+                <input class="form-control" name="productIdList" value="@Model.ProductIdList" placeholder="örn. 176536,176537" />
+            </div>
+            <button type="submit" class="btn btn-primary" @(Model.CategoryId <= 0 ? "disabled" : null)>Seçilenleri Bu Kategoriye Taşı</button>
+            <a class="btn btn-link" asp-action="Index">Ürün listesine dön</a>
+        </form>
+        @if (Model.Products.Count > 0)
+        {
+            <table class="table table-sm">
+                <thead><tr><th>Id</th><th>Ad</th><th>Kategori</th></tr></thead>
+                <tbody>
+                @foreach (var p in Model.Products)
+                {
+                    <tr><td>@p.Id</td><td>@p.Name</td><td>@p.CategoryName</td></tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

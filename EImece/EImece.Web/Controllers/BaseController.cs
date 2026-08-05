@@ -27,7 +27,6 @@ public abstract class BaseController : Controller
     {
         ViewData["IsProductPriceEnable"] = true; // default until settings service migrates
         ViewData["SiteStatus"] = SiteOptions.SiteStatus;
-        ViewData["Phase"] = "Phase 6 — Application layer";
         base.OnActionExecuting(context);
     }
 

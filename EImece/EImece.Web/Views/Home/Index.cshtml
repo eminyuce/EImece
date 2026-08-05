@@ -1,44 +1,89 @@
-﻿@using Resources
+﻿@model EImece.Web.Models.HomePageViewModel
+@using Resources
 @{
     ViewData["Title"] = "EImece";
-    ViewData["Description"] = "Open-source e-commerce storefront on ASP.NET Core 8";
 }
 
-<section class="eimece-hero">
-    <div class="container px-3 py-5">
-        <p class="text-uppercase small opacity-75 mb-2">@ViewData["Phase"]</p>
-        <h1 class="brand">EImece</h1>
-        <p class="lead mb-4">Modern ASP.NET Core storefront shell using the legacy mstore theme assets.</p>
-        <div class="d-flex flex-wrap" style="gap: .75rem;">
-            <a class="btn btn-primary btn-lg" asp-controller="Products" asp-action="SearchProducts">@Resource.Products</a>
-            <a class="btn btn-outline-light btn-lg" href="/c/pc/1">@Resource.ProductCategories</a>
-            <a class="btn btn-outline-light btn-lg" asp-controller="Payment" asp-action="Index">Cart</a>
+@if (Model.Banners.Count > 0)
+{
+    <section class="container px-3 pt-4">
+        <div id="homeCarousel" class="carousel slide eimece-shell-card overflow-hidden" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @for (var i = 0; i < Model.Banners.Count; i++)
+                {
+                    var banner = Model.Banners[i];
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        @if (!string.IsNullOrWhiteSpace(banner.Link))
+                        {
+                            <a href="@banner.Link" class="d-block p-4 text-decoration-none">
+                                <h2 class="h4 mb-0">@banner.Name</h2>
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="p-4">
+                                <h2 class="h4 mb-0">@banner.Name</h2>
+                            </div>
+                        }
+                        @if (banner.MainImageId is > 0)
+                        {
+                            <img src="/images/300/@banner.MainImageId/" alt="@banner.Name" class="d-block w-100" style="max-height:320px;object-fit:cover;" />
+                        }
+                    </div>
+                }
+            </div>
+            @if (Model.Banners.Count > 1)
+            {
+                <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            }
         </div>
-    </div>
-</section>
+    </section>
+}
+else
+{
+    <section class="eimece-hero">
+        <div class="container px-3 py-5">
+            <h1 class="brand">EImece</h1>
+            <p class="lead mb-4">ASP.NET Core 8 mağaza</p>
+        </div>
+    </section>
+}
 
 <section class="container px-3 py-5">
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <div class="eimece-shell-card h-100">
-                <h3 class="h5">@Resource.Products</h3>
-                <p class="text-muted mb-3">SEO routes under <code>/p/...</code> with Detail shell views.</p>
-                <a asp-controller="Products" asp-action="SearchProducts">@Resource.Search →</a>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="eimece-shell-card h-100">
-                <h3 class="h5">@Resource.Stories</h3>
-                <p class="text-muted mb-3">Content routes under <code>/s/...</code> ready for Phase 7+ pages.</p>
-                <a asp-controller="Stories" asp-action="Categories">Browse →</a>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="eimece-shell-card h-100">
-                <h3 class="h5">Admin</h3>
-                <p class="text-muted mb-3">Admin chrome uses <code>adminShell.css</code> + sidebar layout.</p>
-                <a asp-controller="Account" asp-action="AdminLogin">Admin login →</a>
-            </div>
-        </div>
+    <div class="d-flex flex-wrap mb-4" style="gap: .75rem;">
+        <a class="btn btn-primary" asp-controller="Products" asp-action="SearchProducts">@Resource.Products</a>
+        <a class="btn btn-outline-primary" href="/c/pc/">@Resource.ProductCategories</a>
+        <a class="btn btn-outline-primary" asp-controller="Payment" asp-action="Index">Sepet</a>
     </div>
+
+    <h2 class="h4 mb-3">Öne çıkan ürünler</h2>
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <div class="alert alert-warning">@Model.Error</div>
+    }
+    @if (Model.Products.Count == 0)
+    {
+        <p class="text-muted">Ürün bulunamadı.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var p in Model.Products)
+            {
+                <div class="col-md-3 mb-3">
+                    <div class="eimece-shell-card h-100">
+                        <h3 class="h6">@p.Name</h3>
+                        <p class="small text-muted mb-2">@p.ProductCode</p>
+                        <p class="mb-2"><strong>@p.Price.ToString("N2") ₺</strong></p>
+                        <a href="/p/@(p.CategorySlug ?? "urun")/@p.Id/">Detay →</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </section>

@@ -1,0 +1,22 @@
+@using EImece.Domain.Core.Admin
+@model CategoryTreeNode
+@{
+    var selectedId = (int)(ViewBag.SelectedCategoryId ?? 0);
+    var brandId = (int)(ViewBag.BrandId ?? 0);
+    var search = ViewBag.Search as string;
+    var pad = Math.Max(0, (Model.Level - 1) * 12);
+    var label = Model.ProductCount > 0 ? $"{Model.Name} ({Model.ProductCount})" : Model.Name;
+}
+<a class="d-block small py-1 text-decoration-none @(Model.Id == selectedId ? "fw-bold text-danger" : "text-dark")"
+   style="padding-left:@(pad)px"
+   asp-action="Index" asp-route-id="@Model.Id" asp-route-brandId="@brandId" asp-route-search="@search">
+    @if (Model.Level > 1)
+    {
+        <span class="text-muted">— </span>
+    }
+    @label
+</a>
+@foreach (var child in Model.Children)
+{
+    <partial name="_CategoryTreeNode" model="child" />
+}

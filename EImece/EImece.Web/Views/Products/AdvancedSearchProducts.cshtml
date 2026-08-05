@@ -1,0 +1,41 @@
+@model EImece.Web.Models.ProductSearchViewModel
+@using Resources
+@{
+    ViewData["Title"] = "Gelişmiş Arama";
+}
+<div class="container px-3 py-4">
+    <h1 class="h3 mb-3">Gelişmiş Arama</h1>
+    <form method="get" class="eimece-shell-card p-3 mb-4">
+        <div class="row g-2">
+            <div class="col-md-5">
+                <input type="text" name="search" value="@Model.Query" class="form-control" placeholder="Ürün adı veya kodu" />
+            </div>
+            <div class="col-md-4">
+                <select name="categoryId" class="form-select">
+                    <option value="">Tüm kategoriler</option>
+                    @foreach (var c in Model.Categories)
+                    {
+                        <option value="@c.Id" selected="@(Model.CategoryId == c.Id)">@c.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">@Resource.Search</button>
+            </div>
+        </div>
+    </form>
+    <p class="text-muted">@Model.Products.Count sonuç</p>
+    <div class="row">
+        @foreach (var p in Model.Products)
+        {
+            <div class="col-md-3 mb-3">
+                <div class="eimece-shell-card h-100">
+                    <h3 class="h6">@p.Name</h3>
+                    <p class="small text-muted">@p.ProductCode · @p.CategoryName</p>
+                    <p><strong>@p.Price.ToString("N2") ₺</strong></p>
+                    <a href="/p/@(p.CategorySlug ?? "urun")/@p.Id/">Detay →</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

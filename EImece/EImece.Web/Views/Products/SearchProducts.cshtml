@@ -1,14 +1,23 @@
+@model EImece.Web.Models.ProductSearchViewModel
 @using Resources
 @{
     ViewData["Title"] = Resource.SearchResults;
-    var q = ViewData["Query"] as string;
 }
-
 <div class="container px-3 py-4">
     <h1 class="h3 mb-3">@Resource.SearchResults</h1>
     <partial name="_SearchProductForm" />
-    <div class="eimece-shell-card mt-3">
-        <p class="mb-1">Query: <strong>@(string.IsNullOrWhiteSpace(q) ? "(empty)" : q)</strong></p>
-        <p class="text-muted mb-0">Search results UI migrates with Domain.Core product services. Route <code>/p/arama</code> is live.</p>
+    <p class="text-muted mt-3">@(string.IsNullOrWhiteSpace(Model.Query) ? "Tüm ürünler" : $"Arama: {Model.Query}") — @Model.Products.Count sonuç</p>
+    <div class="row">
+        @foreach (var p in Model.Products)
+        {
+            <div class="col-md-3 mb-3">
+                <div class="eimece-shell-card h-100">
+                    <h3 class="h6">@p.Name</h3>
+                    <p class="small text-muted">@p.ProductCode</p>
+                    <p><strong>@p.Price.ToString("N2") ₺</strong></p>
+                    <a href="/p/@(p.CategoryName ?? "urun")/@p.Id/">Detay →</a>
+                </div>
+            </div>
+        }
     </div>
 </div>

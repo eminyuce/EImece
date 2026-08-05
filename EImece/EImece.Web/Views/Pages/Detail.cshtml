@@ -1,0 +1,20 @@
+@model EImece.Web.Models.PageDetailViewModel
+@{
+    ViewData["Title"] = Model.Name;
+    ViewData["Description"] = Model.Description;
+}
+<div class="container px-3 py-4">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent px-0 mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Ana Sayfa</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+    <article class="eimece-shell-card p-4">
+        <h1 class="h2 mb-3">@Model.Name</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="page-body">@Html.Raw(Model.Description)</div>
+        }
+    </article>
+</div>

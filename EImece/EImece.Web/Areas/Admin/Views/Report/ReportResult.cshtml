@@ -1,0 +1,62 @@
+@model EImece.Web.Models.ReportResultViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    var table = Model.Table;
+}
+<div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h1 class="h4 mb-1">@Model.Title</h1>
+        <a asp-action="Index">← Raporlar</a>
+    </div>
+    <div class="btn-group">
+        <a class="btn btn-sm btn-success"
+           asp-action="Export"
+           asp-route-actionName="@Model.ActionName"
+           asp-route-format="xlsx"
+           asp-route-startDate="@Model.StartDate?.ToString("yyyy-MM-dd")"
+           asp-route-endDate="@Model.EndDate?.ToString("yyyy-MM-dd")">Excel</a>
+        <a class="btn btn-sm btn-outline-secondary"
+           asp-action="Export"
+           asp-route-actionName="@Model.ActionName"
+           asp-route-format="csv"
+           asp-route-startDate="@Model.StartDate?.ToString("yyyy-MM-dd")"
+           asp-route-endDate="@Model.EndDate?.ToString("yyyy-MM-dd")">CSV</a>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-warning">Rapor çalıştırılamadı: @Model.Error</div>
+}
+
+@if (table == null || table.Rows.Count == 0)
+{
+    <p class="text-muted">Kayıt bulunamadı.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    @foreach (System.Data.DataColumn col in table.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in table.Rows)
+                {
+                    <tr>
+                        @foreach (System.Data.DataColumn col in table.Columns)
+                        {
+                            <td>@(row[col]?.ToString())</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <p class="small text-muted">@table.Rows.Count satır</p>
+}

@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Raporlar";
+    var reportMeta = new Dictionary<string, (string Title, string Desc)>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["SalesByDateRange"] = ("Tarihe Göre Satışlar", "Seçtiğiniz tarih aralığındaki sipariş ve satış özetini görüntüleyin."),
+        ["GetRegionalSalesReport"] = ("Bölgesel Satışlar", "Satışların bölgelere ve illere göre dağılımını inceleyin."),
+        ["OrderVolumeReport"] = ("Sipariş Hacmi", "Belirli bir dönemde kaç sipariş alındığını görün."),
+        ["PaymentMethod"] = ("Ödeme Yöntemleri", "Ödeme yöntemlerinin kullanımını karşılaştırın."),
+        ["PaymentStatus"] = ("Ödeme Durumları", "Başarılı, bekleyen ve başarısız ödemelerin dağılımı."),
+        ["PaymentTransactionReport"] = ("Ödeme İşlemleri", "Tarih aralığına göre ödeme işlemleri."),
+        ["ProductSummary"] = ("Ürün Özeti", "Ürünlerin genel durumunu tek bakışta görün."),
+        ["ProductStatsByDateRange"] = ("Ürün İstatistikleri", "Dönem bazında ürün satış rakamları."),
+        ["PriceAnalysis"] = ("Fiyat Analizi", "Fiyat aralıklarına göre ürün dağılımı."),
+        ["ProductInventory"] = ("Stok Durumu", "Düşük stok ve kampanyalı ürünler."),
+        ["FraudAnalysis"] = ("Dolandırıcılık Analizi", "Şüpheli sipariş sinyalleri."),
+        ["FraudRiskReport"] = ("Dolandırıcılık Riski", "Risk skorları ve uyarılar."),
+        ["PerformanceSystemReport"] = ("Sistem Performansı", "Sistem ve işlem performans özeti."),
+        ["CouponUsage"] = ("Kupon Kullanımı", "Kupon kullanım istatistikleri."),
+        ["ShipmentCompany"] = ("Kargo Firmaları", "Kargo firmalarına göre gönderi dağılımı."),
+        ["FinancialReport"] = ("Finansal Özet", "Gelir ve finansal göstergeler.")
+    };
+    var categories = new Dictionary<string, string[]>
+    {
+        ["Satış Raporları"] = new[] { "SalesByDateRange", "GetRegionalSalesReport", "OrderVolumeReport" },
+        ["Ödeme Raporları"] = new[] { "PaymentMethod", "PaymentStatus", "PaymentTransactionReport" },
+        ["Ürün Raporları"] = new[] { "ProductSummary", "ProductStatsByDateRange", "PriceAnalysis", "ProductInventory" },
+        ["Risk ve Analiz"] = new[] { "FraudAnalysis", "FraudRiskReport", "PerformanceSystemReport" },
+        ["Pazarlama ve Lojistik"] = new[] { "CouponUsage", "ShipmentCompany" },
+        ["Finansal Raporlar"] = new[] { "FinancialReport" }
+    };
+}
+
+<div class="report-index">
+    <div class="mb-4">
+        <h1 class="h3">Raporlar</h1>
+        <p class="text-muted">Mevcut SQL Server stored procedure raporları (legacy parity).</p>
+    </div>
+    @foreach (var cat in categories)
+    {
+        <h2 class="h5 mt-4">@cat.Key</h2>
+        <div class="row">
+            @foreach (var action in cat.Value)
+            {
+                var meta = reportMeta[action];
+                <div class="col-md-4 mb-3">
+                    <div class="eimece-shell-card h-100">
+                        <h3 class="h6">@meta.Title</h3>
+                        <p class="small text-muted">@meta.Desc</p>
+                        <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="Report" asp-action="@action">Aç</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

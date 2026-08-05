@@ -1,0 +1,14 @@
+@model EImece.Web.Models.ErrorPageViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "_Layout";
+}
+<div class="container px-3 py-5 text-center">
+    <h1 class="display-4">@Model.StatusCode</h1>
+    <p class="lead">@Model.Title</p>
+    @if (!string.IsNullOrWhiteSpace(Model.RequestedUrl))
+    {
+        <p class="text-muted small">@Model.RequestedUrl</p>
+    }
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Ana sayfa</a>
+</div>
