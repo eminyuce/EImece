@@ -13,11 +13,11 @@ public sealed class PaymentController : BaseController
 
     [HttpGet]
     public IActionResult Index()
-        => Placeholder("Shopping cart", "Cart shell — full checkout migrates in Phase 8.");
+        => View();
 
     [HttpGet]
     public IActionResult ShoppingCart()
-        => Placeholder("Shopping cart", "ShoppingCart action shell.");
+        => View("Index");
 
     [HttpGet]
     public IActionResult BuyNow(string categoryName, string? id)

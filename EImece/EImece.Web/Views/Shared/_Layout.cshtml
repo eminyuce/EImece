@@ -1,66 +1,78 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using System.Globalization
+@using Resources
+@{
+    var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var title = ViewData["Title"] as string ?? "EImece";
+    var description = ViewData["Description"] as string;
+}
+<!DOCTYPE html>
+<html lang="@culture">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EImece.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EImece.Web.styles.css" asp-append-version="true" />
+    <title>@title</title>
+    @if (!string.IsNullOrWhiteSpace(description))
+    {
+        <meta name="description" content="@description" />
+    }
+    <meta property="og:site_name" content="EImece" />
+    <meta property="og:title" content="@title" />
+    <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png" />
+    <link rel="manifest" href="~/manifest.json" />
+
+    <!-- Legacy mstore theme (served from EImece/Content via static file mapping) -->
+    <link rel="stylesheet" href="~/Content/mstore/css/vendor.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/mstore/css/theme.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/mstore/css/skins/theme-5c77fc.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/mstore/css/skins/theme-5c77fc-rounded.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/eimece-core.css" asp-append-version="true" />
+    @await RenderSectionAsync("HeadExtra", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EImece.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="AdminLogin">Admin</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            <li class="nav-item">
-                                <span class="navbar-text me-2">@User.Identity.Name</span>
-                            </li>
-                            <li class="nav-item">
-                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-link nav-link">Logout</button>
-                                </form>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="navbar bg-dark py-2 px-0">
+        <div class="container px-3 d-flex justify-content-between align-items-center">
+            <span class="text-light opacity-75 font-size-sm">EImece · @culture</span>
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <a class="text-light font-size-sm opacity-75" asp-controller="Info" asp-action="Index" asp-route-id="aboutus">@Resource.AboutUs</a>
+                </li>
+                <li class="list-inline-item">
+                    <a class="text-light font-size-sm opacity-75" asp-controller="Payment" asp-action="Index">Cart</a>
+                </li>
+                <li class="list-inline-item">
+                    <partial name="_LoginPartial" />
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - EImece.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <header class="navbar navbar-expand-lg navbar-light bg-light px-0 border-bottom">
+        <div class="container flex-wrap px-3 py-2">
+            <a class="navbar-brand mr-sm-4 font-weight-bold" style="min-width: 120px; font-size: 1.6rem;" asp-controller="Home" asp-action="Index">
+                EImece
+            </a>
+            <partial name="_SearchProductForm" />
+            <nav class="navbar-nav flex-row ml-auto">
+                <a class="nav-link px-2" asp-controller="Products" asp-action="SearchProducts">@Resource.Products</a>
+                <a class="nav-link px-2" href="/c/pc/1">@Resource.ProductCategories</a>
+                <a class="nav-link px-2" asp-controller="Stories" asp-action="Categories">@Resource.Stories</a>
+            </nav>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <partial name="_Footer" />
+
+    <script src="~/Content/mstore/js/vendor.min.js" asp-append-version="true"></script>
+    <script src="~/Content/mstore/js/theme.min.js" asp-append-version="true"></script>
+    <script src="~/Scripts/jquery-3.5.1.min.js" asp-append-version="true"></script>
+    <script src="~/Scripts/eimece.js" asp-append-version="true"></script>
+    <script src="~/Scripts/cookie-consent.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

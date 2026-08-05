@@ -1,6 +1,6 @@
 # EImece — ASP.NET MVC 5 → ASP.NET Core 8 Migration Roadmap
 
-**Status:** Phase 6 complete (application layer: SEO routes, controllers, filters, validation)  
+**Status:** Phase 7 complete (presentation: Razor layouts, mstore/admin static mapping, key shells)  
 **Source stack:** ASP.NET MVC 5 / .NET Framework 4.8.1 / EF6 / MS.DI  
 **Target stack:** ASP.NET Core 8 LTS / EF Core 8 / ASP.NET Core Identity / PackageReference / Minimal Hosting  
 **Principle:** Incremental migration; preserve business behavior; keep Microsoft.Extensions.DependencyInjection; do not reintroduce Ninject.
@@ -281,12 +281,23 @@ EImece.sln
 - Domain.Core service/business-rule port for controllers.  
 - Iyzico checkout + image pipeline (Phase 8).
 
-### Phase 7 — Presentation layer
+### Phase 7 — Presentation layer ✅ (implemented)
 
-- Views/layouts/partials with minimal markup changes.  
-- Static files middleware; retire BundleConfig (or replace with modern bundling).  
-- Tag Helpers where beneficial.  
-- Localization via resx + request culture middleware.
+**Delivered**
+
+- Legacy theme static mapping: `UseLegacyThemeStaticFiles` serves `/Content/*` and `/Scripts/*` from `EImece/Content` + `EImece/Scripts` (no full asset copy into wwwroot).  
+- Storefront `_Layout` + partials (`_LoginPartial`, `_SearchProductForm`, `_Footer`) using mstore CSS/JS + Tag Helpers + `Resources`.  
+- Admin area layout (`_Layout`, `_AdminSidebar`, `_AdminTopbar`) on `adminSite`/`adminShell` CSS.  
+- Customers area layout shell.  
+- Key views: Home hero, Products Detail/Search, ProductCategories Index, Payment/Cart, Account Login/AdminLogin, Placeholder shells.  
+- Bridge CSS `wwwroot/css/eimece-core.css`; favicons/manifest copied to wwwroot.  
+- Controllers return presentation views (not Placeholder) for Detail, Search, Categories, Cart.
+
+**Deferred**
+
+- Full port of ~283 legacy Razor views / product grids / rich admin pages.  
+- Modern bundling replacement for BundleConfig (assets served unbundled from legacy folders).  
+- Image pipeline UI (Phase 8).
 
 ### Phase 8 — Integrations
 
@@ -357,6 +368,6 @@ Expected health payload includes `orm: Entity Framework Core 8` and `database` s
 
 ## 11. Approval gate
 
-**Phases 1–6 complete.** Do not begin Phase 7 (Presentation layer) until approved.
+**Phases 1–7 complete.** Do not begin Phase 8 (Integrations) until approved.
 
-Reply with approval to proceed to **Phase 7 — Presentation layer** (Razor views, layouts, tag helpers, static files).
+Reply with approval to proceed to **Phase 8 — Integrations** (Iyzico, MailKit, SkiaSharp images, background jobs).

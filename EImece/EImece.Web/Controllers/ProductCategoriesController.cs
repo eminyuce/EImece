@@ -1,5 +1,6 @@
 using EImece.Domain.Core.Data;
 using EImece.Web.Configuration;
+using EImece.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -21,7 +22,12 @@ public sealed class ProductCategoriesController : BaseController
     {
         if (!int.TryParse(id, out var categoryId))
         {
-            return Placeholder("Category", "Category list shell — use /c/pc/{id}", new { id });
+            return View(new CategoryShellViewModel
+            {
+                Name = "Categories",
+                Summary = "Category list shell — use /c/pc/{id}.",
+                Notice = "Provide a numeric category id."
+            });
         }
 
         try
@@ -34,14 +40,31 @@ public sealed class ProductCategoriesController : BaseController
 
             if (category is null)
             {
-                return Placeholder("Category", $"Category {categoryId} not found (or database offline).", new { id });
+                return View(new CategoryShellViewModel
+                {
+                    Id = categoryId,
+                    Name = $"Category {categoryId}",
+                    Summary = "Category not found (or database offline).",
+                    Notice = $"Route OK: /c/pc/{categoryId}"
+                });
             }
 
-            return Placeholder(category.Name, $"Category #{category.Id} · Active={category.IsActive}", new { id });
+            return View(new CategoryShellViewModel
+            {
+                Id = category.Id,
+                Name = category.Name ?? $"Category {category.Id}",
+                Summary = category.IsActive ? null : "This category is inactive."
+            });
         }
         catch
         {
-            return Placeholder("Category", $"Route OK: /c/pc/{id} (database unavailable — shell only).", new { id });
+            return View(new CategoryShellViewModel
+            {
+                Id = categoryId,
+                Name = $"Category {categoryId}",
+                Summary = "Database unavailable — presentation shell only.",
+                Notice = $"Route OK: /c/pc/{id}"
+            });
         }
     }
 }

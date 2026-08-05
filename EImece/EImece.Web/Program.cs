@@ -3,6 +3,7 @@ using EImece.Domain.Core.DependencyInjection;
 using EImece.Domain.Core.Media;
 using EImece.Web.DependencyInjection;
 using EImece.Web.Infrastructure.Routing;
+using EImece.Web.Infrastructure.StaticFiles;
 using EImece.Web.Middleware;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
@@ -11,7 +12,7 @@ using NLog;
 using NLog.Web;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Info("EImece.Web starting (Phase 6 application layer)");
+logger.Info("EImece.Web starting (Phase 7 presentation layer)");
 
 try
 {
@@ -88,6 +89,8 @@ try
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
+    // Legacy mstore / admin theme assets from ../EImece/Content and ../EImece/Scripts.
+    app.UseLegacyThemeStaticFiles(app.Environment);
     app.UseRequestLocalization();
     app.UseMiddleware<SecurityHeadersMiddleware>();
     app.UseMiddleware<CorrelationIdMiddleware>();

@@ -1,16 +1,10 @@
+@using Resources
 @{
-    Layout = null;
+    ViewData["Title"] = Resource.MyAccount;
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - EImece</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-</head>
-<body class="p-4">
-    <h1 class="h3">@ViewData["Title"]</h1>
-    <p>@ViewData["Message"]</p>
-    <a class="btn btn-outline-primary btn-sm" href="/">Storefront</a>
-</body>
-</html>
+
+<div class="eimece-shell-card">
+    <h1 class="h4">@Resource.MyAccount</h1>
+    <p class="text-muted mb-2">Customer portal shell for @User.Identity?.Name</p>
+    <p class="mb-0">Orders, addresses, and profile pages migrate with Phase 7+ incremental view ports.</p>
+</div>

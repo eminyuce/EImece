@@ -1,5 +1,6 @@
 using EImece.Domain.Core.Data;
 using EImece.Web.Configuration;
+using EImece.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,9 +23,18 @@ public sealed class ProductsController : BaseController
     [HttpGet]
     public async Task<IActionResult> Detail(string categoryName, string? id, CancellationToken cancellationToken)
     {
+        var slug = string.IsNullOrWhiteSpace(categoryName) ? "category" : categoryName;
+
         if (!int.TryParse(id, out var productId))
         {
-            return Placeholder("Product", $"Invalid product id for category '{categoryName}'.", new { categoryName, id });
+            return View(new ProductDetailViewModel
+            {
+                Name = "Product",
+                CategorySlug = slug,
+                CategoryName = slug,
+                Summary = $"Invalid product id for category '{slug}'.",
+                Notice = "Shell view — route parsing failed."
+            });
         }
 
         try
@@ -37,17 +47,40 @@ public sealed class ProductsController : BaseController
 
             if (product is null)
             {
-                return Placeholder("Product", $"Product {productId} not found (or database offline).", new { categoryName, id });
+                return View(new ProductDetailViewModel
+                {
+                    Id = productId,
+                    Name = $"Product {productId}",
+                    CategorySlug = slug,
+                    CategoryName = slug,
+                    Summary = "Product not found (or database offline).",
+                    Notice = $"Route OK: /p/{slug}/{productId}"
+                });
             }
 
-            return Placeholder(
-                product.Name,
-                $"Product #{product.Id} · {product.ProductCode} · {product.Price:0.00} · Active={product.IsActive}",
-                new { categoryName, id, product.Id });
+            return View(new ProductDetailViewModel
+            {
+                Id = product.Id,
+                Name = product.Name ?? $"Product {product.Id}",
+                ProductCode = product.ProductCode,
+                Price = product.Price,
+                CategorySlug = slug,
+                CategoryName = slug,
+                Summary = product.IsActive ? null : "This product is inactive.",
+                Notice = null
+            });
         }
         catch
         {
-            return Placeholder("Product", $"Route OK: /p/{categoryName}/{id} (database unavailable — shell only).", new { categoryName, id });
+            return View(new ProductDetailViewModel
+            {
+                Id = productId,
+                Name = $"Product {productId}",
+                CategorySlug = slug,
+                CategoryName = slug,
+                Summary = "Database unavailable — presentation shell only.",
+                Notice = $"Route OK: /p/{slug}/{id}"
+            });
         }
     }
 
@@ -57,7 +90,10 @@ public sealed class ProductsController : BaseController
 
     [HttpGet]
     public IActionResult SearchProducts(string? q)
-        => Placeholder("Search products", $"Search route /p/arama · q={q}", new { q });
+    {
+        ViewData["Query"] = q;
+        return View();
+    }
 
     [HttpGet]
     public IActionResult AdvancedSearchProducts()

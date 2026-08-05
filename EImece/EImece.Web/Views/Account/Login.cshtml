@@ -1,30 +1,35 @@
 @model EImece.Web.Models.LoginViewModel
+@using Resources
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = Resource.SignInOrUp;
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <h2>Login</h2>
-        <form asp-action="Login" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ReturnUrl" />
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="form-control" autocomplete="username" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+<div class="container px-3 py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="eimece-shell-card">
+                <h1 class="h3 mb-3">@Resource.SignInOrUp</h1>
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" autocomplete="username" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input asp-for="RememberMe" class="form-check-input" />
+                        <label asp-for="RememberMe" class="form-check-label"></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                    <a class="btn btn-link btn-block" asp-action="AdminLogin">Admin login</a>
+                </form>
             </div>
-            <div class="mb-3">
-                <label asp-for="Password" class="form-label"></label>
-                <input asp-for="Password" class="form-control" autocomplete="current-password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-check mb-3">
-                <input asp-for="RememberMe" class="form-check-input" />
-                <label asp-for="RememberMe" class="form-check-label"></label>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-            <a class="btn btn-link" asp-action="AdminLogin">Admin login</a>
-        </form>
+        </div>
     </div>
 </div>

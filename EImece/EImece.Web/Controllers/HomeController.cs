@@ -18,14 +18,10 @@ public class HomeController : BaseController
 
     public IActionResult Index()
     {
-        ViewData["Title"] = "EImece Core Host";
+        ViewData["Title"] = "EImece";
+        ViewData["Phase"] = "Phase 7 · Presentation";
         ViewData["Domain"] = SiteOptions.Domain;
         ViewData["SiteStatus"] = SiteOptions.SiteStatus;
-        ViewData["SampleResource"] = Resources.Resource.ResourceManager != null
-            ? "Resources assembly loaded"
-            : "Resources assembly missing";
-        ViewData["Orm"] = "Entity Framework Core 8";
-        ViewData["AppLayer"] = "SEO routes · BaseController · storefront/admin shells · validation";
         _logger.LogInformation("EImece.Web home served (domain={Domain})", SiteOptions.Domain);
         return View();
     }
