@@ -1,0 +1,126 @@
+﻿@model EImece.Domain.Models.AdminModels.DataSetReportViewModel
+@using System.Collections.Generic
+@using System.Data
+@using EImece.Domain.Helpers
+@{
+    var titleMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "PerformanceSystemReport", "Performans Sistem Raporu" },
+        { "FinancialReport", "Finansal Rapor" },
+        { "FraudRiskReport", "Sahtekarlık Risk Raporu" },
+        { "OrderVolumeReport", "Sipariş Hacmi Raporu" },
+        { "PaymentTransactionReport", "Ödeme İşlem Raporu" }
+    };
+    var descriptionMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "PerformanceSystemReport", "Seçilen tarih aralığındaki sistem performans özetlerini gösterir." },
+        { "FinancialReport", "Seçilen tarih aralığındaki finansal özetleri gösterir." },
+        { "FraudRiskReport", "Seçilen tarih aralığındaki sahtekarlık risk verilerini gösterir." },
+        { "OrderVolumeReport", "Seçilen tarih aralığındaki sipariş hacmi istatistiklerini gösterir." },
+        { "PaymentTransactionReport", "Seçilen tarih aralığındaki ödeme işlemlerini gösterir." }
+    };
+
+    string reportKey = Model.ReportActionName ?? "Report";
+    string reportTitle;
+    if (!titleMap.TryGetValue(reportKey, out reportTitle))
+    {
+        reportTitle = Model.ReportTitle ?? "Rapor";
+    }
+    string reportDescription;
+    if (!descriptionMap.TryGetValue(reportKey, out reportDescription))
+    {
+        reportDescription = "Seçilen tarih aralığına göre rapor sonuçlarını gösterir.";
+    }
+
+    bool hasData = false;
+    if (Model.ReportData != null)
+    {
+        foreach (DataTable table in Model.ReportData.Tables)
+        {
+            if (table != null && table.Rows.Count > 0)
+            {
+                hasData = true;
+                break;
+            }
+        }
+    }
+
+    ViewBag.Title = reportTitle;
+    ViewBag.ReportDescription = reportDescription;
+    ViewBag.ReportKey = reportKey;
+    ViewBag.HasData = hasData;
+    bool neverLoaded = Model.ReportData == null || Model.ReportData.Tables.Count == 0;
+    ViewBag.EmptyTitle = neverLoaded ? "Rapor henüz oluşturulmadı" : "Sonuç bulunamadı";
+    ViewBag.EmptyMessage = neverLoaded
+        ? "Tarih aralığını seçip raporu getirin."
+        : "Seçilen kriterlere uygun veri bulunamadı. Filtreleri değiştirerek tekrar deneyin.";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var exportFilters = new Dictionary<string, object>();
+    if (Model.StartDate.HasValue)
+    {
+        exportFilters["startDate"] = Model.StartDate.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.EndDate.HasValue)
+    {
+        exportFilters["endDate"] = Model.EndDate.Value.ToString("yyyy-MM-dd");
+    }
+    ViewBag.ExportFilters = exportFilters;
+}
+
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
+
+<div class="panel panel-default report-filter-panel">
+    <div class="panel-heading">Filtreler</div>
+    <div class="panel-body">
+        @using (Html.BeginForm(Model.ReportActionName, "Report", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ReportActionName)
+
+            <div class="report-filter-row">
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.StartDate, "Başlangıç Tarihi")
+                        @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.EndDate, "Bitiş Tarihi")
+                        @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+                <div class="report-filter-field report-filter-actions">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Raporu Getir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (hasData)
+{
+    var firstTable = Model.ReportData.Tables[0];
+    @Html.Partial("_ReportKpis", firstTable)
+
+    for (int i = 0; i < Model.ReportData.Tables.Count; i++)
+    {
+        var table = Model.ReportData.Tables[i];
+        var tableTitle = !string.IsNullOrWhiteSpace(table.TableName)
+            ? table.TableName
+            : (Model.ReportData.Tables.Count > 1 ? ("Tablo " + (i + 1)) : "Sonuçlar");
+        ViewBag.ReportTableTitle = tableTitle;
+        @Html.Partial("_ReportDataTable", table)
+    }
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}

@@ -1,0 +1,40 @@
+﻿@using System.Xml;
+@using System.Linq;
+@using System.Text;
+@using System.Xml.Linq;
+@using EImece.Domain.Entities;
+@model ProductSpecification
+
+@{
+    var field = Model.FieldFormat;
+    var name = field.Attribute("name");
+    var unit = field.Attribute("unit");
+    var values = field.Attribute("values");
+    var display = field.Attribute("display");
+    var dbValue = Model.Value;
+    String valueDisplayName = "";
+    if (display != null)
+    {
+        valueDisplayName = display.Value;
+    }
+    else
+    {
+        valueDisplayName = name != null ? name.Value : "";
+    }
+
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        @valueDisplayName
+    </div>
+    <div class="col-md-5">
+        <input class="form-control" name="@name.Value" type="text" value="@dbValue" />
+    </div>
+    <div class="col-md-1">
+        @if (unit != null)
+            {
+        @unit.Value
+            }
+    </div>
+</div>

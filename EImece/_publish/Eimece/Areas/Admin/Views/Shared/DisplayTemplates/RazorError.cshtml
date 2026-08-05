@@ -1,0 +1,8 @@
+﻿@model EImece.Domain.Models.AdminModels.RazorError
+
+<div class="razor-error">
+
+    @Model.ErrorNumber &bull; line:@Model.LineAdjusted col: @Model.Column
+    &bull; @Model.ErrorText
+    <pre>@Model.ErrorLine.Trim()</pre>
+</div>

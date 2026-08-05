@@ -1,0 +1,22 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Kargo Firması";
+    ViewBag.ReportDescription = "Kargo firmalarına göre sipariş sayısı ve toplam kargo maliyeti özetini gösterir.";
+    ViewBag.ReportKey = "ShipmentCompany";
+    ViewBag.HasData = Model != null && Model.Rows.Count > 0;
+    ViewBag.EmptyMessage = "Bu rapor için henüz veri bulunamadı.";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
+
+@if (ViewBag.HasData)
+{
+    @Html.Partial("_ReportKpis", Model)
+    @Html.Partial("_ReportDataTable", Model)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}

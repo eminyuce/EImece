@@ -1,0 +1,377 @@
+﻿body {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+
+.main-page-product img {
+    width: 100%;
+    height: auto;
+}
+
+.main-page-product h3,
+.main-page-product h4 {
+    margin-top: 0;
+}
+
+/* Footer
+---------------------------------------------------------------------- */
+#footer {
+    background: #606060;
+    color: #d0d0d0;
+    padding: 35px 0 40px 0;
+    margin: 0;
+}
+
+    #footer h3.footer {
+        color: #fff;
+        background: #606060;
+        text-transform: uppercase;
+    }
+
+    #footer .line {
+        border-color: #747474;
+        margin-bottom: 28px;
+    }
+
+    #footer a {
+        color: #d0d0d0;
+    }
+
+/* Bottom Footer
+------------------------------------- */
+#footer-bottom {
+    background: #505050;
+    color: #a8a8a8;
+    padding: 17px 0 13px 0;
+}
+
+    #footer-bottom a {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    #footer-bottom a {
+        color: #e0e0e0;
+    }
+
+/* Newsletter
+------------------------------------- */
+.newsletter-btn {
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    float: right;
+    z-index: 5;
+    position: relative;
+    padding: 10px 15px;
+    line-height: 18px;
+    margin: 0;
+    height: 40px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    background-color: #808080;
+    border: none;
+    color: #fff;
+    box-shadow: none;
+}
+
+    .newsletter-btn:hover {
+        background-color: #c0c0c0;
+    }
+
+input.newsletter {
+    float: left;
+    color: #808080;
+    font-weight: 600;
+    z-index: 1;
+    position: relative;
+    font-size: 13px;
+    width: 85%;
+    margin-top: -40px;
+    padding: 10px 14px;
+    line-height: 18px;
+    height: 20px;
+    background-color: #505050;
+    border: none;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+    input.newsletter::-webkit-input-placeholder {
+        color: #909090;
+    }
+
+    input.newsletter:-moz-placeholder {
+        color: #909090;
+    }
+
+    input.newsletter::-moz-placeholder {
+        color: #909090;
+    }
+
+    input.newsletter:-ms-input-placeholder {
+        color: #909090;
+    }
+
+input:focus.newsletter {
+    background-color: #4c4c4c;
+    border: none;
+    color: #999;
+}
+
+/* Footer Links
+------------------------------------- */
+ul.footer-links {
+    margin: 0 0 15px 0;
+}
+
+.footer-links li a {
+    padding: 0 0 7px 0;
+    display: inline-block;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+    .footer-links li a:hover {
+        padding-left: 3px;
+        color: #fff !important;
+    }
+
+.footer-links li:before {
+    font-family: "FontAwesome";
+    font-size: 12px;
+    content: "ïƒš";
+    color: #fff;
+    position: relative;
+    left: 0;
+    top: -1px;
+    padding: 0 7px 0 0;
+    color: #fff;
+}
+
+.urun-detay-whatsapp {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #25D366; /* WhatsApp yeşili */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .urun-detay-whatsapp:hover {
+        background-color: #1ebe57; /* Hover için daha koyu yeşil */
+    }
+
+.whatsapp-icon {
+    margin-right: 10px;
+}
+
+/* Enhanced Tab Styles */
+:root {
+    --primary-color: #4a6bff;
+    --secondary-color: #6c757d;
+    --hover-color: #3a56d4;
+    --active-color: #3a56d4;
+    --border-color: #e0e0e0;
+    --bg-color: #f8f9fa;
+    --text-color: #333;
+    --light-text: #6c757d;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Base styles for the tabs */
+.nav-tabs {
+    border-bottom: 2px solid var(--border-color);
+    position: relative;
+}
+
+    .nav-tabs::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--border-color);
+        z-index: 0;
+    }
+
+    .nav-tabs .nav-item {
+        margin-bottom: -2px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        border-radius: 0;
+        padding: 12px 24px;
+        color: var(--secondary-color);
+        background-color: transparent;
+        font-weight: 500;
+        transition: var(--transition);
+        position: relative;
+        border-bottom: 3px solid transparent;
+        margin-right: 8px; /* Increased margin for spacing */
+        margin-left: 8px; /* Added left margin for better spacing */
+    }
+
+        /* Style for the active tab */
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: transparent;
+            border-color: transparent;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+            .nav-tabs .nav-link.active::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 100%;
+                background-color: rgba(74, 107, 255, 0.05);
+                z-index: -1;
+            }
+
+        /* Style for hover effect */
+        .nav-tabs .nav-link:hover:not(.active) {
+            color: var(--hover-color);
+            background-color: rgba(74, 107, 255, 0.05);
+            border-bottom: 3px solid rgba(74, 107, 255, 0.2);
+        }
+
+/* Style for tab content */
+.tab-content {
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+    box-shadow: var(--shadow);
+    margin-top: -1px;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+    .tab-pane.active {
+        display: block;
+    }
+
+    /* Tab content headings */
+    .tab-pane h3 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+        .tab-pane h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+/* Animation for tab content */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .nav-tabs .nav-link {
+        padding: 10px 15px;
+        font-size: 14px;
+        margin-right: 12px; /* Added more space on mobile */
+        margin-left: 12px; /* Added more space on mobile */
+    }
+
+    .tab-content {
+        padding: 15px;
+    }
+}
+
+/* Special styling for Iyzico info tab */
+#contact .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    padding: 12px 0;
+}
+
+#contact .alert-info {
+    background-color: #f0f7ff;
+    border-color: #cce5ff;
+    color: #004085;
+}
+
+/* Review section styling */
+#profile .card {
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+#profile .progress {
+    height: 4px;
+    border-radius: 2px;
+}
+
+/* Product description section */
+#home .list-unstyled li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    #home .list-unstyled li:last-child {
+        border-bottom: none;
+    }
+
+    #home .list-unstyled li strong {
+        color: var(--primary-color);
+    }

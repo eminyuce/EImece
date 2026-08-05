@@ -9,5 +9,8 @@
     <Disable_CopyWebApplication>true</Disable_CopyWebApplication>
     <NoWarn>$(NoWarn);NU1903;NU1904;NU1902</NoWarn>
     <NuGetAudit>false</NuGetAudit>
+    <!-- packages.config projects: ignore stale PackageReference assets (VS design-time restore). -->
+    <RestoreProjectStyle Condition="Exists('$(MSBuildProjectDirectory)\packages.config')">PackagesConfig</RestoreProjectStyle>
+    <ResolveNuGetPackages Condition="Exists('$(MSBuildProjectDirectory)\packages.config')">false</ResolveNuGetPackages>
   </PropertyGroup>
 </Project>

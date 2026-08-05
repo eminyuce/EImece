@@ -1,0 +1,31 @@
+﻿@using EImece.Domain.Entities;
+@model List<BaseEntity>
+@using EImece.Domain.Helpers;
+@using Resources;
+
+@{
+    var contents = Model;
+    var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
+    var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
+}
+
+<div class="panel-heading">
+    <div class="row">
+        <span class="col-md-6">
+            <span class="label ">
+                <span class="badge text-danger text-large">@contents.Count() </span>
+                @GridResultRecordNumber
+            </span>
+        </span>
+        @*<span class="col-md-3">
+                <p class="text-right">@GridPagingDropDownText</p>
+            </span>*@
+        @*<span class="col-md-3">
+                <select name="GridListItemSize" class="form-control dropdown-toggle" id="GridListItemSize">
+                    <option selected="selected" class="text-info" value="50">50</option>
+                    <option class="text-info" value="500">500</option>
+                    <option class="text-info" value="1000">1000</option>
+                </select>
+            </span>*@
+    </div>
+</div>

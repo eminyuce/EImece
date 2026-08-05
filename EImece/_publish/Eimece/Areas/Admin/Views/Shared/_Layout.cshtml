@@ -1,0 +1,66 @@
+﻿@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Services.IServices;
+@{
+    var SettingService = DependencyResolver.Current.GetService<ISettingService>();
+    string companyName = EImece.Domain.Constants.CompanyName;
+    var companyNameSetting = SettingService.GetSettingByKey(companyName).ToStr();
+    ViewBag.CompanyNameSetting = companyNameSetting;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@companyNameSetting Admin Panel </title>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/adminScripts")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/admincss")
+    @* Cache-bust report filter styles so IIS/bundle cache does not keep oversized date inputs *@
+    <link href="~/Content/adminReports.css?v=20260804b" rel="stylesheet" type="text/css" />
+    @RenderSection("scripts", required: false)
+    @Styles.Render("~/Content/themes/base/css")
+    @RenderSection("Styles", false)
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script src="~/MVCGridHandler.axd/script.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+<body class="admin-app">
+    <script>
+        (function () {
+            try {
+                if (window.matchMedia && window.matchMedia("(min-width: 992px)").matches
+                    && window.localStorage.getItem("eimece.admin.sidebarCollapsed") === "1") {
+                    document.body.classList.add("sidebar-collapsed");
+                }
+            } catch (e) { }
+        })();
+    </script>
+
+    <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
+    <input type="hidden" id="CookieLanguage" value="@AppConfig.MainLanguage" />
+
+    @Html.Partial("_AdminSidebar")
+
+    <div class="admin-main">
+        @Html.Partial("_AdminTopbar")
+        <main class="admin-content">
+            @Html.Partial("_StatusMessage")
+            @RenderBody()
+        </main>
+    </div>
+
+    <script>
+        function setlanguage(selectedLanguage) {
+            window.location.href = "/admin/dashboard/setlanguage/" + selectedLanguage;
+        }
+    </script>
+</body>
+</html>

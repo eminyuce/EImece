@@ -1,0 +1,65 @@
+﻿@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@model  ShoppingCartSession
+@{
+    var products = Model.ShoppingCartItems;
+}
+<div class="checkout-section cart">Shopping Cart</div>
+
+<table class="checkout cart-table responsive-table stacktable large-only">
+
+    <tbody>
+        <tr>
+            <th class="hide-on-mobile"> </th>
+            <th>@Resource.Name</th>
+            <th>@Resource.Price</th>
+            <th>@Resource.Quantity</th>
+            <th>@Resource.Total</th>
+        </tr>
+        @if (products.IsNotEmpty())
+        {
+            foreach (var item in products)
+            {
+
+                var product = item.Product;
+                double totalPricePerItem =(double) product.Price * item.Quantity;
+
+                <!-- Item #1 -->
+        <tr>
+            <td class="hide-on-mobile">
+                @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
+                        {
+                <a href="@Url.Action("Detail","Products",new { id=product.Id })">
+                    <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+                </a>
+                        }
+            </td>
+            <td class="cart-title"><a href="@Url.Action("Detail","Products",new { id=product.Id })">@product.Name</a></td>
+            <td>@product.Price.CurrencySign()</td>
+            <td class="qty-checkout">@item.Quantity</td>
+            <td class="cart-total">@totalPricePerItem.CurrencySign()</td>
+        </tr>
+
+            }
+        }
+    </tbody>
+</table>
+
+<!-- Apply Coupon Code / Buttons -->
+<table class="cart-table bottom">
+
+    <tbody>
+        <tr>
+            <th class="checkout-totals">
+                <div class="checkout-subtotal">
+                    Subtotal: <span>@Model.TotalPrice.CurrencySign()</span>
+                </div>
+            </th>
+        </tr>
+    </tbody>
+</table>

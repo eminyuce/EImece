@@ -1,0 +1,18 @@
+@{
+    var title = ViewBag.ReportTitle as string ?? ViewBag.Title as string ?? "Rapor";
+    var description = ViewBag.ReportDescription as string;
+}
+
+<div class="report-page-header clearfix">
+    <div class="pull-right">
+        <a href="@Url.Action("Index", "Report", new { area = "Admin" })"
+           class="btn btn-default btn-sm report-back-link">
+            <i class="fa fa-arrow-left"></i> Raporlara Dön
+        </a>
+    </div>
+    <h2 class="report-title">@title</h2>
+    @if (!string.IsNullOrWhiteSpace(description))
+    {
+        <p class="report-description">@description</p>
+    }
+</div>

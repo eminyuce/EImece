@@ -1,0 +1,51 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@{
+    var pagingItems = Model as IPaginatedModelList;
+    var id = pagingItems.RouteId;
+    var sorting = pagingItems.Sorting;
+    var filter = pagingItems.Filter;
+    var actionName = ViewData["actionName"].ToStr("Category");
+}
+@if (pagingItems.TotalPageCount > 1)
+{
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center justify-content-sm-start mb-0">
+        <li class="page-item @(pagingItems.HasPreviousPage ? " " : "disabled" )">
+            <a href=@Url.Action(actionName,new { id=id, page =   1,sorting,filtreler=filter  })
+               class="page-link" aria-label="Frist">
+                <span aria-hidden="true">|<</span>
+                <span class="sr-only">First</span>
+            </a>
+        </li>
+        <li class="page-item @(pagingItems.HasPreviousPage ? " " : " disabled" )">
+            <a href=@Url.Action(actionName,new { id=id,  page = pagingItems.PageIndex - 1,sorting ,filtreler=filter })
+               class="page-link" aria-label="Next">
+                <span aria-hidden="true"><</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        @for (var i = 1; i <= pagingItems.TotalPageCount; i++)
+        {
+        <li class="page-item @(i == pagingItems.PageIndex ? "active" : "")">
+            <a href=@Url.Action(actionName,new { id=id,  page = i,sorting ,filtreler=filter }) class="page-link">@i</a>
+        </li>
+        }
+        <li class="page-item @(pagingItems.HasNextPage ? " " : " disabled")">
+            <a href=@Url.Action(actionName,new { id=id, page = pagingItems.PageIndex + 1,sorting ,filtreler=filter })
+               class="page-link" aria-label="Previous">
+                <span aria-hidden="true">></span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item @(pagingItems.HasNextPage ? " " : " disabled")">
+            <a href=@Url.Action(actionName,new { id=id, page = pagingItems.TotalPageCount,sorting ,filtreler=filter })
+               class="page-link" aria-label="Last">
+                <span aria-hidden="true">>|</span>
+                <span class="sr-only">Last</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+}

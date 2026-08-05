@@ -1,0 +1,129 @@
+﻿@model EImece.Areas.Admin.Models.MetricsIndexViewModel
+@using EImece.Domain
+@using EImece.Domain.Helpers
+@using GridMvc.Html
+@using GridMvc.Sorting
+
+@{
+    ViewBag.Title = "Metrikler";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int gridPage = Request.QueryString["grid-page"].ToInt();
+    var rowIndex = gridPage == 0 ? 0 : pageSizeNumber * (gridPage - 1);
+
+    var gridName = "MetricsGrid";
+    var contents = Model.Metrics;
+}
+
+<h2>Uygulama Metrikleri</h2>
+<hr class="adminLine" />
+
+<div class="alert alert-info" style="margin-bottom: 15px;">
+    <p style="margin-bottom: 8px;">
+        Bu sayfa <strong>canlı performans ölçümlerini</strong> gösterir.
+        Her admin/site isteği, dış HTTP çağrısı ve veritabanı işlemi için sayım, hata ve süre tutulur.
+    </p>
+    <ul style="margin-bottom: 0; padding-left: 18px;">
+        <li>Veriler <strong>bellekte</strong> tutulur; uygulama yeniden başlayınca sıfırlanır.</li>
+        <li>İş raporları (satış, sipariş vb.) için <em>Raporlar</em> menüsünü kullanın.</li>
+        <li>Yavaş veya hatalı controller aksiyonlarını bulmak için Ort. / P95 sürelerine bakın.</li>
+    </ul>
+</div>
+
+<div class="panel panel-default" style="margin-bottom: 20px;">
+    <div class="panel-body">
+        <form method="get" class="form-inline">
+            <div class="form-group">
+                <label for="search">Metrik ara:</label>
+                <input type="text" id="search" name="search" class="form-control"
+                       placeholder="örn. request:, db:, http:, Orders"
+                       value="@Model.SearchTerm" />
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span> Ara
+            </button>
+            <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-default">
+                <span class="glyphicon glyphicon-refresh"></span> Temizle
+            </a>
+        </form>
+    </div>
+</div>
+
+<div class="alert alert-success" style="padding: 8px 12px;">
+    Toplam <strong>@Model.TotalCount</strong> metrik
+    @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+    {
+        <span>(filtre: <code>@Model.SearchTerm</code>)</span>
+    }
+</div>
+
+@if (contents == null || !contents.Any())
+{
+    <div class="alert alert-warning">
+        Henüz metrik kaydı yok. Site veya admin sayfalarında gezinince burada dolmaya başlar
+        (<code>EnableMetrics=true</code> olmalı).
+    </div>
+}
+else
+{
+    <div class="panel panel-primary">
+        <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
+            @(Html.Grid(contents).Named(gridName).Columns(columns =>
+{
+columns.Add()
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+
+columns.Add(m => m.Name)
+.Titled("Metrik adı")
+.Sortable(true)
+.Filterable(true)
+.Css("metric-name");
+
+columns.Add(m => m.Count)
+.Titled("Adet")
+.Sortable(true)
+.SortInitialDirection(GridSortDirection.Descending)
+.Filterable(false);
+
+columns.Add(m => m.ErrorCount)
+.Titled("Hata")
+.Sortable(true)
+.Filterable(false)
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(m => string.Format("<span class='label label-{0}'>{1}</span>",
+    m.ErrorCount > 0 ? "danger" : "success", m.ErrorCount.ToString("N0")));
+
+columns.Add(m => m.AverageDurationMs)
+.Titled("Ort. süre (ms)")
+.Sortable(true)
+.Filterable(false);
+
+columns.Add(m => m.P95DurationMs)
+.Titled("P95 süre (ms)")
+.Sortable(true)
+.Filterable(false);
+
+}).WithPaging(pageSizeNumber).Sortable(true).Filterable(true).WithMultipleFilters())
+        </div>
+    </div>
+}
+
+<div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 4px;">
+    <h4 style="margin-top: 0;">Metrik adı formatı</h4>
+    <ul style="margin-bottom: 0;">
+        <li><code>request:Controller.Action</code> — sayfa / MVC aksiyon süreleri</li>
+        <li><code>http:METHOD:STATUS</code> — dış HTTP çağrıları (örn. <code>http:GET:200</code>)</li>
+        <li><code>db:...</code> — veritabanı sorgu süreleri</li>
+    </ul>
+</div>
+
+<style>
+    .metric-name {
+        font-family: Consolas, Monaco, monospace;
+        font-size: 11px;
+    }
+</style>

@@ -1,0 +1,20 @@
+ 
+ 
+        var tags = {
+            "!top": ["component"],
+            "!attrs": {
+            },
+            component: {
+                children: ["group"]
+            },
+            group: {
+                attrs: {
+                    name: @Raw(Model.GroupAttributes)
+                    },
+                children:         @Raw(Model.Children)
+                },
+            @Raw(Model.Configurations)
+
+        };
+
+		 

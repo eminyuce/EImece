@@ -1,0 +1,102 @@
+﻿@model EImece.Domain.Models.AdminModels.DataSetReportViewModel
+@using System.Collections.Generic
+@using System.Data
+@using EImece.Domain.Helpers
+@{
+    ViewBag.Title = "Tarihe Göre Ürün İstatistikleri";
+    ViewBag.ReportDescription = "Seçilen tarih aralığındaki ürün satış istatistiklerini gösterir.";
+    ViewBag.ReportKey = "ProductStatsByDateRange";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    bool hasData = false;
+    DataTable firstTable = null;
+    if (Model != null && Model.ReportData != null)
+    {
+        foreach (DataTable table in Model.ReportData.Tables)
+        {
+            if (table != null && table.Rows.Count > 0)
+            {
+                hasData = true;
+                if (firstTable == null)
+                {
+                    firstTable = table;
+                }
+            }
+        }
+        if (firstTable == null && Model.ReportData.Tables.Count > 0)
+        {
+            firstTable = Model.ReportData.Tables[0];
+        }
+    }
+
+    ViewBag.HasData = hasData;
+    ViewBag.EmptyMessage = "Seçilen tarih aralığında ürün istatistiği bulunamadı. Filtreleri değiştirerek tekrar deneyin.";
+
+    var exportFilters = new Dictionary<string, object>();
+    if (Model != null)
+    {
+        if (Model.StartDate.HasValue)
+        {
+            exportFilters["startDate"] = Model.StartDate.Value.ToString("yyyy-MM-dd");
+        }
+        if (Model.EndDate.HasValue)
+        {
+            exportFilters["endDate"] = Model.EndDate.Value.ToString("yyyy-MM-dd");
+        }
+    }
+    ViewBag.ExportFilters = exportFilters;
+}
+
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
+
+<div class="panel panel-default report-filter-panel">
+    <div class="panel-heading">Filtreler</div>
+    <div class="panel-body">
+        @using (Html.BeginForm("ProductStatsByDateRange", "Report", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ReportActionName)
+
+            <div class="report-filter-row">
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.StartDate, "Başlangıç Tarihi")
+                        @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="report-filter-field">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.EndDate, "Bitiş Tarihi")
+                        @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="report-filter-field report-filter-actions">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Raporu Getir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (hasData && firstTable != null)
+{
+    @Html.Partial("_ReportKpis", firstTable)
+    ViewBag.ReportTableTitle = "Sonuçlar";
+    @Html.Partial("_ReportDataTable", firstTable)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

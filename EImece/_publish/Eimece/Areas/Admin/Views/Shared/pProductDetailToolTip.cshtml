@@ -1,0 +1,169 @@
+﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+
+@{
+    var product = Model.Product;
+}
+
+<h2>pProductDetailToolTip</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => product.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.UpdatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.UpdatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.Position)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.Position)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.Lang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.Lang)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.ImageState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.ImageState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.MetaKeywords)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.MetaKeywords)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.MainImageId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.MainImageId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.ImageHeight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.ImageHeight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.ImageWidth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.ImageWidth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.NameShort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.NameShort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.ProductCategoryId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.ProductCategoryId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.MainPage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.MainPage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.Discount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.Discount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.ProductCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.ProductCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => product.VideoUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => product.VideoUrl)
+        </dd>
+    </dl>
+</div>

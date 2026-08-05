@@ -1,0 +1,43 @@
+﻿@model FileStorage
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Entities;
+
+@{
+    var close = AdminResource.Close;
+    var fileStorageId = Model;
+    var imageWidth = 300;
+    var imageHeight = 0 ;
+    var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
+    filesHelper.InitFilesMediaFolder();
+    var imageSizes = filesHelper.GetThumbnailImageSize(fileStorageId);
+}
+
+<!-- Modal -->
+<div id="@String.Format("myModal_{0}",fileStorageId)" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    @imageSizes.FileName
+                </h4>
+            </div>
+            <div class="modal-body">
+                <p>@String.Format("Original Width={0} Height={1}", imageSizes.OriginalWidth, imageSizes.OriginalHeight)</p>
+                <p>@String.Format("Thumbs Width={0} Height={1}", imageSizes.ThumpBitmapWidth, imageSizes.ThumpBitmapHeight)</p>
+                <p>
+                    <a href=@String.Format("../media/images/{0}",imageSizes.FileName) target="_blank">Full Image</a>
+                </p>
+                <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorageId, width=imageWidth, height= imageHeight })" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Image Compression";
+}
+
+<h2>Upload and Compress Images (Folder)</h2>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Image Compression and Resizing Utility</h3>
+        </div>
+        <div class="card-body">
+            <p>This code defines a utility function <code>CompressImagesInDirectory</code> in the <strong>ImageCompressor</strong> class, which is used to compress and optionally resize image files in a given directory. Below is a breakdown of its functionality:</p>
+
+            <h5>Functionality Overview:</h5>
+            <ul>
+                <li><strong>Input Directory</strong>: The directory containing the images to be processed is specified by <code>inputImageDirectoryPath</code>.</li>
+                <li><strong>Output Directory</strong>: The compressed and resized images will be saved in the specified <code>outputDirectory</code>.</li>
+                <li><strong>Compression Quality</strong>: The function allows setting the compression quality for JPEG images (1-100), where values between 40-70 are recommended for a balance between file size and image quality.</li>
+                <li><strong>File Extension</strong>: You can specify a new file extension for the output images (e.g., ".jpg", ".png"). If <code>null</code>, the original file extension will be retained.</li>
+                <li><strong>File Naming</strong>: Optionally, you can provide a <code>baseFileName</code> which will be used as a base for naming the output files. If <code>null</code>, the original file names will be used.</li>
+                <li><strong>Resizing</strong>: You can provide new dimensions for resizing the images. If only the width or height is provided, the aspect ratio will be preserved automatically.</li>
+                <li><strong>Supported Formats</strong>: The method supports input formats: .jpg, .jpeg, .png, .bmp, .gif. It processes each image and creates a new compressed version based on the settings provided.</li>
+            </ul>
+
+            <h5>Method Flow:</h5>
+            <ol>
+                <li>The method first ensures the <code>outputDirectory</code> exists, creating it if necessary.</li>
+                <li>It then iterates over all the files in the <code>inputImageDirectoryPath</code>, filtering only valid image formats.</li>
+                <li>For each image, the method calculates the new dimensions based on the provided width and/or height, while preserving the aspect ratio if needed.</li>
+                <li>The image is resized using the <code>Bitmap</code> class and then saved in the specified format to the output directory.</li>
+                <li>For JPEG images, the method allows setting a custom compression quality using <code>EncoderParameter</code>.</li>
+                <li>The function returns a list of paths to the processed images, or any error messages encountered during processing.</li>
+            </ol>
+
+            <h5>Useful Features:</h5>
+            <ul>
+                <li>Ability to resize images while maintaining the aspect ratio.</li>
+                <li>Option to change file names and extensions for output images.</li>
+                <li>Custom compression quality for JPEG files.</li>
+                <li>Support for multiple image formats (JPG, PNG, BMP, GIF, ICO).</li>
+            </ul>
+
+            <p class="mt-3"><strong>Note:</strong> The images will be processed sequentially, and errors encountered during the process will be logged for further review.</p>
+        </div>
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" action="@Url.Action("CompressImages", "Images")">
+    <div class="form-group">
+        <label for="file">Choose Folder</label>
+        <input type="file" name="file" id="file" class="form-control" required webkitdirectory
+               title="Select a folder containing image files for compression." />
+        <small class="form-text text-muted">
+            Select a folder containing the images you wish to compress.
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="quality">Compression Quality (1-100)</label>
+        <input type="text" name="quality" id="quality" class="form-control" placeholder="Enter compression quality (1-100)"
+               title="Enter compression quality between 1 and 100. Recommended range: 40-70 for good balance of size and quality." />
+        <small class="form-text text-muted">
+            JPEG compression quality (1-100). Lower values reduce quality for smaller file sizes.
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="newExtension">File Extension</label>
+        <select name="newExtension" id="newExtension" class="form-control">
+            <option value="">Retain Original</option>
+            <option value=".jpg">.jpg</option>
+            <option value=".jpeg">.jpeg</option>
+            <option value=".png">.png</option>
+            <option value=".webp">.webp</option>
+            <option value=".bmp">.bmp</option>
+            <option value=".gif">.gif</option>
+        </select>
+        <small class="form-text text-muted">
+            Select a new file extension for the compressed image (e.g., .jpg, .png) or choose "Retain Original" to keep the original extension.
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="baseFileName">Base File Name</label>
+        <input type="text" name="baseFileName" id="baseFileName" class="form-control" placeholder="Enter base file name"
+               title="Enter a base name for the output files. Files will be saved as baseFileName-1.jpg, baseFileName-2.jpg, etc." />
+        <small class="form-text text-muted">
+            If left empty, original file names will be used.
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="newWidth">New Width</label>
+        <input type="text" name="newWidth" id="newWidth" class="form-control" placeholder="Enter new width (optional)"
+               title="Optional. If provided, height will be auto-calculated to maintain aspect ratio." />
+        <small class="form-text text-muted">
+            Resize the image to this width. Height will be adjusted proportionally.
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="newHeight">New Height</label>
+        <input type="text" name="newHeight" id="newHeight" class="form-control" placeholder="Enter new height (optional)"
+               title="Optional. If provided, width will be auto-calculated to maintain aspect ratio." />
+        <small class="form-text text-muted">
+            Resize the image to this height. Width will be adjusted proportionally.
+        </small>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Compress Images</button>
+
+    </div>
+</form>
+
+<!-- Button to Download Compressed Images -->
+<form action="@Url.Action("DownloadCompressedImages", "Images")" method="post">
+    <button type="submit" class="btn btn-primary">Download Compressed Images Under Media Folder</button>
+</form>
+
+<!-- Button to Remove Compressed Images -->
+<form action="@Url.Action("RemoveCompressedImages", "Images")" method="post">
+    <button type="submit" class="btn btn-danger">Remove Compressed Images Under Media Folder</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        <p>@ViewBag.Message</p>
+    </div>
+}
+@if (ViewBag.ResultMessage != null)
+{
+    <ul>
+        @foreach (string message in ViewBag.ResultMessage)
+        {
+            <li>@message</li>
+        }
+    </ul>
+}

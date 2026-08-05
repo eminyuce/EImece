@@ -1,0 +1,22 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Ödeme Durumu";
+    ViewBag.ReportDescription = "Ödeme durumlarına göre sipariş sayısı ve tutar özetini gösterir.";
+    ViewBag.ReportKey = "PaymentStatus";
+    ViewBag.HasData = Model != null && Model.Rows.Count > 0;
+    ViewBag.EmptyMessage = "Bu rapor için henüz veri bulunamadı.";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_ReportHeader")
+@Html.Partial("_ReportExportButtons")
+
+@if (ViewBag.HasData)
+{
+    @Html.Partial("_ReportKpis", Model)
+    @Html.Partial("_ReportDataTable", Model)
+}
+else
+{
+    @Html.Partial("_ReportEmptyState")
+}

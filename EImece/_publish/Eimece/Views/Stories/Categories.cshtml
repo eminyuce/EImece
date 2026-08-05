@@ -1,0 +1,18 @@
+﻿@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    var category = Model.StoryCategory;
+    var stories = Model.Stories;
+    ViewBag.Title = category.GetSeoTitle();
+    ViewBag.Description = category.GetSeoDescription();
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    category.PageTheme = String.IsNullOrEmpty(category.PageTheme) ? "T1" : category.PageTheme;
+    var selectedPagePath = "StoriesPageThemes/PageTheme_" + category.PageTheme;
+}
+@Html.Partial(selectedPagePath, Model)
