@@ -9,6 +9,8 @@ namespace EImece.Domain.Observability.Metrics
     {
         void RecordRequest(string name, long durationMilliseconds, bool success);
 
+        void RecordRequest(string name, long durationMilliseconds, bool success, string httpMethod, int statusCode);
+
         void RecordHttpCall(string url, string method, int statusCode, long durationMilliseconds, int retryCount);
 
         void RecordDatabaseQuery(string operation, long durationMilliseconds, bool success);
@@ -33,18 +35,28 @@ namespace EImece.Domain.Observability.Metrics
 
         public void RecordRequest(string name, long durationMilliseconds, bool success)
         {
-            Record("request:" + name, durationMilliseconds, success);
+            RecordRequest(name, durationMilliseconds, success, null, success ? 200 : 500);
+        }
+
+        public void RecordRequest(string name, long durationMilliseconds, bool success, string httpMethod, int statusCode)
+        {
+            Record("request:" + OpenTelemetryMetrics.NormalizeRoute(name), durationMilliseconds, success);
+            OpenTelemetryMetrics.RecordServerRequest(httpMethod ?? "GET", name, statusCode, durationMilliseconds);
         }
 
         public void RecordHttpCall(string url, string method, int statusCode, long durationMilliseconds, int retryCount)
         {
-            var key = "http:" + method + ":" + statusCode;
+            var operation = OpenTelemetryMetrics.NormalizeRoute(url);
+            var key = "http:" + OpenTelemetryMetrics.NormalizeMethod(method) + ":" + statusCode;
             Record(key, durationMilliseconds, statusCode >= 200 && statusCode < 500);
+            OpenTelemetryMetrics.RecordClientRequest(method, operation, statusCode, durationMilliseconds, retryCount);
         }
 
         public void RecordDatabaseQuery(string operation, long durationMilliseconds, bool success)
         {
-            Record("db:" + operation, durationMilliseconds, success);
+            var normalized = OpenTelemetryMetrics.NormalizeRoute(operation);
+            Record("db:" + normalized, durationMilliseconds, success);
+            OpenTelemetryMetrics.RecordDatabaseOperation(normalized, durationMilliseconds, success);
         }
 
         public IReadOnlyDictionary<string, MetricSnapshot> GetSnapshots()

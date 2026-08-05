@@ -1,3 +1,4 @@
+using EImece.Domain.Observability;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -10,13 +11,39 @@ namespace EImece.App_Start
     public static class ObservabilityBootstrap
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static OpenTelemetryBootstrap _openTelemetry;
 
         public static void Configure()
         {
+            var options = ObservabilityOptions.FromAppConfig();
+
             // The resilient HTTP client is now consumed via constructor injection
             // (see IImageDownloadService); no global static accessor to prime here.
-            StructuredLoggingBootstrap.Configure();
+            StructuredLoggingBootstrap.Configure(options);
+            _openTelemetry = OpenTelemetryBootstrap.Initialize(options);
             ConfigureApplicationInsights();
+
+            Logger.Info(
+                "Observability configured. Tracing={EnableTracing} Metrics={EnableMetrics} Otlp={HasOtlp} AzureMonitor={HasAzure} SamplingRatio={SamplingRatio}",
+                options.EnableTracing,
+                options.EnableMetrics,
+                options.HasOtlpExporter,
+                options.HasAzureMonitorExporter,
+                options.SamplingRatio);
+        }
+
+        public static void Shutdown()
+        {
+            try
+            {
+                OpenTelemetryBootstrap.Shutdown();
+                _openTelemetry = null;
+                StructuredLoggingBootstrap.CloseAndFlush();
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Observability shutdown encountered an error.");
+            }
         }
 
         /// <summary>
@@ -24,6 +51,7 @@ namespace EImece.App_Start
         /// so deployments can avoid baking secrets into ApplicationInsights.config.
         /// Automatic request/dependency/exception/perf-counter collection is enabled via
         /// Microsoft.ApplicationInsights.Web 3.x + ApplicationInsights.config toggles.
+        /// Prefer OpenTelemetry + Azure Monitor exporter for new vendor-neutral pipelines.
         /// </summary>
         private static void ConfigureApplicationInsights()
         {

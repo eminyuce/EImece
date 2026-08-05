@@ -1,6 +1,7 @@
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Observability.Metrics;
+using EImece.Domain.Observability.Telemetry;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.CircuitBreaker;
@@ -10,7 +11,6 @@ using Polly.Wrap;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -138,50 +138,137 @@ namespace EImece.Domain.Observability.Http
         {
             var stopwatch = Stopwatch.StartNew();
             var retryCount = 0;
+            var host = request.RequestUri?.Host ?? "unknown";
+            var operation = OpenTelemetryMetrics.NormalizeRoute(request.RequestUri?.AbsolutePath ?? host);
 
             var context = new Context
             {
                 ["retry_count"] = 0
             };
 
-            try
+            using (var activity = StartClientActivity(request, operation, host))
             {
-                var response = await _policy.ExecuteAsync(
-                    async (ctx, token) =>
+                try
+                {
+                    var response = await _policy.ExecuteAsync(
+                        async (ctx, token) =>
+                        {
+                            retryCount = ctx.ContainsKey("retry_count") ? (int)ctx["retry_count"] : 0;
+                            var clone = await CloneRequestAsync(request).ConfigureAwait(false);
+                            InjectPropagationHeaders(clone);
+                            return await _httpClient.SendAsync(clone, HttpCompletionOption.ResponseHeadersRead, token).ConfigureAwait(false);
+                        },
+                        context,
+                        cancellationToken).ConfigureAwait(false);
+
+                    stopwatch.Stop();
+                    var statusCode = (int)response.StatusCode;
+                    _metrics.RecordHttpCall(operation, request.Method.Method, statusCode, stopwatch.ElapsedMilliseconds, retryCount);
+
+                    if (activity != null)
                     {
-                        retryCount = ctx.ContainsKey("retry_count") ? (int)ctx["retry_count"] : 0;
-                        var clone = await CloneRequestAsync(request).ConfigureAwait(false);
-                        return await _httpClient.SendAsync(clone, HttpCompletionOption.ResponseHeadersRead, token).ConfigureAwait(false);
-                    },
-                    context,
-                    cancellationToken).ConfigureAwait(false);
+                        activity.SetTag(ActivityTags.HttpStatusCode, statusCode);
+                        activity.SetTag(ActivityTags.HttpRetryCount, retryCount);
+                        if (statusCode >= 500)
+                        {
+                            activity.SetStatus(ActivityStatusCode.Error, "HTTP " + statusCode);
+                        }
+                        else
+                        {
+                            activity.SetStatus(ActivityStatusCode.Ok);
+                        }
+                    }
 
-                stopwatch.Stop();
-                _metrics.RecordHttpCall(request.RequestUri.ToString(), request.Method.Method, (int)response.StatusCode, stopwatch.ElapsedMilliseconds, retryCount);
-                _logger.LogInformation(
-                    "HTTP {HttpMethod} {Url} responded {StatusCode} in {DurationMs}ms with {RetryCount} retries. CorrelationId={CorrelationId}",
-                    request.Method.Method,
-                    SensitiveDataMasker.Mask(request.RequestUri.ToString()),
-                    (int)response.StatusCode,
-                    stopwatch.ElapsedMilliseconds,
-                    retryCount,
-                    CorrelationIdContext.Current);
+                    _logger.LogInformation(
+                        "HTTP {HttpMethod} {Url} responded {StatusCode} in {DurationMs}ms with {RetryCount} retries. CorrelationId={CorrelationId} TraceId={TraceId}",
+                        request.Method.Method,
+                        SensitiveDataMasker.Mask(host + "/" + operation),
+                        statusCode,
+                        stopwatch.ElapsedMilliseconds,
+                        retryCount,
+                        CorrelationIdContext.Current,
+                        Activity.Current?.TraceId.ToString());
 
-                return response;
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    stopwatch.Stop();
+                    _metrics.RecordHttpCall(operation, request.Method.Method, 0, stopwatch.ElapsedMilliseconds, retryCount);
+
+                    if (activity != null)
+                    {
+                        activity.SetTag(ActivityTags.HttpRetryCount, retryCount);
+                        activity.SetStatus(ActivityStatusCode.Error, ex.Message);
+                        activity.AddException(ex);
+                    }
+
+                    _logger.LogError(
+                        ex,
+                        "HTTP {HttpMethod} {Url} failed after {DurationMs}ms with {RetryCount} retries. CorrelationId={CorrelationId} TraceId={TraceId}",
+                        request.Method.Method,
+                        SensitiveDataMasker.Mask(host + "/" + operation),
+                        stopwatch.ElapsedMilliseconds,
+                        retryCount,
+                        CorrelationIdContext.Current,
+                        Activity.Current?.TraceId.ToString());
+                    throw;
+                }
             }
-            catch (Exception ex)
+        }
+
+        private static Activity StartClientActivity(HttpRequestMessage request, string operation, string host)
+        {
+            var activity = OpenTelemetryBootstrap.ActivitySource?.StartActivity(
+                "HTTP " + request.Method.Method,
+                ActivityKind.Client);
+
+            if (activity == null)
             {
-                stopwatch.Stop();
-                _metrics.RecordHttpCall(request.RequestUri.ToString(), request.Method.Method, 0, stopwatch.ElapsedMilliseconds, retryCount);
-                _logger.LogError(
-                    ex,
-                    "HTTP {HttpMethod} {Url} failed after {DurationMs}ms with {RetryCount} retries. CorrelationId={CorrelationId}",
-                    request.Method.Method,
-                    SensitiveDataMasker.Mask(request.RequestUri.ToString()),
-                    stopwatch.ElapsedMilliseconds,
-                    retryCount,
-                    CorrelationIdContext.Current);
-                throw;
+                return null;
+            }
+
+            activity.SetTag(ActivityTags.HttpMethod, request.Method.Method);
+            activity.SetTag(ActivityTags.HttpRoute, operation);
+            activity.SetTag(ActivityTags.ServerAddress, host);
+            activity.SetTag(ActivityTags.CorrelationId, CorrelationIdContext.Current);
+            return activity;
+        }
+
+        private static void InjectPropagationHeaders(HttpRequestMessage request)
+        {
+            if (request == null)
+            {
+                return;
+            }
+
+            var correlationId = CorrelationIdContext.Current;
+            if (!string.IsNullOrWhiteSpace(correlationId)
+                && !request.Headers.Contains(CorrelationIdContext.HeaderName))
+            {
+                request.Headers.TryAddWithoutValidation(CorrelationIdContext.HeaderName, correlationId);
+            }
+
+            var activity = Activity.Current;
+            if (activity == null)
+            {
+                return;
+            }
+
+            // W3C trace context
+            if (!request.Headers.Contains(CorrelationIdContext.TraceParentHeaderName))
+            {
+                request.Headers.TryAddWithoutValidation(
+                    CorrelationIdContext.TraceParentHeaderName,
+                    activity.Id);
+            }
+
+            if (!string.IsNullOrEmpty(activity.TraceStateString)
+                && !request.Headers.Contains(CorrelationIdContext.TraceStateHeaderName))
+            {
+                request.Headers.TryAddWithoutValidation(
+                    CorrelationIdContext.TraceStateHeaderName,
+                    activity.TraceStateString);
             }
         }
 

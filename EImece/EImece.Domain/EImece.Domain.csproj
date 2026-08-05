@@ -45,6 +45,12 @@
     <Reference Include="AutoMapper, Version=16.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.16.2.0\lib\net471\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Azure.Core, Version=1.54.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Core.1.54.0\lib\net462\Azure.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Azure.Monitor.OpenTelemetry.Exporter, Version=1.8.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Monitor.OpenTelemetry.Exporter.1.8.0\lib\netstandard2.0\Azure.Monitor.OpenTelemetry.Exporter.dll</HintPath>
+    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
@@ -206,6 +212,27 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.8.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.8.0\lib\net472\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="OpenTelemetry, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.1.15.3\lib\net462\OpenTelemetry.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTelemetry.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Api.1.15.3\lib\net462\OpenTelemetry.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTelemetry.Api.ProviderBuilderExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Api.ProviderBuilderExtensions.1.15.3\lib\net462\OpenTelemetry.Api.ProviderBuilderExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Exporter.OpenTelemetryProtocol.1.15.3\lib\net462\OpenTelemetry.Exporter.OpenTelemetryProtocol.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTelemetry.Instrumentation.Http, Version=1.15.1.1025, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Instrumentation.Http.1.15.1\lib\net462\OpenTelemetry.Instrumentation.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTelemetry.PersistentStorage.Abstractions, Version=1.0.3.1043, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.PersistentStorage.Abstractions.1.0.3\lib\net462\OpenTelemetry.PersistentStorage.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTelemetry.PersistentStorage.FileSystem, Version=1.0.3.1043, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.PersistentStorage.FileSystem.1.0.3\lib\net462\OpenTelemetry.PersistentStorage.FileSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -245,6 +272,9 @@
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ClientModel, Version=1.14.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ClientModel.1.14.0\lib\netstandard2.0\System.ClientModel.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable, Version=10.0.0.10, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.10.0.10\lib\net462\System.Collections.Immutable.dll</HintPath>
@@ -421,6 +451,9 @@
     <Compile Include="Observability\Logging\SensitiveDataMasker.cs" />
     <Compile Include="Observability\Logging\StructuredLoggingBootstrap.cs" />
     <Compile Include="Observability\Metrics\ApplicationMetrics.cs" />
+    <Compile Include="Observability\Metrics\OpenTelemetryMetrics.cs" />
+    <Compile Include="Observability\OpenTelemetryBootstrap.cs" />
+    <Compile Include="Observability\Telemetry\ActivityTags.cs" />
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Entities\Coupon.cs" />
     <Compile Include="GenericRepository.EntityFramework\DbContextFactory.cs" />

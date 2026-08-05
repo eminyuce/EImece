@@ -15,7 +15,7 @@
 | Data | Entity Framework **6.5**, SQL Server |
 | DI | **Microsoft.Extensions.DependencyInjection** |
 | Payments | [Iyzico](https://www.iyzico.com/en) (`Iyzipay`) |
-| Logging / telemetry | NLog, Application Insights **3.x**, optional OpenTelemetry |
+| Logging / telemetry | NLog, Serilog, Application Insights **3.x**, OpenTelemetry (OTLP / Azure Monitor) |
 | Jobs | Quartz.NET (optional) |
 | Front end | jQuery, Bootstrap |
 
@@ -47,9 +47,10 @@
 ### Operations & security
 - Health endpoints: `GET /health` and `GET /healthz`
 - Admin metrics: `GET /metrics` (authenticated administrators)
+- OpenTelemetry traces/metrics (OTLP primary; optional Azure Monitor exporter)
 - Security response headers (`SecurityHeadersHttpModule`)
 - DB credentials and encryption keys via environment variables (not committed secrets)
-- Structured request logging under `App_Data/logs/`
+- Structured request logging under `App_Data/logs/` with CorrelationId / TraceId / SpanId
 
 ---
 
@@ -146,6 +147,7 @@ See [EImece/RECAPTCHA.md](EImece/RECAPTCHA.md) to switch between Legacy captcha 
 |-----|----------|
 | [BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md) | Build, run, health checks, tests, common errors |
 | [SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md) | Env vars, `configSource`, TLS, production |
+| [OPENTELEMETRY.md](EImece/docs/OPENTELEMETRY.md) | OTLP, sampling, Azure Monitor exporter |
 | [RECAPTCHA.md](EImece/RECAPTCHA.md) | Captcha providers and Web.config keys |
 
 ---
