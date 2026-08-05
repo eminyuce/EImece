@@ -391,3 +391,7 @@ ModelManifest.xml
 
 # Local NuGet extract markers from scripts/restore-packages.py
 **/.nupkg_extracted
+
+# ASP.NET Core data protection keys (runtime-generated)
+**/App_Data/DataProtection-Keys/*.xml
+**/App_Data/logs/

@@ -1,0 +1,41 @@
+@model EImece.Web.Models.ProductDetailViewModel
+@using Resources
+@{
+    ViewData["Title"] = Model.Name;
+    ViewData["Description"] = Model.Summary;
+}
+
+<div class="container px-3 py-4 eimece-product-shell">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent px-0 mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a href="/c/pc/@(Model.CategoryId)">@Model.CategoryName</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="eimece-shell-card d-flex align-items-center justify-content-center" style="min-height: 280px; background: #f8fafc;">
+                <span class="text-muted">@Resource.Images · Phase 8 pipeline</span>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <h1 class="h2 mb-2">@Model.Name</h1>
+            <p class="text-muted mb-2">@Model.ProductCode</p>
+            @if (Model.Price.HasValue)
+            {
+                <p class="price mb-3">@Model.Price.Value.ToString("N2")</p>
+            }
+            <p class="mb-4">@(Model.Summary ?? "Product detail shell — full markup migrates incrementally.")</p>
+            <div class="d-flex flex-wrap" style="gap: .5rem;">
+                <a class="btn btn-primary" href="/b/@Model.CategorySlug/@Model.Id">Buy now</a>
+                <a class="btn btn-outline-secondary" asp-controller="Payment" asp-action="Index">Cart</a>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.Notice))
+            {
+                <p class="small text-muted mt-3 mb-0">@Model.Notice</p>
+            }
+        </div>
+    </div>
+</div>

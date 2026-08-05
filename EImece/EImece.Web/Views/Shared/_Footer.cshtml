@@ -1,0 +1,29 @@
+@using Resources
+<footer class="bg-dark pt-5 pb-4 mt-5">
+    <div class="container px-3">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h5 class="text-light">EImece</h5>
+                <p class="text-light opacity-75 mb-0">@Resource.AboutUs · Phase 7 presentation shell</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6 class="text-light">@Resource.UsefulLinks</h6>
+                <ul class="list-unstyled mb-0">
+                    <li><a class="text-light opacity-75" asp-controller="Info" asp-action="Index" asp-route-id="aboutus">@Resource.AboutUs</a></li>
+                    <li><a class="text-light opacity-75" asp-controller="Info" asp-action="Index" asp-route-id="deliveryinfo">@Resource.DeliveryInfo</a></li>
+                    <li><a class="text-light opacity-75" href="/sitemap.xml">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6 class="text-light">@Resource.Products</h6>
+                <ul class="list-unstyled mb-0">
+                    <li><a class="text-light opacity-75" asp-controller="Products" asp-action="SearchProducts">@Resource.Search</a></li>
+                    <li><a class="text-light opacity-75" asp-controller="Payment" asp-action="Index">Cart</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-top border-light border-opacity-25 pt-3 mt-2">
+            <p class="text-light opacity-50 small mb-0">&copy; @DateTime.UtcNow.Year EImece</p>
+        </div>
+    </div>
+</footer>
