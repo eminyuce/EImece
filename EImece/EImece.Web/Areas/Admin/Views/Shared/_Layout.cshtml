@@ -15,9 +15,9 @@
 </head>
 <body class="admin-app">
     <div class="admin-shell">
-        <partial name="_AdminSidebar" />
+        <partial name="~/Areas/Admin/Views/Shared/_AdminSidebar.cshtml" />
         <div class="admin-main">
-            <partial name="_AdminTopbar" />
+            <partial name="~/Areas/Admin/Views/Shared/_AdminTopbar.cshtml" />
             <main class="admin-content">
                 @if (TempData["Status"] is string status)
                 {
