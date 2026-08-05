@@ -122,6 +122,9 @@
     <Reference Include="OpenTelemetry.Exporter.Console, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTelemetry.Exporter.Console.1.15.3\lib\net462\OpenTelemetry.Exporter.Console.dll</HintPath>
     </Reference>
+    <Reference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Exporter.OpenTelemetryProtocol.1.15.3\lib\net462\OpenTelemetry.Exporter.OpenTelemetryProtocol.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTelemetry.Extensions.Hosting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTelemetry.Extensions.Hosting.1.15.3\lib\net462\OpenTelemetry.Extensions.Hosting.dll</HintPath>
     </Reference>
@@ -467,6 +470,7 @@
     <Compile Include="Controllers\UnderConstructionController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Filters\MetricsActionFilter.cs" />
+    <Compile Include="Filters\TelemetryActionFilter.cs" />
     <Compile Include="Filters\RequestLoggingActionFilter.cs" />
     <Compile Include="Filters\StructuredExceptionFilter.cs" />
     <Compile Include="Filters\WebApiExceptionFilter.cs" />

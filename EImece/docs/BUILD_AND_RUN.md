@@ -12,7 +12,7 @@ This document describes how to build the EImece solution (the C# equivalent of `
 | `EImece.Tests` | MSTest library | Unit and integration tests |
 | `EImece.MyConsole` | Console app | One-off maintenance / migration utilities |
 
-**Stack:** .NET Framework 4.8.1, ASP.NET MVC 5, Entity Framework 6, Microsoft.Extensions.DependencyInjection, SQL Server, IIS / IIS Express.
+**Stack:** .NET Framework 4.8.1, ASP.NET MVC 5, Entity Framework 6, Microsoft.Extensions.DependencyInjection, SQL Server, IIS / IIS Express. Observability: NLog/Serilog + OpenTelemetry (see [OPENTELEMETRY.md](OPENTELEMETRY.md)).
 
 > **Important:** The solution can be **compiled on Linux** for CI. The web application itself must **run on Windows** with IIS or IIS Express and a reachable SQL Server database.
 

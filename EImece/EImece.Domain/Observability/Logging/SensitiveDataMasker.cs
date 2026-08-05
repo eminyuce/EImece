@@ -4,8 +4,30 @@ namespace EImece.Domain.Observability.Logging
 {
     public static class SensitiveDataMasker
     {
-        private static readonly Regex PasswordPattern = new Regex(@"(password|pwd|secret|token|apikey|api_key|authorization)\s*[:=]\s*[^,\s""']+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex BearerPattern = new Regex(@"Bearer\s+[A-Za-z0-9\-._~+/]+=*", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        // Use \S+ for values (Mono mishandles \s inside some character classes).
+        private static readonly Regex PasswordPattern = new Regex(
+            @"\b(password|pwd|secret|token|apikey|api_key|connectionstring|connection_string)\s*[:=]\s*\S+",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex AuthorizationBearerPattern = new Regex(
+            @"\bauthorization\s*[:=]\s*Bearer\s+\S+",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex BearerPattern = new Regex(
+            @"Bearer\s+\S+",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex CardNumberPattern = new Regex(
+            @"\b(?:\d[ -]*?){13,19}\b",
+            RegexOptions.Compiled);
+
+        private static readonly Regex Cv2Pattern = new Regex(
+            @"\b(cvc|cvv|cv2)\s*[:=]\s*\d{3,4}\b",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex ConnectionStringPattern = new Regex(
+            @"(Password|Pwd|User ID|UserId|AccountKey|SharedAccessKey)\s*=\s*[^;""'\s]+",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public static string Mask(string value)
         {
@@ -14,9 +36,19 @@ namespace EImece.Domain.Observability.Logging
                 return value;
             }
 
-            var masked = PasswordPattern.Replace(value, "$1=***");
+            // Authorization/Bearer first so generic key=value masking does not consume tokens.
+            var masked = AuthorizationBearerPattern.Replace(value, "authorization=Bearer ***");
             masked = BearerPattern.Replace(masked, "Bearer ***");
+            masked = PasswordPattern.Replace(masked, MatchKeyValue);
+            masked = ConnectionStringPattern.Replace(masked, "$1=***");
+            masked = Cv2Pattern.Replace(masked, "$1=***");
+            masked = CardNumberPattern.Replace(masked, "****-****-****-****");
             return masked;
+        }
+
+        private static string MatchKeyValue(Match match)
+        {
+            return match.Groups[1].Value + "=***";
         }
     }
 }

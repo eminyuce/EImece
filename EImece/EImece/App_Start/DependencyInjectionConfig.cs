@@ -7,10 +7,12 @@ using EImece.Domain.Factories;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Observability;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.HealthChecks;
 using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Metrics;
+using EImece.Filters;
 using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
@@ -145,6 +147,12 @@ namespace EImece.App_Start
             // Async, resilient image downloader — DI replacement for the removed static accessor.
             services.AddSingletonWithProps<IImageDownloadService, ImageDownloadService>();
 
+            // Telemetry ActionFilter is also added globally in Application_Start; register for DI resolution.
+            services.AddSingleton<TelemetryActionFilter>(sp =>
+                new TelemetryActionFilter(
+                    sp.GetRequiredService<IApplicationMetrics>(),
+                    sp.GetRequiredService<ObservabilityOptions>()));
+
             // Multiple IHealthCheck implementations — GetServices / IEnumerable<IHealthCheck> returns all.
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<SqlServerHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<ExternalApiHealthCheck>(sp));
@@ -152,6 +160,10 @@ namespace EImece.App_Start
             // DependenciesHealthCheck removed: rely on specific health checks
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<BackgroundServiceHealthCheck>(sp));
             services.AddSingletonWithProps<IHealthCheckService, HealthCheckService>();
+
+            // OpenTelemetry providers are initialized once from ObservabilityBootstrap.Configure().
+            services.AddSingleton(sp =>
+                OpenTelemetryBootstrap.Initialize(sp.GetRequiredService<ObservabilityOptions>()));
         }
 
         private static void RegisterLogging(IServiceCollection services)

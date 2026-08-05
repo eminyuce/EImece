@@ -1,3 +1,4 @@
+using EImece.Domain.Observability.Metrics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -42,7 +43,10 @@ namespace EImece.Domain.Observability.HealthChecks
                 results.Add(result);
             }
 
-            return HealthCheckResponse.Create(results);
+            var response = HealthCheckResponse.Create(results);
+            OpenTelemetryMetrics.SetHealthStatus(
+                string.Equals(response.Status, "UP", System.StringComparison.OrdinalIgnoreCase));
+            return response;
         }
     }
 }

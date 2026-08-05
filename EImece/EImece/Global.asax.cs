@@ -48,8 +48,10 @@ namespace EImece
             ObservabilityBootstrap.Configure();
             using (DependencyInjectionConfig.BeginAmbientScope())
             {
-                GlobalFilters.Filters.Add(new Filters.MetricsActionFilter(
-                    DependencyResolver.Current.GetService<EImece.Domain.Observability.Metrics.IApplicationMetrics>()));
+                var metrics = DependencyResolver.Current.GetService<EImece.Domain.Observability.Metrics.IApplicationMetrics>();
+                var observabilityOptions = DependencyResolver.Current.GetService<EImece.Domain.Observability.Configuration.ObservabilityOptions>()
+                    ?? EImece.Domain.Observability.Configuration.ObservabilityOptions.FromAppConfig();
+                GlobalFilters.Filters.Add(new Filters.TelemetryActionFilter(metrics, observabilityOptions));
                 GlobalFilters.Filters.Add(new Filters.StructuredExceptionFilter());
 
                 var adresService = DependencyResolver.Current.GetService<AdresService>();
@@ -144,6 +146,11 @@ namespace EImece
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             DependencyInjectionConfig.EndRequestScope();
+        }
+
+        protected void Application_End()
+        {
+            ObservabilityBootstrap.Shutdown();
         }
 
         /// <summary>

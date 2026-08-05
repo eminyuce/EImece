@@ -312,9 +312,12 @@
     <Compile Include="Controllers\ParallelPocessingTest.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipherTests.cs" />
+    <Compile Include="Helpers\ApplicationMetricsTests.cs" />
+    <Compile Include="Helpers\CorrelationIdContextTests.cs" />
     <Compile Include="Helpers\EfSqlLoggerTests.cs" />
     <Compile Include="Helpers\ImageUtilitiesTests.cs" />
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
+    <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
