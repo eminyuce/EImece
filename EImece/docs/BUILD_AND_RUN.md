@@ -127,9 +127,9 @@ Full local / IIS / Azure / TLS / password-rotation steps: [SECURE_CONNECTION_STR
 
 The database schema must already exist (apply your usual EF migrations or restore a backup).
 
-### Dummy / load-test data (optional)
+### Dummy / demo data (optional)
 
-To populate ~5000 rows per table for manual testing (admin grids, storefront, orders, reports):
+To populate a realistic small shop for manual testing (admin grids, storefront, orders, reports):
 
 1. Ensure the schema exists and the app can connect.
 2. Run `EImece/SqlScripts/SeedDummyData.sql` in SSMS, or:
@@ -137,12 +137,16 @@ To populate ~5000 rows per table for manual testing (admin grids, storefront, or
 ```powershell
 cd EImece/SqlScripts
 .\RunSeedDummyData.ps1 -ConnectionString "Server=.;Database=EImece;Trusted_Connection=True;TrustServerCertificate=True;"
+# Optional: larger catalog/orders only (menus, slides, settings stay small)
+.\RunSeedDummyData.ps1 -ConnectionString "..." -Scale 2
 ```
+
+Default volumes (`@Scale = 1`): ~12 menus, ~6 homepage slides, ~20 brands, ~25 categories, ~150 products, ~30 stories, ~40 customers, ~100 orders — not thousands of rows in every table.
 
 - Shared seed credential for all seed users: concatenate `Test` + `123` + `!` (local/test only)
 - Known logins: `admin@eimece.test` (Admin), `editor@eimece.test` (NormalUser), `customer1@eimece.test` (Customer)
 - Cleanup: `CleanupDummyData.sql`, or re-run the seed script (`@CleanupFirst = 1` by default)
-- Tune volume with `@RecordCount` / `-RecordCount`
+- Tune bulk catalog/order size with `@Scale` / `-Scale`; edit individual `@Seed*` counts in the SQL for finer control
 
 ### Application settings (review)
 

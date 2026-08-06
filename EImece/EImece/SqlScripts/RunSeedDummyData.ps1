@@ -6,7 +6,7 @@
     .\RunSeedDummyData.ps1 -ConnectionString "Server=.;Database=EImece;Trusted_Connection=True;TrustServerCertificate=True;"
 
 .EXAMPLE
-    .\RunSeedDummyData.ps1 -Server "." -Database "EImece" -RecordCount 5000
+    .\RunSeedDummyData.ps1 -Server "." -Database "EImece" -Scale 2
 
 .EXAMPLE
     .\RunSeedDummyData.ps1 -ConnectionString "..." -CleanupOnly
@@ -22,7 +22,9 @@ param(
     [Parameter(ParameterSetName = 'ServerDatabase')]
     [string] $Database = "EImece",
 
-    [int] $RecordCount = 5000,
+    # Multiplies catalog/order bulk tables only (menus, slides, settings stay small).
+    [ValidateScript({ $_ -gt 0 })]
+    [double] $Scale = 1.0,
 
     [switch] $SkipCleanup,
 
@@ -107,8 +109,9 @@ if ($CleanupOnly) {
     return
 }
 
+$scaleLiteral = ([string]::Format([System.Globalization.CultureInfo]::InvariantCulture, "{0}", $Scale))
 $replacements = @{
-    'DECLARE @RecordCount\s+INT\s+=\s+\d+' = "DECLARE @RecordCount   INT          = $RecordCount"
+    'DECLARE @Scale\s+FLOAT\s+=\s+[0-9.]+' = "DECLARE @Scale         FLOAT        = $scaleLiteral"
 }
 
 if ($SkipCleanup) {
@@ -116,5 +119,5 @@ if ($SkipCleanup) {
 }
 
 Invoke-SqlFile -Path $seedPath -VariableReplacements $replacements
-Write-Host "Seed finished. RecordCount=$RecordCount" -ForegroundColor Green
+Write-Host "Seed finished. Scale=$Scale (menus/slides/settings stay small; catalog/orders scale)." -ForegroundColor Green
 Write-Host "Login: admin@eimece.test (seed credential = 'Test' + '123' + '!')" -ForegroundColor Yellow

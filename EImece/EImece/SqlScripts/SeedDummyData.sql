@@ -1,26 +1,31 @@
 /*
 ================================================================================
-  EImece — Seed Dummy Data for Manual / Load Testing
+  EImece — Seed Dummy Data for Manual / Demo Testing
 ================================================================================
-  Inserts ~@RecordCount rows into each major table so you can exercise admin
-  grids, storefront, orders, reports, search, and pagination.
+  Inserts realistic volumes of related demo data so the storefront and admin
+  feel like a small-to-medium shop (not thousands of menus/settings/brands).
+
+  Default shape (@Scale = 1):
+    ~12 menus, ~6 homepage slides, ~20 brands, ~25 categories, ~150 products,
+    ~30 stories, ~40 customers/users, ~100 orders, plus supporting rows.
 
   HOW TO RUN
   ----------
   1. Ensure the EImece database schema already exists (app has created tables).
   2. Open this script in SSMS (or use sqlcmd / Invoke-Sqlcmd).
-  3. Optionally change @RecordCount (default 5000) and @CleanupFirst.
+  3. Optionally change @Scale (bulk tables only) or individual @Seed* counts.
   4. Execute against your EImece database.
 
   PowerShell example:
     .\RunSeedDummyData.ps1 -ConnectionString "Server=.;Database=EImece;Trusted_Connection=True;"
+    .\RunSeedDummyData.ps1 -ConnectionString "..." -Scale 2   # larger catalog/orders
 
   TEST LOGINS (local seed credential — see docs/BUILD_AND_RUN.md)
   ---------------------------------------------------------------
     admin@eimece.test      → Admin role
     editor@eimece.test     → NormalUser role
     customer1@eimece.test  → Customer role
-    seeduser00001@eimece.test … seeduser05000@eimece.test → Customer
+    seeduser00001@eimece.test … → Customer
     Shared seed credential parts: N'Test' + N'123' + N'!'
 
   CLEANUP
@@ -30,9 +35,9 @@
   NOTES
   -----
   - All seed entity Names are prefixed with N'SEED ' for easy cleanup.
-  - Menus: only the first 12 are IsActive=1 so the storefront nav stays usable.
-  - Settings: required app keys are inserted, plus SEED_Dummy_* fillers.
-  - MailTemplates: required template Names are inserted (exact Names the app uses).
+  - Structural tables (Menus, MainPageImages, Templates, Settings, MailTemplates)
+    use small fixed counts so the site stays usable; @Scale does not inflate them.
+  - Settings / MailTemplates: required app keys/names first, plus a few fillers.
   - Product.Rating is omitted when the column is computed; otherwise set explicitly.
   - Script is idempotent when @CleanupFirst = 1.
 ================================================================================
@@ -42,7 +47,7 @@ SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
 /* ========================= CONFIG ========================= */
-DECLARE @RecordCount   INT          = 5000;   -- rows per bulk table
+DECLARE @Scale         FLOAT        = 1.0;    -- multiplies catalog/order bulk tables only
 DECLARE @CleanupFirst  BIT          = 1;      -- 1 = wipe previous SEED data first
 DECLARE @Lang          INT          = 1;      -- 1=TR, 2=EN
 DECLARE @Now           DATETIME     = GETDATE();
@@ -54,13 +59,78 @@ DECLARE @Customer1Id   NVARCHAR(128) = N'seed-customer-0000000001';
 DECLARE @PasswordHash  NVARCHAR(MAX) = N'AAECAwQFBgcICQoLDA0ODxDDsDqHD/P2DJthJqYXFSVlp6Ybmsrf5Stb142xLX6XZw==';
 DECLARE @SecurityStamp NVARCHAR(MAX) = N'A1B2C3D4E5F64789A0B1C2D3E4F50607';
 
-IF @RecordCount < 1
+/* ---- Structural / UX-sensitive (NOT scaled) ---- */
+DECLARE @SeedMenus              INT = 12;   -- main nav / CMS pages
+DECLARE @SeedMenuFiles          INT = 12;
+DECLARE @SeedMainPageImages     INT = 6;    -- homepage slider
+DECLARE @SeedTemplates          INT = 6;
+DECLARE @SeedTagCategories      INT = 6;
+DECLARE @SeedLists              INT = 8;
+DECLARE @SeedFaqs               INT = 20;
+DECLARE @SeedCoupons            INT = 12;
+DECLARE @SeedStoryCategories    INT = 6;
+DECLARE @SeedBrands             INT = 20;
+DECLARE @SeedSettingFillers     INT = 10;   -- plus required keys
+DECLARE @SeedMailTemplateFillers INT = 5;   -- plus required templates
+DECLARE @SeedBrowserSubscriptions INT = 3;
+DECLARE @SeedShortUrls          INT = 20;
+
+/* ---- Catalog / traffic (scaled by @Scale) ---- */
+DECLARE @SeedUsers              INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
+DECLARE @SeedFiles              INT = CASE WHEN CAST(ROUND(120 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(120 * @Scale, 0) AS INT) END;
+DECLARE @SeedTags               INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
+DECLARE @SeedProductCategories  INT = CASE WHEN CAST(ROUND(25  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(25  * @Scale, 0) AS INT) END;
+DECLARE @SeedCategoryRoots      INT = CASE WHEN CAST(ROUND(8   * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(8   * @Scale, 0) AS INT) END;
+DECLARE @SeedProducts           INT = CASE WHEN CAST(ROUND(150 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(150 * @Scale, 0) AS INT) END;
+DECLARE @SeedProductFiles       INT = CASE WHEN CAST(ROUND(200 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(200 * @Scale, 0) AS INT) END;
+DECLARE @SeedProductTags        INT = CASE WHEN CAST(ROUND(200 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(200 * @Scale, 0) AS INT) END;
+DECLARE @SeedProductSpecs       INT = CASE WHEN CAST(ROUND(300 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(300 * @Scale, 0) AS INT) END;
+DECLARE @SeedProductComments    INT = CASE WHEN CAST(ROUND(80  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(80  * @Scale, 0) AS INT) END;
+DECLARE @SeedStories            INT = CASE WHEN CAST(ROUND(30  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(30  * @Scale, 0) AS INT) END;
+DECLARE @SeedStoryFiles         INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
+DECLARE @SeedStoryTags          INT = CASE WHEN CAST(ROUND(60  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(60  * @Scale, 0) AS INT) END;
+DECLARE @SeedFileStorageTags    INT = CASE WHEN CAST(ROUND(80  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(80  * @Scale, 0) AS INT) END;
+DECLARE @SeedListItems          INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
+DECLARE @SeedSubscribers        INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
+DECLARE @SeedCustomers          INT = @SeedUsers;
+DECLARE @SeedAddresses          INT = CASE WHEN CAST(ROUND(80  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(80  * @Scale, 0) AS INT) END;
+DECLARE @SeedOrders             INT = CASE WHEN CAST(ROUND(100 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(100 * @Scale, 0) AS INT) END;
+DECLARE @SeedOrderProducts      INT = CASE WHEN CAST(ROUND(250 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(250 * @Scale, 0) AS INT) END;
+DECLARE @SeedShoppingCarts      INT = CASE WHEN CAST(ROUND(25  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(25  * @Scale, 0) AS INT) END;
+DECLARE @SeedBrowserSubscribers INT = CASE WHEN CAST(ROUND(30  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(30  * @Scale, 0) AS INT) END;
+DECLARE @SeedBrowserNotifications INT = CASE WHEN CAST(ROUND(15 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(15 * @Scale, 0) AS INT) END;
+DECLARE @SeedBrowserFeedbacks   INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
+DECLARE @SeedAppLogs            INT = CASE WHEN CAST(ROUND(100 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(100 * @Scale, 0) AS INT) END;
+
+IF @Scale <= 0
 BEGIN
-    RAISERROR(N'@RecordCount must be >= 1', 16, 1);
+    RAISERROR(N'@Scale must be > 0', 16, 1);
     RETURN;
 END;
 
-PRINT CONVERT(VARCHAR(30), GETDATE(), 121) + N' — Starting seed. RecordCount=' + CAST(@RecordCount AS VARCHAR(10));
+IF @SeedCategoryRoots > @SeedProductCategories
+    SET @SeedCategoryRoots = @SeedProductCategories;
+
+DECLARE @MaxSeed INT =
+(
+    SELECT MAX(v) FROM (VALUES
+        (@SeedUsers),(@SeedFiles),(@SeedTags),(@SeedProductCategories),(@SeedProducts),
+        (@SeedProductFiles),(@SeedProductTags),(@SeedProductSpecs),(@SeedProductComments),
+        (@SeedStories),(@SeedStoryFiles),(@SeedStoryTags),(@SeedMenus),(@SeedMenuFiles),
+        (@SeedMainPageImages),(@SeedFileStorageTags),(@SeedSettingFillers),(@SeedMailTemplateFillers),
+        (@SeedLists),(@SeedListItems),(@SeedFaqs),(@SeedSubscribers),(@SeedCoupons),
+        (@SeedCustomers),(@SeedAddresses),(@SeedOrders),(@SeedOrderProducts),(@SeedShoppingCarts),
+        (@SeedBrowserSubscriptions),(@SeedBrowserSubscribers),(@SeedBrowserNotifications),
+        (@SeedBrowserFeedbacks),(@SeedShortUrls),(@SeedAppLogs),(@SeedTemplates),
+        (@SeedTagCategories),(@SeedBrands),(@SeedStoryCategories)
+    ) x(v)
+);
+
+PRINT CONVERT(VARCHAR(30), GETDATE(), 121)
+    + N' — Starting seed. Scale=' + CAST(@Scale AS VARCHAR(20))
+    + N', Products=' + CAST(@SeedProducts AS VARCHAR(10))
+    + N', Menus=' + CAST(@SeedMenus AS VARCHAR(10))
+    + N', Orders=' + CAST(@SeedOrders AS VARCHAR(10));
 
 /* ========================= CLEANUP ========================= */
 IF @CleanupFirst = 1
@@ -133,7 +203,7 @@ CREATE TABLE #Nums (n INT NOT NULL PRIMARY KEY);
 E2(n) AS (SELECT 1 FROM E1 a CROSS JOIN E1 b),          -- 100
 E3(n) AS (SELECT 1 FROM E2 a CROSS JOIN E2 b),          -- 10,000
 Numbers AS (
-    SELECT TOP (@RecordCount) ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS n
+    SELECT TOP (@MaxSeed) ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS n
     FROM E3
 )
 INSERT INTO #Nums(n)
@@ -195,7 +265,8 @@ BEGIN
             N'seeduser' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5),
             N'Seed',
             N'User' + CAST(n.n AS NVARCHAR(10))
-        FROM #Nums n;
+        FROM #Nums n
+        WHERE n.n <= @SeedUsers;
     END
     ELSE
     BEGIN
@@ -215,7 +286,8 @@ BEGIN
             N'seeduser' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5) + N'@eimece.test',
             1, @PasswordHash, @SecurityStamp, 0, 0, 1, 0,
             N'seeduser' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5)
-        FROM #Nums n;
+        FROM #Nums n
+        WHERE n.n <= @SeedUsers;
     END
 
     DECLARE @AdminRoleId NVARCHAR(128) = (SELECT TOP 1 Id FROM dbo.AspNetRoles WHERE Name = N'Admin');
@@ -255,7 +327,8 @@ SELECT
     800, 600,
     N'image',
     0
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedFiles;
 
 DECLARE @MinFileId INT = (SELECT MIN(Id) FROM dbo.FileStorages WHERE Name LIKE N'SEED %');
 DECLARE @MaxFileId INT = (SELECT MAX(Id) FROM dbo.FileStorages WHERE Name LIKE N'SEED %');
@@ -270,7 +343,8 @@ SELECT
     N'SEED Template ' + CAST(n.n AS NVARCHAR(10)),
     @Now, @Now, 1, n.n, @Lang,
     N'<template><fields><field name="Color" type="text"/><field name="Size" type="text"/><field name="Material" type="text"/></fields></template>'
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedTemplates;
 
 DECLARE @MinTemplateId INT = (SELECT MIN(Id) FROM dbo.Templates WHERE Name LIKE N'SEED %');
 DECLARE @TemplateCount INT = (SELECT COUNT(*) FROM dbo.Templates WHERE Name LIKE N'SEED %');
@@ -281,7 +355,8 @@ DECLARE @TemplateCount INT = (SELECT COUNT(*) FROM dbo.Templates WHERE Name LIKE
 PRINT N'Seeding TagCategories / Tags...';
 INSERT INTO dbo.TagCategories (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang)
 SELECT N'SEED TagCategory ' + CAST(n.n AS NVARCHAR(10)), @Now, @Now, 1, n.n, @Lang
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedTagCategories;
 
 DECLARE @MinTagCatId INT = (SELECT MIN(Id) FROM dbo.TagCategories WHERE Name LIKE N'SEED %');
 DECLARE @TagCatCount INT = (SELECT COUNT(*) FROM dbo.TagCategories WHERE Name LIKE N'SEED %');
@@ -291,7 +366,8 @@ SELECT
     N'SEED Tag ' + CAST(n.n AS NVARCHAR(10)),
     @Now, @Now, 1, n.n, @Lang,
     @MinTagCatId + ((n.n - 1) % @TagCatCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedTags;
 
 DECLARE @MinTagId INT = (SELECT MIN(Id) FROM dbo.Tags WHERE Name LIKE N'SEED %');
 DECLARE @TagCount INT = (SELECT COUNT(*) FROM dbo.Tags WHERE Name LIKE N'SEED %');
@@ -310,14 +386,15 @@ SELECT
     1, N'seed,brand,' + CAST(n.n AS NVARCHAR(10)),
     @MinFileId + ((n.n - 1) % @FileCount),
     @AdminUserId, @AdminUserId,
-    CASE WHEN n.n <= 20 THEN 1 ELSE 0 END
-FROM #Nums n;
+    CASE WHEN n.n <= 8 THEN 1 ELSE 0 END
+FROM #Nums n
+WHERE n.n <= @SeedBrands;
 
 DECLARE @MinBrandId INT = (SELECT MIN(Id) FROM dbo.Brands WHERE Name LIKE N'SEED %');
 DECLARE @BrandCount INT = (SELECT COUNT(*) FROM dbo.Brands WHERE Name LIKE N'SEED %');
 
 /* ============================================================
-   6) ProductCategories (tree: first 50 roots, rest children)
+   6) ProductCategories (tree: first @SeedCategoryRoots roots, rest children)
    ============================================================ */
 PRINT N'Seeding ProductCategories...';
 INSERT INTO dbo.ProductCategories
@@ -331,12 +408,13 @@ SELECT
     1, N'seed,category',
     @MinFileId + ((n.n - 1) % @FileCount),
     @AdminUserId, @AdminUserId,
-    CASE WHEN n.n <= 50 THEN 0 ELSE ((n.n - 1) % 50) + 1 END,  -- ParentId: 0 for roots; temporary child placeholder
-    CASE WHEN n.n <= 30 THEN 1 ELSE 0 END,
+    CASE WHEN n.n <= @SeedCategoryRoots THEN 0 ELSE ((n.n - 1) % @SeedCategoryRoots) + 1 END,  -- temp child placeholder
+    CASE WHEN n.n <= @SeedCategoryRoots THEN 1 ELSE 0 END,
     N'Short desc for category ' + CAST(n.n AS NVARCHAR(10)),
     @MinTemplateId + ((n.n - 1) % @TemplateCount),
     CASE WHEN n.n % 10 = 0 THEN 10.0 ELSE NULL END
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedProductCategories;
 
 /* Fix ParentId for children to real root Ids */
 DECLARE @MinCatId INT = (SELECT MIN(Id) FROM dbo.ProductCategories WHERE Name LIKE N'SEED %');
@@ -344,8 +422,8 @@ DECLARE @CatCount INT = (SELECT COUNT(*) FROM dbo.ProductCategories WHERE Name L
 
 UPDATE pc
 SET ParentId = CASE
-    WHEN TRY_CAST(REPLACE(pc.Name, N'SEED ProductCategory ', N'') AS INT) <= 50 THEN 0
-    ELSE @MinCatId + ((TRY_CAST(REPLACE(pc.Name, N'SEED ProductCategory ', N'') AS INT) - 1) % 50)
+    WHEN TRY_CAST(REPLACE(pc.Name, N'SEED ProductCategory ', N'') AS INT) <= @SeedCategoryRoots THEN 0
+    ELSE @MinCatId + ((TRY_CAST(REPLACE(pc.Name, N'SEED ProductCategory ', N'') AS INT) - 1) % @SeedCategoryRoots)
 END
 FROM dbo.ProductCategories pc
 WHERE pc.Name LIKE N'SEED ProductCategory %';
@@ -384,7 +462,7 @@ BEGIN
         N'Long name for SEED Product ' + CAST(n.n AS NVARCHAR(10)),
         @MinCatId + ((n.n - 1) % @CatCount),
         @MinBrandId + ((n.n - 1) % @BrandCount),
-        CASE WHEN n.n <= 40 THEN 1 ELSE 0 END,
+        CASE WHEN n.n <= 12 THEN 1 ELSE 0 END,
         N'Short description ' + CAST(n.n AS NVARCHAR(10)),
         CAST((50.0 + (n.n % 950)) AS DECIMAL(18,2)),
         CASE WHEN n.n % 7 = 0 THEN CAST((5.0 + (n.n % 40)) AS DECIMAL(18,2)) ELSE NULL END,
@@ -394,7 +472,8 @@ BEGIN
         N'Red,Blue,Green',
         (SELECT State FROM @ProductStates WHERE i = n.n % 10),
         N'S,M,L,XL'
-    FROM #Nums n;
+    FROM #Nums n
+    WHERE n.n <= @SeedProducts;
 END
 ELSE
 BEGIN
@@ -417,7 +496,7 @@ BEGIN
         N'Long name for SEED Product ' + CAST(n.n AS NVARCHAR(10)),
         @MinCatId + ((n.n - 1) % @CatCount),
         @MinBrandId + ((n.n - 1) % @BrandCount),
-        CASE WHEN n.n <= 40 THEN 1 ELSE 0 END,
+        CASE WHEN n.n <= 12 THEN 1 ELSE 0 END,
         N'Short description ' + CAST(n.n AS NVARCHAR(10)),
         CAST((50.0 + (n.n % 950)) AS DECIMAL(18,2)),
         CASE WHEN n.n % 7 = 0 THEN CAST((5.0 + (n.n % 40)) AS DECIMAL(18,2)) ELSE NULL END,
@@ -428,7 +507,8 @@ BEGIN
         (SELECT State FROM @ProductStates WHERE i = n.n % 10),
         N'S,M,L,XL',
         CAST((2.0 + (n.n % 30) / 10.0) AS FLOAT)
-    FROM #Nums n;
+    FROM #Nums n
+    WHERE n.n <= @SeedProducts;
 END;
 
 DECLARE @MinProductId INT = (SELECT MIN(Id) FROM dbo.Products WHERE Name LIKE N'SEED %');
@@ -446,13 +526,15 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     @MinFileId + ((n.n - 1) % @FileCount),
     @MinProductId + ((n.n - 1) % @ProductCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedProductFiles;
 
 INSERT INTO dbo.ProductTags (TagId, ProductId)
 SELECT
     @MinTagId + ((n.n - 1) % @TagCount),
     @MinProductId + ((n.n - 1) % @ProductCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedProductTags;
 
 INSERT INTO dbo.ProductSpecifications
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, Value, Unit, ProductId)
@@ -474,7 +556,8 @@ SELECT
     END,
     CASE n.n % 5 WHEN 2 THEN N'g' WHEN 4 THEN N'cm' ELSE N'' END,
     @MinProductId + ((n.n - 1) % @ProductCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedProductSpecs;
 
 INSERT INTO dbo.ProductComments
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang,
@@ -485,12 +568,13 @@ SELECT
     CASE WHEN n.n % 15 = 0 THEN 0 ELSE 1 END,
     n.n, @Lang,
     @MinProductId + ((n.n - 1) % @ProductCount),
-    CASE WHEN n.n = 1 THEN @Customer1Id ELSE N'seed-user-' + RIGHT(N'00000000' + CAST(((n.n - 1) % @RecordCount) + 1 AS NVARCHAR(8)), 8) END,
+    CASE WHEN n.n = 1 THEN @Customer1Id ELSE N'seed-user-' + RIGHT(N'00000000' + CAST(((n.n - 1) % @SeedUsers) + 1 AS NVARCHAR(8)), 8) END,
     N'This is a dummy review for product testing. Comment #' + CAST(n.n AS NVARCHAR(10)),
-    N'seeduser' + RIGHT(N'00000' + CAST(((n.n - 1) % @RecordCount) + 1 AS NVARCHAR(5)), 5) + N'@eimece.test',
+    N'seeduser' + RIGHT(N'00000' + CAST(((n.n - 1) % @SeedUsers) + 1 AS NVARCHAR(5)), 5) + N'@eimece.test',
     N'Review subject ' + CAST(n.n AS NVARCHAR(10)),
     1 + (n.n % 5)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedProductComments;
 
 /* ============================================================
    9) StoryCategories / Stories / StoryFiles / StoryTags
@@ -508,7 +592,8 @@ SELECT
     @MinFileId + ((n.n - 1) % @FileCount),
     @AdminUserId, @AdminUserId,
     N'T' + CAST(1 + (n.n % 8) AS NVARCHAR(2))
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedStoryCategories;
 
 DECLARE @MinStoryCatId INT = (SELECT MIN(Id) FROM dbo.StoryCategories WHERE Name LIKE N'SEED %');
 DECLARE @StoryCatCount INT = (SELECT COUNT(*) FROM dbo.StoryCategories WHERE Name LIKE N'SEED %');
@@ -530,7 +615,8 @@ SELECT
     N'Author ' + CAST((n.n % 20) + 1 AS NVARCHAR(10)),
     CASE WHEN n.n <= 10 THEN 1 ELSE 0 END,
     N'Short story blurb ' + CAST(n.n AS NVARCHAR(10))
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedStories;
 
 DECLARE @MinStoryId INT = (SELECT MIN(Id) FROM dbo.Stories WHERE Name LIKE N'SEED %');
 DECLARE @StoryCount INT = (SELECT COUNT(*) FROM dbo.Stories WHERE Name LIKE N'SEED %');
@@ -542,13 +628,15 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     @MinStoryId + ((n.n - 1) % @StoryCount),
     @MinFileId + ((n.n - 1) % @FileCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedStoryFiles;
 
 INSERT INTO dbo.StoryTags (StoryId, TagId)
 SELECT
     @MinStoryId + ((n.n - 1) % @StoryCount),
     @MinTagId + ((n.n - 1) % @TagCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedStoryTags;
 
 /* ============================================================
    10) Menus / MenuFiles / MainPageImages
@@ -562,20 +650,20 @@ INSERT INTO dbo.Menus
 SELECT
     N'SEED Menu ' + CAST(n.n AS NVARCHAR(10)),
     @Now, @Now,
-    /* Keep storefront nav small: first 12 active top-level pages */
-    CASE WHEN n.n <= 12 THEN 1 ELSE 0 END,
+    1,  -- all seeded menus active; count stays small (@SeedMenus)
     n.n, @Lang,
     N'<p>Menu page content ' + CAST(n.n AS NVARCHAR(10)) + N'</p>',
     1, N'seed,menu',
     @MinFileId + ((n.n - 1) % @FileCount),
     @AdminUserId, @AdminUserId,
-    CASE WHEN n.n <= 12 THEN 0 ELSE 0 END,
+    0,
     CASE WHEN n.n <= 8 THEN 1 ELSE 0 END,
     N'pages-detail_' + CAST(n.n AS NVARCHAR(10)),
-    CASE WHEN n.n % 25 = 0 THEN N'https://example.com/external-' + CAST(n.n AS NVARCHAR(10)) ELSE NULL END,
+    CASE WHEN n.n % 6 = 0 THEN N'https://example.com/external-' + CAST(n.n AS NVARCHAR(10)) ELSE NULL END,
     N'T' + CAST(1 + (n.n % 8) AS NVARCHAR(2)),
-    CASE WHEN n.n % 25 = 0 THEN 1 ELSE 0 END
-FROM #Nums n;
+    CASE WHEN n.n % 6 = 0 THEN 1 ELSE 0 END
+FROM #Nums n
+WHERE n.n <= @SeedMenus;
 
 DECLARE @MinMenuId INT = (SELECT MIN(Id) FROM dbo.Menus WHERE Name LIKE N'SEED %');
 DECLARE @MenuCount INT = (SELECT COUNT(*) FROM dbo.Menus WHERE Name LIKE N'SEED %');
@@ -587,7 +675,8 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     @MinMenuId + ((n.n - 1) % @MenuCount),
     @MinFileId + ((n.n - 1) % @FileCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedMenuFiles;
 
 INSERT INTO dbo.MainPageImages
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang,
@@ -595,14 +684,15 @@ INSERT INTO dbo.MainPageImages
 SELECT
     N'SEED MainPageImage ' + CAST(n.n AS NVARCHAR(10)),
     @Now, @Now,
-    CASE WHEN n.n <= 10 THEN 1 ELSE 0 END,
+    1,
     n.n, @Lang,
     N'Slider image ' + CAST(n.n AS NVARCHAR(10)),
     1, N'seed,slider',
     @MinFileId + ((n.n - 1) % @FileCount),
     @AdminUserId, @AdminUserId,
     N'/c/SEED-ProductCategory-' + CAST(((n.n - 1) % @CatCount) + 1 AS NVARCHAR(10))
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedMainPageImages;
 
 /* ============================================================
    11) FileStorageTags
@@ -612,7 +702,8 @@ INSERT INTO dbo.FileStorageTags (FileStorageId, TagId)
 SELECT
     @MinFileId + ((n.n - 1) % @FileCount),
     @MinTagId + ((n.n - 1) % @TagCount)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedFileStorageTags;
 
 /* ============================================================
    12) Settings (required keys + fillers)
@@ -673,16 +764,17 @@ WHERE NOT EXISTS (
     WHERE s.SettingKey = rs.SettingKey AND s.Lang = @Lang
 );
 
-/* Pad Settings to ~@RecordCount with unique dummy keys */
+/* A few dummy settings for admin grid demos (not thousands) */
 INSERT INTO dbo.Settings
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, Description, SettingKey, SettingValue)
 SELECT
     N'SEED Setting Dummy ' + CAST(n.n AS NVARCHAR(10)),
     @Now, @Now, 1, n.n, @Lang,
-    N'Dummy setting for grid/load testing',
+    N'Dummy setting for admin grid demos',
     N'SEED_Dummy_' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5),
     N'value-' + CAST(n.n AS NVARCHAR(10))
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedSettingFillers;
 
 /* ============================================================
    13) MailTemplates (required Names + fillers)
@@ -715,7 +807,8 @@ SELECT
     N'Seed subject ' + CAST(n.n AS NVARCHAR(10)),
     N'<p>Seed mail body ' + CAST(n.n AS NVARCHAR(10)) + N'</p>',
     @AdminUserId, N'SEED', 0, 0
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedMailTemplateFillers;
 
 /* ============================================================
    14) Lists / ListItems
@@ -727,7 +820,8 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     CASE WHEN n.n % 2 = 0 THEN 1 ELSE 0 END,
     CASE WHEN n.n % 3 = 0 THEN 1 ELSE 0 END
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedLists;
 
 DECLARE @MinListId INT = (SELECT MIN(Id) FROM dbo.Lists WHERE Name LIKE N'SEED %');
 DECLARE @ListCount INT = (SELECT COUNT(*) FROM dbo.Lists WHERE Name LIKE N'SEED %');
@@ -738,7 +832,8 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     @MinListId + ((n.n - 1) % @ListCount),
     N'value-' + CAST(n.n AS NVARCHAR(10))
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedListItems;
 
 /* ============================================================
    15) Faqs / Subscribers / Coupons
@@ -753,7 +848,8 @@ SELECT
     N'Seed question #' + CAST(n.n AS NVARCHAR(10)) + N'?',
     N'<p>Seed answer for question ' + CAST(n.n AS NVARCHAR(10)) + N'.</p>',
     @AdminUserId, @AdminUserId
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedFaqs;
 
 INSERT INTO dbo.Subscribers
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, Email, Note)
@@ -762,7 +858,8 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     N'subscriber' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5) + N'@eimece.test',
     N'Seed subscriber note ' + CAST(n.n AS NVARCHAR(10))
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedSubscribers;
 
 INSERT INTO dbo.Coupons
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang,
@@ -777,7 +874,8 @@ SELECT
     CASE WHEN n.n % 2 = 1 THEN 25 + (n.n % 100) ELSE 0 END,
     DATEADD(DAY, -30, @Now),
     DATEADD(DAY, 90 + (n.n % 180), @Now)
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedCoupons;
 
 /* ============================================================
    16) Customers / Addresses
@@ -812,7 +910,8 @@ SELECT
     CASE WHEN n.n % 8 = 0 THEN N'Seed Company ' + CAST(n.n AS NVARCHAR(10)) ELSE NULL END,
     CASE WHEN n.n % 8 = 0 THEN 2 ELSE 1 END
 FROM #Nums n
-INNER JOIN #Cities c ON c.i = n.n % 10;
+INNER JOIN #Cities c ON c.i = n.n % 10
+WHERE n.n <= @SeedCustomers;
 
 /* Addresses: half shipping (1), half billing (2) — Name marker SEED */
 INSERT INTO dbo.Addresses
@@ -829,7 +928,8 @@ SELECT
     N'Street ' + CAST(n.n AS NVARCHAR(10)),
     c.District
 FROM #Nums n
-INNER JOIN #Cities c ON c.i = n.n % 10;
+INNER JOIN #Cities c ON c.i = n.n % 10
+WHERE n.n <= @SeedAddresses;
 
 DECLARE @MinAddressId INT = (SELECT MIN(Id) FROM dbo.Addresses WHERE Name LIKE N'SEED %');
 DECLARE @AddressCount INT = (SELECT COUNT(*) FROM dbo.Addresses WHERE Name LIKE N'SEED %');
@@ -858,7 +958,7 @@ SELECT
     CASE WHEN n.n = 1 THEN @Customer1Id
          WHEN n.n % 17 = 0 THEN N'BNC'
          WHEN n.n % 19 = 0 THEN N'SWA'
-         ELSE N'seed-user-' + RIGHT(N'00000000' + CAST(((n.n - 1) % @RecordCount) + 1 AS NVARCHAR(8)), 8) END,
+         ELSE N'seed-user-' + RIGHT(N'00000000' + CAST(((n.n - 1) % @SeedUsers) + 1 AS NVARCHAR(8)), 8) END,
     1 + (n.n % 3),                 -- OrderType 1..3
     1 + (n.n % 8),                 -- OrderStatus 1..8
     CASE WHEN n.n % 10 = 0 THEN N'Admin note ' + CAST(n.n AS NVARCHAR(10)) ELSE NULL END,
@@ -868,7 +968,7 @@ SELECT
     @MinAddressId + ((n.n - 1) % @AddressCount),
     @MinAddressId + (n.n % @AddressCount),
     LOWER(CONVERT(NVARCHAR(36), NEWID())),
-    CASE WHEN n.n % 12 = 0 THEN N'SEED' + RIGHT(N'00000' + CAST(((n.n - 1) % @RecordCount) + 1 AS NVARCHAR(5)), 5) ELSE NULL END,
+    CASE WHEN n.n % 12 = 0 THEN N'SEED' + RIGHT(N'00000' + CAST(((n.n - 1) % @SeedCoupons) + 1 AS NVARCHAR(5)), 5) ELSE NULL END,
     CASE WHEN n.n % 12 = 0 THEN N'10' ELSE NULL END,
     LOWER(CONVERT(NVARCHAR(64), NEWID())),
     CAST(CAST((100.0 + (n.n % 900)) AS DECIMAL(18,2)) AS NVARCHAR(50)),
@@ -893,7 +993,8 @@ SELECT
     CAST(DATEDIFF(SECOND, '1970-01-01', DATEADD(DAY, -(n.n % 180), @Now)) AS BIGINT) * 1000,
     CASE WHEN (1 + (n.n % 8)) >= 4 THEN N'TRK' + RIGHT(N'000000000' + CAST(n.n AS NVARCHAR(9)), 9) ELSE NULL END,
     CASE WHEN (1 + (n.n % 8)) >= 4 THEN N'Yurtici Kargo' ELSE NULL END
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedOrders;
 
 DECLARE @MinOrderId INT = (SELECT MIN(Id) FROM dbo.Orders WHERE Name LIKE N'SEED %');
 DECLARE @OrderCount INT = (SELECT COUNT(*) FROM dbo.Orders WHERE Name LIKE N'SEED %');
@@ -910,7 +1011,8 @@ SELECT
     N'SKU-' + RIGHT(N'000000' + CAST(((n.n - 1) % @ProductCount) + 1 AS NVARCHAR(6)), 6),
     N'SEED ProductCategory ' + CAST(((n.n - 1) % @CatCount) + 1 AS NVARCHAR(10)),
     N'[{"Name":"Color","Value":"Red"}]'
-FROM #Nums n;
+FROM #Nums n
+WHERE n.n <= @SeedOrderProducts;
 
 INSERT INTO dbo.ShoppingCarts
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, OrderGuid, ShoppingCartJson, UserId)
@@ -921,8 +1023,9 @@ SELECT
     N'{"Items":[{"ProductId":' + CAST(@MinProductId + ((n.n - 1) % @ProductCount) AS NVARCHAR(20))
         + N',"Quantity":' + CAST(1 + (n.n % 3) AS NVARCHAR(10)) + N'}]}',
     CASE WHEN n.n = 1 THEN @Customer1Id
-         ELSE N'seed-user-' + RIGHT(N'00000000' + CAST(((n.n - 1) % @RecordCount) + 1 AS NVARCHAR(8)), 8) END
-FROM #Nums n;
+         ELSE N'seed-user-' + RIGHT(N'00000000' + CAST(((n.n - 1) % @SeedUsers) + 1 AS NVARCHAR(8)), 8) END
+FROM #Nums n
+WHERE n.n <= @SeedShoppingCarts;
 
 /* ============================================================
    18) Browser push stack (optional tables)
@@ -940,7 +1043,8 @@ BEGIN
         n.n % 3,
         N'seed-public-key-' + CAST(n.n AS NVARCHAR(10)),
         N'seed-private-key-' + CAST(n.n AS NVARCHAR(10))
-    FROM #Nums n;
+    FROM #Nums n
+    WHERE n.n <= @SeedBrowserSubscriptions;
 
     DECLARE @MinBrowserSubId INT = (SELECT MIN(Id) FROM dbo.BrowserSubscriptions WHERE Name LIKE N'SEED %');
     DECLARE @BrowserSubCount INT = (SELECT COUNT(*) FROM dbo.BrowserSubscriptions WHERE Name LIKE N'SEED %');
@@ -957,7 +1061,8 @@ BEGIN
         N'p256dh' + CAST(n.n AS NVARCHAR(10)),
         N'Mozilla/5.0 SeedBrowser',
         N'127.0.0.' + CAST((n.n % 254) + 1 AS NVARCHAR(3))
-    FROM #Nums n;
+    FROM #Nums n
+    WHERE n.n <= @SeedBrowserSubscribers;
 
     DECLARE @MinBrowserSubscriberId INT = (SELECT MIN(Id) FROM dbo.BrowserSubscribers WHERE Name LIKE N'SEED %');
     DECLARE @BrowserSubscriberCount INT = (SELECT COUNT(*) FROM dbo.BrowserSubscribers WHERE Name LIKE N'SEED %');
@@ -972,7 +1077,8 @@ BEGIN
         N'Seed notification body ' + CAST(n.n AS NVARCHAR(10)),
         N'/media/images/seed-image-' + CAST(((n.n - 1) % @FileCount) + 1 AS NVARCHAR(10)) + N'.jpg',
         N'/p/SEED-Product-' + CAST(((n.n - 1) % @ProductCount) + 1 AS NVARCHAR(10))
-    FROM #Nums n;
+    FROM #Nums n
+    WHERE n.n <= @SeedBrowserNotifications;
 
     DECLARE @MinBrowserNotificationId INT = (SELECT MIN(Id) FROM dbo.BrowserNotifications WHERE Name LIKE N'SEED %');
     DECLARE @BrowserNotificationCount INT = (SELECT COUNT(*) FROM dbo.BrowserNotifications WHERE Name LIKE N'SEED %');
@@ -988,7 +1094,8 @@ BEGIN
         n.n % 4,
         DATEADD(HOUR, -n.n, @Now),
         CASE WHEN n.n % 3 = 0 THEN DATEADD(HOUR, -(n.n - 1), @Now) ELSE NULL END
-    FROM #Nums n;
+    FROM #Nums n
+    WHERE n.n <= @SeedBrowserFeedbacks;
 END;
 
 /* ============================================================
@@ -1005,7 +1112,8 @@ BEGIN
         N's' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5),
         N'https://example.com/long-url/' + CAST(n.n AS NVARCHAR(10)),
         n.n % 1000
-    FROM #Nums n;
+    FROM #Nums n
+    WHERE n.n <= @SeedShortUrls;
 END;
 
 IF OBJECT_ID(N'dbo.AppLogs', N'U') IS NOT NULL
@@ -1019,7 +1127,7 @@ BEGIN
         SELECT
             CONVERT(VARCHAR(30), DATEADD(MINUTE, -n.n, @Now), 121),
             CASE n.n % 5 WHEN 0 THEN N'Error' WHEN 1 THEN N'Warn' WHEN 2 THEN N'Info' WHEN 3 THEN N'Debug' ELSE N'Fatal' END,
-            N'seeduser' + RIGHT(N'00000' + CAST(((n.n - 1) % @RecordCount) + 1 AS NVARCHAR(5)), 5),
+            N'seeduser' + RIGHT(N'00000' + CAST(((n.n - 1) % @SeedUsers) + 1 AS NVARCHAR(5)), 5),
             N'SEED-MACHINE',
             N'SEED log message ' + CAST(n.n AS NVARCHAR(10)),
             CASE WHEN n.n % 5 = 0 THEN N'EImece.Domain' ELSE NULL END,
@@ -1028,7 +1136,8 @@ BEGIN
             CASE WHEN n.n % 5 = 0 THEN N'Seed exception message' ELSE NULL END,
             CASE WHEN n.n % 10 = 0 THEN N'Seed inner exception' ELSE NULL END,
             DATEADD(MINUTE, -n.n, @Now)
-        FROM #Nums n;
+        FROM #Nums n
+        WHERE n.n <= @SeedAppLogs;
     END
     ELSE
     BEGIN
@@ -1038,7 +1147,7 @@ BEGIN
         SELECT
             CONVERT(VARCHAR(30), DATEADD(MINUTE, -n.n, @Now), 121),
             CASE n.n % 5 WHEN 0 THEN N'Error' WHEN 1 THEN N'Warn' WHEN 2 THEN N'Info' WHEN 3 THEN N'Debug' ELSE N'Fatal' END,
-            N'seeduser' + RIGHT(N'00000' + CAST(((n.n - 1) % @RecordCount) + 1 AS NVARCHAR(5)), 5),
+            N'seeduser' + RIGHT(N'00000' + CAST(((n.n - 1) % @SeedUsers) + 1 AS NVARCHAR(5)), 5),
             N'SEED-MACHINE',
             N'SEED log message ' + CAST(n.n AS NVARCHAR(10)),
             CASE WHEN n.n % 5 = 0 THEN N'EImece.Domain' ELSE NULL END,
@@ -1046,7 +1155,8 @@ BEGIN
             CASE WHEN n.n % 5 = 0 THEN N'DoWork' ELSE NULL END,
             CASE WHEN n.n % 5 = 0 THEN N'Seed exception message' ELSE NULL END,
             CASE WHEN n.n % 10 = 0 THEN N'Seed inner exception' ELSE NULL END
-        FROM #Nums n;
+        FROM #Nums n
+        WHERE n.n <= @SeedAppLogs;
     END
 END;
 
