@@ -127,6 +127,23 @@ Full local / IIS / Azure / TLS / password-rotation steps: [SECURE_CONNECTION_STR
 
 The database schema must already exist (apply your usual EF migrations or restore a backup).
 
+### Dummy / load-test data (optional)
+
+To populate ~5000 rows per table for manual testing (admin grids, storefront, orders, reports):
+
+1. Ensure the schema exists and the app can connect.
+2. Run `EImece/SqlScripts/SeedDummyData.sql` in SSMS, or:
+
+```powershell
+cd EImece/SqlScripts
+.\RunSeedDummyData.ps1 -ConnectionString "Server=.;Database=EImece;Trusted_Connection=True;TrustServerCertificate=True;"
+```
+
+- Shared seed credential for all seed users: concatenate `Test` + `123` + `!` (local/test only)
+- Known logins: `admin@eimece.test` (Admin), `editor@eimece.test` (NormalUser), `customer1@eimece.test` (Customer)
+- Cleanup: `CleanupDummyData.sql`, or re-run the seed script (`@CleanupFirst = 1` by default)
+- Tune volume with `@RecordCount` / `-RecordCount`
+
 ### Application settings (review)
 
 | Key | Purpose |
