@@ -100,17 +100,40 @@ var productCategoryLink = productCategory.ProductCategoryLink;
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">@menu.Name</a>
     <ul class="dropdown-menu">
         @foreach (var menuChildren in menuTreeModel.Childrens)
+        {
+            var menuChild = menuChildren.Menu;
+            if (menuChildren.Childrens.IsNotEmpty())
+            {
+        <li class="dropdown">
+            <a class="dropdown-item dropdown-toggle" href="#">
+                <i class="widget-categories-indicator" data-feather="chevron-right"></i>
+                <span class="font-size-sm">@menuChildren.Name</span>
+            </a>
+            <ul class="dropdown-menu">
+                @foreach (var grandChild in menuChildren.Childrens)
                 {
-                    var menuChild = menuChildren.Menu;
-                    var imgTag = menuChild.GetCroppedImageTag(50, 50);
+                    var grandChildMenu = grandChild.Menu;
+                <li>
+                    <a class="dropdown-item" href="@grandChildMenu.DetailPageLink">
+                        <i class="widget-categories-indicator" data-feather="chevron-right"></i>
+                        <span class="font-size-sm">@grandChild.Name</span>
+                    </a>
+                </li>
+                }
+            </ul>
+        </li>
+            }
+            else
+            {
         <li>
             <a class="dropdown-item" href="@menuChild.DetailPageLink">
                 <i class="widget-categories-indicator" data-feather="chevron-right"></i>
                 <span class="font-size-sm">@menuChildren.Name</span>
             </a>
         </li>
+            }
         <li class="dropdown-divider"></li>
-                }
+        }
     </ul>
 </li>
     }

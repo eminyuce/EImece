@@ -38,6 +38,9 @@
   - Structural tables (Menus, MainPageImages, Templates, Settings, MailTemplates)
     use small fixed counts so the site stays usable; @Scale does not inflate them.
   - Settings / MailTemplates: required app keys/names first, plus a few fillers.
+  - Products get a BrandId from real SEED brand Ids (hash-distributed) and every
+    SEED brand is guaranteed at least one product.
+  - Products get 1–4 SEED tags via ProductTags; stories/blogs get 1–3 via StoryTags.
   - Product.Rating is omitted when the column is computed; otherwise set explicitly.
   - Script is idempotent when @CleanupFirst = 1.
 ================================================================================
@@ -146,7 +149,8 @@ BEGIN
     IF OBJECT_ID(N'dbo.Orders', N'U') IS NOT NULL DELETE FROM dbo.Orders WHERE Name LIKE N'SEED %';
     IF OBJECT_ID(N'dbo.ShoppingCarts', N'U') IS NOT NULL DELETE FROM dbo.ShoppingCarts WHERE Name LIKE N'SEED %';
     IF OBJECT_ID(N'dbo.ProductComments', N'U') IS NOT NULL DELETE FROM dbo.ProductComments WHERE Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.ProductSpecifications', N'U') IS NOT NULL DELETE FROM dbo.ProductSpecifications WHERE Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.ProductSpecifications', N'U') IS NOT NULL
+        DELETE ps FROM dbo.ProductSpecifications ps INNER JOIN dbo.Products p ON p.Id = ps.ProductId WHERE p.Name LIKE N'SEED %';
     IF OBJECT_ID(N'dbo.ProductTags', N'U') IS NOT NULL
         DELETE pt FROM dbo.ProductTags pt INNER JOIN dbo.Products p ON p.Id = pt.ProductId WHERE p.Name LIKE N'SEED %';
     IF OBJECT_ID(N'dbo.ProductFiles', N'U') IS NOT NULL DELETE FROM dbo.ProductFiles WHERE Name LIKE N'SEED %';
@@ -393,6 +397,24 @@ WHERE n.n <= @SeedBrands;
 DECLARE @MinBrandId INT = (SELECT MIN(Id) FROM dbo.Brands WHERE Name LIKE N'SEED %');
 DECLARE @BrandCount INT = (SELECT COUNT(*) FROM dbo.Brands WHERE Name LIKE N'SEED %');
 
+IF OBJECT_ID(N'tempdb..#SeedBrandIds') IS NOT NULL DROP TABLE #SeedBrandIds;
+SELECT ROW_NUMBER() OVER (ORDER BY Id) AS rn, Id
+INTO #SeedBrandIds
+FROM dbo.Brands
+WHERE Name LIKE N'SEED %';
+
+IF OBJECT_ID(N'tempdb..#SeedTagIds') IS NOT NULL DROP TABLE #SeedTagIds;
+SELECT ROW_NUMBER() OVER (ORDER BY Id) AS rn, Id
+INTO #SeedTagIds
+FROM dbo.Tags
+WHERE Name LIKE N'SEED %';
+
+IF @BrandCount < 1 OR @TagCount < 1
+BEGIN
+    RAISERROR(N'Seed Brands/Tags were not created; cannot link products/stories.', 16, 1);
+    RETURN;
+END;
+
 /* ============================================================
    6) ProductCategories (tree: first @SeedCategoryRoots roots, rest children)
    ============================================================ */
@@ -461,7 +483,7 @@ BEGIN
         N'Short ' + CAST(n.n AS NVARCHAR(10)),
         N'Long name for SEED Product ' + CAST(n.n AS NVARCHAR(10)),
         @MinCatId + ((n.n - 1) % @CatCount),
-        @MinBrandId + ((n.n - 1) % @BrandCount),
+        (SELECT Id FROM #SeedBrandIds WHERE rn = 1 + ((ABS(CHECKSUM(N'SEED-BRAND', n.n)) % @BrandCount))),
         CASE WHEN n.n <= 12 THEN 1 ELSE 0 END,
         N'Short description ' + CAST(n.n AS NVARCHAR(10)),
         CAST((50.0 + (n.n % 950)) AS DECIMAL(18,2)),
@@ -495,7 +517,7 @@ BEGIN
         N'Short ' + CAST(n.n AS NVARCHAR(10)),
         N'Long name for SEED Product ' + CAST(n.n AS NVARCHAR(10)),
         @MinCatId + ((n.n - 1) % @CatCount),
-        @MinBrandId + ((n.n - 1) % @BrandCount),
+        (SELECT Id FROM #SeedBrandIds WHERE rn = 1 + ((ABS(CHECKSUM(N'SEED-BRAND', n.n)) % @BrandCount))),
         CASE WHEN n.n <= 12 THEN 1 ELSE 0 END,
         N'Short description ' + CAST(n.n AS NVARCHAR(10)),
         CAST((50.0 + (n.n % 950)) AS DECIMAL(18,2)),
@@ -514,6 +536,24 @@ END;
 DECLARE @MinProductId INT = (SELECT MIN(Id) FROM dbo.Products WHERE Name LIKE N'SEED %');
 DECLARE @ProductCount INT = (SELECT COUNT(*) FROM dbo.Products WHERE Name LIKE N'SEED %');
 
+/* Guarantee every SEED brand has at least one product (admin brand filter / demo realism). */
+;WITH BrandsRn AS (
+    SELECT Id, ROW_NUMBER() OVER (ORDER BY Id) AS rn
+    FROM dbo.Brands
+    WHERE Name LIKE N'SEED %'
+),
+ProductsRn AS (
+    SELECT Id, ROW_NUMBER() OVER (ORDER BY Id) AS rn
+    FROM dbo.Products
+    WHERE Name LIKE N'SEED %'
+)
+UPDATE p
+SET BrandId = b.Id
+FROM dbo.Products p
+INNER JOIN ProductsRn pr ON pr.Id = p.Id
+INNER JOIN BrandsRn b ON b.rn = pr.rn
+WHERE pr.rn <= @BrandCount;
+
 /* ============================================================
    8) ProductFiles / ProductTags / ProductSpecifications / ProductComments
    ============================================================ */
@@ -529,12 +569,29 @@ SELECT
 FROM #Nums n
 WHERE n.n <= @SeedProductFiles;
 
+/* Each SEED product gets 1–4 random SEED tags (real Tag Ids from #SeedTagIds). */
+;WITH SeedProducts AS (
+    SELECT p.Id AS ProductId
+    FROM dbo.Products p
+    WHERE p.Name LIKE N'SEED %'
+),
+ProductTagPicks AS (
+    SELECT
+        sp.ProductId,
+        t.Id AS TagId,
+        ROW_NUMBER() OVER (
+            PARTITION BY sp.ProductId
+            ORDER BY CHECKSUM(sp.ProductId, t.Id, N'SEED-PT')
+        ) AS TagPickRn,
+        1 + (ABS(CHECKSUM(CONCAT(N'SEED-PT-COUNT-', CAST(sp.ProductId AS NVARCHAR(20))))) % 4) AS TagCount
+    FROM SeedProducts sp
+    CROSS JOIN dbo.Tags t
+    WHERE t.Name LIKE N'SEED %'
+)
 INSERT INTO dbo.ProductTags (TagId, ProductId)
-SELECT
-    @MinTagId + ((n.n - 1) % @TagCount),
-    @MinProductId + ((n.n - 1) % @ProductCount)
-FROM #Nums n
-WHERE n.n <= @SeedProductTags;
+SELECT DISTINCT ptp.TagId, ptp.ProductId
+FROM ProductTagPicks ptp
+WHERE ptp.TagPickRn <= ptp.TagCount;
 
 INSERT INTO dbo.ProductSpecifications
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, Value, Unit, ProductId)
@@ -631,12 +688,29 @@ SELECT
 FROM #Nums n
 WHERE n.n <= @SeedStoryFiles;
 
+/* Each SEED story/blog gets 1–3 random SEED tags. */
+;WITH SeedStories AS (
+    SELECT s.Id AS StoryId
+    FROM dbo.Stories s
+    WHERE s.Name LIKE N'SEED %'
+),
+StoryTagPicks AS (
+    SELECT
+        ss.StoryId,
+        t.Id AS TagId,
+        ROW_NUMBER() OVER (
+            PARTITION BY ss.StoryId
+            ORDER BY CHECKSUM(ss.StoryId, t.Id, N'SEED-ST')
+        ) AS TagPickRn,
+        1 + (ABS(CHECKSUM(CONCAT(N'SEED-ST-COUNT-', CAST(ss.StoryId AS NVARCHAR(20))))) % 3) AS TagCount
+    FROM SeedStories ss
+    CROSS JOIN dbo.Tags t
+    WHERE t.Name LIKE N'SEED %'
+)
 INSERT INTO dbo.StoryTags (StoryId, TagId)
-SELECT
-    @MinStoryId + ((n.n - 1) % @StoryCount),
-    @MinTagId + ((n.n - 1) % @TagCount)
-FROM #Nums n
-WHERE n.n <= @SeedStoryTags;
+SELECT DISTINCT stp.StoryId, stp.TagId
+FROM StoryTagPicks stp
+WHERE stp.TagPickRn <= stp.TagCount;
 
 /* ============================================================
    10) Menus / MenuFiles / MainPageImages
@@ -667,6 +741,20 @@ WHERE n.n <= @SeedMenus;
 
 DECLARE @MinMenuId INT = (SELECT MIN(Id) FROM dbo.Menus WHERE Name LIKE N'SEED %');
 DECLARE @MenuCount INT = (SELECT COUNT(*) FROM dbo.Menus WHERE Name LIKE N'SEED %');
+
+/* Wire a 3-level SEED menu tree for admin/storefront demos:
+   SEED Menu 1          → root
+   SEED Menu 2,3,5–10,12 → children of Menu 1
+   SEED Menu 4,11        → children of Menu 2 (third level) */
+UPDATE m
+SET ParentId = CASE
+    WHEN TRY_CAST(REPLACE(m.Name, N'SEED Menu ', N'') AS INT) = 1 THEN 0
+    WHEN TRY_CAST(REPLACE(m.Name, N'SEED Menu ', N'') AS INT) IN (4, 11)
+        THEN (SELECT TOP 1 Id FROM dbo.Menus WHERE Name = N'SEED Menu 2' AND Lang = @Lang)
+    ELSE (SELECT TOP 1 Id FROM dbo.Menus WHERE Name = N'SEED Menu 1' AND Lang = @Lang)
+END
+FROM dbo.Menus m
+WHERE m.Name LIKE N'SEED Menu %' AND m.Lang = @Lang;
 
 INSERT INTO dbo.MenuFiles
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, MenuId, FileStorageId)
@@ -1175,11 +1263,15 @@ UNION ALL SELECT N'ProductCategories', COUNT(*) FROM dbo.ProductCategories WHERE
 UNION ALL SELECT N'Products', COUNT(*) FROM dbo.Products WHERE Name LIKE N'SEED %'
 UNION ALL SELECT N'ProductFiles', COUNT(*) FROM dbo.ProductFiles WHERE Name LIKE N'SEED %'
 UNION ALL SELECT N'ProductTags', COUNT(*) FROM dbo.ProductTags pt INNER JOIN dbo.Products p ON p.Id = pt.ProductId WHERE p.Name LIKE N'SEED %'
-UNION ALL SELECT N'ProductSpecifications', COUNT(*) FROM dbo.ProductSpecifications WHERE Name LIKE N'SEED %'
+UNION ALL SELECT N'Products with BrandId', COUNT(*) FROM dbo.Products WHERE Name LIKE N'SEED %' AND BrandId IS NOT NULL
+UNION ALL SELECT N'Brands with products', COUNT(*) FROM dbo.Brands b WHERE b.Name LIKE N'SEED %' AND EXISTS (SELECT 1 FROM dbo.Products p WHERE p.BrandId = b.Id)
+UNION ALL SELECT N'ProductSpecifications', COUNT(*) FROM dbo.ProductSpecifications ps INNER JOIN dbo.Products p ON p.Id = ps.ProductId WHERE p.Name LIKE N'SEED %'
 UNION ALL SELECT N'ProductComments', COUNT(*) FROM dbo.ProductComments WHERE Name LIKE N'SEED %'
 UNION ALL SELECT N'StoryCategories', COUNT(*) FROM dbo.StoryCategories WHERE Name LIKE N'SEED %'
 UNION ALL SELECT N'Stories', COUNT(*) FROM dbo.Stories WHERE Name LIKE N'SEED %'
 UNION ALL SELECT N'StoryFiles', COUNT(*) FROM dbo.StoryFiles WHERE Name LIKE N'SEED %'
+UNION ALL SELECT N'StoryTags', COUNT(*) FROM dbo.StoryTags st INNER JOIN dbo.Stories s ON s.Id = st.StoryId WHERE s.Name LIKE N'SEED %'
+UNION ALL SELECT N'Stories with tags', COUNT(DISTINCT s.Id) FROM dbo.Stories s INNER JOIN dbo.StoryTags st ON st.StoryId = s.Id WHERE s.Name LIKE N'SEED %'
 UNION ALL SELECT N'Menus', COUNT(*) FROM dbo.Menus WHERE Name LIKE N'SEED %'
 UNION ALL SELECT N'MainPageImages', COUNT(*) FROM dbo.MainPageImages WHERE Name LIKE N'SEED %'
 UNION ALL SELECT N'Settings', COUNT(*) FROM dbo.Settings WHERE Name LIKE N'SEED %' OR SettingKey LIKE N'SEED_%'

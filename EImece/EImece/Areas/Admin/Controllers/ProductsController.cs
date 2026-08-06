@@ -26,7 +26,9 @@ namespace EImece.Areas.Admin.Controllers
             var products = ProductService.GetAdminPageList(id, brandId, search, CurrentLanguage);
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
-            ViewBag.Brands = BrandService.GetActiveBaseContents(true, CurrentLanguage);
+            ViewBag.Brands = BrandService.GetBrandsIfAnyProductExists(CurrentLanguage)
+                .Where(b => b.IsActive)
+                .ToList();
             return View(products);
         }
 

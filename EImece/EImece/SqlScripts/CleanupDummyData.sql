@@ -49,7 +49,10 @@ IF OBJECT_ID(N'dbo.ProductComments', N'U') IS NOT NULL
     DELETE FROM dbo.ProductComments WHERE Name LIKE N'SEED %';
 
 IF OBJECT_ID(N'dbo.ProductSpecifications', N'U') IS NOT NULL
-    DELETE FROM dbo.ProductSpecifications WHERE Name LIKE N'SEED %';
+    DELETE ps
+    FROM dbo.ProductSpecifications ps
+    INNER JOIN dbo.Products p ON p.Id = ps.ProductId
+    WHERE p.Name LIKE N'SEED %';
 
 IF OBJECT_ID(N'dbo.ProductTags', N'U') IS NOT NULL
     DELETE pt

@@ -23,9 +23,7 @@ namespace EImece.Domain.Repositories
 
             foreach (var i in topLevels)
             {
-                var p = new MenuTreeModel();
-                p.Menu = i;
-                p.TreeLevel = 1;
+                var p = new MenuTreeModel(i, 1);
                 GetTreeview(list, p, p.TreeLevel);
                 returnList.Add(p);
             }
@@ -34,21 +32,24 @@ namespace EImece.Domain.Repositories
 
         private void GetTreeview(List<Menu> list, MenuTreeModel current, int level)
         {
-            //get child of current item
-            var childs = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
-            if (childs.IsNotEmpty())
+            //get child of current item — recurse on the same instances added to Childrens
+            // so nested levels (3+) are attached (previous code built orphans and dropped them).
+            var childMenus = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
+            current.Childrens = new List<MenuTreeModel>();
+            if (childMenus.IsEmpty())
             {
-                current.Childrens = new List<MenuTreeModel>();
-                var childs2 = childs.Select(r => new MenuTreeModel(r, level + 1)).ToList();
-                current.Childrens.AddRange(childs2);
-                foreach (var i in childs)
+                return;
+            }
+
+            int childLevel = level + 1;
+            foreach (var childMenu in childMenus)
+            {
+                var childNode = new MenuTreeModel(childMenu, childLevel)
                 {
-                    var p = new MenuTreeModel();
-                    p.Menu = i;
-                    p.Parent = current;
-                    p.TreeLevel = level + 1;
-                    GetTreeview(list, p, p.TreeLevel);
-                }
+                    Parent = current
+                };
+                current.Childrens.Add(childNode);
+                GetTreeview(list, childNode, childLevel);
             }
         }
 
