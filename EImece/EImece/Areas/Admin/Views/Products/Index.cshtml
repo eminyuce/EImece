@@ -68,18 +68,28 @@
 
         @if (brands != null)
         {
+            int selectedBrandId = ViewBag.SelectedBrandId != null ? (int)ViewBag.SelectedBrandId : -1;
+            int categoryIdForBrandFilter = selectedCategory == null ? 0 : selectedCategory.Id;
+            bool isAllBrandsSelected = selectedBrandId <= 0;
             <span>
                 @AdminResource.Brands
             </span>
+            <a href="@Url.Action("Index", "Products", new { id = categoryIdForBrandFilter, brandId = -1 })">
+                <b style="color:@(isAllBrandsSelected ? "red" : "#555");">
+                    @Resource.All
+                </b>
+            </a>
+            <span>&nbsp;</span>
             var index = 1;
             foreach (var b in brands)
             {
-                <a href="@Url.Action("Index", "Products", new { id = (selectedCategory == null ? 0 : selectedCategory.Id), brandId = b.Id })">
-                    <b style="color:red;">
+                bool isSelectedBrand = selectedBrandId == b.Id;
+                <a href="@Url.Action("Index", "Products", new { id = categoryIdForBrandFilter, brandId = b.Id })">
+                    <b style="color:@(isSelectedBrand ? "red" : "#555");">
                         @(index + ". " + b.Name)
                     </b>
                 </a>
-                <span>&nbsp;</span> <!-- Adds space between brand names -->
+                <span>&nbsp;</span>
                 index++;
             }
         }

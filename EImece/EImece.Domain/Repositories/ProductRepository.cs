@@ -134,7 +134,7 @@ namespace EImece.Domain.Repositories
 
         public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language)
         {
-            return await GetAdminPageListAsync(categoryId, 0, search, language).ConfigureAwait(false);
+            return await GetAdminPageListAsync(categoryId, -1, search, language).ConfigureAwait(false);
         }
 
         public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language)
