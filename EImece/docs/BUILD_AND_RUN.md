@@ -200,6 +200,8 @@ Visual Studio may assign a different port; check the browser address bar or proj
    - `EImece/App_Data/`
    - `EImece/App_Data/logs/`
    - Any media/upload directories your deployment uses
+
+   Exact `icacls` commands for the published IIS site (`C:\inetpub\wwwroot\Eimece`) are documented in [IIS_APP_POOL_PERMISSIONS.md](IIS_APP_POOL_PERMISSIONS.md).
 5. Browse to the site URL configured in IIS.
 
 ### Option C: Console utility (optional)
