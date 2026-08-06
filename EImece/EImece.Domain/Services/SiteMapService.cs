@@ -242,56 +242,57 @@ namespace EImece.Domain.Services
                 {
                     try
                     {
-                        var p = c.MenuLink.Split("_".ToCharArray());
-                        var parts = p.First().Split("-".ToCharArray());
-                        var action = parts[1];
-                        var controller = parts[0];
-                        String mid = "";
-                        mid = p.Last();
-
-                        DateTime? lastModified = c.UpdatedDate;
-
-                        if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                        // Prefer absolute/external links; otherwise parse controller-action MenuLink.
+                        string url;
+                        if (c.LinkIsActive && !string.IsNullOrEmpty(c.Link))
                         {
-                            string url = new UrlHelper(requestContext).Action("detail",
-                                                            controller,
-                                                            new { id = c.GetSeoUrl() },
-                                                            AppConfig.HttpProtocol);
-                            var siteMap = new SitemapItem(
-                                url,
-                                lastModified,
-                                changeFrequency: SitemapChangeFrequency.Daily,
-                                priority: 1.0);
-
-                            sitemapItems.Add(siteMap);
-                        }
-                        else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                                                    && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            var siteMap = new SitemapItem(
-                                 new UrlHelper(requestContext).Action(action,
-                                 controller,
-                                 new { id = mid },
-                                 AppConfig.HttpProtocol),
-                                 lastModified,
-                                 changeFrequency: SitemapChangeFrequency.Daily,
-                                 priority: 1.0);
-
-                            sitemapItems.Add(siteMap);
+                            url = c.Link;
                         }
                         else
                         {
-                            var siteMap = new SitemapItem(
-                                new UrlHelper(requestContext).Action(action,
-                                controller,
-                                null,
-                                AppConfig.HttpProtocol),
-                                lastModified,
-                                changeFrequency: SitemapChangeFrequency.Daily,
-                                priority: 1.0);
+                            if (string.IsNullOrWhiteSpace(c.MenuLink))
+                            {
+                                continue;
+                            }
 
-                            sitemapItems.Add(siteMap);
+                            var p = c.MenuLink.Split('_');
+                            var parts = p[0].Split('-');
+                            if (parts.Length < 2)
+                            {
+                                Logger.Warn("Skipping sitemap menu Id={0} with invalid MenuLink '{1}'", c.Id, c.MenuLink);
+                                continue;
+                            }
+
+                            var action = parts[1];
+                            var controller = parts[0];
+                            var mid = p[p.Length - 1];
+                            var urlHelper = new UrlHelper(requestContext);
+
+                            if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                url = urlHelper.Action("detail", controller, new { id = c.GetSeoUrl() }, AppConfig.HttpProtocol);
+                            }
+                            else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                                     && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                url = urlHelper.Action(action, controller, new { id = mid }, AppConfig.HttpProtocol);
+                            }
+                            else
+                            {
+                                url = urlHelper.Action(action, controller, null, AppConfig.HttpProtocol);
+                            }
                         }
+
+                        if (string.IsNullOrWhiteSpace(url) || url == "#")
+                        {
+                            continue;
+                        }
+
+                        sitemapItems.Add(new SitemapItem(
+                            url,
+                            c.UpdatedDate,
+                            changeFrequency: SitemapChangeFrequency.Daily,
+                            priority: 1.0));
                     }
                     catch (Exception ex)
                     {

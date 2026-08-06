@@ -572,18 +572,18 @@ INSERT INTO #StoryLookup VALUES (15,N'Pet Dostu Ev Düzeni',N'Mama alanı ve gü
 IF OBJECT_ID(N'tempdb..#MenuLookup') IS NOT NULL DROP TABLE #MenuLookup;
 CREATE TABLE #MenuLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, Description NVARCHAR(MAX) NULL, MenuLink NVARCHAR(100) NOT NULL, ExternalLink NVARCHAR(200) NULL, MainPage BIT NOT NULL);
 
-INSERT INTO #MenuLookup VALUES (1,N'Ana Sayfa',N'<p>EImece vitrine hoş geldiniz.</p>',N'anasayfa',NULL,1);
-INSERT INTO #MenuLookup VALUES (2,N'Kurumsal',N'<p>Hakkımızda ve şirket bilgileri.</p>',N'kurumsal',NULL,1);
-INSERT INTO #MenuLookup VALUES (3,N'Hakkımızda',N'<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>',N'hakkimizda',NULL,0);
-INSERT INTO #MenuLookup VALUES (4,N'İletişim',N'<p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p>',N'iletisim',NULL,0);
-INSERT INTO #MenuLookup VALUES (5,N'Kargo & Teslimat',N'<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>',N'kargo-teslimat',NULL,1);
-INSERT INTO #MenuLookup VALUES (6,N'Sıkça Sorulan Sorular',N'<p>Sipariş, ödeme ve iade hakkında SSS.</p>',N'sss',NULL,1);
-INSERT INTO #MenuLookup VALUES (7,N'Kampanyalar',N'<p>Güncel indirimler ve kuponlar.</p>',N'kampanyalar',NULL,1);
-INSERT INTO #MenuLookup VALUES (8,N'Blog',N'<p>Stil, yaşam ve ürün rehberleri.</p>',N'blog',NULL,1);
-INSERT INTO #MenuLookup VALUES (9,N'Gizlilik Politikası',N'<p>Kişisel verilerin korunması.</p>',N'gizlilik',NULL,0);
-INSERT INTO #MenuLookup VALUES (10,N'Mesafeli Satış Sözleşmesi',N'<p>Mesafeli satış ve tüketici hakları.</p>',N'mesafeli-satis',NULL,0);
-INSERT INTO #MenuLookup VALUES (11,N'İade & Değişim',N'<p>14 gün içinde iade ve değişim koşulları.</p>',N'iade-degisim',NULL,0);
-INSERT INTO #MenuLookup VALUES (12,N'Mağazalarımız',NULL,N'magazalar',N'https://maps.example.com/eimece',1);
+INSERT INTO #MenuLookup VALUES (1,N'Ana Sayfa',N'<p>EImece vitrine hoş geldiniz.</p>',N'home-index',NULL,1);
+INSERT INTO #MenuLookup VALUES (2,N'Kurumsal',N'<p>Hakkımızda ve şirket bilgileri.</p>',N'pages-index',NULL,1);
+INSERT INTO #MenuLookup VALUES (3,N'Hakkımızda',N'<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>',N'info-aboutus',NULL,0);
+INSERT INTO #MenuLookup VALUES (4,N'İletişim',N'<p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p>',N'pages-index',NULL,0);
+INSERT INTO #MenuLookup VALUES (5,N'Kargo & Teslimat',N'<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>',N'info-deliveryinfo',NULL,1);
+INSERT INTO #MenuLookup VALUES (6,N'Sıkça Sorulan Sorular',N'<p>Sipariş, ödeme ve iade hakkında SSS.</p>',N'pages-index',NULL,1);
+INSERT INTO #MenuLookup VALUES (7,N'Kampanyalar',N'<p>Güncel indirimler ve kuponlar.</p>',N'pages-index',NULL,1);
+INSERT INTO #MenuLookup VALUES (8,N'Blog',N'<p>Stil, yaşam ve ürün rehberleri.</p>',N'stories-index',NULL,1);
+INSERT INTO #MenuLookup VALUES (9,N'Gizlilik Politikası',N'<p>Kişisel verilerin korunması.</p>',N'info-privacypolicy',NULL,0);
+INSERT INTO #MenuLookup VALUES (10,N'Mesafeli Satış Sözleşmesi',N'<p>Mesafeli satış ve tüketici hakları.</p>',N'info-termsandconditions',NULL,0);
+INSERT INTO #MenuLookup VALUES (11,N'İade & Değişim',N'<p>14 gün içinde iade ve değişim koşulları.</p>',N'pages-index',NULL,0);
+INSERT INTO #MenuLookup VALUES (12,N'Mağazalarımız',NULL,N'pages-index',N'https://maps.example.com/eimece',1);
 
 IF OBJECT_ID(N'tempdb..#SlideLookup') IS NOT NULL DROP TABLE #SlideLookup;
 CREATE TABLE #SlideLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(150) NOT NULL, Description NVARCHAR(400) NOT NULL, Link NVARCHAR(200) NOT NULL);

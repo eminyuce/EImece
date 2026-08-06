@@ -36,25 +36,53 @@ namespace EImece.Domain.Entities
 
         public ICollection<MenuFile> MenuFiles { get; set; }
 
+        /// <summary>
+        /// MenuLink format is "controller-action" or "controller-action_id"
+        /// (e.g. home-index, info-aboutus, stories-categories_seo-url, pages-index).
+        /// </summary>
+        private bool TryParseMenuLink(out string controller, out string action, out string mid)
+        {
+            controller = null;
+            action = null;
+            mid = null;
+
+            if (string.IsNullOrWhiteSpace(MenuLink))
+            {
+                return false;
+            }
+
+            var segments = MenuLink.Split('_');
+            var parts = segments[0].Split('-');
+            if (parts.Length < 2 || string.IsNullOrWhiteSpace(parts[0]) || string.IsNullOrWhiteSpace(parts[1]))
+            {
+                return false;
+            }
+
+            controller = parts[0];
+            action = parts[1];
+            mid = segments[segments.Length - 1];
+            return true;
+        }
+
         [NotMapped]
         public string IsPageActived
         {
             get
             {
+                if (!TryParseMenuLink(out var controller, out var action, out _))
+                {
+                    return "";
+                }
+
                 String result = "active";
-                var p = MenuLink.Split("_".ToCharArray());
-                var parts = p.First().Split("-".ToCharArray());
-                var action = parts[1];
-                var controller = parts[0];
-                String mid = p.Last();
                 string resultLink = "";
                 var pageAction = HtmlRequestHelper.Action();
                 var pageController = HtmlRequestHelper.Controller();
                 if (pageController.Equals("info", StringComparison.InvariantCultureIgnoreCase)
                     && pageAction.Equals("index", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var ppppp = HttpContext.Current.Request.Url.AbsolutePath.ToString();
-                    resultLink = ppppp.ToLower().Contains(MenuLink.Replace("-", "/")) ? result : "";
+                    var absolutePath = HttpContext.Current.Request.Url.AbsolutePath.ToString();
+                    resultLink = absolutePath.ToLower().Contains(MenuLink.Replace("-", "/")) ? result : "";
                 }
                 else if (pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -87,31 +115,29 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                var p = MenuLink.Split("_".ToCharArray());
-                var parts = p.First().Split("-".ToCharArray());
-                var action = parts[1];
-                var controller = parts[0];
-                String mid = p.Last();
-                string resultLink = "";
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 if (LinkIsActive && !String.IsNullOrEmpty(Link))
                 {
-                    resultLink = Link;
+                    return Link;
                 }
-                else if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+
+                if (!TryParseMenuLink(out var controller, out var action, out var mid))
                 {
-                    resultLink = urlHelper.Action("detail", controller, new { id = this.GetSeoUrl() });
+                    return "#";
                 }
-                else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                                                            && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    resultLink = urlHelper.Action(action, controller, new { id = mid });
+                    return urlHelper.Action("detail", controller, new { id = this.GetSeoUrl() });
                 }
-                else
+
+                if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                    && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    resultLink = urlHelper.Action(action, controller);
+                    return urlHelper.Action(action, controller, new { id = mid });
                 }
-                return resultLink;
+
+                return urlHelper.Action(action, controller);
             }
         }
     }
