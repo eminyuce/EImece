@@ -11,96 +11,80 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="text-center">@AdminResource.AdminPanelWelcome</h2>
+<h2>@AdminResource.AdminPanelWelcome</h2>
 <hr class="adminLine" />
-<div class="container">
-    <div class="row justify-content-md-center">
 
-        @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "" }))
-        {
-            <div class="col-md-5 col-md-offset-3">
-                <input type="text" name="searchContent"
-                       value="@Request.QueryString["searchContent"].ToStr()"
-                       id="searchTxt"
-                       data-provide="typehead"
-                       title="Aramaya başlamak için en az 2 karakter yazmalısınız"
-                       class="form-control"
-                       placeholder="@AdminResource.AdminMainSeachPlaceHolder"
-                       autocomplete="off">
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-default btn-block"><span class="glyphicon glyphicon-search"></span></button>
-            </div>
-        }
-    </div>
+@using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "admin-dashboard-search" }))
+{
+    <input type="text" name="searchContent"
+           value="@Request.QueryString["searchContent"].ToStr()"
+           id="searchTxt"
+           data-provide="typehead"
+           title="Aramaya başlamak için en az 2 karakter yazmalısınız"
+           class="form-control"
+           placeholder="@AdminResource.AdminMainSeachPlaceHolder"
+           autocomplete="off">
+    <button type="submit" class="btn btn-primary" title="@AdminResource.GridSearchButtonText">
+        <span class="glyphicon glyphicon-search"></span>
+        <span class="sr-only">@AdminResource.GridSearchButtonText</span>
+    </button>
+}
 
-    <div class="row">
-        <div class="col-md-12">
-
-            <br /><br />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <div class="MainPage">
-                <div>
-                    <a href="@Url.Action("Index","MainPageImages")">
-                        <img src="~/Areas/Admin/Content/main/giris-kayan-gorseller.png" />
-                    </a>
-                    <a href="@Url.Action("Index","Menus")">
-                        <img src="~/Areas/Admin/Content/main/hakkimizda-iletisim-diger-menuler.png" />
-                    </a>
-                    <a href="@Url.Action("Index","Products")">
-                        <img src="~/Areas/Admin/Content/main/urun-ekle-yonet.png" />
-                    </a>
-                    <a href="@Url.Action("Index","ProductCategories")">
-                        <img src="~/Areas/Admin/Content/main/urun-kategorileri.png" />
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-
-        <div class="MainPage">
-            <div>
-                <a href="@Url.Action("Index","adminsettings")">
-                    <img src="~/Areas/Admin/Content/main/yonetici-ayarlari.png" />
-                </a>
-                <a href="@Url.Action("Index","adminsettings")">
-                    <img src="~/Areas/Admin/Content/main/kargo.png" />
-                </a>
-                <a href="@Url.Action("Index","customers")">
-                    <img src="~/Areas/Admin/Content/main/uyeler.png" />
-                </a>
-                <a href="https://merchant.iyzipay.com/auth/login">
-                    <img src="~/Areas/Admin/Content/main/iyzico.png" />
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-
-        <div class="MainPage">
-            <div>
-                <a href="@Url.Action("Index","brands")">
-                    <img src="~/Areas/Admin/Content/main/brand.png" />
-                </a>
-                <a href="@Url.Action("SystemSettings","adminsettings")">
-                    <img src="~/Areas/Admin/Content/main/settings.png" />
-                </a>
-                <a href="@Url.Action("Index","MailTemplates")">
-                    <img src="~/Areas/Admin/Content/main/MailTemplates.png" />
-                </a>
-                <a href="@Url.Action("Index","Customers")">
-                    <img src="~/Areas/Admin/Content/main/Customers.png" />
-                </a>
-            </div>
-        </div>
-    </div>
-
+<div class="admin-dashboard-grid">
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","MainPageImages")">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+        <span>@AdminResource.MainPageImages</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","Menus")">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+        <span>@AdminResource.Menus</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","Products")">
+        <i class="fa fa-cube" aria-hidden="true"></i>
+        <span>@AdminResource.Products</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","ProductCategories")">
+        <i class="fa fa-sitemap" aria-hidden="true"></i>
+        <span>@AdminResource.ProductCategories</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","adminsettings")">
+        <i class="fa fa-cogs" aria-hidden="true"></i>
+        <span>@AdminResource.AdminSettings</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","customers")">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        <span>@AdminResource.Customers</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","Orders")">
+        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+        <span>@AdminResource.Orders</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","brands")">
+        <i class="fa fa-tags" aria-hidden="true"></i>
+        <span>@AdminResource.Brands</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("SystemSettings","adminsettings")">
+        <i class="fa fa-sliders" aria-hidden="true"></i>
+        <span>@AdminResource.SystemSettings</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","MailTemplates")">
+        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        <span>@AdminResource.MailTemplates</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","Stories")">
+        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+        <span>@AdminResource.Stories</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","Report")">
+        <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <span>@AdminResource.Reports</span>
+    </a>
+    <a class="admin-dashboard-tile" href="@Url.Action("Index","Coupons")">
+        <i class="fa fa-ticket" aria-hidden="true"></i>
+        <span>@AdminResource.Coupons</span>
+    </a>
+    <a class="admin-dashboard-tile" href="https://merchant.iyzipay.com/auth/login" target="_blank" rel="noopener noreferrer">
+        <i class="fa fa-credit-card" aria-hidden="true"></i>
+        <span>iyzico</span>
+    </a>
 </div>

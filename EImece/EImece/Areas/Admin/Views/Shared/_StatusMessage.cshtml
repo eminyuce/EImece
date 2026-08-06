@@ -2,7 +2,7 @@
 @if (TempData["StatusMessage"] != null)
 {
     var messageType = TempData["StatusMessageType"].ToStr("info");
-    <div class="alert alert-@messageType alert-dismissible" role="alert" style="margin-top:15px;">
+    <div class="alert alert-@messageType alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         @TempData["StatusMessage"]
     </div>

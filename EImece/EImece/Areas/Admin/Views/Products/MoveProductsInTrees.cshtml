@@ -62,7 +62,7 @@
 
         }
         @Html.ActionLink(AdminResource.Products, "Index")
-        <div class="panel panel-primary">
+        <div class="panel panel-primary admin-grid-card">
             @Html.Partial("pGridDropDown", baseList)
             @Html.Grid(products).Named(gridName).Columns(columns =>
        {

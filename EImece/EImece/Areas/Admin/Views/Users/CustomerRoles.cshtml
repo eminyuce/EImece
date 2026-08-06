@@ -32,26 +32,19 @@
 <h2>@AdminResource.Customers Customer Role Users</h2>
 <hr class="adminLine" />
 
-<div class="panel panel-info">
-    <div class="row">
-        <span class="col-md-9">
-            @Html.Partial("pSearchForm")
-        </span>
+<div class="panel panel-info admin-grid-ops">
+    <div class="panel-body">
+        <div class="admin-grid-ops-primary">
+            <div class="admin-grid-search" style="max-width:none;flex:1 1 100%;">
+                @Html.Partial("pSearchForm")
+            </div>
+        </div>
     </div>
 </div>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <div class="row">
-            <span class="col-md-6">
-                <span class="label ">
-                    <span class="badge text-danger text-large">@contents.Count() </span>
-                    @GridResultRecordNumber
-                </span>
-            </span>
-            <span class="col-md-3">
-                <p class="text-right">@GridPagingDropDownText</p>
-            </span>
-        </div>
+<div class="panel panel-primary admin-grid-card">
+    <div class="panel-heading admin-grid-toolbar-heading">
+        <span class="admin-grid-count">@contents.Count()</span>
+        <span>@GridResultRecordNumber</span>
     </div>
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
@@ -59,7 +52,7 @@
 columns.Add()
 .Encoded(false)
 .Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill'>{0}</span>", ++rowIndex));
 
     columns.Add()
 .Encoded(false)

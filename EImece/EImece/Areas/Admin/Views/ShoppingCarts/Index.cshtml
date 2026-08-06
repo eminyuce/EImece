@@ -40,13 +40,13 @@
     {"IsExcelButtonEnabled",true}
 })
 
-<div class="panel panel-primary">
+<div class="panel panel-primary admin-grid-card">
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
     columns.Add()
         .Encoded(false)
         .Sanitized(false)
-        .RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+        .RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill'>{0}</span>", ++rowIndex));
 
     columns.Add(o => o.Id).Titled("ID");
 

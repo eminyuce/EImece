@@ -47,12 +47,16 @@ All existing button IDs (`SelectAll`, `DeleteAll`, `SetStateOnAll`, `OrderingAll
 
 ## Applying to other modules
 
-No per-page redesign required for Orders, Customers, Coupons, Stories, Settings, etc.:
+Global consistency is enforced via `adminModern.css` under `body.admin-app`:
 
-- Shell + panel card styles apply globally under `body.admin-app`
-- Any page using `pGridOperations` gets the modern toolbar + selection bar
-- Optional: wrap category trees with `admin-listing-layout` / `admin-listing-sidebar` like Products
-- Optional: wrap name cells with `admin-product-cell` pattern where thumbnails exist
+- All `panel-primary` grids render as soft cards (`admin-grid-card` class added across Index pages)
+- Status `gridActiveIcon` / `gridNotActiveIcon` render as soft pills (list + bare icon columns)
+- Custom search toolbars (Orders / Customers / Users) use the same ops chrome
+- Forms, tabbed editors, settings accordions, alerts, and detail `dl`s inherit card/spacing/typography
+- Dashboard uses modern icon tiles (`admin-dashboard-grid`)
+- Tree sidebars (legacy `col-md-2` or `admin-listing-layout`) share the same card look
+
+Reference layouts: Products, ProductCategories, Menus. Shared chrome: `pGridOperations`, `pGridDropDown`.
 
 ## Files
 

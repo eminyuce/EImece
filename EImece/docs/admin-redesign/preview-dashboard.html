@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../../EImece/Content/adminShell.css" />
+  <link rel="stylesheet" href="../../EImece/Content/adminModern.css" />
+</head>
+<body class="admin-app">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+      <a href="#"><i class="fa fa-cubes"></i><span class="admin-sidebar-brand-text">Demo Mağaza</span></a>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <a class="admin-nav-item active" href="#"><i class="fa fa-home"></i><span class="admin-nav-label">Yönetici Ana Sayfa</span></a>
+      <div class="admin-nav-group is-open">
+        <button type="button" class="admin-nav-group-toggle">
+          <i class="fa fa-th-large"></i><span class="admin-nav-label">Katalog</span>
+          <i class="fa fa-chevron-down admin-nav-caret"></i>
+        </button>
+      </div>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button type="button" class="admin-sidebar-toggle"><i class="fa fa-bars"></i></button>
+        <div class="admin-topbar-title">
+          <span class="admin-topbar-panel">Demo Mağaza Yönetim Paneli</span>
+          <span class="admin-topbar-page">Ana Sayfa</span>
+        </div>
+      </div>
+    </header>
+    <main class="admin-content">
+      <h2>Yönetim Paneline Hoş Geldiniz</h2>
+      <form class="admin-dashboard-search">
+        <input class="form-control" placeholder="İçerik ara..." />
+        <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button>
+      </form>
+      <div class="admin-dashboard-grid">
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-cube"></i><span>Ürünler</span></a>
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-sitemap"></i><span>Kategoriler</span></a>
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-shopping-bag"></i><span>Siparişler</span></a>
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-users"></i><span>Müşteriler</span></a>
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-ticket"></i><span>Kuponlar</span></a>
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-bar-chart"></i><span>Raporlar</span></a>
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-cogs"></i><span>Ayarlar</span></a>
+        <a class="admin-dashboard-tile" href="#"><i class="fa fa-newspaper-o"></i><span>Hikayeler</span></a>
+      </div>
+
+      <h2 style="margin-top:32px;">Siparişler (örnek toolbar)</h2>
+      <div class="panel panel-info admin-grid-ops">
+        <div class="panel-body">
+          <div class="admin-grid-ops-primary">
+            <div class="admin-grid-search" style="max-width:none;flex:1 1 100%;">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ara" />
+                <div class="input-group-btn"><button class="btn btn-primary" type="button">Ara</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-primary admin-grid-card">
+        <div class="panel-heading admin-grid-toolbar-heading">
+          <span class="admin-grid-count">3</span>
+          <span>kayıt</span>
+        </div>
+        <table class="table grid-table">
+          <thead><tr><th>Sipariş No</th><th>Durum</th><th>Tutar</th><th>Tarih</th></tr></thead>
+          <tbody>
+            <tr><td><a href="#">ORD-1001</a></td><td><span class="label label-success">Paid</span></td><td>1.250,00 ₺</td><td>06.08.2026</td></tr>
+            <tr><td><a href="#">ORD-1002</a></td><td><span class="label label-warning">Pending</span></td><td>890,00 ₺</td><td>05.08.2026</td></tr>
+            <tr><td><a href="#">ORD-1003</a></td><td><span class="label label-info">Shipped</span></td><td>2.140,00 ₺</td><td>04.08.2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -32,17 +32,14 @@
 <h2>@AdminResource.ProductSpecTemplateItemList</h2>
 <hr class="adminLine" />
 
-<div class="panel panel-info">
-
-    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
                       ,{"StateTypes","State"}
            ,{"orderingButton",true}
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
-</div>
-<div class="panel panel-primary">
+<div class="panel panel-primary admin-grid-card">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {

@@ -31,21 +31,26 @@
     </ul>
 </div>
 
-<div class="panel panel-default" style="margin-bottom: 20px;">
+<div class="panel panel-info admin-grid-ops">
     <div class="panel-body">
-        <form method="get" class="form-inline">
-            <div class="form-group">
-                <label for="search">Metrik ara:</label>
-                <input type="text" id="search" name="search" class="form-control"
-                       placeholder="örn. request:, db:, http:, Orders"
-                       value="@Model.SearchTerm" />
+        <form method="get" class="admin-grid-ops-primary">
+            <div class="admin-grid-search" style="max-width:none;flex:1 1 280px;">
+                <div class="input-group">
+                    <input type="text" id="search" name="search" class="form-control"
+                           placeholder="örn. request:, db:, http:, Orders"
+                           value="@Model.SearchTerm" />
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-search"></span> Ara
+                        </button>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-search"></span> Ara
-            </button>
-            <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-default">
-                <span class="glyphicon glyphicon-refresh"></span> Temizle
-            </a>
+            <div class="admin-grid-ops-actions">
+                <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-refresh"></span> Temizle
+                </a>
+            </div>
         </form>
     </div>
 </div>
@@ -67,14 +72,14 @@
 }
 else
 {
-    <div class="panel panel-primary">
-        <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
+    <div class="panel panel-primary admin-grid-card">
+        <div class="table-responsive">
             @(Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 columns.Add()
 .Encoded(false)
 .Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill'>{0}</span>", ++rowIndex));
 
 columns.Add(m => m.Name)
 .Titled("Metrik Adı")
