@@ -1,5 +1,6 @@
 ﻿@using EImece.Domain.Helpers;
 @using EImece.Domain;
+@using EImece.Domain.Entities;
 @using Resources;
 @using System.Threading;
 @using EImece.Domain.Models.Enums;
@@ -9,6 +10,8 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 }
 
 <h2 class="text-center">@AdminResource.AdminPanelWelcome</h2>
@@ -70,15 +73,18 @@
                 <a href="@Url.Action("Index","adminsettings")">
                     <img src="~/Areas/Admin/Content/main/yonetici-ayarlari.png" />
                 </a>
-                <a href="@Url.Action("Index","adminsettings")">
-                    <img src="~/Areas/Admin/Content/main/kargo.png" />
-                </a>
-                <a href="@Url.Action("Index","customers")">
-                    <img src="~/Areas/Admin/Content/main/uyeler.png" />
-                </a>
-                <a href="https://merchant.iyzipay.com/auth/login">
-                    <img src="~/Areas/Admin/Content/main/iyzico.png" />
-                </a>
+                @if (productPriceEnabled)
+                {
+                    <a href="@Url.Action("Index","adminsettings")">
+                        <img src="~/Areas/Admin/Content/main/kargo.png" />
+                    </a>
+                    <a href="@Url.Action("Index","customers")">
+                        <img src="~/Areas/Admin/Content/main/uyeler.png" />
+                    </a>
+                    <a href="https://merchant.iyzipay.com/auth/login">
+                        <img src="~/Areas/Admin/Content/main/iyzico.png" />
+                    </a>
+                }
             </div>
         </div>
     </div>
@@ -96,9 +102,12 @@
                 <a href="@Url.Action("Index","MailTemplates")">
                     <img src="~/Areas/Admin/Content/main/MailTemplates.png" />
                 </a>
-                <a href="@Url.Action("Index","Customers")">
-                    <img src="~/Areas/Admin/Content/main/Customers.png" />
-                </a>
+                @if (productPriceEnabled)
+                {
+                    <a href="@Url.Action("Index","Customers")">
+                        <img src="~/Areas/Admin/Content/main/Customers.png" />
+                    </a>
+                }
             </div>
         </div>
     </div>

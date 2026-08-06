@@ -1,10 +1,13 @@
 @using System.Linq;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using Resources;
 @{
     var companyNameSetting = ViewBag.CompanyNameSetting as string ?? "";
     var currentController = ((string)ViewContext.RouteData.Values["controller"] ?? "").ToLowerInvariant();
     var currentAction = ((string)ViewContext.RouteData.Values["action"] ?? "").ToLowerInvariant();
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
     Func<string, string> controllerActive = (controllerName) =>
         string.Equals(currentController, controllerName, StringComparison.OrdinalIgnoreCase) ? "active" : "";
@@ -17,8 +20,11 @@
     Func<string[], bool> groupOpen = (controllers) =>
         controllers.Any(c => string.Equals(currentController, c, StringComparison.OrdinalIgnoreCase));
 
-    var catalogOpen = groupOpen(new[] { "products", "productcategories", "brands", "templates", "lists", "coupons" });
-    var salesOpen = groupOpen(new[] { "orders", "customers", "shoppingcarts", "report" });
+    var catalogControllers = productPriceEnabled
+        ? new[] { "products", "productcategories", "brands", "templates", "lists", "coupons" }
+        : new[] { "products", "productcategories", "brands", "templates", "lists" };
+    var catalogOpen = groupOpen(catalogControllers);
+    var salesOpen = productPriceEnabled && groupOpen(new[] { "orders", "customers", "shoppingcarts", "report" });
     var contentOpen = groupOpen(new[] { "menus", "mainpageimages", "stories", "storycategories", "tags", "tagcategories", "faq", "subscribers" });
     var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "users" });
 }
@@ -85,51 +91,57 @@
                     <i class="fa fa-list-alt" aria-hidden="true"></i>
                     <span class="admin-nav-label">@AdminResource.ProductSpecTemplateItemList</span>
                 </a>
-                <a class="admin-nav-item @(controllerActive("coupons"))"
-                   href="@Url.Action("Index", "Coupons", new { area = "admin" })"
-                   title="@AdminResource.Coupons">
-                    <i class="fa fa-ticket" aria-hidden="true"></i>
-                    <span class="admin-nav-label">@AdminResource.Coupons</span>
-                </a>
+                @if (productPriceEnabled)
+                {
+                    <a class="admin-nav-item @(controllerActive("coupons"))"
+                       href="@Url.Action("Index", "Coupons", new { area = "admin" })"
+                       title="@AdminResource.Coupons">
+                        <i class="fa fa-ticket" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.Coupons</span>
+                    </a>
+                }
             </div>
         </div>
 
-        <div class="admin-nav-group @(salesOpen ? "is-open" : "")" data-group="sales">
-            <button type="button"
-                    class="admin-nav-group-toggle"
-                    aria-expanded="@(salesOpen ? "true" : "false")"
-                    title="@AdminResource.Sales">
-                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                <span class="admin-nav-label">@AdminResource.Sales</span>
-                <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
-            </button>
-            <div class="admin-nav-group-body">
-                <a class="admin-nav-item @(controllerActive("orders"))"
-                   href="@Url.Action("Index", "Orders", new { area = "admin" })"
-                   title="@AdminResource.Orders">
+        @if (productPriceEnabled)
+        {
+            <div class="admin-nav-group @(salesOpen ? "is-open" : "")" data-group="sales">
+                <button type="button"
+                        class="admin-nav-group-toggle"
+                        aria-expanded="@(salesOpen ? "true" : "false")"
+                        title="@AdminResource.Sales">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                    <span class="admin-nav-label">@AdminResource.Orders</span>
-                </a>
-                <a class="admin-nav-item @(controllerActive("customers"))"
-                   href="@Url.Action("Index", "Customers", new { area = "admin" })"
-                   title="@AdminResource.Customers">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    <span class="admin-nav-label">@AdminResource.Customers</span>
-                </a>
-                <a class="admin-nav-item @(controllerActive("shoppingcarts"))"
-                   href="@Url.Action("Index", "ShoppingCarts", new { area = "admin" })"
-                   title="@AdminResource.ShoppingCarts">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <span class="admin-nav-label">@AdminResource.ShoppingCarts</span>
-                </a>
-                <a class="admin-nav-item @(controllerActive("report"))"
-                   href="@Url.Action("Index", "Report", new { area = "admin" })"
-                   title="@AdminResource.Reports">
-                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                    <span class="admin-nav-label">@AdminResource.Reports</span>
-                </a>
+                    <span class="admin-nav-label">@AdminResource.Sales</span>
+                    <i class="fa fa-chevron-down admin-nav-caret" aria-hidden="true"></i>
+                </button>
+                <div class="admin-nav-group-body">
+                    <a class="admin-nav-item @(controllerActive("orders"))"
+                       href="@Url.Action("Index", "Orders", new { area = "admin" })"
+                       title="@AdminResource.Orders">
+                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.Orders</span>
+                    </a>
+                    <a class="admin-nav-item @(controllerActive("customers"))"
+                       href="@Url.Action("Index", "Customers", new { area = "admin" })"
+                       title="@AdminResource.Customers">
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.Customers</span>
+                    </a>
+                    <a class="admin-nav-item @(controllerActive("shoppingcarts"))"
+                       href="@Url.Action("Index", "ShoppingCarts", new { area = "admin" })"
+                       title="@AdminResource.ShoppingCarts">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.ShoppingCarts</span>
+                    </a>
+                    <a class="admin-nav-item @(controllerActive("report"))"
+                       href="@Url.Action("Index", "Report", new { area = "admin" })"
+                       title="@AdminResource.Reports">
+                        <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                        <span class="admin-nav-label">@AdminResource.Reports</span>
+                    </a>
+                </div>
             </div>
-        </div>
+        }
 
         <div class="admin-nav-group @(contentOpen ? "is-open" : "")" data-group="content">
             <button type="button"
