@@ -326,6 +326,31 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapseMetricsHealth" class="panel-title expand">
+                            <div class="right-arrow pull-right">+</div>
+                            <a href="#">@AdminResource.SystemMonitoring</a>
+                        </h4>
+                    </div>
+                    <div id="collapseMetricsHealth" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-block btn-primary">
+                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    @AdminResource.Metrics
+                                </a>
+                                <a href="@Url.Action("Index", "Health", new { area = "" })"
+                                   class="btn btn-block btn-default"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                    @AdminResource.Health
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse4443451" class="panel-title expand">
                             <div class="right-arrow pull-right">+</div>
                             <a href="#">@AdminResource.AppLogs</a>

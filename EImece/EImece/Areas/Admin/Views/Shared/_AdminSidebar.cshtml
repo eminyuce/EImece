@@ -20,7 +20,7 @@
     var catalogOpen = groupOpen(new[] { "products", "productcategories", "brands", "templates", "lists", "coupons" });
     var salesOpen = groupOpen(new[] { "orders", "customers", "shoppingcarts", "report" });
     var contentOpen = groupOpen(new[] { "menus", "mainpageimages", "stories", "storycategories", "tags", "tagcategories", "faq", "subscribers" });
-    var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "metrics", "users" });
+    var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "users" });
 }
 <aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="@AdminResource.AdminNavigation" data-collapsed="false">
     <div class="admin-sidebar-brand">
@@ -227,20 +227,6 @@
                        title="@AdminResource.SystemSettings">
                         <i class="fa fa-sliders" aria-hidden="true"></i>
                         <span class="admin-nav-label">@AdminResource.SystemSettings</span>
-                    </a>
-                    <a class="admin-nav-item @(controllerActive("metrics"))"
-                       href="@Url.Action("Index", "Metrics", new { area = "admin" })"
-                       title="@AdminResource.Metrics">
-                        <i class="fa fa-line-chart" aria-hidden="true"></i>
-                        <span class="admin-nav-label">@AdminResource.Metrics</span>
-                    </a>
-                    <a class="admin-nav-item"
-                       href="@Url.Action("Index", "Health", new { area = "" })"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       title="@AdminResource.Health">
-                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                        <span class="admin-nav-label">@AdminResource.Health</span>
                     </a>
                     <a class="admin-nav-item @actionActive("users", "index")"
                        href="@Url.Action("Index", "Users", new { area = "admin" })"
