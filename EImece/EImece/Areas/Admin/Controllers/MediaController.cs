@@ -97,6 +97,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateJsonAntiForgeryToken]
         public JsonResult Upload()
         {
             int Id = Request.Form["contentId"].ToInt();
@@ -134,14 +135,15 @@ namespace EImece.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
         [DeleteAuthorize()]
         public JsonResult DeleteFile(string file, int contentId, String mod, String imageType)
         {
             var CurrentContext = HttpContext;
             filesHelper.DeleteFile(file, CurrentContext);
 
-            return Json("OK", JsonRequestBehavior.AllowGet);
+            return Json("OK");
         }
 
         [HttpPost, ActionName("Delete")]

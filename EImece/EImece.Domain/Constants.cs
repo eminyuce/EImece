@@ -101,7 +101,7 @@ namespace EImece.Domain
         public const string ServerMapPath = "~/media/images/";
         public const string UrlBase = "/media/images/";
         public const string DeleteURL = "/Media/DeleteFile/?file={0}&contentId={1}&mod={2}&imageType={3}";
-        public const string DeleteType = "GET";
+        public const string DeleteType = "POST";
         public const string FileUploadDeleteURL = "/FileUpload/DeleteFile/?file=";
         public const string AdminCultureCookieName = "_adminCulture";
         public const string CultureCookieName = "_culture";

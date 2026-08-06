@@ -27,6 +27,7 @@
 }
 @using (Html.BeginForm("DisplayExcel","ImportData"))
 {
+@Html.AntiForgeryToken()
 <input type="hidden" name="pathName" value="@pathName" />
 @Html.DropDownList("selectedTable", listItems, "-- Select Tables --")
 

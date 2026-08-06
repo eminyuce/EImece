@@ -20,6 +20,7 @@ using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -97,6 +98,7 @@ namespace EImece.Controllers
             return PartialView("ShoppingCartTemplates/_HomePageShoppingCart", GetShoppingCart());
         }
 
+        [HttpPost]
         public ActionResult AddToCart(string productId, int quantity, string orderGuid, string productSpecItems)
         {
             if (quantity < 0 || quantity > 1000)
@@ -552,6 +554,8 @@ namespace EImece.Controllers
                 }
                 else
                 {
+                    RevalidateCoupon(shoppingCart);
+                    SaveShoppingCart(shoppingCart);
                     var user = UserManager.FindByName(User.Identity.GetUserName());
                     PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id}");
                     ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, user.Id);
@@ -569,26 +573,61 @@ namespace EImece.Controllers
         {
             CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
             PaymentLogger.Info($"PaymentResult with ACCOUNT status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
-            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+            if (!IsSuccessfulPayment(checkoutForm))
             {
-                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                PaymentLogger.Info("Decrypted payment callback order reference successfully.");
-                ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
-                var userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
-                PaymentLogger.Info("Decrypted payment callback user reference successfully.");
-                var order = ShoppingCartService.SaveShoppingCart(orderNumber, shoppingCart, checkoutForm, userId);
-                PaymentLogger.Info($"Order saved with ID: {order.Id}");
-                SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
-                ClearCart(shoppingCart);
-                PaymentLogger.Info("Cart cleared. Redirecting to ThankYouForYourOrder.");
-                TempData["LastCompletedOrderId"] = order.Id;
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
-            }
-            else
-            {
-                PaymentLogger.Error($"Payment failed. CheckoutForm: {JsonConvert.SerializeObject(checkoutForm)}");
+                PaymentLogger.Error($"Payment failed. Status: {checkoutForm?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
+
+            string orderGuid;
+            string userId;
+            try
+            {
+                orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
+                userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
+            }
+            catch (Exception ex)
+            {
+                PaymentLogger.Error(ex, "Failed to decrypt payment callback references.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var bindingError = ValidatePaymentBinding(checkoutForm, orderGuid, orderNumber);
+            if (bindingError != null)
+            {
+                return bindingError;
+            }
+
+            var existingOrder = FindExistingPaidOrder(checkoutForm.PaymentId, orderGuid);
+            if (existingOrder != null)
+            {
+                TempData["LastCompletedOrderId"] = existingOrder.Id;
+                return RedirectToAction("ThankYouForYourOrder", new { orderId = existingOrder.Id });
+            }
+
+            ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
+            if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
+            {
+                PaymentLogger.Error($"Shopping cart missing for OrderGuid after successful payment.");
+                return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+            }
+
+            if (!PaidPriceMatches(checkoutForm.PaidPrice, shoppingCart.TotalPriceWithCargoPrice))
+            {
+                PaymentLogger.Error($"PaidPrice mismatch for OrderGuid. Expected cart total does not match payment.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var resolvedOrderNumber = string.IsNullOrWhiteSpace(checkoutForm.ConversationId)
+                ? orderNumber
+                : checkoutForm.ConversationId;
+            var order = ShoppingCartService.SaveShoppingCart(resolvedOrderNumber, shoppingCart, checkoutForm, userId);
+            PaymentLogger.Info($"Order saved with ID: {order.Id}");
+            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
+            ClearCart(shoppingCart);
+            PaymentLogger.Info("Cart cleared. Redirecting to ThankYouForYourOrder.");
+            TempData["LastCompletedOrderId"] = order.Id;
+            return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
         }
 
         public ActionResult ThankYouForYourOrder(int orderId)
@@ -749,42 +788,81 @@ namespace EImece.Controllers
             PaymentLogger.Info("Entering BuyNowPaymentResult action.");
             CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
             PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
-            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+            if (!IsSuccessfulPayment(checkoutForm))
             {
-                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                PaymentLogger.Info("Decrypted BuyNow payment callback order reference successfully.");
-                var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
-                BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
-                PaymentLogger.Info("Deserialized BuyNow model from shopping cart.");
-                if (buyNowModel.ShoppingCartItem == null || buyNowModel.ShoppingCartItem.Product == null)
-                {
-                    PaymentLogger.Error("ShoppingCartItem or Product is null in BuyNow model.");
-                    throw new ArgumentException("buyNowModel.ShoppingCartItem.Product cannot be null");
-                }
-                if (buyNowModel.Customer == null)
-                {
-                    PaymentLogger.Error("Customer is null in BuyNow model.");
-                    throw new ArgumentException("buyNowModel.Customer cannot be null");
-                }
-                buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
-                buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
-                buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-                buyNowModel.Customer.Lang = CurrentLanguage;
-                PaymentLogger.Info("Updated BuyNow model with cargo and language details.");
-
-                var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
-                PaymentLogger.Info($"Order saved with ID: {order.Id}");
-                ClearBuyNow(buyNowModel);
-                PaymentLogger.Info("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
-                TempData["LastCompletedOrderId"] = order.Id;
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
-            }
-            else
-            {
-                PaymentLogger.Error($"BuyNow payment failed. CheckoutForm: {JsonConvert.SerializeObject(checkoutForm)}");
-                PaymentLogger.Info("Redirecting to NoSuccessForYourOrder.");
+                PaymentLogger.Error($"BuyNow payment failed. Status: {checkoutForm?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
+
+            string orderGuid;
+            try
+            {
+                orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
+            }
+            catch (Exception ex)
+            {
+                PaymentLogger.Error(ex, "Failed to decrypt BuyNow payment callback order reference.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (!string.Equals(checkoutForm.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
+            {
+                PaymentLogger.Error("BuyNow payment BasketId does not match callback order reference.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var existingOrder = FindExistingPaidOrder(checkoutForm.PaymentId, orderGuid);
+            if (existingOrder != null)
+            {
+                TempData["LastCompletedOrderId"] = existingOrder.Id;
+                return RedirectToAction("ThankYouForYourOrder", new { orderId = existingOrder.Id });
+            }
+
+            var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
+            if (item == null || string.IsNullOrEmpty(item.ShoppingCartJson))
+            {
+                PaymentLogger.Error("BuyNow shopping cart missing after successful payment.");
+                return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+            }
+
+            BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
+            PaymentLogger.Info("Deserialized BuyNow model from shopping cart.");
+            if (buyNowModel.ShoppingCartItem == null || buyNowModel.ShoppingCartItem.Product == null)
+            {
+                PaymentLogger.Error("ShoppingCartItem or Product is null in BuyNow model.");
+                throw new ArgumentException("buyNowModel.ShoppingCartItem.Product cannot be null");
+            }
+            if (buyNowModel.Customer == null)
+            {
+                PaymentLogger.Error("Customer is null in BuyNow model.");
+                throw new ArgumentException("buyNowModel.Customer cannot be null");
+            }
+
+            if (!string.IsNullOrEmpty(buyNowModel.ConversationId)
+                && !string.Equals(checkoutForm.ConversationId, buyNowModel.ConversationId, StringComparison.OrdinalIgnoreCase))
+            {
+                PaymentLogger.Error("BuyNow ConversationId does not match payment ConversationId.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (!PaidPriceMatches(checkoutForm.PaidPrice, buyNowModel.TotalPriceWithCargoPrice))
+            {
+                PaymentLogger.Error("BuyNow PaidPrice mismatch.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            buyNowModel.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+            buyNowModel.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyNowModel.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
+            buyNowModel.Customer.Lang = CurrentLanguage;
+            PaymentLogger.Info("Updated BuyNow model with cargo and language details.");
+
+            var order = ShoppingCartService.SaveBuyNow(buyNowModel, checkoutForm);
+            PaymentLogger.Info($"Order saved with ID: {order.Id}");
+            ClearBuyNow(buyNowModel);
+            PaymentLogger.Info("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
+            TempData["LastCompletedOrderId"] = order.Id;
+            return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
         }
 
         [HttpPost]
@@ -1049,6 +1127,8 @@ namespace EImece.Controllers
                 ShoppingCart item = SaveShoppingCart(shoppingCart);
           
 
+                RevalidateCoupon(shoppingCart);
+                SaveShoppingCart(shoppingCart);
                 ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
                 return View("ShoppingWithoutAccountPayment", buyWithNoAccountCreation);
             }
@@ -1063,51 +1143,84 @@ namespace EImece.Controllers
 
         public async Task<ActionResult> ShoppingWithoutAccountResult(RetrieveCheckoutFormRequest model, String o, String orderNumber)
         {
-            PaymentLogger.Info("Entering BuyNowPaymentResult action.");
+            PaymentLogger.Info("Entering ShoppingWithoutAccountResult action.");
             CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
             PaymentLogger.Info($"ShoppingWithoutAccountResult status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
 
-            PaymentLogger.Info("ShoppingWithoutAccountResult.CheckoutForm: " + JsonConvert.SerializeObject(checkoutForm));
-            PaymentLogger.Info("ShoppingWithoutAccountResult.RetrieveCheckoutFormRequest: " + JsonConvert.SerializeObject(model));
-            if (checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase))
+            if (!IsSuccessfulPayment(checkoutForm))
             {
-                var orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                PaymentLogger.Info("Decrypted ShoppingWithoutAccount payment callback order reference successfully.");
-                var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
-                ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
-                BuyWithNoAccountCreation buyWithNoAccountCreation = JsonConvert.DeserializeObject<BuyWithNoAccountCreation>(item.ShoppingCartJson);
-                PaymentLogger.Info("Deserialized BuyWithNoAccountCreation model from shopping cart.");
-                if (buyWithNoAccountCreation.ShoppingCartItems.IsEmpty())
-                {
-                    PaymentLogger.Error("ShoppingCartItem or Product is null in buyWithNoAccountCreation model.");
-                    throw new ArgumentException("buyWithNoAccountCreation.ShoppingCartItem.ShoppingCartItems cannot be empty");
-                }
-                if (buyWithNoAccountCreation.Customer == null)
-                {
-                    PaymentLogger.Error("Customer is null in BuyNow model.");
-                    throw new ArgumentException("buyWithNoAccountCreation.Customer cannot be null");
-                }
-                buyWithNoAccountCreation.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
-                buyWithNoAccountCreation.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
-                buyWithNoAccountCreation.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
-                buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
-                PaymentLogger.Info("Updated buyWithNoAccountCreation model with cargo and language details.");
-
-                var order = ShoppingCartService.SaveBuyWithNoAccountCreation(orderNumber, buyWithNoAccountCreation, checkoutForm);
-                PaymentLogger.Info($"Order saved with ID: {order.Id}");
-                SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
-                ClearBuyWithNoAccountCreation(buyWithNoAccountCreation);
-                ClearCart(shoppingCart);
-                PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
-                TempData["LastCompletedOrderId"] = order.Id;
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
-            }
-            else
-            {
-                PaymentLogger.Error($"BuyWithNoAccountCreation payment failed. CheckoutForm: {JsonConvert.SerializeObject(checkoutForm)}");
-                PaymentLogger.Info("Redirecting to NoSuccessForYourOrder.");
+                PaymentLogger.Error($"BuyWithNoAccountCreation payment failed. Status: {checkoutForm?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
+
+            string orderGuid;
+            try
+            {
+                orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
+            }
+            catch (Exception ex)
+            {
+                PaymentLogger.Error(ex, "Failed to decrypt ShoppingWithoutAccount payment callback order reference.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var bindingError = ValidatePaymentBinding(checkoutForm, orderGuid, orderNumber);
+            if (bindingError != null)
+            {
+                return bindingError;
+            }
+
+            var existingOrder = FindExistingPaidOrder(checkoutForm.PaymentId, orderGuid);
+            if (existingOrder != null)
+            {
+                TempData["LastCompletedOrderId"] = existingOrder.Id;
+                return RedirectToAction("ThankYouForYourOrder", new { orderId = existingOrder.Id });
+            }
+
+            var item = ShoppingCartService.GetShoppingCartByOrderGuid(orderGuid);
+            ShoppingCartSession shoppingCart = GetShoppingCartByOrderGuid(orderGuid);
+            if (item == null || string.IsNullOrEmpty(item.ShoppingCartJson) || shoppingCart == null)
+            {
+                PaymentLogger.Error("ShoppingWithoutAccount cart missing after successful payment.");
+                return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+            }
+
+            BuyWithNoAccountCreation buyWithNoAccountCreation = JsonConvert.DeserializeObject<BuyWithNoAccountCreation>(item.ShoppingCartJson);
+            PaymentLogger.Info("Deserialized BuyWithNoAccountCreation model from shopping cart.");
+            if (buyWithNoAccountCreation.ShoppingCartItems.IsEmpty())
+            {
+                PaymentLogger.Error("ShoppingCartItem or Product is null in buyWithNoAccountCreation model.");
+                throw new ArgumentException("buyWithNoAccountCreation.ShoppingCartItem.ShoppingCartItems cannot be empty");
+            }
+            if (buyWithNoAccountCreation.Customer == null)
+            {
+                PaymentLogger.Error("Customer is null in BuyNow model.");
+                throw new ArgumentException("buyWithNoAccountCreation.Customer cannot be null");
+            }
+
+            if (!PaidPriceMatches(checkoutForm.PaidPrice, buyWithNoAccountCreation.TotalPriceWithCargoPrice))
+            {
+                PaymentLogger.Error("ShoppingWithoutAccount PaidPrice mismatch.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            buyWithNoAccountCreation.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
+            buyWithNoAccountCreation.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyWithNoAccountCreation.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
+            buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
+            PaymentLogger.Info("Updated buyWithNoAccountCreation model with cargo and language details.");
+
+            var resolvedOrderNumber = string.IsNullOrWhiteSpace(checkoutForm.ConversationId)
+                ? orderNumber
+                : checkoutForm.ConversationId;
+            var order = ShoppingCartService.SaveBuyWithNoAccountCreation(resolvedOrderNumber, buyWithNoAccountCreation, checkoutForm);
+            PaymentLogger.Info($"Order saved with ID: {order.Id}");
+            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
+            ClearBuyWithNoAccountCreation(buyWithNoAccountCreation);
+            ClearCart(shoppingCart);
+            PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
+            TempData["LastCompletedOrderId"] = order.Id;
+            return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
         }
 
         private void ClearBuyWithNoAccountCreation(BuyWithNoAccountCreation buyWithNoAccountCreation)
@@ -1115,6 +1228,101 @@ namespace EImece.Controllers
             PaymentLogger.Info($"Entering ClearBuyWithNoAccountCreation with OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
             ShoppingCartService.DeleteByOrderGuid(buyWithNoAccountCreation.OrderGuid);
             PaymentLogger.Info("BuyNow cart deleted from data source.");
+        }
+
+        private void RevalidateCoupon(ShoppingCartSession shoppingCart)
+        {
+            if (shoppingCart?.Coupon == null || string.IsNullOrWhiteSpace(shoppingCart.Coupon.Code))
+            {
+                if (shoppingCart != null)
+                {
+                    shoppingCart.Coupon = null;
+                }
+                return;
+            }
+
+            try
+            {
+                shoppingCart.Coupon = CouponService.GetCouponByCode(shoppingCart.Coupon.Code, CurrentLanguage);
+            }
+            catch (Exception ex)
+            {
+                PaymentLogger.Warn(ex, "Coupon revalidation failed; clearing coupon from cart.");
+                shoppingCart.Coupon = null;
+            }
+        }
+
+        private static bool IsSuccessfulPayment(CheckoutForm checkoutForm)
+        {
+            return checkoutForm != null
+                && !string.IsNullOrEmpty(checkoutForm.PaymentStatus)
+                && checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private ActionResult ValidatePaymentBinding(CheckoutForm checkoutForm, string orderGuid, string orderNumber)
+        {
+            if (string.IsNullOrWhiteSpace(orderGuid))
+            {
+                PaymentLogger.Error("Payment callback orderGuid is empty.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (!string.Equals(checkoutForm.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
+            {
+                PaymentLogger.Error("Payment BasketId does not match callback order reference.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (!string.IsNullOrWhiteSpace(orderNumber)
+                && !string.IsNullOrWhiteSpace(checkoutForm.ConversationId)
+                && !string.Equals(checkoutForm.ConversationId, orderNumber, StringComparison.OrdinalIgnoreCase))
+            {
+                PaymentLogger.Error("Payment ConversationId does not match callback orderNumber.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            return null;
+        }
+
+        private Order FindExistingPaidOrder(string paymentId, string orderGuid)
+        {
+            var byPaymentId = OrderService.GetByPaymentId(paymentId);
+            if (byPaymentId != null)
+            {
+                PaymentLogger.Info($"Idempotent payment callback: existing order {byPaymentId.Id} for PaymentId.");
+                return byPaymentId;
+            }
+
+            if (!string.IsNullOrWhiteSpace(orderGuid))
+            {
+                var byOrderGuid = OrderService.GetByOrderGuid(orderGuid);
+                if (byOrderGuid != null
+                    && !string.IsNullOrEmpty(byOrderGuid.PaymentId)
+                    && string.Equals(byOrderGuid.PaymentStatus, Domain.Constants.SUCCESS, StringComparison.OrdinalIgnoreCase))
+                {
+                    PaymentLogger.Info($"Idempotent payment callback: existing order {byOrderGuid.Id} for OrderGuid.");
+                    return byOrderGuid;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool PaidPriceMatches(string paidPrice, decimal expectedTotal)
+        {
+            if (string.IsNullOrWhiteSpace(paidPrice))
+            {
+                return false;
+            }
+
+            var normalized = paidPrice.Trim().Replace(",", ".");
+            if (!decimal.TryParse(normalized, NumberStyles.Number, CultureInfo.InvariantCulture, out var paid))
+            {
+                return false;
+            }
+
+            // Allow small rounding differences between cart math and Iyzico formatting.
+            return Math.Abs(paid - expectedTotal) <= 0.05m;
         }
     }
 }

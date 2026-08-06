@@ -28,12 +28,27 @@ namespace EImece.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ExcelUploadImport(HttpPostedFileBase excelFile = null)
         {
+            if (excelFile == null || excelFile.ContentLength <= 0)
+            {
+                ModelState.AddModelError("", "Excel file is required.");
+                return View("ExcelUpload");
+            }
+
             String path = "~/App_Data/";
-            var r = new Random();
-            string fileName = r.Next(0, 1000) + excelFile.FileName;
-            var pathName = Server.MapPath(path + fileName);
+            var root = Server.MapPath(path);
+            string originalName = Path.GetFileName(excelFile.FileName);
+            if (string.IsNullOrWhiteSpace(originalName) || !IsAllowedExcelExtension(originalName))
+            {
+                ModelState.AddModelError("", "Only .xls or .xlsx files are allowed.");
+                return View("ExcelUpload");
+            }
+
+            string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(originalName);
+            var pathName = SecurityHelper.GetSafeStorageFilePath(root, fileName);
             excelFile.SaveAs(pathName);
             return RedirectToAction("DisplayTable", new { id = fileName });
         }
@@ -41,17 +56,20 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult DisplayTable(String id)
         {
             String path = "~/App_Data/";
-            var pathName = Server.MapPath(path + "/" + id);
+            var root = Server.MapPath(path);
+            var pathName = SecurityHelper.GetSafeStorageFilePath(root, id);
             DataTable dt = ExcelHelper.Excel_To_DataTable(pathName, 0);
-            ViewBag.PathName = id;
+            ViewBag.PathName = Path.GetFileName(id);
             return View(dt);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult DisplayExcel(String pathName, String selectedTable)
         {
             String path = "~/App_Data/";
-            pathName = Server.MapPath(path + pathName);
+            var root = Server.MapPath(path);
+            pathName = SecurityHelper.GetSafeStorageFilePath(root, pathName);
 
             DataTable dt = ExcelHelper.Excel_To_DataTable(pathName, 0);
             if (selectedTable.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))
@@ -64,6 +82,13 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        private static bool IsAllowedExcelExtension(string fileName)
+        {
+            var ext = Path.GetExtension(fileName);
+            return string.Equals(ext, ".xls", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(ext, ".xlsx", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

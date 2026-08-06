@@ -46,6 +46,7 @@
 
     <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
     <input type="hidden" id="CookieLanguage" value="@AppConfig.MainLanguage" />
+    @Html.AntiForgeryToken()
 
     @Html.Partial("_AdminSidebar")
 
@@ -58,6 +59,17 @@
     </div>
 
     <script>
+        (function () {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            if (token && window.jQuery) {
+                $.ajaxSetup({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('RequestVerificationToken', token);
+                    }
+                });
+            }
+        })();
+
         function setlanguage(selectedLanguage) {
             window.location.href = "/admin/dashboard/setlanguage/" + selectedLanguage;
         }

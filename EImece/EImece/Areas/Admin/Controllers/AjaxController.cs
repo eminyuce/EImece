@@ -22,6 +22,7 @@ using NLog;
 
 namespace EImece.Areas.Admin.Controllers
 {
+    [ValidateJsonAntiForgeryToken]
     public class AjaxController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -85,11 +86,12 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "UpdatePrices failed");
-                // Hata durumunda yanıt
-                return Json(new { success = false, message = $"Hata: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = "İşlem başarısız." }, JsonRequestBehavior.AllowGet);
             }
         }
 
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
         public JsonResult DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)
         {
             Logger.Info($"DeleteBaseContentMainImage called by {User?.Identity?.Name ?? "-"} ContentId={contentId} ImageId={imageId} ContentClass={contentClass}");

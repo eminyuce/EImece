@@ -13,7 +13,10 @@ namespace EImece.Domain.Helpers.AttributeHelper
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             // TEMPORARY: allow unauthenticated admin browsing while BypassAdminAuth is enabled.
-            if (EImece.Domain.AppConfig.BypassAdminAuth)
+            // AppConfig.BypassAdminAuth is hard-disabled when SiteStatus is live.
+            if (EImece.Domain.AppConfig.BypassAdminAuth
+                && httpContext != null
+                && httpContext.Request.IsLocal)
             {
                 return true;
             }
