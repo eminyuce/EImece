@@ -129,7 +129,7 @@ The database schema must already exist (apply your usual EF migrations or restor
 
 ### Dummy / demo data (optional)
 
-To populate a realistic small shop for manual testing (admin grids, storefront, orders, reports):
+To populate a realistic small shop for manual testing (admin grids, storefront, orders, reports). Catalog values look production-like (brand/product names, Turkish customers, EIMC order/coupon codes); cleanup uses technical markers rather than `SEED …` name prefixes.
 
 1. Ensure the schema exists and the app can connect.
 2. Run `EImece/SqlScripts/SeedDummyData.sql` in SSMS, or:
@@ -147,6 +147,7 @@ Default volumes (`@Scale = 1`): ~12 menus, ~6 homepage slides, ~20 brands, ~25 c
 - Known logins: `admin@eimece.test` (Admin), `editor@eimece.test` (NormalUser), `customer1@eimece.test` (Customer)
 - Cleanup: `CleanupDummyData.sql`, or re-run the seed script (`@CleanupFirst = 1` by default)
 - Tune bulk catalog/order size with `@Scale` / `-Scale`; edit individual `@Seed*` counts in the SQL for finer control
+- To change the realistic catalog copy, edit `_gen_realistic_seed.py` and re-run it to regenerate `SeedDummyData.sql`
 
 ### Application settings (review)
 

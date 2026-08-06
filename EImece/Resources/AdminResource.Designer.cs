@@ -2003,7 +2003,25 @@ namespace Resources {
                 return ResourceManager.GetString("NoImage", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün mevcut.
+        /// </summary>
+        public static string CategoryHasProducts {
+            get {
+                return ResourceManager.GetString("CategoryHasProducts", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Silinemez.
+        /// </summary>
+        public static string CategoryCannotDelete {
+            get {
+                return ResourceManager.GetString("CategoryCannotDelete", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Normal Ayarlar.
         /// </summary>

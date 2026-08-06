@@ -426,6 +426,48 @@ namespace EImece.Areas.Admin.Controllers
             return Json(normalizedValues, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [DeleteAuthorize()]
+        public JsonResult DeleteBrandGridItem(List<String> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return Json(new List<String>(), JsonRequestBehavior.AllowGet);
+            }
+
+            foreach (var value in values)
+            {
+                BrandService.DeleteBrandById(value.ToInt());
+            }
+
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [DeleteAuthorize()]
+        public JsonResult DeleteListGridItem(List<String> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return Json(new List<String>(), JsonRequestBehavior.AllowGet);
+            }
+
+            foreach (var value in values)
+            {
+                ListService.DeleteListById(value.ToInt());
+            }
+
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [DeleteAuthorize()]
+        public JsonResult DeleteMailTemplateGridItem(List<String> values)
+        {
+            MailTemplateService.DeleteBaseEntity(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// Media bulk-delete keys must be fileStorageId-contentId-mod[-imageType].
         /// Older pages sent only the fileStorageId; enrich those from the media page session.

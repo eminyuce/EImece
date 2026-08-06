@@ -116,28 +116,33 @@ $(document).ready(function () {
     }
     var YOUR_MESSAGE_STRING_CONST = $("#AdminMultiSelectDeleteConfirmMessage").text();
     $("#DeleteAll").click(function () {
-        ////  console.log("DeleteAll is clicked.");
+        var selectedCount = GetSelectedCheckBoxValuesArray().length;
+        if (selectedCount === 0) {
+            showAdminAjaxError($("#CheckboxesDataTableDoesNotSelected").val() || "Lütfen en az bir kayıt seçin.");
+            return;
+        }
         confirmDialog(YOUR_MESSAGE_STRING_CONST, function () {
             var postData = GetSelectedCheckBoxValues();
             var parsedPostData = jQuery.parseJSON(postData);
             if (parsedPostData.values.length > 0) {
                 var tableName = $("[data-gridname]").attr("data-gridname");
-                //  console.log("Delete" + tableName + "Item");
                 ajaxMethodCall(postData, "/admin/Ajax/Delete" + tableName + "Item", deleteItemsSuccess);
             }
         });
     });
 
     function confirmDialog(message, onConfirm) {
+        var modal = $("#confirmModal");
         var fClose = function () {
             modal.modal("hide");
         };
-        var modal = $("#confirmModal");
         modal.modal("show");
         $("#confirmMessage").empty().append(message);
-        $("#confirmOk").one('click', onConfirm);
-        $("#confirmOk").one('click', fClose);
-        $("#confirmCancel").one("click", fClose);
+        $("#confirmOk").off("click.confirmDialog").one("click.confirmDialog", function () {
+            onConfirm();
+            fClose();
+        });
+        $("#confirmCancel").off("click.confirmDialog").one("click.confirmDialog", fClose);
     }
     $("#OrderingAll").click(function () {
         //  console.log("OrderingAll is clicked.");
@@ -479,23 +484,45 @@ function ajaxMethodCall(postData, ajaxUrl, successFunction) {
             console.error("parameters :" + postData);
             console.error("ajaxUrl :" + ajaxUrl);
             console.error("responseText :" + jqXHR.responseText);
+            var message = "İşlem başarısız oldu.";
             if (jqXHR.status === 0) {
+                message = "Sunucuya bağlanılamadı. Ağ bağlantınızı kontrol edin.";
                 console.error('Not connect.\n Verify Network.');
             } else if (jqXHR.status === 404) {
+                message = "Silme servisi bulunamadı (404): " + ajaxUrl;
                 console.error('Requested page not found. [404]');
             } else if (jqXHR.status === 500) {
+                message = "Sunucu hatası (500). Lütfen tekrar deneyin veya konsolu kontrol edin.";
                 console.error('Internal Server Error [500].');
             } else if (exception === 'parsererror') {
+                message = "Sunucu yanıtı okunamadı.";
                 console.error('Requested JSON parse failed.');
             } else if (exception === 'timeout') {
+                message = "İstek zaman aşımına uğradı.";
                 console.error('Time out error.');
             } else if (exception === 'abort') {
                 console.error('Ajax request aborted.');
+                return;
             } else {
                 console.error('Uncaught Error.\n' + jqXHR.responseText);
             }
+            showAdminAjaxError(message);
         }
     });
+}
+
+function showAdminAjaxError(message) {
+    var panel = $("#ErrorMessagePanel");
+    var span = $("#ErrorMessage");
+    if (panel.length && span.length) {
+        span.text(message);
+        panel.show();
+        try {
+            $("html, body").animate({ scrollTop: panel.offset().top - 80 }, 200);
+        } catch (e) { }
+    } else {
+        window.alert(message);
+    }
 }
 function sortInputFirst(input, data) {
     var first = [];

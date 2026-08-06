@@ -1275,4 +1275,10 @@
   <data name="ToggleSidebar" xml:space="preserve">
     <value>Kenar çubuğunu aç/kapat</value>
   </data>
+  <data name="CategoryHasProducts" xml:space="preserve">
+    <value>Ürün mevcut</value>
+  </data>
+  <data name="CategoryCannotDelete" xml:space="preserve">
+    <value>Silinemez</value>
+  </data>
 </root>

@@ -1,4 +1,400 @@
-/*
+# -*- coding: utf-8 -*-
+"""One-shot generator for SeedDummyData.sql with production-like demo values."""
+from pathlib import Path
+
+OUT = Path(__file__).with_name("SeedDummyData.sql")
+
+# Realistic Turkish e-commerce catalog (Lang=1 / TR storefront)
+BRANDS = [
+    ("Nordline", "İskandinav tarzı mobilya ve ev dekorasyonu.", "mobilya,ev,dekorasyon"),
+    ("Atlas Tekstil", "Günlük giyim ve temel tekstil ürünleri.", "tekstil,giyim,pamuk"),
+    ("Sportiva", "Koşu, fitness ve outdoor ekipmanları.", "spor,fitness,outdoor"),
+    ("Lumina Kitchen", "Mutfak gereçleri ve küçük ev aletleri.", "mutfak,ev aleti"),
+    ("Beauté Lab", "Cilt bakımı ve kişisel bakım ürünleri.", "kozmetik,cilt bakımı"),
+    ("TeknoPlus", "Elektronik aksesuar ve bilgisayar çevre birimleri.", "elektronik,aksesuar"),
+    ("Casa Bella", "Ev tekstili, yatak ve banyo ürünleri.", "ev tekstili,yatak"),
+    ("MiniNest", "Bebek ve çocuk ürünleri.", "bebek,çocuk"),
+    ("Meridian Outdoor", "Kamp, yürüyüş ve doğa sporları.", "kamp,outdoor"),
+    ("Deri Atölyesi", "Deri çanta, kemer ve cüzdan koleksiyonu.", "deri,aksesuar"),
+    ("AquaPure", "Su arıtma ve sağlıklı yaşam ürünleri.", "su,sağlık"),
+    ("Kitap Köşesi", "Kitap, kırtasiye ve hobi ürünleri.", "kitap,kırtasiye"),
+    ("UrbanWear", "Sokak stili ve günlük moda.", "moda,streetwear"),
+    ("ChefPro", "Profesyonel mutfak ekipmanları.", "mutfak,profesyonel"),
+    ("GreenLeaf", "Organik gıda ve doğal ürünler.", "organik,doğal"),
+    ("SoundWave", "Kulaklık, hoparlör ve ses sistemleri.", "ses,kulaklık"),
+    ("FitLife", "Spor giyim ve aktif yaşam.", "spor giyim,aktif"),
+    ("HomeGlow", "Aydınlatma ve ev dekorasyonu.", "aydınlatma,dekor"),
+    ("PetFriend", "Evcil hayvan bakımı ve aksesuarları.", "pet,hayvan"),
+    ("Voyage Pack", "Valiz, sırt çantası ve seyahat aksesuarları.", "seyahat,valiz"),
+]
+
+# (name, short_desc, parent_index_or_None_for_root, discount_or_None)
+# First 8 are roots; rest are children referencing root index 0..7
+CATEGORIES = [
+    ("Elektronik", "Telefon, bilgisayar ve elektronik aksesuarlar.", None, None),
+    ("Moda & Giyim", "Kadın, erkek ve unisex giyim.", None, None),
+    ("Ev & Yaşam", "Mobilya, dekorasyon ve ev tekstili.", None, 10.0),
+    ("Spor & Outdoor", "Spor giyim, ekipman ve kamp ürünleri.", None, None),
+    ("Kozmetik & Bakım", "Cilt bakımı, makyaj ve kişisel bakım.", None, None),
+    ("Bebek & Çocuk", "Bebek bakımı ve çocuk ürünleri.", None, None),
+    ("Kitap & Hobi", "Kitaplar, kırtasiye ve hobi malzemeleri.", None, None),
+    ("Mutfak", "Mutfak gereçleri ve küçük ev aletleri.", None, None),
+    # children
+    ("Kulaklık & Ses", "Kablosuz kulaklık ve hoparlörler.", 0, None),
+    ("Telefon Aksesuarları", "Kılıf, şarj ve ekran koruyucular.", 0, None),
+    ("Kadın Giyim", "Elbise, bluz ve dış giyim.", 1, None),
+    ("Erkek Giyim", "Gömlek, pantolon ve mont.", 1, None),
+    ("Ayakkabı", "Spor ve günlük ayakkabılar.", 1, None),
+    ("Oturma Grubu", "Koltuk, berjer ve sehpa.", 2, None),
+    ("Yatak Odası", "Nevresim, yastık ve yorgan.", 2, None),
+    ("Aydınlatma", "Masa lambası ve avize.", 2, None),
+    ("Koşu & Fitness", "Koşu ayakkabısı ve fitness ekipmanı.", 3, None),
+    ("Kamp & Doğa", "Çadır, mat ve outdoor çanta.", 3, None),
+    ("Cilt Bakımı", "Temizleyici, serum ve nemlendirici.", 4, None),
+    ("Saç Bakımı", "Şampuan, saç kremi ve serum.", 4, None),
+    ("Bebek Bakım", "Bebek bezi ve bakım setleri.", 5, None),
+    ("Oyuncak", "Eğitici ve eğlenceli oyuncaklar.", 5, None),
+    ("Roman & Edebiyat", "Çağdaş ve klasik romanlar.", 6, None),
+    ("Kırtasiye", "Defter, kalem ve ofis malzemeleri.", 6, None),
+    ("Pişirme Gereçleri", "Tencere, tava ve mutfak setleri.", 7, None),
+]
+
+# Product templates: (name_pattern with {b}=brand, {n}=variant num, brand_rn 1-based or 0=any,
+# category_index 0-based, price_base, price_spread, colors, sizes, short, html_desc)
+PRODUCTS = [
+    ("{b} Wireless Bluetooth Kulaklık Pro", 16, 8, 1299, 800, "Siyah,Beyaz,Lacivert", None,
+     "Aktif gürültü engelleme özellikli kablosuz kulaklık.",
+     "<p>Uzun pil ömrü, hızlı şarj ve konforlu kullanım için tasarlandı. Günlük commute ve ofis kullanımı için idealdir.</p>"),
+    ("{b} USB-C Hızlı Şarj Adaptörü 65W", 6, 9, 449, 200, "Beyaz,Siyah", None,
+     "GaN teknolojili kompakt şarj adaptörü.",
+     "<p>Telefon, tablet ve dizüstü bilgisayarlarınızı tek adaptörle şarj edin. Aşırı ısınma koruması dahildir.</p>"),
+    ("{b} Silikon Telefon Kılıfı", 6, 9, 149, 80, "Şeffaf,Siyah,Pembe,Mavi", None,
+     "Darbelere dayanıklı ince silikon kılıf.",
+     "<p>Hassas kenarları korur, kablosuz şarj ile uyumludur.</p>"),
+    ("{b} Kadın Pamuklu Basic Tişört", 2, 10, 279, 120, "Beyaz,Siyah,Gri,Bej", "XS,S,M,L,XL",
+     "Nefes alan pamuklu günlük tişört.",
+     "<p>%100 pamuk, yumuşak dokulu. Makinede yıkanabilir.</p>"),
+    ("{b} Erkek Slim Fit Chino Pantolon", 13, 11, 599, 250, "Bej,Lacivert,Haki,Siyah", "28,30,32,34,36",
+     "Ofis ve günlük kullanım için slim fit chino.",
+     "<p>Esnek kumaş, ütü gerektirmeyen form. Mevsimlik koleksiyon.</p>"),
+    ("{b} Unisex Koşu Ayakkabısı AirFlex", 17, 12, 1899, 600, "Siyah,Gri,Mavi,Turuncu", "36,37,38,39,40,41,42,43,44",
+     "Hafif tabanlı koşu ayakkabısı.",
+     "<p>Nefes alan mesh üst, darbe emici taban. Yol koşusu için optimize edildi.</p>"),
+    ("{b} Kadın Trençkot", 13, 10, 1499, 500, "Bej,Siyah,Haki", "S,M,L,XL",
+     "Su itici kumaşlı klasik trençkot.",
+     "<p>Mevsim geçişleri için ideal. Astarlı, bel kemerli kesim.</p>"),
+    ("{b} Erkek Oxford Gömlek", 2, 11, 449, 150, "Beyaz,Açık Mavi,Pembe", "S,M,L,XL,XXL",
+     "Klasik oxford gömlek.",
+     "<p>İş ve günlük kombinler için. Kolay ütülenir pamuk karışımı.</p>"),
+    ("{b} Köşe Koltuk Takımı 3+1", 1, 13, 24999, 8000, "Antrasit,Krem,Yeşil", None,
+     "Geniş L köşe koltuk takımı.",
+     "<p>Yüksek yoğunluklu sünger, çıkarılabilir kılıflar. Oturma odanıza ferah bir görünüm katar.</p>"),
+    ("{b} Meşe Sehpa 90cm", 1, 13, 3299, 1000, "Doğal Meşe,Ceviz", None,
+     "Masif görünümlü orta sehpa.",
+     "<p>Dayanıklı yüzey, kolay temizlenir. Minimal İskandinav çizgiler.</p>"),
+    ("{b} Pamuk Saten Nevresim Takımı", 7, 14, 899, 400, "Beyaz,Gri,Pudra", "Tek Kişilik,Çift Kişilik,King",
+     "200 tc pamuk saten nevresim.",
+     "<p>Yumuşak doku, renk solmaz. Yastık kılıfı dahildir.</p>"),
+    ("{b} LED Masa Lambası Dimmerlı", 18, 15, 649, 250, "Siyah,Beyaz,Pirinç", None,
+     "Dokunmatik dimmerlı LED masa lambası.",
+     "<p>Üç renk sıcaklığı, göz yormayan ışık. USB şarj portu.</p>"),
+    ("{b} Yoga Matı 6mm", 17, 16, 349, 150, "Mor,Mavi,Pembe,Siyah", None,
+     "Kaymaz yüzeyli yoga ve pilates matı.",
+     "<p>Taşıma askısı dahil. Lateks içermez, kolay silinir.</p>"),
+    ("{b} Dambıl Seti 2x5kg", 3, 16, 429, 200, "Siyah", None,
+     "Neopren kaplı dambıl çifti.",
+     "<p>Ev antrenmanları için kaymaz tutuş. Zemin koruyucu uçlar.</p>"),
+    ("{b} 2 Kişilik Kamp Çadırı", 9, 17, 2199, 700, "Yeşil,Turuncu", None,
+     "Hızlı kurulumlu su geçirmez çadır.",
+     "<p>2000 mm su kolonlu kumaş, sivrisinek tülü. Taşıma çantası dahil.</p>"),
+    ("{b} Trekking Sırt Çantası 40L", 9, 17, 1599, 500, "Antrasit,Haki", None,
+     "Bel ve göğüs kemerli trekking çantası.",
+     "<p>Yağmurluk kılıfı, hidrasyon uyumlu. Sırt paneli nefes alır.</p>"),
+    ("{b} Vitamin C Aydınlatıcı Serum 30ml", 5, 18, 389, 150, None, None,
+     "Leke karşıtı C vitamini serumu.",
+     "<p>Sabah rutini için. SPF ile birlikte kullanın. Dermatolojik olarak test edilmiştir.</p>"),
+    ("{b} Nemlendirici Yüz Kremi 50ml", 5, 18, 299, 120, None, None,
+     "24 saat nem desteği sağlayan yüz kremi.",
+     "<p>Yağlı ve karma ciltler için hafif formül. Paraben içermez.</p>"),
+    ("{b} Onarıcı Şampuan 400ml", 5, 19, 189, 80, None, None,
+     "Yıpranmış saçlar için onarıcı şampuan.",
+     "<p>Keratin ve argan yağı kompleksi. Günlük kullanıma uygundur.</p>"),
+    ("{b} Bebek Bakım Seti 5'li", 8, 20, 449, 150, None, None,
+     "Hassas ciltler için bebek bakım seti.",
+     "<p>Şampuan, losyon, yağ, krem ve ıslak mendil. Hipoalerjenik.</p>"),
+    ("{b} Eğitici Ahşap Blok Seti", 8, 21, 329, 100, "Renkli", None,
+     "48 parçalı ahşap blok seti.",
+     "<p>Su bazlı boya, keskin kenar yok. 3+ yaş için uygundur.</p>"),
+    ("{b} Çağdaş Roman - Seçki #{n}", 12, 22, 149, 80, None, None,
+     "Özenle seçilmiş çağdaş edebiyat.",
+     "<p>Sert kapak, yerli baskı. Okur yorumlarıyla öne çıkan başlık.</p>"),
+    ("{b} Sert Kapaklı Defter A5", 12, 23, 89, 40, "Kraft,Siyah,Lacivert", None,
+     "Noktalı sayfa A5 defter.",
+     "<p>120 sayfa, 90 gsm. Lastik bant ve yer imi şeridi.</p>"),
+    ("{b} Granit Tava 28cm", 14, 24, 549, 200, "Siyah", None,
+     "Yapışmaz granit kaplama tava.",
+     "<p>Indüksiyon uyumlu. Fırına dayanıklı sap. PFOA içermez.</p>"),
+    ("{b} Çelik Tencere Seti 6 Parça", 4, 24, 2499, 800, "Çelik", None,
+     "Paslanmaz çelik tencere seti.",
+     "<p>Kapaklı 3 tencere. Bulaşık makinesinde yıkanabilir.</p>"),
+    ("{b} Cam Su Şişesi 750ml", 11, 7, 249, 80, "Şeffaf,Füme,Mavi", None,
+     "BPA içermeyen cam su şişesi.",
+     "<p>Silikon kılıflı, sızdırmaz kapak. Ofis ve spor için.</p>"),
+    ("{b} Organik Zeytinyağı 1L", 15, 7, 329, 100, None, None,
+     "Soğuk sıkım organik zeytinyağı.",
+     "<p>Tek hasat, koyu cam şişe. Tadım notları etikette.</p>"),
+    ("{b} Kabin Boyu Valiz 55cm", 20, 1, 1899, 600, "Siyah,Lacivert,Bordo", None,
+     "Hafif kabin boyu sert valiz.",
+     "<p>360° tekerlek, TSA kilit. İç organizer bölmeler.</p>"),
+    ("{b} Deri Omuz Çantası", 10, 1, 1299, 400, "Taba,Siyah,Bordo", None,
+     "El yapımı görünümlü deri omuz çantası.",
+     "<p>Ayarlanabilir askı, fermuarlı iç cep. Günlük kullanım.</p>"),
+    ("{b} Evcil Hayvan Mama Kabı Seti", 19, 2, 199, 80, "Gri,Pembe,Mavi", None,
+     "Çelik mama ve su kabı seti.",
+     "<p>Kaymaz taban, bulaşık makinesi uyumlu.</p>"),
+    ("{b} Akıllı LED Ampul 9W", 18, 15, 179, 60, "Beyaz", None,
+     "Uygulama kontrollü renk değiştiren ampul.",
+     "<p>Sesli asistan uyumlu. Zamanlayıcı ve senaryo desteği.</p>"),
+    ("{b} Termos Mug 350ml", 4, 7, 279, 100, "Siyah,Beyaz,Kırmızı", None,
+     "Paslanmaz çelik vakumlu termos mug.",
+     "<p>6 saat sıcak / 12 saat soğuk tutma. Araç tutucuya uygun.</p>"),
+    ("{b} Fitness Taytı Yüksek Bel", 17, 16, 449, 150, "Siyah,Lacivert,Bordo", "XS,S,M,L",
+     "Toparlayıcı yüksek bel spor taytı.",
+     "<p>Ter emici kumaş, cep detayı. Antrenman ve günlük kullanım.</p>"),
+    ("{b} Erkek Polar Mont", 3, 11, 899, 300, "Antrasit,Lacivert,Haki", "S,M,L,XL,XXL",
+     "Hafif polar fermuarlı mont.",
+     "<p>Soğuk hava katmanı olarak veya tek başına giyilebilir.</p>"),
+    ("{b} Bambu Kesme Tahtası Seti", 14, 24, 349, 120, "Doğal", None,
+     "3 boy bambu kesme tahtası.",
+     "<p>Antibakteriyel doğal yüzey. Asma delikli.</p>"),
+    ("{b} Güneş Kremi SPF50 50ml", 5, 18, 259, 80, None, None,
+     "Yüz için hafif dokulu güneş koruyucu.",
+     "<p>Beyaz iz bırakmaz. Makyaj altı kullanıma uygun.</p>"),
+    ("{b} Bebek Body 3'lü Paket", 8, 20, 249, 80, "Beyaz,Gri,Sarı", "0-3 Ay,3-6 Ay,6-9 Ay,9-12 Ay",
+     "Organik pamuk bebek body seti.",
+     "<p>Çıtçıtlı, etiket içe basılmış. Hassas ciltler için.</p>"),
+    ("{b} Bluetooth Hoparlör Mini", 16, 8, 799, 300, "Siyah,Mavi,Kırmızı", None,
+     "Taşınabilir suya dayanıklı hoparlör.",
+     "<p>12 saat pil, IPX7. Stereo eşleştirme destekler.</p>"),
+    ("{b} Laptop Standı Alüminyum", 6, 0, 549, 200, "Gümüş,Uzay Grisi", None,
+     "Ayarlanabilir alüminyum laptop standı.",
+     "<p>Ergonomik açı, kablo geçişi. 10–16 inç uyumlu.</p>"),
+    ("{b} Yastık 2'li Memory Foam", 7, 14, 699, 250, "Beyaz", "Standart",
+     "Visco bellek köpük yastık çifti.",
+     "<p>Boyun desteği, çıkarılabilir kılıf. Anti-alerjik.</p>"),
+]
+
+TAG_CATEGORIES = [
+    "Kullanım Amacı",
+    "Malzeme",
+    "Sezon",
+    "Hedef Kitle",
+    "Özellik",
+    "Koleksiyon",
+]
+
+TAGS = [
+    "Günlük kullanım", "Ofis", "Spor", "Seyahat", "Hediye fikri",
+    "Pamuk", "Deri", "Polyester", "Organik", "Metal",
+    "Yaz", "Kış", "İlkbahar", "Sonbahar", "Mevsimlik",
+    "Kadın", "Erkek", "Unisex", "Çocuk", "Bebek",
+    "Su geçirmez", "Nefes alan", "Hızlı kargo", "İndirimde", "Yeni sezon",
+    "Minimal", "Klasik", "Modern", "Vintage", "Scandinavian",
+    "Kampanya", "Çok satan", "Editörün seçimi", "Sınırlı stok", "Yerli üretim",
+    "Eco-friendly", "BPA free", "Makinede yıkanır", "İndüksiyon uyumlu", "TSA kilit",
+]
+
+FIRST_NAMES = [
+    "Ayşe", "Mehmet", "Elif", "Can", "Zeynep", "Emre", "Defne", "Burak",
+    "Selin", "Onur", "İrem", "Kerem", "Deniz", "Cem", "Melis", "Tolga",
+    "Ece", "Baran", "Sude", "Kaan", "Naz", "Arda", "Lara", "Yiğit",
+    "Pınar", "Oğuz", "Gül", "Hakan", "Berna", "Serkan", "Aslı", "Mert",
+    "Ceren", "Umut", "Dilan", "Furkan", "İpek", "Volkan", "Buse", "Alper",
+]
+
+LAST_NAMES = [
+    "Yılmaz", "Kaya", "Demir", "Şahin", "Çelik", "Yıldız", "Yıldırım", "Öztürk",
+    "Aydın", "Özdemir", "Arslan", "Doğan", "Kılıç", "Aslan", "Çetin", "Kara",
+    "Koç", "Kurt", "Özkan", "Şimşek", "Erdoğan", "Acar", "Polat", "Korkmaz",
+    "Çakır", "Güneş", "Bulut", "Aksoy", "Bozkurt", "Duman", "Ateş", "Taş",
+    "Akın", "Soylu", "Başaran", "Ergin", "Uçar", "Sezer", "Bilgin", "Karaca",
+]
+
+STORY_CATEGORIES = [
+    ("Stil Rehberi", "Moda ve stil ipuçları.", "T1"),
+    ("Ev Dekorasyonu", "Yaşam alanları için ilham.", "T2"),
+    ("Sağlıklı Yaşam", "Beslenme ve wellness yazıları.", "T3"),
+    ("Teknoloji", "Gadget incelemeleri ve ipuçları.", "T4"),
+    ("Seyahat", "Rota önerileri ve paketleme rehberleri.", "T5"),
+    ("Ebeveynlik", "Bebek ve çocuk bakımı.", "T6"),
+]
+
+STORIES = [
+    ("2024 Sonbahar Kombin Önerileri", "Katmanlı sonbahar stilleri.", "Selin Arslan",
+     "<p>Mevsim geçişinde trençkot, polar ve chino pantolonları nasıl bir araya getirirsiniz? Editörlerimizin favori kombinleri.</p>"),
+    ("Küçük Salonlar İçin Mobilya İpuçları", "Dar alanlarda ferahlık.", "Can Yılmaz",
+     "<p>Köşe koltuk yerine doğru sehpa ve aydınlatma ile salonu büyütün. Nordline koleksiyonundan örnekler.</p>"),
+    ("Koşu Ayakkabısı Nasıl Seçilir?", "Pronasyon, taban ve fit.", "Emre Demir",
+     "<p>Haftalık kilometrenize ve ayak tipinize göre doğru koşu ayakkabısını seçmenin kısa rehberi.</p>"),
+    ("Cilt Bakım Rutini: 5 Adım", "Temizlikten nemlendirmeye.", "Elif Kaya",
+     "<p>Sabah ve akşam için sade ama etkili bir rutin. Serum ve güneş kreminin sırası neden önemli?</p>"),
+    ("Kamp Tatiline Çıkmadan Önce", "Kontrol listesi.", "Burak Şahin",
+     "<p>Çadır, mat, sırt çantası ve mutfak seti: ilk kampınız için unutmamanız gerekenler.</p>"),
+    ("Mutfakta Granit Tava Kullanımı", "Bakım ve pişirme ipuçları.", "Ayşe Çelik",
+     "<p>Yapışmaz yüzeyin ömrünü uzatmak için metal spatula kullanmayın. Doğru ısı ayarları.</p>"),
+    ("Bebek Odası Hazırlık Listesi", "İlk 3 ay için temel ürünler.", "Zeynep Öztürk",
+     "<p>Body setlerinden bakım ürünlerine, gerçekçi bir alışveriş listesi.</p>"),
+    ("Bluetooth Kulaklık Alırken", "ANC, pil ve uyum.", "Kerem Aydın",
+     "<p>Aktif gürültü engelleme gerçekten işe yarıyor mu? Ofis ve yolculuk senaryoları.</p>"),
+    ("Organik Ürün Etiketlerini Okumak", "Sertifikalar ne anlama geliyor?", "Defne Kara",
+     "<p>Organik, soğuk sıkım ve katkı maddesi ifadelerini doğru yorumlayın.</p>"),
+    ("Ev Ofisi Aydınlatması", "Göz yorgunluğunu azaltın.", "Onur Yıldız",
+     "<p>Masa lambası rengi, parlaklık ve ekran konumu hakkında pratik öneriler.</p>"),
+    ("Valiz Seçiminde Dikkat Edilecekler", "Kabin kuralları ve tekerlek.", "Melis Doğan",
+     "<p>Havayolu kabin ölçüleri, TSA kilit ve ağırlık dengesi.</p>"),
+    ("Spor Taytı Alırken Fit Kontrolü", "Yüksek bel ve kumaş.", "İrem Kılıç",
+     "<p>Antrenmanda kaymayan, ter emici kumaşlı tayt nasıl anlaşılır?</p>"),
+    ("Kitaplarla Küçük Bir Köşe", "Okuma alanı kurmak.", "Cem Polat",
+     "<p>Raf, aydınlatma ve rahat bir berjer ile evde mini kütüphane.</p>"),
+    ("Kışlık Mont Katmanlama", "Polar + dış katman.", "Hakan Kurt",
+     "<p>Soğuk havalarda nefes alan katmanlarla sıcak kalmanın yolu.</p>"),
+    ("Pet Dostu Ev Düzeni", "Mama alanı ve güvenlik.", "Buse Aksoy",
+     "<p>Kaymaz mama kapları ve kablo düzeni ile evcil dostunuz için güvenli alan.</p>"),
+]
+
+MENUS = [
+    ("Ana Sayfa", "<p>EImece vitrine hoş geldiniz.</p>", "anasayfa", None, True),
+    ("Kurumsal", "<p>Hakkımızda ve şirket bilgileri.</p>", "kurumsal", None, True),
+    ("Hakkımızda", "<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>", "hakkimizda", None, False),
+    ("İletişim", "<p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p>", "iletisim", None, False),
+    ("Kargo & Teslimat", "<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>", "kargo-teslimat", None, True),
+    ("Sıkça Sorulan Sorular", "<p>Sipariş, ödeme ve iade hakkında SSS.</p>", "sss", None, True),
+    ("Kampanyalar", "<p>Güncel indirimler ve kuponlar.</p>", "kampanyalar", None, True),
+    ("Blog", "<p>Stil, yaşam ve ürün rehberleri.</p>", "blog", None, True),
+    ("Gizlilik Politikası", "<p>Kişisel verilerin korunması.</p>", "gizlilik", None, False),
+    ("Mesafeli Satış Sözleşmesi", "<p>Mesafeli satış ve tüketici hakları.</p>", "mesafeli-satis", None, False),
+    ("İade & Değişim", "<p>14 gün içinde iade ve değişim koşulları.</p>", "iade-degisim", None, False),
+    ("Mağazalarımız", None, "magazalar", "https://maps.example.com/eimece", True),
+]
+
+SLIDES = [
+    ("Sonbahar Koleksiyonu", "Yeni sezon trençkot ve botlarda %20'ye varan indirim.", "/c/Moda-Giyim"),
+    ("Mutfakta Yenilikler", "ChefPro tencere setlerinde ücretsiz kargo.", "/c/Mutfak"),
+    ("Koşu Sezonu Başladı", "AirFlex koşu ayakkabılarında peşin fiyatına taksit.", "/c/Spor-Outdoor"),
+    ("Evini Yenile", "Köşe koltuk ve sehpa takımlarında kaçırılmayacak fırsatlar.", "/c/Ev-Yasam"),
+    ("Cilt Bakım Haftası", "Beauté Lab serum ve kremlerde 2 al 1 öde.", "/c/Kozmetik-Bakim"),
+    ("Seyahat Hazırlığı", "Kabin boyu valizlerde ekstra %10.", "/c/Moda-Giyim"),
+]
+
+FAQS = [
+    ("Siparişimi nasıl takip ederim?", "Hesabım > Siparişlerim ekranından kargo takip numaranızı görebilirsiniz."),
+    ("Ücretsiz kargo limiti nedir?", "500 TL ve üzeri siparişlerde kargo ücretsizdir."),
+    ("İade süresi kaç gündür?", "Teslimattan itibaren 14 gün içinde iade talebi oluşturabilirsiniz."),
+    ("Kapıda ödeme var mı?", "Seçili bölgelerde kapıda kart ile ödeme seçeneği sunulmaktadır."),
+    ("Fatura nasıl alınır?", "Sipariş sonrası e-fatura kayıtlı e-posta adresinize gönderilir."),
+    ("Ürün beden tablosu nerede?", "Ürün detay sayfasında Beden Tablosu sekmesini inceleyebilirsiniz."),
+    ("Kupon kodu nasıl kullanılır?", "Sepet sayfasında kupon alanına kodunuzu girip Uygula demeniz yeterlidir."),
+    ("Stokta yok yazıyor, ne zaman gelir?", "Ürün sayfasından stok bildirimi bırakabilirsiniz."),
+    ("Hediye paketi yapıyor musunuz?", "Sepette hediye paketi seçeneğini işaretleyebilirsiniz."),
+    ("Same-day teslimat var mı?", "İstanbul Anadolu yakasında seçili SKU'larda aynı gün teslimat vardır."),
+    ("Ürün orijinal mi?", "Tüm ürünler yetkili distribütör ve marka garantisiyle satılır."),
+    ("Değişim kargo ücreti kimde?", "Üretim hatası ve yanlış ürün gönderimlerinde kargo bize aittir."),
+    ("Taksit seçenekleri neler?", "Anlaşmalı kartlarda 3–6–9 taksit seçenekleri sunulur."),
+    ("Üyeliksiz alışveriş yapabilir miyim?", "Evet, misafir ödeme ile sipariş verebilirsiniz."),
+    ("Şifremi unuttum ne yapmalıyım?", "Giriş ekranından Şifremi Unuttum ile sıfırlama bağlantısı alabilirsiniz."),
+    ("Mağazanız fiziksel olarak var mı?", "Showroom adresimiz İletişim sayfasında yer almaktadır."),
+    ("Toplu / kurumsal sipariş?", "kurumsal@eimece.test adresinden teklif alabilirsiniz."),
+    ("Ürün videoları neden açılmıyor?", "Tarayıcı eklentileri engelliyor olabilir; farklı tarayıcı deneyin."),
+    ("Hangi kargo firmasıyla çalışıyorsunuz?", "Yurtiçi Kargo ile anlaşmalıyız."),
+    ("Siparişimi iptal edebilir miyim?", "Kargoya verilmeden önce Hesabım üzerinden iptal edebilirsiniz."),
+]
+
+COUPONS = [
+    ("Hoş Geldin İndirimi", "EIMC-HOSGELDIN", 15, 0),
+    ("Yaz Kampanyası", "EIMC-YAZ25", 25, 0),
+    ("Ücretsiz Kargo", "EIMC-KARGO", 0, 50),
+    ("Sezon Sonu", "EIMC-SEZON20", 20, 0),
+    ("VIP Müşteri", "EIMC-VIP15", 15, 0),
+    ("İlk Alışveriş", "EIMC-ILK10", 10, 0),
+    ("Flash İndirim", "EIMC-FLASH30", 30, 0),
+    ("Bahar Fırsatı", "EIMC-BAHAR", 12, 0),
+    ("Öğrenci İndirimi", "EIMC-OGRENCI", 10, 0),
+    ("Sepette 100 TL", "EIMC-100TL", 0, 100),
+    ("Anne Günü", "EIMC-ANNE", 18, 0),
+    ("Yılbaşı Özel", "EIMC-YILBASI", 22, 0),
+]
+
+LISTS = [
+    ("Ödeme Yöntemleri", 0, 1),
+    ("Kargo Firmaları", 1, 1),
+    ("İade Nedenleri", 0, 1),
+    ("Beden Rehberi Notları", 1, 0),
+    ("Mağaza Hizmetleri", 1, 0),
+    ("Bildirim Kanalları", 0, 1),
+    ("Ürün Durum Etiketleri", 0, 1),
+    ("Müşteri Segmentleri", 0, 1),
+]
+
+LIST_ITEMS = [
+    "Kredi Kartı", "Havale / EFT", "Kapıda Ödeme",
+    "Yurtiçi Kargo", "Aras Kargo", "MNG Kargo",
+    "Beden uymadı", "Fikir değişikliği", "Hasarlı ürün",
+    "Kalça ölçüsü kritik", "Boyuna göre etek boyu",
+    "Hediye paketi", "Express kargo", "Montaj hizmeti",
+    "E-posta", "SMS", "Push bildirim",
+    "Stokta", "Ön sipariş", "Tükendi",
+    "Yeni üye", "Tekrarlayan", "Kurumsal",
+]
+
+TEMPLATES = [
+    "Giyim Şablonu",
+    "Elektronik Şablonu",
+    "Ev & Mobilya Şablonu",
+    "Kozmetik Şablonu",
+    "Spor Ekipman Şablonu",
+    "Genel Ürün Şablonu",
+]
+
+REVIEW_SUBJECTS = [
+    "Beklentimi karşıladı", "Çok memnun kaldım", "Fiyat/performans iyi",
+    "Kargo hızlıydı", "Ürün kaliteli", "Beden tam oldu",
+    "Tekrar alırım", "Hediye olarak aldım", "Fotoğraftaki gibi",
+    "Kullanışlı ürün", "Tavsiye ederim", "Biraz küçük geldi",
+]
+
+REVIEW_BODIES = [
+    "Ürün elime sorunsuz ulaştı, paketleme özenliydi. Bir süredir kullanıyorum, memnunum.",
+    "Açıklamadaki özelliklerle uyumlu. Günlük kullanım için gayet yeterli.",
+    "Kumaş kalitesi güzel, rengi ekranda gördüğüm gibi çıktı.",
+    "Kargo 2 günde geldi. Montaj / kullanım kolay, öneririm.",
+    "Fiyatına göre beklentimin üzerinde. Tekrar sipariş vereceğim.",
+    "İade sürecini denemedim ama ürün beklentimi karşıladı.",
+    "Eşim için aldım, çok beğendi. Hediye paketiniz de güzeldi.",
+    "Birkaç yıkamadan sonra formunu korudu. Memnun kaldım.",
+    "Ses kalitesi net, pil ömrü iddia edildiği gibi.",
+    "Küçük eksikler olsa da genel olarak iyi bir alışveriş oldu.",
+]
+
+STREETS = [
+    "Bağdat Caddesi", "Atatürk Bulvarı", "İstiklal Caddesi", "Cumhuriyet Mahallesi",
+    "Göztepe Sokak", "Çankaya Caddesi", "Alsancak Mahallesi", "Nilüfer Caddesi",
+    "Lara Bulvarı", "Tepebaşı Sokak",
+]
+
+
+def esc(s: str) -> str:
+    return s.replace("'", "''")
+
+
+def sql_n(s: str) -> str:
+    return "N'" + esc(s) + "'"
+
+
+def main() -> None:
+    lines: list[str] = []
+    a = lines.append
+
+    a("""/*
 ================================================================================
   EImece — Seed Dummy Data for Manual / Demo Testing
 ================================================================================
@@ -7,7 +403,7 @@
 
   Values are production-like (believable product/brand/category names, prices,
   Turkish customer names, etc.). Cleanup uses technical markers — not Name
-  prefixes — so the UI is not littered with "SEED Product 1" placeholders:
+  prefixes — so the UI is not littered with \"SEED Product 1\" placeholders:
     - AddUserId = N'SEED'          (catalog / CMS content)
     - FileUrl LIKE N'/media/seed/%'
     - Email / UserName @eimece.test / seed*
@@ -28,8 +424,8 @@
   4. Execute against your EImece database.
 
   PowerShell example:
-    .\RunSeedDummyData.ps1 -ConnectionString "Server=.;Database=EImece;Trusted_Connection=True;"
-    .\RunSeedDummyData.ps1 -ConnectionString "..." -Scale 2   -- larger catalog/orders
+    .\\RunSeedDummyData.ps1 -ConnectionString \"Server=.;Database=EImece;Trusted_Connection=True;\"
+    .\\RunSeedDummyData.ps1 -ConnectionString \"...\" -Scale 2   -- larger catalog/orders
 
   TEST LOGINS (local seed credential — see docs/BUILD_AND_RUN.md)
   ---------------------------------------------------------------
@@ -144,113 +540,22 @@ PRINT CONVERT(VARCHAR(30), GETDATE(), 121)
     + N', Products=' + CAST(@SeedProducts AS VARCHAR(10))
     + N', Menus=' + CAST(@SeedMenus AS VARCHAR(10))
     + N', Orders=' + CAST(@SeedOrders AS VARCHAR(10));
+""")
 
-
+    # Cleanup block
+    a("""
 /* ========================= CLEANUP ========================= */
 IF @CleanupFirst = 1
 BEGIN
     PRINT N'Running cleanup of previous seed data...';
-
-
-    IF OBJECT_ID(N'dbo.BrowserNotificationFeedBacks', N'U') IS NOT NULL
-        DELETE FROM dbo.BrowserNotificationFeedBacks WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.BrowserNotifications', N'U') IS NOT NULL
-        DELETE FROM dbo.BrowserNotifications WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.BrowserSubscribers', N'U') IS NOT NULL
-        DELETE FROM dbo.BrowserSubscribers WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.BrowserSubscriptions', N'U') IS NOT NULL
-        DELETE FROM dbo.BrowserSubscriptions WHERE Position >= 900000 AND Position < 910000 OR Subject = N'mailto:admin@eimece.test' OR Name LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.OrderProducts', N'U') IS NOT NULL
-        DELETE op FROM dbo.OrderProducts op INNER JOIN dbo.Orders o ON o.Id = op.OrderId WHERE o.OrderNumber LIKE N'EIMC-%' OR o.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Orders', N'U') IS NOT NULL
-        DELETE FROM dbo.Orders WHERE OrderNumber LIKE N'EIMC-%' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.ShoppingCarts', N'U') IS NOT NULL
-        DELETE FROM dbo.ShoppingCarts WHERE UserId LIKE N'seed%' OR Name LIKE N'SEED %' OR UserId IN (N'seed-admin-000000000001', N'seed-editor-00000000001', N'seed-customer-0000000001');
-
-    IF OBJECT_ID(N'dbo.ProductComments', N'U') IS NOT NULL
-        DELETE FROM dbo.ProductComments WHERE Email LIKE N'%@eimece.test' OR UserId LIKE N'seed%' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.ProductSpecifications', N'U') IS NOT NULL
-        DELETE ps FROM dbo.ProductSpecifications ps INNER JOIN dbo.Products p ON p.Id = ps.ProductId WHERE p.AddUserId = N'SEED' OR p.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.ProductTags', N'U') IS NOT NULL
-        DELETE pt FROM dbo.ProductTags pt INNER JOIN dbo.Products p ON p.Id = pt.ProductId WHERE p.AddUserId = N'SEED' OR p.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.ProductFiles', N'U') IS NOT NULL
-        DELETE pf FROM dbo.ProductFiles pf INNER JOIN dbo.Products p ON p.Id = pf.ProductId WHERE p.AddUserId = N'SEED' OR p.Name LIKE N'SEED %' OR pf.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Products', N'U') IS NOT NULL
-        DELETE FROM dbo.Products WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.ProductCategories', N'U') IS NOT NULL
-        DELETE FROM dbo.ProductCategories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Brands', N'U') IS NOT NULL
-        DELETE FROM dbo.Brands WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.StoryTags', N'U') IS NOT NULL
-        DELETE st FROM dbo.StoryTags st INNER JOIN dbo.Stories s ON s.Id = st.StoryId WHERE s.AddUserId = N'SEED' OR s.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.StoryFiles', N'U') IS NOT NULL
-        DELETE sf FROM dbo.StoryFiles sf INNER JOIN dbo.Stories s ON s.Id = sf.StoryId WHERE s.AddUserId = N'SEED' OR s.Name LIKE N'SEED %' OR sf.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Stories', N'U') IS NOT NULL
-        DELETE FROM dbo.Stories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.StoryCategories', N'U') IS NOT NULL
-        DELETE FROM dbo.StoryCategories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.MenuFiles', N'U') IS NOT NULL
-        DELETE mf FROM dbo.MenuFiles mf INNER JOIN dbo.Menus m ON m.Id = mf.MenuId WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Menus', N'U') IS NOT NULL
-        DELETE FROM dbo.Menus WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.MainPageImages', N'U') IS NOT NULL
-        DELETE FROM dbo.MainPageImages WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.FileStorageTags', N'U') IS NOT NULL
-        DELETE fst FROM dbo.FileStorageTags fst INNER JOIN dbo.FileStorages fs ON fs.Id = fst.FileStorageId WHERE fs.FileUrl LIKE N'/media/seed/%' OR fs.Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Tags', N'U') IS NOT NULL
-        DELETE FROM dbo.Tags WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.TagCategories', N'U') IS NOT NULL
-        DELETE FROM dbo.TagCategories WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.ListItems', N'U') IS NOT NULL
-        DELETE FROM dbo.ListItems WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Lists', N'U') IS NOT NULL
-        DELETE FROM dbo.Lists WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.Faqs', N'U') IS NOT NULL
-        DELETE FROM dbo.Faqs WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Subscribers', N'U') IS NOT NULL
-        DELETE FROM dbo.Subscribers WHERE Email LIKE N'%@eimece.test' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Coupons', N'U') IS NOT NULL
-        DELETE FROM dbo.Coupons WHERE Code LIKE N'EIMC-%' OR Name LIKE N'SEED %' OR Code LIKE N'SEED%';
-    IF OBJECT_ID(N'dbo.Customers', N'U') IS NOT NULL
-        DELETE FROM dbo.Customers WHERE Email LIKE N'%@eimece.test' OR UserId LIKE N'seed%' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Addresses', N'U') IS NOT NULL
-        DELETE FROM dbo.Addresses WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.MailTemplates', N'U') IS NOT NULL
-        DELETE FROM dbo.MailTemplates WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.Settings', N'U') IS NOT NULL
-        DELETE FROM dbo.Settings WHERE Name LIKE N'Demo: %' OR Name LIKE N'SEED %' OR SettingKey LIKE N'SEED_%' OR SettingKey = N'__EIMECE_SEED__';
-    IF OBJECT_ID(N'dbo.Templates', N'U') IS NOT NULL
-        DELETE FROM dbo.Templates WHERE TemplateXml LIKE N'%<!--eimece-seed-->%' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.FileStorages', N'U') IS NOT NULL
-        DELETE FROM dbo.FileStorages WHERE FileUrl LIKE N'/media/seed/%' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.ShortUrls', N'U') IS NOT NULL
-        DELETE FROM dbo.ShortUrls WHERE Position >= 900000 AND Position < 910000 OR Url LIKE N'https://eimece.test/%' OR Name LIKE N'SEED %';
-    IF OBJECT_ID(N'dbo.AppLogs', N'U') IS NOT NULL
-        DELETE FROM dbo.AppLogs WHERE UserName LIKE N'seed%' OR EventMessage LIKE N'SEED %';
-
-    IF OBJECT_ID(N'dbo.AspNetUserRoles', N'U') IS NOT NULL
-        DELETE ur FROM dbo.AspNetUserRoles ur INNER JOIN dbo.AspNetUsers u ON u.Id = ur.UserId
-        WHERE u.UserName LIKE N'seed%' OR u.Email LIKE N'%@eimece.test';
-    IF OBJECT_ID(N'dbo.AspNetUserClaims', N'U') IS NOT NULL
-        DELETE uc FROM dbo.AspNetUserClaims uc INNER JOIN dbo.AspNetUsers u ON u.Id = uc.UserId
-        WHERE u.UserName LIKE N'seed%' OR u.Email LIKE N'%@eimece.test';
-    IF OBJECT_ID(N'dbo.AspNetUserLogins', N'U') IS NOT NULL
-        DELETE ul FROM dbo.AspNetUserLogins ul INNER JOIN dbo.AspNetUsers u ON u.Id = ul.UserId
-        WHERE u.UserName LIKE N'seed%' OR u.Email LIKE N'%@eimece.test';
-    IF OBJECT_ID(N'dbo.AspNetUsers', N'U') IS NOT NULL
-        DELETE FROM dbo.AspNetUsers WHERE UserName LIKE N'seed%' OR Email LIKE N'%@eimece.test';
-
-    PRINT N'Cleanup done.';
+""")
+    a(cleanup_sql_body())
+    a("""    PRINT N'Cleanup done.';
 END;
+""")
 
-
+    # Lookups + numbers
+    a("""
 /* ========================= NUMBERS TALLY ========================= */
 IF OBJECT_ID(N'tempdb..#Nums') IS NOT NULL DROP TABLE #Nums;
 CREATE TABLE #Nums (n INT NOT NULL PRIMARY KEY);
@@ -286,116 +591,24 @@ INSERT INTO @ProductStates VALUES
 /* ---- Realistic name / catalog lookups ---- */
 IF OBJECT_ID(N'tempdb..#FirstNames') IS NOT NULL DROP TABLE #FirstNames;
 CREATE TABLE #FirstNames (i INT NOT NULL PRIMARY KEY, Name NVARCHAR(50) NOT NULL);
-
-INSERT INTO #FirstNames(i, Name) VALUES (0,N'Ayşe');
-INSERT INTO #FirstNames(i, Name) VALUES (1,N'Mehmet');
-INSERT INTO #FirstNames(i, Name) VALUES (2,N'Elif');
-INSERT INTO #FirstNames(i, Name) VALUES (3,N'Can');
-INSERT INTO #FirstNames(i, Name) VALUES (4,N'Zeynep');
-INSERT INTO #FirstNames(i, Name) VALUES (5,N'Emre');
-INSERT INTO #FirstNames(i, Name) VALUES (6,N'Defne');
-INSERT INTO #FirstNames(i, Name) VALUES (7,N'Burak');
-INSERT INTO #FirstNames(i, Name) VALUES (8,N'Selin');
-INSERT INTO #FirstNames(i, Name) VALUES (9,N'Onur');
-INSERT INTO #FirstNames(i, Name) VALUES (10,N'İrem');
-INSERT INTO #FirstNames(i, Name) VALUES (11,N'Kerem');
-INSERT INTO #FirstNames(i, Name) VALUES (12,N'Deniz');
-INSERT INTO #FirstNames(i, Name) VALUES (13,N'Cem');
-INSERT INTO #FirstNames(i, Name) VALUES (14,N'Melis');
-INSERT INTO #FirstNames(i, Name) VALUES (15,N'Tolga');
-INSERT INTO #FirstNames(i, Name) VALUES (16,N'Ece');
-INSERT INTO #FirstNames(i, Name) VALUES (17,N'Baran');
-INSERT INTO #FirstNames(i, Name) VALUES (18,N'Sude');
-INSERT INTO #FirstNames(i, Name) VALUES (19,N'Kaan');
-INSERT INTO #FirstNames(i, Name) VALUES (20,N'Naz');
-INSERT INTO #FirstNames(i, Name) VALUES (21,N'Arda');
-INSERT INTO #FirstNames(i, Name) VALUES (22,N'Lara');
-INSERT INTO #FirstNames(i, Name) VALUES (23,N'Yiğit');
-INSERT INTO #FirstNames(i, Name) VALUES (24,N'Pınar');
-INSERT INTO #FirstNames(i, Name) VALUES (25,N'Oğuz');
-INSERT INTO #FirstNames(i, Name) VALUES (26,N'Gül');
-INSERT INTO #FirstNames(i, Name) VALUES (27,N'Hakan');
-INSERT INTO #FirstNames(i, Name) VALUES (28,N'Berna');
-INSERT INTO #FirstNames(i, Name) VALUES (29,N'Serkan');
-INSERT INTO #FirstNames(i, Name) VALUES (30,N'Aslı');
-INSERT INTO #FirstNames(i, Name) VALUES (31,N'Mert');
-INSERT INTO #FirstNames(i, Name) VALUES (32,N'Ceren');
-INSERT INTO #FirstNames(i, Name) VALUES (33,N'Umut');
-INSERT INTO #FirstNames(i, Name) VALUES (34,N'Dilan');
-INSERT INTO #FirstNames(i, Name) VALUES (35,N'Furkan');
-INSERT INTO #FirstNames(i, Name) VALUES (36,N'İpek');
-INSERT INTO #FirstNames(i, Name) VALUES (37,N'Volkan');
-INSERT INTO #FirstNames(i, Name) VALUES (38,N'Buse');
-INSERT INTO #FirstNames(i, Name) VALUES (39,N'Alper');
-
+""")
+    for i, n in enumerate(FIRST_NAMES):
+        a(f"INSERT INTO #FirstNames(i, Name) VALUES ({i},{sql_n(n)});")
+    a("""
 IF OBJECT_ID(N'tempdb..#LastNames') IS NOT NULL DROP TABLE #LastNames;
 CREATE TABLE #LastNames (i INT NOT NULL PRIMARY KEY, Name NVARCHAR(50) NOT NULL);
+""")
+    for i, n in enumerate(LAST_NAMES):
+        a(f"INSERT INTO #LastNames(i, Name) VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #LastNames(i, Name) VALUES (0,N'Yılmaz');
-INSERT INTO #LastNames(i, Name) VALUES (1,N'Kaya');
-INSERT INTO #LastNames(i, Name) VALUES (2,N'Demir');
-INSERT INTO #LastNames(i, Name) VALUES (3,N'Şahin');
-INSERT INTO #LastNames(i, Name) VALUES (4,N'Çelik');
-INSERT INTO #LastNames(i, Name) VALUES (5,N'Yıldız');
-INSERT INTO #LastNames(i, Name) VALUES (6,N'Yıldırım');
-INSERT INTO #LastNames(i, Name) VALUES (7,N'Öztürk');
-INSERT INTO #LastNames(i, Name) VALUES (8,N'Aydın');
-INSERT INTO #LastNames(i, Name) VALUES (9,N'Özdemir');
-INSERT INTO #LastNames(i, Name) VALUES (10,N'Arslan');
-INSERT INTO #LastNames(i, Name) VALUES (11,N'Doğan');
-INSERT INTO #LastNames(i, Name) VALUES (12,N'Kılıç');
-INSERT INTO #LastNames(i, Name) VALUES (13,N'Aslan');
-INSERT INTO #LastNames(i, Name) VALUES (14,N'Çetin');
-INSERT INTO #LastNames(i, Name) VALUES (15,N'Kara');
-INSERT INTO #LastNames(i, Name) VALUES (16,N'Koç');
-INSERT INTO #LastNames(i, Name) VALUES (17,N'Kurt');
-INSERT INTO #LastNames(i, Name) VALUES (18,N'Özkan');
-INSERT INTO #LastNames(i, Name) VALUES (19,N'Şimşek');
-INSERT INTO #LastNames(i, Name) VALUES (20,N'Erdoğan');
-INSERT INTO #LastNames(i, Name) VALUES (21,N'Acar');
-INSERT INTO #LastNames(i, Name) VALUES (22,N'Polat');
-INSERT INTO #LastNames(i, Name) VALUES (23,N'Korkmaz');
-INSERT INTO #LastNames(i, Name) VALUES (24,N'Çakır');
-INSERT INTO #LastNames(i, Name) VALUES (25,N'Güneş');
-INSERT INTO #LastNames(i, Name) VALUES (26,N'Bulut');
-INSERT INTO #LastNames(i, Name) VALUES (27,N'Aksoy');
-INSERT INTO #LastNames(i, Name) VALUES (28,N'Bozkurt');
-INSERT INTO #LastNames(i, Name) VALUES (29,N'Duman');
-INSERT INTO #LastNames(i, Name) VALUES (30,N'Ateş');
-INSERT INTO #LastNames(i, Name) VALUES (31,N'Taş');
-INSERT INTO #LastNames(i, Name) VALUES (32,N'Akın');
-INSERT INTO #LastNames(i, Name) VALUES (33,N'Soylu');
-INSERT INTO #LastNames(i, Name) VALUES (34,N'Başaran');
-INSERT INTO #LastNames(i, Name) VALUES (35,N'Ergin');
-INSERT INTO #LastNames(i, Name) VALUES (36,N'Uçar');
-INSERT INTO #LastNames(i, Name) VALUES (37,N'Sezer');
-INSERT INTO #LastNames(i, Name) VALUES (38,N'Bilgin');
-INSERT INTO #LastNames(i, Name) VALUES (39,N'Karaca');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#BrandLookup') IS NOT NULL DROP TABLE #BrandLookup;
 CREATE TABLE #BrandLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, Description NVARCHAR(400) NOT NULL, MetaKeywords NVARCHAR(200) NOT NULL);
+""")
+    for i, (name, desc, kw) in enumerate(BRANDS, 1):
+        a(f"INSERT INTO #BrandLookup VALUES ({i},{sql_n(name)},{sql_n(desc)},{sql_n(kw)});")
 
-INSERT INTO #BrandLookup VALUES (1,N'Nordline',N'İskandinav tarzı mobilya ve ev dekorasyonu.',N'mobilya,ev,dekorasyon');
-INSERT INTO #BrandLookup VALUES (2,N'Atlas Tekstil',N'Günlük giyim ve temel tekstil ürünleri.',N'tekstil,giyim,pamuk');
-INSERT INTO #BrandLookup VALUES (3,N'Sportiva',N'Koşu, fitness ve outdoor ekipmanları.',N'spor,fitness,outdoor');
-INSERT INTO #BrandLookup VALUES (4,N'Lumina Kitchen',N'Mutfak gereçleri ve küçük ev aletleri.',N'mutfak,ev aleti');
-INSERT INTO #BrandLookup VALUES (5,N'Beauté Lab',N'Cilt bakımı ve kişisel bakım ürünleri.',N'kozmetik,cilt bakımı');
-INSERT INTO #BrandLookup VALUES (6,N'TeknoPlus',N'Elektronik aksesuar ve bilgisayar çevre birimleri.',N'elektronik,aksesuar');
-INSERT INTO #BrandLookup VALUES (7,N'Casa Bella',N'Ev tekstili, yatak ve banyo ürünleri.',N'ev tekstili,yatak');
-INSERT INTO #BrandLookup VALUES (8,N'MiniNest',N'Bebek ve çocuk ürünleri.',N'bebek,çocuk');
-INSERT INTO #BrandLookup VALUES (9,N'Meridian Outdoor',N'Kamp, yürüyüş ve doğa sporları.',N'kamp,outdoor');
-INSERT INTO #BrandLookup VALUES (10,N'Deri Atölyesi',N'Deri çanta, kemer ve cüzdan koleksiyonu.',N'deri,aksesuar');
-INSERT INTO #BrandLookup VALUES (11,N'AquaPure',N'Su arıtma ve sağlıklı yaşam ürünleri.',N'su,sağlık');
-INSERT INTO #BrandLookup VALUES (12,N'Kitap Köşesi',N'Kitap, kırtasiye ve hobi ürünleri.',N'kitap,kırtasiye');
-INSERT INTO #BrandLookup VALUES (13,N'UrbanWear',N'Sokak stili ve günlük moda.',N'moda,streetwear');
-INSERT INTO #BrandLookup VALUES (14,N'ChefPro',N'Profesyonel mutfak ekipmanları.',N'mutfak,profesyonel');
-INSERT INTO #BrandLookup VALUES (15,N'GreenLeaf',N'Organik gıda ve doğal ürünler.',N'organik,doğal');
-INSERT INTO #BrandLookup VALUES (16,N'SoundWave',N'Kulaklık, hoparlör ve ses sistemleri.',N'ses,kulaklık');
-INSERT INTO #BrandLookup VALUES (17,N'FitLife',N'Spor giyim ve aktif yaşam.',N'spor giyim,aktif');
-INSERT INTO #BrandLookup VALUES (18,N'HomeGlow',N'Aydınlatma ve ev dekorasyonu.',N'aydınlatma,dekor');
-INSERT INTO #BrandLookup VALUES (19,N'PetFriend',N'Evcil hayvan bakımı ve aksesuarları.',N'pet,hayvan');
-INSERT INTO #BrandLookup VALUES (20,N'Voyage Pack',N'Valiz, sırt çantası ve seyahat aksesuarları.',N'seyahat,valiz');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#CategoryLookup') IS NOT NULL DROP TABLE #CategoryLookup;
 CREATE TABLE #CategoryLookup (
     rn INT NOT NULL PRIMARY KEY,
@@ -404,33 +617,13 @@ CREATE TABLE #CategoryLookup (
     ParentRn INT NULL,          -- NULL = root; else 1-based root rn
     Discount FLOAT NULL
 );
+""")
+    for i, (name, desc, parent, disc) in enumerate(CATEGORIES, 1):
+        pr = "NULL" if parent is None else str(parent + 1)
+        d = "NULL" if disc is None else str(disc)
+        a(f"INSERT INTO #CategoryLookup VALUES ({i},{sql_n(name)},{sql_n(desc)},{pr},{d});")
 
-INSERT INTO #CategoryLookup VALUES (1,N'Elektronik',N'Telefon, bilgisayar ve elektronik aksesuarlar.',NULL,NULL);
-INSERT INTO #CategoryLookup VALUES (2,N'Moda & Giyim',N'Kadın, erkek ve unisex giyim.',NULL,NULL);
-INSERT INTO #CategoryLookup VALUES (3,N'Ev & Yaşam',N'Mobilya, dekorasyon ve ev tekstili.',NULL,10.0);
-INSERT INTO #CategoryLookup VALUES (4,N'Spor & Outdoor',N'Spor giyim, ekipman ve kamp ürünleri.',NULL,NULL);
-INSERT INTO #CategoryLookup VALUES (5,N'Kozmetik & Bakım',N'Cilt bakımı, makyaj ve kişisel bakım.',NULL,NULL);
-INSERT INTO #CategoryLookup VALUES (6,N'Bebek & Çocuk',N'Bebek bakımı ve çocuk ürünleri.',NULL,NULL);
-INSERT INTO #CategoryLookup VALUES (7,N'Kitap & Hobi',N'Kitaplar, kırtasiye ve hobi malzemeleri.',NULL,NULL);
-INSERT INTO #CategoryLookup VALUES (8,N'Mutfak',N'Mutfak gereçleri ve küçük ev aletleri.',NULL,NULL);
-INSERT INTO #CategoryLookup VALUES (9,N'Kulaklık & Ses',N'Kablosuz kulaklık ve hoparlörler.',1,NULL);
-INSERT INTO #CategoryLookup VALUES (10,N'Telefon Aksesuarları',N'Kılıf, şarj ve ekran koruyucular.',1,NULL);
-INSERT INTO #CategoryLookup VALUES (11,N'Kadın Giyim',N'Elbise, bluz ve dış giyim.',2,NULL);
-INSERT INTO #CategoryLookup VALUES (12,N'Erkek Giyim',N'Gömlek, pantolon ve mont.',2,NULL);
-INSERT INTO #CategoryLookup VALUES (13,N'Ayakkabı',N'Spor ve günlük ayakkabılar.',2,NULL);
-INSERT INTO #CategoryLookup VALUES (14,N'Oturma Grubu',N'Koltuk, berjer ve sehpa.',3,NULL);
-INSERT INTO #CategoryLookup VALUES (15,N'Yatak Odası',N'Nevresim, yastık ve yorgan.',3,NULL);
-INSERT INTO #CategoryLookup VALUES (16,N'Aydınlatma',N'Masa lambası ve avize.',3,NULL);
-INSERT INTO #CategoryLookup VALUES (17,N'Koşu & Fitness',N'Koşu ayakkabısı ve fitness ekipmanı.',4,NULL);
-INSERT INTO #CategoryLookup VALUES (18,N'Kamp & Doğa',N'Çadır, mat ve outdoor çanta.',4,NULL);
-INSERT INTO #CategoryLookup VALUES (19,N'Cilt Bakımı',N'Temizleyici, serum ve nemlendirici.',5,NULL);
-INSERT INTO #CategoryLookup VALUES (20,N'Saç Bakımı',N'Şampuan, saç kremi ve serum.',5,NULL);
-INSERT INTO #CategoryLookup VALUES (21,N'Bebek Bakım',N'Bebek bezi ve bakım setleri.',6,NULL);
-INSERT INTO #CategoryLookup VALUES (22,N'Oyuncak',N'Eğitici ve eğlenceli oyuncaklar.',6,NULL);
-INSERT INTO #CategoryLookup VALUES (23,N'Roman & Edebiyat',N'Çağdaş ve klasik romanlar.',7,NULL);
-INSERT INTO #CategoryLookup VALUES (24,N'Kırtasiye',N'Defter, kalem ve ofis malzemeleri.',7,NULL);
-INSERT INTO #CategoryLookup VALUES (25,N'Pişirme Gereçleri',N'Tencere, tava ve mutfak setleri.',8,NULL);
-
+    a("""
 IF OBJECT_ID(N'tempdb..#ProductLookup') IS NOT NULL DROP TABLE #ProductLookup;
 CREATE TABLE #ProductLookup (
     rn INT NOT NULL PRIMARY KEY,
@@ -444,290 +637,115 @@ CREATE TABLE #ProductLookup (
     ShortDescription NVARCHAR(400) NOT NULL,
     DescriptionHtml NVARCHAR(MAX) NOT NULL
 );
+""")
+    for i, p in enumerate(PRODUCTS, 1):
+        name, brand, cat, base, spread, colors, sizes, short, html = p
+        c = "NULL" if colors is None else sql_n(colors)
+        s = "NULL" if sizes is None else sql_n(sizes)
+        a(f"INSERT INTO #ProductLookup VALUES ({i},{sql_n(name)},{brand},{cat+1},{base},{spread},{c},{s},{sql_n(short)},{sql_n(html)});")
 
-INSERT INTO #ProductLookup VALUES (1,N'{b} Wireless Bluetooth Kulaklık Pro',16,9,1299,800,N'Siyah,Beyaz,Lacivert',NULL,N'Aktif gürültü engelleme özellikli kablosuz kulaklık.',N'<p>Uzun pil ömrü, hızlı şarj ve konforlu kullanım için tasarlandı. Günlük commute ve ofis kullanımı için idealdir.</p>');
-INSERT INTO #ProductLookup VALUES (2,N'{b} USB-C Hızlı Şarj Adaptörü 65W',6,10,449,200,N'Beyaz,Siyah',NULL,N'GaN teknolojili kompakt şarj adaptörü.',N'<p>Telefon, tablet ve dizüstü bilgisayarlarınızı tek adaptörle şarj edin. Aşırı ısınma koruması dahildir.</p>');
-INSERT INTO #ProductLookup VALUES (3,N'{b} Silikon Telefon Kılıfı',6,10,149,80,N'Şeffaf,Siyah,Pembe,Mavi',NULL,N'Darbelere dayanıklı ince silikon kılıf.',N'<p>Hassas kenarları korur, kablosuz şarj ile uyumludur.</p>');
-INSERT INTO #ProductLookup VALUES (4,N'{b} Kadın Pamuklu Basic Tişört',2,11,279,120,N'Beyaz,Siyah,Gri,Bej',N'XS,S,M,L,XL',N'Nefes alan pamuklu günlük tişört.',N'<p>%100 pamuk, yumuşak dokulu. Makinede yıkanabilir.</p>');
-INSERT INTO #ProductLookup VALUES (5,N'{b} Erkek Slim Fit Chino Pantolon',13,12,599,250,N'Bej,Lacivert,Haki,Siyah',N'28,30,32,34,36',N'Ofis ve günlük kullanım için slim fit chino.',N'<p>Esnek kumaş, ütü gerektirmeyen form. Mevsimlik koleksiyon.</p>');
-INSERT INTO #ProductLookup VALUES (6,N'{b} Unisex Koşu Ayakkabısı AirFlex',17,13,1899,600,N'Siyah,Gri,Mavi,Turuncu',N'36,37,38,39,40,41,42,43,44',N'Hafif tabanlı koşu ayakkabısı.',N'<p>Nefes alan mesh üst, darbe emici taban. Yol koşusu için optimize edildi.</p>');
-INSERT INTO #ProductLookup VALUES (7,N'{b} Kadın Trençkot',13,11,1499,500,N'Bej,Siyah,Haki',N'S,M,L,XL',N'Su itici kumaşlı klasik trençkot.',N'<p>Mevsim geçişleri için ideal. Astarlı, bel kemerli kesim.</p>');
-INSERT INTO #ProductLookup VALUES (8,N'{b} Erkek Oxford Gömlek',2,12,449,150,N'Beyaz,Açık Mavi,Pembe',N'S,M,L,XL,XXL',N'Klasik oxford gömlek.',N'<p>İş ve günlük kombinler için. Kolay ütülenir pamuk karışımı.</p>');
-INSERT INTO #ProductLookup VALUES (9,N'{b} Köşe Koltuk Takımı 3+1',1,14,24999,8000,N'Antrasit,Krem,Yeşil',NULL,N'Geniş L köşe koltuk takımı.',N'<p>Yüksek yoğunluklu sünger, çıkarılabilir kılıflar. Oturma odanıza ferah bir görünüm katar.</p>');
-INSERT INTO #ProductLookup VALUES (10,N'{b} Meşe Sehpa 90cm',1,14,3299,1000,N'Doğal Meşe,Ceviz',NULL,N'Masif görünümlü orta sehpa.',N'<p>Dayanıklı yüzey, kolay temizlenir. Minimal İskandinav çizgiler.</p>');
-INSERT INTO #ProductLookup VALUES (11,N'{b} Pamuk Saten Nevresim Takımı',7,15,899,400,N'Beyaz,Gri,Pudra',N'Tek Kişilik,Çift Kişilik,King',N'200 tc pamuk saten nevresim.',N'<p>Yumuşak doku, renk solmaz. Yastık kılıfı dahildir.</p>');
-INSERT INTO #ProductLookup VALUES (12,N'{b} LED Masa Lambası Dimmerlı',18,16,649,250,N'Siyah,Beyaz,Pirinç',NULL,N'Dokunmatik dimmerlı LED masa lambası.',N'<p>Üç renk sıcaklığı, göz yormayan ışık. USB şarj portu.</p>');
-INSERT INTO #ProductLookup VALUES (13,N'{b} Yoga Matı 6mm',17,17,349,150,N'Mor,Mavi,Pembe,Siyah',NULL,N'Kaymaz yüzeyli yoga ve pilates matı.',N'<p>Taşıma askısı dahil. Lateks içermez, kolay silinir.</p>');
-INSERT INTO #ProductLookup VALUES (14,N'{b} Dambıl Seti 2x5kg',3,17,429,200,N'Siyah',NULL,N'Neopren kaplı dambıl çifti.',N'<p>Ev antrenmanları için kaymaz tutuş. Zemin koruyucu uçlar.</p>');
-INSERT INTO #ProductLookup VALUES (15,N'{b} 2 Kişilik Kamp Çadırı',9,18,2199,700,N'Yeşil,Turuncu',NULL,N'Hızlı kurulumlu su geçirmez çadır.',N'<p>2000 mm su kolonlu kumaş, sivrisinek tülü. Taşıma çantası dahil.</p>');
-INSERT INTO #ProductLookup VALUES (16,N'{b} Trekking Sırt Çantası 40L',9,18,1599,500,N'Antrasit,Haki',NULL,N'Bel ve göğüs kemerli trekking çantası.',N'<p>Yağmurluk kılıfı, hidrasyon uyumlu. Sırt paneli nefes alır.</p>');
-INSERT INTO #ProductLookup VALUES (17,N'{b} Vitamin C Aydınlatıcı Serum 30ml',5,19,389,150,NULL,NULL,N'Leke karşıtı C vitamini serumu.',N'<p>Sabah rutini için. SPF ile birlikte kullanın. Dermatolojik olarak test edilmiştir.</p>');
-INSERT INTO #ProductLookup VALUES (18,N'{b} Nemlendirici Yüz Kremi 50ml',5,19,299,120,NULL,NULL,N'24 saat nem desteği sağlayan yüz kremi.',N'<p>Yağlı ve karma ciltler için hafif formül. Paraben içermez.</p>');
-INSERT INTO #ProductLookup VALUES (19,N'{b} Onarıcı Şampuan 400ml',5,20,189,80,NULL,NULL,N'Yıpranmış saçlar için onarıcı şampuan.',N'<p>Keratin ve argan yağı kompleksi. Günlük kullanıma uygundur.</p>');
-INSERT INTO #ProductLookup VALUES (20,N'{b} Bebek Bakım Seti 5''li',8,21,449,150,NULL,NULL,N'Hassas ciltler için bebek bakım seti.',N'<p>Şampuan, losyon, yağ, krem ve ıslak mendil. Hipoalerjenik.</p>');
-INSERT INTO #ProductLookup VALUES (21,N'{b} Eğitici Ahşap Blok Seti',8,22,329,100,N'Renkli',NULL,N'48 parçalı ahşap blok seti.',N'<p>Su bazlı boya, keskin kenar yok. 3+ yaş için uygundur.</p>');
-INSERT INTO #ProductLookup VALUES (22,N'{b} Çağdaş Roman - Seçki #{n}',12,23,149,80,NULL,NULL,N'Özenle seçilmiş çağdaş edebiyat.',N'<p>Sert kapak, yerli baskı. Okur yorumlarıyla öne çıkan başlık.</p>');
-INSERT INTO #ProductLookup VALUES (23,N'{b} Sert Kapaklı Defter A5',12,24,89,40,N'Kraft,Siyah,Lacivert',NULL,N'Noktalı sayfa A5 defter.',N'<p>120 sayfa, 90 gsm. Lastik bant ve yer imi şeridi.</p>');
-INSERT INTO #ProductLookup VALUES (24,N'{b} Granit Tava 28cm',14,25,549,200,N'Siyah',NULL,N'Yapışmaz granit kaplama tava.',N'<p>Indüksiyon uyumlu. Fırına dayanıklı sap. PFOA içermez.</p>');
-INSERT INTO #ProductLookup VALUES (25,N'{b} Çelik Tencere Seti 6 Parça',4,25,2499,800,N'Çelik',NULL,N'Paslanmaz çelik tencere seti.',N'<p>Kapaklı 3 tencere. Bulaşık makinesinde yıkanabilir.</p>');
-INSERT INTO #ProductLookup VALUES (26,N'{b} Cam Su Şişesi 750ml',11,8,249,80,N'Şeffaf,Füme,Mavi',NULL,N'BPA içermeyen cam su şişesi.',N'<p>Silikon kılıflı, sızdırmaz kapak. Ofis ve spor için.</p>');
-INSERT INTO #ProductLookup VALUES (27,N'{b} Organik Zeytinyağı 1L',15,8,329,100,NULL,NULL,N'Soğuk sıkım organik zeytinyağı.',N'<p>Tek hasat, koyu cam şişe. Tadım notları etikette.</p>');
-INSERT INTO #ProductLookup VALUES (28,N'{b} Kabin Boyu Valiz 55cm',20,2,1899,600,N'Siyah,Lacivert,Bordo',NULL,N'Hafif kabin boyu sert valiz.',N'<p>360° tekerlek, TSA kilit. İç organizer bölmeler.</p>');
-INSERT INTO #ProductLookup VALUES (29,N'{b} Deri Omuz Çantası',10,2,1299,400,N'Taba,Siyah,Bordo',NULL,N'El yapımı görünümlü deri omuz çantası.',N'<p>Ayarlanabilir askı, fermuarlı iç cep. Günlük kullanım.</p>');
-INSERT INTO #ProductLookup VALUES (30,N'{b} Evcil Hayvan Mama Kabı Seti',19,3,199,80,N'Gri,Pembe,Mavi',NULL,N'Çelik mama ve su kabı seti.',N'<p>Kaymaz taban, bulaşık makinesi uyumlu.</p>');
-INSERT INTO #ProductLookup VALUES (31,N'{b} Akıllı LED Ampul 9W',18,16,179,60,N'Beyaz',NULL,N'Uygulama kontrollü renk değiştiren ampul.',N'<p>Sesli asistan uyumlu. Zamanlayıcı ve senaryo desteği.</p>');
-INSERT INTO #ProductLookup VALUES (32,N'{b} Termos Mug 350ml',4,8,279,100,N'Siyah,Beyaz,Kırmızı',NULL,N'Paslanmaz çelik vakumlu termos mug.',N'<p>6 saat sıcak / 12 saat soğuk tutma. Araç tutucuya uygun.</p>');
-INSERT INTO #ProductLookup VALUES (33,N'{b} Fitness Taytı Yüksek Bel',17,17,449,150,N'Siyah,Lacivert,Bordo',N'XS,S,M,L',N'Toparlayıcı yüksek bel spor taytı.',N'<p>Ter emici kumaş, cep detayı. Antrenman ve günlük kullanım.</p>');
-INSERT INTO #ProductLookup VALUES (34,N'{b} Erkek Polar Mont',3,12,899,300,N'Antrasit,Lacivert,Haki',N'S,M,L,XL,XXL',N'Hafif polar fermuarlı mont.',N'<p>Soğuk hava katmanı olarak veya tek başına giyilebilir.</p>');
-INSERT INTO #ProductLookup VALUES (35,N'{b} Bambu Kesme Tahtası Seti',14,25,349,120,N'Doğal',NULL,N'3 boy bambu kesme tahtası.',N'<p>Antibakteriyel doğal yüzey. Asma delikli.</p>');
-INSERT INTO #ProductLookup VALUES (36,N'{b} Güneş Kremi SPF50 50ml',5,19,259,80,NULL,NULL,N'Yüz için hafif dokulu güneş koruyucu.',N'<p>Beyaz iz bırakmaz. Makyaj altı kullanıma uygun.</p>');
-INSERT INTO #ProductLookup VALUES (37,N'{b} Bebek Body 3''lü Paket',8,21,249,80,N'Beyaz,Gri,Sarı',N'0-3 Ay,3-6 Ay,6-9 Ay,9-12 Ay',N'Organik pamuk bebek body seti.',N'<p>Çıtçıtlı, etiket içe basılmış. Hassas ciltler için.</p>');
-INSERT INTO #ProductLookup VALUES (38,N'{b} Bluetooth Hoparlör Mini',16,9,799,300,N'Siyah,Mavi,Kırmızı',NULL,N'Taşınabilir suya dayanıklı hoparlör.',N'<p>12 saat pil, IPX7. Stereo eşleştirme destekler.</p>');
-INSERT INTO #ProductLookup VALUES (39,N'{b} Laptop Standı Alüminyum',6,1,549,200,N'Gümüş,Uzay Grisi',NULL,N'Ayarlanabilir alüminyum laptop standı.',N'<p>Ergonomik açı, kablo geçişi. 10–16 inç uyumlu.</p>');
-INSERT INTO #ProductLookup VALUES (40,N'{b} Yastık 2''li Memory Foam',7,15,699,250,N'Beyaz',N'Standart',N'Visco bellek köpük yastık çifti.',N'<p>Boyun desteği, çıkarılabilir kılıf. Anti-alerjik.</p>');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#TagCatLookup') IS NOT NULL DROP TABLE #TagCatLookup;
 CREATE TABLE #TagCatLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL);
+""")
+    for i, n in enumerate(TAG_CATEGORIES, 1):
+        a(f"INSERT INTO #TagCatLookup VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #TagCatLookup VALUES (1,N'Kullanım Amacı');
-INSERT INTO #TagCatLookup VALUES (2,N'Malzeme');
-INSERT INTO #TagCatLookup VALUES (3,N'Sezon');
-INSERT INTO #TagCatLookup VALUES (4,N'Hedef Kitle');
-INSERT INTO #TagCatLookup VALUES (5,N'Özellik');
-INSERT INTO #TagCatLookup VALUES (6,N'Koleksiyon');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#TagLookup') IS NOT NULL DROP TABLE #TagLookup;
 CREATE TABLE #TagLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL);
+""")
+    for i, n in enumerate(TAGS, 1):
+        a(f"INSERT INTO #TagLookup VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #TagLookup VALUES (1,N'Günlük kullanım');
-INSERT INTO #TagLookup VALUES (2,N'Ofis');
-INSERT INTO #TagLookup VALUES (3,N'Spor');
-INSERT INTO #TagLookup VALUES (4,N'Seyahat');
-INSERT INTO #TagLookup VALUES (5,N'Hediye fikri');
-INSERT INTO #TagLookup VALUES (6,N'Pamuk');
-INSERT INTO #TagLookup VALUES (7,N'Deri');
-INSERT INTO #TagLookup VALUES (8,N'Polyester');
-INSERT INTO #TagLookup VALUES (9,N'Organik');
-INSERT INTO #TagLookup VALUES (10,N'Metal');
-INSERT INTO #TagLookup VALUES (11,N'Yaz');
-INSERT INTO #TagLookup VALUES (12,N'Kış');
-INSERT INTO #TagLookup VALUES (13,N'İlkbahar');
-INSERT INTO #TagLookup VALUES (14,N'Sonbahar');
-INSERT INTO #TagLookup VALUES (15,N'Mevsimlik');
-INSERT INTO #TagLookup VALUES (16,N'Kadın');
-INSERT INTO #TagLookup VALUES (17,N'Erkek');
-INSERT INTO #TagLookup VALUES (18,N'Unisex');
-INSERT INTO #TagLookup VALUES (19,N'Çocuk');
-INSERT INTO #TagLookup VALUES (20,N'Bebek');
-INSERT INTO #TagLookup VALUES (21,N'Su geçirmez');
-INSERT INTO #TagLookup VALUES (22,N'Nefes alan');
-INSERT INTO #TagLookup VALUES (23,N'Hızlı kargo');
-INSERT INTO #TagLookup VALUES (24,N'İndirimde');
-INSERT INTO #TagLookup VALUES (25,N'Yeni sezon');
-INSERT INTO #TagLookup VALUES (26,N'Minimal');
-INSERT INTO #TagLookup VALUES (27,N'Klasik');
-INSERT INTO #TagLookup VALUES (28,N'Modern');
-INSERT INTO #TagLookup VALUES (29,N'Vintage');
-INSERT INTO #TagLookup VALUES (30,N'Scandinavian');
-INSERT INTO #TagLookup VALUES (31,N'Kampanya');
-INSERT INTO #TagLookup VALUES (32,N'Çok satan');
-INSERT INTO #TagLookup VALUES (33,N'Editörün seçimi');
-INSERT INTO #TagLookup VALUES (34,N'Sınırlı stok');
-INSERT INTO #TagLookup VALUES (35,N'Yerli üretim');
-INSERT INTO #TagLookup VALUES (36,N'Eco-friendly');
-INSERT INTO #TagLookup VALUES (37,N'BPA free');
-INSERT INTO #TagLookup VALUES (38,N'Makinede yıkanır');
-INSERT INTO #TagLookup VALUES (39,N'İndüksiyon uyumlu');
-INSERT INTO #TagLookup VALUES (40,N'TSA kilit');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#StoryCatLookup') IS NOT NULL DROP TABLE #StoryCatLookup;
 CREATE TABLE #StoryCatLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, Description NVARCHAR(400) NOT NULL, PageTheme NVARCHAR(10) NOT NULL);
+""")
+    for i, (n, d, t) in enumerate(STORY_CATEGORIES, 1):
+        a(f"INSERT INTO #StoryCatLookup VALUES ({i},{sql_n(n)},{sql_n(d)},{sql_n(t)});")
 
-INSERT INTO #StoryCatLookup VALUES (1,N'Stil Rehberi',N'Moda ve stil ipuçları.',N'T1');
-INSERT INTO #StoryCatLookup VALUES (2,N'Ev Dekorasyonu',N'Yaşam alanları için ilham.',N'T2');
-INSERT INTO #StoryCatLookup VALUES (3,N'Sağlıklı Yaşam',N'Beslenme ve wellness yazıları.',N'T3');
-INSERT INTO #StoryCatLookup VALUES (4,N'Teknoloji',N'Gadget incelemeleri ve ipuçları.',N'T4');
-INSERT INTO #StoryCatLookup VALUES (5,N'Seyahat',N'Rota önerileri ve paketleme rehberleri.',N'T5');
-INSERT INTO #StoryCatLookup VALUES (6,N'Ebeveynlik',N'Bebek ve çocuk bakımı.',N'T6');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#StoryLookup') IS NOT NULL DROP TABLE #StoryLookup;
 CREATE TABLE #StoryLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(200) NOT NULL, ShortDescription NVARCHAR(400) NOT NULL, AuthorName NVARCHAR(100) NOT NULL, BodyHtml NVARCHAR(MAX) NOT NULL);
+""")
+    for i, (n, s, au, body) in enumerate(STORIES, 1):
+        a(f"INSERT INTO #StoryLookup VALUES ({i},{sql_n(n)},{sql_n(s)},{sql_n(au)},{sql_n(body)});")
 
-INSERT INTO #StoryLookup VALUES (1,N'2024 Sonbahar Kombin Önerileri',N'Katmanlı sonbahar stilleri.',N'Selin Arslan',N'<p>Mevsim geçişinde trençkot, polar ve chino pantolonları nasıl bir araya getirirsiniz? Editörlerimizin favori kombinleri.</p>');
-INSERT INTO #StoryLookup VALUES (2,N'Küçük Salonlar İçin Mobilya İpuçları',N'Dar alanlarda ferahlık.',N'Can Yılmaz',N'<p>Köşe koltuk yerine doğru sehpa ve aydınlatma ile salonu büyütün. Nordline koleksiyonundan örnekler.</p>');
-INSERT INTO #StoryLookup VALUES (3,N'Koşu Ayakkabısı Nasıl Seçilir?',N'Pronasyon, taban ve fit.',N'Emre Demir',N'<p>Haftalık kilometrenize ve ayak tipinize göre doğru koşu ayakkabısını seçmenin kısa rehberi.</p>');
-INSERT INTO #StoryLookup VALUES (4,N'Cilt Bakım Rutini: 5 Adım',N'Temizlikten nemlendirmeye.',N'Elif Kaya',N'<p>Sabah ve akşam için sade ama etkili bir rutin. Serum ve güneş kreminin sırası neden önemli?</p>');
-INSERT INTO #StoryLookup VALUES (5,N'Kamp Tatiline Çıkmadan Önce',N'Kontrol listesi.',N'Burak Şahin',N'<p>Çadır, mat, sırt çantası ve mutfak seti: ilk kampınız için unutmamanız gerekenler.</p>');
-INSERT INTO #StoryLookup VALUES (6,N'Mutfakta Granit Tava Kullanımı',N'Bakım ve pişirme ipuçları.',N'Ayşe Çelik',N'<p>Yapışmaz yüzeyin ömrünü uzatmak için metal spatula kullanmayın. Doğru ısı ayarları.</p>');
-INSERT INTO #StoryLookup VALUES (7,N'Bebek Odası Hazırlık Listesi',N'İlk 3 ay için temel ürünler.',N'Zeynep Öztürk',N'<p>Body setlerinden bakım ürünlerine, gerçekçi bir alışveriş listesi.</p>');
-INSERT INTO #StoryLookup VALUES (8,N'Bluetooth Kulaklık Alırken',N'ANC, pil ve uyum.',N'Kerem Aydın',N'<p>Aktif gürültü engelleme gerçekten işe yarıyor mu? Ofis ve yolculuk senaryoları.</p>');
-INSERT INTO #StoryLookup VALUES (9,N'Organik Ürün Etiketlerini Okumak',N'Sertifikalar ne anlama geliyor?',N'Defne Kara',N'<p>Organik, soğuk sıkım ve katkı maddesi ifadelerini doğru yorumlayın.</p>');
-INSERT INTO #StoryLookup VALUES (10,N'Ev Ofisi Aydınlatması',N'Göz yorgunluğunu azaltın.',N'Onur Yıldız',N'<p>Masa lambası rengi, parlaklık ve ekran konumu hakkında pratik öneriler.</p>');
-INSERT INTO #StoryLookup VALUES (11,N'Valiz Seçiminde Dikkat Edilecekler',N'Kabin kuralları ve tekerlek.',N'Melis Doğan',N'<p>Havayolu kabin ölçüleri, TSA kilit ve ağırlık dengesi.</p>');
-INSERT INTO #StoryLookup VALUES (12,N'Spor Taytı Alırken Fit Kontrolü',N'Yüksek bel ve kumaş.',N'İrem Kılıç',N'<p>Antrenmanda kaymayan, ter emici kumaşlı tayt nasıl anlaşılır?</p>');
-INSERT INTO #StoryLookup VALUES (13,N'Kitaplarla Küçük Bir Köşe',N'Okuma alanı kurmak.',N'Cem Polat',N'<p>Raf, aydınlatma ve rahat bir berjer ile evde mini kütüphane.</p>');
-INSERT INTO #StoryLookup VALUES (14,N'Kışlık Mont Katmanlama',N'Polar + dış katman.',N'Hakan Kurt',N'<p>Soğuk havalarda nefes alan katmanlarla sıcak kalmanın yolu.</p>');
-INSERT INTO #StoryLookup VALUES (15,N'Pet Dostu Ev Düzeni',N'Mama alanı ve güvenlik.',N'Buse Aksoy',N'<p>Kaymaz mama kapları ve kablo düzeni ile evcil dostunuz için güvenli alan.</p>');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#MenuLookup') IS NOT NULL DROP TABLE #MenuLookup;
 CREATE TABLE #MenuLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, Description NVARCHAR(MAX) NULL, MenuLink NVARCHAR(100) NOT NULL, ExternalLink NVARCHAR(200) NULL, MainPage BIT NOT NULL);
+""")
+    for i, (n, d, link, ext, mp) in enumerate(MENUS, 1):
+        dd = "NULL" if d is None else sql_n(d)
+        ee = "NULL" if ext is None else sql_n(ext)
+        a(f"INSERT INTO #MenuLookup VALUES ({i},{sql_n(n)},{dd},{sql_n(link)},{ee},{1 if mp else 0});")
 
-INSERT INTO #MenuLookup VALUES (1,N'Ana Sayfa',N'<p>EImece vitrine hoş geldiniz.</p>',N'anasayfa',NULL,1);
-INSERT INTO #MenuLookup VALUES (2,N'Kurumsal',N'<p>Hakkımızda ve şirket bilgileri.</p>',N'kurumsal',NULL,1);
-INSERT INTO #MenuLookup VALUES (3,N'Hakkımızda',N'<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>',N'hakkimizda',NULL,0);
-INSERT INTO #MenuLookup VALUES (4,N'İletişim',N'<p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p>',N'iletisim',NULL,0);
-INSERT INTO #MenuLookup VALUES (5,N'Kargo & Teslimat',N'<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>',N'kargo-teslimat',NULL,1);
-INSERT INTO #MenuLookup VALUES (6,N'Sıkça Sorulan Sorular',N'<p>Sipariş, ödeme ve iade hakkında SSS.</p>',N'sss',NULL,1);
-INSERT INTO #MenuLookup VALUES (7,N'Kampanyalar',N'<p>Güncel indirimler ve kuponlar.</p>',N'kampanyalar',NULL,1);
-INSERT INTO #MenuLookup VALUES (8,N'Blog',N'<p>Stil, yaşam ve ürün rehberleri.</p>',N'blog',NULL,1);
-INSERT INTO #MenuLookup VALUES (9,N'Gizlilik Politikası',N'<p>Kişisel verilerin korunması.</p>',N'gizlilik',NULL,0);
-INSERT INTO #MenuLookup VALUES (10,N'Mesafeli Satış Sözleşmesi',N'<p>Mesafeli satış ve tüketici hakları.</p>',N'mesafeli-satis',NULL,0);
-INSERT INTO #MenuLookup VALUES (11,N'İade & Değişim',N'<p>14 gün içinde iade ve değişim koşulları.</p>',N'iade-degisim',NULL,0);
-INSERT INTO #MenuLookup VALUES (12,N'Mağazalarımız',NULL,N'magazalar',N'https://maps.example.com/eimece',1);
-
+    a("""
 IF OBJECT_ID(N'tempdb..#SlideLookup') IS NOT NULL DROP TABLE #SlideLookup;
 CREATE TABLE #SlideLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(150) NOT NULL, Description NVARCHAR(400) NOT NULL, Link NVARCHAR(200) NOT NULL);
+""")
+    for i, (n, d, link) in enumerate(SLIDES, 1):
+        a(f"INSERT INTO #SlideLookup VALUES ({i},{sql_n(n)},{sql_n(d)},{sql_n(link)});")
 
-INSERT INTO #SlideLookup VALUES (1,N'Sonbahar Koleksiyonu',N'Yeni sezon trençkot ve botlarda %20''ye varan indirim.',N'/c/Moda-Giyim');
-INSERT INTO #SlideLookup VALUES (2,N'Mutfakta Yenilikler',N'ChefPro tencere setlerinde ücretsiz kargo.',N'/c/Mutfak');
-INSERT INTO #SlideLookup VALUES (3,N'Koşu Sezonu Başladı',N'AirFlex koşu ayakkabılarında peşin fiyatına taksit.',N'/c/Spor-Outdoor');
-INSERT INTO #SlideLookup VALUES (4,N'Evini Yenile',N'Köşe koltuk ve sehpa takımlarında kaçırılmayacak fırsatlar.',N'/c/Ev-Yasam');
-INSERT INTO #SlideLookup VALUES (5,N'Cilt Bakım Haftası',N'Beauté Lab serum ve kremlerde 2 al 1 öde.',N'/c/Kozmetik-Bakim');
-INSERT INTO #SlideLookup VALUES (6,N'Seyahat Hazırlığı',N'Kabin boyu valizlerde ekstra %10.',N'/c/Moda-Giyim');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#FaqLookup') IS NOT NULL DROP TABLE #FaqLookup;
 CREATE TABLE #FaqLookup (rn INT NOT NULL PRIMARY KEY, Question NVARCHAR(300) NOT NULL, Answer NVARCHAR(MAX) NOT NULL);
+""")
+    for i, (q, ans) in enumerate(FAQS, 1):
+        a(f"INSERT INTO #FaqLookup VALUES ({i},{sql_n(q)},{sql_n('<p>' + ans + '</p>')});")
 
-INSERT INTO #FaqLookup VALUES (1,N'Siparişimi nasıl takip ederim?',N'<p>Hesabım > Siparişlerim ekranından kargo takip numaranızı görebilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (2,N'Ücretsiz kargo limiti nedir?',N'<p>500 TL ve üzeri siparişlerde kargo ücretsizdir.</p>');
-INSERT INTO #FaqLookup VALUES (3,N'İade süresi kaç gündür?',N'<p>Teslimattan itibaren 14 gün içinde iade talebi oluşturabilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (4,N'Kapıda ödeme var mı?',N'<p>Seçili bölgelerde kapıda kart ile ödeme seçeneği sunulmaktadır.</p>');
-INSERT INTO #FaqLookup VALUES (5,N'Fatura nasıl alınır?',N'<p>Sipariş sonrası e-fatura kayıtlı e-posta adresinize gönderilir.</p>');
-INSERT INTO #FaqLookup VALUES (6,N'Ürün beden tablosu nerede?',N'<p>Ürün detay sayfasında Beden Tablosu sekmesini inceleyebilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (7,N'Kupon kodu nasıl kullanılır?',N'<p>Sepet sayfasında kupon alanına kodunuzu girip Uygula demeniz yeterlidir.</p>');
-INSERT INTO #FaqLookup VALUES (8,N'Stokta yok yazıyor, ne zaman gelir?',N'<p>Ürün sayfasından stok bildirimi bırakabilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (9,N'Hediye paketi yapıyor musunuz?',N'<p>Sepette hediye paketi seçeneğini işaretleyebilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (10,N'Same-day teslimat var mı?',N'<p>İstanbul Anadolu yakasında seçili SKU''larda aynı gün teslimat vardır.</p>');
-INSERT INTO #FaqLookup VALUES (11,N'Ürün orijinal mi?',N'<p>Tüm ürünler yetkili distribütör ve marka garantisiyle satılır.</p>');
-INSERT INTO #FaqLookup VALUES (12,N'Değişim kargo ücreti kimde?',N'<p>Üretim hatası ve yanlış ürün gönderimlerinde kargo bize aittir.</p>');
-INSERT INTO #FaqLookup VALUES (13,N'Taksit seçenekleri neler?',N'<p>Anlaşmalı kartlarda 3–6–9 taksit seçenekleri sunulur.</p>');
-INSERT INTO #FaqLookup VALUES (14,N'Üyeliksiz alışveriş yapabilir miyim?',N'<p>Evet, misafir ödeme ile sipariş verebilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (15,N'Şifremi unuttum ne yapmalıyım?',N'<p>Giriş ekranından Şifremi Unuttum ile sıfırlama bağlantısı alabilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (16,N'Mağazanız fiziksel olarak var mı?',N'<p>Showroom adresimiz İletişim sayfasında yer almaktadır.</p>');
-INSERT INTO #FaqLookup VALUES (17,N'Toplu / kurumsal sipariş?',N'<p>kurumsal@eimece.test adresinden teklif alabilirsiniz.</p>');
-INSERT INTO #FaqLookup VALUES (18,N'Ürün videoları neden açılmıyor?',N'<p>Tarayıcı eklentileri engelliyor olabilir; farklı tarayıcı deneyin.</p>');
-INSERT INTO #FaqLookup VALUES (19,N'Hangi kargo firmasıyla çalışıyorsunuz?',N'<p>Yurtiçi Kargo ile anlaşmalıyız.</p>');
-INSERT INTO #FaqLookup VALUES (20,N'Siparişimi iptal edebilir miyim?',N'<p>Kargoya verilmeden önce Hesabım üzerinden iptal edebilirsiniz.</p>');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#CouponLookup') IS NOT NULL DROP TABLE #CouponLookup;
 CREATE TABLE #CouponLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, Code NVARCHAR(40) NOT NULL, DiscountPercentage INT NOT NULL, Discount INT NOT NULL);
+""")
+    for i, (n, code, pct, disc) in enumerate(COUPONS, 1):
+        a(f"INSERT INTO #CouponLookup VALUES ({i},{sql_n(n)},{sql_n(code)},{pct},{disc});")
 
-INSERT INTO #CouponLookup VALUES (1,N'Hoş Geldin İndirimi',N'EIMC-HOSGELDIN',15,0);
-INSERT INTO #CouponLookup VALUES (2,N'Yaz Kampanyası',N'EIMC-YAZ25',25,0);
-INSERT INTO #CouponLookup VALUES (3,N'Ücretsiz Kargo',N'EIMC-KARGO',0,50);
-INSERT INTO #CouponLookup VALUES (4,N'Sezon Sonu',N'EIMC-SEZON20',20,0);
-INSERT INTO #CouponLookup VALUES (5,N'VIP Müşteri',N'EIMC-VIP15',15,0);
-INSERT INTO #CouponLookup VALUES (6,N'İlk Alışveriş',N'EIMC-ILK10',10,0);
-INSERT INTO #CouponLookup VALUES (7,N'Flash İndirim',N'EIMC-FLASH30',30,0);
-INSERT INTO #CouponLookup VALUES (8,N'Bahar Fırsatı',N'EIMC-BAHAR',12,0);
-INSERT INTO #CouponLookup VALUES (9,N'Öğrenci İndirimi',N'EIMC-OGRENCI',10,0);
-INSERT INTO #CouponLookup VALUES (10,N'Sepette 100 TL',N'EIMC-100TL',0,100);
-INSERT INTO #CouponLookup VALUES (11,N'Anne Günü',N'EIMC-ANNE',18,0);
-INSERT INTO #CouponLookup VALUES (12,N'Yılbaşı Özel',N'EIMC-YILBASI',22,0);
-
+    a("""
 IF OBJECT_ID(N'tempdb..#ListLookup') IS NOT NULL DROP TABLE #ListLookup;
 CREATE TABLE #ListLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, IsService BIT NOT NULL, IsValues BIT NOT NULL);
+""")
+    for i, (n, svc, vals) in enumerate(LISTS, 1):
+        a(f"INSERT INTO #ListLookup VALUES ({i},{sql_n(n)},{svc},{vals});")
 
-INSERT INTO #ListLookup VALUES (1,N'Ödeme Yöntemleri',0,1);
-INSERT INTO #ListLookup VALUES (2,N'Kargo Firmaları',1,1);
-INSERT INTO #ListLookup VALUES (3,N'İade Nedenleri',0,1);
-INSERT INTO #ListLookup VALUES (4,N'Beden Rehberi Notları',1,0);
-INSERT INTO #ListLookup VALUES (5,N'Mağaza Hizmetleri',1,0);
-INSERT INTO #ListLookup VALUES (6,N'Bildirim Kanalları',0,1);
-INSERT INTO #ListLookup VALUES (7,N'Ürün Durum Etiketleri',0,1);
-INSERT INTO #ListLookup VALUES (8,N'Müşteri Segmentleri',0,1);
-
+    a("""
 IF OBJECT_ID(N'tempdb..#ListItemLookup') IS NOT NULL DROP TABLE #ListItemLookup;
 CREATE TABLE #ListItemLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL);
+""")
+    for i, n in enumerate(LIST_ITEMS, 1):
+        a(f"INSERT INTO #ListItemLookup VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #ListItemLookup VALUES (1,N'Kredi Kartı');
-INSERT INTO #ListItemLookup VALUES (2,N'Havale / EFT');
-INSERT INTO #ListItemLookup VALUES (3,N'Kapıda Ödeme');
-INSERT INTO #ListItemLookup VALUES (4,N'Yurtiçi Kargo');
-INSERT INTO #ListItemLookup VALUES (5,N'Aras Kargo');
-INSERT INTO #ListItemLookup VALUES (6,N'MNG Kargo');
-INSERT INTO #ListItemLookup VALUES (7,N'Beden uymadı');
-INSERT INTO #ListItemLookup VALUES (8,N'Fikir değişikliği');
-INSERT INTO #ListItemLookup VALUES (9,N'Hasarlı ürün');
-INSERT INTO #ListItemLookup VALUES (10,N'Kalça ölçüsü kritik');
-INSERT INTO #ListItemLookup VALUES (11,N'Boyuna göre etek boyu');
-INSERT INTO #ListItemLookup VALUES (12,N'Hediye paketi');
-INSERT INTO #ListItemLookup VALUES (13,N'Express kargo');
-INSERT INTO #ListItemLookup VALUES (14,N'Montaj hizmeti');
-INSERT INTO #ListItemLookup VALUES (15,N'E-posta');
-INSERT INTO #ListItemLookup VALUES (16,N'SMS');
-INSERT INTO #ListItemLookup VALUES (17,N'Push bildirim');
-INSERT INTO #ListItemLookup VALUES (18,N'Stokta');
-INSERT INTO #ListItemLookup VALUES (19,N'Ön sipariş');
-INSERT INTO #ListItemLookup VALUES (20,N'Tükendi');
-INSERT INTO #ListItemLookup VALUES (21,N'Yeni üye');
-INSERT INTO #ListItemLookup VALUES (22,N'Tekrarlayan');
-INSERT INTO #ListItemLookup VALUES (23,N'Kurumsal');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#TemplateLookup') IS NOT NULL DROP TABLE #TemplateLookup;
 CREATE TABLE #TemplateLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL);
+""")
+    for i, n in enumerate(TEMPLATES, 1):
+        a(f"INSERT INTO #TemplateLookup VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #TemplateLookup VALUES (1,N'Giyim Şablonu');
-INSERT INTO #TemplateLookup VALUES (2,N'Elektronik Şablonu');
-INSERT INTO #TemplateLookup VALUES (3,N'Ev & Mobilya Şablonu');
-INSERT INTO #TemplateLookup VALUES (4,N'Kozmetik Şablonu');
-INSERT INTO #TemplateLookup VALUES (5,N'Spor Ekipman Şablonu');
-INSERT INTO #TemplateLookup VALUES (6,N'Genel Ürün Şablonu');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#ReviewSubject') IS NOT NULL DROP TABLE #ReviewSubject;
 CREATE TABLE #ReviewSubject (i INT NOT NULL PRIMARY KEY, Subject NVARCHAR(100) NOT NULL);
+""")
+    for i, n in enumerate(REVIEW_SUBJECTS):
+        a(f"INSERT INTO #ReviewSubject VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #ReviewSubject VALUES (0,N'Beklentimi karşıladı');
-INSERT INTO #ReviewSubject VALUES (1,N'Çok memnun kaldım');
-INSERT INTO #ReviewSubject VALUES (2,N'Fiyat/performans iyi');
-INSERT INTO #ReviewSubject VALUES (3,N'Kargo hızlıydı');
-INSERT INTO #ReviewSubject VALUES (4,N'Ürün kaliteli');
-INSERT INTO #ReviewSubject VALUES (5,N'Beden tam oldu');
-INSERT INTO #ReviewSubject VALUES (6,N'Tekrar alırım');
-INSERT INTO #ReviewSubject VALUES (7,N'Hediye olarak aldım');
-INSERT INTO #ReviewSubject VALUES (8,N'Fotoğraftaki gibi');
-INSERT INTO #ReviewSubject VALUES (9,N'Kullanışlı ürün');
-INSERT INTO #ReviewSubject VALUES (10,N'Tavsiye ederim');
-INSERT INTO #ReviewSubject VALUES (11,N'Biraz küçük geldi');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#ReviewBody') IS NOT NULL DROP TABLE #ReviewBody;
 CREATE TABLE #ReviewBody (i INT NOT NULL PRIMARY KEY, Body NVARCHAR(500) NOT NULL);
+""")
+    for i, n in enumerate(REVIEW_BODIES):
+        a(f"INSERT INTO #ReviewBody VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #ReviewBody VALUES (0,N'Ürün elime sorunsuz ulaştı, paketleme özenliydi. Bir süredir kullanıyorum, memnunum.');
-INSERT INTO #ReviewBody VALUES (1,N'Açıklamadaki özelliklerle uyumlu. Günlük kullanım için gayet yeterli.');
-INSERT INTO #ReviewBody VALUES (2,N'Kumaş kalitesi güzel, rengi ekranda gördüğüm gibi çıktı.');
-INSERT INTO #ReviewBody VALUES (3,N'Kargo 2 günde geldi. Montaj / kullanım kolay, öneririm.');
-INSERT INTO #ReviewBody VALUES (4,N'Fiyatına göre beklentimin üzerinde. Tekrar sipariş vereceğim.');
-INSERT INTO #ReviewBody VALUES (5,N'İade sürecini denemedim ama ürün beklentimi karşıladı.');
-INSERT INTO #ReviewBody VALUES (6,N'Eşim için aldım, çok beğendi. Hediye paketiniz de güzeldi.');
-INSERT INTO #ReviewBody VALUES (7,N'Birkaç yıkamadan sonra formunu korudu. Memnun kaldım.');
-INSERT INTO #ReviewBody VALUES (8,N'Ses kalitesi net, pil ömrü iddia edildiği gibi.');
-INSERT INTO #ReviewBody VALUES (9,N'Küçük eksikler olsa da genel olarak iyi bir alışveriş oldu.');
-
+    a("""
 IF OBJECT_ID(N'tempdb..#StreetLookup') IS NOT NULL DROP TABLE #StreetLookup;
 CREATE TABLE #StreetLookup (i INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL);
+""")
+    for i, n in enumerate(STREETS):
+        a(f"INSERT INTO #StreetLookup VALUES ({i},{sql_n(n)});")
 
-INSERT INTO #StreetLookup VALUES (0,N'Bağdat Caddesi');
-INSERT INTO #StreetLookup VALUES (1,N'Atatürk Bulvarı');
-INSERT INTO #StreetLookup VALUES (2,N'İstiklal Caddesi');
-INSERT INTO #StreetLookup VALUES (3,N'Cumhuriyet Mahallesi');
-INSERT INTO #StreetLookup VALUES (4,N'Göztepe Sokak');
-INSERT INTO #StreetLookup VALUES (5,N'Çankaya Caddesi');
-INSERT INTO #StreetLookup VALUES (6,N'Alsancak Mahallesi');
-INSERT INTO #StreetLookup VALUES (7,N'Nilüfer Caddesi');
-INSERT INTO #StreetLookup VALUES (8,N'Lara Bulvarı');
-INSERT INTO #StreetLookup VALUES (9,N'Tepebaşı Sokak');
-
+    # Cap lookups vs configured counts
+    a("""
 DECLARE @BrandLookupCount INT = (SELECT COUNT(*) FROM #BrandLookup);
 DECLARE @CategoryLookupCount INT = (SELECT COUNT(*) FROM #CategoryLookup);
 DECLARE @ProductLookupCount INT = (SELECT COUNT(*) FROM #ProductLookup);
@@ -749,8 +767,10 @@ DECLARE @ReviewBodyCount INT = (SELECT COUNT(*) FROM #ReviewBody);
 DECLARE @StreetCount INT = (SELECT COUNT(*) FROM #StreetLookup);
 
 BEGIN TRANSACTION;
+""")
 
-
+    # Section 1: Identity
+    a("""
 /* ============================================================
    1) ASP.NET Identity roles + users
    ============================================================ */
@@ -835,8 +855,10 @@ BEGIN
       AND @CustomerRoleId IS NOT NULL
       AND NOT EXISTS (SELECT 1 FROM dbo.AspNetUserRoles ur WHERE ur.UserId = u.Id AND ur.RoleId = @CustomerRoleId);
 END;
+""")
 
-
+    # FileStorages
+    a("""
 /* ============================================================
    2) FileStorages
    ============================================================ */
@@ -868,8 +890,10 @@ WHERE n.n <= @SeedFiles;
 DECLARE @MinFileId INT = (SELECT MIN(Id) FROM dbo.FileStorages WHERE FileUrl LIKE N'/media/seed/%');
 DECLARE @MaxFileId INT = (SELECT MAX(Id) FROM dbo.FileStorages WHERE FileUrl LIKE N'/media/seed/%');
 DECLARE @FileCount INT = @MaxFileId - @MinFileId + 1;
+""")
 
-
+    # Templates
+    a("""
 /* ============================================================
    3) Templates
    ============================================================ */
@@ -878,15 +902,17 @@ INSERT INTO dbo.Templates (Name, CreatedDate, UpdatedDate, IsActive, Position, L
 SELECT
     tl.Name,
     @Now, @Now, 1, n.n, @Lang,
-    N'<!--eimece-seed--><template><fields><field name="Renk" type="text"/><field name="Beden" type="text"/><field name="Malzeme" type="text"/></fields></template>'
+    N'<!--eimece-seed--><template><fields><field name=\"Renk\" type=\"text\"/><field name=\"Beden\" type=\"text\"/><field name=\"Malzeme\" type=\"text\"/></fields></template>'
 FROM #Nums n
 INNER JOIN #TemplateLookup tl ON tl.rn = ((n.n - 1) % @TemplateLookupCount) + 1
 WHERE n.n <= @SeedTemplates;
 
 DECLARE @MinTemplateId INT = (SELECT MIN(Id) FROM dbo.Templates WHERE TemplateXml LIKE N'%<!--eimece-seed-->%');
 DECLARE @TemplateCount INT = (SELECT COUNT(*) FROM dbo.Templates WHERE TemplateXml LIKE N'%<!--eimece-seed-->%');
+""")
 
-
+    # Tags
+    a("""
 /* ============================================================
    4) TagCategories + Tags
    ============================================================ */
@@ -913,8 +939,10 @@ WHERE n.n <= @SeedTags;
 
 DECLARE @MinTagId INT = (SELECT MIN(Id) FROM dbo.Tags WHERE Position >= 900000 AND Position < 910000);
 DECLARE @TagCount INT = (SELECT COUNT(*) FROM dbo.Tags WHERE Position >= 900000 AND Position < 910000);
+""")
 
-
+    # Brands
+    a("""
 /* ============================================================
    5) Brands
    ============================================================ */
@@ -954,8 +982,10 @@ BEGIN
     RAISERROR(N'Seed Brands/Tags were not created; cannot link products/stories.', 16, 1);
     RETURN;
 END;
+""")
 
-
+    # Categories
+    a("""
 /* ============================================================
    6) ProductCategories (tree: first roots from lookup, rest children)
    ============================================================ */
@@ -1004,8 +1034,10 @@ SET ParentId = CASE
 END
 FROM dbo.ProductCategories pc
 INNER JOIN SeedCats sc ON sc.Id = pc.Id;
+""")
 
-
+    # Products - the big one
+    a("""
 /* ============================================================
    7) Products
    ============================================================ */
@@ -1144,8 +1176,10 @@ INNER JOIN dbo.Brands b ON b.Id = p.BrandId
 WHERE p.AddUserId = @SeedMarker
   AND p.Position <= @BrandCount
   AND b.AddUserId = @SeedMarker;
+""")
 
-
+    # Product children
+    a("""
 /* ============================================================
    8) ProductFiles / ProductTags / ProductSpecifications / ProductComments
    ============================================================ */
@@ -1230,8 +1264,10 @@ INNER JOIN #LastNames ln ON ln.i = (n.n * 3) % @LastNameCount
 INNER JOIN #ReviewSubject rs ON rs.i = (n.n - 1) % @ReviewSubjectCount
 INNER JOIN #ReviewBody rb ON rb.i = (n.n - 1) % @ReviewBodyCount
 WHERE n.n <= @SeedProductComments;
+""")
 
-
+    # Stories
+    a("""
 /* ============================================================
    9) StoryCategories / Stories / StoryFiles / StoryTags
    ============================================================ */
@@ -1313,8 +1349,10 @@ INSERT INTO dbo.StoryTags (StoryId, TagId)
 SELECT DISTINCT stp.StoryId, stp.TagId
 FROM StoryTagPicks stp
 WHERE stp.TagPickRn <= stp.TagCount;
+""")
 
-
+    # Menus
+    a("""
 /* ============================================================
    10) Menus / MenuFiles / MainPageImages
    ============================================================ */
@@ -1388,8 +1426,10 @@ SELECT
 FROM #Nums n
 INNER JOIN #SlideLookup sl ON sl.rn = ((n.n - 1) % @SlideLookupCount) + 1
 WHERE n.n <= @SeedMainPageImages;
+""")
 
-
+    # FileStorageTags + Settings + Mail
+    a("""
 /* ============================================================
    11) FileStorageTags
    ============================================================ */
@@ -1523,8 +1563,10 @@ SELECT
     @AdminUserId, @SeedMarker, 0, 0
 FROM #Nums n
 WHERE n.n <= @SeedMailTemplateFillers;
+""")
 
-
+    # Lists, FAQs, etc.
+    a("""
 /* ============================================================
    14) Lists / ListItems
    ============================================================ */
@@ -1598,8 +1640,10 @@ SELECT
 FROM #Nums n
 INNER JOIN #CouponLookup cl ON cl.rn = ((n.n - 1) % @CouponLookupCount) + 1
 WHERE n.n <= @SeedCoupons;
+""")
 
-
+    # Customers / Addresses
+    a("""
 /* ============================================================
    16) Customers / Addresses
    ============================================================ */
@@ -1662,8 +1706,10 @@ WHERE n.n <= @SeedAddresses;
 
 DECLARE @MinAddressId INT = (SELECT MIN(Id) FROM dbo.Addresses WHERE Position >= 900000 AND Position < 1000000);
 DECLARE @AddressCount INT = (SELECT COUNT(*) FROM dbo.Addresses WHERE Position >= 900000 AND Position < 1000000);
+""")
 
-
+    # Orders
+    a("""
 /* ============================================================
    17) Orders / OrderProducts / ShoppingCarts
    ============================================================ */
@@ -1770,8 +1816,10 @@ FROM #Nums n
 INNER JOIN #FirstNames fn ON fn.i = (n.n - 1) % @FirstNameCount
 INNER JOIN #LastNames ln ON ln.i = (n.n - 1) % @LastNameCount
 WHERE n.n <= @SeedShoppingCarts;
+""")
 
-
+    # Browser + ShortUrls + AppLogs + Summary
+    a("""
 /* ============================================================
    18) Browser push stack (optional tables)
    ============================================================ */
@@ -1977,3 +2025,114 @@ PRINT N'  admin@eimece.test / Admin';
 PRINT N'  editor@eimece.test / NormalUser';
 PRINT N'  customer1@eimece.test / Customer';
 PRINT CONVERT(VARCHAR(30), GETDATE(), 121) + N' — Seed complete.';
+""")
+
+    OUT.write_text("\n".join(lines), encoding="utf-8")
+    print(f"Wrote {OUT} ({OUT.stat().st_size} bytes, {len(lines)} lines)")
+
+
+def cleanup_sql_body() -> str:
+    """Shared cleanup predicates used by SeedDummyData inline cleanup.
+
+    Includes legacy Name LIKE N'SEED %' so older seeds are removed before re-seed.
+    """
+    return r"""
+    IF OBJECT_ID(N'dbo.BrowserNotificationFeedBacks', N'U') IS NOT NULL
+        DELETE FROM dbo.BrowserNotificationFeedBacks WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.BrowserNotifications', N'U') IS NOT NULL
+        DELETE FROM dbo.BrowserNotifications WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.BrowserSubscribers', N'U') IS NOT NULL
+        DELETE FROM dbo.BrowserSubscribers WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.BrowserSubscriptions', N'U') IS NOT NULL
+        DELETE FROM dbo.BrowserSubscriptions WHERE Position >= 900000 AND Position < 910000 OR Subject = N'mailto:admin@eimece.test' OR Name LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.OrderProducts', N'U') IS NOT NULL
+        DELETE op FROM dbo.OrderProducts op INNER JOIN dbo.Orders o ON o.Id = op.OrderId WHERE o.OrderNumber LIKE N'EIMC-%' OR o.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Orders', N'U') IS NOT NULL
+        DELETE FROM dbo.Orders WHERE OrderNumber LIKE N'EIMC-%' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.ShoppingCarts', N'U') IS NOT NULL
+        DELETE FROM dbo.ShoppingCarts WHERE UserId LIKE N'seed%' OR Name LIKE N'SEED %' OR UserId IN (N'seed-admin-000000000001', N'seed-editor-00000000001', N'seed-customer-0000000001');
+
+    IF OBJECT_ID(N'dbo.ProductComments', N'U') IS NOT NULL
+        DELETE FROM dbo.ProductComments WHERE Email LIKE N'%@eimece.test' OR UserId LIKE N'seed%' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.ProductSpecifications', N'U') IS NOT NULL
+        DELETE ps FROM dbo.ProductSpecifications ps INNER JOIN dbo.Products p ON p.Id = ps.ProductId WHERE p.AddUserId = N'SEED' OR p.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.ProductTags', N'U') IS NOT NULL
+        DELETE pt FROM dbo.ProductTags pt INNER JOIN dbo.Products p ON p.Id = pt.ProductId WHERE p.AddUserId = N'SEED' OR p.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.ProductFiles', N'U') IS NOT NULL
+        DELETE pf FROM dbo.ProductFiles pf INNER JOIN dbo.Products p ON p.Id = pf.ProductId WHERE p.AddUserId = N'SEED' OR p.Name LIKE N'SEED %' OR pf.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Products', N'U') IS NOT NULL
+        DELETE FROM dbo.Products WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.ProductCategories', N'U') IS NOT NULL
+        DELETE FROM dbo.ProductCategories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Brands', N'U') IS NOT NULL
+        DELETE FROM dbo.Brands WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.StoryTags', N'U') IS NOT NULL
+        DELETE st FROM dbo.StoryTags st INNER JOIN dbo.Stories s ON s.Id = st.StoryId WHERE s.AddUserId = N'SEED' OR s.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.StoryFiles', N'U') IS NOT NULL
+        DELETE sf FROM dbo.StoryFiles sf INNER JOIN dbo.Stories s ON s.Id = sf.StoryId WHERE s.AddUserId = N'SEED' OR s.Name LIKE N'SEED %' OR sf.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Stories', N'U') IS NOT NULL
+        DELETE FROM dbo.Stories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.StoryCategories', N'U') IS NOT NULL
+        DELETE FROM dbo.StoryCategories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.MenuFiles', N'U') IS NOT NULL
+        DELETE mf FROM dbo.MenuFiles mf INNER JOIN dbo.Menus m ON m.Id = mf.MenuId WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Menus', N'U') IS NOT NULL
+        DELETE FROM dbo.Menus WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.MainPageImages', N'U') IS NOT NULL
+        DELETE FROM dbo.MainPageImages WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.FileStorageTags', N'U') IS NOT NULL
+        DELETE fst FROM dbo.FileStorageTags fst INNER JOIN dbo.FileStorages fs ON fs.Id = fst.FileStorageId WHERE fs.FileUrl LIKE N'/media/seed/%' OR fs.Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Tags', N'U') IS NOT NULL
+        DELETE FROM dbo.Tags WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.TagCategories', N'U') IS NOT NULL
+        DELETE FROM dbo.TagCategories WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.ListItems', N'U') IS NOT NULL
+        DELETE FROM dbo.ListItems WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Lists', N'U') IS NOT NULL
+        DELETE FROM dbo.Lists WHERE Position >= 900000 AND Position < 910000 OR Name LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.Faqs', N'U') IS NOT NULL
+        DELETE FROM dbo.Faqs WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Subscribers', N'U') IS NOT NULL
+        DELETE FROM dbo.Subscribers WHERE Email LIKE N'%@eimece.test' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Coupons', N'U') IS NOT NULL
+        DELETE FROM dbo.Coupons WHERE Code LIKE N'EIMC-%' OR Name LIKE N'SEED %' OR Code LIKE N'SEED%';
+    IF OBJECT_ID(N'dbo.Customers', N'U') IS NOT NULL
+        DELETE FROM dbo.Customers WHERE Email LIKE N'%@eimece.test' OR UserId LIKE N'seed%' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Addresses', N'U') IS NOT NULL
+        DELETE FROM dbo.Addresses WHERE Position >= 900000 AND Position < 1000000 OR Name LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.MailTemplates', N'U') IS NOT NULL
+        DELETE FROM dbo.MailTemplates WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.Settings', N'U') IS NOT NULL
+        DELETE FROM dbo.Settings WHERE Name LIKE N'Demo: %' OR Name LIKE N'SEED %' OR SettingKey LIKE N'SEED_%' OR SettingKey = N'__EIMECE_SEED__';
+    IF OBJECT_ID(N'dbo.Templates', N'U') IS NOT NULL
+        DELETE FROM dbo.Templates WHERE TemplateXml LIKE N'%<!--eimece-seed-->%' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.FileStorages', N'U') IS NOT NULL
+        DELETE FROM dbo.FileStorages WHERE FileUrl LIKE N'/media/seed/%' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.ShortUrls', N'U') IS NOT NULL
+        DELETE FROM dbo.ShortUrls WHERE Position >= 900000 AND Position < 910000 OR Url LIKE N'https://eimece.test/%' OR Name LIKE N'SEED %';
+    IF OBJECT_ID(N'dbo.AppLogs', N'U') IS NOT NULL
+        DELETE FROM dbo.AppLogs WHERE UserName LIKE N'seed%' OR EventMessage LIKE N'SEED %';
+
+    IF OBJECT_ID(N'dbo.AspNetUserRoles', N'U') IS NOT NULL
+        DELETE ur FROM dbo.AspNetUserRoles ur INNER JOIN dbo.AspNetUsers u ON u.Id = ur.UserId
+        WHERE u.UserName LIKE N'seed%' OR u.Email LIKE N'%@eimece.test';
+    IF OBJECT_ID(N'dbo.AspNetUserClaims', N'U') IS NOT NULL
+        DELETE uc FROM dbo.AspNetUserClaims uc INNER JOIN dbo.AspNetUsers u ON u.Id = uc.UserId
+        WHERE u.UserName LIKE N'seed%' OR u.Email LIKE N'%@eimece.test';
+    IF OBJECT_ID(N'dbo.AspNetUserLogins', N'U') IS NOT NULL
+        DELETE ul FROM dbo.AspNetUserLogins ul INNER JOIN dbo.AspNetUsers u ON u.Id = ul.UserId
+        WHERE u.UserName LIKE N'seed%' OR u.Email LIKE N'%@eimece.test';
+    IF OBJECT_ID(N'dbo.AspNetUsers', N'U') IS NOT NULL
+        DELETE FROM dbo.AspNetUsers WHERE UserName LIKE N'seed%' OR Email LIKE N'%@eimece.test';
+"""
+
+
+if __name__ == "__main__":
+    main()

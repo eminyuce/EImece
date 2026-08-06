@@ -45,7 +45,7 @@
 
     <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
     <input type="hidden" id="CookieLanguage" value="@AppConfig.MainLanguage" />
-    @Html.AntiForgeryToken()
+    <form id="__AjaxAntiForgeryForm" style="display:none">@Html.AntiForgeryToken()</form>
 
     @Html.Partial("_AdminSidebar")
 
@@ -59,13 +59,25 @@
 
     <script>
         (function () {
-            var token = $('input[name="__RequestVerificationToken"]').val();
-            if (token && window.jQuery) {
+            function wireAjaxAntiForgery() {
+                if (!window.jQuery) {
+                    return;
+                }
+                var token = $('#__AjaxAntiForgeryForm input[name="__RequestVerificationToken"]').val()
+                    || $('input[name="__RequestVerificationToken"]').first().val();
+                if (!token) {
+                    return;
+                }
                 $.ajaxSetup({
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader('RequestVerificationToken', token);
                     }
                 });
+            }
+            if (window.jQuery) {
+                wireAjaxAntiForgery();
+            } else {
+                document.addEventListener('DOMContentLoaded', wireAjaxAntiForgery);
             }
         })();
 
