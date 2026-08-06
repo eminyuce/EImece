@@ -1263,6 +1263,9 @@
   <data name="System" xml:space="preserve">
     <value>Sistem</value>
   </data>
+  <data name="SystemMonitoring" xml:space="preserve">
+    <value>Sistem İzleme</value>
+  </data>
   <data name="OpenMenu" xml:space="preserve">
     <value>Menüyü aç</value>
   </data>

@@ -3148,6 +3148,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sistem İzleme.
+        /// </summary>
+        public static string SystemMonitoring {
+            get {
+                return ResourceManager.GetString("SystemMonitoring", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Sistem ayarları.
         /// </summary>
         public static string SystemSettings {
