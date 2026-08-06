@@ -8,7 +8,7 @@
 @using EImece.Domain.Helpers;
 
 @{
-    ViewBag.Title = "Shopping Carts";
+    ViewBag.Title = AdminResource.ShoppingCarts;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
@@ -26,7 +26,7 @@
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
 }
 
-<h2>Shopping Cards</h2>
+<h2>@AdminResource.ShoppingCarts</h2>
 <hr class="adminLine" />
 
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -81,8 +81,8 @@
             .RenderValueAs(d => Html.ActionLink(" ", "Detail", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-xs glyphicon glyphicon-info-sign" }));
 
     columns.Add(o => o.Name).Titled(AdminResource.Name);
-    columns.Add(o => o.OrderGuid).Titled("Order GUID");
-    columns.Add(o => o.UserId).Titled("User ID");
+    columns.Add(o => o.OrderGuid).Titled("Sipariş GUID");
+    columns.Add(o => o.UserId).Titled("Kullanıcı Id");
 
     columns.Add(o => o.IsActive)
         .Titled(AdminResource.IsActive)
