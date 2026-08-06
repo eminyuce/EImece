@@ -70,6 +70,12 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult UpdatePrices(UpdatePriceRequest request)
         {
+            if (!IsProductPriceEnabled)
+            {
+                Logger.Warn("UpdatePrices blocked because IsProductPriceEnable is false");
+                return Json(new { success = false, message = "Fiyat işlemleri devre dışı." }, JsonRequestBehavior.AllowGet);
+            }
+
             Logger.Info($"UpdatePrices called by {User?.Identity?.Name ?? "-"} with Percentage={request?.PercentageOfIncreaseOrDecrease}, ProductId={request?.ProductId}, CategoryId={request?.CategoryId}, BrandId={request?.BrandId}, TagId={request?.TagId}");
             try
             {

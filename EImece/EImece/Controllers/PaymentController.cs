@@ -79,6 +79,23 @@ namespace EImece.Controllers
             SignInManager = signInManager;
         }
 
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (!IsProductPriceEnabled)
+            {
+                if (filterContext.IsChildAction)
+                {
+                    filterContext.Result = new ContentResult { Content = string.Empty };
+                    return;
+                }
+
+                filterContext.Result = RedirectToAction("Index", "Home");
+                return;
+            }
+
+            base.OnActionExecuting(filterContext);
+        }
+
         public ActionResult ShoppingCart()
         {
             ShoppingCartSession shoppingCart = GetShoppingCart();

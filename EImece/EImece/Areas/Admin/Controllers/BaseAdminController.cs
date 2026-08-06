@@ -126,9 +126,38 @@ namespace EImece.Areas.Admin.Controllers
             return base.BeginExecute(requestContext, callback, state);
         }
 
+        private static readonly HashSet<string> PriceRelatedAdminControllers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Coupons",
+            "Orders",
+            "Customers",
+            "ShoppingCarts",
+            "Report"
+        };
+
+        protected bool IsProductPriceEnabled
+        {
+            get
+            {
+                return SettingService.GetSettingByKey(Constants.IsProductPriceEnable).ToBool(true);
+            }
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+
+            if (!IsProductPriceEnabled)
+            {
+                var controllerName = filterContext.RouteData.Values["controller"] as string ?? string.Empty;
+                if (PriceRelatedAdminControllers.Contains(controllerName))
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                        new RouteValueDictionary(new { area = "Admin", controller = "Dashboard", action = "Index" }));
+                    return;
+                }
+            }
+
             base.OnActionExecuting(filterContext);
         }
 
