@@ -660,6 +660,25 @@ input[name='checkboxGrid'] {
         border: 1px solid #000000;
     }
 
+/* Bare EditorFor(bool) checkboxes must stay in normal flow. Bootstrap's
+   .checkbox input { position:absolute; margin-left:-20px } is for inputs
+   nested inside a padded <label> and breaks form-horizontal columns. */
+.form-horizontal .checkbox > input[type="checkbox"],
+.form-horizontal .checkbox > input.check-box,
+.form-horizontal .col-md-10 > input[type="checkbox"],
+.form-horizontal .col-md-10 > input.check-box {
+    position: static !important;
+    margin-left: 0 !important;
+    margin-top: 7px;
+    vertical-align: middle;
+}
+
+.form-horizontal .CodeMirror {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 
 /* Proper spacing between rows and inside inputs */
 .form-horizontal .form-group {
@@ -730,10 +749,12 @@ input[type="radio"] {
     min-width: 110px;
 }
 
-/* Fix for checkbox label alignment */
-label[for^="IsActive"],
-label[for^="MainPage"],
-label[for^="ImageState"] {
+/* Inline label+checkbox pairs only (e.g. Menus SaveOrEdit in col-md-3).
+   Must not apply to form-horizontal .control-label.col-md-* or the
+   Bootstrap column float layout breaks and the checkbox drops out of grid. */
+label[for^="IsActive"]:not(.control-label),
+label[for^="MainPage"]:not(.control-label),
+label[for^="ImageState"]:not(.control-label) {
     display: inline-block;
     margin-right: 5px;
     font-weight: normal;
