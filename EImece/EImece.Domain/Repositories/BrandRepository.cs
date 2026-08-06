@@ -47,10 +47,13 @@ namespace EImece.Domain.Repositories
             return await brands.ToListAsync().ConfigureAwait(false);
         }
 
-        public List<Brand> GetBrandsIfAnyProductExists(int lang)
+        public List<Brand> GetBrandsIfAnyProductExists(int lang, int categoryId = 0)
         {
             var brandsWithProducts = GetAllReadOnly()
-                .Where(r => r.Lang == lang && r.Products.Any())
+                .Where(r => r.Lang == lang &&
+                    (categoryId > 0
+                        ? r.Products.Any(p => p.ProductCategoryId == categoryId)
+                        : r.Products.Any()))
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.UpdatedDate);
 
