@@ -36,52 +36,43 @@
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
 
-<div class="row">
-    <div class="col-md-2">
-        @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
+<div class="admin-listing-layout">
+    <aside class="admin-listing-sidebar">
+        <div class="admin-listing-card">
+            @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
                             {"UrlPattern","/admin/products/index/"}
                           ,{"IsExcelButtonEnabled",true}})
-
-        <span id="treeClickContainer"></span>
-    </div>
-    <div class="col-md-10">
+            <span id="treeClickContainer"></span>
+        </div>
+    </aside>
+    <div class="admin-listing-main">
 
         @if (selectedCategory != null)
         {
-            <span>
-                @{
-                    <span>
-                        @AdminResource.SelectedCategory
-                    </span>
-                    <b style="color:red;">
-                        @String.Format("{0}", selectedCategory.Name)
-                    </b>
-                }
-
-                <a href="@Url.Action("Index", "Products",new { id=0 })">
-                    <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
+            <div class="admin-filter-chip">
+                <span>@AdminResource.SelectedCategory</span>
+                <strong>@selectedCategory.Name</strong>
+                <a href="@Url.Action("Index", "Products",new { id=0 })" title="@AdminResource.Clear">
+                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
                 </a>
-            </span>
-            <hr />
-
+            </div>
         }
 
         @if (brands != null)
         {
-            <span>
-                @AdminResource.Brands
-            </span>
-            var index = 1;
-            foreach (var b in brands)
-            {
-                <a href="@Url.Action("Index", "Products", new { id = (selectedCategory == null ? 0 : selectedCategory.Id), brandId = b.Id })">
-                    <b style="color:red;">
-                        @(index + ". " + b.Name)
-                    </b>
-                </a>
-                <span>&nbsp;</span> <!-- Adds space between brand names -->
-                index++;
-            }
+            <div class="admin-brand-filters">
+                <span>@AdminResource.Brands</span>
+                @{
+                    var index = 1;
+                    foreach (var b in brands)
+                    {
+                        <a href="@Url.Action("Index", "Products", new { id = (selectedCategory == null ? 0 : selectedCategory.Id), brandId = b.Id })">
+                            @(index + ". " + b.Name)
+                        </a>
+                        index++;
+                    }
+                }
+            </div>
         }
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -91,10 +82,15 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"ProductState",true}
-            ,{"SetStateOnOrOff",true} ,{"IsExcelButtonEnabled",true}})
+            ,{"SetStateOnOrOff",true}
+            ,{"IsExcelButtonEnabled",true}
+            ,{"NewRecordText", "Yeni Ürün"}})
 
-        @Html.ActionLink(AdminResource.MoveProductsInTrees, "MoveProductsInTrees")
-        <div class="panel panel-primary">
+        <a class="admin-secondary-link" href="@Url.Action("MoveProductsInTrees")">
+            <i class="fa fa-exchange" aria-hidden="true"></i>
+            @AdminResource.MoveProductsInTrees
+        </a>
+        <div class="panel panel-primary admin-grid-card">
 
             @Html.Partial("pGridDropDown", baseList)
 
@@ -103,7 +99,7 @@
        columns.Add()
 .Encoded(false)
 .Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill'>{0}</span>", ++rowIndex));
 
        columns.Add(o => o.Id, true);
 
@@ -120,17 +116,17 @@
            .Encoded(false)
             .Sanitized(false)
       .RenderValueAs(d =>
-                        @<div>
-
-                            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "", @target = "_blank" })
-                            @if (!string.IsNullOrEmpty(d.NameLong))
-                                 {
-                                <div style="max-width:220px">
-                                    @string.Format("{0}", d.NameLong)
+                        @<div class="admin-product-cell">
+                            @ProductThumb(d)
+                            <div class="admin-product-meta">
+                                @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "admin-product-name", @target = "_blank" })
+                                @if (!string.IsNullOrEmpty(d.NameLong))
+                                {
+                                    <div class="admin-product-sub">@d.NameLong</div>
+                                }
+                                <div class="admin-row-actions">
+                                    @GridToolsColumnAlt(d, controllerName)
                                 </div>
-                                 }
-                            <div>
-                                @GridToolsColumnAlt(d, controllerName)
                             </div>
                         </div>
 
@@ -161,7 +157,10 @@
            }
 
            columns.Add(c => c.ProductCode)
-           .Titled(AdminResource.ProductCode);
+           .Titled(AdminResource.ProductCode)
+           .Encoded(false)
+           .Sanitized(false)
+           .RenderValueAs(o => string.Format("<span class='admin-code-text'>{0}</span>", System.Web.HttpUtility.HtmlEncode(o.ProductCode ?? "")));
 
            columns.Add(o => o.State)
             .Titled(AdminResource.ProductState)
@@ -169,7 +168,7 @@
             .Css("smallGridColumn")
             .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
             Sanitized(false)
-            .RenderValueAs(o => String.Format("<div  Product-State-Id='{0}'    name='ProductState'>{1}</div>", o.Id, GetProductStateResourceText(o.StateEnum)));
+            .RenderValueAs(o => String.Format("<div class='admin-meta-text' Product-State-Id='{0}' name='ProductState'>{1}</div>", o.Id, GetProductStateResourceText(o.StateEnum)));
 
            columns.Add(o => o.Position).Titled(AdminResource.Position)
      .Encoded(false).
@@ -196,40 +195,54 @@
         </div>
     </div>
 </div>
+@helper ProductThumb(Product o)
+{
+    Boolean IsMainImageExists = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
+    if (IsMainImageExists)
+    {
+        var imgUrl = o.GetCroppedImageUrl(o.MainImageId, 96, 96);
+        <div class="admin-product-thumb">
+            <img src="@imgUrl" alt="@o.Name" width="48" height="48" loading="lazy" />
+        </div>
+    }
+    else
+    {
+        <div class="admin-product-thumb">
+            <span class="admin-product-thumb-empty">@AdminResource.NoImage</span>
+        </div>
+    }
+}
 @helper DisplayPriceColumn(Product o)
 {
     if (o.HasDiscount)
     {
-        <span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
-        <br />
-        <span class="badge badge-pill badge-warning mr-2 mb-2">
-            @string.Format("%{0} {1}", o.DiscountPercentage, Resource.Discount)
-        </span>
-        <br />
-        <del class="lead text-muted mr-2">
-            @o.Price.CurrencySign()
-        </del>
-
+        <div class="admin-price-cell">
+            <span class="admin-price-current">@o.PriceWithDiscount.CurrencySign()</span>
+            <span class="admin-discount-pill">@string.Format("%{0} {1}", o.DiscountPercentage, Resource.Discount)</span>
+            <span class="admin-price-original">@o.Price.CurrencySign()</span>
+        </div>
     }
     else
     {
-        <span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
+        <div class="admin-price-cell">
+            <span class="admin-price-current">@o.PriceWithDiscount.CurrencySign()</span>
+        </div>
     }
 
 }
 @helper GridImageActiveColumn(Product o, String controllerName)
 {
-    <ul>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
+    <ul class="admin-status-list">
+        <li class="admin-status-item">
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span class='admin-status-label'>{3}</span>",
                                                     o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
         </li>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
+        <li class="admin-status-item">
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span class='admin-status-label'>{3}</span>",
                                                     o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
         </li>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
+        <li class="admin-status-item">
+            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span class='admin-status-label'>{3}</span>",
                                                     o.Id, (o.IsCampaign ? Constants.OkStyle : Constants.CancelStyle), o.IsCampaign, AdminResource.IsCampaign))
         </li>
     </ul>
@@ -241,9 +254,9 @@
     Boolean IsMainImageExists = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
     if (IsMainImageExists)
     {
-        <ul>
-            <li>
-                @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
+        <ul class="admin-status-list">
+            <li class="admin-status-item">
+                @Html.Raw(String.Format("<span class='admin-status-label'>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
                                                         o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
             </li>
             <li>
@@ -253,15 +266,7 @@
     }
     else
     {
-        <ul>
-            <li>
-                <b style="font-size:0.8em;">
-
-                    @AdminResource.NoImage
-                </b>
-            </li>
-        </ul>
-
+        <span class="admin-empty-media">@AdminResource.NoImage</span>
     }
 
 }
@@ -272,15 +277,15 @@
     <div class="gridToolBox">
 
         <span>
-            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white " })
+            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white ", @title = AdminResource.GridImagesText })
         </span>
         <span>
-            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
+            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white ", @title = AdminResource.GridEditText })
         </span>
         @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId > 0)
         {
             <span>
-                @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
+                @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus", @title = AdminResource.GridDetailText })
             </span>
         }
         @if (UserRoleHelper.IsDeletedEnableRoles())

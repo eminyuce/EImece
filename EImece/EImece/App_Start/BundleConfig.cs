@@ -48,6 +48,7 @@ namespace EImece
                       "~/Content/checkBoxStyle.css",
                       "~/Content/adminSite.css",
                       "~/Content/adminShell.css",
+                      "~/Content/adminModern.css",
                       "~/Content/adminReports.css"
                       ));
 

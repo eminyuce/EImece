@@ -59,7 +59,7 @@ input.GridOrderingTextbox {
 }*/
 
 .gridChecked {
-    background: rgba(38,185,154,.16) !important;
+    background: #eff8ff !important;
 }
 
 .container {
@@ -212,13 +212,13 @@ input[name='checkboxGrid'] {
 }
 
 .gridNotActiveIcon {
-    color: red;
-    font-size: 1.5em;
+    color: #dc2626;
+    font-size: 1.15em;
 }
 
 .gridActiveIcon {
-    color: green;
-    font-size: 1.5em;
+    color: #059669;
+    font-size: 1.15em;
 }
 
 .MainPage > div {
@@ -739,83 +739,7 @@ label[for^="ImageState"] {
     font-weight: normal;
 }
 
-/* Admin grid bulk-action toolbar */
-.admin-grid-ops .admin-grid-ops-top {
-    margin-bottom: 10px;
-}
-
-.admin-grid-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px 12px;
-}
-
-.admin-grid-toolbar-group {
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px;
-    padding-right: 12px;
-    margin-right: 4px;
-    border-right: 1px solid #c5d6e8;
-}
-
-.admin-grid-toolbar-group:last-child,
-.admin-grid-toolbar-excel {
-    border-right: none;
-    padding-right: 0;
-    margin-right: 0;
-}
-
-.admin-grid-toolbar-excel {
-    margin-left: auto;
-}
-
-.admin-grid-toolbar .admin-grid-state-select,
-.admin-grid-ops select.admin-grid-state-select {
-    width: auto;
-    min-width: 140px;
-    max-width: 220px;
-    display: inline-block;
-    height: 30px;
-}
-
-.admin-grid-toolbar .btn {
-    white-space: nowrap;
-}
-
-.admin-grid-toolbar .btn img {
-    height: 16px;
-    margin-right: 4px;
-    vertical-align: text-top;
-}
-
-.admin-grid-toolbar-product {
-    background: #f5f9fc;
-    border: 1px solid #d9e6f2;
-    border-radius: 3px;
-    padding: 6px 8px;
-}
-
-@media (max-width: 767px) {
-    .admin-grid-toolbar-group {
-        border-right: none;
-        padding-right: 0;
-        margin-right: 0;
-        width: 100%;
-    }
-
-    .admin-grid-toolbar-excel {
-        margin-left: 0;
-    }
-
-    .admin-grid-toolbar .admin-grid-state-select,
-    .admin-grid-ops select.admin-grid-state-select {
-        width: 100%;
-        max-width: none;
-    }
-}
+/* Admin grid bulk-action toolbar — see adminModern.css for modern layout */
 
 /* Media uploaded-files preview in grid */
 .media-file-preview {

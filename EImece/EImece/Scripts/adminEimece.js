@@ -66,17 +66,34 @@ $(document).ready(function () {
     bindProductDetailToolTip();
     bindCKEDITOR();
     searchAutoComplete();
+    function updateAdminSelectionBar() {
+        var count = $("input[name=checkboxGrid]:checked").length;
+        var $bar = $("#adminSelectionBar");
+        var $count = $("#adminSelectionCount");
+        if ($count.length) {
+            $count.text(count);
+        }
+        if ($bar.length) {
+            if (count > 0) {
+                $bar.addClass("is-visible");
+            } else {
+                $bar.removeClass("is-visible");
+            }
+        }
+    }
     $("input[name=checkboxGrid]").each(function () {
-        $(this).off("click");
-        $(this).on("click", function (e) {
+        $(this).off("click change");
+        $(this).on("click change", function (e) {
             var m = $(this).is(':checked');
             if (m) {
                 $(this).parents("tr:first").addClass('gridChecked');
             } else {
                 $(this).parents("tr:first").removeClass('gridChecked');
             }
+            updateAdminSelectionBar();
         });
     });
+    updateAdminSelectionBar();
     function bindCKEDITOR() {
         $('[data-ckeditor-field]').each(function () {
             // CKEDITOR.replace(this);
@@ -174,6 +191,7 @@ $(document).ready(function () {
             $(this).parents("tr:first").removeClass('gridChecked');
             var m = $(this).prop('checked', false);
         });
+        updateAdminSelectionBar();
     });
     $("#SelectAll").click(function () {
         //  console.log("SelectAll is clicked.");
@@ -183,6 +201,7 @@ $(document).ready(function () {
             $(this).parents("tr:first").addClass('gridChecked');
             var m = $(this).prop('checked', true);
         });
+        updateAdminSelectionBar();
     });
 
     $("#SetStateOffAll").click(function () {

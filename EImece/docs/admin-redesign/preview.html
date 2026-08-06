@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EImece Admin — Modern Redesign Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../../EImece/Content/adminShell.css" />
+  <link rel="stylesheet" href="../../EImece/Content/adminModern.css" />
+  <style>
+    /* Preview-only demo helpers */
+    .demo-thumb-a { background: linear-gradient(135deg, #dbeafe, #93c5fd); }
+    .demo-thumb-b { background: linear-gradient(135deg, #fce7f3, #f9a8d4); }
+    .demo-thumb-c { background: linear-gradient(135deg, #d1fae5, #6ee7b7); }
+    .preview-banner {
+      position: fixed; right: 16px; bottom: 16px; z-index: 2000;
+      background: #0f172a; color: #fff; padding: 10px 14px; border-radius: 10px;
+      font: 600 12px/1.4 Inter, system-ui, sans-serif; box-shadow: 0 8px 24px rgba(15,23,42,.25);
+      max-width: 260px;
+    }
+    .preview-banner a { color: #93c5fd; }
+  </style>
+</head>
+<body class="admin-app">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-brand">
+      <a href="#"><i class="fa fa-cubes"></i><span class="admin-sidebar-brand-text">Demo Mağaza</span></a>
+      <button type="button" class="admin-sidebar-close"><i class="fa fa-times"></i></button>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <a class="admin-nav-item" href="#"><i class="fa fa-home"></i><span class="admin-nav-label">Yönetici Ana Sayfa</span></a>
+      <div class="admin-nav-group is-open has-active">
+        <button type="button" class="admin-nav-group-toggle">
+          <i class="fa fa-th-large"></i><span class="admin-nav-label">Katalog</span>
+          <i class="fa fa-chevron-down admin-nav-caret"></i>
+        </button>
+        <div class="admin-nav-group-body">
+          <a class="admin-nav-item active" href="#"><i class="fa fa-cube"></i><span class="admin-nav-label">Ürünler</span></a>
+          <a class="admin-nav-item" href="#"><i class="fa fa-sitemap"></i><span class="admin-nav-label">Ürün Kategorileri</span></a>
+          <a class="admin-nav-item" href="#"><i class="fa fa-tags"></i><span class="admin-nav-label">Markalar</span></a>
+          <a class="admin-nav-item" href="#"><i class="fa fa-ticket"></i><span class="admin-nav-label">Kuponlar</span></a>
+        </div>
+      </div>
+      <div class="admin-nav-group">
+        <button type="button" class="admin-nav-group-toggle">
+          <i class="fa fa-shopping-bag"></i><span class="admin-nav-label">Satışlar</span>
+          <i class="fa fa-chevron-down admin-nav-caret"></i>
+        </button>
+      </div>
+      <div class="admin-nav-group">
+        <button type="button" class="admin-nav-group-toggle">
+          <i class="fa fa-file-text-o"></i><span class="admin-nav-label">İçerik</span>
+          <i class="fa fa-chevron-down admin-nav-caret"></i>
+        </button>
+      </div>
+      <div class="admin-nav-group">
+        <button type="button" class="admin-nav-group-toggle">
+          <i class="fa fa-cogs"></i><span class="admin-nav-label">Sistem</span>
+          <i class="fa fa-chevron-down admin-nav-caret"></i>
+        </button>
+      </div>
+    </nav>
+  </aside>
+  <div class="admin-sidebar-overlay"></div>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle"><i class="fa fa-bars"></i></button>
+        <div class="admin-topbar-title">
+          <span class="admin-topbar-panel">Demo Mağaza Yönetim Paneli</span>
+          <span class="admin-topbar-page">Ürünler</span>
+        </div>
+      </div>
+      <div class="admin-topbar-right">
+        <ul class="admin-topbar-actions">
+          <li><a href="#"><i class="fa fa-book"></i><span class="admin-topbar-label">Özellikler</span></a></li>
+          <li><a href="#"><i class="fa fa-refresh"></i><span class="admin-topbar-label">Yenile</span></a></li>
+          <li><a href="#"><i class="fa fa-globe"></i><span class="admin-topbar-label">Web Sitesi</span></a></li>
+          <li class="admin-topbar-user"><a href="#"><i class="fa fa-user"></i><span class="admin-topbar-label">Merhaba admin!</span></a></li>
+          <li><a href="#"><i class="fa fa-sign-out"></i><span class="admin-topbar-label">Çıkış</span></a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <h2>Ürünler</h2>
+
+      <div class="admin-listing-layout">
+        <aside class="admin-listing-sidebar">
+          <div class="admin-listing-card">
+            <ul class="treeProducts" id="responsive">
+              <li class="dropdown">
+                <a href="#">Elektronik (24)</a>
+                <ul>
+                  <li><a href="#">Telefon (8)</a></li>
+                  <li><a href="#">Bilgisayar (10)</a></li>
+                  <li><a href="#">Aksesuar (6)</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Ev &amp; Yaşam (18)</a></li>
+              <li><a href="#">Moda (32)</a></li>
+              <li><a href="#">Spor (12)</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="admin-listing-main">
+          <div class="admin-filter-chip">
+            <span>Seçili Kategori</span>
+            <strong>Telefon</strong>
+            <a href="#"><span class="glyphicon glyphicon-remove-circle"></span></a>
+          </div>
+
+          <div class="panel panel-info admin-grid-ops">
+            <div class="panel-body">
+              <div class="admin-grid-ops-primary">
+                <a class="btn btn-primary admin-grid-new-btn" href="#">+ Yeni Ürün</a>
+                <div class="admin-grid-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ara" />
+                    <div class="input-group-btn">
+                      <button class="btn btn-primary" type="button">Ara</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="admin-grid-ops-actions">
+                  <button type="button" class="btn btn-default btn-sm" id="SelectAll">Tümünü Seç</button>
+                  <button type="button" class="btn btn-default btn-sm" id="DeselectAll">Seçimi Kaldır</button>
+                  <div class="dropdown admin-grid-more">
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-ellipsis-h"></i> Daha fazla <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a href="#">Sıralamayı Güncelle</a></li>
+                      <li><a href="#">Excel</a></li>
+                      <li><a href="#">CSV</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="admin-selection-bar is-visible" id="adminSelectionBar">
+                <span class="admin-selection-count"><span id="adminSelectionCount">2</span> seçili</span>
+                <div class="admin-selection-group">
+                  <button type="button" class="btn btn-danger btn-sm">Seçilenleri Sil</button>
+                </div>
+                <div class="admin-selection-group">
+                  <select class="form-control input-sm admin-grid-state-select">
+                    <option>Yayında mı</option>
+                    <option>Vitrinde mi</option>
+                    <option>Kampanyalı</option>
+                  </select>
+                  <button type="button" class="btn btn-success btn-sm">Aktif Yap</button>
+                  <button type="button" class="btn btn-warning btn-sm">Pasif Yap</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a class="admin-secondary-link" href="#"><i class="fa fa-exchange"></i> Ürünleri Kategoriler Arasında Taşı</a>
+
+          <div class="panel panel-primary admin-grid-card">
+            <div class="table-responsive">
+              <table class="table grid-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th></th>
+                    <th>Ad</th>
+                    <th>Kategori</th>
+                    <th>Marka</th>
+                    <th>Fiyat</th>
+                    <th>Ürün Kodu</th>
+                    <th>Durum</th>
+                    <th>Sıra</th>
+                    <th>Yayında mı</th>
+                    <th>Resimler</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="gridChecked">
+                    <td><span class="badge badge-primary badge-pill">1</span></td>
+                    <td><input type="checkbox" checked /></td>
+                    <td>
+                      <div class="admin-product-cell">
+                        <div class="admin-product-thumb demo-thumb-a"></div>
+                        <div class="admin-product-meta">
+                          <a class="admin-product-name" href="#">iPhone 15 Pro 256GB</a>
+                          <div class="admin-product-sub">Titanyum kasa, A17 Pro çip, ProMotion ekran</div>
+                          <div class="admin-row-actions" style="opacity:1">
+                            <a class="btn btn-default btn-xs"><i class="glyphicon glyphicon-camera"></i></a>
+                            <a class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                            <a class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-circle"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Telefon</td>
+                    <td>Apple</td>
+                    <td>
+                      <div class="admin-price-cell">
+                        <span class="admin-price-current">64.999,00 ₺</span>
+                        <span class="admin-discount-pill">%10 indirim</span>
+                        <span class="admin-price-original">72.199,00 ₺</span>
+                      </div>
+                    </td>
+                    <td><span class="admin-code-text">IP15P-256</span></td>
+                    <td><span class="admin-meta-text">Stokta</span></td>
+                    <td><input class="GridOrderingTextbox input-xs" value="1" /></td>
+                    <td>
+                      <ul class="admin-status-list">
+                        <li class="admin-status-item"><span class="gridActiveIcon"></span><span class="admin-status-label">Yayında mı</span></li>
+                        <li class="admin-status-item"><span class="gridActiveIcon"></span><span class="admin-status-label">Vitrinde mi</span></li>
+                        <li class="admin-status-item"><span class="gridNotActiveIcon"></span><span class="admin-status-label">Kampanyalı</span></li>
+                      </ul>
+                    </td>
+                    <td><ul class="admin-status-list"><li class="admin-status-item"><span class="admin-status-label">Resim Durumu</span><span class="gridActiveIcon"></span></li></ul></td>
+                  </tr>
+                  <tr class="gridChecked">
+                    <td><span class="badge badge-primary badge-pill">2</span></td>
+                    <td><input type="checkbox" checked /></td>
+                    <td>
+                      <div class="admin-product-cell">
+                        <div class="admin-product-thumb demo-thumb-b"></div>
+                        <div class="admin-product-meta">
+                          <a class="admin-product-name" href="#">Galaxy S24 Ultra</a>
+                          <div class="admin-product-sub">200MP kamera, S Pen, Titanium Gray</div>
+                          <div class="admin-row-actions" style="opacity:1">
+                            <a class="btn btn-default btn-xs"><i class="glyphicon glyphicon-camera"></i></a>
+                            <a class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Telefon</td>
+                    <td>Samsung</td>
+                    <td>
+                      <div class="admin-price-cell">
+                        <span class="admin-price-current">58.490,00 ₺</span>
+                      </div>
+                    </td>
+                    <td><span class="admin-code-text">S24U-512</span></td>
+                    <td><span class="admin-meta-text">Sınırlı Stok</span></td>
+                    <td><input class="GridOrderingTextbox input-xs" value="2" /></td>
+                    <td>
+                      <ul class="admin-status-list">
+                        <li class="admin-status-item"><span class="gridActiveIcon"></span><span class="admin-status-label">Yayında mı</span></li>
+                        <li class="admin-status-item"><span class="gridNotActiveIcon"></span><span class="admin-status-label">Vitrinde mi</span></li>
+                        <li class="admin-status-item"><span class="gridActiveIcon"></span><span class="admin-status-label">Kampanyalı</span></li>
+                      </ul>
+                    </td>
+                    <td><ul class="admin-status-list"><li class="admin-status-item"><span class="admin-status-label">Resim Durumu</span><span class="gridActiveIcon"></span></li></ul></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-primary badge-pill">3</span></td>
+                    <td><input type="checkbox" /></td>
+                    <td>
+                      <div class="admin-product-cell">
+                        <div class="admin-product-thumb"><span class="admin-product-thumb-empty">Resim Yok</span></div>
+                        <div class="admin-product-meta">
+                          <a class="admin-product-name" href="#">Pixel 8a</a>
+                          <div class="admin-product-sub">Google Tensor G3, 7 yıl güncelleme</div>
+                          <div class="admin-row-actions">
+                            <a class="btn btn-default btn-xs"><i class="glyphicon glyphicon-camera"></i></a>
+                            <a class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Telefon</td>
+                    <td>Google</td>
+                    <td>
+                      <div class="admin-price-cell">
+                        <span class="admin-price-current">24.999,00 ₺</span>
+                        <span class="admin-discount-pill">%15 indirim</span>
+                        <span class="admin-price-original">29.399,00 ₺</span>
+                      </div>
+                    </td>
+                    <td><span class="admin-code-text">PX8A-128</span></td>
+                    <td><span class="admin-meta-text">Ön Sipariş</span></td>
+                    <td><input class="GridOrderingTextbox input-xs" value="3" /></td>
+                    <td>
+                      <ul class="admin-status-list">
+                        <li class="admin-status-item"><span class="gridNotActiveIcon"></span><span class="admin-status-label">Yayında mı</span></li>
+                        <li class="admin-status-item"><span class="gridNotActiveIcon"></span><span class="admin-status-label">Vitrinde mi</span></li>
+                        <li class="admin-status-item"><span class="gridActiveIcon"></span><span class="admin-status-label">Kampanyalı</span></li>
+                      </ul>
+                    </td>
+                    <td><span class="admin-empty-media">Resim Yok</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-primary badge-pill">4</span></td>
+                    <td><input type="checkbox" /></td>
+                    <td>
+                      <div class="admin-product-cell">
+                        <div class="admin-product-thumb demo-thumb-c"></div>
+                        <div class="admin-product-meta">
+                          <a class="admin-product-name" href="#">AirPods Pro 2</a>
+                          <div class="admin-product-sub">Aktif gürültü engelleme, USB-C</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Aksesuar</td>
+                    <td>Apple</td>
+                    <td><div class="admin-price-cell"><span class="admin-price-current">9.799,00 ₺</span></div></td>
+                    <td><span class="admin-code-text">APP2-USBC</span></td>
+                    <td><span class="admin-meta-text">Stokta</span></td>
+                    <td><input class="GridOrderingTextbox input-xs" value="4" /></td>
+                    <td>
+                      <ul class="admin-status-list">
+                        <li class="admin-status-item"><span class="gridActiveIcon"></span><span class="admin-status-label">Yayında mı</span></li>
+                        <li class="admin-status-item"><span class="gridActiveIcon"></span><span class="admin-status-label">Vitrinde mi</span></li>
+                        <li class="admin-status-item"><span class="gridNotActiveIcon"></span><span class="admin-status-label">Kampanyalı</span></li>
+                      </ul>
+                    </td>
+                    <td><ul class="admin-status-list"><li class="admin-status-item"><span class="admin-status-label">Resim Durumu</span><span class="gridActiveIcon"></span></li></ul></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="padding:12px 16px;border-top:1px solid #e2e8f0;">
+              <ul class="pagination pagination-sm" style="margin:0;">
+                <li class="active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">»</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="preview-banner">
+    Statik önizleme — gerçek admin shell + product listing tasarımı.<br />
+    <a href="DESIGN_SYSTEM.md">Tasarım sistemi notları</a>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script>
+    $("#adminSidebarToggle").on("click", function () {
+      if (window.matchMedia("(min-width: 992px)").matches) {
+        $("body").toggleClass("sidebar-collapsed");
+      } else {
+        $("body").toggleClass("sidebar-open");
+      }
+    });
+  </script>
+</body>
+</html>
