@@ -122,8 +122,28 @@
     <Reference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTelemetry.Exporter.OpenTelemetryProtocol.1.15.3\lib\net462\OpenTelemetry.Exporter.OpenTelemetryProtocol.dll</HintPath>
     </Reference>
+    <Reference Include="OpenTelemetry.Exporter.Console, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Exporter.Console.1.15.3\lib\net462\OpenTelemetry.Exporter.Console.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTelemetry.Extensions.Hosting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Extensions.Hosting.1.15.3\lib\net462\OpenTelemetry.Extensions.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTelemetry.Instrumentation.AspNet, Version=1.15.2.1017, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Instrumentation.AspNet.1.15.2\lib\net462\OpenTelemetry.Instrumentation.AspNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule, Version=1.15.2.1017, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule.1.15.2\lib\net462\OpenTelemetry.Instrumentation.AspNet.TelemetryHttpModule.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenTelemetry.Instrumentation.Http, Version=1.15.1.1025, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTelemetry.Instrumentation.Http.1.15.1\lib\net462\OpenTelemetry.Instrumentation.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTelemetry.Instrumentation.SqlClient, Version=1.15.2.1033, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTelemetry.Instrumentation.SqlClient.1.15.2\lib\net462\OpenTelemetry.Instrumentation.SqlClient.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="OpenTelemetry.PersistentStorage.Abstractions, Version=1.0.3.1043, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTelemetry.PersistentStorage.Abstractions.1.0.3\lib\net462\OpenTelemetry.PersistentStorage.Abstractions.dll</HintPath>

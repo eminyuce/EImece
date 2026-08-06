@@ -880,7 +880,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to İndirim miktar.
+        ///   Looks up a localized string similar to İndirim Miktarı.
         /// </summary>
         public static string DiscountQuantity {
             get {
@@ -1501,7 +1501,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yayında mı.
+        ///   Looks up a localized string similar to Yayında mı?.
         /// </summary>
         public static string IsActive {
             get {
@@ -2095,7 +2095,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sipariş numarası.
+        ///   Looks up a localized string similar to Sipariş Numarası.
         /// </summary>
         public static string OrderNumber {
             get {
@@ -2131,7 +2131,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sipariş durumu.
+        ///   Looks up a localized string similar to Sipariş Durumu.
         /// </summary>
         public static string OrderStatus {
             get {
@@ -2545,7 +2545,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Urun Durum.
+        ///   Looks up a localized string similar to Ürün Durumu.
         /// </summary>
         public static string ProductState {
             get {

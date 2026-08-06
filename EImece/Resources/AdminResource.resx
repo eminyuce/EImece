@@ -205,7 +205,7 @@
     <value>Vitrin Resmi</value>
   </data>
   <data name="IsActive" xml:space="preserve">
-    <value>Yayında mı</value>
+    <value>Yayında mı?</value>
   </data>
   <data name="Position" xml:space="preserve">
     <value>Sırası</value>
@@ -217,7 +217,7 @@
     <value>Ürün Kategorisi</value>
   </data>
   <data name="TemplateId" xml:space="preserve">
-    <value>Şablon adı</value>
+    <value>Şablon Adı</value>
   </data>
   <data name="ProductCategoryDiscountPercantage" xml:space="preserve">
     <value>Ürün Kategorisi İndirim Yüzdesi</value>
@@ -961,19 +961,19 @@
     <value>Kargo açıklaması</value>
   </data>
   <data name="StartUploadingAndSave" xml:space="preserve">
-    <value>Yüklemeye başla ve Kayıt Et</value>
+    <value>Yüklemeye başla ve Kaydet</value>
   </data>
   <data name="ShippingOptions" xml:space="preserve">
     <value>Kargo Bilgisi</value>
   </data>
   <data name="OrderNumber" xml:space="preserve">
-    <value>Sipariş numarası</value>
+    <value>Sipariş Numarası</value>
   </data>
   <data name="PaymentStatus" xml:space="preserve">
     <value>Ödeme Durumu</value>
   </data>
   <data name="OrderComments" xml:space="preserve">
-    <value>Sipariş yorumları</value>
+    <value>Sipariş Yorumları</value>
   </data>
   <data name="Filtrele" xml:space="preserve">
     <value>Filtrele</value>
@@ -1108,7 +1108,7 @@
     <value>Ürün Ölçü Seçenekleri</value>
   </data>
   <data name="OrderStatus" xml:space="preserve">
-    <value>Sipariş durumu</value>
+    <value>Sipariş Durumu</value>
   </data>
   <data name="CustomerComingOrders" xml:space="preserve">
     <value>Gelen Siparişler</value>
@@ -1171,7 +1171,7 @@
     <value>İndirim Yüzdesi</value>
   </data>
   <data name="DiscountQuantity" xml:space="preserve">
-    <value>İndirim miktar</value>
+    <value>İndirim Miktarı</value>
   </data>
   <data name="EndDate" xml:space="preserve">
     <value>Bitiş tarihi</value>
@@ -1186,7 +1186,7 @@
     <value>Bitiş tarihinin başlangıç tarihinden önce gelmediğinden emin olun</value>
   </data>
   <data name="ProductState" xml:space="preserve">
-    <value>Urun Durum</value>
+    <value>Ürün Durumu</value>
   </data>
   <data name="WarningForDesign" xml:space="preserve">
     <value>Dikkat! 5'ten fazla resim tasarımınızı kötüleştirebilir.</value>
