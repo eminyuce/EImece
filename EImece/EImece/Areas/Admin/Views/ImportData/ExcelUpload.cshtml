@@ -6,6 +6,7 @@
 <h2>Upload Excel File</h2>
 @using (Html.BeginForm("ExcelUploadImport", "ImportData", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+@Html.AntiForgeryToken()
 <input type="file" name="excelFile" />
 
 <div class="form-group">

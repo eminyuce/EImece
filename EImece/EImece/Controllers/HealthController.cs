@@ -1,3 +1,4 @@
+using EImece.Domain;
 using EImece.Domain.Observability.HealthChecks;
 using Newtonsoft.Json;
 using System.Net;
@@ -17,20 +18,6 @@ namespace EImece.Controllers
             _healthCheckService = healthCheckService;
         }
 
-        /**
-         *  icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-         *  
-         *  run it in command prompt to give permission to the app pool identity to write to the images folder as admin 
-         *  
-         *  
-         *  If the directory does not exist yet:
-
-mkdir "C:\inetpub\wwwroot\Eimece\App_Data\logs"
-
-icacls "C:\inetpub\wwwroot\Eimece\App_Data\logs" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-
-         */
-
         [HttpGet]
         [Route("health")]
         [Route("healthz")]
@@ -40,7 +27,19 @@ icacls "C:\inetpub\wwwroot\Eimece\App_Data\logs" /grant "IIS AppPool\Eimece":(OI
             var statusCode = response.Status == "UP" ? HttpStatusCode.OK : HttpStatusCode.ServiceUnavailable;
             Response.StatusCode = (int)statusCode;
             Response.ContentType = "application/json";
-            return Content(JsonConvert.SerializeObject(response, Formatting.Indented), "application/json");
+
+            // Anonymous callers only get aggregate status (no dependency error details).
+            var isAdmin = User?.Identity != null
+                && User.Identity.IsAuthenticated
+                && User.IsInRole(Constants.AdministratorRole);
+
+            if (isAdmin)
+            {
+                return Content(JsonConvert.SerializeObject(response, Formatting.Indented), "application/json");
+            }
+
+            var publicPayload = new { status = response.Status };
+            return Content(JsonConvert.SerializeObject(publicPayload), "application/json");
         }
     }
 }

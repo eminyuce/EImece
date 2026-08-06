@@ -1,5 +1,6 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.HelperModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateJsonAntiForgeryToken]
         public JsonResult Upload()
         {
             var resultList = new List<ViewDataUploadFilesResult>();
@@ -67,12 +69,14 @@ namespace EImece.Areas.Admin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
+        [DeleteAuthorize()]
         public JsonResult DeleteFile(string file)
         {
             var CurrentContext = HttpContext;
             filesHelper.DeleteFile(file, CurrentContext);
-            return Json("OK", JsonRequestBehavior.AllowGet);
+            return Json("OK");
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
+    [AuthorizeRoles(Domain.Constants.AdministratorRole)]
     public class MailTemplatesController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

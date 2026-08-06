@@ -80,16 +80,13 @@ namespace EImece
 
                 if (User.Identity.IsAuthenticated)
                 {
-                    return string.Format("User:{0}-Rnd:{1}:Lang:{2}",
+                    return string.Format("User:{0}:Lang:{1}",
                         context.User.Identity.Name,
-                        Guid.NewGuid().ToString(),
                         cultureCookieValue);
                 }
                 else
                 {
-                    return string.Format("cultureCookieValue:{0}-Rnd:{1}",
-                    cultureCookieValue,
-                    Guid.NewGuid().ToString());
+                    return string.Format("Anon:Lang:{0}", cultureCookieValue);
                 }
             }
 
@@ -107,13 +104,19 @@ namespace EImece
         }
 
         /// <summary>
-        /// TEMPORARY: when BypassAdminAuth is enabled, inject a debug Admin principal
+        /// TEMPORARY: when BypassAdminAuth is enabled (non-live + local only), inject a debug Admin principal
         /// so the admin sidebar/layout and role-gated menus can be smoke-tested without AdminLogin.
         /// Only applies to /admin requests so storefront logout/home stay anonymous.
         /// </summary>
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             if (!AppConfig.BypassAdminAuth)
+            {
+                return;
+            }
+
+            // Never inject a privileged principal for non-local requests.
+            if (Context == null || !Context.Request.IsLocal)
             {
                 return;
             }
@@ -185,7 +188,7 @@ namespace EImece
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            // redirectErrorController(sender);
+            redirectErrorController(sender);
         }
 
         private void redirectErrorController(object sender)
@@ -243,6 +246,14 @@ namespace EImece
                 //We check if we have an AJAX request and return JSON in this case
                 if (IsAjaxRequest())
                 {
+                    httpContext.ClearError();
+                    httpContext.Response.Clear();
+                    httpContext.Response.StatusCode = exception is HttpException
+                                                          ? ((HttpException)exception).GetHttpCode()
+                                                          : 500;
+                    httpContext.Response.TrySkipIisCustomErrors = true;
+                    httpContext.Response.ContentType = "application/json";
+                    httpContext.Response.Write("{\"success\":false,\"message\":\"An unexpected error occurred.\"}");
                 }
                 else
                 {
@@ -308,8 +319,9 @@ namespace EImece
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Logger.Error(ex, "IsAjaxRequest reflection check failed");
                 }
             }
 

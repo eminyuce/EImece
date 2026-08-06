@@ -46,6 +46,22 @@ namespace EImece.Domain.Services
             return item;
         }
 
+        public Order GetByPaymentId(string paymentId)
+        {
+            if (string.IsNullOrWhiteSpace(paymentId))
+            {
+                return null;
+            }
+
+            var item = OrderRepository.FindBy(r => r.PaymentId != null
+                && r.PaymentId.Equals(paymentId, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            if (item != null && !string.IsNullOrEmpty(item.UserId))
+            {
+                item.Customer = CustomerService.GetUserId(item.UserId);
+            }
+            return item;
+        }
+
         public Order GetByOrderNumber(string orderNumber)
         {
             var item = OrderRepository.GetByOrderNumber(orderNumber);

@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using Resources;
 using System;
@@ -14,6 +15,7 @@ using System.Xml.Linq;
 
 namespace EImece.Areas.Admin.Controllers
 {
+    [AuthorizeRoles(Domain.Constants.AdministratorRole)]
     public class TemplatesController : BaseAdminController
     {
         [Inject]

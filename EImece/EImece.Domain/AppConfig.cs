@@ -444,11 +444,17 @@ namespace EImece.Domain
         /// <summary>
         /// TEMPORARY debug switch: when true, admin auth/login is bypassed and a debug Admin principal is injected.
         /// Keep false in production (Web.Release.config forces false).
+        /// Hard-disabled whenever SiteStatus indicates a live environment.
         /// </summary>
         public static bool BypassAdminAuth
         {
             get
             {
+                if (IsSiteLive)
+                {
+                    return false;
+                }
+
                 return GetConfigBool("BypassAdminAuth", false);
             }
         }
