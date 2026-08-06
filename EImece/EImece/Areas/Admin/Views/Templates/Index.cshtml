@@ -86,7 +86,7 @@ if (UserRoleHelper.IsDeletedEnableRoles())
 }
 
 columns.Add(c => c.Name)
-       .Titled("Title")
+       .Titled(AdminResource.Title)
        .Filterable(true);
 
 columns.Add(o => o.Position).Titled(AdminResource.Position)

@@ -102,7 +102,7 @@ SetWidth(10).
 RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
-.Titled("State")
+.Titled(AdminResource.State)
 .Sortable(true)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
@@ -110,7 +110,7 @@ Sanitized(false)
              o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
 
 columns.Add(o => o.UpdatedDate)
-.Titled("UpdatedDate")
+.Titled(AdminResource.UpdatedDate)
 .Sortable(true)
 .Css("gridDateClass")
 .RenderValueAs(o => String.Format("{0}", o.UpdatedDate.ToShortDateString()))

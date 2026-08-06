@@ -301,7 +301,7 @@
     <value>Hizmet mi?</value>
   </data>
   <data name="IsValues" xml:space="preserve">
-    <value>IsValues</value>
+    <value>Değer Listesi mi?</value>
   </data>
   <data name="EntityDescriptionPage" xml:space="preserve">
     <value>Genel açıklama</value>

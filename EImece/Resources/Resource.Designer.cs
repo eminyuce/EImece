@@ -2250,7 +2250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsValues.
+        ///   Looks up a localized string similar to Değer Listesi mi?.
         /// </summary>
         public static string IsValues {
             get {

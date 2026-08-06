@@ -13,14 +13,14 @@
 @{
     var orders = Model;
 
-    ViewBag.Title = "Orders";
+    ViewBag.Title = AdminResource.Orders;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Orders";
     var gridDeleteText = AdminResource.GridDeleteText;
-    var title = "Orders";
+    var title = AdminResource.Orders;
     var gridName = "OrdersGrid";
     var contents = Model;
 
@@ -58,7 +58,7 @@
 {
     // Order Number (with link to details)
     columns.Add(c => c.OrderNumber)
-        .Titled("Siparis Numarasi")
+        .Titled(AdminResource.OrderNumber)
         .Encoded(false)
         .Sanitized(false)
         .SetWidth(30)
@@ -69,13 +69,13 @@
 
     // Order Status
     columns.Add(o => o.OrderStatus)
-        .Titled("Siparis Durumu")
+        .Titled(AdminResource.OrderStatus)
         .Sortable(true)
         .RenderValueAs(o => o.OrderStatus.ToString());
 
     // Created Date
     columns.Add(o => o.CreatedDate)
-        .Titled("Olusturulma Tarihi")
+        .Titled(AdminResource.CreatedDate)
         .Sortable(true)
         .Css("gridDateClass")
         .RenderValueAs(o => o.CreatedDate != null ? o.CreatedDate.ToShortDateString() : "-")
@@ -83,27 +83,28 @@
 
     // Paid Price
     columns.Add(o => o.PaidPrice)
+        .Titled("Ödenen Tutar")
         .Sortable(true)
         .RenderValueAs(o => o.PaidPrice + " " + o.Currency);
 
     // Payment Status
     columns.Add(o => o.PaymentStatus)
-        .Titled("Odeme Durumu")
+        .Titled(AdminResource.PaymentStatus)
         .Sortable(true);
 
     // Kargo Şirketi
     columns.Add(o => o.ShipmentCompanyName)
-        .Titled("Kargo Sirketi")
+        .Titled(AdminResource.CargoCompany)
         .Sortable(true);
 
     // Takip Numarası
     columns.Add(o => o.ShipmentTrackingNumber)
-        .Titled("Takip Numarasi")
+        .Titled(AdminResource.ShipmentTrackingNumber)
         .Sortable(true);
 
     // Admin Notu
     columns.Add(o => o.AdminOrderNote)
-        .Titled("Admin Notu")
+        .Titled(AdminResource.AdminOrderNote)
         .Sortable(true);
 
     // Teslimat Tarihi
@@ -115,13 +116,13 @@
 
     // Kargo Fiyatı
     columns.Add(o => o.CargoPrice)
-        .Titled("Kargo Fiyati")
+        .Titled(AdminResource.CargoPrice)
         .Sortable(true)
         .RenderValueAs(o => o.CargoPrice.ToString() + " " + o.Currency);
 
     // Ödeme Yöntemi (Kart Tipi)
     columns.Add(o => o.CardType)
-        .Titled("Odeme Yontemi")
+        .Titled("Ödeme Yöntemi")
         .Sortable(true);
 
 }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
