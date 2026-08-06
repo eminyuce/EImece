@@ -258,12 +258,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync()
+        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
         {
-            return await DownloadFileAsync();
+            return await DownloadFileAsync(format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync()
+        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
         {
             String search = "";
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
@@ -272,20 +272,20 @@ namespace EImece.Areas.Admin.Controllers
             var result = from r in menus
                          select new
                          {
-                             Id = r.Id.ToStr(250),
-                             ParentId = r.ParentId.ToStr(250),
+                             Id = r.Id,
+                             ParentId = r.ParentId,
                              Name = r.Name.ToStr(250),
-                             CreatedDate = r.CreatedDate.ToStr(250),
-                             UpdatedDate = r.UpdatedDate.ToStr(250),
-                             IsActive = r.IsActive.ToStr(250),
-                             Position = r.Position.ToStr(250),
+                             CreatedDate = r.CreatedDate,
+                             UpdatedDate = r.UpdatedDate,
+                             IsActive = r.IsActive,
+                             Position = r.Position,
                              Description = r.Description,
-                             MainPage = r.MainPage.ToStr(250),
-                             ImageState = r.ImageState.ToStr(250),
-                             MainImageId = r.MainImageId.ToStr(250)
+                             MainPage = r.MainPage,
+                             ImageState = r.ImageState,
+                             MainImageId = r.MainImageId
                          };
 
-            return DownloadFile(result, String.Format("Menus-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("Menus-{0}", GetCurrentLanguage), format);
         }
     }
 }

@@ -727,6 +727,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSV.
+        /// </summary>
+        public static string Csv {
+            get {
+                return ResourceManager.GetString("Csv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şimdiki Şifre.
         /// </summary>
         public static string CurrentPassword {

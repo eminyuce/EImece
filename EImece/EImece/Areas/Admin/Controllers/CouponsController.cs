@@ -108,12 +108,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync()
+        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
         {
-            return await DownloadFileAsync();
+            return await DownloadFileAsync(format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync()
+        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
         {
             String search = "";
             Expression<Func<Coupon, bool>> whereLambda = r => r.Name.Contains(search) || r.Code.Contains(search);
@@ -122,15 +122,15 @@ namespace EImece.Areas.Admin.Controllers
             var result = from r in Coupons
                          select new
                          {
-                             Id = r.Id.ToStr(250),
+                             Id = r.Id,
                              Name = r.Name.ToStr(250),
-                             CreatedDate = r.CreatedDate.ToStr(250),
-                             UpdatedDate = r.UpdatedDate.ToStr(250),
-                             IsActive = r.IsActive.ToStr(250),
-                             Position = r.Position.ToStr(250),
+                             CreatedDate = r.CreatedDate,
+                             UpdatedDate = r.UpdatedDate,
+                             IsActive = r.IsActive,
+                             Position = r.Position,
                          };
 
-            return DownloadFile(result, String.Format("Coupons-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("Coupons-{0}", GetCurrentLanguage), format);
         }
     }
 }

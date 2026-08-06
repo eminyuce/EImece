@@ -102,7 +102,7 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult ExportExcel()
+        public ActionResult ExportExcel(string format = "excel")
         {
             String search = "";
 
@@ -112,17 +112,17 @@ namespace EImece.Areas.Admin.Controllers
             var result = from r in settings
                          select new
                          {
-                             Id = r.Id.ToStr(250),
+                             Id = r.Id,
                              Name = r.Name.ToStr(250),
                              SettingKey = r.SettingKey,
                              SettingValue = r.SettingValue,
-                             CreatedDate = r.CreatedDate.ToStr(250),
-                             UpdatedDate = r.UpdatedDate.ToStr(250),
-                             IsActive = r.IsActive.ToStr(250),
-                             Position = r.Position.ToStr(250),
+                             CreatedDate = r.CreatedDate,
+                             UpdatedDate = r.UpdatedDate,
+                             IsActive = r.IsActive,
+                             Position = r.Position,
                          };
 
-            return DownloadFile(result, String.Format("Settings-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("Settings-{0}", GetCurrentLanguage), format);
         }
     }
 }

@@ -55,7 +55,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (faq.Id == 0)
+                    if (faq.Id = = 0)
                     {
                         faq.AddUserId = User.Identity.GetUserName();
                         faq.UpdateUserId = User.Identity.GetUserName();
@@ -114,12 +114,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync()
+        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
         {
-            return await DownloadFileAsync();
+            return await DownloadFileAsync(format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync()
+        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
         {
             String search = "";
             Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
@@ -127,17 +127,17 @@ namespace EImece.Areas.Admin.Controllers
             var result = from r in Faqs
                          select new
                          {
-                             Id = r.Id.ToStr(250),
+                             Id = r.Id,
                              Name = r.Name.ToStr(250),
                              Question = r.Question.ToStr(400),
                              Answer = r.Answer.ToStr(30000),
-                             CreatedDate = r.CreatedDate.ToStr(250),
-                             UpdatedDate = r.UpdatedDate.ToStr(250),
-                             IsActive = r.IsActive.ToStr(250),
-                             Position = r.Position.ToStr(250),
+                             CreatedDate = r.CreatedDate,
+                             UpdatedDate = r.UpdatedDate,
+                             IsActive = r.IsActive,
+                             Position = r.Position,
                          };
 
-            return DownloadFile(result, String.Format("Faqs-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("Faqs-{0}", GetCurrentLanguage), format);
         }
     }
 }

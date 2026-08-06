@@ -390,6 +390,9 @@
   <data name="Excel" xml:space="preserve">
     <value>Excel</value>
   </data>
+  <data name="Csv" xml:space="preserve">
+    <value>CSV</value>
+  </data>
   <data name="FileUploadingPage" xml:space="preserve">
     <value>Resim Yükleme Sayfası</value>
   </data>

@@ -218,36 +218,36 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync()
+        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
         {
-            return await DownloadFileAsync();
+            return await DownloadFileAsync(format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync()
+        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
         {
             var products = await ProductService.GetAdminPageListAsync(-1, "", CurrentLanguage);
 
             var result = from r in products
                          select new
                          {
-                             Id = r.Id.ToStr(250),
+                             Id = r.Id,
                              Name = r.Name.ToStr(250),
                              ProductCategory = r.ProductCategory.Name,
-                             CreatedDate = r.CreatedDate.ToStr(250),
-                             UpdatedDate = r.UpdatedDate.ToStr(250),
-                             IsActive = r.IsActive.ToStr(250),
-                             Position = r.Position.ToStr(250),
+                             CreatedDate = r.CreatedDate,
+                             UpdatedDate = r.UpdatedDate,
+                             IsActive = r.IsActive,
+                             Position = r.Position,
                              Description = r.Description,
-                             MainPage = r.MainPage.ToStr(250),
-                             ImageState = r.ImageState.ToStr(250),
-                             MainImageId = r.MainImageId.ToStr(250),
-                             Price = r.Price.ToStr(250),
-                             Discount = r.Discount.ToStr(250),
+                             MainPage = r.MainPage,
+                             ImageState = r.ImageState,
+                             MainImageId = r.MainImageId,
+                             Price = r.Price,
+                             Discount = r.Discount,
                              ProductCode = r.ProductCode.ToStr(250),
                              VideoUrl = r.VideoUrl.ToStr(250)
                          };
 
-            return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage), format);
         }
 
         public ActionResult MoveProductsInTrees(int id = 0, string productIdList = "", int oldCategoryId = 0)
