@@ -593,14 +593,14 @@ namespace EImece.Domain.Helpers
             if (type == typeof(Boolean) || cellValue is bool)
             {
                 var cell = row.CreateCell(columnIndex, CellType.Boolean);
-                cell.SetCellValue(Convert.ToBoolean(cellValue));
+                cell.SetCellValue(System.Convert.ToBoolean(cellValue));
                 cell.CellStyle = styles.Boolean;
                 return;
             }
 
             if (type == typeof(DateTime) || cellValue is DateTime)
             {
-                var dateValue = Convert.ToDateTime(cellValue);
+                var dateValue = System.Convert.ToDateTime(cellValue);
                 var cell = row.CreateCell(columnIndex, CellType.Numeric);
                 cell.SetCellValue(dateValue);
                 cell.CellStyle = dateValue.TimeOfDay.TotalSeconds == 0 ? styles.Date : styles.DateTime;
@@ -617,7 +617,7 @@ namespace EImece.Domain.Helpers
                 || cellValue is long || cellValue is ulong)
             {
                 var cell = row.CreateCell(columnIndex, CellType.Numeric);
-                cell.SetCellValue(Convert.ToDouble(cellValue));
+                cell.SetCellValue(System.Convert.ToDouble(cellValue));
                 cell.CellStyle = styles.Integer;
                 return;
             }
@@ -626,13 +626,13 @@ namespace EImece.Domain.Helpers
                 || cellValue is decimal || cellValue is double || cellValue is float)
             {
                 var cell = row.CreateCell(columnIndex, CellType.Numeric);
-                cell.SetCellValue(Convert.ToDouble(cellValue));
+                cell.SetCellValue(System.Convert.ToDouble(cellValue));
                 cell.CellStyle = styles.Numeric;
                 return;
             }
 
             var textCell = row.CreateCell(columnIndex, CellType.String);
-            textCell.SetCellValue(Convert.ToString(cellValue) ?? string.Empty);
+            textCell.SetCellValue(System.Convert.ToString(cellValue) ?? string.Empty);
             textCell.CellStyle = styles.Text;
         }
 

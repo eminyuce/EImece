@@ -55,7 +55,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (faq.Id = = 0)
+                    if (faq.Id == 0)
                     {
                         faq.AddUserId = User.Identity.GetUserName();
                         faq.UpdateUserId = User.Identity.GetUserName();

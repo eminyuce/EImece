@@ -135,7 +135,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 if (ModelState.IsValid)
                 {
-                    if (MailTemplate.Id = = 0)
+                    if (MailTemplate.Id == 0)
                     {
                         MailTemplate.AddUserId = User.Identity.GetUserName();
                         MailTemplate.UpdateUserId = User.Identity.GetUserName();
