@@ -1273,7 +1273,6 @@
     <Folder Include="Areas\Customers\Data\" />
     <Folder Include="media\images\thumbs\" />
     <Folder Include="Scripts\codemirror\addon\" />
-    <Folder Include="Scripts\DataTables\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
