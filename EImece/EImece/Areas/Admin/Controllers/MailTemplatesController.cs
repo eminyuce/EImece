@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 // Rendering can fail for CKEditor-encoded / incomplete Razor — still offer a download.
-                Logger.Error(ex, "GenerateHtmlBody render failed for MailTemplate Id={0}", id);
+                Logger.Error(ex, "GenerateHtmlBody render failed for MailTemplate Id = {0}", id);
                 warning = ex.Message;
                 body = System.Net.WebUtility.HtmlDecode(rssTemplate.Body ?? string.Empty);
             }
@@ -134,7 +134,7 @@ namespace EImece.Areas.Admin.Controllers
                 }
                 if (ModelState.IsValid)
                 {
-                    if (MailTemplate.Id == 0)
+                    if (MailTemplate.Id = = 0)
                     {
                         MailTemplate.AddUserId = User.Identity.GetUserName();
                         MailTemplate.UpdateUserId = User.Identity.GetUserName();
@@ -200,12 +200,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync()
+        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
         {
-            return await DownloadFileAsync();
+            return await DownloadFileAsync(format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync()
+        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
         {
             String search = "";
             Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
@@ -213,17 +213,17 @@ namespace EImece.Areas.Admin.Controllers
             var result = from r in mailTemplates
                          select new
                          {
-                             Id = r.Id.ToStr(250),
+                             Id = r.Id,
                              Name = r.Name.ToStr(250),
                              Subject = r.Subject.ToStr(400),
                              Body = r.Body.ToStr(30000),
-                             CreatedDate = r.CreatedDate.ToStr(250),
-                             UpdatedDate = r.UpdatedDate.ToStr(250),
-                             IsActive = r.IsActive.ToStr(250),
-                             Position = r.Position.ToStr(250),
+                             CreatedDate = r.CreatedDate,
+                             UpdatedDate = r.UpdatedDate,
+                             IsActive = r.IsActive,
+                             Position = r.Position,
                          };
 
-            return DownloadFile(result, String.Format("MailTemplates-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("MailTemplates-{0}", GetCurrentLanguage), format);
         }
     }
 }

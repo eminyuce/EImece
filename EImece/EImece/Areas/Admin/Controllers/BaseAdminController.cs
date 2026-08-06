@@ -212,11 +212,11 @@ namespace EImece.Areas.Admin.Controllers
             return returnDefault;
         }
 
-        protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName)
+        protected ActionResult DownloadFile<T>(IEnumerable<T> result, string fileName, string format = "excel")
         {
             DataTable dt = GeneralHelper.LINQToDataTable(result);
             dt.TableName = fileName;
-            return DownloadFileDataTable(dt, fileName);
+            return DownloadFileDataTable(dt, fileName, format);
         }
 
         protected ActionResult ReturnIndexIfNotUrlReferrer(String action)
@@ -249,23 +249,26 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction(action, routeValues);
         }
 
-        protected ActionResult DownloadFileDataTable(DataTable result, string fileName)
+        protected ActionResult DownloadFileDataTable(DataTable result, string fileName, string format = "excel")
         {
             if (result == null || String.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentException("Result or fileName cannot be empty.");
             }
             fileName = string.Format("{1}-{0}", DateTime.Now.ToString("yyyy-MM-dd"), fileName);
-            if (result.Rows.Count < 65534)
-            {
-                var ms = ExcelHelper.GetExcelByteArrayFromDataTable(result);
-                return File(ms, "application/vnd.ms-excel", fileName + ".xls");
-            }
-            else
+
+            var isCsv = string.Equals(format, "csv", StringComparison.OrdinalIgnoreCase);
+            // HSSF (.xls) supports at most 65536 rows; fall back to CSV when Excel cannot fit the data.
+            var useCsv = isCsv || result.Rows.Count >= 65534;
+
+            if (useCsv)
             {
                 byte[] data = ExcelHelper.Export(result, true);
                 return File(data, "text/csv", fileName + ".csv");
             }
+
+            var ms = ExcelHelper.GetExcelByteArrayFromDataTable(result);
+            return File(ms, "application/vnd.ms-excel", fileName + ".xls");
         }
 
         protected void RemoveModelState()

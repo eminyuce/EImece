@@ -1,6 +1,7 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
@@ -429,13 +430,15 @@ namespace EImece.Domain.Helpers
         public static HSSFWorkbook CreateWorkBook(List<DataTable> dtList)
         {
             var workbook = new HSSFWorkbook();
-
-            var headerStyle = GetCellStyle(workbook);
-            var headerStyle1 = GetCellStyle2(workbook);
-            var headerStyle3 = GetCellStyle3(workbook);
+            var styles = CreateExportCellStyles(workbook);
             int i = 1;
             foreach (DataTable dt in dtList)
             {
+                if (dt == null)
+                {
+                    continue;
+                }
+
                 String name = String.Format("workbook-{0}", i);
                 if (!String.IsNullOrEmpty(dt.TableName))
                 {
@@ -446,92 +449,191 @@ namespace EImece.Domain.Helpers
                     i++;
                 }
                 var sheet = workbook.CreateSheet(name);
-                ExportDataTableToSheet(dt, sheet, headerStyle, headerStyle1, headerStyle3);
+                ExportDataTableToSheet(dt, sheet, styles);
             }
             return workbook;
         }
 
-        private static ICellStyle GetCellStyle3(HSSFWorkbook workbook)
+        private sealed class ExportCellStyles
         {
-            ICellStyle headerStyle = workbook.CreateCellStyle();
-
-            //headerStyle.FillForegroundColor = IndexedColors.White.Index;
-            //headerStyle.FillBackgroundColor = IndexedColors.Red.Index;
-            //headerStyle.FillPattern = FillPattern.SolidForeground;
-
-            IFont font = workbook.CreateFont();
-            // Use IsBold for newer NPOI versions instead of deprecated Boldweight
-            font.IsBold = true;
-            font.Color = HSSFColor.Black.Index;
-            font.FontHeightInPoints = 11;
-            headerStyle.SetFont(font);
-            return headerStyle;
+            public ICellStyle Header { get; set; }
+            public ICellStyle Text { get; set; }
+            public ICellStyle Numeric { get; set; }
+            public ICellStyle Integer { get; set; }
+            public ICellStyle Boolean { get; set; }
+            public ICellStyle Date { get; set; }
+            public ICellStyle DateTime { get; set; }
         }
 
-        private static ICellStyle GetCellStyle2(HSSFWorkbook workbook)
+        private static ExportCellStyles CreateExportCellStyles(HSSFWorkbook workbook)
         {
-            ICellStyle headerStyle = workbook.CreateCellStyle();
+            var dataFormat = workbook.CreateDataFormat();
 
-            //headerStyle.FillForegroundColor = IndexedColors.White.Index;
-            //headerStyle.FillBackgroundColor = IndexedColors.Red.Index;
-            //headerStyle.FillPattern = FillPattern.SolidForeground;
+            var headerFont = workbook.CreateFont();
+            headerFont.FontName = "Calibri";
+            headerFont.FontHeightInPoints = 12;
+            headerFont.IsBold = true;
+            headerFont.Color = HSSFColor.Black.Index;
 
-            IFont font = workbook.CreateFont();
-            font.IsBold = false;
-            font.Color = HSSFColor.Red.Index;
-            font.FontHeightInPoints = 11;
-            headerStyle.SetFont(font);
-            return headerStyle;
-        }
+            var dataFont = workbook.CreateFont();
+            dataFont.FontName = "Calibri";
+            dataFont.FontHeightInPoints = 11;
+            dataFont.IsBold = false;
+            dataFont.Color = HSSFColor.Black.Index;
 
-        private static ICellStyle GetCellStyle(HSSFWorkbook workbook)
-        {
-            ICellStyle headerStyle = workbook.CreateCellStyle();
-            //headerStyle.FillForegroundColor = HSSFColor.White.Index;
-            //headerStyle.FillBackgroundColor = HSSFColor.DarkRed.Index;
-            //headerStyle.FillPattern = FillPattern.SolidForeground;
+            var headerStyle = workbook.CreateCellStyle();
+            headerStyle.SetFont(headerFont);
+            headerStyle.FillForegroundColor = HSSFColor.LightYellow.Index;
+            headerStyle.FillPattern = FillPattern.SolidForeground;
+            headerStyle.Alignment = HorizontalAlignment.Center;
+            headerStyle.VerticalAlignment = VerticalAlignment.Center;
+            headerStyle.BorderTop = BorderStyle.Thin;
+            headerStyle.BorderBottom = BorderStyle.Thin;
+            headerStyle.BorderLeft = BorderStyle.Thin;
+            headerStyle.BorderRight = BorderStyle.Thin;
 
-            var font = workbook.CreateFont();
-            // set bold via IsBold; numeric boldweight is deprecated
-            font.IsBold = true;
-            font.Color = HSSFColor.DarkBlue.Index;
-            font.FontHeightInPoints = 11;
-            headerStyle.SetFont(font);
-            return headerStyle;
-        }
+            var textStyle = workbook.CreateCellStyle();
+            textStyle.SetFont(dataFont);
+            textStyle.Alignment = HorizontalAlignment.Left;
+            textStyle.VerticalAlignment = VerticalAlignment.Center;
 
-        private static void ExportDataTableToSheet(DataTable dt, ISheet sheet, ICellStyle headerStyle, ICellStyle headerStyle2, ICellStyle headerStyle3)
-        {
-            var row1 = sheet.CreateRow(0);
-            //Puts in headers (these are table row headers, omit if you
-            //just need a straight data dump
-            for (int j = 0; j < dt.Columns.Count; j++)
+            var numericStyle = workbook.CreateCellStyle();
+            numericStyle.SetFont(dataFont);
+            numericStyle.Alignment = HorizontalAlignment.Right;
+            numericStyle.VerticalAlignment = VerticalAlignment.Center;
+            numericStyle.DataFormat = dataFormat.GetFormat("#,##0.###");
+
+            var integerStyle = workbook.CreateCellStyle();
+            integerStyle.SetFont(dataFont);
+            integerStyle.Alignment = HorizontalAlignment.Right;
+            integerStyle.VerticalAlignment = VerticalAlignment.Center;
+            integerStyle.DataFormat = dataFormat.GetFormat("#,##0");
+
+            var booleanStyle = workbook.CreateCellStyle();
+            booleanStyle.SetFont(dataFont);
+            booleanStyle.Alignment = HorizontalAlignment.Left;
+            booleanStyle.VerticalAlignment = VerticalAlignment.Center;
+
+            var dateStyle = workbook.CreateCellStyle();
+            dateStyle.SetFont(dataFont);
+            dateStyle.Alignment = HorizontalAlignment.Left;
+            dateStyle.VerticalAlignment = VerticalAlignment.Center;
+            dateStyle.DataFormat = dataFormat.GetFormat("dd.MM.yyyy");
+
+            var dateTimeStyle = workbook.CreateCellStyle();
+            dateTimeStyle.SetFont(dataFont);
+            dateTimeStyle.Alignment = HorizontalAlignment.Left;
+            dateTimeStyle.VerticalAlignment = VerticalAlignment.Center;
+            dateTimeStyle.DataFormat = dataFormat.GetFormat("dd.MM.yyyy HH:mm:ss");
+
+            return new ExportCellStyles
             {
-                var cell = row1.CreateCell(j);
-                String columnName = dt.Columns[j].ToString();
-                cell.SetCellValue(columnName);
-                cell.CellStyle = headerStyle3;
+                Header = headerStyle,
+                Text = textStyle,
+                Numeric = numericStyle,
+                Integer = integerStyle,
+                Boolean = booleanStyle,
+                Date = dateStyle,
+                DateTime = dateTimeStyle
+            };
+        }
+
+        private static void ExportDataTableToSheet(DataTable dt, ISheet sheet, ExportCellStyles styles)
+        {
+            if (dt == null || sheet == null || styles == null)
+            {
+                return;
+            }
+
+            int columnCount = dt.Columns.Count;
+            if (columnCount == 0)
+            {
+                return;
+            }
+
+            var headerRow = sheet.CreateRow(0);
+            for (int j = 0; j < columnCount; j++)
+            {
+                var cell = headerRow.CreateCell(j, CellType.String);
+                cell.SetCellValue(dt.Columns[j].ColumnName);
+                cell.CellStyle = styles.Header;
             }
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 var row = sheet.CreateRow(i + 1);
-                for (int j = 0; j < dt.Columns.Count; j++)
+                for (int j = 0; j < columnCount; j++)
                 {
-                    var cell = row.CreateCell(j);
-                    cell.CellStyle = headerStyle;
-                    //if (i%2 == 0)
-                    //{
-                    //    cell.CellStyle = headerStyle;
-                    //}
-                    //else
-                    //{
-                    //    cell.CellStyle = headerStyle2;
-                    //}
-                    String columnName = dt.Columns[j].ToString();
-                    cell.SetCellValue(dt.Rows[i][columnName].ToString());
+                    WriteTypedCell(row, j, dt.Rows[i][j], dt.Columns[j], styles);
                 }
             }
+
+            int lastRowIndex = Math.Max(dt.Rows.Count, 0);
+            sheet.CreateFreezePane(0, 1);
+            sheet.SetAutoFilter(new CellRangeAddress(0, lastRowIndex, 0, columnCount - 1));
+
+            for (int j = 0; j < columnCount; j++)
+            {
+                sheet.AutoSizeColumn(j);
+            }
+        }
+
+        private static void WriteTypedCell(IRow row, int columnIndex, object cellValue, DataColumn column, ExportCellStyles styles)
+        {
+            if (cellValue == null || cellValue == DBNull.Value)
+            {
+                var emptyCell = row.CreateCell(columnIndex, CellType.Blank);
+                emptyCell.CellStyle = styles.Text;
+                return;
+            }
+
+            Type type = column != null ? column.DataType : cellValue.GetType();
+            type = Nullable.GetUnderlyingType(type) ?? type;
+
+            if (type == typeof(Boolean) || cellValue is bool)
+            {
+                var cell = row.CreateCell(columnIndex, CellType.Boolean);
+                cell.SetCellValue(Convert.ToBoolean(cellValue));
+                cell.CellStyle = styles.Boolean;
+                return;
+            }
+
+            if (type == typeof(DateTime) || cellValue is DateTime)
+            {
+                var dateValue = Convert.ToDateTime(cellValue);
+                var cell = row.CreateCell(columnIndex, CellType.Numeric);
+                cell.SetCellValue(dateValue);
+                cell.CellStyle = dateValue.TimeOfDay.TotalSeconds == 0 ? styles.Date : styles.DateTime;
+                return;
+            }
+
+            if (type == typeof(Byte) || type == typeof(SByte)
+                || type == typeof(Int16) || type == typeof(UInt16)
+                || type == typeof(Int32) || type == typeof(UInt32)
+                || type == typeof(Int64) || type == typeof(UInt64)
+                || cellValue is byte || cellValue is sbyte
+                || cellValue is short || cellValue is ushort
+                || cellValue is int || cellValue is uint
+                || cellValue is long || cellValue is ulong)
+            {
+                var cell = row.CreateCell(columnIndex, CellType.Numeric);
+                cell.SetCellValue(Convert.ToDouble(cellValue));
+                cell.CellStyle = styles.Integer;
+                return;
+            }
+
+            if (type == typeof(Decimal) || type == typeof(Double) || type == typeof(Single)
+                || cellValue is decimal || cellValue is double || cellValue is float)
+            {
+                var cell = row.CreateCell(columnIndex, CellType.Numeric);
+                cell.SetCellValue(Convert.ToDouble(cellValue));
+                cell.CellStyle = styles.Numeric;
+                return;
+            }
+
+            var textCell = row.CreateCell(columnIndex, CellType.String);
+            textCell.SetCellValue(Convert.ToString(cellValue) ?? string.Empty);
+            textCell.CellStyle = styles.Text;
         }
 
         public static byte[] Export(DataTable dt, bool exportColumnHeadings)

@@ -155,10 +155,14 @@
 
                         @if (IsExcelButtonEnabled)
                         {
-                            <div class="admin-grid-toolbar-group admin-grid-toolbar-excel" role="group">
-                                <a class="btn btn-default btn-sm" href="@Url.Action("ExportExcel", controllerName)">
+                            <div class="admin-grid-toolbar-group admin-grid-toolbar-excel" role="group" aria-label="@AdminResource.Excel">
+                                <a class="btn btn-default btn-sm" href="@Url.Action("ExportExcel", controllerName, new { format = "excel" })">
                                     <img src="~/Areas/Admin/Content/main/excel.jpg" alt="" />
                                     @AdminResource.Excel
+                                </a>
+                                <a class="btn btn-default btn-sm" href="@Url.Action("ExportExcel", controllerName, new { format = "csv" })">
+                                    <i class="glyphicon glyphicon-download-alt"></i>
+                                    @AdminResource.Csv
                                 </a>
                             </div>
                         }

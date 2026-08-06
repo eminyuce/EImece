@@ -19,12 +19,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync()
+        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
         {
-            return await DownloadFileAsync();
+            return await DownloadFileAsync(format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync()
+        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
         {
             var subscibers = await SubscriberService.GetAllAsync();
 
@@ -37,7 +37,7 @@ namespace EImece.Areas.Admin.Controllers
                              r.Note
                          };
 
-            return DownloadFile(result, String.Format("subscibers-{0}", GetCurrentLanguage));
+            return DownloadFile(result, String.Format("subscibers-{0}", GetCurrentLanguage), format);
         }
     }
 }
