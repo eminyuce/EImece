@@ -44,7 +44,58 @@ namespace EImece.Controllers
             {
                 BaseLogger.Error("OnException:" + filterContext.Exception.ToFormattedString());
             }
+
+            if (filterContext != null
+                && !filterContext.ExceptionHandled
+                && AppConfig.ExposeDetailedErrors
+                && filterContext.Exception != null)
+            {
+                // Surface full stack instead of empty/generic 500 pages while debugging.
+                filterContext.ExceptionHandled = true;
+                filterContext.HttpContext.Response.Clear();
+                filterContext.HttpContext.Response.StatusCode = 500;
+                filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
+                filterContext.Result = new ContentResult
+                {
+                    ContentType = "text/html; charset=utf-8",
+                    Content = BuildDetailedErrorHtml(filterContext)
+                };
+                return;
+            }
+
             base.OnException(filterContext);
+        }
+
+        protected ActionResult HandleUnexpectedError(Exception exception, string contextMessage)
+        {
+            BaseLogger.Error(exception, contextMessage);
+            if (AppConfig.ExposeDetailedErrors)
+            {
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(exception).Throw();
+            }
+
+            return RedirectToAction("InternalServerError", "Error");
+        }
+
+        private static string BuildDetailedErrorHtml(ExceptionContext filterContext)
+        {
+            var ex = filterContext.Exception;
+            var controller = filterContext.RouteData.Values["controller"];
+            var action = filterContext.RouteData.Values["action"];
+            var url = filterContext.HttpContext.Request.Url;
+            return
+                "<!DOCTYPE html><html><head><title>Error</title>" +
+                "<style>body{font-family:Consolas,monospace;padding:24px;background:#111;color:#f5f5f5}" +
+                "h1{color:#ff6b6b}pre{white-space:pre-wrap;background:#1e1e1e;padding:16px;border-radius:8px}</style>" +
+                "</head><body>" +
+                "<h1>Unhandled exception</h1>" +
+                "<p><b>URL:</b> " + HttpUtility.HtmlEncode(url != null ? url.ToString() : "") + "</p>" +
+                "<p><b>Controller:</b> " + HttpUtility.HtmlEncode(System.Convert.ToString(controller)) +
+                " &nbsp; <b>Action:</b> " + HttpUtility.HtmlEncode(System.Convert.ToString(action)) + "</p>" +
+                "<p><b>Type:</b> " + HttpUtility.HtmlEncode(ex.GetType().FullName) + "</p>" +
+                "<p><b>Message:</b> " + HttpUtility.HtmlEncode(ex.Message) + "</p>" +
+                "<h2>Stack trace</h2><pre>" + HttpUtility.HtmlEncode(ex.ToString()) + "</pre>" +
+                "</body></html>";
         }
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)

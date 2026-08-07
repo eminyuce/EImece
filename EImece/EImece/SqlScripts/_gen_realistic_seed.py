@@ -347,13 +347,96 @@ LIST_ITEMS = [
     "Yeni üye", "Tekrarlayan", "Kurumsal",
 ]
 
+def component_xml(*fields_or_groups):
+    """Build TemplateXml in the real admin format: <component><group>…<textbox/dropdown/checkbox>."""
+    # fields_or_groups: either a list of field dicts for one group, or list of (group_name, fields)
+    if fields_or_groups and isinstance(fields_or_groups[0], tuple):
+        groups = fields_or_groups
+    else:
+        groups = [("Ürün Özellikleri", list(fields_or_groups))]
+
+    parts = ["<!--eimece-seed-->", "<component>"]
+    for gname, fields in groups:
+        parts.append(f'  <group name="{gname}">')
+        for f in fields:
+            tag = f.get("tag", "textbox")
+            name = f["name"]
+            attrs = [f'name="{name}"']
+            if f.get("display"):
+                attrs.append(f'display="{f["display"]}"')
+            if f.get("unit"):
+                attrs.append(f'unit="{f["unit"]}"')
+            if f.get("values"):
+                attrs.append(f'values="{f["values"]}"')
+            parts.append(f'    <{tag} {" ".join(attrs)} />')
+        parts.append("  </group>")
+    parts.append("</component>")
+    return "\n".join(parts)
+
+
 TEMPLATES = [
-    "Giyim Şablonu",
-    "Elektronik Şablonu",
-    "Ev & Mobilya Şablonu",
-    "Kozmetik Şablonu",
-    "Spor Ekipman Şablonu",
-    "Genel Ürün Şablonu",
+    (
+        "Giyim Şablonu",
+        component_xml(
+            {"name": "Renk"},
+            {"name": "Beden"},
+            {"name": "Malzeme", "display": "Kumaş / Malzeme"},
+        ),
+    ),
+    (
+        "Elektronik Şablonu",
+        component_xml(
+            {"name": "Renk"},
+            {"name": "Marka"},
+            {"name": "Model"},
+            {"name": "Garanti", "unit": "ay"},
+            {"name": "Ağırlık", "unit": "kg"},
+        ),
+    ),
+    (
+        "Ev & Mobilya Şablonu",
+        component_xml(
+            {"name": "Renk"},
+            {"name": "Malzeme"},
+            {"name": "Yükseklik", "unit": "cm"},
+            {"name": "Genişlik", "unit": "cm"},
+            {"name": "Derinlik", "unit": "cm"},
+            {"name": "Ağırlık", "unit": "kg"},
+        ),
+    ),
+    (
+        "Kozmetik Şablonu",
+        component_xml(
+            {"name": "Renk"},
+            {"name": "Hacim", "unit": "ml"},
+            {"name": "Cilt Tipi"},
+            {"name": "Paket Adeti"},
+        ),
+    ),
+    (
+        "Spor Ekipman Şablonu",
+        component_xml(
+            {"name": "Renk"},
+            {"name": "Beden"},
+            {"name": "Malzeme"},
+            {"name": "Ağırlık", "unit": "kg"},
+        ),
+    ),
+    (
+        "Genel Ürün Şablonu",
+        component_xml(
+            ("Ürün Özellikleri 1", [
+                {"tag": "dropdown", "name": "Renk", "values": "Renkler"},
+                {"name": "Malzeme"},
+                {"name": "Ağırlık", "unit": "kg"},
+            ]),
+            ("Ürün Özellikleri 2", [
+                {"name": "Paket Adeti", "unit": "tane"},
+                {"name": "Koli Adeti", "display": "Koli Adeti", "unit": "tane"},
+                {"tag": "checkbox", "name": "Depoda Var mi?"},
+            ]),
+        ),
+    ),
 ]
 
 REVIEW_SUBJECTS = [
@@ -733,10 +816,10 @@ CREATE TABLE #ListItemLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NO
 
     a("""
 IF OBJECT_ID(N'tempdb..#TemplateLookup') IS NOT NULL DROP TABLE #TemplateLookup;
-CREATE TABLE #TemplateLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL);
+CREATE TABLE #TemplateLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, TemplateXml NVARCHAR(MAX) NOT NULL);
 """)
-    for i, n in enumerate(TEMPLATES, 1):
-        a(f"INSERT INTO #TemplateLookup VALUES ({i},{sql_n(n)});")
+    for i, (n, xml) in enumerate(TEMPLATES, 1):
+        a(f"INSERT INTO #TemplateLookup VALUES ({i},{sql_n(n)},{sql_n(xml)});")
 
     a("""
 IF OBJECT_ID(N'tempdb..#ReviewSubject') IS NOT NULL DROP TABLE #ReviewSubject;
@@ -942,7 +1025,7 @@ INSERT INTO dbo.Templates (Name, CreatedDate, UpdatedDate, IsActive, Position, L
 SELECT
     tl.Name,
     @Now, @Now, 1, n.n, @Lang,
-    N'<!--eimece-seed--><template><fields><field name=\"Renk\" type=\"text\"/><field name=\"Beden\" type=\"text\"/><field name=\"Malzeme\" type=\"text\"/></fields></template>'
+    tl.TemplateXml
 FROM #Nums n
 INNER JOIN #TemplateLookup tl ON tl.rn = ((n.n - 1) % @TemplateLookupCount) + 1
 WHERE n.n <= @SeedTemplates;

@@ -228,41 +228,52 @@ namespace EImece.Domain.Models.FrontModels
             {
                 var result = new List<ProductSpecsModel>();
                 var product = Product;
+                if (product?.ProductSpecifications == null)
+                {
+                    return result;
+                }
+
                 var productSpecs = product.ProductSpecifications.Where(r => !String.IsNullOrEmpty(r.Value)).OrderBy(r => r.Position).ToList();
                 var template = Template;
-                if (productSpecs.Any() && !string.IsNullOrEmpty(template.TemplateXml))
+                if (!productSpecs.Any() || template == null || string.IsNullOrEmpty(template.TemplateXml))
                 {
-                    XDocument xdoc = XDocument.Parse(template.TemplateXml);
-                    var groups = xdoc.Root.Descendants("group");
-                    foreach (var group in groups)
+                    return result;
+                }
+
+                XDocument xdoc = XDocument.Parse(template.TemplateXml);
+                // Prefer <group> children (legacy + correct seed shape); fall back to any named field/textbox.
+                IEnumerable<XElement> fields = xdoc.Root.Descendants("group").SelectMany(g => g.Elements());
+                if (!fields.Any())
+                {
+                    fields = xdoc.Descendants().Where(e =>
+                        e.Attribute("name") != null
+                        && !e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase)
+                        && !e.Name.LocalName.Equals("fields", StringComparison.OrdinalIgnoreCase)
+                        && !e.Name.LocalName.Equals("template", StringComparison.OrdinalIgnoreCase)
+                        && !e.Name.LocalName.Equals("component", StringComparison.OrdinalIgnoreCase));
+                }
+
+                foreach (XElement field in fields)
+                {
+                    var name = field.Attribute("name");
+                    if (name == null || string.IsNullOrWhiteSpace(name.Value))
                     {
-                        foreach (XElement field in group.Elements())
-                        {
-                            var name = field.Attribute("name");
-                            var unit = field.Attribute("unit");
-                            var values = field.Attribute("values");
-                            var display = field.Attribute("display");
-                            var dbValueObj = productSpecs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
-                            var isValueExist = dbValueObj != null;
-                            if (!isValueExist)
-                            {
-                                continue;
-                            }
-                            string specsName = "";
-                            if (display != null)
-                            {
-                                specsName = display.Value;
-                            }
-                            else
-                            {
-                                specsName = name.Value;
-                            }
-                            result.Add(new ProductSpecsModel(
-                                specsName.ToStr().Trim(),
-                               dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim(),
-                               unit == null ? "" : unit.Value.ToStr(), values == null ? "" : values.Value.ToStr()));
-                        }
+                        continue;
                     }
+                    var unit = field.Attribute("unit");
+                    var values = field.Attribute("values");
+                    var display = field.Attribute("display");
+                    var dbValueObj = productSpecs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                    if (dbValueObj == null)
+                    {
+                        continue;
+                    }
+                    string specsName = display != null ? display.Value : name.Value;
+                    result.Add(new ProductSpecsModel(
+                        specsName.ToStr().Trim(),
+                        dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim(),
+                        unit == null ? "" : unit.Value.ToStr(),
+                        values == null ? "" : values.Value.ToStr()));
                 }
                 return result;
             }

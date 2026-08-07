@@ -102,7 +102,7 @@ namespace EImece.Domain.Observability.Configuration
                     AppConfig.GetConfigString("SiteStatus", "dev")),
                 EnableEfSqlLogging = AppConfig.GetConfigBool("EnableEfSqlLogging", AppConfig.IsSiteUnderDevelopment),
                 EnableEfTelemetry = AppConfig.GetConfigBool("EnableEfTelemetry", true),
-                ExposeDetailedErrors = AppConfig.IsSiteUnderDevelopment
+                ExposeDetailedErrors = AppConfig.ExposeDetailedErrors
             };
         }
 

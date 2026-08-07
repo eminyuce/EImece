@@ -442,6 +442,25 @@ namespace EImece.Domain
         }
 
         /// <summary>
+        /// When true, unhandled exceptions show full stack traces (YSOD / detailed error pages)
+        /// instead of the generic friendly 500 page. Defaults to true in non-live environments.
+        /// Set appSetting ExposeDetailedErrors=true to force this even when SiteStatus=live (local IIS).
+        /// Web.Release.config should keep this false for production.
+        /// </summary>
+        public static bool ExposeDetailedErrors
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["ExposeDetailedErrors"] != null)
+                {
+                    return GetConfigBool("ExposeDetailedErrors", false);
+                }
+
+                return IsSiteUnderDevelopment;
+            }
+        }
+
+        /// <summary>
         /// TEMPORARY debug switch: when true, admin auth/login is bypassed and a debug Admin principal is injected.
         /// Keep false in production (Web.Release.config forces false).
         /// Hard-disabled whenever SiteStatus indicates a live environment.

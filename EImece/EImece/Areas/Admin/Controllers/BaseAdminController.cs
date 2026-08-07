@@ -100,6 +100,49 @@ namespace EImece.Areas.Admin.Controllers
         {
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            if (filterContext != null && filterContext.Exception != null)
+            {
+                // Logged via NLog elsewhere; surface stack when debugging.
+            }
+
+            if (filterContext != null
+                && !filterContext.ExceptionHandled
+                && AppConfig.ExposeDetailedErrors
+                && filterContext.Exception != null)
+            {
+                filterContext.ExceptionHandled = true;
+                filterContext.HttpContext.Response.Clear();
+                filterContext.HttpContext.Response.StatusCode = 500;
+                filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
+                var ex = filterContext.Exception;
+                var controller = filterContext.RouteData.Values["controller"];
+                var action = filterContext.RouteData.Values["action"];
+                var url = filterContext.HttpContext.Request.Url;
+                filterContext.Result = new ContentResult
+                {
+                    ContentType = "text/html; charset=utf-8",
+                    Content =
+                        "<!DOCTYPE html><html><head><title>Admin Error</title>" +
+                        "<style>body{font-family:Consolas,monospace;padding:24px;background:#111;color:#f5f5f5}" +
+                        "h1{color:#ff6b6b}pre{white-space:pre-wrap;background:#1e1e1e;padding:16px;border-radius:8px}</style>" +
+                        "</head><body>" +
+                        "<h1>Unhandled admin exception</h1>" +
+                        "<p><b>URL:</b> " + HttpUtility.HtmlEncode(url != null ? url.ToString() : "") + "</p>" +
+                        "<p><b>Controller:</b> " + HttpUtility.HtmlEncode(System.Convert.ToString(controller)) +
+                        " &nbsp; <b>Action:</b> " + HttpUtility.HtmlEncode(System.Convert.ToString(action)) + "</p>" +
+                        "<p><b>Type:</b> " + HttpUtility.HtmlEncode(ex.GetType().FullName) + "</p>" +
+                        "<p><b>Message:</b> " + HttpUtility.HtmlEncode(ex.Message) + "</p>" +
+                        "<h2>Stack trace</h2><pre>" + HttpUtility.HtmlEncode(ex.ToString()) + "</pre>" +
+                        "</body></html>"
+                };
+                return;
+            }
+
+            base.OnException(filterContext);
+        }
+
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
         {
             var IsCachingActivated = false;

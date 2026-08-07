@@ -94,9 +94,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Exception in Category action for id: '{id}'. Message: {ex.Message}");
-                Logger.Info("Redirecting to InternalServerError error page.");
-                return RedirectToAction("InternalServerError", "Error");
+                return HandleUnexpectedError(ex, $"Exception in Category action for id: '{id}'. Message: {ex.Message}");
             }
         }
     }

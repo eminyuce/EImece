@@ -42,8 +42,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message + " id:" + id);
-                return RedirectToAction("InternalServerError", "Error");
+                return HandleUnexpectedError(ex, ex.Message + " id:" + id);
             }
         }
     }

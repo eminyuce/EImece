@@ -41,7 +41,22 @@ namespace EImece.Domain.Services
             var result = resultList.FirstOrDefault(r => r.Id == id);
             if (result == null)
             {
-                Logger.Error("GetTemplate is null for id" + id);
+                // Cache can be stale after seed/admin template inserts; load directly from DB.
+                result = TemplateRepository.GetSingle(id);
+                if (result == null)
+                {
+                    Logger.Error("GetTemplate is null for id" + id);
+                }
+                else if (!result.IsActive)
+                {
+                    Logger.Warn("GetTemplate found inactive template id" + id);
+                    result = null;
+                }
+                else
+                {
+                    Logger.Warn("GetTemplate cache miss for id" + id + "; loaded from database.");
+                    DataCachingProvider.Clear(String.Format("GetAllActiveTemplates"));
+                }
             }
             return result;
         }

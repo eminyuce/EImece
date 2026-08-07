@@ -1,6 +1,8 @@
-﻿using EImece.Domain.Helpers.AttributeHelper;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.HelperModels;
 using NLog; // Added for logging
+using System;
 using System.Net;
 using System.Web.Mvc;
 
@@ -53,10 +55,13 @@ namespace EImece.Controllers
         /// Returns a HTTP 500 Internal Server Error error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
         /// <returns>The partial or full internal server error view.</returns>
-        [CustomOutputCache(CacheProfile = "InternalServerError")]
         public ActionResult InternalServerError()
         {
             Logger.Info("Entering InternalServerError action.");
+            if (AppConfig.ExposeDetailedErrors)
+            {
+                ViewBag.ExceptionDetail = TempData["LastException"] as Exception ?? Server.GetLastError();
+            }
             var result = this.GetErrorView(HttpStatusCode.InternalServerError, "internalservererror");
             Logger.Info("Returning InternalServerError view or partial view.");
             return result;

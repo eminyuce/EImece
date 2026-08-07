@@ -33,9 +33,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Exception in Index action for page: {page}. Message: {ex.Message}");
-                Logger.Info("Redirecting to InternalServerError error page.");
-                return RedirectToAction("InternalServerError", "Error");
+                return HandleUnexpectedError(ex, $"Exception in Index action for page: {page}. Message: {ex.Message}");
             }
         }
 
@@ -66,9 +64,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Exception in Detail action for id: '{id}'. Message: {ex.Message}");
-                Logger.Info("Redirecting to InternalServerError error page.");
-                return RedirectToAction("InternalServerError", "Error");
+                return HandleUnexpectedError(ex, $"Exception in Detail action for id: '{id}'. Message: {ex.Message}");
             }
         }
 
@@ -99,9 +95,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Exception in Categories action for id: '{id}'. Message: {ex.Message}");
-                Logger.Info("Redirecting to InternalServerError error page.");
-                return RedirectToAction("InternalServerError", "Error");
+                return HandleUnexpectedError(ex, $"Exception in Categories action for id: '{id}'. Message: {ex.Message}");
             }
         }
 
@@ -136,9 +130,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Exception in Tag action for id: '{id}'. Message: {ex.Message}");
-                Logger.Info("Redirecting to InternalServerError error page.");
-                return RedirectToAction("InternalServerError", "Error");
+                return HandleUnexpectedError(ex, $"Exception in Tag action for id: '{id}'. Message: {ex.Message}");
             }
         }
     }

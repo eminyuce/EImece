@@ -689,14 +689,68 @@ INSERT INTO #ListItemLookup VALUES (22,N'Tekrarlayan');
 INSERT INTO #ListItemLookup VALUES (23,N'Kurumsal');
 
 IF OBJECT_ID(N'tempdb..#TemplateLookup') IS NOT NULL DROP TABLE #TemplateLookup;
-CREATE TABLE #TemplateLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL);
+CREATE TABLE #TemplateLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, TemplateXml NVARCHAR(MAX) NOT NULL);
 
-INSERT INTO #TemplateLookup VALUES (1,N'Giyim Şablonu');
-INSERT INTO #TemplateLookup VALUES (2,N'Elektronik Şablonu');
-INSERT INTO #TemplateLookup VALUES (3,N'Ev & Mobilya Şablonu');
-INSERT INTO #TemplateLookup VALUES (4,N'Kozmetik Şablonu');
-INSERT INTO #TemplateLookup VALUES (5,N'Spor Ekipman Şablonu');
-INSERT INTO #TemplateLookup VALUES (6,N'Genel Ürün Şablonu');
+INSERT INTO #TemplateLookup VALUES (1,N'Giyim Şablonu',N'<!--eimece-seed-->
+<component>
+  <group name="Ürün Özellikleri">
+    <textbox name="Renk" />
+    <textbox name="Beden" />
+    <textbox name="Malzeme" display="Kumaş / Malzeme" />
+  </group>
+</component>');
+INSERT INTO #TemplateLookup VALUES (2,N'Elektronik Şablonu',N'<!--eimece-seed-->
+<component>
+  <group name="Ürün Özellikleri">
+    <textbox name="Renk" />
+    <textbox name="Marka" />
+    <textbox name="Model" />
+    <textbox name="Garanti" unit="ay" />
+    <textbox name="Ağırlık" unit="kg" />
+  </group>
+</component>');
+INSERT INTO #TemplateLookup VALUES (3,N'Ev & Mobilya Şablonu',N'<!--eimece-seed-->
+<component>
+  <group name="Ürün Özellikleri">
+    <textbox name="Renk" />
+    <textbox name="Malzeme" />
+    <textbox name="Yükseklik" unit="cm" />
+    <textbox name="Genişlik" unit="cm" />
+    <textbox name="Derinlik" unit="cm" />
+    <textbox name="Ağırlık" unit="kg" />
+  </group>
+</component>');
+INSERT INTO #TemplateLookup VALUES (4,N'Kozmetik Şablonu',N'<!--eimece-seed-->
+<component>
+  <group name="Ürün Özellikleri">
+    <textbox name="Renk" />
+    <textbox name="Hacim" unit="ml" />
+    <textbox name="Cilt Tipi" />
+    <textbox name="Paket Adeti" />
+  </group>
+</component>');
+INSERT INTO #TemplateLookup VALUES (5,N'Spor Ekipman Şablonu',N'<!--eimece-seed-->
+<component>
+  <group name="Ürün Özellikleri">
+    <textbox name="Renk" />
+    <textbox name="Beden" />
+    <textbox name="Malzeme" />
+    <textbox name="Ağırlık" unit="kg" />
+  </group>
+</component>');
+INSERT INTO #TemplateLookup VALUES (6,N'Genel Ürün Şablonu',N'<!--eimece-seed-->
+<component>
+  <group name="Ürün Özellikleri 1">
+    <dropdown name="Renk" values="Renkler" />
+    <textbox name="Malzeme" />
+    <textbox name="Ağırlık" unit="kg" />
+  </group>
+  <group name="Ürün Özellikleri 2">
+    <textbox name="Paket Adeti" unit="tane" />
+    <textbox name="Koli Adeti" display="Koli Adeti" unit="tane" />
+    <checkbox name="Depoda Var mi?" />
+  </group>
+</component>');
 
 IF OBJECT_ID(N'tempdb..#ReviewSubject') IS NOT NULL DROP TABLE #ReviewSubject;
 CREATE TABLE #ReviewSubject (i INT NOT NULL PRIMARY KEY, Subject NVARCHAR(100) NOT NULL);
@@ -917,7 +971,7 @@ INSERT INTO dbo.Templates (Name, CreatedDate, UpdatedDate, IsActive, Position, L
 SELECT
     tl.Name,
     @Now, @Now, 1, n.n, @Lang,
-    N'<!--eimece-seed--><template><fields><field name="Renk" type="text"/><field name="Beden" type="text"/><field name="Malzeme" type="text"/></fields></template>'
+    tl.TemplateXml
 FROM #Nums n
 INNER JOIN #TemplateLookup tl ON tl.rn = ((n.n - 1) % @TemplateLookupCount) + 1
 WHERE n.n <= @SeedTemplates;

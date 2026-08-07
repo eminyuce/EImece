@@ -723,9 +723,7 @@ namespace EImece.Controllers
             }
             catch (Exception e)
             {
-                PaymentLogger.Error($"Exception in BuyNow: {e.Message}", e);
-                PaymentLogger.Info("Redirecting to InternalServerError.");
-                return RedirectToAction("InternalServerError", "Error");
+                return HandleUnexpectedError(e, $"Exception in BuyNow: {e.Message}");
             }
         }
 

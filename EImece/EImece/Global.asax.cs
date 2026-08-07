@@ -193,87 +193,87 @@ namespace EImece
 
         private void redirectErrorController(object sender)
         {
-            bool useCustomError = true;
+            // When detailed errors are enabled, leave the exception for ASP.NET's yellow screen
+            // (requires customErrors Off or RemoteOnly from localhost).
+            bool useCustomError = !AppConfig.ExposeDetailedErrors;
 
-            String siteStatus = AppConfig.GetConfigString("SiteStatus", "dev");
+            Exception exception = Server.GetLastError();
+            var httpContext = ((MvcApplication)sender).Context;
+            var currentController = " ";
+            var currentAction = " ";
+            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
 
-            if (siteStatus.IndexOf("live", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            if (currentRouteData != null)
             {
-                useCustomError = true;
+                if (currentRouteData.Values["controller"] != null &&
+                    !String.IsNullOrEmpty(currentRouteData.Values["controller"].ToString()))
+                {
+                    currentController = currentRouteData.Values["controller"].ToString();
+                }
+
+                if (currentRouteData.Values["action"] != null &&
+                    !String.IsNullOrEmpty(currentRouteData.Values["action"].ToString()))
+                {
+                    currentAction = currentRouteData.Values["action"].ToString();
+                }
+            }
+
+            var requestUrl = httpContext.Request.Url.ToStr();
+            String requestUrlReferrer = "";
+            if (httpContext.Request.UrlReferrer != null)
+            {
+                requestUrlReferrer = httpContext.Request.UrlReferrer.ToStr();
+            }
+            var logMessage = (String.IsNullOrEmpty(requestUrlReferrer)
+                                  ? ""
+                                  : "requestUrlReferrer:" + requestUrlReferrer) + " requestUrl: " + requestUrl +
+                             "  Controller:" +
+                             currentController + " Action:" + currentAction + " error:" +
+                             (exception != null ? exception.Message : "(null)");
+            if (exception != null)
+            {
+                Logger.Error(exception, logMessage, "");
             }
             else
             {
-                useCustomError = false;
+                Logger.Error(logMessage);
             }
 
-            if (useCustomError)
+            if (!useCustomError)
             {
-                var httpContext = ((MvcApplication)sender).Context;
-                var currentController = " ";
-                var currentAction = " ";
-                var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
+                return;
+            }
 
-                if (currentRouteData != null)
-                {
-                    if (currentRouteData.Values["controller"] != null &&
-                        !String.IsNullOrEmpty(currentRouteData.Values["controller"].ToString()))
-                    {
-                        currentController = currentRouteData.Values["controller"].ToString();
-                    }
+            //We check if we have an AJAX request and return JSON in this case
+            if (IsAjaxRequest())
+            {
+                httpContext.ClearError();
+                httpContext.Response.Clear();
+                httpContext.Response.StatusCode = exception is HttpException
+                                                      ? ((HttpException)exception).GetHttpCode()
+                                                      : 500;
+                httpContext.Response.TrySkipIisCustomErrors = true;
+                httpContext.Response.ContentType = "application/json";
+                httpContext.Response.Write("{\"success\":false,\"message\":\"An unexpected error occurred.\"}");
+            }
+            else
+            {
+                var controller = new ErrorController();
+                var routeData = new RouteData();
+                var action = "Index";
 
-                    if (currentRouteData.Values["action"] != null &&
-                        !String.IsNullOrEmpty(currentRouteData.Values["action"].ToString()))
-                    {
-                        currentAction = currentRouteData.Values["action"].ToString();
-                    }
-                }
+                httpContext.ClearError();
+                httpContext.Response.Clear();
+                httpContext.Response.StatusCode = exception is HttpException
+                                                      ? ((HttpException)exception).GetHttpCode()
+                                                      : 500;
+                httpContext.Response.TrySkipIisCustomErrors = true;
 
-                Exception exception = Server.GetLastError();
+                routeData.Values["controller"] = "Error";
+                routeData.Values["action"] = action;
 
-                var requestUrl = httpContext.Request.Url.ToStr();
-
-                String requestUrlReferrer = "";
-                if (httpContext.Request.UrlReferrer != null)
-                {
-                    requestUrlReferrer = httpContext.Request.UrlReferrer.ToStr();
-                }
-                var logMessage = (String.IsNullOrEmpty(requestUrlReferrer)
-                                      ? ""
-                                      : "requestUrlReferrer:" + requestUrlReferrer) + " requestUrl: " + requestUrl +
-                                 "  Controller:" +
-                                 currentController + " Action:" + currentAction + " error:" + exception.Message;
-                Logger.Error(exception, logMessage, "");
-                //We check if we have an AJAX request and return JSON in this case
-                if (IsAjaxRequest())
-                {
-                    httpContext.ClearError();
-                    httpContext.Response.Clear();
-                    httpContext.Response.StatusCode = exception is HttpException
-                                                          ? ((HttpException)exception).GetHttpCode()
-                                                          : 500;
-                    httpContext.Response.TrySkipIisCustomErrors = true;
-                    httpContext.Response.ContentType = "application/json";
-                    httpContext.Response.Write("{\"success\":false,\"message\":\"An unexpected error occurred.\"}");
-                }
-                else
-                {
-                    var controller = new ErrorController();
-                    var routeData = new RouteData();
-                    var action = "Index";
-
-                    httpContext.ClearError();
-                    httpContext.Response.Clear();
-                    httpContext.Response.StatusCode = exception is HttpException
-                                                          ? ((HttpException)exception).GetHttpCode()
-                                                          : 500;
-                    httpContext.Response.TrySkipIisCustomErrors = true;
-
-                    routeData.Values["controller"] = "Error";
-                    routeData.Values["action"] = action;
-
-                    controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
-                    ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
-                }
+                controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
+                ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
             }
         }
 
