@@ -15,6 +15,19 @@
 <h2>@AdminResource.MainPageImages</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "mainPageImagesHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada ana sayfa <strong>slider / banner</strong> görsellerini yönetirsiniz.</li>
+    <li><strong>İsim</strong>: Yönetimde görünen başlık.</li>
+    <li><strong>Link</strong>: Görsele tıklanınca gidilecek adres (site içi veya tam URL).</li>
+    <li><strong>Resim</strong>: Banner görselini yükleyin. <strong>Resim durumu</strong> ile gösterimi açıp kapatabilirsiniz.</li>
+    <li><strong>Sırası</strong>: Slider’da görünme sırası; küçük sayı önce gelir.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1:</strong> Link = <code>/products</code> → ürün listesine gider.</p>
+<p style="margin-bottom: 0;"><strong>Örnek 2:</strong> Link = <code>https://ornek.com/kampanya</code> → harici kampanya sayfasına gider.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 <div class="row" style="padding:20px;">
 
     @using (Html.BeginForm("SaveOrEdit", "MainPageImages", FormMethod.Post, new { enctype = "multipart/form-data" }))

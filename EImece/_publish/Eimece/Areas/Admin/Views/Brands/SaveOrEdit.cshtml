@@ -15,6 +15,19 @@
 <h2>@AdminResource.Brands</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "brandsHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0; margin-bottom: 0;">
+    <li>Bu sayfada <strong>marka</strong> oluşturur veya düzenlersiniz.</li>
+    <li><strong>İsim</strong>: Markanın görünen adı.</li>
+    <li><strong>Yayında mı</strong>: İşaretliyse marka sitede görünür.</li>
+    <li><strong>Ana sayfa</strong>: İşaretliyse marka ana sayfada listelenir.</li>
+    <li><strong>Sırası</strong>: Listede görünme sırası; küçük sayı önce gelir.</li>
+    <li><strong>Resim</strong>: Marka logosunu yükleyin. <strong>Resim durumu</strong> ile görüntülenmeyi açıp kapatabilirsiniz.</li>
+    <li>Açıklama sekmesinde marka hakkında uzun metin yazabilirsiniz.</li>
+</ul>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm("SaveOrEdit", "brands", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 @Html.AntiForgeryToken()
@@ -69,17 +82,22 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-3">
-                            @Html.LabelFor(model => model.IsActive)
-                            @Html.EditorFor(model => model.IsActive)
-                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-md-3">
-                            @Html.LabelFor(model => model.MainPage)
-                            @Html.EditorFor(model => model.MainPage)
-                            @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.EditorFor(model => model.IsActive)
+                                    Yayında
+                                </label>
+                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    @Html.EditorFor(model => model.MainPage)
+                                    Ana sayfada göster
+                                </label>
+                                @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
 
@@ -93,14 +111,18 @@
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <input type="file" name="postedImage" />
                             @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-3">
-                            @Html.LabelFor(model => model.ImageState)
-                            @Html.EditorFor(model => model.ImageState)
-                            @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                            <div class="checkbox">
+                                <label>
+                                    @Html.EditorFor(model => model.ImageState)
+                                    @Html.DisplayNameFor(model => model.ImageState)
+                                </label>
+                                @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                         <div class="col-md-3">
                             @if (Model.MainImageId.HasValue)
@@ -126,8 +148,12 @@
 
 }
 
-<div>
-    @Html.ActionLink(AdminResource.BackToList, "Index")
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Marka listesine dön", "Index", null, new { @class = "btn btn-default btn-block" })
+        </div>
+    </div>
 </div>
 
 @section Scripts {

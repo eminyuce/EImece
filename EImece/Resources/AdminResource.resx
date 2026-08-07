@@ -298,10 +298,10 @@
     <value>Resimler</value>
   </data>
   <data name="IsService" xml:space="preserve">
-    <value>Hizmet mi?</value>
+    <value>Hizmet listesi</value>
   </data>
   <data name="IsValues" xml:space="preserve">
-    <value>Değer Listesi mi?</value>
+    <value>Şablon değer listesi</value>
   </data>
   <data name="EntityDescriptionPage" xml:space="preserve">
     <value>Genel açıklama</value>
@@ -538,7 +538,7 @@
     <value>Seçilenler ile Aksiyon</value>
   </data>
   <data name="ProductSpecTemplateItemList" xml:space="preserve">
-    <value>Şablonların Değer Listesi</value>
+    <value>Değer listeleri</value>
   </data>
   <data name="MakeItRootCategory" xml:space="preserve">
     <value>Ana Kategori Yap</value>
@@ -1063,22 +1063,22 @@
     <value>İletişim Formu</value>
   </data>
   <data name="MoveProductCategory" xml:space="preserve">
-    <value>Ürün Kategorileri Başka Kategoriye Taşımak</value>
+    <value>Ürün kategorisini taşı</value>
   </data>
   <data name="FirstCategoryId" xml:space="preserve">
-    <value>Taşımak İstenilen Ürün Kategorisi</value>
+    <value>Yeni üst kategori</value>
   </data>
   <data name="SecondCategoryId" xml:space="preserve">
-    <value>Gideceği Yeni Kategori</value>
+    <value>Taşınacak ürün kategorisi</value>
   </data>
   <data name="MoveProductMenu" xml:space="preserve">
     <value>Menü kategorilerini başka kategoriye taşı</value>
   </data>
   <data name="FirstMenuCategoryId" xml:space="preserve">
-    <value>Taşınacak menü kategorisi</value>
+    <value>Yeni üst menü</value>
   </data>
   <data name="SecondMenuCategoryId" xml:space="preserve">
-    <value>Gideceği yeni menü kategori</value>
+    <value>Taşınacak menü</value>
   </data>
   <data name="NoImage" xml:space="preserve">
     <value>Resim Yok</value>

@@ -23,6 +23,20 @@
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "productsHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada <strong>ürün</strong> oluşturur veya düzenlersiniz.</li>
+    <li>Soldaki ağaçtan ürünün <strong>kategorisini</strong> seçin (zorunlu).</li>
+    <li><strong>Fiyat</strong>: Satış fiyatı. <strong>Ürün indirimi</strong> varsa fiyat üzerinden ek indirim uygulanır.</li>
+    <li><strong>Ana sayfa</strong>: Ürünü ana sayfada gösterir. <strong>Kampanya</strong>: Kampanya listelerinde öne çıkarır.</li>
+    <li><strong>Marka / etiketler</strong>: Filtreleme ve vitrin için kullanılır.</li>
+    <li>Ek özellikler (renk, beden vb.) kategori şablonuna bağlıdır; ürün listesinden “özellik” ikonuyla doldurulur.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1:</strong> Kategori “Tişörtler” → İsim “Basic Beyaz Tişört” → Fiyat 499 → Kaydet.</p>
+<p style="margin-bottom: 0;"><strong>Örnek 2:</strong> Aynı ürün → Kampanya işaretli + indirim 50 → kampanya vitrininde görünür.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 <div class="row">
 
     <div class="col-md-2">

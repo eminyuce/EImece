@@ -983,10 +983,10 @@
     <value>Teslimat adresi ile fatura adresinin aynı olduğunu bilmenizi isteriz.</value>
   </data>
   <data name="IsService" xml:space="preserve">
-    <value>Hizmet mi?</value>
+    <value>Hizmet listesi</value>
   </data>
   <data name="IsValues" xml:space="preserve">
-    <value>Değer Listesi mi?</value>
+    <value>Şablon değer listesi</value>
   </data>
   <data name="IyzicoInfo" xml:space="preserve">
     <value>Iyzico ödeme altyapısı bilgileri</value>
@@ -1223,7 +1223,7 @@
     <value>Ürün Ek Özellikleri</value>
   </data>
   <data name="ProductSpecTemplateItemList" xml:space="preserve">
-    <value>Şablonların Değer Listesi</value>
+    <value>Değer listeleri</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Soru</value>
@@ -1654,10 +1654,10 @@
     <value>Minimum Sipariş Kargo Tutarı</value>
   </data>
   <data name="FirstCategoryId" xml:space="preserve">
-    <value>Taşımak İstenilen Ürün Kategorisi</value>
+    <value>Yeni üst kategori</value>
   </data>
   <data name="FirstMenuCategoryId" xml:space="preserve">
-    <value>Gideceği Yeni Kategori</value>
+    <value>Yeni üst menü</value>
   </data>
   <data name="FooterHtmlDescription" xml:space="preserve">
     <value>Footer Html İçerik</value>
@@ -1684,10 +1684,10 @@
     <value>Ürün Ölçü Seçenekleri</value>
   </data>
   <data name="SecondCategoryId" xml:space="preserve">
-    <value>SecondCategoryId</value>
+    <value>Taşınacak ürün kategorisi</value>
   </data>
   <data name="SecondMenuCategoryId" xml:space="preserve">
-    <value>Gideceği Yeni Menü Kategori</value>
+    <value>Taşınacak menü</value>
   </data>
   <data name="PromoBannerText" xml:space="preserve">
     <value>&lt;h3 class="font-family-body font-weight-light mb-2"&gt;Tek Ürün&lt;/h3&gt;

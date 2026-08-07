@@ -15,6 +15,17 @@
 <h2>@AdminResource.StoryCategory</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "storyCategoriesHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0; margin-bottom: 0;">
+    <li>Bu sayfada blog / hikâye yazıları için bir <strong>kategori</strong> oluşturur veya düzenlersiniz.</li>
+    <li><strong>İsim</strong>: Kategori adı (ör. “Haberler”).</li>
+    <li><strong>Yayında / Sıra</strong>: Sitede görünme ve listelenme sırası.</li>
+    <li>İsterseniz kategori görseli ve açıklama ekleyebilirsiniz.</li>
+    <li>Yazılar, Hikâyeler menüsünden bu kategoriye bağlanır.</li>
+</ul>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm("SaveOrEdit", "StoryCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 @Html.AntiForgeryToken()

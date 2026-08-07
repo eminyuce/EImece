@@ -303,7 +303,16 @@ namespace EImece.Areas.Admin.Controllers
         // GET: /Manage/ChangePassword
         public async Task<ActionResult> ChangePassword()
         {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var userId = User.Identity.GetUserId();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+            }
+            var user = await UserManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+            }
             ViewBag.CurrentUser = user;
             return View();
         }

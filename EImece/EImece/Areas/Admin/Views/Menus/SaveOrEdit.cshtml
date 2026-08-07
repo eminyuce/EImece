@@ -19,6 +19,19 @@
 <h2>@AdminResource.Menu</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "menusHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada site <strong>menü / sayfa</strong> öğesi oluşturur veya düzenlersiniz.</li>
+    <li>Soldaki ağaçtan <strong>üst menüyü</strong> seçin. Ana seviye için üst menü seçmeyin (veya kök bırakın).</li>
+    <li><strong>Menü linki</strong> (yeni kayıtta): Hazır sayfa seçeneklerinden birini seçebilirsiniz.</li>
+    <li><strong>Özel link</strong>: Harici veya özel bir URL yazmak için Link alanını kullanın; gerekirse “Link aktif” işaretleyin.</li>
+    <li><strong>Sayfa teması</strong>: İçerik sayfasının görünümünü belirler (varsa).</li>
+    <li><strong>Ana sayfa / Yayında</strong>: Menünün sitede görünmesini ve ana sayfada öne çıkmasını kontrol eder.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 0;"><strong>Örnek:</strong> Üst menü “Kurumsal” seç → İsim “Hakkımızda” → Menü linki “Hakkımızda” → Kaydet.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 <div class="row">
 
     <div class="col-md-2">

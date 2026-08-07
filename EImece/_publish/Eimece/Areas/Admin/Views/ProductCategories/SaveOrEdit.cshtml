@@ -20,6 +20,19 @@
 <h2>@AdminResource.ProductCategory</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "productCategoriesHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada <strong>ürün kategorisi</strong> oluşturur veya düzenlersiniz.</li>
+    <li>Soldaki ağaçtan <strong>üst kategoriyi</strong> seçin. Ana kategori için üst seçmeyin.</li>
+    <li><strong>Şablon</strong>: Bu kategorideki ürünlerin ek özellik alanlarını (renk, beden vb.) belirler. Şablonlar menüsünden tanımlanır.</li>
+    <li><strong>Kategori indirimi (%)</strong>: Kategorideki ürünlere uygulanacak yüzde indirim (varsa).</li>
+    <li><strong>Ana sayfa / Yayında</strong>: Kategorinin sitede ve ana sayfada görünmesini kontrol eder.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1:</strong> Üst yok → İsim “Giyim” → Şablon “Giyim Özellikleri” → Kaydet.</p>
+<p style="margin-bottom: 0;"><strong>Örnek 2:</strong> Üst “Giyim” → İsim “Tişörtler” → aynı şablon → alt kategori oluşur.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 <div class="row">
 
     <div class="col-md-2">

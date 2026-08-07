@@ -26,6 +26,18 @@
 <h2>@AdminResource.MoveProductsInTrees</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "moveProductsHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada ürünleri bir kategoriden başka bir kategoriye <strong>toplu taşırsınız</strong>.</li>
+    <li><strong>1.</strong> Soldaki ağaçtan <strong>kaynak kategoriyi</strong> seçin → ortada o kategorinin ürünleri listelenir.</li>
+    <li><strong>2.</strong> Taşınacak ürünleri ortadaki listeden <strong>işaretleyin</strong> (checkbox).</li>
+    <li><strong>3.</strong> Sağdaki ağaçtan <strong>hedef kategoriyi</strong> tıklayın → seçili ürünler o kategoriye taşınır.</li>
+    <li>Kaynak seçimini temizlemek için seçili kategori yanındaki <strong>X</strong> ikonunu kullanın.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 0;"><strong>Örnek:</strong> Solda “Tişörtler” seç → 3 ürünü işaretle → sağda “Kampanya Ürünleri”ne tıkla → ürünler taşınır.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 <div class="row">
     <div class="col-md-3">
         @Html.Partial("_ProductCategoryTree", ProductCategoryTreeLeft, new ViewDataDictionary(ViewData){
@@ -61,7 +73,7 @@
         </span>
 
         }
-        @Html.ActionLink(AdminResource.Products, "Index")
+        @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-default btn-sm", style = "margin-bottom:10px;" })
         <div class="panel panel-primary">
             @Html.Partial("pGridDropDown", baseList)
             @Html.Grid(products).Named(gridName).Columns(columns =>

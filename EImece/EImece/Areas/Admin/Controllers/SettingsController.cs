@@ -18,6 +18,11 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        public ActionResult Index()
+        {
+            return RedirectToAction("AddWebSiteLogo");
+        }
+
         public ActionResult AddWebSiteLogo()
         {
             var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);

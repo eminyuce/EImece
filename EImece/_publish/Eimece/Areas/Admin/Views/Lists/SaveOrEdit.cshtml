@@ -5,13 +5,44 @@
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
-    ViewBag.Title = "SaveOrEdit";
+    ViewBag.Title = AdminResource.ProductSpecTemplateItemList;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var itemText = Model.GetListItemText();
 }
 
 <h2>@AdminResource.ProductSpecTemplateItemList</h2>
 <hr class="adminLine" />
+
+@{ ViewData["HelpId"] = "listsHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada ürün özelliklerinde kullanılan <strong>açılır menü seçeneklerini</strong> oluşturur veya düzenlersiniz (renk, beden vb.).</li>
+    <li><strong>İsim</strong>: Listenin adı. Ürün şablonundaki <code>values="..."</code> değeriyle <strong>birebir aynı</strong> olmalıdır (ör. İsim = <code>Renkler</code> → şablonda <code>values="Renkler"</code>).</li>
+    <li><strong>Yayında mı</strong>: İşaretliyse liste kullanılabilir.</li>
+    <li><strong>Şablon değer listesi</strong>: Ürün şablonlarında açılır menü kaynağı olarak kullanmak için işaretleyin.</li>
+    <li><strong>Hizmet listesi</strong>: Bu liste bir hizmet türü içinse işaretleyin; ürün özellikleri için genelde boş bırakın.</li>
+    <li><strong>Sırası</strong>: Listelerin görünme sırası; küçük sayı önce gelir.</li>
+    <li><strong>Liste öğeleri</strong>: Her satıra bir seçenek yazın. İsterseniz <code>Görünen metin, değer</code> biçiminde virgülle ayırın. Sadece metin yazarsanız ikisi de aynı olur.</li>
+</ul>
+
+<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Renkler listesi</strong> (İsim: <code>Renkler</code>, Şablon değer listesi işaretli):</p>
+<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:12px; white-space:pre-wrap;">Kırmızı, kirmizi
+Mavi, mavi
+Siyah, siyah
+Beyaz, beyaz
+Yeşil, yesil</pre>
+
+<p style="margin-bottom: 6px;"><strong>Örnek 2 — Bedenler listesi</strong> (İsim: <code>Bedenler</code>, Şablon değer listesi işaretli):</p>
+<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:0; white-space:pre-wrap;">XS
+S
+M
+L
+XL
+XXL</pre>
+<p style="margin-top: 8px; margin-bottom: 0; font-size: 12px;">
+    Şablonda kullanım: <code>&lt;dropdown name="Renk" values="Renkler" /&gt;</code> veya <code>&lt;dropdown name="Beden" values="Bedenler" /&gt;</code>
+</p>
+@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm())
 {
@@ -26,7 +57,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Renkler" } })
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -35,7 +66,10 @@
         @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.IsActive)
+                <label>
+                    @Html.EditorFor(model => model.IsActive)
+                    Liste aktif olsun
+                </label>
                 @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -45,7 +79,10 @@
         @Html.LabelFor(model => model.IsService, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.IsService)
+                <label>
+                    @Html.EditorFor(model => model.IsService)
+                    Bu bir hizmet listesidir
+                </label>
                 @Html.ValidationMessageFor(model => model.IsService, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -55,7 +92,10 @@
         @Html.LabelFor(model => model.IsValues, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.IsValues)
+                <label>
+                    @Html.EditorFor(model => model.IsValues)
+                    Ürün şablonunda açılır menü olarak kullan
+                </label>
                 @Html.ValidationMessageFor(model => model.IsValues, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -70,10 +110,10 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-md-2" for=" ListItems"> List Items:</label>
+        <label class="control-label col-md-2" for="itemText">Liste öğeleri</label>
         <div class="col-md-10">
-            <span style="font-size: small">Put each list item on a new line. Divide the displayed text and values with a comma.</span><br />
-            @Html.TextAreaFor(m => itemText, new { cols = 50, rows = 10 })
+            <span class="help-block" style="margin-top:0;">Her satıra bir öğe yazın. İsterseniz görünen metin ile değeri virgülle ayırın: <code>Kırmızı, kirmizi</code></span>
+            @Html.TextAreaFor(m => itemText, new { cols = 50, rows = 10, @class = "form-control", id = "itemText", placeholder = "Kırmızı, kirmizi&#10;Mavi, mavi&#10;Siyah, siyah" })
         </div>
     </div>
 
@@ -84,20 +124,28 @@
     </div>
 
     @if (Model.ListItems != null && Model.ListItems.Any())
-        {
-
-            foreach (var item in Model.ListItems)
-            {
-    <div>
-        Text: @(item.Name), Value: @(item.Value), Order: @(item.Position)
-    </div>
-            }
-        }
+    {
+        <div class="form-group">
+            <label class="control-label col-md-2">Kayıtlı öğeler</label>
+            <div class="col-md-10">
+                <ul class="list-unstyled" style="margin-bottom:0;">
+                    @foreach (var item in Model.ListItems.OrderBy(i => i.Position))
+                    {
+                        <li>Metin: <strong>@(item.Name)</strong>, Değer: <strong>@(item.Value)</strong>, Sıra: @(item.Position)</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
 </div>
 }
 
-<div>
-    @Html.ActionLink(AdminResource.BackToList, "Index")
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Liste sayfasına dön", "Index", null, new { @class = "btn btn-default btn-block" })
+        </div>
+    </div>
 </div>
 
 @section Scripts {

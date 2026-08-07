@@ -9,6 +9,16 @@
 <h2>@AdminResource.TagCategory</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "tagCategoriesHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0; margin-bottom: 0;">
+    <li>Bu sayfada etiketleri gruplayan bir <strong>etiket kategorisi</strong> oluşturur veya düzenlersiniz.</li>
+    <li><strong>İsim</strong>: Kategori adı (ör. “Ürün Etiketleri”).</li>
+    <li><strong>Yayında / Sıra</strong>: Kullanılabilirlik ve listelenme sırası.</li>
+    <li>Etiketler, bu kategorinin altına Etiketler menüsünden eklenir.</li>
+</ul>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm())
 {
 @Html.AntiForgeryToken()

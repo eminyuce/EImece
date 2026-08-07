@@ -41,11 +41,12 @@
 <div class="row">
 
     <div class="col-md-2">
-
+        @if (ProductCategoryTree != null)
+        {
         @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
                     {"UrlPattern","/admin/productcategories/saveoredit/"}
                   ,{"IsExcelButtonEnabled",true}})
-
+        }
         <span id="treeClickContainer"></span>
     </div>
     <div class="col-md-10">
@@ -127,7 +128,7 @@ columns.Add(o => o.UpdatedDate)
 .SortInitialDirection(GridSortDirection.Descending);
 
 columns.Add(o => o.IsActive)
-.Titled(AdminResource.State)
+.Titled(AdminResource.IsActive)
 .Sortable(true)
 .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
 Sanitized(false)
@@ -143,7 +144,7 @@ columns.Add(r => r.ImageState)
 if (productPriceEnabled)
 {
 columns.Add()
-.Titled("Fiyat Guncelleme")
+.Titled("Fiyat Güncellemesi")
 .Encoded(false)
 .Sanitized(false)
 .Css("smallGridColumn")

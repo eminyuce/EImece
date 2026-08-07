@@ -20,6 +20,18 @@
 
 <h2>@AdminResource.ProductSpecs   &#8594;   @AdminResource.TemplateXml : @Html.ActionLink(@template.Name, "SaveOrEdit", "Templates", new { id = template.Id }, new { @class = "" }) </h2>
 <hr class="adminLine" />
+
+@{ ViewData["HelpId"] = "productSpecsHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada ürünün <strong>ek özelliklerini</strong> doldurursunuz (renk, beden, ölçü vb.).</li>
+    <li>Alanlar, ürün kategorisine bağlı <strong>şablondan</strong> gelir. Şablon adı yukarıdaki linkten düzenlenebilir.</li>
+    <li>Açılır listelerdeki seçenekler <strong>Değer listeleri</strong> menüsünden tanımlanır.</li>
+    <li>Şablon veya kategori şablonu yoksa bu sayfada alan görünmez; önce şablon atayın.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 0;"><strong>Örnek:</strong> Şablon “Giyim” ise Renk = Kırmızı, Beden = M seçip Kaydet → ürün detayında bu özellikler görünür.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 <div class="row">
     <div class="col-md-3">
         <div class="text-center">

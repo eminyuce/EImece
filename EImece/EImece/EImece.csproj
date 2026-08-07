@@ -898,6 +898,8 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionEnd.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pAdminSearchForm.cshtml" />
     <Content Include="Areas\Admin\Views\Products\SaveOrEdit.cshtml" />

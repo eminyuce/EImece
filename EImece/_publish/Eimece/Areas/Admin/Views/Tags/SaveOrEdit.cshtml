@@ -11,6 +11,16 @@
 <h2>@AdminResource.Tag</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "tagsHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0; margin-bottom: 0;">
+    <li>Bu sayfada ürünlerde kullanılan bir <strong>etiket</strong> oluşturur veya düzenlersiniz.</li>
+    <li><strong>Etiket kategorisi</strong>: Etiketin ait olduğu grup (önce etiket kategorisi tanımlı olmalıdır).</li>
+    <li><strong>İsim</strong>: Etiketin görünen adı (ör. “Yeni Sezon”).</li>
+    <li><strong>Yayında / Sıra</strong>: Kullanılabilirlik ve listelenme sırası.</li>
+</ul>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm())
 {
 @Html.AntiForgeryToken()

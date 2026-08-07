@@ -11,6 +11,23 @@
 
 <h2>@AdminResource.MailTemplates</h2>
 <hr class="adminLine" />
+
+@{ ViewData["HelpId"] = "mailTemplatesHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada sistemin gönderdiği <strong>e-posta şablonlarını</strong> düzenlersiniz (sipariş onayı, şifre sıfırlama vb.).</li>
+    <li><strong>İsim</strong>: Sistemin şablonu bulduğu anahtar ad. Düzenlerken genelde değiştirilmemelidir.</li>
+    <li><strong>Konu</strong>: E-posta konusu. Dinamik alanlar Razor sözdizimi ile yazılabilir.</li>
+    <li><strong>Gövde</strong>: HTML e-posta içeriği. İkinci sekmede düzenlenir.</li>
+    <li><strong>Yayında / Sıra</strong>: Şablonun kullanımı ve listelenme sırası.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Konu:</strong></p>
+<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:12px; white-space:pre-wrap;">Siparişiniz alındı - #@@Model.OrderNumber</pre>
+<p style="margin-bottom: 6px;"><strong>Örnek 2 — Kısa gövde:</strong></p>
+<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:0; white-space:pre-wrap;">&lt;p&gt;Merhaba @@Model.CustomerName,&lt;/p&gt;
+&lt;p&gt;Siparişiniz başarıyla alındı.&lt;/p&gt;</pre>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editor-form" }))
 {
 @Html.AntiForgeryToken()

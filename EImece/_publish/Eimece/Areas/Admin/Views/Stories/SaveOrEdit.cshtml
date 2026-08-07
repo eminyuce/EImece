@@ -17,6 +17,17 @@
 <h2>@AdminResource.StoryPageTitle</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "storiesHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0; margin-bottom: 0;">
+    <li>Bu sayfada <strong>blog / hikâye</strong> yazısı oluşturur veya düzenlersiniz.</li>
+    <li><strong>Kategori</strong>: Yazının ait olduğu hikâye kategorisi.</li>
+    <li><strong>Öne çıkan</strong>: Blog listesinde vurgulanır. <strong>Ana sayfa</strong>: Ana sayfada gösterilir. İkisi farklı yerlerdir.</li>
+    <li><strong>Kısa açıklama</strong>: Liste ve özetlerde görünen metin; uzun içerik açıklama sekmesindedir.</li>
+    <li><strong>Yazar</strong>: Yazıyı yazan kişinin adı.</li>
+</ul>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm("SaveOrEdit", "Stories", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 @Html.AntiForgeryToken()

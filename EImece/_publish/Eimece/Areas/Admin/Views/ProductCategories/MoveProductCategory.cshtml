@@ -6,7 +6,7 @@
 @model EImece.Domain.Models.AdminHelperModels.MoveProductCategory
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = AdminResource.MoveProductCategory;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var productCategoryDropDownList = (List<SelectListItem>)ViewBag.ProductCategoryDropDownList;
     var saveButtonText = AdminResource.SaveButtonText;
@@ -24,17 +24,20 @@
         <span id="treeClickContainer"></span>
     </div>
     <div class="col-md-9">
+        @{ ViewData["HelpId"] = "moveCategoryHelp"; }
+        @Html.Partial("_AdminHelpAccordionStart")
+        <ul style="margin-bottom: 0; margin-top: 0;">
+            <li>Bu sayfa, bir ürün kategorisini kategori ağacında başka bir yere taşımanızı sağlar.</li>
+            <li><strong>Taşınacak ürün kategorisi</strong> listesinden taşımak istediğiniz kategoriyi seçin.</li>
+            <li><strong>Yeni üst kategori</strong> listesinden kategorinin gideceği üst kategoriyi seçin.</li>
+            <li>Kategoriyi en üst seviyeye almak için <strong>Yeni üst kategori</strong> alanında <strong>Ana Kategori Yap</strong> seçeneğini seçin.</li>
+            <li>Soldaki ağaç mevcut kategori yapısını gösterir; kaydettikten sonra sayfayı yenileyerek sonucu görebilirsiniz.</li>
+        </ul>
+        @Html.Partial("_AdminHelpAccordionEnd")
         @using (Html.BeginForm("MoveProductCategory", "ProductCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
-            <div class="form-group">
-                @Html.LabelFor(model => model.FirstCategoryId, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.FirstCategoryId, productCategoryDropDownList, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.FirstCategoryId, "", new { @class = "text-danger" })
-                </div>
-            </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.SecondCategoryId, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-6">
@@ -43,12 +46,23 @@
                 </div>
             </div>
             <div class="form-group">
+                @Html.LabelFor(model => model.FirstCategoryId, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.FirstCategoryId, productCategoryDropDownList, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FirstCategoryId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="col-md-6 col-md-offset-3">
                     <input type="submit" name="saveButton" value="@saveButtonText" class="btn btn-success btn-block" />
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-3">
+                    @Html.ActionLink("Ürün kategorileri listesine dön", "Index", null, new { @class = "btn btn-default btn-block" })
+                </div>
+            </div>
         </div>
         }
-        @Html.ActionLink(AdminResource.ProductCategory, "Index")
     </div>
 </div>

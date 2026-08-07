@@ -21,6 +21,42 @@
 <h2>@AdminResource.Templates</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "templatesHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada <strong>ürün ek özellik şablonları</strong> oluşturur veya düzenlersiniz. Şablon, ürünlerde doldurulacak alanları (renk, beden, ölçü vb.) tanımlar.</li>
+    <li><strong>Ad</strong>: Şablona anlaşılır bir isim verin (ör. “Giyim Özellikleri”, “Elektronik Özellikleri”).</li>
+    <li><strong>Aktif</strong>: İşaretliyse şablon kullanılabilir; işaretsizse listede durur ama yeni ürünlerde seçilmez.</li>
+    <li><strong>Sıra</strong>: Listede görünme sırasını belirler; küçük sayı önce gelir.</li>
+    <li><strong>Xml Şablon</strong>: Alanları XML ile tanımlayın. Alanlar ürün “Ek Özellikleri” ekranında form olarak çıkar.</li>
+    <li>Desteklenen alan türleri: <code>textbox</code> (metin), <code>dropdown</code> (liste), <code>checkbox</code> (evet/hayır).</li>
+    <li><code>dropdown</code> için <code>values</code> değeri, <strong>Listeler</strong> menüsünde tanımlı bir listenin adı olmalıdır.</li>
+    <li>Kaydettikten sonra ürün düzenleme ekranından bu şablonu seçerek alanları doldurabilirsiniz.</li>
+</ul>
+
+<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Giyim ürünleri:</strong></p>
+<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:12px; white-space:pre-wrap;">&lt;component&gt;
+  &lt;group name="Giyim Özellikleri"&gt;
+    &lt;dropdown name="Renk" values="Renkler" /&gt;
+    &lt;dropdown name="Beden" values="Bedenler" /&gt;
+    &lt;textbox name="Malzeme" display="Kumaş / Malzeme" /&gt;
+    &lt;checkbox name="Yıkamaya Uygun" /&gt;
+  &lt;/group&gt;
+&lt;/component&gt;</pre>
+
+<p style="margin-bottom: 6px;"><strong>Örnek 2 — Elektronik ürünleri:</strong></p>
+<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:0; white-space:pre-wrap;">&lt;component&gt;
+  &lt;group name="Teknik Özellikler"&gt;
+    &lt;textbox name="Marka" /&gt;
+    &lt;textbox name="Model" /&gt;
+    &lt;textbox name="Garanti" unit="ay" /&gt;
+    &lt;textbox name="Ağırlık" unit="kg" /&gt;
+    &lt;dropdown name="Renk" values="Renkler" /&gt;
+    &lt;checkbox name="Kutu İçeriği Tam mı?" /&gt;
+  &lt;/group&gt;
+&lt;/component&gt;</pre>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm())
 {
 @Html.AntiForgeryToken()
@@ -77,8 +113,12 @@
 </div>
 }
 
-<div>
-    @Html.ActionLink(AdminResource.BackToList, "Index")
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Şablon listesine dön", "Index", null, new { @class = "btn btn-default btn-block" })
+        </div>
+    </div>
 </div>
 
 <script>
