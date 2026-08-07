@@ -14,19 +14,21 @@
 <div class="flex-grow-1 pb-3 pt-sm-3 my-1 px-sm-2 pr-lg-4 order-sm-2">
     @using (Html.BeginForm("SearchProducts", "Products", FormMethod.Get))
     {
-    <input type="submit" style="display:none;" id="searchSubmitButton" />
+    <input type="submit" style="display:none;" id="searchSubmitButton" aria-hidden="true" tabindex="-1" />
 
     <div class="input-group flex-nowrap">
         <div class="input-group-prepend">
-            <a title="@Resource.Search"
+            <button type="button"
+               title="@Resource.Search"
+               aria-label="@Resource.Search"
                onclick="onClickSearch(this)"
                class="input-group-text rounded-left"
                id="search-icon">
-                <i data-feather="search"></i>
-            </a>
+                <i data-feather="search" aria-hidden="true"></i>
+            </button>
         </div>
         <input class="form-control rounded-right" type="text" id="site-search"
-               aria-label="Search site" aria-describedby="search-icon"
+               aria-label="@SearchProductTextBoxPlaceHolder" aria-describedby="search-icon"
                name="search"
                placeholder="@SearchProductButtonTextPlaceHolder" value="@search" />
     </div>
@@ -38,7 +40,6 @@
 <input type="hidden" id="SearchValidText" value="@Resource.SearchValidText" />
 
 <script>
-
     function isEmpty(str) {
         return (!str || 0 === str.length);
     }

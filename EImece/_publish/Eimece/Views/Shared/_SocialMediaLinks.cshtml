@@ -58,8 +58,8 @@
             {
                 continue;
             }
-    <a class="sb-light sb-sm ml-2" href="@Url.Action("Language", "Home",new { id = item.Value })">
-        <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" />
+    <a class="sb-light sb-sm ml-2" href="@Url.Action("Language", "Home",new { id = item.Value })" aria-label="@item.Text">
+        <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png",countryCode)" width="20" height="14" alt="@item.Text" loading="lazy" decoding="async" />
     </a>
         }
     }

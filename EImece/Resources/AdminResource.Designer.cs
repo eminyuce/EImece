@@ -3130,7 +3130,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email Üyeliği.
+        ///   Looks up a localized string similar to E-posta Üyeliği.
         /// </summary>
         public static string Subscribers {
             get {

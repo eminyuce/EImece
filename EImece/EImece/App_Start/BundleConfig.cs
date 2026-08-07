@@ -33,11 +33,14 @@ namespace EImece
                    "~/Content/site.css"
                       ));
 
+            // Core theme + tiny vendor CSS. Skin duplicates removed from layout (see perf-overrides.css).
             bundles.Add(new StyleBundle("~/Content/eimeceTheme").Include(
                  "~/Content/mstore/css/theme.min.css",
-                  "~/Content/mstore/css/vendor.min.css"
+                  "~/Content/mstore/css/vendor.min.css",
+                  "~/Content/mstore/css/perf-overrides.css"
                  ));
 
+            // vendor.min.js already includes jQuery 3.3.1 + Bootstrap + Owl + Feather + Fancybox.
             bundles.Add(new ScriptBundle("~/bundles/mstore").Include(
                     "~/Content/mstore/js/vendor.min.js",
                     "~/Content/mstore/js/theme.min.js"));
@@ -124,8 +127,8 @@ namespace EImece
                     "~/Scripts/blueimp-gallery2/js/blueimp-gallery-indicator.js",
                     "~/Scripts/blueimp-gallery2/js/jquery.blueimp-gallery.js"));
 
+            // Do NOT re-include jQuery here — mstore vendor.min.js already ships jQuery 3.3.1 (~85KB saved).
             bundles.Add(new ScriptBundle("~/bundles/eimeceScripts").Include(
-                    "~/Scripts/jquery-3.1.1.min.js",
                     "~/Scripts/eimece.js",
                     "~/Scripts/cookie-consent.js",
                     "~/Scripts/mustache.min.js"));

@@ -681,6 +681,51 @@ namespace EImece.Domain.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Resize and encode as WebP when the client advertises image/webp support.
+        /// Falls back to the standard resized image on failure.
+        /// </summary>
+        public SavedImage GetResizedImageAsWebP(int fileStorageId, int width, int height, int quality = 80)
+        {
+            FileStorage fileStorage;
+            byte[] imageBytes = GetFileStorageFromCache(fileStorageId, out fileStorage);
+            if (imageBytes == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                using (var startStream = new MemoryStream(imageBytes))
+                using (var bitmap = new Bitmap(startStream))
+                using (var resized = ResizeImage(bitmap, width, height))
+                using (var outStream = new MemoryStream())
+                {
+                    ISupportedImageFormat webPFormat = new WebPFormat { Quality = quality };
+                    using (var imageFactory = new ImageFactory(preserveExifData: false))
+                    {
+                        using (var loadStream = new MemoryStream(GetBitmapBytes(resized)))
+                        {
+                            imageFactory.Load(loadStream)
+                                .Format(webPFormat)
+                                .Save(outStream);
+                        }
+                    }
+
+                    var result = new SavedImage(outStream.ToArray(), "image/webp");
+                    result.UpdatedDated = fileStorage.UpdatedDate;
+                    result.Width = resized.Width;
+                    result.Height = resized.Height;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "WebP conversion failed for fileStorageId={0}; falling back to original mime type", fileStorageId);
+                return GetResizedImage(fileStorageId, width, height);
+            }
+        }
+
         public Tuple<string, string> GetImageSrcPath(int fileStorageId)
         {
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);

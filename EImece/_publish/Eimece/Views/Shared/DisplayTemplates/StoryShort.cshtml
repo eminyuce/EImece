@@ -7,8 +7,10 @@
 @using Resources;
 @{
     var story = Model;
-    int Width = ViewData["Width"].ToInt(0);
-    int Height = ViewData["Height"].ToInt(0);
+    int Width = ViewData["Width"].ToInt(278);
+    int Height = ViewData["Height"].ToInt(200);
+    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
+    var imageTag = story.GetCroppedImageTag(imageId, Width, Height, lazy: true, sizes: "(max-width: 767px) 90vw, 278px");
 }
 
 <div class="container mt-4">
@@ -19,17 +21,17 @@
                     <div class="row">
                         <div class="col-md-4 text-center">
                             <!-- Cropped image -->
-                            <a href="@story.DetailPageUrl" class="text-dark">
-                                @Html.Raw(story.GetCroppedImageTag(0, 0))
+                            <a href="@story.DetailPageUrl" class="text-dark" aria-label="@story.Name">
+                                @Html.Raw(imageTag)
                             </a>
                         </div>
                         <div class="col-md-8">
                             <div class="d-flex justify-content-between align-items-start">
-                                <h5 class="card-title mb-1">
+                                <h3 class="card-title h5 mb-1">
                                     <a href="@story.DetailPageUrl" class="text-dark">
                                         @Html.DisplayFor(model => story.Name)
                                     </a>
-                                </h5>
+                                </h3>
                                 <div class="text-right">
                                     <p class="mb-1 text-muted">
                                         <strong>@Resource.StoryCategory:</strong>

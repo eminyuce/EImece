@@ -560,9 +560,11 @@
     <Content Include="Content\mstore\css\skins\theme-ea4979.min.css" />
     <Content Include="Content\mstore\css\skins\theme-f29366-rounded.min.css" />
     <Content Include="Content\mstore\css\skins\theme-f29366.min.css" />
+    <Content Include="Content\mstore\css\perf-overrides.css" />
     <Content Include="Content\mstore\css\theme.css" />
     <Content Include="Content\mstore\css\theme.min.css" />
     <Content Include="Content\mstore\css\vendor.min.css" />
+    <Content Include="media\Web.config" />
     <Content Include="Content\mstore\docs\autoprefixer.html" />
     <Content Include="Content\mstore\docs\changelog.html" />
     <Content Include="Content\mstore\docs\components.html" />

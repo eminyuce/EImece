@@ -15,7 +15,7 @@
 }
 
 <!-- Page Title-->
-<div class="page-title-wrapper" aria-label="Page title">
+<div class="page-title-wrapper" role="region" aria-label="Page title">
     <div class="container">
         <div class="alert alert-secondary" role="alert">
             <nav aria-label="breadcrumb">
@@ -93,13 +93,13 @@
         @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
             {
         <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
-            <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+            <img class="rsImg" src="@product.CroppedImageUrl" alt="@product.Name" width="80" height="80" loading="lazy" decoding="async" />
         </a>
             }
             else
             {
         <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
-            <img class="rsImg" src="@AppConfig.GetDefaultImage(200, 0)" alt="" />
+            <img class="rsImg" src="@AppConfig.GetDefaultImage(200, 0)" alt="@product.Name" width="80" height="80" loading="lazy" decoding="async" />
         </a>
             }
 

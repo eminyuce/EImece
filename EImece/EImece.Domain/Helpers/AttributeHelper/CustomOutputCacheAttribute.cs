@@ -10,8 +10,12 @@ namespace EImece.Domain.Helpers.AttributeHelper
 
             if (httpContext.User.Identity.IsAuthenticated)
             {
+                // Skip output-cache for authenticated users, but avoid Cache-Control: no-store
+                // so browsers can use back/forward cache (bfcache) on public GET pages.
                 httpContext.Response.Cache.SetNoServerCaching();
-                httpContext.Response.Cache.SetNoStore();
+                httpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.Private);
+                httpContext.Response.Cache.SetMaxAge(System.TimeSpan.Zero);
+                httpContext.Response.Cache.SetRevalidation(System.Web.HttpCacheRevalidation.AllCaches);
             }
             else
             {
@@ -26,7 +30,9 @@ namespace EImece.Domain.Helpers.AttributeHelper
             if (httpContext.User.Identity.IsAuthenticated)
             {
                 httpContext.Response.Cache.SetNoServerCaching();
-                httpContext.Response.Cache.SetNoStore();
+                httpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.Private);
+                httpContext.Response.Cache.SetMaxAge(System.TimeSpan.Zero);
+                httpContext.Response.Cache.SetRevalidation(System.Web.HttpCacheRevalidation.AllCaches);
             }
             else
             {

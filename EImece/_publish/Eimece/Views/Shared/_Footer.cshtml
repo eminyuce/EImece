@@ -18,6 +18,7 @@
 
     var productCategories = Model.ProductCategories;
     var productRootCategories = productCategories.Where(r => r.ParentId == 0).ToList();
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
 }
 <!-- Footer-->
 <footer class="page-footer bg-dark">
@@ -68,7 +69,10 @@
                     <div class="widget widget-links pb-4">
                         <h3 class="widget-title text-white border-light">@Resource.CustomerRelationship</h3>
                         <ul>
-                            <li><a class="nav-link-inline nav-link-light" href="@Url.Action("CargoTracking","Payment")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.TrackYourCargo</span></a></li>
+                            @if (productPriceEnabled)
+                            {
+                                <li><a class="nav-link-inline nav-link-light" href="@Url.Action("CargoTracking","Payment")"><i class="widget-categories-indicator" data-feather="chevron-right"></i><span class="font-size-sm">@Resource.TrackYourCargo</span></a></li>
+                            }
                             @if (musteriIliskileriChildren.IsNotEmpty())
                             {
                                 foreach (var m in musteriIliskileriChildren)
@@ -85,7 +89,10 @@
                         <h3 class="widget-title text-white border-light">@Resource.StayInformed</h3>
                         @Html.Partial("_AddSubscriber", Model)
                     </div>
-                    <img src="~/Content/img/logo-footer-mastervisa.png" />
+                    @if (productPriceEnabled)
+                    {
+                        <img src="~/Content/img/logo-footer-mastervisa.png" width="180" height="40" alt="MasterCard and Visa accepted" loading="lazy" decoding="async" />
+                    }
                 </div>
             </div>
         </div>
@@ -97,6 +104,6 @@
     </div>
     }
     <div class="py-3" style="background-color: #1a1a1a;">
-        <div class="container font-size-xs text-center" aria-label="Copyright"><span class="text-white opacity-60 mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank">Erayweb</a></div>
+        <div class="container font-size-xs text-center" role="contentinfo"><span class="text-white mr-1">© All rights reserved. Made by</span><a class="nav-link-inline nav-link-light" href="http://www.erayweb.com/" target="_blank" rel="noopener noreferrer">Erayweb</a></div>
     </div>
 </footer>

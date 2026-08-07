@@ -19,10 +19,23 @@
     var latestStories = Model.LatestStories;
     Subscriber subscriber = new Subscriber();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+
+    // Preload first hero image for LCP discovery
+    var firstHero = mainPageImages != null && mainPageImages.Count > 0 ? mainPageImages[0] : null;
+    var firstHeroUrl = firstHero != null ? firstHero.GetCroppedImageUrl(firstHero.MainImageId, 459, 344) : null;
 }
 
+@section HeadExtra {
+    @if (!string.IsNullOrEmpty(firstHeroUrl))
+    {
+        <link rel="preload" as="image" href="@firstHeroUrl" fetchpriority="high" />
+    }
+}
+
+<h1 class="sr-only">@ViewBag.Title</h1>
+
 <!-- Hero slider + Promo list-->
-<section class="container px-1">
+<section class="container px-1" aria-label="@Resource.PopularProducts">
     <div class="mt-4">
         <div class="row">
             <!-- Categories-->
@@ -37,12 +50,13 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <!-- Hero slider-->
-                <div class="bg-secondary bg-size-cover mb-grid-gutter" style="background-image: url(/Content/img/hero-main-bg.jpg);">
-                    <div class="owl-carousel trigger-carousel" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: false, &quot;loop&quot;: true, &quot;autoHeight&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 5500 }">
+                <!-- Hero slider: fixed min-height (no autoHeight) to avoid CLS -->
+                <div class="bg-secondary bg-size-cover mb-grid-gutter home-hero-carousel" style="background-image: url(/Content/img/hero-main-bg.jpg);">
+                    <div class="owl-carousel trigger-carousel"
+                         data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: false, &quot;loop&quot;: true, &quot;autoHeight&quot;: false, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 5500 }">
                         @for (int i = 0; i < mainPageImages.Count; i++)
                         {
-                            @CreateMainPageImage(mainPageImages[i])
+                            @CreateMainPageImage(mainPageImages[i], i == 0)
                         }
                     </div>
                 </div>
@@ -53,13 +67,14 @@
 
 @CreateProductCategorySection(@Resource.PopularProducts, mainPageProductCategories)
 
-<!-- Subscription form section (Add this section) -->
-<section class="container px-1 py-4">
+<!-- Subscription form section -->
+<section class="container px-1 py-4" aria-label="@Resource.StayInformed">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="bg-white border p-4 rounded shadow-sm">
                 @Html.Raw(Resource.MainPageProductSubscriptionHtml)
-                <input type="text" name="email" id="SubscribeEmailText" class="form-control mb-3" placeholder="@Resource.PleaseEnterYourEmail" />
+                <label class="sr-only" for="SubscribeEmailText">@Resource.PleaseEnterYourEmail</label>
+                <input type="email" name="email" id="SubscribeEmailText" class="form-control mb-3" placeholder="@Resource.PleaseEnterYourEmail" autocomplete="email" />
                 <button type="button" id="SubscribeEmailBtn" class="btn btn-primary btn-block">@Resource.Subscribe*</button>
                 <div class="success-message text-center mt-3" id="SubscribeEmailTextSuccessMessage" style="display: none;">@Html.Raw(@Resource.MainPageProductSubscriptionThanks)</div>
             </div>
@@ -81,7 +96,7 @@
                         @Html.Raw(string.Format(Resource.PromoBannerText, HttpUtility.HtmlAttributeEncode(bannerLink)))
                     </div>
                 </div>
-                <div class="col-md-7"><img class="mx-auto" src="~/media/images/offer.jpg" alt="Promo banner"></div>
+                <div class="col-md-7"><img class="mx-auto" src="~/media/images/offer.jpg" width="561" height="421" alt="Promo banner" loading="lazy" decoding="async"></div>
             </div>
         </div>
     </section>
@@ -106,16 +121,35 @@
 }
 
 
-@helper  CreateMainPageImage(MainPageImage mainPageImage)
-{var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 0);
+@helper  CreateMainPageImage(MainPageImage mainPageImage, bool isLcp)
+{
+    var imageId = mainPageImage.MainImageId.HasValue ? mainPageImage.MainImageId.Value : 0;
+    var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 344);
+    var imgSrcSet = mainPageImage.GetResponsiveImageSrcSet(imageId, 459, 344);
+    var loadingAttr = isLcp ? "eager" : "lazy";
+    var fetchPriorityAttr = isLcp ? "high" : "auto";
     <div class="row align-items-center py-5">
         <div class="col-md-5">
             <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
-                <h3 class="mb-1">@mainPageImage.Name</h3>
-                <a class="btn btn-primary" href="@mainPageImage.Link"><i class="ml-1" data-feather="arrow-right"></i></a>
+                <h2 class="h3 mb-1">@mainPageImage.Name</h2>
+                <a class="btn btn-primary" href="@mainPageImage.Link">
+                    @mainPageImage.Name
+                    <i class="ml-1" data-feather="arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
-        <div class="col-md-7"><img class="d-block mx-auto" src="@imgLink" alt="@mainPageImage.Name"></div>
+        <div class="col-md-7">
+            <img class="d-block mx-auto hero-slide-img"
+                 src="@imgLink"
+                 srcset="@imgSrcSet"
+                 sizes="(max-width: 767px) 92vw, 459px"
+                 width="459"
+                 height="344"
+                 alt="@mainPageImage.Name"
+                 loading="@loadingAttr"
+                 fetchpriority="@fetchPriorityAttr"
+                 decoding="async" />
+        </div>
     </div>
 }
 
@@ -123,7 +157,8 @@
 {if (mainPageProductCategories.IsNotEmpty())
     {
         var featuredItem = mainPageProductCategories.First();<!-- Featured products grid-->
-        <section class="container px-1 pt-2">
+        <section class="container px-1 pt-2" aria-label="@title">
+            <h2 class="h3 mb-3">@title</h2>
             <div class="row no-gutters">
                 @for (int i = 0; i < mainPageProductCategories.Count; i++)
                 {
@@ -138,12 +173,12 @@
 {
         <div class="col-md-12 mb-2 py-3">
             <div class="widget widget-featured-entries">
-                <h3 class="widget-title font-size-lg">@title</h3>
+                <h2 class="widget-title font-size-lg h3">@title</h2>
 
                 @for (int i = 0; i < latestStories.Count; i++)
                 {
                     var p = latestStories[i];
-                    @Html.DisplayFor(model => p, "StoryShort")
+                    @Html.DisplayFor(model => p, "StoryShort", new { Width = 278, Height = 200 })
                 }
             </div>
         </div>
@@ -155,7 +190,7 @@
     {
         <div class="col-md-4 col-sm-6 mb-2 py-3">
             <div class="widget widget-featured-entries">
-                <h3 class="widget-title font-size-lg">@title</h3>
+                <h2 class="widget-title font-size-lg h3">@title</h2>
 
                 @for (int i = 0; i < products.Count; i++)
                 {
@@ -175,13 +210,10 @@
            href="@productCategoryLink"
            data-toggle="popover" data-placement="right" data-trigger="hover"
            data-html="true" data-content="@Html.Raw(productCategory.CreateChildDataContent)">
-            <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;"></i>
+            <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;" aria-hidden="true"></i>
             <span>
-
-                <b>
-                    @productCategory.Name
-                </b> <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;">
-                </i>
+                <b>@productCategory.Name</b>
+                <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;" aria-hidden="true"></i>
             </span>
         </a>
     </li>
