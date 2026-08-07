@@ -696,6 +696,15 @@ input[name='checkboxGrid'] {
     margin-bottom: -1px;
 }
 
+/* The -1px above lets the active tab cover the panel border, but it also leaves
+   the floated tab <li> elements overlapping the first pixel of .panel-body.
+   Nothing between the panel and .form-group starts a new block formatting
+   context, so that leftover float pushes the first row's .control-label out of
+   the grid and drops its input column onto the next line. */
+.panel.with-nav-tabs > .panel-body {
+    clear: both;
+}
+
 .panel-heading .Tools {
     float: right;
     margin-left: 10px;
