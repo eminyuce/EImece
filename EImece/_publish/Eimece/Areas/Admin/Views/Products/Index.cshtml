@@ -68,18 +68,28 @@
 
         @if (brands != null)
         {
+            int selectedBrandId = ViewBag.SelectedBrandId != null ? (int)ViewBag.SelectedBrandId : -1;
+            int categoryIdForBrandFilter = selectedCategory == null ? 0 : selectedCategory.Id;
+            bool isAllBrandsSelected = selectedBrandId <= 0;
             <span>
                 @AdminResource.Brands
             </span>
+            <a href="@Url.Action("Index", "Products", new { id = categoryIdForBrandFilter, brandId = -1 })">
+                <b style="color:@(isAllBrandsSelected ? "red" : "#555");">
+                    @Resource.All
+                </b>
+            </a>
+            <span>&nbsp;</span>
             var index = 1;
             foreach (var b in brands)
             {
-                <a href="@Url.Action("Index", "Products", new { id = (selectedCategory == null ? 0 : selectedCategory.Id), brandId = b.Id })">
-                    <b style="color:red;">
+                bool isSelectedBrand = selectedBrandId == b.Id;
+                <a href="@Url.Action("Index", "Products", new { id = categoryIdForBrandFilter, brandId = b.Id })">
+                    <b style="color:@(isSelectedBrand ? "red" : "#555");">
                         @(index + ". " + b.Name)
                     </b>
                 </a>
-                <span>&nbsp;</span> <!-- Adds space between brand names -->
+                <span>&nbsp;</span>
                 index++;
             }
         }
@@ -122,7 +132,7 @@
       .RenderValueAs(d =>
                         @<div>
 
-                            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "", @target = "_blank" })
+                            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory != null ? d.ProductCategory.Name : ""), id = d.GetSeoUrl() }, new { @class = "", @target = "_blank" })
                             @if (!string.IsNullOrEmpty(d.NameLong))
                                  {
                                 <div style="max-width:220px">
@@ -140,16 +150,16 @@
            .Titled(AdminResource.ProductCategory)
            .Encoded(false)
            .Filterable(true)
-           .RenderValueAs(o => o.ProductCategory.Name);
+           .RenderValueAs(o => o.ProductCategory != null ? o.ProductCategory.Name : "");
 
            columns.Add(c => c.BrandId)
            .Titled(AdminResource.Brands)
            .Encoded(false)
            .Filterable(true)
-           .RenderValueAs(o => o.BrandId.HasValue ? string.Format("{0}", o.Brand.Name) : "");
+           .RenderValueAs(o => (o.BrandId.HasValue && o.Brand != null) ? o.Brand.Name : "");
 
 
-           if (isProductPriceEnable.SettingValue.ToBool(true))
+           if (isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true))
            {
                columns.Add(c => c.Price).
                Titled(AdminResource.Price).
@@ -178,7 +188,7 @@
      RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
            columns.Add(o => o.IsActive)
-           .Titled(AdminResource.State)
+           .Titled(AdminResource.IsActive)
            .Sortable(true)
            .Css("smallGridColumn")
            .SortInitialDirection(GridSortDirection.Descending).Encoded(false).

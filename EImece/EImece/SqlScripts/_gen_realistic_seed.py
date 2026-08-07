@@ -1212,7 +1212,7 @@ BEGIN
         pr.ProductName,
         DATEADD(DAY, -(pr.rn % 365), @Now), DATEADD(DAY, -(pr.rn % 30), @Now),
         CASE WHEN pr.rn % 50 = 0 THEN 0 ELSE 1 END,
-        pr.rn, @Lang,
+        1 + (ABS(CHECKSUM(CONCAT(N'SEED-POS-', CAST(pr.rn AS NVARCHAR(20))))) % 10000), @Lang,
         pr.DescriptionHtml,
         1, N'ürün,e-ticaret,' + LOWER(LEFT(pr.ProductName, 40)),
         @MinFileId + @FsOffProduct + (pr.rn - 1),
@@ -1245,7 +1245,7 @@ BEGIN
         pr.ProductName,
         DATEADD(DAY, -(pr.rn % 365), @Now), DATEADD(DAY, -(pr.rn % 30), @Now),
         CASE WHEN pr.rn % 50 = 0 THEN 0 ELSE 1 END,
-        pr.rn, @Lang,
+        1 + (ABS(CHECKSUM(CONCAT(N'SEED-POS-', CAST(pr.rn AS NVARCHAR(20))))) % 10000), @Lang,
         pr.DescriptionHtml,
         1, N'ürün,e-ticaret,' + LOWER(LEFT(pr.ProductName, 40)),
         @MinFileId + @FsOffProduct + (pr.rn - 1),
@@ -1290,14 +1290,24 @@ INNER JOIN BrandsRn b ON b.rn = pr.rn
 WHERE pr.rn <= @BrandCount;
 
 /* Align product display name brand with assigned BrandId for the first @BrandCount rows */
+;WITH FirstBrandProducts AS (
+    SELECT p.Id
+    FROM dbo.Products p
+    INNER JOIN (
+        SELECT Id, ROW_NUMBER() OVER (ORDER BY Id) AS rn
+        FROM dbo.Products
+        WHERE AddUserId = @SeedMarker
+    ) pr ON pr.Id = p.Id
+    WHERE pr.rn <= @BrandCount
+)
 UPDATE p
 SET Name = REPLACE(p.Name, LEFT(p.Name, CHARINDEX(N' ', p.Name + N' ') - 1), b.Name),
     NameLong = REPLACE(p.NameLong, LEFT(p.NameLong, CHARINDEX(N' ', p.NameLong + N' ') - 1), b.Name),
     NameShort = LEFT(REPLACE(p.Name, LEFT(p.Name, CHARINDEX(N' ', p.Name + N' ') - 1), b.Name), 60)
 FROM dbo.Products p
+INNER JOIN FirstBrandProducts fbp ON fbp.Id = p.Id
 INNER JOIN dbo.Brands b ON b.Id = p.BrandId
 WHERE p.AddUserId = @SeedMarker
-  AND p.Position <= @BrandCount
   AND b.AddUserId = @SeedMarker;
 """)
 
