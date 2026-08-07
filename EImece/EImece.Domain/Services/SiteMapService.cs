@@ -307,9 +307,17 @@ namespace EImece.Domain.Services
         }
 
         /// <summary>
-        /// Warms the output cache by requesting every URL in the given sitemap XML. Fully async:
-        /// requests run without blocking a worker thread, and each fetch uses the resilient client
-        /// via <see cref="IImageDownloadService"/> (no static service-locator, no sync-over-async).
+        /// Number of sitemap URLs warmed concurrently. The previous implementation awaited each
+        /// URL one-at-a-time, which was the dominant cost of the admin "Clear Cache" action; a
+        /// bounded fan-out keeps the server responsive while cutting wall-clock time dramatically.
+        /// </summary>
+        private const int SitemapWarmUpConcurrency = 8;
+
+        /// <summary>
+        /// Warms the output cache by requesting every URL in the given sitemap XML. Fully async and
+        /// now fanned out with a bounded degree of parallelism (<see cref="SitemapWarmUpConcurrency"/>):
+        /// requests never block a worker thread, each fetch uses the resilient client via
+        /// <see cref="IImageDownloadService"/>, and a single failed URL no longer aborts the rest.
         /// </summary>
         public async Task ReadSiteMapXmlAndRequestAsync(string xml, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -317,22 +325,58 @@ namespace EImece.Domain.Services
             {
                 return;
             }
+
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             try
             {
+                Urlset urlSet;
                 XmlSerializer serializer = new XmlSerializer(typeof(Urlset));
                 using (StringReader reader = new StringReader(xml))
                 {
-                    var test = (Urlset)serializer.Deserialize(reader);
-                    foreach (var tUrl in test.Url)
+                    urlSet = (Urlset)serializer.Deserialize(reader);
+                }
+
+                if (urlSet?.Url == null || urlSet.Url.Count == 0)
+                {
+                    return;
+                }
+
+                using (var throttler = new SemaphoreSlim(SitemapWarmUpConcurrency))
+                {
+                    var tasks = new List<Task>(urlSet.Url.Count);
+                    foreach (var tUrl in urlSet.Url)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        await ImageDownloadService.GetImageAsync(tUrl.Loc, null, cancellationToken).ConfigureAwait(false);
+                        await throttler.WaitAsync(cancellationToken).ConfigureAwait(false);
+                        tasks.Add(WarmUpUrlAsync(tUrl.Loc, throttler, cancellationToken));
                     }
+
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
                 }
+
+                Logger.Info("ReadSiteMapXmlAndRequestAsync warmed {0} url(s) in {1} ms",
+                    urlSet.Url.Count, stopwatch.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "ReadSiteMapXmlAndRequestAsync failed");
+            }
+        }
+
+        private async Task WarmUpUrlAsync(string loc, SemaphoreSlim throttler, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await ImageDownloadService.GetImageAsync(loc, null, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                // One bad URL must not fail the whole warm-up.
+                Logger.Warn(ex, "Sitemap warm-up request failed for {0}", loc);
+            }
+            finally
+            {
+                throttler.Release();
             }
         }
     }

@@ -26,12 +26,6 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
 
-        [Inject]
-        public SiteMapService SiteMapService { get; set; }
-
-        [Inject]
-        public Domain.Services.IServices.IImageDownloadService ImageDownloadService { get; set; }
-
         // GET: Admin/Dashboard
         public ActionResult Index()
         {
@@ -81,11 +75,22 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ClearCache()
+        public ActionResult ClearCache()
         {
+            // Evict caches synchronously — this is fast and must complete before we redirect so the
+            // admin immediately sees fresh data. The expensive rebuild is deferred to a background job.
+            var evictionSw = System.Diagnostics.Stopwatch.StartNew();
             SettingService.ClearCache();
             MemoryCacheProvider.ClearAll();
-            await ExecuteWarmUpSqlAsync().ConfigureAwait(true);
+            Logger.Info("ClearCache: cache eviction completed in {0} ms", evictionSw.ElapsedMilliseconds);
+
+            // Capture request-bound values now; HttpContext is unavailable on the background thread.
+            var baseUrl = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
+            var language = CurrentLanguage;
+
+            // Rebuild the cache off the request thread so the user gets an immediate response while
+            // the (expensive) DB priming and sitemap crawl continue in the background.
+            App_Start.CacheWarmUpJob.Queue(baseUrl, language);
 
             SetSuccessMessage();
 
@@ -96,53 +101,6 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        private async Task ExecuteWarmUpSqlAsync()
-        {
-            try
-            {
-                FaqService.GetActiveBaseEntitiesFromCache(true, CurrentLanguage);
-                SettingService.GetEmailAccount();
-                SettingService.GetAllActiveSettings();
-                SiteMapService.GenerateSiteMap();
-                MainPageImageService.GetMainPageViewModel(CurrentLanguage);
-                MainPageImageService.GetFooterViewModel(CurrentLanguage);
-                var activeCategories = ProductCategoryService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                if (activeCategories.IsNotEmpty())
-                {
-                    foreach (var c in activeCategories.Take(10))
-                    {
-                        ProductCategoryService.GetProductCategoryViewModel(c.Id);
-                    }
-                }
-                MenuService.GetMenus();
-                var menus = MenuService.BuildTree(true, CurrentLanguage);
-                var tree2 = ProductCategoryService.BuildTree(true, CurrentLanguage);
-                var tree = ProductCategoryService.BuildNavigation(true, CurrentLanguage);
-                MenuService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                var products = ProductService.GetActiveBaseContentsFromCache(true, CurrentLanguage);
-                MailTemplateService.GetAllMailTemplatesWithCache();
-                if (products.IsNotEmpty())
-                {
-                    foreach (var p in products.Take(10))
-                    {
-                        ProductService.GetProductDetailViewModelById(p.Id);
-                    }
-                }
-
-                var pppp = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
-                // FIX: async, resilient download via DI instead of the static blocking helper.
-                var buffer = await ImageDownloadService.GetImageAsync(pppp + "/sitemap.xml").ConfigureAwait(true);
-                if (buffer != null && buffer.Length > 0)
-                {
-                    await SiteMapService.ReadSiteMapXmlAndRequestAsync(Encoding.UTF8.GetString(buffer, 0, buffer.Length)).ConfigureAwait(true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "ExecuteWarmUpSql error");
-            }
         }
 
         [HttpPost]
