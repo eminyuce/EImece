@@ -143,7 +143,17 @@ namespace EImece.Domain.Helpers
 
         public string DeleteThumbFile(string file)
         {
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                return "Ok";
+            }
+
             string safeFileName = Path.GetFileName(file);
+            if (string.IsNullOrEmpty(safeFileName))
+            {
+                return "Ok";
+            }
+
             string partThumb1 = Path.Combine(StorageRoot, THUMBS);
             string partThumb2 = Path.Combine(partThumb1, THB + safeFileName);
             string successMessage = "Error Delete";
@@ -173,12 +183,22 @@ namespace EImece.Domain.Helpers
 
         public bool NormalFileExists(String file)
         {
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                return false;
+            }
+
             String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, file);
             return File.Exists(fullPath);
         }
 
         public String DeleteNormalFile(String file)
         {
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                return "Ok";
+            }
+
             String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, file);
             if (File.Exists(fullPath))
             {
@@ -194,6 +214,11 @@ namespace EImece.Domain.Helpers
 
         public String DeleteFile(String file)
         {
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                return "Ok";
+            }
+
             DeleteThumbFile(file);
             return DeleteNormalFile(file);
         }

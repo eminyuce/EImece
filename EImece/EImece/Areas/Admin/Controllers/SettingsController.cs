@@ -45,33 +45,61 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
         {
-            if (postedImage != null)
+            if (postedImage != null && postedImage.ContentLength > 0)
             {
-                var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
-                if (id > 0)
+                try
                 {
-                    webSiteLogoSetting = SettingService.GetSingle(id);
-                    FilesHelper.DeleteFile(webSiteLogoSetting.SettingValue);
-                }
+                    var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
+                    if (id > 0)
+                    {
+                        webSiteLogoSetting = SettingService.GetSingle(id);
+                        if (webSiteLogoSetting == null)
+                        {
+                            return HttpNotFound();
+                        }
 
-                var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
-                webSiteLogoSetting.Name = Constants.WebSiteLogo;
-                webSiteLogoSetting.Description = "";
-                webSiteLogoSetting.SettingValue = result.NewFileName;
-                webSiteLogoSetting.SettingKey = Constants.WebSiteLogo;
-                webSiteLogoSetting.IsActive = true;
-                webSiteLogoSetting.Position = 1;
-                webSiteLogoSetting.Lang = CurrentLanguage;
-                SettingService.SaveOrEditEntity(webSiteLogoSetting);
-                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                RemoveModelState();
-                return View("WebSiteLogo", webSiteLogoSetting);
+                        // First-time logo (or cleared SettingValue) has nothing to delete.
+                        if (!string.IsNullOrWhiteSpace(webSiteLogoSetting.SettingValue))
+                        {
+                            FilesHelper.DeleteFile(webSiteLogoSetting.SettingValue);
+                        }
+                    }
+
+                    var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
+                    if (result == null || string.IsNullOrWhiteSpace(result.NewFileName))
+                    {
+                        ModelState.AddModelError("", "Logo kaydedilemedi. Lütfen geçerli bir görsel seçiniz.");
+                        return View("WebSiteLogo", webSiteLogoSetting);
+                    }
+
+                    webSiteLogoSetting.Name = Constants.WebSiteLogo;
+                    webSiteLogoSetting.Description = "";
+                    webSiteLogoSetting.SettingValue = result.NewFileName;
+                    webSiteLogoSetting.SettingKey = Constants.WebSiteLogo;
+                    webSiteLogoSetting.IsActive = true;
+                    webSiteLogoSetting.Position = 1;
+                    webSiteLogoSetting.Lang = CurrentLanguage;
+                    SettingService.SaveOrEditEntity(webSiteLogoSetting);
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                    RemoveModelState();
+                    Logger.Info("Website logo uploaded. SettingId={0}, File={1}", webSiteLogoSetting.Id, result.NewFileName);
+                    return View("WebSiteLogo", webSiteLogoSetting);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "UploadWebSiteLogo failed. id={0}, file={1}", id, postedImage.FileName);
+                    ModelState.AddModelError("", "Logo yüklenirken hata oluştu: " + ex.Message);
+                    var existing = id > 0 ? SettingService.GetSingle(id) : SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+                    return View("WebSiteLogo", existing ?? EntityFactory.GetBaseEntityInstance<Setting>());
+                }
             }
             ModelState.AddModelError("", "Lütfen logo resmi seçiniz");
             var l = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-            return View("WebSiteLogo", l);
+            return View("WebSiteLogo", l ?? EntityFactory.GetBaseEntityInstance<Setting>());
         }
 
         [HttpPost, ActionName("Delete")]

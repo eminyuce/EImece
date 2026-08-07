@@ -12,23 +12,29 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
     var setting = Model;
-    string fileName = Model.SettingValue.ToStr();
-    string fullPath = Path.Combine(Constants.ServerMapPath, fileName);
-    string thumbPath = "\thb" + fileName + "";
-    string partThumb1 = Path.Combine(Constants.ServerMapPath, "thumbs");
-    string partThumb2 = Path.Combine(partThumb1, "thb" + fileName);
+    string fileName = Model != null ? Model.SettingValue.ToStr() : "";
+    string thumbUrl = !string.IsNullOrWhiteSpace(fileName)
+        ? Url.Content("~/media/images/thumbs/thb" + fileName)
+        : "";
 }
 
 <h2>@AdminResource.WebSiteLogo</h2>
 <hr class="adminLine" />
 @using (Html.BeginForm("UploadWebSiteLogo", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-
+@Html.AntiForgeryToken()
 @Html.HiddenFor(r => r.Id)
 @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
 <div class="row">
     <div class="col-md-3">
-        <img style="max-width: 250px;" src="@partThumb2.Replace("~","")" />
+        @if (!string.IsNullOrEmpty(thumbUrl))
+        {
+            <img style="max-width: 250px;" src="@thumbUrl" alt="@AdminResource.WebSiteLogo" />
+        }
+        else
+        {
+            <div class="text-muted">Logo henüz yüklenmedi.</div>
+        }
     </div>
     <div class="col-md-9">
 
