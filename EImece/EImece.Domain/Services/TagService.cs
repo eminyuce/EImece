@@ -74,5 +74,31 @@ namespace EImece.Domain.Services
                 () => TagRepository.GetProductTags(language),
                 AppConfig.CacheLongSeconds);
         }
+
+        public List<Tag> GetTagsWithEntityCounts(int language, int minEntityCount = 1)
+        {
+            String cacheKey = String.Format(
+                this.GetType().FullName + "-GetTagsWithEntityCounts-{0}-{1}",
+                language,
+                minEntityCount);
+
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => TagRepository.GetTagsWithEntityCounts(language, minEntityCount),
+                AppConfig.CacheLongSeconds);
+        }
+
+        public List<Tag> GetTagsWithStoryCounts(int language, int minStoryCount = 1)
+        {
+            String cacheKey = String.Format(
+                this.GetType().FullName + "-GetTagsWithStoryCounts-{0}-{1}",
+                language,
+                minStoryCount);
+
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => TagRepository.GetTagsWithStoryCounts(language, minStoryCount),
+                AppConfig.CacheLongSeconds);
+        }
     }
 }

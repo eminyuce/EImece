@@ -1,56 +1,124 @@
 ﻿using System;
+using System.Globalization;
+using System.Text;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.HtmlHelpers
 {
     public static class HtmlHelperExtensions
     {
+        /// <summary>
+        /// Bootstrap 4 pagination matching the site theme (.pagination / .page-item / .page-link).
+        /// Returns empty markup when there is only a single page (or no items).
+        /// </summary>
         public static MvcHtmlString BootstrapPager(this HtmlHelper helper, int currentPageIndex, Func<int, string> action, int totalItems, int pageSize = 10, int numberOfLinks = 5)
         {
-            if (totalItems <= 0)
+            if (helper == null)
+            {
+                throw new ArgumentNullException(nameof(helper));
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            if (totalItems <= 0 || pageSize <= 0)
             {
                 return MvcHtmlString.Empty;
             }
+
             var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-            var lastPageNumber = (int)Math.Ceiling((double)currentPageIndex / numberOfLinks) * numberOfLinks;
+            if (totalPages <= 1)
+            {
+                return MvcHtmlString.Empty;
+            }
+
+            if (currentPageIndex < 1)
+            {
+                currentPageIndex = 1;
+            }
+            else if (currentPageIndex > totalPages)
+            {
+                currentPageIndex = totalPages;
+            }
+
+            if (numberOfLinks < 1)
+            {
+                numberOfLinks = 5;
+            }
+
+            var lastPageNumber = (int)Math.Ceiling(currentPageIndex / (double)numberOfLinks) * numberOfLinks;
             var firstPageNumber = lastPageNumber - (numberOfLinks - 1);
-            var hasPreviousPage = currentPageIndex > 1;
-            var hasNextPage = currentPageIndex < totalPages;
             if (lastPageNumber > totalPages)
             {
                 lastPageNumber = totalPages;
             }
-            var ul = new TagBuilder("ul");
-            ul.AddCssClass("pagination");
-            ul.InnerHtml += AddLink(1, action, currentPageIndex == 1, "disabled", "<<", "First Page");
-            ul.InnerHtml += AddLink(currentPageIndex - 1, action, !hasPreviousPage, "disabled", "<", "Previous Page");
+
+            var hasPreviousPage = currentPageIndex > 1;
+            var hasNextPage = currentPageIndex < totalPages;
+
+            var html = new StringBuilder();
+            html.Append("<nav aria-label=\"Pagination Navigation\">");
+            html.Append("<ul class=\"pagination justify-content-center mb-0\">");
+
+            html.Append(BuildPageItem(1, action, !hasPreviousPage, isActive: false, "«", "First"));
+            html.Append(BuildPageItem(currentPageIndex - 1, action, !hasPreviousPage, isActive: false, "‹", "Previous"));
+
             for (int i = firstPageNumber; i <= lastPageNumber; i++)
             {
-                ul.InnerHtml += AddLink(i, action, i == currentPageIndex, "current-page", i.ToString(), i.ToString());
+                var label = i.ToString(CultureInfo.InvariantCulture);
+                html.Append(BuildPageItem(i, action, isDisabled: false, isActive: i == currentPageIndex, label, label));
             }
-            ul.InnerHtml += AddLink(currentPageIndex + 1, action, !hasNextPage, "disabled", ">", "Next Page");
-            ul.InnerHtml += AddLink(totalPages, action, currentPageIndex == totalPages, "disabled", ">>", "Last Page");
-            return MvcHtmlString.Create(ul.ToString());
+
+            html.Append(BuildPageItem(currentPageIndex + 1, action, !hasNextPage, isActive: false, "›", "Next"));
+            html.Append(BuildPageItem(totalPages, action, !hasNextPage, isActive: false, "»", "Last"));
+
+            html.Append("</ul></nav>");
+            return MvcHtmlString.Create(html.ToString());
         }
 
-        private static TagBuilder AddLink(int index, Func<int, string> action, bool condition, string classToAdd, string linkText, string tooltip)
+        private static string BuildPageItem(int index, Func<int, string> action, bool isDisabled, bool isActive, string linkText, string ariaLabel)
         {
             var li = new TagBuilder("li");
-            li.MergeAttribute("title", tooltip);
-            if (condition)
+            li.AddCssClass("page-item");
+            if (isActive)
             {
-                //  li.AddCssClass(classToAdd);
+                li.AddCssClass("active");
+                li.MergeAttribute("aria-current", "page");
             }
-            var a = new TagBuilder("a");
-            a.MergeAttribute("href", !condition ? action(index) : "javascript:");
-            if (condition)
+            if (isDisabled)
             {
-                a.MergeAttribute("class", classToAdd);
+                li.AddCssClass("disabled");
             }
 
-            a.SetInnerText(linkText);
-            li.InnerHtml = a.ToString();
-            return li;
+            if (isActive)
+            {
+                var span = new TagBuilder("span");
+                span.AddCssClass("page-link");
+                span.SetInnerText(linkText);
+                var sr = new TagBuilder("span");
+                sr.AddCssClass("sr-only");
+                sr.SetInnerText("(current)");
+                span.InnerHtml += " " + sr;
+                li.InnerHtml = span.ToString();
+            }
+            else
+            {
+                var a = new TagBuilder("a");
+                a.AddCssClass("page-link");
+                a.MergeAttribute("href", isDisabled ? "#" : action(index));
+                a.MergeAttribute("aria-label", ariaLabel);
+                if (isDisabled)
+                {
+                    a.MergeAttribute("tabindex", "-1");
+                    a.MergeAttribute("aria-disabled", "true");
+                }
+                a.SetInnerText(linkText);
+                li.InnerHtml = a.ToString();
+            }
+
+            return li.ToString();
         }
     }
 }

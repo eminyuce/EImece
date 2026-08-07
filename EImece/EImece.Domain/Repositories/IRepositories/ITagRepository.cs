@@ -13,5 +13,17 @@ namespace EImece.Domain.Repositories.IRepositories
 
         Tag GetTagById(int tagId);
         List<Tag> GetProductTags(int language);
+
+        /// <summary>
+        /// Active tags that have at least <paramref name="minEntityCount"/> active product or story links.
+        /// Sets <see cref="Tag.ItemCount"/> on each result.
+        /// </summary>
+        List<Tag> GetTagsWithEntityCounts(int language, int minEntityCount = 1);
+
+        /// <summary>
+        /// Active tags that have at least <paramref name="minStoryCount"/> active stories.
+        /// Sets <see cref="Tag.ItemCount"/> to the story count (product links are ignored).
+        /// </summary>
+        List<Tag> GetTagsWithStoryCounts(int language, int minStoryCount = 1);
     }
 }

@@ -73,5 +73,51 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.StoryTags);
             return GetSingleIncluding(tagId, includeProperties.ToArray());
         }
+
+        public List<Tag> GetTagsWithEntityCounts(int language, int minEntityCount = 1)
+        {
+            var rows = GetAll()
+                .Where(t => t.IsActive && t.Lang == language)
+                .Select(t => new
+                {
+                    Tag = t,
+                    EntityCount =
+                        t.ProductTags.Count(pt => pt.Product != null && pt.Product.IsActive)
+                        + t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
+                })
+                .Where(x => x.EntityCount >= minEntityCount)
+                .OrderBy(x => x.Tag.Position)
+                .ThenByDescending(x => x.Tag.Id)
+                .ToList();
+
+            foreach (var row in rows)
+            {
+                row.Tag.ItemCount = row.EntityCount;
+            }
+
+            return rows.Select(r => r.Tag).ToList();
+        }
+
+        public List<Tag> GetTagsWithStoryCounts(int language, int minStoryCount = 1)
+        {
+            var rows = GetAll()
+                .Where(t => t.IsActive && t.Lang == language)
+                .Select(t => new
+                {
+                    Tag = t,
+                    StoryCount = t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
+                })
+                .Where(x => x.StoryCount >= minStoryCount)
+                .OrderBy(x => x.Tag.Position)
+                .ThenByDescending(x => x.Tag.Id)
+                .ToList();
+
+            foreach (var row in rows)
+            {
+                row.Tag.ItemCount = row.StoryCount;
+            }
+
+            return rows.Select(r => r.Tag).ToList();
+        }
     }
 }

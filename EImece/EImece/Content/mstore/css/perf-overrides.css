@@ -113,3 +113,94 @@
   clip: auto;
   white-space: normal;
 }
+
+/* Stories listing cards */
+.story-short-thumb {
+  display: block;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  aspect-ratio: 5 / 3;
+}
+
+.story-short-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.story-short-card .card-body {
+  min-height: 0;
+}
+
+.story-short-card .card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.story-category-card:hover {
+  border-color: #d0d0d0;
+}
+
+.story-category-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  flex: 0 0 48px;
+}
+
+/* Story category page (list + sidebar) */
+.story-category-lead {
+  max-width: 48rem;
+  line-height: 1.5;
+}
+
+.story-category-lead p:last-child {
+  margin-bottom: 0;
+}
+
+.story-category-side-list a:hover {
+  text-decoration: underline;
+}
+
+.story-list-card .story-list-thumb {
+  display: block;
+  position: relative;
+  height: 100%;
+  min-height: 180px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.story-list-card .story-list-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.story-list-date {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  min-width: 3rem;
+  line-height: 1.1;
+}
+
+.story-list-card .card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+  .story-list-card .story-list-thumb {
+    min-height: 200px;
+    aspect-ratio: 16 / 10;
+    height: auto;
+  }
+}

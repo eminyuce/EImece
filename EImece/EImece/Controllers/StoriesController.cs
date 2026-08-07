@@ -126,6 +126,12 @@ namespace EImece.Controllers
                     return RedirectToAction("NotFound", "Error");
                 }
 
+                if (stories.StoryTags == null || stories.StoryTags.TotalCount == 0)
+                {
+                    Logger.Warn($"Tag '{id}' has no associated stories; redirecting to NotFound.");
+                    return RedirectToAction("NotFound", "Error");
+                }
+
                 Logger.Info($"Retrieved {stories.StoryTags.Count} stories for tag ID: {tagId}, language: {CurrentLanguage}");
 
                 ViewBag.SeoId = stories.Tag.GetSeoUrl();

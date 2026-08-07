@@ -20,6 +20,12 @@ namespace EImece.Domain.Entities
 
         public ICollection<FileStorageTag> FileStorageTags { get; set; }
 
+        /// <summary>
+        /// Active product + story associations. Populated by tag listing queries; not mapped to the DB.
+        /// </summary>
+        [NotMapped]
+        public int ItemCount { get; set; }
+
         [NotMapped]
         public string DetailPageRelativeUrlForProducts
         {

@@ -52,7 +52,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Story.StoryCategory);
             includeProperties.Add(r => r.Story.MainImage);
             includeProperties.Add(r => r.Story.StoryFiles);
-            includeProperties.Add(r => r.Story.StoryTags.Select(st => st.Tag));
+            // Do not Include Story.StoryTags here: with AsNoTracking(), EF throws
+            // "RelatedEnd ... StoryTag_Story_Target has already been loaded" when the
+            // nested StoryTags try to wire Story back onto already-loaded Story entities.
             return this.Paginate(pageIndex,
                 pageSize,
                 r => r.Story.Position,

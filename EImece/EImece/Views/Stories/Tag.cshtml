@@ -2,10 +2,10 @@
 @using EImece.Domain.GenericRepository;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using Resources;
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers
+@using EImece.Domain
+@using Resources
 
 @{
     PaginatedList<StoryTag> storyTags = Model.StoryTags;
@@ -58,14 +58,16 @@
         }
     </div>
 
-    <div class="offset-md-4 col-md-8 pb-5">
-        @Html.BootstrapPager(
-            storyTags.PageIndex,
-            index => Url.Action("Tag", "Stories", new { page = index }),
-            storyTags.TotalCount,
-            storyTags.PageSize,
-            numberOfLinks: 10
-        )
-    </div>
+    @if (storyTags != null && storyTags.TotalPageCount > 1)
+    {
+        <div class="d-flex justify-content-center pt-2 pb-5">
+            @Html.BootstrapPager(
+                storyTags.PageIndex,
+                index => Url.Action("Tag", "Stories", new { page = index, id = tag.GetSeoUrl() }),
+                storyTags.TotalCount,
+                storyTags.PageSize,
+                numberOfLinks: 5)
+        </div>
+    }
 
 </div>
