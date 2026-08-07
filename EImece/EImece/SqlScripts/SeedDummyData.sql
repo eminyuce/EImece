@@ -90,7 +90,6 @@ DECLARE @SeedShortUrls          INT = 20;
 
 /* ---- Catalog / traffic (scaled by @Scale) ---- */
 DECLARE @SeedUsers              INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
-DECLARE @SeedFiles              INT = CASE WHEN CAST(ROUND(120 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(120 * @Scale, 0) AS INT) END;
 DECLARE @SeedTags               INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
 DECLARE @SeedProductCategories  INT = CASE WHEN CAST(ROUND(25  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(25  * @Scale, 0) AS INT) END;
 DECLARE @SeedCategoryRoots      INT = CASE WHEN CAST(ROUND(8   * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(8   * @Scale, 0) AS INT) END;
@@ -114,6 +113,20 @@ DECLARE @SeedBrowserSubscribers INT = CASE WHEN CAST(ROUND(30  * @Scale, 0) AS I
 DECLARE @SeedBrowserNotifications INT = CASE WHEN CAST(ROUND(15 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(15 * @Scale, 0) AS INT) END;
 DECLARE @SeedBrowserFeedbacks   INT = CASE WHEN CAST(ROUND(40  * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(40  * @Scale, 0) AS INT) END;
 DECLARE @SeedAppLogs            INT = CASE WHEN CAST(ROUND(100 * @Scale, 0) AS INT) < 1 THEN 1 ELSE CAST(ROUND(100 * @Scale, 0) AS INT) END;
+
+/* One dedicated FileStorage row per image reference (MainImage + gallery files).
+   Never share FileStorage across entities — shared IDs break deletes via FK_ProductFiles_FileStorages. */
+DECLARE @SeedFiles INT =
+      @SeedBrands
+    + @SeedProductCategories
+    + @SeedProducts
+    + @SeedProductFiles
+    + @SeedStoryCategories
+    + @SeedStories
+    + @SeedStoryFiles
+    + @SeedMenus
+    + @SeedMenuFiles
+    + @SeedMainPageImages;
 
 IF @Scale <= 0
 BEGIN
@@ -143,6 +156,7 @@ PRINT CONVERT(VARCHAR(30), GETDATE(), 121)
     + N' — Starting seed. Scale=' + CAST(@Scale AS VARCHAR(20))
     + N', Products=' + CAST(@SeedProducts AS VARCHAR(10))
     + N', Menus=' + CAST(@SeedMenus AS VARCHAR(10))
+    + N', ExclusiveFiles=' + CAST(@SeedFiles AS VARCHAR(10))
     + N', Orders=' + CAST(@SeedOrders AS VARCHAR(10));
 
 
@@ -838,7 +852,8 @@ END;
 
 
 /* ============================================================
-   2) FileStorages
+   2) FileStorages — exclusive pool sized to @SeedFiles
+      Each MainImage / gallery reference later takes a unique row.
    ============================================================ */
 PRINT N'Seeding FileStorages...';
 INSERT INTO dbo.FileStorages
@@ -856,18 +871,42 @@ SELECT
     DATEADD(MINUTE, -n.n, @Now), DATEADD(MINUTE, -n.n, @Now),
     1, n.n, @Lang,
     N'product-' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5) + N'.jpg',
+    /* FileUrl keeps /media/seed/ marker for cleanup; physical files live under ~/media/images/{FileName} */
     N'/media/seed/images/product-' + RIGHT(N'00000' + CAST(n.n AS NVARCHAR(5)), 5) + N'.jpg',
     N'image/jpeg',
     85000 + (n.n % 400000),
     1200, 900,
     N'image',
-    0
+    1
 FROM #Nums n
 WHERE n.n <= @SeedFiles;
 
 DECLARE @MinFileId INT = (SELECT MIN(Id) FROM dbo.FileStorages WHERE FileUrl LIKE N'/media/seed/%');
 DECLARE @MaxFileId INT = (SELECT MAX(Id) FROM dbo.FileStorages WHERE FileUrl LIKE N'/media/seed/%');
-DECLARE @FileCount INT = @MaxFileId - @MinFileId + 1;
+DECLARE @FileCount INT = ISNULL(@MaxFileId - @MinFileId + 1, 0);
+
+/* Exclusive offset ranges into the seed FileStorages block (0-based). */
+DECLARE @FsOffBrand     INT = 0;
+DECLARE @FsOffProdCat   INT = @FsOffBrand + @SeedBrands;
+DECLARE @FsOffProduct   INT = @FsOffProdCat + @SeedProductCategories;
+DECLARE @FsOffProdFile  INT = @FsOffProduct + @SeedProducts;
+DECLARE @FsOffStoryCat  INT = @FsOffProdFile + @SeedProductFiles;
+DECLARE @FsOffStory     INT = @FsOffStoryCat + @SeedStoryCategories;
+DECLARE @FsOffStoryFile INT = @FsOffStory + @SeedStories;
+DECLARE @FsOffMenu      INT = @FsOffStoryFile + @SeedStoryFiles;
+DECLARE @FsOffMenuFile  INT = @FsOffMenu + @SeedMenus;
+DECLARE @FsOffSlide     INT = @FsOffMenuFile + @SeedMenuFiles;
+DECLARE @FsRequired     INT = @FsOffSlide + @SeedMainPageImages;
+
+IF @MinFileId IS NULL OR @FileCount < @FsRequired
+BEGIN
+    RAISERROR(N'Seed FileStorages were not created with enough exclusive slots. Expected at least %d rows.', 16, 1, @FsRequired);
+    RETURN;
+END;
+
+PRINT N'FileStorage exclusive ranges ready. MinId=' + CAST(@MinFileId AS VARCHAR(20))
+    + N', Count=' + CAST(@FileCount AS VARCHAR(20))
+    + N', Required=' + CAST(@FsRequired AS VARCHAR(20));
 
 
 /* ============================================================
@@ -927,7 +966,7 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     bl.Description,
     1, bl.MetaKeywords,
-    @MinFileId + ((n.n - 1) % @FileCount),
+    @MinFileId + @FsOffBrand + (n.n - 1),
     @AdminUserId, @SeedMarker,
     CASE WHEN n.n <= 8 THEN 1 ELSE 0 END
 FROM #Nums n
@@ -969,7 +1008,7 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     cl.Description,
     1, N'kategori,' + LOWER(REPLACE(cl.Name, N' ', N',')),
-    @MinFileId + ((n.n - 1) % @FileCount),
+    @MinFileId + @FsOffProdCat + (n.n - 1),
     @AdminUserId, @SeedMarker,
     0,  -- ParentId fixed below
     CASE WHEN cl.ParentRn IS NULL AND n.n <= @SeedCategoryRoots THEN 1 ELSE 0 END,
@@ -1060,7 +1099,7 @@ BEGIN
         pr.rn, @Lang,
         pr.DescriptionHtml,
         1, N'ürün,e-ticaret,' + LOWER(LEFT(pr.ProductName, 40)),
-        @MinFileId + ((pr.rn - 1) % @FileCount),
+        @MinFileId + @FsOffProduct + (pr.rn - 1),
         @AdminUserId, @SeedMarker,
         LEFT(pr.ProductName, 60),
         pr.ProductName,
@@ -1093,7 +1132,7 @@ BEGIN
         pr.rn, @Lang,
         pr.DescriptionHtml,
         1, N'ürün,e-ticaret,' + LOWER(LEFT(pr.ProductName, 40)),
-        @MinFileId + ((pr.rn - 1) % @FileCount),
+        @MinFileId + @FsOffProduct + (pr.rn - 1),
         @AdminUserId, @SeedMarker,
         LEFT(pr.ProductName, 60),
         pr.ProductName,
@@ -1156,7 +1195,7 @@ INSERT INTO dbo.ProductFiles
 SELECT
     N'Galeri ' + CAST(1 + ((n.n - 1) % 4) AS NVARCHAR(2)) + N' — ' + LEFT(p.Name, 80),
     @Now, @Now, 1, n.n, @Lang,
-    @MinFileId + ((n.n - 1) % @FileCount),
+    @MinFileId + @FsOffProdFile + (n.n - 1),
     p.Id
 FROM #Nums n
 INNER JOIN dbo.Products p ON p.Id = @MinProductId + ((n.n - 1) % @ProductCount)
@@ -1245,7 +1284,7 @@ SELECT
     @Now, @Now, 1, n.n, @Lang,
     scl.Description,
     1, N'blog,' + LOWER(REPLACE(scl.Name, N' ', N',')),
-    @MinFileId + ((n.n - 1) % @FileCount),
+    @MinFileId + @FsOffStoryCat + (n.n - 1),
     @AdminUserId, @SeedMarker,
     scl.PageTheme
 FROM #Nums n
@@ -1265,7 +1304,7 @@ SELECT
     1, n.n, @Lang,
     sl.BodyHtml,
     1, N'blog,rehber',
-    @MinFileId + ((n.n - 1) % @FileCount),
+    @MinFileId + @FsOffStory + (n.n - 1),
     @AdminUserId, @SeedMarker,
     @MinStoryCatId + ((n.n - 1) % @StoryCatCount),
     CASE WHEN n.n <= 15 THEN 1 ELSE 0 END,
@@ -1285,7 +1324,7 @@ SELECT
     N'Kapak — ' + LEFT(s.Name, 80),
     @Now, @Now, 1, n.n, @Lang,
     s.Id,
-    @MinFileId + ((n.n - 1) % @FileCount)
+    @MinFileId + @FsOffStoryFile + (n.n - 1)
 FROM #Nums n
 INNER JOIN dbo.Stories s ON s.Id = @MinStoryId + ((n.n - 1) % @StoryCount)
 WHERE n.n <= @SeedStoryFiles
@@ -1331,7 +1370,7 @@ SELECT
     n.n, @Lang,
     ISNULL(ml.Description, N'<p>' + ml.Name + N'</p>'),
     1, N'sayfa,menü',
-    @MinFileId + ((n.n - 1) % @FileCount),
+    @MinFileId + @FsOffMenu + (n.n - 1),
     @AdminUserId, @SeedMarker,
     0,
     ml.MainPage,
@@ -1366,7 +1405,7 @@ SELECT
     N'Sayfa görseli — ' + LEFT(m.Name, 80),
     @Now, @Now, 1, n.n, @Lang,
     m.Id,
-    @MinFileId + ((n.n - 1) % @FileCount)
+    @MinFileId + @FsOffMenuFile + (n.n - 1)
 FROM #Nums n
 INNER JOIN dbo.Menus m ON m.Id = @MinMenuId + ((n.n - 1) % @MenuCount)
 WHERE n.n <= @SeedMenuFiles
@@ -1382,7 +1421,7 @@ SELECT
     n.n, @Lang,
     sl.Description,
     1, N'slider,kampanya',
-    @MinFileId + ((n.n - 1) % @FileCount),
+    @MinFileId + @FsOffSlide + (n.n - 1),
     @AdminUserId, @SeedMarker,
     sl.Link
 FROM #Nums n

@@ -1,4 +1,5 @@
-﻿@using EImece.Domain.Entities;
+﻿@using System.Web;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.FrontModels;
@@ -23,7 +24,7 @@
     <li class="dropdown">
         @if (String.IsNullOrEmpty(urlPattern))
                 {
-        <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
+        <a onclick="menuTreeClick(event,@productCategory.Id,'@HttpUtility.JavaScriptStringEncode(productCategory.Name)')">@p.Name</a>
                 }
                 else
                 {
@@ -40,7 +41,7 @@
     <li>
         @if (String.IsNullOrEmpty(urlPattern))
                 {
-        <a onclick="menuTreeClick(event,@productCategory.Id,'@productCategory.Name')">@p.Name</a>
+        <a onclick="menuTreeClick(event,@productCategory.Id,'@HttpUtility.JavaScriptStringEncode(productCategory.Name)')">@p.Name</a>
                 }
                 else
                 {

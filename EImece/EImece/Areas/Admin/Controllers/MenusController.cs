@@ -190,13 +190,18 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                MenuService.DeleteMenu(menu.Id);
+                var deleted = MenuService.DeleteMenu(menu.Id);
+                if (!deleted)
+                {
+                    SetErrorMessage(AdminResource.MenuCannotDeleteHasChildren);
+                    return ReturnIndexIfNotUrlReferrer("Index");
+                }
                 SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" +
+                Logger.Error(ex, "Unable to delete menu:" +
                     ex.StackTrace, menu);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");

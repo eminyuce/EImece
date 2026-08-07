@@ -1281,4 +1281,7 @@
   <data name="CategoryCannotDelete" xml:space="preserve">
     <value>Silinemez</value>
   </data>
+  <data name="MenuCannotDeleteHasChildren" xml:space="preserve">
+    <value>Alt menüsü olduğu için silinemez</value>
+  </data>
 </root>

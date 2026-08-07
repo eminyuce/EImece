@@ -30,6 +30,12 @@ param(
 
     [switch] $CleanupOnly,
 
+    # Skip JPEG placeholder generation under media/images (on by default).
+    [switch] $SkipImages,
+
+    # Physical media/images path (IIS default shown).
+    [string] $MediaRoot = "C:\inetpub\wwwroot\Eimece\media\images",
+
     [int] $CommandTimeoutSeconds = 0
 )
 
@@ -105,6 +111,14 @@ $seedPath = Join-Path $scriptDir "SeedDummyData.sql"
 
 if ($CleanupOnly) {
     Invoke-SqlFile -Path $cleanupPath
+    if (-not $SkipImages -and (Test-Path $MediaRoot)) {
+        Write-Host "Removing seed image files under $MediaRoot ..." -ForegroundColor Cyan
+        Get-ChildItem -Path $MediaRoot -Filter "product-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
+        $thumbRoot = Join-Path $MediaRoot "thumbs"
+        if (Test-Path $thumbRoot) {
+            Get-ChildItem -Path $thumbRoot -Filter "thbproduct-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
+        }
+    }
     Write-Host "Cleanup finished." -ForegroundColor Green
     return
 }
@@ -120,4 +134,16 @@ if ($SkipCleanup) {
 
 Invoke-SqlFile -Path $seedPath -VariableReplacements $replacements
 Write-Host "Seed finished. Scale=$Scale (menus/slides/settings stay small; catalog/orders scale)." -ForegroundColor Green
+
+if (-not $SkipImages) {
+    $genScript = Join-Path $scriptDir "GenerateSeedImages.ps1"
+    if (-not (Test-Path $genScript)) {
+        throw "GenerateSeedImages.ps1 not found: $genScript"
+    }
+    if (-not $MediaRoot) {
+        throw "-MediaRoot is required when generating seed images."
+    }
+    & $genScript -MediaRoot $MediaRoot -ConnectionString $ConnectionString -MarkExisting
+}
+
 Write-Host "Login: admin@eimece.test (seed credential = 'Test' + '123' + '!')" -ForegroundColor Yellow

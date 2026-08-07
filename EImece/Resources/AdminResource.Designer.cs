@@ -2023,6 +2023,15 @@ namespace Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Alt menüsü olduğu için silinemez.
+        /// </summary>
+        public static string MenuCannotDeleteHasChildren {
+            get {
+                return ResourceManager.GetString("MenuCannotDeleteHasChildren", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Normal Ayarlar.
         /// </summary>
         public static string NormalSettings {

@@ -148,6 +148,15 @@ Default volumes (`@Scale = 1`): ~12 menus, ~6 homepage slides, ~20 brands, ~25 c
 - Cleanup: `CleanupDummyData.sql`, or re-run the seed script (`@CleanupFirst = 1` by default)
 - Tune bulk catalog/order size with `@Scale` / `-Scale`; edit individual `@Seed*` counts in the SQL for finer control
 - To change the realistic catalog copy, edit `_gen_realistic_seed.py` and re-run it to regenerate `SeedDummyData.sql`
+- After SQL seed, `RunSeedDummyData.ps1` generates JPEG placeholders under `media/images` (and `media/images/thumbs`) via `GenerateSeedImages.ps1`. IIS default:
+
+```powershell
+.\RunSeedDummyData.ps1 -ConnectionString "..." -MediaRoot "C:\inetpub\wwwroot\Eimece\media\images"
+# Images only (SQL already seeded):
+.\GenerateSeedImages.ps1 -MediaRoot "C:\inetpub\wwwroot\Eimece\media\images" -MarkExisting
+```
+
+File uploads use `~/media/images/` (`Constants.ServerMapPath` / `AppConfig.StorageRoot`). Seed `FileStorage.FileName` values (`product-00001.jpg`, …) must exist there for admin/storefront thumbnails.
 
 ### Application settings (review)
 
