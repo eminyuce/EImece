@@ -1,13 +1,18 @@
 ﻿@model EImece.Domain.Entities.Story
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using Resources;
+@using System.Linq
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers
+@using EImece.Domain
+@using Resources
 
 @{
     var story = Model;
-    var categoryName = story.StoryCategory.Name;
-    var tags = story.StoryTags.Select(r1 => r1.Tag).Distinct().ToList();
+    var tags = (story.StoryTags ?? Enumerable.Empty<StoryTag>())
+        .Where(r1 => r1.Tag != null)
+        .Select(r1 => r1.Tag)
+        .Distinct()
+        .ToList();
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
     var storyImageTag = story.GetCroppedImageTag(Width, Height);

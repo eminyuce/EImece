@@ -1,4 +1,5 @@
 ﻿@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using System.Web.Hosting
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -14,5 +15,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     category.PageTheme = String.IsNullOrEmpty(category.PageTheme) ? "T1" : category.PageTheme;
     var selectedPagePath = "StoriesPageThemes/PageTheme_" + category.PageTheme;
+    var themePhysicalPath = HostingEnvironment.MapPath("~/Views/Shared/" + selectedPagePath + ".cshtml");
+    if (string.IsNullOrEmpty(themePhysicalPath) || !System.IO.File.Exists(themePhysicalPath))
+    {
+        selectedPagePath = "StoriesPageThemes/PageTheme_T1";
+    }
 }
 @Html.Partial(selectedPagePath, Model)

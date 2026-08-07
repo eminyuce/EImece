@@ -167,6 +167,7 @@ namespace EImece.Domain.Repositories
             try
             {
                 var includeProperties = GetIncludePropertyExpressionList();
+                includeProperties.Add(r => r.StoryCategory);
                 includeProperties.Add(r => r.MainImage);
                 includeProperties.Add(r => r.StoryFiles);
                 includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
