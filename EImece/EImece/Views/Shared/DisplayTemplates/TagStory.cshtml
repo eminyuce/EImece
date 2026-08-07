@@ -6,7 +6,9 @@
 
 @{
     var story = Model;
-    var tags = story.StoryTags.Select(r1 => r1.Tag).Distinct().ToList();
+    var tags = story.StoryTags == null
+        ? new List<EImece.Domain.Entities.Tag>()
+        : story.StoryTags.Where(r1 => r1.Tag != null).Select(r1 => r1.Tag).Distinct().ToList();
     int width = ViewData["Width"].ToInt(0);
     int height = ViewData["Height"].ToInt(0);
 }
@@ -30,14 +32,17 @@
             <h2>
                 <a href="@story.DetailPageUrl">@story.Name</a>
             </h2>
-            <span>
-                <i class="fa fa-tag"></i>
-                @for (int i = 0; i < tags.Count; i++)
-                {
-                    var tag = tags[i];
-                    <a href="#">@tag.Name</a>@(i < tags.Count - 1 ? ", " : "")
-                }
-            </span>
+            @if (tags.Any())
+            {
+                <span>
+                    <i class="fa fa-tag"></i>
+                    @for (int i = 0; i < tags.Count; i++)
+                    {
+                        var tag = tags[i];
+                        <a href="@(tag.DetailPageRelativeUrlForStories ?? "#")">@tag.Name</a>@(i < tags.Count - 1 ? ", " : "")
+                    }
+                </span>
+            }
         </header>
 
         <p>

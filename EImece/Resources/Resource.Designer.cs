@@ -286,6 +286,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tüm yazılar.
+        /// </summary>
+        public static string AllPosts {
+            get {
+                return ResourceManager.GetString("AllPosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zaten Üyeyim.
         /// </summary>
         public static string AlreadyMembered {
@@ -2829,6 +2838,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sonraki yazı.
+        /// </summary>
+        public static string NextPost {
+            get {
+                return ResourceManager.GetString("NextPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bu ürüne henüz yorum yazılmadı. İlk yorumu yazmak ister misin?.
         /// </summary>
         public static string NoCommentForProductYet {
@@ -3424,6 +3442,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yazı gezintisi.
+        /// </summary>
+        public static string PostNavigation {
+            get {
+                return ResourceManager.GetString("PostNavigation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ön Sipariş.
         /// </summary>
         public static string PreOrder {
@@ -3438,6 +3465,15 @@ namespace Resources {
         public static string PreOrderAvailable {
             get {
                 return ResourceManager.GetString("PreOrderAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Önceki yazı.
+        /// </summary>
+        public static string PrevPost {
+            get {
+                return ResourceManager.GetString("PrevPost", resourceCulture);
             }
         }
         
@@ -5400,6 +5436,15 @@ namespace Resources {
         public static string WrongSum {
             get {
                 return ResourceManager.GetString("WrongSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bunları da beğenebilirsiniz.
+        /// </summary>
+        public static string YouMayAlsoLike {
+            get {
+                return ResourceManager.GetString("YouMayAlsoLike", resourceCulture);
             }
         }
         

@@ -1960,4 +1960,19 @@
   <data name="IyzicoPaymentTitle" xml:space="preserve">
     <value>Iyzico Güvencesiyle Ödeme</value>
   </data>
+  <data name="PrevPost" xml:space="preserve">
+    <value>Önceki yazı</value>
+  </data>
+  <data name="NextPost" xml:space="preserve">
+    <value>Sonraki yazı</value>
+  </data>
+  <data name="AllPosts" xml:space="preserve">
+    <value>Tüm yazılar</value>
+  </data>
+  <data name="PostNavigation" xml:space="preserve">
+    <value>Yazı gezintisi</value>
+  </data>
+  <data name="YouMayAlsoLike" xml:space="preserve">
+    <value>Bunları da beğenebilirsiniz</value>
+  </data>
 </root>

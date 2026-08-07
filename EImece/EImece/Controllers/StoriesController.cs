@@ -120,6 +120,12 @@ namespace EImece.Controllers
                 Logger.Info($"Using pageIndex: {pageIndex}, pageSize: {pageSize}");
 
                 var stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+                if (stories == null || stories.Tag == null)
+                {
+                    Logger.Warn($"Tag not found for id: '{id}' (parsed: {tagId})");
+                    return RedirectToAction("NotFound", "Error");
+                }
+
                 Logger.Info($"Retrieved {stories.StoryTags.Count} stories for tag ID: {tagId}, language: {CurrentLanguage}");
 
                 ViewBag.SeoId = stories.Tag.GetSeoUrl();

@@ -45,10 +45,10 @@ else
     @Model.Exception.Message
 </p>
 
-@if (AppConfig.ExposeDetailedErrors && Model.Exception != null)
+@if ((AppConfig.ExposeDetailedErrors || HttpContext.Current.IsDebuggingEnabled) && Model.Exception != null)
 {
     <div class="panel panel-danger" style="margin-top: 20px; text-align: left;">
-        <div class="panel-heading"><strong>Detailed error (ExposeDetailedErrors)</strong></div>
+        <div class="panel-heading"><strong>Detailed error</strong></div>
         <div class="panel-body">
             <p><strong>Controller:</strong> @Model.ControllerName &nbsp; <strong>Action:</strong> @Model.ActionName</p>
             <p><strong>Type:</strong> @Model.Exception.GetType().FullName</p>

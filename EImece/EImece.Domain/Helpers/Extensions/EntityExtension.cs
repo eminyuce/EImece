@@ -533,7 +533,8 @@ namespace EImece.Domain.Helpers.Extensions
             string domain = AppConfig.Domain;
             if (string.IsNullOrEmpty(domain))
             {
-                domain = HttpContext.Current.Request.Url.Host;
+                // Authority keeps the port (e.g. localhost:81); Host alone drops it
+                domain = HttpContext.Current.Request.Url.Authority;
             }
             var httpProtocol = AppConfig.HttpProtocol;
             return $"{httpProtocol}://{domain}{path}";

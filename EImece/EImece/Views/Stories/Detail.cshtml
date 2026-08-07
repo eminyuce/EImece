@@ -191,22 +191,22 @@
             </div>
 
             <!-- Post navigation-->
-            <nav class="entry-navigation" aria-label="Post navigation">
+            <nav class="entry-navigation" aria-label="@Resource.PostNavigation">
                 @if (Model.PreviousStory != null)
                 {
-                    <a class="entry-navigation-link" href="@Model.PreviousStory.DetailPageUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.PreviousStory.GetCroppedImageUrl(Model.PreviousStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.PreviousStory.Name&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by @Model.PreviousStory.AuthorName&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
+                    <a class="entry-navigation-link" href="@Model.PreviousStory.DetailPageRelativeUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.PreviousStory.GetCroppedImageUrl(Model.PreviousStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;@Model.PreviousStory.Name&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.PreviousStory.Name&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;@Model.PreviousStory.AuthorName&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
                         <i class="mr-1" data-feather="chevron-left"></i>
-                        <span class="d-none d-sm-inline">Prev post</span>
+                        <span class="d-none d-sm-inline">@Resource.PrevPost</span>
                     </a>
                 }
-                <a class="entry-navigation-link" href="@(storyCategory.DetailPageRelativeUrl ?? "#")">
+                <a class="entry-navigation-link" href="@Url.Action("Index", "Stories")">
                     <i class="mr-1" data-feather="grid"></i>
-                    <span class="d-none d-sm-inline">All posts</span>
+                    <span class="d-none d-sm-inline">@Resource.AllPosts</span>
                 </a>
                 @if (Model.NextStory != null)
                 {
-                    <a class="entry-navigation-link" href="@Model.NextStory.DetailPageUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.NextStory.GetCroppedImageUrl(Model.NextStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;Post thumb&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.NextStory.Name&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;by @Model.NextStory.AuthorName&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
-                        <span class="d-none d-sm-inline">Next post</span>
+                    <a class="entry-navigation-link" href="@Model.NextStory.DetailPageRelativeUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.NextStory.GetCroppedImageUrl(Model.NextStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;@Model.NextStory.Name&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.NextStory.Name&lt;/h6&gt;&lt;span class=&quot;d-block font-size-xs text-muted&quot;&gt;@Model.NextStory.AuthorName&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;">
+                        <span class="d-none d-sm-inline">@Resource.NextPost</span>
                         <i class="ml-1" data-feather="chevron-right"></i>
                     </a>
                 }
@@ -215,7 +215,7 @@
             <!-- Related stories-->
             @if (relatedStories.IsNotEmpty())
             {
-                <h3 class="h4 pt-5 pb-4 mt-2 text-center">You may also like</h3>
+                <h3 class="h4 pt-5 pb-4 mt-2 text-center">@Resource.YouMayAlsoLike</h3>
                 <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2},&quot;800&quot;:{&quot;items&quot;:3},&quot;1200&quot;:{&quot;items&quot;:3}} }">
                     @foreach (var relatedStory in relatedStories)
                     {

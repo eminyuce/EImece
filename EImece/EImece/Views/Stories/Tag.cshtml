@@ -10,8 +10,9 @@
 @{
     PaginatedList<StoryTag> storyTags = Model.StoryTags;
     var tag = Model.Tag;
-    ViewBag.Title = tag.GetSeoTitle();
-    ViewBag.Description = (Model.CompanyName.SettingValue + " - " + String.Join(",", storyTags.Select(r => r.Story.Name))).ToStr(150);
+    ViewBag.Title = tag != null ? tag.GetSeoTitle() : "";
+    var companyName = Model.CompanyName != null ? Model.CompanyName.SettingValue : "";
+    ViewBag.Description = (companyName + " - " + String.Join(",", storyTags.Where(r => r.Story != null).Select(r => r.Story.Name))).ToStr(150);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

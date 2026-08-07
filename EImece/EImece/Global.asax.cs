@@ -193,9 +193,10 @@ namespace EImece
 
         private void redirectErrorController(object sender)
         {
-            // When detailed errors are enabled, leave the exception for ASP.NET's yellow screen
-            // (requires customErrors Off or RemoteOnly from localhost).
-            bool useCustomError = !AppConfig.ExposeDetailedErrors;
+            // When detailed errors are enabled (appSetting or compilation debug), leave the exception
+            // for ASP.NET's yellow screen / MVC detailed error output.
+            bool useCustomError = !AppConfig.ExposeDetailedErrors
+                && (HttpContext.Current == null || !HttpContext.Current.IsDebuggingEnabled);
 
             Exception exception = Server.GetLastError();
             var httpContext = ((MvcApplication)sender).Context;

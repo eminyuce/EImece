@@ -45,9 +45,11 @@ namespace EImece.Controllers
                 BaseLogger.Error("OnException:" + filterContext.Exception.ToFormattedString());
             }
 
+            var exposeDetails = ShouldExposeDetailedErrors(filterContext != null ? filterContext.HttpContext : null);
+
             if (filterContext != null
                 && !filterContext.ExceptionHandled
-                && AppConfig.ExposeDetailedErrors
+                && exposeDetails
                 && filterContext.Exception != null)
             {
                 // Surface full stack instead of empty/generic 500 pages while debugging.
@@ -55,6 +57,8 @@ namespace EImece.Controllers
                 filterContext.HttpContext.Response.Clear();
                 filterContext.HttpContext.Response.StatusCode = 500;
                 filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
+                filterContext.HttpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                filterContext.HttpContext.Response.Cache.SetNoStore();
                 filterContext.Result = new ContentResult
                 {
                     ContentType = "text/html; charset=utf-8",
@@ -69,12 +73,24 @@ namespace EImece.Controllers
         protected ActionResult HandleUnexpectedError(Exception exception, string contextMessage)
         {
             BaseLogger.Error(exception, contextMessage);
-            if (AppConfig.ExposeDetailedErrors)
+            if (ShouldExposeDetailedErrors(HttpContext))
             {
                 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(exception).Throw();
             }
 
+            TempData["LastException"] = exception;
             return RedirectToAction("InternalServerError", "Error");
+        }
+
+        protected static bool ShouldExposeDetailedErrors(HttpContextBase httpContext)
+        {
+            if (AppConfig.ExposeDetailedErrors)
+            {
+                return true;
+            }
+
+            // compilation debug="true" in Web.config
+            return httpContext != null && httpContext.IsDebuggingEnabled;
         }
 
         private static string BuildDetailedErrorHtml(ExceptionContext filterContext)

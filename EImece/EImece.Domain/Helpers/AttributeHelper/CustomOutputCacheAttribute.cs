@@ -33,5 +33,20 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 base.OnResultExecuting(filterContext);
             }
         }
+
+        public override void OnResultExecuted(ResultExecutedContext filterContext)
+        {
+            // Never cache error responses (avoids blank 500 pages being served from output cache).
+            if (filterContext != null
+                && filterContext.HttpContext != null
+                && filterContext.HttpContext.Response.StatusCode >= 400)
+            {
+                filterContext.HttpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+                filterContext.HttpContext.Response.Cache.SetNoStore();
+                filterContext.HttpContext.Response.Cache.SetNoServerCaching();
+            }
+
+            base.OnResultExecuted(filterContext);
+        }
     }
 }

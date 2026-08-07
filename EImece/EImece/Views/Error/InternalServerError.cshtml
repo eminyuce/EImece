@@ -17,10 +17,10 @@
     </a>
 </div>
 
-@if (AppConfig.ExposeDetailedErrors && detail != null)
+@if ((AppConfig.ExposeDetailedErrors || HttpContext.Current.IsDebuggingEnabled) && detail != null)
 {
     <div class="panel panel-danger" style="margin: 20px; text-align: left;">
-        <div class="panel-heading"><strong>Detailed error (ExposeDetailedErrors)</strong></div>
+        <div class="panel-heading"><strong>Detailed error</strong></div>
         <div class="panel-body">
             <p><strong>Type:</strong> @detail.GetType().FullName</p>
             <p><strong>Message:</strong> @detail.Message</p>

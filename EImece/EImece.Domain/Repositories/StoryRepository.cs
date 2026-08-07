@@ -79,12 +79,18 @@ namespace EImece.Domain.Repositories
             var currentStory = dbContext.Stories.FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
             if (currentStory == null) return null;
 
+            // Match listing order: Position ASC, UpdatedDate DESC
             return dbContext.Stories
-                .Where(s => s.Lang == language && s.IsActive &&
+                .Include(s => s.StoryCategory)
+                .Include(s => s.MainImage)
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
                             (s.Position > currentStory.Position ||
-                            (s.Position == currentStory.Position && s.UpdatedDate > currentStory.UpdatedDate)))
+                            (s.Position == currentStory.Position && s.UpdatedDate < currentStory.UpdatedDate)))
                 .OrderBy(s => s.Position)
-                .ThenBy(s => s.UpdatedDate)
+                .ThenByDescending(s => s.UpdatedDate)
                 .FirstOrDefault();
         }
 
@@ -93,12 +99,18 @@ namespace EImece.Domain.Repositories
             var currentStory = dbContext.Stories.FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
             if (currentStory == null) return null;
 
+            // Reverse of listing order so the first result is the adjacent previous story
             return dbContext.Stories
-                .Where(s => s.Lang == language && s.IsActive &&
+                .Include(s => s.StoryCategory)
+                .Include(s => s.MainImage)
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
                             (s.Position < currentStory.Position ||
-                            (s.Position == currentStory.Position && s.UpdatedDate < currentStory.UpdatedDate)))
+                            (s.Position == currentStory.Position && s.UpdatedDate > currentStory.UpdatedDate)))
                 .OrderByDescending(s => s.Position)
-                .ThenByDescending(s => s.UpdatedDate)
+                .ThenBy(s => s.UpdatedDate)
                 .FirstOrDefault();
         }
 
