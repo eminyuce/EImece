@@ -1,54 +1,29 @@
 ﻿@model EImece.Domain.Entities.Story
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Helpers
-@using EImece.Domain
 @using Resources
-
 @{
     var story = Model;
-    var tags = story.StoryTags == null
-        ? new List<EImece.Domain.Entities.Tag>()
-        : story.StoryTags.Where(r1 => r1.Tag != null).Select(r1 => r1.Tag).Distinct().ToList();
-    int width = ViewData["Width"].ToInt(0);
-    int height = ViewData["Height"].ToInt(0);
+    int width = ViewData["Width"].ToInt(400);
+    int height = ViewData["Height"].ToInt(260);
+    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
+    var imageTag = imageId > 0
+        ? story.GetCroppedImageTag(imageId, width, height, lazy: true, fetchPriority: null, sizes: "(max-width: 575px) 100vw, (max-width: 991px) 50vw, 300px")
+        : story.GetCroppedImageTag(width, height);
 }
 
-<article class="post">
-
-    <figure class="post-img">
-        <a href="@story.DetailPageUrl">
-            @Html.Raw(story.GetCroppedImageTag(0, 0))
-        </a>
-    </figure>
-
-    <section class="date">
-        <span class="day">@story.CreatedDate.Day</span>
-        <span class="month">@story.CreatedDate.ToString("MMM")</span>
-    </section>
-
-    <section class="post-content">
-
-        <header class="meta">
-            <h2>
-                <a href="@story.DetailPageUrl">@story.Name</a>
-            </h2>
-            @if (tags.Any())
-            {
-                <span>
-                    <i class="fa fa-tag"></i>
-                    @for (int i = 0; i < tags.Count; i++)
-                    {
-                        var tag = tags[i];
-                        <a href="@(tag.DetailPageRelativeUrlForStories ?? "#")">@tag.Name</a>@(i < tags.Count - 1 ? ", " : "")
-                    }
-                </span>
-            }
-        </header>
-
-        <p>
-            @story.GetSeoDescription(300)
+<article class="card story-tag-card h-100 border-0 shadow-sm overflow-hidden">
+    <a href="@story.DetailPageUrl" class="story-tag-thumb" aria-label="@story.Name">
+        @Html.Raw(imageTag)
+    </a>
+    <div class="card-body d-flex flex-column">
+        <p class="text-muted small mb-2">
+            <time datetime="@story.CreatedDate.ToString("yyyy-MM-dd")">@story.CreatedDate.ToShortDateString()</time>
         </p>
-
-        <a href="@story.DetailPageUrl" class="button color">@Resource.ReadMore</a>
-    </section>
+        <h3 class="card-title h6 mb-2">
+            <a href="@story.DetailPageUrl" class="text-dark">@story.Name</a>
+        </h3>
+        <p class="card-text text-muted small mb-3 flex-grow-1">@story.GetSeoDescription(160)</p>
+        <a href="@story.DetailPageUrl" class="btn btn-sm btn-outline-secondary align-self-start">@Resource.ReadMore</a>
+    </div>
 </article>

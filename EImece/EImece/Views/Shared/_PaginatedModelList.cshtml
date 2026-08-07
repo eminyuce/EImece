@@ -1,42 +1,47 @@
-﻿@using EImece.Domain.Entities;
-@using EImece.Domain.Helpers;
-@using EImece.Domain.Models.FrontModels;
+﻿@using EImece.Domain.Helpers
+@using EImece.Domain.Models.FrontModels
 @{
     var pagingItems = Model as IPaginatedModelList;
-    var id = pagingItems.RouteId;
-    var sorting = pagingItems.Sorting;
-    var filter = pagingItems.Filter;
     var actionName = ViewData["actionName"].ToStr("Category");
     var controllerName = ViewData["controllerName"].ToStr("ProductCategories");
     var styleClassBtn = "page-link";
 }
-@if (pagingItems.TotalPageCount > 1)
+@if (pagingItems != null && pagingItems.TotalPageCount > 1)
 {
-    <nav aria-label="Pagination Navigation">
-        <ul class="pagination justify-content-center justify-content-sm-start mb-0">
-            @* First Page Button *@
-            <li class="page-item @(pagingItems.HasPreviousPage ? "" : "disabled")">
-                <a href="@(pagingItems.HasPreviousPage ? Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, 1)) : "#")"
-                   class="@styleClassBtn"
-                   aria-label="First"
-                   @(pagingItems.HasPreviousPage ? "" : "tabindex=\"-1\"")>
-                    <span aria-hidden="true">«</span>
-                    <span class="sr-only">First</span>
-                </a>
+    <nav class="site-pagination" aria-label="Pagination Navigation">
+        <ul class="pagination justify-content-center flex-wrap mb-0">
+            <li class="page-item@(pagingItems.HasPreviousPage ? "" : " disabled")">
+                @if (pagingItems.HasPreviousPage)
+                {
+                    <a href="@Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, 1))"
+                       class="@styleClassBtn"
+                       aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">First</span>
+                    </a>
+                }
+                else
+                {
+                    <span class="@styleClassBtn" aria-hidden="true">&laquo;</span>
+                }
             </li>
 
-            @* Previous Page Button *@
-            <li class="page-item @(pagingItems.HasPreviousPage ? "" : "disabled")">
-                <a href="@(pagingItems.HasPreviousPage ? Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.PageIndex - 1)) : "#")"
-                   class="@styleClassBtn"
-                   aria-label="Previous"
-                   @(pagingItems.HasPreviousPage ? "" : "tabindex=\"-1\"")>
-                    <span aria-hidden="true">‹</span>
-                    <span class="sr-only">Previous</span>
-                </a>
+            <li class="page-item@(pagingItems.HasPreviousPage ? "" : " disabled")">
+                @if (pagingItems.HasPreviousPage)
+                {
+                    <a href="@Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.PageIndex - 1))"
+                       class="@styleClassBtn"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&lsaquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                }
+                else
+                {
+                    <span class="@styleClassBtn" aria-hidden="true">&lsaquo;</span>
+                }
             </li>
 
-            @* Page Numbers *@
             @{
                 int startPage = 1;
                 int endPage = pagingItems.TotalPageCount;
@@ -61,7 +66,6 @@
                     }
                 }
 
-                // Show first page with ellipsis if needed
                 if (startPage > 1)
                 {
                     <li class="page-item">
@@ -71,12 +75,11 @@
                     if (startPage > 2)
                     {
                         <li class="page-item disabled d-none d-sm-block">
-                            <span class="@styleClassBtn">...</span>
+                            <span class="@styleClassBtn">…</span>
                         </li>
                     }
                 }
 
-                // Show page numbers
                 for (int i = startPage; i <= endPage; i++)
                 {
                     if (i == pagingItems.PageIndex)
@@ -96,13 +99,12 @@
                     }
                 }
 
-                // Show last page with ellipsis if needed
                 if (endPage < pagingItems.TotalPageCount)
                 {
                     if (endPage < pagingItems.TotalPageCount - 1)
                     {
                         <li class="page-item disabled d-none d-sm-block">
-                            <span class="@styleClassBtn">...</span>
+                            <span class="@styleClassBtn">…</span>
                         </li>
                     }
                     <li class="page-item">
@@ -112,26 +114,36 @@
                 }
             }
 
-            @* Next Page Button *@
-            <li class="page-item @(pagingItems.HasNextPage ? "" : "disabled")">
-                <a href="@(pagingItems.HasNextPage ? Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.PageIndex + 1)) : "#")"
-                   class="@styleClassBtn"
-                   aria-label="Next"
-                   @(pagingItems.HasNextPage ? "" : "tabindex=\"-1\"")>
-                    <span aria-hidden="true">›</span>
-                    <span class="sr-only">Next</span>
-                </a>
+            <li class="page-item@(pagingItems.HasNextPage ? "" : " disabled")">
+                @if (pagingItems.HasNextPage)
+                {
+                    <a href="@Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.PageIndex + 1))"
+                       class="@styleClassBtn"
+                       aria-label="Next">
+                        <span aria-hidden="true">&rsaquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                }
+                else
+                {
+                    <span class="@styleClassBtn" aria-hidden="true">&rsaquo;</span>
+                }
             </li>
 
-            @* Last Page Button *@
-            <li class="page-item @(pagingItems.HasNextPage ? "" : "disabled")">
-                <a href="@(pagingItems.HasNextPage ? Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.TotalPageCount)) : "#")"
-                   class="@styleClassBtn"
-                   aria-label="Last"
-                   @(pagingItems.HasNextPage ? "" : "tabindex=\"-1\"")>
-                    <span aria-hidden="true">»</span>
-                    <span class="sr-only">Last</span>
-                </a>
+            <li class="page-item@(pagingItems.HasNextPage ? "" : " disabled")">
+                @if (pagingItems.HasNextPage)
+                {
+                    <a href="@Url.Action(actionName, controllerName, ProductCategoryViewModel.GetRouteObjectsForPaging(pagingItems, pagingItems.TotalPageCount))"
+                       class="@styleClassBtn"
+                       aria-label="Last">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Last</span>
+                    </a>
+                }
+                else
+                {
+                    <span class="@styleClassBtn" aria-hidden="true">&raquo;</span>
+                }
             </li>
         </ul>
     </nav>

@@ -49,18 +49,19 @@
     <div class="clearfix"></div>
 
     <!-- Stories grid -->
-    <div class="row no-gutters">
+    <div class="row">
         @foreach (var item in storyTags)
         {
-            <div class="col-lg-3 col-md-4 col-sm-6 p-2">
-                @Html.DisplayFor(modelItem => item.Story, "TagStory")
+            if (item.Story == null) { continue; }
+            <div class="col-sm-6 col-lg-3 mb-4 d-flex">
+                @Html.DisplayFor(modelItem => item.Story, "TagStory", new { Width = 400, Height = 260 })
             </div>
         }
     </div>
 
     @if (storyTags != null && storyTags.TotalPageCount > 1)
     {
-        <div class="d-flex justify-content-center pt-2 pb-5">
+        <div class="d-flex justify-content-center py-4 pb-5">
             @Html.BootstrapPager(
                 storyTags.PageIndex,
                 index => Url.Action("Tag", "Stories", new { page = index, id = tag.GetSeoUrl() }),

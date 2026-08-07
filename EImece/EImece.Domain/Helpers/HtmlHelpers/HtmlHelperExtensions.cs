@@ -59,8 +59,8 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             var hasNextPage = currentPageIndex < totalPages;
 
             var html = new StringBuilder();
-            html.Append("<nav aria-label=\"Pagination Navigation\">");
-            html.Append("<ul class=\"pagination justify-content-center mb-0\">");
+            html.Append("<nav class=\"site-pagination\" aria-label=\"Pagination Navigation\">");
+            html.Append("<ul class=\"pagination justify-content-center flex-wrap mb-0\">");
 
             html.Append(BuildPageItem(1, action, !hasPreviousPage, isActive: false, "«", "First"));
             html.Append(BuildPageItem(currentPageIndex - 1, action, !hasPreviousPage, isActive: false, "‹", "Previous"));
