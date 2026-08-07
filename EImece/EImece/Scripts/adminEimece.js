@@ -3,17 +3,182 @@
 }
 
 function deleteBaseContentMainImage(contentId, ImageId, contentClass, confirmationText) {
+    var $modal = $("#adminDeleteConfirmModal");
+    showDeleteConfirmation({
+        title: $modal.attr("data-default-title"),
+        message: confirmationText || $modal.attr("data-default-message"),
+        deleteButtonText: $modal.attr("data-default-delete-text"),
+        onConfirm: function (done) {
+            var postData = JSON.stringify({
+                "contentId": contentId,
+                "imageId": ImageId,
+                "contentClass": contentClass
+            });
+            ajaxMethodCall(postData, "/admin/Ajax/DeleteBaseContentMainImage", function (data) {
+                $('[data-main-image-delete-id=' + ImageId + ']').html(data);
+                done();
+            }, function () {
+                done(false);
+            });
+        }
+    });
+}
 
-    if (confirm(confirmationText)) {
-        var postData = JSON.stringify({
-            "contentId": contentId,
-            "imageId": ImageId,
-            "contentClass": contentClass
-        });
-        ajaxMethodCall(postData, "/admin/Ajax/DeleteBaseContentMainImage", function (data) {
-            $('[data-main-image-delete-id=' + ImageId + ']').html(data);
-        });
-    } 
+/**
+ * Reusable admin delete confirmation (Bootstrap 3 modal).
+ * options: { title, message, entityName, itemCount, deleteButtonText, cancelButtonText, onConfirm }
+ * onConfirm(done): call done() after success, done(false) to keep the dialog open on failure.
+ * If onConfirm takes no arguments, the dialog closes immediately after invoking it.
+ */
+function showDeleteConfirmation(options) {
+    options = options || {};
+    var $modal = $("#adminDeleteConfirmModal");
+    if (!$modal.length) {
+        if (window.confirm(options.message || options.title || "Are you sure?")) {
+            if (typeof options.onConfirm === "function") {
+                options.onConfirm(function () { });
+            }
+        }
+        return;
+    }
+
+    var $dialog = $modal.find(".modal-confirm");
+    var $title = $("#adminDeleteConfirmTitle");
+    var $message = $("#adminDeleteConfirmMessage");
+    var $entity = $("#adminDeleteConfirmEntity");
+    var $count = $("#adminDeleteConfirmCount");
+    var $ok = $("#adminDeleteConfirmOk");
+    var $cancel = $("#adminDeleteConfirmCancel");
+    var $btnLabel = $ok.find(".admin-delete-btn-label");
+
+    var title = options.title || $modal.attr("data-default-title") || "";
+    var message = options.message || $modal.attr("data-default-message") || "";
+    var deleteText = options.deleteButtonText || $modal.attr("data-default-delete-text") || "";
+    var cancelText = options.cancelButtonText || $modal.attr("data-default-cancel-text") || "";
+
+    $title.text(title);
+    $message.text(message);
+    $btnLabel.text(deleteText);
+    $cancel.text(cancelText);
+
+    if (options.entityName) {
+        $entity.text(options.entityName).prop("hidden", false).show();
+    } else {
+        $entity.empty().prop("hidden", true).hide();
+    }
+
+    if (options.itemCount && options.itemCount > 0) {
+        $count.text("× " + options.itemCount).prop("hidden", false).show();
+    } else {
+        $count.empty().prop("hidden", true).hide();
+    }
+
+    var state = {
+        loading: false,
+        onConfirm: options.onConfirm
+    };
+
+    function setLoading(isLoading) {
+        state.loading = !!isLoading;
+        $dialog.toggleClass("is-loading", state.loading);
+        $ok.prop("disabled", state.loading);
+        $cancel.prop("disabled", state.loading);
+        $modal.find(".close").prop("disabled", state.loading);
+        if (state.loading) {
+            $modal.attr("aria-busy", "true");
+        } else {
+            $modal.removeAttr("aria-busy");
+        }
+    }
+
+    function closeModal() {
+        setLoading(false);
+        $modal.modal("hide");
+    }
+
+    function finish(success) {
+        if (success === false) {
+            setLoading(false);
+            return;
+        }
+        closeModal();
+    }
+
+    $ok.off("click.adminDelete");
+    $modal.off("shown.bs.modal.adminDelete");
+    $modal.off("hidden.bs.modal.adminDelete");
+    $modal.off("hide.bs.modal.adminDelete");
+    $modal.off("keydown.adminDelete");
+
+    $ok.on("click.adminDelete", function (e) {
+        e.preventDefault();
+        if (state.loading) {
+            return;
+        }
+        if (typeof state.onConfirm !== "function") {
+            closeModal();
+            return;
+        }
+        setLoading(true);
+        if (state.onConfirm.length >= 1) {
+            state.onConfirm(finish);
+        } else {
+            state.onConfirm();
+            closeModal();
+        }
+    });
+
+    $modal.on("shown.bs.modal.adminDelete", function () {
+        $ok.focus();
+    });
+
+    $modal.on("hide.bs.modal.adminDelete", function (e) {
+        if (state.loading) {
+            e.preventDefault();
+        }
+    });
+
+    $modal.on("hidden.bs.modal.adminDelete", function () {
+        setLoading(false);
+        $ok.off("click.adminDelete");
+        $modal.off("keydown.adminDelete");
+        $modal.off("hide.bs.modal.adminDelete");
+    });
+
+    $modal.on("keydown.adminDelete", function (e) {
+        if (state.loading) {
+            return;
+        }
+        if (e.keyCode === 13 && !$(e.target).is("textarea,button")) {
+            e.preventDefault();
+            $ok.trigger("click.adminDelete");
+        }
+    });
+
+    setLoading(false);
+    $modal.modal("show");
+}
+
+function submitAdminDeleteForm(url, id) {
+    var token = $("#__AjaxAntiForgeryForm input[name='__RequestVerificationToken']").val()
+        || $("input[name='__RequestVerificationToken']").first().val();
+    var $form = $("<form>").attr({
+        method: "POST",
+        action: url
+    });
+    if (token) {
+        $form.append($("<input>").attr({
+            type: "hidden",
+            name: "__RequestVerificationToken",
+            value: token
+        }));
+    }
+    $form.append($("<input>").attr({
+        type: "hidden",
+        name: "Id",
+        value: id
+    }));
+    $form.appendTo("body").trigger("submit");
 }
 
 
@@ -121,28 +286,51 @@ $(document).ready(function () {
             showAdminAjaxError($("#CheckboxesDataTableDoesNotSelected").val() || "Lütfen en az bir kayıt seçin.");
             return;
         }
-        confirmDialog(YOUR_MESSAGE_STRING_CONST, function () {
-            var postData = GetSelectedCheckBoxValues();
-            var parsedPostData = jQuery.parseJSON(postData);
-            if (parsedPostData.values.length > 0) {
-                var tableName = $("[data-gridname]").attr("data-gridname");
-                ajaxMethodCall(postData, "/admin/Ajax/Delete" + tableName + "Item", deleteItemsSuccess);
+        var $deleteModal = $("#adminDeleteConfirmModal");
+        showDeleteConfirmation({
+            title: $deleteModal.attr("data-default-title"),
+            message: YOUR_MESSAGE_STRING_CONST || $deleteModal.attr("data-bulk-message"),
+            itemCount: selectedCount,
+            deleteButtonText: $deleteModal.attr("data-bulk-delete-text") || $(this).text().trim(),
+            onConfirm: function (done) {
+                var postData = GetSelectedCheckBoxValues();
+                var parsedPostData = jQuery.parseJSON(postData);
+                if (parsedPostData.values.length > 0) {
+                    var tableName = $("[data-gridname]").attr("data-gridname");
+                    ajaxMethodCall(postData, "/admin/Ajax/Delete" + tableName + "Item", function (data) {
+                        deleteItemsSuccess(data);
+                        done();
+                    }, function () {
+                        done(false);
+                    });
+                } else {
+                    done(false);
+                }
             }
         });
     });
 
-    function confirmDialog(message, onConfirm) {
-        var modal = $("#confirmModal");
-        var fClose = function () {
-            modal.modal("hide");
-        };
-        modal.modal("show");
-        $("#confirmMessage").empty().append(message);
-        $("#confirmOk").off("click.confirmDialog").one("click.confirmDialog", function () {
-            onConfirm();
-            fClose();
+    $(document).on("click", "[data-admin-delete]", function (e) {
+        e.preventDefault();
+        var $el = $(this);
+        showDeleteConfirmation({
+            title: $el.attr("data-delete-title"),
+            message: $el.attr("data-delete-message"),
+            entityName: $el.attr("data-entity-name"),
+            deleteButtonText: $el.attr("data-delete-button"),
+            onConfirm: function (done) {
+                submitAdminDeleteForm($el.attr("data-delete-url"), $el.attr("data-delete-id"));
+                // Page navigates on successful POST; keep loading state to prevent double-submit.
+            }
         });
-        $("#confirmCancel").off("click.confirmDialog").one("click.confirmDialog", fClose);
+    });
+
+    /** @deprecated Use showDeleteConfirmation. Kept for backward compatibility. */
+    function confirmDialog(message, onConfirm) {
+        showDeleteConfirmation({
+            message: message,
+            onConfirm: onConfirm
+        });
     }
     $("#OrderingAll").click(function () {
         //  console.log("OrderingAll is clicked.");
@@ -472,7 +660,7 @@ function refresh(timeElapsed) {
 function changeOrderingSuccess(data) {
     refresh(500);
 }
-function ajaxMethodCall(postData, ajaxUrl, successFunction) {
+function ajaxMethodCall(postData, ajaxUrl, successFunction, errorFunction) {
     $.ajax({
         type: "POST",
         url: ajaxUrl,
@@ -502,11 +690,17 @@ function ajaxMethodCall(postData, ajaxUrl, successFunction) {
                 console.error('Time out error.');
             } else if (exception === 'abort') {
                 console.error('Ajax request aborted.');
+                if (typeof errorFunction === "function") {
+                    errorFunction(jqXHR, exception);
+                }
                 return;
             } else {
                 console.error('Uncaught Error.\n' + jqXHR.responseText);
             }
             showAdminAjaxError(message);
+            if (typeof errorFunction === "function") {
+                errorFunction(jqXHR, exception);
+            }
         }
     });
 }

@@ -1,0 +1,48 @@
+@using Resources
+@*
+    Single reusable admin delete confirmation dialog (Bootstrap 3).
+    Open via showDeleteConfirmation({ title, message, entityName, itemCount, deleteButtonText, onConfirm }).
+*@
+<div class="modal fade"
+     id="adminDeleteConfirmModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="adminDeleteConfirmTitle"
+     aria-hidden="true"
+     data-default-title="@AdminResource.AreYouSure"
+     data-default-message="@AdminResource.DeletePopupDescription"
+     data-default-delete-text="@AdminResource.Delete"
+     data-default-cancel-text="@AdminResource.ButtonCancel"
+     data-bulk-message="@AdminResource.AdminDeleteConfirmMessage"
+     data-bulk-delete-text="@AdminResource.GridDeleteSelectedButtonText"
+     data-item-count-label="@AdminResource.GridDeleteSelectedButtonText">
+    <div class="modal-dialog modal-confirm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="@AdminResource.ButtonCancel">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="icon-box" aria-hidden="true">
+                    <i class="material-icons">warning</i>
+                </div>
+                <h4 class="modal-title" id="adminDeleteConfirmTitle">@AdminResource.AreYouSure</h4>
+            </div>
+            <div class="modal-body">
+                <p class="admin-delete-message" id="adminDeleteConfirmMessage">@AdminResource.DeletePopupDescription</p>
+                <p class="admin-delete-entity" id="adminDeleteConfirmEntity" hidden></p>
+                <p class="admin-delete-count" id="adminDeleteConfirmCount" hidden></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal" id="adminDeleteConfirmCancel">
+                    @AdminResource.ButtonCancel
+                </button>
+                <button type="button" class="btn btn-danger btn-confirm" id="adminDeleteConfirmOk">
+                    <span class="admin-delete-btn-label">@AdminResource.Delete</span>
+                    <span class="admin-delete-btn-loading" aria-hidden="true">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
