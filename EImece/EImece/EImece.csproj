@@ -1072,6 +1072,7 @@
     <None Include="ApplicationInsights.config.example" />
     <Content Include="Areas\Admin\Views\Shared\_AdminTopbar.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminSidebar.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_DeleteConfirmationModal.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
