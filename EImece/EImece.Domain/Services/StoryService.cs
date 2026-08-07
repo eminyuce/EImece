@@ -163,7 +163,10 @@ namespace EImece.Domain.Services
             int lang = result.StoryCategory.Lang;
             result.StoryCategories = StoryCategoryService.GetActiveBaseContents(true, result.StoryCategory.Lang);
             // Story category sidebar links to /s/t/{tag}. Only show tags that have at least one active story.
-            result.Tags = TagService.GetTagsWithStoryCounts(lang, minStoryCount: 1);
+            result.Tags = TagService.GetTagsWithStoryCounts(lang, minStoryCount: 1)
+                .OrderByDescending(t => t.ItemCount)
+                .ThenBy(t => t.Name)
+                .ToList();
             result.Stories = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
 

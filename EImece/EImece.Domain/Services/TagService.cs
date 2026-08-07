@@ -90,8 +90,9 @@ namespace EImece.Domain.Services
 
         public List<Tag> GetTagsWithStoryCounts(int language, int minStoryCount = 1)
         {
+            // v2: ordered by story count descending (cache key bumped to drop old position-ordered entries)
             String cacheKey = String.Format(
-                this.GetType().FullName + "-GetTagsWithStoryCounts-{0}-{1}",
+                this.GetType().FullName + "-GetTagsWithStoryCounts-v2-{0}-{1}",
                 language,
                 minStoryCount);
 

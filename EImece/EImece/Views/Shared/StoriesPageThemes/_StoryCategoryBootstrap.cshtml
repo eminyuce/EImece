@@ -2,6 +2,7 @@
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain
 @using Resources
+@using System.Linq
 @{
     var category = Model.StoryCategory;
     var stories = Model.Stories;
@@ -89,7 +90,7 @@
                     <div class="card-body">
                         <h2 class="h5 card-title">@Resource.Tags</h2>
                         <div class="story-category-tags">
-                            @foreach (var t in Model.Tags)
+                            @foreach (var t in Model.Tags.OrderByDescending(x => x.ItemCount).ThenBy(x => x.Name))
                             {
                                 <a href="@Url.Action("Tag", "Stories", new { id = t.GetSeoUrl() })"
                                    class="badge badge-secondary mr-1 mb-1">@t.Name (@t.ItemCount)</a>

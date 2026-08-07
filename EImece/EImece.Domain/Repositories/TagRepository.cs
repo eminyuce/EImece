@@ -108,8 +108,8 @@ namespace EImece.Domain.Repositories
                     StoryCount = t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
                 })
                 .Where(x => x.StoryCount >= minStoryCount)
-                .OrderBy(x => x.Tag.Position)
-                .ThenByDescending(x => x.Tag.Id)
+                .OrderByDescending(x => x.StoryCount)
+                .ThenBy(x => x.Tag.Name)
                 .ToList();
 
             foreach (var row in rows)
