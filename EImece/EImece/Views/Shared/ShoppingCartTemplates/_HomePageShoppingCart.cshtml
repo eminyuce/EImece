@@ -37,7 +37,7 @@
                 @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
                         {
                 <a href="@Url.Action("Detail","Products",new { id=product.Id })">
-                    <img class="rsImg" src="@product.CroppedImageUrl" alt="" />
+                    <img class="rsImg" src="@product.CroppedImageUrl" alt="@product.Name" width="80" height="80" loading="lazy" decoding="async" />
                 </a>
                         }
 

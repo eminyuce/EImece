@@ -1,0 +1,115 @@
+/* Lightweight theme overrides — replaces ~560KB of duplicate skin CSS.
+   Keeps rounded corners + fixes Lighthouse contrast/CLS issues. */
+
+/* Rounded skin (delta only) */
+.btn,
+.form-control,
+.card,
+.dropdown-menu,
+.modal-content,
+.input-group-text,
+.badge,
+.alert,
+.product-card,
+.product-thumb,
+.product-thumb img,
+.navbar,
+.page-footer,
+.custom-control-label::before,
+.custom-select {
+  border-radius: 0.25rem;
+}
+
+.btn-lg,
+.form-control-lg {
+  border-radius: 0.3rem;
+}
+
+.rounded-circle,
+.product-thumb.rounded-circle img {
+  border-radius: 50% !important;
+}
+
+/* Contrast: light text on dark topbar/footer (opacity-75/60 fails AA) */
+.navbar.bg-dark .text-light,
+.navbar.bg-dark a.text-light,
+.navbar.bg-dark .opacity-75,
+.page-footer .text-white.opacity-60,
+.page-footer .opacity-60,
+.page-footer .nav-link-light {
+  opacity: 1 !important;
+  color: #f0f0f0 !important;
+}
+
+.navbar.bg-dark a.text-light:hover,
+.page-footer a.nav-link-light:hover {
+  color: #ffffff !important;
+}
+
+/* Reserve space for common image slots to reduce CLS */
+.product-thumb {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.product-thumb img,
+.featured-entry-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.featured-entry-thumb {
+  flex: 0 0 80px;
+  width: 80px;
+  max-width: 80px;
+}
+
+.featured-entry-thumb img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.hero-slide-img {
+  width: 100%;
+  max-width: 459px;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+.navbar-brand img {
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  aspect-ratio: auto;
+}
+
+/* Stable hero carousel height (avoids Owl autoHeight CLS) */
+.home-hero-carousel,
+.home-hero-carousel .owl-stage-outer,
+.home-hero-carousel .owl-item {
+  min-height: 280px;
+}
+
+@media (min-width: 768px) {
+  .home-hero-carousel,
+  .home-hero-carousel .owl-stage-outer,
+  .home-hero-carousel .owl-item {
+    min-height: 360px;
+  }
+}
+
+/* Visually hidden but available to AT */
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}

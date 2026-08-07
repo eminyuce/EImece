@@ -9,6 +9,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -84,7 +85,11 @@ namespace EImece.Controllers
                 width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
                 height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
 
-                var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
+                bool wantsWebP = Request.AcceptTypes != null
+                    && Request.AcceptTypes.Any(t => t != null && t.IndexOf("image/webp", StringComparison.OrdinalIgnoreCase) >= 0);
+                var imageByte = wantsWebP
+                    ? FilesHelper.GetResizedImageAsWebP(fileStorageId, width, height)
+                    : FilesHelper.GetResizedImage(fileStorageId, width, height);
                 if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     Response.StatusCode = 200;
@@ -93,9 +98,11 @@ namespace EImece.Controllers
                     Response.Cache.SetMaxAge(TimeSpan.FromDays(365));
                     Response.Cache.SetSlidingExpiration(true);
                     Response.Cache.SetOmitVaryStar(true);
+                    Response.Cache.SetValidUntilExpires(true);
                     Response.Headers.Set("Vary",
                         string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
-                    if (imageByte.UpdatedDated != null)
+                    Response.Headers["Cache-Control"] = "public, max-age=31536000, immutable";
+                    if (imageByte.UpdatedDated != null && imageByte.UpdatedDated > DateTime.MinValue)
                     {
                         Response.Cache.SetLastModified(imageByte.UpdatedDated.ToLocalTime());
                     }

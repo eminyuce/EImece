@@ -335,7 +335,7 @@ namespace EImece.Domain.Helpers.Extensions
             }
             else
             {
-                return $"<img src='{AppConfig.GetDefaultImage(width, height)}'    />";
+                return BuildImageTag(AppConfig.GetDefaultImage(width, height), "Default image", width, height, lazy: true);
             }
 
             return imageTag;
@@ -343,31 +343,79 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static string GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0)
         {
-            string imageTag = "";
+            return GetCroppedImageTag(entity, fileStorageId, width, height, lazy: true, fetchPriority: null, sizes: null);
+        }
+
+        public static string GetCroppedImageTag(this BaseEntity entity, int fileStorageId, int width, int height, bool lazy, string fetchPriority = null, string sizes = null)
+        {
             if (entity != null && fileStorageId > 0)
             {
                 string imagePath = GetCroppedImageUrl(entity, fileStorageId, width, height);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    if(width == 0 && height == 0)
-                    {
-                        imageTag = string.Format("<img src='{0}' alt='{1}'   />",
-                           imagePath, entity.Name).ToLower();
-                    }
-                    else
-                    {
-                        imageTag = string.Format("<img src='{0}' alt='{1}' width='{2}'  height='{3}'  />",
-                           imagePath, entity.Name, width, height).ToLower();
-                    }
-                       
+                    string srcset = GetResponsiveImageSrcSet(entity, fileStorageId, width, height);
+                    return BuildImageTag(imagePath, entity.Name, width, height, lazy, fetchPriority, srcset, sizes);
                 }
             }
-            else
+
+            return BuildImageTag(AppConfig.GetDefaultImage(width, height), "Default image", width, height, lazy);
+        }
+
+        /// <summary>
+        /// Builds a comma-separated srcset for resized image variants near the requested display size.
+        /// </summary>
+        public static string GetResponsiveImageSrcSet(this BaseEntity entity, int fileStorageId, int width, int height)
+        {
+            if (entity == null || fileStorageId <= 0)
             {
-                return $"<img src='{AppConfig.GetDefaultImage(width, height)}'    />";
+                return string.Empty;
             }
 
-            return imageTag;
+            int baseWidth = width > 0 ? width : (height > 0 ? height : 400);
+            int baseHeight = height > 0 ? height : 0;
+            var widths = new[] { baseWidth, baseWidth * 2 };
+            var parts = new List<string>();
+            foreach (var w in widths)
+            {
+                int h = baseHeight > 0 ? (int)Math.Round(baseHeight * ((double)w / baseWidth)) : 0;
+                string url = GetCroppedImageUrl(entity, fileStorageId, w, h);
+                if (!string.IsNullOrEmpty(url))
+                {
+                    parts.Add(string.Format("{0} {1}w", url, w));
+                }
+            }
+            return string.Join(", ", parts);
+        }
+
+        private static string BuildImageTag(string src, string alt, int width, int height, bool lazy = true, string fetchPriority = null, string srcset = null, string sizes = null)
+        {
+            var attrs = new List<string>
+            {
+                string.Format("src='{0}'", src),
+                string.Format("alt='{0}'", HttpUtility.HtmlAttributeEncode(alt ?? string.Empty))
+            };
+
+            if (width > 0)
+            {
+                attrs.Add(string.Format("width='{0}'", width));
+            }
+            if (height > 0)
+            {
+                attrs.Add(string.Format("height='{0}'", height));
+            }
+            if (!string.IsNullOrEmpty(srcset))
+            {
+                attrs.Add(string.Format("srcset='{0}'", srcset));
+                attrs.Add(string.Format("sizes='{0}'", string.IsNullOrEmpty(sizes) ? string.Format("{0}px", width > 0 ? width : 300) : sizes));
+            }
+            if (!string.IsNullOrEmpty(fetchPriority))
+            {
+                attrs.Add(string.Format("fetchpriority='{0}'", fetchPriority));
+            }
+            attrs.Add(lazy ? "loading='lazy'" : "loading='eager'");
+            attrs.Add("decoding='async'");
+
+            return string.Format("<img {0} />", string.Join(" ", attrs));
         }
 
         public static string GetCroppedImageUrl(this BaseEntity entity, int? fileStorageIdOptional, int width = 0, int height = 0, bool isFullPathImageUrl = false, bool isThump = false)
@@ -382,7 +430,10 @@ namespace EImece.Domain.Helpers.Extensions
         {
             if (entity != null && fileStorageId > 0)
             {
-                bool isImageFullSrcUnderMediaFolder = AppConfig.IsImageFullSrcUnderMediaFolder;
+                // When explicit dimensions are requested, always use the resize proxy so clients
+                // never download full-resolution originals for small display slots (Lighthouse image delivery).
+                bool preferResizedProxy = width > 0 || height > 0;
+                bool isImageFullSrcUnderMediaFolder = AppConfig.IsImageFullSrcUnderMediaFolder && !preferResizedProxy;
                 if (isImageFullSrcUnderMediaFolder && entity is BaseContent)
                 {
                     var baseContentEntity = (BaseContent)entity;
