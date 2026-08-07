@@ -171,14 +171,14 @@
 
 @helper  CreateStoryWidget(String title, List<Story> latestStories)
 {
-        <div class="col-md-12 mb-2 py-3">
-            <div class="widget widget-featured-entries">
+        <div class="col-12 mb-2 py-3">
+            <div class="widget widget-featured-entries home-stories-widget">
                 <h2 class="widget-title font-size-lg h3">@title</h2>
 
                 @for (int i = 0; i < latestStories.Count; i++)
                 {
                     var p = latestStories[i];
-                    @Html.DisplayFor(model => p, "StoryShort", new { Width = 278, Height = 200 })
+                    @Html.DisplayFor(model => p, "MainPageStoryShort", new { Width = 220, Height = 150 })
                 }
             </div>
         </div>
