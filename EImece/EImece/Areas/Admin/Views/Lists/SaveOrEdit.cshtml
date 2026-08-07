@@ -63,41 +63,22 @@ XXL</pre>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                <label>
-                    @Html.EditorFor(model => model.IsActive)
-                    Liste aktif olsun
-                </label>
-                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-3">
         </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.IsService, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                <label>
-                    @Html.EditorFor(model => model.IsService)
-                    Bu bir hizmet listesidir
-                </label>
-                @Html.ValidationMessageFor(model => model.IsService, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.IsActive)
+            @Html.EditorFor(model => model.IsActive)
+            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
         </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.IsValues, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                <label>
-                    @Html.EditorFor(model => model.IsValues)
-                    Ürün şablonunda açılır menü olarak kullan
-                </label>
-                @Html.ValidationMessageFor(model => model.IsValues, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.IsService)
+            @Html.EditorFor(model => model.IsService)
+            @Html.ValidationMessageFor(model => model.IsService, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.IsValues)
+            @Html.EditorFor(model => model.IsValues)
+            @Html.ValidationMessageFor(model => model.IsValues, "", new { @class = "text-danger" })
         </div>
     </div>
 

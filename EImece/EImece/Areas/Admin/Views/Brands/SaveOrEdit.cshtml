@@ -82,22 +82,17 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="checkbox">
-                                <label>
-                                    @Html.EditorFor(model => model.IsActive)
-                                    Yayında
-                                </label>
-                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    @Html.EditorFor(model => model.MainPage)
-                                    Ana sayfada göster
-                                </label>
-                                @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.IsActive)
+                            @Html.EditorFor(model => model.IsActive)
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.MainPage)
+                            @Html.EditorFor(model => model.MainPage)
+                            @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -111,18 +106,14 @@
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <input type="file" name="postedImage" />
                             @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-3">
-                            <div class="checkbox">
-                                <label>
-                                    @Html.EditorFor(model => model.ImageState)
-                                    @Html.DisplayNameFor(model => model.ImageState)
-                                </label>
-                                @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
-                            </div>
+                            @Html.LabelFor(model => model.ImageState)
+                            @Html.EditorFor(model => model.ImageState)
+                            @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-3">
                             @if (Model.MainImageId.HasValue)
