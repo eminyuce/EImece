@@ -73,3 +73,229 @@ body[data-design="crizal"] .contact-style01 .bg-primary.bg {
 body[data-design="crizal"] #ShoppingCartItemCount:empty {
     display: none !important;
 }
+
+/* ---------- Header layout (Playwright visual audit fixes) ----------
+   Bootstrap 5 .navbar flex-wrap + crowded Turkish labels was squeezing
+   .attr-nav to ~1 icon width, stacking cart/search/login vertically. */
+body[data-design="crizal"] .navbar-default .navbar {
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-header,
+body[data-design="crizal"] .navbar-default .navbar-header-custom {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 3;
+    margin-right: 1rem;
+    min-width: 9.5rem;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-brand {
+    flex: 0 0 auto;
+    margin-right: 0;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-brand img,
+body[data-design="crizal"] #logo {
+    max-height: 52px;
+    width: auto;
+    max-width: 150px;
+    height: auto;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-nav,
+body[data-design="crizal"] .navbar-default #nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: auto !important;
+    margin-right: 0.35rem;
+    position: relative;
+    z-index: 1;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-nav > li {
+    float: none;
+    margin-left: 0.1rem;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+    padding: 1.15rem 0.28rem;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+body[data-design="crizal"] .navbar-default .navbar > ul > li.has-sub > a:after {
+    top: 50%;
+    margin-top: -3px;
+    right: -6px;
+}
+
+body[data-design="crizal"] .attr-nav {
+    float: none !important;
+    flex: 0 0 auto;
+    margin-left: 0.25rem !important;
+    margin-right: 0 !important;
+    align-self: center;
+}
+
+body[data-design="crizal"] .attr-nav > ul {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+}
+
+body[data-design="crizal"] .attr-nav > ul > li {
+    float: none !important;
+    align-items: center;
+    vertical-align: middle;
+}
+
+/* Do NOT force display on li — preserve Bootstrap d-none / d-lg-* / d-xxl-* */
+body[data-design="crizal"] .attr-nav > ul > li > a {
+    padding: 0.85rem 0.55rem;
+    line-height: 1;
+}
+
+/* Keep the About CTA out of crowded headers; only show on very wide screens */
+@media (max-width: 1399.98px) {
+    body[data-design="crizal"] .attr-nav > ul > li.d-xxl-inline-block {
+        display: none !important;
+    }
+}
+
+body[data-design="crizal"] .attr-nav > ul > li > a span.badge {
+    width: 1rem;
+    height: 1rem;
+    min-width: 1rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    line-height: 1;
+}
+
+/* Long helper copy under form fields must wrap — never stretch the page */
+body[data-design="crizal"] .form-group > .badge,
+body[data-design="crizal"] .form-group .badge-info {
+    display: inline-block;
+    max-width: 100%;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.35;
+    font-weight: 500;
+    margin-top: 0.35rem;
+    padding: 0.4rem 0.65rem;
+}
+
+body[data-design="crizal"] .form-text-help {
+    display: block;
+    max-width: 100%;
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--crizal-muted);
+    white-space: normal;
+}
+
+/* Product / listing cards: keep image boxes consistent */
+body[data-design="crizal"] .product-grid .card-img-top,
+body[data-design="crizal"] .product-card img,
+body[data-design="crizal"] .cz-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Auth cards: align with Crizal button language */
+body[data-design="crizal"] .crizal-auth-card {
+    border: 0;
+    border-radius: var(--crizal-radius-lg);
+    box-shadow: var(--crizal-shadow);
+}
+
+body[data-design="crizal"] .crizal-auth-card .form-control {
+    min-height: 2.75rem;
+}
+
+/* WOW.js can leave .wow at visibility:hidden if init/scroll fails — never hide content */
+body[data-design="crizal"] .wow {
+    visibility: visible !important;
+}
+
+@media (max-width: 1199.98px) {
+    body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
+        font-size: 0.72rem;
+        padding: 1rem 0.25rem;
+        letter-spacing: 0;
+    }
+}
+
+/* Mobile hero: keep title/CTA readable without stacking onto each other */
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .slider-fade3 .item {
+        padding-top: 3rem !important;
+        padding-bottom: 3.5rem !important;
+    }
+
+    body[data-design="crizal"] .slider-fade3 .item h2,
+    body[data-design="crizal"] .slider-fade3 .item .display-1 {
+        font-size: 1.85rem !important;
+        line-height: 1.15 !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    body[data-design="crizal"] .slider-fade3 .item .lead {
+        font-size: 0.95rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    body[data-design="crizal"] .slider-fade3 .item .butn-style8 {
+        font-size: 0.75rem;
+        padding: 0.65rem 1.1rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    body[data-design="crizal"] .navbar-default .navbar {
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    body[data-design="crizal"] .navbar-header {
+        order: 1;
+        flex: 0 0 auto;
+    }
+
+    body[data-design="crizal"] .attr-nav {
+        order: 2;
+        margin-left: auto !important;
+        margin-right: 0.35rem !important;
+        flex: 0 0 auto;
+    }
+
+    body[data-design="crizal"] .navbar-toggler {
+        order: 3;
+        flex: 0 0 auto;
+        margin-left: 0;
+    }
+
+    body[data-design="crizal"] .attr-nav > ul > li > a {
+        padding: 0.45rem 0.35rem;
+        font-size: 1rem;
+    }
+
+    /* Mobile: hide desktop-only account icon (Bootstrap d-lg may be overridden elsewhere) */
+    body[data-design="crizal"] .attr-nav > ul > li.d-lg-inline-block {
+        display: none !important;
+    }
+}

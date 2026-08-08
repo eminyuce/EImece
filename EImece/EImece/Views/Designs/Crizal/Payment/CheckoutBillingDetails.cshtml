@@ -91,7 +91,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => customer.IdentityNumber)
                             @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
+                            <small class="form-text-help">@Resource.WhyNeedIdentityNumber</small>
                             @Html.ValidationMessageFor(model => customer.IdentityNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => customer.GsmNumber)
                             @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
+                            <small class="form-text-help">@Resource.WhyNeedGsmNumber</small>
                             @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>

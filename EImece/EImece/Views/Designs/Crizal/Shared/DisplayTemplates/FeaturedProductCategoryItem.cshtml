@@ -15,10 +15,9 @@
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
 }
 
-<div class="col-md-6 col-xl-3 mt-2-9 wow fadeInUp">
-    <div class="text-center about-box h-100">
-        <div class="about-img01 position-relative d-inline-block">
-            <div class="box"></div>
+<div class="col-6 col-md-4 col-xl-3 mt-4">
+    <article class="crizal-card h-100">
+        <div class="crizal-card-media">
             <a href="@productLink" aria-label="@product.Name">
                 <img src="@mainImageImgSrcUrl"
                      srcset="@srcset"
@@ -26,15 +25,16 @@
                      width="@(Width > 0 ? Width : 305)"
                      height="@(Height > 0 ? Height : 305)"
                      alt="@product.Name"
-                     class="w-65px mb-1-6 mb-xl-1-9 position-relative z-index-9 border-radius-10"
                      loading="lazy"
                      decoding="async" />
             </a>
         </div>
-        <h3 class="h5 mb-3"><a href="@productLink">@product.Name</a></h3>
-        @if (!string.IsNullOrEmpty(shortDesc))
-        {
-            <p class="mb-0 w-sm-90 w-xxl-80 mx-auto opacity9">@shortDesc</p>
-        }
-    </div>
+        <div class="crizal-card-body text-center">
+            <h3 class="h5 mb-2"><a href="@productLink">@product.Name</a></h3>
+            @if (!string.IsNullOrEmpty(shortDesc))
+            {
+                <p class="mb-0 small opacity9">@shortDesc</p>
+            }
+        </div>
+    </article>
 </div>

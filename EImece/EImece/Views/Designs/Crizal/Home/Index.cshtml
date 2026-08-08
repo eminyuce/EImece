@@ -99,8 +99,8 @@
     var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 1200, 600);
     var loadingAttr = isLcp ? "eager" : "lazy";
     var fetchPriorityAttr = isLcp ? "high" : "auto";
-    <div class="item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-md-16 py-lg-20 py-xxl-23 border-radius-lg-10 secondary-overlay"
-         data-overlay-dark="7"
+    <div class="item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-md-16 py-lg-20 py-xxl-23 border-radius-lg-10"
+         data-overlay-dark="5"
          data-background="@imgLink">
         <div class="container pt-6 pt-md-0 my-xxl-2">
             <div class="row justify-content-end text-end align-items-center">
@@ -125,7 +125,7 @@
                     <span>@title</span>
                     <h2 class="display-4 font-weight-800 mb-0 lh-1">@title</h2>
                 </div>
-                <div class="row g-0 mb-6 mb-xl-9 mt-n2-9">
+                <div class="row mb-6 mb-xl-9">
                     @for (int i = 0; i < mainPageProductCategories.Count; i++)
                     {
                         var p = mainPageProductCategories[i];
@@ -154,7 +154,7 @@
 {
     if (products.IsNotEmpty())
     {
-        <div class="col-sm-6 col-xl-4 mt-4 wow fadeInUp" data-wow-delay="@(delayMs)ms">
+        <div class="col-sm-6 col-xl-4 mt-4">
             <div class="widget widget-featured-entries bg-light border-radius-10 p-1-6 h-100">
                 <h3 class="h5 mb-3">@title</h3>
                 @for (int i = 0; i < products.Count; i++)
