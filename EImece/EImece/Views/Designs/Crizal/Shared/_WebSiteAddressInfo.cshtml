@@ -8,29 +8,31 @@
 }
 @if (Model.isMobilePage)
 {
-    <a class="dropdown-item" href="tel:@webSiteCompanyPhoneAndLocation">
-        <i class="mr-1" data-feather="phone" style="width: 13px; height: 13px;"></i>@webSiteCompanyPhoneAndLocation
-    </a>
-    <a class="dropdown-item" href="mailto:@webSiteCompanyEmailAddress">
-        <i class="mr-1" data-feather="mail" style="width: 13px; height: 13px;"></i>@webSiteCompanyEmailAddress
-    </a>
+    if (isPhone)
+    {
+        <a class="dropdown-item" href="tel:@webSiteCompanyPhoneAndLocation">
+            <i class="ti-mobile me-1"></i>@webSiteCompanyPhoneAndLocation
+        </a>
+    }
+    if (isEnvelope)
+    {
+        <a class="dropdown-item" href="mailto:@webSiteCompanyEmailAddress">
+            <i class="ti-email me-1"></i>@webSiteCompanyEmailAddress
+        </a>
+    }
 }
 else if (isPhone || isEnvelope)
 {
-    <ul class="crizal-top-bar-info d-none d-lg-flex">
-        @if (isPhone)
-        {
-            <li>
-                <i data-feather="phone" style="width: 13px; height: 13px;" aria-hidden="true"></i>
-                <a href="@string.Format("tel:{0}",webSiteCompanyPhoneAndLocation)">@Html.Raw(webSiteCompanyPhoneAndLocation)</a>
-            </li>
-        }
-        @if (isEnvelope)
-        {
-            <li>
-                <i data-feather="mail" style="width: 13px; height: 13px;" aria-hidden="true"></i>
-                <a href="mailto:@webSiteCompanyEmailAddress">@Html.Raw(webSiteCompanyEmailAddress)</a>
-            </li>
-        }
-    </ul>
+    <div class="top-bar-info">
+        <ul class="ps-0 mb-0">
+            @if (isPhone)
+            {
+                <li><i class="ti-mobile"></i><a href="@string.Format("tel:{0}", webSiteCompanyPhoneAndLocation)">@Html.Raw(webSiteCompanyPhoneAndLocation)</a></li>
+            }
+            @if (isEnvelope)
+            {
+                <li class="d-none d-sm-inline-block"><i class="ti-email"></i><a href="mailto:@webSiteCompanyEmailAddress">@Html.Raw(webSiteCompanyEmailAddress)</a></li>
+            }
+        </ul>
+    </div>
 }

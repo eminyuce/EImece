@@ -10,13 +10,9 @@
     var mainPageProducts = Model.MainPageProducts;
     var mainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId != 0).OrderBy(r => r.Position).Take(12).ToList();
     var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
-    var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-    var bannerLink = randomRootMainPageProductCategory == null ? "" : randomRootMainPageProductCategory.DetailPageUrl;
     var campaignProducts = Model.CampaignProducts;
     var latestProducts = Model.LatestProducts;
     var latestStories = Model.LatestStories;
-    Subscriber subscriber = new Subscriber();
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 
     var firstHero = mainPageImages != null && mainPageImages.Count > 0 ? mainPageImages[0] : null;
     var firstHeroUrl = firstHero != null ? firstHero.GetCroppedImageUrl(firstHero.MainImageId, 1200, 600) : null;
@@ -31,50 +27,35 @@
 
 <h1 class="sr-only">@ViewBag.Title</h1>
 
-<!-- Hero (home-business-02 inspired) -->
-<section class="crizal-hero" aria-label="@Resource.PopularProducts">
-    <div class="container py-4">
-        <div class="row align-items-stretch">
-            <div class="col-lg-3 d-none d-lg-block">
-                <div class="crizal-hero-aside">
-                    <ul class="list-unstyled mb-0">
-                        @for (int i = 0; i < rootMainPageProductCategories.Count; i++)
-                        {
-                            @CreateMainPageCategory(rootMainPageProductCategories[i], Model.MainPageProductCategories, rootMainPageProductCategories.Count - 1 - i == 0)
-                        }
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="owl-carousel trigger-carousel crizal-hero-carousel"
-                     data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoHeight&quot;: false, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 5500 }">
-                    @for (int i = 0; i < mainPageImages.Count; i++)
-                    {
-                        @CreateMainPageImage(mainPageImages[i], i == 0)
-                    }
-                </div>
-            </div>
+<!-- BANNER (home-business-02 slider-fade3) -->
+<section class="p-0 mx-lg-1-9 mx-xxl-10" aria-label="@Resource.PopularProducts">
+    <div class="container-fluid px-0 z-index-2 position-relative">
+        <div class="slider-fade3 owl-carousel owl-theme w-100">
+            @for (int i = 0; i < mainPageImages.Count; i++)
+            {
+                @CreateMainPageImage(mainPageImages[i], i == 0)
+            }
         </div>
     </div>
 </section>
 
 @CreateProductCategorySection(@Resource.PopularProducts, mainPageProductCategories)
 
-<!-- CTA / subscription (contact-style inspired) -->
-<section class="crizal-section pt-0" aria-label="@Resource.StayInformed">
+<!-- Subscription CTA -->
+<section class="about-style5 pt-0" aria-label="@Resource.StayInformed">
     <div class="container">
-        <div class="crizal-cta">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-3 mb-lg-0">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="bg-light text-center p-1-6 p-sm-1-9 border-radius-10">
+                    <div class="title-style16 mb-1-6">
+                        <span>@Resource.StayInformed</span>
+                        <h2 class="display-5 font-weight-800 mb-0 lh-1">@Resource.Subscribe*</h2>
+                    </div>
                     @Html.Raw(Resource.MainPageProductSubscriptionHtml)
-                </div>
-                <div class="col-lg-6">
                     <label class="sr-only" for="SubscribeEmailText">@Resource.PleaseEnterYourEmail</label>
-                    <div class="input-group">
+                    <div class="input-group mt-3">
                         <input type="email" name="email" id="SubscribeEmailText" class="form-control" placeholder="@Resource.PleaseEnterYourEmail" autocomplete="email" />
-                        <div class="input-group-append">
-                            <button type="button" id="SubscribeEmailBtn" class="butn-style8 secondary">@Resource.Subscribe*</button>
-                        </div>
+                        <button type="button" id="SubscribeEmailBtn" class="butn-style8 secondary"><span>@Resource.Subscribe*</span></button>
                     </div>
                     <div class="success-message text-center mt-3" id="SubscribeEmailTextSuccessMessage" style="display: none;">@Html.Raw(@Resource.MainPageProductSubscriptionThanks)</div>
                 </div>
@@ -84,30 +65,30 @@
 </section>
 
 <!-- Product widgets -->
-<section class="crizal-section crizal-section-alt">
+<section class="pt-0">
     <div class="container">
-        <div class="crizal-title">
-            <span class="eyebrow">@Resource.PopularProducts</span>
-            <h2>@Resource.ShowcaseProducts</h2>
+        <div class="title-style16 mb-2-6 text-center">
+            <span>@Resource.PopularProducts</span>
+            <h2 class="display-4 font-weight-800 mb-0 lh-1">@Resource.ShowcaseProducts</h2>
         </div>
-        <div class="row">
-            @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
-            @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
-            @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+        <div class="row mt-n4 justify-content-center">
+            @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList(), 0)
+            @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList(), 150)
+            @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList(), 300)
         </div>
     </div>
 </section>
 
 @if (latestStories.IsNotEmpty())
 {
-    <section class="crizal-section">
+    <section>
         <div class="container">
-            <div class="crizal-title">
-                <span class="eyebrow">@Resource.Stories</span>
-                <h2>@Resource.Stories</h2>
+            <div class="title-style16 mb-2-6 text-center">
+                <span>@Resource.Stories</span>
+                <h2 class="display-4 font-weight-800 mb-0 lh-1">@Resource.Stories</h2>
             </div>
             <div class="row">
-                @CreateStoryWidget(Resource.Stories, latestStories.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+                @CreateStoryWidget(latestStories.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
             </div>
         </div>
     </section>
@@ -115,19 +96,19 @@
 
 @helper CreateMainPageImage(MainPageImage mainPageImage, bool isLcp)
 {
-    var imageId = mainPageImage.MainImageId.HasValue ? mainPageImage.MainImageId.Value : 0;
     var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 1200, 600);
     var loadingAttr = isLcp ? "eager" : "lazy";
     var fetchPriorityAttr = isLcp ? "high" : "auto";
-    <div class="crizal-hero-slide" style="background-image: url('@imgLink');">
-        <div class="container">
-            <div class="crizal-hero-content">
-                <span class="eyebrow">@Resource.PopularProducts</span>
-                <h2>@mainPageImage.Name</h2>
-                <a class="butn-style8" href="@mainPageImage.Link">
-                    @mainPageImage.Name
-                    <i data-feather="arrow-right" aria-hidden="true"></i>
-                </a>
+    <div class="item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-md-16 py-lg-20 py-xxl-23 border-radius-lg-10 secondary-overlay"
+         data-overlay-dark="7"
+         data-background="@imgLink">
+        <div class="container pt-6 pt-md-0 my-xxl-2">
+            <div class="row justify-content-end text-end align-items-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h2 class="display-1 lh-1 font-weight-800 mb-3 text-white">@mainPageImage.Name</h2>
+                    <p class="lead opacity7 text-white mb-4">@Resource.PopularProducts</p>
+                    <a href="@mainPageImage.Link" class="butn-style8"><span>@mainPageImage.Name</span></a>
+                </div>
             </div>
         </div>
         <img src="@imgLink" alt="@mainPageImage.Name" class="sr-only" loading="@loadingAttr" fetchpriority="@fetchPriorityAttr" width="1200" height="600" />
@@ -138,13 +119,13 @@
 {
     if (mainPageProductCategories.IsNotEmpty())
     {
-        <section class="crizal-section" aria-label="@title">
+        <section class="about-style5">
             <div class="container">
-                <div class="crizal-title">
-                    <span class="eyebrow">@title</span>
-                    <h2>@title</h2>
+                <div class="title-style16 mb-2-6 text-center">
+                    <span>@title</span>
+                    <h2 class="display-4 font-weight-800 mb-0 lh-1">@title</h2>
                 </div>
-                <div class="row">
+                <div class="row g-0 mb-6 mb-xl-9 mt-n2-9">
                     @for (int i = 0; i < mainPageProductCategories.Count; i++)
                     {
                         var p = mainPageProductCategories[i];
@@ -156,7 +137,7 @@
     }
 }
 
-@helper CreateStoryWidget(String title, List<Story> latestStories)
+@helper CreateStoryWidget(List<Story> latestStories)
 {
     <div class="col-12">
         <div class="widget widget-featured-entries home-stories-widget">
@@ -169,13 +150,13 @@
     </div>
 }
 
-@helper CreateProductWidget(String title, List<Product> products)
+@helper CreateProductWidget(String title, List<Product> products, int delayMs)
 {
     if (products.IsNotEmpty())
     {
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="widget widget-featured-entries">
-                <h2 class="widget-title font-size-lg h3">@title</h2>
+        <div class="col-sm-6 col-xl-4 mt-4 wow fadeInUp" data-wow-delay="@(delayMs)ms">
+            <div class="widget widget-featured-entries bg-light border-radius-10 p-1-6 h-100">
+                <h3 class="h5 mb-3">@title</h3>
                 @for (int i = 0; i < products.Count; i++)
                 {
                     var p = products[i];
@@ -184,22 +165,4 @@
             </div>
         </div>
     }
-}
-
-@helper CreateMainPageCategory(ProductCategory productCategory, List<ProductCategory> productCategories, bool isLast)
-{
-    var children = productCategories.Where(r => r.ParentId == productCategory.Id).ToList();
-    var productCategoryLink = productCategory.ProductCategoryLink;
-    <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
-        <a class="d-flex align-items-center nav-link-inline pb-3 pt-3"
-           href="@productCategoryLink"
-           data-toggle="popover" data-placement="right" data-trigger="hover"
-           data-html="true" data-content="@Html.Raw(productCategory.CreateChildDataContent)">
-            <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;" aria-hidden="true"></i>
-            <span>
-                <b>@productCategory.Name</b>
-                <i class="ml-1" data-feather="chevron-right" style="width: 1rem; height: 1rem;" aria-hidden="true"></i>
-            </span>
-        </a>
-    </li>
 }

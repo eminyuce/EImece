@@ -4,29 +4,26 @@
 @using EImece.Domain.Helpers;
 
 @{
-    var SearchProductTextBoxPlaceHolder = Resource.SearchProductTextBoxPlaceHolder;
-    var SearchProductButtonTextPlaceHolder = Resource.SearchProductTextBoxPlaceHolder;
+    var searchPlaceholder = Resource.SearchProductTextBoxPlaceHolder;
     var search = Request.QueryString["search"].ToStr();
 }
 
-@using (Html.BeginForm("SearchProducts", "Products", FormMethod.Get, new { @class = "crizal-search-form w-100" }))
+@using (Html.BeginForm("SearchProducts", "Products", FormMethod.Get, new { @class = "search-form", role = "search" }))
 {
     <input type="submit" style="display:none;" id="searchSubmitButton" aria-hidden="true" tabindex="-1" />
-    <div class="input-group flex-nowrap">
-        <input class="form-control" type="text" id="site-search"
-               aria-label="@SearchProductTextBoxPlaceHolder"
+    <div class="input-group">
+        <span class="input-group-addon cursor-pointer">
+            <button class="search-form_submit fas fa-search text-white" type="button" onclick="onClickSearch(this)" aria-label="@Resource.Search"></button>
+        </span>
+        <input type="text"
+               class="search-form_input form-control"
+               id="site-search"
                name="search"
-               placeholder="@SearchProductButtonTextPlaceHolder" value="@search" />
-        <div class="input-group-append">
-            <button type="button"
-                    title="@Resource.Search"
-                    aria-label="@Resource.Search"
-                    onclick="onClickSearch(this)"
-                    class="input-group-text"
-                    id="search-icon">
-                <i data-feather="search" aria-hidden="true"></i>
-            </button>
-        </div>
+               value="@search"
+               autocomplete="off"
+               placeholder="@searchPlaceholder"
+               aria-label="@searchPlaceholder" />
+        <span class="input-group-addon close-search mt-1"><i class="fas fa-times"></i></span>
     </div>
 }
 
@@ -39,9 +36,8 @@
     }
     function onClickSearch(e) {
         if (isEmpty($("#site-search").val()) || $("#site-search").val().length < 2) {
-            console.log("site-search be empty");
-        } else {
-             document.getElementById('searchSubmitButton').click();
+            return;
         }
+        document.getElementById('searchSubmitButton').click();
     }
 </script>

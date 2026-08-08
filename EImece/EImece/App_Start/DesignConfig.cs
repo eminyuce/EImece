@@ -11,6 +11,27 @@ namespace EImece.App_Start
         {
             if (bundles == null) return;
 
+            // Plain Bundle (not StyleBundle) — WebGrease CssMinify misparses CSS custom properties (--crizal-*).
+            bundles.Add(new Bundle("~/bundles/designs/crizal/vendor/css").Include(
+                "~/Content/designs/crizal/vendor/css/styles.css",
+                "~/Content/designs/crizal/search/search.css",
+                "~/Content/designs/crizal/css/theme.css",
+                "~/Content/designs/crizal/css/components.css",
+                "~/Content/designs/crizal/css/responsive.css"));
+
+            bundles.Add(new Bundle("~/bundles/designs/crizal/vendor/js").Include(
+                "~/Scripts/jquery-{version}.js",
+                "~/Content/designs/crizal/vendor/js/popper.min.js",
+                "~/Content/designs/crizal/vendor/js/bootstrap.min.js",
+                "~/Content/designs/crizal/vendor/js/jquery.magnific-popup.min.js",
+                "~/Content/designs/crizal/vendor/js/jarallax.min.js",
+                "~/Content/designs/crizal/vendor/js/nav-menu.js",
+                "~/Content/designs/crizal/vendor/js/owl.carousel.js",
+                "~/Content/designs/crizal/vendor/js/wow.js",
+                "~/Content/designs/crizal/vendor/js/odometer.min.js",
+                "~/Content/designs/crizal/vendor/js/main.js",
+                "~/Content/designs/crizal/js/theme.js"));
+
             string contentPath = HostingEnvironment.IsHosted
                 ? HostingEnvironment.MapPath("~/Content/designs")
                 : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "designs");
@@ -25,7 +46,7 @@ namespace EImece.App_Start
                     string cssDir = Path.Combine(dir, "css");
                     if (Directory.Exists(cssDir))
                     {
-                        var cssBundle = new StyleBundle($"~/Content/designs/{designName}/css");
+                        var cssBundle = new Bundle($"~/bundles/designs/{designName}/css");
                         cssBundle.IncludeDirectory($"~/Content/designs/{designName}/css", "*.css", true);
                         bundles.Add(cssBundle);
                     }
@@ -33,7 +54,7 @@ namespace EImece.App_Start
                     string jsDir = Path.Combine(dir, "js");
                     if (Directory.Exists(jsDir))
                     {
-                        var jsBundle = new ScriptBundle($"~/bundles/designs/{designName}/js");
+                        var jsBundle = new Bundle($"~/bundles/designs/{designName}/js");
                         jsBundle.IncludeDirectory($"~/Content/designs/{designName}/js", "*.js", true);
                         bundles.Add(jsBundle);
                     }

@@ -3,12 +3,10 @@
 @using EImece.Domain;
 @using Resources;
 @using System.Threading;
-@using EImece.Domain.Models.Enums;
 @using EImece.Infrastructure.Designs;
 
 @{
     var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
-    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
     var companyName = Html.Action("GetCompanyName", "Home");
     var htmlLang = Html.Action("GetHtmlLangCode", "Home");
 }
@@ -18,17 +16,18 @@
 <head>
     @Html.ActiveDesignDebugInfo()
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>@ViewBag.Title</title>
 
     <meta property="og:locale" content='tr_TR' />
     <meta property="og:type" content='Website' />
     <meta property="og:site_name" content='@companyName' />
-    <meta property="og:image" content="@string.Format("https://{0}/images/logo.jpg",AppConfig.Domain)" />
+    <meta property="og:image" content="@string.Format("https://{0}/images/logo.jpg", AppConfig.Domain)" />
     <meta property="og:image:width" content="100" />
     <meta property="og:image:height" content="100" />
     <meta property="og:title" content="@ViewBag.Title" />
-    <meta property="og:url" content="@string.Format("https://{0}",AppConfig.Domain)" />
+    <meta property="og:url" content="@string.Format("https://{0}", AppConfig.Domain)" />
 
     @if (!string.IsNullOrEmpty(ViewBag.Description))
     {
@@ -66,10 +65,9 @@
 
     <link rel="preload" as="image" href="/images/logo.jpg" fetchpriority="high" />
 
-    @Styles.Render("~/Content/eimeceTheme")
-    <link rel="stylesheet" href="@Url.Content("~/Content/designs/crizal/css/theme.css")" />
-    <link rel="stylesheet" href="@Url.Content("~/Content/designs/crizal/css/components.css")" />
-    <link rel="stylesheet" href="@Url.Content("~/Content/designs/crizal/css/responsive.css")" />
+    @Styles.Render("~/bundles/designs/crizal/vendor/css")
+
+
 
     @RenderSection("HeadExtra", required: false)
 </head>
@@ -78,117 +76,42 @@
 
     <a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
 
-    <div class="crizal-main-wrapper">
-        <header class="crizal-header header-style3">
-            <div class="crizal-top-bar">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
-                            @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = false })
-                            <div class="dropdown d-inline-block d-lg-none">
-                                <a class="dropdown-toggle text-white font-size-sm py-1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Resource.UsefulLinks</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
-                                    <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
-                                    @if (productPriceEnabled)
-                                    {
-                                        <a class="dropdown-item" href="@Url.Action("CargoTracking","Payment")">@Resource.TrackYourCargo</a>
-                                    }
-                                    <div class="dropdown-divider"></div>
-                                    @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = true })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 d-none d-md-block">
-                            <div class="d-flex justify-content-end align-items-center">
-                                <ul class="list-inline mb-0 mr-3">
-                                    <li class="list-inline-item">@Html.Action("Languages", "Home")</li>
-                                    <li class="list-inline-item">
-                                        <a class="text-white font-size-sm" href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
-                                    </li>
-                                    @if (productPriceEnabled)
-                                    {
-                                        <li class="list-inline-item">
-                                            <a class="text-white font-size-sm" href="@Url.Action("CargoTracking","Payment")">@Resource.TrackYourCargo</a>
-                                        </li>
-                                    }
-                                </ul>
-                                @Html.Action("SocialMediaLinks", "Home")
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div id="preloader"></div>
 
-            <div class="crizal-navbar navbar navbar-expand-lg navbar-dark">
-                <div class="container flex-wrap">
-                    <a class="navbar-brand" href="@Url.Action("Index","Home")">
-                        <img src="/images/logo.jpg" width="200" height="60" alt="@companyName" decoding="async" fetchpriority="high" />
-                    </a>
-
-                    <div class="crizal-attr-nav order-lg-3">
-                        @if (productPriceEnabled)
-                        {
-                            if (Request.IsAuthenticated)
-                            {
-                                <a class="crizal-icon-btn" href="@Url.Action("index","home",new { @area="customers" })">
-                                    <i data-feather="user" aria-hidden="true"></i>
-                                    <span>@Resource.MyAccount</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="crizal-icon-btn" href="@Url.Action("login","account")">
-                                    <i data-feather="log-in" aria-hidden="true"></i>
-                                    <span>@Resource.SignInOrUp</span>
-                                </a>
-                            }
-                            @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
-                        }
-                        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#crizalMenu" aria-controls="crizalMenu" aria-expanded="false" aria-label="Menu">
-                            <i data-feather="menu" aria-hidden="true"></i>
-                        </button>
-                    </div>
-
-                    <div class="crizal-search-wrap order-lg-2 d-none d-sm-block">
-                        @Html.Partial("_SearchProductForm")
-                    </div>
-
-                    @Html.Raw(Html.Action("Navigation", "Home", new { lang = countryCode }))
-                </div>
-            </div>
-        </header>
+    <div class="main-wrapper">
+        @Html.Partial("_Header")
 
         <main id="main-content" role="main">
             @RenderBody()
         </main>
 
-        <div class="crizal-contact-strip">
+        <section class="p-0 bg-transparent overflow-visible contact-style01">
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <h3>@companyName</h3>
-                        <p class="mb-0 text-white-50">@Resource.StayInformed</p>
-                    </div>
-                    <div class="col-lg-4 text-lg-right">
-                        <a class="butn-style8 secondary" href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
+                <div class="bg-primary bg px-1-9 px-xl-2-9 py-2-0 py-sm-2-9 py-lg-6 py-xl-8 border-radius-10">
+                    <div class="row align-items-center mt-n1-9 position-relative z-index-9">
+                        <div class="col-xl-6 mt-1-9">
+                            <h2 class="display-4 font-weight-800 mb-0 lh-1 text-white">@companyName</h2>
+                            <p class="text-white opacity7 mb-0 mt-2">@Resource.StayInformed</p>
+                        </div>
+                        <div class="col-xl-6 mt-1-9">
+                            <div class="d-inline-block d-md-flex justify-content-xl-end">
+                                <a href="@Url.Action(Constants.AboutUs, "info", new { lang = countryCode })" class="butn-style8 secondary"><span>@Resource.AboutUs</span></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         @Html.Action("Footer", "Home", new { lang = countryCode })
     </div>
 
     @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
     @Html.Raw(Html.Action("WhatsAppCommunicationScript", "Home"))
-    <a class="scroll-to-top-btn crizal-scroll-top" href="#main-content" aria-label="Scroll to top">
-        <i class="scroll-to-top-btn-icon" data-feather="chevron-up" aria-hidden="true"></i>
-    </a>
 
-    @Scripts.Render("~/bundles/mstore")
-    @Scripts.Render("~/bundles/eimeceScripts")
-    <script src="@Url.Content("~/Content/designs/crizal/js/theme.js")"></script>
+    <div class="scroll-top-percentage"><span id="scroll-value"></span></div>
+
+    @Html.Partial("_Scripts")
     @RenderSection("scripts", required: false)
 </body>
 </html>

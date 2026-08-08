@@ -7,26 +7,20 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@using Microsoft.AspNet.Identity;
-@using System.Globalization;
-@model  ShoppingCartSession
+@model ShoppingCartSession
 @{
     ShoppingCartSession shoppingCart = Model;
-    string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? shoppingCart.TotalItemCount.ToString() : "";
-    var userName = User.Identity.GetUserName();
+    string totalNumber = shoppingCart == null || shoppingCart.TotalItemCount <= 0 ? "" : shoppingCart.TotalItemCount.ToString();
 }
 
-<a id="ShoppingCartsLink" class="crizal-icon-btn" href="@Url.Action("shoppingcart","payment")" data-toggle="offcanvas">
-    <span class="d-block position-relative">
-        @if (!string.IsNullOrEmpty(totalNumber))
-        {
-            <span class="crizal-cart-badge" id="ShoppingCartItemCount">@totalNumber</span>
-        }
-        else
-        {
-            <span class="crizal-cart-badge" id="ShoppingCartItemCount" style="display:none;"></span>
-        }
-        <i data-feather="shopping-cart" aria-hidden="true"></i>
-        <span>@shoppingCart.TotalPriceWithCargoPrice.CurrencySign()</span>
-    </span>
+<a href="@Url.Action("shoppingcart", "payment")" class="dropdown-toggle" id="ShoppingCartsLink" title="@Resource.YourCartTotalAmount">
+    <i class="fas fa-shopping-cart"></i>
+    @if (!string.IsNullOrEmpty(totalNumber))
+    {
+        <span class="badge bg-primary" id="ShoppingCartItemCount">@totalNumber</span>
+    }
+    else
+    {
+        <span class="badge bg-primary" id="ShoppingCartItemCount" style="display:none;"></span>
+    }
 </a>

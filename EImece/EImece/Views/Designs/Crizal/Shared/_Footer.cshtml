@@ -20,72 +20,73 @@
     var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
     var companyName = Html.Action("GetCompanyName", "Home");
 }
-<footer class="crizal-footer page-footer">
+
+<footer class="bg-secondary pt-15 pt-sm-18 pt-lg-24 mt-n12">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="widget">
-                    <h3 class="widget-title">@companyName</h3>
-                    <p class="mb-3">@Resource.StayInformed</p>
-                    @Html.Partial("_AddSubscriber", Model)
-                    @if (productPriceEnabled)
-                    {
-                        <img class="mt-3" src="~/Content/img/logo-footer-mastervisa.png" width="180" height="40" alt="MasterCard and Visa accepted" loading="lazy" decoding="async" />
-                    }
+        <div class="row border-bottom border-color-light-white pt-4 pb-2-9 pb-lg-10 mt-n1-9">
+            <div class="col-md-6 col-xl-4 mt-1-9">
+                <div class="footer-logo mb-1-9">
+                    <a href="@Url.Action("Index", "Home")">
+                        <img src="/images/logo.jpg" width="200" height="60" alt="@companyName" loading="lazy" decoding="async" />
+                    </a>
                 </div>
+                <p class="mb-1-9 text-white opacity9">@Resource.StayInformed</p>
+                @Html.Partial("_AddSubscriber", Model)
+                @if (productPriceEnabled)
+                {
+                    <img class="mt-3" src="~/Content/img/logo-footer-mastervisa.png" width="180" height="40" alt="MasterCard and Visa accepted" loading="lazy" decoding="async" />
+                }
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="widget widget-links">
-                    <h3 class="widget-title">@Resource.ProductCategories</h3>
-                    <ul class="list-unstyled">
+            <div class="col-md-6 col-xl-3 mt-1-9">
+                <div class="ps-md-2-0 ps-xl-2-6">
+                    <h4 class="text-primary mb-1-6 mb-lg-2-2">@Resource.ProductCategories</h4>
+                    <ul class="list-unstyled mb-0 list-style-21">
                         @if (productRootCategories.IsNotEmpty())
                         {
                             foreach (var m in productRootCategories.Take(8))
                             {
-                                <li class="mb-2">
-                                    <a href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">@m.Name</a>
-                                </li>
+                                <li><a href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">@m.Name</a></li>
                             }
                         }
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="widget widget-links">
-                    <h3 class="widget-title">@Resource.AboutUs</h3>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="@Url.Action(Constants.AboutUs,"info")">@Resource.AboutUs</a></li>
+            <div class="col-md-6 col-xl-3 mt-1-9">
+                <div class="ps-xl-2-6">
+                    <h4 class="text-primary mb-1-6 mb-lg-2-2">@Resource.AboutUs</h4>
+                    <ul class="list-unstyled mb-0 list-style-21">
+                        <li><a href="@Url.Action(Constants.AboutUs, "info")">@Resource.AboutUs</a></li>
                         @if (communicationPageLink != null)
                         {
                             communicationId = communicationPageLink.Id;
-                            <li class="mb-2"><a href="@communicationPageLink.DetailPageLink">@communicationPageLink.Name</a></li>
+                            <li><a href="@communicationPageLink.DetailPageLink">@communicationPageLink.Name</a></li>
                         }
                         @if (aboutUsChildrenLinks.IsNotEmpty())
                         {
                             foreach (var m in aboutUsChildrenLinks)
                             {
-                                <li class="mb-2"><a href="@m.DetailPageLink">@m.Name</a></li>
+                                <li><a href="@m.DetailPageLink">@m.Name</a></li>
                             }
                         }
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="widget widget-links">
-                    <h3 class="widget-title">@Resource.CustomerRelationship</h3>
-                    <ul class="list-unstyled">
+            <div class="col-md-6 col-xl-2 mt-1-9">
+                <div class="ps-md-2-0 ps-xxl-2-6">
+                    <h4 class="text-primary mb-1-6 mb-lg-2-2">@Resource.CustomerRelationship</h4>
+                    <ul class="list-unstyled mb-0">
                         @if (productPriceEnabled)
                         {
-                            <li class="mb-2"><a href="@Url.Action("CargoTracking","Payment")">@Resource.TrackYourCargo</a></li>
+                            <li class="mb-3"><a href="@Url.Action("CargoTracking", "Payment")" class="text-white text-primary-hover">@Resource.TrackYourCargo</a></li>
                         }
                         @if (musteriIliskileriChildren.IsNotEmpty())
                         {
                             foreach (var m in musteriIliskileriChildren)
                             {
-                                <li class="mb-2"><a href="@m.DetailPageLink">@m.Name</a></li>
+                                <li class="mb-3"><a href="@m.DetailPageLink" class="text-white text-primary-hover">@m.Name</a></li>
                             }
                         }
-                        <li class="mb-2"><a href="@Url.Action(Constants.DeliveryInfo,"info")">@Resource.DeliveryInfo</a></li>
+                        <li><a href="@Url.Action(Constants.DeliveryInfo, "info")" class="text-white text-primary-hover">@Resource.DeliveryInfo</a></li>
                     </ul>
                 </div>
             </div>
@@ -93,14 +94,21 @@
 
         @if (footerModel.FooterHtmlDescription != null && !string.IsNullOrEmpty(footerModel.FooterHtmlDescription.SettingValue))
         {
-            <div class="py-3 border-top border-color-light-white">
+            <div class="py-3 border-top border-color-light-white text-white opacity9">
                 @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)
             </div>
         }
 
-        <div class="crizal-footer-bottom text-center">
-            <span class="mr-1">© @DateTime.Now.Year @companyName. All rights reserved. Made by</span>
-            <a href="http://www.erayweb.com/" target="_blank" rel="noopener noreferrer">Erayweb</a>
+        <div class="row py-1-9 mt-n3">
+            <div class="col-lg-6 mt-3">
+                <p class="mb-0 text-white text-lg-start text-center">&copy; <span class="current-year">@DateTime.Now.Year</span> @companyName.</p>
+            </div>
+            <div class="col-lg-6 mt-3">
+                <div class="text-center text-lg-end">
+                    <span class="text-white opacity7 display-30">Made by </span>
+                    <a href="http://www.erayweb.com/" target="_blank" rel="noopener noreferrer" class="text-white text-primary-hover">Erayweb</a>
+                </div>
+            </div>
         </div>
     </div>
 </footer>

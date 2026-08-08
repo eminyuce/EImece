@@ -1,4 +1,4 @@
-/* Crizal theme UI behaviors only — no business logic */
+/* Crizal theme UI behaviors — complements template main.js */
 (function (window, document, $) {
     'use strict';
 
@@ -8,23 +8,20 @@
             return;
         }
 
-        // Smooth scroll for in-page anchors
-        $(document).on('click', 'a.crizal-scroll-top, .scroll-to-top-btn', function (e) {
-            var href = this.getAttribute('href');
-            if (href && href.charAt(0) === '#') {
-                var target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+        // Prevent main.js from swapping to missing inner logo paths
+        $(window).off('scroll.crizalLogoFix');
+        $(window).on('scroll.crizalLogoFix', function () {
+            var $logo = $('#logo');
+            if ($logo.length) {
+                $logo.attr('src', '/images/logo.jpg');
             }
         });
 
-        // Mobile: close navbar after link click
-        $(document).on('click', '.crizal-navbar .navbar-nav .nav-link:not(.dropdown-toggle)', function () {
-            var collapse = document.querySelector('.crizal-navbar .navbar-collapse.show');
-            if (collapse && window.jQuery && $.fn.collapse) {
-                $(collapse).collapse('hide');
+        // Enter key submits overlay search
+        $(document).on('keypress', '.search-form_input', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                onClickSearch();
             }
         });
     }

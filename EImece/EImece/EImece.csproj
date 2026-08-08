@@ -1044,7 +1044,6 @@
     <Content Include="Views\Designs\Modern\Stories\Tag.cshtml" />
     <Content Include="Views\Designs\Modern\UnderConstruction\Index.cshtml" />
     <Content Include="Views\Designs\Modern\_ViewStart.cshtml" />
-
     <Content Include="Views\Designs\Crizal\_ViewStart.cshtml" />
     <Content Include="Views\Designs\Crizal\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Designs\Crizal\Account\ConfirmEmail.cshtml" />
@@ -1112,6 +1111,7 @@
     <Content Include="Views\Designs\Crizal\Shared\_Footer.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Grid.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_GridPager.cshtml" />
+    <Content Include="Views\Designs\Crizal\Shared\_Header.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Languages.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Layout.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_LoginPartial.cshtml" />
@@ -1125,6 +1125,7 @@
     <Content Include="Views\Designs\Crizal\Shared\_ProductCategoryTreeHeadLine.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_pThankYouForContactingUs.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_SearchProductForm.cshtml" />
+    <Content Include="Views\Designs\Crizal\Shared\_Scripts.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_SocialMediaLinks.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_WebSiteAddressInfo.cshtml" />
@@ -1580,6 +1581,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customers\Data\" />
+    <Folder Include="Content\designs\crizal\images\" />
     <Folder Include="media\images\thumbs\" />
     <Folder Include="Scripts\codemirror\addon\" />
   </ItemGroup>
