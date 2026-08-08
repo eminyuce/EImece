@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -47,6 +47,12 @@ namespace EImece.Controllers
 
                 var productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
                 Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.ProductCategory?.Name}");
+
+                if (productCategory == null || productCategory.ProductCategory == null || !productCategory.ProductCategory.IsActive)
+                {
+                    Logger.Info($"ProductCategory with ID: {categoryId} is null or inactive. Redirecting to NotFound error page.");
+                    return RedirectToAction("NotFound", "Error");
+                }
 
                 productCategory.SeoId = id;
                 productCategory.Page = page;

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
@@ -158,7 +158,7 @@ namespace EImece.Domain.Services
 
             if (product == null)
             {
-                throw new ArgumentNullException("Product is null for id:" + id);
+                return null;
             }
             if (!product.IsActive)
             {

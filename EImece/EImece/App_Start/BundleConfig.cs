@@ -1,4 +1,4 @@
-﻿using System.Web.Optimization;
+using System.Web.Optimization;
 
 namespace EImece
 {
@@ -132,6 +132,8 @@ namespace EImece
                     "~/Scripts/eimece.js",
                     "~/Scripts/cookie-consent.js",
                     "~/Scripts/mustache.min.js"));
+
+            EImece.App_Start.DesignConfig.RegisterDesignBundles(bundles);
         }
     }
 }

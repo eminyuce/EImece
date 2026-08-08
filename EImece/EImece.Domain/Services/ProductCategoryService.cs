@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
@@ -195,10 +195,14 @@ namespace EImece.Domain.Services
         {
             var result = new ProductCategoryViewModel();
             result.ProductCategory = GetProductCategory(productCategoryId);
+            if (result.ProductCategory == null)
+            {
+                return null;
+            }
             if (result.ProductCategory.ParentId > 0)
             {
                 result.ProductCategory.Parent = GetProductCategory(result.ProductCategory.ParentId);
-                if (result.ProductCategory.Parent.ParentId > 0)
+                if (result.ProductCategory.Parent != null && result.ProductCategory.Parent.ParentId > 0)
                 {
                     result.ProductCategory.Parent.Parent = GetProductCategory(result.ProductCategory.Parent.ParentId);
                 }

@@ -1,37 +1,27 @@
 <#
 .SYNOPSIS
-    Creates JPEG placeholders (+ thumbs) for seed FileStorage rows under the site media/images folder.
+    Generates JPEG placeholders (+ thumbs) for all FileStorage rows in the database under media/images folder.
 
 .DESCRIPTION
-    The app resolves uploads via Constants.ServerMapPath (~/media/images/) using FileStorage.FileName.
-    SeedDummyData.sql inserts FileName values like product-00001.jpg; this script writes those files
-    (and thumbs\thbproduct-00001.jpg) so admin/storefront images load.
+    Queries dbo.FileStorages for all existing image filenames, creates placeholding JPEG images
+    (and thumbs/thb*.jpg) in the target media folder, and sets IsFileExist = 1 in the database.
 
 .EXAMPLE
-    .\GenerateSeedImages.ps1 -MediaRoot "C:\inetpub\wwwroot\Eimece\media\images"
-
-.EXAMPLE
-    .\GenerateSeedImages.ps1 -MediaRoot "C:\inetpub\wwwroot\Eimece\media\images" -ConnectionString "..." -MarkExisting
+    .\GenerateSeedImages.ps1 -MediaRoot "C:\Users\eminy\source\repos\EImece\EImece\EImece\media\images" -ConnectionString "Server=.;Database=EImece;Trusted_Connection=True;TrustServerCertificate=True;"
 #>
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $true)]
-    [string] $MediaRoot,
+    [Parameter(Mandatory = $false)]
+    [string] $MediaRoot = "",
 
-    [string] $ConnectionString,
+    [string] $ConnectionString = "Server=.;Database=EImece;Trusted_Connection=True;TrustServerCertificate=True;",
 
-    [string] $Server = "YUCE\SQLEXPRESS",
+    [string] $Server = ".",
 
-    [string] $Database = "yuva8905_yuvadan",
+    [string] $Database = "EImece",
 
-    [string] $SqlUser = "sqluser",
+    [switch] $MarkExisting = $true,
 
-    [string] $SqlPassword = "sqluser",
-
-    # When set, UPDATE IsFileExist=1 for seed FileStorages whose files were written.
-    [switch] $MarkExisting,
-
-    # Optional override instead of reading filenames from SQL.
     [int] $Count = 0,
 
     [int] $Width = 1200,
@@ -42,8 +32,22 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-
 Add-Type -AssemblyName System.Drawing
+Add-Type -AssemblyName System.Data
+
+if ([string]::IsNullOrWhiteSpace($ConnectionString) -and $Server -and $Database) {
+    $ConnectionString = "Server=$Server;Database=$Database;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+
+if ([string]::IsNullOrWhiteSpace($MediaRoot)) {
+    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+    $appMedia = Join-Path (Split-Path -Parent $scriptDir) "media\images"
+    if (Test-Path (Split-Path -Parent $appMedia)) {
+        $MediaRoot = $appMedia
+    } else {
+        $MediaRoot = "C:\inetpub\wwwroot\Eimece\media\images"
+    }
+}
 
 function Get-SeedFileNames {
     param([string] $ConnStr)
@@ -52,33 +56,40 @@ function Get-SeedFileNames {
         return 1..$Count | ForEach-Object { "product-{0:D5}.jpg" -f $_ }
     }
 
-    $sql = @"
-SELECT FileName
-FROM dbo.FileStorages
-WHERE FileUrl LIKE N'/media/seed/%'
-   OR FileUrl LIKE N'/media/images/product-%'
-ORDER BY Id;
-"@
+    $sql = "SELECT DISTINCT FileName FROM dbo.FileStorages WHERE FileName IS NOT NULL AND FileName <> '' ORDER BY FileName;"
+
+    # Preferred: System.Data.SqlClient
+    try {
+        $conn = New-Object System.Data.SqlClient.SqlConnection $ConnStr
+        $conn.Open()
+        try {
+            $cmd = $conn.CreateCommand()
+            $cmd.CommandText = $sql
+            $reader = $cmd.ExecuteReader()
+            $names = New-Object System.Collections.Generic.List[string]
+            while ($reader.Read()) {
+                $val = $reader.GetString(0)
+                if (-not [string]::IsNullOrWhiteSpace($val)) {
+                    $names.Add($val.Trim())
+                }
+            }
+            return $names.ToArray()
+        }
+        finally {
+            $conn.Close()
+        }
+    }
+    catch {
+        Write-Warning "SqlClient query failed: $_. Trying sqlcmd..."
+    }
 
     if (Get-Command sqlcmd -ErrorAction SilentlyContinue) {
-        if ($ConnStr) {
-            # Parse basic Server/Database/User from connection string when possible; fall back to params.
-            $serverMatch = [regex]::Match($ConnStr, '(?i)(?:Server|Data Source)=([^;]+)')
-            $dbMatch = [regex]::Match($ConnStr, '(?i)(?:Database|Initial Catalog)=([^;]+)')
-            $userMatch = [regex]::Match($ConnStr, '(?i)(?:User ID|UID)=([^;]+)')
-            $pwdMatch = [regex]::Match($ConnStr, '(?i)(?:Password|PWD)=([^;]+)')
-            if ($serverMatch.Success) { $script:Server = $serverMatch.Groups[1].Value }
-            if ($dbMatch.Success) { $script:Database = $dbMatch.Groups[1].Value }
-            if ($userMatch.Success) { $script:SqlUser = $userMatch.Groups[1].Value }
-            if ($pwdMatch.Success) { $script:SqlPassword = $pwdMatch.Groups[1].Value }
-        }
-
-        $rows = sqlcmd -S $Server -d $Database -U $SqlUser -P $SqlPassword -Q $sql -h -1 -W 2>$null |
+        $rows = sqlcmd -S $Server -d $Database -E -Q $sql -h -1 -W 2>$null |
             Where-Object { $_ -and $_.Trim() -ne '' -and $_ -notmatch 'rows affected' -and $_ -notmatch '^-+$' }
         return @($rows | ForEach-Object { $_.Trim() } | Where-Object { $_ -like '*.jpg' -or $_ -like '*.png' -or $_ -like '*.jpeg' })
     }
 
-    throw "sqlcmd not found and -Count was not provided."
+    throw "Could not retrieve FileStorage filenames from database."
 }
 
 function New-SeedJpeg {
@@ -97,7 +108,6 @@ function New-SeedJpeg {
             $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
             $g.Clear($BackColor)
 
-            # Soft panels for a non-flat placeholder look
             $panelBrush = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(40, 255, 255, 255))
             $g.FillRectangle($panelBrush, [int]($ImgWidth * 0.08), [int]($ImgHeight * 0.12), [int]($ImgWidth * 0.84), [int]($ImgHeight * 0.76))
             $panelBrush.Dispose()
@@ -145,14 +155,14 @@ if (-not (Test-Path $thumbRoot)) {
 
 $fileNames = @(Get-SeedFileNames -ConnStr $ConnectionString)
 if ($fileNames.Count -eq 0) {
-    Write-Host "No seed FileStorage filenames found. Nothing to generate." -ForegroundColor Yellow
+    Write-Host "No FileStorage filenames found in database. Nothing to generate." -ForegroundColor Yellow
     return
 }
 
-Write-Host "Generating $($fileNames.Count) seed images under $MediaRoot ..." -ForegroundColor Cyan
+Write-Host "Generating $($fileNames.Count) images under $MediaRoot ..." -ForegroundColor Cyan
 
 $palette = @(
-    [System.Drawing.Color]::FromArgb(255, 41, 98, 255),
+    [System.Drawing.Color]::FromArgb(255, 37, 99, 235),
     [System.Drawing.Color]::FromArgb(255, 16, 185, 129),
     [System.Drawing.Color]::FromArgb(255, 245, 158, 11),
     [System.Drawing.Color]::FromArgb(255, 239, 68, 68),
@@ -172,29 +182,34 @@ foreach ($name in $fileNames) {
     $fullPath = Join-Path $MediaRoot $safeName
     $thumbPath = Join-Path $thumbRoot ("thb" + $safeName)
     $color = $palette[($index - 1) % $palette.Count]
-    $label = "EImece seed`n$safeName"
+    $label = "EImece Media`n$safeName"
 
     New-SeedJpeg -Path $fullPath -ImgWidth $Width -ImgHeight $Height -Label $label -BackColor $color
     New-SeedJpeg -Path $thumbPath -ImgWidth $ThumbWidth -ImgHeight $thumbHeight -Label $safeName -BackColor $color
     $written++
 
     if ($written % 50 -eq 0) {
-        Write-Host "  ... $written / $($fileNames.Count)"
+        Write-Host "  ... generated $written / $($fileNames.Count)"
     }
 }
 
-Write-Host "Wrote $written images and $written thumbs." -ForegroundColor Green
+Write-Host "Successfully generated $written images and $written thumbnails in $MediaRoot." -ForegroundColor Green
 
-if ($MarkExisting) {
-    $updateSql = @"
-UPDATE dbo.FileStorages
-SET IsFileExist = 1,
-    UpdatedDate = GETDATE(),
-    FileSize = CASE WHEN FileSize IS NULL OR FileSize < 1000 THEN 85000 ELSE FileSize END
-WHERE FileUrl LIKE N'/media/seed/%'
-   OR FileUrl LIKE N'/media/images/product-%';
-SELECT COUNT(*) AS MarkedExisting FROM dbo.FileStorages WHERE IsFileExist = 1 AND (FileUrl LIKE N'/media/seed/%' OR FileUrl LIKE N'/media/images/product-%');
-"@
-    sqlcmd -S $Server -d $Database -U $SqlUser -P $SqlPassword -Q $updateSql -W
-    Write-Host "Marked seed FileStorages as IsFileExist=1." -ForegroundColor Green
+if ($MarkExisting -and $ConnectionString) {
+    try {
+        $conn = New-Object System.Data.SqlClient.SqlConnection $ConnectionString
+        $conn.Open()
+        try {
+            $cmd = $conn.CreateCommand()
+            $cmd.CommandText = "UPDATE dbo.FileStorages SET IsFileExist = 1, UpdatedDate = GETDATE(), FileSize = CASE WHEN FileSize IS NULL OR FileSize < 1000 THEN 85000 ELSE FileSize END WHERE FileName IS NOT NULL AND FileName <> ''"
+            $affected = $cmd.ExecuteNonQuery()
+            Write-Host "Updated $affected FileStorage records in database with IsFileExist = 1." -ForegroundColor Green
+        }
+        finally {
+            $conn.Close()
+        }
+    }
+    catch {
+        Write-Warning "Could not update IsFileExist in database: $_"
+    }
 }

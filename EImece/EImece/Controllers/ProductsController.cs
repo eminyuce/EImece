@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -73,14 +73,14 @@ namespace EImece.Controllers
 
                 Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.Product?.Name}, IsActive: {product?.Product?.IsActive}");
 
-                if (!product.Product.IsActive)
+                if (product == null || product.Product == null || !product.Product.IsActive)
                 {
-                    Logger.Info($"Product with ID: {productId} is inactive. Redirecting to NotFound error page.");
+                    Logger.Info($"Product with ID: {productId} is null or inactive. Redirecting to NotFound error page.");
                     return RedirectToAction("NotFound", "Error");
                 }
-                if (!product.Product.ProductCategory.IsActive)
+                if (product.Product.ProductCategory == null || !product.Product.ProductCategory.IsActive)
                 {
-                    Logger.Info($"ProductCategory with ID: {product.Product.ProductCategory.Name} is inactive. Redirecting to NotFound error page.");
+                    Logger.Info($"ProductCategory for product ID: {productId} is null or inactive. Redirecting to NotFound error page.");
                     return RedirectToAction("NotFound", "Error");
                 }
                 ViewBag.SeoId = product.Product.GetSeoUrl();
@@ -92,6 +92,11 @@ namespace EImece.Controllers
                 Logger.Info($"Set culture and SEO ID: {ViewBag.SeoId} for product ID: {productId}");
                 Logger.Info("Returning Detail view.");
                 return View(product);
+            }
+            catch (ArgumentNullException ex)
+            {
+                Logger.Info($"Product not found for id '{id}': {ex.Message}. Redirecting to NotFound.");
+                return RedirectToAction("NotFound", "Error");
             }
             catch (Exception e)
             {

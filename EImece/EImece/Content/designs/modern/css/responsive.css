@@ -1,0 +1,75 @@
+/* Modern Design Responsive Styles & Breakpoints */
+
+@media (max-width: 991.98px) {
+    .modern-search-bar {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0.75rem;
+    }
+
+    .modern-navbar {
+        flex-wrap: wrap;
+    }
+
+    .modern-hero h1 {
+        font-size: 2rem;
+    }
+
+    .modern-hero p {
+        font-size: 1rem;
+    }
+
+    .cart-summary-sticky {
+        position: static !important;
+        margin-top: 2rem;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 767.98px) {
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.2rem; }
+
+    .modern-hero {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-grid-modern {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
+    }
+
+    .cart-item-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+    }
+
+    .cart-item-price-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media (max-width: 479.98px) {
+    .product-grid-modern {
+        grid-template-columns: 1fr !important;
+    }
+
+    .modern-header-actions {
+        gap: 0.75rem;
+    }
+}

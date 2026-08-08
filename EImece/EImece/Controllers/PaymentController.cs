@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Helpers;
@@ -184,7 +184,7 @@ namespace EImece.Controllers
             var shoppingCart = GetShoppingCartFromDataSource();
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
-                        @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartSmallDetails.cshtml",
+                        "ShoppingCartTemplates/_ShoppingCartSmallDetails",
                         new ViewDataDictionary(shoppingCart), tempData);
             PaymentLogger.Info("Returning JSON response with HTML.");
             return Json(html, JsonRequestBehavior.AllowGet);
@@ -196,7 +196,7 @@ namespace EImece.Controllers
             var shoppingCart = GetShoppingCartFromDataSource();
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
-                        @"~\Views\Shared\ShoppingCartTemplates\_ShoppingCartLinks.cshtml",
+                        "ShoppingCartTemplates/_ShoppingCartLinks",
                         new ViewDataDictionary(shoppingCart), tempData);
             PaymentLogger.Info("Returning JSON response with HTML.");
             return Json(html, JsonRequestBehavior.AllowGet);
@@ -446,7 +446,7 @@ namespace EImece.Controllers
             }
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
-                        @"~\Views\Shared\CargoTrackingResult.cshtml",
+                        "CargoTrackingResult",
                         new ViewDataDictionary(order), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }

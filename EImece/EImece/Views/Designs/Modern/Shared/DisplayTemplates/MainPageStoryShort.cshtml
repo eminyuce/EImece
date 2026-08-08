@@ -1,0 +1,43 @@
+@model EImece.Domain.Entities.Story
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers
+@using Resources
+@{
+    var story = Model;
+    int Width = ViewData["Width"].ToInt(220);
+    int Height = ViewData["Height"].ToInt(150);
+    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
+    var imageTag = story.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 575px) 100vw, 220px");
+    var category = story.StoryCategory;
+    var excerpt = !string.IsNullOrWhiteSpace(story.ShortDescription)
+        ? story.ShortDescription
+        : story.GetSeoDescription(160);
+}
+
+<article class="home-story-item media">
+    <a class="home-story-thumb" href="@story.DetailPageUrl" aria-label="@story.Name">
+        @Html.Raw(imageTag)
+    </a>
+    <div class="media-body home-story-body">
+        <h3 class="home-story-title h5 mb-1">
+            <a href="@story.DetailPageUrl" class="text-dark">@story.Name</a>
+        </h3>
+        <p class="home-story-meta text-muted small mb-2">
+            @if (category != null)
+            {
+                <a href="@category.DetailPageRelativeUrl" class="text-muted">@category.Name</a>
+                <span> · </span>
+            }
+            <time datetime="@story.UpdatedDate.ToString("yyyy-MM-dd")">@story.UpdatedDate.ToShortDateString()</time>
+            @if (!string.IsNullOrWhiteSpace(story.AuthorName))
+            {
+                <span> · @story.AuthorName</span>
+            }
+        </p>
+        @if (!string.IsNullOrWhiteSpace(excerpt))
+        {
+            <p class="home-story-excerpt text-muted mb-2">@Html.Raw(excerpt)</p>
+        }
+        <a href="@story.DetailPageUrl" class="btn btn-sm btn-outline-secondary">@Resource.ReadMore</a>
+    </div>
+</article>
