@@ -65,9 +65,9 @@
 
     <link rel="preload" as="image" href="/images/logo.jpg" fetchpriority="high" />
 
+    @* Plugin CSS must load via Content path (not Bundle) so @import and font url() resolve correctly *@
+    <link rel="stylesheet" href="@Url.Content("~/Content/designs/crizal/vendor/css/plugins.css")" />
     @Styles.Render("~/bundles/designs/crizal/vendor/css")
-
-
 
     @RenderSection("HeadExtra", required: false)
 </head>

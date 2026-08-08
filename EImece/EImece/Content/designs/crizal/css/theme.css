@@ -11,7 +11,7 @@ body[data-design="crizal"] {
     --crizal-border: #e6e8ef;
     --crizal-border-light: rgba(255, 255, 255, 0.15);
     --crizal-sale: #ff214f;
-    --crizal-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --crizal-font: "Plus Jakarta Sans", Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --crizal-radius: 4px;
     --crizal-radius-sm: 3px;
     --crizal-radius-lg: 10px;
