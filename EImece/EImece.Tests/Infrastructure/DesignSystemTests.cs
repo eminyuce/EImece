@@ -149,10 +149,10 @@ namespace EImece.Tests.Infrastructure
         [TestMethod]
         public void AlternateDesign_ResolvesAlternateDesignView()
         {
-            var designProvider = new TestDesignProvider { ActiveDesign = "Corporate" };
+            var designProvider = new TestDesignProvider { ActiveDesign = "Minimal" };
             var engine = new DesignAwareRazorViewEngine(designProvider);
 
-            engine.FileExistsOverride = (path) => path.Equals("~/Views/Designs/Corporate/Products/Detail.cshtml", StringComparison.OrdinalIgnoreCase);
+            engine.FileExistsOverride = (path) => path.Equals("~/Views/Designs/Minimal/Products/Detail.cshtml", StringComparison.OrdinalIgnoreCase);
 
             var context = CreateControllerContext("Products", "Detail");
             var result = engine.FindView(context, "Detail", null, false);
