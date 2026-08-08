@@ -41,13 +41,13 @@
     var productCommentsPaging = new PaginatedModelList<ProductComment>(productComments, Model.Page, Model.RecordPerPage, productComments.Count);
     productCommentsPaging.RouteId = Model.SeoId;
 
-    var mainImageImgSrc = product.MainImageSrc.Item1;
+    var mainImageImgSrc = product.MainImageSrc != null ? product.MainImageSrc.Item1 : "";
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
 
-    var productPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
-    var productReviewEnable = Model.IsProductReviewEnable.SettingValue.ToBool(true);
+    var productPriceEnabled = Model.IsProductPriceEnable != null ? Model.IsProductPriceEnable.SettingValue.ToBool(true) : true;
+    var productReviewEnable = Model.IsProductReviewEnable != null ? Model.IsProductReviewEnable.SettingValue.ToBool(true) : true;
 
     var productSchemaJson = Model.GoogleProductSchemaJson;
 

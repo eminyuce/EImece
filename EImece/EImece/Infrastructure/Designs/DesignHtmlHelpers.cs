@@ -29,5 +29,18 @@ namespace EImece.Infrastructure.Designs
 
             return $"~/Content/designs/{activeDesign.ToLowerInvariant()}/{cleanAsset}";
         }
+
+        public static string GetActiveDesignName(this HtmlHelper html)
+        {
+            return _designProvider.GetActiveDesign();
+        }
+
+        public static MvcHtmlString ActiveDesignDebugInfo(this HtmlHelper html)
+        {
+            string activeDesign = _designProvider.GetActiveDesign();
+            string encoded = html.AttributeEncode(activeDesign ?? "None");
+            string htmlSnippet = $"<!-- Active Design: {encoded} -->\n<meta name=\"active-design\" content=\"{encoded}\" />\n<input type=\"hidden\" id=\"active-design\" name=\"active-design\" value=\"{encoded}\" />";
+            return new MvcHtmlString(htmlSnippet);
+        }
     }
 }

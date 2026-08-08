@@ -24,7 +24,7 @@
     ViewBag.Keywords = product.GetSeoKeywords();
     var productCategory = product.ProductCategory;
 
-    var mainImageImgSrc = product.MainImageSrc.Item1;
+    var mainImageImgSrc = product.MainImageSrc != null ? product.MainImageSrc.Item1 : "";
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);

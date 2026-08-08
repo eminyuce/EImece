@@ -124,6 +124,14 @@ namespace EImece.Infrastructure.Designs
                 return new ViewEngineResult(view, this);
             }
 
+            bool isBuiltInTemplate = partialViewName.StartsWith("EditorTemplates/", StringComparison.OrdinalIgnoreCase) ||
+                                     partialViewName.StartsWith("DisplayTemplates/", StringComparison.OrdinalIgnoreCase);
+
+            if (isBuiltInTemplate)
+            {
+                return base.FindPartialView(controllerContext, partialViewName, useCache);
+            }
+
             string expectedPath = searchedLocations.Count > 0 ? searchedLocations[0] : $"~/Views/Designs/{activeDesign}/{controllerName}/{partialViewName}.cshtml";
             throw new MissingDesignViewException(
                 activeDesign,

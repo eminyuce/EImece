@@ -1,12 +1,11 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain;
 @using Resources;
 @using System.Threading;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers;
-@using EImece.Domain.Models.FrontModels;
-
+@using EImece.Infrastructure.Designs;
 
 @{
     var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
@@ -18,6 +17,7 @@
 <!DOCTYPE html>
 <html lang="@htmlLang">
 <head>
+    @Html.ActiveDesignDebugInfo()
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
