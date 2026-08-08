@@ -6,23 +6,25 @@
 @using Resources;
 @{
     var categories = Model.BreadCrumb;
-
 }
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-        <li class="breadcrumb-item">
-            <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+
+<nav class="crizal-breadcrumb" aria-label="breadcrumb">
+    <ol class="crizal-breadcrumb__list breadcrumb">
+        <li class="crizal-breadcrumb__item breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")" class="crizal-breadcrumb__link">
+                <i data-feather="home" aria-hidden="true"></i>
+                <span>@Resource.HomePage</span>
+            </a>
         </li>
         @for (int i = categories.Count() - 1; i >= 0; i--)
         {
             var category = categories[i];
-        <li class="breadcrumb-item">
-            <a href="@category.ProductCategory.DetailPageUrl">@category.ProductCategory.Name</a>
-        </li>
+            <li class="crizal-breadcrumb__item breadcrumb-item">
+                <a href="@category.ProductCategory.DetailPageUrl" class="crizal-breadcrumb__link">@category.ProductCategory.Name</a>
+            </li>
         }
-        <li class="breadcrumb-item active">
-            @Model.Product.Name
+        <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+            <span class="crizal-breadcrumb__current" title="@Model.Product.Name">@Model.Product.Name</span>
         </li>
     </ol>
 </nav>

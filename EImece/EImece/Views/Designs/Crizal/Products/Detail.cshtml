@@ -93,23 +93,25 @@
 }
 
 <!-- Page Title-->
-<div class="page-title-wrapper" aria-label="Page title">
+<div class="page-title-wrapper crizal-product-hero" aria-label="Page title">
     <div class="container">
         @if (TempData["RecaptchaError"] != null)
         {
             <div class="alert alert-danger" role="alert">@TempData["RecaptchaError"]</div>
         }
-        <div class="alert alert-secondary" role="alert">
-            @Html.Partial("_ProductBreadCrumb", Model)
-        </div>
-        <h1 class="page-title">@product.ProductNameStr</h1><span class="d-block mt-2 text-muted"></span>
-        <hr class="mt-4">
-        @if (product.Brand != null)
+        @Html.Partial("_ProductBreadCrumb", Model)
+        <h1 class="page-title">@product.ProductNameStr</h1>
+        @if (!string.IsNullOrEmpty(product.ShortDescription))
         {
-            <span class="d-block mt-1 text-muted">@Resource.ProductBrand : <strong>@product.Brand.Name</strong></span>
+            <p class="crizal-product-hero__lead">@Html.Raw(product.ShortDescription)</p>
         }
-        <span class="d-block mt-1 text-muted">@Resource.ProductCode : <strong>@product.ProductCode</strong></span>
-        <span class="d-block mt-1 text-muted">@Html.Raw(product.ShortDescription)</span>
+        <ul class="crizal-product-hero__meta">
+            @if (product.Brand != null)
+            {
+                <li><span>@Resource.ProductBrand</span> <strong>@product.Brand.Name</strong></li>
+            }
+            <li><span>@Resource.ProductCode</span> <strong>@product.ProductCode</strong></li>
+        </ul>
     </div>
 </div>
 

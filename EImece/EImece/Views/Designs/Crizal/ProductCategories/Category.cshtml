@@ -29,31 +29,31 @@
 
 <div class="page-title-wrapper" role="region" aria-label="Page title">
     <div class="container">
-        <div class="alert alert-secondary" role="alert">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+        <nav class="crizal-breadcrumb" aria-label="breadcrumb">
+            <ol class="crizal-breadcrumb__list breadcrumb">
+                <li class="crizal-breadcrumb__item breadcrumb-item">
+                    <a href="@Url.Action("Index", "Home")" class="crizal-breadcrumb__link">
+                        <i data-feather="home" aria-hidden="true"></i>
+                        <span>@Resource.HomePage</span>
+                    </a>
+                </li>
+                @if (category.Parent != null && category.Parent.Parent != null)
+                {
+                    <li class="crizal-breadcrumb__item breadcrumb-item">
+                        <a href="@category.Parent.Parent.DetailPageUrl" class="crizal-breadcrumb__link">@category.Parent.Parent.Name</a>
                     </li>
-                    @if (category.Parent != null && category.Parent.Parent != null)
-                    {
-                    <li class="breadcrumb-item">
-                        <a href="@category.Parent.Parent.DetailPageUrl"> @category.Parent.Parent.Name</a>
+                }
+                @if (category.Parent != null)
+                {
+                    <li class="crizal-breadcrumb__item breadcrumb-item">
+                        <a href="@category.Parent.DetailPageUrl" class="crizal-breadcrumb__link">@category.Parent.Name</a>
                     </li>
-                    }
-                    @if (category.Parent != null)
-                    {
-                    <li class="breadcrumb-item">
-                        <a href="@category.Parent.DetailPageUrl"> @category.Parent.Name</a>
-                    </li>
-                    }
-                    <li class="breadcrumb-item active">
-                        @category.Name
-                    </li>
-                </ol>
-            </nav>
-        </div>
+                }
+                <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+                    <span class="crizal-breadcrumb__current" title="@category.Name">@category.Name</span>
+                </li>
+            </ol>
+        </nav>
         <h1 class="page-title">@category.Name</h1><span class="d-block mt-2 text-muted"></span>
         @if (!string.IsNullOrEmpty(category.ShortDescription))
         {
