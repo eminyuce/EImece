@@ -156,6 +156,55 @@
         initProductGallery($);
         initRelatedCarousel($);
         initHomeHero($);
+        initProductTabs($);
+        initProductPanels($);
+    }
+
+    function initProductTabs($) {
+        $(document).off('click.crizalProductTabs', '.crizal-product-tabs__nav [data-toggle="tab"]');
+        $(document).on('click.crizalProductTabs', '.crizal-product-tabs__nav [data-toggle="tab"]', function (e) {
+            e.preventDefault();
+            var $link = $(this);
+            if (typeof $link.tab === 'function') {
+                $link.tab('show');
+            }
+        });
+    }
+
+    function initProductPanels($) {
+        var $root = $('#productPanels');
+        if (!$root.length || typeof $.fn.collapse !== 'function') {
+            return;
+        }
+
+        function syncPanelLinks() {
+            $root.find('[data-toggle="collapse"]').each(function () {
+                var $link = $(this);
+                var target = $link.attr('href') || $link.data('target');
+                var isOpen = target && $(target).hasClass('show');
+                $link.toggleClass('collapsed', !isOpen);
+                $link.attr('aria-expanded', isOpen ? 'true' : 'false');
+            });
+        }
+
+        $root.off('shown.bs.collapse.crizalProductPanels hidden.bs.collapse.crizalProductPanels');
+        $root.on('shown.bs.collapse.crizalProductPanels hidden.bs.collapse.crizalProductPanels', syncPanelLinks);
+
+        $(document).off('click.crizalProductPanels', '#productPanels [data-toggle="collapse"]');
+        $(document).on('click.crizalProductPanels', '#productPanels [data-toggle="collapse"]', function (e) {
+            e.preventDefault();
+            var $link = $(this);
+            var target = $link.attr('href') || $link.data('target');
+            if (!target) {
+                return;
+            }
+            var $target = $(target);
+            var willOpen = !$target.hasClass('show');
+            $root.find('.collapse.show').not($target).collapse('hide');
+            $target.collapse(willOpen ? 'show' : 'hide');
+        });
+
+        syncPanelLinks();
     }
 
     function initHomeHero($) {

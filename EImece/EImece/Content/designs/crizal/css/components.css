@@ -2389,3 +2389,1009 @@ body[data-design="crizal"] .crizal-home-story-card__more:hover {
         margin-bottom: 1.6rem;
     }
 }
+
+/* ==========================================================================
+   Stories — detail, category, tags, list cards
+   ========================================================================== */
+
+body[data-design="crizal"] .crizal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+body[data-design="crizal"] .crizal-tag,
+body[data-design="crizal"] a.crizal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--crizal-border);
+    background: #f3f6f4;
+    color: var(--crizal-secondary) !important;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none !important;
+    transition: var(--crizal-transition);
+}
+
+body[data-design="crizal"] .crizal-tag:hover,
+body[data-design="crizal"] a.crizal-tag:hover {
+    background: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+    color: #fff !important;
+}
+
+body[data-design="crizal"] .crizal-tag__count {
+    min-width: 1.25rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 999px;
+    background: rgba(20, 33, 43, 0.08);
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+body[data-design="crizal"] .crizal-tag:hover .crizal-tag__count {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+body[data-design="crizal"] .crizal-tags--sm .crizal-tag {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.72rem;
+}
+
+/* Override broken Bootstrap badges used by older story markup */
+body[data-design="crizal"] .story-category-tags .badge,
+body[data-design="crizal"] .badge.badge-secondary {
+    background: #eef4f0 !important;
+    color: var(--crizal-secondary) !important;
+    border: 1px solid var(--crizal-border);
+    font-weight: 700;
+}
+
+body[data-design="crizal"] .crizal-story-page,
+body[data-design="crizal"] .crizal-story-detail {
+    padding: 1.25rem 0 3.5rem;
+}
+
+body[data-design="crizal"] .crizal-story-page__header {
+    margin: 0.5rem 0 2rem;
+}
+
+body[data-design="crizal"] .crizal-story-page__title,
+body[data-design="crizal"] .crizal-story-detail__title {
+    margin: 0 0 0.75rem;
+    color: var(--crizal-heading);
+    font-size: clamp(1.75rem, 3vw, 2.35rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+body[data-design="crizal"] .crizal-story-page__lead {
+    max-width: 46rem;
+    color: var(--crizal-muted);
+    font-size: 1.02rem;
+    line-height: 1.55;
+}
+
+body[data-design="crizal"] .crizal-story-widget {
+    margin-bottom: 1.25rem;
+    padding: 1.25rem 1.2rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: var(--crizal-surface);
+}
+
+body[data-design="crizal"] .crizal-story-widget__title {
+    margin: 0 0 0.95rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 2px solid var(--crizal-primary);
+    color: var(--crizal-heading);
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-story-widget__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+body[data-design="crizal"] .crizal-story-widget__list li + li {
+    border-top: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-story-widget__list a,
+body[data-design="crizal"] .crizal-story-widget__list .is-current {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.7rem 0.1rem;
+    color: var(--crizal-heading);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+body[data-design="crizal"] .crizal-story-widget__list a:hover {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-widget__list .is-current {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-widget__list em {
+    font-style: normal;
+    color: var(--crizal-muted);
+    font-weight: 600;
+}
+
+body[data-design="crizal"] .crizal-story-featured {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+body[data-design="crizal"] .crizal-story-featured__item {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: center;
+    text-decoration: none !important;
+    color: inherit;
+}
+
+body[data-design="crizal"] .crizal-story-featured__item img {
+    width: 4.5rem;
+    height: 4.5rem;
+    object-fit: cover;
+    border-radius: var(--crizal-radius);
+    background: #eef1f4;
+}
+
+body[data-design="crizal"] .crizal-story-featured__item strong {
+    display: block;
+    color: var(--crizal-heading);
+    font-size: 0.92rem;
+    line-height: 1.3;
+}
+
+body[data-design="crizal"] .crizal-story-featured__item:hover strong {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-featured__item small {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--crizal-muted);
+    font-size: 0.78rem;
+}
+
+body[data-design="crizal"] .crizal-story-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.2fr);
+    gap: 0;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: var(--crizal-surface);
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-story-card__media {
+    position: relative;
+    display: block;
+    min-height: 100%;
+    background: #e8eef1;
+}
+
+body[data-design="crizal"] .crizal-story-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 220px;
+}
+
+body[data-design="crizal"] .crizal-story-card__date {
+    position: absolute;
+    left: 0.85rem;
+    bottom: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.25rem;
+    padding: 0.4rem 0.45rem;
+    border-radius: var(--crizal-radius);
+    background: rgba(20, 33, 43, 0.9);
+    color: #fff;
+    line-height: 1.1;
+}
+
+body[data-design="crizal"] .crizal-story-card__day {
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-story-card__month {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.85;
+}
+
+body[data-design="crizal"] .crizal-story-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.35rem 1.4rem;
+}
+
+body[data-design="crizal"] .crizal-story-card__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+body[data-design="crizal"] .crizal-story-card__title a {
+    color: var(--crizal-heading);
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .crizal-story-card__title a:hover {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-card__excerpt {
+    margin: 0;
+    color: var(--crizal-muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    flex: 1 1 auto;
+}
+
+body[data-design="crizal"] .crizal-story-card__more {
+    align-self: flex-start;
+    width: auto !important;
+    min-width: 0;
+    padding: 0.55rem 1.1rem;
+}
+
+body[data-design="crizal"] .crizal-story-card__more.butn-style8:before {
+    display: none !important;
+    content: none !important;
+}
+
+body[data-design="crizal"] .crizal-story-gallery--compact {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 160px));
+}
+
+body[data-design="crizal"] .crizal-story-gallery--compact .crizal-story-gallery__item img {
+    height: 7rem;
+}
+
+body[data-design="crizal"] .crizal-story-empty {
+    padding: 1.25rem 1.35rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: var(--crizal-surface-alt, #f6f8fa);
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] .crizal-story-detail__header {
+    margin-bottom: 1.35rem;
+}
+
+body[data-design="crizal"] .crizal-story-detail__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1rem;
+    align-items: center;
+    color: var(--crizal-muted);
+    font-size: 0.9rem;
+}
+
+body[data-design="crizal"] .crizal-story-detail__meta a {
+    color: var(--crizal-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .crizal-story-detail__hero {
+    margin: 0 0 1.5rem;
+    border-radius: var(--crizal-radius-lg);
+    overflow: hidden;
+    background: #e8eef1;
+}
+
+body[data-design="crizal"] .crizal-story-detail__hero img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 28rem;
+    object-fit: cover;
+}
+
+body[data-design="crizal"] .crizal-story-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin: 0 0 1.5rem;
+}
+
+body[data-design="crizal"] .crizal-story-gallery__item {
+    display: block;
+    border-radius: var(--crizal-radius);
+    overflow: hidden;
+    background: #eef1f4;
+}
+
+body[data-design="crizal"] .crizal-story-gallery__item img {
+    display: block;
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+}
+
+body[data-design="crizal"] .crizal-story-detail__content {
+    color: var(--crizal-heading);
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+body[data-design="crizal"] .crizal-story-detail__content p {
+    margin-bottom: 1.1rem;
+}
+
+body[data-design="crizal"] .crizal-story-detail__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-story-share {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--crizal-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+body[data-design="crizal"] .crizal-story-share__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 50%;
+    background: var(--crizal-secondary);
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+body[data-design="crizal"] .crizal-story-share__btn:hover {
+    background: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+    justify-content: space-between;
+    margin: 1.75rem 0 0.5rem;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link {
+    flex: 1 1 12rem;
+    max-width: 20rem;
+}
+
+body[data-design="crizal"] .crizal-story-nav__all {
+    flex: 0 0 auto;
+}
+
+body[data-design="crizal"] .crizal-story-nav--end {
+    justify-content: flex-end;
+}
+
+body[data-design="crizal"] .crizal-story-nav--start {
+    justify-content: flex-start;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link,
+body[data-design="crizal"] .crizal-story-nav__all {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    background: var(--crizal-surface);
+    color: var(--crizal-heading);
+    text-decoration: none !important;
+    min-height: 4.25rem;
+    box-sizing: border-box;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link span,
+body[data-design="crizal"] .crizal-story-nav__all {
+    color: var(--crizal-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link strong {
+    font-size: 0.92rem;
+    line-height: 1.3;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link:hover,
+body[data-design="crizal"] .crizal-story-nav__all:hover {
+    border-color: var(--crizal-primary);
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-nav__link--next {
+    text-align: right;
+    align-items: flex-end;
+}
+
+body[data-design="crizal"] .crizal-story-nav__all {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--crizal-secondary);
+}
+
+body[data-design="crizal"] .crizal-story-related {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-story-related__title {
+    margin: 0 0 1.15rem;
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-story-related__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    overflow: hidden;
+    background: var(--crizal-surface);
+    text-decoration: none !important;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body[data-design="crizal"] .crizal-story-related__card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--crizal-shadow);
+}
+
+body[data-design="crizal"] .crizal-story-related__card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: #eef1f4;
+}
+
+body[data-design="crizal"] .crizal-story-related__card--product img {
+    aspect-ratio: 1 / 1;
+}
+
+body[data-design="crizal"] .crizal-story-related__card span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.9rem 1rem 1.1rem;
+}
+
+body[data-design="crizal"] .crizal-story-related__card small {
+    color: var(--crizal-muted);
+    font-size: 0.75rem;
+}
+
+body[data-design="crizal"] .crizal-story-related__card strong {
+    color: var(--crizal-heading);
+    font-size: 0.95rem;
+    line-height: 1.3;
+}
+
+body[data-design="crizal"] .crizal-story-related__excerpt {
+    margin: 0.15rem 0 0;
+    color: var(--crizal-muted);
+    font-size: 0.82rem;
+    font-style: normal;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-story-card {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-story-nav {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-story-nav__link--next {
+        text-align: left;
+        align-items: flex-start;
+    }
+
+    body[data-design="crizal"] .crizal-story-detail__footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* ==========================================================================
+   Product detail — buy-box accordion + description/comments/payment tabs
+   ========================================================================== */
+
+body[data-design="crizal"] #productPanels.accordion,
+body[data-design="crizal"] .crizal-product-panels {
+    margin-top: 1.25rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    overflow: hidden;
+    background: var(--crizal-surface);
+}
+
+body[data-design="crizal"] .crizal-product-panels__icon {
+    color: var(--crizal-primary);
+    width: 1.05rem;
+    text-align: center;
+}
+
+body[data-design="crizal"] .crizal-product-panels .accordion-indicator {
+    transition: transform 0.2s ease;
+}
+
+body[data-design="crizal"] .crizal-product-panels .accordion-heading > a:not(.collapsed) .accordion-indicator {
+    transform: rotate(180deg);
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-product-panels__text {
+    color: var(--crizal-heading);
+    line-height: 1.55;
+}
+
+body[data-design="crizal"] .crizal-product-panels .product-code {
+    margin: 0 0 0.35rem;
+    font-style: normal;
+}
+
+body[data-design="crizal"] .crizal-product-panels .product-code strong {
+    color: var(--crizal-heading);
+    font-weight: 700;
+}
+
+body[data-design="crizal"] #productPanels .card {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+body[data-design="crizal"] #productPanels .card + .card {
+    border-top: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] #productPanels .card-header {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+}
+
+body[data-design="crizal"] #productPanels .accordion-heading {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+body[data-design="crizal"] #productPanels .accordion-heading > a {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    padding: 0.95rem 1.1rem;
+    color: var(--crizal-heading) !important;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+body[data-design="crizal"] #productPanels .accordion-heading > a:hover {
+    color: var(--crizal-primary) !important;
+    background: #f6f9f7;
+}
+
+body[data-design="crizal"] #productPanels .accordion-heading > a .border-right {
+    border-color: var(--crizal-border) !important;
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] #productPanels .accordion-indicator {
+    margin-left: auto;
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] #productPanels .card-body {
+    padding: 0 1.1rem 1.1rem;
+    color: var(--crizal-heading);
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+body[data-design="crizal"] #productPanels .product-code {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--crizal-muted);
+    font-style: normal;
+    font-size: 0.88rem;
+}
+
+body[data-design="crizal"] .crizal-product-tabs {
+    padding: 2rem 0 2.75rem;
+}
+
+body[data-design="crizal"] .crizal-product-tabs__nav.nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.35rem;
+    border: 1px solid var(--crizal-border);
+    border-bottom: 0;
+    border-radius: var(--crizal-radius-lg) var(--crizal-radius-lg) 0 0;
+    background: #f4f7f5;
+}
+
+body[data-design="crizal"] .crizal-product-tabs__nav .nav-item {
+    margin: 0;
+}
+
+body[data-design="crizal"] .crizal-product-tabs__nav .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.75rem 1.05rem;
+    border: 1px solid transparent !important;
+    border-radius: var(--crizal-radius) !important;
+    background: transparent;
+    color: var(--crizal-muted) !important;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none !important;
+}
+
+body[data-design="crizal"] .crizal-product-tabs__nav .nav-link i {
+    color: inherit;
+    font-size: 0.95rem;
+}
+
+body[data-design="crizal"] .crizal-product-tabs__nav .nav-link:hover {
+    color: var(--crizal-secondary) !important;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+body[data-design="crizal"] .crizal-product-tabs__nav .nav-link.active {
+    background: #fff !important;
+    border-color: var(--crizal-border) !important;
+    color: var(--crizal-secondary) !important;
+    box-shadow: 0 1px 2px rgba(20, 33, 43, 0.06);
+}
+
+body[data-design="crizal"] .crizal-product-tabs__nav .nav-link.active i {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-product-tabs__content.tab-content {
+    padding: 1.5rem 1.35rem 1.6rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: 0 0 var(--crizal-radius-lg) var(--crizal-radius-lg);
+    background: var(--crizal-surface);
+}
+
+body[data-design="crizal"] .crizal-product-desc__body {
+    color: var(--crizal-heading);
+    font-size: 1.02rem;
+    line-height: 1.7;
+}
+
+body[data-design="crizal"] .crizal-product-desc__body p:last-child {
+    margin-bottom: 0;
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs-title {
+    margin: 0 0 0.85rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs li {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 0.75rem;
+    padding: 0.75rem 0.9rem;
+    border-top: 1px solid var(--crizal-border);
+    font-size: 0.92rem;
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs li:first-child {
+    border-top: 0;
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs li span {
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs li strong {
+    color: var(--crizal-heading);
+    font-weight: 700;
+    text-align: right;
+}
+
+body[data-design="crizal"] .crizal-product-reviews {
+    margin: 0;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__summary {
+    padding: 1.2rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: #f7faf8;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__score {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__score > strong {
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-product-reviews__score small {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--crizal-muted);
+    font-size: 0.8rem;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__bar {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr) 1.5rem;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.55rem;
+    font-size: 0.8rem;
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] .crizal-product-reviews__bar .progress {
+    height: 0.35rem;
+    margin: 0;
+    background: #e4e9ec;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__bar .progress-bar {
+    background: #f5a524;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__bar em {
+    font-style: normal;
+    text-align: right;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__cta.butn-style8 {
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__cta.butn-style8:before {
+    display: none !important;
+    content: none !important;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__list-title {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-product-review {
+    padding: 1rem 0;
+    border-top: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-product-review:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+body[data-design="crizal"] .crizal-product-review header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 0.45rem;
+}
+
+body[data-design="crizal"] .crizal-product-review strong {
+    display: block;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-product-review time {
+    color: var(--crizal-muted);
+    font-size: 0.8rem;
+}
+
+body[data-design="crizal"] .crizal-product-review p {
+    margin: 0;
+    color: var(--crizal-heading);
+    line-height: 1.55;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 8.5rem;
+    padding: 1.35rem 1.5rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: #f7faf8;
+    color: var(--crizal-muted);
+    text-align: center;
+}
+
+body[data-design="crizal"] .crizal-product-reviews__empty p {
+    margin: 0;
+}
+
+body[data-design="crizal"] .crizal-product-payment__header h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-product-payment__header p {
+    margin: 0 0 0.85rem;
+    color: var(--crizal-primary);
+    font-weight: 700;
+}
+
+body[data-design="crizal"] .crizal-product-payment__lead {
+    margin: 0 0 1.15rem;
+    color: var(--crizal-muted);
+    line-height: 1.6;
+}
+
+body[data-design="crizal"] .crizal-product-payment__list {
+    list-style: none;
+    margin: 0 0 1.15rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-product-payment__list {
+        grid-template-columns: 1fr;
+    }
+}
+
+body[data-design="crizal"] .crizal-product-payment__list li {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    background: #f8fbf9;
+    color: var(--crizal-heading);
+    line-height: 1.5;
+}
+
+body[data-design="crizal"] .crizal-product-payment__list i {
+    margin-top: 0.15rem;
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-product-payment__note {
+    padding: 0.95rem 1.05rem;
+    border-left: 3px solid var(--crizal-primary);
+    background: #f3f8f5;
+    color: var(--crizal-heading);
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+body[data-design="crizal"] .crizal-product-payment__note a {
+    color: var(--crizal-primary);
+    font-weight: 700;
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-product-tabs__nav.nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body[data-design="crizal"] .crizal-product-tabs__nav .nav-link {
+        white-space: nowrap;
+        padding: 0.65rem 0.85rem;
+        font-size: 0.82rem;
+    }
+
+    body[data-design="crizal"] .crizal-product-tabs__content.tab-content {
+        padding: 1.15rem 1rem 1.25rem;
+    }
+
+    body[data-design="crizal"] .crizal-product-desc__specs li {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-product-desc__specs li strong {
+        text-align: left;
+    }
+
+    body[data-design="crizal"] .crizal-product-reviews__summary {
+        margin-bottom: 1.25rem;
+    }
+}
