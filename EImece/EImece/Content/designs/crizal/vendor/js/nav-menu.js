@@ -11,16 +11,22 @@
     "use strict";
     $.fn.menumaker = function (options) {
 
-        var nav = $(this),
-
-            settings = $.extend({
-                format: "dropdown",
-                sticky: false
-            }, options);
+        var settings = $.extend({
+            format: "dropdown",
+            sticky: false
+        }, options);
 
         return this.each(function () {
+            // Must scope to the current nav — outer $(this) is the full collection and
+            // re-runs prepend/bind for every <nav> on the page (duplicate +/− buttons).
+            var nav = $(this);
 
-            $(this).find(".navbar-toggler").on('click', function () {
+            if (nav.data('menumaker-init')) {
+                return;
+            }
+            nav.data('menumaker-init', true);
+
+            nav.find(".navbar-toggler").on('click', function () {
                 $(this).toggleClass('menu-opened');
                 var mainmenu = $(this).next('ul');
                 if (mainmenu.hasClass('open')) {
@@ -35,24 +41,59 @@
 
             nav.find('.navbar-nav li ul').parent().addClass('has-sub');
             nav.find('.navbar-nav li ul li').parent().addClass('sub-menu');
+
             var multiTg = function () {
 
-                // For First Level
-                nav.find(".has-sub").prepend('<span class="submenu-button"></span>');
-                nav.find('.navbar-nav > li.has-sub > .submenu-button').on('click', function () {
-                    $(this).next('.sub-menu').slideToggle();
-                    $(this).siblings('ul').addClass('open').slideToggle();
-                    $(this).parents('.navbar-nav > li.has-sub').toggleClass('active').siblings('.has-sub').children('.sub-menu').slideUp().removeClass('open').parents('li').removeClass('active');
+                nav.find(".has-sub").each(function () {
+                    if (!$(this).children('.submenu-button').length) {
+                        $(this).prepend('<span class="submenu-button"></span>');
+                    }
                 });
 
-                // For Second Level
-                nav.find('.sub-menu > li.has-sub > .submenu-button').on('click', function () {
-                    $(this).next('.sub-menu').slideToggle();
-                    $(this).siblings('ul').addClass('open').slideToggle();
-                    $(this).parents('.sub-menu > li').toggleClass('active').siblings('.has-sub').children('.sub-menu').slideUp().removeClass('open').parents('li').removeClass('active');
-                    if ($(this).siblings('ul').hasClass('open')) {
-                        $(this).parents('li').eq(1).addClass('active');
+                function toggleSubmenu($btn) {
+                    var $li = $btn.closest('li.has-sub');
+                    var $submenu = $li.children('ul').first();
+                    if (!$submenu.length) {
+                        return;
                     }
+                    var opening = !$submenu.is(':visible');
+                    $li.siblings('.has-sub').removeClass('active')
+                        .children('ul').stop(true, true).slideUp().removeClass('open');
+                    if (opening) {
+                        $submenu.addClass('open').stop(true, true).slideDown();
+                        $li.addClass('active');
+                    } else {
+                        $submenu.stop(true, true).slideUp(function () {
+                            $submenu.removeClass('open');
+                        });
+                        $li.removeClass('active');
+                    }
+                }
+
+                // Single toggle (template originally toggled twice via next+siblings).
+                nav.find('.navbar-nav > li.has-sub > .submenu-button').off('click.menumaker').on('click.menumaker', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleSubmenu($(this));
+                });
+
+                nav.find('.sub-menu > li.has-sub > .submenu-button').off('click.menumaker').on('click.menumaker', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleSubmenu($(this));
+                });
+
+                // Tapping the parent label should expand/collapse on mobile, not navigate to #!
+                nav.find('.navbar-nav li.has-sub > a').off('click.menumaker').on('click.menumaker', function (e) {
+                    if ($(window).width() > 991) {
+                        return;
+                    }
+                    var href = ($(this).attr('href') || '').trim();
+                    if (href && href !== '#' && href !== '#!' && href.indexOf('javascript:') !== 0) {
+                        return;
+                    }
+                    e.preventDefault();
+                    $(this).siblings('.submenu-button').first().trigger('click');
                 });
 
             };

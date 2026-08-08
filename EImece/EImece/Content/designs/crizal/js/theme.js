@@ -160,6 +160,14 @@
         initProductPanels($);
         initLeaveReviewModal($);
         initNavMenuBreakpoint($);
+        initMobileSubmenuCleanup($);
+    }
+
+    function initMobileSubmenuCleanup($) {
+        // Remove duplicate +/− controls if an older menumaker run created extras.
+        $('#nav li.has-sub').each(function () {
+            $(this).children('.submenu-button').slice(1).remove();
+        });
     }
 
     function initNavMenuBreakpoint($) {
