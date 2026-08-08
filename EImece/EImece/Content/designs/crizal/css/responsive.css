@@ -39,7 +39,7 @@
     .crizal-hero-content h2 { font-size: 2rem; max-width: none; }
     .crizal-hero-aside { margin-top: 1.25rem; }
 
-    .crizal-footer { margin-top: 0; padding-top: 3rem; }
+    body[data-design="crizal"] .crizal-footer { margin-top: 0; padding-top: 4.25rem; }
 }
 
 @media (max-width: 767.98px) {

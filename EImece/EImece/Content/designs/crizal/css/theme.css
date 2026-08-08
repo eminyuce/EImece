@@ -64,9 +64,16 @@ body[data-design="crizal"] .home-stories-widget .media {
     margin-bottom: 1rem;
 }
 
-/* Contact strip fallback when shape asset is unavailable */
+/* Legacy contact-style01 fallback (superseded by .crizal-cta-band) */
 body[data-design="crizal"] .contact-style01 .bg-primary.bg {
     background-color: var(--crizal-primary, #09b850) !important;
+}
+
+body[data-design="crizal"] footer.bg-secondary.mt-n12,
+body[data-design="crizal"] footer.pt-15,
+body[data-design="crizal"] footer.pt-lg-24 {
+    margin-top: 0 !important;
+    padding-top: 4rem !important;
 }
 
 /* Cart badge visibility for AJAX updates */

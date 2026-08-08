@@ -85,19 +85,15 @@
             @RenderBody()
         </main>
 
-        <section class="p-0 bg-transparent overflow-visible contact-style01">
+        <section class="crizal-cta-band contact-style01" aria-label="@companyName">
             <div class="container">
-                <div class="bg-primary bg px-1-9 px-xl-2-9 py-2-0 py-sm-2-9 py-lg-6 py-xl-8 border-radius-10">
-                    <div class="row align-items-center mt-n1-9 position-relative z-index-9">
-                        <div class="col-xl-6 mt-1-9">
-                            <h2 class="display-4 font-weight-800 mb-0 lh-1 text-white">@companyName</h2>
-                            <p class="text-white opacity7 mb-0 mt-2">@Resource.StayInformed</p>
-                        </div>
-                        <div class="col-xl-6 mt-1-9">
-                            <div class="d-inline-block d-md-flex justify-content-xl-end">
-                                <a href="@Url.Action(Constants.AboutUs, "info", new { lang = countryCode })" class="butn-style8 secondary"><span>@Resource.AboutUs</span></a>
-                            </div>
-                        </div>
+                <div class="crizal-cta-band__panel">
+                    <div class="crizal-cta-band__copy">
+                        <h2 class="crizal-cta-band__title">@companyName</h2>
+                        <p class="crizal-cta-band__text">@Resource.StayInformed</p>
+                    </div>
+                    <div class="crizal-cta-band__actions">
+                        <a href="@Url.Action(Constants.AboutUs, "info", new { lang = countryCode })" class="butn-style8 crizal-cta-band__btn"><span>@Resource.AboutUs</span></a>
                     </div>
                 </div>
             </div>
