@@ -1285,9 +1285,144 @@ body[data-design="crizal"] .widget .widget-title {
     margin-bottom: 0.85rem;
 }
 
-body[data-design="crizal"] .widget.mb-4 {
+body[data-design="crizal"] .widget.mb-4,
+body[data-design="crizal"] .crizal-filter-widget {
     border-top: 1px solid var(--crizal-border);
     padding-top: 1rem;
+}
+
+body[data-design="crizal"] .crizal-filter-widget .widget-title {
+    margin-bottom: 0.85rem;
+}
+
+body[data-design="crizal"] .crizal-filter-list .custom-control,
+body[data-design="crizal"] .crizal-rating-filters .custom-control {
+    margin-bottom: 0.45rem;
+}
+
+body[data-design="crizal"] .crizal-filter-list .custom-control-label,
+body[data-design="crizal"] .crizal-rating-filter .custom-control-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--crizal-heading);
+    font-size: 0.9rem;
+    line-height: 1.35;
+}
+
+body[data-design="crizal"] .crizal-filter-name {
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-filter-count {
+    color: var(--crizal-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Star rating filter (no feather.js dependency) */
+body[data-design="crizal"] .crizal-rating-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+body[data-design="crizal"] .crizal-rating-filter {
+    margin-bottom: 0 !important;
+    padding: 0.35rem 0.45rem;
+    border-radius: var(--crizal-radius);
+    transition: background 0.15s ease;
+}
+
+body[data-design="crizal"] .crizal-rating-filter:hover {
+    background: var(--crizal-surface-alt);
+}
+
+body[data-design="crizal"] .crizal-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.12rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+body[data-design="crizal"] .crizal-stars__star {
+    font-size: 1.2rem;
+    color: #d5d8e3;
+    letter-spacing: 0;
+}
+
+body[data-design="crizal"] .crizal-stars__star.is-on {
+    color: #f5a524;
+}
+
+body[data-design="crizal"] .crizal-rating-filter .custom-control-input:checked ~ .custom-control-label .crizal-stars__star.is-on {
+    color: #ef9b12;
+}
+
+body[data-design="crizal"] .crizal-rating-filter .custom-control-input:checked ~ .custom-control-label {
+    font-weight: 600;
+}
+
+body[data-design="crizal"] .crizal-rating-filter__caption {
+    color: var(--crizal-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    min-width: 1.5rem;
+}
+
+body[data-design="crizal"] .crizal-price-range {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+body[data-design="crizal"] .crizal-price-range .form-control {
+    flex: 1 1 0;
+    min-width: 0;
+    border-color: var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    min-height: 2.5rem;
+}
+
+body[data-design="crizal"] .crizal-price-range__sep {
+    flex: 0 0 auto;
+    color: var(--crizal-muted);
+    font-weight: 700;
+}
+
+/* Product detail / shared star-rating fallback */
+body[data-design="crizal"] .star-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+body[data-design="crizal"] .star-rating .sr-star,
+body[data-design="crizal"] .sr-star {
+    display: inline-block;
+    width: 0.95rem;
+    height: 0.95rem;
+    position: relative;
+    color: transparent;
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .star-rating .sr-star::before,
+body[data-design="crizal"] .sr-star::before {
+    content: "★";
+    position: absolute;
+    inset: 0;
+    color: #d5d8e3;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+body[data-design="crizal"] .star-rating .sr-star.active::before,
+body[data-design="crizal"] .sr-star.active::before {
+    color: #f5a524;
 }
 
 body[data-design="crizal"] #FilterButton,

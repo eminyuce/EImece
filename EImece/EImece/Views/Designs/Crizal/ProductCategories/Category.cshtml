@@ -208,75 +208,71 @@
 
 @helper CreateFilterTypeList(CategoryFilterType categoryFilter, ProductCategoryViewModel productCategoryViewModel)
 {
-
     var selectedFilters = productCategoryViewModel.SelectedFilters;
 
     if (categoryFilter.FilterTypeName.FilterType == FilterType.Rating)
     {
-
-        <!-- Price filter    -->
-<div class="widget mb-4 pb-1">
-    <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
-    @foreach (var filter in categoryFilter.CategoryFilters)
-            {
-                var filterId = @String.Format("filter-{0}", filter.CategoryFilterId);
-    <div class="custom-control custom-checkbox mb-1">
-        <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
-        <label class="custom-control-label" for="@filterId">
-            @for (int i = 0; i < filter.rating; i++)
-                        {
-            @:<i class="sr-star active" data-feather="star"></i>
-                        }
-            <span class="badge text-muted ml-1">(@filter.name)</span>
-        </label>
-    </div>
-            }
-</div>
-
+        <div class="widget crizal-filter-widget mb-4">
+            <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
+            <div class="crizal-rating-filters">
+                @foreach (var filter in categoryFilter.CategoryFilters.OrderByDescending(f => f.rating))
+                {
+                    var filterId = string.Format("filter-{0}", filter.CategoryFilterId);
+                    var rating = filter.rating > 0 ? filter.rating : 0;
+                    if (rating > 5) { rating = 5; }
+                    <div class="custom-control custom-checkbox crizal-rating-filter">
+                        <input class="custom-control-input" type="checkbox" @(selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : null) value="@filter.CategoryFilterId" name="filters" id="@filterId">
+                        <label class="custom-control-label" for="@filterId">
+                            <span class="crizal-stars" aria-label="@filter.name" role="img">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span class="crizal-stars__star@(i <= rating ? " is-on" : "")" aria-hidden="true">★</span>
+                                }
+                            </span>
+                            <span class="crizal-rating-filter__caption">@rating+</span>
+                            @if (filter.count > 0)
+                            {
+                                <span class="crizal-filter-count">(@filter.count)</span>
+                            }
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
     }
     else
     {
- <!-- Price filter    -->
-<div class="widget mb-4 pb-1">
-    <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
-    @foreach (var filter in categoryFilter.CategoryFilters)
-            {
-                var filterId = @String.Format("filter-{0}", filter.CategoryFilterId);
-    <div class="custom-control custom-checkbox mb-1">
-        <input class="custom-control-input" type="checkbox" @String.Format("{0}", selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : "") value="@filter.CategoryFilterId" name="filters" id="@filterId">
-        <label class="custom-control-label" for="@filterId">
-            @filter.name
-            @if (filter.count > 0)
-                        {
-            <span class="text-muted ml-1">(@filter.count)</span>
-                        }
-        </label>
-    </div>
-            }
-</div>
+        <div class="widget crizal-filter-widget mb-4">
+            <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
+            <div class="crizal-filter-list">
+                @foreach (var filter in categoryFilter.CategoryFilters)
+                {
+                    var filterId = string.Format("filter-{0}", filter.CategoryFilterId);
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" @(selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : null) value="@filter.CategoryFilterId" name="filters" id="@filterId">
+                        <label class="custom-control-label" for="@filterId">
+                            <span class="crizal-filter-name">@filter.name</span>
+                            @if (filter.count > 0)
+                            {
+                                <span class="crizal-filter-count">(@filter.count)</span>
+                            }
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
         if (categoryFilter.FilterTypeName.FilterType == FilterType.Price)
         {
-
-<div class="widget mb-4 pb-1">
-    <h3 class="widget-title">@Resource.FilterByPrice</h3>
-    <div class="d-flex align-items-center">
-        <div>
-            <div class="input-group">
-                <input class="form-control" type="text" id="minPriceOrginal" placeholder="Min TL" value="@Model.MinPrice" title="Lütfen bir tam sayı giriniz">
+            <div class="widget crizal-filter-widget mb-4">
+                <h3 class="widget-title">@Resource.FilterByPrice</h3>
+                <div class="crizal-price-range">
+                    <input class="form-control" type="text" inputmode="numeric" id="minPriceOrginal" placeholder="Min TL" value="@Model.MinPrice" title="Lütfen bir tam sayı giriniz" aria-label="Min TL">
+                    <span class="crizal-price-range__sep" aria-hidden="true">&ndash;</span>
+                    <input class="form-control" type="text" inputmode="numeric" id="maxPriceOrginal" placeholder="Max TL" value="@Model.MaxPrice" title="Lütfen bir tam sayı giriniz" aria-label="Max TL">
+                </div>
             </div>
-        </div>
-        <div class="mx-1 pt-12">&ndash;</div>
-        <div>
-            <div class="input-group">
-                <input class="form-control" type="text" id="maxPriceOrginal" placeholder="Max TL" value="@Model.MaxPrice" title="Lütfen bir tam sayı giriniz">
-            </div>
-        </div>
-    </div>
-</div>
-
         }
     }
-
 }
 <input type="hidden" id="noUrlFilter" value="@Url.Action("Category", "ProductCategories",new { id=Model.SeoId })" />
 <input type="hidden" id="urlFilter" value="@Url.Action("Category", "ProductCategories", new { id=Model.SeoId, filtreler = "js-filtreler" })" />
