@@ -4,6 +4,7 @@
 .butn,
 .butn-style8,
 .crizal-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -20,6 +21,7 @@
     cursor: pointer;
     text-decoration: none !important;
     line-height: 1.2;
+    overflow: hidden;
 }
 
 .butn-style8,
@@ -47,6 +49,17 @@
 .crizal-btn-secondary:hover {
     background: var(--crizal-primary);
     border-color: var(--crizal-primary);
+}
+
+.butn-style8.btn-block,
+.butn-style8.small.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+.butn-style8.small {
+    padding: 0.55rem 1rem;
+    font-size: 0.75rem;
 }
 
 .crizal-btn-outline {
@@ -651,4 +664,430 @@ body[data-design="crizal"] .widget-featured-entries .media:last-child {
     border-bottom: 0;
     margin-bottom: 0;
     padding-bottom: 0;
+}
+
+/* ---------- Page title / breadcrumb ---------- */
+body[data-design="crizal"] .page-title-wrapper {
+    padding: 1.1rem 0 0.5rem;
+}
+
+body[data-design="crizal"] .page-title-wrapper .alert.alert-secondary {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0.15rem 0 0.5rem;
+    margin-bottom: 0.35rem;
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] .page-title-wrapper .breadcrumb {
+    margin: 0;
+    background: transparent;
+    padding: 0;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+}
+
+body[data-design="crizal"] .page-title-wrapper .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] .page-title {
+    font-size: clamp(1.65rem, 2.5vw, 2.25rem);
+    font-weight: 800;
+    color: var(--crizal-heading);
+    margin-bottom: 0.35rem;
+}
+
+body[data-design="crizal"] .page-title-wrapper hr {
+    margin-top: 0.85rem;
+    border-color: var(--crizal-border);
+}
+
+/* ---------- Category filters / sidebar ---------- */
+body[data-design="crizal"] .widget-categories ul,
+body[data-design="crizal"] .widget-categories li,
+body[data-design="crizal"] .widget-categories ul ul {
+    list-style: none !important;
+    margin: 0;
+    padding-left: 0;
+}
+
+body[data-design="crizal"] .widget-categories li::marker {
+    content: none;
+    display: none;
+}
+
+body[data-design="crizal"] .widget-categories > ul > li {
+    border-bottom: 1px solid var(--crizal-border);
+    padding: 0.35rem 0;
+}
+
+body[data-design="crizal"] .widget-categories .has-children ul {
+    padding: 0.35rem 0 0.35rem 0.85rem;
+}
+
+body[data-design="crizal"] .widget-categories .widget-title,
+body[data-design="crizal"] .widget .widget-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--crizal-heading);
+    margin-bottom: 0.85rem;
+}
+
+body[data-design="crizal"] .widget.mb-4 {
+    border-top: 1px solid var(--crizal-border);
+    padding-top: 1rem;
+}
+
+body[data-design="crizal"] #FilterButton,
+body[data-design="crizal"] .btn.btn-primary {
+    background: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-radius: var(--crizal-radius);
+}
+
+body[data-design="crizal"] #FilterButton:hover,
+body[data-design="crizal"] .btn.btn-primary:hover {
+    background: var(--crizal-secondary);
+    border-color: var(--crizal-secondary);
+}
+
+body[data-design="crizal"] .btn-pill.btn-outline-dark,
+body[data-design="crizal"] .btn-pill.btn-outline-secondary {
+    border-radius: 999px;
+    border-color: var(--crizal-border);
+    color: var(--crizal-heading);
+    font-weight: 600;
+    background: #fff;
+}
+
+body[data-design="crizal"] .btn-pill.btn-secondary,
+body[data-design="crizal"] .btn-pill.btn-outline-secondary:hover,
+body[data-design="crizal"] .btn-pill.btn-outline-dark:hover {
+    background: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+    color: #fff;
+}
+
+body[data-design="crizal"] .crizal-open-filters {
+    display: none;
+}
+
+/* BS4 custom-control polyfill (Crizal ships BS5) */
+body[data-design="crizal"] .custom-control {
+    position: relative;
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 1.75rem;
+}
+
+body[data-design="crizal"] .custom-control-input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+body[data-design="crizal"] .custom-control-label {
+    position: relative;
+    margin-bottom: 0;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+body[data-design="crizal"] .custom-control-label::before {
+    position: absolute;
+    top: 0.15rem;
+    left: -1.75rem;
+    display: block;
+    width: 1.15rem;
+    height: 1.15rem;
+    content: "";
+    background-color: #fff;
+    border: 1.5px solid var(--crizal-border);
+    border-radius: 0.25rem;
+    box-shadow: none;
+}
+
+body[data-design="crizal"] .custom-control-label::after {
+    position: absolute;
+    top: 0.15rem;
+    left: -1.75rem;
+    display: block;
+    width: 1.15rem;
+    height: 1.15rem;
+    content: "";
+    background: no-repeat 50% / 60% 60%;
+}
+
+body[data-design="crizal"] .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .custom-control-input:checked ~ .custom-control-label::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
+}
+
+body[data-design="crizal"] .custom-checkbox .custom-control-label::before {
+    border-radius: 0.25rem;
+}
+
+/* Edge knob unused — toolbar Filtrele button opens the drawer */
+body[data-design="crizal"] .offcanvas-sidebar-toggle {
+    display: none !important;
+}
+
+@media (max-width: 991.98px) {
+    body[data-design="crizal"] .crizal-open-filters {
+        display: inline-flex;
+        margin-bottom: 0.85rem;
+    }
+
+    body[data-design="crizal"] .offcanvas-sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        max-width: 86vw;
+        height: 100%;
+        z-index: 100050;
+        background: #fff;
+        box-shadow: none;
+        transition: left 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    body[data-design="crizal"] .offcanvas-sidebar.show {
+        left: 0;
+        box-shadow: var(--crizal-shadow-lg);
+    }
+
+    body[data-design="crizal"] .offcanvas-sidebar-body {
+        position: absolute;
+        inset: 0;
+        overflow-y: auto;
+        background: #fff;
+        z-index: 1;
+    }
+
+    body[data-design="crizal"] .offcanvas-sidebar-body-inner {
+        padding: 0 1rem 2.5rem;
+        background: #fff;
+        min-height: 100%;
+    }
+
+    body[data-design="crizal"] .crizal-sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0 0.85rem;
+        margin-bottom: 0.75rem;
+        border-bottom: 1px solid var(--crizal-border);
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 2;
+    }
+
+    body[data-design="crizal"] .crizal-sidebar-close {
+        border: 0;
+        background: var(--crizal-surface-alt);
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-size: 1.35rem;
+        line-height: 1;
+        color: var(--crizal-heading);
+        cursor: pointer;
+    }
+
+    body[data-design="crizal"].crizal-sidebar-open [id^="gb-widget"],
+    body[data-design="crizal"].crizal-sidebar-open [id^="gb-widget-"] {
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    body[data-design="crizal"] #FilterButton.butn-style8:hover:before,
+    body[data-design="crizal"] #FilterButton.butn-style8:focus:before,
+    body[data-design="crizal"] #FilterButton.butn-style8:active:before {
+        width: 47px;
+        height: 47px;
+        right: -25px;
+        bottom: -18px;
+        border-radius: 50%;
+        background-color: #fff;
+        opacity: 0.35;
+    }
+
+    body[data-design="crizal"] .crizal-sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(20, 33, 43, 0.45);
+        z-index: 100040;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+
+    body[data-design="crizal"] .crizal-sidebar-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    body[data-design="crizal"].crizal-sidebar-open {
+        overflow: hidden;
+    }
+}
+
+/* Related products carousel */
+body[data-design="crizal"] .crizal-related-carousel .owl-stage {
+    display: flex;
+    align-items: stretch;
+}
+
+body[data-design="crizal"] .crizal-related-carousel .owl-item {
+    display: flex;
+    float: none;
+}
+
+body[data-design="crizal"] .crizal-related-carousel .product-card {
+    margin: 0.25rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body[data-design="crizal"] .crizal-related-carousel .product-card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+body[data-design="crizal"] .crizal-related-carousel .owl-dots {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+body[data-design="crizal"] .crizal-related-carousel .owl-dot span {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    background: var(--crizal-border);
+    display: block;
+    border-radius: 50%;
+}
+
+body[data-design="crizal"] .crizal-related-carousel .owl-dot.active span {
+    background: var(--crizal-primary);
+}
+
+/* ---------- Product gallery (detail) ---------- */
+body[data-design="crizal"] .product-gallery {
+    position: relative;
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+}
+
+body[data-design="crizal"] .product-gallery .product-thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 4.5rem;
+    flex: 0 0 4.5rem;
+}
+
+body[data-design="crizal"] .product-gallery .product-thumbnails li {
+    display: block;
+    margin: 0;
+    list-style: none;
+}
+
+body[data-design="crizal"] .product-gallery .product-thumbnails li > a {
+    display: block;
+    border: 2px solid var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    overflow: hidden;
+    opacity: 0.65;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+body[data-design="crizal"] .product-gallery .product-thumbnails li > a > img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+body[data-design="crizal"] .product-gallery .product-thumbnails li.active > a,
+body[data-design="crizal"] .product-gallery .product-thumbnails li > a:hover {
+    opacity: 1;
+    border-color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .product-gallery .product-carousel {
+    flex: 1 1 auto;
+    min-width: 0;
+    border-radius: var(--crizal-radius-lg);
+    overflow: hidden;
+    background: var(--crizal-surface-alt);
+}
+
+body[data-design="crizal"] .product-gallery .product-carousel a {
+    display: block;
+}
+
+body[data-design="crizal"] .product-gallery .product-carousel img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+body[data-design="crizal"] .product-gallery .owl-nav,
+body[data-design="crizal"] .product-gallery .owl-dots {
+    display: none;
+}
+
+@media (max-width: 991.98px) {
+    body[data-design="crizal"] .product-gallery {
+        flex-direction: column-reverse;
+    }
+
+    body[data-design="crizal"] .product-gallery .product-thumbnails {
+        flex-direction: row;
+        width: 100%;
+        flex: 0 0 auto;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+    }
+
+    body[data-design="crizal"] .product-gallery .product-thumbnails li > a {
+        width: 4.25rem;
+    }
+}
+
+/* Detail buy box */
+body[data-design="crizal"] .col-lg-5 .text-primary {
+    color: var(--crizal-primary) !important;
+}
+
+body[data-design="crizal"] .col-lg-5 .form-control,
+body[data-design="crizal"] .col-lg-5 .custom-select {
+    border-color: var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    min-height: 2.75rem;
+}
+
+body[data-design="crizal"] .col-lg-5 .btn-block {
+    border-radius: var(--crizal-radius);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }

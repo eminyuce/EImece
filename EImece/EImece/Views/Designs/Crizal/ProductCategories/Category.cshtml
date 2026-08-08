@@ -94,13 +94,17 @@
                 <div class="offcanvas-sidebar-toggle"><span class="toggle-knob"><i data-feather="chevrons-right"></i>@Resource.Filtrele</span></div>
                 <div class="offcanvas-sidebar-body">
                     <div class="offcanvas-sidebar-body-inner">
+                        <div class="crizal-sidebar-header d-lg-none">
+                            <strong>@Resource.Filtrele</strong>
+                            <button type="button" class="crizal-sidebar-close" aria-label="Close">&times;</button>
+                        </div>
 
                         @Html.Partial("_ProductCategoryTreeHeadLine",
                        new Tuple<ProductCategory, List<ProductCategoryTreeModel>>(category, Model.ProductCategoryTree))
                         @if (Model.HasAnyFilters)
                         {
                             <div class="column mb-2 pb-1">
-                                <button class="btn btn-primary rounded btn-block mb-2 mr-1" id="FilterButton">@Resource.Filter</button>
+                                <button class="butn-style8 btn-block mb-2" id="FilterButton" type="button"><span>@Resource.Filter</span></button>
                             </div>
                             foreach (var filterType in Model.CategoryFilterTypes.OrderBy(r => r.Position))
                             {
@@ -112,6 +116,7 @@
             </div>
         </div>
         <div class="col-lg-9">
+            <button type="button" class="butn-style8 small crizal-open-filters"><span>@Resource.Filtrele</span></button>
             <!-- Toolbar-->
             <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
                 <div class="d-flex flex-wrap">

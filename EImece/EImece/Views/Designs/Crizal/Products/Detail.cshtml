@@ -70,9 +70,6 @@
 }
 
 
-<!-- Add this to your head section -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <input type="hidden" name="productReviewEnable" value="@productReviewEnable.ToString().ToLower()" />
 <input type="hidden" name="productPriceEnabled" value="@productPriceEnabled.ToString().ToLower()" />
 
@@ -297,8 +294,8 @@
                         case ProductState.LimitedStock:
                             <div class="d-flex align-items-center pt-2">
                                 <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
-                                <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast">
-                                    <i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart
+                                <button id="AddToCart" class="butn-style8 btn-block" type="button" data-toggle="toast" data-target="#cart-toast">
+                                    <span>@Resource.AddToCart</span>
                                 </button>
                             </div>
                             break;
@@ -737,7 +734,7 @@
     <!-- Related products-->
     <div class="container pb-1">
         <h2 class="h3 pb-1">@Resource.SimilairProducts</h2>
-        <div class="owl-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
+        <div class="owl-carousel crizal-related-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: false, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
             @foreach (var product2 in relatedProducts)
             {
                 @RelatedProductItem(product2)
@@ -832,34 +829,19 @@
             </a>
         </div>
         <div class="product-card-body box-shadow-0">
-            <div class="d-flex flex-wrap justify-content-between pb-1">
-                <a class="product-meta" href="@product.DetailPageRelativeUrl">@product.Name</a>
-                @if (product.Rating > 0)
-                {
-                    <div class="star-rating">
-                        <span class="sr-label mr-1">@product.Rating</span>
-                        @for (int i = 0; i < product.Rating; i++)
-                        {
-                            <i class="sr-star active" data-feather="star"></i>
-                        }
-                    </div>
-                }
-            </div>
+            <a class="product-meta small d-block mb-1" href="@product.ProductCategory.DetailPageUrl">@product.ProductCategory.Name</a>
+            <h3 class="product-card-title h6 mb-2"><a href="@product.DetailPageRelativeUrl">@product.Name</a></h3>
+            @if (relatedProductPriceEnabled && product.PriceWithDiscount > 0)
+            {
+                <p class="price text-center m-0">
+                    <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+                </p>
+            }
             @if (relatedProductPriceEnabled && product.IsBuyableState)
             {
-                <h3 class="product-card-title">
-                    <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-toggle="toast" data-target="#cart-toast">
-                        @Resource.AddToCart
-                    </button>
-                    <a href="@product.DetailPageRelativeUrl">@shortDesc</a>
-                </h3>
-                <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
-            }
-            else
-            {
-                <h3 class="product-card-title">
-                    <a href="@product.DetailPageRelativeUrl">@shortDesc</a>
-                </h3>
+                <button class="butn-style8 small mt-3 btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-toggle="toast" data-target="#cart-toast">
+                    <span>@Resource.AddToCart</span>
+                </button>
             }
         </div>
     </div>
