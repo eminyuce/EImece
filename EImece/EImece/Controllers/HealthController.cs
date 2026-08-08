@@ -20,7 +20,14 @@ namespace EImece.Controllers
         /**
  *  icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
  *  icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS_IUSRS:(OI)(CI)M" /grant "IUSR:(OI)(CI)M" /T
+icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS_IUSRS:(OI)(CI)M" /grant "IUSR:(OI)(CI)M" /T
 
+        iisreset
+
+Attempting stop...
+Internet services successfully stopped
+Attempting start...
+Internet services successfully restarted
  *  
  *  run it in command prompt to give permission to the app pool identity to write to the images folder as admin 
  *  
