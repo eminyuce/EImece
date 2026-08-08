@@ -1,22 +1,38 @@
 <#
 .SYNOPSIS
-    Generates missing product & media images for existing database records.
+    EImece Database & Image Generator Utility.
 
 .DESCRIPTION
-    Reads existing FileStorage rows from the EImece database and generates missing JPEG image files
-    and thumbnails under media/images so that product detail pages, category listings, and storefront
-    render properly without broken images.
+    Flexible utility to generate dummy data, image files, or both for EImece.
+
+    MODES OF OPERATION:
+    1. Images Only (Default):
+       .\RunSeedDummyData.ps1
+       .\RunSeedDummyData.ps1 -ImagesOnly
+       (Generates JPEG image files & thumbnails for existing database records without changing SQL data).
+
+    2. Data + Images (Full Seed):
+       .\RunSeedDummyData.ps1 -SeedDatabase
+       (Populates SQL tables with dummy data AND generates missing JPEG image files).
+
+    3. Data Only (No Images):
+       .\RunSeedDummyData.ps1 -SeedDatabase -SkipImages
+       (Populates SQL tables with dummy data without creating image files on disk).
+
+    4. Cleanup:
+       .\RunSeedDummyData.ps1 -CleanupDatabase
+       (Cleans up dummy seed data from the SQL database).
 
 .EXAMPLE
-    .\RunSeedDummyData.ps1
-
-.EXAMPLE
-    .\RunSeedDummyData.ps1 -ConnectionString "Data Source=YUCE\SQLEXPRESS;Initial Catalog=yuva8905_yuvadan;User ID=sqluser;Password=sqluser;Encrypt=True;TrustServerCertificate=True;"
+    .\RunSeedDummyData.ps1 -ImagesOnly
 
 .EXAMPLE
     .\RunSeedDummyData.ps1 -SeedDatabase
+
+.EXAMPLE
+    .\RunSeedDummyData.ps1 -SeedDatabase -SkipImages
 #>
-[CmdletBinding(DefaultParameterSetName = 'Default')]
+[CmdletBinding()]
 param(
     [string] $ConnectionString = "",
 
@@ -27,10 +43,19 @@ param(
     # Target folder for generated images (auto-detected if omitted)
     [string] $MediaRoot = "",
 
-    # Switch to re-run SQL database seed script if explicitly desired
+    # Multiplier scale for seed data (1.0 = standard, 2.0 = double volume)
+    [double] $Scale = 1.0,
+
+    # Mode 1: Generate Images Only (default if no SQL switches supplied)
+    [switch] $ImagesOnly,
+
+    # Mode 2 & 3: Run SQL database seed script
     [switch] $SeedDatabase,
 
-    # Switch to run SQL cleanup script
+    # Mode 3: Skip image generation when seeding database data
+    [switch] $SkipImages,
+
+    # Mode 4: Run SQL cleanup script
     [switch] $CleanupDatabase
 )
 
@@ -70,22 +95,39 @@ if ([string]::IsNullOrWhiteSpace($MediaRoot)) {
     }
 }
 
+# Determine active execution mode
+$modeName = "Images Only"
+if ($CleanupDatabase) {
+    $modeName = "Database Cleanup"
+} elseif ($SeedDatabase -and $SkipImages) {
+    $modeName = "Data Only (No Images)"
+} elseif ($SeedDatabase) {
+    $modeName = "Data + Images (Full Seed)"
+}
+
 Write-Host "========================================================" -ForegroundColor Cyan
-Write-Host " EImece Image Generator Utility" -ForegroundColor Cyan
+Write-Host " EImece Data & Image Utility [$modeName]" -ForegroundColor Cyan
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host "ConnectionString  : $ConnectionString" -ForegroundColor Yellow
 Write-Host "Media Root Folder : $MediaRoot" -ForegroundColor Yellow
 
 # Helper function to run SQL script
 function Invoke-SqlScriptFile {
-    param([string] $Path)
+    param(
+        [string] $Path,
+        [hashtable] $Replacements = @{}
+    )
 
     if (-not (Test-Path $Path)) {
         throw "SQL script file not found: $Path"
     }
 
     $sql = Get-Content -Path $Path -Raw -Encoding UTF8
-    Write-Host "Executing SQL script $Path ..." -ForegroundColor Cyan
+    foreach ($key in $Replacements.Keys) {
+        $sql = $sql -replace $key, [string]$Replacements[$key]
+    }
+
+    Write-Host "`nExecuting SQL script $Path ..." -ForegroundColor Cyan
 
     Add-Type -AssemblyName System.Data
     $conn = New-Object System.Data.SqlClient.SqlConnection $ConnectionString
@@ -102,41 +144,56 @@ function Invoke-SqlScriptFile {
     }
 }
 
-# Optional: Run SQL Database Cleanup
+# Mode 4: Cleanup
 if ($CleanupDatabase) {
     $cleanupPath = Join-Path $scriptDir "CleanupDummyData.sql"
     Invoke-SqlScriptFile -Path $cleanupPath
+    if (-not $SkipImages -and (Test-Path $MediaRoot)) {
+        Write-Host "Removing generated seed image files from $MediaRoot ..." -ForegroundColor Cyan
+        Get-ChildItem -Path $MediaRoot -Filter "product-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
+        $thumbRoot = Join-Path $MediaRoot "thumbs"
+        if (Test-Path $thumbRoot) {
+            Get-ChildItem -Path $thumbRoot -Filter "thbproduct-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
+        }
+    }
+    Write-Host "`nCleanup Complete!" -ForegroundColor Green
+    return
 }
 
-# Optional: Run SQL Database Seed
+# Mode 2 & 3: Seed Database Data
 if ($SeedDatabase) {
     $seedPath = Join-Path $scriptDir "SeedDummyData.sql"
-    Invoke-SqlScriptFile -Path $seedPath
-}
-
-# Core Task: Generate Images for Existing Database Records
-$genScript = Join-Path $scriptDir "GenerateSeedImages.ps1"
-if (-not (Test-Path $genScript)) {
-    throw "GenerateSeedImages.ps1 script not found: $genScript"
-}
-
-Write-Host "`nGenerating images for all FileStorage records in database..." -ForegroundColor Cyan
-& $genScript -MediaRoot $MediaRoot -ConnectionString $ConnectionString -MarkExisting
-
-# If IIS media directory exists, sync generated images to IIS as well
-$iisMedia = "C:\inetpub\wwwroot\Eimece\media\images"
-if ((Test-Path $MediaRoot) -and (Test-Path (Split-Path -Parent $iisMedia)) -and ($MediaRoot -ne $iisMedia)) {
-    Write-Host "`nSyncing generated images to IIS website folder ($iisMedia)..." -ForegroundColor Cyan
-    try {
-        Copy-Item -Path "$MediaRoot\*" -Destination $iisMedia -Recurse -Force -ErrorAction SilentlyContinue
-        Write-Host "Successfully synced images to IIS." -ForegroundColor Green
+    $scaleLiteral = ([string]::Format([System.Globalization.CultureInfo]::InvariantCulture, "{0}", $Scale))
+    $replacements = @{
+        'DECLARE @Scale\s+FLOAT\s+=\s+[0-9.]+' = "DECLARE @Scale         FLOAT        = $scaleLiteral"
     }
-    catch {
-        Write-Warning "Could not copy images to IIS folder: $_"
+    Invoke-SqlScriptFile -Path $seedPath -Replacements $replacements
+}
+
+# Mode 1 & 2: Generate Image Files (unless -SkipImages is passed)
+if (-not $SkipImages) {
+    $genScript = Join-Path $scriptDir "GenerateSeedImages.ps1"
+    if (-not (Test-Path $genScript)) {
+        throw "GenerateSeedImages.ps1 script not found: $genScript"
+    }
+
+    Write-Host "`nGenerating images for all FileStorage records in database..." -ForegroundColor Cyan
+    & $genScript -MediaRoot $MediaRoot -ConnectionString $ConnectionString -MarkExisting
+
+    # Sync generated images to IIS website directory if present
+    $iisMedia = "C:\inetpub\wwwroot\Eimece\media\images"
+    if ((Test-Path $MediaRoot) -and (Test-Path (Split-Path -Parent $iisMedia)) -and ($MediaRoot -ne $iisMedia)) {
+        Write-Host "`nSyncing generated images to IIS website folder ($iisMedia)..." -ForegroundColor Cyan
+        try {
+            Copy-Item -Path "$MediaRoot\*" -Destination $iisMedia -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Host "Successfully synced images to IIS." -ForegroundColor Green
+        }
+        catch {
+            Write-Warning "Could not copy images to IIS folder: $_"
+        }
     }
 }
 
 Write-Host "`n========================================================" -ForegroundColor Green
-Write-Host " Image Generation Complete!" -ForegroundColor Green
-Write-Host " All product and media images have been generated." -ForegroundColor Green
+Write-Host " Task Completed Successfully! [$modeName]" -ForegroundColor Green
 Write-Host "========================================================" -ForegroundColor Green
