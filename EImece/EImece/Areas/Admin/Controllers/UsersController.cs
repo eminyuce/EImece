@@ -236,13 +236,28 @@ namespace EImece.Areas.Admin.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword(String id = "")
         {
-            var m = new ForgotPasswordViewModel();
+            var model = new ForgotPasswordViewModel();
             if (!String.IsNullOrEmpty(id))
             {
-                var user = ApplicationDbContext.Users.First(u => u.Id == id);
-                m.Email = user.UserName;
+                var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id == id);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+
+                // Prefer Email; fall back to UserName for older accounts.
+                model.Email = !string.IsNullOrWhiteSpace(user.Email) ? user.Email : user.UserName;
+                ViewBag.UserId = user.Id;
+                ViewBag.FirstName = user.FirstName;
+                ViewBag.LastName = user.LastName;
+                ViewBag.HasTargetUser = true;
             }
-            return View(m);
+            else
+            {
+                ViewBag.HasTargetUser = false;
+            }
+
+            return View(model);
         }
 
         //
