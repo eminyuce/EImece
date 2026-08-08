@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
@@ -538,12 +538,39 @@ namespace EImece.Domain.Helpers
         public Tuple<string, string, string> GetFileNames2(String fileName)
         {
             String fullPath = Path.Combine(StorageRoot, fileName);
-            System.Diagnostics.Debug.WriteLine(fullPath);
-            System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
             String partThumb1 = Path.Combine(StorageRoot, THUMBS);
             String candidatePathThb = Path.Combine(partThumb1, THB + fileName);
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, fileName);
+        }
+
+        private static void EnsureDirectoryExists(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath)) return;
+            string dir = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
+
+        private static void SaveImageToFilePath(Image img, string filePath, ImageFormat format)
+        {
+            EnsureDirectoryExists(filePath);
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    File.Delete(filePath);
+                }
+                catch { }
+            }
+
+            using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                img.Save(fs, format);
+            }
         }
 
         public SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte[] fileByte)
@@ -579,19 +606,9 @@ namespace EImece.Domain.Helpers
 
                 imageSize = fileByteCropped.Length;
 
-                using (Image thumbnail = ByteArrayToImage(fileByteCropped))  // Clone the image
+                using (Image thumbnail = ByteArrayToImage(fileByteCropped))
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        ms.Seek(0, SeekOrigin.Begin);
-                        thumbnail.Save(ms, imgFormat);
-                        if (File.Exists(fullPath))
-                        {
-                            File.SetAttributes(fullPath, FileAttributes.Normal);
-                            File.Delete(fullPath);
-                        }
-                        thumbnail.Save(fullPath, imgFormat);
-                    }
+                    SaveImageToFilePath(thumbnail, fullPath, imgFormat);
                 }
 
                 byte[] byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, imgFormat);
@@ -600,19 +617,9 @@ namespace EImece.Domain.Helpers
                     throw new Exception("Thumbnail creation failed for resized image!");
                 }
 
-                using (Image thumbnail = (Image)ByteArrayToImage(byteArrayIn).Clone())  // Clone again
+                using (Image thumbnail = (Image)ByteArrayToImage(byteArrayIn).Clone())
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        ms.Seek(0, SeekOrigin.Begin);
-                        thumbnail.Save(ms, imgFormat);
-                        if (File.Exists(candidatePathThb))
-                        {
-                            File.SetAttributes(candidatePathThb, FileAttributes.Normal);
-                            File.Delete(candidatePathThb);
-                        }
-                        thumbnail.Save(candidatePathThb, imgFormat);
-                    }
+                    SaveImageToFilePath(thumbnail, candidatePathThb, imgFormat);
                 }
             }
             else
