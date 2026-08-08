@@ -1,0 +1,156 @@
+﻿@model EImece.Domain.Models.DTOs.ProductCategoryDto
+
+@{
+    ViewBag.Title = "Product Category Details";
+}
+
+<h2>@Model.Name</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Category Information</h3>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>@Html.DisplayNameFor(model => model.Id)</dt>
+                    <dd>@Html.DisplayFor(model => model.Id)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+                    <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.ShortDescription)</dt>
+                    <dd>@Html.Raw(Model.ShortDescription)</dd> <!-- Allows HTML if you store formatted text -->
+
+                    <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+                    <dd>@Html.Raw(Model.Description)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.ParentId)</dt>
+                    <dd>@Html.DisplayFor(model => model.ParentId)</dd>
+
+                    <dt>Main Page</dt>
+                    <dd>@(Model.MainPage ? "Yes" : "No")</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.DiscountPercentage)</dt>
+                    <dd>
+                        @if (Model.DiscountPercentage.HasValue)
+                        {
+                            @Model.DiscountPercentage.Value.ToString("N2")
+                        }
+                        else
+                        {
+                        <span class="text-muted">No discount</span>
+                        }
+                    </dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.TemplateId)</dt>
+                    <dd>@Html.DisplayFor(model => model.TemplateId)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.IsActive)</dt>
+                    <dd>@(Model.IsActive ? "Active" : "Inactive")</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.Position)</dt>
+                    <dd>@Html.DisplayFor(model => model.Position)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.Lang)</dt>
+                    <dd>@Html.DisplayFor(model => model.Lang)</dd>
+
+                    <dt>Created</dt>
+                    <dd>@Html.DisplayFor(model => model.CreatedDate) (@Model.CreatedDate.ToString("dd MMM yyyy HH:mm"))</dd>
+
+                    <dt>Updated</dt>
+                    <dd>@Html.DisplayFor(model => model.UpdatedDate) (@Model.UpdatedDate.ToString("dd MMM yyyy HH:mm"))</dd>
+
+                    <dt>SEO / URL</dt>
+                    <dd>
+                        @if (!string.IsNullOrEmpty(Model.SeoUrl))
+                        {
+                            <code>@Model.SeoUrl</code>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Not set</span>
+                        }
+                    </dd>
+
+                    <dt>Detail Page URL</dt>
+                    <dd>
+                        @if (!string.IsNullOrEmpty(Model.DetailPageUrl))
+                        {
+                            <a href="@Model.DetailPageUrl" target="_blank">@Model.DetailPageUrl</a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Not generated</span>
+                        }
+                    </dd>
+
+                    <dt>Meta Keywords</dt>
+                    <dd>@Html.DisplayFor(model => model.MetaKeywords)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <!-- Image Section -->
+        @if (!string.IsNullOrEmpty(Model.MainImageUrl))
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Main Image</h3>
+                </div>
+                <div class="panel-body text-center">
+                    <img src="@Model.MainImageUrl"
+                         alt="@Model.Name"
+                         class="img-responsive img-thumbnail"
+                         style="max-height: 400px;" />
+
+                    @if (!string.IsNullOrEmpty(Model.MainImageThumbnailUrl))
+                    {
+                        <p class="text-muted small mt-2">
+                            Thumbnail: <a href="@Model.MainImageThumbnailUrl" target="_blank">view</a>
+                        </p>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                <strong>No main image</strong> assigned to this category.
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Children Categories (if any) -->
+@if (Model.Children != null && Model.Children.Any())
+{
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Subcategories (@Model.Children.Count)</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                @foreach (var child in Model.Children)
+                {
+                    <li class="list-group-item">
+                        <strong>@child.Name</strong>
+                        <small class="text-muted pull-right">ID: @child.Id | Position: @child.Position</small>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+<div class="form-group mt-4">
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @* Optional: Add any JS if you want image zoom, lightbox, etc. *@
+}

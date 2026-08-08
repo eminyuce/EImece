@@ -1,0 +1,14 @@
+﻿@model  EImece.Domain.Models.HelperModels.ErrorModel
+@using Resources;
+@{
+    ViewBag.Title = Resource.Forbidden;
+    ViewBag.Description = Resource.DontHavePermissionText;
+}
+<div class="container py-5">
+    <div class="crizal-empty-state">
+        <h1>403</h1>
+        <h2>@ViewBag.Title</h2>
+        <p class="text-muted mb-4">@ViewBag.Description</p>
+        <a class="butn-style8" href="@Url.Action("Index","Home")">@Resource.ContinueShopping</a>
+    </div>
+</div>

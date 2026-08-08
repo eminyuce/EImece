@@ -1,0 +1,92 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
+@model NavigationModel
+@{
+    var productCategories = Model.ProductCategories;
+}
+
+<ul class="navbar-nav ms-auto" id="nav" style="display: none;">
+    <li><a href="@Url.Action("Index", "Home")">@Resources.Resource.HomePage</a></li>
+    <li>
+        <a href="#!">@Resources.Resource.ProductCategories</a>
+        <ul>
+            @for (int i = 0; i < productCategories.Count; i++)
+            {
+                @CreateProductTree(productCategories[i])
+            }
+        </ul>
+    </li>
+    @CreateMenuTree(Model)
+</ul>
+
+@helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
+{
+    var productCategory = categoryTreeModel.ProductCategory;
+    if (categoryTreeModel.Childrens.IsNotEmpty())
+    {
+        <li>
+            <a href="@productCategory.DetailPageUrl">@productCategory.Name</a>
+            <ul>
+                @foreach (var childCategory in categoryTreeModel.Childrens)
+                {
+                    var productChildCategory = childCategory.ProductCategory;
+                    <li><a href="@productChildCategory.ProductCategoryLink">@productChildCategory.Name</a></li>
+                }
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li><a href="@productCategory.DetailPageUrl">@productCategory.Name</a></li>
+    }
+}
+
+@helper CreateMenuTree(NavigationModel navigationMenu)
+{
+    foreach (var menu in navigationMenu.Menus)
+    {
+        @CreateMenuChildrenTree(menu)
+    }
+}
+
+@helper CreateMenuChildrenTree(MenuTreeModel menuTreeModel)
+{
+    var menu = menuTreeModel.Menu;
+    if (menuTreeModel.Childrens.IsNotEmpty())
+    {
+        <li class="@menu.IsPageActived">
+            <a href="#!">@menu.Name</a>
+            <ul>
+                @foreach (var menuChildren in menuTreeModel.Childrens)
+                {
+                    var menuChild = menuChildren.Menu;
+                    if (menuChildren.Childrens.IsNotEmpty())
+                    {
+                        <li>
+                            <a href="#!">@menuChildren.Name</a>
+                            <ul>
+                                @foreach (var grandChild in menuChildren.Childrens)
+                                {
+                                    var grandChildMenu = grandChild.Menu;
+                                    <li><a href="@grandChildMenu.DetailPageLink">@grandChild.Name</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a href="@menuChild.DetailPageLink">@menuChildren.Name</a></li>
+                    }
+                }
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="@menu.IsPageActived">
+            <a href="@menu.DetailPageLink">@menu.Name</a>
+        </li>
+    }
+}

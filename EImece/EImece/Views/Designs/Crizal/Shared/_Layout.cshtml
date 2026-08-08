@@ -1,0 +1,113 @@
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using EImece.Infrastructure.Designs;
+
+@{
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var companyName = Html.Action("GetCompanyName", "Home");
+    var htmlLang = Html.Action("GetHtmlLangCode", "Home");
+}
+
+<!DOCTYPE html>
+<html lang="@htmlLang">
+<head>
+    @Html.ActiveDesignDebugInfo()
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>@ViewBag.Title</title>
+
+    <meta property="og:locale" content='tr_TR' />
+    <meta property="og:type" content='Website' />
+    <meta property="og:site_name" content='@companyName' />
+    <meta property="og:image" content="@string.Format("https://{0}/images/logo.jpg", AppConfig.Domain)" />
+    <meta property="og:image:width" content="100" />
+    <meta property="og:image:height" content="100" />
+    <meta property="og:title" content="@ViewBag.Title" />
+    <meta property="og:url" content="@string.Format("https://{0}", AppConfig.Domain)" />
+
+    @if (!string.IsNullOrEmpty(ViewBag.Description))
+    {
+        <meta name="description" content="@((string)ViewBag.Description)">
+        <meta name="og:description" content="@((string)ViewBag.Description)">
+    }
+
+    @if (!string.IsNullOrEmpty(ViewBag.Keywords))
+    {
+        <meta name="keywords" content="@((string)ViewBag.Keywords)">
+    }
+    @{
+        String seoId = (String)ViewBag.SeoId;
+    }
+    @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
+    @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
+
+    @if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+    {
+        <meta name="robots" content="noindex">
+        <meta name="googlebot" content="noindex">
+    }
+    else
+    {
+        <meta name="Robots" content="index,follow" />
+    }
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" color="#14212B" href="~/Content/safari-pinned-tab.svg">
+    <meta name="msapplication-TileColor" content="#14212B">
+    <meta name="theme-color" content="#09b850">
+
+    <link rel="preload" as="image" href="/images/logo.jpg" fetchpriority="high" />
+
+    @* Plugin CSS must load via Content path (not Bundle) so @import and font url() resolve correctly *@
+    <link rel="stylesheet" href="@Url.Content("~/Content/designs/crizal/vendor/css/plugins.css")" />
+    @Styles.Render("~/bundles/designs/crizal/vendor/css")
+
+    @RenderSection("HeadExtra", required: false)
+</head>
+<body lang="@htmlLang" data-design="crizal">
+    <input name="currentLang" type="hidden" value="@countryCode.ToString()" />
+
+    <a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+
+    <div id="preloader"></div>
+
+    <div class="main-wrapper">
+        @Html.Partial("_Header")
+
+        <main id="main-content" role="main">
+            @RenderBody()
+        </main>
+
+        <section class="crizal-cta-band contact-style01" aria-label="@companyName">
+            <div class="container">
+                <div class="crizal-cta-band__panel">
+                    <div class="crizal-cta-band__copy">
+                        <h2 class="crizal-cta-band__title">@companyName</h2>
+                        <p class="crizal-cta-band__text">@Resource.StayInformed</p>
+                    </div>
+                    <div class="crizal-cta-band__actions">
+                        <a href="@Url.Action(Constants.AboutUs, "info", new { lang = countryCode })" class="butn-style8 crizal-cta-band__btn"><span>@Resource.AboutUs</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        @Html.Action("Footer", "Home", new { lang = countryCode })
+    </div>
+
+    @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
+    @Html.Raw(Html.Action("WhatsAppCommunicationScript", "Home"))
+
+    <div class="scroll-top-percentage"><span id="scroll-value"></span></div>
+
+    @Html.Partial("_Scripts")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

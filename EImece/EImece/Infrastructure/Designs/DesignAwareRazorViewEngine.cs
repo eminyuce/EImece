@@ -38,8 +38,8 @@ namespace EImece.Infrastructure.Designs
             string controllerName = controllerContext.RouteData?.GetRequiredString("controller") ?? string.Empty;
             string actionName = controllerContext.RouteData?.Values["action"]?.ToString() ?? viewName;
 
-            // Admin area is excluded from design overrides
-            if (IsAdminArea(areaName) || string.IsNullOrEmpty(activeDesign))
+            // Admin area and standalone admin entry views are excluded from design overrides
+            if (IsAdminArea(areaName) || IsDesignExcludedView(controllerName, viewName) || string.IsNullOrEmpty(activeDesign))
             {
                 if (FileExistsOverride != null)
                 {
@@ -268,6 +268,15 @@ namespace EImece.Infrastructure.Designs
         private static bool IsAdminArea(string areaName)
         {
             return string.Equals(areaName, "Admin", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Views that intentionally live outside storefront designs (see DesignValidator).
+        /// </summary>
+        private static bool IsDesignExcludedView(string controllerName, string viewName)
+        {
+            return string.Equals(controllerName, "Account", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(viewName, "AdminLogin", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

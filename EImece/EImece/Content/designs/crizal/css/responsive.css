@@ -1,0 +1,98 @@
+/* Crizal Responsive — 320 → 1920 */
+
+@media (max-width: 1399.98px) {
+    body[data-design="crizal"] h1 { font-size: 2.25rem; }
+    .crizal-hero-content h2 { font-size: 2.35rem; }
+}
+
+@media (max-width: 1199.98px) {
+    .crizal-search-wrap { max-width: 320px; }
+    .crizal-section { padding: 3.25rem 0; }
+}
+
+@media (max-width: 991.98px) {
+    .crizal-top-bar { text-align: center; }
+    .crizal-top-bar-info { justify-content: center; }
+    .crizal-top-social { justify-content: center; margin-top: 0.35rem; }
+
+    .crizal-navbar .navbar-collapse {
+        background: var(--crizal-secondary);
+        padding: 1rem;
+        margin-top: 0.75rem;
+        border-radius: var(--crizal-radius);
+    }
+
+    .crizal-attr-nav {
+        margin-left: auto;
+        margin-right: 0.5rem;
+    }
+
+    .crizal-search-wrap {
+        order: 5;
+        max-width: 100%;
+        width: 100%;
+        margin: 0.75rem 0 0;
+        flex-basis: 100%;
+    }
+
+    .crizal-hero-slide { min-height: 400px; }
+    .crizal-hero-content h2 { font-size: 2rem; max-width: none; }
+    .crizal-hero-aside { margin-top: 1.25rem; }
+
+    body[data-design="crizal"] .crizal-footer { margin-top: 0; padding-top: 4.25rem; }
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] h1 { font-size: 1.85rem; }
+    body[data-design="crizal"] h2 { font-size: 1.5rem; }
+    body[data-design="crizal"] h3 { font-size: 1.2rem; }
+
+    .crizal-section { padding: 2.5rem 0; }
+    .crizal-hero-slide { min-height: 360px; }
+    .crizal-hero-content { padding: 2.5rem 0; }
+    .crizal-hero-content h2 { font-size: 1.75rem; }
+
+    .crizal-cta { padding: 1.75rem 1.25rem; }
+    .crizal-contact-strip { text-align: center; }
+    .crizal-contact-strip .butn,
+    .crizal-contact-strip .crizal-btn { margin-top: 1rem; }
+
+    .crizal-title { margin-bottom: 1.75rem; }
+
+    body[data-design="crizal"] .home-story-item.media {
+        flex-direction: column;
+    }
+
+    body[data-design="crizal"] .home-story-thumb {
+        margin-bottom: 0.75rem;
+        margin-right: 0 !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .crizal-top-bar-info { gap: 0.75rem; font-size: 0.75rem; }
+    .crizal-attr-nav .crizal-icon-btn { min-width: 2.5rem; font-size: 0; }
+    .crizal-attr-nav .crizal-icon-btn svg { margin-bottom: 0; }
+    .crizal-hero-slide { min-height: 320px; }
+    .butn-style8,
+    .crizal-btn { padding: 0.75rem 1.25rem; font-size: 0.8rem; }
+
+    body[data-design="crizal"] .col-6.border.border-collapse,
+    body[data-design="crizal"] .col-lg-3.col-sm-4.col-6 {
+        padding: 0.4rem;
+    }
+}
+
+@media (max-width: 374.98px) {
+    .crizal-navbar .navbar-brand img { max-height: 40px; }
+    .crizal-hero-content h2 { font-size: 1.5rem; }
+}
+
+@media (min-width: 1400px) {
+    .crizal-hero-slide { min-height: 560px; }
+    .crizal-hero-content h2 { font-size: 3rem; }
+}
+
+@media (min-width: 1920px) {
+    .crizal-section { padding: 5rem 0; }
+}

@@ -244,6 +244,11 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /EImece/EImece/media/images
+# IIS/local junction: /images -> media/images (do not commit)
+/EImece/EImece/images/
+/Playwright/node_modules/
+/Playwright/test-results/
+/Playwright/playwright-report/
 /EImece/EImece/App_Data/36ProductCategories-Turkish-2017-02-22.xlsx
 /EImece/EImece/App_Data/5Products-Turkish-2017-03-05.xls
 /EImece/EImece/App_Data/439Products-Turkish-2017-03-05.xls

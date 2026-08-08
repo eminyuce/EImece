@@ -1,0 +1,15 @@
+{
+  "name": "eimece-crizal-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright validation for the Crizal Razor theme against IIS http://localhost:81",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}

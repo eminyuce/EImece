@@ -1,0 +1,58 @@
+﻿@using EImece.Domain;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.Enums;
+@using System.Threading;
+
+@model Dictionary<String, String>
+@{
+    var dic = Model;
+    var currentLanguage = Thread.CurrentThread.CurrentUICulture.ToString();
+    List<SelectListItem> listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3("Language");
+}
+
+<ul class="top-social-icon ps-0 mb-0">
+    @if (ContainsValue(dic, Constants.FacebookWebSiteLink))
+    {
+        <li><a href="@dic[Constants.FacebookWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+    }
+    @if (ContainsValue(dic, Constants.TwitterWebSiteLink))
+    {
+        <li><a href="@dic[Constants.TwitterWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a></li>
+    }
+    @if (ContainsValue(dic, Constants.InstagramWebSiteLink))
+    {
+        <li><a href="@dic[Constants.InstagramWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+    }
+    @if (ContainsValue(dic, Constants.LinkedinWebSiteLink))
+    {
+        <li><a href="@dic[Constants.LinkedinWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
+    }
+    @if (ContainsValue(dic, Constants.PinterestWebSiteLink))
+    {
+        <li><a href="@dic[Constants.PinterestWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a></li>
+    }
+    @if (listItems.Count() > 1)
+    {
+        foreach (var item in listItems)
+        {
+            var selectedLanguage = (EImeceLanguage)item.Value.ToInt();
+            var countryCode = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(selectedLanguage);
+            if (countryCode.Equals(currentLanguage))
+            {
+                continue;
+            }
+            <li>
+                <a href="@Url.Action("Language", "Home", new { id = item.Value })" aria-label="@item.Text">
+                    <img src="~/Content/mstore/img/flags/@String.Format("flag-{0}.png", countryCode)" width="20" height="14" alt="@item.Text" loading="lazy" decoding="async" />
+                </a>
+            </li>
+        }
+    }
+</ul>
+
+@functions {
+    public static bool ContainsValue(Dictionary<String, String> dic, String key)
+    {
+        return dic.ContainsKey(key) && !string.IsNullOrEmpty(dic[key]);
+    }
+}

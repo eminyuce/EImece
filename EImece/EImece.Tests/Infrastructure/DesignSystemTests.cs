@@ -184,6 +184,29 @@ namespace EImece.Tests.Infrastructure
         }
 
         [TestMethod]
+        public void AdminLogin_UsesDefaultViewWhenActiveDesignSet()
+        {
+            var designProvider = new TestDesignProvider { ActiveDesign = "Crizal" };
+            var engine = new DesignAwareRazorViewEngine(designProvider);
+            bool designPathProbed = false;
+            engine.FileExistsOverride = (path) =>
+            {
+                if (path.StartsWith("~/Views/Designs/", StringComparison.OrdinalIgnoreCase))
+                {
+                    designPathProbed = true;
+                }
+                return path.Equals("~/Views/Account/AdminLogin.cshtml", StringComparison.OrdinalIgnoreCase);
+            };
+
+            var context = CreateControllerContext("Account", "AdminLogin");
+            var result = engine.FindView(context, "AdminLogin", null, false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.View);
+            Assert.IsFalse(designPathProbed, "AdminLogin should not probe design paths under ~/Views/Designs/");
+        }
+
+        [TestMethod]
         public void LayoutResolver_ThrowsWhenDesignLayoutMissing()
         {
             var designProvider = new TestDesignProvider { ActiveDesign = "Modern" };

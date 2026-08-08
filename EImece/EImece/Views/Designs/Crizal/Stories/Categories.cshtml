@@ -1,0 +1,29 @@
+@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using System.Web.Hosting
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    var category = Model.StoryCategory;
+    var stories = Model.Stories;
+    ViewBag.Title = category.GetSeoTitle();
+    ViewBag.Description = category.GetSeoDescription();
+
+    category.PageTheme = String.IsNullOrEmpty(category.PageTheme) ? "T1" : category.PageTheme;
+    var selectedPagePath = "StoriesPageThemes/PageTheme_" + category.PageTheme;
+    
+    string activeDesign = new EImece.Infrastructure.Designs.ConfigDesignProvider().GetActiveDesign();
+    string designRelative = string.IsNullOrEmpty(activeDesign) 
+        ? "~/Views/Shared/" + selectedPagePath + ".cshtml"
+        : "~/Views/Designs/" + activeDesign + "/Shared/" + selectedPagePath + ".cshtml";
+
+    var themePhysicalPath = HostingEnvironment.MapPath(designRelative);
+    if (string.IsNullOrEmpty(themePhysicalPath) || !System.IO.File.Exists(themePhysicalPath))
+    {
+        selectedPagePath = "StoriesPageThemes/PageTheme_T1";
+    }
+}
+@Html.Partial(selectedPagePath, Model)

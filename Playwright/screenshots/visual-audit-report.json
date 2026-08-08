@@ -1,0 +1,2887 @@
+{
+  "generatedAt": "2026-08-08T15:02:09.786Z",
+  "baseURL": "http://localhost:81",
+  "pages": [
+    {
+      "key": "home",
+      "path": "/",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 10974,
+              "width": 14631
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item active",
+              "right": 1220,
+              "width": 1219
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 1220,
+              "width": 1219
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 1220,
+              "width": 1219
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 1220,
+              "width": 1219
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 1220,
+              "width": 1219
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 1208,
+              "width": 1195
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 1208,
+              "width": 1195
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "home/home-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 2880,
+              "width": 3840
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 640,
+              "width": 320
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 640,
+              "width": 320
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 640,
+              "width": 320
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 640,
+              "width": 320
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 640,
+              "width": 320
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 628,
+              "width": 296
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 628,
+              "width": 296
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "home/home-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 3726,
+              "width": 4968
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 828,
+              "width": 414
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 828,
+              "width": 414
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 828,
+              "width": 414
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 828,
+              "width": 414
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 828,
+              "width": 414
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 816,
+              "width": 390
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 816,
+              "width": 390
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "home/home-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 6912,
+              "width": 9216
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1536,
+              "width": 768
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 1536,
+              "width": 768
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 1512,
+              "width": 720
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 1512,
+              "width": 720
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 1512,
+              "width": 600
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 1500,
+              "width": 576
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 1500,
+              "width": 576
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "home/home-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 8700,
+              "width": 11559
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1957,
+              "width": 963
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 1957,
+              "width": 963
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 1956,
+              "width": 960
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 1956,
+              "width": 960
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 1956,
+              "width": 640
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 1944,
+              "width": 616
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 1944,
+              "width": 616
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "home/home-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 11004,
+              "width": 14631
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 2469,
+              "width": 1219
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 2469,
+              "width": 1219
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 2445,
+              "width": 1170
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 2445,
+              "width": 1170
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 2445,
+              "width": 683
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 2433,
+              "width": 659
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 2433,
+              "width": 659
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "home/home-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 11464,
+              "width": 15168
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 2616,
+              "width": 1264
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 2616,
+              "width": 1264
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 2616,
+              "width": 1264
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 2616,
+              "width": 1264
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 2616,
+              "width": 737
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 2604,
+              "width": 713
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 2604,
+              "width": 713
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "home/home-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 15784,
+              "width": 20928
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 3576,
+              "width": 1744
+            },
+            {
+              "tag": "div",
+              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "right": 3576,
+              "width": 1744
+            },
+            {
+              "tag": "div",
+              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "right": 3364,
+              "width": 1320
+            },
+            {
+              "tag": "div",
+              "cls": "row justify-content-end text-end align-items-center",
+              "right": 3364,
+              "width": 1320
+            },
+            {
+              "tag": "div",
+              "cls": "col-md-10 col-lg-8 col-xl-7",
+              "right": 3364,
+              "width": 770
+            },
+            {
+              "tag": "h2",
+              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
+              "right": 3352,
+              "width": 746
+            },
+            {
+              "tag": "p",
+              "cls": "lead opacity7 text-white mb-4",
+              "right": 3352,
+              "width": 746
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "home/home-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1400,
+          "top": 3759,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 3515,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1219,
+          "h": 618,
+          "top": 128,
+          "left": 30
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [
+          {
+            "tag": "div",
+            "cls": "owl-stage",
+            "width": 14631
+          }
+        ],
+        "butnCount": 15,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 45
+      }
+    },
+    {
+      "key": "products",
+      "path": "/c/pc/kulaklik--ses-4h0j6g1b/",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "products/products-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "products/products-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "products/products-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "products/products-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "products/products-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "products/products-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "products/products-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "products/products-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 1806,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 1538,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 197,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 17
+      }
+    },
+    {
+      "key": "product-detail",
+      "path": "/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 1492,
+              "width": 2072
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 604,
+              "width": 296
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 604,
+              "width": 296
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 604,
+              "width": 296
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 900,
+              "width": 296
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 900,
+              "width": 296
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 900,
+              "width": 296
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 1196,
+              "width": 296
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "product-detail/product-detail-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 1767,
+              "width": 2457
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 714,
+              "width": 351
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 714,
+              "width": 351
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 714,
+              "width": 351
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1065,
+              "width": 351
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 1065,
+              "width": 351
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 1065,
+              "width": 351
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 1416,
+              "width": 351
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "product-detail/product-detail-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 1767,
+              "width": 2457
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 714,
+              "width": 351
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 714,
+              "width": 351
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 714,
+              "width": 351
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1065,
+              "width": 351
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 1065,
+              "width": 351
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 1065,
+              "width": 351
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 1416,
+              "width": 351
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "product-detail/product-detail-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 1986,
+              "width": 2730
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 816,
+              "width": 390
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 816,
+              "width": 390
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 816,
+              "width": 390
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1206,
+              "width": 390
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 1206,
+              "width": 390
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 1206,
+              "width": 390
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 1596,
+              "width": 390
+            }
+          ],
+          "navTogglerVisible": true,
+          "screenshot": "product-detail/product-detail-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 2724,
+              "width": 3752
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1116,
+              "width": 536
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 1116,
+              "width": 536
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 1116,
+              "width": 536
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1652,
+              "width": 536
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 1652,
+              "width": 536
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 1652,
+              "width": 536
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 2188,
+              "width": 536
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "product-detail/product-detail-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 3360,
+              "width": 4610
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1384,
+              "width": 659
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 1384,
+              "width": 659
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 1384,
+              "width": 659
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 2043,
+              "width": 659
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 2043,
+              "width": 659
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 2043,
+              "width": 659
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 2701,
+              "width": 659
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "product-detail/product-detail-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 3802,
+              "width": 5222
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 1564,
+              "width": 746
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 1564,
+              "width": 746
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 1564,
+              "width": 746
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 2310,
+              "width": 746
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 2310,
+              "width": 746
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 2310,
+              "width": 746
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 3056,
+              "width": 746
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "product-detail/product-detail-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [
+            {
+              "tag": "div",
+              "cls": "owl-stage",
+              "right": 4042,
+              "width": 5222
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item",
+              "right": 2550,
+              "width": 746
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 2550,
+              "width": 746
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 2550,
+              "width": 746
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 3296,
+              "width": 746
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "right": 3296,
+              "width": 746
+            },
+            {
+              "tag": "img",
+              "cls": "",
+              "right": 3296,
+              "width": 746
+            },
+            {
+              "tag": "div",
+              "cls": "owl-item cloned",
+              "right": 4042,
+              "width": 746
+            }
+          ],
+          "navTogglerVisible": false,
+          "screenshot": "product-detail/product-detail-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 2917,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 2673,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 267,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": {
+          "w": 464,
+          "h": 167,
+          "top": 808,
+          "left": 750
+        },
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [
+          {
+            "tag": "div",
+            "cls": "owl-stage",
+            "width": 4610
+          },
+          {
+            "tag": "div",
+            "cls": "owl-stage",
+            "width": 45840
+          }
+        ],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 23
+      }
+    },
+    {
+      "key": "cart",
+      "path": "/Payment/ShoppingCart",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "cart/cart-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "cart/cart-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "cart/cart-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "cart/cart-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "cart/cart-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "cart/cart-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "cart/cart-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "cart/cart-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 740,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 473,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 136,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 17
+      }
+    },
+    {
+      "key": "checkout-guest",
+      "path": "/Payment/ShoppingWithoutAccount",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "checkout/checkout-guest-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "checkout/checkout-guest-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "checkout/checkout-guest-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "checkout/checkout-guest-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "checkout/checkout-guest-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "checkout/checkout-guest-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "checkout/checkout-guest-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "checkout/checkout-guest-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 1923,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 1655,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 1582,
+          "top": 202,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 31
+      }
+    },
+    {
+      "key": "login",
+      "path": "/Account/Login",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/login-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/login-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/login-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/login-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/login-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/login-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/login-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/login-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 1075,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 807,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 807,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": {
+          "w": 561,
+          "h": 695,
+          "top": 192,
+          "left": 360
+        },
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 4,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 16
+      }
+    },
+    {
+      "key": "register",
+      "path": "/Account/Register",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/register-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/register-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/register-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/register-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/register-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/register-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/register-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/register-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 1179,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 911,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 911,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 17
+      }
+    },
+    {
+      "key": "forgot-password",
+      "path": "/Account/ForgotPassword",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/forgot-password-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/forgot-password-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/forgot-password-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "account/forgot-password-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/forgot-password-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/forgot-password-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/forgot-password-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "account/forgot-password-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 927,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 659,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 659,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": {
+          "w": 756,
+          "h": 320,
+          "top": 420,
+          "left": 262
+        },
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 15
+      }
+    },
+    {
+      "key": "stories",
+      "path": "/stories/",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "stories/stories-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "stories/stories-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "stories/stories-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "stories/stories-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "stories/stories-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "stories/stories-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "stories/stories-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "stories/stories-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1400,
+          "top": 2874,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 2558,
+          "top": 152,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 2558,
+          "top": 152,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": {
+          "w": 269,
+          "h": 82,
+          "top": 202,
+          "left": 67
+        },
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 16
+      }
+    },
+    {
+      "key": "search",
+      "path": "/p/arama?search=kulaklik",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "search/search-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "search/search-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "search/search-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "search/search-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "search/search-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "search/search-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "search/search-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "search/search-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 537,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 278,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 217,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 15
+      }
+    },
+    {
+      "key": "about",
+      "path": "/info/aboutus/",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/about-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/about-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/about-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/about-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/about-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/about-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/about-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/about-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 1288,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 1045,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 161,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 18
+      }
+    },
+    {
+      "key": "contact",
+      "path": "/i/iletisim-3f4h8c6g/",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/contact-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/contact-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/contact-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "content/contact-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/contact-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/contact-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/contact-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "content/contact-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 1288,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 1045,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 161,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 2,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 18
+      }
+    },
+    {
+      "key": "error-404",
+      "path": "/Error/NotFound",
+      "status": 404,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-404-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-404-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-404-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-404-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-404-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-404-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-404-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-404-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 672,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 429,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 429,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 3,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 14
+      }
+    },
+    {
+      "key": "error-index",
+      "path": "/Error/Index",
+      "status": 200,
+      "crizal": true,
+      "pendingOldTheme": false,
+      "consoleErrors": [],
+      "failedAssets": [],
+      "viewports": [
+        {
+          "width": 320,
+          "height": 800,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-index-320.png"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "scrollWidth": 375,
+          "clientWidth": 375,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-index-375.png"
+        },
+        {
+          "width": 414,
+          "height": 896,
+          "scrollWidth": 414,
+          "clientWidth": 414,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-index-414.png"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": true,
+          "screenshot": "errors/error-index-768.png"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-index-1024.png"
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-index-1280.png"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-index-1440.png"
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "clientWidth": 1920,
+          "hasOverflow": false,
+          "overflowing": [],
+          "navTogglerVisible": false,
+          "screenshot": "errors/error-index-1920.png"
+        }
+      ],
+      "notes": [],
+      "signals1280": {
+        "fontFamily": "\"Plus Jakarta Sans\", sans-serif",
+        "bodyBg": "rgb(255, 255, 255)",
+        "hasHeader": true,
+        "hasFooter": true,
+        "hasMain": true,
+        "headerBox": {
+          "w": 1280,
+          "h": 128,
+          "top": 0,
+          "left": 0
+        },
+        "footerBox": {
+          "w": 1280,
+          "h": 1381,
+          "top": 621,
+          "left": 0
+        },
+        "mainBox": {
+          "w": 1280,
+          "h": 378,
+          "top": 128,
+          "left": 0
+        },
+        "containerBox": {
+          "w": 1170,
+          "h": 378,
+          "top": 128,
+          "left": 55
+        },
+        "buttonBox": {
+          "w": 0,
+          "h": 0,
+          "top": 0,
+          "left": 0
+        },
+        "cardBox": null,
+        "logoBox": {
+          "w": 54,
+          "h": 52,
+          "top": 60,
+          "left": 82
+        },
+        "logoNatural": {
+          "nw": 282,
+          "nh": 273,
+          "complete": true
+        },
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "overflowEls": [],
+        "butnCount": 3,
+        "mstoreMarkers": false,
+        "bootstrapGrid": 14
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using Resources;
+@{
+    var categories = Model.BreadCrumb;
+}
+
+<nav class="crizal-breadcrumb" aria-label="breadcrumb">
+    <ol class="crizal-breadcrumb__list breadcrumb">
+        <li class="crizal-breadcrumb__item breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")" class="crizal-breadcrumb__link">
+                <i data-feather="home" aria-hidden="true"></i>
+                <span>@Resource.HomePage</span>
+            </a>
+        </li>
+        @for (int i = categories.Count() - 1; i >= 0; i--)
+        {
+            var category = categories[i];
+            <li class="crizal-breadcrumb__item breadcrumb-item">
+                <a href="@category.ProductCategory.DetailPageUrl" class="crizal-breadcrumb__link">@category.ProductCategory.Name</a>
+            </li>
+        }
+        <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+            <span class="crizal-breadcrumb__current" title="@Model.Product.Name">@Model.Product.Name</span>
+        </li>
+    </ol>
+</nav>

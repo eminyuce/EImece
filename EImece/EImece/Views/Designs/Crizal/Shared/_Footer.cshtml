@@ -1,0 +1,106 @@
+﻿@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using System.Threading;
+@model FooterViewModel
+@{
+    var footerModel = Model;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
+    int communicationId = 0;
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var SpecialFooterMenuLinkMenuId = countryCode.Equals("tr-TR") ? AppConfig.MusteriIliskileriChildrenIdTurkce : -1;
+    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
+    var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == 6135).OrderBy(r => r.Position).ToList();
+    var productCategories = Model.ProductCategories;
+    var productRootCategories = productCategories.Where(r => r.ParentId == 0).ToList();
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
+    var companyName = Html.Action("GetCompanyName", "Home");
+}
+
+<footer class="crizal-footer">
+    <div class="container">
+        <div class="crizal-footer__grid">
+            <div class="crizal-footer__brand">
+                <a class="crizal-footer__logo" href="@Url.Action("Index", "Home")" aria-label="@companyName">
+                    <img src="/images/logo.jpg" width="160" height="48" alt="@companyName" loading="lazy" decoding="async" />
+                </a>
+                <p class="crizal-footer__lead">@Resource.StayInformed</p>
+                <div class="crizal-footer__subscribe">
+                    @Html.Partial("_AddSubscriber", Model)
+                </div>
+                @if (productPriceEnabled)
+                {
+                    <img class="crizal-footer__payments" src="~/Content/img/logo-footer-mastervisa.png" width="160" height="36" alt="MasterCard and Visa accepted" loading="lazy" decoding="async" />
+                }
+            </div>
+
+            <div class="crizal-footer__col">
+                <h4 class="crizal-footer__heading">@Resource.ProductCategories</h4>
+                <ul class="crizal-footer__links">
+                    @if (productRootCategories.IsNotEmpty())
+                    {
+                        foreach (var m in productRootCategories.Take(8))
+                        {
+                            <li><a href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">@m.Name</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+
+            <div class="crizal-footer__col">
+                <h4 class="crizal-footer__heading">@Resource.AboutUs</h4>
+                <ul class="crizal-footer__links">
+                    <li><a href="@Url.Action(Constants.AboutUs, "info")">@Resource.AboutUs</a></li>
+                    @if (communicationPageLink != null)
+                    {
+                        communicationId = communicationPageLink.Id;
+                        <li><a href="@communicationPageLink.DetailPageLink">@communicationPageLink.Name</a></li>
+                    }
+                    @if (aboutUsChildrenLinks.IsNotEmpty())
+                    {
+                        foreach (var m in aboutUsChildrenLinks)
+                        {
+                            <li><a href="@m.DetailPageLink">@m.Name</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+
+            <div class="crizal-footer__col">
+                <h4 class="crizal-footer__heading">@Resource.CustomerRelationship</h4>
+                <ul class="crizal-footer__links">
+                    @if (productPriceEnabled)
+                    {
+                        <li><a href="@Url.Action("CargoTracking", "Payment")">@Resource.TrackYourCargo</a></li>
+                    }
+                    @if (musteriIliskileriChildren.IsNotEmpty())
+                    {
+                        foreach (var m in musteriIliskileriChildren)
+                        {
+                            <li><a href="@m.DetailPageLink">@m.Name</a></li>
+                        }
+                    }
+                    <li><a href="@Url.Action(Constants.DeliveryInfo, "info")">@Resource.DeliveryInfo</a></li>
+                </ul>
+            </div>
+        </div>
+
+        @if (footerModel.FooterHtmlDescription != null && !string.IsNullOrEmpty(footerModel.FooterHtmlDescription.SettingValue))
+        {
+            <div class="crizal-footer__extras">
+                @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)
+            </div>
+        }
+
+        <div class="crizal-footer__bottom">
+            <p class="mb-0">&copy; <span class="current-year">@DateTime.Now.Year</span> @companyName.</p>
+            <p class="mb-0 crizal-footer__credit">
+                Made by <a href="http://www.erayweb.com/" target="_blank" rel="noopener noreferrer">Erayweb</a>
+            </p>
+        </div>
+    </div>
+</footer>
