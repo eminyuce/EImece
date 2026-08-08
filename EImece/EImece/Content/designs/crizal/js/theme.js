@@ -155,6 +155,36 @@
 
         initProductGallery($);
         initRelatedCarousel($);
+        initHomeHero($);
+    }
+
+    function initHomeHero($) {
+        $('.crizal-home-hero .slider-fade3').each(function () {
+            var $el = $(this);
+            if (typeof $el.owlCarousel !== 'function') {
+                return;
+            }
+            destroyOwl($el);
+            $el.owlCarousel({
+                items: 1,
+                loop: true,
+                margin: 0,
+                nav: true,
+                dots: true,
+                navText: ["<i class='ti-angle-left'></i>", "<i class='ti-angle-right'></i>"],
+                autoplay: true,
+                autoplayTimeout: 6500,
+                smartSpeed: 900,
+                mouseDrag: false,
+                touchDrag: true,
+                animateIn: 'fadeIn',
+                animateOut: 'fadeOut',
+                responsive: {
+                    0: { nav: false, dots: true },
+                    768: { nav: true, dots: true }
+                }
+            });
+        });
     }
 
     if (window.jQuery) {

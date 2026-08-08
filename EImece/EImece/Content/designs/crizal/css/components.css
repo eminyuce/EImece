@@ -1776,3 +1776,616 @@ body[data-design="crizal"] .col-lg-5 .btn-block {
     text-transform: uppercase;
     letter-spacing: 0.03em;
 }
+
+/* ==========================================================================
+   Home — full-bleed hero, sections, product panels, stories
+   ========================================================================== */
+
+body[data-design="crizal"] .crizal-home-hero {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--crizal-secondary);
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-home-hero__slider,
+body[data-design="crizal"] .crizal-home-hero .slider-fade3 {
+    margin: 0 !important;
+    width: 100%;
+}
+
+body[data-design="crizal"] .crizal-home-hero__slide,
+body[data-design="crizal"] .crizal-home-hero .slider-fade3 .item {
+    position: relative;
+    min-height: clamp(420px, 72vh, 640px);
+    display: flex !important;
+    align-items: center;
+    margin: 0 !important;
+    padding: 4.5rem 0 5rem !important;
+    border-radius: 0 !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+body[data-design="crizal"] .crizal-home-hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(105deg, rgba(20, 33, 43, 0.94) 0%, rgba(20, 33, 43, 0.82) 38%, rgba(20, 33, 43, 0.55) 68%, rgba(20, 33, 43, 0.4) 100%);
+}
+
+body[data-design="crizal"] .crizal-home-hero__slide > .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+body[data-design="crizal"] .crizal-home-hero__copy {
+    max-width: 34rem;
+    color: #fff;
+    text-align: left;
+    animation: crizal-home-hero-in 0.85s ease both;
+}
+
+@keyframes crizal-home-hero-in {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body[data-design="crizal"] .crizal-home-hero__copy,
+    body[data-design="crizal"] .crizal-home-story-card,
+    body[data-design="crizal"] .crizal-home-category-card {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+body[data-design="crizal"] .crizal-home-hero__brand {
+    margin: 0 0 0.85rem;
+    color: var(--crizal-primary);
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-home-hero__title {
+    margin: 0 0 1rem;
+    color: #fff !important;
+    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+}
+
+body[data-design="crizal"] .crizal-home-hero__lead {
+    margin: 0 0 1.6rem;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    max-width: 32ch;
+}
+
+body[data-design="crizal"] .crizal-home-hero__btn.butn-style8,
+body[data-design="crizal"] .crizal-home-subscribe__row .butn-style8 {
+    position: relative;
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-home-hero__btn.butn-style8:before,
+body[data-design="crizal"] .crizal-home-hero__btn.butn-style8:after,
+body[data-design="crizal"] .crizal-home-subscribe__row .butn-style8:before,
+body[data-design="crizal"] .crizal-home-subscribe__row .butn-style8:after {
+    content: none !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body[data-design="crizal"] .crizal-home-hero__btn.butn-style8 {
+    background: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+    color: #fff !important;
+    box-shadow: 0 8px 18px rgba(9, 184, 80, 0.18);
+    text-shadow: none;
+}
+
+body[data-design="crizal"] .crizal-home-hero__btn.butn-style8:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--crizal-secondary) !important;
+    box-shadow: none;
+}
+
+/* Hero owl nav: side arrows, not stacked left column */
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-nav {
+    position: static;
+    margin: 0;
+    transform: none;
+    width: 0;
+    height: 0;
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-nav [class*='owl-'] {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 2.65rem;
+    height: 2.65rem;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    background: rgba(20, 33, 43, 0.28) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    backdrop-filter: blur(6px);
+    opacity: 0.92;
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-nav .owl-prev {
+    left: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-nav .owl-next {
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    left: auto;
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-nav [class*='owl-']:hover {
+    background: var(--crizal-primary) !important;
+    border-color: var(--crizal-primary);
+    opacity: 1;
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3 .owl-nav i {
+    font-size: 0.85rem;
+    color: #fff;
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1.25rem;
+    margin: 0;
+    z-index: 3;
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-dots .owl-dot span {
+    width: 0.55rem;
+    height: 0.55rem;
+    margin: 0 0.28rem;
+    background: rgba(255, 255, 255, 0.45);
+    border: none;
+}
+
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-dots .owl-dot.active span,
+body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-dots .owl-dot:hover span {
+    background: var(--crizal-primary);
+}
+
+/* Section headings */
+body[data-design="crizal"] .crizal-home-heading {
+    text-align: center;
+    margin: 0 auto 2.25rem;
+    max-width: 40rem;
+}
+
+body[data-design="crizal"] .crizal-home-heading__eyebrow {
+    margin: 0 0 0.55rem;
+    color: var(--crizal-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-home-heading__title {
+    margin: 0;
+    color: var(--crizal-heading);
+    font-size: clamp(1.65rem, 2.4vw, 2.15rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+body[data-design="crizal"] .crizal-home-categories,
+body[data-design="crizal"] .crizal-home-products,
+body[data-design="crizal"] .crizal-home-stories {
+    padding: 3.75rem 0;
+}
+
+body[data-design="crizal"] .crizal-home-categories .row {
+    --bs-gutter-y: 1.5rem;
+}
+
+body[data-design="crizal"] .crizal-home-category-card {
+    box-shadow: none;
+    border: 1px solid var(--crizal-border);
+    background: var(--crizal-surface);
+}
+
+body[data-design="crizal"] .crizal-home-category-card:hover {
+    border-color: rgba(9, 184, 80, 0.35);
+    box-shadow: 0 12px 28px rgba(20, 33, 43, 0.08);
+    transform: translateY(-4px);
+}
+
+body[data-design="crizal"] .crizal-home-category-card .crizal-card-media {
+    aspect-ratio: 1 / 1;
+}
+
+body[data-design="crizal"] .crizal-home-category-card .crizal-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+body[data-design="crizal"] .crizal-home-category-card .crizal-card-body {
+    padding: 1rem 0.9rem 1.15rem;
+}
+
+body[data-design="crizal"] .crizal-home-category-card .crizal-card-body h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+
+body[data-design="crizal"] .crizal-home-category-card .crizal-card-body p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Subscribe band */
+body[data-design="crizal"] .crizal-home-subscribe {
+    padding: 0 0 0.5rem;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 2rem;
+    align-items: center;
+    padding: 2.25rem 2.5rem;
+    border-radius: var(--crizal-radius-lg);
+    color: #fff;
+    background:
+        radial-gradient(120% 140% at 100% 0%, rgba(255, 255, 255, 0.14) 0%, transparent 45%),
+        linear-gradient(125deg, #0aad4a 0%, var(--crizal-primary) 48%, #0a7d3a 100%);
+    box-shadow: 0 18px 40px rgba(9, 184, 80, 0.22);
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__eyebrow {
+    margin: 0 0 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__title {
+    margin: 0 0 0.65rem;
+    color: #fff;
+    font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__text h3,
+body[data-design="crizal"] .crizal-home-subscribe__text .text-muted {
+    display: none;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__text p {
+    margin: 0 0 0.55rem;
+    text-align: left !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__text p:last-child {
+    margin-bottom: 0;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__row {
+    display: flex;
+    gap: 0.65rem;
+    align-items: stretch;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__row .form-control {
+    flex: 1 1 auto;
+    min-height: 3rem;
+    border: none;
+    border-radius: var(--crizal-radius);
+    padding: 0.7rem 1rem;
+    box-shadow: none;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__row .butn-style8 {
+    flex: 0 0 auto;
+    background: var(--crizal-secondary);
+    border-color: var(--crizal-secondary);
+    color: #fff !important;
+    white-space: nowrap;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe__row .butn-style8:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--crizal-secondary) !important;
+}
+
+body[data-design="crizal"] .crizal-home-subscribe .success-message {
+    color: #fff;
+}
+
+/* Product panels */
+body[data-design="crizal"] .crizal-home-product-panel {
+    height: 100%;
+    padding: 1.35rem 1.25rem 1.35rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: var(--crizal-surface);
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-home-product-panel__title {
+    margin: 0 0 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--crizal-primary);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-home-product-panel__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+body[data-design="crizal"] .crizal-home-products {
+    background:
+        linear-gradient(180deg, #f4f7f5 0%, #fff 42%, #fff 100%);
+}
+
+body[data-design="crizal"] .crizal-home-product-row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0.95rem;
+    align-items: center;
+    padding: 0.85rem 0.4rem;
+    border-radius: var(--crizal-radius);
+    text-decoration: none !important;
+    color: inherit;
+    transition: background 0.2s ease;
+}
+
+body[data-design="crizal"] .crizal-home-product-row:hover {
+    background: var(--crizal-surface-alt, #f6f8fa);
+}
+
+body[data-design="crizal"] .crizal-home-product-row__thumb {
+    display: block;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: var(--crizal-radius);
+    overflow: hidden;
+    background: var(--crizal-surface-alt, #f0f2f5);
+}
+
+body[data-design="crizal"] .crizal-home-product-row__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background:
+        linear-gradient(135deg, #e8edf1 0%, #d7dee5 100%);
+}
+
+body[data-design="crizal"] .crizal-home-product-row__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+body[data-design="crizal"] .crizal-home-product-row__title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--crizal-heading);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-home-product-row:hover .crizal-home-product-row__title {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-home-product-row__price {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--crizal-secondary);
+}
+
+body[data-design="crizal"] .crizal-stars--sm .crizal-stars__star {
+    font-size: 0.85rem;
+}
+
+/* Story cards */
+body[data-design="crizal"] .crizal-home-story-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: var(--crizal-surface);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+body[data-design="crizal"] .crizal-home-story-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--crizal-shadow);
+}
+
+body[data-design="crizal"] .crizal-home-story-card__media {
+    display: block;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--crizal-surface-alt, #eef1f4);
+}
+
+body[data-design="crizal"] .crizal-home-story-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s ease;
+}
+
+body[data-design="crizal"] .crizal-home-story-card:hover .crizal-home-story-card__media img {
+    transform: scale(1.04);
+}
+
+body[data-design="crizal"] .crizal-home-story-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 1.15rem 1.2rem 1.35rem;
+    flex: 1 1 auto;
+}
+
+body[data-design="crizal"] .crizal-home-story-card__meta {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--crizal-muted);
+    letter-spacing: 0.02em;
+}
+
+body[data-design="crizal"] .crizal-home-story-card__meta a {
+    color: var(--crizal-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .crizal-home-story-card__title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+body[data-design="crizal"] .crizal-home-story-card__title a {
+    color: var(--crizal-heading);
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .crizal-home-story-card__title a:hover {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-home-story-card__excerpt {
+    margin: 0;
+    color: var(--crizal-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1 1 auto;
+}
+
+body[data-design="crizal"] .crizal-home-story-card__more {
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--crizal-primary);
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .crizal-home-story-card__more:hover {
+    color: var(--crizal-secondary);
+}
+
+@media (max-width: 991.98px) {
+    body[data-design="crizal"] .crizal-home-subscribe__panel {
+        grid-template-columns: 1fr;
+        padding: 1.75rem 1.5rem;
+        gap: 1.35rem;
+    }
+
+    body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-nav [class*='owl-'] {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-home-hero__slide,
+    body[data-design="crizal"] .crizal-home-hero .slider-fade3 .item {
+        min-height: 420px;
+        padding: 3.25rem 0 4rem !important;
+    }
+
+    body[data-design="crizal"] .crizal-home-hero__title {
+        max-width: none;
+        font-size: 1.9rem;
+    }
+
+    body[data-design="crizal"] .crizal-home-hero .slider-fade3.owl-theme .owl-nav {
+        display: none;
+    }
+
+    body[data-design="crizal"] .crizal-home-categories,
+    body[data-design="crizal"] .crizal-home-products,
+    body[data-design="crizal"] .crizal-home-stories {
+        padding: 2.75rem 0;
+    }
+
+    body[data-design="crizal"] .crizal-home-subscribe__row {
+        flex-direction: column;
+    }
+
+    body[data-design="crizal"] .crizal-home-subscribe__row .butn-style8 {
+        width: 100%;
+    }
+
+    body[data-design="crizal"] .crizal-home-heading {
+        margin-bottom: 1.6rem;
+    }
+}
