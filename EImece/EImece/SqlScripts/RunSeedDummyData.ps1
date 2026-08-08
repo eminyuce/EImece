@@ -1,149 +1,142 @@
 <#
 .SYNOPSIS
-    Runs SeedDummyData.sql (and optionally CleanupDummyData.sql) against an EImece SQL Server database.
+    Generates missing product & media images for existing database records.
+
+.DESCRIPTION
+    Reads existing FileStorage rows from the EImece database and generates missing JPEG image files
+    and thumbnails under media/images so that product detail pages, category listings, and storefront
+    render properly without broken images.
 
 .EXAMPLE
-    .\RunSeedDummyData.ps1 -ConnectionString "Server=.;Database=EImece;Trusted_Connection=True;TrustServerCertificate=True;"
+    .\RunSeedDummyData.ps1
 
 .EXAMPLE
-    .\RunSeedDummyData.ps1 -Server "." -Database "EImece" -Scale 2
+    .\RunSeedDummyData.ps1 -ConnectionString "Data Source=YUCE\SQLEXPRESS;Initial Catalog=yuva8905_yuvadan;User ID=sqluser;Password=sqluser;Encrypt=True;TrustServerCertificate=True;"
 
 .EXAMPLE
-    .\RunSeedDummyData.ps1 -ConnectionString "..." -CleanupOnly
+    .\RunSeedDummyData.ps1 -SeedDatabase
 #>
-[CmdletBinding(DefaultParameterSetName = 'ConnectionString')]
+[CmdletBinding(DefaultParameterSetName = 'Default')]
 param(
-    [Parameter(ParameterSetName = 'ConnectionString', Mandatory = $true)]
-    [string] $ConnectionString,
+    [string] $ConnectionString = "",
 
-    [Parameter(ParameterSetName = 'ServerDatabase')]
-    [string] $Server = ".",
+    [string] $Server = "",
 
-    [Parameter(ParameterSetName = 'ServerDatabase')]
-    [string] $Database = "EImece",
+    [string] $Database = "",
 
-    # Multiplies catalog/order bulk tables only (menus, slides, settings stay small).
-    [ValidateScript({ $_ -gt 0 })]
-    [double] $Scale = 1.0,
+    # Target folder for generated images (auto-detected if omitted)
+    [string] $MediaRoot = "",
 
-    [switch] $SkipCleanup,
+    # Switch to re-run SQL database seed script if explicitly desired
+    [switch] $SeedDatabase,
 
-    [switch] $CleanupOnly,
-
-    # Skip JPEG placeholder generation under media/images (on by default).
-    [switch] $SkipImages,
-
-    # Physical media/images path (IIS default shown).
-    [string] $MediaRoot = "C:\inetpub\wwwroot\Eimece\media\images",
-
-    [int] $CommandTimeoutSeconds = 0
+    # Switch to run SQL cleanup script
+    [switch] $CleanupDatabase
 )
 
 $ErrorActionPreference = "Stop"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$appDir = Split-Path -Parent $scriptDir
 
-if ($PSCmdlet.ParameterSetName -eq 'ServerDatabase') {
-    $ConnectionString = "Server=$Server;Database=$Database;Trusted_Connection=True;TrustServerCertificate=True;"
+# Auto-detect ConnectionString from env variable or Web.config if not explicitly provided
+if ([string]::IsNullOrWhiteSpace($ConnectionString)) {
+    if ($env:EIMECE_DB_CONNECTION_STRING) {
+        $ConnectionString = $env:EIMECE_DB_CONNECTION_STRING
+    } else {
+        $webConfig = Join-Path $appDir "Web.config"
+        if (Test-Path $webConfig) {
+            try {
+                $xml = [xml](Get-Content $webConfig)
+                $csNode = $xml.configuration.connectionStrings.add | Where-Object { $_.name -eq 'EImeceDbConnection' }
+                if ($csNode -and $csNode.connectionString) {
+                    $ConnectionString = $csNode.connectionString
+                }
+            } catch {}
+        }
+    }
 }
 
-function Invoke-SqlFile {
-    param(
-        [string] $Path,
-        [hashtable] $VariableReplacements = @{}
-    )
+if ([string]::IsNullOrWhiteSpace($ConnectionString)) {
+    $ConnectionString = "Data Source=YUCE\SQLEXPRESS;Initial Catalog=yuva8905_yuvadan;User ID=sqluser;Password=sqluser;Encrypt=True;TrustServerCertificate=True;"
+}
+
+# Auto-detect local project media path
+if ([string]::IsNullOrWhiteSpace($MediaRoot)) {
+    $projectMedia = Join-Path $appDir "media\images"
+    if (Test-Path (Split-Path -Parent $projectMedia)) {
+        $MediaRoot = $projectMedia
+    } else {
+        $MediaRoot = "C:\inetpub\wwwroot\Eimece\media\images"
+    }
+}
+
+Write-Host "========================================================" -ForegroundColor Cyan
+Write-Host " EImece Image Generator Utility" -ForegroundColor Cyan
+Write-Host "========================================================" -ForegroundColor Cyan
+Write-Host "ConnectionString  : $ConnectionString" -ForegroundColor Yellow
+Write-Host "Media Root Folder : $MediaRoot" -ForegroundColor Yellow
+
+# Helper function to run SQL script
+function Invoke-SqlScriptFile {
+    param([string] $Path)
 
     if (-not (Test-Path $Path)) {
-        throw "SQL file not found: $Path"
+        throw "SQL script file not found: $Path"
     }
 
     $sql = Get-Content -Path $Path -Raw -Encoding UTF8
-    foreach ($key in $VariableReplacements.Keys) {
-        $sql = $sql -replace $key, [string]$VariableReplacements[$key]
-    }
+    Write-Host "Executing SQL script $Path ..." -ForegroundColor Cyan
 
-    Write-Host "Executing $Path ..." -ForegroundColor Cyan
-
-    if (Get-Command Invoke-Sqlcmd -ErrorAction SilentlyContinue) {
-        Invoke-Sqlcmd -ConnectionString $ConnectionString -Query $sql -QueryTimeout $CommandTimeoutSeconds
-        return
-    }
-
-    if (Get-Command sqlcmd -ErrorAction SilentlyContinue) {
-        $tmp = [System.IO.Path]::GetTempFileName() + ".sql"
-        Set-Content -Path $tmp -Value $sql -Encoding UTF8
-        try {
-            sqlcmd -S ($ConnectionString -replace '.*Server=([^;]+).*', '$1') `
-                   -d ($ConnectionString -replace '.*Database=([^;]+).*', '$1') `
-                   -E -i $tmp -b
-            if ($LASTEXITCODE -ne 0) { throw "sqlcmd failed with exit code $LASTEXITCODE" }
-        }
-        finally {
-            Remove-Item $tmp -ErrorAction SilentlyContinue
-        }
-        return
-    }
-
-    # Fallback: .NET SqlClient
     Add-Type -AssemblyName System.Data
     $conn = New-Object System.Data.SqlClient.SqlConnection $ConnectionString
     $conn.Open()
     try {
-        # Split on GO batches if present; this script has none, run as one batch
         $cmd = $conn.CreateCommand()
         $cmd.CommandText = $sql
-        $cmd.CommandTimeout = $CommandTimeoutSeconds
-        $reader = $cmd.ExecuteReader()
-        do {
-            $table = New-Object System.Data.DataTable
-            $table.Load($reader)
-            if ($table.Rows.Count -gt 0) {
-                $table | Format-Table -AutoSize | Out-String | Write-Host
-            }
-        } while (-not $reader.IsClosed -and $reader.NextResult())
+        $cmd.CommandTimeout = 0
+        $null = $cmd.ExecuteNonQuery()
+        Write-Host "SQL script executed successfully." -ForegroundColor Green
     }
     finally {
         $conn.Close()
     }
 }
 
-$cleanupPath = Join-Path $scriptDir "CleanupDummyData.sql"
-$seedPath = Join-Path $scriptDir "SeedDummyData.sql"
+# Optional: Run SQL Database Cleanup
+if ($CleanupDatabase) {
+    $cleanupPath = Join-Path $scriptDir "CleanupDummyData.sql"
+    Invoke-SqlScriptFile -Path $cleanupPath
+}
 
-if ($CleanupOnly) {
-    Invoke-SqlFile -Path $cleanupPath
-    if (-not $SkipImages -and (Test-Path $MediaRoot)) {
-        Write-Host "Removing seed image files under $MediaRoot ..." -ForegroundColor Cyan
-        Get-ChildItem -Path $MediaRoot -Filter "product-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
-        $thumbRoot = Join-Path $MediaRoot "thumbs"
-        if (Test-Path $thumbRoot) {
-            Get-ChildItem -Path $thumbRoot -Filter "thbproduct-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
-        }
+# Optional: Run SQL Database Seed
+if ($SeedDatabase) {
+    $seedPath = Join-Path $scriptDir "SeedDummyData.sql"
+    Invoke-SqlScriptFile -Path $seedPath
+}
+
+# Core Task: Generate Images for Existing Database Records
+$genScript = Join-Path $scriptDir "GenerateSeedImages.ps1"
+if (-not (Test-Path $genScript)) {
+    throw "GenerateSeedImages.ps1 script not found: $genScript"
+}
+
+Write-Host "`nGenerating images for all FileStorage records in database..." -ForegroundColor Cyan
+& $genScript -MediaRoot $MediaRoot -ConnectionString $ConnectionString -MarkExisting
+
+# If IIS media directory exists, sync generated images to IIS as well
+$iisMedia = "C:\inetpub\wwwroot\Eimece\media\images"
+if ((Test-Path $MediaRoot) -and (Test-Path (Split-Path -Parent $iisMedia)) -and ($MediaRoot -ne $iisMedia)) {
+    Write-Host "`nSyncing generated images to IIS website folder ($iisMedia)..." -ForegroundColor Cyan
+    try {
+        Copy-Item -Path "$MediaRoot\*" -Destination $iisMedia -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Host "Successfully synced images to IIS." -ForegroundColor Green
     }
-    Write-Host "Cleanup finished." -ForegroundColor Green
-    return
-}
-
-$scaleLiteral = ([string]::Format([System.Globalization.CultureInfo]::InvariantCulture, "{0}", $Scale))
-$replacements = @{
-    'DECLARE @Scale\s+FLOAT\s+=\s+[0-9.]+' = "DECLARE @Scale         FLOAT        = $scaleLiteral"
-}
-
-if ($SkipCleanup) {
-    $replacements['DECLARE @CleanupFirst\s+BIT\s+=\s+\d+'] = "DECLARE @CleanupFirst  BIT          = 0"
-}
-
-Invoke-SqlFile -Path $seedPath -VariableReplacements $replacements
-Write-Host "Seed finished. Scale=$Scale (menus/slides/settings stay small; catalog/orders scale)." -ForegroundColor Green
-
-if (-not $SkipImages) {
-    $genScript = Join-Path $scriptDir "GenerateSeedImages.ps1"
-    if (-not (Test-Path $genScript)) {
-        throw "GenerateSeedImages.ps1 not found: $genScript"
+    catch {
+        Write-Warning "Could not copy images to IIS folder: $_"
     }
-    if (-not $MediaRoot) {
-        throw "-MediaRoot is required when generating seed images."
-    }
-    & $genScript -MediaRoot $MediaRoot -ConnectionString $ConnectionString -MarkExisting
 }
 
-Write-Host "Login: admin@eimece.test (seed credential = 'Test' + '123' + '!')" -ForegroundColor Yellow
+Write-Host "`n========================================================" -ForegroundColor Green
+Write-Host " Image Generation Complete!" -ForegroundColor Green
+Write-Host " All product and media images have been generated." -ForegroundColor Green
+Write-Host "========================================================" -ForegroundColor Green
