@@ -999,21 +999,17 @@ namespace EImece.Domain.Helpers
         public static byte[] GetBitmapBytes(Bitmap source)
         {
             //Settings to increase quality of the image
-            ImageCodecInfo codec = ImageCodecInfo.GetImageEncoders()[4];
-            EncoderParameters parameters = new EncoderParameters(1);
-            parameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
-
-            //Temporary stream to save the bitmap
-            using (MemoryStream tmpStream = new MemoryStream())
+            ImageCodecInfo codec = GetEncoderInfo(source.RawFormat) ?? GetEncoderInfo(ImageFormat.Png);
+            using (EncoderParameters parameters = new EncoderParameters(1))
             {
-                source.Save(tmpStream, codec, parameters);
+                parameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
 
-                //Get image bytes from temporary stream
-                byte[] result = new byte[tmpStream.Length];
-                tmpStream.Seek(0, SeekOrigin.Begin);
-                tmpStream.Read(result, 0, (int)tmpStream.Length);
-
-                return result;
+                //Temporary stream to save the bitmap
+                using (MemoryStream tmpStream = new MemoryStream())
+                {
+                    source.Save(tmpStream, codec, parameters);
+                    return tmpStream.ToArray();
+                }
             }
         }
 
@@ -1021,12 +1017,12 @@ namespace EImece.Domain.Helpers
         {
             switch (extension)
             {
-                case ".bmp": return ImageCodecInfo.GetImageEncoders()[0];
-                case ".jpg": return ImageCodecInfo.GetImageEncoders()[1];
-                case ".jpeg": return ImageCodecInfo.GetImageEncoders()[1];
-                case ".gif": return ImageCodecInfo.GetImageEncoders()[2];
-                case ".tiff": return ImageCodecInfo.GetImageEncoders()[3];
-                case ".png": return ImageCodecInfo.GetImageEncoders()[4];
+                case ".bmp": return ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Bmp.Guid);
+                case ".jpg": return ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                case ".jpeg": return ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                case ".gif": return ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Gif.Guid);
+                case ".tiff": return ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Tiff.Guid);
+                case ".png": return ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Png.Guid);
                 default: return null;
             }
         }
@@ -1066,19 +1062,28 @@ namespace EImece.Domain.Helpers
                 graphics.DrawImage(image, 0, 0, newWidth, newHeight);
             }
 
-            // Get an ImageCodecInfo object that represents the JPEG codec.
-            ImageCodecInfo imageCodecInfo = this.GetEncoderInfo(format);
+            EnsureDirectoryExists(filePath);
+            if (File.Exists(filePath))
+            {
+                try { File.SetAttributes(filePath, FileAttributes.Normal); File.Delete(filePath); } catch { }
+            }
+
+            // Get an ImageCodecInfo object that represents the format codec.
+            ImageCodecInfo imageCodecInfo = GetEncoderInfo(format) ?? GetEncoderInfo(ImageFormat.Jpeg);
 
             // Create an Encoder object for the Quality parameter.
             var encoder = System.Drawing.Imaging.Encoder.Quality;
 
             // Create an EncoderParameters object.
-            EncoderParameters encoderParameters = new EncoderParameters(1);
-
-            // Save the image as a JPEG file with quality level.
-            EncoderParameter encoderParameter = new EncoderParameter(encoder, quality);
-            encoderParameters.Param[0] = encoderParameter;
-            newImage.Save(filePath, imageCodecInfo, encoderParameters);
+            using (EncoderParameters encoderParameters = new EncoderParameters(1))
+            {
+                EncoderParameter encoderParameter = new EncoderParameter(encoder, quality);
+                encoderParameters.Param[0] = encoderParameter;
+                using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    newImage.Save(fs, imageCodecInfo, encoderParameters);
+                }
+            }
         }
 
         /// <summary>
@@ -1086,9 +1091,11 @@ namespace EImece.Domain.Helpers
         /// </summary>
         /// <param name="format">Image format</param>
         /// <returns>image codec info.</returns>
-        private ImageCodecInfo GetEncoderInfo(ImageFormat format)
+        private static ImageCodecInfo GetEncoderInfo(ImageFormat format)
         {
-            return ImageCodecInfo.GetImageDecoders().SingleOrDefault(c => c.FormatID == format.Guid);
+            if (format == null) return ImageCodecInfo.GetImageEncoders().FirstOrDefault();
+            return ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == format.Guid)
+                   ?? ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
         }
 
         public static Bitmap LoadImage(string path)
