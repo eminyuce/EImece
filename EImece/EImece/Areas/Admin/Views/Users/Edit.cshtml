@@ -1,54 +1,78 @@
-﻿@model EImece.Models.EditUserViewModel
+@model EImece.Models.EditUserViewModel
 @using Resources;
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
-    ViewBag.Title = "Edit";
+    ViewBag.Title = AdminResource.Users;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@AdminResource.Users</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "userEditHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada kullanıcının temel profil bilgilerini güncelleyebilirsiniz.</li>
+    <li>İsim, Soyisim ve E-posta adresi sistemdeki bildirimler ve giriş işlemleri için kullanılmaktadır, lütfen güncel tutmaya özen gösterin.</li>
+</ul>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm())
 {
-@Html.AntiForgeryToken()
-@Html.HiddenFor(r => r.Id)
-<div class="form-horizontal">
-    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(r => r.Id)
+    
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-9">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-success btn-block btn-lg">
+                <i class="glyphicon glyphicon-floppy-disk"></i> @saveButtonText
+            </button>
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Kullanıcı Bilgilerini Düzenle</h3>
+                </div>
+                <div class="panel-body form-horizontal" style="padding: 30px;">
+                    
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="@saveButtonText" class="btn btn-block btn-success" />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="panel-footer text-right">
+                    <a href="@Url.Action("Index")" class="btn btn-default">
+                        <i class="glyphicon glyphicon-arrow-left"></i> @AdminResource.BackToList
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 }
-
-<div>
-    @Html.ActionLink(AdminResource.BackToList, "Index")
-</div>

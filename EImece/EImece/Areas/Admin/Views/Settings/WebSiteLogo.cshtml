@@ -1,17 +1,12 @@
-﻿@model Setting
+@model Setting
 @using EImece.Domain.Helpers;
-
-@using GridMvc.Html
-@using GridMvc.Sorting
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
-@using EImece.Domain.Helpers.Extensions;
 @{
     ViewBag.Title = AdminResource.WebSiteLogo;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
-    var setting = Model;
     string fileName = Model != null ? Model.SettingValue.ToStr() : "";
     string thumbUrl = !string.IsNullOrWhiteSpace(fileName)
         ? Url.Content("~/media/images/thumbs/thb" + fileName)
@@ -20,81 +15,72 @@
 
 <h2>@AdminResource.WebSiteLogo</h2>
 <hr class="adminLine" />
+
+@{ ViewData["HelpId"] = "webSiteLogoHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada web sitenizin <strong>logosunu</strong> değiştirebilirsiniz.</li>
+    <li>Logo seçmek için aşağıdaki alandan dosya (Gözat / Dosya Seç) butonuna tıklayın ve bilgisayarınızdan logonuzu seçin.</li>
+    <li>Mevcut logonuz sol tarafta önizleme olarak görünmektedir.</li>
+    <li>Değişiklikleri kaydetmek için <strong>@saveButtonText</strong> butonuna tıklamayı unutmayın.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 0;"><strong>Tavsiye:</strong> Görseli, tasarımınızda görünmesini istediğiniz boyutlarda ve formatta (tercihen PNG) yüklemeniz tavsiye edilir. İhtiyacınız olmayan boyutlandırma ayarları kullanıcılara kolaylık sağlamak amacıyla kaldırılmıştır.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm("UploadWebSiteLogo", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-@Html.AntiForgeryToken()
-@Html.HiddenFor(r => r.Id)
-@Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
-<div class="row">
-    <div class="col-md-3">
-        @if (!string.IsNullOrEmpty(thumbUrl))
-        {
-            <img style="max-width: 250px;" src="@thumbUrl" alt="@AdminResource.WebSiteLogo" />
-        }
-        else
-        {
-            <div class="text-muted">Logo henüz yüklenmedi.</div>
-        }
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(r => r.Id)
+    
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-9">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-success btn-block btn-lg">
+                <i class="glyphicon glyphicon-upload"></i> @saveButtonText
+            </button>
+        </div>
     </div>
-    <div class="col-md-9">
 
-        <table width="95%" class="table table-responsive table-bordered">
-            <tr>
-                <td class="text-center">
-                    @AdminResource.WebSiteLogo
-                </td>
-                <td>
-                    <input type="file" name="postedImage" />
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">
-                    @AdminResource.ImageWidth
-                </td>
-                <td>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Mevcut Logo ve Yeni Yükleme</h3></div>
+                <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-10">
-
-                            <div id="sliderWidth">
-                                <div id="sliderWidthHandle" class="ui-slider-handle myslider"></div>
+                        <!-- Current Logo Preview -->
+                        <div class="col-md-4 text-center">
+                            <h4 style="margin-bottom: 15px;">Mevcut Logo</h4>
+                            <div class="well" style="min-height: 180px; display: flex; align-items: center; justify-content: center; background-color: #f9f9f9; border: 1px solid #e3e3e3;">
+                                @if (!string.IsNullOrEmpty(thumbUrl))
+                                {
+                                    <img style="max-width: 100%; max-height: 150px; object-fit: contain;" src="@thumbUrl" alt="@AdminResource.WebSiteLogo" />
+                                }
+                                else
+                                {
+                                    <div class="text-muted" style="padding: 20px;">
+                                        <i class="glyphicon glyphicon-picture" style="font-size: 32px; color: #ccc;"></i><br/><br/>
+                                        Logo henüz yüklenmedi.
+                                    </div>
+                                }
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <input type="text" name="imageWidth" style="width:50px" id="imageWidthTxt" />
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">
-                    @AdminResource.ImageHeight
-                </td>
-                <td>
-                    <div class="row">
-                        <div class="col-md-10">
-
-                            <div id="sliderHeight">
-                                <div id="sliderHeightHandle" class="ui-slider-handle myslider"></div>
+                        
+                        <!-- Upload New Logo -->
+                        <div class="col-md-8">
+                            <h4 style="margin-bottom: 15px;">Yeni Logo Yükle</h4>
+                            <div class="form-group" style="background-color: #f5f5f5; padding: 20px; border-radius: 4px; border: 1px dashed #ccc; margin-top: 10px;">
+                                <label class="control-label">@AdminResource.WebSiteLogo Dosyası (PNG, JPG vb.)</label>
+                                <input type="file" name="postedImage" class="form-control" style="padding-bottom: 40px; margin-top: 10px;" />
+                                <span class="help-block" style="margin-top: 15px;">
+                                    <strong>Not:</strong> Logonuzu yüklerken sitenizin genel tasarımına uygun, transparan arka planlı PNG formatlarını tercih edebilirsiniz.
+                                </span>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <input type="text" name="imageHeight" style="width:50px" id="imageHeightTxt" />
-                        </div>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="@saveButtonText" class="btn btn-success btn-block" />
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 }

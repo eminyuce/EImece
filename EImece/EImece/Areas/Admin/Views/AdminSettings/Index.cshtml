@@ -1,155 +1,211 @@
-﻿@model EImece.Domain.Models.AdminModels.SettingModel
+@model EImece.Domain.Models.AdminModels.SettingModel
 @using Resources;
+@using EImece.Domain.Helpers;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    EImece.Domain.Entities.Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+
+    var activeTab = productPriceEnabled ? "cargo" : "seo";
 }
 
 <h2>@AdminResource.AdminGeneralSettings</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "generalSettingsHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>Bu sayfada sitenizin <strong>Kargo, SEO ve Alt Bilgi (Footer)</strong> ayarlarını yönetebilirsiniz.</li>
+    @if (productPriceEnabled)
+    {
+        <li><strong>@AdminResource.CargoSettings:</strong> Kargo firması adı, sabit kargo ücreti, ücretsiz kargo için minimum sepet tutarı ve kargo açıklama metnini buradan belirleyebilirsiniz.</li>
+    }
+    <li><strong>@AdminResource.SeoSettings:</strong> Arama motorları için sitenizin ana sayfa başlığı (Title), anahtar kelimeleri (Keywords) ve açıklama (Description) metnini içerir. SEO performansınız için önemlidir.</li>
+    <li><strong>@AdminResource.FooterSettings:</strong> Sitenin en alt kısmında yer alan genel açıklamaları, e-posta bülteni açıklamasını ve varsa özel HTML destekli footer alanını buradan düzenleyebilirsiniz.</li>
+</ul>
+<p style="margin-top: 12px; margin-bottom: 0;"><strong>Önemli:</strong> Yaptığınız değişikliklerin geçerli olması için kaydet butonuna tıklamayı unutmayın.</p>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm("Index", "AdminSettings"))
 {
     @Html.AntiForgeryToken()
 
-<div class="row">
-    <div class="col-md-9">
-        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-9">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-success btn-block btn-lg">
+                <i class="glyphicon glyphicon-floppy-disk"></i> @AdminResource.SaveButtonText
+            </button>
+        </div>
     </div>
-    <div class="col-md-3">
-        <input type="submit" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block" />
-    </div>
-</div>
-    <hr />
 
-    <div class="container">
-        <div class="form-horizontal">
+    <div class="row">
+        <!-- Vertical Tabs Menu -->
+        <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked" id="settingsTabs" style="border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9; padding: 10px 0;">
+                @if (productPriceEnabled)
+                {
+                    <li class="@(activeTab == "cargo" ? "active" : "")">
+                        <a data-toggle="pill" href="#tab-cargo">
+                            <i class="glyphicon glyphicon-send" style="margin-right:8px;"></i> @AdminResource.CargoSettings
+                        </a>
+                    </li>
+                }
+                <li class="@(activeTab == "seo" ? "active" : "")">
+                    <a data-toggle="pill" href="#tab-seo">
+                        <i class="glyphicon glyphicon-search" style="margin-right:8px;"></i> @AdminResource.SeoSettings
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="pill" href="#tab-footer">
+                        <i class="glyphicon glyphicon-list-alt" style="margin-right:8px;"></i> @AdminResource.FooterSettings
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-            <div class="panel-group" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse221144" class="panel-title expand">
-                            <div class="right-arrow pull-right">+</div>
-                            <a href="#">@AdminResource.CargoSettings</a>
-                        </h4>
-                    </div>
-                    <div id="collapse221144" class="panel-collapse collapse">
-                        <div class="panel-body">
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.CargoCompany, new { htmlAttributes = new { @class = "form-control" } })
+        <!-- Vertical Tabs Content -->
+        <div class="col-md-9">
+            <div class="tab-content form-horizontal">
+                
+                @if (productPriceEnabled)
+                {
+                    <!-- Cargo Settings -->
+                    <div id="tab-cargo" class="tab-pane fade @(activeTab == "cargo" ? "in active" : "")">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">@AdminResource.CargoSettings</h3></div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.CargoCompany, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CargoPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.CargoPrice, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CargoPrice, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.CargoPrice, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CargoDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.CargoDescription, 3, 50, new { @class = "form-control" })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CargoDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextAreaFor(model => model.CargoDescription, 3, 50, new { @class = "form-control" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse111" class="panel-title expand">
-                            <div class="right-arrow pull-right">+</div>
-                            <a href="#">@AdminResource.SeoSettings</a>
-                        </h4>
-                    </div>
-                    <div id="collapse111" class="panel-collapse collapse">
-                        <div class="panel-body">
+                }
 
+                <!-- SEO Settings -->
+                <div id="tab-seo" class="tab-pane fade @(activeTab == "seo" ? "in active" : "")">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h3 class="panel-title">@AdminResource.SeoSettings</h3></div>
+                        <div class="panel-body">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.SiteIndexMetaTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(model => model.SiteIndexMetaTitle, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
                                     @Html.EditorFor(model => model.SiteIndexMetaTitle, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaTitle, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                @Html.LabelFor(model => model.SiteIndexMetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(model => model.SiteIndexMetaKeywords, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
                                     @Html.EditorFor(model => model.SiteIndexMetaKeywords, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaKeywords, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.SiteIndexMetaDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.SiteIndexMetaDescription, 2, 50, new { @class = "form-control" })
+                                @Html.LabelFor(model => model.SiteIndexMetaDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(model => model.SiteIndexMetaDescription, 3, 50, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaDescription, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse2211" class="panel-title expand">
-                            <div class="right-arrow pull-right">+</div>
-                            <a href="#">@AdminResource.FooterSettings</a>
-                        </h4>
-                    </div>
-                    <div id="collapse2211" class="panel-collapse collapse">
-                        <div class="panel-body">
 
+                <!-- Footer Settings -->
+                <div id="tab-footer" class="tab-pane fade">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h3 class="panel-title">@AdminResource.FooterSettings</h3></div>
+                        <div class="panel-body">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.FooterDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(model => model.FooterDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
                                     @Html.EditorFor(model => model.FooterDescription, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.FooterDescription, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.FooterEmailListDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(model => model.FooterEmailListDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
                                     @Html.EditorFor(model => model.FooterEmailListDescription, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.FooterEmailListDescription, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                @Html.LabelFor(model => model.FooterHtmlDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(model => model.FooterHtmlDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
                                     @Html.TextAreaFor(model => model.FooterHtmlDescription, 10, 50, new { @class = "form-control" })
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
-
 }
 
-<script>
-    $(function () {
-        $(".expand").on("click", function () {
-            // $(this).next().slideToggle(200);
-            $expand = $(this).find(">:first-child");
+<style>
+    /* Styling for the nav pills */
+    #settingsTabs > li > a {
+        border-radius: 4px;
+        margin-bottom: 2px;
+        color: #555;
+    }
+    #settingsTabs > li.active > a,
+    #settingsTabs > li.active > a:hover,
+    #settingsTabs > li.active > a:focus {
+        background-color: #337ab7;
+        color: #fff;
+    }
+    .tab-content {
+        padding-left: 15px;
+    }
+    .tab-pane .panel-heading {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+</style>
 
-            if ($expand.text() == "+") {
-                $expand.text("-");
-            } else {
-                $expand.text("+");
-            }
+<script>
+    // Tab persist via hash in URL
+    $(function(){
+        var hash = window.location.hash;
+        if (hash) {
+            $(".nav-pills a[href='" + hash + "']").tab('show');
+        }
+        $('.nav-pills a').click(function (e) {
+            $(this).tab('show');
+            var scrollmem = $('body').scrollTop() || $('html').scrollTop();
+            window.location.hash = this.hash;
+            $('html,body').scrollTop(scrollmem);
         });
     });
 </script>
