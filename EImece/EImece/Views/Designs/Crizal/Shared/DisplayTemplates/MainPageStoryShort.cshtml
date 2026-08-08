@@ -1,0 +1,49 @@
+@model EImece.Domain.Entities.Story
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers
+@using Resources
+@{
+    var story = Model;
+    int Width = ViewData["Width"].ToInt(420);
+    int Height = ViewData["Height"].ToInt(280);
+    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
+    var imageUrl = story.GetCroppedImageUrl(imageId, Width, Height);
+    var srcset = story.MainImageId.HasValue
+        ? story.GetResponsiveImageSrcSet(story.MainImageId.Value, Width, Height)
+        : string.Empty;
+    var category = story.StoryCategory;
+    var excerpt = !string.IsNullOrWhiteSpace(story.ShortDescription)
+        ? story.ShortDescription
+        : story.GetSeoDescription(120);
+}
+
+<article class="crizal-home-story-card h-100">
+    <a class="crizal-home-story-card__media" href="@story.DetailPageUrl" aria-label="@story.Name">
+        <img src="@imageUrl"
+             srcset="@srcset"
+             sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 420px"
+             width="@Width"
+             height="@Height"
+             alt="@story.Name"
+             loading="lazy"
+             decoding="async" />
+    </a>
+    <div class="crizal-home-story-card__body">
+        <p class="crizal-home-story-card__meta">
+            @if (category != null)
+            {
+                <a href="@category.DetailPageRelativeUrl">@category.Name</a>
+                <span aria-hidden="true"> · </span>
+            }
+            <time datetime="@story.UpdatedDate.ToString("yyyy-MM-dd")">@story.UpdatedDate.ToShortDateString()</time>
+        </p>
+        <h3 class="crizal-home-story-card__title">
+            <a href="@story.DetailPageUrl">@story.Name</a>
+        </h3>
+        @if (!string.IsNullOrWhiteSpace(excerpt))
+        {
+            <p class="crizal-home-story-card__excerpt">@Html.Raw(excerpt)</p>
+        }
+        <a href="@story.DetailPageUrl" class="crizal-home-story-card__more">@Resource.ReadMore</a>
+    </div>
+</article>

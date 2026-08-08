@@ -1,0 +1,313 @@
+@model EImece.Domain.Models.FrontModels.StoryDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@{
+    var story = Model.Story;
+    ViewBag.Title = story.GetSeoTitle();
+    ViewBag.Description = story.GetSeoDescription();
+    ViewBag.Keywords = story.GetSeoKeywords();
+    var storyFiles = story.StoryFiles != null ? story.StoryFiles.ToList() : new List<StoryFile>();
+    var storyTags = (story.StoryTags ?? Enumerable.Empty<StoryTag>())
+        .Where(r => r.Tag != null)
+        .Select(r => r.Tag)
+        .ToList();
+    var storyCategory = story.StoryCategory;
+    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
+    var relatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
+    var cloudTags = Model.Tags != null ? Model.Tags.OrderByDescending(t => t.ItemCount).ThenBy(t => t.Name).Take(16).ToList() : new List<Tag>();
+    var tagCounts = (Model.Tags ?? new List<Tag>())
+        .GroupBy(t => t.Id)
+        .ToDictionary(g => g.Key, g => g.First().ItemCount);
+    var heroImageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
+    var heroUrl = heroImageId > 0 ? story.GetCroppedImageUrl(heroImageId, 1200, 675) : null;
+    var shareUrl = Request.Url != null ? Request.Url.AbsoluteUri : story.DetailPageUrl;
+    var shareText = Uri.EscapeDataString(story.Name ?? "");
+}
+
+<section class="crizal-story-detail">
+    <div class="container">
+        <nav class="crizal-breadcrumb" aria-label="breadcrumb">
+            <ol class="crizal-breadcrumb__list breadcrumb">
+                <li class="crizal-breadcrumb__item breadcrumb-item">
+                    <a href="@Url.Action("Index", "Home")" class="crizal-breadcrumb__link">@Resource.HomePage</a>
+                </li>
+                <li class="crizal-breadcrumb__item breadcrumb-item">
+                    <a href="@Url.Action("Index", "Stories")" class="crizal-breadcrumb__link">@Resource.Stories</a>
+                </li>
+                @if (storyCategory != null)
+                {
+                    <li class="crizal-breadcrumb__item breadcrumb-item">
+                        <a href="@storyCategory.DetailPageRelativeUrl" class="crizal-breadcrumb__link">@storyCategory.Name</a>
+                    </li>
+                }
+                <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+                    <span class="crizal-breadcrumb__current" title="@story.Name">@story.Name</span>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="row g-4 g-xl-5">
+            <aside class="col-lg-3 order-lg-1">
+                <div class="crizal-story-sidebar">
+                    @if (Model.StoryCategories.IsNotEmpty())
+                    {
+                        <div class="crizal-story-widget">
+                            <h2 class="crizal-story-widget__title">@Resource.StoryCategory</h2>
+                            <ul class="crizal-story-widget__list">
+                                @foreach (var allStoryCategory in Model.StoryCategories)
+                                {
+                                    var isCurrent = storyCategory != null && allStoryCategory.Id == storyCategory.Id;
+                                    <li>
+                                        @if (isCurrent)
+                                        {
+                                            <span class="is-current">@allStoryCategory.Name <em>(@allStoryCategory.Stories.Count)</em></span>
+                                        }
+                                        else
+                                        {
+                                            <a href="@allStoryCategory.DetailPageRelativeUrl">
+                                                @allStoryCategory.Name <em>(@allStoryCategory.Stories.Count)</em>
+                                            </a>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    @if (Model.FeaturedStories.IsNotEmpty())
+                    {
+                        <div class="crizal-story-widget">
+                            <h2 class="crizal-story-widget__title">@Resource.IsFeaturedStory</h2>
+                            <div class="crizal-story-featured">
+                                @foreach (var featuredStory in Model.FeaturedStories.Take(4))
+                                {
+                                    var imgTag = featuredStory.GetCroppedImageUrl(featuredStory.MainImageId, 72, 72);
+                                    <a class="crizal-story-featured__item" href="@featuredStory.DetailPageUrl">
+                                        @if (!string.IsNullOrEmpty(imgTag))
+                                        {
+                                            <img src="@imgTag" width="72" height="72" alt="" loading="lazy" decoding="async" />
+                                        }
+                                        <span>
+                                            <strong>@featuredStory.Name</strong>
+                                            @if (!string.IsNullOrEmpty(featuredStory.AuthorName))
+                                            {
+                                                <small>@featuredStory.AuthorName</small>
+                                            }
+                                        </span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    @if (cloudTags.Count > 0)
+                    {
+                        <div class="crizal-story-widget">
+                            <h2 class="crizal-story-widget__title">@Resource.Tags</h2>
+                            <div class="crizal-tags">
+                                @foreach (var tag in cloudTags)
+                                {
+                                    <a class="crizal-tag" href="@tag.DetailPageRelativeUrlForStories">
+                                        <span class="crizal-tag__name">@tag.Name</span>
+                                        <span class="crizal-tag__count">@tag.ItemCount</span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else if (storyTags.IsNotEmpty())
+                    {
+                        <div class="crizal-story-widget">
+                            <h2 class="crizal-story-widget__title">@Resource.Tags</h2>
+                            <div class="crizal-tags">
+                                @foreach (var tag in storyTags)
+                                {
+                                    var count = tagCounts.ContainsKey(tag.Id) ? tagCounts[tag.Id] : 0;
+                                    <a class="crizal-tag" href="@tag.DetailPageRelativeUrlForStories">
+                                        <span class="crizal-tag__name">@tag.Name</span>
+                                        @if (count > 0)
+                                        {
+                                            <span class="crizal-tag__count">@count</span>
+                                        }
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </aside>
+
+            <article class="col-lg-9 order-lg-2">
+                <header class="crizal-story-detail__header">
+                    <h1 class="crizal-story-detail__title">@story.Name</h1>
+                    <div class="crizal-story-detail__meta">
+                        @if (!string.IsNullOrEmpty(story.AuthorName))
+                        {
+                            <span>@story.AuthorName</span>
+                        }
+                        @if (storyCategory != null)
+                        {
+                            <a href="@storyCategory.DetailPageRelativeUrl">@storyCategory.Name</a>
+                        }
+                        <time datetime="@story.CreatedDate.ToString("yyyy-MM-dd")">@story.CreatedDate.ToString("dd MMM yyyy")</time>
+                    </div>
+                </header>
+
+                @if (!string.IsNullOrEmpty(heroUrl))
+                {
+                    <figure class="crizal-story-detail__hero">
+                        <img src="@heroUrl"
+                             alt="@story.Name"
+                             width="1200"
+                             height="675"
+                             loading="eager"
+                             fetchpriority="high"
+                             decoding="async" />
+                    </figure>
+                }
+                else if (storyFiles.IsNotEmpty())
+                {
+                    var first = storyFiles[0];
+                    var firstUrl = first.GetCroppedImageUrl(first.FileStorageId, 1200, 675);
+                    <figure class="crizal-story-detail__hero">
+                        <img src="@firstUrl" alt="@first.Name" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async" />
+                    </figure>
+                }
+
+                @* When a cover/hero image exists, keep the article focused on one visual plane.
+                   Extra story files are only shown when there is no dedicated hero. *@
+                @if (string.IsNullOrEmpty(heroUrl) && storyFiles.Count > 1)
+                {
+                    <div class="crizal-story-gallery">
+                        @foreach (var file in storyFiles.Skip(1))
+                        {
+                            var imgTag = file.GetCroppedImageUrl(file.FileStorageId, 800, 600);
+                            var thumbTag = file.GetCroppedImageUrl(file.FileStorageId, 400, 280);
+                            <a class="crizal-story-gallery__item" href="@imgTag" data-fancybox="blogGallery" data-caption="@file.Name">
+                                <img src="@thumbTag" alt="@file.Name" loading="lazy" decoding="async" />
+                            </a>
+                        }
+                    </div>
+                }
+
+                <div class="crizal-story-detail__content post-content">
+                    @Html.Raw(story.Description)
+                </div>
+
+                <footer class="crizal-story-detail__footer">
+                    @if (storyTags.IsNotEmpty())
+                    {
+                        <div class="crizal-tags">
+                            @foreach (var t in storyTags)
+                            {
+                                var count = tagCounts.ContainsKey(t.Id) ? tagCounts[t.Id] : 0;
+                                <a class="crizal-tag" href="@t.DetailPageRelativeUrlForStories">
+                                    <span class="crizal-tag__name">@t.Name</span>
+                                    @if (count > 0)
+                                    {
+                                        <span class="crizal-tag__count">@count</span>
+                                    }
+                                </a>
+                            }
+                        </div>
+                    }
+
+                    <div class="crizal-story-share">
+                        <span>@Resource.ShareProduct</span>
+                        <a class="crizal-story-share__btn" href="https://www.facebook.com/sharer/sharer.php?u=@Uri.EscapeDataString(shareUrl)" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        </a>
+                        <a class="crizal-story-share__btn" href="https://twitter.com/intent/tweet?url=@Uri.EscapeDataString(shareUrl)&text=@shareText" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a class="crizal-story-share__btn" href="https://pinterest.com/pin/create/button/?url=@Uri.EscapeDataString(shareUrl)&description=@shareText" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+                            <i class="fab fa-pinterest-p" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </footer>
+
+                <nav class="crizal-story-nav@(Model.PreviousStory == null && Model.NextStory != null ? " crizal-story-nav--end" : (Model.PreviousStory != null && Model.NextStory == null ? " crizal-story-nav--start" : ""))" aria-label="@Resource.PostNavigation">
+                    @if (Model.PreviousStory != null)
+                    {
+                        <a class="crizal-story-nav__link" href="@Model.PreviousStory.DetailPageRelativeUrl">
+                            <span>@Resource.PrevPost</span>
+                            <strong>@Model.PreviousStory.Name</strong>
+                        </a>
+                    }
+                    <a class="crizal-story-nav__all" href="@Url.Action("Index", "Stories")">@Resource.AllPosts</a>
+                    @if (Model.NextStory != null)
+                    {
+                        <a class="crizal-story-nav__link crizal-story-nav__link--next" href="@Model.NextStory.DetailPageRelativeUrl">
+                            <span>@Resource.NextPost</span>
+                            <strong>@Model.NextStory.Name</strong>
+                        </a>
+                    }
+                </nav>
+
+                @if (relatedStories.IsNotEmpty())
+                {
+                    <section class="crizal-story-related">
+                        <h2 class="crizal-story-related__title">@Resource.YouMayAlsoLike</h2>
+                        <div class="row g-3">
+                            @foreach (var relatedStory in relatedStories)
+                            {
+                                var imgTag = relatedStory.GetCroppedImageUrl(relatedStory.MainImageId, 400, 260);
+                                <div class="col-md-4">
+                                    <a class="crizal-story-related__card" href="@relatedStory.DetailPageUrl">
+                                        @if (!string.IsNullOrEmpty(imgTag))
+                                        {
+                                            <img src="@imgTag" alt="@relatedStory.Name" loading="lazy" decoding="async" />
+                                        }
+                                        <span>
+                                            @if (!string.IsNullOrEmpty(relatedStory.AuthorName))
+                                            {
+                                                <small>@relatedStory.AuthorName</small>
+                                            }
+                                            <strong>@relatedStory.Name</strong>
+                                        </span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+
+                @if (relatedProducts.Any())
+                {
+                    <section class="crizal-story-related">
+                        <h2 class="crizal-story-related__title">@Resource.RelatedProductsForBlog</h2>
+                        <div class="row g-3">
+                            @foreach (var product in relatedProducts)
+                            {
+                                var imgTag = product.GetCroppedImageUrl(product.MainImageId, 400, 400);
+                                <div class="col-6 col-md-3">
+                                    <a class="crizal-story-related__card crizal-story-related__card--product" href="@product.DetailPageRelativeUrl">
+                                        <img src="@imgTag" alt="@product.Name" loading="lazy" decoding="async" />
+                                        <span><strong>@product.Name</strong></span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+            </article>
+        </div>
+    </div>
+</section>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            if ($.fn.fancybox) {
+                $('[data-fancybox="blogGallery"]').fancybox({
+                    buttons: ["zoom", "slideShow", "fullScreen", "thumbs", "close"]
+                });
+            }
+        });
+    </script>
+}

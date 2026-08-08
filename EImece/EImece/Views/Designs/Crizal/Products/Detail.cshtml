@@ -1,0 +1,878 @@
+@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
+@using System.Collections.Immutable;
+@using System.Text.RegularExpressions;
+
+@{
+    var product = Model.Product;
+    ProductState productState = product.StateEnum;
+    var sharedSocialLinks = Model.SocialMediaLinks;
+    var ProductSizeOptions = Regex.Split(product.ProductSizeOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+    var ProductColorOptions = Regex.Split(product.ProductColorOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    ViewBag.Title = product.GetProductSeoTitle();
+    ViewBag.Description = product.GetSeoDescription();
+    ViewBag.Keywords = product.GetSeoKeywords();
+    var productFiles = product.ProductFiles.ToList();
+    var productTags = product.ProductTags.Select(r => r.Tag).Where(r=>r.TagCategory.IsActive).ToList();
+    var productCategory = product.ProductCategory;
+    var productSpecs = product.ProductSpecifications;
+    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(1).ToList();
+    var relatedProducts = Model.RelatedProducts.ToList();
+    var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
+
+    Model.ProductComment.ProductId = product.Id;
+    Model.ProductComment.SeoUrl = product.GetSeoUrl();
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var productCommentsPaging = new PaginatedModelList<ProductComment>(productComments, Model.Page, Model.RecordPerPage, productComments.Count);
+    productCommentsPaging.RouteId = Model.SeoId;
+
+    var mainImageImgSrc = product.MainImageSrc != null ? product.MainImageSrc.Item1 : "";
+    var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
+    var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
+    var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
+
+    var productPriceEnabled = Model.IsProductPriceEnable != null ? Model.IsProductPriceEnable.SettingValue.ToBool(true) : true;
+    var productReviewEnable = Model.IsProductReviewEnable != null ? Model.IsProductReviewEnable.SettingValue.ToBool(true) : true;
+
+    var productSchemaJson = Model.GoogleProductSchemaJson;
+
+    int imageWidth = 800;
+    int imageHeight = 600;
+
+    if (product.MainImage != null)
+    {
+        if (product.MainImage.Width > 0)
+                {
+                    imageWidth = product.MainImage.Width;
+                }
+
+        if (product.MainImage.Height > 0)
+        {
+            imageHeight = product.MainImage.Height;
+        }
+
+    }
+}
+
+
+<input type="hidden" name="productReviewEnable" value="@productReviewEnable.ToString().ToLower()" />
+<input type="hidden" name="productPriceEnabled" value="@productPriceEnabled.ToString().ToLower()" />
+
+@section HeadExtra {
+
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:type" content="product" />
+    <meta property="og:site_name" content="@Html.Action("GetCompanyName", "Home")" />
+    <meta property="og:image" content="@product.ImageFullPath(imageWidth,imageHeight)" />
+    <meta property="og:image:width" content="@imageWidth" />
+    <meta property="og:image:height" content="@imageHeight" />
+    <meta property="og:title" content="@product.GetProductSeoTitle()" />
+    <meta property="og:description" content="@HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(product.ShortDescription))" />
+    <meta property="og:url" content="@product.DetailPageAbsoluteUrl" />
+    <meta property="product:price:amount" content="@product.PriceWithDiscount" />
+    <meta property="product:price:currency" content="@Constants.CURRENCY_TURKISH" />
+
+    <script type="application/ld+json">
+        @Html.Raw(productSchemaJson)
+    </script>
+}
+
+<!-- Page Title-->
+<div class="page-title-wrapper crizal-product-hero" aria-label="Page title">
+    <div class="container">
+        @if (TempData["RecaptchaError"] != null)
+        {
+            <div class="alert alert-danger" role="alert">@TempData["RecaptchaError"]</div>
+        }
+        @Html.Partial("_ProductBreadCrumb", Model)
+        <h1 class="page-title">@product.ProductNameStr</h1>
+        @if (!string.IsNullOrEmpty(product.ShortDescription))
+        {
+            <p class="crizal-product-hero__lead">@Html.Raw(product.ShortDescription)</p>
+        }
+        <ul class="crizal-product-hero__meta">
+            @if (product.Brand != null)
+            {
+                <li><span>@Resource.ProductBrand</span> <strong>@product.Brand.Name</strong></li>
+            }
+            <li><span>@Resource.ProductCode</span> <strong>@product.ProductCode</strong></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Page Content-->
+<!-- Toast notifications-->
+<div class="toast-container toast-bottom-center">
+    <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">@Resource.AddedToCart</span>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="toast-body">@Resource.ThisItemAddedYourCart</div>
+    </div>
+</div>
+
+<input type="hidden" name="productId" id="productId" value="@product.ModifiedId">
+<div class="container pb-4">
+    <div class="row">
+        <div class="col-lg-7">
+            <!-- Product gallery-->
+            <div class="product-gallery">
+                <ul class="product-thumbnails">
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgSrc))
+                    {
+                        <li class="active">
+                            <a href="#one">
+                                <img alt="@product.Name" src="@mainImageThbImgSrc" width="95" height="105" />
+                            </a>
+                        </li>
+                    }
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 95, 105);
+                        <li class="">
+                            <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img alt="@f.Name" src="@imgTag" />
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <div class="product-carousel owl-carousel">
+                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgSrc))
+                    {
+                        <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@mainImageImgSrc" width="610" height="610" alt="@product.Name">
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" data-fancybox="prod-gallery" data-hash="one">
+                            <img src="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" width="610" height="610" alt="Product">
+                        </a>
+                    }
+                    @for (int i = 0; i < productFiles.Count; i++)
+                    {
+                        var f = productFiles[i];
+                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
+                        if (!string.IsNullOrEmpty(imgTag))
+                        {
+                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
+                                <img src="@imgTag" alt="@f.Name">
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Product details -->
+        <div class="col-lg-5 pt-4 pt-lg-0">
+            <div class="pb-4">
+                @if (productReviewEnable && product.ProductComments.IsNotEmpty())
+                {
+                    <a class="d-inline-block scroll-to" href="#reviews">
+                        <div class="star-rating">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                if (i + 1 > product.Rating)
+                                {
+                                    <i class="sr-star" data-feather="star"></i>
+                                }
+                                else
+                                {
+                                    <i class="sr-star active" data-feather="star"></i>
+                                }
+                            }
+                        </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
+                    </a>
+                }
+                @if (productPriceEnabled)
+                {
+                    <h2 class="h1 font-weight-light pt-3 pb-2">
+                        @if (product.HasDiscount)
+                        {
+                            <del class="lead text-muted mr-2">
+                                @product.Price.CurrencySign()
+                            </del>
+                        }
+                        <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+                    </h2>
+                    if (product.HasDiscount)
+                    {
+                        <h4>
+                            <span class="badge badge-pill badge-warning mr-2 mb-2">
+                                @string.Format("%{0} {1}", product.DiscountPercentage, Resource.Discount)
+                            </span>
+                        </h4>
+                    }
+                }
+
+                <!-- Display Product State Message -->
+                <div class="mb-3">
+                    @switch (productState)
+                    {
+                        case ProductState.ProductInStock:
+                            <span class="badge badge-success badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ProductInStock</span>
+                            break;
+                        case ProductState.ProductOutOfStock:
+                            <span class="badge badge-danger badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ProductOutOfStock</span>
+                            break;
+                        case ProductState.PreOrder:
+                            <span class="badge badge-info badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.PreOrderAvailable</span>
+                            break;
+                        case ProductState.Discontinued:
+                            <span class="badge badge-dark badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.Discontinued</span>
+                            break;
+                        case ProductState.Backorder:
+                            <span class="badge badge-warning badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.BackorderAvailable</span>
+                            break;
+                        case ProductState.ComingSoon:
+                            <span class="badge badge-primary badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ComingSoon</span>
+                            break;
+                        case ProductState.LimitedStock:
+                            <span class="badge badge-success badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.LimitedStockAvailable</span>
+                            break;
+                        case ProductState.Reserved:
+                            <span class="badge badge-secondary badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.ReservedForCustomers</span>
+                            break;
+                        case ProductState.AwaitingRestock:
+                            <span class="badge badge-warning badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.AwaitingRestock</span>
+                            break;
+                        case ProductState.NotForSale:
+                            <span class="badge badge-dark badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.NotForSale</span>
+                            break;
+                        default:
+                            <span class="badge badge-secondary badge-pill" style="font-size: 1.5rem; padding: 0.5rem 1rem;">@Resource.NONE</span>
+                            break;
+                    }
+                </div>
+
+                @if (ProductSizeOptions.IsNotEmpty())
+                {
+                    <div class="form-group">
+                        <div class="pb-2 text-right"></div>
+                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="color" name="@Resource.ProductSize" required>
+                            @foreach (var pSize in ProductSizeOptions)
+                            {
+                                <option value="@pSize">@pSize</option>
+                            }
+                        </select>
+                    </div>
+                }
+                @if (ProductColorOptions.IsNotEmpty())
+                {
+                    <div class="form-group">
+                        <div class="pb-2 text-right"></div>
+                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="color" name="@Resource.ProductColor" required>
+                            @foreach (var pColor in ProductColorOptions)
+                            {
+                                <option value="@pColor">@pColor</option>
+                            }
+                        </select>
+                    </div>
+                }
+
+                <!-- Conditional Add to Cart / Action Buttons Based on Product State -->
+                @if (productPriceEnabled)
+                {
+                    switch (productState)
+                    {
+                        case ProductState.ProductInStock:
+                        case ProductState.LimitedStock:
+                            <div class="d-flex align-items-center pt-2">
+                                <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
+                                <button id="AddToCart" class="butn-style8 btn-block" type="button" data-toggle="toast" data-target="#cart-toast">
+                                    <span>@Resource.AddToCart</span>
+                                </button>
+                            </div>
+                            break;
+                        case ProductState.PreOrder:
+                            <div class="d-flex align-items-center pt-2">
+                                <button id="PreOrder" class="btn btn-info btn-block" type="button">
+                                    <i class="mr-2" data-feather="clock"></i>@Resource.PreOrder
+                                </button>
+                            </div>
+                            break;
+                        case ProductState.Backorder:
+                            <div class="d-flex align-items-center pt-2">
+                                <button id="Backorder" class="btn btn-warning btn-block" type="button">
+                                    <i class="mr-2" data-feather="truck"></i>@Resource.Backorder
+                                </button>
+                            </div>
+                            break;
+                        case ProductState.ProductOutOfStock:
+                        case ProductState.Discontinued:
+                        case ProductState.NotForSale:
+                            <div class="d-flex align-items-center pt-2">
+                                <button class="btn btn-secondary btn-block" type="button" disabled>
+                                    <i class="mr-2" data-feather="x-circle"></i>@Resource.Unavailable
+                                </button>
+                            </div>
+                            break;
+                        case ProductState.ComingSoon:
+                        case ProductState.AwaitingRestock:
+                            <div class="d-flex align-items-center pt-2">
+                                <button class="btn btn-primary btn-block" type="button" disabled>
+                                    <i class="mr-2" data-feather="clock"></i>@Resource.ComingSoon
+                                </button>
+                            </div>
+                            break;
+                        case ProductState.Reserved:
+                            <div class="d-flex align-items-center pt-2">
+                                <button class="btn btn-secondary btn-block" type="button" disabled>
+                                    <i class="mr-2" data-feather="lock"></i>@Resource.Reserved
+                                </button>
+                            </div>
+                            break;
+                        default:
+                            <div class="d-flex align-items-center pt-2">
+                                <button class="btn btn-secondary btn-block" type="button" disabled>
+                                    <i class="mr-2" data-feather="info"></i>@Resource.UnknownState
+                                </button>
+                            </div>
+                            break;
+                    }
+
+                    <!-- WhatsApp Order Option -->
+                    <div class="d-flex align-items-center pt-2">
+                        <a href="@Model.WhatsAppCommunicationLinkGenerateScript"
+                           target="_blank"
+                           class="col-auto button urun-detay-whatsapp hstack"
+                           aria-label="WhatsApp ile sipariş ver">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                 alt="WhatsApp simgesi"
+                                 width="20"
+                                 class="whatsapp-icon">
+                            <span>WhatsApp İle Sipariş</span>
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <!-- Product panels-->
+            <div class="accordion crizal-product-panels" id="productPanels">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="accordion-heading">
+                            <a href="#productInfo" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
+                                <i class="fas fa-info-circle crizal-product-panels__icon" aria-hidden="true"></i>
+                                <span>@Resource.ProductInformation</span>
+                                <span class="accordion-indicator" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="collapse show" id="productInfo" data-parent="#productPanels">
+                        <div class="card-body">
+                            @if (product.Brand != null && !String.IsNullOrEmpty(product.Brand.Name))
+                            {
+                                <p class="product-code">@Resource.ProductBrand: <strong>@product.Brand.Name</strong></p>
+                            }
+                            @if (!String.IsNullOrEmpty(product.ProductCode))
+                            {
+                                <p class="product-code">@Resource.ProductCodeNo <strong>@product.ProductCode</strong></p>
+                            }
+                            <div class="crizal-product-panels__text">@Html.Raw(product.ShortDescription)</div>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.CargoDescription.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading">
+                                <a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
+                                    <i class="fas fa-truck crizal-product-panels__icon" aria-hidden="true"></i>
+                                    <span>@Resource.ShippingOptions</span>
+                                    <span class="accordion-indicator" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="collapse" id="shippingOptions" data-parent="#productPanels">
+                            <div class="card-body">
+                                <div class="crizal-product-panels__text">@Html.Raw(Model.CargoDescription.SettingValue)</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (productTags.IsNotEmpty())
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="accordion-heading">
+                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
+                                    <i class="fas fa-tags crizal-product-panels__icon" aria-hidden="true"></i>
+                                    <span>@Resource.Tags</span>
+                                    <span class="accordion-indicator" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="collapse" id="tagCloud" data-parent="#productPanels">
+                            <div class="card-body">
+                                <div class="crizal-tags">
+                                    @foreach (var t in productTags)
+                                    {
+                                        <a class="crizal-tag" href="@t.DetailPageRelativeUrlForProducts">@t.Name</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (Model.SocialMediaLinks.IsNotEmpty())
+            {
+                @CreateSocialMediaLinks(Model.SocialMediaLinks)
+            }
+        </div>
+    </div>
+</div>
+
+<section class="crizal-product-tabs" aria-label="@Resource.Description">
+    <div class="container">
+        <ul class="nav nav-tabs crizal-product-tabs__nav" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                    <i class="fas fa-align-left" aria-hidden="true"></i>
+                    <span>@Resource.Description</span>
+                </a>
+            </li>
+            @if (productReviewEnable)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                        <i class="fas fa-comments" aria-hidden="true"></i>
+                        <span>@Resource.CommentSection</span>
+                    </a>
+                </li>
+            }
+            @if (!string.IsNullOrEmpty(product.VideoUrl))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="video-tab" data-toggle="tab" href="#video" role="tab" aria-controls="video" aria-selected="false">
+                        <i class="fas fa-play-circle" aria-hidden="true"></i>
+                        <span>@Resource.VideoUrl</span>
+                    </a>
+                </li>
+            }
+            @if (productPriceEnabled)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        <span>@Resource.PaymentSection</span>
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <div class="tab-content crizal-product-tabs__content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                @ProductDescriptionHelper(Model)
+            </div>
+            @if (productReviewEnable)
+            {
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    @ProductCommentsHelper(Model)
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(product.VideoUrl))
+            {
+                <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
+                    @ProductVideoHelper(Model)
+                </div>
+            }
+            @if (productPriceEnabled)
+            {
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    @PaymentOptionsHelper(Model)
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@helper ProductDescriptionHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
+{
+    var productSpecsExists = model.ProdSpecs.IsNotEmpty();
+    var product = Model.Product;
+
+    <div class="crizal-product-desc">
+        <div class="row g-4">
+            <div class="@(productSpecsExists ? "col-md-7" : "col-12")">
+                <div class="crizal-product-desc__body">@Html.Raw(product.Description)</div>
+            </div>
+            @if (productSpecsExists)
+            {
+                <div class="col-md-5">
+                    <h3 class="crizal-product-desc__specs-title">@Resource.Specifications</h3>
+                    <ul class="crizal-product-desc__specs">
+                        @foreach (var specs in Model.ProdSpecs)
+                        {
+                            <li>
+                                <span>@specs.specsName</span>
+                                <strong>@Html.Raw(specs.value) @specs.unit</strong>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@helper ProductVideoHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
+{
+    var product = model.Product;
+    var videoUrl = product.VideoUrl;
+
+    var videoUrls = SplitByCommaOrSemicolonOrNewline(videoUrl);
+
+    <div class="container pt-sm-3 pb-sm-3">
+        <div class="row">
+            @if (videoUrls.Any())
+            {
+                if (videoUrls.Count == 1)
+                {
+                    // If there is only one video URL, take up the full width
+                    var videoId = ExtractYouTubeVideoId(videoUrls.First());
+
+                    if (!string.IsNullOrEmpty(videoId))
+                    {
+                        var embedUrl = string.Format("https://www.youtube.com/embed/{0}", videoId);
+                        <div class="col-12 mb-4">
+                            <div class="ratio ratio-16x9">
+                                <iframe src="@embedUrl"
+                                        title="YouTube video player"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        // If the URL isn't a valid YouTube link, display it as text
+                        <div class="col-12 mb-4">
+                            <span>@videoUrls.First()</span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    // If there are multiple video URLs, display them in grid format
+                    foreach (var url in videoUrls)
+                    {
+                        var videoId = ExtractYouTubeVideoId(url);
+
+                        if (!string.IsNullOrEmpty(videoId))
+                        {
+                            var embedUrl = string.Format("https://www.youtube.com/embed/{0}", videoId);
+                            <div class="col-md-6 mb-4">
+                                <div class="ratio ratio-16x9">
+                                    <iframe src="@embedUrl"
+                                            title="YouTube video player"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            // If the URL isn't a valid YouTube link, display it as text
+                            <div class="col-md-6 mb-4">
+                                <span>@url</span>
+                            </div>
+                        }
+                    }
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <span>No valid video URLs provided.</span>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@helper ProductCommentsHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
+{
+    var product = model.Product;
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
+    var productCommentsPaging = new PaginatedModelList<ProductComment>(productComments, Model.Page, Model.RecordPerPage, productComments.Count);
+    productCommentsPaging.RouteId = Model.SeoId;
+    var productReviewEnable = model.IsProductReviewEnable.SettingValue.ToBool(true);
+    var rating = product.Rating > 5 ? 5 : (product.Rating < 0 ? 0 : product.Rating);
+
+    <div class="crizal-product-reviews row">
+        <div class="col-md-4">
+            <div class="crizal-product-reviews__summary">
+                @if (productComments.IsNotEmpty())
+                {
+                    <div class="crizal-product-reviews__score">
+                        <strong>@Model.AverageRating</strong>
+                        <div>
+                            <span class="crizal-stars" aria-hidden="true">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span class="crizal-stars__star@(i <= rating ? " is-on" : "")">★</span>
+                                }
+                            </span>
+                            <small>@Model.TotalRating.Sum(r => r.Value.Count) @Resource.Review</small>
+                        </div>
+                    </div>
+                    foreach (var item in Model.TotalRating)
+                    {
+                        <div class="crizal-product-reviews__bar">
+                            <span>@item.Key</span>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <em>@item.Value.Count</em>
+                        </div>
+                    }
+                }
+                <a class="butn-style8 crizal-product-reviews__cta" href="#leaveReview" data-toggle="modal" data-target="#leaveReview" role="button"><span>@Resource.LeaveReview</span></a>
+            </div>
+        </div>
+        @if (productReviewEnable)
+        {
+            <div class="col-md-8">
+                @if (productCommentsPaging.IsNotEmpty())
+                {
+                    <h3 class="crizal-product-reviews__list-title">@Resource.LatestReviews</h3>
+                    <div class="crizal-product-reviews__list">
+                        @foreach (var productComment in productCommentsPaging.GetPagingResult())
+                        {
+                            @createReviewItem(productComment)
+                        }
+                    </div>
+                    <div class="pt-3">
+                        @Html.Partial("_PaginatedModelList", productCommentsPaging, new ViewDataDictionary
+                        {
+                            { "actionName", "Detail" },
+                            { "controllerName", "Products" }
+                        })
+                    </div>
+                }
+                else
+                {
+                    <div class="crizal-product-reviews__empty">
+                        <p>@Resource.NoCommentForProductYet</p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+@helper PaymentOptionsHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
+{
+    <div class="crizal-product-payment">
+        <header class="crizal-product-payment__header">
+            <h3>İyzico ile güvenli ödeme</h3>
+            <p>Siz alışverişin keyfini çıkarın, ödeme güvenliğini İyzico’ya bırakın.</p>
+        </header>
+        <p class="crizal-product-payment__lead">
+            İyzico, Türkiye'nin önde gelen ödeme altyapı sağlayıcılarından biridir.
+            Web sitemiz üzerinden yapacağınız ödemelerde İyzico altyapısı kullanılmaktadır.
+        </p>
+        <ul class="crizal-product-payment__list">
+            <li>
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                <span><strong>Kart bilgileriniz 256-bit SSL ile şifrelenir</strong> ve güvenle saklanır.</span>
+            </li>
+            <li>
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span><strong>Her ödeme İyzico güvencesi altındadır.</strong> Ödemeniz tarafımıza ulaşmadan önce doğrulanır.</span>
+            </li>
+            <li>
+                <i class="fas fa-undo" aria-hidden="true"></i>
+                <span><strong>Kolay iade ve iptal süreçleri</strong> sayesinde alışveriş deneyiminiz kontrolünüzdedir.</span>
+            </li>
+            <li>
+                <i class="fas fa-university" aria-hidden="true"></i>
+                <span><strong>BDDK lisanslı bir ödeme kuruluşudur.</strong> Türkiye Cumhuriyeti yasalarına uygun ve denetimli şekilde hizmet verir.</span>
+            </li>
+            <li>
+                <i class="fas fa-bolt" aria-hidden="true"></i>
+                <span><strong>Hızlı ödeme deneyimi</strong> — tek tıkla ödeme, taksit seçenekleri ve daha fazlası.</span>
+            </li>
+            <li>
+                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                <span><strong>İyzico Korumalı Alışveriş</strong> ile ürün elinize ulaşmazsa paranız iade edilir.</span>
+            </li>
+        </ul>
+        <div class="crizal-product-payment__note">
+            Siparişinizi tamamlarken tüm ödeme süreci İyzico’nun güvenlik standartları ile gerçekleştirilir.
+            <a href="https://www.iyzico.com" target="_blank" rel="noopener noreferrer">iyzico.com</a>
+        </div>
+    </div>
+}
+
+@if (relatedProducts.IsNotEmpty())
+{
+    <!-- Related products-->
+    <div class="container pb-1">
+        <h2 class="h3 pb-1">@Resource.SimilairProducts</h2>
+        <div class="owl-carousel crizal-related-carousel" data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;loop&quot;: false, &quot;margin&quot;: 15, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2}, &quot;630&quot;:{&quot;items&quot;:3}, &quot;850&quot;:{&quot;items&quot;:4}, &quot;1200&quot;:{&quot;items&quot;:5}} }">
+            @foreach (var product2 in relatedProducts)
+            {
+                @RelatedProductItem(product2)
+            }
+        </div>
+    </div>
+}
+
+@functions {
+    public static bool ContainsValue(Dictionary<String, String> dic, String key)
+    {
+        return dic.ContainsKey(key) && !string.IsNullOrEmpty(dic[key]);
+    }
+    // Split the videoUrl by common delimiters (e.g., comma, semicolon, or newline)
+    public static List<string> SplitByCommaOrSemicolonOrNewline(string videoUrl)
+    {
+        return Regex.Split(videoUrl ?? "", @"[,\s;\n]+")
+                  .Select(url => url.Trim())
+                  .Where(url => !string.IsNullOrEmpty(url))
+                  .ToList();
+    }
+    public static string ExtractYouTubeVideoId(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+            return "";
+
+        try
+        {
+            var uri = new Uri(url);
+
+            if (uri.Host.Contains("youtu.be"))
+            {
+                return uri.AbsolutePath.Trim('/');
+            }
+
+            if (uri.Host.Contains("youtube.com"))
+            {
+                var query = HttpUtility.ParseQueryString(uri.Query);
+                return query["v"];
+            }
+        }
+        catch
+        {
+            // Log or handle malformed URLs if needed
+        }
+
+        return "";
+    }
+}
+
+@helper CreateSocialMediaLinks(Dictionary<string, string> sharedSocialLinks)
+{
+    <div class="py-4">
+        <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">@Resource.ShareProduct:</span>
+        @if (ContainsValue(sharedSocialLinks, Constants.InstagramWebSiteLink))
+        {
+            <a class="social-btn sb-instagram mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
+                <i class="flaticon-instagram"></i>
+            </a>
+        }
+        @if (ContainsValue(sharedSocialLinks, Constants.FacebookWebSiteLink))
+        {
+            <a class="social-btn sb-facebook mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
+                <i class="flaticon-facebook"></i>
+            </a>
+        }
+        @if (ContainsValue(sharedSocialLinks, Constants.TwitterWebSiteLink))
+        {
+            <a class="social-btn sb-twitter mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
+                <i class="flaticon-twitter"></i>
+            </a>
+        }
+        @if (ContainsValue(sharedSocialLinks, Constants.PinterestWebSiteLink))
+        {
+            <a class="social-btn sb-pinterest mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.PinterestWebSiteLink]">
+                <i class="flaticon-pinterest"></i>
+            </a>
+        }
+    </div>
+}
+
+@helper RelatedProductItem(Product product)
+{
+    var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 300);
+    var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
+    var relatedProductPriceEnabled = Model.IsProductPriceEnable.SettingValue.ToBool(true);
+
+    <div class="product-card">
+        <div class="product-thumb box-shadow-0">
+            <a class="product-thumb-link" href="@product.DetailPageRelativeUrl" aria-label="@product.Name">
+                <img src="@relatedProductImgTag" width="300" height="300" alt="@product.Name" loading="lazy" decoding="async">
+            </a>
+        </div>
+        <div class="product-card-body box-shadow-0">
+            <a class="product-meta small d-block mb-1" href="@product.ProductCategory.DetailPageUrl">@product.ProductCategory.Name</a>
+            <h3 class="product-card-title h6 mb-2"><a href="@product.DetailPageRelativeUrl">@product.Name</a></h3>
+            @if (relatedProductPriceEnabled && product.PriceWithDiscount > 0)
+            {
+                <p class="price text-center m-0">
+                    <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+                </p>
+            }
+            @if (relatedProductPriceEnabled && product.IsBuyableState)
+            {
+                <button class="butn-style8 small mt-3 btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-toggle="toast" data-target="#cart-toast">
+                    <span>@Resource.AddToCart</span>
+                </button>
+            }
+        </div>
+    </div>
+}
+
+@if (productReviewEnable)
+{
+    @Html.EditorFor(model => model.ProductComment, "ProductComment", new { ProductId = product.Id })
+}
+
+@helper createReviewItem(ProductComment productComment)
+{
+    var rating = productComment.Rating > 5 ? 5 : (productComment.Rating < 0 ? 0 : productComment.Rating);
+    <article class="crizal-product-review">
+        <header>
+            <div>
+                <strong>@productComment.Name</strong>
+                <time datetime="@productComment.CreatedDate.ToString("yyyy-MM-dd")">@productComment.CreatedDate.ToString("dd MMM yyyy")</time>
+            </div>
+            <span class="crizal-stars crizal-stars--sm" aria-label="@rating stars" role="img">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="crizal-stars__star@(i <= rating ? " is-on" : "")" aria-hidden="true">★</span>
+                }
+            </span>
+        </header>
+        <p>@productComment.Review</p>
+    </article>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

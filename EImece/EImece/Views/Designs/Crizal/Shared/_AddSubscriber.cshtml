@@ -1,0 +1,48 @@
+﻿@using EImece.Domain.Factories;
+@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@model FooterViewModel
+@{
+    Subscriber subscriber = new Subscriber();
+}
+
+@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "crizal-subscribe validate" }))
+{
+    <div class="crizal-subscribe__row">
+        @Html.TextBoxFor(model => subscriber.Email, new { @class = "crizal-subscribe__input form-control", @placeholder = @Resource.Email, type = "email", autocomplete = "email" })
+        <button class="butn-style8 small crizal-subscribe__btn" type="submit" name="subscribe" id="mc-embedded-subscribe"><span>@Resource.Subscribe</span></button>
+    </div>
+
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="b_c7103e2c981361a6639545bd5_29ca296126" tabindex="-1">
+    </div>
+
+    if (Model.FooterEmailListDescription != null)
+    {
+        <p class="crizal-subscribe__hint">@Model.FooterEmailListDescription.SettingValue</p>
+    }
+
+    <div class="crizal-subscribe__social">
+        @Html.Action("SocialMediaLinks", "Home")
+    </div>
+
+    if (Model.FooterDescription != null)
+    {
+        <p class="crizal-subscribe__hint">@Model.FooterDescription.SettingValue</p>
+    }
+
+    if (Model.CompanyName != null && Model.CompanyAddress != null)
+    {
+        <p class="crizal-subscribe__address">
+            <strong>@Model.CompanyName.SettingValue</strong><br />
+            @Model.CompanyAddress.SettingValue
+        </p>
+    }
+
+    <div class="subscribe-status"></div>
+}

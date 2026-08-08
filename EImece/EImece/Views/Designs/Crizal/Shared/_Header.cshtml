@@ -1,0 +1,84 @@
+@using EImece.Domain;
+@using EImece.Domain.Helpers;
+@using Resources;
+@using System.Threading;
+
+@{
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
+    var companyName = Html.Action("GetCompanyName", "Home");
+}
+
+<header class="header-style3 p-dark">
+    <div class="top-bar bg-secondary">
+        <div class="container-fluid container-xl">
+            <div class="row">
+                <div class="col-md-9 col-xs-12">
+                    @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = false })
+                </div>
+                <div class="col-xs-12 col-md-3 d-none d-md-block">
+                    @Html.Action("SocialMediaLinks", "Home")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar-default border-bottom border-color-light-white">
+        <div class="top-search bg-primary">
+            <div class="container-fluid container-xl">
+                @Html.Partial("_SearchProductForm")
+            </div>
+        </div>
+
+        <div class="container-fluid container-xl">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-12">
+                    <div class="menu_area alt-font">
+                        <nav class="navbar navbar-expand-lg navbar-light p-0">
+                            <div class="navbar-header navbar-header-custom">
+                                <a href="@Url.Action("Index", "Home")" class="navbar-brand logodefault">
+                                    <img id="logo" src="/images/logo.jpg" width="200" height="60" alt="@companyName" decoding="async" fetchpriority="high" />
+                                </a>
+                            </div>
+
+                            <div class="navbar-toggler bg-secondary"></div>
+
+                            @Html.Action("Navigation", "Home", new { lang = countryCode })
+
+                            <div class="attr-nav align-items-lg-center ms-lg-auto main-font">
+                                <ul>
+                                    @if (productPriceEnabled)
+                                    {
+                                        if (Request.IsAuthenticated)
+                                        {
+                                            <li class="d-none d-lg-inline-block me-2">
+                                                <a href="@Url.Action("index", "home", new { area = "customers" })" title="@Resource.MyAccount">
+                                                    <i class="fas fa-user"></i>
+                                                </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="d-none d-lg-inline-block me-2">
+                                                <a href="@Url.Action("login", "account")" title="@Resource.SignInOrUp">
+                                                    <i class="fas fa-sign-in-alt"></i>
+                                                </a>
+                                            </li>
+                                        }
+                                        <li class="dropdown me-3 me-sm-4 me-lg-0">
+                                            @Html.Raw(Html.Action("ShoppingCartLink", "Payment"))
+                                        </li>
+                                    }
+                                    <li class="search"><a href="#!" aria-label="@Resource.Search"><i class="fas fa-search"></i></a></li>
+                                    <li class="d-none d-xxl-inline-block">
+                                        <a href="@Url.Action(Constants.AboutUs, "info", new { lang = countryCode })" class="butn secondary small"><span>@Resource.AboutUs</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

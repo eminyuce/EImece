@@ -1,0 +1,531 @@
+/* Crizal design tokens (single source of truth) */
+body[data-design="crizal"] {
+    --crizal-primary: #09b850;
+    --crizal-secondary: #14212B;
+    --crizal-heading: #14212B;
+    --crizal-text: #575a7b;
+    --crizal-muted: #7a7d9a;
+    --crizal-background: #ffffff;
+    --crizal-surface: #ffffff;
+    --crizal-surface-alt: #f4f5f9;
+    --crizal-border: #e6e8ef;
+    --crizal-border-light: rgba(255, 255, 255, 0.15);
+    --crizal-sale: #ff214f;
+    --crizal-font: "Plus Jakarta Sans", Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --crizal-radius: 4px;
+    --crizal-radius-sm: 3px;
+    --crizal-radius-lg: 10px;
+    --crizal-radius-xl: 16px;
+    --crizal-transition: all 0.3s ease-in-out;
+    --crizal-shadow-sm: 0 5px 20px rgba(0, 0, 0, 0.1);
+    --crizal-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+    --crizal-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Crizal MVC integration overrides (home-business-02) */
+
+body[data-design="crizal"] .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+body[data-design="crizal"] .sr-only-focusable:active,
+body[data-design="crizal"] .sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* Keep e-commerce widgets readable inside Crizal sections */
+body[data-design="crizal"] .widget-featured-entries .media {
+    border-bottom: 1px solid rgba(20, 33, 43, 0.08);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+body[data-design="crizal"] .widget-featured-entries .media:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+body[data-design="crizal"] .home-stories-widget .media {
+    margin-bottom: 1rem;
+}
+
+/* Legacy contact-style01 fallback (superseded by .crizal-cta-band) */
+body[data-design="crizal"] .contact-style01 .bg-primary.bg {
+    background-color: var(--crizal-primary, #09b850) !important;
+}
+
+body[data-design="crizal"] footer.bg-secondary.mt-n12,
+body[data-design="crizal"] footer.pt-15,
+body[data-design="crizal"] footer.pt-lg-24 {
+    margin-top: 0 !important;
+    padding-top: 4rem !important;
+}
+
+/* Cart badge visibility for AJAX updates */
+body[data-design="crizal"] #ShoppingCartItemCount:empty {
+    display: none !important;
+}
+
+/* ---------- Header layout (Playwright visual audit fixes) ----------
+   Bootstrap 5 .navbar flex-wrap + crowded Turkish labels was squeezing
+   .attr-nav to ~1 icon width, stacking cart/search/login vertically.
+   Desktop-only flex rules must NOT apply below 992px — Crizal mobile
+   menu uses absolute full-width dropdown (nav-menu.css). */
+body[data-design="crizal"] .navbar-default .navbar {
+    flex-wrap: nowrap;
+    align-items: center;
+    position: relative;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-header,
+body[data-design="crizal"] .navbar-default .navbar-header-custom {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 3;
+    margin-right: 1rem;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-brand {
+    flex: 0 0 auto;
+    margin-right: 0;
+}
+
+body[data-design="crizal"] .navbar-default .navbar-brand img,
+body[data-design="crizal"] #logo {
+    max-height: 52px;
+    width: auto;
+    max-width: 150px;
+    height: auto;
+}
+
+body[data-design="crizal"] .attr-nav > ul {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+}
+
+body[data-design="crizal"] .attr-nav > ul > li {
+    float: none !important;
+    align-items: center;
+    vertical-align: middle;
+}
+
+/* Do NOT force display on li — preserve Bootstrap d-none / d-lg-* / d-xxl-* */
+body[data-design="crizal"] .attr-nav > ul > li > a {
+    padding: 0.85rem 0.55rem;
+    line-height: 1;
+}
+
+@media (min-width: 992px) {
+    body[data-design="crizal"] .navbar-default .navbar-header,
+    body[data-design="crizal"] .navbar-default .navbar-header-custom {
+        min-width: 9.5rem;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav,
+    body[data-design="crizal"] .navbar-default #nav {
+        display: flex !important;
+        flex: 1 1 auto;
+        min-width: 0;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: center;
+        margin-left: auto !important;
+        margin-right: 0.35rem;
+        position: relative;
+        z-index: 1;
+        width: auto !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav > li {
+        float: none;
+        width: auto !important;
+        margin-left: 0.1rem;
+        border-top: 0;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
+        font-size: 0.72rem;
+        letter-spacing: 0.01em;
+        padding: 1.15rem 0.28rem;
+        line-height: 1.15;
+        white-space: nowrap;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar > ul > li.has-sub > a:after {
+        top: 50%;
+        margin-top: -3px;
+        right: -6px;
+    }
+
+    body[data-design="crizal"] .attr-nav {
+        float: none !important;
+        flex: 0 0 auto;
+        margin-left: 0.25rem !important;
+        margin-right: 0 !important;
+        align-self: center;
+    }
+
+    /* Mobile +/− toggles must not appear on desktop flyout menus */
+    body[data-design="crizal"] .navbar-nav .submenu-button {
+        display: none !important;
+    }
+}
+
+/* Keep the About CTA out of crowded headers; only show on very wide screens */
+@media (max-width: 1399.98px) {
+    body[data-design="crizal"] .attr-nav > ul > li.d-xxl-inline-block {
+        display: none !important;
+    }
+}
+
+body[data-design="crizal"] .attr-nav > ul > li > a span.badge {
+    width: 1rem;
+    height: 1rem;
+    min-width: 1rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    line-height: 1;
+}
+
+/* Long helper copy under form fields must wrap — never stretch the page */
+body[data-design="crizal"] .form-group > .badge,
+body[data-design="crizal"] .form-group .badge-info {
+    display: inline-block;
+    max-width: 100%;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.35;
+    font-weight: 500;
+    margin-top: 0.35rem;
+    padding: 0.4rem 0.65rem;
+}
+
+body[data-design="crizal"] .form-text-help {
+    display: block;
+    max-width: 100%;
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--crizal-muted);
+    white-space: normal;
+}
+
+/* Product / listing cards: keep image boxes consistent */
+body[data-design="crizal"] .product-grid .card-img-top,
+body[data-design="crizal"] .product-card img,
+body[data-design="crizal"] .cz-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Auth cards: align with Crizal button language */
+body[data-design="crizal"] .crizal-auth-card {
+    border: 0;
+    border-radius: var(--crizal-radius-lg);
+    box-shadow: var(--crizal-shadow);
+}
+
+body[data-design="crizal"] .crizal-auth-card .form-control {
+    min-height: 2.75rem;
+}
+
+/* WOW.js can leave .wow at visibility:hidden if init/scroll fails — never hide content */
+body[data-design="crizal"] .wow {
+    visibility: visible !important;
+}
+
+/* Category tree: name navigates; chevron toggles collapse (Bootstrap 5) */
+body[data-design="crizal"] .widget-categories .crizal-cat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-link {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-link:hover {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--crizal-muted);
+    cursor: pointer;
+    line-height: 1;
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle:hover {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle.is-static {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle svg,
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle i {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s ease;
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle:not(.collapsed) svg,
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle:not(.collapsed) i,
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="true"] svg,
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+/* Fallback caret when feather icons are unavailable */
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle:not(:has(svg)):after {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    margin-top: -0.2rem;
+}
+
+body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="true"]:not(:has(svg)):after {
+    transform: rotate(225deg);
+    margin-top: 0.15rem;
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
+        font-size: 0.72rem;
+        padding: 1rem 0.25rem;
+        letter-spacing: 0;
+    }
+}
+
+/* Mobile hero: keep title/CTA readable without stacking onto each other */
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .slider-fade3 .item {
+        padding-top: 3rem !important;
+        padding-bottom: 3.5rem !important;
+    }
+
+    body[data-design="crizal"] .slider-fade3 .item h2,
+    body[data-design="crizal"] .slider-fade3 .item .display-1 {
+        font-size: 1.85rem !important;
+        line-height: 1.15 !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    body[data-design="crizal"] .slider-fade3 .item .lead {
+        font-size: 0.95rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    body[data-design="crizal"] .slider-fade3 .item .butn-style8 {
+        font-size: 0.75rem;
+        padding: 0.65rem 1.1rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    /* Restore Crizal nav-menu.css mobile dropdown (overrides desktop flex polish) */
+    body[data-design="crizal"] .navbar-default .navbar {
+        flex-wrap: nowrap;
+        align-items: center;
+        position: relative;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-header,
+    body[data-design="crizal"] .navbar-default .navbar-header-custom {
+        order: 1;
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+        min-width: 0;
+        z-index: 5;
+    }
+
+    body[data-design="crizal"] .attr-nav {
+        order: 2;
+        float: none !important;
+        flex: 0 0 auto;
+        margin-left: auto !important;
+        margin-right: 3.75rem !important; /* room for absolute toggler */
+        align-self: center;
+        position: relative;
+        z-index: 5;
+    }
+
+    body[data-design="crizal"] .navbar-toggler {
+        order: 3;
+        flex: 0 0 auto;
+        position: absolute;
+        right: 0;
+        top: 13px;
+        transform: none;
+        margin: 0;
+        z-index: 12399994;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav,
+    body[data-design="crizal"] .navbar-default #nav {
+        order: 4;
+        display: none;
+        flex: none !important;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        float: none !important;
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: calc(100vh - 120px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        z-index: 12399990;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav.open,
+    body[data-design="crizal"] .navbar-default #nav.open {
+        display: block !important;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav > li,
+    body[data-design="crizal"] .navbar-default #nav > li {
+        float: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left;
+        border-top: 1px solid #e6e6e6;
+        position: relative;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav > li > a,
+    body[data-design="crizal"] .navbar-default #nav > li > a {
+        display: block;
+        width: 100%;
+        font-size: 15px !important;
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1.3;
+        padding: 14px 20px !important;
+        white-space: normal;
+        color: #14212B;
+    }
+
+    /* Hide desktop carets; submenu-button (+/−) handles expand on mobile */
+    body[data-design="crizal"] .navbar-default .navbar-nav > li.has-sub > a:after,
+    body[data-design="crizal"] .navbar-default .navbar-nav > li.has-sub > a:before,
+    body[data-design="crizal"] .navbar-default .navbar > ul > li.has-sub > a:after,
+    body[data-design="crizal"] .navbar-default .navbar > ul > li.has-sub > a:before,
+    body[data-design="crizal"] .navbar-default .navbar-nav ul ul > li.has-sub > a:after,
+    body[data-design="crizal"] .navbar-default .navbar-nav ul ul > li.has-sub > a:before {
+        display: none !important;
+        content: none !important;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav ul {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        float: none !important;
+        box-shadow: none !important;
+        background: #f5f5f5;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav ul li a {
+        display: block;
+        width: 100%;
+        padding: 10px 35px 10px 30px !important;
+        font-size: 16px;
+        font-weight: 600;
+        color: #14212B;
+        white-space: normal;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav ul ul li a {
+        padding-left: 45px !important;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav ul ul ul li a {
+        padding-left: 55px !important;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-nav .submenu-button {
+        position: absolute;
+        z-index: 99;
+        right: 0;
+        top: 0;
+        display: block;
+        height: 51px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    body[data-design="crizal"] .attr-nav > ul > li > a {
+        padding: 0.45rem 0.35rem;
+        font-size: 1rem;
+    }
+
+    /* Mobile: hide desktop-only account icon (Bootstrap d-lg may be overridden elsewhere) */
+    body[data-design="crizal"] .attr-nav > ul > li.d-lg-inline-block {
+        display: none !important;
+    }
+}

@@ -1,0 +1,204 @@
+@model EImece.Domain.Models.FrontModels.BuyWithNoAccountCreation
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Models.Enums;
+@using System.Collections.Immutable;
+@using System.Text.RegularExpressions;
+
+@{
+    ShoppingCartSession shoppingCartSession = (ShoppingCartSession)ViewBag.ShoppingCartSession;
+    var customer = Model.Customer;
+    BuyWithNoAccountCreation BuyWithNoAccountCreation = Model;
+    List<ShoppingCartItem> products = BuyWithNoAccountCreation.ShoppingCartItems;
+}
+
+<br />
+<br />
+<br />
+
+<div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+    <div class="row">
+
+        <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info text-center">
+                        <div>@Resource.CustomerBillingDetailsNotFilledOut</div>
+                        <div>@Resource.ContinueShoppingWithoutAccount</div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12 col-md-12">
+                    <h6 class="mb-3 pt-2 pb-3 border-bottom">@Resource.ShippingAddress</h6>
+                    @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> @Html.LabelFor(model => customer.Name)</label>
+                                    @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> @Html.LabelFor(model => customer.Surname)</label>
+                                    @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-envelope"></i> @Html.LabelFor(model => customer.Email)</label>
+                                    @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-id-card"></i> @Html.LabelFor(model => customer.IdentityNumber)</label>
+                                    @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    <small class="form-text-help">@Resource.WhyNeedIdentityNumber</small>
+                                    @Html.ValidationMessageFor(model => customer.IdentityNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-phone"></i> @Html.LabelFor(model => customer.GsmNumber)</label>
+                                    @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 5XX XXX XX XX" } })
+                                    <small class="form-text-help">@Resource.WhyNeedGsmNumber</small>
+                                    @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => customer.Gender, htmlAttributes: new { @class = "control-label" })<br />
+
+                                    <label class="me-2">
+                                        @Html.RadioButtonFor(model => customer.Gender, ((int)GenderType.Woman).ToString()) Kadin
+                                    </label>
+
+                                    <label>
+                                        @Html.RadioButtonFor(model => customer.Gender, ((int)GenderType.Man).ToString()) Erkek
+                                    </label>
+
+                                    @Html.ValidationMessageFor(model => customer.Gender, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-city"></i> @Html.LabelFor(model => customer.City)</label>
+                                    <input type="hidden" id="SelectedCity" value="@customer.City" />
+                                    @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
+                                    @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-map-marker-alt"></i> @Html.LabelFor(model => customer.Town)</label>
+                                    <input type="hidden" id="SelectedTown" value="@customer.Town" />
+                                    @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
+                                    @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="hidden" id="SelectedDistrict" value="@customer.District" />
+                                    @Html.LabelFor(model => customer.District)
+                                    @Html.DropDownListFor(model => customer.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
+                                    @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => customer.Street)
+                                    @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-globe"></i> @Html.LabelFor(model => customer.Country)</label>
+                                    @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-map-pin"></i> @Html.LabelFor(model => customer.ZipCode)</label>
+                                    @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div>@Html.LabelFor(model => customer.Description, htmlAttributes: new { @class = "control-label" }) </div>
+                                    @Html.TextAreaFor(model => customer.Description, new { @class = "form-control", placeholder = "", rows = "3" })
+                                    @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="alert alert-secondary" role="alert">
+                                        @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-info btn-block"><i class="fas fa-credit-card"></i> @Resource.GoToPayment</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        @Html.Partial("_OrderSummaryBeforePayment", shoppingCartSession)
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+            $(document).ready(function () {
+
+                GetIller();
+
+            });
+    </script>
+
+}

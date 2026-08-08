@@ -111,7 +111,11 @@ namespace EImece.Domain.Services
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             string menuLink = "stories-categories_" + result.Story.GetSeoUrl();
             result.BlogMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.Tags = TagService.GetActiveBaseEntities(true, language);
+            // Sidebar/footer tag cloud needs story ItemCount (same source as category pages).
+            result.Tags = TagService.GetTagsWithStoryCounts(language, minStoryCount: 1)
+                .OrderByDescending(t => t.ItemCount)
+                .ThenBy(t => t.Name)
+                .ToList();
             result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
             return result;
         }

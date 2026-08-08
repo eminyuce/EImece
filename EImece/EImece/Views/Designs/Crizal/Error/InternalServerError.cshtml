@@ -1,0 +1,29 @@
+﻿@model  EImece.Domain.Models.HelperModels.ErrorModel
+@using Resources;
+@using EImece.Domain;
+@{
+    ViewBag.Title = Resource.UnexpectedErrorText;
+    ViewBag.Description = Resource.InternalServererrorText;
+    var detail = ViewBag.ExceptionDetail as Exception;
+}
+<div class="container py-5">
+    <div class="crizal-empty-state">
+        <h1>500</h1>
+        <h2>@ViewBag.Title</h2>
+        <p class="text-muted mb-4">@ViewBag.Description</p>
+        <a class="butn-style8" href="@Url.Action("Index","Home")">@Resource.ContinueShopping</a>
+    </div>
+</div>
+@if ((AppConfig.ExposeDetailedErrors || HttpContext.Current.IsDebuggingEnabled) && detail != null)
+{
+    <div class="container">
+        <div class="panel panel-danger" style="margin: 20px; text-align: left;">
+            <div class="panel-heading"><strong>Detailed error</strong></div>
+            <div class="panel-body">
+                <p><strong>Type:</strong> @detail.GetType().FullName</p>
+                <p><strong>Message:</strong> @detail.Message</p>
+                <pre style="white-space: pre-wrap; max-height: 480px; overflow: auto;">@detail.ToString()</pre>
+            </div>
+        </div>
+    </div>
+}

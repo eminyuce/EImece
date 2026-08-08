@@ -1,0 +1,22 @@
+﻿@model EImece.Domain.Entities.Story
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers
+@using Resources
+@{
+    var story = Model;
+    int width = ViewData["Width"].ToInt(400);
+    int height = ViewData["Height"].ToInt(260);
+    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
+    var imageUrl = story.GetCroppedImageUrl(imageId, width, height);
+}
+
+<a class="crizal-story-related__card h-100" href="@story.DetailPageUrl">
+    <img src="@imageUrl" alt="@story.Name" width="@width" height="@height" loading="lazy" decoding="async" />
+    <span>
+        <small>
+            <time datetime="@story.CreatedDate.ToString("yyyy-MM-dd")">@story.CreatedDate.ToShortDateString()</time>
+        </small>
+        <strong>@story.Name</strong>
+        <em class="crizal-story-related__excerpt">@story.GetSeoDescription(120)</em>
+    </span>
+</a>

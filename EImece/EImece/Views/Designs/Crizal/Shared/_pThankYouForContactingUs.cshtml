@@ -1,0 +1,30 @@
+﻿@model EImece.Domain.Models.FrontModels.ContactUsFormViewModel
+@using Resources;
+
+<div class="margin-top-50"></div>
+
+<br />
+<div class="container pb-5 mb-sm-4">
+    <div class="row justify-content-center pt-5">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <h2>@Resource.ThankYouForContactingUs</h2>
+                    <!-- Login -->
+                    <p style="color:black"> @Resource.DearCustomer @Html.DisplayFor(model => model.Name)  </p>
+                    <p style="color:black">
+                        @Html.Raw(Resource.ThankYouContactUsForm)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

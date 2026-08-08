@@ -1,0 +1,61 @@
+﻿@model EImece.Domain.Entities.Story
+@using System.Linq
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers
+@using Resources
+@{
+    var story = Model;
+    var tags = (story.StoryTags ?? Enumerable.Empty<StoryTag>())
+        .Where(r1 => r1.Tag != null)
+        .Select(r1 => r1.Tag)
+        .Distinct()
+        .ToList();
+    int Width = ViewData["Width"].ToInt(480);
+    int Height = ViewData["Height"].ToInt(320);
+    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
+    var imageUrl = story.GetCroppedImageUrl(imageId, Width, Height);
+    var srcset = imageId > 0 ? story.GetResponsiveImageSrcSet(imageId, Width, Height) : string.Empty;
+    var excerpt = !string.IsNullOrWhiteSpace(story.ShortDescription)
+        ? story.ShortDescription
+        : story.GetSeoDescription(180);
+}
+
+<article class="crizal-story-card">
+    <a class="crizal-story-card__media" href="@story.DetailPageUrl" aria-label="@story.Name">
+        <img src="@imageUrl"
+             srcset="@srcset"
+             sizes="(max-width: 767px) 100vw, 360px"
+             width="@Width"
+             height="@Height"
+             alt="@story.Name"
+             loading="lazy"
+             decoding="async" />
+        <time class="crizal-story-card__date" datetime="@story.CreatedDate.ToString("yyyy-MM-dd")">
+            <span class="crizal-story-card__day">@story.CreatedDate.Day</span>
+            <span class="crizal-story-card__month">@story.CreatedDate.ToString("MMM")</span>
+        </time>
+    </a>
+    <div class="crizal-story-card__body">
+        <h2 class="crizal-story-card__title">
+            <a href="@story.DetailPageUrl">@story.Name</a>
+        </h2>
+
+        @if (tags.Any())
+        {
+            <div class="crizal-tags crizal-tags--sm">
+                @foreach (var tag in tags.Take(4))
+                {
+                    <a class="crizal-tag" href="@(tag.DetailPageRelativeUrlForStories ?? "#")">@tag.Name</a>
+                }
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(excerpt))
+        {
+            <p class="crizal-story-card__excerpt">@Html.Raw(excerpt)</p>
+        }
+
+        <a href="@story.DetailPageUrl" class="butn-style8 small crizal-story-card__more"><span>@Resource.ReadMore</span></a>
+    </div>
+</article>
