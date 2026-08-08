@@ -261,6 +261,21 @@ namespace EImece.Tests.Infrastructure
         }
 
         [TestMethod]
+        public void DesignValidator_ValidatesModernBootstrapCompleteness()
+        {
+            string appRoot = GetAppRoot();
+            var result = DesignValidator.ValidateDesign("Modern-Bootstrap", appRoot);
+
+            if (!result.IsValid)
+            {
+                Assert.Fail($"AppRoot: {appRoot}, Total: {result.TotalRequiredViews}, Missing ({result.MissingViews.Count}): {string.Join(", ", result.MissingViews)}");
+            }
+
+            Assert.IsTrue(result.TotalRequiredViews > 0);
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
         public void DesignValidator_DetectsMissingViewsInIncompleteDesign()
         {
             string appRoot = GetAppRoot();
