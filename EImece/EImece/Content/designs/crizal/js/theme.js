@@ -158,6 +158,60 @@
         initHomeHero($);
         initProductTabs($);
         initProductPanels($);
+        initLeaveReviewModal($);
+        initNavMenuBreakpoint($);
+    }
+
+    function initNavMenuBreakpoint($) {
+        var mediasize = 991;
+        var syncNav = function () {
+            var $nav = $('#nav');
+            if (!$nav.length) {
+                return;
+            }
+            if ($(window).width() > mediasize) {
+                $nav.removeClass('open').css('display', '');
+                $('.navbar-toggler').removeClass('menu-opened');
+                // Collapse mobile accordion; clear inline styles from slideToggle/show
+                // so desktop CSS (left: -9999px / hover) controls flyouts again.
+                $nav.find('li.has-sub').removeClass('active');
+                $nav.find('ul').removeClass('open').each(function () {
+                    this.removeAttribute('style');
+                });
+            }
+        };
+        // Defer so this runs after nav-menu.js resizeFix (which calls ul.show()).
+        $(window).off('resize.crizalNav').on('resize.crizalNav', function () {
+            window.setTimeout(syncNav, 0);
+        });
+        syncNav();
+    }
+
+    function initLeaveReviewModal($) {
+        if (typeof $.fn.modal !== 'function') {
+            return;
+        }
+
+        var $modal = $('#leaveReview');
+        if ($modal.length && $modal.parent()[0] !== document.body) {
+            $modal.appendTo(document.body);
+        }
+
+        $(document).off('click.crizalLeaveReview', '[data-toggle="modal"][href="#leaveReview"], [data-toggle="modal"][data-target="#leaveReview"], .crizal-product-reviews__cta');
+        $(document).on('click.crizalLeaveReview', '[data-toggle="modal"][href="#leaveReview"], [data-toggle="modal"][data-target="#leaveReview"], .crizal-product-reviews__cta', function (e) {
+            e.preventDefault();
+            var $target = $('#leaveReview');
+            if ($target.length) {
+                $target.modal('show');
+            }
+        });
+
+        // Bootstrap data-api dismiss is not wired; close buttons need an explicit hide.
+        $(document).off('click.crizalLeaveReviewDismiss', '#leaveReview [data-dismiss="modal"]');
+        $(document).on('click.crizalLeaveReviewDismiss', '#leaveReview [data-dismiss="modal"]', function (e) {
+            e.preventDefault();
+            $('#leaveReview').modal('hide');
+        });
     }
 
     function initProductTabs($) {

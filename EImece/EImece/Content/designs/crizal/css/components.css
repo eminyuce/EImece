@@ -3395,3 +3395,46 @@ body[data-design="crizal"] .crizal-product-payment__note a {
         margin-bottom: 1.25rem;
     }
 }
+
+/* Leave review modal */
+body[data-design="crizal"] .crizal-review-modal .modal-content {
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    box-shadow: var(--crizal-shadow);
+}
+
+body[data-design="crizal"] .crizal-review-modal .modal-header {
+    border-bottom-color: var(--crizal-border);
+    padding: 1rem 1.25rem;
+}
+
+body[data-design="crizal"] .crizal-review-modal .modal-title {
+    font-weight: 800;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-review-modal .modal-body {
+    padding: 1.25rem;
+}
+
+body[data-design="crizal"] .crizal-review-modal .modal-footer {
+    border-top-color: var(--crizal-border);
+    padding: 0.9rem 1.25rem;
+}
+
+body[data-design="crizal"] .crizal-review-modal .butn-style8:before {
+    display: none !important;
+    content: none !important;
+}
+
+body[data-design="crizal"] .crizal-review-modal .form-control,
+body[data-design="crizal"] .crizal-review-modal .custom-select {
+    border-color: var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    min-height: 2.75rem;
+}
+
+body[data-design="crizal"] .crizal-review-modal .control-label {
+    font-weight: 700;
+    color: var(--crizal-heading);
+}

@@ -19,16 +19,15 @@
 }
 <!-- Leave a Review-->
 
-@using (Html.BeginForm("Review", "Products", FormMethod.Post, new { @class = "needs-validation modal fade", @id = "leaveReview", @tabindex = "-1" }))
+@using (Html.BeginForm("Review", "Products", FormMethod.Post, new { @class = "needs-validation modal fade crizal-review-modal", @id = "leaveReview", @tabindex = "-1", role = "dialog", aria_labelledby = "leaveReviewTitle", aria_hidden = "true" }))
 {
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">@Resource.LeaveReview</h4>
+            <h4 class="modal-title" id="leaveReviewTitle">@Resource.LeaveReview</h4>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
-
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.ProductId)
             @Html.HiddenFor(model => model.SeoUrl)
@@ -36,14 +35,14 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", autocomplete = "name" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "invalid-feedback" })
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", autocomplete = "email" } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "invalid-feedback" })
                     </div>
                 </div>
@@ -60,26 +59,25 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(
-                        model => model.Rating,
+                            model => model.Rating,
                             ratingDropDown,
-                            new
-                                 {
-                                     @class = "form-control custom-select",
-                                @id = "review-rating"
-                                 })
+                            new { @class = "form-control custom-select", @id = "review-rating" })
                         @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "invalid-feedback" })
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-0">
                 @Html.LabelFor(model => model.Review, htmlAttributes: new { @class = "control-label" })
-                @Html.TextAreaFor(model => model.Review, 8, 0, new { @class = "form-control" })
+                @Html.TextAreaFor(model => model.Review, 6, 0, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Review, "", new { @class = "text-danger" })
             </div>
-            @Html.CaptchaWidget("ProductReview")
+            <div class="mt-3">
+                @Html.CaptchaWidget("ProductReview")
+            </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="submit">@Resource.SubmitReview</button>
+            <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">@Resource.Close</button>
+            <button class="butn-style8" type="submit"><span>@Resource.SubmitReview</span></button>
         </div>
     </div>
 </div>
