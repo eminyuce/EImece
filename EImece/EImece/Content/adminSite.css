@@ -877,3 +877,354 @@ label[for^="ImageState"]:not(.control-label) {
 .media-file-preview-meta a {
     margin-left: 4px;
 }
+
+/* Generate new password page */
+.generate-password-page {
+    margin-top: 12px;
+}
+
+.generate-password-panel > .panel-heading .panel-title {
+    font-size: 18px;
+}
+
+.generate-password-panel > .panel-heading .fa {
+    margin-right: 6px;
+}
+
+.generate-password-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+    background: #f7f9fc;
+    border: 1px solid #e3e8ef;
+    border-radius: 4px;
+}
+
+.generate-password-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #337ab7;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.generate-password-user-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.3;
+}
+
+.generate-password-user-email {
+    margin-top: 4px;
+    color: #666;
+    font-size: 14px;
+}
+
+.generate-password-user-email .fa {
+    margin-right: 4px;
+}
+
+.generate-password-alert {
+    margin-bottom: 20px;
+}
+
+.generate-password-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.generate-password-input-group {
+    max-width: 520px;
+}
+
+.generate-password-value {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    background: #fffef5;
+    font-weight: 600;
+}
+
+#copyGeneratedPassword.is-copied {
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+.generate-password-help {
+    min-height: 20px;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.generate-password-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media (max-width: 767px) {
+    .generate-password-user {
+        align-items: flex-start;
+    }
+
+    .generate-password-actions .btn {
+        width: 100%;
+    }
+
+    .generate-password-input-group {
+        max-width: none;
+    }
+}
+
+/* User roles page */
+.user-roles-page {
+    margin-top: 12px;
+}
+
+.user-roles-panel > .panel-heading .panel-title {
+    font-size: 18px;
+}
+
+.user-roles-panel > .panel-heading .fa {
+    margin-right: 6px;
+}
+
+.user-roles-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+    background: #f7f9fc;
+    border: 1px solid #e3e8ef;
+    border-radius: 4px;
+}
+
+.user-roles-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #337ab7;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.user-roles-user-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-roles-user-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.3;
+}
+
+.user-roles-user-email {
+    margin-top: 4px;
+    color: #666;
+    font-size: 14px;
+}
+
+.user-roles-user-email .fa {
+    margin-right: 4px;
+}
+
+.user-roles-user-status {
+    margin-top: 8px;
+}
+
+.user-roles-user-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.user-roles-alert {
+    margin-bottom: 18px;
+}
+
+.user-roles-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.user-role-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0;
+    padding: 16px;
+    border: 2px solid #d9e2ec;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: normal;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.user-role-card:hover {
+    border-color: #9fb3c8;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, 0.08);
+}
+
+.user-role-card.is-selected {
+    border-color: #337ab7;
+    background: #f3f8fc;
+    box-shadow: 0 0 0 1px rgba(51, 122, 183, 0.2);
+}
+
+.user-role-card.is-admin.is-selected {
+    border-color: #8a6d3b;
+    background: #fcf8e3;
+}
+
+.user-role-card.is-editor.is-selected {
+    border-color: #3c763d;
+    background: #f4faf4;
+}
+
+.user-role-card-check {
+    padding-top: 2px;
+}
+
+.user-role-checkbox {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.user-role-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #eef2f7;
+    color: #445;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.user-role-card.is-admin .user-role-card-icon {
+    background: #f7e7b5;
+    color: #8a6d3b;
+}
+
+.user-role-card.is-editor .user-role-card-icon {
+    background: #d8f0d8;
+    color: #3c763d;
+}
+
+.user-role-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-role-card-title {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.user-role-card-desc {
+    display: block;
+    color: #555;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.user-role-card-code {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: #eef2f7;
+    color: #667;
+    font-size: 11px;
+    font-family: Consolas, "Courier New", monospace;
+}
+
+.user-role-card-badge {
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.user-role-selected-label,
+.user-role-unselected-label {
+    display: none;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.user-role-unselected-label {
+    display: inline-block;
+    background: #eef2f7;
+    color: #667;
+}
+
+.user-role-card.is-selected .user-role-unselected-label {
+    display: none;
+}
+
+.user-role-card.is-selected .user-role-selected-label {
+    display: inline-block;
+    background: #337ab7;
+    color: #fff;
+}
+
+.user-role-card.is-admin.is-selected .user-role-selected-label {
+    background: #8a6d3b;
+}
+
+.user-role-card.is-editor.is-selected .user-role-selected-label {
+    background: #3c763d;
+}
+
+.user-roles-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media (max-width: 767px) {
+    .user-roles-user {
+        flex-wrap: wrap;
+    }
+
+    .user-roles-user-actions,
+    .user-roles-actions {
+        width: 100%;
+    }
+
+    .user-roles-user-actions .btn,
+    .user-roles-actions .btn {
+        width: 100%;
+    }
+}

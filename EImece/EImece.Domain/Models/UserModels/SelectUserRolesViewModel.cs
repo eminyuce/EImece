@@ -45,7 +45,10 @@ namespace EImece.Models
             {
                 var checkUserRole =
                     this.Roles.Find(r => r.RoleId.Equals(userRole.RoleId));
-                checkUserRole.Selected = true;
+                if (checkUserRole != null)
+                {
+                    checkUserRole.Selected = true;
+                }
             }
         }
 
@@ -68,7 +71,10 @@ namespace EImece.Models
             {
                 var checkUserRole =
                     this.Roles.Find(r => r.RoleId.Equals(userRole.RoleId));
-                checkUserRole.Selected = true;
+                if (checkUserRole != null)
+                {
+                    checkUserRole.Selected = true;
+                }
             }
         }
 

@@ -2,27 +2,55 @@
 @using EImece.Domain;
 @model SelectRoleEditorViewModel
 @using Resources;
-@Html.HiddenFor(model => model.RoleName)
-<tr>
-    <td style="text-align:center">
-        @Html.CheckBoxFor(model => model.Selected)
-    </td>
-    <td>
-        @Html.DisplayFor(model => model.RoleName)
-    </td>
-    <td>
-        @GetUserDesc(Model.RoleName)
-    </td>
-</tr>
+@{
+    var isAdmin = Model.RoleName.Equals(Constants.AdministratorRole, StringComparison.InvariantCultureIgnoreCase);
+    var isEditor = Model.RoleName.Equals(Constants.EditorRole, StringComparison.InvariantCultureIgnoreCase);
 
-@helper GetUserDesc(String userName)
-{
-    if (userName.Equals(Constants.AdministratorRole, StringComparison.InvariantCultureIgnoreCase))
+    string roleTitle;
+    string roleDescription;
+    string roleIcon;
+    string roleTone;
+
+    if (isAdmin)
     {
-<p>@AdminResource.AdminUserRoleDescription</p>
+        roleTitle = "Yonetici (Admin)";
+        roleDescription = AdminResource.AdminUserRoleDescription;
+        roleIcon = "fa-star";
+        roleTone = "is-admin";
     }
-    else if (userName.Equals(Constants.EditorRole, StringComparison.InvariantCultureIgnoreCase))
+    else if (isEditor)
     {
-<p>@AdminResource.EditorUserRoleDescription</p>
+        roleTitle = "Editor (NormalUser)";
+        roleDescription = AdminResource.EditorUserRoleDescription;
+        roleIcon = "fa-pencil";
+        roleTone = "is-editor";
     }
+    else
+    {
+        roleTitle = Model.RoleName;
+        roleDescription = Model.RoleName;
+        roleIcon = "fa-user";
+        roleTone = "is-other";
+    }
+
+    var cardClass = "user-role-card " + roleTone + (Model.Selected ? " is-selected" : "");
 }
+@Html.HiddenFor(model => model.RoleName)
+@Html.HiddenFor(model => model.RoleId)
+<label class="@cardClass">
+    <span class="user-role-card-check">
+        @Html.CheckBoxFor(model => model.Selected, new { @class = "user-role-checkbox" })
+    </span>
+    <span class="user-role-card-icon" aria-hidden="true">
+        <i class="fa @roleIcon"></i>
+    </span>
+    <span class="user-role-card-body">
+        <span class="user-role-card-title">@roleTitle</span>
+        <span class="user-role-card-desc">@roleDescription</span>
+        <span class="user-role-card-code">@Model.RoleName</span>
+    </span>
+    <span class="user-role-card-badge">
+        <span class="user-role-selected-label">Secili</span>
+        <span class="user-role-unselected-label">Sec</span>
+    </span>
+</label>

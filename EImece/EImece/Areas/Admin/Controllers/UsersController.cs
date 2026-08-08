@@ -129,33 +129,65 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult GenerateNewPassword(string id = null)
         {
-            var user = ApplicationDbContext.Users.First(u => u.Id == id);
-            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-            // Send an email with this link
-            string code = UserManager.GeneratePasswordResetToken(user.Id);
-            String newPassWord = GeneralHelper.GenerateRandomPassword();
-            var result = UserManager.ResetPassword(user.Id, code, newPassWord);
-
-            if (result.Succeeded)
+            if (string.IsNullOrEmpty(id))
             {
-                ViewBag.NewPassword = newPassWord;
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            else
-            {
-                ViewBag.NewPassword = result.Errors.ToArray()[0].ToStr() + " ERROR is occured while generating the new password for user:" + user.Email;
-            }
-            AddErrors(result);
-            var model = new EditUserViewModel();
-            model.FirstName = user.FirstName;
-            model.LastName = user.LastName;
-            model.Email = user.Email;
-            model.Id = user.Id;
 
+            var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(model);
+
+            ViewBag.PasswordGenerated = false;
+            return View(BuildEditUserViewModel(user));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GenerateNewPasswordConfirm(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            string code = UserManager.GeneratePasswordResetToken(user.Id);
+            string newPassword = GeneralHelper.GenerateRandomPassword();
+            var result = UserManager.ResetPassword(user.Id, code, newPassword);
+
+            ViewBag.PasswordGenerated = true;
+            if (result.Succeeded)
+            {
+                ViewBag.GenerationSucceeded = true;
+                ViewBag.NewPassword = newPassword;
+            }
+            else
+            {
+                ViewBag.GenerationSucceeded = false;
+                ViewBag.NewPassword = null;
+                AddErrors(result);
+            }
+
+            return View("GenerateNewPassword", BuildEditUserViewModel(user));
+        }
+
+        private static EditUserViewModel BuildEditUserViewModel(ApplicationUser user)
+        {
+            return new EditUserViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            };
         }
 
         [HttpPost, ActionName("Delete")]

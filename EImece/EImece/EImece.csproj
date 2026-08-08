@@ -1380,6 +1380,8 @@
     <Content Include="Views\Shared\StoriesPageThemes\PageTheme_T3.cshtml" />
     <Content Include="Views\Shared\StoriesPageThemes\PageTheme_T2.cshtml" />
     <Content Include="Views\Shared\StoriesPageThemes\PageTheme_T4.cshtml" />
+    <Content Include="Views\Shared\StoriesPageThemes\PageTheme_T5.cshtml" />
+    <Content Include="Views\Shared\StoriesPageThemes\_StoryCategoryBootstrap.cshtml" />
     <Content Include="Views\Stories\Tag.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FileStorage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProductShort.cshtml" />
