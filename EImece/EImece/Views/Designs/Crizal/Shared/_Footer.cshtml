@@ -1,0 +1,106 @@
+﻿@using Resources;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using System.Threading;
+@model FooterViewModel
+@{
+    var footerModel = Model;
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
+    int communicationId = 0;
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var SpecialFooterMenuLinkMenuId = countryCode.Equals("tr-TR") ? AppConfig.MusteriIliskileriChildrenIdTurkce : -1;
+    var musteriIliskileriChildren = Model.Menus.Where(r => r.ParentId == SpecialFooterMenuLinkMenuId).OrderBy(r => r.Position).ToList();
+    var aboutUsChildrenLinks = Model.Menus.Where(r => r.ParentId == 6135).OrderBy(r => r.Position).ToList();
+    var productCategories = Model.ProductCategories;
+    var productRootCategories = productCategories.Where(r => r.ParentId == 0).ToList();
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
+    var companyName = Html.Action("GetCompanyName", "Home");
+}
+<footer class="crizal-footer page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="widget">
+                    <h3 class="widget-title">@companyName</h3>
+                    <p class="mb-3">@Resource.StayInformed</p>
+                    @Html.Partial("_AddSubscriber", Model)
+                    @if (productPriceEnabled)
+                    {
+                        <img class="mt-3" src="~/Content/img/logo-footer-mastervisa.png" width="180" height="40" alt="MasterCard and Visa accepted" loading="lazy" decoding="async" />
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="widget widget-links">
+                    <h3 class="widget-title">@Resource.ProductCategories</h3>
+                    <ul class="list-unstyled">
+                        @if (productRootCategories.IsNotEmpty())
+                        {
+                            foreach (var m in productRootCategories.Take(8))
+                            {
+                                <li class="mb-2">
+                                    <a href="@Url.Action("Category", "ProductCategories", new { id = m.GetSeoUrl() })">@m.Name</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="widget widget-links">
+                    <h3 class="widget-title">@Resource.AboutUs</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="@Url.Action(Constants.AboutUs,"info")">@Resource.AboutUs</a></li>
+                        @if (communicationPageLink != null)
+                        {
+                            communicationId = communicationPageLink.Id;
+                            <li class="mb-2"><a href="@communicationPageLink.DetailPageLink">@communicationPageLink.Name</a></li>
+                        }
+                        @if (aboutUsChildrenLinks.IsNotEmpty())
+                        {
+                            foreach (var m in aboutUsChildrenLinks)
+                            {
+                                <li class="mb-2"><a href="@m.DetailPageLink">@m.Name</a></li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="widget widget-links">
+                    <h3 class="widget-title">@Resource.CustomerRelationship</h3>
+                    <ul class="list-unstyled">
+                        @if (productPriceEnabled)
+                        {
+                            <li class="mb-2"><a href="@Url.Action("CargoTracking","Payment")">@Resource.TrackYourCargo</a></li>
+                        }
+                        @if (musteriIliskileriChildren.IsNotEmpty())
+                        {
+                            foreach (var m in musteriIliskileriChildren)
+                            {
+                                <li class="mb-2"><a href="@m.DetailPageLink">@m.Name</a></li>
+                            }
+                        }
+                        <li class="mb-2"><a href="@Url.Action(Constants.DeliveryInfo,"info")">@Resource.DeliveryInfo</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        @if (footerModel.FooterHtmlDescription != null && !string.IsNullOrEmpty(footerModel.FooterHtmlDescription.SettingValue))
+        {
+            <div class="py-3 border-top border-color-light-white">
+                @Html.Raw(footerModel.FooterHtmlDescription.SettingValue)
+            </div>
+        }
+
+        <div class="crizal-footer-bottom text-center">
+            <span class="mr-1">© @DateTime.Now.Year @companyName. All rights reserved. Made by</span>
+            <a href="http://www.erayweb.com/" target="_blank" rel="noopener noreferrer">Erayweb</a>
+        </div>
+    </div>
+</footer>

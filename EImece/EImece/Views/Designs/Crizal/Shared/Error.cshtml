@@ -1,0 +1,70 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@using EImece.Domain.Helpers
+@using EImece.Domain
+@using System.Web
+@using Resources
+
+@{
+    ViewBag.Title = "Error";
+    var exception = Model != null ? Model.Exception : null;
+    var errorCode = 0;
+    if (exception is HttpException)
+    {
+        errorCode = ((HttpException)exception).GetHttpCode();
+    }
+
+    var body = string.Empty;
+    body += string.Format("Page: {0} \n", Request.Url.AbsoluteUri);
+    if (Request.UrlReferrer != null)
+    {
+        body += string.Format("Referal: {0} \n", Request.UrlReferrer.AbsoluteUri);
+    }
+    if (exception != null)
+    {
+        body += string.Format("Error: {0} \n", exception.Message);
+    }
+    body += string.Format("Time: {0} \n", DateTime.Now.ToLongTimeString());
+    if (User.Identity.IsAuthenticated)
+    {
+        body += string.Format("User: {0} \n", User.Identity.Name);
+    }
+    body = GeneralHelper.EncodeForEmailLink(body);
+    var link = String.Format("mailto:yuce@marinelink.com?subject={0}&body={1}", errorCode, body);
+}
+
+<div class="container py-5">
+    <div class="crizal-empty-state">
+        @if (errorCode == 404)
+        {
+            <h1>404</h1>
+            <h2>Sorry, the page you requested was not found.</h2>
+        }
+        else
+        {
+            <h1>@(errorCode > 0 ? errorCode.ToString() : "Error")</h1>
+            <h2>We're sorry, something went wrong.</h2>
+        }
+
+        @if (exception != null)
+        {
+            <p class="text-muted mb-3">@exception.Message</p>
+        }
+
+        @if ((AppConfig.ExposeDetailedErrors || HttpContext.Current.IsDebuggingEnabled) && exception != null && Model != null)
+        {
+            <div class="panel panel-danger text-left" style="margin-top: 20px;">
+                <div class="panel-heading"><strong>Detailed error</strong></div>
+                <div class="panel-body">
+                    <p><strong>Controller:</strong> @Model.ControllerName &nbsp; <strong>Action:</strong> @Model.ActionName</p>
+                    <p><strong>Type:</strong> @exception.GetType().FullName</p>
+                    <pre style="white-space: pre-wrap; max-height: 480px; overflow: auto;">@exception.ToString()</pre>
+                </div>
+            </div>
+        }
+
+        <p class="mt-3">
+            <a class="butn-style8" href="@Url.Action("Index","Home")">@Resource.ContinueShopping</a>
+            <a class="butn-style8 secondary ml-2" id="hlInform" href="@link">Report this error</a>
+        </p>
+    </div>
+</div>

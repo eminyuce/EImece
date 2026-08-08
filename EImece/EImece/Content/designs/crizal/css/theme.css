@@ -1,0 +1,162 @@
+/* Crizal Design System — tokens & base (home-business-02) */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --crizal-primary: #09b850;
+    --crizal-primary-hover: #078a3c;
+    --crizal-primary-rgb: 9, 184, 80;
+    --crizal-secondary: #14212B;
+    --crizal-secondary-hover: #0d151c;
+    --crizal-background: #ffffff;
+    --crizal-surface: #ffffff;
+    --crizal-surface-alt: #f4f5f9;
+    --crizal-surface-soft: #f5fafe;
+    --crizal-text: #575a7b;
+    --crizal-muted: #7a7d9a;
+    --crizal-heading: #14212B;
+    --crizal-border: #e6e8ef;
+    --crizal-border-light: rgba(255, 255, 255, 0.15);
+    --crizal-success: #09b850;
+    --crizal-warning: #ff7e67;
+    --crizal-danger: #ff214f;
+    --crizal-info: #3b82f6;
+    --crizal-sale: #ff214f;
+    --crizal-radius-sm: 0.25rem;
+    --crizal-radius: 0.375rem;
+    --crizal-radius-lg: 0.75rem;
+    --crizal-radius-xl: 1rem;
+    --crizal-shadow-sm: 0 2px 8px rgba(20, 33, 43, 0.06);
+    --crizal-shadow: 0 8px 24px rgba(20, 33, 43, 0.1);
+    --crizal-shadow-lg: 0 16px 40px rgba(20, 33, 43, 0.14);
+    --crizal-transition: all 0.25s ease;
+    --crizal-container: 1170px;
+    --crizal-font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+body[data-design="crizal"] {
+    font-family: var(--crizal-font);
+    background-color: var(--crizal-background);
+    color: var(--crizal-text);
+    font-size: 16px;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+}
+
+body[data-design="crizal"] h1,
+body[data-design="crizal"] h2,
+body[data-design="crizal"] h3,
+body[data-design="crizal"] h4,
+body[data-design="crizal"] h5,
+body[data-design="crizal"] h6 {
+    font-family: var(--crizal-font);
+    color: var(--crizal-heading);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
+body[data-design="crizal"] h1 { font-size: 2.5rem; }
+body[data-design="crizal"] h2 { font-size: 2rem; }
+body[data-design="crizal"] h3 { font-size: 1.5rem; }
+body[data-design="crizal"] h4 { font-size: 1.25rem; }
+body[data-design="crizal"] h5 { font-size: 1.1rem; }
+body[data-design="crizal"] h6 { font-size: 1rem; }
+
+body[data-design="crizal"] a {
+    color: var(--crizal-primary);
+    transition: var(--crizal-transition);
+}
+
+body[data-design="crizal"] a:hover {
+    color: var(--crizal-primary-hover);
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .bg-primary,
+body[data-design="crizal"] .badge-primary,
+body[data-design="crizal"] .btn-primary {
+    background-color: var(--crizal-primary) !important;
+    border-color: var(--crizal-primary) !important;
+}
+
+body[data-design="crizal"] .btn-primary:hover,
+body[data-design="crizal"] .btn-primary:focus {
+    background-color: var(--crizal-primary-hover) !important;
+    border-color: var(--crizal-primary-hover) !important;
+}
+
+body[data-design="crizal"] .bg-secondary {
+    background-color: var(--crizal-secondary) !important;
+}
+
+body[data-design="crizal"] .text-primary {
+    color: var(--crizal-primary) !important;
+}
+
+body[data-design="crizal"] .text-secondary {
+    color: var(--crizal-secondary) !important;
+}
+
+body[data-design="crizal"] .btn-outline-success {
+    color: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .btn-outline-success:hover {
+    background-color: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+    color: #fff;
+}
+
+/* Override mstore dark topbars when Crizal chrome is active */
+body[data-design="crizal"] .crizal-main-wrapper {
+    overflow-x: hidden;
+}
+
+body[data-design="crizal"] .page-title-wrapper {
+    background: linear-gradient(135deg, var(--crizal-surface-alt) 0%, var(--crizal-surface-soft) 100%);
+    padding: 1.75rem 0 1.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .page-title-wrapper .page-title {
+    font-weight: 800;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .page-title-wrapper .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+body[data-design="crizal"] .page-title-wrapper .alert-secondary {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin-bottom: 0.5rem;
+}
+
+body[data-design="crizal"] .scroll-to-top-btn {
+    background: var(--crizal-primary);
+    color: #fff;
+    border-radius: 50%;
+    box-shadow: var(--crizal-shadow);
+}
+
+body[data-design="crizal"] .scroll-to-top-btn:hover {
+    background: var(--crizal-primary-hover);
+    color: #fff;
+}
+
+/* Form focus */
+body[data-design="crizal"] .form-control:focus {
+    border-color: var(--crizal-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--crizal-primary-rgb), 0.2);
+}
+
+body[data-design="crizal"] ::selection {
+    background: rgba(var(--crizal-primary-rgb), 0.2);
+}

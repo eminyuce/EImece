@@ -1,0 +1,18 @@
+﻿@model EImece.Domain.Entities.MainPageImage
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+
+@{
+    var image = Model.MainImage;
+    var mainPageImage = Model;
+    int index = ViewData["index"].ToInt() + 1;
+}
+
+<!-- Slide 1  -->
+<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
+    <img src="@mainPageImage.GetFullPathImageUrlFromFileSystem(false)" alt="slidebg1" data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+    <div class="caption sfb fadeout" data-x="145" data-y="170" data-speed="400" data-start="800" data-easing="Power4.easeOut">
+        <h3>@Html.Raw(@mainPageImage.Description)</h3>
+        <a href="shop-with-sidebar.html" class="caption-btn">@mainPageImage.Name</a>
+    </div>
+</li>

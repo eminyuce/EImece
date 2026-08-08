@@ -1,0 +1,120 @@
+﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
+@model NavigationModel
+@{
+    var productCategories = Model.ProductCategories;
+}
+
+<div class="collapse navbar-collapse order-lg-1" id="crizalMenu">
+    <ul class="navbar-nav mr-auto" aria-label="Primary">
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index","Home")">@Resources.Resource.HomePage</a>
+        </li>
+        <li class="nav-item dropdown mega-dropdown crizal-mega">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Resources.Resource.ProductCategories</a>
+            <div class="dropdown-menu">
+                <div class="dropdown-inner d-lg-flex flex-wrap">
+                    @for (int i = 0; i < productCategories.Count; i++)
+                    {
+                        @CreateProductTree(productCategories[i])
+                    }
+                </div>
+            </div>
+        </li>
+        @CreateMenuTree(Model)
+    </ul>
+</div>
+
+@helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
+{
+    var productCategory = categoryTreeModel.ProductCategory;
+    var mainImage = productCategory.MainImage;
+    string productImgLink = "";
+    if (mainImage != null)
+    {
+        productImgLink = mainImage.GetCroppedImageUrl(mainImage.Id, 200, 0);
+    }
+    <div class="dropdown-column px-2 mb-3">
+        <div class="bg-position-center bg-no-repeat bg-size-cover text-center px-2 py-3 mb-2 rounded" style="background-image: url(@productImgLink); min-height: 80px;">
+            <h3 class="h6 text-white text-shadow my-2"><a class="text-white" href="@productCategory.DetailPageUrl">@productCategory.Name</a></h3>
+        </div>
+        @CreateProductChildrenTree(categoryTreeModel)
+    </div>
+}
+
+@helper CreateProductChildrenTree(ProductCategoryTreeModel categoryTreeModel)
+{
+    if (categoryTreeModel.Childrens.IsNotEmpty())
+    {
+        <ul class="list-unstyled mb-0">
+            @foreach (var childCategory in categoryTreeModel.Childrens)
+            {
+                var productChildCategory = childCategory.ProductCategory;
+                <li class="mb-1">
+                    <a class="small" href="@productChildCategory.ProductCategoryLink">@productChildCategory.Name</a>
+                    @CreateProductChildrenTree(childCategory)
+                </li>
+            }
+        </ul>
+    }
+}
+
+@helper CreateMenuTree(NavigationModel navigationMenu)
+{
+    foreach (var menu in navigationMenu.Menus)
+    {
+        @CreateMenuChildrenTree(menu)
+    }
+}
+
+@helper CreateMenuChildrenTree(MenuTreeModel menuTreeModel)
+{
+    var menu = menuTreeModel.Menu;
+    if (menuTreeModel.Childrens.IsNotEmpty())
+    {
+        <li class="nav-item dropdown @menu.IsPageActived">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">@menu.Name</a>
+            <ul class="dropdown-menu">
+                @foreach (var menuChildren in menuTreeModel.Childrens)
+                {
+                    var menuChild = menuChildren.Menu;
+                    if (menuChildren.Childrens.IsNotEmpty())
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-item dropdown-toggle" href="#">
+                                <span class="font-size-sm">@menuChildren.Name</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @foreach (var grandChild in menuChildren.Childrens)
+                                {
+                                    var grandChildMenu = grandChild.Menu;
+                                    <li>
+                                        <a class="dropdown-item" href="@grandChildMenu.DetailPageLink">
+                                            <span class="font-size-sm">@grandChild.Name</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="dropdown-item" href="@menuChild.DetailPageLink">
+                                <span class="font-size-sm">@menuChildren.Name</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item @menu.IsPageActived">
+            <a class="nav-link" href="@menu.DetailPageLink">@menu.Name</a>
+        </li>
+    }
+}

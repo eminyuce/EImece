@@ -1,0 +1,654 @@
+/* Crizal Components — header, hero, cards, buttons, shop, footer */
+
+/* ---------- Buttons (butn-style8 inspired) ---------- */
+.butn,
+.butn-style8,
+.crizal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    font-family: var(--crizal-font);
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: var(--crizal-radius);
+    border: 2px solid transparent;
+    transition: var(--crizal-transition);
+    cursor: pointer;
+    text-decoration: none !important;
+    line-height: 1.2;
+}
+
+.butn-style8,
+.crizal-btn-primary {
+    background: var(--crizal-primary);
+    color: #fff !important;
+    border-color: var(--crizal-primary);
+}
+
+.butn-style8:hover,
+.crizal-btn-primary:hover {
+    background: var(--crizal-secondary);
+    border-color: var(--crizal-secondary);
+    color: #fff !important;
+}
+
+.butn-style8.secondary,
+.crizal-btn-secondary {
+    background: var(--crizal-secondary);
+    color: #fff !important;
+    border-color: var(--crizal-secondary);
+}
+
+.butn-style8.secondary:hover,
+.crizal-btn-secondary:hover {
+    background: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+}
+
+.crizal-btn-outline {
+    background: transparent;
+    color: var(--crizal-secondary) !important;
+    border-color: var(--crizal-secondary);
+}
+
+.crizal-btn-outline:hover {
+    background: var(--crizal-secondary);
+    color: #fff !important;
+}
+
+.crizal-btn.small,
+.butn.small {
+    padding: 0.55rem 1.15rem;
+    font-size: 0.75rem;
+}
+
+/* ---------- Header (header-style3) ---------- */
+.crizal-header {
+    position: relative;
+    z-index: 1040;
+}
+
+.crizal-top-bar {
+    background: var(--crizal-secondary);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.8125rem;
+    padding: 0.55rem 0;
+}
+
+.crizal-top-bar a {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.crizal-top-bar a:hover {
+    color: var(--crizal-primary);
+}
+
+.crizal-top-bar-info {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: center;
+}
+
+.crizal-top-bar-info li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.crizal-top-social {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.85rem;
+}
+
+.crizal-top-social a {
+    color: #fff;
+    opacity: 0.85;
+}
+
+.crizal-top-social a:hover {
+    color: var(--crizal-primary);
+    opacity: 1;
+}
+
+.crizal-navbar {
+    background: var(--crizal-secondary);
+    border-bottom: 1px solid var(--crizal-border-light);
+    padding: 0.65rem 0;
+}
+
+.crizal-navbar .navbar-brand img {
+    max-height: 52px;
+    width: auto;
+}
+
+.crizal-navbar .navbar-nav .nav-link {
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    padding: 0.75rem 0.9rem !important;
+    letter-spacing: 0.02em;
+}
+
+.crizal-navbar .navbar-nav .nav-link:hover,
+.crizal-navbar .navbar-nav .nav-item.show > .nav-link,
+.crizal-navbar .navbar-nav .nav-link.active {
+    color: var(--crizal-primary) !important;
+}
+
+.crizal-navbar .navbar-toggler {
+    border: 0;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.5rem 0.65rem;
+    color: #fff;
+}
+
+.crizal-attr-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: 1rem;
+}
+
+.crizal-attr-nav .crizal-icon-btn {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff !important;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+    min-width: 3rem;
+    position: relative;
+    padding: 0.25rem;
+}
+
+.crizal-attr-nav .crizal-icon-btn:hover {
+    color: var(--crizal-primary) !important;
+}
+
+.crizal-attr-nav .crizal-icon-btn svg,
+.crizal-attr-nav .crizal-icon-btn i {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-bottom: 0.15rem;
+}
+
+.crizal-cart-badge {
+    position: absolute;
+    top: -2px;
+    right: 4px;
+    background: var(--crizal-primary);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.25rem;
+}
+
+.crizal-search-wrap {
+    flex: 1;
+    max-width: 420px;
+    margin: 0 1rem;
+}
+
+.crizal-search-wrap .form-control {
+    border: 0;
+    border-radius: var(--crizal-radius) 0 0 var(--crizal-radius);
+    height: 44px;
+}
+
+.crizal-search-wrap .input-group-text,
+.crizal-search-wrap button.input-group-text {
+    background: var(--crizal-primary);
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0 var(--crizal-radius) var(--crizal-radius) 0;
+    height: 44px;
+}
+
+.crizal-mega .dropdown-menu {
+    border: 0;
+    box-shadow: var(--crizal-shadow-lg);
+    border-radius: var(--crizal-radius);
+    padding: 1.25rem;
+    margin-top: 0;
+}
+
+.crizal-mega .dropdown-column {
+    min-width: 180px;
+}
+
+/* ---------- Section titles ---------- */
+.crizal-title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.crizal-title .eyebrow {
+    display: inline-block;
+    color: var(--crizal-primary);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.crizal-title h2 {
+    margin-bottom: 0.75rem;
+}
+
+.crizal-title p {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--crizal-muted);
+}
+
+.crizal-section {
+    padding: 4rem 0;
+}
+
+.crizal-section-alt {
+    background: var(--crizal-surface-alt);
+}
+
+.crizal-section-secondary {
+    background: var(--crizal-secondary);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.crizal-section-secondary h2,
+.crizal-section-secondary h3 {
+    color: #fff;
+}
+
+/* ---------- Hero ---------- */
+.crizal-hero {
+    position: relative;
+    background: var(--crizal-secondary);
+    overflow: hidden;
+}
+
+.crizal-hero-slide {
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.crizal-hero-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20, 33, 43, 0.88) 0%, rgba(20, 33, 43, 0.55) 55%, rgba(20, 33, 43, 0.25) 100%);
+}
+
+.crizal-hero-content {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    padding: 3.5rem 0;
+}
+
+.crizal-hero-content .eyebrow {
+    color: var(--crizal-primary);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.crizal-hero-content h2 {
+    color: #fff;
+    font-size: 2.75rem;
+    margin-bottom: 1.25rem;
+    max-width: 18ch;
+}
+
+.crizal-hero-aside {
+    background: var(--crizal-surface);
+    border-radius: var(--crizal-radius-lg);
+    box-shadow: var(--crizal-shadow);
+    padding: 0.5rem 1.25rem;
+    height: 100%;
+}
+
+.crizal-hero-aside .nav-link-inline {
+    color: var(--crizal-heading);
+    font-weight: 600;
+}
+
+.crizal-hero-aside .nav-link-inline:hover {
+    color: var(--crizal-primary);
+}
+
+.crizal-hero-aside li.border-bottom {
+    border-color: var(--crizal-border) !important;
+}
+
+/* ---------- Service / category cards (card-style1 inspired) ---------- */
+.crizal-card {
+    position: relative;
+    border-radius: var(--crizal-radius-lg);
+    overflow: hidden;
+    background: var(--crizal-surface);
+    box-shadow: var(--crizal-shadow-sm);
+    height: 100%;
+    transition: var(--crizal-transition);
+}
+
+.crizal-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--crizal-shadow);
+}
+
+.crizal-card-media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: var(--crizal-surface-alt);
+}
+
+.crizal-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.crizal-card:hover .crizal-card-media img {
+    transform: scale(1.06);
+}
+
+.crizal-card-body {
+    padding: 1.25rem 1.35rem 1.5rem;
+}
+
+.crizal-card-body h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+
+.crizal-card-body h3 a {
+    color: var(--crizal-heading);
+}
+
+.crizal-card-body h3 a:hover {
+    color: var(--crizal-primary);
+}
+
+/* ---------- Product cards (shop product-details) ---------- */
+body[data-design="crizal"] .product-details,
+body[data-design="crizal"] .product-card {
+    background: var(--crizal-surface);
+    border-radius: var(--crizal-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--crizal-shadow-sm);
+    height: 100%;
+    transition: var(--crizal-transition);
+    border: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .product-details:hover,
+body[data-design="crizal"] .product-card:hover {
+    box-shadow: var(--crizal-shadow);
+    transform: translateY(-4px);
+}
+
+body[data-design="crizal"] .product-img,
+body[data-design="crizal"] .product-thumb {
+    position: relative;
+    overflow: hidden;
+    background: var(--crizal-surface-alt);
+}
+
+body[data-design="crizal"] .product-img img,
+body[data-design="crizal"] .product-thumb img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+body[data-design="crizal"] .product-details:hover .product-img img,
+body[data-design="crizal"] .product-card:hover .product-thumb img {
+    transform: scale(1.05);
+}
+
+body[data-design="crizal"] .product-info,
+body[data-design="crizal"] .product-card-body {
+    padding: 1rem 1.15rem 1.25rem;
+    text-align: center;
+}
+
+body[data-design="crizal"] .product-info a,
+body[data-design="crizal"] .product-card-title a {
+    color: var(--crizal-heading);
+    font-weight: 700;
+}
+
+body[data-design="crizal"] .product-info .price,
+body[data-design="crizal"] .product-card-body .text-primary {
+    color: var(--crizal-primary) !important;
+    font-weight: 700;
+}
+
+body[data-design="crizal"] .col-lg-3.border.border-collapse,
+body[data-design="crizal"] .border.border-collapse {
+    border: 0 !important;
+    padding: 0.65rem;
+}
+
+body[data-design="crizal"] .label-offer {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: var(--crizal-radius-sm);
+    color: #fff;
+}
+
+body[data-design="crizal"] .label-offer.bg-red {
+    background: var(--crizal-sale);
+}
+
+/* ---------- Subscribe / CTA ---------- */
+.crizal-cta {
+    background: linear-gradient(120deg, var(--crizal-primary) 0%, #0d9e48 55%, var(--crizal-secondary) 100%);
+    color: #fff;
+    border-radius: var(--crizal-radius-xl);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--crizal-shadow);
+}
+
+.crizal-cta h2,
+.crizal-cta h3 {
+    color: #fff;
+}
+
+.crizal-cta .form-control {
+    border: 0;
+    height: 48px;
+}
+
+.crizal-contact-strip {
+    background: var(--crizal-primary);
+    color: #fff;
+    padding: 2rem 0;
+    position: relative;
+    z-index: 2;
+}
+
+.crizal-contact-strip h3 {
+    color: #fff;
+    margin: 0;
+}
+
+/* ---------- Stories ---------- */
+body[data-design="crizal"] .home-story-item {
+    background: var(--crizal-surface);
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--crizal-shadow-sm);
+}
+
+body[data-design="crizal"] .home-story-title a {
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .home-stories-widget .widget-title {
+    margin-bottom: 1.25rem;
+}
+
+/* ---------- Auth / forms ---------- */
+.crizal-auth-card {
+    border: 0;
+    border-radius: var(--crizal-radius-xl);
+    box-shadow: var(--crizal-shadow);
+    overflow: hidden;
+}
+
+.crizal-auth-card .card-body {
+    padding: 2.25rem 2rem;
+}
+
+.crizal-auth-card h2 {
+    font-weight: 800;
+}
+
+/* ---------- Cart ---------- */
+body[data-design="crizal"] .h6.bg-secondary {
+    background: var(--crizal-secondary) !important;
+    color: #fff;
+    border-radius: var(--crizal-radius);
+}
+
+/* ---------- Footer ---------- */
+.crizal-footer {
+    background: var(--crizal-secondary);
+    color: rgba(255, 255, 255, 0.75);
+    padding-top: 4rem;
+    margin-top: -3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.crizal-footer .widget-title {
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--crizal-border-light);
+    padding-bottom: 0.75rem;
+}
+
+.crizal-footer a,
+.crizal-footer .nav-link-light {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.crizal-footer a:hover {
+    color: var(--crizal-primary) !important;
+}
+
+.crizal-footer-bottom {
+    border-top: 1px solid var(--crizal-border-light);
+    padding: 1.25rem 0;
+    margin-top: 2rem;
+    font-size: 0.875rem;
+}
+
+.crizal-footer-social {
+    display: flex;
+    gap: 0.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+}
+
+.crizal-footer-social a {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff !important;
+}
+
+.crizal-footer-social a:hover {
+    background: var(--crizal-primary);
+}
+
+/* ---------- Empty / error ---------- */
+.crizal-empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background: var(--crizal-surface-alt);
+    border-radius: var(--crizal-radius-xl);
+}
+
+.crizal-empty-state h1,
+.crizal-empty-state h2 {
+    margin-bottom: 0.75rem;
+}
+
+/* ---------- Product widgets on home ---------- */
+body[data-design="crizal"] .widget-featured-entries {
+    background: var(--crizal-surface);
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    padding: 1.25rem;
+    height: 100%;
+    box-shadow: var(--crizal-shadow-sm);
+}
+
+body[data-design="crizal"] .widget-featured-entries .widget-title {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--crizal-primary);
+    display: inline-block;
+}
+
+body[data-design="crizal"] .widget-featured-entries .media {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .widget-featured-entries .media:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

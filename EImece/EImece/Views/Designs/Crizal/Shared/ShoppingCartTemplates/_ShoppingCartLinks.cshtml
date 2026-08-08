@@ -1,0 +1,32 @@
+﻿@using System.Threading;
+@using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities;
+@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain;
+@using Resources;
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+@model  ShoppingCartSession
+@{
+    ShoppingCartSession shoppingCart = Model;
+    string totalNumber = shoppingCart == null ? "" : shoppingCart.TotalItemCount > 0 ? shoppingCart.TotalItemCount.ToString() : "";
+    var userName = User.Identity.GetUserName();
+}
+
+<a id="ShoppingCartsLink" class="crizal-icon-btn" href="@Url.Action("shoppingcart","payment")" data-toggle="offcanvas">
+    <span class="d-block position-relative">
+        @if (!string.IsNullOrEmpty(totalNumber))
+        {
+            <span class="crizal-cart-badge" id="ShoppingCartItemCount">@totalNumber</span>
+        }
+        else
+        {
+            <span class="crizal-cart-badge" id="ShoppingCartItemCount" style="display:none;"></span>
+        }
+        <i data-feather="shopping-cart" aria-hidden="true"></i>
+        <span>@shoppingCart.TotalPriceWithCargoPrice.CurrencySign()</span>
+    </span>
+</a>
