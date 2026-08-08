@@ -1,0 +1,5 @@
+/* Modern Design System Assets */
+body[data-design="modern"] {
+    --design-primary: #0f172a;
+    --design-accent: #3b82f6;
+}

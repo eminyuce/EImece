@@ -35,6 +35,15 @@ namespace EImece
             //System.Net.ServicePointManager.SecurityProtocol
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // TLS 1.2 only; older protocols (TLS 1.0/1.1) removed for security
 
+            ViewEngineConfig.RegisterViewEngines(ViewEngines.Engines);
+
+            string activeDesign = new EImece.Infrastructure.Designs.ConfigDesignProvider().GetActiveDesign();
+            bool validateOnStartup = string.Equals(System.Configuration.ConfigurationManager.AppSettings["ValidateDesignOnStartup"], "true", StringComparison.OrdinalIgnoreCase);
+            if (!string.IsNullOrEmpty(activeDesign) && validateOnStartup)
+            {
+                EImece.Infrastructure.Designs.DesignValidator.EnsureValidDesign(activeDesign);
+            }
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

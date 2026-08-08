@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -30,7 +30,7 @@ namespace EImece.Controllers
         {
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
-                        @"~\Views\Shared\ShoppingCartTemplates\_HomePageShoppingCart.cshtml",
+                        "ShoppingCartTemplates/_HomePageShoppingCart",
                         new ViewDataDictionary(), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }

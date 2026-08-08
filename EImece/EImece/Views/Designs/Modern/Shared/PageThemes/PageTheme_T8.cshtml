@@ -1,0 +1,67 @@
+﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain;
+@using Resources;
+@using EImece.Domain.Helpers;
+@{
+
+    var menu = Model.Menu;
+    var files = Model.Menu.MenuFiles.ToList().OrderBy(r => r.FileStorage != null ? r.FileStorage.Position : 0).ToList();
+
+    ViewBag.Title = menu.GetSeoTitle();
+    ViewBag.Description = menu.GetSeoDescription();
+    ViewBag.Keywords = menu.GetSeoKeywords();
+    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
+    int Width = ViewData["Width"].ToInt(300);
+    int Height = ViewData["Height"].ToInt(214);
+    var desc = Model.Menu.Description;
+
+}
+<!-- Page Title-->
+<div class="page-title-wrapper" role="region" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item active">@Model.Menu.Name</li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@Model.Menu.Name</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+    </div>
+</div>
+@Html.Raw(HttpUtility.HtmlDecode(desc))
+<!-- Split section: Map + Contact form-->
+<!-- Split section: Map + Contact form-->
+<div class="container-fluid" id="map" data-offset-top="30">
+    <div class="row no-gutters">
+        <div class="col-lg-6 iframe-full-height-wrap">
+            <!-- Google Map Script -->
+            @Html.Raw(Model.GoogleMapScript.SettingValue)
+
+            <!-- Company Info Section -->
+            <div class="company-info mt-3 text-muted">
+                <h4>@Model.CompanyName.SettingValue.ToStr()</h4>
+                <p>@Resource.CompanyAddress : @Model.CompanyAddress.SettingValue.ToStr()</p>
+                <p>@Resource.WebSiteCompanyPhoneAndLocation : @Model.WebSiteCompanyPhoneAndLocation.SettingValue.ToStr()</p>
+                <p>@Resource.WebSiteCompanyEmailAddress : @Model.WebSiteCompanyEmailAddress.SettingValue.ToStr()</p>
+            </div>
+        </div>
+        <div class="col-lg-6 px-4 px-xl-5 py-5 border-top">
+            <h2 class="h4 mb-4">@Resource.DropUsALine</h2>
+            @Html.Partial("_ContactUsFormViewModel", Model.Contact)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
