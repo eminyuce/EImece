@@ -297,7 +297,7 @@ namespace EImece.Domain.Services
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong, product.ImageFullPath(1000, 0));
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
-            if (product.ProductCategory.TemplateId.HasValue)
+            if (product.ProductCategory != null && product.ProductCategory.TemplateId.HasValue)
             {
                 result.Template = await TemplateService.GetTemplateAsync(product.ProductCategory.TemplateId.Value, cancellationToken).ConfigureAwait(false);
             }
@@ -305,7 +305,7 @@ namespace EImece.Domain.Services
             result.RelatedStories = new List<Story>();
             int relatedProductTake = 20;
             result.RelatedProducts = new List<Product>();
-            if (product.ProductTags.Any())
+            if (product.ProductTags != null && product.ProductTags.Any())
             {
                 var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
                 result.RelatedProducts = await GetRelatedProductsAsync(tagIdList, relatedProductTake, product.Lang, id, cancellationToken).ConfigureAwait(false);

@@ -460,19 +460,31 @@ namespace EImece.Domain.Helpers.Extensions
                 }
                 else
                 {
-                    if (HttpContext.Current == null)
-                        return "";
-                    var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                     var imageSize = $"w{width}h{height}";
+                    var imageId = entity.GetImageSeoUrl(fileStorageId);
+                    if (HttpContext.Current == null)
+                    {
+                        // Async service continuations (ConfigureAwait(false)) lose HttpContext; build the known route.
+                        var relative = $"/images/{imageSize}/{imageId}";
+                        if (!isFullPathImageUrl)
+                        {
+                            return relative;
+                        }
+
+                        var baseUrl = GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocolForImages);
+                        return string.IsNullOrEmpty(baseUrl) ? relative : baseUrl + relative;
+                    }
+
+                    var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                     if (isFullPathImageUrl)
                     {
                         return urlHelper.Action(Constants.ImageActionName,
-                            "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" },
+                            "Images", new { imageSize, id = imageId, area = "" },
                             AppConfig.HttpProtocolForImages);
                     }
                     else
                     {
-                        return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = entity.GetImageSeoUrl(fileStorageId), area = "" });
+                        return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area = "" });
                     }
                 }
             }
@@ -555,40 +567,132 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static String GetDetailPageUrl(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "", String authorName = "")
         {
-            if (HttpContext.Current == null)
-                return "";
-
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             string path = "";
 
             if (entity != null)
             {
-                if (!String.IsNullOrEmpty(authorName))
+                if (HttpContext.Current != null)
                 {
-                    path = urlHelper.Action(action, controller, new { id = authorName, area = "" });
-                }
-                else if (String.IsNullOrEmpty(categoryName))
-                {
-                    path = urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" });
+                    var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                    if (!String.IsNullOrEmpty(authorName))
+                    {
+                        path = urlHelper.Action(action, controller, new { id = authorName, area = "" });
+                    }
+                    else if (String.IsNullOrEmpty(categoryName))
+                    {
+                        path = urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" });
+                    }
+                    else
+                    {
+                        path = urlHelper.Action(action, controller, new
+                        {
+                            categoryName = GeneralHelper.GetUrlSeoString(categoryName),
+                            id = GetSeoUrl(entity),
+                            area = ""
+                        });
+                    }
                 }
                 else
                 {
-                    path = urlHelper.Action(action, controller, new
-                    {
-                        categoryName = GeneralHelper.GetUrlSeoString(categoryName),
-                        id = GetSeoUrl(entity),
-                        area = ""
-                    });
+                    // Async service continuations lose HttpContext; reconstruct SEO routes used by RouteConfig.
+                    path = BuildDetailRelativePathWithoutHttpContext(entity, action, controller, categoryName, authorName);
                 }
             }
+
             string domain = AppConfig.Domain;
             if (string.IsNullOrEmpty(domain))
             {
+                if (HttpContext.Current == null)
+                {
+                    return path ?? string.Empty;
+                }
+
                 // Authority keeps the port (e.g. localhost:81); Host alone drops it
                 domain = HttpContext.Current.Request.Url.Authority;
             }
-            var httpProtocol = AppConfig.HttpProtocol;
+
+            var httpProtocol = string.IsNullOrEmpty(protocol) ? AppConfig.HttpProtocol : protocol;
+            if (string.IsNullOrEmpty(httpProtocol))
+            {
+                httpProtocol = AppConfig.HttpProtocol;
+            }
+
             return $"{httpProtocol}://{domain}{path}";
+        }
+
+        /// <summary>
+        /// Absolute site base URL (scheme + authority + app path), safe when HttpContext.Current is null
+        /// after ConfigureAwait(false) continuations.
+        /// </summary>
+        public static string GetAbsoluteApplicationBaseUrl(string protocol = null)
+        {
+            var context = HttpContext.Current;
+            if (context?.Request != null)
+            {
+                var request = context.Request;
+                return request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
+            }
+
+            var domain = AppConfig.Domain;
+            if (string.IsNullOrEmpty(domain))
+            {
+                return string.Empty;
+            }
+
+            var scheme = string.IsNullOrEmpty(protocol) ? AppConfig.HttpProtocol : protocol;
+            return $"{scheme}://{domain.TrimEnd('/')}";
+        }
+
+        private static string BuildDetailRelativePathWithoutHttpContext(
+            BaseEntity entity,
+            string action,
+            string controller,
+            string categoryName,
+            string authorName)
+        {
+            if (entity == null)
+            {
+                return string.Empty;
+            }
+
+            var seoId = !string.IsNullOrEmpty(authorName) ? authorName : GetSeoUrl(entity);
+            var categorySeo = string.IsNullOrEmpty(categoryName)
+                ? string.Empty
+                : GeneralHelper.GetUrlSeoString(categoryName);
+
+            if (string.Equals(controller, "Products", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Detail", StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrEmpty(categorySeo))
+            {
+                return $"/{Constants.ProductsControllerRoutingPrefix}/{categorySeo}/{seoId}";
+            }
+
+            if (string.Equals(controller, "Stories", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Detail", StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrEmpty(categorySeo))
+            {
+                return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/{categorySeo}/{seoId}";
+            }
+
+            if (string.Equals(controller, "Pages", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Detail", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.PagesControllerRoutingPrefix}/{seoId}";
+            }
+
+            if (string.Equals(controller, "Payment", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "BuyNow", StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrEmpty(categorySeo))
+            {
+                return $"/b/{categorySeo}/{seoId}";
+            }
+
+            if (!string.IsNullOrEmpty(categorySeo))
+            {
+                return $"/{controller}/{action}/{categorySeo}/{seoId}";
+            }
+
+            return $"/{controller}/{action}/{seoId}";
         }
 
     }

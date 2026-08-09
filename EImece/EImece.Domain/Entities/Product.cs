@@ -102,10 +102,10 @@ namespace EImece.Domain.Entities
 
         public string ImageFullPath(int width, int height, bool isThump=false)
         {
-            var request = HttpContext.Current.Request;
-            var baseurl = request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
-            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true, isThump);
-            if (!result.Contains(baseurl))
+            // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
+            var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
+            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true, isThump) ?? string.Empty;
+            if (!string.IsNullOrEmpty(baseurl) && !result.Contains(baseurl))
             {
                 result = baseurl + result;
             }

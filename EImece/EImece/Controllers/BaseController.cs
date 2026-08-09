@@ -167,7 +167,18 @@ namespace EImece.Controllers
 
         protected void SetLanguage(string id)
         {
-            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
+            // Accept either enum numeric id ("1") or culture description ("tr-TR").
+            EImeceLanguage selectedLanguage;
+            int langId;
+            if (int.TryParse(id, out langId) && Enum.IsDefined(typeof(EImeceLanguage), langId))
+            {
+                selectedLanguage = (EImeceLanguage)langId;
+            }
+            else
+            {
+                selectedLanguage = (EImeceLanguage)EnumHelper.GetEnumFromDescription(id, typeof(EImeceLanguage));
+            }
+
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);

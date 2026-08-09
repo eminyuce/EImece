@@ -132,7 +132,8 @@ namespace EImece.Controllers
                 return View(model);
             }
 
-            var user = await UserManager.FindByNameAsync(model.Email);
+            // Seed/local users often have UserName != Email (e.g. seed-admin / admin@eimece.test).
+            var user = await FindUserByEmailOrUserNameAsync(model.Email);
             if (user == null)
             {
                 Logger.Info($"No user found for email: {model.Email}");
@@ -170,8 +171,8 @@ namespace EImece.Controllers
                 });
             }
 
-            Logger.Info($"Attempting sign-in for email: {model.Email}");
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            Logger.Info($"Attempting sign-in for user: {user.UserName} (email: {model.Email})");
+            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
             Logger.Info($"Sign-in result: {result}");
 
             switch (result)
@@ -204,14 +205,37 @@ namespace EImece.Controllers
         private bool isUserAsCustomerRole(LoginViewModel model)
         {
             Logger.Info($"Entering isUserAsCustomerRole for email: {model.Email}");
+            var login = (model.Email ?? string.Empty).Trim();
             var usersRoles = from u in ApplicationDbContext.Users
                              from ur in u.Roles
                              join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
-                             where u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase)
+                             where u.UserName.Equals(login, StringComparison.InvariantCultureIgnoreCase)
+                                || u.Email.Equals(login, StringComparison.InvariantCultureIgnoreCase)
                              select new { Role = r.Name };
             bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase));
             Logger.Info($"User role check result: isCustomer = {isCustomer}");
             return isCustomer;
+        }
+
+        /// <summary>
+        /// Resolves Identity users by email or user name so login forms that collect an email
+        /// still work when AspNetUsers.UserName differs from Email (seed accounts).
+        /// </summary>
+        private async Task<ApplicationUser> FindUserByEmailOrUserNameAsync(string emailOrUserName)
+        {
+            if (string.IsNullOrWhiteSpace(emailOrUserName))
+            {
+                return null;
+            }
+
+            var key = emailOrUserName.Trim();
+            var user = await UserManager.FindByEmailAsync(key);
+            if (user != null)
+            {
+                return user;
+            }
+
+            return await UserManager.FindByNameAsync(key);
         }
 
         [AllowAnonymous]
@@ -267,8 +291,16 @@ namespace EImece.Controllers
                 return View(model);
             }
 
-            Logger.Info($"Attempting sign-in for email: {model.Email}");
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var customerUser = await FindUserByEmailOrUserNameAsync(model.Email);
+            if (customerUser == null)
+            {
+                Logger.Info($"No customer user found for email: {model.Email}");
+                ModelState.AddModelError("", Resource.NoUserFound);
+                return View(model);
+            }
+
+            Logger.Info($"Attempting sign-in for user: {customerUser.UserName} (email: {model.Email})");
+            var result = await SignInManager.PasswordSignInAsync(customerUser.UserName, model.Password, model.RememberMe, shouldLockout: false);
             Logger.Info($"Sign-in result: {result}");
 
             switch (result)
@@ -503,7 +535,7 @@ namespace EImece.Controllers
                     IdentitySignout();
                     Logger.Info("Signed out after registration setup.");
 
-                    var result2 = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
+                    var result2 = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
                     Logger.Info($"Post-registration sign-in result: {result2}");
                     switch (result2)
                     {
@@ -611,7 +643,7 @@ namespace EImece.Controllers
             }
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                var user = await FindUserByEmailOrUserNameAsync(model.Email);
                 if (user == null)
                 {
                     ModelState.AddModelError("", Resource.NoUserFound);
@@ -683,7 +715,7 @@ namespace EImece.Controllers
                 Logger.Info("Model state is invalid. Returning view with errors.");
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await FindUserByEmailOrUserNameAsync(model.Email);
             if (user == null)
             {
                 Logger.Info($"No user found for email: {model.Email}. Redirecting to confirmation.");

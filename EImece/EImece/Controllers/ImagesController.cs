@@ -200,6 +200,14 @@ namespace EImece.Controllers
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
                 var webSiteLogo = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
+                if (webSiteLogo == null || string.IsNullOrWhiteSpace(webSiteLogo.SettingValue))
+                {
+                    // Avoid OutputCache storing a miss while the logo file/setting is temporarily absent.
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.TrySkipIisCustomErrors = true;
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                }
+
                 var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
                 var isFullFileExits = System.IO.File.Exists(p.Item1);
                 if (isFullFileExits)
@@ -211,10 +219,17 @@ namespace EImece.Controllers
                 }
                 else
                 {
-                    var response = HttpContext.Response;
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-                    response.TrySkipIisCustomErrors = true;
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.TrySkipIisCustomErrors = true;
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
                 }
+            }
+
+            if (result == null)
+            {
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.TrySkipIisCustomErrors = true;
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
             return result;

@@ -157,7 +157,6 @@ namespace EImece.App_Start
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<SqlServerHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<ExternalApiHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<FileStorageHealthCheck>(sp));
-            // DependenciesHealthCheck removed: rely on specific health checks
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<BackgroundServiceHealthCheck>(sp));
             services.AddSingletonWithProps<IHealthCheckService, HealthCheckService>();
 

@@ -114,12 +114,13 @@ namespace EImece.Areas.Customers.Controllers
             return customer;
         }
 
-        public async Task<ActionResult> WebSiteAddressInfo(bool isMobilePage = false)
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
+        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", item);
         }
 

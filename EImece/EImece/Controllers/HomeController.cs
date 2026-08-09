@@ -99,19 +99,25 @@ namespace EImece.Controllers
             }
 
             var s = await SubsciberService.GetSingleAsync(id.Value);
+            if (s == null)
+            {
+                HomeLogger.Error($"Subscriber not found for ThanksForSubscription id={id.Value}.");
+                return RedirectToAction("NotFound", "Error");
+            }
             return View(s);
         }
 
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public async Task<ActionResult> SocialMediaLinks()
+        public ActionResult SocialMediaLinks()
         {
             var resultList = new Dictionary<String, String>();
-            resultList.Add(Constants.InstagramWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.InstagramWebSiteLink));
-            resultList.Add(Constants.LinkedinWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.LinkedinWebSiteLink));
-            resultList.Add(Constants.YotubeWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.YotubeWebSiteLink));
-            resultList.Add(Constants.FacebookWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.FacebookWebSiteLink));
-            resultList.Add(Constants.TwitterWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.TwitterWebSiteLink));
-            resultList.Add(Constants.PinterestWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.PinterestWebSiteLink));
+            resultList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
+            resultList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink));
+            resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
+            resultList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
+            resultList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingByKey(Constants.TwitterWebSiteLink));
+            resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
             return PartialView("_SocialMediaLinks", resultList);
         }
 
@@ -195,20 +201,22 @@ namespace EImece.Controllers
             return PartialView("_Footer", footerViewModel);
         }
 
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public async Task<ActionResult> GetCompanyName()
+        public ActionResult GetCompanyName()
         {
-            string companyName = await SettingService.GetSettingByKeyAsync(Constants.CompanyName);
+            string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
             HomeLogger.Info($"Retrieved company name: {companyName}");
             return Content(companyName);
         }
 
-        public async Task<ActionResult> WebSiteAddressInfo(bool isMobilePage = false)
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
+        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyEmailAddress);
             HomeLogger.Info("Returning _WebSiteAddressInfo partial view.");
             return PartialView("_WebSiteAddressInfo", item);
         }
