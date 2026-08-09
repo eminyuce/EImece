@@ -59,5 +59,18 @@ namespace EImece.Domain.Repositories
 
             return brandsWithProducts.ToList();
         }
+
+        public async Task<List<Brand>> GetBrandsIfAnyProductExistsAsync(int lang, int categoryId = 0)
+        {
+            var brandsWithProducts = GetAllReadOnly()
+                .Where(r => r.Lang == lang &&
+                    (categoryId > 0
+                        ? r.Products.Any(p => p.ProductCategoryId == categoryId)
+                        : r.Products.Any()))
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.UpdatedDate);
+
+            return await brandsWithProducts.ToListAsync().ConfigureAwait(false);
+        }
     }
 }

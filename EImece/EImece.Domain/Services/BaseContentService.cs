@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -96,9 +97,35 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public virtual async Task<List<T>> GetActiveBaseContentsFromCacheAsync(bool? isActive, int? language)
+        {
+            String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseContentsFromCache-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+
+            // CancellationToken.None: see AsyncCacheKeySuffix - the factory result is shared by
+            // every concurrent miss, so it must not be tied to one request's lifetime.
+            var result = await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => BaseContentRepository.GetActiveBaseContentsAsync(isActive, language, CancellationToken.None),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+
+            // Same semantics as the synchronous overload: an empty content set is never kept, so
+            // newly added content shows up without waiting out the long cache window.
+            if (!result.IsNotEmpty())
+            {
+                DataCachingProvider.Clear(cacheKey);
+                return new List<T>();
+            }
+            return result;
+        }
+
         public virtual List<T> GetActiveBaseContents(bool? isActive, int? language)
         {
             return BaseContentRepository.GetActiveBaseContents(isActive, language);
+        }
+
+        public virtual async Task<List<T>> GetActiveBaseContentsAsync(bool? isActive, int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await BaseContentRepository.GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
         }
 
         public virtual new T SaveOrEditEntity(T entity)

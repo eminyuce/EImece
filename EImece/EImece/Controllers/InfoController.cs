@@ -5,6 +5,7 @@ using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -15,7 +16,7 @@ namespace EImece.Controllers
         public IMenuService MenuService { get; set; }
 
         // GET: Info
-        public ActionResult Index(string id, string lang = "")
+        public async Task<ActionResult> Index(string id, string lang = "")
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -26,7 +27,7 @@ namespace EImece.Controllers
             {
                 eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
             }
-            var page = MenuService.GetPageByMenuLink(Constants.INFO_PREFIX + id, eImageLang);
+            var page = await MenuService.GetPageByMenuLinkAsync(Constants.INFO_PREFIX + id, eImageLang);
             if (page == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);

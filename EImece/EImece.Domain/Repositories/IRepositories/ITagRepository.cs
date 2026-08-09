@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
@@ -25,5 +26,9 @@ namespace EImece.Domain.Repositories.IRepositories
         /// Sets <see cref="Tag.ItemCount"/> to the story count (product links are ignored).
         /// </summary>
         List<Tag> GetTagsWithStoryCounts(int language, int minStoryCount = 1);
+
+        Task<List<Tag>> GetTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<List<Tag>> GetProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

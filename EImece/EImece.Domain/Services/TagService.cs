@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -75,6 +76,16 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
+        public async Task<List<Tag>> GetProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            String cacheKey = String.Format(this.GetType().FullName + "-GetProductTags-{0}", language) + AsyncCacheKeySuffix;
+
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => TagRepository.GetProductTagsAsync(language, CancellationToken.None),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+        }
+
         public List<Tag> GetTagsWithEntityCounts(int language, int minEntityCount = 1)
         {
             String cacheKey = String.Format(
@@ -100,6 +111,20 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => TagRepository.GetTagsWithStoryCounts(language, minStoryCount),
                 AppConfig.CacheLongSeconds);
+        }
+
+        public async Task<List<Tag>> GetTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // v2: ordered by story count descending (cache key bumped to drop old position-ordered entries)
+            String cacheKey = String.Format(
+                this.GetType().FullName + "-GetTagsWithStoryCounts-v2-{0}-{1}",
+                language,
+                minStoryCount) + AsyncCacheKeySuffix;
+
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => TagRepository.GetTagsWithStoryCountsAsync(language, minStoryCount, CancellationToken.None),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
     }
 }

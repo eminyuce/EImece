@@ -7,10 +7,10 @@ test.describe('Crizal Authentication', () => {
     expect(res?.status()).toBe(200);
     await assertCrizalChrome(page);
 
-    const authForm = page.locator('main form.login, .crizal-auth-card form, form[action*="Login"]').first();
+    const authForm = page.locator('form.crizal-customer-login__form, .crizal-auth-card form, form[action*="/account/login"]').first();
     await expect(authForm).toBeVisible();
-    await expect(page.locator('#Email, input[name="Email"]').first()).toBeVisible();
-    await expect(page.locator('#Password, input[name="Password"]').first()).toBeVisible();
+    await expect(authForm.locator('#Email, input[name="Email"]').first()).toBeVisible();
+    await expect(authForm.locator('#Password, input[name="Password"]').first()).toBeVisible();
     await page.screenshot({ path: 'screenshots/login.png', fullPage: true });
   });
 

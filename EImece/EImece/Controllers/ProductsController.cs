@@ -11,8 +11,11 @@ using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -44,18 +47,47 @@ namespace EImece.Controllers
             this.productCommentService = ProductCommentService;
         }
 
+        /// <summary>
+        /// Product listing page. The action returns Task&lt;ActionResult&gt; and awaits the service, so
+        /// the request thread goes back to the ASP.NET thread pool while SQL Server runs the COUNT
+        /// and the page query, instead of sitting blocked inside ToList().
+        /// </summary>
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, int page = 1)
+        {
+            Logger.Info($"Entering Index action with page: {page}, language: {CurrentLanguage}");
+
+            if (page < 1)
+            {
+                Logger.Error($"Invalid page number: {page}. Returning BadRequest status.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            // No ConfigureAwait(false) here on purpose: the continuation needs HttpContext.Current
+            // and the request culture to render the view. ConfigureAwait(false) belongs in the
+            // service and repository layers, which is where it is used.
+            var products = await ProductService.GetMainPageProductsAsync(page, CurrentLanguage, cancellationToken);
+
+            products.Page = page;
+            products.RecordPerPage = AppConfig.RecordPerPage;
+
+            Logger.Info($"Retrieved {products.Products.Count} of {products.Products.TotalCount} products for page: {page}");
+            Logger.Info("Returning Index view.");
+            return View(products);
+        }
+
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        public async Task<ActionResult> AdvancedSearchProducts(CancellationToken cancellationToken, String search = "", string filters = "", String page = "")
         {
             Logger.Info($"Entering AdvancedSearchProducts with search: '{search}', filters: '{filters}', page: '{page}'");
-            var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
+            var products = await ProductService.GetProductsSearchResultAsync(search, filters, page, CurrentLanguage, cancellationToken);
             Logger.Info($"Retrieved {products.Products.Count} products for search: '{search}', language: {CurrentLanguage}");
             Logger.Info("Returning AdvancedSearchProducts view.");
             return View(products);
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Detail(String id, int page = 0)
+        public async Task<ActionResult> Detail(CancellationToken cancellationToken, String id, int page = 0)
         {
             Logger.Info($"Entering Detail action with id: '{id}'");
             if (String.IsNullOrEmpty(id))
@@ -68,7 +100,7 @@ namespace EImece.Controllers
             {
                 var productId = id.GetId();
                 Logger.Info($"Parsed product ID: {productId}");
-                var product = ProductService.GetProductDetailViewModelById(productId);
+                var product = await ProductService.GetProductDetailViewModelByIdAsync(productId, cancellationToken);
                 string fullPath = Request.Path;
 
                 Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.Product?.Name}, IsActive: {product?.Product?.IsActive}");
@@ -106,7 +138,7 @@ namespace EImece.Controllers
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         [Route(Constants.ProductTagPrefix)]
-        public ActionResult Tag(String id, int page = 1, int sorting = 0)
+        public async Task<ActionResult> Tag(CancellationToken cancellationToken, String id, int page = 1, int sorting = 0)
         {
             Logger.Info($"Entering Tag action with id: '{id}', page: {page}, sorting: {sorting}");
             if (String.IsNullOrEmpty(id))
@@ -120,7 +152,7 @@ namespace EImece.Controllers
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
             Logger.Info($"Using page size: {pageSize}");
 
-            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting);
+            SimiliarProductTagsViewModel products = await ProductService.GetProductByTagIdAsync(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting, cancellationToken);
             Logger.Info($"Retrieved products for tag ID: {tagId}, page: {page}, language: {CurrentLanguage}");
 
             products.Page = page;
@@ -137,7 +169,7 @@ namespace EImece.Controllers
         }
 
         [Route(Constants.SearchProductPrefix)]
-        public ActionResult SearchProducts(String search, int page = 1, int sorting = 0)
+        public async Task<ActionResult> SearchProducts(String search, CancellationToken cancellationToken, int page = 1, int sorting = 0)
         {
             Logger.Info($"Entering SearchProducts with search: '{search}', page: {page}, sorting: {sorting}");
             if (String.IsNullOrEmpty(search))
@@ -149,7 +181,7 @@ namespace EImece.Controllers
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
             Logger.Info($"Using page size: {pageSize}");
 
-            var products = ProductService.SearchProducts(page, pageSize, search, CurrentLanguage, (SortingType)sorting);
+            var products = await ProductService.SearchProductsAsync(page, pageSize, search, CurrentLanguage, (SortingType)sorting, cancellationToken);
             Logger.Info($"Retrieved {products.Products.Count} products for search: '{search}', page: {page}, language: {CurrentLanguage}");
 
             products.RecordPerPage = pageSize;
@@ -163,7 +195,7 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateCaptcha(Prefix = "ProductReview")]
-        public ActionResult Review(ProductComment productComment)
+        public async Task<ActionResult> Review(ProductComment productComment)
         {
             Logger.Info($"Entering Review POST action with productComment Email: {productComment?.Email}, ProductId: {productComment?.ProductId}");
             if (productComment == null)
@@ -182,8 +214,11 @@ namespace EImece.Controllers
             }
 
             Logger.Info($"Looking up user by email: {productComment.Email}");
-            var users = ApplicationDbContext.Users.AsQueryable();
-            var user = users.Where(u => u.UserName.Equals(productComment.Email, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
+            // Compared with == rather than String.Equals(StringComparison): EF6 cannot translate the
+            // StringComparison overloads, and the database collation is already case-insensitive.
+            var email = productComment.Email.ToStr().Trim();
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.UserName == email);
             Logger.Info($"User found: {(user != null ? $"ID: {user.Id}" : "None")}");
 
             productComment.UserId = user == null ? "" : user.Id;
@@ -194,7 +229,7 @@ namespace EImece.Controllers
             productComment.Lang = CurrentLanguage;
             Logger.Info($"Set productComment properties: UserId={productComment.UserId}, CreatedDate={productComment.CreatedDate}, Lang={productComment.Lang}");
 
-            productCommentService.SaveOrEditEntity(productComment);
+            await productCommentService.SaveOrEditEntityAsync(productComment);
             Logger.Info($"Saved product comment with ID: {productComment.Id}");
 
             Logger.Info($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");

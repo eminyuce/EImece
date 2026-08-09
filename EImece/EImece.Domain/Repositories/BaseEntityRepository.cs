@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
@@ -51,7 +52,7 @@ namespace EImece.Domain.Repositories
             return result;
         }
 
-        public virtual async Task<List<T>> GetActiveBaseEntitiesAsync(bool? isActive, int? language)
+        public virtual async Task<List<T>> GetActiveBaseEntitiesAsync(bool? isActive, int? language, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
@@ -59,7 +60,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, int>> keySelector = t => t.Position;
                 var items = this.FindAll(match, keySelector, OrderByType.Ascending, null, null);
 
-                return await items.ToListAsync().ConfigureAwait(false);
+                return await items.ToListAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (Exception exception)
             {

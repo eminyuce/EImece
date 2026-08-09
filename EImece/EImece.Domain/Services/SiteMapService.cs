@@ -85,28 +85,119 @@ namespace EImece.Domain.Services
             return sitemapItems;
         }
 
-        private void GenerateTagSiteMap(List<SitemapItem> sitemapItems, int language)
+        public async Task<List<SitemapItem>> GenerateSiteMapAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            List<EImeceLanguage> eImeceLanguages = EnumHelper.GetLanguageEnumListFromWebConfig();
+
+            var sitemapItems = new List<SitemapItem>();
+            foreach (var item in eImeceLanguages)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                int language = (int)item;
+                await GenerateMenuSiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
+                List<ProductCategory> productCategories = await GenerateProductCategorySiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
+                await GenerateProductSiteMapAsync(sitemapItems, language, productCategories, cancellationToken).ConfigureAwait(false);
+                List<StoryCategory> storyCategories = await GenerateStoryCategorySiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
+                await GenerateStorySiteMapAsync(sitemapItems, language, storyCategories, cancellationToken).ConfigureAwait(false);
+                await GenerateTagSiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
+            }
+
+            return sitemapItems;
+        }
+
+        private async Task GenerateMenuSiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken)
         {
             try
             {
-                var tags = TagService.GetProductTags(language);
+                if (HttpContext.Current == null)
+                    return;
+                var requestContext = HttpContext.Current.Request.RequestContext;
 
-                foreach (var item in tags)
+                var menus = await MenuService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                foreach (var c in menus)
                 {
-                    DateTime? lastModified = item.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
+                    try
+                    {
+                        string url;
+                        if (c.LinkIsActive && !string.IsNullOrEmpty(c.Link))
+                        {
+                            url = c.Link;
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(c.MenuLink))
+                            {
+                                continue;
+                            }
+
+                            var p = c.MenuLink.Split('_');
+                            var parts = p[0].Split('-');
+                            if (parts.Length < 2)
+                            {
+                                Logger.Warn("Skipping sitemap menu Id={0} with invalid MenuLink '{1}'", c.Id, c.MenuLink);
+                                continue;
+                            }
+
+                            var action = parts[1];
+                            var controller = parts[0];
+                            var mid = p[p.Length - 1];
+                            var urlHelper = new UrlHelper(requestContext);
+
+                            if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                url = urlHelper.Action("detail", controller, new { id = c.GetSeoUrl() }, AppConfig.HttpProtocol);
+                            }
+                            else if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                                     && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                url = urlHelper.Action(action, controller, new { id = mid }, AppConfig.HttpProtocol);
+                            }
+                            else
+                            {
+                                url = urlHelper.Action(action, controller, null, AppConfig.HttpProtocol);
+                            }
+                        }
+
+                        if (string.IsNullOrWhiteSpace(url) || url == "#")
+                        {
+                            continue;
+                        }
+
+                        sitemapItems.Add(new SitemapItem(
+                            url,
+                            c.UpdatedDate,
+                            changeFrequency: SitemapChangeFrequency.Daily,
+                            priority: 1.0));
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private async Task<List<ProductCategory>> GenerateProductCategorySiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken)
+        {
+            var productCategories = new List<ProductCategory>();
+            try
+            {
+                productCategories = await ProductCategoryService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+                foreach (var productCategory in productCategories)
+                {
+                    DateTime? lastModified = productCategory.UpdatedDate;
+                    SitemapItem sm = new SitemapItem(productCategory.GetDetailPageUrl("Category", "ProductCategories", "",
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
                                    priority: 1.0);
-
-                    sitemapItems.Add(sm);
-
-                    sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
-                      AppConfig.HttpProtocol),
-                            lastModified,
-                            SitemapChangeFrequency.Daily,
-                            priority: 1.0);
 
                     sitemapItems.Add(sm);
                 }
@@ -114,6 +205,146 @@ namespace EImece.Domain.Services
             catch (Exception ex)
             {
                 Logger.Error(ex, ex.Message);
+            }
+
+            return productCategories;
+        }
+
+        private async Task GenerateProductSiteMapAsync(List<SitemapItem> sitemapItems, int language, List<ProductCategory> productCategories, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var products = await ProductService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+                foreach (var product in products)
+                {
+                    var productCategory = productCategories.FirstOrDefault(r => r.Id == product.ProductCategoryId);
+                    if (productCategory == null || !productCategory.IsActive)
+                    {
+                        continue;
+                    }
+                    string productCategoryName = productCategory.Name;
+
+                    DateTime? lastModified = product.UpdatedDate;
+                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl("Detail", "Products", productCategoryName,
+                             AppConfig.HttpProtocol),
+                                   lastModified,
+                                   SitemapChangeFrequency.Daily,
+                                   priority: 1.0);
+
+                    sitemapItems.Add(sm);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private async Task<List<StoryCategory>> GenerateStoryCategorySiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken)
+        {
+            var storyCategories = new List<StoryCategory>();
+            try
+            {
+                storyCategories = await StoryCategoryService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+                foreach (var storyCategory in storyCategories)
+                {
+                    DateTime? lastModified = storyCategory.UpdatedDate;
+                    SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", "Stories", "",
+                             AppConfig.HttpProtocol),
+                                   lastModified,
+                                   SitemapChangeFrequency.Daily,
+                                   priority: 1.0);
+
+                    sitemapItems.Add(sm);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+
+            return storyCategories;
+        }
+
+        private async Task GenerateStorySiteMapAsync(List<SitemapItem> sitemapItems, int language, List<StoryCategory> storyCategories, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var stories = await StoryService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+                foreach (var story in stories)
+                {
+                    var storyCategory = storyCategories.FirstOrDefault(r => r.Id == story.StoryCategoryId);
+                    if (storyCategory == null || !storyCategory.IsActive)
+                    {
+                        continue;
+                    }
+                    string storyCategoryName = storyCategory.Name;
+
+                    DateTime? lastModified = story.UpdatedDate;
+                    SitemapItem sm = new SitemapItem(story.GetDetailPageUrl("Detail", "Stories", storyCategoryName,
+                             AppConfig.HttpProtocol),
+                                   lastModified,
+                                   SitemapChangeFrequency.Daily,
+                                   priority: 1.0);
+
+                    sitemapItems.Add(sm);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private void GenerateTagSiteMap(List<SitemapItem> sitemapItems, int language)
+        {
+            try
+            {
+                var tags = TagService.GetProductTags(language);
+                AddTagSitemapItems(sitemapItems, tags);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private async Task GenerateTagSiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var tags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
+                AddTagSitemapItems(sitemapItems, tags);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private static void AddTagSitemapItems(List<SitemapItem> sitemapItems, List<Tag> tags)
+        {
+            foreach (var item in tags)
+            {
+                DateTime? lastModified = item.UpdatedDate;
+                SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
+                         AppConfig.HttpProtocol),
+                               lastModified,
+                               SitemapChangeFrequency.Daily,
+                               priority: 1.0);
+
+                sitemapItems.Add(sm);
+
+                sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
+                  AppConfig.HttpProtocol),
+                        lastModified,
+                        SitemapChangeFrequency.Daily,
+                        priority: 1.0);
+
+                sitemapItems.Add(sm);
             }
         }
 

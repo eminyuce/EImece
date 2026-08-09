@@ -14,5 +14,7 @@ namespace EImece.Domain.Services.IServices
 
         Brand GetBrandById(int BrandId);
         List<Brand> GetBrandsIfAnyProductExists(int lang, int categoryId = 0);
+
+        Task<List<Brand>> GetBrandsIfAnyProductExistsAsync(int lang, int categoryId = 0);
     }
 }

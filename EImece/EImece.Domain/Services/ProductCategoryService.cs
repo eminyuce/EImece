@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -77,9 +78,29 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
+        {
+            if (IsCachingActivated)
+            {
+                var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+                return await DataCachingProvider.GetOrAddAsync(
+                    cacheKey,
+                    () => ProductCategoryRepository.BuildTreeAsync(isActive, language),
+                    AppConfig.CacheMediumSeconds).ConfigureAwait(false);
+            }
+
+            return await ProductCategoryRepository.BuildTreeAsync(isActive, language).ConfigureAwait(false);
+        }
+
         public ProductCategory GetProductCategory(int categoryId)
         {
             ProductCategory result = ProductCategoryRepository.GetProductCategory(categoryId);
+            return EntityFilterHelper.FilterProductCategory(result);
+        }
+
+        public async Task<ProductCategory> GetProductCategoryAsync(int categoryId)
+        {
+            ProductCategory result = await ProductCategoryRepository.GetProductCategoryAsync(categoryId).ConfigureAwait(false);
             return EntityFilterHelper.FilterProductCategory(result);
         }
 
@@ -139,6 +160,15 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
+        public async Task<List<ProductCategory>> GetMainPageProductCategoriesAsync(int language)
+        {
+            var cacheKey = $"GetMainPageProductCategories-{language}" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => ProductCategoryRepository.GetMainPageProductCategoriesAsync(language),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+        }
+
         public List<ProductCategory> GetAdminProductCategories(string search, int currentLanguage)
         {
             return ProductCategoryRepository.GetAdminProductCategories(search, currentLanguage);
@@ -149,6 +179,26 @@ namespace EImece.Domain.Services
             List<ProductCategoryTreeModel> result = new List<ProductCategoryTreeModel>();
 
             var tree = BuildTree(true, language);
+            ProductCategoryTreeModel productCategoryTreeModel = null;
+            foreach (var t in tree)
+            {
+                productCategoryTreeModel = FindNode(t, productCategoryId);
+                if (productCategoryTreeModel != null)
+                {
+                    break;
+                }
+            }
+
+            AddParent(result, productCategoryTreeModel);
+
+            return result;
+        }
+
+        public async Task<List<ProductCategoryTreeModel>> GetBreadCrumbAsync(int productCategoryId, int language)
+        {
+            List<ProductCategoryTreeModel> result = new List<ProductCategoryTreeModel>();
+
+            var tree = await BuildTreeAsync(true, language).ConfigureAwait(false);
             ProductCategoryTreeModel productCategoryTreeModel = null;
             foreach (var t in tree)
             {
@@ -220,10 +270,47 @@ namespace EImece.Domain.Services
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
+
+        public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int productCategoryId)
+        {
+            var result = new ProductCategoryViewModel();
+            result.ProductCategory = await GetProductCategoryAsync(productCategoryId).ConfigureAwait(false);
+            if (result.ProductCategory == null)
+            {
+                return null;
+            }
+            if (result.ProductCategory.ParentId > 0)
+            {
+                result.ProductCategory.Parent = await GetProductCategoryAsync(result.ProductCategory.ParentId).ConfigureAwait(false);
+                if (result.ProductCategory.Parent != null && result.ProductCategory.Parent.ParentId > 0)
+                {
+                    result.ProductCategory.Parent.Parent = await GetProductCategoryAsync(result.ProductCategory.Parent.ParentId).ConfigureAwait(false);
+                }
+            }
+            int lang = result.ProductCategory.Lang;
+            List<Menu> lists = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
+            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.Brands = await BrandService.GetBrandsIfAnyProductExistsAsync(lang).ConfigureAwait(false);
+            result.ProductCategoryTree = await BuildTreeAsync(true, lang).ConfigureAwait(false);
+            result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
+            result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
+            result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
+            result.ChildrenProductCategories = await ProductCategoryRepository.GetProductCategoriesByParentIdAsync(productCategoryId).ConfigureAwait(false);
+            result.CategoryChildrenProducts = await ProductService.GetChildrenProductsAsync(result.ProductCategory, result.ChildrenProductCategories).ConfigureAwait(false);
+            return result;
+        }
         public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
         {
             var ProductCategory = GetProductCategory(productCategoryId);
             var result = Mapper.Map<ProductCategoryDto>(ProductCategory);
+            return result;
+        }
+
+        public async Task<ProductCategoryDto> GetProductCategoryDtoAsync(int productCategoryId)
+        {
+            var productCategory = await GetProductCategoryAsync(productCategoryId).ConfigureAwait(false);
+            var result = Mapper.Map<ProductCategoryDto>(productCategory);
             return result;
         }
     }

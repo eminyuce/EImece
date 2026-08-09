@@ -165,8 +165,6 @@ File uploads use `~/media/images/` (`Constants.ServerMapPath` / `AppConfig.Stora
 | `domain` | Public site domain used in links and emails |
 | `SiteStatus` | `live` or maintenance modes |
 | `Quartz_Scheduler_IsEnabled` | Background job scheduler (`False` for local dev) |
-| `RedisConnectionString` | Optional; leave empty to skip Redis health check |
-| `RabbitMqConnectionString` | Optional; leave empty to skip RabbitMQ health check |
 | `IyzicoBaseUrl` | Payment API base URL (sandbox or production) |
 | `EnableRequestLogging` | Structured request logging (`true` recommended) |
 | `EnableMetrics` | In-process metrics collection |
@@ -250,8 +248,6 @@ GET http://localhost:31544/healthz
       "Status": "UP",
       "Details": {
         "sqlServer": "connection alive",
-        "redis": "not configured",
-        "rabbitmq": "not configured",
         "externalApi": "404 reachable",
         "fileStorage": "read/write available",
         "backgroundServices": "scheduler disabled"
@@ -375,7 +371,6 @@ vstest.console.exe EImece.Tests\bin\Release\EImece.Tests.dll
 | `/health` returns 503, `fileStorage` down | IIS identity cannot write to `App_Data` | Grant modify permission on `App_Data` to the app pool identity |
 | Blank page, no error | `customErrors` hiding detail | Temporarily set `<customErrors mode="Off"/>` in dev only |
 | Tests fail, site works | Test `App.config` points elsewhere | Align test connection strings with a dedicated test database |
-| Redis/RabbitMQ show "not configured" | Empty connection strings | Expected for local dev; not an error |
 
 ---
 

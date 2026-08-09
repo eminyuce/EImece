@@ -5,6 +5,8 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -26,6 +28,15 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => TemplateRepository.GetAllActiveTemplates(),
                 AppConfig.CacheLongSeconds);
+        }
+
+        private async Task<List<Template>> GetAllActiveTemplatesAsync()
+        {
+            var cacheKey = String.Format("GetAllActiveTemplates") + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => TemplateRepository.GetAllActiveTemplatesAsync(CancellationToken.None),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public override Template GetSingle(int id)
@@ -56,6 +67,35 @@ namespace EImece.Domain.Services
                 {
                     Logger.Warn("GetTemplate cache miss for id" + id + "; loaded from database.");
                     DataCachingProvider.Clear(String.Format("GetAllActiveTemplates"));
+                }
+            }
+            return result;
+        }
+
+        public async Task<Template> GetTemplateAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (id == 0)
+                return new Template();
+
+            List<Template> resultList = await GetAllActiveTemplatesAsync().ConfigureAwait(false);
+            var result = resultList.FirstOrDefault(r => r.Id == id);
+            if (result == null)
+            {
+                result = await TemplateRepository.GetSingleAsync(id).ConfigureAwait(false);
+                if (result == null)
+                {
+                    Logger.Error("GetTemplateAsync is null for id" + id);
+                }
+                else if (!result.IsActive)
+                {
+                    Logger.Warn("GetTemplateAsync found inactive template id" + id);
+                    result = null;
+                }
+                else
+                {
+                    Logger.Warn("GetTemplateAsync cache miss for id" + id + "; loaded from database.");
+                    DataCachingProvider.Clear(String.Format("GetAllActiveTemplates"));
+                    DataCachingProvider.Clear(String.Format("GetAllActiveTemplates") + AsyncCacheKeySuffix);
                 }
             }
             return result;

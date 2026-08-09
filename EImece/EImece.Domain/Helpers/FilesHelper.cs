@@ -16,6 +16,8 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 
@@ -688,6 +690,59 @@ namespace EImece.Domain.Helpers
             return result;
         }
 
+        public async Task<SavedImage> GetResizedImageAsync(int fileStorageId, int width, int height, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var loaded = await GetFileStorageFromCacheAsync(fileStorageId, cancellationToken).ConfigureAwait(false);
+            if (loaded.Item1 == null || loaded.Item2 == null)
+            {
+                return null;
+            }
+
+            var result = resizeImageBytesByWidthAndHeight(loaded.Item1, width, height, loaded.Item2.MimeType);
+            result.UpdatedDated = loaded.Item2.UpdatedDate;
+            return result;
+        }
+
+        public async Task<SavedImage> GetResizedImageAsWebPAsync(int fileStorageId, int width, int height, int quality = 80, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var loaded = await GetFileStorageFromCacheAsync(fileStorageId, cancellationToken).ConfigureAwait(false);
+            if (loaded.Item1 == null || loaded.Item2 == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                using (var startStream = new MemoryStream(loaded.Item1))
+                using (var bitmap = new Bitmap(startStream))
+                using (var resized = ResizeImage(bitmap, width, height))
+                using (var outStream = new MemoryStream())
+                {
+                    ISupportedImageFormat webPFormat = new WebPFormat { Quality = quality };
+                    using (var imageFactory = new ImageFactory(preserveExifData: false))
+                    {
+                        using (var loadStream = new MemoryStream(GetBitmapBytes(resized)))
+                        {
+                            imageFactory.Load(loadStream)
+                                .Format(webPFormat)
+                                .Save(outStream);
+                        }
+                    }
+
+                    var result = new SavedImage(outStream.ToArray(), "image/webp");
+                    result.UpdatedDated = loaded.Item2.UpdatedDate;
+                    result.Width = resized.Width;
+                    result.Height = resized.Height;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "WebP conversion failed for fileStorageId={0}; falling back to original mime type", fileStorageId);
+                return await GetResizedImageAsync(fileStorageId, width, height, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
         /// <summary>
         /// Resize and encode as WebP when the client advertises image/webp support.
         /// Falls back to the standard resized image on failure.
@@ -782,6 +837,28 @@ namespace EImece.Domain.Helpers
                 }
             }
             return imageBytes;
+        }
+
+        /// <summary>
+        /// Async twin of <see cref="GetFileStorageFromCache"/>. Item1 is the file bytes; Item2 is the
+        /// FileStorage row. Disk read stays synchronous after the metadata await (local media folder).
+        /// </summary>
+        public async Task<Tuple<byte[], FileStorage>> GetFileStorageFromCacheAsync(int fileStorageId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var fileStorage = await FileStorageService.GetFileStorageAsync(fileStorageId, cancellationToken).ConfigureAwait(false);
+            if (fileStorage == null)
+            {
+                return Tuple.Create<byte[], FileStorage>(null, null);
+            }
+
+            String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
+            if (!File.Exists(fullPath))
+            {
+                return Tuple.Create<byte[], FileStorage>(null, fileStorage);
+            }
+
+            byte[] imageBytes = File.ReadAllBytes(fullPath);
+            return Tuple.Create(imageBytes, fileStorage);
         }
 
         private SavedImage resizeImageBytesByWidthAndHeight(byte[] imageBytes, int width, int height, string mimeType)

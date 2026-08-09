@@ -13,6 +13,7 @@ using RazorEngine.Templating;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -45,6 +46,34 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
 
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
+
+            string baseurl = GetSiteBaseUrl();
+
+            var model = new
+            {
+                WebSiteIconUrl = baseurl + "/images/logo.jpg",
+                Email = email,
+                callbackUrl = callbackUrl,
+                Name = name,
+                companyname = companyname
+            };
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string result = Engine.Razor.RunCompile(template, templateKey, null, model);
+
+            return new Tuple<string, string>(emailTemplate.Subject, result);
+        }
+
+        public async Task<Tuple<string, string>> ConfirmYourAccountEmailBodyAsync(string email, string name, string callbackUrl)
+        {
+            MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ConfirmYourAccountMailTemplate).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ConfirmYourAccountMailTemplate}");
+            }
+
+            String companyname = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
 
             string baseurl = GetSiteBaseUrl();
 
@@ -98,6 +127,33 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
+        public async Task<Tuple<string, string>> ForgotPasswordEmailBodyAsync(string email, string callbackUrl)
+        {
+            MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ForgotPasswordMailTemplate).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ForgotPasswordMailTemplate}");
+            }
+
+            String companyname = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+
+            string baseurl = GetSiteBaseUrl();
+            var model = new
+            {
+                WebSiteIconUrl = baseurl + "/images/logo.jpg",
+                Email = email,
+                ForgotPasswordLink = callbackUrl,
+                CompanyName = companyname,
+                CompanyPageLink = baseurl
+            };
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            string result = Engine.Razor.RunCompile(template, templateKey, null, model);
+
+            return new Tuple<string, string>(emailTemplate.Subject, result);
+        }
+
         public Tuple<string, RazorRenderResult, Customer> CompanyGotNewOrderEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.CompanyGotNewOrderEmailMailTemplate);
@@ -129,6 +185,31 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
         }
 
+        public async Task<Tuple<string, RazorRenderResult, Customer>> CompanyGotNewOrderEmailAsync(int orderId)
+        {
+            MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.CompanyGotNewOrderEmailMailTemplate).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.CompanyGotNewOrderEmailMailTemplate}");
+            }
+
+            CompanyGotNewOrderEmailRazorTemplate model = await MailTemplateService.GenerateCompanyGotNewOrderEmailRazorTemplateAsync(orderId).ConfigureAwait(false);
+
+            var modelSubject = new
+            {
+                OrderNumber = model.FinishedOrder.OrderNumber
+            };
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(template);
+
+            var result = GetRenderOutputByRazorEngineModel(template, model);
+
+            string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, modelSubject);
+
+            return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
+        }
+
         public Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.OrderConfirmationEmailMailTemplate);
@@ -138,6 +219,21 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
 
             OrderConfirmationEmailRazorTemplate model = MailTemplateService.GenerateOrderConfirmationEmailRazorTemplate(orderId);
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
+            var result = GetRenderOutputByRazorEngineModel(template, model);
+            return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
+        }
+
+        public async Task<Tuple<string, RazorRenderResult, Customer>> OrderConfirmationEmailAsync(int orderId)
+        {
+            MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.OrderConfirmationEmailMailTemplate).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.OrderConfirmationEmailMailTemplate}");
+            }
+
+            OrderConfirmationEmailRazorTemplate model = await MailTemplateService.GenerateOrderConfirmationEmailRazorTemplateAsync(orderId).ConfigureAwait(false);
             string template = emailTemplate.Body;
             string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             var result = GetRenderOutputByRazorEngineModel(template, model);
@@ -165,6 +261,36 @@ namespace EImece.Domain.Helpers.EmailHelper
             string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact); // Use different key for body
 
             EmailSender.SendEmailInBackground(SettingService.GetEmailAccount(),
+                subject,
+                body,
+                adminUserName,
+                companyname,
+                adminUserName,
+                companyname);
+        }
+
+        public async Task SendMessageToSellerAsync(ContactUsFormViewModel contact)
+        {
+            MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.SendMessageToSellerMailTemplate).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException("NO email template is defined for " + Constants.SendMessageToSellerMailTemplate);
+            }
+
+            string groupName = string.Format("{0} | {1} | {2}", "SendMessageToSeller", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+
+            string companyname = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            var adminUserName = await SettingService.GetSettingByKeyAsync(Constants.AdminUserName).ConfigureAwait(false);
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "_" + GeneralHelper.GetHashString(template);
+
+            string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
+            string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact);
+
+            // SendEmailInBackground queues the SMTP work; await only the settings/template I/O above.
+            EmailSender.SendEmailInBackground(await SettingService.GetEmailAccountAsync().ConfigureAwait(false),
                 subject,
                 body,
                 adminUserName,
@@ -222,6 +348,48 @@ namespace EImece.Domain.Helpers.EmailHelper
             );
         }
 
+        public async Task SendContactUsAboutProductDetailEmailAsync(ContactUsFormViewModel contact)
+        {
+            var emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ContactUsAboutProductInfoMailTemplate).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ContactUsAboutProductInfoMailTemplate}");
+            }
+
+            string groupName = $"ContactUsFormViewModel | {emailTemplate.Name} | {DateTime.Now:yyyy-MM-dd HH:mm}";
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(
+                emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk,
+                emailTemplate.Body, emailTemplate.Name, groupName
+            );
+
+            string companyName = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            string adminUserName = await SettingService.GetSettingByKeyAsync(Constants.AdminUserName).ConfigureAwait(false);
+
+            string baseurl = GetSiteBaseUrl();
+
+            var model = new
+            {
+                ContactUs = contact,
+                CompanyName = companyName,
+                BaseUrl = baseurl,
+                ProductPageLink = baseurl,
+                WebSiteIconUrl = $"{baseurl}/images/logo.jpg"
+            };
+
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
+            string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
+
+            EmailSender.SendEmailInBackground(
+                await SettingService.GetEmailAccountAsync().ConfigureAwait(false),
+                emailTemplate.Subject,
+                body,
+                adminUserName,
+                companyName,
+                adminUserName,
+                companyName
+            );
+        }
+
         public void SendContactUsForCommunication(ContactUsFormViewModel contact)
         {
             // E-posta şablonunu al
@@ -263,6 +431,49 @@ namespace EImece.Domain.Helpers.EmailHelper
             // E-posta gönder
             EmailSender.SendEmailInBackground(
                 SettingService.GetEmailAccount(),
+                emailTemplate.Subject,
+                body,
+                adminUserName,
+                companyName,
+                webSiteCompanyEmailAddress,
+                companyName
+            );
+        }
+
+        public async Task SendContactUsForCommunicationAsync(ContactUsFormViewModel contact)
+        {
+            var emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ContactUsForCommunication).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException($"E-posta şablonu bulunamadı: {Constants.ContactUsForCommunication}");
+            }
+
+            string groupName = $"ContactUsForCommunication | {emailTemplate.Name} | {DateTime.Now:yyyy-MM-dd HH:mm}";
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(
+                emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk,
+                emailTemplate.Body, emailTemplate.Name, groupName
+            );
+
+            string companyName = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            string adminUserName = await SettingService.GetSettingByKeyAsync(Constants.AdminUserName).ConfigureAwait(false);
+            string webSiteCompanyEmailAddress = await SettingService.GetSettingByKeyAsync(Constants.WebSiteCompanyEmailAddress).ConfigureAwait(false);
+
+            string baseurl = GetSiteBaseUrl();
+
+            var model = new
+            {
+                ContactUs = contact,
+                CompanyName = companyName,
+                BaseUrl = baseurl,
+                WebSiteIconUrl = $"{baseurl}/images/logo.jpg",
+                AdminPageUrl = $"{baseurl}/account/adminlogin/"
+            };
+
+            string templateKey = emailTemplate.Subject + GeneralHelper.GetHashString(emailTemplate.Body);
+            string body = Engine.Razor.RunCompile(emailTemplate.Body, templateKey, null, model);
+
+            EmailSender.SendEmailInBackground(
+                await SettingService.GetEmailAccountAsync().ConfigureAwait(false),
                 emailTemplate.Subject,
                 body,
                 adminUserName,

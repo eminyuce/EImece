@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -92,6 +94,45 @@ namespace EImece.Domain.Repositories
             return returnList;
         }
 
+        public async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            Expression<Func<ProductCategory, bool>> match = r => r.Lang == language;
+            bool isActived = isActive != null && isActive.HasValue;
+            if (isActived)
+            {
+                match = match.And(r => r.IsActive == isActive);
+            }
+            var pcList = await FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToListAsync(CancellationToken.None).ConfigureAwait(false);
+            var categoryIds = pcList.Select(c => c.Id).ToList();
+            var productCountRows = await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => categoryIds.Contains(p.ProductCategoryId) && p.Lang == language && (!isActived || p.IsActive))
+                .GroupBy(p => p.ProductCategoryId)
+                .Select(g => new { CategoryId = g.Key, Count = g.Count() })
+                .ToListAsync(CancellationToken.None).ConfigureAwait(false);
+            var productCounts = productCountRows.ToDictionary(x => x.CategoryId, x => x.Count);
+            var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
+            new
+            {
+                ProductCategory = c,
+                ProductCount = productCounts.ContainsKey(c.Id) ? productCounts[c.Id] : 0
+            }).ToList();
+
+            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
+            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
+
+            int level = 1;
+            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
+            topLevels.ForEach(r => r.TreeLevel = level);
+            returnList.AddRange(topLevels);
+            foreach (var i in topLevels)
+            {
+                GetTreeview(list, i, level);
+            }
+            return returnList;
+        }
+
         private List<ProductCategory> GetActiveProductCategoriesWithActiveProducts(int language)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -148,6 +189,32 @@ namespace EImece.Domain.Repositories
             }
         }
 
+        public async Task<ProductCategory> GetProductCategoryAsync(int categoryId, bool isOnlyActive = true)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.Products);
+            includeProperties.Add(r => r.Products.Select(t => t.MainImage));
+            includeProperties.Add(r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage)));
+            includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));
+            if (isOnlyActive)
+            {
+                var result = await GetSingleIncludingAsync(categoryId, CancellationToken.None, includeProperties.ToArray()).ConfigureAwait(false);
+                if (result != null && result.IsActive)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return await GetSingleIncludingAsync(categoryId, CancellationToken.None, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+        }
+
         public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
         {
             var productCategories = GetActiveBaseContents(isActive, language);
@@ -172,6 +239,16 @@ namespace EImece.Domain.Repositories
             var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
             return result.ToList();
+        }
+
+        public async Task<List<ProductCategory>> GetMainPageProductCategoriesAsync(int language)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            Expression<Func<ProductCategory, bool>> match = r => r.MainPage && r.IsActive && r.Lang == language;
+            var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+
+            return await result.ToListAsync(CancellationToken.None).ConfigureAwait(false);
         }
 
         public List<ProductCategory> GetAdminProductCategories(string search, int language)
@@ -206,6 +283,19 @@ namespace EImece.Domain.Repositories
                 includeProperties.ToArray());
             var result = items.ToList();
             return result;
+        }
+
+        public async Task<List<ProductCategory>> GetProductCategoriesByParentIdAsync(int parentId)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            Expression<Func<ProductCategory, bool>> match = r =>
+          r.ParentId == parentId && r.IsActive;
+
+            var items = FindAllIncluding(match,
+                 r => r.Position, OrderByType.Ascending, null, null,
+                includeProperties.ToArray());
+            return await items.ToListAsync(CancellationToken.None).ConfigureAwait(false);
         }
     }
 }

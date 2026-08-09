@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.GenericRepository.EntityFramework
@@ -100,6 +101,26 @@ namespace EImece.Domain.GenericRepository.EntityFramework
             return paginatedList;
         }
 
+        public Task<PaginatedList<TEntity>> PaginateAsync<TKey>(int pageIndex, int pageSize, Expression<Func<TEntity, TKey>> keySelector, CancellationToken cancellationToken)
+        {
+            return PaginateAsync<TKey>(pageIndex, pageSize, keySelector, null, OrderByType.Ascending, cancellationToken);
+        }
+
+        public Task<PaginatedList<TEntity>> PaginateAsync<TKey>(int pageIndex, int pageSize, Expression<Func<TEntity, TKey>> keySelector, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            return PaginateAsync<TKey>(pageIndex, pageSize, keySelector, predicate, OrderByType.Ascending, cancellationToken, includeProperties);
+        }
+
+        public Task<PaginatedList<TEntity>> PaginateDescendingAsync<TKey>(int pageIndex, int pageSize, Expression<Func<TEntity, TKey>> keySelector, CancellationToken cancellationToken)
+        {
+            return PaginateAsync<TKey>(pageIndex, pageSize, keySelector, null, OrderByType.Descending, cancellationToken);
+        }
+
+        public Task<PaginatedList<TEntity>> PaginateDescendingAsync<TKey>(int pageIndex, int pageSize, Expression<Func<TEntity, TKey>> keySelector, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            return PaginateAsync<TKey>(pageIndex, pageSize, keySelector, predicate, OrderByType.Descending, cancellationToken, includeProperties);
+        }
+
         public TEntity GetSingle(TId id)
         {
             IQueryable<TEntity> entities = GetAll();
@@ -127,6 +148,27 @@ namespace EImece.Domain.GenericRepository.EntityFramework
             IQueryable<TEntity> entities = GetAllIncluding(includeProperties);
             TEntity entity = Filter<TId>(entities, x => x.Id, id).FirstOrDefault();
             return entity;
+        }
+
+        public async Task<TEntity> GetSingleIncludingAsync(TId id, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.Where(predicate).FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<TEntity> GetSingleIncludingAsync(TId id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> entities = GetAllIncluding(includeProperties);
+            return await Filter<TId>(entities, x => x.Id, id).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public void Add(TEntity entity)
@@ -254,6 +296,18 @@ namespace EImece.Domain.GenericRepository.EntityFramework
             PaginatedList<TEntity> paginatedList = queryable.ToPaginatedList(pageIndex, pageSize);
 
             return paginatedList;
+        }
+
+        private Task<PaginatedList<TEntity>> PaginateAsync<TKey>(int pageIndex, int pageSize, Expression<Func<TEntity, TKey>> keySelector, Expression<Func<TEntity, bool>> predicate, OrderByType orderByType, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> queryable =
+                (orderByType == OrderByType.Ascending)
+                    ? GetAllIncludingReadOnly(includeProperties).OrderBy(keySelector)
+                    : GetAllIncludingReadOnly(includeProperties).OrderByDescending(keySelector);
+
+            queryable = (predicate != null) ? queryable.Where(predicate) : queryable;
+
+            return queryable.ToPaginatedListAsync(pageIndex, pageSize, cancellationToken);
         }
 
         private IQueryable<TEntity> Filter<TProperty>(IQueryable<TEntity> dbSet,

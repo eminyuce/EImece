@@ -2,7 +2,10 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -20,6 +23,11 @@ namespace EImece.Domain.Repositories
         public List<Setting> GetAllSettings()
         {
             return GetAll().ToList();
+        }
+
+        public async Task<List<Setting>> GetAllSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

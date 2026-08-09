@@ -10,7 +10,8 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  // IIS Express/local site is sensitive to parallel cold starts after app-pool recycle.
+  workers: process.env.CI ? 2 : 2,
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
   outputDir: 'test-results',
   timeout: 60_000,

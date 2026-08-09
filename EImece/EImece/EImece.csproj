@@ -1108,6 +1108,7 @@
     <Content Include="Views\Designs\Modern\ProductCategories\GetProductCategoryDto.cshtml" />
     <Content Include="Views\Designs\Modern\Products\AdvancedSearchProducts.cshtml" />
     <Content Include="Views\Designs\Modern\Products\Detail.cshtml" />
+    <Content Include="Views\Designs\Modern\Products\Index.cshtml" />
     <Content Include="Views\Designs\Modern\Products\SearchProducts.cshtml" />
     <Content Include="Views\Designs\Modern\Products\Tag.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\CargoTrackingResult.cshtml" />
@@ -1245,6 +1246,7 @@
     <Content Include="Views\Designs\Crizal\ProductCategories\GetProductCategoryDto.cshtml" />
     <Content Include="Views\Designs\Crizal\Products\AdvancedSearchProducts.cshtml" />
     <Content Include="Views\Designs\Crizal\Products\Detail.cshtml" />
+    <Content Include="Views\Designs\Crizal\Products\Index.cshtml" />
     <Content Include="Views\Designs\Crizal\Products\SearchProducts.cshtml" />
     <Content Include="Views\Designs\Crizal\Products\Tag.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_AddSubscriber.cshtml" />
@@ -1635,6 +1637,7 @@
     <Content Include="Views\Shared\DisplayTemplates\MainPageProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridImageMainPage.cshtml" />
     <Content Include="Views\Products\Detail.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_AddSubscriber.cshtml" />
     <Content Include="Views\Home\ThanksForSubscription.cshtml" />

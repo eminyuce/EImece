@@ -3,6 +3,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Services;
 using EImece.Domain.DependencyInjection;
+using System.Threading.Tasks;
 using System.Text;
 using System.Web.Mvc;
 
@@ -18,13 +19,13 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         [Route("sitemap.xml")]
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             if (AppConfig.IsSiteUnderConstruction)
             {
                 return File(Encoding.UTF8.GetBytes(""), TextPlain);
             }
-            return new SitemapResult(SiteMapService.GenerateSiteMap());
+            return new SitemapResult(await SiteMapService.GenerateSiteMapAsync());
         }
     }
 }

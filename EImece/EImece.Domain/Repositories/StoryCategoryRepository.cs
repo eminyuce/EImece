@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace EImece.Domain.Repositories
 {
@@ -32,6 +35,16 @@ namespace EImece.Domain.Repositories
             // var item =this.EImeceDbContext.StoryCategories.Where(match).OrderBy(keySelector).ThenByDescending(r => r.UpdatedDate).ToList();
             // EImeceDbContext.Database.Log = s => StoryCategoryLogger.Trace(s);
             return item.ToList();
+        }
+
+        public async Task<List<StoryCategory>> GetActiveStoryCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            Expression<Func<StoryCategory, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.Stories.Count() > 0;
+            Expression<Func<StoryCategory, int>> keySelector = t => t.Position;
+            var item = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            return await item.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public StoryCategory GetStoryCategoryById(int storyCategoryId)

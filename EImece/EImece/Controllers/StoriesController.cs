@@ -7,6 +7,8 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -21,12 +23,12 @@ namespace EImece.Controllers
         public IStoryService StoryService { get; set; }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Index(int page = 1)
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, int page = 1)
         {
             Logger.Info($"Entering Index action with page: {page}");
             try
             {
-                var stories = StoryService.GetMainPageStories(page, CurrentLanguage);
+                var stories = await StoryService.GetMainPageStoriesAsync(page, CurrentLanguage, cancellationToken);
                 Logger.Info($"Retrieved {stories?.Stories?.Count ?? 0} stories for page: {page}, language: {CurrentLanguage}");
                 Logger.Info("Returning Index view.");
                 return View(stories);
@@ -38,7 +40,7 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Detail(String id)
+        public async Task<ActionResult> Detail(CancellationToken cancellationToken, String id)
         {
             Logger.Info($"Entering Detail action with id: '{id}'");
             try
@@ -53,7 +55,7 @@ namespace EImece.Controllers
                 var storyId = id.GetId();
                 Logger.Info($"Parsed story ID: {storyId}");
 
-                var story = StoryService.GetStoryDetailViewModel(storyId);
+                var story = await StoryService.GetStoryDetailViewModelAsync(storyId, cancellationToken);
                 Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story?.Story?.Name}");
 
                 ViewBag.SeoId = story.Story.GetSeoUrl();
@@ -69,7 +71,7 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Categories(String id, int page = 1)
+        public async Task<ActionResult> Categories(CancellationToken cancellationToken, String id, int page = 1)
         {
             Logger.Info($"Entering Categories action with id: '{id}', page: {page}");
             try
@@ -84,7 +86,7 @@ namespace EImece.Controllers
                 var storyCategoryId = id.GetId();
                 Logger.Info($"Parsed story category ID: {storyCategoryId}");
 
-                var storyCategory = StoryService.GetStoryCategoriesViewModel(storyCategoryId, page);
+                var storyCategory = await StoryService.GetStoryCategoriesViewModelAsync(storyCategoryId, page, cancellationToken);
                 Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory?.StoryCategory?.Name}, Stories Count: {storyCategory?.Stories?.Count ?? 0}");
 
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
@@ -100,7 +102,7 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Tag(String id)
+        public async Task<ActionResult> Tag(CancellationToken cancellationToken, String id)
         {
             Logger.Info($"Entering Tag action with id: '{id}'");
             try
@@ -119,7 +121,7 @@ namespace EImece.Controllers
                 int pageSize = 20;
                 Logger.Info($"Using pageIndex: {pageIndex}, pageSize: {pageSize}");
 
-                var stories = StoryService.GetStoriesByTagId(tagId, pageIndex, pageSize, CurrentLanguage);
+                var stories = await StoryService.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, CurrentLanguage, cancellationToken);
                 if (stories == null || stories.Tag == null)
                 {
                     Logger.Warn($"Tag not found for id: '{id}' (parsed: {tagId})");

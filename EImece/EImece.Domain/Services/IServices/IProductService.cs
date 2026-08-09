@@ -5,6 +5,7 @@ using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -26,7 +27,11 @@ namespace EImece.Domain.Services.IServices
 
         Rss20FeedFormatter GetProductsRss(RssParams rssParams);
 
+        Task<Rss20FeedFormatter> GetProductsRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken));
+
         ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang);
+
+        Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken));
 
         List<ProductTag> GetProductTagsByProductId(int productId);
 
@@ -36,7 +41,11 @@ namespace EImece.Domain.Services.IServices
 
         ProductDetailViewModel GetProductDetailViewModelById(int id);
 
+        Task<ProductDetailViewModel> GetProductDetailViewModelByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
         Product GetProductById(int id);
+
+        Task<Product> GetProductByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
         ProductDeleteResult DeleteProductById(int id);
 
@@ -44,7 +53,11 @@ namespace EImece.Domain.Services.IServices
 
         ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
 
+        Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
+
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
+
+        Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken));
 
         void SaveProductSpecifications(List<ProductSpecification> specifications, int productId);
 
@@ -52,11 +65,20 @@ namespace EImece.Domain.Services.IServices
 
         List<Product> GetActiveProducts(int? language);
 
+        Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken));
+
         ProductsSearchResult GetProductsSearchResult(
          string search,
          string filters,
          string page,
          int language);
+
+        Task<ProductsSearchResult> GetProductsSearchResultAsync(
+         string search,
+         string filters,
+         string page,
+         int language,
+         CancellationToken cancellationToken = default(CancellationToken));
 
         void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request);
 
@@ -64,7 +86,11 @@ namespace EImece.Domain.Services.IServices
 
         List<Product> GetChildrenProducts(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories);
 
+        Task<List<Product>> GetChildrenProductsAsync(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories, CancellationToken cancellationToken = default(CancellationToken));
+
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting);
+
+        Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
         void ChangeProductState(List<string> values, ProductState state);
     }
 }

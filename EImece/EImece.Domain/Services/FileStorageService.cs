@@ -9,9 +9,12 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -42,6 +45,16 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public async Task<FileStorage> GetFileStorageAsync(int fileStorageId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var result = (await GetFileStoragesAsync(cancellationToken).ConfigureAwait(false)).FirstOrDefault(r => r.Id == fileStorageId);
+            if (result == null)
+            {
+                result = await GetSingleAsync(fileStorageId).ConfigureAwait(false);
+            }
+            return result;
+        }
+
         public List<FileStorage> GetFileStorages()
         {
             // FIX (pre-existing bug): the previous get-then-set logic fell into the else branch on a
@@ -57,6 +70,20 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => FileStorageRepository.GetAll().ToList(),
                 AppConfig.CacheMediumSeconds);
+        }
+
+        public async Task<List<FileStorage>> GetFileStoragesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (!IsCachingActivated)
+            {
+                return await FileStorageRepository.GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
+            }
+
+            var cacheKey = "GetFileStorages" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => FileStorageRepository.GetAll().ToListAsync(CancellationToken.None),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public void SaveUploadImages(int contentId,

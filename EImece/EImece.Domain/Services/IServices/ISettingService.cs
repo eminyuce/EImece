@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -11,9 +12,17 @@ namespace EImece.Domain.Services.IServices
 
         string GetSettingByKey(string key, int language);
 
+        Task<string> GetSettingByKeyAsync(string key);
+
+        Task<string> GetSettingByKeyAsync(string key, int language);
+
         Setting GetSettingObjectByKey(string key);
 
         Setting GetSettingObjectByKey(string key, int language);
+
+        Task<Setting> GetSettingObjectByKeyAsync(string key);
+
+        Task<Setting> GetSettingObjectByKeyAsync(string key, int language);
 
         SettingModel GetSettingModel(int language);
 
@@ -21,7 +30,11 @@ namespace EImece.Domain.Services.IServices
 
         List<Setting> GetAllActiveSettings();
 
+        Task<List<Setting>> GetAllActiveSettingsAsync();
+
         EmailAccount GetEmailAccount();
+
+        Task<EmailAccount> GetEmailAccountAsync();
 
         SystemSettingModel GetSystemSettingModel();
 

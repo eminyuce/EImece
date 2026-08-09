@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -69,6 +71,11 @@ namespace EImece.Domain.Services
         public List<StoryCategory> GetActiveStoryCategories(int language)
         {
             return StoryCategoryRepository.GetActiveStoryCategories(language);
+        }
+
+        public async Task<List<StoryCategory>> GetActiveStoryCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryCategoryRepository.GetActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
         }
     }
 }

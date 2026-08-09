@@ -65,7 +65,7 @@ namespace EImece.Controllers
 
 
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
-        public JsonResult GetAllCities()
+        public Task<JsonResult> GetAllCities()
         {
             var cities = turkishRegionService.GetAllCities()
                 .OrderBy(city => city)
@@ -77,10 +77,10 @@ namespace EImece.Controllers
 
             cities.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
-            return Json(cities, JsonRequestBehavior.AllowGet);
+            return Task.FromResult(Json(cities, JsonRequestBehavior.AllowGet));
         }
 
-        public JsonResult GetTownsByCity(string cityName)
+        public Task<JsonResult> GetTownsByCity(string cityName)
         {
             var towns = turkishRegionService.GetTownsByCity(cityName)
                 .OrderBy(town => town)
@@ -92,10 +92,10 @@ namespace EImece.Controllers
 
             towns.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
-            return Json(towns, JsonRequestBehavior.AllowGet);
+            return Task.FromResult(Json(towns, JsonRequestBehavior.AllowGet));
         }
 
-        public JsonResult GetDistrictsByTown(string cityName, string townName)
+        public Task<JsonResult> GetDistrictsByTown(string cityName, string townName)
         {
             var districts = turkishRegionService.GetDistrictsByTown(cityName, townName)
                 .OrderBy(d => d)
@@ -107,7 +107,7 @@ namespace EImece.Controllers
 
             districts.Insert(0, new SelectListItem { Value = "", Text = Resource.Select });
 
-            return Json(districts, JsonRequestBehavior.AllowGet);
+            return Task.FromResult(Json(districts, JsonRequestBehavior.AllowGet));
         }
     }
 }

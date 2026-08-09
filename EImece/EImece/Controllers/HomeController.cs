@@ -22,6 +22,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.Caching;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -61,18 +62,18 @@ namespace EImece.Controllers
         public MigrationRepository MigrationRepository { get; set; }
 
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+            MainPageViewModel mainPageModel = await MainPageImageService.GetMainPageViewModelAsync(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
-            ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle, CurrentLanguage).ToStr();
-            ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();
-            ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords, CurrentLanguage).ToStr();
+            ViewBag.Title = (await SettingService.GetSettingByKeyAsync(Constants.SiteIndexMetaTitle, CurrentLanguage)).ToStr();
+            ViewBag.Description = (await SettingService.GetSettingByKeyAsync(Constants.SiteIndexMetaDescription, CurrentLanguage)).ToStr();
+            ViewBag.Keywords = (await SettingService.GetSettingByKeyAsync(Constants.SiteIndexMetaKeywords, CurrentLanguage)).ToStr();
             return View(mainPageModel);
         }
 
         [HttpPost]
-        public ActionResult AddSubscriber(Subscriber subscriber)
+        public async Task<ActionResult> AddSubscriber(Subscriber subscriber)
         {
             var emailChecker = new EmailAddressAttribute();
             if (subscriber == null || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim()) || !emailChecker.IsValid(subscriber.Email.ToStr().Trim()))
@@ -84,12 +85,12 @@ namespace EImece.Controllers
             {
                 subscriber.Name = subscriber.Email;
                 subscriber.IsActive = true;
-                SubsciberService.SaveOrEditEntity(subscriber);
+                await SubsciberService.SaveOrEditEntityAsync(subscriber);
                 return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
             }
         }
 
-        public ActionResult ThanksForSubscription(int? id)
+        public async Task<ActionResult> ThanksForSubscription(int? id)
         {
             if (!id.HasValue)
             {
@@ -97,10 +98,16 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var s = SubsciberService.GetSingle(id.Value);
+            var s = await SubsciberService.GetSingleAsync(id.Value);
+            if (s == null)
+            {
+                HomeLogger.Error($"Subscriber not found for ThanksForSubscription id={id.Value}.");
+                return RedirectToAction("NotFound", "Error");
+            }
             return View(s);
         }
 
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult SocialMediaLinks()
         {
@@ -194,6 +201,7 @@ namespace EImece.Controllers
             return PartialView("_Footer", footerViewModel);
         }
 
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
         public ActionResult GetCompanyName()
         {
@@ -202,6 +210,7 @@ namespace EImece.Controllers
             return Content(companyName);
         }
 
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
         public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
@@ -215,7 +224,7 @@ namespace EImece.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateCaptcha(Prefix = "ContactUsLogin")]
-        public ActionResult SendContactUs(ContactUsFormViewModel contact)
+        public async Task<ActionResult> SendContactUs(ContactUsFormViewModel contact)
         {
             HomeLogger.Info("Entering SendContactUs POST action.");
             if (contact == null)
@@ -237,7 +246,7 @@ namespace EImece.Controllers
                 if (contact.ItemType == EImeceItemType.Product)
                 {
                     HomeLogger.Info($"ItemType is Product with ID: {contact.ItemId}");
-                    var product = ProductService.GetProductDetailViewModelById(contact.ItemId);
+                    var product = await ProductService.GetProductDetailViewModelByIdAsync(contact.ItemId);
                     product.Contact = contact;
                     HomeLogger.Info("Returning Product Detail view with captcha error.");
                     return View("../Products/Detail", product);
@@ -245,7 +254,7 @@ namespace EImece.Controllers
                 else if (contact.ItemType == EImeceItemType.Menu)
                 {
                     HomeLogger.Info($"ItemType is Menu with ID: {contact.ItemId}");
-                    var page = MenuService.GetPageById(contact.ItemId);
+                    var page = await MenuService.GetPageByIdAsync(contact.ItemId);
                     page.Contact = contact;
                     HomeLogger.Info("Returning Page Detail view with captcha error.");
                     return View("../Pages/Detail", page);
@@ -264,7 +273,7 @@ namespace EImece.Controllers
                 try
                 {
                     HomeLogger.Info("Saving subscriber from contact form.");
-                    saveSubsciber(contact);
+                    await saveSubsciberAsync(contact);
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -281,13 +290,13 @@ namespace EImece.Controllers
                     if (contact.ItemType == EImeceItemType.Product)
                     {
                         HomeLogger.Info($"Sending contact email for product ID: {contact.ItemId}");
-                        RazorEngineHelper.SendContactUsAboutProductDetailEmail(contact);
+                        await RazorEngineHelper.SendContactUsAboutProductDetailEmailAsync(contact);
                         HomeLogger.Info("Product contact email sent.");
                     }
                     else
                     {
                         HomeLogger.Info("Sending general contact email.");
-                        RazorEngineHelper.SendContactUsForCommunication(contact);
+                        await RazorEngineHelper.SendContactUsForCommunicationAsync(contact);
                         HomeLogger.Info("General contact email sent.");
                     }
                 }
@@ -326,7 +335,7 @@ namespace EImece.Controllers
             return result;
         }
 
-        private void saveSubsciber(ContactUsFormViewModel contact)
+        private async Task saveSubsciberAsync(ContactUsFormViewModel contact)
         {
             HomeLogger.Info("Entering saveSubsciber method.");
             var s = new Subscriber();
@@ -340,7 +349,7 @@ namespace EImece.Controllers
             s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
                 contact.CompanyName, contact.Phone, contact.Address, contact.Message, Environment.NewLine);
             HomeLogger.Info($"Saving subscriber with email: {s.Email}");
-            SubsciberService.SaveOrEditEntity(s);
+            await SubsciberService.SaveOrEditEntityAsync(s);
             HomeLogger.Info("Subscriber saved successfully.");
         }
 
@@ -354,12 +363,12 @@ namespace EImece.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult OrderConfirmationEmail(int orderId = 1)
+        public async Task<ActionResult> OrderConfirmationEmail(int orderId = 1)
         {
             HomeLogger.Info($"Entering OrderConfirmationEmail with orderId: {orderId}");
-            var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(orderId);
+            var emailTemplate = await RazorEngineHelper.OrderConfirmationEmailAsync(orderId);
             HomeLogger.Info("Generated order confirmation email template.");
-            EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
+            EmailSender.SendRenderedEmailTemplateToCustomer(await SettingService.GetEmailAccountAsync(), emailTemplate);
             HomeLogger.Info("Order confirmation email sent to customer.");
             HomeLogger.Info("Returning email template view.");
             return View(emailTemplate.Item2);

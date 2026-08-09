@@ -10,6 +10,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -69,10 +70,53 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task SaveRegisterViewModelAsync(string userId, RegisterViewModel model)
+        {
+            Logger.Info($"Saving RegisterViewModel for user: {userId}");
+            try
+            {
+                var item = new Customer
+                {
+                    UserId = userId,
+                    Name = model.FirstName,
+                    GsmNumber = GeneralHelper.CheckGsmNumber(model.PhoneNumber),
+                    IdentityNumber = "",
+                    Ip = GeneralHelper.GetIpAddress(),
+                    IsActive = true,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                    Position = 1,
+                    Lang = 1,
+                    IsPermissionGranted = model.IsPermissionGranted,
+                    Street = "",
+                    District = "",
+                    City = "",
+                    Country = "",
+                    ZipCode = ""
+                };
+
+                await CustomerRepository.SaveOrEditAsync(item).ConfigureAwait(false);
+                Logger.Info("Customer successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error saving RegisterViewModel.");
+                throw;
+            }
+        }
+
         public Customer GetUserId(string userId)
         {
             Logger.Info($"Retrieving customer by userId: {userId}");
             var item = CustomerRepository.GetUserId(userId);
+            GetUserFields(item);
+            return item;
+        }
+
+        public async Task<Customer> GetUserIdAsync(string userId)
+        {
+            Logger.Info($"Retrieving customer by userId: {userId}");
+            var item = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
             GetUserFields(item);
             return item;
         }
@@ -101,6 +145,23 @@ namespace EImece.Domain.Services
                 customer.CustomerType = (int)EImeceCustomerType.Normal;
                 customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
                 SaveOrEditEntity(customer);
+                Logger.Info("Customer type updated successfully.");
+            }
+            else
+            {
+                Logger.Warn("Customer not found.");
+            }
+        }
+
+        public async Task SaveCustomerTypeToNormalAsync(string userId)
+        {
+            Logger.Info($"Updating customer type to Normal for userId: {userId}");
+            var customer = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
+            if (customer != null)
+            {
+                customer.CustomerType = (int)EImeceCustomerType.Normal;
+                customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
+                await SaveOrEditEntityAsync(customer).ConfigureAwait(false);
                 Logger.Info("Customer type updated successfully.");
             }
             else

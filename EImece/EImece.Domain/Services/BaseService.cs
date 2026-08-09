@@ -16,6 +16,15 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseService<T> where T : class, IEntity<int>
     {
+        /// <summary>
+        /// Async cached reads deliberately use their own cache keys. LazyCache stores a
+        /// <c>Lazy&lt;T&gt;</c> for GetOrAdd and an <c>AsyncLazy&lt;T&gt;</c> for GetOrAddAsync, and if a
+        /// synchronous reader lands on an entry that an async reader created, LazyCache unwraps it
+        /// with GetAwaiter().GetResult() internally. Separate keys keep the sync and async paths
+        /// from ever blocking on each other while both spellings of a method still exist.
+        /// </summary>
+        protected const string AsyncCacheKeySuffix = "-async";
+
         [Inject]
         public IHttpContextFactory HttpContextFactory { get; set; }
         [Inject]

@@ -2,7 +2,10 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -15,6 +18,11 @@ namespace EImece.Domain.Repositories
         public List<Template> GetAllActiveTemplates()
         {
             return GetAll().Where(t => t.IsActive).ToList();
+        }
+
+        public async Task<List<Template>> GetAllActiveTemplatesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await GetAll().Where(t => t.IsActive).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public List<Template> GetAllTemplates()

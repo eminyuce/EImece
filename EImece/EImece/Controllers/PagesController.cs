@@ -7,6 +7,7 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -20,7 +21,7 @@ namespace EImece.Controllers
         public IMenuService MenuService { get; set; }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Detail(String id = "")
+        public async Task<ActionResult> Detail(String id = "")
         {
             try
             {
@@ -29,7 +30,7 @@ namespace EImece.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 var menuId = id.GetId();
-                var page = MenuService.GetPageById(menuId);
+                var page = await MenuService.GetPageByIdAsync(menuId);
                 ViewBag.SeoId = page.Menu.GetSeoUrl();
                 if (page.Menu.IsActive)
                 {
