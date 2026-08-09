@@ -1,0 +1,73 @@
+@model EImece.Domain.Models.FrontModels.ProductIndexViewModel
+@using EImece.Domain.GenericRepository;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Models;
+@{
+    PaginatedList<Product> productsAll = Model.Products;
+    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
+    products.PageIndex = Model.Page;
+
+    var pageTitle = Model.ProductMenu != null ? Model.ProductMenu.Name : Resource.Products;
+    ViewBag.Title = pageTitle;
+    ViewBag.Description = String.Join(",", productsAll.Select(r => r.Name)).ToStr(150);
+}
+
+<div class="page-title-wrapper" role="region" aria-label="Page title">
+    <div class="container">
+        <div class="alert alert-secondary" role="alert">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        @pageTitle
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title">@pageTitle</h1><span class="d-block mt-2 text-muted"></span>
+        <hr class="mt-4">
+    </div>
+</div>
+
+<div class="container potrfolio-container">
+
+    @if (products.IsNotEmpty())
+    {
+        @if (Model.Tags.IsNotEmpty())
+        {
+    <div class="d-flex flex-wrap pb-3">
+        @foreach (var tag in Model.Tags)
+        {
+        <a href="@Url.Action("Tag", "Products", new { id = tag.GetSeoUrl() })"
+           rel="nofollow" class="btn btn-pill btn-outline-secondary mb-2 mr-1">@tag.Name</a>
+        }
+    </div>
+        }
+        <!-- Products grid-->
+    <div class="row no-gutters">
+        @foreach (var p in products)
+        {
+        @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
+        }
+    </div>
+    <div class="d-flex justify-content-center py-4 pb-5">
+        @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
+                          {"actionName","index"}, {"controllerName","products" } })
+    </div>
+    }
+    else
+    {
+    <div class="alert alert-secondary alert-with-icon" role="alert">
+        <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
+        @Resource.NOSearchResult
+    </div>
+    }
+</div>

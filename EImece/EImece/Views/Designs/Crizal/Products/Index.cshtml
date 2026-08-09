@@ -1,0 +1,73 @@
+@model EImece.Domain.Models.FrontModels.ProductIndexViewModel
+@using EImece.Domain.GenericRepository;
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
+@using EImece.Domain;
+@using EImece.Domain.Models;
+@{
+    PaginatedList<Product> productsAll = Model.Products;
+    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
+    products.PageIndex = Model.Page;
+
+    var pageTitle = Model.ProductMenu != null ? Model.ProductMenu.Name : Resource.Products;
+    ViewBag.Title = pageTitle;
+    ViewBag.Description = String.Join(",", productsAll.Select(r => r.Name)).ToStr(150);
+}
+
+<div class="page-title-wrapper crizal-search-hero" role="region" aria-label="Page title">
+    <div class="container">
+        <nav class="crizal-breadcrumb" aria-label="breadcrumb">
+            <ol class="crizal-breadcrumb__list breadcrumb">
+                <li class="crizal-breadcrumb__item breadcrumb-item">
+                    <a href="@Url.Action("Index", "Home")" class="crizal-breadcrumb__link">
+                        <i data-feather="home" aria-hidden="true"></i>
+                        <span>@Resource.HomePage</span>
+                    </a>
+                </li>
+                <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+                    <span class="crizal-breadcrumb__current">@pageTitle</span>
+                </li>
+            </ol>
+        </nav>
+        <p class="crizal-search-hero__eyebrow">@Resource.Products</p>
+        <h1 class="page-title">@pageTitle</h1>
+    </div>
+</div>
+
+<div class="container pb-5 mb-2">
+
+    @if (products.IsNotEmpty())
+    {
+        @if (Model.Tags.IsNotEmpty())
+        {
+        <div class="crizal-search-toolbar">
+            <div class="crizal-search-toolbar__sorts">
+                @foreach (var tag in Model.Tags)
+                {
+                    <a href="@Url.Action("Tag", "Products", new { id = tag.GetSeoUrl() })"
+                       rel="nofollow" class="btn btn-pill btn-outline-secondary mb-2 mr-1">@tag.Name</a>
+                }
+            </div>
+        </div>
+        }
+        <div class="row">
+            @foreach (var p in products)
+            {
+                @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
+            }
+        </div>
+        <div class="d-flex justify-content-center py-4 pb-5">
+            @Html.Partial("_PaginatedModelList", products, new ViewDataDictionary(ViewData){
+                              {"actionName","index"}, {"controllerName","products" } })
+        </div>
+    }
+    else
+    {
+        <div class="crizal-empty-state" role="alert">
+            <h2>@Resource.NOSearchResult</h2>
+        </div>
+    }
+</div>
