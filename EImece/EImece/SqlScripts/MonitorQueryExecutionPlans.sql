@@ -9,14 +9,26 @@ SET NOCOUNT ON;
 GO
 
 /* --------------------------------------------------------------------------
-   1) Capture an *actual* execution plan for a representative product listing
-      (mirrors ProductRepository.GetActiveProducts paging predicate).
+   1a) Category browse — most important Products predicate
+       (mirrors GetRandomProductsByCategoryId / category product lists).
    -------------------------------------------------------------------------- */
 -- In SSMS: Query → Include Actual Execution Plan (Ctrl+M), then run:
 /*
 SET STATISTICS IO ON;
 SET STATISTICS TIME ON;
 
+SELECT TOP (20) p.Id, p.Name, p.Price, p.Position, p.ProductCategoryId, p.MainImageId
+FROM dbo.Products AS p
+WHERE p.ProductCategoryId = 1 AND p.IsActive = 1 AND p.Lang = 1
+ORDER BY p.Position DESC;
+
+-- Expect: Index Seek on IX_Products_ProductCategoryId_IsActive_Lang_Position
+*/
+
+/* --------------------------------------------------------------------------
+   1b) Storefront listing (IsActive + Lang + Position)
+   -------------------------------------------------------------------------- */
+/*
 SELECT TOP (20) p.Id, p.Name, p.Price, p.Position, p.ProductCategoryId, p.MainImageId
 FROM dbo.Products AS p
 WHERE p.IsActive = 1 AND p.Lang = 1
@@ -28,8 +40,29 @@ SET STATISTICS TIME OFF;
 
 -- What to look for in the plan:
 --   * Index Seek (or ordered Index Scan) on IX_Products_IsActive_Lang_Position
+--     or IX_Products_ProductCategoryId_IsActive_Lang_Position for category filters
 --   * No Key Lookup storms (covering INCLUDE columns should avoid them)
 --   * Estimated vs Actual rows roughly aligned (parameter sniffing otherwise)
+
+/* --------------------------------------------------------------------------
+   1c) Product child-table seeks (detail page eager loads)
+   -------------------------------------------------------------------------- */
+/*
+SELECT * FROM dbo.ProductTags WHERE ProductId = 1;
+-- Expect: IX_ProductTags_ProductId_TagId
+
+SELECT * FROM dbo.ProductFiles WHERE ProductId = 1;
+-- Expect: IX_ProductFiles_ProductId
+
+SELECT * FROM dbo.ProductComments WHERE ProductId = 1 AND Lang = 1 AND IsActive = 1;
+-- Expect: IX_ProductComments_ProductId_Lang_IsActive
+
+SELECT * FROM dbo.ProductSpecifications WHERE ProductId = 1;
+-- Expect: IX_ProductSpecifications_ProductId
+
+SELECT * FROM dbo.ProductCategories WHERE ParentId = 0 AND IsActive = 1 ORDER BY Position;
+-- Expect: IX_ProductCategories_ParentId_IsActive_Position
+*/
 
 /* --------------------------------------------------------------------------
    2) Order lookup by number — should be a unique seek
@@ -98,7 +131,16 @@ FROM sys.dm_db_index_usage_stats AS s
 INNER JOIN sys.indexes AS i
     ON i.object_id = s.object_id AND i.index_id = s.index_id
 WHERE s.database_id = DB_ID()
-  AND OBJECT_NAME(s.object_id) IN (N'Products', N'Orders', N'OrderProducts', N'ProductTags')
+  AND OBJECT_NAME(s.object_id) IN (
+      N'Products',
+      N'ProductCategories',
+      N'ProductTags',
+      N'ProductFiles',
+      N'ProductComments',
+      N'ProductSpecifications',
+      N'Brands',
+      N'Orders',
+      N'OrderProducts')
 ORDER BY table_name, index_name;
 GO
 

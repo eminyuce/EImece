@@ -95,18 +95,25 @@ Apply:
 EImece/SqlScripts/AddPerformanceIndexes.sql
 ```
 
-Key indexes:
+Key indexes (product tables first):
 
 | Index | Supports |
 |---|---|
+| `IX_Products_ProductCategoryId_IsActive_Lang_Position` | **Category browse / counts / related-by-category** |
+| `IX_Products_ProductCategoryId_Lang` | Admin category grids |
 | `IX_Products_IsActive_Lang_Position` | Storefront listing / paging |
 | `IX_Products_IsActive_MainPage_Lang_Position` | Home main-page products |
-| `IX_Products_ProductCategoryId_IsActive_Lang` | Category + related products |
-| `IX_Products_ProductCode` | Admin SKU search |
-| `IX_Orders_OrderNumber` | Order lookup by number |
-| `IX_Orders_UserId_UpdatedDate` | Customer order history |
+| `IX_Products_BrandId_Lang` / `ProductCode` / `State` / `IsCampaign` | Brand + admin filters |
+| `IX_Products_MainImageId` | MainImage FK joins |
+| `IX_ProductCategories_ParentId_IsActive_Position` | Category tree |
+| `IX_ProductCategories_Lang_IsActive_Position` / `MainPage_…` | Navigation / home categories |
+| `IX_ProductTags_ProductId_TagId` / `TagId_ProductId` | Detail tags + related-by-tag |
+| `IX_ProductFiles_ProductId` / `FileStorageId` | Gallery eager loads |
+| `IX_ProductComments_ProductId_Lang_IsActive` | Detail reviews |
+| `IX_ProductSpecifications_ProductId` | Detail specs |
+| `IX_Brands_Lang_IsActive_Position` | Brand lists |
+| `IX_Orders_OrderNumber` / `UserId_UpdatedDate` | Order lookups |
 | `IX_OrderProducts_ProductId` / `_OrderId` | Eager order lines + delete guards |
-| `IX_ProductTags_TagId_ProductId` | Related products by tag |
 
 ### How to monitor plans
 
