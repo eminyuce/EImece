@@ -37,24 +37,37 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         // GET: Admin/Media
-        public ActionResult Index(int contentId, String mod, String imageType)
+        public ActionResult Index(int? contentId, String mod = null, String imageType = null)
         {
+            if (!contentId.HasValue || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
+            {
+                // Media is opened from a parent entity editor with query params; bare /admin/media/ is not a listing.
+                SetErrorMessage("Medya yönetimi bir içerik kaydı üzerinden açılmalıdır.");
+                return RedirectToAction("Index", "Dashboard");
+            }
+
             var currentSelectedModul = new Dictionary<string, string>();
             currentSelectedModul.Add("contentId", contentId + "");
             currentSelectedModul.Add("mod", mod);
             currentSelectedModul.Add("imageType", imageType);
             CurrentSelectedModul = currentSelectedModul;
 
-            int id = contentId;
+            int id = contentId.Value;
             var returnModel = new MediaAdminIndexModel();
             MediaModType? enumMod = EnumHelper.Parse<MediaModType>(mod);
             EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(imageType);
+            if (!enumMod.HasValue || !enumImageType.HasValue)
+            {
+                SetErrorMessage("Geçersiz medya parametreleri.");
+                return RedirectToAction("Index", "Dashboard");
+            }
+
             returnModel.Id = id;
             returnModel.Lang = GetCurrentLanguage;
             returnModel.ImageType = enumImageType.Value;
             returnModel.MediaMod = enumMod.Value;
-            returnModel.FileStorages = FileStorageService.GetUploadImages(contentId, enumMod, enumImageType);
-            switch (enumMod)
+            returnModel.FileStorages = FileStorageService.GetUploadImages(id, enumMod.Value, enumImageType.Value);
+            switch (enumMod.Value)
             {
                 case MediaModType.Stories:
                     returnModel.BaseContent = StoryService.GetSingle(id);
