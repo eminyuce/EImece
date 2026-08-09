@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -80,64 +81,37 @@ namespace EImece.Domain.Repositories
 
         public List<Product> GetAdminPageList(int categoryId, string search, int language)
         {
-            return GetAdminPageList(categoryId, 0, search, language);
+            return GetAdminPageList(categoryId, 0, search, language, null);
         }
 
         public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int language)
         {
-            Expression<Func<Product, object>> includeProperty4 = r => r.ProductComments;
-            Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
-            Expression<Func<Product, object>> includeProperty5 = r => r.Brand;
-            Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
-            Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3, includeProperty4, includeProperty5 };
-            var products = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
-            search = search.ToStr().Trim();
-            if (!String.IsNullOrEmpty(search))
-            {
-                var productId = search.ToInt();
-                if (productId > 0)
-                {
-                    products = products.Where(r => r.Id == productId);
-                }
-                else
-                {
-                    Expression<Func<Product, bool>> whereLamba = r => r.Name.Contains(search)
-                    || r.ProductCode.Contains(search)
-                          || r.NameLong.Contains(search)
-                           || r.NameShort.Contains(search)
-                    || r.ProductCategory.Name.Contains(search);
-                    products = products.Where(whereLamba);
-                }
-            }
+            return GetAdminPageList(categoryId, brandId, search, language, null);
+        }
 
-            if (brandId > 0)
-            {
-                products = products.Where(r => r.BrandId == brandId);
-            }
-
-            if (categoryId > 0)
-            {
-                products = products.Where(r => r.ProductCategoryId == categoryId);
-            }
-            else
-            {
-                // CategoryId is -1 for excel exporting.
-                if (String.IsNullOrEmpty(search) && categoryId != -1)
-                {
-                    products = products.Take(1000);
-                }
-            }
-            products = products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
-
+        public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter)
+        {
+            var products = BuildAdminPageListQuery(categoryId, brandId, search, language, filter);
             return products.ToList();
         }
 
         public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language)
         {
-            return await GetAdminPageListAsync(categoryId, -1, search, language).ConfigureAwait(false);
+            return await GetAdminPageListAsync(categoryId, -1, search, language, null).ConfigureAwait(false);
         }
 
         public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language)
+        {
+            return await GetAdminPageListAsync(categoryId, brandId, search, language, null).ConfigureAwait(false);
+        }
+
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter)
+        {
+            var products = BuildAdminPageListQuery(categoryId, brandId, search, language, filter);
+            return await products.ToListAsync().ConfigureAwait(false);
+        }
+
+        private IQueryable<Product> BuildAdminPageListQuery(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter)
         {
             Expression<Func<Product, object>> includeProperty4 = r => r.ProductComments;
             Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
@@ -169,6 +143,43 @@ namespace EImece.Domain.Repositories
                 products = products.Where(r => r.BrandId == brandId);
             }
 
+            if (filter != null)
+            {
+                if (!String.IsNullOrWhiteSpace(filter.State))
+                {
+                    var state = filter.State.Trim();
+                    products = products.Where(r => r.State == state);
+                }
+                if (filter.IsActive.HasValue)
+                {
+                    var isActive = filter.IsActive.Value;
+                    products = products.Where(r => r.IsActive == isActive);
+                }
+                if (filter.MainPage.HasValue)
+                {
+                    var mainPage = filter.MainPage.Value;
+                    products = products.Where(r => r.MainPage == mainPage);
+                }
+                if (filter.IsCampaign.HasValue)
+                {
+                    var isCampaign = filter.IsCampaign.Value;
+                    products = products.Where(r => r.IsCampaign == isCampaign);
+                }
+                if (filter.ApplyPriceFilter)
+                {
+                    if (filter.MinPrice.HasValue)
+                    {
+                        var minPrice = filter.MinPrice.Value;
+                        products = products.Where(r => r.Price >= minPrice);
+                    }
+                    if (filter.MaxPrice.HasValue)
+                    {
+                        var maxPrice = filter.MaxPrice.Value;
+                        products = products.Where(r => r.Price <= maxPrice);
+                    }
+                }
+            }
+
             if (categoryId > 0)
             {
                 products = products.Where(r => r.ProductCategoryId == categoryId);
@@ -176,14 +187,16 @@ namespace EImece.Domain.Repositories
             else
             {
                 // CategoryId is -1 for excel exporting.
-                if (String.IsNullOrEmpty(search) && categoryId != -1)
+                // Skip Take(1000) when advanced filters are active so filtered results are complete.
+                var hasAdvancedFilter = filter != null && filter.HasAnyFilter;
+                if (String.IsNullOrEmpty(search) && categoryId != -1 && !hasAdvancedFilter && brandId <= 0)
                 {
                     products = products.Take(1000);
                 }
             }
             products = products.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
 
-            return await products.ToListAsync().ConfigureAwait(false);
+            return products;
         }
 
         public Product GetProduct(int id)

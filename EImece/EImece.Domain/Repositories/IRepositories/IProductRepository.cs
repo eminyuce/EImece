@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using System;
@@ -18,9 +19,13 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<Product> GetAdminPageList(int categoryId, int brandId, string search, int language);
 
+        List<Product> GetAdminPageList(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter);
+
         Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language);
 
         Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language);
+
+        Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter);
 
         Product GetProduct(int id);
 

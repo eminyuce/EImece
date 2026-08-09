@@ -621,6 +621,7 @@
     <Compile Include="Models\AdminHelperModels\SavedImage.cs" />
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
+    <Compile Include="Models\AdminModels\ProductAdminListFilter.cs" />
     <Compile Include="Models\AdminModels\RazorEngineModel.cs" />
     <Compile Include="Models\AdminModels\RazorError.cs" />
     <Compile Include="Models\AdminModels\RazorRenderResult.cs" />

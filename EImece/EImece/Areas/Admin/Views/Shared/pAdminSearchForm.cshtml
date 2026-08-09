@@ -15,6 +15,21 @@
 <input type="hidden" id="controller" value="@controller" />
 @using (Html.BeginForm(action, controller, FormMethod.Get, new { @class = "" }))
 {
+    if (IdValueExists && !String.IsNullOrEmpty(idValue))
+    {
+        <input type="hidden" name="id" value="@idValue" />
+    }
+    var preserveQuery = ViewData["PreserveQuery"] as IDictionary<string, string>;
+    if (preserveQuery != null)
+    {
+        foreach (var kv in preserveQuery)
+        {
+            if (!string.IsNullOrEmpty(kv.Key) && kv.Value != null)
+            {
+                <input type="hidden" name="@kv.Key" value="@kv.Value" />
+            }
+        }
+    }
 
 <div class="row">
     <div class="col-md-12">

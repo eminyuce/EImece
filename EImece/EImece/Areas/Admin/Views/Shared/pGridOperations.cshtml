@@ -50,8 +50,11 @@
                 @if (IsSearchFormEnabled)
                 {
                     <div class="@(isNewRecordButtonEnabled ? "col-md-9" : "col-md-12")">
-                        @Html.Partial("pAdminSearchForm", new ViewDataDictionary(){
-                            {"IdValueExists",IdValueExists}})
+                        @{
+                            var searchViewData = new ViewDataDictionary(ViewData);
+                            searchViewData["IdValueExists"] = IdValueExists;
+                        }
+                        @Html.Partial("pAdminSearchForm", searchViewData)
                     </div>
                 }
             </div>

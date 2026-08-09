@@ -3,11 +3,13 @@
 @using GridMvc.Sorting
 @using EImece.Domain.Entities;
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.AdminModels;
 @using EImece.Domain;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
+@using System.Globalization;
 @{
     ViewBag.Title = "Products";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -22,14 +24,78 @@
     ProductCategory selectedCategory = (ProductCategory)ViewBag.SelectedCategory;
     var products = Model;
     var baseList = contents.DownCasting<Product>();
-    List<Brand> brands = (List<Brand>)ViewBag.Brands;
+    List<Brand> brands = (ViewBag.Brands != null ? (List<Brand>)ViewBag.Brands : new List<Brand>())
+        .OrderBy(b => b.Name, StringComparer.CurrentCultureIgnoreCase)
+        .ToList();
+    List<ProductState> productStates = ViewBag.ProductStates != null
+        ? (List<ProductState>)ViewBag.ProductStates
+        : Enum.GetValues(typeof(ProductState)).Cast<ProductState>().ToList();
     var gridImagesText = AdminResource.GridImagesText;
     var gridEditText = AdminResource.GridEditText;
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
 
-    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable != null ? (Setting)ViewBag.IsProductPriceEnable : null;
+    bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+    int selectedBrandId = ViewBag.SelectedBrandId != null ? (int)ViewBag.SelectedBrandId : -1;
+    var selectedBrandEntity = selectedBrandId > 0 ? brands.FirstOrDefault(b => b.Id == selectedBrandId) : null;
+    string selectedBrandName = selectedBrandEntity != null ? selectedBrandEntity.Name : "";
+    int categoryIdForFilter = selectedCategory == null ? 0 : selectedCategory.Id;
+    string selectedState = ViewBag.SelectedState != null ? System.Convert.ToString(ViewBag.SelectedState) : "";
+    bool filterIsActive = ViewBag.FilterIsActive != null && System.Convert.ToBoolean(ViewBag.FilterIsActive);
+    bool filterMainPage = ViewBag.FilterMainPage != null && System.Convert.ToBoolean(ViewBag.FilterMainPage);
+    bool filterIsCampaign = ViewBag.FilterIsCampaign != null && System.Convert.ToBoolean(ViewBag.FilterIsCampaign);
+    decimal? minPrice = ViewBag.MinPrice != null ? System.Convert.ToDecimal(ViewBag.MinPrice, CultureInfo.InvariantCulture) : (decimal?)null;
+    decimal? maxPrice = ViewBag.MaxPrice != null ? System.Convert.ToDecimal(ViewBag.MaxPrice, CultureInfo.InvariantCulture) : (decimal?)null;
+    string search = Request.QueryString["search"].ToStr();
+    ProductAdminListFilter productFilter = ViewBag.ProductFilter != null
+        ? (ProductAdminListFilter)ViewBag.ProductFilter
+        : new ProductAdminListFilter();
 
+    var treeQueryParts = new List<string>();
+    if (selectedBrandId > 0)
+    {
+        treeQueryParts.Add("brandId=" + selectedBrandId);
+    }
+    if (!string.IsNullOrEmpty(search))
+    {
+        treeQueryParts.Add("search=" + Uri.EscapeDataString(search));
+    }
+    var filterQuery = productFilter.ToQueryString();
+    if (!string.IsNullOrEmpty(filterQuery))
+    {
+        treeQueryParts.Add(filterQuery);
+    }
+    string treeUrlQuery = string.Join("&", treeQueryParts);
+
+    bool hasAdvancedFilter = selectedBrandId > 0
+        || !string.IsNullOrEmpty(selectedState)
+        || filterIsActive
+        || filterMainPage
+        || filterIsCampaign
+        || (priceEnabled && (minPrice.HasValue || maxPrice.HasValue));
+
+    var activeFilterChips = new List<Tuple<string, string>>();
+    if (selectedBrandId > 0)
+    {
+        var selectedBrand = brands.FirstOrDefault(b => b.Id == selectedBrandId);
+        activeFilterChips.Add(Tuple.Create(AdminResource.Brands, selectedBrand != null ? selectedBrand.Name : selectedBrandId.ToString()));
+    }
+    if (!string.IsNullOrEmpty(selectedState))
+    {
+        activeFilterChips.Add(Tuple.Create(AdminResource.ProductState, selectedState));
+    }
+    if (filterIsActive) { activeFilterChips.Add(Tuple.Create(AdminResource.IsActive, (string)null)); }
+    if (filterMainPage) { activeFilterChips.Add(Tuple.Create(AdminResource.MainPage, (string)null)); }
+    if (filterIsCampaign) { activeFilterChips.Add(Tuple.Create(AdminResource.IsCampaign, (string)null)); }
+    if (priceEnabled && (minPrice.HasValue || maxPrice.HasValue))
+    {
+        var minLabel = minPrice.HasValue ? minPrice.Value.ToString("0.##", CultureInfo.InvariantCulture) : "…";
+        var maxLabel = maxPrice.HasValue ? maxPrice.Value.ToString("0.##", CultureInfo.InvariantCulture) : "…";
+        activeFilterChips.Add(Tuple.Create(AdminResource.Price, minLabel + " – " + maxLabel));
+    }
+
+    string clearFiltersUrl = Url.Action("Index", "Products", new { id = categoryIdForFilter, search = search });
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
 
 }
@@ -40,6 +106,7 @@
     <div class="col-md-2">
         @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
                             {"UrlPattern","/admin/products/index/"}
+                          ,{"UrlQuery", treeUrlQuery}
                           ,{"IsExcelButtonEnabled",true}})
 
         <span id="treeClickContainer"></span>
@@ -58,7 +125,17 @@
                     </b>
                 }
 
-                <a href="@Url.Action("Index", "Products",new { id=0 })">
+                <a href="@Url.Action("Index", "Products", new {
+                    id = 0,
+                    brandId = selectedBrandId,
+                    search = search,
+                    state = selectedState,
+                    isActive = filterIsActive ? (bool?)true : null,
+                    mainPage = filterMainPage ? (bool?)true : null,
+                    isCampaign = filterIsCampaign ? (bool?)true : null,
+                    minPrice = priceEnabled ? minPrice : null,
+                    maxPrice = priceEnabled ? maxPrice : null
+                })">
                     <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
                 </a>
             </span>
@@ -66,34 +143,205 @@
 
         }
 
-        @if (brands != null)
-        {
-            int selectedBrandId = ViewBag.SelectedBrandId != null ? (int)ViewBag.SelectedBrandId : -1;
-            int categoryIdForBrandFilter = selectedCategory == null ? 0 : selectedCategory.Id;
-            bool isAllBrandsSelected = selectedBrandId <= 0;
-            <span>
-                @AdminResource.Brands
-            </span>
-            <a href="@Url.Action("Index", "Products", new { id = categoryIdForBrandFilter, brandId = -1 })">
-                <b style="color:@(isAllBrandsSelected ? "red" : "#555");">
-                    @Resource.All
-                </b>
-            </a>
-            <span>&nbsp;</span>
-            var index = 1;
-            foreach (var b in brands)
+        <div class="panel panel-default product-admin-filters @(hasAdvancedFilter ? "is-open" : "is-collapsed")" id="productAdminFilters">
+            <div class="panel-heading product-admin-filters-heading" role="button"
+                 data-toggle="collapse" data-target="#productAdminFiltersBody"
+                 aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="productAdminFiltersBody">
+                <div class="product-admin-filters-heading-main">
+                    <span class="product-admin-filters-title">
+                        <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>
+                        Filtreler
+                    </span>
+                    @if (activeFilterChips.Count > 0)
+                    {
+                        <span class="badge product-admin-filters-count">@activeFilterChips.Count</span>
+                    }
+                    else
+                    {
+                        <span class="product-admin-filters-hint">Marka, durum, fiyat…</span>
+                    }
+                </div>
+                <span class="product-admin-filters-chevron glyphicon @(hasAdvancedFilter ? "glyphicon-chevron-up" : "glyphicon-chevron-down")" aria-hidden="true"></span>
+            </div>
+
+            @if (activeFilterChips.Count > 0)
             {
-                bool isSelectedBrand = selectedBrandId == b.Id;
-                <a href="@Url.Action("Index", "Products", new { id = categoryIdForBrandFilter, brandId = b.Id })">
-                    <b style="color:@(isSelectedBrand ? "red" : "#555");">
-                        @(index + ". " + b.Name)
-                    </b>
-                </a>
-                <span>&nbsp;</span>
-                index++;
+                <div class="product-admin-filters-summary" onclick="event.stopPropagation();">
+                    @foreach (var chip in activeFilterChips)
+                    {
+                        string chipText = chip.Item1;
+                        if (!string.IsNullOrEmpty(chip.Item2))
+                        {
+                            if (string.Equals(chip.Item1, AdminResource.ProductState, StringComparison.Ordinal))
+                            {
+                                ProductState chipState;
+                                chipText = chip.Item1 + ": " + (Enum.TryParse(chip.Item2, true, out chipState)
+                                    ? GetProductStateResourceText(chipState)
+                                    : chip.Item2);
+                            }
+                            else
+                            {
+                                chipText = chip.Item1 + ": " + chip.Item2;
+                            }
+                        }
+                        <span class="label label-info product-admin-filter-chip">@chipText</span>
+                    }
+                    <a class="product-admin-filters-clear-link" href="@clearFiltersUrl" title="@AdminResource.Clear">
+                        <i class="glyphicon glyphicon-remove" aria-hidden="true"></i> @AdminResource.Clear
+                    </a>
+                </div>
+            }
+
+            @{
+                var sortedProductStates = productStates
+                    .Select(st => new { Value = st.ToString(), Label = GetProductStateResourceText(st) })
+                    .OrderBy(x => x.Label, StringComparer.CurrentCultureIgnoreCase)
+                    .ToList();
+                string selectedStateLabel = "";
+                if (!string.IsNullOrEmpty(selectedState))
+                {
+                    ProductState selectedStateEnum;
+                    selectedStateLabel = Enum.TryParse(selectedState, true, out selectedStateEnum)
+                        ? GetProductStateResourceText(selectedStateEnum)
+                        : selectedState;
+                }
+            }
+            <div id="productAdminFiltersBody" class="panel-collapse collapse @(hasAdvancedFilter ? "in" : "")">
+                <div class="panel-body">
+                    @using (Html.BeginForm("Index", "Products", FormMethod.Get, new { @class = "product-admin-filter-form", id = "productAdminFilterForm" }))
+                    {
+                        <input type="hidden" name="id" value="@categoryIdForFilter" />
+                        if (!string.IsNullOrEmpty(search))
+                        {
+                            <input type="hidden" name="search" value="@search" />
+                        }
+
+                        <div class="row">
+                            <div class="col-sm-@(priceEnabled ? "3" : "6")">
+                                <div class="form-group">
+                                    <label for="brandSearch">@AdminResource.Brands</label>
+                                    <div class="product-admin-combo">
+                                        <input type="text"
+                                               class="form-control input-sm"
+                                               id="brandSearch"
+                                               list="brandDatalist"
+                                               value="@selectedBrandName"
+                                               placeholder="@Resource.All"
+                                               autocomplete="off" />
+                                        <input type="hidden" name="brandId" id="brandId" value="@(selectedBrandId > 0 ? selectedBrandId.ToString() : "-1")" />
+                                        <datalist id="brandDatalist">
+                                            <option value="@Resource.All" data-value="-1"></option>
+                                            @foreach (var b in brands)
+                                            {
+                                                <option value="@b.Name" data-value="@b.Id"></option>
+                                            }
+                                        </datalist>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-@(priceEnabled ? "3" : "6")">
+                                <div class="form-group">
+                                    <label for="stateSearch">@AdminResource.ProductState</label>
+                                    <div class="product-admin-combo">
+                                        <input type="text"
+                                               class="form-control input-sm"
+                                               id="stateSearch"
+                                               list="stateDatalist"
+                                               value="@selectedStateLabel"
+                                               placeholder="@Resource.All"
+                                               autocomplete="off" />
+                                        <input type="hidden" name="state" id="state" value="@selectedState" />
+                                        <datalist id="stateDatalist">
+                                            <option value="@Resource.All" data-value=""></option>
+                                            @foreach (var st in sortedProductStates)
+                                            {
+                                                <option value="@st.Label" data-value="@st.Value"></option>
+                                            }
+                                        </datalist>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (priceEnabled)
+                            {
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>@AdminResource.Price</label>
+                                        <div class="product-admin-price-range">
+                                            <input type="number" step="0.01" min="0" class="form-control input-sm" id="minPrice" name="minPrice"
+                                                   placeholder="Min"
+                                                   value="@(minPrice.HasValue ? minPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />
+                                            <span class="product-admin-price-sep">–</span>
+                                            <input type="number" step="0.01" min="0" class="form-control input-sm" id="maxPrice" name="maxPrice"
+                                                   placeholder="Max"
+                                                   value="@(maxPrice.HasValue ? maxPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="product-admin-filter-flags">
+                            <span class="product-admin-filter-flags-label">Özellikler</span>
+                            <div class="product-admin-filter-toggles">
+                                <label class="product-admin-toggle @(filterIsActive ? "is-on" : "")">
+                                    <input type="checkbox" name="isActive" value="true" @(filterIsActive ? "checked=\"checked\"" : null) />
+                                    <span>@AdminResource.IsActive</span>
+                                </label>
+                                <label class="product-admin-toggle @(filterMainPage ? "is-on" : "")">
+                                    <input type="checkbox" name="mainPage" value="true" @(filterMainPage ? "checked=\"checked\"" : null) />
+                                    <span>@AdminResource.MainPage</span>
+                                </label>
+                                <label class="product-admin-toggle @(filterIsCampaign ? "is-on" : "")">
+                                    <input type="checkbox" name="isCampaign" value="true" @(filterIsCampaign ? "checked=\"checked\"" : null) />
+                                    <span>@AdminResource.IsCampaign</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="product-admin-filter-actions">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="glyphicon glyphicon-ok" aria-hidden="true"></i> Filtrele
+                            </button>
+                            <a class="btn btn-default btn-sm" href="@clearFiltersUrl">
+                                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i> @AdminResource.Clear
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @{
+            var preserveQuery = new Dictionary<string, string>();
+            if (selectedBrandId > 0)
+            {
+                preserveQuery["brandId"] = selectedBrandId.ToString();
+            }
+            if (!string.IsNullOrEmpty(selectedState))
+            {
+                preserveQuery["state"] = selectedState;
+            }
+            if (filterIsActive)
+            {
+                preserveQuery["isActive"] = "true";
+            }
+            if (filterMainPage)
+            {
+                preserveQuery["mainPage"] = "true";
+            }
+            if (filterIsCampaign)
+            {
+                preserveQuery["isCampaign"] = "true";
+            }
+            if (priceEnabled && minPrice.HasValue)
+            {
+                preserveQuery["minPrice"] = minPrice.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            if (priceEnabled && maxPrice.HasValue)
+            {
+                preserveQuery["maxPrice"] = maxPrice.Value.ToString(CultureInfo.InvariantCulture);
             }
         }
-
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
                             {"controllerName",controllerName}
             ,{"StateTypes","State,ImageState,MainPage,IsCampaign"}
@@ -101,7 +349,10 @@
            ,{"selectAll",true}
            ,{"deleteAll",true}
             ,{"ProductState",true}
-            ,{"SetStateOnOrOff",true} ,{"IsExcelButtonEnabled",true}})
+            ,{"SetStateOnOrOff",true}
+            ,{"IsExcelButtonEnabled",true}
+            ,{"IdValueExists",true}
+            ,{"PreserveQuery",preserveQuery}})
 
         @Html.ActionLink(AdminResource.MoveProductsInTrees, "MoveProductsInTrees")
         <div class="panel panel-primary">
@@ -317,9 +568,73 @@
 
 @section Scripts{
     <script>
-
         $(document).ready(function () {
+            var $panel = $('#productAdminFilters');
+            var $body = $('#productAdminFiltersBody');
+            var $chevron = $panel.find('.product-admin-filters-chevron');
+            var $heading = $panel.find('.product-admin-filters-heading');
 
+            $body.on('show.bs.collapse', function () {
+                $panel.removeClass('is-collapsed').addClass('is-open');
+                $chevron.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+                $heading.attr('aria-expanded', 'true');
+            }).on('hide.bs.collapse', function () {
+                $panel.removeClass('is-open').addClass('is-collapsed');
+                $chevron.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+                $heading.attr('aria-expanded', 'false');
+            });
+
+            $panel.on('change', '.product-admin-toggle input[type=checkbox]', function () {
+                $(this).closest('.product-admin-toggle').toggleClass('is-on', this.checked);
+            });
+
+            // HTML5 <datalist> is searchable/editable; map display text -> hidden values for submit.
+            function normalizeLabel(value) {
+                return (value || '').replace(/\s+/g, ' ').trim().toLocaleLowerCase('tr-TR');
+            }
+
+            function syncCombo($input, $hidden, datalistId, emptyValue) {
+                var typed = normalizeLabel($input.val());
+                var $options = $('#' + datalistId + ' option');
+                if (!typed) {
+                    $hidden.val(emptyValue);
+                    return;
+                }
+
+                var match = null;
+                $options.each(function () {
+                    var label = normalizeLabel($(this).attr('value'));
+                    if (label === typed) {
+                        match = $(this).attr('data-value');
+                        return false;
+                    }
+                });
+
+                if (match !== null && typeof match !== 'undefined') {
+                    $hidden.val(match);
+                } else {
+                    // Unknown free text should not filter by accident.
+                    $hidden.val(emptyValue);
+                }
+            }
+
+            var $brandSearch = $('#brandSearch');
+            var $brandId = $('#brandId');
+            var $stateSearch = $('#stateSearch');
+            var $state = $('#state');
+            var $form = $('#productAdminFilterForm');
+
+            function syncBrand() { syncCombo($brandSearch, $brandId, 'brandDatalist', '-1'); }
+            function syncState() { syncCombo($stateSearch, $state, 'stateDatalist', ''); }
+            function syncCombos() {
+                syncBrand();
+                syncState();
+            }
+
+            $brandSearch.on('input change blur', syncBrand);
+            $stateSearch.on('input change blur', syncState);
+            $form.on('submit', syncCombos);
+            $form.find('button[type="submit"]').on('click', syncCombos);
         });
     </script>
 }

@@ -67,6 +67,11 @@ namespace EImece.Domain.Services
             return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang);
         }
 
+        public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int lang, ProductAdminListFilter filter)
+        {
+            return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang, filter);
+        }
+
         public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int lang)
         {
             return await ProductRepository.GetAdminPageListAsync(categoryId, search, lang).ConfigureAwait(false);
@@ -75,6 +80,11 @@ namespace EImece.Domain.Services
         public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang)
         {
             return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang).ConfigureAwait(false);
+        }
+
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang, ProductAdminListFilter filter)
+        {
+            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang, filter).ConfigureAwait(false);
         }
 
         public string UpdatePrices(UpdatePriceRequest request)

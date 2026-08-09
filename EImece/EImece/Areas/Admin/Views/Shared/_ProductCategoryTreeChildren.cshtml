@@ -8,9 +8,12 @@
 @{
     var productCategories = Model ?? new List<ProductCategoryTreeModel>();
     String urlPattern = ViewData["UrlPattern"].ToStr();
+    String urlQuery = ViewData["UrlQuery"].ToStr();
     var viewData = new ViewDataDictionary(){
                             {"UrlPattern",urlPattern}
+                          ,{"UrlQuery",urlQuery}
                           ,{"IsExcelButtonEnabled",true}};
+    string querySuffix = string.IsNullOrEmpty(urlQuery) ? "" : "?" + urlQuery;
 }
 
 <ul>
@@ -26,7 +29,7 @@
         }
         else
         {
-        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.AdminText</a>
+        <a href="@String.Format("{0}{1}{2}",urlPattern,productCategory.Id, querySuffix)">@p.AdminText</a>
         }
 
         @Html.Partial("_ProductCategoryTreeChildren", p.Childrens, viewData)
@@ -41,7 +44,7 @@
     }
     else
     {
-        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.AdminText</a>
+        <a href="@String.Format("{0}{1}{2}",urlPattern,productCategory.Id, querySuffix)">@p.AdminText</a>
     }
     </li>
         }

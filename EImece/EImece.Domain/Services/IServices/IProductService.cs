@@ -16,9 +16,13 @@ namespace EImece.Domain.Services.IServices
 
         List<Product> GetAdminPageList(int id, int brandId, string search, int lang);
 
+        List<Product> GetAdminPageList(int id, int brandId, string search, int lang, ProductAdminListFilter filter);
+
         Task<List<Product>> GetAdminPageListAsync(int id, string search, int lang);
 
         Task<List<Product>> GetAdminPageListAsync(int id, int brandId, string search, int lang);
+
+        Task<List<Product>> GetAdminPageListAsync(int id, int brandId, string search, int lang, ProductAdminListFilter filter);
 
         Rss20FeedFormatter GetProductsRss(RssParams rssParams);
 

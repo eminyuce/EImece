@@ -2,6 +2,7 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using NLog;
 using Resources;
@@ -20,15 +21,49 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(int id = 0, int brandId = -1, String search = "")
+        public ActionResult Index(
+            int id = 0,
+            int brandId = -1,
+            String search = "",
+            string state = "",
+            bool? isActive = null,
+            bool? mainPage = null,
+            bool? isCampaign = null,
+            decimal? minPrice = null,
+            decimal? maxPrice = null)
         {
+            var isProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+
+            var filter = new ProductAdminListFilter
+            {
+                State = state,
+                IsActive = isActive == true ? true : (bool?)null,
+                MainPage = mainPage == true ? true : (bool?)null,
+                IsCampaign = isCampaign == true ? true : (bool?)null,
+                MinPrice = minPrice,
+                MaxPrice = maxPrice,
+                ApplyPriceFilter = priceEnabled
+            };
+
             ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            var products = ProductService.GetAdminPageList(id, brandId, search, CurrentLanguage);
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            var products = ProductService.GetAdminPageList(id, brandId, search, CurrentLanguage, filter);
+            ViewBag.IsProductPriceEnable = isProductPriceEnable;
             ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
             ViewBag.SelectedBrandId = brandId;
+            ViewBag.SelectedState = state.ToStr();
+            ViewBag.FilterIsActive = filter.IsActive;
+            ViewBag.FilterMainPage = filter.MainPage;
+            ViewBag.FilterIsCampaign = filter.IsCampaign;
+            ViewBag.MinPrice = priceEnabled ? minPrice : null;
+            ViewBag.MaxPrice = priceEnabled ? maxPrice : null;
+            ViewBag.ProductFilter = filter;
             ViewBag.Brands = BrandService.GetBrandsIfAnyProductExists(CurrentLanguage, id)
                 .Where(b => b.IsActive)
+                .OrderBy(b => b.Name)
+                .ToList();
+            ViewBag.ProductStates = Enum.GetValues(typeof(ProductState))
+                .Cast<ProductState>()
                 .ToList();
             return View(products);
         }
