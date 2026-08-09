@@ -130,5 +130,14 @@ columns.Add(o => o.Role)
 .Titled(AdminResource.Roles)
 .RenderValueAs(o => String.Format("{0}", o.Role));
 
+columns.Add(o => o.AuthenticatorEnabled)
+.Encoded(false)
+.Sanitized(false)
+.Titled("2FA")
+.Filterable(true)
+.RenderValueAs(o => o.AuthenticatorEnabled
+    ? "<span class='label label-success'>Aktif</span>"
+    : "<span class='label label-danger'>Yok</span>");
+
 }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>

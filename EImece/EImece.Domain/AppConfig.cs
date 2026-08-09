@@ -490,6 +490,57 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// When true, admin/editor users must enable TOTP authenticator before using the admin panel.
+        /// Defaults to true. Set false for temporary local work; Web.Release keeps true for production.
+        /// Enforcement is also skipped when compilation debug is on, BypassAdminAuth is on,
+        /// or the user is listed in TwoFactorBypassUsers.
+        /// </summary>
+        public static bool RequireAdminAuthenticator
+        {
+            get
+            {
+                return GetConfigBool("RequireAdminAuthenticator", true);
+            }
+        }
+
+        /// <summary>
+        /// Comma-separated emails/usernames that may use the admin panel without authenticator 2FA
+        /// (e.g. a dedicated local debug account).
+        /// </summary>
+        public static string TwoFactorBypassUsers
+        {
+            get
+            {
+                return GetConfigString("TwoFactorBypassUsers", string.Empty);
+            }
+        }
+
+        public static bool IsTwoFactorBypassUser(string emailOrUserName)
+        {
+            if (string.IsNullOrWhiteSpace(emailOrUserName))
+            {
+                return false;
+            }
+
+            var raw = TwoFactorBypassUsers;
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return false;
+            }
+
+            var needle = emailOrUserName.Trim();
+            foreach (var part in raw.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (string.Equals(part.Trim(), needle, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static string DummyIdentityNumber
         {
             get

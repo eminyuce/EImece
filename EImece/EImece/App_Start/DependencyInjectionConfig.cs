@@ -300,6 +300,7 @@ namespace EImece.App_Start
             services.AddScopedWithProps<ApplicationDbContext>();
             services.AddScopedWithProps<ApplicationUserManager>();
             services.AddScopedWithProps<ApplicationSignInManager>();
+            services.AddScopedWithProps<TwoFactorTokenService>();
 
             // Former named Ninject bindings for IIdentityMessageService ("Email"/"Sms"):
             // register concretes; ApplicationUserManager takes EmailService + SmsService.

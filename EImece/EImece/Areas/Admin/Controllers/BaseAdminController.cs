@@ -5,8 +5,10 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using Microsoft.AspNet.Identity;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -16,10 +18,11 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DomainConstants = EImece.Domain.Constants;
 
 namespace EImece.Areas.Admin.Controllers
 {
-    [AuthorizeRoles(Constants.AdministratorRole, Constants.EditorRole)]
+    [AuthorizeRoles(DomainConstants.AdministratorRole, DomainConstants.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
         [Inject]
@@ -93,6 +96,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public IFaqService FaqService { get; set; }
+
+        [Inject]
+        public ApplicationUserManager UserManager { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
 
@@ -182,13 +188,13 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                return SettingService.GetSettingByKey(Constants.IsProductPriceEnable).ToBool(true);
+                return SettingService.GetSettingByKey(DomainConstants.IsProductPriceEnable).ToBool(true);
             }
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
 
             if (!IsProductPriceEnabled)
             {
@@ -201,7 +207,71 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
 
+            if (MustRedirectToEnableAuthenticator(filterContext))
+            {
+                TempData["StatusMessage"] = "Yönetici paneline devam etmek için Authenticator 2FA etkinleştirmeniz zorunludur.";
+                filterContext.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary(new { area = "Admin", controller = "Users", action = "EnableAuthenticator" }));
+                return;
+            }
+
             base.OnActionExecuting(filterContext);
+        }
+
+        /// <summary>
+        /// Forces Authenticator setup for admin/editor users when required.
+        /// Skipped for: compilation debug, BypassAdminAuth, config off, bypass users, or the setup actions themselves.
+        /// </summary>
+        private bool MustRedirectToEnableAuthenticator(ActionExecutingContext filterContext)
+        {
+            if (!AppConfig.RequireAdminAuthenticator || AppConfig.BypassAdminAuth)
+            {
+                return false;
+            }
+
+            var httpContext = filterContext.HttpContext;
+            if (httpContext == null || httpContext.IsDebuggingEnabled)
+            {
+                return false;
+            }
+
+            var controllerName = filterContext.RouteData.Values["controller"] as string ?? string.Empty;
+            var actionName = filterContext.RouteData.Values["action"] as string ?? string.Empty;
+            if (string.Equals(controllerName, "Users", StringComparison.OrdinalIgnoreCase)
+                && (string.Equals(actionName, "EnableAuthenticator", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            if (httpContext.User == null || httpContext.User.Identity == null || !httpContext.User.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            if (UserManager == null)
+            {
+                return false;
+            }
+
+            var userId = httpContext.User.Identity.GetUserId();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return false;
+            }
+
+            var user = UserManager.FindById(userId);
+            if (user == null)
+            {
+                return false;
+            }
+
+            if (AppConfig.IsTwoFactorBypassUser(user.Email) || AppConfig.IsTwoFactorBypassUser(user.UserName))
+            {
+                return false;
+            }
+
+            return !user.TwoFactorAuthenticatorEnabled;
         }
 
         [Inject]
@@ -225,9 +295,9 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                if (Session[Constants.SelectedLanguage] != null)
+                if (Session[DomainConstants.SelectedLanguage] != null)
                 {
-                    return Session[Constants.SelectedLanguage].ToInt(1);
+                    return Session[DomainConstants.SelectedLanguage].ToInt(1);
                 }
                 else
                 {
@@ -236,7 +306,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             set
             {
-                Session[Constants.SelectedLanguage] = value;
+                Session[DomainConstants.SelectedLanguage] = value;
             }
         }
 
@@ -256,10 +326,10 @@ namespace EImece.Areas.Admin.Controllers
                 var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
                 if (languages.Count > 1)
                 {
-                    HttpCookie cultureCookie = Request.Cookies[Constants.AdminCultureCookieName];
+                    HttpCookie cultureCookie = Request.Cookies[DomainConstants.AdminCultureCookieName];
                     if (cultureCookie != null)
                     {
-                        return cultureCookie.Values[Constants.ELanguage].ToInt();
+                        return cultureCookie.Values[DomainConstants.ELanguage].ToInt();
                     }
                     else
                     {

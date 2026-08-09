@@ -65,6 +65,33 @@
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Authenticator 2FA</label>
+                        <div class="col-md-9">
+                            @if (ViewBag.AuthenticatorEnabled == true)
+                            {
+                                <p class="form-control-static text-success" style="display:inline-block; margin-right: 12px;">
+                                    <strong>Etkin</strong>
+                                </p>
+                                using (Html.BeginForm("DisableAuthenticator", "Users", FormMethod.Post, new { style = "display:inline" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("id", Model.Id)
+                                    <button type="submit" class="btn btn-warning btn-sm"
+                                            onclick="return confirm('Bu kullanıcının Authenticator 2FA kapatılsın mı?');">
+                                        2FA Kapat
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                <p class="form-control-static text-muted">
+                                    Kapalı — kullanıcı kendi hesabından <strong>Şifre Değiştir</strong> sayfasında etkinleştirir.
+                                </p>
+                            }
+                        </div>
+                    </div>
                     
                 </div>
                 <div class="panel-footer text-right">

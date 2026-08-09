@@ -27,6 +27,10 @@ namespace EImece.Models
         public string Email { get; set; }
 
         public virtual String Role { get; set; }
-        //you might want to implement jobs too, if you want to display them in your index view
+
+        /// <summary>
+        /// Whether TOTP authenticator 2FA is enabled for this user.
+        /// </summary>
+        public bool AuthenticatorEnabled { get; set; }
     }
 }

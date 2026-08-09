@@ -12,7 +12,25 @@ namespace EImece.Models
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
+        public bool AuthenticatorEnabled { get; set; }
         public bool BrowserRemembered { get; set; }
+    }
+
+    public class EnableAuthenticatorViewModel
+    {
+        public string SharedKey { get; set; }
+        public string AuthenticatorUri { get; set; }
+        public string QrCodeImage { get; set; }
+
+        /// <summary>
+        /// Label shown in authenticator apps, e.g. "MySite:admin@example.com".
+        /// </summary>
+        public string DisplayName { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Code))]
+        [StringLength(6, MinimumLength = 6)]
+        public string Code { get; set; }
     }
 
     public class ManageLoginsViewModel
