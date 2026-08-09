@@ -89,20 +89,21 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ShippingAddress);
             includeProperties.Add(r => r.BillingAddress);
 
-            Expression<Func<Order, bool>> match = r2 => r2.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase);
-            Expression<Func<Order, int>> keySelector = t => t.Position;
-            var orders = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
             search = search.ToStr().Trim();
-            if (!String.IsNullOrEmpty(search))
+            Expression<Func<Order, bool>> match;
+            if (string.IsNullOrEmpty(search))
             {
-                orders = orders.Where(r =>
-                r.OrderGuid.Equals(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                 r.OrderNumber.Equals(search, StringComparison.InvariantCultureIgnoreCase)
-                );
+                match = r2 => r2.UserId == userId;
             }
-            orders = orders.OrderByDescending(r => r.UpdatedDate);
+            else
+            {
+                var term = search;
+                match = r2 => r2.UserId == userId
+                    && (r2.OrderGuid == term || r2.OrderNumber == term);
+            }
 
+            Expression<Func<Order, DateTime>> keySelector = t => t.UpdatedDate;
+            var orders = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
             return orders.ToList();
         }
 
@@ -115,20 +116,24 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ShippingAddress);
             includeProperties.Add(r => r.BillingAddress);
 
-            Expression<Func<Order, bool>> match = r2 => r2.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase);
-            Expression<Func<Order, int>> keySelector = t => t.Position;
-            var orders = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            // Push UserId (+ optional OrderNumber/OrderGuid) filtering into SQL so the IX_Orders_UserId*
+            // indexes can seek and we never materialise every order for the user just to discard most.
             search = search.ToStr().Trim();
-            var result = await orders.ToListAsync(cancellationToken).ConfigureAwait(false);
-            if (!String.IsNullOrEmpty(search))
+            Expression<Func<Order, bool>> match;
+            if (string.IsNullOrEmpty(search))
             {
-                result = result.Where(r =>
-                r.OrderGuid.Equals(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                 r.OrderNumber.Equals(search, StringComparison.InvariantCultureIgnoreCase)
-                ).ToList();
+                match = r2 => r2.UserId == userId;
             }
-            return result.OrderByDescending(r => r.UpdatedDate).ToList();
+            else
+            {
+                var term = search;
+                match = r2 => r2.UserId == userId
+                    && (r2.OrderGuid == term || r2.OrderNumber == term);
+            }
+
+            Expression<Func<Order, DateTime>> keySelector = t => t.UpdatedDate;
+            var orders = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            return await orders.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

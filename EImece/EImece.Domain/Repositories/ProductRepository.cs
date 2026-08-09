@@ -255,14 +255,20 @@ namespace EImece.Domain.Repositories
 
         public PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
+            // Eager-load category/image/tags in one round-trip (Paginate uses AsNoTracking) so the
+            // view never triggers N+1 lazy loads under concurrent search traffic.
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
+
+            // Trim once in CLR — embedding search.Trim() inside the expression tree makes EF emit
+            // LTRIM/RTRIM (or client evaluation) per predicate and can block index seeks on Name*.
+            var term = (search ?? string.Empty).Trim();
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang
-            && (r2.Name.Contains(search.Trim())
-            || r2.NameLong.Contains(search.Trim())
-            || r2.NameShort.Contains(search.Trim()));
+            && (r2.Name.Contains(term)
+            || r2.NameLong.Contains(term)
+            || r2.NameShort.Contains(term));
 
             if (sorting == SortingType.LowHighPrice)
             {
@@ -292,10 +298,12 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.MainImage);
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
+
+            var term = (search ?? string.Empty).Trim();
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang
-            && (r2.Name.Contains(search.Trim())
-            || r2.NameLong.Contains(search.Trim())
-            || r2.NameShort.Contains(search.Trim()));
+            && (r2.Name.Contains(term)
+            || r2.NameLong.Contains(term)
+            || r2.NameShort.Contains(term));
 
             if (sorting == SortingType.LowHighPrice)
             {
@@ -388,7 +396,7 @@ namespace EImece.Domain.Repositories
             && r2.ProductTags.Any(t => tagIdList.Contains(t.TagId))
             && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
             var result2 = result.ToList();
             return result2.Distinct().ToList();
         }
@@ -403,7 +411,7 @@ namespace EImece.Domain.Repositories
             && r2.ProductTags.Any(t => tagIdList.Contains(t.TagId))
             && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
             var result2 = await result.ToListAsync(cancellationToken).ConfigureAwait(false);
             return result2.Distinct().ToList();
         }
@@ -416,7 +424,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.ProductCategoryId == productCategoryId && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
             var result2 = result.ToList();
             return result2.Distinct().ToList();
         }
@@ -429,7 +437,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.ProductCategoryId == productCategoryId && r2.Id != excludedProductId;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
             var result2 = await result.ToListAsync(cancellationToken).ConfigureAwait(false);
             return result2.Distinct().ToList();
         }
@@ -443,7 +451,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Brand);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            // AsNoTracking: storefront/RSS readers never mutate these graphs; skipping the change
+            // tracker cuts allocations under high concurrency.
+            var result = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
 
             return result.ToList();
         }
@@ -457,7 +467,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Brand);
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
             Expression<Func<Product, int>> keySelector = t => t.Position;
-            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            var result = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
 
             return await result.ToListAsync(cancellationToken).ConfigureAwait(false);
         }

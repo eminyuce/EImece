@@ -262,14 +262,43 @@ namespace EImece.Domain.GenericRepository.EntityFramework
         public IQueryable<TEntity> FindAllIncluding<TKey>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TKey>> keySelector, OrderByType orderByType,
                                          int? take, int? skip, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var queryable = _dbContext.Set<TEntity>().Where(match);
+            return FindAllIncludingInternal(match, keySelector, orderByType, take, skip, trackEntities: true, includeProperties);
+        }
+
+        /// <summary>
+        /// Read-only counterpart of <see cref="FindAllIncluding{TKey}"/>. Uses
+        /// <c>AsNoTracking()</c> so EF skips change-tracker bookkeeping on list/search hot paths —
+        /// lower memory and CPU under concurrent storefront traffic.
+        /// </summary>
+        public IQueryable<TEntity> FindAllIncludingReadOnly<TKey>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TKey>> keySelector, OrderByType orderByType,
+                                         int? take, int? skip, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            return FindAllIncludingInternal(match, keySelector, orderByType, take, skip, trackEntities: false, includeProperties);
+        }
+
+        private IQueryable<TEntity> FindAllIncludingInternal<TKey>(
+            Expression<Func<TEntity, bool>> match,
+            Expression<Func<TEntity, TKey>> keySelector,
+            OrderByType orderByType,
+            int? take,
+            int? skip,
+            bool trackEntities,
+            params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            var queryable = trackEntities
+                ? _dbContext.Set<TEntity>().Where(match)
+                : _dbContext.Set<TEntity>().AsNoTracking().Where(match);
+
             queryable = (orderByType == OrderByType.Ascending)
                             ? queryable.OrderBy(keySelector)
                             : queryable.OrderByDescending(keySelector);
 
-            foreach (Expression<Func<TEntity, object>> includeProperty in includeProperties)
+            if (includeProperties != null)
             {
-                queryable = queryable.Include<TEntity, object>(includeProperty);
+                foreach (Expression<Func<TEntity, object>> includeProperty in includeProperties)
+                {
+                    queryable = queryable.Include<TEntity, object>(includeProperty);
+                }
             }
             if (skip.HasValue && skip.Value > 0)
             {

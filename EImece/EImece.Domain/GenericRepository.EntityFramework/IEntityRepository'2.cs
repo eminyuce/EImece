@@ -78,6 +78,11 @@ namespace EImece.Domain.GenericRepository.EntityFramework
 
         IQueryable<TEntity> FindAllIncluding<TKey>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TKey>> keySelector, OrderByType orderByType, int? take, int? skip, params Expression<Func<TEntity, object>>[] includeProperties);
 
+        /// <summary>
+        /// Same as <see cref="FindAllIncluding{TKey}"/> but with AsNoTracking for read-only list/search queries.
+        /// </summary>
+        IQueryable<TEntity> FindAllIncludingReadOnly<TKey>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TKey>> keySelector, OrderByType orderByType, int? take, int? skip, params Expression<Func<TEntity, object>>[] includeProperties);
+
         bool Contains(Expression<Func<TEntity, bool>> predicate);
 
         void Delete(Expression<Func<TEntity, bool>> predicate);
