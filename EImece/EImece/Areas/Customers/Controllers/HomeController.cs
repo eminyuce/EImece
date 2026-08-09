@@ -91,20 +91,20 @@ namespace EImece.Areas.Customers.Controllers
         }
 
         // GET: Customers/Home
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            Customer customer = GetCustomer();
+            Customer customer = await GetCustomerAsync();
             ViewBag.Title = Resource.CustomerAccount;
             return View(customer);
         }
 
-        private Customer GetCustomer()
+        private async Task<Customer> GetCustomerAsync()
         {
             ApplicationUser user;
             Customer customer;
-            user = UserManager.FindByName(User.Identity.GetUserName());
-            customer = CustomerService.GetUserId(user.Id);
-            customer.Orders = OrderService.GetOrdersByUserId(customer.UserId);
+            user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
+            customer = await CustomerService.GetUserIdAsync(user.Id);
+            customer.Orders = await OrderService.GetOrdersByUserIdAsync(customer.UserId);
             if (customer.Gender == 0)
             {
                 customer.Gender = (int)GenderType.Man;
@@ -112,18 +112,18 @@ namespace EImece.Areas.Customers.Controllers
             return customer;
         }
 
-        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
+        public async Task<ActionResult> WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", item);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(Customer customer)
+        public async Task<ActionResult> Index(Customer customer)
         {
             if (customer == null)
             {
@@ -132,17 +132,17 @@ namespace EImece.Areas.Customers.Controllers
             bool isValidCustomer = customer != null && customer.isValidCustomer();
             if (isValidCustomer)
             {
-                var user = UserManager.FindByName(User.Identity.GetUserName());
+                var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
                 if (!user.FirstName.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) || !user.LastName.Equals(customer.Surname, StringComparison.InvariantCultureIgnoreCase))
                 {
                     user.FirstName = customer.Name;
                     user.LastName = customer.Surname;
-                    UserManager.Update(user);
+                    await UserManager.UpdateAsync(user);
                 }
 
                 customer.UserId = user.Id;
                 customer.Ip = GeneralHelper.GetIpAddress();
-                customer = CustomerService.SaveOrEditEntity(customer);
+                customer = await CustomerService.SaveOrEditEntityAsync(customer);
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 return View(customer);
             }
@@ -202,11 +202,11 @@ namespace EImece.Areas.Customers.Controllers
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 
-        public ActionResult SendMessageToSeller()
+        public async Task<ActionResult> SendMessageToSeller()
         {
             ViewBag.Title = Resource.SendMessageToSeller;
-            var customer = GetCustomer();
-            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, null);
+            var customer = await GetCustomerAsync();
+            var faqs = await FaqService.GetActiveBaseEntitiesFromCacheAsync(true, null);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
@@ -236,28 +236,28 @@ namespace EImece.Areas.Customers.Controllers
             }
         }
 
-        public ActionResult Faq()
+        public async Task<ActionResult> Faq()
         {
             ViewBag.Title = Resource.Faq;
-            var customer = GetCustomer();
-            var faqs = FaqService.GetActiveBaseEntitiesFromCache(true, CurrentLanguage);
+            var customer = await GetCustomerAsync();
+            var faqs = await FaqService.GetActiveBaseEntitiesFromCacheAsync(true, CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
-        public ActionResult CustomerOrders(string search = "")
+        public async Task<ActionResult> CustomerOrders(string search = "")
         {
             ViewBag.Title = Resource.CustomerDetail;
-            var customer = GetCustomer();
-            var user = UserManager.FindByName(User.Identity.GetUserName());
-            var orders = OrderService.GetOrdersUserId(user.Id, search).OrderByDescending(r=>r.UpdatedDate).ToList();
+            var customer = await GetCustomerAsync();
+            var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
+            var orders = (await OrderService.GetOrdersUserIdAsync(user.Id, search)).OrderByDescending(r=>r.UpdatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 
-        public ActionResult CustomerOrderDetail(int id)
+        public async Task<ActionResult> CustomerOrderDetail(int id)
         {
             ViewBag.Title = Resource.CustomerDetail;
-            var customer = GetCustomer();
-            var order = OrderService.GetOrderById(id);
+            var customer = await GetCustomerAsync();
+            var order = await OrderService.GetOrderByIdAsync(id);
             return View(new CustomerOrderDetailViewModel() { Customer = customer, Order = order });
         }
 
@@ -271,10 +271,10 @@ namespace EImece.Areas.Customers.Controllers
 
         //
         // GET: /Manage/ChangePassword
-        public ActionResult ChangePassword()
+        public async Task<ActionResult> ChangePassword()
         {
             ViewBag.Title = Resource.Password;
-            ViewBag.Customer = GetCustomer();
+            ViewBag.Customer = await GetCustomerAsync();
             return View();
         }
 

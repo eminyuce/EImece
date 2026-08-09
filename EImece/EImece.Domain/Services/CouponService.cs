@@ -2,6 +2,7 @@
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -18,6 +19,11 @@ namespace EImece.Domain.Services
         public Coupon GetCouponByCode(string code, int lang)
         {
             return CouponRepository.GetCouponByCode(code, lang);
+        }
+
+        public async Task<Coupon> GetCouponByCodeAsync(string code, int lang)
+        {
+            return await CouponRepository.GetCouponByCodeAsync(code, lang).ConfigureAwait(false);
         }
     }
 }

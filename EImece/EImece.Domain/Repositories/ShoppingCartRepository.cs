@@ -4,8 +4,11 @@ using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -32,6 +35,11 @@ namespace EImece.Domain.Repositories
         public ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
         {
             return FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        }
+
+        public async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -3,7 +3,10 @@ using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -29,6 +32,22 @@ namespace EImece.Domain.Repositories
                 .ThenByDescending(r => r.UpdatedDate);
 
             return coupons.FirstOrDefault();
+        }
+
+        public async Task<Coupon> GetCouponByCodeAsync(string code, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (String.IsNullOrEmpty(code))
+            {
+                throw new ArgumentException("Coupon.Code cannot be empty or null");
+            }
+
+            var coupons = FindBy(r => r.Lang == lang && r.IsActive &&
+            r.Code.Equals(code, StringComparison.InvariantCultureIgnoreCase)
+            && DateTime.Now > r.StartDate && DateTime.Now <= r.EndDate)
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.UpdatedDate);
+
+            return await coupons.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

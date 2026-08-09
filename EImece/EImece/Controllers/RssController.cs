@@ -7,6 +7,7 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -27,11 +28,12 @@ namespace EImece.Controllers
         // GET: Rss
         /// rss/products/?Take=10&Description=1&CategoryId=2&Language=1&Width=300&Height=250&utm_source=google&utm_medium=cpc&utm_campaign=spring_sale&utm_term=shoes&utm_content=ad1
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Products(RssParams rssParams)
+        public async Task<ActionResult> Products(RssParams rssParams)
         {
             var comment = new StringBuilder();
             try
             {
+                // TODO: await ProductService.GetProductsRssAsync when available
                 var items = ProductService.GetProductsRss(rssParams);
                 if (items == null)
                 {
@@ -48,11 +50,12 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult StoryCategories(RssParams rssParams)
+        public async Task<ActionResult> StoryCategories(RssParams rssParams)
         {
             var comment = new StringBuilder();
             try
             {
+                // TODO: await StoryService.GetStoryCategoriesRssAsync when available
                 var items = StoryService.GetStoryCategoriesRss(rssParams);
                 if (items == null)
                 {
@@ -69,10 +72,11 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult StoryCategoriesFull(RssParams rssParams)
+        public async Task<ActionResult> StoryCategoriesFull(RssParams rssParams)
         {
             var comment = new StringBuilder();
 
+            // TODO: await StoryService.GetStoryCategoriesRssFullAsync when available
             var items = StoryService.GetStoryCategoriesRssFull(rssParams);
             if (items == null)
             {

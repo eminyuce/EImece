@@ -293,7 +293,7 @@ namespace EImece.Controllers
                     var user = ApplicationDbContext.Users.FirstOrDefault(u => u.UserName.Equals(model.Email));
                     if (user != null)
                     {
-                        bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
+                        bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user, model.Password);
                         Logger.Info($"Password check for {model.Email}: {checkPassword}");
                         if (!checkPassword)
                         {
@@ -497,7 +497,7 @@ namespace EImece.Controllers
                     Logger.Info("Confirmation email sent.");
 
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
-                    CustomerService.SaveRegisterViewModel(user.Id, model);
+                    await CustomerService.SaveRegisterViewModelAsync(user.Id, model);
                     Logger.Info($"Assigned Customer role and saved customer data for user ID: {user.Id}");
 
                     IdentitySignout();
@@ -525,7 +525,7 @@ namespace EImece.Controllers
 
                         case SignInStatus.Failure:
                             var user2 = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
-                            bool checkPassword = SignInManager.UserManager.CheckPassword(user2, model.Password);
+                            bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user2, model.Password);
                             Logger.Info($"Password check for {model.Email}: {checkPassword}");
                             if (!checkPassword)
                                 ModelState.AddModelError("", "Invalid login attempt. Password is not correct");
