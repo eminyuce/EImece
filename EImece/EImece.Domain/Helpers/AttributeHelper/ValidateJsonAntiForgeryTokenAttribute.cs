@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
@@ -29,7 +30,15 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 ?? request.Headers["X-RequestVerificationToken"]
                 ?? request.Form["__RequestVerificationToken"];
 
-            AntiForgery.Validate(cookieToken, requestToken);
+            try
+            {
+                AntiForgery.Validate(cookieToken, requestToken);
+            }
+            catch (HttpAntiForgeryException)
+            {
+                // Prefer 403 over an unhandled 500 for missing/invalid AJAX antiforgery tokens.
+                filterContext.Result = new HttpStatusCodeResult(HttpStatusCode.Forbidden, "Invalid antiforgery token.");
+            }
         }
 
         private static bool IsStateChangingMethod(string httpMethod)
