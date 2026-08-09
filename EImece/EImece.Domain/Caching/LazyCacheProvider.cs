@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using NLog;
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Caching
@@ -10,6 +11,7 @@ namespace EImece.Domain.Caching
     public class LazyCacheProvider : IEimeceCacheProvider
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string PhysicalKeyPrefix = "Memory:";
         private readonly IAppCache _lazyCache = new CachingService();
 
         // ConcurrentDictionary replaces a HashSet that was only locked on writes: ClearAll()
@@ -23,23 +25,63 @@ namespace EImece.Domain.Caching
             // FIX (pre-existing bug): entries are stored under the "Memory:" prefix by Set/GetOrAdd,
             // but Clear used the raw key, so targeted eviction never actually removed anything
             // (e.g. SettingService clearing its cache after a save was a no-op). Prefix it to match.
-            var keyNew = "Memory:" + key;
+            var keyNew = ToPhysicalKey(key);
             _lazyCache.Remove(keyNew);
             allCacheKeys.TryRemove(keyNew, out _);
         }
 
-        public void ClearAll()
+        public int ClearByPrefix(string keyPrefix)
         {
-            foreach (var key in allCacheKeys.Keys)
+            if (string.IsNullOrEmpty(keyPrefix))
+            {
+                return 0;
+            }
+
+            var physicalPrefix = ToPhysicalKey(keyPrefix);
+            var keys = allCacheKeys.Keys
+                .Where(k => k.StartsWith(physicalPrefix, StringComparison.Ordinal))
+                .ToList();
+
+            foreach (var key in keys)
             {
                 _lazyCache.Remove(key);
                 allCacheKeys.TryRemove(key, out _);
             }
+
+            return keys.Count;
+        }
+
+        public int ClearAll()
+        {
+            var keys = allCacheKeys.Keys.ToList();
+            foreach (var key in keys)
+            {
+                _lazyCache.Remove(key);
+                allCacheKeys.TryRemove(key, out _);
+            }
+
+            // Admin Refresh must also drop OutputCache HTML and MemoryCache.Default — otherwise
+            // ProductsController/[CustomOutputCache] keeps serving stale pages after data eviction.
+            int httpRuntimeRemoved;
+            int memoryCacheRemoved;
+            ApplicationCacheClearer.ClearAspNetCaches(out httpRuntimeRemoved, out memoryCacheRemoved);
+            Logger.Info(
+                "LazyCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
+                keys.Count,
+                httpRuntimeRemoved,
+                memoryCacheRemoved);
+            return keys.Count;
         }
 
         public T GetOrAdd<T>(string key, Func<T> valueFactory, int duration)
         {
+            return GetOrAdd(key, valueFactory, CachePolicy.Absolute(duration));
+        }
+
+        public T GetOrAdd<T>(string key, Func<T> valueFactory, CachePolicy policy)
+        {
             if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
+            if (policy == null) throw new ArgumentNullException(nameof(policy));
 
             // When caching is globally disabled, bypass the cache but still honour the contract.
             if (!AppConfig.IsCacheActive)
@@ -47,30 +89,36 @@ namespace EImece.Domain.Caching
                 return valueFactory();
             }
 
-            var keyNew = "Memory:" + key;
+            var keyNew = ToPhysicalKey(key);
             // LazyCache wraps the factory in a Lazy<T> internally, guaranteeing single execution
             // under concurrent misses (single-flight) — this is the stampede fix.
             return _lazyCache.GetOrAdd(keyNew, entry =>
             {
-                entry.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                ApplyPolicy(entry, policy);
                 allCacheKeys.TryAdd(keyNew, 0);
                 return valueFactory();
             });
         }
 
-        public async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> valueFactory, int duration)
+        public Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> valueFactory, int duration)
+        {
+            return GetOrAddAsync(key, valueFactory, CachePolicy.Absolute(duration));
+        }
+
+        public async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> valueFactory, CachePolicy policy)
         {
             if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
+            if (policy == null) throw new ArgumentNullException(nameof(policy));
 
             if (!AppConfig.IsCacheActive)
             {
                 return await valueFactory().ConfigureAwait(false);
             }
 
-            var keyNew = "Memory:" + key;
+            var keyNew = ToPhysicalKey(key);
             return await _lazyCache.GetOrAddAsync(keyNew, async entry =>
             {
-                entry.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration);
+                ApplyPolicy(entry, policy);
                 allCacheKeys.TryAdd(keyNew, 0);
                 return await valueFactory().ConfigureAwait(false);
             }).ConfigureAwait(false);
@@ -80,7 +128,7 @@ namespace EImece.Domain.Caching
         {
             if (AppConfig.IsCacheActive)
             {
-                var keyNew = "Memory:" + key;
+                var keyNew = ToPhysicalKey(key);
                 T t = _lazyCache.Get<T>(keyNew);
                 if (t == null)
                 {
@@ -99,14 +147,54 @@ namespace EImece.Domain.Caching
 
         public void Set<T>(string key, T value, int duration)
         {
+            Set(key, value, CachePolicy.Absolute(duration));
+        }
+
+        public void Set<T>(string key, T value, CachePolicy policy)
+        {
+            if (policy == null) throw new ArgumentNullException(nameof(policy));
+
             if (AppConfig.IsCacheActive)
             {
-                var keyNew = "Memory:" + key;
-                _lazyCache.Add(keyNew, value, new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(duration)
-                });
+                var keyNew = ToPhysicalKey(key);
+                var options = new MemoryCacheEntryOptions();
+                ApplyPolicy(options, policy);
+                _lazyCache.Add(keyNew, value, options);
                 allCacheKeys.TryAdd(keyNew, 0);
+            }
+        }
+
+        private static string ToPhysicalKey(string logicalKey)
+        {
+            if (logicalKey != null && logicalKey.StartsWith(PhysicalKeyPrefix, StringComparison.Ordinal))
+            {
+                return logicalKey;
+            }
+
+            return PhysicalKeyPrefix + logicalKey;
+        }
+
+        private static void ApplyPolicy(ICacheEntry entry, CachePolicy policy)
+        {
+            if (policy.Mode == CacheExpirationMode.Sliding)
+            {
+                entry.SlidingExpiration = TimeSpan.FromSeconds(policy.DurationSeconds);
+            }
+            else
+            {
+                entry.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(policy.DurationSeconds);
+            }
+        }
+
+        private static void ApplyPolicy(MemoryCacheEntryOptions options, CachePolicy policy)
+        {
+            if (policy.Mode == CacheExpirationMode.Sliding)
+            {
+                options.SlidingExpiration = TimeSpan.FromSeconds(policy.DurationSeconds);
+            }
+            else
+            {
+                options.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(policy.DurationSeconds);
             }
         }
     }

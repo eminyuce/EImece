@@ -67,6 +67,12 @@ namespace EImece.Domain.Services.IServices
 
         Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken));
 
+        /// <summary>
+        /// Drops every <c>product:list:*</c> / <c>product:search:*</c> MemoryCache entry.
+        /// Called from product mutations and from the Admin Refresh button before <c>ClearAll</c>.
+        /// </summary>
+        void InvalidateProductListCaches();
+
         ProductsSearchResult GetProductsSearchResult(
          string search,
          string filters,

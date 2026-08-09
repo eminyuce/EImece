@@ -148,6 +148,7 @@ See [EImece/RECAPTCHA.md](EImece/RECAPTCHA.md) to switch between Legacy captcha 
 | [BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md) | Build, run, health checks, tests, common errors |
 | [SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md) | Env vars, `configSource`, TLS, production |
 | [OPENTELEMETRY.md](EImece/docs/OPENTELEMETRY.md) | OTLP, sampling, Azure Monitor exporter |
+| [PERFORMANCE_AND_CACHING.md](EImece/docs/PERFORMANCE_AND_CACHING.md) | EF6 query tuning, SQL indexes, MemoryCache strategy |
 | [RECAPTCHA.md](EImece/RECAPTCHA.md) | Captcha providers and Web.config keys |
 
 ---

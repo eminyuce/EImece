@@ -1704,6 +1704,8 @@
     <Content Include="Views\Payment\_OrderSummary.cshtml" />
     <Content Include="Views\Account\AdminLogin.cshtml" />
     <Content Include="SqlScripts\AddAuthenticatorTwoFactor.sql" />
+    <Content Include="SqlScripts\AddPerformanceIndexes.sql" />
+    <Content Include="SqlScripts\MonitorQueryExecutionPlans.sql" />
     <Content Include="Views\Info\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SearchProductItem.cshtml" />
     <Content Include="Views\Payment\ThankYouForYourOrder.cshtml" />

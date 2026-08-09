@@ -1,3 +1,4 @@
+using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -103,28 +104,33 @@ namespace EImece.Domain.Services
             parameterList.Add(DatabaseUtility.GetSqlParameter("BrandId", (object)request.BrandId ?? DBNull.Value, SqlDbType.Int));
             parameterList.Add(DatabaseUtility.GetSqlParameter("TagId", (object)request.TagId ?? DBNull.Value, SqlDbType.Int));
             var commandType = CommandType.StoredProcedure;
-            return DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray()).ToStr();
+            var result = DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray()).ToStr();
+            InvalidateProductListCaches();
+            return result;
         }
 
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
-            var cacheKey = $"GetMainPageProducts-{page}-{language}";
+            var cacheKey = CacheKeys.MainPageProducts(page, language);
 
-            // Single-flight: the whole main-page view model is built once per (page, language)
-            // even under a burst of concurrent first-hits after expiry.
-            return DataCachingProvider.GetOrAdd(cacheKey, () =>
-            {
-                var result = new ProductIndexViewModel();
-                int pageSize = AppConfig.RecordPerPage;
-                result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
-                result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-                result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            // Absolute expiration: catalogue pages must refresh within CacheMediumSeconds even when
+            // they stay hot. Single-flight: one DB build per (page, language) after expiry.
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () =>
+                {
+                    var result = new ProductIndexViewModel();
+                    int pageSize = AppConfig.RecordPerPage;
+                    result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+                    result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+                    result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
-                var items = ProductRepository.GetActiveProducts(page, pageSize, language);
-                result.Products = items;
-                result.Tags = TagService.GetActiveBaseEntities(true, language);
-                return result;
-            }, AppConfig.CacheMediumSeconds);
+                    var items = ProductRepository.GetActiveProducts(page, pageSize, language);
+                    result.Products = items;
+                    result.Tags = TagService.GetActiveBaseEntities(true, language);
+                    return result;
+                },
+                CachePolicy.Absolute(AppConfig.CacheMediumSeconds));
         }
 
         /// <summary>
@@ -405,6 +411,7 @@ namespace EImece.Domain.Services
                     ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 }
                 DeleteEntity(product);
+                InvalidateProductListCaches();
                 return ProductDeleteResult.Deleted;
             }
             catch (Exception e)
@@ -415,6 +422,28 @@ namespace EImece.Domain.Services
         }
 
         public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
+        {
+            // Absolute + short TTL: search cardinality is high; keep entries brief and invalidate
+            // the whole search prefix when any product changes (see InvalidateProductListCaches).
+            var cacheKey = CacheKeys.ProductSearch(search, pageIndex, pageSize, lang, sorting);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => BuildProductsSearchViewModel(pageIndex, pageSize, search, lang, sorting),
+                CachePolicy.Absolute(AppConfig.CacheShortSeconds));
+        }
+
+        public async Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var cacheKey = CacheKeys.ProductSearchAsync(search, pageIndex, pageSize, lang, sorting);
+            // CancellationToken.None inside the factory: the cached result is shared across requests,
+            // so it must not be tied to one caller's lifetime (see AsyncCacheKeySuffix notes).
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => BuildProductsSearchViewModelAsync(pageIndex, pageSize, search, lang, sorting, CancellationToken.None),
+                CachePolicy.Absolute(AppConfig.CacheShortSeconds)).ConfigureAwait(false);
+        }
+
+        private ProductsSearchViewModel BuildProductsSearchViewModel(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             var r = new ProductsSearchViewModel();
             r.Search = search;
@@ -433,7 +462,7 @@ namespace EImece.Domain.Services
             return r;
         }
 
-        public async Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        private async Task<ProductsSearchViewModel> BuildProductsSearchViewModelAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken)
         {
             var r = new ProductsSearchViewModel();
             r.Search = search;
@@ -472,21 +501,50 @@ namespace EImece.Domain.Services
 
         public List<Product> GetActiveProducts(int? language)
         {
-            var cacheKey = $"GetActiveProducts-{language}";
-            // Single-flight: prevents a DB thundering-herd when this hot key expires.
+            var cacheKey = CacheKeys.ActiveProducts(language);
+            // Absolute expiration keeps the active-product set fresh within CacheMediumSeconds.
+            // Single-flight prevents a DB thundering-herd when this hot key expires.
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => ProductRepository.GetActiveProducts(language),
-                AppConfig.CacheMediumSeconds);
+                CachePolicy.Absolute(AppConfig.CacheMediumSeconds));
         }
 
         public async Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cacheKey = $"GetActiveProducts-{language}" + AsyncCacheKeySuffix;
+            var cacheKey = CacheKeys.ActiveProductsAsync(language);
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => ProductRepository.GetActiveProductsAsync(language, CancellationToken.None),
-                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
+                CachePolicy.Absolute(AppConfig.CacheMediumSeconds)).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Drops every product list/search MemoryCache entry after a mutating admin action so the
+        /// next storefront request rebuilds from SQL instead of serving stale AbsoluteExpiration data.
+        /// </summary>
+        public void InvalidateProductListCaches()
+        {
+            var listRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
+            var searchRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductSearchPrefix);
+            ProductServiceLogger.Info(
+                "InvalidateProductListCaches removed {0} list + {1} search entries",
+                listRemoved,
+                searchRemoved);
+        }
+
+        public override Product SaveOrEditEntity(Product entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateProductListCaches();
+            return saved;
+        }
+
+        public override async Task<Product> SaveOrEditEntityAsync(Product entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateProductListCaches();
+            return saved;
         }
 
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
