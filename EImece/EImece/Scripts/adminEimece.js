@@ -229,8 +229,43 @@ $(document).ready(function () {
 
     }
     bindProductDetailToolTip();
-    bindCKEDITOR();
+    if (window.EImece && EImece.RichTextEditor) {
+        EImece.RichTextEditor.init();
+    }
+    bindAdminEditSections();
     searchAutoComplete();
+    function bindAdminEditSections() {
+        var $form = $(".admin-edit-form");
+        if (!$form.length) {
+            return;
+        }
+
+        function setActiveSectionLink(href) {
+            $form.find(".admin-edit-section-link").removeClass("is-active");
+            $form.find('.admin-edit-section-link[href="' + href + '"]').addClass("is-active");
+        }
+
+        $form.off("click.adminEditSections", ".admin-edit-section-link")
+            .on("click.adminEditSections", ".admin-edit-section-link", function (e) {
+                var href = $(this).attr("href");
+                if (!href || href.charAt(0) !== "#") {
+                    return;
+                }
+                var target = document.querySelector(href);
+                if (!target) {
+                    return;
+                }
+                e.preventDefault();
+                setActiveSectionLink(href);
+                if (typeof target.scrollIntoView === "function") {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                } else {
+                    window.location.hash = href;
+                }
+            });
+
+        setActiveSectionLink("#admin-edit-section-fields");
+    }
     $("input[name=checkboxGrid]").each(function () {
         $(this).off("click");
         $(this).on("click", function (e) {
@@ -242,19 +277,6 @@ $(document).ready(function () {
             }
         });
     });
-    function bindCKEDITOR() {
-        $('[data-ckeditor-field]').each(function () {
-            // CKEDITOR.replace(this);
-            CKEDITOR.replace(this, {
-                //uiColor: '#14B8C4',
-                //toolbar: [
-                //    ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
-                //    ['FontSize', 'TextColor', 'BGColor']
-                //],
-                height: ['550px']
-            });
-        });
-    }
     function OrderingItem() {
         var item = this;
         item.Id = "";

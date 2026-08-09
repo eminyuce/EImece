@@ -62,6 +62,26 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
+        /// <summary>
+        /// TinyMCE image upload endpoint. Reuses existing FilesHelper media storage
+        /// and returns the JSON shape TinyMCE expects: { location: "url" }.
+        /// </summary>
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
+        public JsonResult UploadEditorImage()
+        {
+            var resultList = new List<ViewDataUploadFilesResult>();
+            filesHelper.UploadAndShowResults(HttpContext, resultList);
+
+            var uploaded = resultList.FirstOrDefault();
+            if (uploaded == null || string.IsNullOrWhiteSpace(uploaded.url))
+            {
+                return Json(new { error = "Image upload failed." });
+            }
+
+            return Json(new { location = uploaded.url });
+        }
+
         public JsonResult GetFileList()
         {
             var CurrentContext = HttpContext;

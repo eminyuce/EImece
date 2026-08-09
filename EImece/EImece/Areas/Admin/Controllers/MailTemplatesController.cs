@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                // Rendering can fail for CKEditor-encoded / incomplete Razor — still offer a download.
+                // Rendering can fail for HTML-encoded / incomplete Razor — still offer a download.
                 Logger.Error(ex, "GenerateHtmlBody render failed for MailTemplate Id = {0}", id);
                 warning = ex.Message;
                 body = System.Net.WebUtility.HtmlDecode(rssTemplate.Body ?? string.Empty);
