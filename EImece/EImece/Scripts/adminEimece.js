@@ -758,18 +758,28 @@ function sortInputFirst(input, data) {
 function searchAutoComplete() {
     $("#searchTxtInput").autocomplete({
         source: function (request, response) {
-            //  console.log("auto complate");
             var items = new Array();
-
-            var jsonRequest = JSON.stringify({ "term": request.term, "action": $("#action").val(), "controller": $("#controller").val() });
-            //  console.log(jsonRequest);
+            // Use GET + actionName/controllerName (not action/controller) to avoid MVC route token collisions.
             if (request.term.length > 2) {
-                ajaxMethodCall(jsonRequest, "/admin/Ajax/SearchAutoComplete", function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        items[i] = { text: data[i], value: data[i] };
+                $.ajax({
+                    type: "GET",
+                    url: "/admin/Ajax/SearchAutoComplete",
+                    dataType: "json",
+                    data: {
+                        term: request.term,
+                        actionName: $("#action").val(),
+                        controllerName: $("#controller").val()
+                    },
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            items[i] = { text: data[i], value: data[i] };
+                        }
+                        response(sortInputFirst(request.term, items));
+                    },
+                    error: function (jqXHR, exception) {
+                        console.error("SearchAutoComplete failed", jqXHR.status, jqXHR.responseText, exception);
+                        response([]);
                     }
-                    //  console.log(items);
-                    response(sortInputFirst(request.term, items));
                 });
             }
         },

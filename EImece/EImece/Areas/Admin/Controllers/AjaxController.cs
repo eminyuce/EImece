@@ -156,87 +156,98 @@ namespace EImece.Areas.Admin.Controllers
             return Json(Resources.Resource.SuccessfullySavedCompleted, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public async Task<JsonResult> SearchAutoComplete(String term, String action, String controller)
+        // Parameter names must NOT be "action"/"controller" — those collide with MVC route tokens
+        // and bind as SearchAutoComplete/Ajax instead of the page context from the client.
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<JsonResult> SearchAutoComplete(string term, string actionName, string controllerName)
         {
-            if (string.IsNullOrEmpty(term) || string.IsNullOrEmpty(action) || string.IsNullOrEmpty(controller))
+            if (string.IsNullOrEmpty(term) || string.IsNullOrEmpty(actionName) || string.IsNullOrEmpty(controllerName))
             {
-                throw new ArgumentException("term or action or controller cannot be empty");
+                throw new ArgumentException("term or actionName or controllerName cannot be empty");
             }
             String searchKey = term.ToStr().ToLower(CultureInfo.InvariantCulture).Trim();
             var list = new List<String>();
-            Boolean isIndexAction = action.Equals("Index", StringComparison.InvariantCultureIgnoreCase);
-            if (isIndexAction && controller.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
+            Boolean isIndexAction = actionName.Equals("Index", StringComparison.InvariantCultureIgnoreCase);
+            if (isIndexAction && controllerName.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
             {
-                Expression<Func<Product, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await ProductService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+                Expression<Func<Product, bool>> whereLambda1 = r =>
+                    r.Name.ToLower().Contains(searchKey)
+                    || (r.ProductCode != null && r.ProductCode.ToLower().Contains(searchKey))
+                    || (r.NameLong != null && r.NameLong.ToLower().Contains(searchKey))
+                    || (r.NameShort != null && r.NameShort.ToLower().Contains(searchKey));
+                var products = await ProductService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage);
+                list = products
+                    .SelectMany(r => new[] { r.Name, r.ProductCode })
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList();
             }
-            else if (isIndexAction && controller.Equals("Stories", StringComparison.InvariantCultureIgnoreCase))
+            else if (isIndexAction && controllerName.Equals("Stories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Story, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await StoryService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
-            else if (isIndexAction && controller.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))
+            else if (isIndexAction && controllerName.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await ProductCategoryService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
-            else if (isIndexAction && controller.Equals("StoryCategories", StringComparison.InvariantCultureIgnoreCase))
+            else if (isIndexAction && controllerName.Equals("StoryCategories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await StoryCategoryService.SearchEntitiesAsync(whereLambda3, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-                  controller.Equals("Menus", StringComparison.InvariantCultureIgnoreCase))
+                  controllerName.Equals("Menus", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await MenuService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-                controller.Equals("Tags", StringComparison.InvariantCultureIgnoreCase))
+                controllerName.Equals("Tags", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Tag, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await TagService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-              controller.Equals("Coupons", StringComparison.InvariantCultureIgnoreCase))
+              controllerName.Equals("Coupons", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Coupon, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await CouponService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-               controller.Equals("TagCategories", StringComparison.InvariantCultureIgnoreCase))
+               controllerName.Equals("TagCategories", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<TagCategory, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await TagCategoryService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-            controller.Equals("Subscribers", StringComparison.InvariantCultureIgnoreCase))
+            controllerName.Equals("Subscribers", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Subscriber, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await SubscriberService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-         controller.Equals("Settings", StringComparison.InvariantCultureIgnoreCase))
+         controllerName.Equals("Settings", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Setting, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await SettingService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-        controller.Equals("MainPageImages", StringComparison.InvariantCultureIgnoreCase))
+        controllerName.Equals("MainPageImages", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<MainPageImage, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
                 list = (await MainPageImageService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
             }
             else if (isIndexAction &&
-    controller.Equals("Users", StringComparison.InvariantCultureIgnoreCase))
+    controllerName.Equals("Users", StringComparison.InvariantCultureIgnoreCase))
             {
                 var users = ApplicationDbContext.Users.AsQueryable();
                 list = await users.Where(r => r.Email.ToLower().Contains(searchKey) || r.FirstName.ToLower().Contains(searchKey) || r.LastName.ToLower().Contains(searchKey)).Select(r => r.Email).ToListAsync();
             }
             else
             {
-                throw new NotImplementedException(term + " " + action + " " + controller);
+                throw new NotImplementedException(term + " " + actionName + " " + controllerName);
             }
 
             return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
