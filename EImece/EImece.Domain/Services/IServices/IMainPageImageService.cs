@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -10,5 +11,7 @@ namespace EImece.Domain.Services.IServices
         FooterViewModel GetFooterViewModel(int language);
 
         MainPageViewModel GetMainPageViewModel(int language);
+
+        Task<MainPageViewModel> GetMainPageViewModelAsync(int language);
     }
 }

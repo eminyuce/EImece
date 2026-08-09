@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -23,14 +24,14 @@ namespace EImece.Controllers
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
-        public ActionResult GetProductCategoryDto(String id)
+        public async Task<ActionResult> GetProductCategoryDto(String id)
         {
-            var productCategory = ProductCategoryService.GetProductCategoryDto(id.GetId());
+            var productCategory = await ProductCategoryService.GetProductCategoryDtoAsync(id.GetId());
             return View(productCategory);
         }
 
         [Route(Constants.CategoryPrefix)]
-        public ActionResult Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
+        public async Task<ActionResult> Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {
             Logger.Info($"Entering Category action with id: '{id}', page: {page}, sorting: {sorting}, filtreler: '{filtreler}', minPrice: {minPrice}, maxPrice: {maxPrice}");
             try
@@ -45,7 +46,7 @@ namespace EImece.Controllers
                 var categoryId = id.GetId();
                 Logger.Info($"Parsed category ID: {categoryId}");
 
-                var productCategory = ProductCategoryService.GetProductCategoryViewModel(categoryId);
+                var productCategory = await ProductCategoryService.GetProductCategoryViewModelAsync(categoryId);
                 Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.ProductCategory?.Name}");
 
                 if (productCategory == null || productCategory.ProductCategory == null || !productCategory.ProductCategory.IsActive)

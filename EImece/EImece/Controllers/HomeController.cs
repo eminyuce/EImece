@@ -22,6 +22,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.Caching;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -61,18 +62,18 @@ namespace EImece.Controllers
         public MigrationRepository MigrationRepository { get; set; }
 
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            MainPageViewModel mainPageModel = MainPageImageService.GetMainPageViewModel(CurrentLanguage);
+            MainPageViewModel mainPageModel = await MainPageImageService.GetMainPageViewModelAsync(CurrentLanguage);
             mainPageModel.CurrentLanguage = CurrentLanguage;
-            ViewBag.Title = SettingService.GetSettingByKey(Constants.SiteIndexMetaTitle, CurrentLanguage).ToStr();
-            ViewBag.Description = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription, CurrentLanguage).ToStr();
-            ViewBag.Keywords = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords, CurrentLanguage).ToStr();
+            ViewBag.Title = (await SettingService.GetSettingByKeyAsync(Constants.SiteIndexMetaTitle, CurrentLanguage)).ToStr();
+            ViewBag.Description = (await SettingService.GetSettingByKeyAsync(Constants.SiteIndexMetaDescription, CurrentLanguage)).ToStr();
+            ViewBag.Keywords = (await SettingService.GetSettingByKeyAsync(Constants.SiteIndexMetaKeywords, CurrentLanguage)).ToStr();
             return View(mainPageModel);
         }
 
         [HttpPost]
-        public ActionResult AddSubscriber(Subscriber subscriber)
+        public async Task<ActionResult> AddSubscriber(Subscriber subscriber)
         {
             var emailChecker = new EmailAddressAttribute();
             if (subscriber == null || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim()) || !emailChecker.IsValid(subscriber.Email.ToStr().Trim()))
@@ -84,12 +85,12 @@ namespace EImece.Controllers
             {
                 subscriber.Name = subscriber.Email;
                 subscriber.IsActive = true;
-                SubsciberService.SaveOrEditEntity(subscriber);
+                await SubsciberService.SaveOrEditEntityAsync(subscriber);
                 return RedirectToAction("ThanksForSubscription", new { id = subscriber.Id });
             }
         }
 
-        public ActionResult ThanksForSubscription(int? id)
+        public async Task<ActionResult> ThanksForSubscription(int? id)
         {
             if (!id.HasValue)
             {
@@ -97,20 +98,20 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var s = SubsciberService.GetSingle(id.Value);
+            var s = await SubsciberService.GetSingleAsync(id.Value);
             return View(s);
         }
 
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public ActionResult SocialMediaLinks()
+        public async Task<ActionResult> SocialMediaLinks()
         {
             var resultList = new Dictionary<String, String>();
-            resultList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
-            resultList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink));
-            resultList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
-            resultList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
-            resultList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingByKey(Constants.TwitterWebSiteLink));
-            resultList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
+            resultList.Add(Constants.InstagramWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.InstagramWebSiteLink));
+            resultList.Add(Constants.LinkedinWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.LinkedinWebSiteLink));
+            resultList.Add(Constants.YotubeWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.YotubeWebSiteLink));
+            resultList.Add(Constants.FacebookWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.FacebookWebSiteLink));
+            resultList.Add(Constants.TwitterWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.TwitterWebSiteLink));
+            resultList.Add(Constants.PinterestWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.PinterestWebSiteLink));
             return PartialView("_SocialMediaLinks", resultList);
         }
 
@@ -195,19 +196,19 @@ namespace EImece.Controllers
         }
 
         [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        public ActionResult GetCompanyName()
+        public async Task<ActionResult> GetCompanyName()
         {
-            string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
+            string companyName = await SettingService.GetSettingByKeyAsync(Constants.CompanyName);
             HomeLogger.Info($"Retrieved company name: {companyName}");
             return Content(companyName);
         }
 
-        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
+        public async Task<ActionResult> WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyEmailAddress);
             HomeLogger.Info("Returning _WebSiteAddressInfo partial view.");
             return PartialView("_WebSiteAddressInfo", item);
         }
@@ -215,7 +216,7 @@ namespace EImece.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateCaptcha(Prefix = "ContactUsLogin")]
-        public ActionResult SendContactUs(ContactUsFormViewModel contact)
+        public async Task<ActionResult> SendContactUs(ContactUsFormViewModel contact)
         {
             HomeLogger.Info("Entering SendContactUs POST action.");
             if (contact == null)
@@ -237,6 +238,7 @@ namespace EImece.Controllers
                 if (contact.ItemType == EImeceItemType.Product)
                 {
                     HomeLogger.Info($"ItemType is Product with ID: {contact.ItemId}");
+                    // TODO: switch to ProductService.GetProductDetailViewModelByIdAsync when available
                     var product = ProductService.GetProductDetailViewModelById(contact.ItemId);
                     product.Contact = contact;
                     HomeLogger.Info("Returning Product Detail view with captcha error.");
@@ -245,7 +247,7 @@ namespace EImece.Controllers
                 else if (contact.ItemType == EImeceItemType.Menu)
                 {
                     HomeLogger.Info($"ItemType is Menu with ID: {contact.ItemId}");
-                    var page = MenuService.GetPageById(contact.ItemId);
+                    var page = await MenuService.GetPageByIdAsync(contact.ItemId);
                     page.Contact = contact;
                     HomeLogger.Info("Returning Page Detail view with captcha error.");
                     return View("../Pages/Detail", page);
@@ -264,7 +266,7 @@ namespace EImece.Controllers
                 try
                 {
                     HomeLogger.Info("Saving subscriber from contact form.");
-                    saveSubsciber(contact);
+                    await saveSubsciberAsync(contact);
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -326,7 +328,7 @@ namespace EImece.Controllers
             return result;
         }
 
-        private void saveSubsciber(ContactUsFormViewModel contact)
+        private async Task saveSubsciberAsync(ContactUsFormViewModel contact)
         {
             HomeLogger.Info("Entering saveSubsciber method.");
             var s = new Subscriber();
@@ -340,7 +342,7 @@ namespace EImece.Controllers
             s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
                 contact.CompanyName, contact.Phone, contact.Address, contact.Message, Environment.NewLine);
             HomeLogger.Info($"Saving subscriber with email: {s.Email}");
-            SubsciberService.SaveOrEditEntity(s);
+            await SubsciberService.SaveOrEditEntityAsync(s);
             HomeLogger.Info("Subscriber saved successfully.");
         }
 

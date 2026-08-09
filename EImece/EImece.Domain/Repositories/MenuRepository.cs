@@ -4,7 +4,10 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -69,6 +72,14 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage.FileStorageTags.Select(y => y.Tag)));
             includeProperties.Add(r => r.MainImage);
             return GetAllIncluding(includeProperties.ToArray()).ToList();
+        }
+
+        public async Task<List<Menu>> GetMenusAsync()
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage.FileStorageTags.Select(y => y.Tag)));
+            includeProperties.Add(r => r.MainImage);
+            return await GetAllIncluding(includeProperties.ToArray()).ToListAsync(CancellationToken.None).ConfigureAwait(false);
         }
 
         public List<Menu> GetMenuLeaves(bool? isActive, int language)

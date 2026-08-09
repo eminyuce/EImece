@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -53,6 +54,17 @@ namespace EImece.Domain.Services
             return GetPageById(menu.Id);
         }
 
+        public async Task<MenuPageViewModel> GetPageByMenuLinkAsync(string menuLink, int? language)
+        {
+            List<Menu> lists = await GetMenusAsync().ConfigureAwait(false);
+            var menu = lists.FirstOrDefault(r => (language.HasValue ? (r.Lang == language.Value) : true) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            if (menu == null)
+            {
+                return null;
+            }
+            return await GetPageByIdAsync(menu.Id).ConfigureAwait(false);
+        }
+
         public List<Menu> GetMenus()
         {
             if (!IsCachingActivated)
@@ -67,6 +79,20 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
+        public async Task<List<Menu>> GetMenusAsync()
+        {
+            if (!IsCachingActivated)
+            {
+                return await MenuRepository.GetMenusAsync().ConfigureAwait(false);
+            }
+
+            var cacheKey = "GetMenus" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => MenuRepository.GetMenusAsync(),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
+        }
+
         public MenuPageViewModel GetPageById(int menuId)
         {
             var result = new MenuPageViewModel();
@@ -74,6 +100,18 @@ namespace EImece.Domain.Services
             result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
+            return result;
+        }
+
+        public async Task<MenuPageViewModel> GetPageByIdAsync(int menuId)
+        {
+            var result = new MenuPageViewModel();
+            result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
+            var menus = await GetMenusAsync().ConfigureAwait(false);
+            result.Menu = menus.FirstOrDefault(r => r.Id.Equals(menuId));
+            var activeMenus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, result.Menu.Lang).ConfigureAwait(false);
+            result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ApplicationSettings = await SettingService.GetAllActiveSettingsAsync().ConfigureAwait(false);
             return result;
         }
 

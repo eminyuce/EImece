@@ -6,6 +6,7 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -53,6 +54,26 @@ namespace EImece.Domain.Services
             result.LatestStories = StoryService.GetFeaturedStories(10, language,0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageFeatureStoryCountLimit).ToList();
             result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
             result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
+
+            return result;
+        }
+
+        public async Task<MainPageViewModel> GetMainPageViewModelAsync(int language)
+        {
+            var result = new MainPageViewModel();
+
+            // TODO: switch to ProductService.GetActiveProductsAsync(language) when list overload is available
+            var activeProducts = ProductService.GetActiveProducts(language);
+            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
+
+            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
+            result.MainPageMenu = menus.FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            // TODO: switch to StoryService.GetFeaturedStoriesAsync when available
+            result.LatestStories = StoryService.GetFeaturedStories(10, language, 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageFeatureStoryCountLimit).ToList();
+            result.MainPageImages = await GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
+            result.MainPageProductCategories = await ProductCategoryService.GetMainPageProductCategoriesAsync(language).ConfigureAwait(false);
 
             return result;
         }

@@ -31,6 +31,12 @@ namespace EImece.Domain.Services
             return GetAllSettings().Where(t => t.IsActive).ToList();
         }
 
+        public async Task<List<Setting>> GetAllActiveSettingsAsync()
+        {
+            var allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
+            return allSettings.Where(t => t.IsActive).ToList();
+        }
+
         public void ClearCache()
         {
             DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY);

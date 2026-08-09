@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -13,5 +14,7 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Menu> GetMenuLeaves(bool? isActive, int language);
 
         List<Menu> GetMenus();
+
+        Task<List<Menu>> GetMenusAsync();
     }
 }

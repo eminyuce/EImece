@@ -11,5 +11,7 @@ namespace EImece.Domain.Repositories.IRepositories
         Task<List<Brand>> GetAdminPageListAsync(string search, int lang);
 
         List<Brand> GetBrandsIfAnyProductExists(int lang, int categoryId = 0);
+
+        Task<List<Brand>> GetBrandsIfAnyProductExistsAsync(int lang, int categoryId = 0);
     }
 }

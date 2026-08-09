@@ -42,5 +42,10 @@ namespace EImece.Domain.Services
         {
             return BrandRepository.GetBrandsIfAnyProductExists(lang, categoryId);
         }
+
+        public async Task<List<Brand>> GetBrandsIfAnyProductExistsAsync(int lang, int categoryId = 0)
+        {
+            return await BrandRepository.GetBrandsIfAnyProductExistsAsync(lang, categoryId).ConfigureAwait(false);
+        }
     }
 }

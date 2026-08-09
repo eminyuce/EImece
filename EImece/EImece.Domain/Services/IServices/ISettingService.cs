@@ -30,6 +30,8 @@ namespace EImece.Domain.Services.IServices
 
         List<Setting> GetAllActiveSettings();
 
+        Task<List<Setting>> GetAllActiveSettingsAsync();
+
         EmailAccount GetEmailAccount();
 
         SystemSettingModel GetSystemSettingModel();
