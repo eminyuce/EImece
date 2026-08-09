@@ -379,7 +379,7 @@ any remaining callers keep compiling.
 | `HomeController` | `Index`, settings/subscriber/contact actions that hit I/O |
 | `PagesController` / `InfoController` | `Detail` / `Index` |
 | `PaymentController` | cart, checkout, coupon, buy-now, thank-you, Iyzico callbacks |
-| `Areas/Customers/HomeController` | profile, FAQ, orders, password GET |
+| `Areas/Customers/HomeController` | full customer area (only controller in the area): profile GET/POST, FAQ, send-message-to-seller GET/POST, orders, order detail, password GET/POST, address info. `LogOff` stays sync (cookie sign-out only). `OnActionExecuting` price gate stays sync because MVC 5 filters cannot await; it uses the LazyCache-backed `GetSettingByKey`. |
 | `RssController` / `SiteMapController` | all feed/sitemap actions |
 | `AccountController` / `ManageController` | remaining Identity/settings leftovers inside already-async actions |
 | `HealthController` | already async |

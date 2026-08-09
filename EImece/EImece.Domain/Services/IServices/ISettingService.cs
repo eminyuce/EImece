@@ -34,6 +34,8 @@ namespace EImece.Domain.Services.IServices
 
         EmailAccount GetEmailAccount();
 
+        Task<EmailAccount> GetEmailAccountAsync();
+
         SystemSettingModel GetSystemSettingModel();
 
         void SaveSystemSettingModel(SystemSettingModel settingModel);

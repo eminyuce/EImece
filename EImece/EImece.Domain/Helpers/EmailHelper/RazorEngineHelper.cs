@@ -13,6 +13,7 @@ using RazorEngine.Templating;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -165,6 +166,36 @@ namespace EImece.Domain.Helpers.EmailHelper
             string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact); // Use different key for body
 
             EmailSender.SendEmailInBackground(SettingService.GetEmailAccount(),
+                subject,
+                body,
+                adminUserName,
+                companyname,
+                adminUserName,
+                companyname);
+        }
+
+        public async Task SendMessageToSellerAsync(ContactUsFormViewModel contact)
+        {
+            MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.SendMessageToSellerMailTemplate).ConfigureAwait(false);
+            if (emailTemplate == null)
+            {
+                throw new ArgumentException("NO email template is defined for " + Constants.SendMessageToSellerMailTemplate);
+            }
+
+            string groupName = string.Format("{0} | {1} | {2}", "SendMessageToSeller", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
+            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+
+            string companyname = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            var adminUserName = await SettingService.GetSettingByKeyAsync(Constants.AdminUserName).ConfigureAwait(false);
+
+            string template = emailTemplate.Body;
+            string templateKey = emailTemplate.Subject + "_" + GeneralHelper.GetHashString(template);
+
+            string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
+            string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact);
+
+            // SendEmailInBackground queues the SMTP work; await only the settings/template I/O above.
+            EmailSender.SendEmailInBackground(await SettingService.GetEmailAccountAsync().ConfigureAwait(false),
                 subject,
                 body,
                 adminUserName,

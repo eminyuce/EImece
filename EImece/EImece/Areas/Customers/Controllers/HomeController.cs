@@ -82,6 +82,8 @@ namespace EImece.Areas.Customers.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            // MVC 5 action filters cannot await. GetSettingByKey is LazyCache-backed (async twin
+            // exists for request actions); this gate only runs after a cache miss hits the DB.
             if (!SettingService.GetSettingByKey(Domain.Constants.IsProductPriceEnable).ToBool(true))
             {
                 filterContext.Result = new RedirectResult("~/");
@@ -212,7 +214,7 @@ namespace EImece.Areas.Customers.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SendSellerMessage(ContactUsFormViewModel contact)
+        public async Task<ActionResult> SendSellerMessage(ContactUsFormViewModel contact)
         {
             if (contact == null)
             {
@@ -221,17 +223,15 @@ namespace EImece.Areas.Customers.Controllers
 
             try
             {
-                // Sending email.
                 contact.ItemType = EImeceItemType.Ticket;
                 contact.IPAddress = HttpContext.Request.UserHostAddress;
-                RazorEngineHelper.SendMessageToSeller(contact);
+                await RazorEngineHelper.SendMessageToSellerAsync(contact);
                 TempData["SuccessMessage"] = Resource.YourMessageHasBeenSentToSeller;
                 return RedirectToAction("SendMessageToSeller");
             }
             catch (Exception)
             {
-                // Handle any errors (e.g., email sending failure)
-                TempData["ErrorMessage"] = Resource.EmailSendingFailed; // Add this to your Resource file
+                TempData["ErrorMessage"] = Resource.EmailSendingFailed;
                 return RedirectToAction("SendMessageToSeller");
             }
         }

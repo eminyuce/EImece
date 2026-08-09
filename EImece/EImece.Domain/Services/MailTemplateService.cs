@@ -7,6 +7,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace EImece.Domain.Services
@@ -36,6 +37,12 @@ namespace EImece.Domain.Services
             return GetAllMailTemplatesWithCache().FirstOrDefault(r => r.Name.Equals(templatename, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public async Task<MailTemplate> GetMailTemplateByNameAsync(string templatename)
+        {
+            var templates = await GetAllMailTemplatesWithCacheAsync().ConfigureAwait(false);
+            return templates.FirstOrDefault(r => r.Name.Equals(templatename, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public List<MailTemplate> GetAllMailTemplatesWithCache()
         {
             var cacheKey = "GetAllMailTemplatesWithCache";
@@ -43,6 +50,15 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => this.GetAll(),
                 AppConfig.CacheLongSeconds);
+        }
+
+        public async Task<List<MailTemplate>> GetAllMailTemplatesWithCacheAsync()
+        {
+            var cacheKey = "GetAllMailTemplatesWithCache" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => this.GetAllAsync(),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)

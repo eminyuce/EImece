@@ -322,5 +322,23 @@ namespace EImece.Domain.Services
 
             return emailAccount;
         }
+
+        public async Task<EmailAccount> GetEmailAccountAsync()
+        {
+            var emailAccount = new EmailAccount();
+            emailAccount.Host = await GetSettingByKeyAsync(Constants.AdminEmailHost).ConfigureAwait(false);
+            emailAccount.Password = await GetSettingByKeyAsync(Constants.AdminEmailPassword).ConfigureAwait(false);
+            emailAccount.EnableSsl = (await GetSettingByKeyAsync(Constants.AdminEmailEnableSsl).ConfigureAwait(false)).ToBool();
+            emailAccount.Port = (await GetSettingByKeyAsync(Constants.AdminEmailPort).ConfigureAwait(false)).ToInt();
+            emailAccount.UseDefaultCredentials = (await GetSettingByKeyAsync(Constants.AdminEmailUseDefaultCredentials).ConfigureAwait(false)).ToBool();
+            emailAccount.Email = await GetSettingByKeyAsync(Constants.AdminEmail).ConfigureAwait(false);
+            emailAccount.Username = (await GetSettingByKeyAsync(Constants.AdminUserName).ConfigureAwait(false)).ToStr();
+            emailAccount.Email = String.IsNullOrEmpty(emailAccount.Email) ? emailAccount.Username : emailAccount.Email;
+
+            emailAccount.DisplayName = await GetSettingByKeyAsync(Constants.AdminEmailDisplayName).ConfigureAwait(false);
+            emailAccount.DisplayName = String.IsNullOrEmpty(emailAccount.DisplayName) ? emailAccount.Username : emailAccount.DisplayName;
+
+            return emailAccount;
+        }
     }
 }
