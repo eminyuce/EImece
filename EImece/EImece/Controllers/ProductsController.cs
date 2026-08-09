@@ -77,17 +77,17 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult AdvancedSearchProducts(String search = "", string filters = "", String page = "")
+        public async Task<ActionResult> AdvancedSearchProducts(CancellationToken cancellationToken, String search = "", string filters = "", String page = "")
         {
             Logger.Info($"Entering AdvancedSearchProducts with search: '{search}', filters: '{filters}', page: '{page}'");
-            var products = ProductService.GetProductsSearchResult(search, filters, page, CurrentLanguage);
+            var products = await ProductService.GetProductsSearchResultAsync(search, filters, page, CurrentLanguage, cancellationToken);
             Logger.Info($"Retrieved {products.Products.Count} products for search: '{search}', language: {CurrentLanguage}");
             Logger.Info("Returning AdvancedSearchProducts view.");
             return View(products);
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
-        public ActionResult Detail(String id, int page = 0)
+        public async Task<ActionResult> Detail(CancellationToken cancellationToken, String id, int page = 0)
         {
             Logger.Info($"Entering Detail action with id: '{id}'");
             if (String.IsNullOrEmpty(id))
@@ -100,7 +100,7 @@ namespace EImece.Controllers
             {
                 var productId = id.GetId();
                 Logger.Info($"Parsed product ID: {productId}");
-                var product = ProductService.GetProductDetailViewModelById(productId);
+                var product = await ProductService.GetProductDetailViewModelByIdAsync(productId, cancellationToken);
                 string fullPath = Request.Path;
 
                 Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.Product?.Name}, IsActive: {product?.Product?.IsActive}");
@@ -138,7 +138,7 @@ namespace EImece.Controllers
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         [Route(Constants.ProductTagPrefix)]
-        public ActionResult Tag(String id, int page = 1, int sorting = 0)
+        public async Task<ActionResult> Tag(CancellationToken cancellationToken, String id, int page = 1, int sorting = 0)
         {
             Logger.Info($"Entering Tag action with id: '{id}', page: {page}, sorting: {sorting}");
             if (String.IsNullOrEmpty(id))
@@ -152,7 +152,7 @@ namespace EImece.Controllers
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
             Logger.Info($"Using page size: {pageSize}");
 
-            SimiliarProductTagsViewModel products = ProductService.GetProductByTagId(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting);
+            SimiliarProductTagsViewModel products = await ProductService.GetProductByTagIdAsync(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting, cancellationToken);
             Logger.Info($"Retrieved products for tag ID: {tagId}, page: {page}, language: {CurrentLanguage}");
 
             products.Page = page;

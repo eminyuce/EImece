@@ -32,6 +32,8 @@ namespace EImece.Domain.Repositories.IRepositories
 
         Product GetProduct(int id);
 
+        Task<Product> GetProductAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
         PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
 
         Task<PaginatedList<Product>> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
@@ -40,7 +42,11 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<Product> GetRelatedProducts(int[] tagIdList, int take, int lang, int excludedProductId);
 
+        Task<List<Product>> GetRelatedProductsAsync(int[] tagIdList, int take, int lang, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
+
         List<Product> GetActiveProducts(int? language);
+
+        Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken));
 
         ProductsSearchResult GetProductsSearchResult(
    string search,
@@ -49,8 +55,20 @@ namespace EImece.Domain.Repositories.IRepositories
    int skip,
    int language);
 
+        Task<ProductsSearchResult> GetProductsSearchResultAsync(
+   string search,
+   string filters,
+   int top,
+   int skip,
+   int language,
+   CancellationToken cancellationToken = default(CancellationToken));
+
         List<Product> GetChildrenProducts(int[] childrenCategoryId);
 
+        Task<List<Product>> GetChildrenProductsAsync(int[] childrenCategoryId, CancellationToken cancellationToken = default(CancellationToken));
+
         List<Product> GetRandomProductsByCategoryId(int productCategoryId, int take, int lang, int excludedProductId);
+
+        Task<List<Product>> GetRandomProductsByCategoryIdAsync(int productCategoryId, int take, int lang, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

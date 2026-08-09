@@ -261,6 +261,69 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public async Task<ProductDetailViewModel> GetProductDetailViewModelByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var result = new ProductDetailViewModel();
+            var product = await ProductRepository.GetProductAsync(id, cancellationToken).ConfigureAwait(false);
+
+            if (product == null)
+            {
+                return null;
+            }
+            if (!product.IsActive)
+            {
+                result.Product = product;
+                return result;
+            }
+            result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
+            result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
+            result.WhatsAppCommunicationLink = await SettingService.GetSettingObjectByKeyAsync(Constants.WhatsAppCommunicationLink).ConfigureAwait(false);
+            result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            if (product.MainImageId.HasValue)
+            {
+                product.MainImageSrc = FilesHelper.GetImageSrcPath(product.MainImageId.Value);
+            }
+            else
+            {
+                product.MainImageSrc = new Tuple<string, string>("", "");
+            }
+            result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
+            product.ProductComments = EntityFilterHelper.FilterProductComments(product.ProductComments);
+            result.CargoDescription = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoDescription, product.Lang).ConfigureAwait(false);
+            result.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoPrice, product.Lang).ConfigureAwait(false);
+            List<Menu> menuList = await MenuService.GetActiveBaseContentsFromCacheAsync(true, product.Lang).ConfigureAwait(false);
+            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong, product.ImageFullPath(1000, 0));
+            result.Product = product;
+            EntityFilterHelper.FilterProduct(result.Product);
+            if (product.ProductCategory.TemplateId.HasValue)
+            {
+                // TODO async: TemplateService.GetTemplateAsync when available
+                result.Template = TemplateService.GetTemplate(product.ProductCategory.TemplateId.Value);
+            }
+            // TODO async: ProductCategoryService.GetBreadCrumbAsync when available
+            result.BreadCrumb = ProductCategoryService.GetBreadCrumb(product.ProductCategoryId, product.Lang);
+            result.RelatedStories = new List<Story>();
+            int relatedProductTake = 20;
+            result.RelatedProducts = new List<Product>();
+            if (product.ProductTags.Any())
+            {
+                var tagIdList = product.ProductTags.Select(t => t.TagId).ToArray();
+                result.RelatedProducts = await GetRelatedProductsAsync(tagIdList, relatedProductTake, product.Lang, id, cancellationToken).ConfigureAwait(false);
+            }
+
+            if (result.RelatedProducts.Count < 20)
+            {
+                relatedProductTake -= result.RelatedProducts.Count;
+                result.RelatedProducts.AddRange(await GetRandomProductsByCategoryIdAsync(product.ProductCategoryId, relatedProductTake, product.Lang, id, cancellationToken).ConfigureAwait(false));
+            }
+
+            result.RelatedProducts = result.RelatedProducts.Distinct().OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
+        }
+
         private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
@@ -270,6 +333,11 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        private async Task<List<Product>> GetRandomProductsByCategoryIdAsync(int productCategoryId, int relatedProductTake, int lang, int id, CancellationToken cancellationToken)
+        {
+            return await ProductRepository.GetRandomProductsByCategoryIdAsync(productCategoryId, relatedProductTake * 3, lang, id, cancellationToken).ConfigureAwait(false);
+        }
+
         private List<Product> GetRelatedProducts(int[] tagIdList, int relatedProductTake, int lang, int id)
         {
             List<Product> result = null;
@@ -277,6 +345,11 @@ namespace EImece.Domain.Services
             result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake * 3, lang, id);
 
             return result;
+        }
+
+        private async Task<List<Product>> GetRelatedProductsAsync(int[] tagIdList, int relatedProductTake, int lang, int id, CancellationToken cancellationToken)
+        {
+            return await ProductRepository.GetRelatedProductsAsync(tagIdList, relatedProductTake * 3, lang, id, cancellationToken).ConfigureAwait(false);
         }
 
         public virtual new void DeleteBaseEntity(List<string> values)
@@ -409,6 +482,15 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
+        public async Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var cacheKey = $"GetActiveProducts-{language}" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => ProductRepository.GetActiveProductsAsync(language, CancellationToken.None),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
+        }
+
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
         {
             var items = this.GetActiveProducts(rssParams.Language).Take(rssParams.Take).ToList();
@@ -439,6 +521,34 @@ namespace EImece.Domain.Services
             return formatter;
         }
 
+        public async Task<Rss20FeedFormatter> GetProductsRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var items = (await GetActiveProductsAsync(rssParams.Language, cancellationToken).ConfigureAwait(false)).Take(rssParams.Take).ToList();
+            var request = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, request.Url.Host);
+            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+
+            String title = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
+
+            var feed = new SyndicationFeed(title, "", new Uri(url))
+            {
+                Language = lang
+            };
+
+            var urlHelper = new UrlHelper(request.RequestContext);
+            String atomSelfHref = urlHelper.Action("products", "rss", new { rssParams.Take, rssParams.Language }, AppConfig.HttpProtocol);
+
+            feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
+            var formatter = new Rss20FeedFormatter(feed);
+            formatter.SerializeExtensionsAsAtom = false;
+            XNamespace atom = "http://www.w3.org/2005/Atom";
+            formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", atomSelfHref.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+
+            return formatter;
+        }
+
         public ProductsSearchResult GetProductsSearchResult(
          string search,
          string filters,
@@ -448,6 +558,18 @@ namespace EImece.Domain.Services
             int top = 10;
             int skip = 0;
             return ProductRepository.GetProductsSearchResult(search, filters, top, skip, language);
+        }
+
+        public async Task<ProductsSearchResult> GetProductsSearchResultAsync(
+         string search,
+         string filters,
+         string page,
+         int language,
+         CancellationToken cancellationToken = default(CancellationToken))
+        {
+            int top = 10;
+            int skip = 0;
+            return await ProductRepository.GetProductsSearchResultAsync(search, filters, top, skip, language, cancellationToken).ConfigureAwait(false);
         }
 
         public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request)
@@ -516,6 +638,11 @@ namespace EImece.Domain.Services
             return ProductRepository.GetProduct(id);
         }
 
+        public async Task<Product> GetProductByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetProductAsync(id, cancellationToken).ConfigureAwait(false);
+        }
+
         public List<Product> GetChildrenProducts(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories)
         {
             if (productCategory == null || ChildrenProductCategories.IsEmpty())
@@ -540,6 +667,29 @@ namespace EImece.Domain.Services
             return ProductRepository.GetChildrenProducts(allCategoriesId.ToArray());
         }
 
+        public async Task<List<Product>> GetChildrenProductsAsync(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (productCategory == null || ChildrenProductCategories.IsEmpty())
+            {
+                return new List<Product>();
+            }
+            var allCategoriesId = new List<int>();
+            int[] childrenCategoryId = ChildrenProductCategories.Select(r => r.Id).ToArray();
+            allCategoriesId.AddRange(childrenCategoryId);
+            var allActiveCategories = await ProductCategoryService.GetActiveBaseContentsFromCacheAsync(true, productCategory.Lang).ConfigureAwait(false);
+            foreach (var category in allActiveCategories)
+            {
+                foreach (var childrenId in childrenCategoryId)
+                {
+                    if (category.ParentId == childrenId)
+                    {
+                        allCategoriesId.Add(category.Id);
+                    }
+                }
+            }
+            return await ProductRepository.GetChildrenProductsAsync(allCategoriesId.ToArray(), cancellationToken).ConfigureAwait(false);
+        }
+
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
             var r = new SimiliarProductTagsViewModel();
@@ -549,12 +699,30 @@ namespace EImece.Domain.Services
             return r;
         }
 
+        public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var r = new SimiliarProductTagsViewModel();
+            r.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
+            r.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
+            r.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, 1, 10, lang, cancellationToken).ConfigureAwait(false);
+            return r;
+        }
+
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
         {
             var r = new SimiliarProductTagsViewModel();
             r.Tag = TagService.GetSingle(tagId);
             r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang, sorting);
             r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
+            return r;
+        }
+
+        public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var r = new SimiliarProductTagsViewModel();
+            r.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
+            r.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, sorting, cancellationToken).ConfigureAwait(false);
+            r.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, 1, 10, lang, cancellationToken).ConfigureAwait(false);
             return r;
         }
 

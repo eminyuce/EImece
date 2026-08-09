@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -56,6 +58,15 @@ namespace EImece.Domain.Repositories
             return this.Paginate(pageIndex, pageSize, r => r.Product.Position, r => r.TagId == tagId, includeProperties.ToArray());
         }
 
+        public async Task<PaginatedList<ProductTag>> GetProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.Product);
+            includeProperties.Add(r => r.Product.MainImage);
+            includeProperties.Add(r => r.Product.ProductCategory);
+            return await this.PaginateAsync(pageIndex, pageSize, r => r.Product.Position, r => r.TagId == tagId, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+        }
+
         public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -83,6 +94,36 @@ namespace EImece.Domain.Repositories
             {
                 Expression<Func<ProductTag, double>> keySelector = t => t.Product.Position;
                 return this.Paginate(pageIndex, pageSize, keySelector, r => r.TagId == tagId, includeProperties.ToArray());
+            }
+        }
+
+        public async Task<PaginatedList<ProductTag>> GetProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.Product);
+            includeProperties.Add(r => r.Product.MainImage);
+            includeProperties.Add(r => r.Product.ProductCategory);
+            Expression<Func<ProductTag, bool>> match = r2 => r2.Tag.IsActive && r2.Tag.Lang == lang && r2.TagId == tagId;
+
+            if (sorting == SortingType.LowHighPrice)
+            {
+                Expression<Func<ProductTag, decimal>> keySelector = t => t.Product.Price;
+                return await this.PaginateAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            else if (sorting == SortingType.HighLowPrice)
+            {
+                Expression<Func<ProductTag, decimal>> keySelector = t => t.Product.Price;
+                return await this.PaginateDescendingAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            else if (sorting == SortingType.Newest)
+            {
+                Expression<Func<ProductTag, DateTime>> keySelector = t => t.Product.UpdatedDate;
+                return await this.PaginateAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            else
+            {
+                Expression<Func<ProductTag, double>> keySelector = t => t.Product.Position;
+                return await this.PaginateAsync(pageIndex, pageSize, keySelector, r => r.TagId == tagId, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
             }
         }
     }

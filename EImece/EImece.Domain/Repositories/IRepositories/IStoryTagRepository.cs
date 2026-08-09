@@ -1,6 +1,8 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
 {
@@ -11,5 +13,7 @@ namespace EImece.Domain.Repositories.IRepositories
         void SaveStoryTags(int storyId, int[] tags);
 
         PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang);
+
+        Task<PaginatedList<StoryTag>> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

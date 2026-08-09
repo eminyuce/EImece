@@ -4,6 +4,8 @@ using EImece.Domain.GenericRepository;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -60,6 +62,22 @@ namespace EImece.Domain.Repositories
                 r => r.Story.Position,
                 r => r.TagId == tagId && r.Tag.Lang == lang && r.Story.IsActive,
                 includeProperties.ToArray());
+        }
+
+        public async Task<PaginatedList<StoryTag>> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.Tag);
+            includeProperties.Add(r => r.Story);
+            includeProperties.Add(r => r.Story.StoryCategory);
+            includeProperties.Add(r => r.Story.MainImage);
+            includeProperties.Add(r => r.Story.StoryFiles);
+            return await this.PaginateAsync(pageIndex,
+                pageSize,
+                r => r.Story.Position,
+                r => r.TagId == tagId && r.Tag.Lang == lang && r.Story.IsActive,
+                cancellationToken,
+                includeProperties.ToArray()).ConfigureAwait(false);
         }
     }
 }

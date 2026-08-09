@@ -240,6 +240,19 @@ namespace EImece.Domain.Repositories
             return item;
         }
 
+        public async Task<Product> GetProductAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductComments);
+            includeProperties.Add(r => r.Brand);
+            includeProperties.Add(r => r.ProductFiles.Select(q => q.FileStorage));
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.ProductTags.Select(q => q.Tag).Select(q1 => q1.TagCategory));
+            includeProperties.Add(r => r.ProductSpecifications);
+            return await GetSingleIncludingAsync(id, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+        }
+
         public PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -380,6 +393,21 @@ namespace EImece.Domain.Repositories
             return result2.Distinct().ToList();
         }
 
+        public async Task<List<Product>> GetRelatedProductsAsync(int[] tagIdList, int take, int lang, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang
+            && r2.ProductTags.Any(t => tagIdList.Contains(t.TagId))
+            && r2.Id != excludedProductId;
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result2 = await result.ToListAsync(cancellationToken).ConfigureAwait(false);
+            return result2.Distinct().ToList();
+        }
+
         public List<Product> GetRandomProductsByCategoryId(int productCategoryId, int take, int lang, int excludedProductId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -390,6 +418,19 @@ namespace EImece.Domain.Repositories
             Expression<Func<Product, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
             var result2 = result.ToList();
+            return result2.Distinct().ToList();
+        }
+
+        public async Task<List<Product>> GetRandomProductsByCategoryIdAsync(int productCategoryId, int take, int lang, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.ProductCategoryId == productCategoryId && r2.Id != excludedProductId;
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, take, 0, includeProperties.ToArray());
+            var result2 = await result.ToListAsync(cancellationToken).ConfigureAwait(false);
             return result2.Distinct().ToList();
         }
 
@@ -405,6 +446,20 @@ namespace EImece.Domain.Repositories
             var result = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
 
             return result.ToList();
+        }
+
+        public async Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.Brand);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+
+            return await result.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public static ItemType ProductsItem
@@ -431,9 +486,20 @@ namespace EImece.Domain.Repositories
         {
             var fltrs = FilterHelper.ParseFiltersFromString(filters);
 
-            var result = GetProductsSearchResult(search, fltrs, top, skip, language);
+            return GetProductsSearchResult(search, fltrs, top, skip, language);
+        }
 
-            return result;
+        public async Task<ProductsSearchResult> GetProductsSearchResultAsync(
+          string search,
+          string filters,
+          int top,
+          int skip,
+          int language,
+          CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var fltrs = FilterHelper.ParseFiltersFromString(filters);
+
+            return await GetProductsSearchResultAsync(search, fltrs, top, skip, language, cancellationToken).ConfigureAwait(false);
         }
 
         private ProductsSearchResult GetProductsSearchResult(
@@ -514,6 +580,78 @@ namespace EImece.Domain.Repositories
             return searchResult;
         }
 
+        private async Task<ProductsSearchResult> GetProductsSearchResultAsync(
+           string search,
+           List<Filter> filters,
+           int top,
+           int skip,
+           int language,
+           CancellationToken cancellationToken)
+        {
+            var searchResult = new ProductsSearchResult();
+
+            var dtFilters = new DataTable("med_tpt_Filter");
+
+            dtFilters.Columns.Add("FieldName");
+            dtFilters.Columns.Add("ValueFirst");
+            dtFilters.Columns.Add("ValueLast");
+
+            if (filters != null && filters.Any())
+            {
+                foreach (var filter in filters)
+                {
+                    DataRow dr = dtFilters.NewRow();
+                    dr["FieldName"] = filter.FieldName;
+                    dr["ValueFirst"] = filter.ValueFirst;
+                    dr["ValueLast"] = filter.ValueLast;
+                    dtFilters.Rows.Add(dr);
+                }
+            }
+            var db = this.EImeceDbContext;
+            var connection = db.Database.Connection;
+            try
+            {
+                await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
+
+                SqlCommand cmd = (SqlCommand)connection.CreateCommand();
+                cmd.CommandText = @"test_SearchProducts";
+                cmd.CommandType = CommandType.StoredProcedure;
+                var parameterList = new List<SqlParameter>();
+                parameterList.Add(DatabaseUtility.GetSqlParameter("search", search.ToStr(), SqlDbType.NVarChar));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("filter", dtFilters, SqlDbType.Structured));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("top", top, SqlDbType.Int));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("skip", skip, SqlDbType.Int));
+                parameterList.Add(DatabaseUtility.GetSqlParameter("language", language, SqlDbType.Int));
+
+                cmd.Parameters.AddRange(parameterList.ToArray());
+                var reader = await cmd.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
+
+                var products = ((IObjectContextAdapter)db)
+                    .ObjectContext
+                    .Translate<Product>(reader, "Products", MergeOption.AppendOnly);
+
+                searchResult.Products = products.ToList();
+
+                reader.NextResult();
+                var productCategories = ((IObjectContextAdapter)db)
+                    .ObjectContext
+                    .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);
+
+                searchResult.ProductCategories = productCategories.ToList();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            searchResult.PageSize = top;
+            return searchResult;
+        }
+
         public List<Product> GetChildrenProducts(int[] childrenCategoryId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -524,6 +662,19 @@ namespace EImece.Domain.Repositories
             Expression<Func<Product, int>> keySelector = t => t.Position;
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, 99999, 0, includeProperties.ToArray());
             var result2 = result.ToList();
+            return result2.Distinct().ToList();
+        }
+
+        public async Task<List<Product>> GetChildrenProductsAsync(int[] childrenCategoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            Expression<Func<Product, bool>> match = r2 => childrenCategoryId.Contains(r2.ProductCategoryId) && r2.IsActive;
+            Expression<Func<Product, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, 99999, 0, includeProperties.ToArray());
+            var result2 = await result.ToListAsync(cancellationToken).ConfigureAwait(false);
             return result2.Distinct().ToList();
         }
     }
