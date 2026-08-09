@@ -2,56 +2,58 @@
 @model LoginViewModel
 @using Resources;
 @{
-    ViewBag.Title = "Log in";
+    var companyName = Html.Action("GetCompanyName", "Home");
+    ViewBag.Title = Resource.CustomerLoginPage + " | " + companyName;
 }
 
-<!-- Page Content-->
 <div class="container pb-5 mb-sm-4">
-    <div class="row pt-5">
-        <div class="col-md-3 pt-sm-3">
-        </div>
-        <div class="col-md-6 pt-sm-3">
+    <div class="row pt-5 justify-content-center">
+        <div class="col-md-7 col-lg-6 pt-sm-3">
             <div class="card">
-                <div class="card-body text-center">
-                    <h2 class="h4 mb-1">@Resource.CustomerLoginPage</h2>
-                    <hr />
-                    <div class="d-sm-flex align-items-center py-3">
-                        @Html.ActionLink(Resource.CustomerRegister, "Register", "Account", null, new { @class = "btn btn-pill btn-sm btn-outline-info mb-2 mr-1" })
-                    </div>
-                    <hr>
+                <div class="card-body">
+                    <p class="text-uppercase text-muted small mb-2 font-weight-bold">@companyName</p>
+                    <h1 class="h3 mb-2">@Resource.CustomerLoginPage</h1>
+                    <p class="text-muted mb-4">@Resource.CustomerLoginInfoText</p>
 
                     @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
                     {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "alert alert-secondary  text-danger" })
-
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "alert alert-default text-danger" })
-                    <div class="input-group form-group">
-                        <div class="input-group-prepend"><span class="input-group-text" id="signin-email-icon"><i data-feather="mail"></i></span></div>
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @Resource.Email, @aria_label = "Email", @aria_describedby = "signin-email-icon" })
-                    </div>
-
-                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "alert alert-default text-danger" })
-                    <div class="input-group form-group">
-                        <div class="input-group-prepend"><span class="input-group-text" id="signin-password-icon"><i data-feather="lock"></i></span></div>
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @Resource.Password, @aria_label = "Password", @aria_describedby = "signin-password-icon" })
-                    </div>
-
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div class="custom-control custom-checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })     @Html.LabelFor(model => model.RememberMe, new { @class = "custom-control-label" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email)
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text" id="signin-email-icon"><i data-feather="mail"></i></span></div>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = Resource.Email, aria_describedby = "signin-email-icon", autofocus = "autofocus" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
                         </div>
-                        @Html.ActionLink(@Resource.LostYourPassword, "ForgotPassword", null, new { @class = "btn btn-pill btn-sm btn-outline-secondary mb-2 mr-1" })
-                    </div>
 
-                    @Html.CaptchaWidget("CustomerLogin", "alert alert-default text-danger")
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password)
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text" id="signin-password-icon"><i data-feather="lock"></i></span></div>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = Resource.Password, aria_describedby = "signin-password-icon" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small" })
+                        </div>
 
-                    <hr class="mt-4">
-                    <div class="text-right pt-4">
-                        <input type="submit" value="@Resource.Login" class="btn btn-block btn-outline-success" />
-                    </div>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                            <div class="custom-control custom-checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input", id = "RememberMe" })
+                                @Html.LabelFor(model => model.RememberMe, new { @class = "custom-control-label", @for = "RememberMe" })
+                            </div>
+                            @Html.ActionLink(Resource.LostYourPassword, "ForgotPassword", "Account", null, new { @class = "small" })
+                        </div>
+
+                        @Html.CaptchaWidget("CustomerLogin", "text-danger small")
+
+                        <button type="submit" class="btn btn-success btn-block btn-lg mt-3">@Resource.Login</button>
                     }
+
+                    <hr class="my-4" />
+                    <p class="mb-2 font-weight-bold">@Resource.NewCustomerPrompt</p>
+                    @Html.ActionLink(Resource.CreateCustomerAccount, "Register", "Account", null, new { @class = "btn btn-outline-secondary btn-block" })
                 </div>
             </div>
         </div>

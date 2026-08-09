@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Models.Enums;
 @model Story
 @using Resources;
@@ -23,7 +23,7 @@
     <li>Bu sayfada <strong>blog / hikâye</strong> yazısı oluşturur veya düzenlersiniz.</li>
     <li><strong>Kategori</strong>: Yazının ait olduğu hikâye kategorisi.</li>
     <li><strong>Öne çıkan</strong>: Blog listesinde vurgulanır. <strong>Ana sayfa</strong>: Ana sayfada gösterilir. İkisi farklı yerlerdir.</li>
-    <li><strong>Kısa açıklama</strong>: Liste ve özetlerde görünen metin; uzun içerik açıklama sekmesindedir.</li>
+    <li><strong>Kısa açıklama</strong>: Liste ve özetlerde görünen metin; uzun içerik alttaki genel açıklama editöründedir.</li>
     <li><strong>Yazar</strong>: Yazıyı yazan kişinin adı.</li>
 </ul>
 @Html.Partial("_AdminHelpAccordionEnd")
@@ -42,25 +42,12 @@
 
     @Html.HiddenFor(model => model.Lang)
 
-    <div class="panel with-nav-tabs panel-default">
-        <div class="panel-heading">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
-                <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
-                <li class="Tools">
-                    <input type="submit" name="saveButton" value="@saveButtonText" style="width:110px;" class="btn btn-sm btn-success" />
-                </li>
-                <li class="Tools">
-                    <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
-                </li>
-                <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
-            </ul>
-        </div>
-        <div class="panel-body">
-            <div class="tab-content">
-                <div id="tab1default" class="tab-pane fade in active">
-
-                    <div class="form-group">
+    <div class="panel panel-default admin-edit-form">
+                @Html.Partial("_AdminEditFormToolbar")
+                <div class="panel-body">
+                    <section id="admin-edit-section-fields" class="admin-edit-section">
+                        @Html.Partial("_AdminEditFieldsHeading")
+<div class="form-group">
                         @Html.LabelFor(model => model.StoryCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
 
@@ -158,17 +145,20 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="tab-pane fade" id="tab2default">
-                    <div class="form-group">
+                        </section>
+                        <section id="admin-edit-section-content" class="admin-edit-section admin-edit-section-content">
+                        @Html.Partial("_AdminEditContentHeading")
+<div class="form-group">
                         <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control eimece-rich-text-editor" })
                         </div>
+                    
+
+                    </div>
+                        </section>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 </div>
 
 }

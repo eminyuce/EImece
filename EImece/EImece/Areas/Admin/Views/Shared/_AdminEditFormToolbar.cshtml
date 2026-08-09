@@ -1,0 +1,25 @@
+@using Resources
+@{
+    var saveButtonText = ViewBag.SaveButtonText as string ?? AdminResource.SaveButtonText;
+    var saveButtonAndCloseText = ViewBag.SaveButtonAndCloseText as string ?? AdminResource.SaveButtonAndCloseText;
+    var backUrl = ViewBag.BackUrl as string ?? Url.Action("Index");
+    var contentSectionTitle = ViewBag.ContentSectionTitle as string ?? AdminResource.EntityDescriptionPage;
+}
+<div class="panel-heading admin-edit-toolbar-heading">
+    <nav class="admin-edit-section-nav" aria-label="Form sections">
+        <a href="#admin-edit-section-fields" class="admin-edit-section-link">
+            <span class="admin-edit-section-step">1</span>
+            <span class="admin-edit-section-link-text">@AdminResource.EntityShortFields</span>
+        </a>
+        <a href="#admin-edit-section-content" class="admin-edit-section-link">
+            <span class="admin-edit-section-step">2</span>
+            <span class="admin-edit-section-link-text">@contentSectionTitle</span>
+            <span class="admin-edit-section-badge">editör</span>
+        </a>
+    </nav>
+    <div class="admin-edit-toolbar-actions">
+        <input type="submit" name="saveButton" value="@saveButtonText" class="btn btn-sm btn-success" />
+        <input type="submit" name="saveButton" value="@saveButtonAndCloseText" class="btn btn-sm btn-success" />
+        <input type="button" onclick="parent.location='@backUrl'" value="@AdminResource.BackToList" class="btn btn-sm btn-primary" />
+    </div>
+</div>

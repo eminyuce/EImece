@@ -296,7 +296,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             razorEngineModel["BaseUrl"] = baseurl;
             razorEngineModel["WebSiteIconUrl"] = string.Format("{0}/images/logo.jpg", baseurl);
 
-            // CKEditor sometimes stores HTML-encoded Razor; decode once before compiling.
+            // Rich-text editors may store HTML-encoded Razor; decode once before compiling.
             string templateBody = System.Net.WebUtility.HtmlDecode(rssTemplate.Body) ?? rssTemplate.Body;
 
             // Şablonu işle

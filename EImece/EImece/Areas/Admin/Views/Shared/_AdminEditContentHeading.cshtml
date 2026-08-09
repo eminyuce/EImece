@@ -1,0 +1,14 @@
+@using Resources
+@{
+    var contentSectionTitle = ViewBag.ContentSectionTitle as string ?? AdminResource.EntityDescriptionPage;
+}
+<div class="admin-edit-section-heading">
+    <span class="admin-edit-section-step" aria-hidden="true">2</span>
+    <div class="admin-edit-section-heading-text">
+        <h3 class="admin-edit-section-title">
+            @contentSectionTitle
+            <span class="admin-edit-section-badge">editör</span>
+        </h3>
+        <p class="admin-edit-section-help">Sayfa içeriğini buradan yazın. Kaydetmek için üstteki kaydet butonlarını kullanın.</p>
+    </div>
+</div>

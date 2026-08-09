@@ -55,6 +55,7 @@ namespace EImece
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
+                  "~/Scripts/rich-text-editor.js",
                   "~/Scripts/adminEimece.js",
                   "~/Scripts/gridmvc.js"));
 

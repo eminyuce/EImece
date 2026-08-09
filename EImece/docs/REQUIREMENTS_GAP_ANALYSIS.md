@@ -32,7 +32,7 @@ Bu rapor, her madde için mevcut durumu, boşluğu ve önerilen önceliği özet
 | Veri | Entity Framework 6 + SQL Server |
 | Ödeme | Iyzico |
 | Admin | Areas/Admin paneli |
-| İçerik editörü | CKEditor 4 |
+| İçerik editörü | TinyMCE |
 | Ön yüz | Bootstrap tabanlı responsive tema |
 | E-posta | SMTP + Razor şablonları |
 | Analitik | Google Analytics / GTM (yapıştırılabilir script) |
@@ -106,7 +106,7 @@ Bu rapor, her madde için mevcut durumu, boşluğu ve önerilen önceliği özet
 | Font ve renk değiştirme | **Eksik** | Tema CSS sabit |
 | Sınırsız kategori / alt kategori | **Mevcut** | ParentId ağacı |
 | SKU değiştirmeden kategori değiştirme | **Mevcut** | ProductCode ve kategori bağımsız |
-| Editörde renk seçeneği | **Mevcut** | CKEditor |
+| Editörde renk seçeneği | **Mevcut** | TinyMCE |
 | Ücretsiz kargo limiti değiştirilebilir | **Mevcut** | BasketMinTotalPriceForCargo |
 | Müşteri kargo şirketi seçebilsin | **Eksik** | Tek sabit kargo ayarı |
 

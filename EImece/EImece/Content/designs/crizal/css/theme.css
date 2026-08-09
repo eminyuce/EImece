@@ -257,6 +257,219 @@ body[data-design="crizal"] .crizal-auth-card .form-control {
     min-height: 2.75rem;
 }
 
+/* ---------- Customer login (storefront account) ---------- */
+body[data-design="crizal"] .crizal-customer-login {
+    position: relative;
+    padding: 3.5rem 0 4.5rem;
+    background:
+        radial-gradient(ellipse 80% 60% at 12% 18%, rgba(9, 184, 80, 0.14), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 88% 82%, rgba(20, 33, 43, 0.08), transparent 50%),
+        linear-gradient(180deg, #eef6f1 0%, #f7f8fb 45%, #ffffff 100%);
+}
+
+body[data-design="crizal"] .crizal-customer-login__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 0;
+    overflow: hidden;
+    border-radius: var(--crizal-radius-xl);
+    box-shadow: var(--crizal-shadow-lg);
+    background: var(--crizal-surface);
+    border: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-customer-login__intro {
+    padding: 2.75rem 2.5rem;
+    background:
+        linear-gradient(155deg, rgba(20, 33, 43, 0.96) 0%, rgba(20, 33, 43, 0.88) 55%, rgba(9, 184, 80, 0.85) 100%),
+        var(--crizal-secondary);
+    color: #fff;
+}
+
+body[data-design="crizal"] .crizal-customer-login__eyebrow {
+    margin: 0 0 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+body[data-design="crizal"] .crizal-customer-login__title {
+    margin: 0 0 1rem;
+    font-size: clamp(1.75rem, 2.4vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+}
+
+body[data-design="crizal"] .crizal-customer-login__lead {
+    margin: 0 0 1.75rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 28rem;
+}
+
+body[data-design="crizal"] .crizal-customer-login__benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+}
+
+body[data-design="crizal"] .crizal-customer-login__benefits li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+body[data-design="crizal"] .crizal-customer-login__benefits i {
+    margin-top: 0.15rem;
+    color: #7dffb0;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .crizal-customer-login__form-wrap {
+    padding: 2.5rem 2.25rem 2.25rem;
+    background: #fff;
+}
+
+body[data-design="crizal"] .crizal-customer-login__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(9, 184, 80, 0.1);
+    color: var(--crizal-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-customer-login__form-title {
+    margin: 0 0 0.35rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-customer-login__form-help {
+    margin: 0 0 1.35rem;
+    font-size: 0.9rem;
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] .crizal-customer-login__label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-customer-login__form .form-control {
+    min-height: 2.9rem;
+    border-color: var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-customer-login__form .form-control:focus {
+    border-color: var(--crizal-primary);
+    box-shadow: 0 0 0 0.15rem rgba(9, 184, 80, 0.18);
+}
+
+body[data-design="crizal"] .crizal-customer-login__form .input-group-text {
+    background: #f4f7f5;
+    border-color: var(--crizal-border);
+    color: var(--crizal-secondary);
+    min-width: 2.9rem;
+    justify-content: center;
+}
+
+body[data-design="crizal"] .crizal-customer-login__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    margin: 0.25rem 0 1.1rem;
+}
+
+body[data-design="crizal"] .crizal-customer-login__forgot {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--crizal-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+body[data-design="crizal"] .crizal-customer-login__forgot:hover {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-customer-login__submit {
+    width: 100%;
+    margin-top: 0.35rem;
+}
+
+body[data-design="crizal"] .crizal-customer-login__register {
+    margin-top: 1.75rem;
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--crizal-border);
+    text-align: center;
+}
+
+body[data-design="crizal"] .crizal-customer-login__register-prompt {
+    margin: 0 0 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .crizal-customer-login__register-btn {
+    width: 100%;
+}
+
+body[data-design="crizal"] .butn-style8.outline,
+body[data-design="crizal"] a.butn-style8.outline {
+    background: transparent !important;
+    color: var(--crizal-secondary) !important;
+    border-color: var(--crizal-secondary) !important;
+}
+
+body[data-design="crizal"] .butn-style8.outline:hover,
+body[data-design="crizal"] a.butn-style8.outline:hover {
+    background: var(--crizal-secondary) !important;
+    color: #fff !important;
+    border-color: var(--crizal-secondary) !important;
+}
+
+@media (max-width: 991.98px) {
+    body[data-design="crizal"] .crizal-customer-login {
+        padding: 2rem 0 3rem;
+    }
+
+    body[data-design="crizal"] .crizal-customer-login__panel {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-customer-login__intro,
+    body[data-design="crizal"] .crizal-customer-login__form-wrap {
+        padding: 1.75rem 1.35rem;
+    }
+
+    body[data-design="crizal"] .crizal-customer-login__benefits li:last-child {
+        display: none;
+    }
+}
+
 /* WOW.js can leave .wow at visibility:hidden if init/scroll fails — never hide content */
 body[data-design="crizal"] .wow {
     visibility: visible !important;

@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Entities.Product
+@model EImece.Domain.Entities.Product
 @using EImece.Domain.Entities;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain;
@@ -65,25 +65,12 @@
                 @Html.HiddenFor(model => model.UpdatedDate)
                 @Html.HiddenFor(model => model.Lang)
 
-                <div class="panel with-nav-tabs panel-default">
-                    <div class="panel-heading">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.EntityShortFields</a></li>
-                            <li><a href="#tab2default" data-toggle="tab">@AdminResource.EntityDescriptionPage</a></li>
-                            <li class="Tools">
-                                <input type="submit" name="saveButton" value="@saveButtonText" style="width:110px;" class="btn btn-sm btn-success" />
-                            </li>
-                            <li class="Tools">
-                                <input type="submit" name="saveButton" value="@saveButtonAndCloseText" style="width:110px;" class="btn btn-sm btn-success" />
-                            </li>
-                            <li class="Tools"> <input type="button" onClick="parent.location='@Url.Action("Index")'" value="@AdminResource.BackToList" style="width:110px;" class="btn btn-sm btn-primary" /></li>
-                        </ul>
-                    </div>
-                    <div class="panel-body">
-                        <div class="tab-content">
-                            <div id="tab1default" class="tab-pane fade in active">
-
-                                <div class="form-group">
+                <div class="panel panel-default admin-edit-form">
+                @Html.Partial("_AdminEditFormToolbar")
+                <div class="panel-body">
+                    <section id="admin-edit-section-fields" class="admin-edit-section">
+                        @Html.Partial("_AdminEditFieldsHeading")
+<div class="form-group">
                                     @Html.LabelFor(model => model.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @if (productCategory != null && productCategory.Id > 0)
@@ -266,17 +253,19 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="tab2default">
-                                <div class="form-group">
+                        </section>
+                        <section id="admin-edit-section-content" class="admin-edit-section admin-edit-section-content">
+                        @Html.Partial("_AdminEditContentHeading")
+<div class="form-group">
                                     <div class="col-md-12">
-                                        @Html.TextAreaFor(model => model.Description, new { @data_ckeditor_field = "product", @class = "form-control" })
+                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control eimece-rich-text-editor" })
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                
+                    </div>
+                        </section>
                     </div>
                 </div>
+            </div>
             </div>
         }
         <div class="row">

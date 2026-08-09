@@ -763,7 +763,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giriş Yap Veya Üye Ol.
+        ///   Looks up a localized string similar to Müşteri Girişi.
         /// </summary>
         public static string CustomerLoginPage {
             get {
