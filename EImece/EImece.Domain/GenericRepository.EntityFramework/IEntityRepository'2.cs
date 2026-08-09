@@ -24,6 +24,10 @@ namespace EImece.Domain.GenericRepository.EntityFramework
 
         TEntity GetSingleIncluding(TId id, Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
 
+        Task<TEntity> GetSingleIncludingAsync(TId id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties);
+
+        Task<TEntity> GetSingleIncludingAsync(TId id, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties);
+
         PaginatedList<TEntity> Paginate<TKey>(
             int pageIndex, int pageSize, Expression<Func<TEntity, TKey>> keySelector);
 

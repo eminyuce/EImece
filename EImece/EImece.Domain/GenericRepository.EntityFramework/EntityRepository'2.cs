@@ -150,6 +150,27 @@ namespace EImece.Domain.GenericRepository.EntityFramework
             return entity;
         }
 
+        public async Task<TEntity> GetSingleIncludingAsync(TId id, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.Where(predicate).FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<TEntity> GetSingleIncludingAsync(TId id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> entities = GetAllIncluding(includeProperties);
+            return await Filter<TId>(entities, x => x.Id, id).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public void Add(TEntity entity)
         {
             _dbContext.SetAsAdded(entity);
