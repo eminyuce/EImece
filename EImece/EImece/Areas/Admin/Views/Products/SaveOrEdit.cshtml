@@ -255,17 +255,15 @@
                                 </div>
                         </section>
                         <section id="admin-edit-section-content" class="admin-edit-section admin-edit-section-content">
-                        @Html.Partial("_AdminEditContentHeading")
-<div class="form-group">
-                                    <div class="col-md-12">
-                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control eimece-rich-text-editor" })
-                                    </div>
-                                
-                    </div>
+                            @Html.Partial("_AdminEditContentHeading")
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control eimece-rich-text-editor" })
+                                </div>
+                            </div>
                         </section>
                     </div>
                 </div>
-            </div>
             </div>
         }
         <div class="row">
