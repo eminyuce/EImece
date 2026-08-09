@@ -268,13 +268,9 @@
             </div>
         </div>
         }
+        @Html.Partial("_AdminEditBackToList")
         <div class="row">
-            <div class="col-md-6">
-            </div>
-            <div class="col-md-2">
-                @Html.ActionLink(AdminResource.BackToList, "Index")
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-12">
                 @GridToolsDeleteColumn(Model, controllerName)
             </div>
         </div>

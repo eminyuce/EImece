@@ -1317,6 +1317,7 @@
     <Content Include="Content\designs\**\*.*" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminEditBackToFields.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminEditBackToList.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminEditContentHeading.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminEditFieldsHeading.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminEditFormToolbar.cshtml" />

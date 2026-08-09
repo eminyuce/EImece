@@ -1501,6 +1501,52 @@ label[for^="ImageState"]:not(.control-label) {
     max-width: 640px;
 }
 
+.admin-edit-back-to-list {
+    margin: 18px 0 8px;
+}
+
+.admin-edit-back-to-list-btn,
+.admin-edit-toolbar-actions .admin-edit-back-to-list-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 1px solid #c5CCD6 !important;
+    border-radius: 6px;
+    background: #eef1f5 !important;
+    color: #334155 !important;
+    font-weight: 600;
+    text-decoration: none !important;
+    box-shadow: none;
+}
+
+.admin-edit-back-to-list .admin-edit-back-to-list-btn {
+    width: 100%;
+}
+
+.admin-edit-back-to-list-btn:hover,
+.admin-edit-back-to-list-btn:focus,
+.admin-edit-toolbar-actions .admin-edit-back-to-list-btn:hover,
+.admin-edit-toolbar-actions .admin-edit-back-to-list-btn:focus {
+    background: #e2e7ee !important;
+    border-color: #aeb6c2 !important;
+    color: #1e293b !important;
+}
+
+.admin-edit-back-to-list-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.admin-edit-toolbar-actions .admin-edit-back-to-list-btn {
+    min-width: 130px;
+    min-height: 30px;
+    padding: 5px 12px;
+    font-size: 12px;
+}
+
 #admin-edit-tab-content .form-group {
     margin-bottom: 0;
 }

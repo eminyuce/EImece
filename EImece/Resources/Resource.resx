@@ -668,7 +668,7 @@
     <value>Yazarın İsmi</value>
   </data>
   <data name="BackToList" xml:space="preserve">
-    <value>Geriye Dönün</value>
+    <value>Listeye Dön</value>
   </data>
   <data name="BasketMinTotalPrice" xml:space="preserve">
     <value>Sepet Minimum Toplam Fiyat</value>

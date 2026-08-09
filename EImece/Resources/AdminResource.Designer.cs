@@ -322,7 +322,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Geriye Dönün.
+        ///   Looks up a localized string similar to Listeye Dön.
         /// </summary>
         public static string BackToList {
             get {

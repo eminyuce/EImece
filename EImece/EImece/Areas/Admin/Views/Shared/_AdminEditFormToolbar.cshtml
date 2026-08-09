@@ -33,6 +33,9 @@
     <div class="admin-edit-toolbar-actions">
         <input type="submit" name="saveButton" value="@saveButtonText" class="btn btn-sm btn-success" />
         <input type="submit" name="saveButton" value="@saveButtonAndCloseText" class="btn btn-sm btn-success" />
-        <input type="button" onclick="parent.location='@backUrl'" value="@AdminResource.BackToList" class="btn btn-sm btn-primary" />
+        <button type="button" onclick="parent.location='@backUrl'" class="btn btn-sm admin-edit-back-to-list-btn" title="@AdminResource.BackToList">
+            <span class="admin-edit-back-to-list-icon" aria-hidden="true">←</span>
+            <span>@AdminResource.BackToList</span>
+        </button>
     </div>
 </div>
