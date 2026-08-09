@@ -2,58 +2,89 @@
 @model LoginViewModel
 @using Resources;
 @{
-    ViewBag.Title = "Log in";
+    var companyName = Html.Action("GetCompanyName", "Home");
+    ViewBag.Title = Resource.CustomerLoginPage + " | " + companyName;
 }
 
-<div class="container pb-5 mb-sm-4">
-    <div class="row pt-5 justify-content-center">
-        <div class="col-md-6 pt-sm-3">
-            <div class="card crizal-auth-card">
-                <div class="card-body text-center">
-                    <h2 class="h4 mb-1">@Resource.CustomerLoginPage</h2>
-                    <p class="text-muted mb-3">@Resource.SignInOrUp</p>
-                    <div class="d-sm-flex align-items-center justify-content-center py-2">
-                        @Html.ActionLink(Resource.CustomerRegister, "Register", "Account", null, new { @class = "butn-style8 small secondary" })
-                    </div>
-                    <hr>
+<section class="crizal-customer-login" aria-labelledby="customer-login-title">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+                <div class="crizal-customer-login__panel">
+                    <aside class="crizal-customer-login__intro" aria-hidden="false">
+                        <p class="crizal-customer-login__eyebrow">@companyName</p>
+                        <h1 id="customer-login-title" class="crizal-customer-login__title">@Resource.CustomerLoginPage</h1>
+                        <p class="crizal-customer-login__lead">@Resource.CustomerLoginInfoText</p>
+                        <ul class="crizal-customer-login__benefits">
+                            <li><i class="fas fa-receipt" aria-hidden="true"></i><span>@Resource.MyOrder</span></li>
+                            <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>@Resource.ShippingAddress</span></li>
+                            <li><i class="fas fa-user-cog" aria-hidden="true"></i><span>@Resource.ManagingMyAccount</span></li>
+                        </ul>
+                    </aside>
 
-                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login text-left", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true, "", new { @class = "alert alert-secondary text-danger" })
-
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "alert alert-default text-danger" })
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text" id="signin-email-icon"><i data-feather="mail"></i></span></div>
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @Resource.Email, @aria_label = "Email", @aria_describedby = "signin-email-icon" })
+                    <div class="crizal-customer-login__form-wrap">
+                        <div class="crizal-customer-login__badge">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            <span>@Resource.CustomerAccount</span>
                         </div>
+                        <h2 class="crizal-customer-login__form-title">@Resource.Login</h2>
+                        <p class="crizal-customer-login__form-help">@Resource.Email &amp; @Resource.Password</p>
 
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "alert alert-default text-danger" })
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend"><span class="input-group-text" id="signin-password-icon"><i data-feather="lock"></i></span></div>
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @Resource.Password, @aria_label = "Password", @aria_describedby = "signin-password-icon" })
-                        </div>
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "crizal-customer-login__form", role = "form", autocomplete = "on" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger crizal-customer-login__errors" })
 
-                        <div class="d-flex flex-wrap justify-content-between">
-                            <div class="custom-control custom-checkbox">
-                                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })
-                                @Html.LabelFor(model => model.RememberMe, new { @class = "custom-control-label" })
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email, new { @class = "crizal-customer-login__label" })
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="signin-email-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = Resource.Email, autocomplete = "username", aria_describedby = "signin-email-icon", autofocus = "autofocus" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small d-block mt-1" })
                             </div>
-                            @Html.ActionLink(@Resource.LostYourPassword, "ForgotPassword", null, new { @class = "btn btn-sm btn-link" })
-                        </div>
 
-                        @Html.CaptchaWidget("CustomerLogin", "alert alert-default text-danger")
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password, new { @class = "crizal-customer-login__label" })
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="signin-password-icon"><i class="fas fa-lock" aria-hidden="true"></i></span>
+                                    </div>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = Resource.Password, autocomplete = "current-password", aria_describedby = "signin-password-icon" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small d-block mt-1" })
+                            </div>
 
-                        <hr class="mt-4">
-                        <div class="text-right pt-2">
-                            <input type="submit" value="@Resource.Login" class="butn-style8 btn-block" />
+                            <div class="crizal-customer-login__meta">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input", id = "RememberMe" })
+                                    @Html.LabelFor(model => model.RememberMe, new { @class = "custom-control-label", @for = "RememberMe" })
+                                </div>
+                                @Html.ActionLink(Resource.LostYourPassword, "ForgotPassword", "Account", null, new { @class = "crizal-customer-login__forgot" })
+                            </div>
+
+                            <div class="form-group crizal-customer-login__captcha">
+                                @Html.CaptchaWidget("CustomerLogin", "text-danger small d-block mt-1")
+                            </div>
+
+                            <button type="submit" class="butn-style8 crizal-customer-login__submit">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                                <span>@Resource.Login</span>
+                            </button>
+                        }
+
+                        <div class="crizal-customer-login__register">
+                            <p class="crizal-customer-login__register-prompt">@Resource.NewCustomerPrompt</p>
+                            @Html.ActionLink(Resource.CreateCustomerAccount, "Register", "Account", null, new { @class = "butn-style8 outline crizal-customer-login__register-btn" })
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

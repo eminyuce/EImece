@@ -1,6 +1,7 @@
 using EImece.Domain;
 using EImece.Domain.Observability.HealthChecks;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;

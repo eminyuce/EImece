@@ -1096,7 +1096,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Giriş Yap Veya Üye Ol.
+        ///   Looks up a localized string similar to Yeni müşteri hesabı oluştur.
+        /// </summary>
+        public static string CreateCustomerAccount {
+            get {
+                return ResourceManager.GetString("CreateCustomerAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siparişlerinizi takip etmek, adreslerinizi yönetmek ve alışverişe devam etmek için müşteri hesabınıza giriş yapın..
+        /// </summary>
+        public static string CustomerLoginInfoText {
+            get {
+                return ResourceManager.GetString("CustomerLoginInfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteri Girişi.
         /// </summary>
         public static string CustomerLoginPage {
             get {
@@ -2762,6 +2780,15 @@ namespace Resources {
         public static string NameShort {
             get {
                 return ResourceManager.GetString("NameShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Henüz müşteri hesabınız yok mu?.
+        /// </summary>
+        public static string NewCustomerPrompt {
+            get {
+                return ResourceManager.GetString("NewCustomerPrompt", resourceCulture);
             }
         }
         

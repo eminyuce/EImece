@@ -871,7 +871,7 @@
     <value>Giriş denemesi başarısız oldu. </value>
   </data>
   <data name="CustomerLoginPage" xml:space="preserve">
-    <value>Giriş Yap Veya Üye Ol</value>
+    <value>Müşteri Girişi</value>
   </data>
   <data name="Brands" xml:space="preserve">
     <value>Markalar</value>

@@ -773,7 +773,16 @@
     <value>Müşteri Detayı</value>
   </data>
   <data name="CustomerLoginPage" xml:space="preserve">
-    <value>Giriş Yap Veya Üye Ol</value>
+    <value>Müşteri Girişi</value>
+  </data>
+  <data name="CustomerLoginInfoText" xml:space="preserve">
+    <value>Siparişlerinizi takip etmek, adreslerinizi yönetmek ve alışverişe devam etmek için müşteri hesabınıza giriş yapın.</value>
+  </data>
+  <data name="NewCustomerPrompt" xml:space="preserve">
+    <value>Henüz müşteri hesabınız yok mu?</value>
+  </data>
+  <data name="CreateCustomerAccount" xml:space="preserve">
+    <value>Yeni müşteri hesabı oluştur</value>
   </data>
   <data name="CustomerOpenAddress" xml:space="preserve">
     <value>Kargo firmasına notunuz: Örneğin, site adı veya blok adı belirterek kargo firmasına yardımcı olabilirsiniz.</value>
