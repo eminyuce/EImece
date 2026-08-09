@@ -1,7 +1,9 @@
-﻿using EImece.Domain.Helpers;
-﻿using EImece.Domain.Observability.Logging;
+﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
+using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 
 namespace EImece.Domain.DbContext
 {
@@ -12,6 +14,8 @@ namespace EImece.Domain.DbContext
         {
             EfSqlLogger.Attach(this);
         }
+
+        public DbSet<TwoFactorToken> TwoFactorTokens { get; set; }
 
         public static ApplicationDbContext Create()
         {

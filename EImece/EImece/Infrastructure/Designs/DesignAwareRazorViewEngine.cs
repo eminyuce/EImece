@@ -275,8 +275,13 @@ namespace EImece.Infrastructure.Designs
         /// </summary>
         private static bool IsDesignExcludedView(string controllerName, string viewName)
         {
-            return string.Equals(controllerName, "Account", StringComparison.OrdinalIgnoreCase)
-                && string.Equals(viewName, "AdminLogin", StringComparison.OrdinalIgnoreCase);
+            if (!string.Equals(controllerName, "Account", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            return string.Equals(viewName, "AdminLogin", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(viewName, "VerifyAuthenticator", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

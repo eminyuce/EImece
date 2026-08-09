@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Services;
+﻿using EImece.Domain.Helpers;
+using EImece.Domain.Services;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -39,11 +40,13 @@ namespace EImece.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var user = await UserManager.FindByIdAsync(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
+                AuthenticatorEnabled = user != null && user.TwoFactorAuthenticatorEnabled,
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
@@ -51,6 +54,99 @@ namespace EImece.Controllers
             Logger.Info("Returning view with model: {@Model}", model);
 
             return View(model);
+        }
+
+        // GET: /Manage/EnableAuthenticator
+        public async Task<ActionResult> EnableAuthenticator()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (user.TwoFactorAuthenticatorEnabled)
+            {
+                TempData["StatusMessage"] = "İki faktörlü doğrulama zaten etkin.";
+                return RedirectToAction("Index");
+            }
+
+            if (string.IsNullOrEmpty(user.AuthenticatorKey))
+            {
+                user.AuthenticatorKey = AuthenticatorHelper.GenerateSecretKey();
+                await UserManager.UpdateAsync(user);
+            }
+
+            return View(BuildEnableAuthenticatorViewModel(user));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EnableAuthenticator(EnableAuthenticatorViewModel model)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (string.IsNullOrEmpty(user.AuthenticatorKey))
+            {
+                ModelState.AddModelError("", "Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin.");
+                return View(BuildEnableAuthenticatorViewModel(user));
+            }
+
+            if (!ModelState.IsValid || !AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model?.Code))
+            {
+                ModelState.AddModelError("", "Geçersiz doğrulama kodu.");
+                return View(BuildEnableAuthenticatorViewModel(user));
+            }
+
+            user.TwoFactorAuthenticatorEnabled = true;
+            await UserManager.UpdateAsync(user);
+
+            TempData["StatusMessage"] = "İki faktörlü doğrulama başarıyla etkinleştirildi.";
+            return RedirectToAction("Index", new { Message = ManageMessageId.SetTwoFactorSuccess });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DisableAuthenticator()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            user.TwoFactorAuthenticatorEnabled = false;
+            user.AuthenticatorKey = null;
+            await UserManager.UpdateAsync(user);
+
+            TempData["StatusMessage"] = "İki faktörlü doğrulama kapatıldı.";
+            return RedirectToAction("Index");
+        }
+
+        private EnableAuthenticatorViewModel BuildEnableAuthenticatorViewModel(ApplicationUser user)
+        {
+            string accountName = !string.IsNullOrEmpty(user.Email) ? user.Email : user.UserName;
+            string siteName = SettingService != null
+                ? SettingService.GetSettingByKey(Domain.Constants.CompanyName)
+                : null;
+            if (string.IsNullOrWhiteSpace(siteName) && Request?.Url != null)
+            {
+                siteName = Request.Url.Host;
+            }
+
+            string issuer = AuthenticatorHelper.NormalizeIssuer(siteName);
+            string otpAuthUri = AuthenticatorHelper.GenerateOtpAuthUri(user.AuthenticatorKey, accountName, issuer);
+            return new EnableAuthenticatorViewModel
+            {
+                SharedKey = AuthenticatorHelper.FormatKey(user.AuthenticatorKey),
+                AuthenticatorUri = otpAuthUri,
+                DisplayName = issuer + ":" + accountName,
+                QrCodeImage = AuthenticatorHelper.GenerateQrCodeBase64(otpAuthUri)
+            };
         }
 
         // POST: /Manage/RemoveLogin

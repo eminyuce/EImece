@@ -18,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
         public ApplicationSignInManager SignInManager { get; set; }
 
         [Inject]
-        public ApplicationUserManager UserManager { get; set; }
+        public new ApplicationUserManager UserManager { get; set; }
 
         [Inject]
         public IdentityManager IdentityManager { get; set; }

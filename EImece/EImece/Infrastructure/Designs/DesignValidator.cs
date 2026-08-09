@@ -58,9 +58,10 @@ namespace EImece.Infrastructure.Designs
                 {
                     string relative = file.Substring(viewsRoot.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
                     
-                    // Skip Designs directory and AdminLogin
+                    // Skip Designs directory and standalone admin auth views
                     if (relative.StartsWith("Designs", StringComparison.OrdinalIgnoreCase) ||
-                        relative.Equals(@"Account\AdminLogin.cshtml", StringComparison.OrdinalIgnoreCase))
+                        relative.Equals(@"Account\AdminLogin.cshtml", StringComparison.OrdinalIgnoreCase) ||
+                        relative.Equals(@"Account\VerifyAuthenticator.cshtml", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }

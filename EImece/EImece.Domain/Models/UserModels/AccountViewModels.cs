@@ -46,6 +46,25 @@ namespace EImece.Models
         public bool RememberMe { get; set; }
     }
 
+    public class VerifyAuthenticatorViewModel
+    {
+        [Required]
+        public string Token { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Code))]
+        [StringLength(6, MinimumLength = 6)]
+        public string Code { get; set; }
+
+        public string ReturnUrl { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RememberThisBrowser))]
+        public bool RememberBrowser { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RememberMe))]
+        public bool RememberMe { get; set; }
+    }
+
     public class LoginViewModel
     {
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]

@@ -1,0 +1,133 @@
+@using EImece.Models
+@using Resources
+@model VerifyAuthenticatorViewModel
+
+@{
+    ViewBag.Title = "İki Faktörlü Doğrulama";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-card {
+            border: 0;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .login-card .card-body {
+            padding: 2.5rem;
+        }
+
+        .login-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .login-title {
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .form-control {
+            height: 45px;
+            border-radius: 5px;
+        }
+
+        .code-input {
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        .btn-login {
+            background-color: var(--primary);
+            border: none;
+            padding: 10px;
+            font-weight: 600;
+        }
+
+        .btn-login:hover {
+            background-color: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card login-card">
+                    <div class="login-header">
+                        <h4 class="login-title">@ViewBag.Title</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-center text-muted mb-4">
+                            Authenticator uygulamanızdaki 6 haneli kodu girin.
+                        </p>
+
+                        @using (Html.BeginForm("VerifyAuthenticator", "Account", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.Token)
+                            @Html.HiddenFor(m => m.ReturnUrl)
+                            @Html.HiddenFor(m => m.RememberMe)
+
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Code, new
+                                {
+                                    @class = "form-control code-input",
+                                    placeholder = "123456",
+                                    maxlength = "6",
+                                    autocomplete = "one-time-code",
+                                    autofocus = "autofocus",
+                                    required = "required",
+                                    inputmode = "numeric",
+                                    pattern = "[0-9]{6}"
+                                })
+                                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group form-check">
+                                @Html.CheckBoxFor(m => m.RememberBrowser, new { @class = "form-check-input", id = "rememberBrowser" })
+                                <label class="form-check-label" for="rememberBrowser">@Resource.RememberThisBrowser</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-login btn-block btn-lg">
+                                <i class="fas fa-shield-alt mr-2"></i> Doğrula ve Giriş Yap
+                            </button>
+                        }
+
+                        <div class="text-center mt-3">
+                            <a href="@Url.Action("AdminLogin", "Account")">Giriş sayfasına dön</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

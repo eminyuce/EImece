@@ -42,6 +42,9 @@ namespace EImece.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
+        [Inject]
+        public TwoFactorTokenService TwoFactorTokenService { get; set; }
+
         private ICustomerService CustomerService;
 
         public AccountController(ApplicationUserManager userManager,
@@ -129,6 +132,44 @@ namespace EImece.Controllers
                 return View(model);
             }
 
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                Logger.Info($"No user found for email: {model.Email}");
+                ModelState.AddModelError("", Resource.NoUserFound);
+                return View(model);
+            }
+
+            if (await UserManager.IsLockedOutAsync(user.Id))
+            {
+                Logger.Debug($"Account locked out for email: {model.Email}");
+                ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
+                return View("Lockout");
+            }
+
+            if (!await UserManager.CheckPasswordAsync(user, model.Password))
+            {
+                await UserManager.AccessFailedAsync(user.Id);
+                Logger.Info($"Password check failed for {model.Email}");
+                ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
+                return View(model);
+            }
+
+            await UserManager.ResetAccessFailedCountAsync(user.Id);
+
+            // Custom TOTP authenticator (Otp.NET) — do not sign in until code is verified.
+            if (user.TwoFactorAuthenticatorEnabled && !string.IsNullOrEmpty(user.AuthenticatorKey))
+            {
+                string token = await TwoFactorTokenService.CreateTokenAsync(user.Id);
+                Logger.Info("Authenticator 2FA required. Redirecting to VerifyAuthenticator.");
+                return RedirectToAction("VerifyAuthenticator", new
+                {
+                    token = token,
+                    rememberMe = model.RememberMe,
+                    returnUrl = returnUrl
+                });
+            }
+
             Logger.Info($"Attempting sign-in for email: {model.Email}");
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             Logger.Info($"Sign-in result: {result}");
@@ -152,32 +193,10 @@ namespace EImece.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                 case SignInStatus.Failure:
-                    var user = ApplicationDbContext.Users.FirstOrDefault(u => u.UserName.Equals(model.Email));
-                    if (user != null)
-                    {
-                        bool checkPassword = SignInManager.UserManager.CheckPassword(user, model.Password);
-                        Logger.Info($"Password check for {model.Email}: {checkPassword}");
-                        if (!checkPassword)
-                        {
-                            ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", Resource.InvalidLoginAttempt + result.ToString());
-                        }
-                    }
-                    else
-                    {
-                        Logger.Info($"No user found for email: {model.Email}");
-                        ModelState.AddModelError("", Resource.NoUserFound);
-                    }
-                    Logger.Info("Returning AdminLogin view with failure error.");
-                    return View(model);
-
                 default:
-                    Logger.Debug($"Unexpected sign-in result for email: {model.Email}");
-                    ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
-                    Logger.Info("Returning AdminLogin view with default error.");
+                    Logger.Debug($"Unexpected sign-in result for email: {model.Email}: {result}");
+                    ModelState.AddModelError("", Resource.InvalidLoginAttempt);
+                    Logger.Info("Returning AdminLogin view with failure error.");
                     return View(model);
             }
         }
@@ -348,6 +367,83 @@ namespace EImece.Controllers
                     Logger.Info("Returning VerifyCode view with error.");
                     return View(model);
             }
+        }
+
+        /// <summary>
+        /// TOTP authenticator verification after AdminLogin password check (secure DB token).
+        /// </summary>
+        [AllowAnonymous]
+        public ActionResult VerifyAuthenticator(string token, bool rememberMe = false, string returnUrl = null)
+        {
+            Logger.Info("Entering VerifyAuthenticator GET.");
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("AdminLogin");
+            }
+
+            return View(new VerifyAuthenticatorViewModel
+            {
+                Token = token,
+                RememberMe = rememberMe,
+                ReturnUrl = returnUrl
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> VerifyAuthenticator(VerifyAuthenticatorViewModel model)
+        {
+            Logger.Info("Entering VerifyAuthenticator POST.");
+            if (model == null || string.IsNullOrEmpty(model.Token))
+            {
+                return RedirectToAction("AdminLogin");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string userId = await TwoFactorTokenService.ValidateAndConsumeTokenAsync(model.Token);
+            if (userId == null)
+            {
+                ModelState.AddModelError("", "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın.");
+                return RedirectToAction("AdminLogin");
+            }
+
+            var user = await UserManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return RedirectToAction("AdminLogin");
+            }
+
+            if (await UserManager.IsLockedOutAsync(user.Id))
+            {
+                return View("Lockout");
+            }
+
+            bool isValid = Domain.Helpers.AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model.Code);
+            if (isValid)
+            {
+                await UserManager.ResetAccessFailedCountAsync(user.Id);
+                await SignInManager.SignInAsync(user, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+                Logger.Info("Authenticator verification succeeded. Redirecting to admin dashboard.");
+
+                if (!string.IsNullOrWhiteSpace(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+
+                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+            }
+
+            await UserManager.AccessFailedAsync(user.Id);
+            string newToken = await TwoFactorTokenService.CreateTokenAsync(user.Id);
+            ModelState.AddModelError("", "Geçersiz doğrulama kodu.");
+            model.Token = newToken;
+            model.Code = null;
+            return View(model);
         }
 
         [AllowAnonymous]

@@ -238,6 +238,12 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Otp.NET, Version=1.4.1.0, Culture=neutral, PublicKeyToken=38a48df817e173a6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Otp.NET.1.4.1\lib\net461\Otp.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder, Version=1.8.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.8.0\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.6.1.4\lib\net46\NLog.dll</HintPath>
     </Reference>
@@ -1079,6 +1085,7 @@
     <Content Include="Views\Designs\Modern\Home\ThanksForSubscription.cshtml" />
     <Content Include="Views\Designs\Modern\Info\Index.cshtml" />
     <Content Include="Views\Designs\Modern\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Designs\Modern\Manage\EnableAuthenticator.cshtml" />
     <Content Include="Views\Designs\Modern\Manage\Index.cshtml" />
     <Content Include="Views\Designs\Modern\Pages\Detail.cshtml" />
     <Content Include="Views\Designs\Modern\Payment\BuyNow.cshtml" />
@@ -1215,6 +1222,7 @@
     <Content Include="Views\Designs\Crizal\Home\ThanksForSubscription.cshtml" />
     <Content Include="Views\Designs\Crizal\Info\Index.cshtml" />
     <Content Include="Views\Designs\Crizal\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Designs\Crizal\Manage\EnableAuthenticator.cshtml" />
     <Content Include="Views\Designs\Crizal\Manage\Index.cshtml" />
     <Content Include="Views\Designs\Crizal\Pages\Detail.cshtml" />
     <Content Include="Views\Designs\Crizal\Payment\_OrderSummary.cshtml" />
@@ -1395,6 +1403,7 @@
     <Content Include="Areas\Admin\Views\Lists\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Lists\SaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ChangePassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\EnableAuthenticator.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Message.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\WebSiteLogo.cshtml" />
     <Content Include="Areas\Admin\Views\Users\GenerateNewPassword.cshtml" />
@@ -1604,7 +1613,9 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Account\VerifyAuthenticator.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\EnableAuthenticator.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -1688,6 +1699,7 @@
     <Content Include="Views\Shared\EditorTemplates\ProductComment.cshtml" />
     <Content Include="Views\Payment\_OrderSummary.cshtml" />
     <Content Include="Views\Account\AdminLogin.cshtml" />
+    <Content Include="SqlScripts\AddAuthenticatorTwoFactor.sql" />
     <Content Include="Views\Info\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SearchProductItem.cshtml" />
     <Content Include="Views\Payment\ThankYouForYourOrder.cshtml" />

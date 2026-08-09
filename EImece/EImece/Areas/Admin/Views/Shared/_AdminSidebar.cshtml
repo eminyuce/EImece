@@ -252,6 +252,12 @@
                         <i class="fa fa-key" aria-hidden="true"></i>
                         <span class="admin-nav-label">@AdminResource.ChangePassword</span>
                     </a>
+                    <a class="admin-nav-item @actionActive("users", "enableauthenticator")"
+                       href="@Url.Action("EnableAuthenticator", "Users", new { area = "admin" })"
+                       title="Authenticator 2FA">
+                        <i class="fa fa-shield" aria-hidden="true"></i>
+                        <span class="admin-nav-label">Authenticator 2FA</span>
+                    </a>
                 </div>
             </div>
         }

@@ -78,6 +78,7 @@ namespace EImece.Domain.Services
                 u.LastName = user.LastName;
                 u.Email = user.Email;
                 u.Id = user.Id;
+                u.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
                 var p = users2.FirstOrDefault(r => r.Id.Equals(u.Id, StringComparison.InvariantCultureIgnoreCase));
                 u.Role = p == null ? String.Empty : p.Role.ToStr();
                 model.Add(u);

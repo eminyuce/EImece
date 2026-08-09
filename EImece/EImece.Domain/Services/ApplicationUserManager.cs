@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -63,6 +64,17 @@ namespace EImece.Domain.Services
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        /// <summary>
+        /// Custom TOTP authenticator (Otp.NET). Separate from Identity's TwoFactorEnabled (phone/email).
+        /// </summary>
+        public bool TwoFactorAuthenticatorEnabled { get; set; }
+
+        /// <summary>
+        /// Base32 TOTP secret for authenticator apps.
+        /// </summary>
+        [MaxLength(128)]
+        public string AuthenticatorKey { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

@@ -26,7 +26,7 @@ namespace EImece.Areas.Admin.Controllers
         public ApplicationSignInManager SignInManager { get; set; }
 
         [Inject]
-        public ApplicationUserManager UserManager { get; set; }
+        public new ApplicationUserManager UserManager { get; set; }
 
         [Inject]
         public IdentityManager IdentityManager { get; set; }
@@ -98,6 +98,7 @@ namespace EImece.Areas.Admin.Controllers
             model.Email = user.Email;
             model.Id = user.Id;
             ViewBag.MessageId = Message;
+            ViewBag.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
             return View(model);
         }
 
@@ -361,7 +362,120 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Dashboard", new { area = "admin" });
             }
             ViewBag.CurrentUser = user;
+            ViewBag.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
             return View();
+        }
+
+        /// <summary>
+        /// Setup TOTP authenticator for the currently logged-in admin (QR + confirm code).
+        /// </summary>
+        public async Task<ActionResult> EnableAuthenticator()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (user.TwoFactorAuthenticatorEnabled)
+            {
+                SetSuccessMessage("İki faktörlü doğrulama zaten etkin.");
+                return RedirectToAction("ChangePassword");
+            }
+
+            if (string.IsNullOrEmpty(user.AuthenticatorKey))
+            {
+                user.AuthenticatorKey = AuthenticatorHelper.GenerateSecretKey();
+                await UserManager.UpdateAsync(user);
+            }
+
+            return View(BuildEnableAuthenticatorViewModel(user));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EnableAuthenticator(EnableAuthenticatorViewModel model)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (string.IsNullOrEmpty(user.AuthenticatorKey))
+            {
+                ModelState.AddModelError("", "Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin.");
+                return View(BuildEnableAuthenticatorViewModel(user));
+            }
+
+            if (!ModelState.IsValid || !AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model?.Code))
+            {
+                ModelState.AddModelError("", "Geçersiz doğrulama kodu.");
+                return View(BuildEnableAuthenticatorViewModel(user));
+            }
+
+            user.TwoFactorAuthenticatorEnabled = true;
+            await UserManager.UpdateAsync(user);
+
+            SetSuccessMessage("İki faktörlü doğrulama başarıyla etkinleştirildi.");
+            return RedirectToAction("ChangePassword");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DisableAuthenticator(string id = null)
+        {
+            // Own account, or admin disabling another user's authenticator.
+            string targetUserId = string.IsNullOrEmpty(id) ? User.Identity.GetUserId() : id;
+            bool isSelf = string.Equals(targetUserId, User.Identity.GetUserId(), StringComparison.OrdinalIgnoreCase);
+            if (!isSelf && !User.IsInRole(Domain.Constants.AdministratorRole))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            var user = await UserManager.FindByIdAsync(targetUserId);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            user.TwoFactorAuthenticatorEnabled = false;
+            user.AuthenticatorKey = null;
+            await UserManager.UpdateAsync(user);
+
+            SetSuccessMessage("İki faktörlü doğrulama kapatıldı.");
+            if (isSelf)
+            {
+                return RedirectToAction("ChangePassword");
+            }
+
+            return RedirectToAction("Edit", new { id = targetUserId });
+        }
+
+        private EnableAuthenticatorViewModel BuildEnableAuthenticatorViewModel(ApplicationUser user)
+        {
+            string accountName = !string.IsNullOrEmpty(user.Email) ? user.Email : user.UserName;
+            string siteName = SettingService.GetSettingByKey(Domain.Constants.CompanyName);
+            if (string.IsNullOrWhiteSpace(siteName) && Request?.Url != null)
+            {
+                siteName = Request.Url.Host;
+            }
+
+            string issuer = AuthenticatorHelper.NormalizeIssuer(siteName);
+            string otpAuthUri = AuthenticatorHelper.GenerateOtpAuthUri(
+                user.AuthenticatorKey ?? string.Empty,
+                accountName,
+                issuer);
+
+            return new EnableAuthenticatorViewModel
+            {
+                SharedKey = AuthenticatorHelper.FormatKey(user.AuthenticatorKey),
+                AuthenticatorUri = otpAuthUri,
+                DisplayName = issuer + ":" + accountName,
+                QrCodeImage = string.IsNullOrEmpty(user.AuthenticatorKey)
+                    ? null
+                    : AuthenticatorHelper.GenerateQrCodeBase64(otpAuthUri)
+            };
         }
 
         //
