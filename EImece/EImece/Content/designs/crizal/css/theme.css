@@ -81,6 +81,25 @@ body[data-design="crizal"] #ShoppingCartItemCount:empty {
     display: none !important;
 }
 
+/* ---------- Main menu active state (Crizal) ----------
+   Top-level current item = brand green; siblings stay dark.
+   Submenu active item = green on dark dropdown panel. */
+body[data-design="crizal"] .navbar-nav > li > a {
+    color: #14212B;
+}
+body[data-design="crizal"] .navbar-nav > li.active > a,
+body[data-design="crizal"] .navbar-nav > li.current > a {
+    color: #09b850 !important;
+}
+body[data-design="crizal"] .navbar > ul > li.active.has-sub > a:after,
+body[data-design="crizal"] .navbar > ul > li.current.has-sub > a:after {
+    border-color: transparent #09b850 #09b850 transparent;
+}
+body[data-design="crizal"] .navbar-nav li li.active > a,
+body[data-design="crizal"] .navbar-nav li li.current > a {
+    color: #09b850 !important;
+}
+
 /* ---------- Header layout (Playwright visual audit fixes) ----------
    Bootstrap 5 .navbar flex-wrap + crowded Turkish labels was squeezing
    .attr-nav to ~1 icon width, stacking cart/search/login vertically.

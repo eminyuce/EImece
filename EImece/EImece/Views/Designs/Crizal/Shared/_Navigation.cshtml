@@ -5,11 +5,17 @@
 @model NavigationModel
 @{
     var productCategories = Model.ProductCategories;
+    var pageController = (HtmlRequestHelper.Controller() ?? string.Empty).ToLowerInvariant();
+    var pageAction = (HtmlRequestHelper.Action() ?? string.Empty).ToLowerInvariant();
+    var isHome = pageController == "home" && pageAction == "index";
+    var isProductArea = pageController == "productcategories" || pageController == "products";
 }
 
 <ul class="navbar-nav ms-auto" id="nav" style="display: none;">
-    <li><a href="@Url.Action("Index", "Home")">@Resources.Resource.HomePage</a></li>
-    <li>
+    <li class="@(isHome ? "active current" : null)">
+        <a href="@Url.Action("Index", "Home")">@Resources.Resource.HomePage</a>
+    </li>
+    <li class="@(isProductArea ? "active current" : null)">
         <a href="#!">@Resources.Resource.ProductCategories</a>
         <ul>
             @for (int i = 0; i < productCategories.Count; i++)
@@ -54,9 +60,11 @@
 @helper CreateMenuChildrenTree(MenuTreeModel menuTreeModel)
 {
     var menu = menuTreeModel.Menu;
+    var activeClass = menuTreeModel.ActiveCssClass;
+
     if (menuTreeModel.Childrens.IsNotEmpty())
     {
-        <li class="@menu.IsPageActived">
+        <li class="@activeClass">
             <a href="#!">@menu.Name</a>
             <ul>
                 @foreach (var menuChildren in menuTreeModel.Childrens)
@@ -64,20 +72,24 @@
                     var menuChild = menuChildren.Menu;
                     if (menuChildren.Childrens.IsNotEmpty())
                     {
-                        <li>
+                        <li class="@menuChildren.ActiveCssClass">
                             <a href="#!">@menuChildren.Name</a>
                             <ul>
                                 @foreach (var grandChild in menuChildren.Childrens)
                                 {
                                     var grandChildMenu = grandChild.Menu;
-                                    <li><a href="@grandChildMenu.DetailPageLink">@grandChild.Name</a></li>
+                                    <li class="@grandChild.ActiveCssClass">
+                                        <a href="@grandChildMenu.DetailPageLink">@grandChild.Name</a>
+                                    </li>
                                 }
                             </ul>
                         </li>
                     }
                     else
                     {
-                        <li><a href="@menuChild.DetailPageLink">@menuChildren.Name</a></li>
+                        <li class="@menuChildren.ActiveCssClass">
+                            <a href="@menuChild.DetailPageLink">@menuChildren.Name</a>
+                        </li>
                     }
                 }
             </ul>
@@ -85,7 +97,7 @@
     }
     else
     {
-        <li class="@menu.IsPageActived">
+        <li class="@activeClass">
             <a href="@menu.DetailPageLink">@menu.Name</a>
         </li>
     }

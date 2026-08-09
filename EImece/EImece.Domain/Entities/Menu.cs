@@ -69,45 +69,178 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                if (!TryParseMenuLink(out var controller, out var action, out _))
+                // Match the current request URL to this menu item's own link.
+                // Do NOT mark every pages/detail item active — many CMS pages share MenuLink "pages-index".
+                if (HttpContext.Current == null || HttpContext.Current.Request == null || HttpContext.Current.Request.Url == null)
                 {
                     return "";
                 }
 
-                String result = "active";
-                string resultLink = "";
-                var pageAction = HtmlRequestHelper.Action();
+                var currentPath = NormalizeAppPath(HttpContext.Current.Request.Url.AbsolutePath);
+                if (string.IsNullOrEmpty(currentPath))
+                {
+                    return "";
+                }
+
+                // External / absolute Link targets: only active when browsing that exact URL.
+                if (LinkIsActive && !string.IsNullOrWhiteSpace(Link))
+                {
+                    if (Uri.TryCreate(Link, UriKind.Absolute, out var absolute) &&
+                        string.Equals(absolute.Host, HttpContext.Current.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return PathsMatch(currentPath, NormalizeAppPath(absolute.AbsolutePath)) ? "active" : "";
+                    }
+
+                    if (Link.StartsWith("/", StringComparison.Ordinal))
+                    {
+                        return PathsMatch(currentPath, NormalizeAppPath(Link)) ? "active" : "";
+                    }
+
+                    return "";
+                }
+
+                if (!string.IsNullOrWhiteSpace(DetailPageLink) && DetailPageLink != "#" && DetailPageLink != "#!")
+                {
+                    var detailPath = ToAppPath(DetailPageLink);
+                    if (!string.IsNullOrEmpty(detailPath) && PathsMatch(currentPath, detailPath))
+                    {
+                        return "active";
+                    }
+                }
+
+                // Route-id fallback for pages/detail when MenuLink is the generic "pages-index"
+                // but the SEO slug in the URL belongs to this menu row.
+                if (!TryParseMenuLink(out var controller, out var action, out var mid))
+                {
+                    return "";
+                }
+
                 var pageController = HtmlRequestHelper.Controller();
+                var pageAction = HtmlRequestHelper.Action();
+                var routeId = HtmlRequestHelper.Id() ?? string.Empty;
+
+                if (pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase)
+                    && pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase)
+                    && controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var seo = this.GetSeoUrl() ?? string.Empty;
+                    if (!string.IsNullOrEmpty(seo)
+                        && (routeId.Equals(seo, StringComparison.OrdinalIgnoreCase)
+                            || currentPath.IndexOf("/" + seo.Trim('/'), StringComparison.OrdinalIgnoreCase) >= 0))
+                    {
+                        return "active";
+                    }
+
+                    return "";
+                }
+
                 if (pageController.Equals("info", StringComparison.InvariantCultureIgnoreCase)
-                    && pageAction.Equals("index", StringComparison.InvariantCultureIgnoreCase))
+                    && pageAction.Equals("index", StringComparison.InvariantCultureIgnoreCase)
+                    && controller.Equals("info", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var absolutePath = HttpContext.Current.Request.Url.AbsolutePath.ToString();
-                    resultLink = absolutePath.ToLower().Contains(MenuLink.Replace("-", "/")) ? result : "";
+                    var infoKey = "/" + MenuLink.Replace("-", "/").Trim('/').ToLowerInvariant();
+                    return PathsMatch(currentPath, infoKey) || currentPath.StartsWith(infoKey + "/", StringComparison.OrdinalIgnoreCase)
+                        ? "active"
+                        : "";
                 }
-                else if (pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+
+                if (pageController.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                    && controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    resultLink = pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase) ? result : "";
+                    if (pageAction.Equals("categories", StringComparison.InvariantCultureIgnoreCase)
+                        && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if (string.IsNullOrEmpty(mid) || routeId.Equals(mid, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return "active";
+                        }
+
+                        return "";
+                    }
+
+                    if (pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return "active";
+                    }
                 }
-                else if (pageController.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                                                            && pageAction.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+
+                // Generic controller/action match only when MenuLink is unique enough
+                // (not the shared pages-index bucket used by many CMS pages).
+                if (!MenuLink.Equals("pages-index", StringComparison.OrdinalIgnoreCase)
+                    && pageController.Equals(controller, StringComparison.InvariantCultureIgnoreCase)
+                    && pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase)
+                    && !pageController.Equals("products", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    resultLink = pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase)
-                            && pageController.Equals(controller, StringComparison.InvariantCultureIgnoreCase)
-                        ? result : "";
+                    return "active";
                 }
-                else if (pageController.Equals("Products", StringComparison.InvariantCultureIgnoreCase)
-                                                          && pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    resultLink = "";
-                }
-                else
-                {
-                    resultLink = pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase)
-                                    && pageController.Equals(controller, StringComparison.InvariantCultureIgnoreCase)
-                                ? result : "";
-                }
-                return resultLink;
+
+                return "";
             }
+        }
+
+        private static string ToAppPath(string href)
+        {
+            if (string.IsNullOrWhiteSpace(href))
+            {
+                return "";
+            }
+
+            if (Uri.TryCreate(href, UriKind.Absolute, out var absolute))
+            {
+                return NormalizeAppPath(absolute.AbsolutePath);
+            }
+
+            // Virtual app-relative (~/) or site-relative path
+            var path = href;
+            var q = path.IndexOfAny(new[] { '?', '#' });
+            if (q >= 0)
+            {
+                path = path.Substring(0, q);
+            }
+
+            if (path.StartsWith("~/", StringComparison.Ordinal))
+            {
+                path = path.Substring(1);
+            }
+
+            return NormalizeAppPath(path);
+        }
+
+        private static string NormalizeAppPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return "/";
+            }
+
+            path = path.Trim().Replace('\\', '/');
+            if (!path.StartsWith("/", StringComparison.Ordinal))
+            {
+                path = "/" + path;
+            }
+
+            // Collapse duplicate slashes and trim trailing slash (except root)
+            while (path.Contains("//"))
+            {
+                path = path.Replace("//", "/");
+            }
+
+            if (path.Length > 1 && path.EndsWith("/", StringComparison.Ordinal))
+            {
+                path = path.TrimEnd('/');
+            }
+
+            return path.ToLowerInvariant();
+        }
+
+        private static bool PathsMatch(string currentPath, string candidatePath)
+        {
+            if (string.IsNullOrEmpty(currentPath) || string.IsNullOrEmpty(candidatePath))
+            {
+                return false;
+            }
+
+            return currentPath.Equals(candidatePath, StringComparison.OrdinalIgnoreCase);
         }
 
         [NotMapped]

@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace EImece.Domain.Models.FrontModels
@@ -7,6 +8,27 @@ namespace EImece.Domain.Models.FrontModels
     public class MenuTreeModel
     {
         public Menu Menu { get; set; }
+
+        /// <summary>
+        /// True when this node or any descendant matches the current request (for nav active CSS).
+        /// </summary>
+        public bool IsActiveBranch
+        {
+            get
+            {
+                if (Menu != null && !string.IsNullOrEmpty(Menu.IsPageActived))
+                {
+                    return true;
+                }
+
+                return Childrens != null && Childrens.Any(c => c != null && c.IsActiveBranch);
+            }
+        }
+
+        public string ActiveCssClass
+        {
+            get { return IsActiveBranch ? "active current" : string.Empty; }
+        }
 
         public MenuTreeModel()
         {
