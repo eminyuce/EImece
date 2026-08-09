@@ -364,13 +364,35 @@ ASP.NET 2.0 quirks mode and async completions behave incorrectly. This app sets 
 
 ---
 
-## What is still synchronous
+## Scope of the public-site conversion
 
-| Action | Why it was left alone |
+Every public (non-admin) controller action that hits the database now runs as
+`async Task<ActionResult>` (or `Task<JsonResult>`) with an unbroken await chain into EF6 /
+ADO.NET async APIs. Sync twins were kept on services and repositories so the admin area and
+any remaining callers keep compiling.
+
+| Area | Converted |
 |---|---|
-| `ProductsController.Detail` | `GetProductDetailViewModelById` fans out into breadcrumb tree building, templates, related products, and comment filtering; converting it means async-ifying `ProductCategoryService.GetBreadCrumb` and `TemplateService` too |
-| `ProductsController.AdvancedSearchProducts` | Runs the `test_SearchProducts` stored procedure with raw ADO.NET and materialises two result sets through `ObjectContext.Translate`, which reads the `SqlDataReader` synchronously; it needs `ExecuteReaderAsync` plus a different materialisation strategy |
-| `ProductsController.Tag` | Needs async paging on `ProductTagRepository` and `StoryTagRepository`; the `PaginateAsync` primitives are in place, so this is a small follow-up |
-| Admin area | Already partly async (`GetAdminPageListAsync`); not on the public hot path |
+| `ProductsController` | `Index`, `Detail`, `Tag`, `SearchProducts`, `AdvancedSearchProducts`, `Review` |
+| `ProductCategoriesController` | `Category`, `GetProductCategoryDto` |
+| `StoriesController` | `Index`, `Detail`, `Categories`, `Tag` |
+| `HomeController` | `Index`, settings/subscriber/contact actions that hit I/O |
+| `PagesController` / `InfoController` | `Detail` / `Index` |
+| `PaymentController` | cart, checkout, coupon, buy-now, thank-you, Iyzico callbacks |
+| `Areas/Customers/HomeController` | profile, FAQ, orders, password GET |
+| `RssController` / `SiteMapController` | all feed/sitemap actions |
+| `AccountController` / `ManageController` | remaining Identity/settings leftovers inside already-async actions |
+| `HealthController` | already async |
 
-The order to continue in: `Tag` (primitives exist), then `Detail`, then the stored-procedure path.
+## What is still synchronous (and why)
+
+| Item | Why it was left alone |
+|---|---|
+| `[ChildActionOnly]` actions (`Navigation`, `Footer`, `WebSiteLogo`, cart partials, analytics/WhatsApp scripts) | MVC 5 cannot await child actions. Refactor to AJAX/`Html.Partial` with data from the parent before converting. |
+| `ImagesController` | Disk read + CPU resize/WebP. Async file I/O would help a little; the resize stays CPU-bound. Output-cached. |
+| `AjaxController` city/town/district | In-memory `TurkishRegionService`, no DB. |
+| View-only / no-I/O shells | `ErrorController`, `UnderConstructionController`, `RobotController`, `LogOff`, `CargoTracking`, `NoSuccessForYourOrder`, Account GET shells, `Languages`, cache dump, order-confirmation email helper |
+| Admin area (`Areas/Admin`) | Explicitly out of scope for this pass |
+| Email send helpers (`RazorEngineHelper`, `EmailSender`) | Still sync SMTP/template; called from a few POST actions after the DB work has already been awaited |
+
+When converting a `[ChildActionOnly]`, remove the child-action usage first — changing the signature to `async Task<ActionResult>` without that refactor will throw at runtime.

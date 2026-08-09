@@ -43,7 +43,7 @@ namespace EImece.Controllers
             var user = await UserManager.FindByIdAsync(userId);
             var model = new IndexViewModel
             {
-                HasPassword = HasPassword(),
+                HasPassword = user != null && user.PasswordHash != null,
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 AuthenticatorEnabled = user != null && user.TwoFactorAuthenticatorEnabled,
@@ -77,7 +77,7 @@ namespace EImece.Controllers
                 await UserManager.UpdateAsync(user);
             }
 
-            return View(BuildEnableAuthenticatorViewModel(user));
+            return View(await BuildEnableAuthenticatorViewModelAsync(user));
         }
 
         [HttpPost]
@@ -93,13 +93,13 @@ namespace EImece.Controllers
             if (string.IsNullOrEmpty(user.AuthenticatorKey))
             {
                 ModelState.AddModelError("", "Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin.");
-                return View(BuildEnableAuthenticatorViewModel(user));
+                return View(await BuildEnableAuthenticatorViewModelAsync(user));
             }
 
             if (!ModelState.IsValid || !AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model?.Code))
             {
                 ModelState.AddModelError("", "Geçersiz doğrulama kodu.");
-                return View(BuildEnableAuthenticatorViewModel(user));
+                return View(await BuildEnableAuthenticatorViewModelAsync(user));
             }
 
             user.TwoFactorAuthenticatorEnabled = true;
@@ -127,11 +127,11 @@ namespace EImece.Controllers
             return RedirectToAction("Index");
         }
 
-        private EnableAuthenticatorViewModel BuildEnableAuthenticatorViewModel(ApplicationUser user)
+        private async Task<EnableAuthenticatorViewModel> BuildEnableAuthenticatorViewModelAsync(ApplicationUser user)
         {
             string accountName = !string.IsNullOrEmpty(user.Email) ? user.Email : user.UserName;
             string siteName = SettingService != null
-                ? SettingService.GetSettingByKey(Domain.Constants.CompanyName)
+                ? await SettingService.GetSettingByKeyAsync(Domain.Constants.CompanyName)
                 : null;
             if (string.IsNullOrWhiteSpace(siteName) && Request?.Url != null)
             {
@@ -320,26 +320,6 @@ namespace EImece.Controllers
             {
                 ModelState.AddModelError("", error);
             }
-        }
-
-        private bool HasPassword()
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-            return false;
-        }
-
-        private bool HasPhoneNumber()
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PhoneNumber != null;
-            }
-            return false;
         }
 
         public enum ManageMessageId

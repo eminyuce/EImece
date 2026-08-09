@@ -136,8 +136,7 @@ namespace EImece.Controllers
             PaymentLogger.Info($"Entering AddToCart action with productId: {productId}, quantity: {quantity}, orderGuid: {orderGuid}");
             int pId = GeneralHelper.RevertId(productId);
             PaymentLogger.Info($"Reverted productId to: {pId}");
-            // TODO: await ProductService.GetProductByIdAsync when available
-            var product = ProductService.GetProductById(pId);
+            var product = await ProductService.GetProductByIdAsync(pId);
             if (product != null)
             {
                 PaymentLogger.Info($"Product found with ID: {pId}");
@@ -763,12 +762,11 @@ namespace EImece.Controllers
             PaymentLogger.Info($"Entering CreateBuyNowModelAsync with productId: {productId}");
             BuyNowModel buyNowModel = new BuyNowModel();
             buyNowModel.ProductId = productId;
-            // TODO: await ProductService.GetProductDetailViewModelByIdAsync when available
-            buyNowModel.ProductDetailViewModel = ProductService.GetProductDetailViewModelById(productId);
+            buyNowModel.ProductDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(productId);
             PaymentLogger.Info("Set product details in BuyNow model.");
             buyNowModel.ShoppingCartItem = new ShoppingCartItem();
-            // TODO: await ProductService.GetProductByIdAsync when available
-            buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(ProductService.GetProductById(productId), new List<ProductSpecItem>());
+            var buyNowProduct = await ProductService.GetProductByIdAsync(productId);
+            buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(buyNowProduct, new List<ProductSpecItem>());
             buyNowModel.ShoppingCartItem.Quantity = 1;
             buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
             PaymentLogger.Info($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");

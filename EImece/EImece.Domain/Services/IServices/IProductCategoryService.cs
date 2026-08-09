@@ -10,6 +10,8 @@ namespace EImece.Domain.Services.IServices
     {
         List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
 
+        Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1);
+
         ProductCategory GetProductCategory(int categoryId);
 
         Task<ProductCategory> GetProductCategoryAsync(int categoryId);

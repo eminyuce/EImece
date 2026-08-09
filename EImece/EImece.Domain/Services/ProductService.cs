@@ -299,11 +299,9 @@ namespace EImece.Domain.Services
             EntityFilterHelper.FilterProduct(result.Product);
             if (product.ProductCategory.TemplateId.HasValue)
             {
-                // TODO async: TemplateService.GetTemplateAsync when available
-                result.Template = TemplateService.GetTemplate(product.ProductCategory.TemplateId.Value);
+                result.Template = await TemplateService.GetTemplateAsync(product.ProductCategory.TemplateId.Value, cancellationToken).ConfigureAwait(false);
             }
-            // TODO async: ProductCategoryService.GetBreadCrumbAsync when available
-            result.BreadCrumb = ProductCategoryService.GetBreadCrumb(product.ProductCategoryId, product.Lang);
+            result.BreadCrumb = await ProductCategoryService.GetBreadCrumbAsync(product.ProductCategoryId, product.Lang).ConfigureAwait(false);
             result.RelatedStories = new List<Story>();
             int relatedProductTake = 20;
             result.RelatedProducts = new List<Product>();

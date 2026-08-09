@@ -33,8 +33,7 @@ namespace EImece.Controllers
             var comment = new StringBuilder();
             try
             {
-                // TODO: await ProductService.GetProductsRssAsync when available
-                var items = ProductService.GetProductsRss(rssParams);
+                var items = await ProductService.GetProductsRssAsync(rssParams);
                 if (items == null)
                 {
                     return Content("No RSS for Stories");
@@ -55,8 +54,7 @@ namespace EImece.Controllers
             var comment = new StringBuilder();
             try
             {
-                // TODO: await StoryService.GetStoryCategoriesRssAsync when available
-                var items = StoryService.GetStoryCategoriesRss(rssParams);
+                var items = await StoryService.GetStoryCategoriesRssAsync(rssParams);
                 if (items == null)
                 {
                     return Content("No RSS for Stories");
@@ -76,8 +74,7 @@ namespace EImece.Controllers
         {
             var comment = new StringBuilder();
 
-            // TODO: await StoryService.GetStoryCategoriesRssFullAsync when available
-            var items = StoryService.GetStoryCategoriesRssFull(rssParams);
+            var items = await StoryService.GetStoryCategoriesRssFullAsync(rssParams);
             if (items == null)
             {
                 return Content("No RSS for Stories");

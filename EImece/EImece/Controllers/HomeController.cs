@@ -238,8 +238,7 @@ namespace EImece.Controllers
                 if (contact.ItemType == EImeceItemType.Product)
                 {
                     HomeLogger.Info($"ItemType is Product with ID: {contact.ItemId}");
-                    // TODO: switch to ProductService.GetProductDetailViewModelByIdAsync when available
-                    var product = ProductService.GetProductDetailViewModelById(contact.ItemId);
+                    var product = await ProductService.GetProductDetailViewModelByIdAsync(contact.ItemId);
                     product.Contact = contact;
                     HomeLogger.Info("Returning Product Detail view with captcha error.");
                     return View("../Products/Detail", product);

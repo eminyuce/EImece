@@ -78,6 +78,20 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
+        {
+            if (IsCachingActivated)
+            {
+                var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+                return await DataCachingProvider.GetOrAddAsync(
+                    cacheKey,
+                    () => ProductCategoryRepository.BuildTreeAsync(isActive, language),
+                    AppConfig.CacheMediumSeconds).ConfigureAwait(false);
+            }
+
+            return await ProductCategoryRepository.BuildTreeAsync(isActive, language).ConfigureAwait(false);
+        }
+
         public ProductCategory GetProductCategory(int categoryId)
         {
             ProductCategory result = ProductCategoryRepository.GetProductCategory(categoryId);
@@ -180,9 +194,24 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public Task<List<ProductCategoryTreeModel>> GetBreadCrumbAsync(int productCategoryId, int language)
+        public async Task<List<ProductCategoryTreeModel>> GetBreadCrumbAsync(int productCategoryId, int language)
         {
-            return Task.FromResult(GetBreadCrumb(productCategoryId, language));
+            List<ProductCategoryTreeModel> result = new List<ProductCategoryTreeModel>();
+
+            var tree = await BuildTreeAsync(true, language).ConfigureAwait(false);
+            ProductCategoryTreeModel productCategoryTreeModel = null;
+            foreach (var t in tree)
+            {
+                productCategoryTreeModel = FindNode(t, productCategoryId);
+                if (productCategoryTreeModel != null)
+                {
+                    break;
+                }
+            }
+
+            AddParent(result, productCategoryTreeModel);
+
+            return result;
         }
 
         private void AddParent(List<ProductCategoryTreeModel> returnList, ProductCategoryTreeModel leave)
@@ -263,12 +292,12 @@ namespace EImece.Domain.Services
             result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
             result.Brands = await BrandService.GetBrandsIfAnyProductExistsAsync(lang).ConfigureAwait(false);
-            result.ProductCategoryTree = BuildTree(true, lang);
+            result.ProductCategoryTree = await BuildTreeAsync(true, lang).ConfigureAwait(false);
             result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
             result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
             result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
             result.ChildrenProductCategories = await ProductCategoryRepository.GetProductCategoriesByParentIdAsync(productCategoryId).ConfigureAwait(false);
-            result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
+            result.CategoryChildrenProducts = await ProductService.GetChildrenProductsAsync(result.ProductCategory, result.ChildrenProductCategories).ConfigureAwait(false);
             return result;
         }
         public ProductCategoryDto GetProductCategoryDto(int productCategoryId)

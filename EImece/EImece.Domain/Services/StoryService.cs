@@ -144,8 +144,7 @@ namespace EImece.Domain.Services
             if (result.Story != null && result.Story.StoryTags.Any())
             {
                 var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
-                // TODO async: ProductRepository.GetRelatedProductsAsync not implemented yet
-                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, result.Story.Lang, 0);
+                result.RelatedProducts = await ProductRepository.GetRelatedProductsAsync(tagIdList, 10, result.Story.Lang, 0, cancellationToken).ConfigureAwait(false);
             }
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
             result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
@@ -269,8 +268,7 @@ namespace EImece.Domain.Services
         {
             var result = new SimiliarStoryTagsViewModel();
             result.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            // TODO async: ProductTagRepository.GetProductsByTagIdAsync not implemented yet
-            result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, lang);
+            result.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, lang, cancellationToken).ConfigureAwait(false);
             result.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
             result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             return result;

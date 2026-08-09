@@ -99,7 +99,7 @@ namespace EImece.Domain.Services
                 await GenerateProductSiteMapAsync(sitemapItems, language, productCategories, cancellationToken).ConfigureAwait(false);
                 List<StoryCategory> storyCategories = await GenerateStoryCategorySiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
                 await GenerateStorySiteMapAsync(sitemapItems, language, storyCategories, cancellationToken).ConfigureAwait(false);
-                GenerateTagSiteMap(sitemapItems, language); // TODO: TagService.GetProductTagsAsync not yet available
+                await GenerateTagSiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
             }
 
             return sitemapItems;
@@ -304,30 +304,47 @@ namespace EImece.Domain.Services
             try
             {
                 var tags = TagService.GetProductTags(language);
-
-                foreach (var item in tags)
-                {
-                    DateTime? lastModified = item.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
-                             AppConfig.HttpProtocol),
-                                   lastModified,
-                                   SitemapChangeFrequency.Daily,
-                                   priority: 1.0);
-
-                    sitemapItems.Add(sm);
-
-                    sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
-                      AppConfig.HttpProtocol),
-                            lastModified,
-                            SitemapChangeFrequency.Daily,
-                            priority: 1.0);
-
-                    sitemapItems.Add(sm);
-                }
+                AddTagSitemapItems(sitemapItems, tags);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private async Task GenerateTagSiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var tags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
+                AddTagSitemapItems(sitemapItems, tags);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private static void AddTagSitemapItems(List<SitemapItem> sitemapItems, List<Tag> tags)
+        {
+            foreach (var item in tags)
+            {
+                DateTime? lastModified = item.UpdatedDate;
+                SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
+                         AppConfig.HttpProtocol),
+                               lastModified,
+                               SitemapChangeFrequency.Daily,
+                               priority: 1.0);
+
+                sitemapItems.Add(sm);
+
+                sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
+                  AppConfig.HttpProtocol),
+                        lastModified,
+                        SitemapChangeFrequency.Daily,
+                        priority: 1.0);
+
+                sitemapItems.Add(sm);
             }
         }
 
