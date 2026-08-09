@@ -492,7 +492,7 @@ namespace EImece.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     Logger.Info($"Generated email confirmation token. Callback URL: {callbackUrl}");
-                    var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
+                    var emailTemplate = await RazorEngineHelper.ConfirmYourAccountEmailBodyAsync(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     Logger.Info("Confirmation email sent.");
 
@@ -624,7 +624,7 @@ namespace EImece.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     Logger.Info($"Generated email confirmation token. Callback URL: {callbackUrl}");
-                    var emailTemplate = RazorEngineHelper.ConfirmYourAccountEmailBody(model.Email, user.FirstName + " " + user.LastName, callbackUrl);
+                    var emailTemplate = await RazorEngineHelper.ConfirmYourAccountEmailBodyAsync(model.Email, user.FirstName + " " + user.LastName, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     ModelState.AddModelError("", Resource.UserEmailNotConfirmed);
                     return View("ForgotPassword");
@@ -634,7 +634,7 @@ namespace EImece.Controllers
                     string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     Logger.Info($"Generated password reset token. Callback URL: {callbackUrl}");
-                    var emailTemplate = RazorEngineHelper.ForgotPasswordEmailBody(model.Email, callbackUrl);
+                    var emailTemplate = await RazorEngineHelper.ForgotPasswordEmailBodyAsync(model.Email, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     Logger.Info("Password reset email sent.");
                     Logger.Info("Redirecting to ForgotPasswordConfirmation.");

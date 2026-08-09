@@ -84,6 +84,28 @@ namespace EImece.Domain.Services
             return pp;
         }
 
+        public async Task<CompanyGotNewOrderEmailRazorTemplate> GenerateCompanyGotNewOrderEmailRazorTemplateAsync(int orderId)
+        {
+            var cOrder = await OrderService.GetOrderByIdAsync(orderId).ConfigureAwait(false);
+            var pp = new CompanyGotNewOrderEmailRazorTemplate();
+
+            pp.CompanyAddress = (await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyAddress).ConfigureAwait(false)).SettingValue.Trim();
+            pp.CompanyName = (await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false)).SettingValue.Trim();
+            pp.CompanyEmailAddress = (await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyEmailAddress).ConfigureAwait(false)).SettingValue.Trim();
+            pp.CompanyPhoneNumber = (await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyPhoneAndLocation).ConfigureAwait(false)).SettingValue.Trim();
+            pp.FinishedOrder = cOrder;
+            pp.OrderProducts = cOrder.OrderProducts.ToList();
+            string baseurl = GetSiteBaseUrl();
+            var mailRequest = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, mailRequest.Url.Host, mailRequest.Url.Port);
+            var url = builder.Uri.ToString().TrimEnd('/');
+            pp.CompanyWebSiteUrl = url;
+            pp.BaseUrl = baseurl;
+            pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
+            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
+            return pp;
+        }
+
         private string GetSiteBaseUrl()
         {
             // FIX: injected abstraction instead of static HttpContext.Current.
@@ -104,6 +126,27 @@ namespace EImece.Domain.Services
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
             // FIX: injected abstraction instead of static HttpContext.Current.
+            var confirmRequest = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, confirmRequest.Url.Host, confirmRequest.Url.Port);
+            var url = builder.Uri.ToString().TrimEnd('/');
+            string baseurl = GetSiteBaseUrl();
+            pp.CompanyWebSiteUrl = url;
+            pp.BaseUrl = baseurl;
+            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
+            return pp;
+        }
+
+        public async Task<OrderConfirmationEmailRazorTemplate> GenerateOrderConfirmationEmailRazorTemplateAsync(int orderId)
+        {
+            var cOrder = await OrderService.GetOrderByIdAsync(orderId).ConfigureAwait(false);
+            var pp = new OrderConfirmationEmailRazorTemplate();
+
+            pp.CompanyAddress = (await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyAddress).ConfigureAwait(false)).SettingValue.Trim();
+            pp.CompanyName = (await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false)).SettingValue.Trim();
+            pp.CompanyEmailAddress = (await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyEmailAddress).ConfigureAwait(false)).SettingValue.Trim();
+            pp.CompanyPhoneNumber = (await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyPhoneAndLocation).ConfigureAwait(false)).SettingValue.Trim();
+            pp.FinishedOrder = cOrder;
+            pp.OrderProducts = cOrder.OrderProducts.ToList();
             var confirmRequest = HttpContextFactory.Create().Request;
             var builder = new UriBuilder(AppConfig.HttpProtocol, confirmRequest.Url.Host, confirmRequest.Url.Port);
             var url = builder.Uri.ToString().TrimEnd('/');

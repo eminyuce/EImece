@@ -282,13 +282,13 @@ namespace EImece.Controllers
                     if (contact.ItemType == EImeceItemType.Product)
                     {
                         HomeLogger.Info($"Sending contact email for product ID: {contact.ItemId}");
-                        RazorEngineHelper.SendContactUsAboutProductDetailEmail(contact);
+                        await RazorEngineHelper.SendContactUsAboutProductDetailEmailAsync(contact);
                         HomeLogger.Info("Product contact email sent.");
                     }
                     else
                     {
                         HomeLogger.Info("Sending general contact email.");
-                        RazorEngineHelper.SendContactUsForCommunication(contact);
+                        await RazorEngineHelper.SendContactUsForCommunicationAsync(contact);
                         HomeLogger.Info("General contact email sent.");
                     }
                 }
@@ -355,12 +355,12 @@ namespace EImece.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult OrderConfirmationEmail(int orderId = 1)
+        public async Task<ActionResult> OrderConfirmationEmail(int orderId = 1)
         {
             HomeLogger.Info($"Entering OrderConfirmationEmail with orderId: {orderId}");
-            var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(orderId);
+            var emailTemplate = await RazorEngineHelper.OrderConfirmationEmailAsync(orderId);
             HomeLogger.Info("Generated order confirmation email template.");
-            EmailSender.SendRenderedEmailTemplateToCustomer(SettingService.GetEmailAccount(), emailTemplate);
+            EmailSender.SendRenderedEmailTemplateToCustomer(await SettingService.GetEmailAccountAsync(), emailTemplate);
             HomeLogger.Info("Order confirmation email sent to customer.");
             HomeLogger.Info("Returning email template view.");
             return View(emailTemplate.Item2);

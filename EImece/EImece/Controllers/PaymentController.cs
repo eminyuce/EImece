@@ -670,7 +670,7 @@ namespace EImece.Controllers
                 : checkoutForm.ConversationId;
             var order = await ShoppingCartService.SaveShoppingCartAsync(resolvedOrderNumber, shoppingCart, checkoutForm, userId);
             PaymentLogger.Info($"Order saved with ID: {order.Id}");
-            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(await OrderService.GetOrderByIdAsync(order.Id));
+            await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
             await ClearCartAsync(shoppingCart);
             PaymentLogger.Info("Cart cleared. Redirecting to ThankYouForYourOrder.");
             TempData["LastCompletedOrderId"] = order.Id;
@@ -1033,17 +1033,13 @@ namespace EImece.Controllers
             return address;
         }
 
-        protected void SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(Order order)
+        protected async Task SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(Order order)
         {
             PaymentLogger.Info($"Entering SendEmails for order ID: {order.Id}");
 
-            // Render the templates and read the email account on the request thread, while the
-            // per-request DbContext is still alive. EmailSender then defers only the SMTP round-trip
-            // (via HostingEnvironment.QueueBackgroundWorkItem) when sendInBackground:true is passed,
-            // so the payment response is not blocked and app-pool recycles don't drop the mail.
-            var emailAccount = SettingService.GetEmailAccount();
-            var customerTemplate = TryRenderOrderConfirmationEmail(order.Id);
-            var adminTemplate = TryRenderCompanyGotNewOrderEmail(order.Id);
+            var emailAccount = await SettingService.GetEmailAccountAsync();
+            var customerTemplate = await TryRenderOrderConfirmationEmailAsync(order.Id);
+            var adminTemplate = await TryRenderCompanyGotNewOrderEmailAsync(order.Id);
 
             if (customerTemplate == null && adminTemplate == null)
             {
@@ -1078,11 +1074,11 @@ namespace EImece.Controllers
             }
         }
 
-        private Tuple<string, RazorRenderResult, Customer> TryRenderOrderConfirmationEmail(int orderId)
+        private async Task<Tuple<string, RazorRenderResult, Customer>> TryRenderOrderConfirmationEmailAsync(int orderId)
         {
             try
             {
-                var emailTemplate = RazorEngineHelper.OrderConfirmationEmail(orderId);
+                var emailTemplate = await RazorEngineHelper.OrderConfirmationEmailAsync(orderId);
                 if (emailTemplate?.Item2?.Result == null)
                 {
                     PaymentLogger.Error("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:" + orderId);
@@ -1098,11 +1094,11 @@ namespace EImece.Controllers
             }
         }
 
-        private Tuple<string, RazorRenderResult, Customer> TryRenderCompanyGotNewOrderEmail(int orderId)
+        private async Task<Tuple<string, RazorRenderResult, Customer>> TryRenderCompanyGotNewOrderEmailAsync(int orderId)
         {
             try
             {
-                var emailTemplate = RazorEngineHelper.CompanyGotNewOrderEmail(orderId);
+                var emailTemplate = await RazorEngineHelper.CompanyGotNewOrderEmailAsync(orderId);
                 if (emailTemplate?.Item2?.Result == null)
                 {
                     PaymentLogger.Error("RazorEngineHelper CompanyGotNewOrderEmail template Is NULL.order.Id:" + orderId);
@@ -1261,7 +1257,7 @@ namespace EImece.Controllers
                 : checkoutForm.ConversationId;
             var order = await ShoppingCartService.SaveBuyWithNoAccountCreationAsync(resolvedOrderNumber, buyWithNoAccountCreation, checkoutForm);
             PaymentLogger.Info($"Order saved with ID: {order.Id}");
-            SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(await OrderService.GetOrderByIdAsync(order.Id));
+            await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
             await ClearBuyWithNoAccountCreationAsync(buyWithNoAccountCreation);
             await ClearCartAsync(shoppingCart);
             PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");

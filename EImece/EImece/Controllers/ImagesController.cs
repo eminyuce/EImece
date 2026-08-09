@@ -193,13 +193,13 @@ namespace EImece.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public FileContentResult Logo()
+        public async Task<ActionResult> Logo()
         {
             var cacheKey = String.Format("WebSiteLogo");
             FileContentResult result = null;
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
-                var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+                var webSiteLogo = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
                 var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
                 var isFullFileExits = System.IO.File.Exists(p.Item1);
                 if (isFullFileExits)
