@@ -215,6 +215,73 @@ body[data-design="crizal"] .attr-nav > ul > li > a span.badge {
     line-height: 1;
 }
 
+/* Bootstrap 4 badge-* helpers → Bootstrap 5 (legacy Razor still uses badge-warning etc.) */
+body[data-design="crizal"] .badge.badge-pill {
+    border-radius: 50rem;
+}
+
+body[data-design="crizal"] .badge.badge-primary {
+    color: #fff;
+    background-color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .badge.badge-secondary {
+    color: #fff;
+    background-color: var(--crizal-secondary);
+}
+
+body[data-design="crizal"] .badge.badge-success {
+    color: #fff;
+    background-color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .badge.badge-info {
+    color: #fff;
+    background-color: #0dcaf0;
+}
+
+body[data-design="crizal"] .badge.badge-warning {
+    color: #212529;
+    background-color: #ffc107;
+}
+
+body[data-design="crizal"] .badge.badge-danger {
+    color: #fff;
+    background-color: var(--crizal-sale);
+}
+
+body[data-design="crizal"] .badge.badge-dark {
+    color: #fff;
+    background-color: #212529;
+}
+
+body[data-design="crizal"] .badge.badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+
+/* Product status / discount chips: keep long Turkish labels readable */
+body[data-design="crizal"] .product-status-badge,
+body[data-design="crizal"] .product-discount-badge {
+    display: inline-block;
+    white-space: normal;
+    line-height: 1.3;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+body[data-design="crizal"] .product-discount-badge {
+    font-size: 0.95rem;
+    padding: 0.45rem 0.85rem;
+    color: #fff;
+    background-color: var(--crizal-sale);
+}
+
+body[data-design="crizal"] .product-status-badge {
+    font-size: 1.05rem;
+    padding: 0.5rem 1rem;
+}
+
 /* Long helper copy under form fields must wrap — never stretch the page */
 body[data-design="crizal"] .form-group > .badge,
 body[data-design="crizal"] .form-group .badge-info {
