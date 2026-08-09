@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
@@ -66,6 +67,23 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
+        public async Task<List<Tag>> GetProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Expression<Func<Tag, object>>[] includeProperties = {
+                r => r.ProductTags,
+                r => r.TagCategory
+            };
+
+            var tags = GetAllIncluding(includeProperties)
+                .Where(r => r.Lang == language && r.IsActive && r.TagCategory.IsActive);
+
+            return await tags
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.Id)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         public Tag GetTagById(int tagId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -111,6 +129,29 @@ namespace EImece.Domain.Repositories
                 .OrderByDescending(x => x.StoryCount)
                 .ThenBy(x => x.Tag.Name)
                 .ToList();
+
+            foreach (var row in rows)
+            {
+                row.Tag.ItemCount = row.StoryCount;
+            }
+
+            return rows.Select(r => r.Tag).ToList();
+        }
+
+        public async Task<List<Tag>> GetTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var rows = await GetAll()
+                .Where(t => t.IsActive && t.Lang == language)
+                .Select(t => new
+                {
+                    Tag = t,
+                    StoryCount = t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
+                })
+                .Where(x => x.StoryCount >= minStoryCount)
+                .OrderByDescending(x => x.StoryCount)
+                .ThenBy(x => x.Tag.Name)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             foreach (var row in rows)
             {

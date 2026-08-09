@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
@@ -74,6 +75,19 @@ namespace EImece.Domain.Repositories
             return result.ToList();
         }
 
+        public async Task<List<Story>> GetFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.StoryTags.Select(r1 => r1.Tag));
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.StoryCategory);
+            Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.IsFeaturedStory && r2.Id != excludedStoryId;
+            Expression<Func<Story, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
+
+            return await result.ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public Story GetNextStory(int currentStoryId, int language)
         {
             var currentStory = dbContext.Stories.FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
@@ -94,6 +108,26 @@ namespace EImece.Domain.Repositories
                 .FirstOrDefault();
         }
 
+        public async Task<Story> GetNextStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var currentStory = await dbContext.Stories.FirstOrDefaultAsync(s => s.Id == currentStoryId && s.Lang == language, cancellationToken).ConfigureAwait(false);
+            if (currentStory == null) return null;
+
+            // Match listing order: Position ASC, UpdatedDate DESC
+            return await dbContext.Stories
+                .Include(s => s.StoryCategory)
+                .Include(s => s.MainImage)
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
+                            (s.Position > currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate < currentStory.UpdatedDate)))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public Story GetPreviousStory(int currentStoryId, int language)
         {
             var currentStory = dbContext.Stories.FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
@@ -112,6 +146,26 @@ namespace EImece.Domain.Repositories
                 .OrderByDescending(s => s.Position)
                 .ThenBy(s => s.UpdatedDate)
                 .FirstOrDefault();
+        }
+
+        public async Task<Story> GetPreviousStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var currentStory = await dbContext.Stories.FirstOrDefaultAsync(s => s.Id == currentStoryId && s.Lang == language, cancellationToken).ConfigureAwait(false);
+            if (currentStory == null) return null;
+
+            // Reverse of listing order so the first result is the adjacent previous story
+            return await dbContext.Stories
+                .Include(s => s.StoryCategory)
+                .Include(s => s.MainImage)
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
+                            (s.Position < currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate > currentStory.UpdatedDate)))
+                .OrderByDescending(s => s.Position)
+                .ThenBy(s => s.UpdatedDate)
+                .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public List<Story> GetLatestStories(int language, int take)
@@ -149,6 +203,26 @@ namespace EImece.Domain.Repositories
             }
         }
 
+        public async Task<PaginatedList<Story>> GetMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                var includeProperties = GetIncludePropertyExpressionList();
+                includeProperties.Add(r => r.StoryCategory);
+                includeProperties.Add(r => r.MainImage);
+                includeProperties.Add(r => r.StoryFiles);
+                includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+                Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
+                Expression<Func<Story, int>> keySelector = t => t.Position;
+                return await this.PaginateDescendingAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw;
+            }
+        }
+
         public List<Story> GetRelatedStories(int[] tagIdList, int take, int lang, int excludedStoryId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -160,6 +234,19 @@ namespace EImece.Domain.Repositories
             var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
 
             return result.ToList();
+        }
+
+        public async Task<List<Story>> GetRelatedStoriesAsync(int[] tagIdList, int take, int lang, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.StoryTags.Select(r1 => r1.Tag));
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.StoryCategory);
+            Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.Lang == lang && r2.StoryTags.Any(t => tagIdList.Contains(t.TagId)) && r2.Id != excludedStoryId;
+            Expression<Func<Story, int>> keySelector = t => t.Position;
+            var result = FindAllIncluding(match, keySelector, OrderByType.Ascending, take, 0, includeProperties.ToArray());
+
+            return await result.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public PaginatedList<Story> GetStoriesByStoryCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)
@@ -184,6 +271,26 @@ namespace EImece.Domain.Repositories
             }
         }
 
+        public async Task<PaginatedList<Story>> GetStoriesByStoryCategoryIdAsync(int storyCategoryId, int language, int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                var includeProperties = GetIncludePropertyExpressionList();
+                includeProperties.Add(r => r.StoryCategory);
+                includeProperties.Add(r => r.MainImage);
+                includeProperties.Add(r => r.StoryFiles);
+                includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+                Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.StoryCategoryId == storyCategoryId && r2.MainPage && r2.Lang == language;
+                Expression<Func<Story, int>> keySelector = t => t.Position;
+                return await this.PaginateDescendingAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw;
+            }
+        }
+
         public Story GetStoryById(int storyId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -192,6 +299,16 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.StoryFiles.Select(t => t.FileStorage));
             includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
             return GetSingleIncluding(storyId, includeProperties.ToArray());
+        }
+
+        public async Task<Story> GetStoryByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.StoryCategory);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.StoryFiles.Select(t => t.FileStorage));
+            includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
+            return await GetSingleIncludingAsync(storyId, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
         }
     }
 }
