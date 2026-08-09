@@ -51,13 +51,26 @@ namespace EImece.Domain.Caching
             return keys.Count;
         }
 
-        public void ClearAll()
+        public int ClearAll()
         {
-            foreach (var key in allCacheKeys.Keys)
+            var keys = allCacheKeys.Keys.ToList();
+            foreach (var key in keys)
             {
                 _lazyCache.Remove(key);
                 allCacheKeys.TryRemove(key, out _);
             }
+
+            // Admin Refresh must also drop OutputCache HTML and MemoryCache.Default — otherwise
+            // ProductsController/[CustomOutputCache] keeps serving stale pages after data eviction.
+            int httpRuntimeRemoved;
+            int memoryCacheRemoved;
+            ApplicationCacheClearer.ClearAspNetCaches(out httpRuntimeRemoved, out memoryCacheRemoved);
+            Logger.Info(
+                "LazyCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
+                keys.Count,
+                httpRuntimeRemoved,
+                memoryCacheRemoved);
+            return keys.Count;
         }
 
         public T GetOrAdd<T>(string key, Func<T> valueFactory, int duration)

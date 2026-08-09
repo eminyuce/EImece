@@ -402,6 +402,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\ApplicationCacheClearer.cs" />
     <Compile Include="Caching\CacheExpirationMode.cs" />
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Caching\CachePolicy.cs" />

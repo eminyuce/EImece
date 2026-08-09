@@ -125,6 +125,11 @@ namespace EImece.App_Start
 
                     List<Product> products = null;
                     Measure("Products", () => products = productService.GetActiveBaseContentsFromCache(true, language));
+                    // Prime the hierarchical product:list:* MemoryCache keys used by the storefront
+                    // (GetActiveProducts / GetMainPageProducts) after Admin Refresh cleared them.
+                    Measure("ActiveProductsList", () => productService.GetActiveProducts(language));
+                    Measure("MainPageProducts", () => productService.GetMainPageProducts(1, language));
+                    Measure("MainPageProductCategories", () => productCategoryService.GetMainPageProductCategories(language));
                     Measure("MailTemplates", () => mailTemplateService.GetAllMailTemplatesWithCache());
                     Measure("ProductDetails", () =>
                     {

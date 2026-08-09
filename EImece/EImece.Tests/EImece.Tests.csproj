@@ -310,6 +310,7 @@
     <Compile Include="Controllers\ParallelPocessingTest.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipherTests.cs" />
+    <Compile Include="Helpers\ApplicationCacheClearerTests.cs" />
     <Compile Include="Helpers\ApplicationMetricsTests.cs" />
     <Compile Include="Helpers\CacheKeysTests.cs" />
     <Compile Include="Helpers\CorrelationIdContextTests.cs" />

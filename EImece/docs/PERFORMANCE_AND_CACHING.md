@@ -203,6 +203,22 @@ Both `MemoryCacheProvider` and `LazyCacheProvider` honour `CachePolicy`.
 | Per-user / high-cardinality keys | Short Absolute or **no cache** | Avoid MemoryCache bloat in one worker process |
 | Async factories shared across requests | Absolute + `CancellationToken.None` in factory | Do not bind a shared cache entry to one request's token |
 
+### Admin Refresh button (`Dashboard/ClearCache`)
+
+The top-bar Refresh control must wipe **every** in-process layer, not only product data keys:
+
+1. `SettingService.ClearCache()` — settings keys
+2. `ProductService.InvalidateProductListCaches()` — `product:list:*` / `product:search:*`
+3. `IEimeceCacheProvider.ClearAll()` — all LazyCache/data entries **plus**
+   - ASP.NET `HttpRuntime.Cache` (OutputCache HTML for Products/Home/…)
+   - `MemoryCache.Default` (RssHelper and other direct writers)
+4. `CacheWarmUpJob.Queue` — background re-prime of menus, categories, `GetActiveProducts`,
+   `GetMainPageProducts`, and a sitemap crawl so the next visitor is not a cold miss
+
+If OutputCache is left intact, `[CustomOutputCache]` product pages keep serving stale HTML even
+after data-cache eviction. `ApplicationCacheClearer` is shared by both cache providers so Admin
+Refresh and any other `ClearAll` caller stay consistent.
+
 ### Single-process caveats
 
 - `MemoryCache` / LazyCache are **in-process**. Multiple IIS workers each have their own copy;
@@ -210,7 +226,8 @@ Both `MemoryCacheProvider` and `LazyCacheProvider` honour `CachePolicy`.
 - Single-flight (`GetOrAdd` / `Lazy<T>`) stops stampedes on expiry — critical when Absolute TTLs
   align under load.
 - Output cache (`CustomOutputCache`) and data cache are complementary: output cache skips MVC
-  entirely; data cache protects shared service/repository work when output cache misses.
+  entirely; data cache protects shared service/repository work when output cache misses. Use Admin
+  Refresh (or `ClearAll`) when both must drop together.
 
 ### Config knobs (`Web.config` / `AppConfig`)
 

@@ -74,15 +74,27 @@ namespace EImece.Areas.Admin.Controllers
             return resultList;
         }
 
+        /// <summary>
+        /// Admin top-bar Refresh button. Wipes every in-process cache layer (data + OutputCache)
+        /// then queues a background warm-up so the next storefront hit is already primed.
+        /// </summary>
         [HttpGet]
         public ActionResult ClearCache()
         {
             // Evict caches synchronously — this is fast and must complete before we redirect so the
             // admin immediately sees fresh data. The expensive rebuild is deferred to a background job.
             var evictionSw = System.Diagnostics.Stopwatch.StartNew();
+
+            // Targeted setting keys first (explicit), then the full provider wipe which also clears
+            // ASP.NET OutputCache / HttpRuntime.Cache and MemoryCache.Default. Without OutputCache
+            // eviction, [CustomOutputCache] product/home pages would keep serving stale HTML.
             SettingService.ClearCache();
-            MemoryCacheProvider.ClearAll();
-            Logger.Info("ClearCache: cache eviction completed in {0} ms", evictionSw.ElapsedMilliseconds);
+            ProductService.InvalidateProductListCaches();
+            var dataKeysRemoved = MemoryCacheProvider.ClearAll();
+            Logger.Info(
+                "ClearCache: eviction completed in {0} ms (provider data keys removed: {1})",
+                evictionSw.ElapsedMilliseconds,
+                dataKeysRemoved);
 
             // Capture request-bound values now; HttpContext is unavailable on the background thread.
             var baseUrl = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);

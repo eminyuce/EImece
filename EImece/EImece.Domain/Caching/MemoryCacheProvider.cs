@@ -1,6 +1,5 @@
 ﻿using NLog;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
@@ -173,7 +172,7 @@ namespace EImece.Domain.Caching
             }
         }
 
-        public void ClearAll()
+        public int ClearAll()
         {
             List<string> cacheKeys = _cache.Select(kvp => kvp.Key).ToList();
             foreach (String key in cacheKeys)
@@ -181,19 +180,17 @@ namespace EImece.Domain.Caching
                 _cache.Remove(key, CacheEntryRemovedReason.Removed);
             }
 
-            List<string> keys = new List<string>();
-
-            IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                string key = (string)enumerator.Key;
-                keys.Add(key);
-            }
-
-            foreach (string key in keys)
-            {
-                System.Web.HttpRuntime.Cache.Remove(key);
-            }
+            // HttpRuntime OutputCache + any leftover Default entries (ClearMemoryCacheDefault is
+            // largely a no-op here because we already emptied MemoryCache.Default above).
+            int httpRuntimeRemoved;
+            int memoryCacheRemoved;
+            ApplicationCacheClearer.ClearAspNetCaches(out httpRuntimeRemoved, out memoryCacheRemoved);
+            Logger.Info(
+                "MemoryCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
+                cacheKeys.Count,
+                httpRuntimeRemoved,
+                memoryCacheRemoved);
+            return cacheKeys.Count;
         }
 
         private static string ToPhysicalKey(string logicalKey)
