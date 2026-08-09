@@ -17,6 +17,7 @@ using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -124,6 +125,34 @@ namespace EImece.Domain.Services
                 result.Tags = TagService.GetActiveBaseEntities(true, language);
                 return result;
             }, AppConfig.CacheMediumSeconds);
+        }
+
+        /// <summary>
+        /// Async twin of <see cref="GetMainPageProducts"/>. Every leg that touches SQL Server is
+        /// awaited, so the request thread is released for the whole duration of the page build
+        /// instead of being parked on four sequential blocking round trips.
+        ///
+        /// The language-scoped parts (company name, menus, tags) come from their own single-flight
+        /// caches; only the paged product query runs per request, which is what lets the caller's
+        /// CancellationToken reach the database. Whole-page caching is the controller's job
+        /// (CustomOutputCache) rather than a shared view-model cache entry, because a shared entry
+        /// cannot honour a per-request token.
+        /// </summary>
+        public async Task<ProductIndexViewModel> GetMainPageProductsAsync(int page, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var result = new ProductIndexViewModel();
+            int pageSize = AppConfig.RecordPerPage;
+
+            result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+
+            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
+            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
+            result.Products = await ProductRepository.GetActiveProductsAsync(page, pageSize, language, cancellationToken).ConfigureAwait(false);
+            result.Tags = await TagService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+
+            return result;
         }
 
         public void SaveProductTags(int id, int[] tags)
@@ -329,6 +358,26 @@ namespace EImece.Domain.Services
 
             r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             r.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+
+            return r;
+        }
+
+        public async Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var r = new ProductsSearchViewModel();
+            r.Search = search;
+            if (!String.IsNullOrEmpty(search))
+            {
+                r.Products = await ProductRepository.SearchProductsAsync(pageIndex, pageSize, search, lang, sorting, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                r.Products = new PaginatedList<Product>(new List<Product>(), pageIndex, pageSize, 0);
+            }
+
+            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
+            r.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            r.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
 
             return r;
         }

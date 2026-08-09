@@ -5,6 +5,7 @@ using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -28,6 +29,8 @@ namespace EImece.Domain.Services.IServices
 
         ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang);
 
+        Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken));
+
         List<ProductTag> GetProductTagsByProductId(int productId);
 
         void SaveProductTags(int id, int[] tags);
@@ -43,6 +46,8 @@ namespace EImece.Domain.Services.IServices
         new void DeleteBaseEntity(List<string> values);
 
         ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
+
+        Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
 
         SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang);
 

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
@@ -44,6 +45,32 @@ namespace EImece.Domain.Repositories
                 var items = this.FindAllIncluding(predicate, keySelector, OrderByType.Ascending, null, null, includeProperties);
 
                 var result = items.ToList();
+
+                return result == null ? new List<T>() : result;
+            }
+            catch (Exception exception)
+            {
+                BaseContentLogger.Error(exception);
+                throw;
+            }
+        }
+
+        public virtual async Task<List<T>> GetActiveBaseContentsAsync(bool? isActive, int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                Expression<Func<T, bool>> match = r2 => r2.Lang == (language.HasValue ? language.Value : r2.Lang);
+                var predicate = PredicateBuilder.Create<T>(match);
+                if (isActive != null && isActive.HasValue)
+                {
+                    predicate = predicate.And(r => r.IsActive == isActive);
+                }
+                Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
+                Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
+                Expression<Func<T, int>> keySelector = t => t.Position;
+                var items = this.FindAllIncluding(predicate, keySelector, OrderByType.Ascending, null, null, includeProperties);
+
+                var result = await items.ToListAsync(cancellationToken).ConfigureAwait(false);
 
                 return result == null ? new List<T>() : result;
             }

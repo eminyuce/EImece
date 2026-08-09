@@ -5,6 +5,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
@@ -12,6 +13,8 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface IProductRepository : IBaseContentRepository<Product>
     {
         PaginatedList<Product> GetActiveProducts(int pageIndex, int pageSize, int language);
+
+        Task<PaginatedList<Product>> GetActiveProductsAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken));
 
         PaginatedList<Product> GetMainPageProducts(int pageIndex, int pageSize, int language);
 
@@ -30,6 +33,8 @@ namespace EImece.Domain.Repositories.IRepositories
         Product GetProduct(int id);
 
         PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
+
+        Task<PaginatedList<Product>> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
 
         IEnumerable<Product> GetData(out int totalRecords, string globalSearch, String name, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
 

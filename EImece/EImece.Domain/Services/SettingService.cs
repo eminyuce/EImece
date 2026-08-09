@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -32,6 +34,7 @@ namespace EImece.Domain.Services
         public void ClearCache()
         {
             DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY);
+            DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix);
         }
 
         private List<Setting> GetAllSettings()
@@ -40,6 +43,15 @@ namespace EImece.Domain.Services
                 ALL_SETTING_CACHE_KEY,
                 () => SettingRepository.GetAllSettings(),
                 AppConfig.CacheLongSeconds);
+        }
+
+        private async Task<List<Setting>> GetAllSettingsAsync()
+        {
+            // CancellationToken.None: the cached task is shared by all concurrent misses.
+            return await DataCachingProvider.GetOrAddAsync(
+                ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix,
+                () => SettingRepository.GetAllSettingsAsync(CancellationToken.None),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public string GetSettingByKey(string key)
@@ -54,9 +66,42 @@ namespace EImece.Domain.Services
             return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
         }
 
+        public async Task<string> GetSettingByKeyAsync(string key)
+        {
+            var result = await GetSettingObjectByKeyAsync(key).ConfigureAwait(false);
+            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
+        }
+
+        public async Task<string> GetSettingByKeyAsync(string key, int language)
+        {
+            var result = await GetSettingObjectByKeyAsync(key, language).ConfigureAwait(false);
+            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
+        }
+
         public Setting GetSettingObjectByKey(string key)
         {
-            var allSettings = GetAllSettings();
+            return SelectSettingByKey(GetAllSettings(), key);
+        }
+
+        public async Task<Setting> GetSettingObjectByKeyAsync(string key)
+        {
+            var allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
+            return SelectSettingByKey(allSettings, key);
+        }
+
+        public Setting GetSettingObjectByKey(string key, int language)
+        {
+            return SelectSettingByKey(GetAllSettings(), key, language);
+        }
+
+        public async Task<Setting> GetSettingObjectByKeyAsync(string key, int language)
+        {
+            var allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
+            return SelectSettingByKey(allSettings, key, language);
+        }
+
+        private Setting SelectSettingByKey(List<Setting> allSettings, string key)
+        {
             // Prefer the most recently updated row when duplicates exist for the same key.
             var result = allSettings
                 .Where(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase))
@@ -74,9 +119,8 @@ namespace EImece.Domain.Services
             return setting;
         }
 
-        public Setting GetSettingObjectByKey(string key, int language)
+        private Setting SelectSettingByKey(List<Setting> allSettings, string key, int language)
         {
-            var allSettings = GetAllSettings();
             var result = allSettings
                 .Where(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.OrdinalIgnoreCase))
                 .OrderByDescending(r => r.UpdatedDate)

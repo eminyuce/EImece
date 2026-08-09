@@ -5,6 +5,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -43,6 +44,24 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => baseEntityRepository.GetActiveBaseEntities(isActive, language),
                 AppConfig.CacheLongSeconds);
+        }
+
+        public virtual async Task<List<T>> GetActiveBaseEntitiesAsync(bool? isActive, int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await baseEntityRepository.GetActiveBaseEntitiesAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public virtual async Task<List<T>> GetActiveBaseEntitiesFromCacheAsync(bool? isActive, int? language)
+        {
+            String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseEntitiesFromCache-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+
+            // Single-flight population: concurrent misses share one repository call. The caller's
+            // token is intentionally not forwarded here - one request cancelling would otherwise
+            // fault the shared task that every other waiter is already awaiting.
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => baseEntityRepository.GetActiveBaseEntitiesAsync(isActive, language, CancellationToken.None),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int? language)

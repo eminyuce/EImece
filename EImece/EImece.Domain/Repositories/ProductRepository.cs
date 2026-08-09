@@ -17,6 +17,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
@@ -49,6 +50,31 @@ namespace EImece.Domain.Repositories
                 var items = this.PaginateDescending(pageIndex, pageSize, keySelector, match, includeProperties);
 
                 return items;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw;
+            }
+        }
+
+        public async Task<PaginatedList<Product>> GetActiveProductsAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                Expression<Func<Product, object>> includeProperty1 = r => r.ProductFiles;
+                Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
+                Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
+                Expression<Func<Product, object>> includeProperty4 = r => r.ProductTags.Select(t => t.Tag);
+                Expression<Func<Product, object>>[] includeProperties = {
+                    includeProperty1,
+                    includeProperty2,
+                    includeProperty4,
+                    includeProperty3 };
+                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language;
+                Expression<Func<Product, int>> keySelector = t => t.Position;
+
+                return await this.PaginateDescendingAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
@@ -244,6 +270,39 @@ namespace EImece.Domain.Repositories
             {
                 Expression<Func<Product, double>> keySelector = t => t.Position;
                 return this.Paginate(pageIndex, pageSize, keySelector, match, includeProperties.ToArray());
+            }
+        }
+
+        public async Task<PaginatedList<Product>> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang
+            && (r2.Name.Contains(search.Trim())
+            || r2.NameLong.Contains(search.Trim())
+            || r2.NameShort.Contains(search.Trim()));
+
+            if (sorting == SortingType.LowHighPrice)
+            {
+                Expression<Func<Product, decimal>> keySelector = t => t.Price;
+                return await this.PaginateAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            else if (sorting == SortingType.HighLowPrice)
+            {
+                Expression<Func<Product, decimal>> keySelector = t => t.Price;
+                return await this.PaginateDescendingAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            else if (sorting == SortingType.Newest)
+            {
+                Expression<Func<Product, DateTime>> keySelector = t => t.UpdatedDate;
+                return await this.PaginateAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+            }
+            else
+            {
+                Expression<Func<Product, double>> keySelector = t => t.Position;
+                return await this.PaginateAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
             }
         }
 

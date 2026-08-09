@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
@@ -9,6 +10,8 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface IBaseContentRepository<T> : IBaseEntityRepository<T> where T : BaseContent
     {
         List<T> GetActiveBaseContents(bool? isActive, int? language);
+
+        Task<List<T>> GetActiveBaseContentsAsync(bool? isActive, int? language, CancellationToken cancellationToken = default(CancellationToken));
 
         T GetBaseContent(int id);
 
