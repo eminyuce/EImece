@@ -19,7 +19,7 @@
     <li>Bu sayfada sistemin gönderdiği <strong>e-posta şablonlarını</strong> düzenlersiniz (sipariş onayı, şifre sıfırlama vb.).</li>
     <li><strong>İsim</strong>: Sistemin şablonu bulduğu anahtar ad. Düzenlerken genelde değiştirilmemelidir.</li>
     <li><strong>Konu</strong>: E-posta konusu. Dinamik alanlar Razor sözdizimi ile yazılabilir.</li>
-    <li><strong>Gövde</strong>: Kısa alanların hemen altındaki içerik bölümünde düzenlenen HTML e-posta içeriği.</li>
+    <li><strong>E-Posta İçerik</strong>: 2. sekmedeki editörde düzenlenen HTML e-posta içeriği.</li>
     <li><strong>Yayında / Sıra</strong>: Şablonun kullanımı ve listelenme sırası.</li>
 </ul>
 <p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Konu:</strong></p>
@@ -48,8 +48,8 @@
     <div class="panel panel-default admin-edit-form">
                 @Html.Partial("_AdminEditFormToolbar")
                 <div class="panel-body">
-                    <section id="admin-edit-section-fields" class="admin-edit-section">
-                        @Html.Partial("_AdminEditFieldsHeading")
+                    <div class="tab-content">
+                        <div id="admin-edit-tab-fields" class="tab-pane fade in active" role="tabpanel">
 <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -92,9 +92,10 @@
                             @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                        </section>
-                        <section id="admin-edit-section-content" class="admin-edit-section admin-edit-section-content">
-                        @Html.Partial("_AdminEditContentHeading")
+                            @Html.Partial("_AdminEditNextStep")
+                        </div>
+                        <div id="admin-edit-tab-content" class="tab-pane fade" role="tabpanel">
+                            @Html.Partial("_AdminEditBackToFields")
 <div class="form-group">
                         <div class="col-md-12">
                             @Html.TextAreaFor(model => model.Body, 50, 50, new { @class = "form-control" })
@@ -102,7 +103,7 @@
                     
 
                     </div>
-                        </section>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -5,18 +5,31 @@
     var backUrl = ViewBag.BackUrl as string ?? Url.Action("Index");
     var contentSectionTitle = ViewBag.ContentSectionTitle as string ?? AdminResource.EntityDescriptionPage;
 }
-<div class="panel-heading admin-edit-toolbar-heading">
-    <nav class="admin-edit-section-nav" aria-label="Form sections">
-        <a href="#admin-edit-section-fields" class="admin-edit-section-link">
-            <span class="admin-edit-section-step">1</span>
-            <span class="admin-edit-section-link-text">@AdminResource.EntityShortFields</span>
-        </a>
-        <a href="#admin-edit-section-content" class="admin-edit-section-link">
-            <span class="admin-edit-section-step">2</span>
-            <span class="admin-edit-section-link-text">@contentSectionTitle</span>
-            <span class="admin-edit-section-badge">editör</span>
-        </a>
-    </nav>
+<div class="panel-heading admin-edit-tabs-heading">
+    <ul class="nav nav-tabs admin-edit-tabs" role="tablist">
+        <li class="active" role="presentation">
+            <a href="#admin-edit-tab-fields"
+               data-toggle="tab"
+               role="tab"
+               aria-controls="admin-edit-tab-fields"
+               data-admin-edit-tab="fields">
+                <span class="admin-edit-tab-step">1</span>
+                <span class="admin-edit-tab-text">@AdminResource.EntityShortFields</span>
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#admin-edit-tab-content"
+               data-toggle="tab"
+               role="tab"
+               aria-controls="admin-edit-tab-content"
+               data-admin-edit-tab="content"
+               data-admin-edit-content-tab="1">
+                <span class="admin-edit-tab-step">2</span>
+                <span class="admin-edit-tab-text">@contentSectionTitle</span>
+                <span class="admin-edit-tab-badge">editör</span>
+            </a>
+        </li>
+    </ul>
     <div class="admin-edit-toolbar-actions">
         <input type="submit" name="saveButton" value="@saveButtonText" class="btn btn-sm btn-success" />
         <input type="submit" name="saveButton" value="@saveButtonAndCloseText" class="btn btn-sm btn-success" />

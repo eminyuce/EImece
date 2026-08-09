@@ -1362,6 +1362,9 @@ label[for^="ImageState"]:not(.control-label) {
 /* -------------------------------------------------------------------------
    Admin edit forms: short fields + always-visible content editor
    ------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------
+   Admin edit forms: short-fields / content tabs
+   ------------------------------------------------------------------------- */
 .admin-edit-form {
     border-color: #d7dde5;
     box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
@@ -1370,16 +1373,16 @@ label[for^="ImageState"]:not(.control-label) {
 
 .admin-edit-form > .panel-body {
     clear: both;
-    padding-top: 16px;
+    padding-top: 20px;
 }
 
-.admin-edit-toolbar-heading {
+.admin-edit-tabs-heading {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 10px 16px;
-    padding: 10px 12px !important;
+    padding: 10px 12px 0 !important;
     background: #f7f9fc;
     border-bottom: 1px solid #e3e8ef;
     position: sticky;
@@ -1387,46 +1390,48 @@ label[for^="ImageState"]:not(.control-label) {
     z-index: 30;
 }
 
-.admin-edit-section-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+.admin-edit-tabs {
+    border-bottom: none !important;
+    margin: 0 !important;
+    float: none !important;
 }
 
-.admin-edit-section-link {
-    display: inline-flex;
+.admin-edit-tabs > li {
+    float: left;
+    margin-bottom: 0;
+}
+
+.admin-edit-tabs > li > a {
+    display: flex !important;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
-    border: 1px solid #d7e0ea;
-    border-radius: 8px;
-    background: #fff;
+    margin-right: 6px !important;
+    padding: 10px 14px !important;
+    border: 1px solid transparent !important;
+    border-radius: 8px 8px 0 0 !important;
     color: #445466 !important;
+    background: transparent !important;
     font-weight: 600;
     line-height: 1.3;
-    text-decoration: none !important;
 }
 
-.admin-edit-section-link:hover,
-.admin-edit-section-link:focus {
-    background: #eef3f9;
-    border-color: #b8c9dc;
+.admin-edit-tabs > li > a:hover,
+.admin-edit-tabs > li > a:focus {
+    background: #eef3f9 !important;
+    border-color: #d7e0ea #d7e0ea transparent !important;
     color: #1f3b57 !important;
 }
 
-.admin-edit-section-link.is-active {
-    background: #fff;
-    border-color: #2f6fed;
+.admin-edit-tabs > li.active > a,
+.admin-edit-tabs > li.active > a:hover,
+.admin-edit-tabs > li.active > a:focus {
     color: #16324f !important;
-    box-shadow: 0 0 0 1px rgba(47, 111, 237, 0.15);
+    background: #fff !important;
+    border-color: #d7dde5 #d7dde5 #fff !important;
+    box-shadow: 0 -1px 0 #fff inset;
 }
 
-.admin-edit-section-link.is-active .admin-edit-section-step {
-    background: #2f6fed;
-    color: #fff;
-}
-
-.admin-edit-section-step {
+.admin-edit-tab-step {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1437,10 +1442,14 @@ label[for^="ImageState"]:not(.control-label) {
     color: #2f4f73;
     font-size: 12px;
     font-weight: 700;
-    flex-shrink: 0;
 }
 
-.admin-edit-section-badge {
+.admin-edit-tabs > li.active .admin-edit-tab-step {
+    background: #2f6fed;
+    color: #fff;
+}
+
+.admin-edit-tab-badge {
     display: inline-block;
     padding: 2px 7px;
     border-radius: 999px;
@@ -1449,14 +1458,13 @@ label[for^="ImageState"]:not(.control-label) {
     font-size: 11px;
     font-weight: 700;
     text-transform: lowercase;
-    vertical-align: middle;
 }
 
 .admin-edit-toolbar-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-left: auto;
+    margin: 0 0 8px auto;
 }
 
 .admin-edit-toolbar-actions .btn {
@@ -1464,77 +1472,82 @@ label[for^="ImageState"]:not(.control-label) {
     margin: 0 !important;
 }
 
-.admin-edit-section {
-    scroll-margin-top: 72px;
-}
-
-.admin-edit-section + .admin-edit-section {
-    margin-top: 28px;
-    padding-top: 22px;
-    border-top: 1px solid #e3e8ef;
-}
-
-.admin-edit-section-heading {
+.admin-edit-next-step,
+.admin-edit-back-step {
     display: flex;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: 12px;
-    margin: 0 0 18px;
+    margin-top: 18px;
+    padding: 14px 16px;
+    border: 1px solid #d7e4f5;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #f5f9ff 0%, #eef5ff 100%);
 }
 
-.admin-edit-section-heading .admin-edit-section-step {
-    margin-top: 2px;
-    background: #2f6fed;
-    color: #fff;
+.admin-edit-back-step {
+    margin-top: 0;
+    margin-bottom: 14px;
+    justify-content: flex-start;
+    background: #f8fafc;
+    border-color: #e3e8ef;
 }
 
-.admin-edit-section-heading-text {
-    min-width: 0;
-}
-
-.admin-edit-section-title {
-    margin: 0 0 4px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #16324f;
-    line-height: 1.3;
-}
-
-.admin-edit-section-help {
-    margin: 0;
-    color: #5b6b7c;
+.admin-edit-next-step-text {
+    color: #33506d;
     font-size: 13px;
     line-height: 1.45;
+    max-width: 640px;
 }
 
-.admin-edit-section-content .form-group {
+#admin-edit-tab-content .form-group {
     margin-bottom: 0;
 }
 
-.admin-edit-section-content .tox-tinymce {
+#admin-edit-tab-content .tox-tinymce {
     border-radius: 4px;
 }
 
 @media (max-width: 767px) {
-    .admin-edit-toolbar-heading {
+    .admin-edit-tabs-heading {
         position: static;
+        padding-bottom: 10px !important;
     }
 
-    .admin-edit-section-nav,
-    .admin-edit-toolbar-actions {
+    .admin-edit-tabs {
         width: 100%;
     }
 
-    .admin-edit-section-link {
-        flex: 1 1 auto;
+    .admin-edit-tabs > li {
+        float: none;
+        width: 100%;
+        margin-bottom: 6px;
     }
 
-    .admin-edit-toolbar-actions .btn {
+    .admin-edit-tabs > li > a {
+        border-radius: 8px !important;
+        margin-right: 0 !important;
+    }
+
+    .admin-edit-tabs > li.active > a {
+        border-color: #2f6fed !important;
+    }
+
+    .admin-edit-toolbar-actions {
+        width: 100%;
+        margin: 0;
+    }
+
+    .admin-edit-toolbar-actions .btn,
+    .admin-edit-next-step .btn {
         flex: 1 1 auto;
         min-width: 0;
     }
 
-    .admin-edit-section {
-        scroll-margin-top: 16px;
+    .admin-edit-next-step {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
 

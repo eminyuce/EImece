@@ -232,39 +232,66 @@ $(document).ready(function () {
     if (window.EImece && EImece.RichTextEditor) {
         EImece.RichTextEditor.init();
     }
-    bindAdminEditSections();
+    bindAdminEditTabs();
     searchAutoComplete();
-    function bindAdminEditSections() {
+    function bindAdminEditTabs() {
         var $form = $(".admin-edit-form");
         if (!$form.length) {
             return;
         }
 
-        function setActiveSectionLink(href) {
-            $form.find(".admin-edit-section-link").removeClass("is-active");
-            $form.find('.admin-edit-section-link[href="' + href + '"]').addClass("is-active");
+        var storageKey = "eimece.admin.editTab:" + window.location.pathname.toLowerCase();
+
+        function activateTab(href) {
+            var $link = $form.find('.admin-edit-tabs a[href="' + href + '"]');
+            if ($link.length) {
+                $link.tab("show");
+            }
         }
 
-        $form.off("click.adminEditSections", ".admin-edit-section-link")
-            .on("click.adminEditSections", ".admin-edit-section-link", function (e) {
-                var href = $(this).attr("href");
-                if (!href || href.charAt(0) !== "#") {
-                    return;
+        function refreshEditorsSoon() {
+            window.setTimeout(function () {
+                if (window.EImece && EImece.RichTextEditor && typeof EImece.RichTextEditor.refreshVisible === "function") {
+                    EImece.RichTextEditor.refreshVisible();
                 }
-                var target = document.querySelector(href);
-                if (!target) {
-                    return;
-                }
+            }, 50);
+        }
+
+        $form.off("click.adminEditTabs", "[data-admin-edit-goto-content]")
+            .on("click.adminEditTabs", "[data-admin-edit-goto-content]", function (e) {
                 e.preventDefault();
-                setActiveSectionLink(href);
-                if (typeof target.scrollIntoView === "function") {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
-                } else {
-                    window.location.hash = href;
+                activateTab("#admin-edit-tab-content");
+            });
+
+        $form.off("click.adminEditTabs", "[data-admin-edit-goto-fields]")
+            .on("click.adminEditTabs", "[data-admin-edit-goto-fields]", function (e) {
+                e.preventDefault();
+                activateTab("#admin-edit-tab-fields");
+            });
+
+        $form.off("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-toggle="tab"]')
+            .on("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-toggle="tab"]', function (e) {
+                var href = $(e.target).attr("href");
+                try {
+                    if (window.sessionStorage && href) {
+                        window.sessionStorage.setItem(storageKey, href);
+                    }
+                } catch (err) { }
+
+                if (href === "#admin-edit-tab-content") {
+                    refreshEditorsSoon();
                 }
             });
 
-        setActiveSectionLink("#admin-edit-section-fields");
+        try {
+            var saved = window.sessionStorage ? window.sessionStorage.getItem(storageKey) : null;
+            if (saved === "#admin-edit-tab-content" || saved === "#admin-edit-tab-fields") {
+                activateTab(saved);
+                if (saved === "#admin-edit-tab-content") {
+                    refreshEditorsSoon();
+                }
+            }
+        } catch (err) { }
     }
     $("input[name=checkboxGrid]").each(function () {
         $(this).off("click");

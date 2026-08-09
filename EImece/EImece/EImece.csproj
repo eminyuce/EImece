@@ -1316,9 +1316,11 @@
     <Content Include="Views\Designs\Crizal\UnderConstruction\Index.cshtml" />
     <Content Include="Content\designs\**\*.*" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminEditBackToFields.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminEditContentHeading.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminEditFieldsHeading.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminEditFormToolbar.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminEditNextStep.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionEnd.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />

@@ -1,0 +1,12 @@
+@using Resources
+@{
+    var contentSectionTitle = ViewBag.ContentSectionTitle as string ?? AdminResource.EntityDescriptionPage;
+}
+<div class="admin-edit-next-step clearfix">
+    <div class="admin-edit-next-step-text">
+        Temel alanları doldurduktan sonra <strong>@contentSectionTitle</strong> sekmesine geçin.
+    </div>
+    <button type="button" class="btn btn-primary" data-admin-edit-goto-content>
+        @contentSectionTitle <span aria-hidden="true">→</span>
+    </button>
+</div>

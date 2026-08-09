@@ -24,7 +24,7 @@
     <li><strong>Ana sayfa</strong>: İşaretliyse marka ana sayfada listelenir.</li>
     <li><strong>Sırası</strong>: Listede görünme sırası; küçük sayı önce gelir.</li>
     <li><strong>Resim</strong>: Marka logosunu yükleyin. <strong>Resim durumu</strong> ile görüntülenmeyi açıp kapatabilirsiniz.</li>
-    <li><strong>Genel açıklama</strong>: Kısa alanların hemen altındaki içerik editöründe yazılır (her zaman görünür).</li>
+    <li><strong>Genel açıklama</strong>: 2. sekmedeki içerik editöründe yazılır.</li>
 </ul>
 @Html.Partial("_AdminHelpAccordionEnd")
 
@@ -48,8 +48,8 @@
     <div class="panel panel-default admin-edit-form">
                 @Html.Partial("_AdminEditFormToolbar")
                 <div class="panel-body">
-                    <section id="admin-edit-section-fields" class="admin-edit-section">
-                        @Html.Partial("_AdminEditFieldsHeading")
+                    <div class="tab-content">
+                        <div id="admin-edit-tab-fields" class="tab-pane fade in active" role="tabpanel">
 <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -109,9 +109,10 @@
                         </div>
                     </div>
                     @Html.Partial("pSliderResizing", (BaseContent)Model)
-                        </section>
-                        <section id="admin-edit-section-content" class="admin-edit-section admin-edit-section-content">
-                        @Html.Partial("_AdminEditContentHeading")
+                            @Html.Partial("_AdminEditNextStep")
+                        </div>
+                        <div id="admin-edit-tab-content" class="tab-pane fade" role="tabpanel">
+                            @Html.Partial("_AdminEditBackToFields")
 <div class="form-group">
                         <div class="col-md-12">
                             @Html.TextAreaFor(model => model.Description, new { @class = "form-control eimece-rich-text-editor" })
@@ -119,7 +120,7 @@
                     
 
                     </div>
-                        </section>
+                        </div>
                     </div>
                 </div>
             </div>
