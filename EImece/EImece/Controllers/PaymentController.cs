@@ -690,7 +690,6 @@ namespace EImece.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            //SendNotificationEmailsToCustomerAndAdminUsersForNewOrder(OrderService.GetOrderById(order.Id));
             return View(order);
         }
 

@@ -3,6 +3,8 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -21,6 +23,8 @@ namespace EImece.Domain.Services.IServices
         string DeleteFileStorage(int id);
 
         FileStorage GetFileStorage(int fileStorageId);
+
+        Task<FileStorage> GetFileStorageAsync(int fileStorageId, CancellationToken cancellationToken = default(CancellationToken));
 
         void DeleteUploadImage(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod);
 

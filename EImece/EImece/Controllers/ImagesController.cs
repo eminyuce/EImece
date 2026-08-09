@@ -59,12 +59,12 @@ namespace EImece.Controllers
         // GET: Images
         [AcceptVerbs(HttpVerbs.Get)]
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
-        public ActionResult Index(String id, String imageSize)
+        public async Task<ActionResult> Index(String id, String imageSize)
         {
-            return GenerateImage(id, imageSize);
+            return await GenerateImageAsync(id, imageSize);
         }
 
-        private ActionResult GenerateImage(string id, string imageSize)
+        private async Task<ActionResult> GenerateImageAsync(string id, string imageSize)
         {
             if (String.IsNullOrEmpty(id))
             {
@@ -88,8 +88,8 @@ namespace EImece.Controllers
                 bool wantsWebP = Request.AcceptTypes != null
                     && Request.AcceptTypes.Any(t => t != null && t.IndexOf("image/webp", StringComparison.OrdinalIgnoreCase) >= 0);
                 var imageByte = wantsWebP
-                    ? FilesHelper.GetResizedImageAsWebP(fileStorageId, width, height)
-                    : FilesHelper.GetResizedImage(fileStorageId, width, height);
+                    ? await FilesHelper.GetResizedImageAsWebPAsync(fileStorageId, width, height)
+                    : await FilesHelper.GetResizedImageAsync(fileStorageId, width, height);
                 if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     Response.StatusCode = 200;
