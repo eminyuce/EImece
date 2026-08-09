@@ -229,6 +229,12 @@ namespace EImece.Areas.Admin.Controllers
                 return false;
             }
 
+            // Child actions (e.g. Html.Action in _AdminTopbar) cannot redirect.
+            if (filterContext.IsChildAction)
+            {
+                return false;
+            }
+
             var httpContext = filterContext.HttpContext;
             if (httpContext == null || httpContext.IsDebuggingEnabled)
             {
@@ -237,9 +243,12 @@ namespace EImece.Areas.Admin.Controllers
 
             var controllerName = filterContext.RouteData.Values["controller"] as string ?? string.Empty;
             var actionName = filterContext.RouteData.Values["action"] as string ?? string.Empty;
-            if (string.Equals(controllerName, "Users", StringComparison.OrdinalIgnoreCase)
-                && (string.Equals(actionName, "EnableAuthenticator", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase)))
+
+            // Allow setup page and logout (otherwise LogOff is intercepted by this redirect).
+            if (string.Equals(actionName, "LogOff", StringComparison.OrdinalIgnoreCase)
+                || (string.Equals(controllerName, "Users", StringComparison.OrdinalIgnoreCase)
+                    && (string.Equals(actionName, "EnableAuthenticator", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase))))
             {
                 return false;
             }
