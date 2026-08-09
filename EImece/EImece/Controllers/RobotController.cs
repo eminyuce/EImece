@@ -1,6 +1,7 @@
 ﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using NLog; // Added for logging
+using NLog;
 using System;
 using System.Text;
 using System.Web.Mvc;
@@ -9,7 +10,7 @@ namespace EImece.Controllers
 {
     public class RobotController : Controller
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); // Added logger instance
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string TextPlain = "text/plain";
 
         // GET: Robots
@@ -18,14 +19,20 @@ namespace EImece.Controllers
         {
             Logger.Info("Entering RobotsText action.");
 
-            var content = "";
-            Logger.Info($"Checking site status: IsSiteUnderConstruction = {AppConfig.IsSiteUnderConstruction}, IsSiteUnderDevelopment = {AppConfig.IsSiteUnderDevelopment}, IsSiteLive = {AppConfig.IsSiteLive}");
+            string content;
 
-            if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+            if (!SeoSettings.AllowIndexing)
+            {
+                Logger.Info("Search engine indexing is disabled. Setting robots.txt to disallow all.");
+                content = "User-agent: *" + Environment.NewLine
+                        + "Disallow: /" + Environment.NewLine;
+            }
+            else if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
             {
                 Logger.Info("Site is under construction or development. Setting robots.txt to disallow all.");
-                content = "Disallow: /" + Environment.NewLine;
-                content += "# Disallow Robots (Debug)" + Environment.NewLine;
+                content = "User-agent: *" + Environment.NewLine
+                        + "Disallow: /" + Environment.NewLine
+                        + "# Disallow Robots (Debug)" + Environment.NewLine;
             }
             else if (AppConfig.IsSiteLive)
             {
@@ -35,19 +42,22 @@ namespace EImece.Controllers
                 var fLink = builder.Uri;
                 Logger.Info($"Generated sitemap URL: {fLink}");
 
-                content += "User-agent:* " + Environment.NewLine;
-                content += "Sitemap: " + fLink + Environment.NewLine;
-                content += "Disallow: /Ajax/ " + Environment.NewLine;
-                content += "Disallow: /Error/ " + Environment.NewLine;
-                content += "Disallow: /Manage/ " + Environment.NewLine;
-                content += "Disallow: /Account/ " + Environment.NewLine;
-                content += "Disallow: /Admin/ " + Environment.NewLine;
-                content += "Disallow: /Customer/ " + Environment.NewLine;
-                content += "# Allow Robots (Release)" + Environment.NewLine;
+                content = "User-agent: *" + Environment.NewLine
+                        + "Allow: /" + Environment.NewLine
+                        + "Sitemap: " + fLink + Environment.NewLine
+                        + "Disallow: /Ajax/ " + Environment.NewLine
+                        + "Disallow: /Error/ " + Environment.NewLine
+                        + "Disallow: /Manage/ " + Environment.NewLine
+                        + "Disallow: /Account/ " + Environment.NewLine
+                        + "Disallow: /Admin/ " + Environment.NewLine
+                        + "Disallow: /Customer/ " + Environment.NewLine
+                        + "# Allow Robots (Release)" + Environment.NewLine;
             }
             else
             {
-                Logger.Info("No specific site status matched. Returning empty robots.txt content.");
+                Logger.Info("No specific site status matched. Returning allow-all robots.txt.");
+                content = "User-agent: *" + Environment.NewLine
+                        + "Allow: /" + Environment.NewLine;
             }
 
             return File(Encoding.UTF8.GetBytes(content), TextPlain);

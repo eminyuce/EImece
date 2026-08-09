@@ -45,10 +45,10 @@
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
 
-    @if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+    @if (!SeoSettings.AllowIndexing || AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
     {
-        <meta name="robots" content="noindex">
-        <meta name="googlebot" content="noindex">
+        <meta name="robots" content="noindex, nofollow, noarchive" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive" />
     }
     else
     {
