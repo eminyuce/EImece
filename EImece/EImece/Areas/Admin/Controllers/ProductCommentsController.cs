@@ -13,10 +13,17 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(int id, String search = "")
+        public ActionResult Index(int? id, String search = "")
         {
-            var productComments = ProductCommentService.GetAdminPageList(id, search, CurrentLanguage);
-            ViewBag.Product = ProductService.GetSingle(id);
+            if (!id.HasValue)
+            {
+                // Comments are scoped to a product (opened from Products grid); bare URL is not a listing.
+                SetErrorMessage("Ürün yorumları bir ürün kaydı üzerinden açılmalıdır.");
+                return RedirectToAction("Index", "Products");
+            }
+
+            var productComments = ProductCommentService.GetAdminPageList(id.Value, search, CurrentLanguage);
+            ViewBag.Product = ProductService.GetSingle(id.Value);
             return View(productComments);
         }
 
