@@ -139,30 +139,26 @@
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
 
-<div class="row">
-    <div class="col-md-2">
+<div class="row eg-products-layout">
+    <div class="col-md-3 eg-products-tree-col">
         @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
                             {"UrlPattern","/admin/products/index/"}
                           ,{"UrlQuery", treeUrlQuery}
+                          ,{"SelectedCategoryId", selectedCategory != null ? selectedCategory.Id : 0}
+                          ,{"ShowAllLink", true}
                           ,{"IsExcelButtonEnabled",true}})
 
         <span id="treeClickContainer"></span>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9 eg-products-main-col">
 
         @if (selectedCategory != null)
         {
-            <span>
-                @{
-                    <span>
-                        @AdminResource.SelectedCategory
-                    </span>
-                    <b style="color:red;">
-                        @String.Format("{0}", selectedCategory.Name)
-                    </b>
-                }
-
-                <a href="@Url.Action("Index", "Products", new {
+            <div class="eg-selected-category">
+                <span class="eg-selected-category-label">@AdminResource.SelectedCategory</span>
+                <strong class="eg-selected-category-name">@selectedCategory.Name</strong>
+                <a class="eg-selected-category-clear"
+                   href="@Url.Action("Index", "Products", new {
                     id = 0,
                     brandId = selectedBrandId,
                     search = search,
@@ -172,12 +168,12 @@
                     isCampaign = filterIsCampaign ? (bool?)true : null,
                     minPrice = priceEnabled ? minPrice : null,
                     maxPrice = priceEnabled ? maxPrice : null
-                })">
-                    <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
+                })"
+                   title="Kategori filtresini temizle"
+                   aria-label="Kategori filtresini temizle">
+                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                 </a>
-            </span>
-            <hr />
-
+            </div>
         }
 
         <div class="panel panel-default product-admin-filters @(hasAdvancedFilter ? "is-open" : "is-collapsed")" id="productAdminFilters">

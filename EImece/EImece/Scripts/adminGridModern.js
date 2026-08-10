@@ -317,6 +317,45 @@
         });
     }
 
+    function wireCategoryTree() {
+        var $trees = $('[data-eg-category-tree]');
+        if (!$trees.length) {
+            return;
+        }
+
+        $trees.each(function () {
+            var $tree = $(this);
+            var selectedId = String($tree.attr('data-selected-id') || '0');
+            if (selectedId && selectedId !== '0') {
+                var $active = $tree.find('.eg-tree-node[data-category-id="' + selectedId + '"]');
+                $active.parents('.eg-tree-node.has-children').addClass('is-open')
+                    .children('.eg-tree-row').find('.eg-tree-toggle').attr('aria-expanded', 'true');
+                // Collapse siblings of the path for a quieter tree when a deep node is selected.
+                $tree.find('.eg-tree-node.has-children').not($active.parents('.eg-tree-node').add($active)).each(function () {
+                    var $node = $(this);
+                    if ($node.find('.eg-tree-node[data-category-id="' + selectedId + '"]').length === 0
+                        && String($node.attr('data-category-id')) !== selectedId) {
+                        // keep top-level open by default; only collapse deeper unrelated branches
+                        if ($node.parents('.eg-tree-node').length > 0) {
+                            $node.removeClass('is-open')
+                                .children('.eg-tree-row').find('.eg-tree-toggle').attr('aria-expanded', 'false');
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '[data-eg-category-tree] .eg-tree-toggle', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var $btn = $(this);
+            var $node = $btn.closest('.eg-tree-node');
+            var open = !$node.hasClass('is-open');
+            $node.toggleClass('is-open', open);
+            $btn.attr('aria-expanded', open ? 'true' : 'false');
+        });
+    }
+
     $(function () {
         markModernGrids();
         enhanceLegacyChangeStateSuccess();
@@ -324,5 +363,6 @@
         wireStatusToggles();
         wireLoadingState();
         wireActionMenus();
+        wireCategoryTree();
     });
 }(window, window.jQuery));
