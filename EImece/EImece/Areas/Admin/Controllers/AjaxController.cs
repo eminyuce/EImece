@@ -364,6 +364,13 @@ namespace EImece.Areas.Admin.Controllers
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteOrdersGridItem(List<String> values)
+        {
+            await OrderService.DeleteBaseEntityAsync(values);
+            return Json(values, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         [DeleteAuthorize()]

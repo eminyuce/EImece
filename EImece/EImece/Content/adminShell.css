@@ -859,6 +859,102 @@ body.admin-app .table-responsive {
     }
 }
 
+/* Legacy Bootstrap rows / pSearchForm / dashboard tiles on phones
+   Intent: kill negative .row margins that clip search buttons; give dashboard
+   tiles a usable 2-column thumb grid; keep inputs ≥16px. */
+@media (max-width: 991px) {
+    body.admin-app .admin-content .panel > .row,
+    body.admin-app .admin-content .panel .row {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+    }
+
+    body.admin-app .admin-content .panel [class*="col-"] {
+        float: none;
+        width: 100%;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    body.admin-app .admin-content .panel .input-group {
+        display: flex;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    body.admin-app .admin-content .panel .input-group .form-control {
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0;
+        min-height: var(--admin-touch-min);
+        height: auto;
+        font-size: 16px;
+    }
+
+    body.admin-app .admin-content .panel .input-group-btn {
+        display: flex;
+        width: auto;
+        white-space: nowrap;
+    }
+
+    body.admin-app .admin-content .panel .input-group-btn > .btn {
+        min-height: var(--admin-touch-min);
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}
+
+@media (max-width: 767px) {
+    body.admin-app .admin-content > .container {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    body.admin-app .admin-content > .container > .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    body.admin-app .admin-content > .container [class*="col-"] {
+        float: none;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    body.admin-app .admin-content #searchTxt,
+    body.admin-app .admin-content input[name="searchContent"] {
+        font-size: 16px;
+        min-height: var(--admin-touch-min);
+        margin-bottom: 8px;
+    }
+
+    body.admin-app .admin-content .MainPage > div {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        text-align: center;
+    }
+
+    body.admin-app .admin-content .MainPage > div > a {
+        display: block;
+        margin: 0;
+        min-height: var(--admin-touch-min);
+    }
+
+    body.admin-app .admin-content .MainPage > div > a img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+}
+
 /* Forms, toolbars, modals — phone stacking & iOS zoom prevention
    Intent: full-width stacked controls under 768px; tappable toolbar buttons. */
 @media (max-width: 767px) {
@@ -1025,5 +1121,15 @@ body.admin-app .table-responsive {
     body.admin-app .nav-tabs {
         display: flex;
         flex-wrap: wrap;
+    }
+
+    /* Settings stacked pills — thumb-sized rows */
+    body.admin-app .admin-content .nav-pills > li > a {
+        min-height: var(--admin-touch-min);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 14px;
+        touch-action: manipulation;
     }
 }

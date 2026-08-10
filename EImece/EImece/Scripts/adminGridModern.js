@@ -203,6 +203,34 @@
         $('.grid-mvc').addClass('eg-grid');
         $('.admin-grid-ops').addClass('eg-bulk-bar');
         $('.eg-grid table.grid-table > thead > tr > th').addClass('grid-header');
+        markSecondaryGridColumns();
+    }
+
+    /**
+     * Tag low-priority columns so mobile CSS can collapse them globally.
+     * Keeps index / check / name / image / status / state / price / actions.
+     */
+    function markSecondaryGridColumns() {
+        var keep = /(^|\s)(eg-col-index|eg-col-check|eg-col-name|eg-col-image|eg-col-status|eg-col-state|eg-col-price|eg-col-actions|gridButtons)(\s|$)/;
+        $('.eg-grid table.grid-table').each(function () {
+            var $table = $(this);
+            var $ths = $table.find('thead > tr > th');
+            if ($ths.length < 7) {
+                return;
+            }
+            $ths.each(function (idx) {
+                var $th = $(this);
+                var cls = $th.attr('class') || '';
+                if (keep.test(cls) || $th.hasClass('gridDateClass') || $th.hasClass('smallGridColumn') || $th.hasClass('eg-col-secondary')) {
+                    return;
+                }
+                // Hidden Id columns from Grid.Mvc — keep marking so they stay collapsed on phones
+                $th.addClass('eg-col-secondary');
+                $table.find('tbody > tr').each(function () {
+                    $(this).children('td').eq(idx).addClass('eg-col-secondary');
+                });
+            });
+        });
     }
 
     function wireLoadingState() {
@@ -365,5 +393,10 @@
         wireLoadingState();
         wireActionMenus();
         wireCategoryTree();
+    });
+
+    // Re-mark after Grid.Mvc AJAX redraws
+    $(document).on('gridmvc.loaded', function () {
+        markModernGrids();
     });
 }(window, window.jQuery));

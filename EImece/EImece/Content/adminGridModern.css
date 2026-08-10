@@ -715,12 +715,13 @@ body.admin-app .grid-table td .gridNotActiveIcon:not(.eg-status-icon) {
 }
 
 @media (max-width: 767px) {
-    .eg-actions {
-        display: none;
+    .eg-actions,
+    .eg-actions.btn-group {
+        display: none !important;
     }
 
     .eg-actions-compact {
-        display: inline-flex;
+        display: inline-flex !important;
     }
 
     .eg-grid .grid-wrap,
@@ -1852,10 +1853,13 @@ body.admin-app .eg-grid .grid-wrap {
     }
 
     .eg-category-all {
-        min-height: 36px;
+        min-height: 44px;
         height: auto;
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 10px 14px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .eg-selected-category-clear {
@@ -1869,11 +1873,32 @@ body.admin-app .eg-grid .grid-wrap {
         font-size: 13px;
     }
 
+    .eg-products-layout {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     .eg-products-layout > [class*="col-"] {
         width: 100%;
         float: none;
         padding-left: 0;
         padding-right: 0;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .eg-products-main-col,
+    .eg-products-tree-col {
+        overflow-x: hidden;
+    }
+
+    /* Keep wide tables inside the touch scrollport */
+    .eg-grid-shell .eg-grid,
+    .eg-grid-shell .grid-wrap,
+    .eg-grid-shell .eg-grid-scroll {
+        max-width: 100%;
     }
 
     .admin-grid-ops.eg-bulk-bar .eg-ops-btn,
@@ -1886,9 +1911,12 @@ body.admin-app .eg-grid .grid-wrap {
 
     .admin-grid-ops.eg-bulk-bar #searchTxtInput,
     .admin-grid-ops.eg-bulk-bar .eg-ops-select,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-toolbar .eg-ops-select,
     .admin-grid-ops.eg-bulk-bar select.admin-grid-state-select {
         min-height: 44px;
-        font-size: 16px;
+        height: auto;
+        font-size: 16px !important;
+        line-height: 1.35;
     }
 
     .eg-status-toggle {
@@ -1972,31 +2000,89 @@ body.admin-app .eg-grid .grid-wrap {
 }
 
 @media (max-width: 767px) {
+    /* Intent: stack bulk toolbar without desktop flex-basis (280px) becoming
+       a 280px-tall empty search well when .eg-ops-primary is column flex. */
     .eg-grid-shell {
         border-radius: 6px;
     }
 
-    .admin-grid-ops.eg-bulk-bar .eg-ops-primary,
-    .admin-grid-ops.eg-bulk-bar .eg-search-form,
-    .admin-grid-ops.eg-bulk-bar .eg-ops-search {
+    .admin-grid-ops.eg-bulk-bar .eg-ops-primary {
         width: 100%;
         flex-direction: column;
+        flex-wrap: nowrap;
         align-items: stretch;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-search {
+        flex: 0 1 auto;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        min-height: 0;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-search-form {
+        width: 100%;
+        margin: 0;
     }
 
     .admin-grid-ops.eg-bulk-bar .eg-search-field {
         width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        min-height: 44px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-export {
+        margin-left: 0;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn-export {
+        flex: 1 1 calc(50% - 8px);
+        min-height: 44px;
+        height: auto;
     }
 
     .admin-grid-ops.eg-bulk-bar .eg-search-actions {
-        width: 100%;
-        display: flex;
-        gap: 8px;
+        display: inline-flex;
+        flex: 0 0 auto;
+        width: auto;
+        gap: 0;
+    }
+
+    .admin-grid-ops.eg-bulk-bar #searchTxtInput {
+        min-height: 44px;
+        height: 44px;
+        font-size: 16px;
     }
 
     .admin-grid-ops.eg-bulk-bar #SearchButton,
     .admin-grid-ops.eg-bulk-bar .eg-search-clear {
-        flex: 1 1 auto;
+        min-height: 44px;
+        height: 44px;
+        flex: 0 0 auto;
+    }
+
+    /* Ops selects: beat desktop 11px rules so iOS does not zoom on focus */
+    .admin-grid-ops.eg-bulk-bar .eg-ops-select,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-select-wide,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-toolbar .eg-ops-select,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-toolbar select.admin-grid-state-select,
+    .admin-grid-ops.eg-bulk-bar select.admin-grid-state-select {
+        width: 100%;
+        max-width: none;
+        min-height: 44px;
+        height: auto;
+        font-size: 16px !important;
+        line-height: 1.35;
+        padding-top: 8px;
+        padding-bottom: 8px;
     }
 
     .eg-grid .eg-pager-summary {
@@ -2023,5 +2109,426 @@ body.admin-app .eg-grid .grid-wrap {
 
     .media-file-preview-thumb img {
         max-width: 100%;
+    }
+}
+
+/* ==========================================================================
+   Global mobile DataGrid (all admin Grid.Mvc pages)
+   Intent: contain wide tables inside .grid-wrap (no page-level X scroll),
+   collapse low-priority columns, keep name/status/actions usable, align
+   header/cells, and preserve desktop (≥992px) layout unchanged.
+   ========================================================================== */
+@media (max-width: 991px) {
+    /* Containment chain — table may be wide; only .grid-wrap scrolls */
+    body.admin-app .eg-grid-shell,
+    body.admin-app .grid-mvc.eg-grid,
+    body.admin-app .eg-grid {
+        max-width: 100%;
+        overflow-x: hidden;
+        min-width: 0;
+    }
+
+    body.admin-app .eg-grid .grid-wrap,
+    body.admin-app .eg-grid-scroll,
+    body.admin-app .eg-grid-shell .grid-wrap {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+        /* subtle edge cue that more columns exist */
+        background:
+            linear-gradient(to right, #fff 30%, rgba(255, 255, 255, 0)) left center / 28px 100% no-repeat,
+            linear-gradient(to left, #fff 30%, rgba(255, 255, 255, 0)) right center / 28px 100% no-repeat,
+            #fff;
+        background-attachment: local, local, scroll;
+    }
+
+    /* Sticky headers/columns fight touch pan and can inflate document scrollWidth */
+    body.admin-app .eg-grid .grid-table > thead > tr > th,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.grid-header {
+        position: static !important;
+        top: auto !important;
+        white-space: nowrap;
+    }
+
+    body.admin-app .eg-grid .grid-table {
+        width: max-content;
+        max-width: none;
+        margin-bottom: 0;
+    }
+
+    body.admin-app .eg-grid .grid-table > tbody > tr > td {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        vertical-align: middle !important;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-name,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-name {
+        min-width: 148px;
+        max-width: 220px;
+        white-space: normal;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-actions,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-actions {
+        min-width: 96px;
+        width: 1%;
+        white-space: nowrap;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-index,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-index {
+        width: 48px;
+        min-width: 48px;
+        max-width: 56px;
+        text-align: center;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-status,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-state,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-state {
+        min-width: 110px;
+        max-width: 160px;
+        white-space: normal;
+    }
+
+    body.admin-app .eg-grid .grid-filter-btn,
+    body.admin-app .eg-grid .grid-filter {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        touch-action: manipulation;
+    }
+
+    /* Compact action buttons on phones + tablets
+       (beat adminShell .btn-group { display:flex } which was keeping the dropdown visible) */
+    body.admin-app .admin-content .eg-actions.btn-group,
+    body.admin-app .eg-grid .eg-actions.btn-group,
+    body.admin-app .eg-actions {
+        display: none !important;
+    }
+
+    body.admin-app .eg-actions-compact {
+        display: inline-flex !important;
+    }
+
+    body.admin-app .eg-name-cell .eg-name-meta,
+    body.admin-app .eg-name-cell .eg-name-id {
+        word-break: break-all;
+        white-space: normal;
+        max-width: 100%;
+    }
+
+    body.admin-app .eg-state-badge,
+    body.admin-app .eg-status-pill {
+        max-width: 140px;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.25;
+    }
+}
+
+@media (max-width: 991px) {
+    /* Collapse low-priority columns on phones + tablets (shared across all grids) */
+    body.admin-app .eg-grid .grid-table > thead > tr > th.gridDateClass,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.gridDateClass,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-secondary,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-secondary,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.smallGridColumn:not(.eg-col-status):not(.eg-col-state):not(.eg-col-price):not(.eg-col-actions),
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.smallGridColumn:not(.eg-col-status):not(.eg-col-state):not(.eg-col-price):not(.eg-col-actions) {
+        display: none !important;
+    }
+
+    /* Legacy checkBoxStyle.css draws a 17px box via label::before and also leaves
+       the native input visible — that reads as a stray "]" on phones. Use a single
+       native checkbox in a fixed 48px column instead. */
+    body.admin-app .eg-grid .grid-table > thead > tr > th.gridButtons,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.gridButtons,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-check,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-check {
+        width: 48px !important;
+        min-width: 48px !important;
+        max-width: 52px !important;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    body.admin-app .eg-grid .gridButtons .gridToolBox,
+    body.admin-app .eg-grid .gridButtons .checkbox {
+        width: 44px;
+        min-width: 44px;
+        max-width: 44px;
+        margin: 0 auto;
+        padding: 0 !important;
+        position: relative;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    body.admin-app .eg-grid .gridButtons .checkbox label {
+        display: none !important;
+    }
+
+    body.admin-app .eg-grid .gridButtons .checkbox label::before,
+    body.admin-app .eg-grid .gridButtons .checkbox label::after {
+        content: none !important;
+        display: none !important;
+        border: 0 !important;
+    }
+
+    body.admin-app .eg-grid .gridButtons .checkbox input[type="checkbox"],
+    body.admin-app .eg-grid .gridButtons input.gridCheckboxes {
+        position: static !important;
+        opacity: 1 !important;
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px;
+        min-height: 22px;
+        margin: 0 !important;
+        z-index: 1;
+        cursor: pointer;
+        -webkit-appearance: checkbox;
+        appearance: checkbox;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    body.admin-app .eg-grid .eg-grid-footer,
+    body.admin-app .eg-grid .grid-footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 8px;
+    }
+
+    body.admin-app .eg-grid .eg-state-badge {
+        white-space: normal !important;
+        overflow: visible;
+        text-overflow: unset;
+        max-width: 150px;
+        line-height: 1.25;
+        padding: 6px 8px;
+        display: inline-block;
+    }
+}
+
+@media (max-width: 575px) {
+    /* Prefer name + status + actions over thumbnails on narrow phones */
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-image,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-image {
+        display: none !important;
+    }
+
+    /* Icon-only primary publish toggle — hide secondary MainPage/Image/Campaign
+       switches on phones so rows stay short and actions stay tappable */
+    body.admin-app .eg-grid .eg-status-toggle .eg-status-label {
+        display: none !important;
+    }
+
+    body.admin-app .eg-grid .eg-status-toggle:not([data-eg-status-field="State"]) {
+        display: none !important;
+    }
+
+    body.admin-app .eg-grid .eg-status-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100% !important;
+        min-width: 0 !important; /* beat desktop min-width:132px that spilled into actions */
+        max-width: 100% !important;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status {
+        font-size: 0 !important; /* keep filter control; drop truncated "Yayında mı?" */
+        line-height: 0;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status .grid-filter-btn,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status .grid-sort-arrow,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status [class*="glyphicon"] {
+        font-size: 14px !important;
+        line-height: 1;
+    }
+
+    body.admin-app .eg-grid .eg-status-toggle {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 6px 4px !important;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-status {
+        min-width: 52px;
+        max-width: 64px;
+        width: 56px;
+        text-align: center;
+        overflow: hidden;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-actions,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-actions {
+        overflow: hidden;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-name,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-name {
+        min-width: 120px;
+        max-width: 180px;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-actions,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-actions {
+        min-width: 88px;
+        max-width: 108px;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-state,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-state {
+        min-width: 110px;
+        max-width: 150px;
+    }
+
+    body.admin-app .eg-grid .eg-state-badge {
+        max-width: 140px;
+        font-size: 11px;
+        white-space: normal !important;
+    }
+
+    body.admin-app .eg-grid .eg-actions-compact {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    body.admin-app .eg-grid .eg-actions-compact .btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 430px) {
+    /* Price is secondary on the narrowest phones */
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-price,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-price {
+        display: none !important;
+    }
+
+    /* Products often have both Ürün Durumu (state) and Yayında toggles (status).
+       Keep toggles; drop the badge column. Orders only have eg-col-state — kept. */
+    body.admin-app .eg-grid:has(.eg-col-status) .grid-table > thead > tr > th.eg-col-state,
+    body.admin-app .eg-grid:has(.eg-col-status) .grid-table > tbody > tr > td.eg-col-state {
+        display: none !important;
+    }
+
+    /* Fit priority columns into the viewport; horizontal scroll remains as fallback */
+    body.admin-app .eg-grid .grid-table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th {
+        white-space: normal;
+        line-height: 1.2;
+        font-size: 11px;
+        overflow: hidden;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th .grid-filter-btn {
+        min-width: 32px;
+        min-height: 32px;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-index,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-index {
+        width: 44px;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-check,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-check,
+    body.admin-app .eg-grid .grid-table > thead > tr > th.gridButtons,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.gridButtons {
+        width: 44px;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-status {
+        width: 52px;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-state,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-state {
+        width: 112px;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-actions,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-actions {
+        width: 92px;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+    }
+
+    body.admin-app .eg-grid .eg-status-toggle {
+        width: 40px;
+        min-width: 40px;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-name,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-name {
+        width: auto;
+        min-width: 0;
+        max-width: none;
+    }
+
+    body.admin-app .eg-grid .eg-name-link {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    body.admin-app .eg-grid .eg-name-cell .eg-name-id,
+    body.admin-app .eg-grid .eg-name-cell .eg-name-meta {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    body.admin-app .eg-grid .eg-state-badge {
+        max-width: 100%;
+        box-sizing: border-box;
     }
 }

@@ -1,11 +1,13 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
+using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,13 +30,74 @@ namespace EImece.Domain.Services
             this.CustomerService = customerService;
         }
 
+        public void DeleteOrderById(int id)
+        {
+            OrderProductService.DeleteOrderProductsByOrderId(id);
+            DeleteById(id);
+        }
+
+        public async Task DeleteOrderByIdAsync(int id)
+        {
+            await OrderProductService.DeleteOrderProductsByOrderIdAsync(id).ConfigureAwait(false);
+            await DeleteByIdAsync(id).ConfigureAwait(false);
+        }
+
+        public override void DeleteBaseEntity(List<string> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                foreach (String v in values)
+                {
+                    DeleteOrderById(v.ToInt());
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                Logger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public override async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                foreach (String v in values)
+                {
+                    await DeleteOrderByIdAsync(v.ToInt()).ConfigureAwait(false);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                Logger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
         public void DeleteByUserId(string userId)
         {
             var orderObjs = OrderRepository.GetOrdersUserId(userId, "");
             foreach (var order in orderObjs)
             {
-                OrderProductService.DeleteOrderProductsByOrderId(order.Id);
-                DeleteEntity(order);
+                DeleteOrderById(order.Id);
             }
         }
 
@@ -43,8 +106,7 @@ namespace EImece.Domain.Services
             var orderObjs = await OrderRepository.GetOrdersUserIdAsync(userId, "").ConfigureAwait(false);
             foreach (var order in orderObjs)
             {
-                await OrderProductService.DeleteOrderProductsByOrderIdAsync(order.Id).ConfigureAwait(false);
-                await DeleteEntityAsync(order).ConfigureAwait(false);
+                await DeleteOrderByIdAsync(order.Id).ConfigureAwait(false);
             }
         }
 

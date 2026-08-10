@@ -1,4 +1,6 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers.AttributeHelper;
+using NLog;
 using System;
 using System.Linq.Expressions;
 using System.Threading;
@@ -9,6 +11,8 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class OrdersController : BaseAdminController
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // GET: Admin/BuyNowOrders
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
@@ -28,6 +32,30 @@ namespace EImece.Areas.Admin.Controllers
                 return HttpNotFound();
             }
             return View(order);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [DeleteAuthorize()]
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
+        {
+            var item = await OrderService.GetSingleAsync(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            try
+            {
+                await OrderService.DeleteOrderByIdAsync(id);
+                SetSuccessMessage();
+                return ReturnIndexIfNotUrlReferrer("Index");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Unable to delete order:" + ex.StackTrace, item);
+                SetErrorMessage();
+                return ReturnIndexIfNotUrlReferrer("Index");
+            }
         }
     }
 }
