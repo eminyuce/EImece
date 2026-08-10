@@ -1,0 +1,401 @@
+# Production build / publish / optional FTPS deploy for EImece
+# (.NET Framework 4.8.1 / ASP.NET MVC 5 Web Application)
+#
+# Manual only — does NOT deploy on push.
+# Default run builds, tests, publishes, and uploads an artifact.
+# Set deploy_to_production=true to FTPS-deploy after a successful publish.
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_to_production:
+        description: 'Deploy the published output to production via FTPS (requires FTP_* secrets)'
+        type: boolean
+        default: false
+      use_ftps:
+        description: 'Use FTPS (explicit TLS). Disable only if the host rejects FTPS.'
+        type: boolean
+        default: true
+      skip_tests:
+        description: 'Skip MSTest unit tests (not recommended)'
+        type: boolean
+        default: false
+
+env:
+  SOLUTION: EImece/EImece.sln
+  WEB_PROJECT: EImece/EImece/EImece.csproj
+  TEST_PROJECT: EImece/EImece.Tests/EImece.Tests.csproj
+  CONFIGURATION: Release
+  PUBLISH_DIR: artifacts/publish
+  ARTIFACT_NAME: eimece-production-publish
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-publish:
+    name: Build, Test, Publish
+    runs-on: windows-latest
+    outputs:
+      build_result: ${{ steps.summary.outputs.build_result }}
+      tests_result: ${{ steps.summary.outputs.tests_result }}
+      publish_result: ${{ steps.summary.outputs.publish_result }}
+      artifact_result: ${{ steps.summary.outputs.artifact_result }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        shell: pwsh
+        run: |
+          Write-Host "Restoring packages for ${{ env.SOLUTION }}"
+          nuget restore "${{ env.SOLUTION }}" -NonInteractive -Verbosity quiet
+          if ($LASTEXITCODE -ne 0) { throw "NuGet restore failed with exit code $LASTEXITCODE" }
+
+      - name: Build solution (Release)
+        id: build
+        shell: pwsh
+        run: |
+          msbuild "${{ env.SOLUTION }}" `
+            /t:Clean,Build `
+            /p:Configuration=${{ env.CONFIGURATION }} `
+            /p:DeployOnBuild=false `
+            /m `
+            /nologo `
+            /v:minimal `
+            /clp:Summary
+          if ($LASTEXITCODE -ne 0) { throw "MSBuild compilation failed with exit code $LASTEXITCODE" }
+          $webDll = "EImece/EImece/bin/EImece.dll"
+          if (-not (Test-Path $webDll)) {
+            throw "Build succeeded according to MSBuild, but $webDll was not found."
+          }
+          Write-Host "Build produced $webDll"
+
+      - name: Run automated tests (MSTest unit tests)
+        id: tests
+        if: ${{ github.event.inputs.skip_tests != 'true' }}
+        shell: pwsh
+        run: |
+          # Controllers/integration tests require a live SQL Server / SMTP and are not
+          # safe to run in this pipeline without dedicated secrets + infrastructure.
+          # Helpers + Infrastructure tests are self-contained unit tests.
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (-not (Test-Path $vswhere)) { throw "vswhere.exe not found on runner." }
+          $vstest = & $vswhere -latest -products * -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core -find "**\vstest.console.exe" | Select-Object -First 1
+          if (-not $vstest) {
+            $vstest = & $vswhere -latest -products * -find "**\vstest.console.exe" | Select-Object -First 1
+          }
+          if (-not $vstest) { throw "vstest.console.exe not found on runner." }
+          Write-Host "Using VSTest: $vstest"
+
+          $dll = "EImece/EImece.Tests/bin/Release/EImece.Tests.dll"
+          if (-not (Test-Path $dll)) {
+            throw "Test assembly not found: $dll"
+          }
+
+          & $vstest $dll `
+            /TestCaseFilter:"FullyQualifiedName~EImece.Tests.Helpers|FullyQualifiedName~EImece.Tests.Infrastructure" `
+            /Logger:trx `
+            /ResultsDirectory:TestResults
+          if ($LASTEXITCODE -ne 0) { throw "Tests failed with exit code $LASTEXITCODE" }
+
+      - name: Skip tests (requested)
+        id: tests_skipped
+        if: ${{ github.event.inputs.skip_tests == 'true' }}
+        shell: pwsh
+        run: |
+          Write-Warning "Automated tests were skipped by workflow input."
+
+      - name: Publish web application (MSBuild FileSystem)
+        id: publish
+        shell: pwsh
+        run: |
+          $publishDir = Join-Path $env:GITHUB_WORKSPACE "${{ env.PUBLISH_DIR }}"
+          if (Test-Path $publishDir) { Remove-Item -Recurse -Force $publishDir }
+          New-Item -ItemType Directory -Path $publishDir | Out-Null
+
+          # Web Application Project publish via Microsoft.Web.Publishing targets.
+          # Do NOT use `dotnet publish` for this .NET Framework MVC app.
+          msbuild "${{ env.WEB_PROJECT }}" `
+            /t:Build `
+            /p:Configuration=${{ env.CONFIGURATION }} `
+            /p:DeployOnBuild=true `
+            /p:PublishProfile=GitHubActions `
+            /p:PublishUrl="$publishDir\" `
+            /p:WebPublishMethod=FileSystem `
+            /p:DeleteExistingFiles=false `
+            /p:DeployDefaultTarget=WebPublish `
+            /m `
+            /nologo `
+            /v:minimal `
+            /clp:Summary
+          if ($LASTEXITCODE -ne 0) { throw "Publish failed with exit code $LASTEXITCODE" }
+
+          $webConfig = Join-Path $publishDir "Web.config"
+          $binDll = Join-Path $publishDir "bin\EImece.dll"
+          if (-not (Test-Path $webConfig)) { throw "Publish output missing Web.config under $publishDir" }
+          if (-not (Test-Path $binDll)) { throw "Publish output missing bin\EImece.dll under $publishDir" }
+
+          # Defense in depth: never ship local secret sidecars or generated media.
+          $forbidden = @(
+            (Join-Path $publishDir "ConnectionStrings.config"),
+            (Join-Path $publishDir "media\images")
+          )
+          foreach ($path in $forbidden) {
+            if (Test-Path $path) {
+              Write-Warning "Removing non-deployable path from publish output: $path"
+              Remove-Item -Recurse -Force $path
+            }
+          }
+
+          # Keep media/Web.config scaffolding; strip any accidental log files.
+          $logs = Join-Path $publishDir "media\logs"
+          if (Test-Path $logs) {
+            Get-ChildItem -LiteralPath $logs -File -ErrorAction SilentlyContinue |
+              Where-Object { $_.Name -notin @('Web.config', '.gitkeep') } |
+              Remove-Item -Force -ErrorAction SilentlyContinue
+          }
+
+          Write-Host "Publish output ready at $publishDir"
+          Get-ChildItem $publishDir | Select-Object Name, Mode | Format-Table | Out-String | Write-Host
+
+      - name: Upload publish artifact
+        id: artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.PUBLISH_DIR }}/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Pipeline status summary (build job)
+        id: summary
+        if: always()
+        shell: pwsh
+        run: |
+          function Map-Result($stepOutcome, [string]$skippedLabel = 'SKIPPED') {
+            switch ($stepOutcome) {
+              'success' { return 'PASS' }
+              'failure' { return 'FAIL' }
+              'cancelled' { return 'FAIL' }
+              'skipped' { return $skippedLabel }
+              default {
+                if ([string]::IsNullOrWhiteSpace($stepOutcome)) { return $skippedLabel }
+                return $stepOutcome.ToUpperInvariant()
+              }
+            }
+          }
+
+          $build = Map-Result '${{ steps.build.outcome }}'
+          if ('${{ github.event.inputs.skip_tests }}' -eq 'true') {
+            $tests = 'SKIPPED'
+          } else {
+            $tests = Map-Result '${{ steps.tests.outcome }}'
+          }
+          $publish = Map-Result '${{ steps.publish.outcome }}'
+          $artifact = Map-Result '${{ steps.artifact.outcome }}' 'not created'
+          if ($artifact -eq 'PASS') { $artifact = 'created' }
+          elseif ($artifact -eq 'FAIL') { $artifact = 'not created' }
+
+          "build_result=$build" >> $env:GITHUB_OUTPUT
+          "tests_result=$tests" >> $env:GITHUB_OUTPUT
+          "publish_result=$publish" >> $env:GITHUB_OUTPUT
+          "artifact_result=$artifact" >> $env:GITHUB_OUTPUT
+
+          $report = @"
+          ========================================
+          EImece CI status (build job)
+          ----------------------------------------
+          Build:       $build
+          Tests:       $tests
+          Publish:     $publish
+          Artifact:    $artifact
+          Deployment:  NOT RUN (separate job / manual flag)
+          Smoke Test:  NOT RUN (post-deploy only)
+          ========================================
+          "@
+          Write-Host $report
+          $report | Out-File -FilePath pipeline-status-build.txt -Encoding utf8
+
+          @"
+          ## Build / Test / Publish
+
+          | Step | Result |
+          |---|---|
+          | Build | $build |
+          | Tests | $tests |
+          | Publish | $publish |
+          | Artifact | $artifact |
+          "@ >> $env:GITHUB_STEP_SUMMARY
+
+  deploy-production:
+    name: FTPS Deploy + Smoke Test
+    needs: build-test-publish
+    if: ${{ github.event.inputs.deploy_to_production == 'true' }}
+    runs-on: windows-latest
+    environment: production
+    outputs:
+      deployment_result: ${{ steps.summary.outputs.deployment_result }}
+      smoke_result: ${{ steps.summary.outputs.smoke_result }}
+
+    steps:
+      - name: Checkout (deploy scripts)
+        uses: actions/checkout@v4
+
+      - name: Download publish artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.PUBLISH_DIR }}
+
+      - name: Verify required FTP secrets
+        shell: pwsh
+        run: |
+          $missing = @()
+          if ([string]::IsNullOrWhiteSpace('${{ secrets.FTP_HOST }}')) { $missing += 'FTP_HOST' }
+          if ([string]::IsNullOrWhiteSpace('${{ secrets.FTP_USERNAME }}')) { $missing += 'FTP_USERNAME' }
+          if ([string]::IsNullOrWhiteSpace('${{ secrets.FTP_PASSWORD }}')) { $missing += 'FTP_PASSWORD' }
+          if ([string]::IsNullOrWhiteSpace('${{ secrets.FTP_PATH }}')) { $missing += 'FTP_PATH' }
+          if ($missing.Count -gt 0) {
+            throw "Missing required GitHub Actions secrets: $($missing -join ', '). See DEPLOYMENT.md."
+          }
+          Write-Host "FTP secrets are present (values are not printed)."
+
+      - name: Deploy via FTPS
+        id: deploy
+        shell: pwsh
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PATH: ${{ secrets.FTP_PATH }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          $port = 21
+          if (-not [string]::IsNullOrWhiteSpace($env:FTP_PORT)) {
+            $port = [int]$env:FTP_PORT
+          }
+          $useFtps = $true
+          if ('${{ github.event.inputs.use_ftps }}' -eq 'false') { $useFtps = $false }
+
+          & .\EImece\scripts\deploy-ftps.ps1 `
+            -LocalPath "${{ env.PUBLISH_DIR }}" `
+            -FtpHost $env:FTP_HOST `
+            -FtpUsername $env:FTP_USERNAME `
+            -FtpPassword $env:FTP_PASSWORD `
+            -FtpPath $env:FTP_PATH `
+            -FtpPort $port `
+            -UseFtps:$useFtps
+          if ($LASTEXITCODE -ne 0) { throw "FTPS deployment failed with exit code $LASTEXITCODE" }
+
+      - name: Production smoke test (GET /health)
+        id: smoke
+        shell: pwsh
+        env:
+          PRODUCTION_BASE_URL: ${{ secrets.PRODUCTION_BASE_URL }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:PRODUCTION_BASE_URL)) {
+            Write-Warning "PRODUCTION_BASE_URL secret is not set; skipping HTTP smoke test."
+            Write-Host "Configure repository secret PRODUCTION_BASE_URL (e.g. https://www.example.com) to enable /health checks."
+            "smoke_mode=skipped" >> $env:GITHUB_OUTPUT
+            exit 0
+          }
+
+          $base = $env:PRODUCTION_BASE_URL.TrimEnd('/')
+          $url = "$base/health"
+          Write-Host "Smoke testing $url"
+          # Allow the app pool a short warm-up after file sync.
+          Start-Sleep -Seconds 5
+
+          $ok = $false
+          $lastError = $null
+          for ($i = 1; $i -le 5; $i++) {
+            try {
+              $response = Invoke-WebRequest -Uri $url -Method GET -UseBasicParsing -TimeoutSec 30
+              $code = [int]$response.StatusCode
+              Write-Host "Attempt $i : HTTP $code"
+              Write-Host "Body: $($response.Content)"
+              if ($code -eq 200 -and $response.Content -match '"status"\s*:\s*"UP"') {
+                $ok = $true
+                break
+              }
+              $lastError = "Unexpected health response HTTP $code body=$($response.Content)"
+            }
+            catch {
+              $lastError = $_.Exception.Message
+              Write-Warning "Attempt $i failed: $lastError"
+            }
+            Start-Sleep -Seconds 10
+          }
+
+          if (-not $ok) {
+            "smoke_mode=failed" >> $env:GITHUB_OUTPUT
+            throw "Production smoke test failed for $url. Last error: $lastError"
+          }
+          "smoke_mode=ran" >> $env:GITHUB_OUTPUT
+          Write-Host "Smoke test PASS"
+
+      - name: Pipeline status summary (deploy job)
+        id: summary
+        if: always()
+        shell: pwsh
+        run: |
+          function Map-Result($stepOutcome, [string]$skippedLabel = 'SKIPPED') {
+            switch ($stepOutcome) {
+              'success' { return 'PASS' }
+              'failure' { return 'FAIL' }
+              'cancelled' { return 'FAIL' }
+              'skipped' { return $skippedLabel }
+              default {
+                if ([string]::IsNullOrWhiteSpace($stepOutcome)) { return $skippedLabel }
+                return $stepOutcome.ToUpperInvariant()
+              }
+            }
+          }
+
+          $deploy = Map-Result '${{ steps.deploy.outcome }}'
+          $smokeRaw = '${{ steps.smoke.outcome }}'
+          $smokeMode = '${{ steps.smoke.outputs.smoke_mode }}'
+          if ($smokeMode -eq 'skipped') {
+            $smoke = 'SKIPPED'
+          } else {
+            $smoke = Map-Result $smokeRaw
+          }
+
+          "deployment_result=$deploy" >> $env:GITHUB_OUTPUT
+          "smoke_result=$smoke" >> $env:GITHUB_OUTPUT
+
+          $report = @"
+          ========================================
+          EImece CI status (full pipeline)
+          ----------------------------------------
+          Build:       ${{ needs.build-test-publish.outputs.build_result }}
+          Tests:       ${{ needs.build-test-publish.outputs.tests_result }}
+          Publish:     ${{ needs.build-test-publish.outputs.publish_result }}
+          Artifact:    ${{ needs.build-test-publish.outputs.artifact_result }}
+          Deployment:  $deploy
+          Smoke Test:  $smoke
+          ========================================
+          "@
+          Write-Host $report
+
+          @"
+          ## Deployment
+
+          | Step | Result |
+          |---|---|
+          | Build | ${{ needs.build-test-publish.outputs.build_result }} |
+          | Tests | ${{ needs.build-test-publish.outputs.tests_result }} |
+          | Publish | ${{ needs.build-test-publish.outputs.publish_result }} |
+          | Artifact | ${{ needs.build-test-publish.outputs.artifact_result }} |
+          | Deployment | $deploy |
+          | Smoke Test | $smoke |
+          "@ >> $env:GITHUB_STEP_SUMMARY
