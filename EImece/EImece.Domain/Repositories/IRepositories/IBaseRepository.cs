@@ -26,5 +26,7 @@ namespace EImece.Domain.Repositories.IRepositories
         T[] ExecuteStoreQuery(string commandText, params object[] parameters);
 
         void DeleteBaseEntity(List<string> values);
+
+        Task DeleteBaseEntityAsync(List<string> values);
     }
 }

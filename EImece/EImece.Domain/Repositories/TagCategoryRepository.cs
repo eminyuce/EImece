@@ -6,8 +6,11 @@ using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -39,6 +42,25 @@ namespace EImece.Domain.Repositories
                 var result = this.FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties);
 
                 return result.ToList();
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, exception.Message);
+                throw;
+            }
+        }
+
+        public async Task<List<TagCategory>> GetTagsByTagTypeAsync(EImeceLanguage language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                Expression<Func<TagCategory, object>> includeProperty1 = r => r.Tags;
+                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language && r2.Tags.Count() > 0;
+                Expression<Func<TagCategory, int>> keySelector = t => t.Position;
+                Expression<Func<TagCategory, object>>[] includeProperties = { includeProperty1 };
+                var result = this.FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties);
+
+                return await result.ToListAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (Exception exception)
             {

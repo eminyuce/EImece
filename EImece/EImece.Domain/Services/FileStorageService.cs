@@ -188,6 +188,108 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task SaveUploadImagesAsync(int contentId,
+            EImeceImageType? contentImageType,
+            MediaModType? contentMediaType,
+            List<ViewDataUploadFilesResult> resultList,
+            int language,
+            string selectedTags
+            )
+        {
+            foreach (var file in resultList)
+            {
+                try
+                {
+                    var fileStorage = new FileStorage();
+                    fileStorage.Name = file.name;
+                    fileStorage.FileName = file.name;
+                    fileStorage.Width = file.width;
+                    fileStorage.Height = file.height;
+                    fileStorage.MimeType = file.mimeType;
+                    fileStorage.CreatedDate = DateTime.Now;
+                    fileStorage.UpdatedDate = DateTime.Now;
+                    fileStorage.IsActive = true;
+                    fileStorage.Position = 1;
+                    fileStorage.FileSize = file.size;
+                    //fileStorage.EntityHash = file.imageHash;
+                    fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
+                    fileStorage.Type = contentImageType.Value.ToStr();
+                    fileStorage.Lang = language;
+                    await FileStorageRepository.SaveOrEditAsync(fileStorage).ConfigureAwait(false);
+                    file.fileStorageId = fileStorage.Id;
+
+                    var sTags = selectedTags.Split(",".ToCharArray()).Select(r => r.ToInt());
+                    if (sTags.Any())
+                    {
+                        await FileStorageTagRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == file.fileStorageId).ConfigureAwait(false);
+                        foreach (var imageTag in sTags)
+                        {
+                            var iTag = new FileStorageTag();
+                            iTag.TagId = imageTag;
+                            iTag.FileStorageId = file.fileStorageId;
+                            await FileStorageTagRepository.SaveOrEditAsync(iTag).ConfigureAwait(false);
+                        }
+                    }
+
+                    switch (contentMediaType.Value)
+                    {
+                        case MediaModType.Stories:
+                            var sf = new StoryFile();
+                            sf.StoryId = contentId;
+                            sf.FileStorageId = fileStorage.Id;
+                            sf.Name = fileStorage.Name;
+                            sf.CreatedDate = DateTime.Now;
+                            sf.UpdatedDate = DateTime.Now;
+                            sf.IsActive = true;
+                            sf.Position = 1;
+                            sf.Lang = language;
+                            await StoryFileRepository.SaveOrEditAsync(sf).ConfigureAwait(false);
+                            break;
+
+                        case MediaModType.Products:
+                            var pf = new ProductFile();
+                            pf.ProductId = contentId;
+                            pf.FileStorageId = fileStorage.Id;
+                            pf.Name = fileStorage.Name;
+                            pf.CreatedDate = DateTime.Now;
+                            pf.UpdatedDate = DateTime.Now;
+                            pf.IsActive = true;
+                            pf.Position = 1;
+                            pf.Lang = language;
+                            await ProductFileRepository.SaveOrEditAsync(pf).ConfigureAwait(false);
+                            break;
+
+                        case MediaModType.Menus:
+                            var mf = new MenuFile();
+                            mf.MenuId = contentId;
+                            mf.FileStorageId = fileStorage.Id;
+                            mf.Name = fileStorage.Name;
+                            mf.CreatedDate = DateTime.Now;
+                            mf.UpdatedDate = DateTime.Now;
+                            mf.IsActive = true;
+                            mf.Position = 1;
+                            mf.Lang = language;
+                            await MenuFileRepository.SaveOrEditAsync(mf).ConfigureAwait(false);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                    Logger.Error(ex, "DbEntityValidationException:" + message);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "ContentId:" + contentId +
+                        " contentImageType:" + contentImageType.Value
+                        + " contentMediaType:" + contentMediaType.Value);
+                }
+            }
+        }
+
         public void DeleteUploadImage(String fileName, int contentId, EImeceImageType? imageType, MediaModType? mod)
         {
             FileStorage f = FileStorageRepository.GetFileStoragebyFileName(fileName);
@@ -198,6 +300,12 @@ namespace EImece.Domain.Services
         {
             FileStorage f = FileStorageRepository.GetSingle(fileStorageId);
             DeleteUploadImageByFileStorage(contentId, mod, f.Id);
+        }
+
+        public async Task DeleteUploadImageAsync(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod)
+        {
+            FileStorage f = await FileStorageRepository.GetSingleAsync(fileStorageId).ConfigureAwait(false);
+            await DeleteUploadImageByFileStorageAsync(contentId, mod, f.Id).ConfigureAwait(false);
         }
 
         public void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId)
@@ -285,6 +393,41 @@ namespace EImece.Domain.Services
             return null;
         }
 
+        public async Task<List<FileStorage>> GetUploadImagesAsync(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            switch (enumMod.Value)
+            {
+                case MediaModType.Stories:
+                    Expression<Func<StoryFile, object>> includeProperty = r => r.FileStorage;
+                    Expression<Func<StoryFile, object>>[] includeProperties = { includeProperty };
+                    Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId;
+
+                    var item = await StoryFileRepository.FindAllIncluding(match, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToListAsync(cancellationToken).ConfigureAwait(false);
+                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+
+                case MediaModType.Products:
+                    Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
+                    Expression<Func<ProductFile, object>>[] includeProperties1 = { includeProperty1 };
+                    Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId;
+
+                    var item1 = await ProductFileRepository.FindAllIncluding(match1, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToListAsync(cancellationToken).ConfigureAwait(false);
+                    return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+
+                case MediaModType.Menus:
+                    Expression<Func<MenuFile, object>> includeProperty2 = r => r.FileStorage;
+                    Expression<Func<MenuFile, object>>[] includeProperties2 = { includeProperty2 };
+                    Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId;
+
+                    var item2 = await MenuFileRepository.FindAllIncluding(match2, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToListAsync(cancellationToken).ConfigureAwait(false);
+                    return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+
+                default:
+                    break;
+            }
+
+            return null;
+        }
+
         public override void DeleteBaseEntity(List<string> values)
         {
             if (values == null || values.Count == 0)
@@ -319,6 +462,52 @@ namespace EImece.Domain.Services
                     }
 
                     DeleteUploadImageByFileStorage(contentId, enumMod, fileStorageId);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                Logger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public override async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                foreach (String v in values)
+                {
+                    if (string.IsNullOrWhiteSpace(v))
+                    {
+                        continue;
+                    }
+
+                    var parts = v.Split('-');
+                    if (parts.Length < 3)
+                    {
+                        Logger.Error("DeleteBaseEntity skipped invalid media key '" + v + "'. Expected fileStorageId-contentId-mod[-imageType].");
+                        continue;
+                    }
+
+                    var fileStorageId = parts[0].ToInt();
+                    int contentId = parts[1].ToInt();
+                    MediaModType? enumMod = EnumHelper.Parse<MediaModType>(parts[2].ToStr());
+                    if (!enumMod.HasValue || fileStorageId <= 0 || contentId <= 0)
+                    {
+                        Logger.Error("DeleteBaseEntity skipped unparseable media key '" + v + "'.");
+                        continue;
+                    }
+
+                    await DeleteUploadImageByFileStorageAsync(contentId, enumMod, fileStorageId).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)

@@ -136,6 +136,27 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task DeleteProductCategoriesAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteProductCategoryAsync(id).ConfigureAwait(false);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                ProductCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                ProductCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
         public void DeleteProductCategory(int productCategoryId)
         {
             var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId, false);

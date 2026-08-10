@@ -110,6 +110,35 @@ namespace EImece.Domain.Services
             return result;
         }
 
+        public async Task<string> UpdatePricesAsync(UpdatePriceRequest request)
+        {
+            if (request == null || request.PercentageOfIncreaseOrDecrease == null)
+            {
+                return "hata";
+            }
+            var connectionString = this.ProductRepository.GetDbContext().Database.Connection.ConnectionString;
+            var commandText = @"[dbo].[UpdateProductPrices]";
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("PercentageOfIncreaseOrDecrease", request.PercentageOfIncreaseOrDecrease, SqlDbType.Decimal));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", (object)request.ProductId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("CategoryId", (object)request.CategoryId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("BrandId", (object)request.BrandId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("TagId", (object)request.TagId ?? DBNull.Value, SqlDbType.Int));
+            var commandType = CommandType.StoredProcedure;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync().ConfigureAwait(false);
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    command.CommandType = commandType;
+                    command.Parameters.AddRange(parameterList.ToArray());
+                    var scalar = await command.ExecuteScalarAsync().ConfigureAwait(false);
+                    InvalidateProductListCaches();
+                    return scalar.ToStr();
+                }
+            }
+        }
+
         public ProductIndexViewModel GetMainPageProducts(int page, int language)
         {
             var cacheKey = CacheKeys.MainPageProducts(page, language);
@@ -175,6 +204,11 @@ namespace EImece.Domain.Services
         public List<ProductTag> GetProductTagsByProductId(int productId)
         {
             return ProductTagRepository.GetAllByProductId(productId);
+        }
+
+        public async Task<List<ProductTag>> GetProductTagsByProductIdAsync(int productId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductTagRepository.GetAllByProductIdAsync(productId, cancellationToken).ConfigureAwait(false);
         }
 
         public ProductAdminModel GetProductAdminPage(int categoryId, String search, int lang, int productId)
@@ -370,6 +404,27 @@ namespace EImece.Domain.Services
                 {
                     var id = v.ToInt();
                     DeleteProductById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                ProductServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                ProductServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public virtual new async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteProductByIdAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)
@@ -923,6 +978,21 @@ namespace EImece.Domain.Services
                 ProductRepository.Edit(product);
             }
             ProductRepository.Save();
+        }
+
+        public async Task ChangeProductStateAsync(List<string> values, ProductState state)
+        {
+            if (values == null || values.IsEmpty())
+            {
+                return;
+            }
+            foreach (var id in values)
+            {
+                var product = await ProductRepository.GetProductAsync(id.ToInt()).ConfigureAwait(false);
+                product.StateEnum = state;
+                ProductRepository.Edit(product);
+            }
+            await ProductRepository.SaveAsync().ConfigureAwait(false);
         }
     }
 }

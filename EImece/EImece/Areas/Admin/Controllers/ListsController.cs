@@ -5,38 +5,24 @@ using NLog;
 using Resources;
 using System;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
     public class ListsController : BaseAdminController
     {
-        // GET: Admin/List
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<List, bool>> whereLambda = r => r.Name.Contains(search);
-            var tags = ListService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var tags = await ListService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(tags);
         }
 
-        //
-        // GET: /List/Create
-        /****
-         *
-         *
-         *
-         *cat, 1
-        bird, 2
-        dog, 3
-        fish, 4
-        parrot, 5
-        hamster, 6
-        dove, 7
-        */
-
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<List>();
 
@@ -45,18 +31,15 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = ListService.GetListById(id);
+                content = await ListService.GetListByIdAsync(id, cancellationToken);
             }
 
             return View(content);
         }
 
-        //
-        // POST: /List/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(List list, string itemText)
+        public async Task<ActionResult> SaveOrEdit(List list, string itemText)
         {
             if (list == null)
             {
@@ -67,9 +50,9 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     list.Lang = CurrentLanguage;
-                    list = ListService.SaveOrEditEntity(list);
+                    list = await ListService.SaveOrEditEntityAsync(list);
                     var listItems = list.SetListItems(itemText);
-                    ListItemService.SaveListItem(list.Id, listItems);
+                    await ListItemService.SaveListItemAsync(list.Id, listItems);
 
                     return RedirectToAction("Index");
                 }
@@ -77,7 +60,6 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, list);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
@@ -87,16 +69,16 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            List List = ListService.GetSingle(id);
+            List List = await ListService.GetSingleAsync(id);
             if (List == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                ListService.DeleteListById(id);
+                await ListService.DeleteListByIdAsync(id);
                 SetSuccessMessage();
                 return RedirectToAction("Index");
             }

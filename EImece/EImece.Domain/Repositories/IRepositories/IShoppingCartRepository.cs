@@ -8,6 +8,9 @@ namespace EImece.Domain.Repositories.IRepositories
     public interface IShoppingCartRepository : IBaseEntityRepository<ShoppingCart>
     {
         List<ShoppingCart> GetAdminPageList(string search, int currentLanguage);
+
+        Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken));
+
         ShoppingCart GetShoppingCartByOrderGuid(string orderGuid);
 
         Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken));

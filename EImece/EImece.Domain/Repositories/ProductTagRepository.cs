@@ -24,6 +24,11 @@ namespace EImece.Domain.Repositories
             return this.GetAll().Where(r => r.ProductId == productId).ToList();
         }
 
+        public async Task<List<ProductTag>> GetAllByProductIdAsync(int productId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await this.GetAll().Where(r => r.ProductId == productId).ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public void DeleteProductTags(int productId)
         {
             var productTags = GetAll().Where(r => r.ProductId == productId).ToList();

@@ -15,7 +15,11 @@ namespace EImece.Domain.Services.IServices
 
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
 
+        Task<List<StoryTag>> GetStoryTagsByStoryIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken));
+
         void DeleteStoryById(int storyId);
+
+        Task DeleteStoryByIdAsync(int storyId);
 
         Story GetStoryById(int storyId);
 
@@ -26,6 +30,8 @@ namespace EImece.Domain.Services.IServices
         Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken));
 
         void SaveStoryTags(int storyId, int[] tags);
+
+        Task SaveStoryTagsAsync(int storyId, int[] tags);
 
         StoryDetailViewModel GetStoryDetailViewModel(int storyId);
 

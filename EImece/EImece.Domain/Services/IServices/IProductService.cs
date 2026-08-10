@@ -35,6 +35,8 @@ namespace EImece.Domain.Services.IServices
 
         List<ProductTag> GetProductTagsByProductId(int productId);
 
+        Task<List<ProductTag>> GetProductTagsByProductIdAsync(int productId, CancellationToken cancellationToken = default(CancellationToken));
+
         void SaveProductTags(int id, int[] tags);
 
         Task SaveProductTagsAsync(int id, int[] tags);
@@ -55,6 +57,8 @@ namespace EImece.Domain.Services.IServices
 
         new void DeleteBaseEntity(List<string> values);
 
+        new Task DeleteBaseEntityAsync(List<string> values);
+
         ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting);
 
         Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
@@ -68,6 +72,8 @@ namespace EImece.Domain.Services.IServices
         Task SaveProductSpecificationsAsync(List<ProductSpecification> specifications, int productId);
 
         String UpdatePrices(UpdatePriceRequest request);
+
+        Task<string> UpdatePricesAsync(UpdatePriceRequest request);
 
         List<Product> GetActiveProducts(int? language);
 
@@ -108,5 +114,7 @@ namespace EImece.Domain.Services.IServices
 
         Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
         void ChangeProductState(List<string> values, ProductState state);
+
+        Task ChangeProductStateAsync(List<string> values, ProductState state);
     }
 }

@@ -101,5 +101,48 @@ namespace EImece.Domain.Repositories
 
             return result;
         }
+
+        public async Task<List<MenuTreeModel>> BuildTreeAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            List<Menu> list = await GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+            var returnList = new List<MenuTreeModel>();
+            var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
+
+            foreach (var i in topLevels)
+            {
+                var p = new MenuTreeModel(i, 1);
+                GetTreeview(list, p, p.TreeLevel);
+                returnList.Add(p);
+            }
+            return returnList;
+        }
+
+        public async Task<Menu> GetMenuByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage.FileStorageTags.Select(y => y.Tag)));
+            includeProperties.Add(r => r.MainImage);
+            return await GetSingleIncludingAsync(menuId, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+        }
+
+        public async Task<List<Menu>> GetMenuLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var menus = await GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+            var result = new List<Menu>();
+
+            foreach (var m in menus)
+            {
+                if (menus.Any(r => r.ParentId == m.Id))
+                {
+                    continue;
+                }
+                else
+                {
+                    result.Add(m);
+                }
+            }
+
+            return result;
+        }
     }
 }

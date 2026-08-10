@@ -96,7 +96,7 @@ namespace EImece.Areas.Admin.Controllers
             var baskets = await ShoppingCartService.GetAllAsync();
             foreach (var item in baskets)
             {
-                await ShoppingCartService.DeleteEntityAsync(item);
+                await ShoppingCartService.DeleteByIdAsync(item.Id);
             }
             SetSuccessMessage();
             return RedirectToAction("CustomerBaskets");

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -328,6 +330,205 @@ namespace EImece.Domain.Services
         }
 
         #endregion Product Stats by Date Range
+
+        #region Async Report Methods
+
+        public Task<DataTable> GetCouponUsageReportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExecuteDataTableStoredProcAsync("GetCouponUsageReport", null, cancellationToken);
+        }
+
+        public Task<DataTable> GetFraudAnalysisReportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExecuteDataTableStoredProcAsync("GetFraudAnalysisReport", null, cancellationToken);
+        }
+
+        public Task<DataTable> GetPaymentMethodReportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExecuteDataTableStoredProcAsync("GetPaymentMethodReport", null, cancellationToken);
+        }
+
+        public Task<DataTable> GetPaymentStatusReportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExecuteDataTableStoredProcAsync("GetPaymentStatusReport", null, cancellationToken);
+        }
+
+        public Task<DataTable> GetRegionalSalesReportAsync(string paymentStatus = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            object statusValue = string.IsNullOrWhiteSpace(paymentStatus)
+                ? (object)DBNull.Value
+                : paymentStatus.Trim();
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@PaymentStatus", statusValue, SqlDbType.NVarChar)
+            };
+            return ExecuteDataTableStoredProcAsync("GetRegionalSalesReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataTable> GetSalesReportByDateRangeAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (startDate == null || endDate == null)
+            {
+                return Task.FromResult<DataTable>(null);
+            }
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            return ExecuteDataTableStoredProcAsync("GetSalesReportByDateRange", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataTable> GetShipmentCompanyReportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExecuteDataTableStoredProcAsync("GetShipmentCompanyReport", null, cancellationToken);
+        }
+
+        public Task<DataSet> GetPerformanceSystemReportAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+            };
+            return ExecuteDataSetStoredProcAsync("sp_GetPerformanceSystemReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetFinancialReportAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+            };
+            return ExecuteDataSetStoredProcAsync("sp_GetFinancialReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetFraudRiskReportAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+            };
+            return ExecuteDataSetStoredProcAsync("sp_GetFraudRiskReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetOrderVolumeReportAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+            };
+            return ExecuteDataSetStoredProcAsync("sp_GetOrderVolumeReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetPaymentTransactionReportAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+            };
+            return ExecuteDataSetStoredProcAsync("sp_GetPaymentTransactionReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetProductSummaryReportAsync(DateTime? startDate = null, DateTime? endDate = null, bool? isActive = null, int? productCategoryId = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@IsActive", isActive, SqlDbType.Bit),
+                DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
+            };
+            return ExecuteDataSetStoredProcAsync("GetProductSummaryReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetPriceAnalysisReportAsync(decimal? minPrice = null, decimal? maxPrice = null, int? productCategoryId = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Decimal),
+                DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Decimal),
+                DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
+            };
+            return ExecuteDataSetStoredProcAsync("GetPriceAnalysisReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetProductInventoryReportAsync(string state = null, bool? isCampaign = null, bool? mainPage = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("State", state, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("IsCampaign", isCampaign, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("MainPage", mainPage, SqlDbType.Bit));
+            return ExecuteDataSetStoredProcAsync("GetProductInventoryReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public Task<DataSet> GetProductStatsByDateRangeAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (startDate == null || endDate == null)
+            {
+                return Task.FromResult<DataSet>(null);
+            }
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            return ExecuteDataSetStoredProcAsync("GetProductStatsByDateRange", parameterList.ToArray(), cancellationToken);
+        }
+
+        private static async Task<DataTable> ExecuteDataTableStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
+        {
+            var connectionString = ConnectionStringProvider.GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    if (parameters != null && parameters.Length > 0)
+                    {
+                        command.Parameters.AddRange(parameters);
+                    }
+                    using (var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false))
+                    {
+                        var dt = new DataTable();
+                        dt.Load(reader);
+                        return dt;
+                    }
+                }
+            }
+        }
+
+        private static async Task<DataSet> ExecuteDataSetStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
+        {
+            var connectionString = ConnectionStringProvider.GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    if (parameters != null && parameters.Length > 0)
+                    {
+                        command.Parameters.AddRange(parameters);
+                    }
+                    using (var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false))
+                    {
+                        var dataSet = new DataSet();
+                        do
+                        {
+                            var dt = new DataTable();
+                            dt.Load(reader);
+                            dataSet.Tables.Add(dt);
+                        }
+                        while (await reader.NextResultAsync(cancellationToken).ConfigureAwait(false));
+                        return dataSet;
+                    }
+                }
+            }
+        }
+
+        #endregion Async Report Methods
 
         #region IDisposable Implementation
 

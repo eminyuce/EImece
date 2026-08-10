@@ -103,6 +103,16 @@ namespace EImece.Domain.Services
             baseRepository.DeleteBaseEntity(values);
         }
 
+        public virtual async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            await baseRepository.DeleteBaseEntityAsync(values).ConfigureAwait(false);
+        }
+
+        public virtual async Task<bool> DeleteByIdAsync(int id)
+        {
+            return await this.baseRepository.DeleteByWhereConditionAsync(r => r.Id == id).ConfigureAwait(false);
+        }
+
         public virtual async Task<T> GetSingleAsync(int id)
         {
             return await baseRepository.GetSingleAsync(id).ConfigureAwait(false);

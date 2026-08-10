@@ -10,7 +10,11 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List<StoryTag> GetStoryTagsByStoryId(int storyId);
 
+        Task<List<StoryTag>> GetStoryTagsByStoryIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken));
+
         void SaveStoryTags(int storyId, int[] tags);
+
+        Task SaveStoryTagsAsync(int storyId, int[] tags);
 
         PaginatedList<StoryTag> GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang);
 

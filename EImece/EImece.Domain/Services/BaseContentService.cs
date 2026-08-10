@@ -228,5 +228,36 @@ namespace EImece.Domain.Services
                 BaseContentServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
+
+        public virtual new async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            if (values.IsEmpty())
+            {
+                throw new ArgumentException("List cannot be empty");
+            }
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    var item = await GetBaseContentAsync(id).ConfigureAwait(false);
+                    if (item.MainImageId.HasValue)
+                    {
+                        await FileStorageService.DeleteFileStorageAsync(item.MainImageId.Value).ConfigureAwait(false);
+                    }
+                    BaseContentRepository.Delete(item);
+                }
+                await BaseContentRepository.SaveAsync().ConfigureAwait(false);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                BaseContentServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                BaseContentServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
     }
 }

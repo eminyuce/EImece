@@ -5,6 +5,8 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -27,11 +29,23 @@ namespace EImece.Domain.Services
             return ListRepository.GetListById(id);
         }
 
+        public async Task<List> GetListByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ListRepository.GetListByIdAsync(id, cancellationToken).ConfigureAwait(false);
+        }
+
         public void DeleteListById(int id)
         {
             List list = GetListById(id);
             ListItemRepository.DeleteByWhereCondition(r => r.ListId == id);
             DeleteEntity(list);
+        }
+
+        public async Task DeleteListByIdAsync(int id)
+        {
+            List list = await GetListByIdAsync(id).ConfigureAwait(false);
+            await ListItemRepository.DeleteByWhereConditionAsync(r => r.ListId == id).ConfigureAwait(false);
+            await DeleteEntityAsync(list).ConfigureAwait(false);
         }
 
         public List GetListByName(string name)

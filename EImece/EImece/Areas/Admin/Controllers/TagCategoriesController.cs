@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -17,17 +18,14 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
-            var tags = TagCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var tags = await TagCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(tags);
         }
 
-        //
-        // GET: /TagCategory/Create
-
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<TagCategory>();
 
@@ -36,18 +34,15 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = TagCategoryService.GetSingle(id);
+                content = await TagCategoryService.GetSingleAsync(id);
             }
 
             return View(content);
         }
 
-        //
-        // POST: /TagCategory/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(TagCategory TagCategory)
+        public async Task<ActionResult> SaveOrEdit(TagCategory TagCategory)
         {
             if (TagCategory == null)
             {
@@ -58,7 +53,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     TagCategory.Lang = CurrentLanguage;
-                    TagCategoryService.SaveOrEditEntity(TagCategory);
+                    await TagCategoryService.SaveOrEditEntityAsync(TagCategory);
                     int contentId = TagCategory.Id;
                     return RedirectToAction("Index");
                 }
@@ -70,7 +65,6 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, TagCategory);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
@@ -80,16 +74,16 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            TagCategory tagCategory = TagCategoryService.GetSingle(id);
+            TagCategory tagCategory = await TagCategoryService.GetSingleAsync(id);
             if (tagCategory == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                TagCategoryService.DeleteTagCategoryById(id);
+                await TagCategoryService.DeleteTagCategoryByIdAsync(id);
                 SetSuccessMessage();
                 return RedirectToAction("Index");
             }
@@ -102,7 +96,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

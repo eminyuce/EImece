@@ -11,6 +11,8 @@ namespace EImece.Domain.Repositories.IRepositories
     {
         List<ProductTag> GetAllByProductId(int productId);
 
+        Task<List<ProductTag>> GetAllByProductIdAsync(int productId, CancellationToken cancellationToken = default(CancellationToken));
+
         void SaveProductTags(int id, int[] tags);
 
         Task SaveProductTagsAsync(int id, int[] tags);

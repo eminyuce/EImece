@@ -7,6 +7,8 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -18,17 +20,16 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
-        // GET: Admin/ShoppingCarts
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
-            var items = ShoppingCartService.GetAdminPageList(search, CurrentLanguage);
+            var items = await ShoppingCartService.GetAdminPageListAsync(search, CurrentLanguage, cancellationToken);
             return View(items);
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public ActionResult ExportExcel(string format = "excel", string search = "")
+        public async Task<ActionResult> ExportExcel(CancellationToken cancellationToken, string format = "excel", string search = "")
         {
-            var items = ShoppingCartService.GetAdminPageList(search ?? "", CurrentLanguage);
+            var items = await ShoppingCartService.GetAdminPageListAsync(search ?? "", CurrentLanguage, cancellationToken);
             var result = items.Select(r =>
             {
                 int itemCount;
@@ -104,9 +105,9 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult Detail(int id)
+        public async Task<ActionResult> Detail(CancellationToken cancellationToken, int id)
         {
-            var shoppingCart = ShoppingCartService.GetSingle(id);
+            var shoppingCart = await ShoppingCartService.GetSingleAsync(id);
             if (shoppingCart == null)
             {
                 return HttpNotFound();
@@ -117,16 +118,16 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            var item = ShoppingCartService.GetSingle(id);
+            var item = await ShoppingCartService.GetSingleAsync(id);
             if (item == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                ShoppingCartService.DeleteById(id);
+                await ShoppingCartService.DeleteByIdAsync(id);
                 SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

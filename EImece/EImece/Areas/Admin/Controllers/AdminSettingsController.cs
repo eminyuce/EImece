@@ -4,6 +4,8 @@ using EImece.Domain.Models.AdminModels;
 using NLog;
 using Resources;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -13,24 +15,24 @@ namespace EImece.Areas.Admin.Controllers
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // GET: Admin/AdminSettings
-        public ActionResult Index()
+        public async Task<ActionResult> Index(CancellationToken cancellationToken)
         {
-            SettingModel r = SettingService.GetSettingModel(CurrentLanguage);
+            SettingModel r = await SettingService.GetSettingModelAsync(CurrentLanguage);
             return View(r);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(SettingModel settingModel)
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, SettingModel settingModel)
         {
-            SettingService.SaveSettingModel(settingModel, CurrentLanguage);
+            await SettingService.SaveSettingModelAsync(settingModel, CurrentLanguage);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            return View(SettingService.GetSettingModel(CurrentLanguage));
+            return View(await SettingService.GetSettingModelAsync(CurrentLanguage));
         }
 
-        public ActionResult SystemSettings()
+        public async Task<ActionResult> SystemSettings(CancellationToken cancellationToken)
         {
-            SystemSettingModel r = SettingService.GetSystemSettingModel();
+            SystemSettingModel r = await SettingService.GetSystemSettingModelAsync(cancellationToken);
             return View(r);
         }
 
@@ -44,23 +46,23 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SystemSettings(SystemSettingModel settingModel)
+        public async Task<ActionResult> SystemSettings(CancellationToken cancellationToken, SystemSettingModel settingModel)
         {
-            SettingService.SaveSystemSettingModel(settingModel);
+            await SettingService.SaveSystemSettingModelAsync(settingModel);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            return View(SettingService.GetSystemSettingModel());
+            return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));
         }
 
-        public ActionResult SendSampleEmail()
+        public async Task<ActionResult> SendSampleEmail(CancellationToken cancellationToken)
         {
             String companyName = "Testing company Name";
-            var webSiteCompanyEmailAddress = SettingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress);
+            var webSiteCompanyEmailAddress = await SettingService.GetSettingByKeyAsync(Constants.WebSiteCompanyEmailAddress);
             if (string.IsNullOrEmpty(webSiteCompanyEmailAddress))
             {
                 ModelState.AddModelError("", AdminResource.WebSiteCompanyEmailAddressRequired);
-                return View("SystemSettings", SettingService.GetSystemSettingModel());
+                return View("SystemSettings", await SettingService.GetSystemSettingModelAsync(cancellationToken));
             }
-            var emailAccount = SettingService.GetEmailAccount();
+            var emailAccount = await SettingService.GetEmailAccountAsync();
             var info = $"From-->{webSiteCompanyEmailAddress} {companyName} To: {emailAccount.ToString()}";
             try
             {
@@ -82,7 +84,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", ex.ToFormattedString());
             }
 
-            return View("SystemSettings", SettingService.GetSystemSettingModel());
+            return View("SystemSettings", await SettingService.GetSystemSettingModelAsync(cancellationToken));
         }
     }
 }

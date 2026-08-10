@@ -246,6 +246,31 @@ namespace EImece.Domain.Repositories
             }
         }
 
+        public virtual async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    var item = await GetSingleAsync(id).ConfigureAwait(false);
+                    Delete(item);
+                }
+                await SaveAsync().ConfigureAwait(false);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                BaseLogger.Error(ex, "DbEntityValidationException:" + message);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                BaseLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                throw;
+            }
+        }
+
         public List<Expression<Func<T, object>>> GetIncludePropertyExpressionList()
         {
             return new List<Expression<Func<T, object>>>();
