@@ -37,6 +37,14 @@ namespace EImece.Domain.Observability.Metrics
 
         public double AverageDurationMs { get; set; }
 
+        public long MinDurationMs { get; set; }
+
+        public long MaxDurationMs { get; set; }
+
+        public long P50DurationMs { get; set; }
+
+        public long P75DurationMs { get; set; }
+
         public long P90DurationMs { get; set; }
 
         public long P95DurationMs { get; set; }
@@ -46,7 +54,7 @@ namespace EImece.Domain.Observability.Metrics
 
     /// <summary>
     /// Thread-safe in-process latency metrics with a bounded ring buffer per key.
-    /// Percentiles (P90/P95/P99) are computed from the most recent samples so memory stays
+    /// Percentiles (P50/P75/P90/P95/P99) are computed from the most recent samples so memory stays
     /// predictable under high concurrency, while <see cref="MetricSnapshot.Count"/> tracks
     /// the lifetime invocation count.
     /// </summary>
@@ -203,6 +211,10 @@ namespace EImece.Domain.Observability.Metrics
                         ErrorCount = _errorCount,
                         SampleWindowSize = _filled,
                         AverageDurationMs = _totalCount == 0 ? 0d : (double)_sumDurationMs / _totalCount,
+                        MinDurationMs = window[0],
+                        MaxDurationMs = window[window.Length - 1],
+                        P50DurationMs = LatencyPercentiles.NearestRank(window, 0.50),
+                        P75DurationMs = LatencyPercentiles.NearestRank(window, 0.75),
                         P90DurationMs = LatencyPercentiles.NearestRank(window, 0.90),
                         P95DurationMs = LatencyPercentiles.NearestRank(window, 0.95),
                         P99DurationMs = LatencyPercentiles.NearestRank(window, 0.99)

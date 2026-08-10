@@ -51,11 +51,11 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
-        public void RecordMethod_ComputesP90P95P99()
+        public void RecordMethod_ComputesP50P75P90P95P99()
         {
             var metrics = new ApplicationMetrics(sampleCapacity: 256);
 
-            // 100 samples: 1..100 ms → P90≈90, P95≈95, P99≈99 (nearest-rank)
+            // 100 samples: 1..100 ms → nearest-rank percentiles
             for (var i = 1; i <= 100; i++)
             {
                 metrics.RecordMethod("service", "IProductService", "GetSingle", i, true);
@@ -63,6 +63,10 @@ namespace EImece.Tests.Helpers
 
             var snapshot = metrics.GetSnapshots()["service:IProductService.GetSingle"];
             Assert.AreEqual(100, snapshot.Count);
+            Assert.AreEqual(1, snapshot.MinDurationMs);
+            Assert.AreEqual(100, snapshot.MaxDurationMs);
+            Assert.AreEqual(50, snapshot.P50DurationMs);
+            Assert.AreEqual(75, snapshot.P75DurationMs);
             Assert.AreEqual(90, snapshot.P90DurationMs);
             Assert.AreEqual(95, snapshot.P95DurationMs);
             Assert.AreEqual(99, snapshot.P99DurationMs);
