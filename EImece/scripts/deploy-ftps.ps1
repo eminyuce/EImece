@@ -1,13 +1,14 @@
 <#
 .SYNOPSIS
-  Uploads a published ASP.NET site to a remote FTP/FTPS endpoint without deleting remote files.
+  Uploads a restricted set of published ASP.NET folders to a remote FTP/FTPS endpoint.
 
 .DESCRIPTION
   Intended for production deployment of MSBuild FileSystem publish output.
   - Authenticates with credentials from parameters (pass via GitHub Actions Secrets).
   - Prefers FTPS (Explicit TLS) when -UseFtps is set (default).
   - Never deletes remote files or directories (no mirror/purge).
-  - Skips persistent / server-only paths so production uploads and logs survive.
+  - Uploads ONLY these folders: bin, Views, Content, Scripts.
+  - Never overwrites Web.config or anything under media/ (kept as-is on the server).
 
 .PARAMETER LocalPath
   Local directory containing the published application (e.g. artifacts/publish).
@@ -66,59 +67,40 @@ if (-not (Test-Path -LiteralPath $LocalPath -PathType Container)) {
 
 $LocalPath = (Resolve-Path -LiteralPath $LocalPath).Path
 
-# Relative paths (POSIX-style) that must never be uploaded or overwritten remotely.
-$SkipPathPrefixes = @(
-    'media/images/',
-    'media/logs/'
-)
-
-$SkipExactFiles = @(
-    'ConnectionStrings.config',
-    'media/logs/.healthcheck'
+# Allowlist only — everything else (including Web.config and media/) stays on the server.
+$AllowedRootFolders = @(
+    'bin',
+    'Views',
+    'Content',
+    'Scripts'
 )
 
 function Normalize-RelPath([string]$path) {
     return (($path -replace '\\', '/') -replace '^/+', '').Trim()
 }
 
-function Should-SkipUpload([string]$relativePath) {
+function Test-IsAllowedUpload([string]$relativePath) {
     $rel = Normalize-RelPath $relativePath
-    if ([string]::IsNullOrWhiteSpace($rel)) { return $true }
+    if ([string]::IsNullOrWhiteSpace($rel)) { return $false }
 
-    foreach ($exact in $SkipExactFiles) {
-        if ($rel -ieq $exact) { return $true }
+    # Hard deny: never overwrite production Web.config or media.
+    if ($rel -ieq 'Web.config' -or $rel -ieq 'web.config') { return $false }
+    if ($rel.StartsWith('media/', [System.StringComparison]::OrdinalIgnoreCase) -or
+        $rel -ieq 'media') {
+        return $false
     }
+    if ($rel -ieq 'ConnectionStrings.config') { return $false }
 
-    foreach ($prefix in $SkipPathPrefixes) {
-        if ($rel.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
-            # Allow deploying media/Web.config and media/logs/Web.config scaffolding only.
-            if ($rel -ieq 'media/Web.config' -or $rel -ieq 'media/logs/Web.config') {
-                return $false
-            }
+    $root = ($rel -split '/')[0]
+    foreach ($allowed in $AllowedRootFolders) {
+        if ($root -ieq $allowed) {
+            # Skip local IDE / debug leftovers inside allowed folders.
+            if ($rel -match '\.(user|suo|pdb)$') { return $false }
             return $true
         }
     }
 
-    # Never upload VCS / IDE / local secrets
-    if ($rel -match '(^|/)\.git(/|$)' -or
-        $rel -match '(^|/)\.github(/|$)' -or
-        $rel -match '\.(user|suo|pdb)$' -or
-        $rel -ieq 'web.config.backup') {
-        return $true
-    }
-
     return $false
-}
-
-function Join-FtpUrl([string]$basePath, [string]$relativePath) {
-    $base = ($basePath -replace '\\', '/').TrimEnd('/')
-    if ([string]::IsNullOrWhiteSpace($base)) { $base = '' }
-    if (-not $base.StartsWith('/')) { $base = '/' + $base }
-    $rel = Normalize-RelPath $relativePath
-    if ([string]::IsNullOrWhiteSpace($rel)) {
-        return $base + '/'
-    }
-    return "$base/$rel"
 }
 
 if ($SkipTlsValidation) {
@@ -198,10 +180,7 @@ function Upload-File([string]$localFile, [string]$remoteFileUrl) {
 
     $resp = $req.GetResponse()
     try {
-        $status = $resp.StatusDescription
-        if ($status) {
-            # Do not echo credentials or full URLs with userinfo.
-        }
+        $null = $resp.StatusDescription
     }
     finally {
         $resp.Close()
@@ -225,7 +204,19 @@ Write-Host "  Port: $FtpPort"
 Write-Host "  Path: $($builder.Path)"
 Write-Host "  Local: $LocalPath"
 Write-Host "  Remote delete: DISABLED"
-Write-Host "  Skipped prefixes: $($SkipPathPrefixes -join ', ')"
+Write-Host "  Allowlist folders: $($AllowedRootFolders -join ', ')"
+Write-Host "  Never overwrite: Web.config, media/"
+
+$missingAllowed = @()
+foreach ($folder in $AllowedRootFolders) {
+    $candidate = Join-Path $LocalPath $folder
+    if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
+        $missingAllowed += $folder
+    }
+}
+if ($missingAllowed.Count -gt 0) {
+    throw "Publish output is missing required folder(s) for deploy: $($missingAllowed -join ', ')"
+}
 
 $files = Get-ChildItem -LiteralPath $LocalPath -Recurse -File
 $uploaded = 0
@@ -235,7 +226,7 @@ foreach ($file in $files) {
     $relative = $file.FullName.Substring($LocalPath.Length).TrimStart('\', '/')
     $relNorm = Normalize-RelPath $relative
 
-    if (Should-SkipUpload $relNorm) {
+    if (-not (Test-IsAllowedUpload $relNorm)) {
         $skipped++
         continue
     }
@@ -249,9 +240,10 @@ foreach ($file in $files) {
 Write-Host ""
 Write-Host "FTPS deployment finished."
 Write-Host "  Uploaded: $uploaded"
-Write-Host "  Skipped (persistent/excluded): $skipped"
+Write-Host "  Skipped (outside allowlist / protected): $skipped"
+Write-Host "  Remote Web.config and media/ were NOT modified."
 Write-Host "  Remote files were NOT deleted."
 
 if ($uploaded -eq 0) {
-    throw 'No files were uploaded. Check LocalPath and exclude rules.'
+    throw 'No files were uploaded. Check LocalPath and allowlist rules.'
 }

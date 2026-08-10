@@ -165,31 +165,34 @@ Release transforms from `Web.Release.config` are applied by the Web Publishing P
 
 Behavior:
 
-- Uploads **only** the published artifact (not the git working tree)
+- Uploads from the published artifact (not the git working tree)
 - Uses **FTPS** by default (`EnableSsl` / explicit TLS)
 - **Never deletes** remote files or directories (no mirror purge)
-- Skips persistent / dangerous paths (see below)
-- Fails the job if upload fails or zero files are uploaded
+- Uploads **only** these folders (allowlist):
+  - `bin/`
+  - `Views/`
+  - `Content/`
+  - `Scripts/`
+- **Never overwrites** production `Web.config` or anything under `media/`
+- Fails the job if upload fails, required folders are missing, or zero files are uploaded
 
 Credentials come exclusively from GitHub Actions Secrets.
 
+Everything else in the publish artifact (for example `Areas/`, `fonts/`, `App_Data/`, `Global.asax`, `NLog.config`, root static files) is kept in the downloadable GitHub artifact for inspection, but is **not** FTPS-uploaded. Manage those on the server separately when needed.
+
 ---
 
-## Persistent directories (do not delete / overwrite)
+## Persistent / protected server files
 
-User-generated and runtime data live under the web root:
+These must remain as already configured on the production server:
 
 | Path | Contents | Deploy behavior |
 |------|----------|-----------------|
-| `media/images/` | Product / CMS uploads (+ `thumbs/`) | **Not uploaded**; remote content preserved |
-| `media/logs/` | NLog / structured logs | **Not uploaded** (except `media/logs/Web.config` scaffolding) |
-| `media/Web.config` | Static content rules for media | May be uploaded |
-| `ConnectionStrings.config` | Server-only DB config (`configSource`) | **Never uploaded** even if present locally |
-| `App_Data/` | App support files | Published with the app; avoid storing irreplaceable user uploads here in production |
+| `Web.config` | Production runtime config / connection wiring | **Never uploaded** |
+| `media/` (entire tree) | Uploads (`images/`), logs (`logs/`), media rules | **Never uploaded** |
+| `ConnectionStrings.config` | Server-only DB config (`configSource`) | **Never uploaded** |
 
-The FTPS script also refuses to upload `.git`, `.github`, `*.user`, and similar local metadata.
-
-Grant the IIS app pool modify rights on `media/` after the first deploy (see `EImece/docs/IIS_APP_POOL_PERMISSIONS.md`).
+Grant the IIS app pool modify rights on `media/` (see `EImece/docs/IIS_APP_POOL_PERMISSIONS.md`).
 
 ---
 
@@ -293,7 +296,7 @@ Example local rollback upload (PowerShell):
   -UseFtps:$true
 ```
 
-Because remote delete is disabled, rollback overwrites application files but **does not** wipe `media/images` or `media/logs`.
+Because remote delete is disabled and the FTPS allowlist is limited to `bin/`, `Views/`, `Content/`, and `Scripts/`, rollback overwrites only those folders and **does not** modify `Web.config` or `media/`.
 
 There is no automatic database rollback (schema changes are out of scope for this pipeline).
 
@@ -313,7 +316,9 @@ There is no automatic database rollback (schema changes are out of scope for thi
 | FTPS authentication / TLS errors | Host requires plain FTP or different port | Try `use_ftps=false` or set `FTP_PORT`; confirm host FTPS support |
 | Smoke test skipped | `PRODUCTION_BASE_URL` unset | Add the secret and re-run deploy |
 | Smoke test 503 / DOWN | DB or `media` permissions | Fix server env connection string / IIS ACLs; see BUILD_AND_RUN.md |
-| Missing images after deploy | Expected if uploads are only on server | Pipeline intentionally skips `media/images` |
+| Missing images after deploy | Expected — `media/` is never uploaded | Production media stays on the server |
+| `Web.config` unexpectedly changed | Should not happen with this pipeline | Confirm deploy used `deploy-ftps.ps1` allowlist |
+| Admin / Areas views not updated | `Areas/` is outside the FTPS allowlist | Update `Areas/` on the server manually, or extend the allowlist if desired |
 
 ---
 
@@ -338,7 +343,8 @@ The workflow intentionally does **not**:
 - Change target framework or migrate to ASP.NET Core
 - Run EF migrations or destructive SQL
 - Delete remote files over FTP
-- Overwrite `media/images` or `media/logs`
+- Overwrite `Web.config` or anything under `media/`
+- Upload folders outside `bin/`, `Views/`, `Content/`, `Scripts/`
 - Echo credentials to logs
 - Execute Playwright against production
 

@@ -286,6 +286,9 @@ jobs:
           $useFtps = $true
           if ('${{ github.event.inputs.use_ftps }}' -eq 'false') { $useFtps = $false }
 
+          Write-Host "FTPS allowlist: bin/, Views/, Content/, Scripts/ only."
+          Write-Host "Protected on server (not uploaded): Web.config, media/"
+
           & .\EImece\scripts\deploy-ftps.ps1 `
             -LocalPath "${{ env.PUBLISH_DIR }}" `
             -FtpHost $env:FTP_HOST `
