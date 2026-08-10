@@ -528,6 +528,7 @@
     <Content Include="Areas\Admin\Content\PageThemes\tema-08.gif" />
     <Content Include="Content\adminSearchResult.css" />
     <Content Include="Content\adminShell.css" />
+    <Content Include="Content\adminGridModern.css" />
     <Content Include="Content\adminReports.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -1336,6 +1337,12 @@
     <Content Include="Areas\Admin\Views\Shared\_AdminEditNextStep.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionEnd.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Grid\_GridChrome.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Grid\_GridImageCell.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Grid\_GridNameCell.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Grid\_GridPriceCell.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Grid\_GridStatusGroup.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Grid\_GridActionsMenu.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pAdminSearchForm.cshtml" />
     <Content Include="Areas\Admin\Views\Products\SaveOrEdit.cshtml" />
@@ -1546,6 +1553,7 @@
     <Content Include="Scripts\codemirror\xml\test.js" />
     <Content Include="Scripts\codemirror\xml\xml.js" />
     <Content Include="Scripts\adminEimece.js" />
+    <Content Include="Scripts\adminGridModern.js" />
     <Content Include="Scripts\cookie-consent.js" />
     <Content Include="Scripts\eimece.js" />
     <Content Include="Scripts\gridmvc.js" />

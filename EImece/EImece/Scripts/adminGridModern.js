@@ -210,11 +210,119 @@
         });
     }
 
+    function positionPortaledMenu($group, $menu) {
+        var $btn = $group.children('.dropdown-toggle, .eg-actions-toggle').first();
+        if (!$btn.length || !$menu.length || !$btn[0]) {
+            return;
+        }
+
+        // Measure with fixed positioning so nested scroll/sticky containers cannot skew offset().
+        $menu.css({
+            display: 'block',
+            position: 'fixed',
+            visibility: 'hidden',
+            top: 0,
+            left: 0,
+            right: 'auto',
+            bottom: 'auto',
+            minWidth: 220,
+            zIndex: 2100
+        });
+
+        var btnRect = $btn[0].getBoundingClientRect();
+        var menuWidth = Math.max($menu.outerWidth(), 220);
+        var menuHeight = $menu.outerHeight();
+        var left = btnRect.right - menuWidth;
+        left = Math.max(8, Math.min(left, window.innerWidth - menuWidth - 8));
+
+        var topBelow = btnRect.bottom + 4;
+        var topAbove = btnRect.top - menuHeight - 4;
+        var top = topBelow;
+        if (topBelow + menuHeight > window.innerHeight - 8 && topAbove >= 8) {
+            top = topAbove;
+        }
+
+        $menu.css({
+            display: 'block',
+            position: 'fixed',
+            visibility: 'visible',
+            top: top,
+            left: left,
+            minWidth: menuWidth,
+            zIndex: 2100,
+            right: 'auto',
+            bottom: 'auto'
+        });
+    }
+
+    function restorePortaledMenu($group) {
+        var $menu = $group.data('egMenu');
+        if (!$menu || !$menu.length) {
+            $menu = $('body > .eg-actions-menu-portal');
+        }
+        if ($menu && $menu.length) {
+            $menu
+                .removeClass('eg-actions-menu-portal')
+                .removeAttr('style')
+                .appendTo($group);
+        }
+        $group.removeData('egMenu');
+    }
+
+    function wireActionMenus() {
+        $(document).on('show.bs.dropdown', '.eg-actions.btn-group', function () {
+            var $group = $(this);
+            var $menu = $group.children('.dropdown-menu').first();
+            if (!$menu.length) {
+                return;
+            }
+
+            // Close any other portaled action menu first.
+            $('.eg-actions.btn-group.open').not($group).each(function () {
+                restorePortaledMenu($(this));
+            });
+
+            $group.data('egMenu', $menu);
+            $menu.addClass('eg-actions-menu-portal').appendTo('body');
+            // Two frames: first attach/layout, then measure final width/height.
+            window.requestAnimationFrame(function () {
+                positionPortaledMenu($group, $menu);
+                window.requestAnimationFrame(function () {
+                    positionPortaledMenu($group, $menu);
+                });
+            });
+        });
+
+        $(document).on('hide.bs.dropdown', '.eg-actions.btn-group', function () {
+            restorePortaledMenu($(this));
+        });
+
+        $(document).on('scroll', '.eg-grid-scroll, .eg-grid .grid-wrap', function () {
+            var $open = $('.eg-actions.btn-group.open');
+            if ($open.length) {
+                $open.removeClass('open');
+                restorePortaledMenu($open);
+            }
+        });
+
+        $(window).on('resize.egActionsMenu', function () {
+            var $open = $('.eg-actions.btn-group.open');
+            if (!$open.length) {
+                return;
+            }
+            var $menu = $open.data('egMenu');
+            if ($menu && $menu.length) {
+                positionPortaledMenu($open, $menu);
+            }
+        });
+    }
+
     $(function () {
         markModernGrids();
         enhanceLegacyChangeStateSuccess();
         wireChrome();
         wireStatusToggles();
         wireLoadingState();
+        wireActionMenus();
     });
 }(window, window.jQuery));

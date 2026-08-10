@@ -20,7 +20,8 @@
             @Html.GridMeta(AdminResource.ProductCode, product.ProductCode)
         }
     </div>
-    @if (!string.IsNullOrEmpty(product.NameLong))
+    @if (!string.IsNullOrEmpty(product.NameLong)
+         && !string.Equals(product.NameLong.Trim(), (product.Name ?? "").Trim(), StringComparison.OrdinalIgnoreCase))
     {
         <div class="eg-name-sub">@product.NameLong</div>
     }

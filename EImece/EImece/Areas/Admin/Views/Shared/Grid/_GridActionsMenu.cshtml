@@ -9,6 +9,21 @@
         && d.ProductCategory.TemplateId.HasValue
         && d.ProductCategory.TemplateId > 0;
     var hasComments = d.ProductComments.IsNotEmpty();
+
+    // ViewDataDictionary collection initializers call Add() and throw if a key already exists
+    // in the copied parent ViewData (e.g. controllerName from Index).
+    var deleteMenuVd = new ViewDataDictionary(ViewData);
+    deleteMenuVd["ItemId"] = d.Id;
+    deleteMenuVd["controllerName"] = controllerName;
+    deleteMenuVd["DeleteIcon"] = "";
+    deleteMenuVd["ItemDescription"] = d.Name;
+    deleteMenuVd["gridDeleteText"] = AdminResource.GridDeleteText;
+
+    var deleteCompactVd = new ViewDataDictionary(ViewData);
+    deleteCompactVd["ItemId"] = d.Id;
+    deleteCompactVd["controllerName"] = controllerName;
+    deleteCompactVd["DeleteIcon"] = "btn btn-danger btn-xs glyphicon glyphicon-remove-circle";
+    deleteCompactVd["ItemDescription"] = d.Name;
 }
 <div class="eg-actions btn-group">
     <button type="button"
@@ -16,7 +31,9 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false">
-        İşlemler <span class="caret"></span>
+        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+        <span>İşlemler</span>
+        <span class="caret"></span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right eg-actions-menu">
         <li>
@@ -32,8 +49,9 @@
         @if (hasSpecs)
         {
             <li>
-                <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = d.Id })">
-                    <i class="glyphicon glyphicon-plus"></i> Specs
+                <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = d.Id })"
+                   title="@AdminResource.ProductSpecs">
+                    <i class="glyphicon glyphicon-plus"></i> Özellikler
                 </a>
             </li>
         }
@@ -49,13 +67,7 @@
         {
             <li class="divider"></li>
             <li class="eg-actions-danger">
-                @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-                    { "ItemId", d.Id },
-                    { "controllerName", controllerName },
-                    { "DeleteIcon", "" },
-                    { "ItemDescription", d.Name },
-                    { "gridDeleteText", AdminResource.GridDeleteText }
-                })
+                @Html.Partial("pDeleteModal", deleteMenuVd)
             </li>
         }
     </ul>
@@ -72,18 +84,13 @@
     @if (hasSpecs)
     {
         <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = d.Id })"
-           class="btn btn-default btn-xs" title="Specs">
+           class="btn btn-default btn-xs" title="@AdminResource.ProductSpecs">
             <i class="glyphicon glyphicon-plus"></i>
         </a>
     }
     @if (UserRoleHelper.IsDeletedEnableRoles())
     {
-        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-            { "ItemId", d.Id },
-            { "controllerName", controllerName },
-            { "DeleteIcon", "btn btn-danger btn-xs glyphicon glyphicon-remove-circle" },
-            { "ItemDescription", d.Name }
-        })
+        @Html.Partial("pDeleteModal", deleteCompactVd)
     }
     @if (hasComments)
     {

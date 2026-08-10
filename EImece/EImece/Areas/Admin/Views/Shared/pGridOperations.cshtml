@@ -30,26 +30,25 @@
     var IsCampaign = AdminResource.IsCampaign;
     var AdminDeleteConfirmMessage = AdminResource.AdminDeleteConfirmMessage;
 
-    var hasBulkActions = selectAll || deleteAll || SetStateOnOrOff || orderingButton || ProductState || IsExcelButtonEnabled;
+    var hasBulkActions = selectAll || deleteAll || SetStateOnOrOff || orderingButton || ProductState;
 }
 
-<div class="panel panel-info admin-grid-ops">
+<div class="panel panel-info admin-grid-ops eg-bulk-bar">
     <div class="panel-body">
 
-        @if (isNewRecordButtonEnabled || IsSearchFormEnabled)
+        @if (isNewRecordButtonEnabled || IsSearchFormEnabled || IsExcelButtonEnabled)
         {
-            <div class="row admin-grid-ops-top">
+            <div class="eg-ops-primary">
                 @if (isNewRecordButtonEnabled)
                 {
-                    <div class="@(IsSearchFormEnabled ? "col-md-3" : "col-md-12")">
-                        <p>
-                            @Html.ActionLink(NewRecordText, "SaveOrEdit", controllerName, null, new { @class = "btn btn-primary btn-block" })
-                        </p>
-                    </div>
+                    <a class="btn btn-primary eg-ops-new" href="@Url.Action("SaveOrEdit", controllerName)">
+                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                        <span>@NewRecordText</span>
+                    </a>
                 }
                 @if (IsSearchFormEnabled)
                 {
-                    <div class="@(isNewRecordButtonEnabled ? "col-md-9" : "col-md-12")">
+                    <div class="eg-ops-search">
                         @{
                             var searchViewData = new ViewDataDictionary(ViewData);
                             searchViewData["IdValueExists"] = IdValueExists;
@@ -57,124 +56,126 @@
                         @Html.Partial("pAdminSearchForm", searchViewData)
                     </div>
                 }
+                @if (IsExcelButtonEnabled)
+                {
+                    <div class="eg-ops-export" role="group" aria-label="@AdminResource.Excel">
+                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel" })" title="@AdminResource.Excel">
+                            <i class="glyphicon glyphicon-export" aria-hidden="true"></i>
+                            <span>@AdminResource.Excel</span>
+                        </a>
+                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "csv" })" title="@AdminResource.Csv">
+                            <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
+                            <span>@AdminResource.Csv</span>
+                        </a>
+                    </div>
+                }
             </div>
         }
 
         @if (hasBulkActions)
         {
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="admin-grid-toolbar" role="toolbar">
+            <div class="admin-grid-toolbar eg-ops-toolbar" role="toolbar" aria-label="Toplu işlemler">
 
-                        @if (selectAll)
+                @if (selectAll)
+                {
+                    <div class="admin-grid-toolbar-group eg-ops-group" role="group" aria-label="@GridSelectAllButtonText">
+                        <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="SelectAll" title="@GridSelectAllButtonText">
+                            <i class="glyphicon glyphicon-check" aria-hidden="true"></i>
+                            <span>Tümü</span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="DeselectAll" title="@GridDeSelectAllButtonText">
+                            <i class="glyphicon glyphicon-unchecked" aria-hidden="true"></i>
+                            <span>Temizle</span>
+                        </button>
+                    </div>
+                }
+
+                @if (deleteAll)
+                {
+                    <div class="admin-grid-toolbar-group eg-ops-group eg-ops-group-danger" role="group">
+                        <button type="button" class="btn btn-danger btn-sm eg-ops-btn eg-ops-btn-danger" id="DeleteAll" title="@GridDeleteSelectedButtonText">
+                            <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                            <span>Sil</span>
+                        </button>
+                    </div>
+                }
+
+                @if (SetStateOnOrOff)
+                {
+                    <div class="admin-grid-toolbar-group eg-ops-group" role="group" aria-label="@State">
+                        @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                         {
-                            <div class="admin-grid-toolbar-group" role="group" aria-label="@GridSelectAllButtonText">
-                                <button type="button" class="btn btn-default btn-sm" id="SelectAll">
-                                    <i class="glyphicon glyphicon-check"></i> @GridSelectAllButtonText
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm" id="DeselectAll">
-                                    <i class="glyphicon glyphicon-unchecked"></i> @GridDeSelectAllButtonText
-                                </button>
-                            </div>
+                            <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                                <option value="MainPage">@MainPage</option>
+                                <option value="IsCampaign">@IsCampaign</option>
+                            </select>
                         }
-
-                        @if (deleteAll)
+                        else if (StateTypes.Equals("State,ImageState,MainPage"))
                         {
-                            <div class="admin-grid-toolbar-group" role="group">
-                                <button type="button" class="btn btn-danger btn-sm" id="DeleteAll">
-                                    <i class="glyphicon glyphicon-trash"></i> @GridDeleteSelectedButtonText
-                                </button>
-                            </div>
+                            <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                                <option value="MainPage">@MainPage</option>
+                            </select>
                         }
-
-                        @if (SetStateOnOrOff)
+                        else if (StateTypes.Equals("State,ImageState"))
                         {
-                            <div class="admin-grid-toolbar-group" role="group" aria-label="@State">
-                                @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
-                                {
-                                    <select class="form-control input-sm admin-grid-state-select" name="ItemStateSelection" id="ItemStateSelection">
-                                        <option value="State">@State</option>
-                                        <option value="ImageState">@ImageState</option>
-                                        <option value="MainPage">@MainPage</option>
-                                        <option value="IsCampaign">@IsCampaign</option>
-                                    </select>
-                                }
-                                else if (StateTypes.Equals("State,ImageState,MainPage"))
-                                {
-                                    <select class="form-control input-sm admin-grid-state-select" name="ItemStateSelection" id="ItemStateSelection">
-                                        <option value="State">@State</option>
-                                        <option value="ImageState">@ImageState</option>
-                                        <option value="MainPage">@MainPage</option>
-                                    </select>
-                                }
-                                else if (StateTypes.Equals("State,ImageState"))
-                                {
-                                    <select class="form-control input-sm admin-grid-state-select" name="ItemStateSelection" id="ItemStateSelection">
-                                        <option value="State">@State</option>
-                                        <option value="ImageState">@ImageState</option>
-                                    </select>
-                                }
-                                else if (StateTypes.Equals("State"))
-                                {
-                                    <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
-                                }
-
-                                <button type="button" class="btn btn-success btn-sm" id="SetStateOnAll">
-                                    <i class="glyphicon glyphicon-ok"></i> @GridActiveSelectedButtonText
-                                </button>
-                                <button type="button" class="btn btn-warning btn-sm" id="SetStateOffAll">
-                                    <i class="glyphicon glyphicon-remove"></i> @GridDeActiveSelectedButtonText
-                                </button>
-                            </div>
+                            <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <option value="State">@State</option>
+                                <option value="ImageState">@ImageState</option>
+                            </select>
                         }
                         else if (StateTypes.Equals("State"))
                         {
                             <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
                         }
 
-                        @if (orderingButton)
-                        {
-                            <div class="admin-grid-toolbar-group" role="group">
-                                <button type="button" class="btn btn-default btn-sm" id="OrderingAll">
-                                    <i class="glyphicon glyphicon-sort"></i> @GridOrderingAllButtonText
-                                </button>
-                            </div>
-                        }
-
-                        @if (ProductState)
-                        {
-                            <div class="admin-grid-toolbar-group admin-grid-toolbar-product" role="group" aria-label="@ProductStateChangeText">
-                                <select class="form-control input-sm admin-grid-state-select" name="ProductStateSelection" id="ProductStateSelection">
-                                    @foreach (EImece.Domain.Models.Enums.ProductState state in Enum.GetValues(typeof(EImece.Domain.Models.Enums.ProductState)))
-                                    {
-                                        <option value="@((int)state)">@GetProductStateResourceText(state)</option>
-                                    }
-                                </select>
-                                <button type="button" class="btn btn-info btn-sm" id="ProductStateChanged">
-                                    <i class="glyphicon glyphicon-refresh"></i> @ProductStateChangeText
-                                </button>
-                            </div>
-                        }
-
-                        @if (IsExcelButtonEnabled)
-                        {
-                            <div class="admin-grid-toolbar-group admin-grid-toolbar-excel" role="group" aria-label="@AdminResource.Excel">
-                                <a class="btn btn-default btn-sm" href="@Url.Action("ExportExcel", controllerName, new { format = "excel" })">
-                                    <img src="~/Areas/Admin/Content/main/excel.jpg" alt="" />
-                                    @AdminResource.Excel
-                                </a>
-                                <a class="btn btn-default btn-sm" href="@Url.Action("ExportExcel", controllerName, new { format = "csv" })">
-                                    <i class="glyphicon glyphicon-download-alt"></i>
-                                    @AdminResource.Csv
-                                </a>
-                            </div>
-                        }
+                        <button type="button" class="btn btn-success btn-sm eg-ops-btn eg-ops-btn-success" id="SetStateOnAll" title="@GridActiveSelectedButtonText">
+                            <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
+                            <span>Yayınla</span>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm eg-ops-btn eg-ops-btn-warning" id="SetStateOffAll" title="@GridDeActiveSelectedButtonText">
+                            <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                            <span>Kaldır</span>
+                        </button>
                     </div>
-                </div>
+                }
+                else if (StateTypes.Equals("State"))
+                {
+                    <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                }
+
+                @if (orderingButton)
+                {
+                    <div class="admin-grid-toolbar-group eg-ops-group" role="group">
+                        <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="OrderingAll" title="@GridOrderingAllButtonText">
+                            <i class="glyphicon glyphicon-sort" aria-hidden="true"></i>
+                            <span>Sıra</span>
+                        </button>
+                    </div>
+                }
+
+                @if (ProductState)
+                {
+                    <div class="admin-grid-toolbar-group admin-grid-toolbar-product eg-ops-group eg-ops-group-product" role="group" aria-label="@ProductStateChangeText">
+                        <select class="form-control input-sm admin-grid-state-select eg-ops-select eg-ops-select-wide" name="ProductStateSelection" id="ProductStateSelection" title="@ProductStateChangeText">
+                            @foreach (EImece.Domain.Models.Enums.ProductState state in Enum.GetValues(typeof(EImece.Domain.Models.Enums.ProductState)))
+                            {
+                                <option value="@((int)state)">@GetProductStateResourceText(state)</option>
+                            }
+                        </select>
+                        <button type="button" class="btn btn-info btn-sm eg-ops-btn eg-ops-btn-info" id="ProductStateChanged" title="@ProductStateChangeText">
+                            <i class="glyphicon glyphicon-refresh" aria-hidden="true"></i>
+                            <span>Güncelle</span>
+                        </button>
+                    </div>
+                }
             </div>
         }
 
-        <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger">
+        <div id="ErrorMessagePanel" style="display: none;" class="alert alert-danger eg-ops-error">
             <span id="ErrorMessage"></span>
         </div>
     </div>
