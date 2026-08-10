@@ -12,6 +12,8 @@ namespace EImece.Domain.Services.IServices
 
         bool DeleteBrandById(int brandId);
 
+        Task<bool> DeleteBrandByIdAsync(int brandId);
+
         Brand GetBrandById(int BrandId);
         List<Brand> GetBrandsIfAnyProductExists(int lang, int categoryId = 0);
 

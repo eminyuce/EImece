@@ -34,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult SearchContent(String searchContent)
+        public async Task<ActionResult> SearchContent(CancellationToken cancellationToken, String searchContent)
         {
             String search = searchContent.ToStr().Trim();
 
@@ -49,28 +49,28 @@ namespace EImece.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
-            List<BaseContent> resultList = SearchDatabaseForDashboard(search);
+            List<BaseContent> resultList = await SearchDatabaseForDashboardAsync(search);
 
             return View(resultList);
         }
 
-        private List<BaseContent> SearchDatabaseForDashboard(string search)
+        private async Task<List<BaseContent>> SearchDatabaseForDashboardAsync(string search)
         {
             var resultList = new List<BaseContent>();
             Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.Contains(search);
-            resultList.AddRange(ProductCategoryService.SearchEntities(whereLambda1, search, CurrentLanguage));
+            resultList.AddRange(await ProductCategoryService.SearchEntitiesAsync(whereLambda1, search, CurrentLanguage));
 
             Expression<Func<Product, bool>> whereLambda2 = r => r.Name.Contains(search) || r.NameLong.Contains(search);
-            resultList.AddRange(ProductService.SearchEntities(whereLambda2, search, CurrentLanguage));
+            resultList.AddRange(await ProductService.SearchEntitiesAsync(whereLambda2, search, CurrentLanguage));
 
             Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.Contains(search);
-            resultList.AddRange(StoryCategoryService.SearchEntities(whereLambda3, search, CurrentLanguage));
+            resultList.AddRange(await StoryCategoryService.SearchEntitiesAsync(whereLambda3, search, CurrentLanguage));
 
             Expression<Func<Story, bool>> whereLambda4 = r => r.Name.Contains(search);
-            resultList.AddRange(StoryService.SearchEntities(whereLambda4, search, CurrentLanguage));
+            resultList.AddRange(await StoryService.SearchEntitiesAsync(whereLambda4, search, CurrentLanguage));
 
             Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.Contains(search);
-            resultList.AddRange(MenuService.SearchEntities(whereLamba5, search, CurrentLanguage));
+            resultList.AddRange(await MenuService.SearchEntitiesAsync(whereLamba5, search, CurrentLanguage));
             return resultList;
         }
 

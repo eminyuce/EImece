@@ -9,6 +9,8 @@ namespace EImece.Domain.Services.IServices
     {
         void DeleteStoryCategoryById(int storyCategoryId);
 
+        Task DeleteStoryCategoryByIdAsync(int storyCategoryId);
+
         List<StoryCategory> GetActiveStoryCategories(int language);
 
         Task<List<StoryCategory>> GetActiveStoryCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken));

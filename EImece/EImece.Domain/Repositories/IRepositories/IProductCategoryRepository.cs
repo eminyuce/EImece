@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories.IRepositories
@@ -17,11 +18,15 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language);
 
+        Task<List<ProductCategory>> GetProductCategoryLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken));
+
         List<ProductCategory> GetMainPageProductCategories(int language);
 
         Task<List<ProductCategory>> GetMainPageProductCategoriesAsync(int language);
 
         List<ProductCategory> GetAdminProductCategories(string search, int language);
+
+        Task<List<ProductCategory>> GetAdminProductCategoriesAsync(string search, int language, CancellationToken cancellationToken = default(CancellationToken));
 
         List<ProductCategory> GetProductCategoriesByParentId(int parentId);
 

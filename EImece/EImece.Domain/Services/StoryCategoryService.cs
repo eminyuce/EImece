@@ -47,6 +47,21 @@ namespace EImece.Domain.Services
             DeleteEntity(storyCategory);
         }
 
+        public async Task DeleteStoryCategoryByIdAsync(int storyCategoryId)
+        {
+            var storyCategory = GetStoryCategoryById(storyCategoryId);
+            if (storyCategory.MainImageId.HasValue)
+            {
+                await FileStorageService.DeleteFileStorageAsync(storyCategory.MainImageId.Value).ConfigureAwait(false);
+            }
+            var storyIdList = storyCategory.Stories.Select(r => r.Id).ToList();
+            foreach (var id in storyIdList)
+            {
+                await StoryService.DeleteStoryByIdAsync(id).ConfigureAwait(false);
+            }
+            await DeleteEntityAsync(storyCategory).ConfigureAwait(false);
+        }
+
         public virtual new void DeleteBaseEntity(List<string> values)
         {
             try
@@ -55,6 +70,27 @@ namespace EImece.Domain.Services
                 {
                     var id = v.ToInt();
                     DeleteStoryCategoryById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                StoryCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                StoryCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public virtual new async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteStoryCategoryByIdAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)

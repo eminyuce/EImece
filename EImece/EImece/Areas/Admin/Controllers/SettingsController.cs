@@ -9,6 +9,8 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -23,9 +25,9 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("AddWebSiteLogo");
         }
 
-        public ActionResult AddWebSiteLogo()
+        public async Task<ActionResult> AddWebSiteLogo(CancellationToken cancellationToken)
         {
-            var webSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            var webSiteLogo = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
             if (webSiteLogo == null)
             {
                 webSiteLogo = new Setting();
@@ -35,7 +37,7 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("WebSiteLogo", new { id });
         }
 
-        public ActionResult WebSiteLogo(int id = 0)
+        public async Task<ActionResult> WebSiteLogo(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Setting>();
 
@@ -44,7 +46,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = SettingService.GetSingle(id);
+                content = await SettingService.GetSingleAsync(id);
             }
 
             return View(content);
@@ -52,7 +54,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UploadWebSiteLogo(int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
+        public async Task<ActionResult> UploadWebSiteLogo(CancellationToken cancellationToken, int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
         {
             if (postedImage != null && postedImage.ContentLength > 0)
             {
@@ -61,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
                     var webSiteLogoSetting = EntityFactory.GetBaseEntityInstance<Setting>();
                     if (id > 0)
                     {
-                        webSiteLogoSetting = SettingService.GetSingle(id);
+                        webSiteLogoSetting = await SettingService.GetSingleAsync(id);
                         if (webSiteLogoSetting == null)
                         {
                             return HttpNotFound();
@@ -88,7 +90,7 @@ namespace EImece.Areas.Admin.Controllers
                     webSiteLogoSetting.IsActive = true;
                     webSiteLogoSetting.Position = 1;
                     webSiteLogoSetting.Lang = CurrentLanguage;
-                    SettingService.SaveOrEditEntity(webSiteLogoSetting);
+                    await SettingService.SaveOrEditEntityAsync(webSiteLogoSetting);
                     ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                     RemoveModelState();
                     Logger.Info("Website logo uploaded. SettingId={0}, File={1}", webSiteLogoSetting.Id, result.NewFileName);
@@ -98,32 +100,32 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     Logger.Error(ex, "UploadWebSiteLogo failed. id={0}, file={1}", id, postedImage.FileName);
                     ModelState.AddModelError("", "Logo yüklenirken hata oluştu: " + ex.Message);
-                    var existing = id > 0 ? SettingService.GetSingle(id) : SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+                    var existing = id > 0 ? await SettingService.GetSingleAsync(id) : await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
                     return View("WebSiteLogo", existing ?? EntityFactory.GetBaseEntityInstance<Setting>());
                 }
             }
             ModelState.AddModelError("", "Lütfen logo resmi seçiniz");
-            var l = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
+            var l = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
             return View("WebSiteLogo", l ?? EntityFactory.GetBaseEntityInstance<Setting>());
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Setting Setting = SettingService.GetSingle(id);
+            Setting Setting = await SettingService.GetSingleAsync(id);
             if (Setting == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                SettingService.DeleteEntity(Setting);
+                await SettingService.DeleteEntityAsync(Setting);
                 SetSuccessMessage();
                 return RedirectToAction("Index");
             }
@@ -135,12 +137,12 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult ExportExcel(string format = "excel")
+        public async Task<ActionResult> ExportExcel(CancellationToken cancellationToken, string format = "excel")
         {
             String search = "";
 
             Expression<Func<Setting, bool>> whereLambda = r => r.Name.Contains(search);
-            var settings = SettingService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var settings = await SettingService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
 
             var result = from r in settings
                          select new

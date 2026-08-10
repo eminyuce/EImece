@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -18,17 +19,14 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<Coupon, bool>> whereLambda = r => r.Name.Contains(search) || r.Code.Contains(search);
-            var result = CouponService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var result = await CouponService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(result);
         }
 
-        //
-        // GET: /Tag/Create
-
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Coupon>();
             if (id == 0)
@@ -36,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = CouponService.GetSingle(id);
+                content = await CouponService.GetSingleAsync(id);
                 content.StartDateStr = content.StartDate.ToString("dd/MM/yyyy",
                                 CultureInfo.InvariantCulture);
                 content.EndDateStr = content.EndDate.ToString("dd/MM/yyyy",
@@ -46,12 +44,9 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
-        //
-        // POST: /Tag/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Coupon coupon)
+        public async Task<ActionResult> SaveOrEdit(Coupon coupon)
         {
             try
             {
@@ -65,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (coupon.EndDate > coupon.StartDate)
                 {
                     coupon.Lang = CurrentLanguage;
-                    CouponService.SaveOrEditEntity(coupon);
+                    await CouponService.SaveOrEditEntityAsync(coupon);
                     return RedirectToAction("Index");
                 }
                 else
@@ -77,7 +72,6 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, coupon);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             return View(coupon);
@@ -86,16 +80,16 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            var item = CouponService.GetSingle(id);
+            var item = await CouponService.GetSingleAsync(id);
             if (item == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                CouponService.DeleteEntity(item);
+                await CouponService.DeleteEntityAsync(item);
                 SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
@@ -108,7 +102,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

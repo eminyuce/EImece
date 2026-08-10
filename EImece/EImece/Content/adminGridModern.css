@@ -1764,3 +1764,264 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
         width: 100%;
     }
 }
+
+/* ==========================================================================
+   Mobile / touch enhancements (phones & small tablets)
+   Intent: keep Grid.Mvc usable with one thumb — horizontal scroll inside
+   tables only, ≥44px hit targets, category tree capped so it cannot push
+   the grid off-screen, forms/filters stack to a single column.
+   Desktop (≥992px) layout and collapse behavior are unchanged.
+   ========================================================================== */
+
+.eg-grid .grid-wrap,
+.eg-grid-scroll,
+body.admin-app .eg-grid .grid-wrap {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    max-width: 100%;
+}
+
+@media (max-width: 991px) {
+    .eg-grid-chrome {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 12px;
+    }
+
+    .eg-grid-chrome-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .eg-density-toggle .btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* Disable sticky columns on touch widths — they fight horizontal swipe scroll */
+    .eg-grid .grid-table > thead > tr > th.eg-sticky-left,
+    .eg-grid .grid-table > tbody > tr > td.eg-sticky-left,
+    .eg-grid .grid-table > thead > tr > th.eg-sticky-left-1,
+    .eg-grid .grid-table > tbody > tr > td.eg-sticky-left-1,
+    .eg-grid .grid-table > thead > tr > th.eg-sticky-left-2,
+    .eg-grid .grid-table > tbody > tr > td.eg-sticky-left-2,
+    .eg-grid .grid-table > thead > tr > th.eg-sticky-right,
+    .eg-grid .grid-table > tbody > tr > td.eg-sticky-right {
+        position: static !important;
+        left: auto !important;
+        right: auto !important;
+        box-shadow: none !important;
+        z-index: auto !important;
+    }
+
+    /* Category tree: scrollable, not page-pushing */
+    .eg-category-tree {
+        max-height: min(42vh, 320px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .eg-category-tree-head {
+        flex: 0 0 auto;
+        min-height: 44px;
+        padding: 10px 12px;
+    }
+
+    .eg-category-tree > ul.treeProducts.eg-tree {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        max-height: none;
+    }
+
+    .eg-category-tree .eg-tree-row {
+        min-height: 44px;
+    }
+
+    .eg-category-tree .eg-tree-toggle {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+    }
+
+    .eg-category-tree .eg-tree-link {
+        min-height: 44px;
+        padding: 10px 10px;
+        font-size: 14px;
+    }
+
+    .eg-category-all {
+        min-height: 36px;
+        height: auto;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .eg-selected-category-clear {
+        width: 44px;
+        height: 44px;
+    }
+
+    .eg-quick-chip {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .eg-products-layout > [class*="col-"] {
+        width: 100%;
+        float: none;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-new,
+    .admin-grid-ops.eg-bulk-bar #SearchButton,
+    .admin-grid-ops.eg-bulk-bar .eg-search-clear {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar #searchTxtInput,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-select,
+    .admin-grid-ops.eg-bulk-bar select.admin-grid-state-select {
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    .eg-status-toggle {
+        min-height: 44px;
+        padding: 8px 10px;
+        font-size: 12px;
+        touch-action: manipulation;
+    }
+
+    .eg-status-switch {
+        width: 36px;
+        height: 20px;
+    }
+
+    .eg-status-knob {
+        width: 16px;
+        height: 16px;
+    }
+
+    .eg-status-toggle.is-on .eg-status-knob {
+        transform: translateX(16px);
+    }
+
+    .eg-actions-compact .btn,
+    .eg-actions-compact > a,
+    .eg-actions-compact > button {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 10px;
+        touch-action: manipulation;
+    }
+
+    .eg-thumb,
+    .eg-thumb img {
+        width: 48px;
+        height: 48px;
+        max-width: 48px;
+        object-fit: cover;
+    }
+
+    .eg-grid .GridOrderingTextbox {
+        width: 56px;
+        min-height: 44px;
+        height: 44px;
+        font-size: 16px;
+    }
+
+    .eg-grid .eg-pager-btn,
+    .eg-grid .pagination > li > a,
+    .eg-grid .pagination > li > span,
+    .eg-grid .page-link {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 10px 12px;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .eg-grid .eg-pager,
+    .eg-grid .site-pagination.eg-pager {
+        flex-wrap: wrap;
+        gap: 8px;
+        row-gap: 10px;
+    }
+
+    .eg-name-link {
+        font-size: 14px;
+        line-height: 1.35;
+        word-break: break-word;
+    }
+
+    body.admin-app .eg-grid table.grid-table > tbody > tr > td {
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .eg-grid-shell {
+        border-radius: 6px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-primary,
+    .admin-grid-ops.eg-bulk-bar .eg-search-form,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-search {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-search-field {
+        width: 100%;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-search-actions {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar #SearchButton,
+    .admin-grid-ops.eg-bulk-bar .eg-search-clear {
+        flex: 1 1 auto;
+    }
+
+    .eg-grid .eg-pager-summary {
+        width: 100%;
+        text-align: left;
+    }
+
+    .product-admin-filters-heading {
+        min-height: 48px;
+        padding: 12px 14px;
+    }
+
+    .product-admin-filter-form .form-group {
+        width: 100%;
+        float: none;
+    }
+
+    .product-admin-filter-form [class*="col-"] {
+        width: 100%;
+        float: none;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .media-file-preview-thumb img {
+        max-width: 100%;
+    }
+}

@@ -5,6 +5,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -23,6 +24,11 @@ namespace EImece.Domain.Repositories
             return this.GetAll().Where(r => r.ProductId == productId).ToList();
         }
 
+        public async Task<List<ProductTag>> GetAllByProductIdAsync(int productId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await this.GetAll().Where(r => r.ProductId == productId).ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public void DeleteProductTags(int productId)
         {
             var productTags = GetAll().Where(r => r.ProductId == productId).ToList();
@@ -31,6 +37,16 @@ namespace EImece.Domain.Repositories
                 Delete(product);
             }
             Save();
+        }
+
+        public async Task DeleteProductTagsAsync(int productId)
+        {
+            var productTags = await GetAll().Where(r => r.ProductId == productId).ToListAsync().ConfigureAwait(false);
+            foreach (var product in productTags)
+            {
+                Delete(product);
+            }
+            await SaveAsync().ConfigureAwait(false);
         }
 
         public void SaveProductTags(int productId, int[] tags)
@@ -46,6 +62,22 @@ namespace EImece.Domain.Repositories
                     this.Add(item);
                 }
                 Save();
+            }
+        }
+
+        public async Task SaveProductTagsAsync(int productId, int[] tags)
+        {
+            await DeleteProductTagsAsync(productId).ConfigureAwait(false);
+            if (tags != null)
+            {
+                foreach (var tag in tags)
+                {
+                    ProductTag item = new ProductTag();
+                    item.ProductId = productId;
+                    item.TagId = tag;
+                    this.Add(item);
+                }
+                await SaveAsync().ConfigureAwait(false);
             }
         }
 

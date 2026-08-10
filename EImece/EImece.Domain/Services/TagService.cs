@@ -40,6 +40,14 @@ namespace EImece.Domain.Services
             DeleteEntity(tag);
         }
 
+        public async Task DeleteTagByIdAsync(int tagId)
+        {
+            var tag = GetTagById(tagId);
+            await ProductTagRepository.DeleteByWhereConditionAsync(r => r.TagId == tagId).ConfigureAwait(false);
+            await StoryTagRepository.DeleteByWhereConditionAsync(r => r.TagId == tagId).ConfigureAwait(false);
+            await DeleteEntityAsync(tag).ConfigureAwait(false);
+        }
+
         public Tag GetTagById(int tagId)
         {
             return TagRepository.GetTagById(tagId);
@@ -53,6 +61,27 @@ namespace EImece.Domain.Services
                 {
                     var id = v.ToInt();
                     DeleteTagById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                TagServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                TagServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public virtual new async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteTagByIdAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)

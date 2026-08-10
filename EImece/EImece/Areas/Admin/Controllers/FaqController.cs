@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -18,17 +19,14 @@ namespace EImece.Areas.Admin.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
-            var result = FaqService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var result = await FaqService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(result);
         }
 
-        //
-        // GET: /Faq/Create
-
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var item = EntityFactory.GetBaseEntityInstance<Faq>();
 
@@ -37,7 +35,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                item = FaqService.GetSingle(id);
+                item = await FaqService.GetSingleAsync(id);
             }
 
             return View(item);
@@ -45,7 +43,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Faq faq, String saveButton = null)
+        public async Task<ActionResult> SaveOrEdit(Faq faq, String saveButton = null)
         {
             if (faq == null)
             {
@@ -66,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
                     }
 
                     faq.Lang = CurrentLanguage;
-                    FaqService.SaveOrEditEntity(faq);
+                    await FaqService.SaveOrEditEntityAsync(faq);
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -81,7 +79,6 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, faq);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
 
@@ -92,16 +89,16 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            Faq Faq = FaqService.GetSingle(id);
+            Faq Faq = await FaqService.GetSingleAsync(id);
             if (Faq == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                FaqService.DeleteEntity(Faq);
+                await FaqService.DeleteEntityAsync(Faq);
                 SetSuccessMessage();
                 return RedirectToAction("Index");
             }
@@ -114,7 +111,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

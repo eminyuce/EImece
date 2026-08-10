@@ -6,6 +6,7 @@ using EImece.Domain.Helpers.Extensions;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -64,6 +65,31 @@ namespace EImece.Domain.Repositories
                 {
                     this.Delete(whereLambda);
                     isResult = this.Save() == 1;
+                    transactionResult.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transactionResult.Rollback();
+                    BaseLogger.Error(ex, "DeleteEntityByWhere");
+                    throw;
+                }
+            }
+            return isResult;
+        }
+
+        public virtual async Task<bool> DeleteByWhereConditionAsync(Expression<Func<T, bool>> whereLambda)
+        {
+            var isResult = false;
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    var objects = await FindBy(whereLambda).ToListAsync().ConfigureAwait(false);
+                    foreach (var obj in objects)
+                    {
+                        GetDbContext().Set<T>().Remove(obj);
+                    }
+                    isResult = await this.SaveAsync().ConfigureAwait(false) == 1;
                     transactionResult.Commit();
                 }
                 catch (Exception ex)
@@ -167,6 +193,27 @@ namespace EImece.Domain.Repositories
             return r;
         }
 
+        public virtual async Task<int> DeleteItemAsync(T item)
+        {
+            int r = 0;
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    this.Delete(item);
+                    r = await this.SaveAsync().ConfigureAwait(false);
+                    transactionResult.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transactionResult.Rollback();
+                    BaseLogger.Error(ex, "DeleteItem");
+                    throw;
+                }
+            }
+            return r;
+        }
+
         public T[] ExecuteStoreQuery(string commandText, params object[] parameters)
         {
             EntitiesContext objectContext = this.GetDbContext();
@@ -185,6 +232,31 @@ namespace EImece.Domain.Repositories
                     Delete(item);
                 }
                 Save();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                BaseLogger.Error(ex, "DbEntityValidationException:" + message);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                BaseLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                throw;
+            }
+        }
+
+        public virtual async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    var item = await GetSingleAsync(id).ConfigureAwait(false);
+                    Delete(item);
+                }
+                await SaveAsync().ConfigureAwait(false);
             }
             catch (DbEntityValidationException ex)
             {

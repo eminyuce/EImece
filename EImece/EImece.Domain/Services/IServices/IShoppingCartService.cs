@@ -2,6 +2,7 @@
 using EImece.Domain.Models.FrontModels;
 using Iyzipay.Model;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
@@ -32,5 +33,7 @@ namespace EImece.Domain.Services.IServices
 
         Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm);
         List<ShoppingCart> GetAdminPageList(string search, int currentLanguage);
+
+        Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

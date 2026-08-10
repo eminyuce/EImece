@@ -59,6 +59,11 @@ namespace EImece.Domain.Services
             return StoryTagRepository.GetStoryTagsByStoryId(storyId);
         }
 
+        public async Task<List<StoryTag>> GetStoryTagsByStoryIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryTagRepository.GetStoryTagsByStoryIdAsync(storyId, cancellationToken).ConfigureAwait(false);
+        }
+
         public void DeleteStoryById(int storyId)
         {
             var story = GetStoryById(storyId);
@@ -79,6 +84,26 @@ namespace EImece.Domain.Services
             DeleteEntity(story);
         }
 
+        public async Task DeleteStoryByIdAsync(int storyId)
+        {
+            var story = await GetStoryByIdAsync(storyId).ConfigureAwait(false);
+            await StoryTagRepository.DeleteByWhereConditionAsync(r => r.StoryId == storyId).ConfigureAwait(false);
+            if (story.MainImageId.HasValue)
+            {
+                await FileStorageService.DeleteFileStorageAsync(story.MainImageId.Value).ConfigureAwait(false);
+            }
+            if (story.StoryFiles != null)
+            {
+                var menuFiles = new List<StoryFile>(story.StoryFiles);
+                foreach (var file in menuFiles)
+                {
+                    await FileStorageService.DeleteUploadImageByFileStorageAsync(storyId, MediaModType.Stories, file.FileStorageId).ConfigureAwait(false);
+                }
+                await StoryFileRepository.DeleteByWhereConditionAsync(r => r.StoryId == storyId).ConfigureAwait(false);
+            }
+            await DeleteEntityAsync(story).ConfigureAwait(false);
+        }
+
         public Story GetStoryById(int storyId)
         {
             return StoryRepository.GetStoryById(storyId);
@@ -92,6 +117,11 @@ namespace EImece.Domain.Services
         public void SaveStoryTags(int storyId, int[] tags)
         {
             StoryTagRepository.SaveStoryTags(storyId, tags);
+        }
+
+        public async Task SaveStoryTagsAsync(int storyId, int[] tags)
+        {
+            await StoryTagRepository.SaveStoryTagsAsync(storyId, tags).ConfigureAwait(false);
         }
 
         public StoryDetailViewModel GetStoryDetailViewModel(int storyId)
@@ -195,6 +225,27 @@ namespace EImece.Domain.Services
                 {
                     var id = v.ToInt();
                     DeleteStoryById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                StoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                StoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public virtual new async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteStoryByIdAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)

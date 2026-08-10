@@ -136,6 +136,21 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task DeleteByUserIdAsync(string userId)
+        {
+            Logger.Info($"Deleting customer by userId: {userId}");
+            var customer = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
+            if (customer != null)
+            {
+                await DeleteEntityAsync(customer).ConfigureAwait(false);
+                Logger.Info("Customer successfully deleted.");
+            }
+            else
+            {
+                Logger.Warn("Customer not found.");
+            }
+        }
+
         public void SaveCustomerTypeToNormal(string userId)
         {
             Logger.Info($"Updating customer type to Normal for userId: {userId}");
@@ -201,6 +216,37 @@ namespace EImece.Domain.Services
             return resultList;
         }
 
+        public async Task<List<Customer>> GetCustomerServicesAsync(string search)
+        {
+            Logger.Info($"Retrieving customer services with search term: {search}");
+            search = search.ToStr().Trim();
+            var result = (await GetAllAsync().ConfigureAwait(false)).Where(r => r.CustomerType == (int)EImeceCustomerType.Normal || r.CustomerType == (int)EImeceCustomerType.ShoppingWithoutAccount).ToList();
+            var allOrders = (await OrderService.GetAllAsync().ConfigureAwait(false)).Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder || r.OrderType == (int)EImeceOrderType.BuyWithNoAccountCreation).ToList();
+            var resultList = result.ToList();
+
+            if (resultList.IsNotEmpty())
+            {
+                foreach (var item in resultList)
+                {
+                    item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    item.OrderLatestDate = item.Orders.IsNotEmpty() ? item.Orders.Max(T => T.CreatedDate) : DateTime.Now.AddYears(-2);
+                    await GetUserFieldsAsync(item).ConfigureAwait(false);
+                }
+
+                if (!string.IsNullOrEmpty(search))
+                {
+                    resultList = resultList.Where(r =>
+                    r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                                       string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
+                                           .ToList();
+                }
+            }
+
+            resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+            Logger.Info("Customer services retrieved successfully.");
+            return resultList;
+        }
+
         public void GetUserFields(Customer item)
         {
             if (item == null)
@@ -210,6 +256,28 @@ namespace EImece.Domain.Services
             }
             Logger.Info($"Fetching user fields for userId: {item.UserId}");
             var user = UsersService.GetUser(item.UserId);
+            if (user != null)
+            {
+                item.Email = user.Email;
+                item.Name = user.FirstName;
+                item.Surname = user.LastName;
+                Logger.Info("User fields populated successfully.");
+            }
+            else
+            {
+                Logger.Warn("User not found in UsersService.");
+            }
+        }
+
+        public async Task GetUserFieldsAsync(Customer item)
+        {
+            if (item == null)
+            {
+                Logger.Warn("GetUserFields called with a null item.");
+                return;
+            }
+            Logger.Info($"Fetching user fields for userId: {item.UserId}");
+            var user = await UsersService.GetUserAsync(item.UserId).ConfigureAwait(false);
             if (user != null)
             {
                 item.Email = user.Email;

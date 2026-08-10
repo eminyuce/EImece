@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -23,25 +24,25 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
-            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            var productCategories = ProductCategoryService.GetAdminProductCategories(search, CurrentLanguage);
-            ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
+            ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            var productCategories = await ProductCategoryService.GetAdminProductCategoriesAsync(search, CurrentLanguage, cancellationToken);
+            ViewBag.ProductCategoryLeaves = await ProductCategoryService.GetProductCategoryLeavesAsync(null, CurrentLanguage, cancellationToken);
             return View(productCategories);
         }
 
         [HttpGet]
-        public ActionResult MoveProductCategory()
+        public async Task<ActionResult> MoveProductCategory(CancellationToken cancellationToken)
         {
-            ViewBag.ProductCategoryDropDownList = GetProductCategoryTreeDropDownList();
-            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
+            ViewBag.ProductCategoryDropDownList = await GetProductCategoryTreeDropDownListAsync();
+            ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult MoveProductCategory(MoveProductCategory moveProductCategory)
+        public async Task<ActionResult> MoveProductCategory(CancellationToken cancellationToken, MoveProductCategory moveProductCategory)
         {
             if (moveProductCategory == null)
             {
@@ -49,25 +50,25 @@ namespace EImece.Areas.Admin.Controllers
             }
             if (moveProductCategory.FirstCategoryId > 0 && moveProductCategory.SecondCategoryId > 0)
             {
-                var firstCategoryId = ProductCategoryService.GetBaseContent(moveProductCategory.FirstCategoryId);
-                var secondCategory = ProductCategoryService.GetBaseContent(moveProductCategory.SecondCategoryId);
+                var firstCategoryId = await ProductCategoryService.GetBaseContentAsync(moveProductCategory.FirstCategoryId, cancellationToken);
+                var secondCategory = await ProductCategoryService.GetBaseContentAsync(moveProductCategory.SecondCategoryId, cancellationToken);
                 secondCategory.ParentId = firstCategoryId.Id;
-                ProductCategoryService.SaveOrEditEntity(secondCategory);
+                await ProductCategoryService.SaveOrEditEntityAsync(secondCategory);
             }
             else if (moveProductCategory.SecondCategoryId > 0)
             {
-                var secondCategory = ProductCategoryService.GetBaseContent(moveProductCategory.SecondCategoryId);
+                var secondCategory = await ProductCategoryService.GetBaseContentAsync(moveProductCategory.SecondCategoryId, cancellationToken);
                 secondCategory.ParentId = 0;
-                ProductCategoryService.SaveOrEditEntity(secondCategory);
+                await ProductCategoryService.SaveOrEditEntityAsync(secondCategory);
             }
             return RedirectToAction("MoveProductCategory");
         }
 
-        private List<SelectListItem> GetProductCategoryTreeDropDownList()
+        private async Task<List<SelectListItem>> GetProductCategoryTreeDropDownListAsync()
         {
             var resultListItem = new List<SelectListItem>();
             resultListItem.Add(new SelectListItem() { Text = AdminResource.MakeItRootCategory, Value = "0" });
-            foreach (var item in ProductCategoryService.BuildTree(null, CurrentLanguage))
+            foreach (var item in await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage))
             {
                 resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.ProductCategory.Id.ToStr() });
                 GetProductCategoryChildrenTreeDropDownList(resultListItem, item);
@@ -88,9 +89,9 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        private List<SelectListItem> GetTemplatesDropDown()
+        private async Task<List<SelectListItem>> GetTemplatesDropDownAsync(CancellationToken cancellationToken)
         {
-            var templates = TemplateService.GetActiveBaseEntities(true, CurrentLanguage);
+            var templates = await TemplateService.GetActiveBaseEntitiesAsync(true, CurrentLanguage, cancellationToken);
 
             var resultListItem = new List<SelectListItem>();
             resultListItem.Add(new SelectListItem() { Text = AdminResource.SelectTemplate, Value = "0" });
@@ -104,21 +105,21 @@ namespace EImece.Areas.Admin.Controllers
         //
         // GET: /ProductCategory/Create
         [HttpGet]
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<ProductCategory>();
             var parentCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
-            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
-            ViewBag.Templates = GetTemplatesDropDown();
+            ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            ViewBag.ProductCategoryLeaves = await ProductCategoryService.GetProductCategoryLeavesAsync(null, CurrentLanguage, cancellationToken);
+            ViewBag.Templates = await GetTemplatesDropDownAsync(cancellationToken);
             if (id == 0)
             {
                 content.ParentId = 0;
             }
             else
             {
-                content = ProductCategoryService.GetBaseContent(id);
-                parentCategory = ProductCategoryService.GetSingle(content.ParentId);
+                content = await ProductCategoryService.GetBaseContentAsync(id, cancellationToken);
+                parentCategory = await ProductCategoryService.GetSingleAsync(content.ParentId);
                 if (content.ParentId > 0 && parentCategory == null)
                 {
                     throw new ArgumentException("ParentId " + content.ParentId + " parent cannot be NULL");
@@ -133,7 +134,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(ProductCategory productCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, ProductCategory productCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -154,7 +155,7 @@ namespace EImece.Areas.Admin.Controllers
                         productCategory.TemplateId = 0;
                     }
                     productCategory.Lang = CurrentLanguage;
-                    ProductCategoryService.SaveOrEditEntity(productCategory);
+                    await ProductCategoryService.SaveOrEditEntityAsync(productCategory);
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -176,9 +177,9 @@ namespace EImece.Areas.Admin.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
-            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            ViewBag.ProductCategoryLeaves = ProductCategoryService.GetProductCategoryLeaves(null, CurrentLanguage);
-            ViewBag.Templates = GetTemplatesDropDown();
+            ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            ViewBag.ProductCategoryLeaves = await ProductCategoryService.GetProductCategoryLeavesAsync(null, CurrentLanguage, cancellationToken);
+            ViewBag.Templates = await GetTemplatesDropDownAsync(cancellationToken);
 
             RemoveModelState();
             return View(productCategory);
@@ -186,14 +187,14 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ProductCategory productCategory = ProductCategoryService.GetSingle(id.Value);
+            ProductCategory productCategory = await ProductCategoryService.GetSingleAsync(id.Value);
             if (productCategory == null)
             {
                 return HttpNotFound();
@@ -201,7 +202,7 @@ namespace EImece.Areas.Admin.Controllers
 
             try
             {
-                ProductCategoryService.DeleteProductCategory(productCategory.Id);
+                await ProductCategoryService.DeleteProductCategoryAsync(productCategory.Id, cancellationToken);
                 SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
@@ -214,12 +215,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ExportExcel(string format = "excel")
+        public async Task<ActionResult> ExportExcel(CancellationToken cancellationToken, string format = "excel")
         {
-            return await DownloadFileAsync(format);
+            return await DownloadFileAsync(cancellationToken, format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
+        private async Task<ActionResult> DownloadFileAsync(CancellationToken cancellationToken, string format = "excel")
         {
             String search = "";
             Expression<Func<ProductCategory, bool>> whereLambda = r => string.Equals(r.Name, r.Name, StringComparison.OrdinalIgnoreCase);

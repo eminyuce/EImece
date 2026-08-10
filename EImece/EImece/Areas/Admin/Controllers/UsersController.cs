@@ -8,8 +8,10 @@ using EImece.Domain.DependencyInjection;
 using Resources;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
@@ -34,9 +36,9 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
-        public ActionResult Index(String search = "", String role = "", String twoFactor = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "")
         {
-            var staffUsers = UsersService.GetUsers(string.Empty)
+            var staffUsers = (await UsersService.GetUsersAsync(string.Empty))
                 .Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase))
                 .OrderBy(r => r.FirstName)
                 .ToList();
@@ -51,7 +53,7 @@ namespace EImece.Areas.Admin.Controllers
             IEnumerable<EditUserViewModel> query = staffUsers;
             if (!string.IsNullOrWhiteSpace(search))
             {
-                query = UsersService.GetUsers(search)
+                query = (await UsersService.GetUsersAsync(search))
                     .Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase))
                     .OrderBy(r => r.FirstName);
             }
@@ -79,9 +81,9 @@ namespace EImece.Areas.Admin.Controllers
             return View(query.ToList());
         }
 
-        public ActionResult CustomerRoles(String search = "")
+        public async Task<ActionResult> CustomerRoles(CancellationToken cancellationToken, String search = "")
         {
-            List<EditUserViewModel> model = UsersService.GetUsers(search);
+            List<EditUserViewModel> model = await UsersService.GetUsersAsync(search);
             model = model.Where(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
             return View(model);
         }
@@ -127,9 +129,9 @@ namespace EImece.Areas.Admin.Controllers
             return View(model);
         }
 
-        public ActionResult Edit(string id, ManageMessageId? Message = null)
+        public async Task<ActionResult> Edit(CancellationToken cancellationToken, string id, ManageMessageId? Message = null)
         {
-            var user = UsersService.GetUser(id);
+            var user = await UsersService.GetUserAsync(id);
             var model = new EditUserViewModel();
             model.FirstName = user.FirstName;
             model.LastName = user.LastName;
@@ -147,7 +149,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
+                var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == model.Id);
                 // Update the user data:
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
@@ -166,14 +168,14 @@ namespace EImece.Areas.Admin.Controllers
             return View(model);
         }
 
-        public ActionResult GenerateNewPassword(string id = null)
+        public async Task<ActionResult> GenerateNewPassword(CancellationToken cancellationToken, string id = null)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -185,22 +187,22 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GenerateNewPasswordConfirm(string id)
+        public async Task<ActionResult> GenerateNewPasswordConfirm(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
             {
                 return HttpNotFound();
             }
 
-            string code = UserManager.GeneratePasswordResetToken(user.Id);
+            string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
             string newPassword = GeneralHelper.GenerateRandomPassword();
-            var result = UserManager.ResetPassword(user.Id, code, newPassword);
+            var result = await UserManager.ResetPasswordAsync(user.Id, code, newPassword);
 
             ViewBag.PasswordGenerated = true;
             if (result.Succeeded)
@@ -232,19 +234,19 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, string id)
         {
-            var user = ApplicationDbContext.Users.First(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id);
             ApplicationDbContext.Users.Remove(user);
-            ApplicationDbContext.SaveChanges();
+            await ApplicationDbContext.SaveChangesAsync();
             SetSuccessMessage();
             return RedirectToAction("Index");
         }
 
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
-        public ActionResult UserRoles(string id)
+        public async Task<ActionResult> UserRoles(CancellationToken cancellationToken, string id)
         {
-            var user = ApplicationDbContext.Users.First(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id);
             var model = new SelectUserRolesViewModel(user);
             model.SetAdminRoles(user);
             return View(model);
@@ -253,11 +255,9 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         [ValidateAntiForgeryToken]
-        public ActionResult UserRoles(SelectUserRolesViewModel model)
+        public async Task<ActionResult> UserRoles(SelectUserRolesViewModel model)
         {
-            // if (ModelState.IsValid)
-            // {
-            var user = ApplicationDbContext.Users.First(u => u.Id == model.Id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == model.Id);
             IdentityManager.ClearUserRoles(user.Id);
             foreach (var role in model.Roles)
             {
@@ -273,12 +273,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult ForgotPassword(String id = "")
+        public async Task<ActionResult> ForgotPassword(CancellationToken cancellationToken, String id = "")
         {
             var model = new ForgotPasswordViewModel();
             if (!String.IsNullOrEmpty(id))
             {
-                var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id == id);
+                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
                 if (user == null)
                 {
                     return HttpNotFound();
@@ -427,7 +427,7 @@ namespace EImece.Areas.Admin.Controllers
                 await UserManager.UpdateAsync(user);
             }
 
-            return View(BuildEnableAuthenticatorViewModel(user));
+            return View(await BuildEnableAuthenticatorViewModelAsync(user));
         }
 
         [HttpPost]
@@ -443,13 +443,13 @@ namespace EImece.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(user.AuthenticatorKey))
             {
                 ModelState.AddModelError("", "Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin.");
-                return View(BuildEnableAuthenticatorViewModel(user));
+                return View(await BuildEnableAuthenticatorViewModelAsync(user));
             }
 
             if (!ModelState.IsValid || !AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model?.Code))
             {
                 ModelState.AddModelError("", "Geçersiz doğrulama kodu.");
-                return View(BuildEnableAuthenticatorViewModel(user));
+                return View(await BuildEnableAuthenticatorViewModelAsync(user));
             }
 
             user.TwoFactorAuthenticatorEnabled = true;
@@ -490,10 +490,10 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("Edit", new { id = targetUserId });
         }
 
-        private EnableAuthenticatorViewModel BuildEnableAuthenticatorViewModel(ApplicationUser user)
+        private async Task<EnableAuthenticatorViewModel> BuildEnableAuthenticatorViewModelAsync(ApplicationUser user)
         {
             string accountName = !string.IsNullOrEmpty(user.Email) ? user.Email : user.UserName;
-            string siteName = SettingService.GetSettingByKey(Domain.Constants.CompanyName);
+            string siteName = await SettingService.GetSettingByKeyAsync(Domain.Constants.CompanyName);
             if (string.IsNullOrWhiteSpace(siteName) && Request?.Url != null)
             {
                 siteName = Request.Url.Host;

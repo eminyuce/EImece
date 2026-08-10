@@ -8,6 +8,7 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -18,16 +19,16 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
-            var brands = BrandService.GetAdminPageList(search, CurrentLanguage);
+            var brands = await BrandService.GetAdminPageListAsync(search, CurrentLanguage);
             return View(brands);
         }
 
         //
         // GET: /Brand/Create
 
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<Brand>();
 
@@ -36,7 +37,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = BrandService.GetBaseContent(id);
+                content = await BrandService.GetBaseContentAsync(id, cancellationToken);
             }
 
             return View(content);
@@ -47,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -64,7 +65,7 @@ namespace EImece.Areas.Admin.Controllers
                         EImeceImageType.BrandMainImage, brand);
 
                     brand.Lang = CurrentLanguage;
-                    brand = BrandService.SaveOrEditEntity(brand);
+                    brand = await BrandService.SaveOrEditEntityAsync(brand);
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -95,16 +96,16 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            Brand Brand = BrandService.GetBaseContent(id);
+            Brand Brand = await BrandService.GetBaseContentAsync(id, cancellationToken);
             if (Brand == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                BrandService.DeleteBrandById(id);
+                await BrandService.DeleteBrandByIdAsync(id);
                 SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
@@ -117,7 +118,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Xml.Linq;
@@ -24,15 +25,14 @@ namespace EImece.Areas.Admin.Controllers
         private const string ProductSpescUrl = "ProductSpescUrl";
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        // GET: Admin/Template
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<Template, bool>> whereLambda = r => r.Name.Contains(search);
-            var templates = TemplateService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var templates = await TemplateService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(templates);
         }
 
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             TempData[ProductSpescUrl] = Request.UrlReferrer.ToStr();
             var template = EntityFactory.GetBaseEntityInstance<Template>();
@@ -42,7 +42,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                template = TemplateService.GetSingle(id);
+                template = await TemplateService.GetSingleAsync(id);
             }
 
             return View(template);
@@ -51,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public ActionResult SaveOrEdit(Template template)
+        public async Task<ActionResult> SaveOrEdit(Template template)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace EImece.Areas.Admin.Controllers
                     }
 
                     template.Lang = CurrentLanguage;
-                    TemplateService.SaveOrEditEntity(template);
+                    await TemplateService.SaveOrEditEntityAsync(template);
                     int contentId = template.Id;
                     if (string.IsNullOrEmpty(TempData[ProductSpescUrl].ToStr()))
                     {
@@ -83,14 +83,10 @@ namespace EImece.Areas.Admin.Controllers
                         return Redirect(TempData[ProductSpescUrl].ToStr());
                     }
                 }
-                else
-                {
-                }
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.Message, template);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
@@ -99,16 +95,16 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            Template template = TemplateService.GetSingle(id);
+            Template template = await TemplateService.GetSingleAsync(id);
             if (template == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                TemplateService.DeleteEntity(template);
+                await TemplateService.DeleteEntityAsync(template);
                 SetSuccessMessage();
                 return RedirectToAction("Index");
             }
@@ -121,7 +117,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

@@ -9,6 +9,8 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -27,11 +29,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult CouponUsage()
+        public async Task<ActionResult> CouponUsage(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetCouponUsageReport();
+                var report = await _reportService.GetCouponUsageReportAsync(cancellationToken);
                 return View(report);
             }
             catch (Exception ex)
@@ -42,11 +44,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult FraudAnalysis()
+        public async Task<ActionResult> FraudAnalysis(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetFraudAnalysisReport();
+                var report = await _reportService.GetFraudAnalysisReportAsync(cancellationToken);
                 return View(report);
             }
             catch (Exception ex)
@@ -57,11 +59,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult PaymentMethod()
+        public async Task<ActionResult> PaymentMethod(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetPaymentMethodReport();
+                var report = await _reportService.GetPaymentMethodReportAsync(cancellationToken);
                 return View(report);
             }
             catch (Exception ex)
@@ -72,11 +74,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult PaymentStatus()
+        public async Task<ActionResult> PaymentStatus(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetPaymentStatusReport();
+                var report = await _reportService.GetPaymentStatusReportAsync(cancellationToken);
                 return View(report);
             }
             catch (Exception ex)
@@ -87,12 +89,12 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetRegionalSalesReport(string paymentStatus = "SUCCESS")
+        public async Task<ActionResult> GetRegionalSalesReport(CancellationToken cancellationToken, string paymentStatus = "SUCCESS")
         {
             try
             {
                 ViewBag.PaymentStatus = paymentStatus ?? string.Empty;
-                var report = _reportService.GetRegionalSalesReport(paymentStatus);
+                var report = await _reportService.GetRegionalSalesReportAsync(paymentStatus, cancellationToken);
                 // Explicit view name: action is GetRegionalSalesReport, view file is RegionalSales.cshtml
                 return View("RegionalSales", report);
             }
@@ -109,13 +111,13 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("GetRegionalSalesReport")]
-        public ActionResult GetRegionalSalesReportPost(string paymentStatus)
+        public async Task<ActionResult> GetRegionalSalesReportPost(CancellationToken cancellationToken, string paymentStatus)
         {
-            return GetRegionalSalesReport(paymentStatus ?? string.Empty);
+            return await GetRegionalSalesReport(cancellationToken, paymentStatus ?? string.Empty);
         }
 
         [HttpGet]
-        public ActionResult SalesByDateRange(DateTime? startDate, DateTime? endDate)
+        public async Task<ActionResult> SalesByDateRange(CancellationToken cancellationToken, DateTime? startDate, DateTime? endDate)
         {
             try
             {
@@ -135,7 +137,7 @@ namespace EImece.Areas.Admin.Controllers
                         return View();
                     }
 
-                    var report = _reportService.GetSalesReportByDateRange(resolvedStart, resolvedEnd);
+                    var report = await _reportService.GetSalesReportByDateRangeAsync(resolvedStart, resolvedEnd, cancellationToken);
                     return View(report);
                 }
 
@@ -150,7 +152,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SalesByDateRange(DateTime startDate, DateTime endDate)
+        public async Task<ActionResult> SalesByDateRange(CancellationToken cancellationToken, DateTime startDate, DateTime endDate)
         {
             try
             {
@@ -162,7 +164,7 @@ namespace EImece.Areas.Admin.Controllers
                     return View();
                 }
 
-                var report = _reportService.GetSalesReportByDateRange(startDate, endDate);
+                var report = await _reportService.GetSalesReportByDateRangeAsync(startDate, endDate, cancellationToken);
                 ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
                 ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
                 return View(report);
@@ -175,11 +177,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShipmentCompany()
+        public async Task<ActionResult> ShipmentCompany(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetShipmentCompanyReport();
+                var report = await _reportService.GetShipmentCompanyReportAsync(cancellationToken);
                 return View(report);
             }
             catch (Exception ex)
@@ -199,7 +201,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult PerformanceSystemReport(DataSetReportViewModel dataSetReportViewModel)
+        public async Task<ActionResult> PerformanceSystemReport(DataSetReportViewModel dataSetReportViewModel)
         {
             if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
             {
@@ -210,7 +212,7 @@ namespace EImece.Areas.Admin.Controllers
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
-                DataSet report = _reportService.GetPerformanceSystemReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                DataSet report = await _reportService.GetPerformanceSystemReportAsync(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
                 var model = new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -232,7 +234,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult FinancialReport(DataSetReportViewModel dataSetReportViewModel)
+        public async Task<ActionResult> FinancialReport(DataSetReportViewModel dataSetReportViewModel)
         {
             if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
             {
@@ -243,7 +245,7 @@ namespace EImece.Areas.Admin.Controllers
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
-                DataSet report = _reportService.GetFinancialReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                DataSet report = await _reportService.GetFinancialReportAsync(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
                 var model = new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -265,7 +267,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult FraudRiskReport(DataSetReportViewModel dataSetReportViewModel)
+        public async Task<ActionResult> FraudRiskReport(DataSetReportViewModel dataSetReportViewModel)
         {
             if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
             {
@@ -276,7 +278,7 @@ namespace EImece.Areas.Admin.Controllers
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
-                DataSet report = _reportService.GetFraudRiskReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                DataSet report = await _reportService.GetFraudRiskReportAsync(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
                 var model = new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -298,7 +300,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult OrderVolumeReport(DataSetReportViewModel dataSetReportViewModel)
+        public async Task<ActionResult> OrderVolumeReport(DataSetReportViewModel dataSetReportViewModel)
         {
             if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
             {
@@ -309,7 +311,7 @@ namespace EImece.Areas.Admin.Controllers
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
-                DataSet report = _reportService.GetOrderVolumeReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                DataSet report = await _reportService.GetOrderVolumeReportAsync(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
                 var model = new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -331,7 +333,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult PaymentTransactionReport(DataSetReportViewModel dataSetReportViewModel)
+        public async Task<ActionResult> PaymentTransactionReport(DataSetReportViewModel dataSetReportViewModel)
         {
             if (dataSetReportViewModel != null && dataSetReportViewModel.IsNotEmpty())
             {
@@ -342,7 +344,7 @@ namespace EImece.Areas.Admin.Controllers
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
-                DataSet report = _reportService.GetPaymentTransactionReport(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
+                DataSet report = await _reportService.GetPaymentTransactionReportAsync(dataSetReportViewModel.StartDate.Value, dataSetReportViewModel.EndDate.Value);
                 var model = new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -358,11 +360,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProductSummary()
+        public async Task<ActionResult> ProductSummary(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetProductSummaryReport();
+                var report = await _reportService.GetProductSummaryReportAsync(cancellationToken: cancellationToken);
                 return View(new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -379,7 +381,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ProductSummary(DateTime? startDate, DateTime? endDate, bool? isActive, int? productCategoryId)
+        public async Task<ActionResult> ProductSummary(DateTime? startDate, DateTime? endDate, bool? isActive, int? productCategoryId)
         {
             try
             {
@@ -389,7 +391,7 @@ namespace EImece.Areas.Admin.Controllers
                     return View();
                 }
 
-                var report = _reportService.GetProductSummaryReport(startDate, endDate, isActive, productCategoryId);
+                var report = await _reportService.GetProductSummaryReportAsync(startDate, endDate, isActive, productCategoryId);
 
                 return View(new DataSetReportViewModel
                 {
@@ -410,11 +412,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult PriceAnalysis()
+        public async Task<ActionResult> PriceAnalysis(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetPriceAnalysisReport();
+                var report = await _reportService.GetPriceAnalysisReportAsync(cancellationToken: cancellationToken);
                 return View(new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -431,7 +433,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult PriceAnalysis(decimal? minPrice, decimal? maxPrice, int? productCategoryId)
+        public async Task<ActionResult> PriceAnalysis(decimal? minPrice, decimal? maxPrice, int? productCategoryId)
         {
             try
             {
@@ -449,7 +451,7 @@ namespace EImece.Areas.Admin.Controllers
                     });
                 }
 
-                var report = _reportService.GetPriceAnalysisReport(minPrice, maxPrice, productCategoryId);
+                var report = await _reportService.GetPriceAnalysisReportAsync(minPrice, maxPrice, productCategoryId);
                 return View(new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -468,11 +470,11 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProductInventory()
+        public async Task<ActionResult> ProductInventory(CancellationToken cancellationToken)
         {
             try
             {
-                var report = _reportService.GetProductInventoryReport();
+                var report = await _reportService.GetProductInventoryReportAsync(cancellationToken: cancellationToken);
                 return View(new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -489,11 +491,11 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ProductInventory(string state, bool? isCampaign, bool? mainPage)
+        public async Task<ActionResult> ProductInventory(string state, bool? isCampaign, bool? mainPage)
         {
             try
             {
-                var report = _reportService.GetProductInventoryReport(state, isCampaign, mainPage);
+                var report = await _reportService.GetProductInventoryReportAsync(state, isCampaign, mainPage);
                 ViewBag.State = state;
                 ViewBag.IsCampaign = isCampaign;
                 ViewBag.MainPage = mainPage;
@@ -515,7 +517,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProductStatsByDateRange()
+        public async Task<ActionResult> ProductStatsByDateRange(CancellationToken cancellationToken)
         {
             try
             {
@@ -524,7 +526,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
                 ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
-                var report = _reportService.GetProductStatsByDateRange(startDate, endDate);
+                var report = await _reportService.GetProductStatsByDateRangeAsync(startDate, endDate, cancellationToken);
                 return View(new DataSetReportViewModel
                 {
                     ReportData = report,
@@ -543,7 +545,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ProductStatsByDateRange(DataSetReportViewModel model)
+        public async Task<ActionResult> ProductStatsByDateRange(DataSetReportViewModel model)
         {
             try
             {
@@ -565,7 +567,7 @@ namespace EImece.Areas.Admin.Controllers
                     return View(model);
                 }
 
-                var report = _reportService.GetProductStatsByDateRange(startDate, endDate);
+                var report = await _reportService.GetProductStatsByDateRangeAsync(startDate, endDate);
                 model.ReportData = report;
                 model.ReportActionName = "ProductStatsByDateRange";
                 model.ReportTitle = "Product Stats By DateRange";
@@ -587,7 +589,8 @@ namespace EImece.Areas.Admin.Controllers
         /// Route: /Admin/Report/Export?reportKey=...&amp;format=excel|csv&amp;...filters
         /// </summary>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult Export(
+        public async Task<ActionResult> Export(
+            CancellationToken cancellationToken,
             string reportKey,
             string format,
             DateTime? startDate = null,
@@ -619,7 +622,8 @@ namespace EImece.Areas.Admin.Controllers
                 }
 
                 // Resolve report data with the same filters the page uses
-                object reportData = LoadReportDataForExport(
+                object reportData = await LoadReportDataForExportAsync(
+                    cancellationToken,
                     reportKey,
                     startDate,
                     endDate,
@@ -679,6 +683,103 @@ namespace EImece.Areas.Admin.Controllers
         /// <summary>
         /// Maps reportKey to the matching ReportService call (same signatures as page actions).
         /// </summary>
+        private async Task<object> LoadReportDataForExportAsync(
+            CancellationToken cancellationToken,
+            string reportKey,
+            DateTime? startDate,
+            DateTime? endDate,
+            decimal? minPrice,
+            decimal? maxPrice,
+            int? productCategoryId,
+            bool? isActive,
+            string state,
+            bool? isCampaign,
+            bool? mainPage,
+            string paymentStatus = null)
+        {
+            switch (reportKey)
+            {
+                case "CouponUsage":
+                    return await _reportService.GetCouponUsageReportAsync(cancellationToken);
+
+                case "FraudAnalysis":
+                    return await _reportService.GetFraudAnalysisReportAsync(cancellationToken);
+
+                case "PaymentMethod":
+                    return await _reportService.GetPaymentMethodReportAsync(cancellationToken);
+
+                case "PaymentStatus":
+                    return await _reportService.GetPaymentStatusReportAsync(cancellationToken);
+
+                case "GetRegionalSalesReport":
+                    return await _reportService.GetRegionalSalesReportAsync(paymentStatus, cancellationToken);
+
+                case "SalesByDateRange":
+                    if (!startDate.HasValue || !endDate.HasValue)
+                    {
+                        return null;
+                    }
+                    return await _reportService.GetSalesReportByDateRangeAsync(startDate.Value, endDate.Value, cancellationToken);
+
+                case "ShipmentCompany":
+                    return await _reportService.GetShipmentCompanyReportAsync(cancellationToken);
+
+                case "PerformanceSystemReport":
+                    if (!startDate.HasValue || !endDate.HasValue)
+                    {
+                        return null;
+                    }
+                    return await _reportService.GetPerformanceSystemReportAsync(startDate.Value, endDate.Value, cancellationToken);
+
+                case "FinancialReport":
+                    if (!startDate.HasValue || !endDate.HasValue)
+                    {
+                        return null;
+                    }
+                    return await _reportService.GetFinancialReportAsync(startDate.Value, endDate.Value, cancellationToken);
+
+                case "FraudRiskReport":
+                    if (!startDate.HasValue || !endDate.HasValue)
+                    {
+                        return null;
+                    }
+                    return await _reportService.GetFraudRiskReportAsync(startDate.Value, endDate.Value, cancellationToken);
+
+                case "OrderVolumeReport":
+                    if (!startDate.HasValue || !endDate.HasValue)
+                    {
+                        return null;
+                    }
+                    return await _reportService.GetOrderVolumeReportAsync(startDate.Value, endDate.Value, cancellationToken);
+
+                case "PaymentTransactionReport":
+                    if (!startDate.HasValue || !endDate.HasValue)
+                    {
+                        return null;
+                    }
+                    return await _reportService.GetPaymentTransactionReportAsync(startDate.Value, endDate.Value, cancellationToken);
+
+                case "ProductSummary":
+                    return await _reportService.GetProductSummaryReportAsync(startDate, endDate, isActive, productCategoryId, cancellationToken);
+
+                case "PriceAnalysis":
+                    return await _reportService.GetPriceAnalysisReportAsync(minPrice, maxPrice, productCategoryId, cancellationToken);
+
+                case "ProductInventory":
+                    return await _reportService.GetProductInventoryReportAsync(state, isCampaign, mainPage, cancellationToken);
+
+                case "ProductStatsByDateRange":
+                    if (!startDate.HasValue || !endDate.HasValue)
+                    {
+                        return null;
+                    }
+                    return await _reportService.GetProductStatsByDateRangeAsync(startDate.Value, endDate.Value, cancellationToken);
+
+                default:
+                    return null;
+            }
+        }
+
         private object LoadReportDataForExport(
             string reportKey,
             DateTime? startDate,

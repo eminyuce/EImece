@@ -20,9 +20,15 @@ namespace EImece.Domain.Services.IServices
 
         bool DeleteEntity(T entity);
 
+        Task<bool> DeleteEntityAsync(T entity);
+
         void DeleteBaseEntity(List<string> values);
 
+        Task DeleteBaseEntityAsync(List<string> values);
+
         bool DeleteById(int id);
+
+        Task<bool> DeleteByIdAsync(int id);
 
         Task<T> SaveOrEditEntityAsync(T entity);
 

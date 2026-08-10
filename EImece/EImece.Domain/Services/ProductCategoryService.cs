@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -109,6 +110,11 @@ namespace EImece.Domain.Services
             return ProductCategoryRepository.GetProductCategoryLeaves(isActive, language);
         }
 
+        public async Task<List<ProductCategory>> GetProductCategoryLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductCategoryRepository.GetProductCategoryLeavesAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+        }
+
         public void DeleteProductCategories(List<string> values)
         {
             try
@@ -117,6 +123,27 @@ namespace EImece.Domain.Services
                 {
                     var id = v.ToInt();
                     DeleteProductCategory(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                ProductCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                ProductCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public async Task DeleteProductCategoriesAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteProductCategoryAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)
@@ -151,6 +178,27 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task DeleteProductCategoryAsync(int productCategoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var productCategory = await ProductCategoryRepository.GetProductCategoryAsync(productCategoryId, false).ConfigureAwait(false);
+            var leaves = await GetProductCategoryLeavesAsync(null, productCategory.Lang, cancellationToken).ConfigureAwait(false);
+            if (leaves.Any(r => r.Id == productCategoryId))
+            {
+                if (productCategory.MainImageId.HasValue)
+                {
+                    await FileStorageService.DeleteFileStorageAsync(productCategory.MainImageId.Value).ConfigureAwait(false);
+                }
+
+                var productIdList = productCategory.Products.Select(r => r.Id).ToList();
+                foreach (var id in productIdList)
+                {
+                    await ProductService.DeleteProductByIdAsync(id, cancellationToken).ConfigureAwait(false);
+                }
+
+                await DeleteEntityAsync(productCategory).ConfigureAwait(false);
+            }
+        }
+
         public List<ProductCategory> GetMainPageProductCategories(int language)
         {
             var cacheKey = $"GetMainPageProductCategories-{language}";
@@ -172,6 +220,11 @@ namespace EImece.Domain.Services
         public List<ProductCategory> GetAdminProductCategories(string search, int currentLanguage)
         {
             return ProductCategoryRepository.GetAdminProductCategories(search, currentLanguage);
+        }
+
+        public async Task<List<ProductCategory>> GetAdminProductCategoriesAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductCategoryRepository.GetAdminProductCategoriesAsync(search, currentLanguage, cancellationToken).ConfigureAwait(false);
         }
 
         public List<ProductCategoryTreeModel> GetBreadCrumb(int productCategoryId, int language)
