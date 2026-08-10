@@ -168,17 +168,16 @@ Behavior:
 - Uploads from the published artifact (not the git working tree)
 - Uses **FTPS** by default (`EnableSsl` / explicit TLS)
 - **Never deletes** remote files or directories (no mirror purge)
-- Uploads **only** these folders (allowlist):
-  - `bin/`
-  - `Views/`
-  - `Content/`
-  - `Scripts/`
 - **Never overwrites** production `Web.config` or anything under `media/`
-- Fails the job if upload fails, required folders are missing, or zero files are uploaded
+- Uploads **all other** publish files **only when changed**:
+  1. remote file missing, **or**
+  2. remote **size** differs (FTP `SIZE`), **or**
+  3. **SHA-256 checksum** differs (compared via server-side `.eimece-deploy-manifest.json`)
+- Unchanged files are skipped
+- After the sync, the script refreshes `.eimece-deploy-manifest.json` on the server for the next run
+- Fails the job if upload fails, or if the publish output has no deployable files after exclusions
 
 Credentials come exclusively from GitHub Actions Secrets.
-
-Everything else in the publish artifact (for example `Areas/`, `fonts/`, `App_Data/`, `Global.asax`, `NLog.config`, root static files) is kept in the downloadable GitHub artifact for inspection, but is **not** FTPS-uploaded. Manage those on the server separately when needed.
 
 ---
 
@@ -296,7 +295,7 @@ Example local rollback upload (PowerShell):
   -UseFtps:$true
 ```
 
-Because remote delete is disabled and the FTPS allowlist is limited to `bin/`, `Views/`, `Content/`, and `Scripts/`, rollback overwrites only those folders and **does not** modify `Web.config` or `media/`.
+Because remote delete is disabled and `Web.config` / `media/` are excluded, rollback overwrites only changed application files and **does not** modify production `Web.config` or `media/`.
 
 There is no automatic database rollback (schema changes are out of scope for this pipeline).
 
@@ -317,8 +316,9 @@ There is no automatic database rollback (schema changes are out of scope for thi
 | Smoke test skipped | `PRODUCTION_BASE_URL` unset | Add the secret and re-run deploy |
 | Smoke test 503 / DOWN | DB or `media` permissions | Fix server env connection string / IIS ACLs; see BUILD_AND_RUN.md |
 | Missing images after deploy | Expected — `media/` is never uploaded | Production media stays on the server |
-| `Web.config` unexpectedly changed | Should not happen with this pipeline | Confirm deploy used `deploy-ftps.ps1` allowlist |
-| Admin / Areas views not updated | `Areas/` is outside the FTPS allowlist | Update `Areas/` on the server manually, or extend the allowlist if desired |
+| `Web.config` unexpectedly changed | Should not happen with this pipeline | Confirm deploy used `deploy-ftps.ps1` exclusions |
+| Every file re-uploaded every run | Remote `.eimece-deploy-manifest.json` missing/corrupt | Allow one full sync; next runs should be incremental |
+| File skipped but content wrong on server | Same size + stale/manual remote edit without manifest update | Delete the remote file or `.eimece-deploy-manifest.json` entry and redeploy |
 
 ---
 
@@ -344,7 +344,7 @@ The workflow intentionally does **not**:
 - Run EF migrations or destructive SQL
 - Delete remote files over FTP
 - Overwrite `Web.config` or anything under `media/`
-- Upload folders outside `bin/`, `Views/`, `Content/`, `Scripts/`
+- Re-upload files whose remote size and checksum are unchanged
 - Echo credentials to logs
 - Execute Playwright against production
 
