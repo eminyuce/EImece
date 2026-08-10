@@ -5,6 +5,8 @@ using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -36,16 +38,16 @@ namespace EImece.Areas.Admin.Controllers
             this.CustomerService = customerService;
         }
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
-            var model = CustomerService.GetCustomerServices(search);
+            var model = await CustomerService.GetCustomerServicesAsync(search);
             return View(model);
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public ActionResult ExportExcel(string format = "excel", string search = "")
+        public async Task<ActionResult> ExportExcel(CancellationToken cancellationToken, string format = "excel", string search = "")
         {
-            var customers = CustomerService.GetCustomerServices(search ?? "");
+            var customers = await CustomerService.GetCustomerServicesAsync(search ?? "");
             var result = from r in customers
                          select new
                          {
@@ -62,10 +64,10 @@ namespace EImece.Areas.Admin.Controllers
             return DownloadFile(result, string.Format("customers-{0}", GetCurrentLanguage), format);
         }
 
-        public ActionResult CustomerOrders(string id, string search = "")
+        public async Task<ActionResult> CustomerOrders(CancellationToken cancellationToken, string id, string search = "")
         {
-            var orders = OrderService.GetOrdersUserId(id, search);
-            var customer = CustomerService.GetUserId(id);
+            var orders = await OrderService.GetOrdersUserIdAsync(id, search);
+            var customer = await CustomerService.GetUserIdAsync(id);
             orders.ForEach(r => r.Customer = customer);
             ViewBag.Customer = customer;
             return View(orders.OrderByDescending(r => r.UpdatedDate).ToList());
@@ -74,27 +76,27 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, string id)
         {
-            UsersService.DeleteUser(id);
-            CustomerService.DeleteByUserId(id);
-            OrderService.DeleteByUserId(id);
+            await UsersService.DeleteUserAsync(id);
+            await CustomerService.DeleteByUserIdAsync(id);
+            await OrderService.DeleteByUserIdAsync(id);
             SetSuccessMessage();
             return RedirectToAction("Index");
         }
 
-        public ActionResult CustomerBaskets()
+        public async Task<ActionResult> CustomerBaskets(CancellationToken cancellationToken)
         {
-            var baskets = ShoppingCartService.GetAll().OrderByDescending(r => r.CreatedDate).ToList();
+            var baskets = (await ShoppingCartService.GetAllAsync()).OrderByDescending(r => r.CreatedDate).ToList();
             return View(baskets);
         }
 
-        public ActionResult DeleteAllShoppingCartSessions()
+        public async Task<ActionResult> DeleteAllShoppingCartSessions(CancellationToken cancellationToken)
         {
-            var baskets = ShoppingCartService.GetAll();
+            var baskets = await ShoppingCartService.GetAllAsync();
             foreach (var item in baskets)
             {
-                ShoppingCartService.DeleteById(item.Id);
+                await ShoppingCartService.DeleteByIdAsync(item.Id);
             }
             SetSuccessMessage();
             return RedirectToAction("CustomerBaskets");

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -961,6 +962,11 @@ namespace EImece.Domain.Services
         public List<ShoppingCart> GetAdminPageList(string search, int currentLanguage)
         {
             return ShoppingCartRepository.GetAdminPageList(search, currentLanguage);
+        }
+
+        public async Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ShoppingCartRepository.GetAdminPageListAsync(search, currentLanguage, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using NLog;
@@ -68,7 +69,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdatePrices(UpdatePriceRequest request)
+        public async Task<ActionResult> UpdatePrices(UpdatePriceRequest request)
         {
             if (!IsProductPriceEnabled)
             {
@@ -84,7 +85,7 @@ namespace EImece.Areas.Admin.Controllers
                     Logger.Warn("UpdatePrices: missing percentage in request");
                     return Json(new { success = false, message = "Yüzde değeri gerekli." }, JsonRequestBehavior.AllowGet);
                 }
-                var affectedRows = ProductService.UpdatePrices(request);
+                var affectedRows = await ProductService.UpdatePricesAsync(request);
                 Logger.Info($"UpdatePrices completed. AffectedRows={affectedRows}");
                 // Başarılı yanıt döndür
                 return Json(new { success = true, affectedRows = affectedRows }, JsonRequestBehavior.AllowGet);
@@ -98,7 +99,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateJsonAntiForgeryToken]
-        public JsonResult DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)
+        public async Task<JsonResult> DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)
         {
             Logger.Info($"DeleteBaseContentMainImage called by {User?.Identity?.Name ?? "-"} ContentId={contentId} ImageId={imageId} ContentClass={contentClass}");
             if (string.IsNullOrEmpty(contentClass))
@@ -109,45 +110,45 @@ namespace EImece.Areas.Admin.Controllers
 
             if (contentClass.Equals(typeof(Product).Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = ProductService.GetSingle(contentId);
+                await FileStorageService.DeleteFileStorageAsync(imageId);
+                var item = await ProductService.GetSingleAsync(contentId);
                 item.MainImageId = null;
-                ProductService.SaveOrEditEntity(item);
+                await ProductService.SaveOrEditEntityAsync(item);
             }
             else if (contentClass.Equals(typeof(Menu).Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = MenuService.GetSingle(contentId);
+                await FileStorageService.DeleteFileStorageAsync(imageId);
+                var item = await MenuService.GetSingleAsync(contentId);
                 item.MainImageId = null;
-                MenuService.SaveOrEditEntity(item);
+                await MenuService.SaveOrEditEntityAsync(item);
             }
             else if (contentClass.Equals(typeof(ProductCategory).Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = ProductCategoryService.GetSingle(contentId);
+                await FileStorageService.DeleteFileStorageAsync(imageId);
+                var item = await ProductCategoryService.GetSingleAsync(contentId);
                 item.MainImageId = null;
-                ProductCategoryService.SaveOrEditEntity(item);
+                await ProductCategoryService.SaveOrEditEntityAsync(item);
             }
             else if (contentClass.Equals(typeof(Story).Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = StoryService.GetSingle(contentId);
+                await FileStorageService.DeleteFileStorageAsync(imageId);
+                var item = await StoryService.GetSingleAsync(contentId);
                 item.MainImageId = null;
-                StoryService.SaveOrEditEntity(item);
+                await StoryService.SaveOrEditEntityAsync(item);
             }
             else if (contentClass.Equals(typeof(StoryCategory).Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = StoryCategoryService.GetSingle(contentId);
+                await FileStorageService.DeleteFileStorageAsync(imageId);
+                var item = await StoryCategoryService.GetSingleAsync(contentId);
                 item.MainImageId = null;
-                StoryCategoryService.SaveOrEditEntity(item);
+                await StoryCategoryService.SaveOrEditEntityAsync(item);
             }
             else if (contentClass.Equals(typeof(MainPageImage).Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                FileStorageService.DeleteFileStorage(imageId);
-                var item = MainPageImageService.GetSingle(contentId);
+                await FileStorageService.DeleteFileStorageAsync(imageId);
+                var item = await MainPageImageService.GetSingleAsync(contentId);
                 item.MainImageId = null;
-                MainPageImageService.SaveOrEditEntity(item);
+                await MainPageImageService.SaveOrEditEntityAsync(item);
             }
             else
             {
@@ -276,170 +277,170 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteTagCategoriesGridItem(List<String> values)
+        public async Task<JsonResult> DeleteTagCategoriesGridItem(List<String> values)
         {
-            TagCategoryService.DeleteBaseEntity(values);
+            await TagCategoryService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteCouponsGridItem(List<String> values)
+        public async Task<JsonResult> DeleteCouponsGridItem(List<String> values)
         {
-            CouponService.DeleteBaseEntity(values);
+            await CouponService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteStoryCategoryGridItem(List<String> values)
+        public async Task<JsonResult> DeleteStoryCategoryGridItem(List<String> values)
         {
-            StoryCategoryService.DeleteBaseEntity(values);
+            await StoryCategoryService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteProductCommentGridItem(List<String> values)
+        public async Task<JsonResult> DeleteProductCommentGridItem(List<String> values)
         {
-            ProductCommentService.DeleteBaseEntity(values);
+            await ProductCommentService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteSettingGridItem(List<String> values)
+        public async Task<JsonResult> DeleteSettingGridItem(List<String> values)
         {
-            SettingService.DeleteBaseEntity(values);
+            await SettingService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteStoryGridItem(List<String> values)
+        public async Task<JsonResult> DeleteStoryGridItem(List<String> values)
         {
-            StoryService.DeleteBaseEntity(values);
+            await StoryService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult MainPageImageGridItem(List<String> values)
+        public async Task<JsonResult> MainPageImageGridItem(List<String> values)
         {
-            MainPageImageService.DeleteBaseEntity(values);
+            await MainPageImageService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteCouponGridItem(List<String> values)
+        public async Task<JsonResult> DeleteCouponGridItem(List<String> values)
         {
-            CouponService.DeleteBaseEntity(values);
+            await CouponService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult StoryCategoryGridItem(List<String> values)
+        public async Task<JsonResult> StoryCategoryGridItem(List<String> values)
         {
-            StoryCategoryService.DeleteBaseEntity(values);
+            await StoryCategoryService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Admin/Ajax
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteSubscriberGridItem(List<String> values)
+        public async Task<JsonResult> DeleteSubscriberGridItem(List<String> values)
         {
-            SubscriberService.DeleteBaseEntity(values);
+            await SubscriberService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteShoppingCartGridItem(List<String> values)
+        public async Task<JsonResult> DeleteShoppingCartGridItem(List<String> values)
         {
-            ShoppingCartService.DeleteBaseEntity(values);
+            await ShoppingCartService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteAppLogGridItem(List<String> values)
+        public async Task<JsonResult> DeleteAppLogGridItem(List<String> values)
         {
-            AppLogRepository.DeleteAppLogs(values);
+            await AppLogRepository.DeleteAppLogsAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteProductGridItem(List<String> values)
+        public async Task<JsonResult> DeleteProductGridItem(List<String> values)
         {
-            ProductService.DeleteBaseEntity(values);
+            await ProductService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteTemplateGridItem(List<String> values)
+        public async Task<JsonResult> DeleteTemplateGridItem(List<String> values)
         {
-            TemplateService.DeleteBaseEntity(values);
+            await TemplateService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteTagGridItem(List<String> values)
+        public async Task<JsonResult> DeleteTagGridItem(List<String> values)
         {
-            TagService.DeleteBaseEntity(values);
+            await TagService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteProductCategoriesGridItem(List<String> values)
+        public async Task<JsonResult> DeleteProductCategoriesGridItem(List<String> values)
         {
-            ProductCategoryService.DeleteProductCategories(values);
+            await ProductCategoryService.DeleteProductCategoriesAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteMainPageImageGridItem(List<String> values)
+        public async Task<JsonResult> DeleteMainPageImageGridItem(List<String> values)
         {
-            MainPageImageService.DeleteBaseEntity(values);
+            await MainPageImageService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteFaqGridItem(List<String> values)
+        public async Task<JsonResult> DeleteFaqGridItem(List<String> values)
         {
-            FaqService.DeleteBaseEntity(values);
+            await FaqService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteMenusGridItem(List<String> values)
+        public async Task<JsonResult> DeleteMenusGridItem(List<String> values)
         {
-            MenuService.DeleteMenus(values);
+            await MenuService.DeleteMenusAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteMediaGridItem(List<String> values)
+        public async Task<JsonResult> DeleteMediaGridItem(List<String> values)
         {
             var normalizedValues = NormalizeMediaDeleteKeys(values);
-            FileStorageService.DeleteBaseEntity(normalizedValues);
+            await FileStorageService.DeleteBaseEntityAsync(normalizedValues);
             return Json(normalizedValues, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteBrandGridItem(List<String> values)
+        public async Task<JsonResult> DeleteBrandGridItem(List<String> values)
         {
             if (values == null || values.Count == 0)
             {
@@ -448,7 +449,7 @@ namespace EImece.Areas.Admin.Controllers
 
             foreach (var value in values)
             {
-                BrandService.DeleteBrandById(value.ToInt());
+                await BrandService.DeleteBrandByIdAsync(value.ToInt());
             }
 
             return Json(values, JsonRequestBehavior.AllowGet);
@@ -456,7 +457,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteListGridItem(List<String> values)
+        public async Task<JsonResult> DeleteListGridItem(List<String> values)
         {
             if (values == null || values.Count == 0)
             {
@@ -465,7 +466,7 @@ namespace EImece.Areas.Admin.Controllers
 
             foreach (var value in values)
             {
-                ListService.DeleteListById(value.ToInt());
+                await ListService.DeleteListByIdAsync(value.ToInt());
             }
 
             return Json(values, JsonRequestBehavior.AllowGet);
@@ -473,9 +474,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [DeleteAuthorize()]
-        public JsonResult DeleteMailTemplateGridItem(List<String> values)
+        public async Task<JsonResult> DeleteMailTemplateGridItem(List<String> values)
         {
-            MailTemplateService.DeleteBaseEntity(values);
+            await MailTemplateService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 
@@ -637,18 +638,18 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult ProductStateChanged(List<String> values, String ProductStateSelection)
+        public async Task<JsonResult> ProductStateChanged(List<String> values, String ProductStateSelection)
         {
             int productStateValue = int.Parse(ProductStateSelection);
             ProductState state = (ProductState)productStateValue;
-            ProductService.ChangeProductState(values, state);
+            await ProductService.ChangeProductStateAsync(values, state);
             return Json(new { values, ProductStateSelection }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult GetProductTags(EImeceLanguage language, int productId = 0)
+        public async Task<JsonResult> GetProductTags(EImeceLanguage language, int productId = 0)
         {
-            var tags = TagCategoryService.GetTagsByTagType(language);
+            var tags = await TagCategoryService.GetTagsByTagTypeAsync(language);
             if (tags.IsEmpty())
             {
                 return Json("", JsonRequestBehavior.AllowGet);
@@ -656,7 +657,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 tags = EntityFilterHelper.FilterTagCategories(tags);
-                var productTags = ProductService.GetProductTagsByProductId(productId).Select(r => r.TagId).ToList();
+                var productTags = (await ProductService.GetProductTagsByProductIdAsync(productId)).Select(r => r.TagId).ToList();
                 var tempData = new TempDataDictionary();
                 tempData["selectedTags"] = productTags;
                 var html = this.RenderPartialToString(
@@ -667,9 +668,9 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetStoryTags(EImeceLanguage language, int storyId = 0)
+        public async Task<JsonResult> GetStoryTags(EImeceLanguage language, int storyId = 0)
         {
-            var tags = TagCategoryService.GetTagsByTagType(language);
+            var tags = await TagCategoryService.GetTagsByTagTypeAsync(language);
             if (tags.IsEmpty())
             {
                 return Json("", JsonRequestBehavior.AllowGet);
@@ -677,7 +678,7 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 tags = EntityFilterHelper.FilterTagCategories(tags);
-                var storyTags = StoryService.GetStoryTagsByStoryId(storyId).Select(r => r.TagId).ToList();
+                var storyTags = (await StoryService.GetStoryTagsByStoryIdAsync(storyId)).Select(r => r.TagId).ToList();
                 var tempData = new TempDataDictionary();
                 tempData["selectedTags"] = storyTags;
                 var html = this.RenderPartialToString(
@@ -688,9 +689,9 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetProductDetailToolTip(int productId = 0)
+        public async Task<JsonResult> GetProductDetailToolTip(int productId = 0)
         {
-            var product = ProductService.GetProductDetailViewModelById(productId);
+            var product = await ProductService.GetProductDetailViewModelByIdAsync(productId);
             var html = this.RenderPartialToString(
                         @"~/Areas/Admin/Views/Shared/pProductDetailToolTip.cshtml",
                         new ViewDataDictionary(product), null);
@@ -698,9 +699,9 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetTags(EImeceLanguage language)
+        public async Task<JsonResult> GetTags(EImeceLanguage language)
         {
-            var tags = TagCategoryService.GetTagsByTagType(language);
+            var tags = await TagCategoryService.GetTagsByTagTypeAsync(language);
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         @"~/Areas/Admin/Views/Shared/pImagesTag.cshtml",

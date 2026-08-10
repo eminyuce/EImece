@@ -13,6 +13,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -21,30 +22,29 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class MenusController : BaseAdminController
     {
-        // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
-            var menus = MenuService.SearchEntities(whereLambda, search, CurrentLanguage);
-            ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
-            ViewBag.MenuLeaves = MenuService.GetMenuLeaves(null, CurrentLanguage);
+            var menus = await MenuService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
+            ViewBag.MenuTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
+            ViewBag.MenuLeaves = await MenuService.GetMenuLeavesAsync(null, CurrentLanguage, cancellationToken);
             return View(menus);
         }
 
         [HttpGet]
-        public ActionResult MoveMenuCategory()
+        public async Task<ActionResult> MoveMenuCategory(CancellationToken cancellationToken)
         {
-            ViewBag.MenuCategoryDropDownList = GetMenuTreeDropDownList();
-            ViewBag.MenuCategoryTree = MenuService.BuildTree(null, CurrentLanguage);
+            ViewBag.MenuCategoryDropDownList = await GetMenuTreeDropDownListAsync(cancellationToken);
+            ViewBag.MenuCategoryTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult MoveMenuCategory(MoveMenuCategory moveMenuCategory)
+        public async Task<ActionResult> MoveMenuCategory(MoveMenuCategory moveMenuCategory)
         {
             if (moveMenuCategory == null)
             {
@@ -52,25 +52,25 @@ namespace EImece.Areas.Admin.Controllers
             }
             if (moveMenuCategory.FirstCategoryId > 0 && moveMenuCategory.SecondCategoryId > 0)
             {
-                var firstCategoryId = MenuService.GetBaseContent(moveMenuCategory.FirstCategoryId);
-                var secondCategory = MenuService.GetBaseContent(moveMenuCategory.SecondCategoryId);
+                var firstCategoryId = await MenuService.GetBaseContentAsync(moveMenuCategory.FirstCategoryId);
+                var secondCategory = await MenuService.GetBaseContentAsync(moveMenuCategory.SecondCategoryId);
                 secondCategory.ParentId = firstCategoryId.Id;
-                MenuService.SaveOrEditEntity(secondCategory);
+                await MenuService.SaveOrEditEntityAsync(secondCategory);
             }
             else if (moveMenuCategory.SecondCategoryId > 0)
             {
-                var secondCategory = MenuService.GetBaseContent(moveMenuCategory.SecondCategoryId);
+                var secondCategory = await MenuService.GetBaseContentAsync(moveMenuCategory.SecondCategoryId);
                 secondCategory.ParentId = 0;
-                MenuService.SaveOrEditEntity(secondCategory);
+                await MenuService.SaveOrEditEntityAsync(secondCategory);
             }
             return RedirectToAction("MoveMenuCategory");
         }
 
-        private List<SelectListItem> GetMenuTreeDropDownList()
+        private async Task<List<SelectListItem>> GetMenuTreeDropDownListAsync(CancellationToken cancellationToken)
         {
             var resultListItem = new List<SelectListItem>();
             resultListItem.Add(new SelectListItem() { Text = AdminResource.MakeItRootCategory, Value = "0" });
-            foreach (var item in MenuService.BuildTree(null, CurrentLanguage))
+            foreach (var item in await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken))
             {
                 resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.Menu.Id.ToStr() });
                 GetMenuTreeChildrenDropDownList(resultListItem, item);
@@ -91,14 +91,11 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        //
-        // GET: /Menu/Create
-
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<Menu>();
-            ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
-            ViewBag.MenuLinks = GetMenuPages();
+            ViewBag.MenuTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
+            ViewBag.MenuLinks = await GetMenuPagesAsync(cancellationToken);
             var parentMenu = EntityFactory.GetBaseContentInstance<Menu>();
 
             if (id == 0)
@@ -107,10 +104,10 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = MenuService.GetBaseContent(id);
+                content = await MenuService.GetBaseContentAsync(id, cancellationToken);
                 if (content.ParentId > 0)
                 {
-                    parentMenu = MenuService.GetSingle(content.ParentId);
+                    parentMenu = await MenuService.GetSingleAsync(content.ParentId);
                 }
             }
             ViewBag.ParentMenu = parentMenu;
@@ -118,12 +115,9 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
-        //
-        // POST: /Menu/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Menu menu, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Menu menu, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -134,8 +128,8 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (menu != null && menu.MenuLink.Equals("-1"))
                 {
-                    ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
-                    ViewBag.MenuLinks = GetMenuPages();
+                    ViewBag.MenuTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
+                    ViewBag.MenuLinks = await GetMenuPagesAsync(cancellationToken);
                     ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
                     ModelState.AddModelError("MenuLink", "Menu Link secimi yapiniz  ");
                     return View(menu);
@@ -149,7 +143,7 @@ namespace EImece.Areas.Admin.Controllers
                         EImeceImageType.MenuMainImage, menu);
 
                     menu.Lang = CurrentLanguage;
-                    MenuService.SaveOrEditEntity(menu);
+                    await MenuService.SaveOrEditEntityAsync(menu);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");
@@ -167,11 +161,10 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.Message, menu);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
-            ViewBag.MenuTree = MenuService.BuildTree(null, CurrentLanguage);
-            ViewBag.MenuLinks = GetMenuPages();
+            ViewBag.MenuTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
+            ViewBag.MenuLinks = await GetMenuPagesAsync(cancellationToken);
 
             RemoveModelState();
             return View(menu);
@@ -180,9 +173,9 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            Menu menu = MenuService.GetSingle(id);
+            Menu menu = await MenuService.GetSingleAsync(id);
 
             if (menu == null)
             {
@@ -190,7 +183,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                var deleted = MenuService.DeleteMenu(menu.Id);
+                var deleted = await MenuService.DeleteMenuAsync(menu.Id);
                 if (!deleted)
                 {
                     SetErrorMessage(AdminResource.MenuCannotDeleteHasChildren);
@@ -209,9 +202,9 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetMenus()
+        public async Task<ActionResult> GetMenus(CancellationToken cancellationToken)
         {
-            var treelist = MenuService.BuildTree(null, CurrentLanguage);
+            var treelist = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
             return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
@@ -226,10 +219,10 @@ namespace EImece.Areas.Admin.Controllers
             });
         }
 
-        private List<SelectListItem> GetMenuPages()
+        private async Task<List<SelectListItem>> GetMenuPagesAsync(CancellationToken cancellationToken)
         {
-            var menus = MenuService.GetActiveBaseContents(true, CurrentLanguage);
-            var storyCategories = StoryCategoryService.GetActiveBaseContents(true, CurrentLanguage);
+            var menus = await MenuService.GetActiveBaseContentsAsync(true, CurrentLanguage, cancellationToken);
+            var storyCategories = await StoryCategoryService.GetActiveBaseContentsAsync(true, CurrentLanguage, cancellationToken);
             var menuLinks = new List<SelectListItem>();
             menuLinks.Add(new SelectListItem() { Text = "Seçim Yapın", Value = "-1" });
 
@@ -263,7 +256,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

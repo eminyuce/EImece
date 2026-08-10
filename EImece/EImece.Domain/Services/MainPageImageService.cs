@@ -41,6 +41,16 @@ namespace EImece.Domain.Services
             DeleteEntity(item);
         }
 
+        public async Task DeleteMainPageImageAsync(int id)
+        {
+            var item = await MainPageImageRepository.GetSingleAsync(id).ConfigureAwait(false);
+            if (item.MainImageId.HasValue)
+            {
+                await FileStorageService.DeleteFileStorageAsync(item.MainImageId.Value).ConfigureAwait(false);
+            }
+            await DeleteEntityAsync(item).ConfigureAwait(false);
+        }
+
         public MainPageViewModel GetMainPageViewModel(int language)
         {
             var result = new MainPageViewModel();

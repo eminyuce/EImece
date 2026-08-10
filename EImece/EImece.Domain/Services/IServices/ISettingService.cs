@@ -2,6 +2,7 @@
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
@@ -26,7 +27,11 @@ namespace EImece.Domain.Services.IServices
 
         SettingModel GetSettingModel(int language);
 
+        Task<SettingModel> GetSettingModelAsync(int language);
+
         void SaveSettingModel(SettingModel settingModel, int lang);
+
+        Task SaveSettingModelAsync(SettingModel settingModel, int lang);
 
         List<Setting> GetAllActiveSettings();
 
@@ -38,7 +43,11 @@ namespace EImece.Domain.Services.IServices
 
         SystemSettingModel GetSystemSettingModel();
 
+        Task<SystemSettingModel> GetSystemSettingModelAsync(CancellationToken cancellationToken = default(CancellationToken));
+
         void SaveSystemSettingModel(SystemSettingModel settingModel);
+
+        Task SaveSystemSettingModelAsync(SystemSettingModel settingModel);
 
         Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text, string imagefullPath);
 

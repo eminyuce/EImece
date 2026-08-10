@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,10 +14,10 @@ namespace EImece.Areas.Admin.Controllers
     {
         // Get method to resize and display image
         [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Index(string id, int width = 0, int height = 0)
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, string id, int width = 0, int height = 0)
         {
             var fileStorageId = id.Replace(".jpg", "").ToInt();
-            var imageByte = FilesHelper.GetResizedImage(fileStorageId, width, height);
+            var imageByte = await FilesHelper.GetResizedImageAsync(fileStorageId, width, height, cancellationToken);
             if (imageByte != null)
             {
                 return File(imageByte.ImageBytes, imageByte.ContentType);

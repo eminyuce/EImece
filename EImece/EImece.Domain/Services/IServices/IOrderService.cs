@@ -28,6 +28,8 @@ namespace EImece.Domain.Services.IServices
 
         void DeleteByUserId(string userId);
 
+        Task DeleteByUserIdAsync(string userId);
+
         List<Order> GetOrdersByUserId(string userId);
 
         Task<List<Order>> GetOrdersByUserIdAsync(string userId);

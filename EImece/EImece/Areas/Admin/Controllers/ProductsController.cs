@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -21,7 +22,8 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(
+        public async Task<ActionResult> Index(
+            CancellationToken cancellationToken,
             int id = 0,
             int brandId = -1,
             String search = "",
@@ -32,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
             decimal? minPrice = null,
             decimal? maxPrice = null)
         {
-            var isProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
             bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
             var filter = new ProductAdminListFilter
@@ -46,10 +48,10 @@ namespace EImece.Areas.Admin.Controllers
                 ApplyPriceFilter = priceEnabled
             };
 
-            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            var products = ProductService.GetAdminPageList(id, brandId, search, CurrentLanguage, filter);
+            ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            var products = await ProductService.GetAdminPageListAsync(id, brandId, search, CurrentLanguage, filter, cancellationToken);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
-            ViewBag.SelectedCategory = ProductCategoryService.GetSingle(id);
+            ViewBag.SelectedCategory = await ProductCategoryService.GetSingleAsync(id);
             ViewBag.SelectedBrandId = brandId;
             ViewBag.SelectedState = state.ToStr();
             ViewBag.FilterIsActive = filter.IsActive;
@@ -58,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MinPrice = priceEnabled ? minPrice : null;
             ViewBag.MaxPrice = priceEnabled ? maxPrice : null;
             ViewBag.ProductFilter = filter;
-            ViewBag.Brands = BrandService.GetBrandsIfAnyProductExists(CurrentLanguage, id)
+            ViewBag.Brands = (await BrandService.GetBrandsIfAnyProductExistsAsync(CurrentLanguage, id))
                 .Where(b => b.IsActive)
                 .OrderBy(b => b.Name)
                 .ToList();
@@ -69,16 +71,16 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult SaveOrEditProductSpecs(int id = 0)
+        public async Task<ActionResult> SaveOrEditProductSpecs(CancellationToken cancellationToken, int id = 0)
         {
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var productDetailViewModel = ProductService.GetProductDetailViewModelById(id);
+            var productDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(id, cancellationToken);
             Product content = productDetailViewModel.Product;
-            ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
+            ViewBag.Template = await TemplateService.GetTemplateAsync(content.ProductCategory.TemplateId.Value, cancellationToken);
             if (content == null)
             {
                 return HttpNotFound();
@@ -88,14 +90,14 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEditProductSpecs(int id, int templateId)
+        public async Task<ActionResult> SaveOrEditProductSpecs(CancellationToken cancellationToken, int id, int templateId)
         {
             int productId = id;
-            ProductService.ParseTemplateAndSaveProductSpecifications(productId, templateId, CurrentLanguage, Request);
+            await ProductService.ParseTemplateAndSaveProductSpecificationsAsync(productId, templateId, CurrentLanguage, Request, cancellationToken);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            var productDetailViewModel = ProductService.GetProductDetailViewModelById(id);
+            var productDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(id, cancellationToken);
             Product content = productDetailViewModel.Product;
-            ViewBag.Template = TemplateService.GetTemplate(content.ProductCategory.TemplateId.Value);
+            ViewBag.Template = await TemplateService.GetTemplateAsync(content.ProductCategory.TemplateId.Value, cancellationToken);
             RemoveModelState();
             return View(content);
         }
@@ -103,25 +105,25 @@ namespace EImece.Areas.Admin.Controllers
         //
         // GET: /Product/Create
         [HttpGet]
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<Product>();
-            ViewBag.Brands = GetBrandsSelectList();
+            ViewBag.Brands = await GetBrandsSelectListAsync();
             var productCategory = EntityFactory.GetBaseContentInstance<ProductCategory>();
-            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
+            ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
             if (id == 0)
             {
                 content.ProductCategoryId = 0;
             }
             else
             {
-                content = ProductService.GetBaseContent(id);
+                content = await ProductService.GetBaseContentAsync(id, cancellationToken);
                 content.PriceStr = decimal.Round(content.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",");
                 content.DiscountStr = content.Discount.HasValue ? decimal.Round(content.Discount.Value, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",") : "";
-                productCategory = ProductCategoryService.GetSingle(content.ProductCategoryId);
+                productCategory = await ProductCategoryService.GetSingleAsync(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
             return View(content);
         }
 
@@ -130,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Product product, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Product product, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             int contentId = 0;
             if (product == null)
@@ -141,7 +143,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var isProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
+                    var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
                     if (product.ProductCategoryId == 0)
                     {
                         ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
@@ -167,10 +169,10 @@ namespace EImece.Areas.Admin.Controllers
                             product.Discount = decimal.Round((decimal)product.DiscountStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
 
                         product.Lang = CurrentLanguage;
-                        ProductService.SaveOrEditEntity(product);
+                        await ProductService.SaveOrEditEntityAsync(product);
                         contentId = product.Id;
 
-                        ProductService.SaveProductTags(product.Id, tags);
+                        await ProductService.SaveProductTagsAsync(product.Id, tags);
 
                         if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -194,16 +196,16 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
-            ViewBag.ProductCategoryTree = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            ViewBag.ProductCategory = ProductCategoryService.GetSingle(product.ProductCategoryId);
+            ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            ViewBag.ProductCategory = await ProductCategoryService.GetSingleAsync(product.ProductCategoryId);
             if (product.MainImageId.HasValue)
             {
-                product.MainImage = FileStorageService.GetSingle(product.MainImageId.Value);
+                product.MainImage = await FileStorageService.GetSingleAsync(product.MainImageId.Value);
             }
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
-            product = contentId == 0 ? product : ProductService.GetBaseContent(contentId);
+            ViewBag.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            product = contentId == 0 ? product : await ProductService.GetBaseContentAsync(contentId, cancellationToken);
 
-            ViewBag.Brands = GetBrandsSelectList();
+            ViewBag.Brands = await GetBrandsSelectListAsync();
             RemoveModelState();
             return View(product);
         }
@@ -211,21 +213,21 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product product = ProductService.GetSingle(id);
+            Product product = await ProductService.GetSingleAsync(id);
             if (product == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                var deleteResult = ProductService.DeleteProductById(id);
+                var deleteResult = await ProductService.DeleteProductByIdAsync(id, cancellationToken);
                 switch (deleteResult)
                 {
                     case ProductDeleteResult.Deleted:
@@ -256,14 +258,14 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
-            return await DownloadFileAsync(format);
+            return await DownloadFileAsync(format, cancellationToken);
         }
 
-        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
+        private async Task<ActionResult> DownloadFileAsync(string format, CancellationToken cancellationToken)
         {
-            var products = await ProductService.GetAdminPageListAsync(-1, "", CurrentLanguage);
+            var products = await ProductService.GetAdminPageListAsync(-1, "", CurrentLanguage, cancellationToken);
 
             var result = from r in products
                          select new
@@ -288,37 +290,37 @@ namespace EImece.Areas.Admin.Controllers
             return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage), format);
         }
 
-        public ActionResult MoveProductsInTrees(int id = 0, string productIdList = "", int oldCategoryId = 0)
+        public async Task<ActionResult> MoveProductsInTrees(CancellationToken cancellationToken, int id = 0, string productIdList = "", int oldCategoryId = 0)
         {
-            ViewBag.ProductCategoryTreeLeft = ProductCategoryService.BuildTree(null, CurrentLanguage);
-            ViewBag.ProductCategoryTreeRight = ProductCategoryService.BuildTree(null, CurrentLanguage);
+            ViewBag.ProductCategoryTreeLeft = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            ViewBag.ProductCategoryTreeRight = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
             var products = new System.Collections.Generic.List<Product>();
             if (id > 0)
             {
-                products = ProductService.GetAdminPageList(id, "", CurrentLanguage);
+                products = await ProductService.GetAdminPageListAsync(id, "", CurrentLanguage, cancellationToken);
             }
 
-            var newCategory = ProductCategoryService.GetSingle(id);
+            var newCategory = await ProductCategoryService.GetSingleAsync(id);
             ViewBag.SelectedCategory = newCategory;
 
             if (id > 0 && oldCategoryId > 0)
             {
-                var oldCategory = ProductCategoryService.GetSingle(oldCategoryId);
+                var oldCategory = await ProductCategoryService.GetSingleAsync(oldCategoryId);
                 ViewBag.MoveProductsMessage = String.Format("Seçilen {0} Ürün '{1}' kategorisinden '{2}' kategorisine tasindi", productIdList.Split(',').Count().ToString(), oldCategory.Name, newCategory.Name);
             }
 
             return View(products);
         }
 
-        public ActionResult MoveProducts(int id, string productIdList, int oldCategoryId)
+        public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int id, string productIdList, int oldCategoryId)
         {
-            ProductService.MoveProductsInTrees(id, productIdList);
+            await ProductService.MoveProductsInTreesAsync(id, productIdList, cancellationToken);
             return RedirectToAction("MoveProductsInTrees", new { id, productIdList, oldCategoryId });
         }
 
-        private List<SelectListItem> GetBrandsSelectList()
+        private async Task<List<SelectListItem>> GetBrandsSelectListAsync()
         {
-            var tagCategories = BrandService.GetAll().Where(r => r.IsActive && r.Lang == CurrentLanguage).OrderBy(r => r.Position).ToList();
+            var tagCategories = (await BrandService.GetAllAsync()).Where(r => r.IsActive && r.Lang == CurrentLanguage).OrderBy(r => r.Position).ToList();
             return tagCategories.Select(r => new SelectListItem()
             {
                 Text = r.Name.ToStr(),

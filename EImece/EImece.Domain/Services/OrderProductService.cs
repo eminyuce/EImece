@@ -2,6 +2,7 @@
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -19,6 +20,11 @@ namespace EImece.Domain.Services
         public bool DeleteOrderProductsByOrderId(int id)
         {
             return OrderProductRepository.DeleteByWhereCondition(r => r.OrderId == id);
+        }
+
+        public async Task<bool> DeleteOrderProductsByOrderIdAsync(int id)
+        {
+            return await OrderProductRepository.DeleteByWhereConditionAsync(r => r.OrderId == id).ConfigureAwait(false);
         }
     }
 }

@@ -17,12 +17,18 @@ namespace EImece.Domain.Services.IServices
 
         void DeleteByUserId(string userId);
 
+        Task DeleteByUserIdAsync(string userId);
+
         void SaveCustomerTypeToNormal(string userId);
 
         Task SaveCustomerTypeToNormalAsync(string userId);
 
         List<Customer> GetCustomerServices(string search);
 
+        Task<List<Customer>> GetCustomerServicesAsync(string search);
+
         void GetUserFields(Customer item);
+
+        Task GetUserFieldsAsync(Customer item);
     }
 }

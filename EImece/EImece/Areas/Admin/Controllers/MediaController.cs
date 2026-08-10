@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -38,7 +40,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         // GET: Admin/Media
-        public ActionResult Index(int? contentId, String mod = null, String imageType = null)
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, int? contentId, String mod = null, String imageType = null)
         {
             if (!contentId.HasValue || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
             {
@@ -67,23 +69,23 @@ namespace EImece.Areas.Admin.Controllers
             returnModel.Lang = GetCurrentLanguage;
             returnModel.ImageType = enumImageType.Value;
             returnModel.MediaMod = enumMod.Value;
-            returnModel.FileStorages = FileStorageService.GetUploadImages(id, enumMod.Value, enumImageType.Value);
+            returnModel.FileStorages = await FileStorageService.GetUploadImagesAsync(id, enumMod.Value, enumImageType.Value, cancellationToken);
             switch (enumMod.Value)
             {
                 case MediaModType.Stories:
-                    returnModel.BaseContent = StoryService.GetSingle(id);
+                    returnModel.BaseContent = await StoryService.GetSingleAsync(id);
                     break;
 
                 case MediaModType.Products:
-                    returnModel.BaseContent = ProductService.GetSingle(id);
+                    returnModel.BaseContent = await ProductService.GetSingleAsync(id);
                     break;
 
                 case MediaModType.Menus:
-                    returnModel.BaseContent = MenuService.GetSingle(id);
+                    returnModel.BaseContent = await MenuService.GetSingleAsync(id);
                     break;
 
                 case MediaModType.MainPageImages:
-                    returnModel.BaseContent = MenuService.GetSingle(id);
+                    returnModel.BaseContent = await MenuService.GetSingleAsync(id);
                     break;
 
                 default:
@@ -95,11 +97,11 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (returnModel.BaseContent.ImageWidth <= 0)
                 {
-                    returnModel.BaseContent.ImageWidth = SettingService.GetSettingByKey(Constants.DefaultImageWidth).ToInt();
+                    returnModel.BaseContent.ImageWidth = (await SettingService.GetSettingByKeyAsync(Constants.DefaultImageWidth)).ToInt();
                 }
                 if (returnModel.BaseContent.ImageHeight <= 0)
                 {
-                    returnModel.BaseContent.ImageHeight = SettingService.GetSettingByKey(Constants.DefaultImageHeight).ToInt();
+                    returnModel.BaseContent.ImageHeight = (await SettingService.GetSettingByKeyAsync(Constants.DefaultImageHeight)).ToInt();
                 }
             }
 
@@ -125,7 +127,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateJsonAntiForgeryToken]
-        public JsonResult Upload()
+        public async Task<JsonResult> Upload()
         {
             int Id = Request.Form["contentId"].ToInt();
             var imageType = EnumHelper.Parse<EImeceImageType>(Request.Form["imageType"].ToStr());
@@ -149,7 +151,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                FileStorageService.SaveUploadImages(Id, imageType, mod, resultList, CurrentLanguage, selectedTags);
+                await FileStorageService.SaveUploadImagesAsync(Id, imageType, mod, resultList, CurrentLanguage, selectedTags);
                 return Json(files);
             }
         }
@@ -176,14 +178,14 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var fileStorage = FileStorageService.GetSingle(id);
+            var fileStorage = await FileStorageService.GetSingleAsync(id);
             if (fileStorage == null)
             {
                 return HttpNotFound();
@@ -195,7 +197,7 @@ namespace EImece.Areas.Admin.Controllers
                 MediaModType? enumMod = EnumHelper.Parse<MediaModType>(CurrentSelectedModul["mod"]);
                 EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(CurrentSelectedModul["imageType"]);
 
-                FileStorageService.DeleteUploadImage(id, contentId, enumImageType, enumMod);
+                await FileStorageService.DeleteUploadImageAsync(id, contentId, enumImageType, enumMod);
                 SetSuccessMessage();
                 return RedirectToAction("Index",
                     new

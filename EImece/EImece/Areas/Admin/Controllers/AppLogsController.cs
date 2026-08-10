@@ -4,6 +4,8 @@ using NLog;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -23,25 +25,21 @@ namespace EImece.Areas.Admin.Controllers
             this.AppLogRepository = repository;
         }
 
-        // GET: Admin/AppLogs
-        public ActionResult Index(string search = "", string eventLevel = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, string search = "", string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
             ViewBag.Search = search ?? string.Empty;
             ViewBag.EventLevel = eventLevel;
             ViewBag.EventLevels = KnownEventLevels;
-            var logs = AppLogRepository.GetAppLogs(search, eventLevel);
+            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
             return View(logs);
         }
 
-        /// <summary>
-        /// Download filtered logs as a UTF-8 text file (same content as the textarea view).
-        /// </summary>
         [HttpGet]
-        public ActionResult Download(string search = "", string eventLevel = "")
+        public async Task<ActionResult> Download(CancellationToken cancellationToken, string search = "", string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
-            var logs = AppLogRepository.GetAppLogs(search, eventLevel);
+            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
             var sb = new StringBuilder(Math.Max(256, logs.Count * 128));
             foreach (var log in logs)
             {
@@ -56,10 +54,10 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public ActionResult ExportExcel(string format = "excel", string search = "", string eventLevel = "")
+        public async Task<ActionResult> ExportExcel(CancellationToken cancellationToken, string format = "excel", string search = "", string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
-            var logs = AppLogRepository.GetAppLogs(search, eventLevel);
+            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
             var levelPart = string.IsNullOrEmpty(eventLevel) ? "all" : eventLevel;
             return DownloadFile(logs, string.Format("AppLogs-{0}", levelPart), format);
         }
@@ -67,18 +65,18 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            AppLogRepository.DeleteAppLog(id);
+            await AppLogRepository.DeleteAppLogAsync(id);
             SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer("Index");
         }
 
         [DeleteAuthorize()]
-        public ActionResult RemoveAll(string eventLevel = "")
+        public async Task<ActionResult> RemoveAll(CancellationToken cancellationToken, string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
-            AppLogRepository.RemoveAll(eventLevel);
+            await AppLogRepository.RemoveAllAsync(eventLevel, cancellationToken);
             SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer("Index");
         }

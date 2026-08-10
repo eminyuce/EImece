@@ -9,6 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -31,6 +35,11 @@ namespace EImece.Domain.Services
             return TagCategoryRepository.GetTagsByTagType(language);
         }
 
+        public async Task<List<TagCategory>> GetTagsByTagTypeAsync(EImeceLanguage language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await TagCategoryRepository.GetTagsByTagTypeAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
         public void DeleteTagCategoryById(int tagCategoryId)
         {
             var tagCategory = GetTagCategoryById(tagCategoryId);
@@ -40,6 +49,17 @@ namespace EImece.Domain.Services
                 TagService.DeleteTagById(tagId);
             }
             DeleteEntity(tagCategory);
+        }
+
+        public async Task DeleteTagCategoryByIdAsync(int tagCategoryId)
+        {
+            var tagCategory = GetTagCategoryById(tagCategoryId);
+            var tagIdList = tagCategory.Tags.Select(r => r.Id).ToList();
+            foreach (var tagId in tagIdList)
+            {
+                await TagService.DeleteTagByIdAsync(tagId).ConfigureAwait(false);
+            }
+            await DeleteEntityAsync(tagCategory).ConfigureAwait(false);
         }
 
         public TagCategory GetTagCategoryById(int tagCategoryId)
@@ -55,6 +75,27 @@ namespace EImece.Domain.Services
                 {
                     var id = v.ToInt();
                     DeleteTagCategoryById(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                TagCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                TagCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public virtual new async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteTagCategoryByIdAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)

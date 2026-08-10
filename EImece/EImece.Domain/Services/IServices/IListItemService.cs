@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -7,6 +8,10 @@ namespace EImece.Domain.Services.IServices
     {
         void DeleteListItemByListId(int id);
 
+        Task DeleteListItemByListIdAsync(int id);
+
         void SaveListItem(int listId, List<ListItem> listItems);
+
+        Task SaveListItemAsync(int listId, List<ListItem> listItems);
     }
 }

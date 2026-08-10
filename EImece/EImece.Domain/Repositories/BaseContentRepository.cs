@@ -29,6 +29,14 @@ namespace EImece.Domain.Repositories
             return item;
         }
 
+        public virtual async Task<T> GetBaseContentAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
+            Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
+            var item = await GetSingleIncludingAsync(id, cancellationToken, includeProperties).ConfigureAwait(false);
+            return item;
+        }
+
         public virtual List<T> GetActiveBaseContents(bool? isActive, int? language)
         {
             try

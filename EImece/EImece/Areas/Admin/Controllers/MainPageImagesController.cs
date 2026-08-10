@@ -7,6 +7,8 @@ using Resources;
 using System;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -17,14 +19,14 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // GET: Admin/MainPageImages
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.Contains(search);
-            var mainPageImages = MainPageImageService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var mainPageImages = await MainPageImageService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(mainPageImages);
         }
 
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<MainPageImage>();
 
@@ -33,7 +35,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = MainPageImageService.GetBaseContent(id);
+                content = await MainPageImageService.GetBaseContentAsync(id, cancellationToken);
             }
 
             return View(content);
@@ -44,7 +46,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(MainPageImage mainpageimage, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public async Task<ActionResult> SaveOrEdit(MainPageImage mainpageimage, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -62,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
                       mainpageimage);
 
                     mainpageimage.ImageState = true;
-                    MainPageImageService.SaveOrEditEntity(mainpageimage);
+                    await MainPageImageService.SaveOrEditEntityAsync(mainpageimage);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return RedirectToAction("Index");
@@ -91,7 +93,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id = 0)
+        public async Task<ActionResult> DeleteConfirmed(int id = 0)
         {
             if (id == 0)
             {
@@ -100,7 +102,7 @@ namespace EImece.Areas.Admin.Controllers
 
             try
             {
-                MainPageImageService.DeleteMainPageImage(id);
+                await MainPageImageService.DeleteMainPageImageAsync(id);
                 SetSuccessMessage();
                 return RedirectToAction("Index");
             }

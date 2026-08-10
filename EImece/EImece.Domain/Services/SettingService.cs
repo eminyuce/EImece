@@ -149,12 +149,51 @@ namespace EImece.Domain.Services
             return SettingRepository.GetAllSettings();
         }
 
+        private async Task<List<Setting>> GetAllSettingsNoCacheAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await SettingRepository.GetAllSettingsAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public SystemSettingModel GetSystemSettingModel()
         {
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
             List<Setting> Settings = GetAllSettingsNoCache().Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+                // Get value on the target instance.
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting != null)
+                {
+                    if (propertyInfo.PropertyType == typeof(int))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(string))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(bool))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<SystemSettingModel> GetSystemSettingModelAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var result = new SystemSettingModel();
+
+            Type type = result.GetType();
+            List<Setting> Settings = (await GetAllSettingsNoCacheAsync(cancellationToken).ConfigureAwait(false))
+                .Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
@@ -220,12 +259,86 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task SaveSystemSettingModelAsync(SystemSettingModel settingModel)
+        {
+            if (settingModel == null)
+            {
+                throw new ArgumentException("SystemSettingModel cannot be null");
+            }
+            List<Setting> Settings = await GetAllSettingsAsync().ConfigureAwait(false);
+            // Get type.
+            Type type = settingModel.GetType();
+
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+
+                // Get value on the target instance.
+                object value = propertyInfo.GetValue(settingModel, null);
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting == null)
+                {
+                    var newSetting = new Setting();
+                    newSetting.Name = name;
+                    newSetting.IsActive = true;
+                    newSetting.SettingKey = name;
+                    newSetting.Description = Constants.SystemSettings;
+                    newSetting.SettingValue = value.ToStr();
+                    await SaveOrEditEntityAsync(newSetting).ConfigureAwait(false);
+                }
+                else
+                {
+                    setting.Description = Constants.SystemSettings;
+                    setting.SettingValue = value.ToStr();
+                    await SaveOrEditEntityAsync(setting).ConfigureAwait(false);
+                }
+            }
+        }
+
         public SettingModel GetSettingModel(int language)
         {
             var result = new SettingModel();
 
             Type type = result.GetType();
             List<Setting> Settings = GetAllSettings().Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+
+                // Get value on the target instance.
+
+                var setting = Settings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting != null)
+                {
+                    if (propertyInfo.PropertyType == typeof(int))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(string))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
+                    }
+                    if (propertyInfo.PropertyType == typeof(bool))
+                    {
+                        propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<SettingModel> GetSettingModelAsync(int language)
+        {
+            var result = new SettingModel();
+
+            Type type = result.GetType();
+            List<Setting> Settings = (await GetAllSettingsAsync().ConfigureAwait(false))
+                .Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
@@ -291,6 +404,46 @@ namespace EImece.Domain.Services
                     setting.SettingValue = value.ToStr();
                     setting.Lang = lang;
                     SaveOrEditEntity(setting);
+                }
+            }
+        }
+
+        public async Task SaveSettingModelAsync(SettingModel settingModel, int lang)
+        {
+            if (settingModel == null)
+            {
+                throw new ArgumentException("SettingModel cannot be null");
+            }
+            List<Setting> Settings = await GetAllSettingsAsync().ConfigureAwait(false);
+            // Get type.
+            Type type = settingModel.GetType();
+
+            // Loop over properties.
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
+            {
+                // Get name.
+                string name = propertyInfo.Name;
+
+                // Get value on the target instance.
+                object value = propertyInfo.GetValue(settingModel, null);
+                var setting = Settings.FirstOrDefault(r => r.Lang == lang && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting == null)
+                {
+                    var newSetting = new Setting();
+                    newSetting.Name = name;
+                    newSetting.IsActive = true;
+                    newSetting.SettingKey = name;
+                    newSetting.Description = Constants.AdminSetting;
+                    newSetting.SettingValue = value.ToStr();
+                    newSetting.Lang = lang;
+                    await SaveOrEditEntityAsync(newSetting).ConfigureAwait(false);
+                }
+                else
+                {
+                    setting.Description = Constants.AdminSetting;
+                    setting.SettingValue = value.ToStr();
+                    setting.Lang = lang;
+                    await SaveOrEditEntityAsync(setting).ConfigureAwait(false);
                 }
             }
         }

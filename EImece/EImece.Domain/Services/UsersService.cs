@@ -6,7 +6,9 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -40,6 +42,21 @@ namespace EImece.Domain.Services
             }
 
             var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            if (user == null)
+            {
+                Logger.Debug("User is null for userId " + id);
+            }
+            return user;
+        }
+
+        public async Task<ApplicationUser> GetUserAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("userId should have value");
+            }
+
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -87,6 +104,45 @@ namespace EImece.Domain.Services
             return model;
         }
 
+        public async Task<List<EditUserViewModel>> GetUsersAsync(string search)
+        {
+            var users = ApplicationDbContext.Users.AsQueryable();
+
+            var users2 = from u in ApplicationDbContext.Users
+                         from ur in u.Roles
+                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                         select new
+                         {
+                             u.Id,
+                             Email = u.UserName,
+                             FirstName = u.FirstName,
+                             LastName = u.LastName,
+                             Role = r.Name,
+                         };
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                search = search.ToLower().Trim();
+                users = users.Where(r => r.Email.ToLower().Contains(search) || r.FirstName.ToLower().Contains(search) || r.LastName.ToLower().Contains(search));
+            }
+
+            var model = new List<EditUserViewModel>();
+            foreach (var user in await users.ToListAsync().ConfigureAwait(false))
+            {
+                var u = new EditUserViewModel();
+                u.FirstName = user.FirstName;
+                u.LastName = user.LastName;
+                u.Email = user.Email;
+                u.Id = user.Id;
+                u.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
+                var p = users2.FirstOrDefault(r => r.Id.Equals(u.Id, StringComparison.InvariantCultureIgnoreCase));
+                u.Role = p == null ? String.Empty : p.Role.ToStr();
+                model.Add(u);
+            }
+
+            return model;
+        }
+
         public void DeleteUser(string id)
         {
             var user = GetUser(id);
@@ -94,6 +150,16 @@ namespace EImece.Domain.Services
             {
                 ApplicationDbContext.Users.Remove(user);
                 ApplicationDbContext.SaveChanges();
+            }
+        }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            var user = await GetUserAsync(id).ConfigureAwait(false);
+            if (user != null)
+            {
+                ApplicationDbContext.Users.Remove(user);
+                await ApplicationDbContext.SaveChangesAsync().ConfigureAwait(false);
             }
         }
     }

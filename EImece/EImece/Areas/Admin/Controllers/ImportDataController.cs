@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,8 +14,6 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ImportDataController : BaseAdminController
     {
-        // GET: Admin/ImportData
-
         public ActionResult Index()
         {
             String path = "~/App_Data/";
@@ -65,7 +65,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DisplayExcel(String pathName, String selectedTable)
+        public async Task<ActionResult> DisplayExcel(String pathName, String selectedTable)
         {
             String path = "~/App_Data/";
             var root = Server.MapPath(path);
@@ -78,7 +78,7 @@ namespace EImece.Areas.Admin.Controllers
                 foreach (var item in items)
                 {
                     item.Lang = CurrentLanguage;
-                    ProductCategoryService.SaveOrEditEntity(item);
+                    await ProductCategoryService.SaveOrEditEntityAsync(item);
                 }
             }
             return RedirectToAction("Index");

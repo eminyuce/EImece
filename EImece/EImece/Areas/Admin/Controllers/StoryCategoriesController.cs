@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -19,17 +20,14 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.Contains(search);
-            var categories = StoryCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
+            var categories = await StoryCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(categories);
         }
 
-        //
-        // GET: /StoryCategory/Create
-
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<StoryCategory>();
 
@@ -38,18 +36,15 @@ namespace EImece.Areas.Admin.Controllers
             }
             else
             {
-                content = StoryCategoryService.GetBaseContent(id);
+                content = await StoryCategoryService.GetBaseContentAsync(id, cancellationToken);
             }
 
             return View(content);
         }
 
-        //
-        // POST: /StoryCategory/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(StoryCategory storyCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
+        public async Task<ActionResult> SaveOrEdit(StoryCategory storyCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
             try
             {
@@ -72,10 +67,10 @@ namespace EImece.Areas.Admin.Controllers
                        EImeceImageType.StoryCategoryMainImage,
                        storyCategory);
                     storyCategory.Lang = CurrentLanguage;
-                    StoryCategoryService.SaveOrEditEntity(storyCategory);
+                    await StoryCategoryService.SaveOrEditEntityAsync(storyCategory);
                     int contentId = storyCategory.Id;
 
-                    MenuService.UpdateStoryCategoryMenuLink(contentId, CurrentLanguage);
+                    await MenuService.UpdateStoryCategoryMenuLinkAsync(contentId, CurrentLanguage);
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -94,7 +89,6 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, storyCategory);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             RemoveModelState();
@@ -104,21 +98,21 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            StoryCategory StoryCategory = StoryCategoryService.GetSingle(id);
+            StoryCategory StoryCategory = await StoryCategoryService.GetSingleAsync(id);
             if (StoryCategory == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                StoryCategoryService.DeleteStoryCategoryById(id);
+                await StoryCategoryService.DeleteStoryCategoryByIdAsync(id);
                 SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
@@ -131,7 +125,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

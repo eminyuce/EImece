@@ -6,6 +6,8 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
 {
@@ -30,6 +32,13 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ListItems);
             var item = GetSingleIncluding(id, includeProperties.ToArray());
             return item;
+        }
+
+        public async Task<List> GetListByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ListItems);
+            return await GetSingleIncludingAsync(id, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
         }
 
         public List GetListByName(string name)

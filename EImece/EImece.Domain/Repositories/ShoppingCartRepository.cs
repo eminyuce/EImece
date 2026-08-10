@@ -32,6 +32,18 @@ namespace EImece.Domain.Repositories
             return items.ToList();
         }
 
+        public async Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var items = GetAll().Where(r => r.Lang == currentLanguage);
+            if (!string.IsNullOrEmpty(search))
+            {
+                items = items.Where(r => r.Name.Contains(search));
+            }
+            items = items.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+
+            return await items.ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
         public ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
         {
             return FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();

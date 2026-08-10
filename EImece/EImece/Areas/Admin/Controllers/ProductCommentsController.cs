@@ -3,36 +3,36 @@ using NLog;
 using Resources;
 using System;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
 {
     public class ProductCommentsController : BaseAdminController
     {
-        // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public ActionResult Index(int? id, String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, int? id, String search = "")
         {
             if (!id.HasValue)
             {
-                // Comments are scoped to a product (opened from Products grid); bare URL is not a listing.
                 SetErrorMessage("Ürün yorumları bir ürün kaydı üzerinden açılmalıdır.");
                 return RedirectToAction("Index", "Products");
             }
 
-            var productComments = ProductCommentService.GetAdminPageList(id.Value, search, CurrentLanguage);
-            ViewBag.Product = ProductService.GetSingle(id.Value);
+            var productComments = await ProductCommentService.GetAdminPageListAsync(id.Value, search, CurrentLanguage, cancellationToken);
+            ViewBag.Product = await ProductService.GetSingleAsync(id.Value);
             return View(productComments);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            var productComment = ProductCommentService.GetSingle(id);
+            var productComment = await ProductCommentService.GetSingleAsync(id);
             if (productComment == null)
             {
                 return HttpNotFound();
@@ -40,7 +40,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 var productId = productComment.ProductId;
-                ProductCommentService.DeleteEntity(productComment);
+                await ProductCommentService.DeleteEntityAsync(productComment);
                 SetSuccessMessage();
                 return RedirectToAction("Index", new { id = productId });
             }

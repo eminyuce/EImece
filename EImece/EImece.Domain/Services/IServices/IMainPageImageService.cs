@@ -9,6 +9,8 @@ namespace EImece.Domain.Services.IServices
     {
         void DeleteMainPageImage(int id);
 
+        Task DeleteMainPageImageAsync(int id);
+
         FooterViewModel GetFooterViewModel(int language);
 
         MainPageViewModel GetMainPageViewModel(int language);

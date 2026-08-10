@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -41,6 +42,20 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => MenuRepository.BuildTree(isActive, language),
                 AppConfig.CacheMediumSeconds);
+        }
+
+        public async Task<List<MenuTreeModel>> BuildTreeAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (!IsCachingActivated)
+            {
+                return await MenuRepository.BuildTreeAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+            }
+
+            var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => MenuRepository.BuildTreeAsync(isActive, language, CancellationToken.None),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
@@ -120,6 +135,11 @@ namespace EImece.Domain.Services
             return MenuRepository.GetMenuLeaves(isActive, language);
         }
 
+        public async Task<List<Menu>> GetMenuLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await MenuRepository.GetMenuLeavesAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+        }
+
         public bool DeleteMenu(int menuId)
         {
             var menu = MenuRepository.GetMenuById(menuId);
@@ -147,6 +167,33 @@ namespace EImece.Domain.Services
             return false;
         }
 
+        public async Task<bool> DeleteMenuAsync(int menuId)
+        {
+            var menu = await MenuRepository.GetMenuByIdAsync(menuId).ConfigureAwait(false);
+            var menuTreeNodeList = await GetMenuLeavesAsync(null, menu.Lang).ConfigureAwait(false);
+            var leave = menuTreeNodeList.FirstOrDefault(r => r.Id == menuId);
+            if (leave != null)
+            {
+                if (menu.MainImageId.HasValue)
+                {
+                    await FileStorageService.DeleteFileStorageAsync(menu.MainImageId.Value).ConfigureAwait(false);
+                }
+                if (menu.MenuFiles != null)
+                {
+                    var menuFiles = new List<MenuFile>(menu.MenuFiles);
+                    foreach (var file in menuFiles)
+                    {
+                        await FileStorageService.DeleteUploadImageByFileStorageAsync(menuId, MediaModType.Menus, file.FileStorageId).ConfigureAwait(false);
+                    }
+                    await MenuFileRepository.DeleteByWhereConditionAsync(r => r.MenuId == menuId).ConfigureAwait(false);
+                }
+                await DeleteEntityAsync(menu).ConfigureAwait(false);
+
+                return true;
+            }
+            return false;
+        }
+
         public void DeleteMenus(List<string> values)
         {
             try
@@ -155,6 +202,27 @@ namespace EImece.Domain.Services
                 {
                     var id = v.ToInt();
                     DeleteMenu(id);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                Logger.Error(ex, "DbEntityValidationException:" + message);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+            }
+        }
+
+        public async Task DeleteMenusAsync(List<string> values)
+        {
+            try
+            {
+                foreach (String v in values)
+                {
+                    var id = v.ToInt();
+                    await DeleteMenuAsync(id).ConfigureAwait(false);
                 }
             }
             catch (DbEntityValidationException ex)
@@ -180,6 +248,22 @@ namespace EImece.Domain.Services
                     string m = "stories-categories_" + storyCategory.GetSeoUrl();
                     item.MenuLink = m;
                     MenuService.SaveOrEditEntity(item);
+                }
+            }
+        }
+
+        public async Task UpdateStoryCategoryMenuLinkAsync(int storyCategoryId, int lang)
+        {
+            var items = (await MenuService.GetActiveBaseContentsFromCacheAsync(null, lang).ConfigureAwait(false)).Where(r1 => r1.MenuLink.Contains("stories-categories")).ToList();
+            foreach (var item in items)
+            {
+                var menuLink = item.MenuLink;
+                if (menuLink.GetId() == storyCategoryId)
+                {
+                    var storyCategory = await StoryCategoryService.GetSingleAsync(storyCategoryId).ConfigureAwait(false);
+                    string m = "stories-categories_" + storyCategory.GetSeoUrl();
+                    item.MenuLink = m;
+                    await MenuService.SaveOrEditEntityAsync(item).ConfigureAwait(false);
                 }
             }
         }

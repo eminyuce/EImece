@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -17,15 +18,15 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult Index(String search = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
-            var result = TagService.GetAdminPageList(search, CurrentLanguage);
+            var result = await TagService.GetAdminPageListAsync(search, CurrentLanguage);
             return View(result);
         }
 
-        private List<SelectListItem> GetCategoriesSelectList()
+        private async Task<List<SelectListItem>> GetCategoriesSelectListAsync(CancellationToken cancellationToken)
         {
-            List<TagCategory> tagCategories = TagCategoryService.GetAll().Where(r => r.IsActive && r.Lang == CurrentLanguage).OrderBy(r => r.Position).ToList();
+            List<TagCategory> tagCategories = (await TagCategoryService.GetAllAsync()).Where(r => r.IsActive && r.Lang == CurrentLanguage).OrderBy(r => r.Position).ToList();
             return tagCategories.Select(r => new SelectListItem()
             {
                 Text = r.Name.ToStr(),
@@ -33,30 +34,24 @@ namespace EImece.Areas.Admin.Controllers
             }).ToList();
         }
 
-        //
-        // GET: /Tag/Create
-
-        public ActionResult SaveOrEdit(int id = 0)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseEntityInstance<Tag>();
-            ViewBag.Categories = GetCategoriesSelectList();
+            ViewBag.Categories = await GetCategoriesSelectListAsync(cancellationToken);
             if (id == 0)
             {
             }
             else
             {
-                content = TagService.GetSingle(id);
+                content = await TagService.GetSingleAsync(id);
             }
 
             return View(content);
         }
 
-        //
-        // POST: /Tag/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveOrEdit(Tag tag)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Tag tag)
         {
             try
             {
@@ -68,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     tag.Lang = CurrentLanguage;
-                    TagService.SaveOrEditEntity(tag);
+                    await TagService.SaveOrEditEntityAsync(tag);
                     return RedirectToAction("Index");
                 }
                 else
@@ -79,26 +74,25 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, tag);
-                //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-            ViewBag.Categories = GetCategoriesSelectList();
+            ViewBag.Categories = await GetCategoriesSelectListAsync(cancellationToken);
             return View(tag);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            Tag tag = TagService.GetSingle(id);
+            Tag tag = await TagService.GetSingleAsync(id);
             if (tag == null)
             {
                 return HttpNotFound();
             }
             try
             {
-                TagService.DeleteEntity(tag);
+                await TagService.DeleteEntityAsync(tag);
                 SetSuccessMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }
@@ -111,7 +105,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("ExportExcel")]
-        public async Task<ActionResult> ExportExcelAsync(string format = "excel")
+        public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
             return await DownloadFileAsync(format);
         }

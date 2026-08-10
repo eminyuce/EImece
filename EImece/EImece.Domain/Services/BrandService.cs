@@ -33,6 +33,11 @@ namespace EImece.Domain.Services
             return BrandRepository.DeleteByWhereCondition(r => r.Id == brandId);
         }
 
+        public async Task<bool> DeleteBrandByIdAsync(int brandId)
+        {
+            return await BrandRepository.DeleteByWhereConditionAsync(r => r.Id == brandId).ConfigureAwait(false);
+        }
+
         public Brand GetBrandById(int brandId)
         {
             return BrandRepository.GetSingle(brandId);
