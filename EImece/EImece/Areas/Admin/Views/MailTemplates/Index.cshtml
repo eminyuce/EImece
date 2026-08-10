@@ -6,7 +6,6 @@
 @using EImece.Domain.Entities;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
-@using Resources;
 
 @{
     ViewBag.Title = "Index";
@@ -14,21 +13,12 @@
 
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);  
+    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
 
     var controllerName = "MailTemplates";
-    var title = "MailTemplate";
     var gridName = "MailTemplateGrid";
     var contents = Model;
     var baseList = contents.DownCasting<MailTemplate>();
-
-    var gridImagesText = AdminResource.GridImagesText;
-    var gridEditText = AdminResource.GridEditText;
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var gridDetailText = AdminResource.GridDetailText;
-    var gridMainPageImageText = AdminResource.GridMainPageImageText;
- 
-
 }
 
 <h2>@AdminResource.MailTemplates</h2>
@@ -42,69 +32,61 @@
        ,{"deleteAll",true}
         ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
 
-<div class="panel panel-primary">
+@Html.Partial("Grid/_GridChrome")
+
+<div class="panel panel-primary eg-grid-shell">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
 columns.Add()
 .Encoded(false)
-          .Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+.Sanitized(false)
+.Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
+.RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
 
 columns.Add(o => o.Id, true);
 
 columns.Add()
-               .Encoded(false)
-               .Sanitized(false)
-                .Css("gridButtons")
-               .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId",d.Id}}));
-
-columns.Add()
-                       .Encoded(false)
-                       .Sanitized(false)
-                       .SetWidth(30)
-                       .RenderValueAs(d =>
-@<b>
-    @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white    " })
-</b>);
-
-if (UserRoleHelper.IsDeletedEnableRoles())
-{
-columns.Add()
 .Encoded(false)
 .Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-{ "ItemId", d.Id },
-{"controllerName",controllerName},
-{ "DeleteText", gridDeleteText },
-{ "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
-{ "ItemDescription", d.Name } }));
-
-}
+.Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
+.RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId",d.Id}}));
 
 columns.Add(c => c.Name)
 .Titled(AdminResource.Name)
-.Filterable(true);
+.Filterable(true)
+.Encoded(false)
+.Sanitized(false)
+.Css("eg-col-name")
+.RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
+    { "Name", d.Name },
+    { "ItemId", d.Id.ToString() }
+}));
 
 columns.Add(c => c.Subject)
 .Titled(AdminResource.MailSubject)
 .Filterable(true);
 
 columns.Add(o => o.Position).Titled(AdminResource.Position)
-.Encoded(false).
-Sanitized(false).
-SetWidth(10).
-RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+.Encoded(false)
+.Sanitized(false)
+.Css("smallGridColumn")
+.RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
 .Titled(AdminResource.IsActive)
 .Sortable(true)
-.SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-Sanitized(false)
-.RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-         o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+.Css("smallGridColumn eg-col-status")
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false)
+.Sanitized(false)
+.RenderValueAs(o => Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) {
+    { "ItemId", o.Id },
+    { "IsActive", o.IsActive },
+    { "ShowState", true },
+    { "ShowMainPage", false },
+    { "ShowImageState", false }
+}));
 
 columns.Add(o => o.CreatedDate)
 .Titled(AdminResource.CreatedDate)
@@ -121,20 +103,30 @@ columns.Add(o => o.UpdatedDate)
 .SortInitialDirection(GridSortDirection.Descending);
 
 columns.Add()
-               .Encoded(false)
-               .Sanitized(false)
-               .SetWidth(30)
-               .RenderValueAs(d =>
-        @<b>
-    @if (d.Name != null && d.Name.ToLower().Contains("rss"))
-    {
-        @Html.ActionLink("HTML İndir", "GenerateHtmlBody", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-xs", title = "Şablondan HTML gövde oluştur ve indir" })
-    }
+.Encoded(false)
+.Sanitized(false)
+.RenderValueAs(d =>
+    @<div class="eg-mail-template-actions">
+        @if (d.Name != null && d.Name.ToLower().Contains("rss"))
+        {
+            @Html.ActionLink("HTML İndir", "GenerateHtmlBody", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-xs", title = "Şablondan HTML gövde oluştur ve indir" })
+        }
+        @Html.ActionLink("Yedekle", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-xs", title = "Şablonun bir kopyasını oluştur" })
+    </div>);
 
-    @Html.ActionLink("Yedekle", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-xs", title = "Şablonun bir kopyasını oluştur" })
-</b>);
+columns.Add()
+.Titled("İşlemler")
+.Encoded(false)
+.Sanitized(false)
+.Css("eg-sticky-right eg-col-actions")
+.RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
+    { "ItemId", d.Id },
+    { "ItemName", d.Name },
+    { "controllerName", controllerName },
+    { "ShowMedia", false },
+    { "ShowEdit", true },
+    { "ShowDelete", true }
+}));
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
-
-
