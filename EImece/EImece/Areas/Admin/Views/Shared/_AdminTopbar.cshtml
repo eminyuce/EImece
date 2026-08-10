@@ -37,31 +37,31 @@
     <div class="admin-topbar-right">
         <ul class="admin-topbar-actions">
             @Html.Action("Languages", "Dashboard")
-            <li>
+            <li class="admin-topbar-action--secondary">
                 <a href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })" title="@AdminResource.OurSiteFeatures">
                     <i class="fa fa-book" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.OurSiteFeatures</span>
                 </a>
             </li>
-            <li>
+            <li class="admin-topbar-action--secondary">
                 <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })" title="@AdminResource.Refresh">
                     <i class="fa fa-refresh" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.Refresh</span>
                 </a>
             </li>
-            <li>
+            <li class="admin-topbar-action--secondary">
                 <a href="/" target="_blank" rel="noopener noreferrer" title="@AdminResource.WebSite">
                     <i class="fa fa-globe" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.WebSite</span>
                 </a>
             </li>
-            <li class="admin-topbar-user">
+            <li class="admin-topbar-user admin-topbar-action--essential">
                 <a href="@Url.Action("changepassword", "Users", new { area = "admin" })" title="Manage">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.Hello @userName!</span>
                 </a>
             </li>
-            <li>
+            <li class="admin-topbar-action--essential">
                 <a href="javascript:document.getElementById('logoutForm').submit()" title="@AdminResource.Logout">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.Logout</span>

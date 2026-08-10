@@ -1614,6 +1614,29 @@ label[for^="ImageState"]:not(.control-label) {
     background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
     border-color: #d7dee8;
     padding: 10px 14px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile intent: taller filter toggle for thumb use on product index */
+@media (max-width: 767px) {
+    .product-admin-filters-heading {
+        min-height: 48px;
+        padding: 12px 14px;
+    }
+
+    .product-admin-filter-form [class*="col-"] {
+        width: 100%;
+        float: none;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .product-admin-filter-form .form-control,
+    .product-admin-filter-form select {
+        font-size: 16px;
+        min-height: 44px;
+    }
 }
 
 .product-admin-filters-heading:hover {
