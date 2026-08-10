@@ -17,8 +17,8 @@ namespace EImece.Domain.Factories
             item.IsActive = true;
             item.ImageState = true;
             item.Lang = AppConfig.MainLanguage;
-            item.ImageHeight = SettingService.GetSettingByKey("DefaultImageHeight").ToInt();
-            item.ImageWidth = SettingService.GetSettingByKey("DefaultImageWidth").ToInt();
+            item.ImageHeight = SettingService.GetSettingByKey(Constants.DefaultImageHeight).ToInt();
+            item.ImageWidth = SettingService.GetSettingByKey(Constants.DefaultImageWidth).ToInt();
             return item;
         }
 

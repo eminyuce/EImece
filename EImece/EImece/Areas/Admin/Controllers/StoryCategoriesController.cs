@@ -31,7 +31,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult SaveOrEdit(int id = 0)
         {
-            var content = EntityFactory.GetBaseEntityInstance<StoryCategory>();
+            var content = EntityFactory.GetBaseContentInstance<StoryCategory>();
 
             if (id == 0)
             {
