@@ -7,18 +7,11 @@
 
 @{
     var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
-    int count;
-    if (Model == null)
+    int count = 0;
+    if (Model != null)
     {
-        count = 0;
-    }
-    else if (Model is ICollection collection)
-    {
-        count = collection.Count;
-    }
-    else
-    {
-        count = Model.Cast<object>().Count();
+        var collection = Model as ICollection;
+        count = collection != null ? collection.Count : Model.Cast<object>().Count();
     }
 }
 
