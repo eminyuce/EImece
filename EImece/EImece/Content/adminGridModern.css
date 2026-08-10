@@ -1236,6 +1236,7 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
     margin: 0 0 12px;
 }
 
+.eg-admin-move-link,
 .eg-products-move-link {
     display: inline-flex;
     align-items: center;
@@ -1254,10 +1255,13 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
     transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
+.eg-admin-move-link > i,
 .eg-products-move-link > i {
     color: var(--eg-accent);
 }
 
+.eg-admin-move-link:hover,
+.eg-admin-move-link:focus,
 .eg-products-move-link:hover,
 .eg-products-move-link:focus {
     background: #e8f2fb;

@@ -31,6 +31,7 @@
     var AdminDeleteConfirmMessage = AdminResource.AdminDeleteConfirmMessage;
 
     var hasBulkActions = selectAll || deleteAll || SetStateOnOrOff || orderingButton || ProductState;
+    var currentSearch = Request.QueryString["search"].ToStr();
 }
 
 <div class="panel panel-info admin-grid-ops eg-bulk-bar">
@@ -59,11 +60,11 @@
                 @if (IsExcelButtonEnabled)
                 {
                     <div class="eg-ops-export" role="group" aria-label="@AdminResource.Excel">
-                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel" })" title="@AdminResource.Excel">
+                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch })" title="@AdminResource.Excel">
                             <i class="glyphicon glyphicon-export" aria-hidden="true"></i>
                             <span>@AdminResource.Excel</span>
                         </a>
-                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "csv" })" title="@AdminResource.Csv">
+                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "csv", search = currentSearch })" title="@AdminResource.Csv">
                             <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
                             <span>@AdminResource.Csv</span>
                         </a>

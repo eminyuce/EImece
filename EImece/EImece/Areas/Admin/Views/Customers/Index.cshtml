@@ -22,16 +22,20 @@
     var gridName = "CustomersGrid";
     var contents = Model;
 }
-<h2>@AdminResource.Customers</h2>
+<h2 class="admin-page-title">@AdminResource.Customers</h2>
 <hr class="adminLine" />
 
-<div class="panel panel-info">
-    <div class="row">
-        <span class="col-md-12">
-            @Html.Partial("pSearchForm")
-        </span>
-    </div>
-</div>
+@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+    {"controllerName", controllerName},
+    {"IsNewRecordButtonEnabled", false},
+    {"IsSearchFormEnabled", true},
+    {"IsExcelButtonEnabled", true},
+    {"selectAll", false},
+    {"deleteAll", false},
+    {"SetStateOnOrOff", false},
+    {"orderingButton", false},
+    {"ProductState", false}
+})
 
 @Html.Partial("Grid/_GridChrome")
 

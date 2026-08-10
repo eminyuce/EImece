@@ -44,7 +44,12 @@
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
 
-        @Html.ActionLink(AdminResource.MoveProductMenu, "MoveMenuCategory")
+        <div class="eg-products-toolbar-gap">
+            <a class="eg-admin-move-link eg-products-move-link" href="@Url.Action("MoveMenuCategory")">
+                <i class="glyphicon glyphicon-transfer" aria-hidden="true"></i>
+                <span>@AdminResource.MoveProductMenu</span>
+            </a>
+        </div>
 
         @Html.Partial("Grid/_GridChrome")
 

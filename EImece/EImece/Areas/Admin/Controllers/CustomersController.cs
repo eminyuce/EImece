@@ -42,6 +42,26 @@ namespace EImece.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpGet, ActionName("ExportExcel")]
+        public ActionResult ExportExcel(string format = "excel", string search = "")
+        {
+            var customers = CustomerService.GetCustomerServices(search ?? "");
+            var result = from r in customers
+                         select new
+                         {
+                             r.Name,
+                             r.Surname,
+                             r.Email,
+                             Phone = r.GsmNumber,
+                             r.Gender,
+                             Address = r.RegistrationAddress,
+                             OrderCount = r.Orders != null ? r.Orders.Count : 0,
+                             r.CreatedDate
+                         };
+
+            return DownloadFile(result, string.Format("customers-{0}", GetCurrentLanguage), format);
+        }
+
         public ActionResult CustomerOrders(string id, string search = "")
         {
             var orders = OrderService.GetOrdersUserId(id, search);
