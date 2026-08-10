@@ -9,8 +9,11 @@ Vendor-neutral traces and metrics for EImece. Existing `/health`, `/healthz`, an
 | Server spans | Global `TelemetryActionFilter` (controller.action) |
 | Client spans | `ResilientHttpClient` + OpenTelemetry HttpClient instrumentation |
 | Payment spans | `IyzicoService` authorize / callback |
-| Metrics | `ApplicationMetrics` snapshots **and** OTel counters/histograms |
+| Metrics | `ApplicationMetrics` snapshots (P90/P95/P99) **and** OTel counters/histograms |
+| Method latency | Controllers via filter; Services via `MeasuredServiceProxy` → `eimece.method.duration` |
 | Logs ↔ traces | Serilog + NLog enriched with `CorrelationId`, `TraceId`, `SpanId` |
+
+See also [LATENCY_PERCENTILES.md](./LATENCY_PERCENTILES.md) for P90/P95/P99 details.
 
 ActivitySource / Meter name: **`EImece`**.
 
@@ -59,6 +62,7 @@ Legacy `Microsoft.ApplicationInsights.Web` remains available separately; prefer 
 |-----------|---------|---------|
 | `EnableTracing` | Build TracerProvider + server/client Activities | `true` in non-live |
 | `EnableMetrics` | In-process snapshots + MeterProvider | `true` |
+| `EnableServiceMethodMetrics` | Wrap interface Services with latency proxy | `true` |
 | `OtlpEndpoint` / `OTEL_EXPORTER_OTLP_ENDPOINT` | OTLP collector URL | empty (exporter off) |
 | `SamplingRatio` | Root sample ratio | `1.0` / `0.1` live |
 | `EnableAzureMonitorExporter` | Feature flag for Azure Monitor OTel exporter | `false` |

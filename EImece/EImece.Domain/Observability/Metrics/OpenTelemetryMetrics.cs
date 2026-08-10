@@ -16,6 +16,8 @@ namespace EImece.Domain.Observability.Metrics
         private static Histogram<double> _httpClientDuration;
         private static Counter<long> _dbOperations;
         private static Histogram<double> _dbDuration;
+        private static Counter<long> _methodInvocations;
+        private static Histogram<double> _methodDuration;
         private static ObservableGauge<int> _healthGauge;
         private static int _healthStatusValue = 1; // 1 = up, 0 = down
         private static bool _initialized;
@@ -56,6 +58,16 @@ namespace EImece.Domain.Observability.Metrics
                 "db.client.duration",
                 unit: "ms",
                 description: "Database operation duration");
+
+            _methodInvocations = meter.CreateCounter<long>(
+                "eimece.method.invocations",
+                unit: "{invocation}",
+                description: "Controller/Service method invocation count");
+
+            _methodDuration = meter.CreateHistogram<double>(
+                "eimece.method.duration",
+                unit: "ms",
+                description: "Controller/Service method duration (use backend histogram_quantile for P90/P95/P99)");
 
             _healthGauge = meter.CreateObservableGauge(
                 "eimece.health.status",
@@ -125,6 +137,69 @@ namespace EImece.Domain.Observability.Metrics
 
             _dbOperations.Add(1, tags);
             _dbDuration.Record(durationMs, tags);
+        }
+
+        /// <summary>
+        /// Records Controller/Service method latency. Labels stay low-cardinality
+        /// (layer + type + method name only — never argument values).
+        /// Backends compute P90/P95/P99 from this histogram's buckets.
+        /// </summary>
+        public static void RecordMethodDuration(string layer, string typeName, string methodName, double durationMs, bool success)
+        {
+            if (!_initialized)
+            {
+                return;
+            }
+
+            var tags = new TagList
+            {
+                { "eimece.layer", string.IsNullOrWhiteSpace(layer) ? "unknown" : layer },
+                { "eimece.type", NormalizeTypeName(typeName) },
+                { "eimece.method", NormalizeMethodName(methodName) },
+                { "eimece.success", success ? "true" : "false" }
+            };
+
+            _methodInvocations.Add(1, tags);
+            _methodDuration.Record(durationMs, tags);
+        }
+
+        public static string NormalizeTypeName(string typeName)
+        {
+            if (string.IsNullOrWhiteSpace(typeName))
+            {
+                return "Unknown";
+            }
+
+            var value = typeName.Trim();
+            // Strip generic arity markers: IList`1 → IList
+            var tick = value.IndexOf('`');
+            if (tick > 0)
+            {
+                value = value.Substring(0, tick);
+            }
+
+            if (value.Length > 80)
+            {
+                value = value.Substring(0, 80);
+            }
+
+            return value;
+        }
+
+        public static string NormalizeMethodName(string methodName)
+        {
+            if (string.IsNullOrWhiteSpace(methodName))
+            {
+                return "Unknown";
+            }
+
+            var value = methodName.Trim();
+            if (value.Length > 80)
+            {
+                value = value.Substring(0, 80);
+            }
+
+            return value;
         }
 
         public static string NormalizeMethod(string method)

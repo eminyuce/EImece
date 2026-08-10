@@ -27,7 +27,8 @@
     <ul style="margin-bottom: 0; padding-left: 18px;">
         <li>Veriler <strong>bellekte</strong> tutulur; uygulama yeniden başlayınca sıfırlanır.</li>
         <li>İş raporları (satış, sipariş vb.) için <em>Raporlar</em> menüsünü kullanın.</li>
-        <li>Yavaş veya hatalı controller aksiyonlarını bulmak için Ort. / P95 sürelerine bakın.</li>
+        <li>Yavaş veya hatalı controller / service metotlarını bulmak için <strong>P90 / P95 / P99</strong> sürelerine bakın (ortalama yanıltıcı olabilir).</li>
+        <li>Yüzdelikler son ~2048 örnek üzerinden hesaplanır; <em>Adet</em> ömür boyu çağrı sayısıdır.</li>
     </ul>
 </div>
 
@@ -102,8 +103,18 @@ columns.Add(m => m.AverageDurationMs)
 .Sortable(true)
 .Filterable(false);
 
+columns.Add(m => m.P90DurationMs)
+.Titled("P90 (ms)")
+.Sortable(true)
+.Filterable(false);
+
 columns.Add(m => m.P95DurationMs)
-.Titled("P95 süre (ms)")
+.Titled("P95 (ms)")
+.Sortable(true)
+.Filterable(false);
+
+columns.Add(m => m.P99DurationMs)
+.Titled("P99 (ms)")
 .Sortable(true)
 .Filterable(false);
 
@@ -116,6 +127,8 @@ columns.Add(m => m.P95DurationMs)
     <h4 style="margin-top: 0;">Metrik adı formatı</h4>
     <ul style="margin-bottom: 0;">
         <li><code>request:Controller.Action</code> — sayfa / MVC aksiyon süreleri</li>
+        <li><code>controller:Controller.Action</code> — aynı aksiyonlar (P90/P95/P99 katmanı)</li>
+        <li><code>service:IService.Method</code> — servis metot süreleri (otomatik proxy)</li>
         <li><code>http:METHOD:STATUS</code> — dış HTTP çağrıları (örn. <code>http:GET:200</code>)</li>
         <li><code>db:...</code> — veritabanı sorgu süreleri</li>
     </ul>

@@ -34,8 +34,11 @@ namespace EImece.Areas.Admin.Controllers
                     Name = x.Key,
                     Count = x.Value.Count,
                     ErrorCount = x.Value.ErrorCount,
+                    SampleWindowSize = x.Value.SampleWindowSize,
                     AverageDurationMs = Math.Round(x.Value.AverageDurationMs, 2),
-                    P95DurationMs = x.Value.P95DurationMs
+                    P90DurationMs = x.Value.P90DurationMs,
+                    P95DurationMs = x.Value.P95DurationMs,
+                    P99DurationMs = x.Value.P99DurationMs
                 })
                 .ToList();
 

@@ -19,6 +19,12 @@ namespace EImece.Domain.Observability.Configuration
         public bool EnableMetrics { get; set; } = true;
 
         /// <summary>
+        /// When true (and <see cref="EnableMetrics"/> is true), wraps interface-based
+        /// Services with <c>MeasuredServiceProxy</c> so every public method records latency.
+        /// </summary>
+        public bool EnableServiceMethodMetrics { get; set; } = true;
+
+        /// <summary>
         /// When true, builds TracerProvider and records server/client Activities.
         /// Exporters remain off until <see cref="OtlpEndpoint"/> or Azure Monitor is configured.
         /// </summary>
@@ -90,6 +96,7 @@ namespace EImece.Domain.Observability.Configuration
                 HttpCircuitBreakerDurationSeconds = AppConfig.GetConfigInt("HttpClientCircuitBreakerDurationSeconds", 30),
                 EnableRequestLogging = AppConfig.GetConfigBool("EnableRequestLogging", true),
                 EnableMetrics = AppConfig.GetConfigBool("EnableMetrics", true),
+                EnableServiceMethodMetrics = AppConfig.GetConfigBool("EnableServiceMethodMetrics", true),
                 EnableTracing = AppConfig.GetConfigBool("EnableTracing", AppConfig.IsSiteUnderDevelopment),
                 OtlpEndpoint = ResolveOtlpEndpoint(),
                 SamplingRatio = ClampRatio(GetConfigDouble("SamplingRatio", defaultSampling)),
