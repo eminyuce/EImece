@@ -168,14 +168,30 @@
     opacity: 0.55;
 }
 
-@media (max-width: 480px) {
+/* Mobile intent: nearly full-width confirm dialog with safe-area + 44px actions */
+@media (max-width: 767px) {
     .modal-confirm {
         width: auto;
-        margin: 16px;
+        max-width: calc(100vw - 24px);
+        margin: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(12px + env(safe-area-inset-bottom, 0px));
     }
 
     .modal-confirm .modal-content {
         padding: 24px 16px 16px;
+        max-height: calc(100dvh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-confirm .modal-header .close {
+        top: -4px;
+        right: -4px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        line-height: 44px;
+        font-size: 28px;
     }
 
     .modal-confirm .modal-footer .btn {
@@ -183,5 +199,7 @@
         width: 100%;
         margin: 0 0 8px;
         min-width: 0;
+        min-height: 44px;
+        font-size: 15px;
     }
 }

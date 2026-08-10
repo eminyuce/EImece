@@ -889,19 +889,62 @@ function setPreSelectedTreeNode(preSelectedNode) {
         safeSet(STORAGE_GROUPS, JSON.stringify(state || {}));
     }
 
+    var mobileScrollLockY = 0;
+
+    function lockBodyScroll() {
+        var body = document.body;
+        if (!body) {
+            return;
+        }
+        mobileScrollLockY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        body.style.position = "fixed";
+        body.style.top = "-" + mobileScrollLockY + "px";
+        body.style.left = "0";
+        body.style.right = "0";
+        body.style.width = "100%";
+    }
+
+    function unlockBodyScroll() {
+        var body = document.body;
+        if (!body) {
+            return;
+        }
+        var y = mobileScrollLockY || 0;
+        body.style.position = "";
+        body.style.top = "";
+        body.style.left = "";
+        body.style.right = "";
+        body.style.width = "";
+        if (y) {
+            window.scrollTo(0, y);
+        }
+        mobileScrollLockY = 0;
+    }
+
     function setMobileDrawerOpen(isOpen) {
         var body = document.body;
         if (!body || !body.classList.contains("admin-app")) {
             return;
         }
+        var wasOpen = body.classList.contains("sidebar-open");
         if (isOpen) {
             body.classList.add("sidebar-open");
+            if (!wasOpen && !isDesktop()) {
+                lockBodyScroll();
+            }
         } else {
             body.classList.remove("sidebar-open");
+            if (wasOpen) {
+                unlockBodyScroll();
+            }
         }
         var overlay = document.getElementById("adminSidebarOverlay");
         if (overlay) {
             overlay.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        }
+        var sidebar = document.getElementById("adminSidebar");
+        if (sidebar) {
+            sidebar.setAttribute("aria-hidden", isOpen || isDesktop() ? "false" : "true");
         }
         syncToggleAria();
     }
@@ -1070,7 +1113,7 @@ function setPreSelectedTreeNode(preSelectedNode) {
             });
         }
 
-        var sidebarLinks = document.querySelectorAll("#adminSidebar a.admin-nav-item");
+        var sidebarLinks = document.querySelectorAll("#adminSidebar a.admin-nav-item, #adminSidebar .admin-sidebar-brand a");
         for (var i = 0; i < sidebarLinks.length; i++) {
             sidebarLinks[i].addEventListener("click", function () {
                 if (!isDesktop()) {
@@ -1079,14 +1122,39 @@ function setPreSelectedTreeNode(preSelectedNode) {
             });
         }
 
+        document.addEventListener("keydown", function (e) {
+            if ((e.key === "Escape" || e.keyCode === 27)
+                && !isDesktop()
+                && body.classList.contains("sidebar-open")) {
+                setMobileDrawerOpen(false);
+            }
+        });
+
+        // Start closed on phones; announce drawer state for assistive tech
+        if (!isDesktop()) {
+            setMobileDrawerOpen(false);
+            if (sidebar) {
+                sidebar.setAttribute("aria-hidden", "true");
+            }
+        }
+
         window.addEventListener("resize", function () {
             if (isDesktop()) {
                 setMobileDrawerOpen(false);
                 setSidebarCollapsed(safeGet(STORAGE_COLLAPSED) === "1");
+                if (sidebar) {
+                    sidebar.setAttribute("aria-hidden", "false");
+                }
             } else {
                 body.classList.remove("sidebar-collapsed");
                 if (sidebar) {
                     sidebar.setAttribute("data-collapsed", "false");
+                }
+                if (!body.classList.contains("sidebar-open")) {
+                    unlockBodyScroll();
+                    if (sidebar) {
+                        sidebar.setAttribute("aria-hidden", "true");
+                    }
                 }
                 syncToggleAria();
             }
