@@ -821,6 +821,73 @@ namespace EImece.Domain.Helpers
             return new Tuple<string, string>("", "");
         }
 
+        /// <summary>
+        /// Physical path for the prebuilt upload thumbnail (media/images/thumbs/thb{fileName}).
+        /// </summary>
+        public static string GetThumbnailPhysicalPath(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName) || fileName.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            var safeName = Path.GetFileName(fileName);
+            if (string.IsNullOrEmpty(safeName))
+            {
+                return null;
+            }
+
+            return Path.Combine(AppConfig.StorageRoot, THUMBS, THB + safeName);
+        }
+
+        public static bool ThumbnailFileExists(string fileName)
+        {
+            var path = GetThumbnailPhysicalPath(fileName);
+            return !string.IsNullOrEmpty(path) && File.Exists(path);
+        }
+
+        /// <summary>
+        /// Public URL for the prebuilt thumbnail, e.g. /media/images/thumbs/thbfoo.jpg
+        /// </summary>
+        public static string GetThumbnailPublicUrl(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName) || fileName.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            var safeName = Path.GetFileName(fileName);
+            if (string.IsNullOrEmpty(safeName))
+            {
+                return null;
+            }
+
+            return MEDIA_FILE_LOCATION_THUMBS + THB + safeName;
+        }
+
+        /// <summary>
+        /// True when the requested display size can be served by downscaling the prebuilt thumb
+        /// (or when stored thumb dims are unknown but the request is modest).
+        /// </summary>
+        public static bool CanServeRequestFromThumbnail(int requestWidth, int requestHeight, int thumbWidth, int thumbHeight)
+        {
+            if (requestWidth <= 0 && requestHeight <= 0)
+            {
+                return false;
+            }
+
+            if (thumbWidth > 0 && thumbHeight > 0)
+            {
+                bool widthOk = requestWidth <= 0 || requestWidth <= thumbWidth;
+                bool heightOk = requestHeight <= 0 || requestHeight <= thumbHeight;
+                return widthOk && heightOk;
+            }
+
+            // Unknown thumb metadata: only use thumb for small UI slots.
+            const int unknownThumbMaxSide = 400;
+            return Math.Max(requestWidth, requestHeight) <= unknownThumbMaxSide;
+        }
+
         public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
         {
             byte[] imageBytes = null;

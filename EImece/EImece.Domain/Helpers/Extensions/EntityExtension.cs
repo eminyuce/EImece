@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -430,8 +431,8 @@ namespace EImece.Domain.Helpers.Extensions
         {
             if (entity != null && fileStorageId > 0)
             {
-                // When explicit dimensions are requested, always use the resize proxy so clients
-                // never download full-resolution originals for small display slots (Lighthouse image delivery).
+                // When explicit dimensions are requested, prefer resize proxy (or static thumb below)
+                // so clients never download full-resolution originals for small display slots.
                 bool preferResizedProxy = width > 0 || height > 0;
                 bool isImageFullSrcUnderMediaFolder = AppConfig.IsImageFullSrcUnderMediaFolder && !preferResizedProxy;
                 if (isImageFullSrcUnderMediaFolder && entity is BaseContent)
@@ -460,6 +461,17 @@ namespace EImece.Domain.Helpers.Extensions
                 }
                 else
                 {
+                    // Prefer prebuilt thumb when it exists and can cover the requested display size.
+                    // Layout can still show it at 100x100 via width/height/CSS; browser downscales.
+                    if (preferResizedProxy)
+                    {
+                        var staticThumbUrl = TryGetStaticThumbnailUrl(entity, fileStorageId, width, height, isFullPathImageUrl);
+                        if (!string.IsNullOrEmpty(staticThumbUrl))
+                        {
+                            return staticThumbUrl;
+                        }
+                    }
+
                     var imageSize = $"w{width}h{height}";
                     var imageId = entity.GetImageSeoUrl(fileStorageId);
                     if (HttpContext.Current == null)
@@ -489,6 +501,90 @@ namespace EImece.Domain.Helpers.Extensions
                 }
             }
             return AppConfig.GetDefaultImage(width, height);
+        }
+
+        /// <summary>
+        /// Returns a static /media/images/thumbs/thb… URL when the thumb file exists and is large enough
+        /// for the requested display size; otherwise null (caller uses ImagesController resize proxy).
+        /// </summary>
+        private static string TryGetStaticThumbnailUrl(BaseEntity entity, int fileStorageId, int width, int height, bool isFullPathImageUrl)
+        {
+            try
+            {
+                var fileStorage = ResolveFileStorageForImageUrl(entity, fileStorageId);
+                if (fileStorage == null || string.IsNullOrWhiteSpace(fileStorage.FileName))
+                {
+                    return null;
+                }
+
+                if (!FilesHelper.CanServeRequestFromThumbnail(width, height, fileStorage.Width, fileStorage.Height))
+                {
+                    return null;
+                }
+
+                if (!FilesHelper.ThumbnailFileExists(fileStorage.FileName))
+                {
+                    return null;
+                }
+
+                var relative = FilesHelper.GetThumbnailPublicUrl(fileStorage.FileName);
+                if (string.IsNullOrEmpty(relative))
+                {
+                    return null;
+                }
+
+                if (!isFullPathImageUrl)
+                {
+                    return relative;
+                }
+
+                var baseUrl = GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocolForImages);
+                if (string.IsNullOrEmpty(baseUrl))
+                {
+                    return relative;
+                }
+
+                return baseUrl.TrimEnd('/') + relative;
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "TryGetStaticThumbnailUrl fallback to resize proxy for fileStorageId={0}", fileStorageId);
+                return null;
+            }
+        }
+
+        private static FileStorage ResolveFileStorageForImageUrl(BaseEntity entity, int fileStorageId)
+        {
+            if (entity is FileStorage asFileStorage && asFileStorage.Id == fileStorageId)
+            {
+                return asFileStorage;
+            }
+
+            if (entity is BaseContent asContent
+                && asContent.MainImage != null
+                && asContent.MainImageId.GetValueOrDefault() == fileStorageId)
+            {
+                return asContent.MainImage;
+            }
+
+            if (entity is ProductFile asProductFile
+                && asProductFile.FileStorage != null
+                && asProductFile.FileStorage.Id == fileStorageId)
+            {
+                return asProductFile.FileStorage;
+            }
+
+            if (entity is StoryFile asStoryFile
+                && asStoryFile.FileStorage != null
+                && asStoryFile.FileStorage.Id == fileStorageId)
+            {
+                return asStoryFile.FileStorage;
+            }
+
+            var fileStorageService = DependencyResolver.Current != null
+                ? DependencyResolver.Current.GetService<IFileStorageService>()
+                : null;
+            return fileStorageService != null ? fileStorageService.GetFileStorage(fileStorageId) : null;
         }
 
         private static string GetImagePathOrDefaultImage(int width, int height, string imagePath)
