@@ -145,6 +145,7 @@ See [EImece/RECAPTCHA.md](EImece/RECAPTCHA.md) to switch between Legacy captcha 
 
 | Doc | Contents |
 |-----|----------|
+| [DEPLOYMENT.md](DEPLOYMENT.md) | Production CI/CD (Windows MSBuild, FTPS, secrets, rollback) |
 | [BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md) | Build, run, health checks, tests, common errors |
 | [SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md) | Env vars, `configSource`, TLS, production |
 | [OPENTELEMETRY.md](EImece/docs/OPENTELEMETRY.md) | OTLP, sampling, Azure Monitor exporter |
