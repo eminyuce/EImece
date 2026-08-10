@@ -386,6 +386,8 @@ namespace EImece.App_Start
         /// Shares the concrete scoped/singleton instance for the interface registration.
         /// When the concrete is mid-construction (circular [Inject] graph), returns that
         /// in-flight instance instead of re-entering MS.DI's scope cache.
+        /// After construction, interface resolutions are wrapped with <see cref="MeasuredServiceProxy"/>
+        /// when service-method metrics are enabled.
         /// </summary>
         private static TService ResolveImplementationOrUnderConstruction<TService, TImplementation>(IServiceProvider sp)
             where TService : class
@@ -395,10 +397,57 @@ namespace EImece.App_Start
                 ?? PropertyInjector.TryGetUnderConstruction(typeof(TService));
             if (underConstruction is TService typed)
             {
+                // During circular [Inject] graphs, return the bare instance (not a proxy).
                 return typed;
             }
 
-            return sp.GetRequiredService<TImplementation>();
+            var implementation = sp.GetRequiredService<TImplementation>();
+            return MaybeWrapWithMetricsProxy<TService>(implementation, sp);
+        }
+
+        private static TService MaybeWrapWithMetricsProxy<TService>(TService implementation, IServiceProvider sp)
+            where TService : class
+        {
+            if (implementation == null || !ShouldMeasureAsService(typeof(TService)))
+            {
+                return implementation;
+            }
+
+            var options = sp.GetService<ObservabilityOptions>();
+            if (options == null || !options.EnableMetrics || !options.EnableServiceMethodMetrics)
+            {
+                return implementation;
+            }
+
+            var metrics = sp.GetService<IApplicationMetrics>();
+            if (metrics == null)
+            {
+                return implementation;
+            }
+
+            return MeasuredServiceProxy.Create(implementation, metrics);
+        }
+
+        /// <summary>
+        /// Only interface-based application Services are proxied — not repositories, factories, or caches.
+        /// </summary>
+        private static bool ShouldMeasureAsService(Type serviceType)
+        {
+            if (serviceType == null || !serviceType.IsInterface)
+            {
+                return false;
+            }
+
+            var ns = serviceType.Namespace ?? string.Empty;
+            if (ns.IndexOf(".Services.IServices", StringComparison.Ordinal) >= 0)
+            {
+                return true;
+            }
+
+            // Catch helpers registered as *Service (e.g. IImageDownloadService) without pulling in repositories.
+            var name = serviceType.Name;
+            return name.EndsWith("Service", StringComparison.Ordinal)
+                && name.IndexOf("Repository", StringComparison.OrdinalIgnoreCase) < 0;
         }
     }
 }

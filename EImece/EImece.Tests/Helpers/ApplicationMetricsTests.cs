@@ -1,5 +1,7 @@
 using EImece.Domain.Observability.Metrics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Threading.Tasks;
 
 namespace EImece.Tests.Helpers
 {
@@ -46,6 +48,113 @@ namespace EImece.Tests.Helpers
             var snapshot = metrics.GetSnapshots()["db:SELECT"];
             Assert.AreEqual(1, snapshot.Count);
             Assert.AreEqual(1, snapshot.ErrorCount);
+        }
+
+        [TestMethod]
+        public void RecordMethod_ComputesP90P95P99()
+        {
+            var metrics = new ApplicationMetrics(sampleCapacity: 256);
+
+            // 100 samples: 1..100 ms → P90≈90, P95≈95, P99≈99 (nearest-rank)
+            for (var i = 1; i <= 100; i++)
+            {
+                metrics.RecordMethod("service", "IProductService", "GetSingle", i, true);
+            }
+
+            var snapshot = metrics.GetSnapshots()["service:IProductService.GetSingle"];
+            Assert.AreEqual(100, snapshot.Count);
+            Assert.AreEqual(90, snapshot.P90DurationMs);
+            Assert.AreEqual(95, snapshot.P95DurationMs);
+            Assert.AreEqual(99, snapshot.P99DurationMs);
+            Assert.AreEqual(50.5d, snapshot.AverageDurationMs, 0.01d);
+        }
+
+        [TestMethod]
+        public void LatencyPercentiles_NearestRank_EmptyAndEdges()
+        {
+            Assert.AreEqual(0, LatencyPercentiles.NearestRank(new long[0], 0.95));
+            Assert.AreEqual(5, LatencyPercentiles.NearestRank(new long[] { 5 }, 0.99));
+            Assert.AreEqual(1, LatencyPercentiles.NearestRank(new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 0.10));
+            Assert.AreEqual(10, LatencyPercentiles.NearestRank(new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 1.0));
+        }
+
+        [TestMethod]
+        public void RingBuffer_CapsSampleWindowButKeepsLifetimeCount()
+        {
+            var metrics = new ApplicationMetrics(sampleCapacity: 32);
+            for (var i = 0; i < 100; i++)
+            {
+                metrics.RecordMethod("controller", "Home", "Index", i, true);
+            }
+
+            var snapshot = metrics.GetSnapshots()["controller:Home.Index"];
+            Assert.AreEqual(100, snapshot.Count);
+            Assert.AreEqual(32, snapshot.SampleWindowSize);
+            // Window holds the most recent 32 samples (68..99) → P99 near the top of that window
+            Assert.IsTrue(snapshot.P99DurationMs >= 90);
+        }
+
+        [TestMethod]
+        public void MeasuredServiceProxy_RecordsSyncAndAsyncDurations()
+        {
+            var metrics = new ApplicationMetrics();
+            IProbeService probe = new ProbeService();
+            var proxied = MeasuredServiceProxy.Create(probe, metrics);
+
+            Assert.AreEqual(42, proxied.Add(40, 2));
+            Assert.AreEqual(7, proxied.AddAsync(3, 4).GetAwaiter().GetResult());
+
+            try
+            {
+                proxied.Fail();
+                Assert.Fail("Expected exception");
+            }
+            catch (InvalidOperationException)
+            {
+                // expected
+            }
+
+            var snapshots = metrics.GetSnapshots();
+            Assert.IsTrue(snapshots.ContainsKey("service:IProbeService.Add"));
+            Assert.IsTrue(snapshots.ContainsKey("service:IProbeService.AddAsync"));
+            Assert.IsTrue(snapshots.ContainsKey("service:IProbeService.Fail"));
+            Assert.AreEqual(1, snapshots["service:IProbeService.Fail"].ErrorCount);
+            Assert.AreEqual(0, snapshots["service:IProbeService.Add"].ErrorCount);
+        }
+
+        [TestMethod]
+        public void MeasuredServiceProxy_DoesNotWrapNullMetrics()
+        {
+            IProbeService probe = new ProbeService();
+            var same = MeasuredServiceProxy.Create(probe, null);
+            Assert.AreSame(probe, same);
+        }
+
+        public interface IProbeService
+        {
+            int Add(int a, int b);
+
+            Task<int> AddAsync(int a, int b);
+
+            void Fail();
+        }
+
+        private sealed class ProbeService : IProbeService
+        {
+            public int Add(int a, int b)
+            {
+                return a + b;
+            }
+
+            public Task<int> AddAsync(int a, int b)
+            {
+                return Task.FromResult(a + b);
+            }
+
+            public void Fail()
+            {
+                throw new InvalidOperationException("boom");
+            }
         }
     }
 }

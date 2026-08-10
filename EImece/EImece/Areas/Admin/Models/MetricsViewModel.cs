@@ -8,8 +8,11 @@ namespace EImece.Areas.Admin.Models
         public string Name { get; set; }
         public long Count { get; set; }
         public long ErrorCount { get; set; }
+        public int SampleWindowSize { get; set; }
         public double AverageDurationMs { get; set; }
+        public long P90DurationMs { get; set; }
         public long P95DurationMs { get; set; }
+        public long P99DurationMs { get; set; }
     }
 
     public class MetricsIndexViewModel

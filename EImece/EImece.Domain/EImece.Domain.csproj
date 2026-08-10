@@ -425,6 +425,7 @@
     <Compile Include="Observability\Logging\SensitiveDataMasker.cs" />
     <Compile Include="Observability\Logging\StructuredLoggingBootstrap.cs" />
     <Compile Include="Observability\Metrics\ApplicationMetrics.cs" />
+    <Compile Include="Observability\Metrics\MeasuredServiceProxy.cs" />
     <Compile Include="Observability\Metrics\OpenTelemetryMetrics.cs" />
     <Compile Include="Observability\OpenTelemetryBootstrap.cs" />
     <Compile Include="Observability\Telemetry\ActivityTags.cs" />
