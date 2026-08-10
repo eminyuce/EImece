@@ -14,6 +14,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
@@ -74,19 +75,19 @@ namespace EImece.Domain.Services
             return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang, filter);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int lang)
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductRepository.GetAdminPageListAsync(categoryId, search, lang).ConfigureAwait(false);
+            return await ProductRepository.GetAdminPageListAsync(categoryId, search, lang, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang)
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang).ConfigureAwait(false);
+            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang, ProductAdminListFilter filter)
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang, ProductAdminListFilter filter, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang, filter).ConfigureAwait(false);
+            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang, filter, cancellationToken).ConfigureAwait(false);
         }
 
         public string UpdatePrices(UpdatePriceRequest request)
@@ -164,6 +165,11 @@ namespace EImece.Domain.Services
         public void SaveProductTags(int id, int[] tags)
         {
             ProductTagRepository.SaveProductTags(id, tags);
+        }
+
+        public async Task SaveProductTagsAsync(int id, int[] tags)
+        {
+            await ProductTagRepository.SaveProductTagsAsync(id, tags).ConfigureAwait(false);
         }
 
         public List<ProductTag> GetProductTagsByProductId(int productId)
@@ -421,6 +427,50 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task<ProductDeleteResult> DeleteProductByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var isAnyProductSold = await OrderProductRepository.FindBy(r => r.ProductId == id).AnyAsync(cancellationToken).ConfigureAwait(false);
+            if (isAnyProductSold)
+            {
+                ProductServiceLogger.Info("Product cannot be deleted because it has order history. ProductId: " + id);
+                return ProductDeleteResult.BlockedByOrders;
+            }
+
+            try
+            {
+                var product = await ProductRepository.GetProductAsync(id, cancellationToken).ConfigureAwait(false);
+                if (product == null)
+                {
+                    return ProductDeleteResult.Failed;
+                }
+
+                await ProductCommentRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+                await ProductSpecificationRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+                await ProductTagRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+                if (product.MainImageId.HasValue)
+                {
+                    await FileStorageService.DeleteFileStorageAsync(product.MainImageId.Value).ConfigureAwait(false);
+                }
+                if (product.ProductFiles != null)
+                {
+                    var menuFiles = new List<ProductFile>(product.ProductFiles);
+                    foreach (var file in menuFiles)
+                    {
+                        await FileStorageService.DeleteUploadImageByFileStorageAsync(id, MediaModType.Products, file.FileStorageId).ConfigureAwait(false);
+                    }
+                    await ProductFileRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+                }
+                await DeleteEntityAsync(product).ConfigureAwait(false);
+                InvalidateProductListCaches();
+                return ProductDeleteResult.Deleted;
+            }
+            catch (Exception e)
+            {
+                ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
+                return ProductDeleteResult.Failed;
+            }
+        }
+
         public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             // Absolute + short TTL: search cardinality is high; keep entries brief and invalidate
@@ -496,6 +546,23 @@ namespace EImece.Domain.Services
                 }
 
                 ProductSpecificationRepository.Save();
+            }
+        }
+
+        public async Task SaveProductSpecificationsAsync(List<ProductSpecification> specifications, int productId)
+        {
+            if (specifications.IsNotEmpty())
+            {
+                await ProductSpecificationRepository.DeleteByWhereConditionAsync(r => r.ProductId == productId).ConfigureAwait(false);
+                foreach (var item in specifications)
+                {
+                    if (!string.IsNullOrEmpty(item.Value))
+                    {
+                        ProductSpecificationRepository.Add(item);
+                    }
+                }
+
+                await ProductSpecificationRepository.SaveAsync().ConfigureAwait(false);
             }
         }
 
@@ -674,6 +741,52 @@ namespace EImece.Domain.Services
             SaveProductSpecifications(Specifications, productId);
         }
 
+        public async Task ParseTemplateAndSaveProductSpecificationsAsync(int productId, int templateId, int currentLanguage, HttpRequestBase request, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var template = await TemplateService.GetTemplateAsync(templateId, cancellationToken).ConfigureAwait(false);
+            XDocument xdoc = XDocument.Parse(template.TemplateXml);
+            var groups = xdoc.Root.Descendants("group");
+            var Specifications = new List<ProductSpecification>();
+
+            foreach (var group in groups)
+            {
+                var groupName = group.FirstAttribute.Value;
+                int position = 1;
+                foreach (XElement field in group.Elements())
+                {
+                    var p = new ProductSpecification();
+                    p.GroupName = groupName;
+                    p.ProductId = productId;
+                    p.CreatedDate = DateTime.Now;
+                    p.UpdatedDate = DateTime.Now;
+                    p.Position = position++;
+                    p.IsActive = true;
+                    p.Lang = currentLanguage;
+                    var name = field.Attribute("name");
+                    var unit = field.Attribute("unit");
+                    var values = field.Attribute("values");
+
+                    var value = request.Unvalidated.Form.Get(name.Value);
+
+                    //   var value = request.Form[name.Value];
+
+                    if (name != null)
+                    {
+                        p.Name = name.Value;
+                    }
+                    if (unit != null)
+                    {
+                        p.Unit = unit.Value;
+                    }
+
+                    p.Value = value;
+                    Specifications.Add(p);
+                }
+            }
+
+            await SaveProductSpecificationsAsync(Specifications, productId).ConfigureAwait(false);
+        }
+
         public void MoveProductsInTrees(int newCategoryId, String products)
         {
             if (!String.IsNullOrEmpty(products))
@@ -686,6 +799,21 @@ namespace EImece.Domain.Services
                     ProductRepository.Edit(product);
                 }
                 ProductRepository.Save();
+            }
+        }
+
+        public async Task MoveProductsInTreesAsync(int newCategoryId, String products, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (!String.IsNullOrEmpty(products))
+            {
+                var productIdList = products.Split(',');
+                foreach (var id in productIdList)
+                {
+                    var product = await ProductRepository.GetProductAsync(id.ToInt(), cancellationToken).ConfigureAwait(false);
+                    product.ProductCategoryId = newCategoryId;
+                    ProductRepository.Edit(product);
+                }
+                await ProductRepository.SaveAsync().ConfigureAwait(false);
             }
         }
 

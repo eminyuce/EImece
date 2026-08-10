@@ -6,7 +6,9 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
@@ -40,6 +42,21 @@ namespace EImece.Domain.Services
             }
 
             var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            if (user == null)
+            {
+                Logger.Debug("User is null for userId " + id);
+            }
+            return user;
+        }
+
+        public async Task<ApplicationUser> GetUserAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("userId should have value");
+            }
+
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -94,6 +111,16 @@ namespace EImece.Domain.Services
             {
                 ApplicationDbContext.Users.Remove(user);
                 ApplicationDbContext.SaveChanges();
+            }
+        }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            var user = await GetUserAsync(id).ConfigureAwait(false);
+            if (user != null)
+            {
+                ApplicationDbContext.Users.Remove(user);
+                await ApplicationDbContext.SaveChangesAsync().ConfigureAwait(false);
             }
         }
     }

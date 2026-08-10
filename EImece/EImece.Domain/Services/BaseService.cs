@@ -87,6 +87,12 @@ namespace EImece.Domain.Services
             return result == 1;
         }
 
+        public virtual async Task<bool> DeleteEntityAsync(T entity)
+        {
+            var result = await this.baseRepository.DeleteItemAsync(entity).ConfigureAwait(false);
+            return result == 1;
+        }
+
         public virtual bool DeleteById(int id)
         {
             return this.baseRepository.DeleteByWhereCondition(r => r.Id == id);

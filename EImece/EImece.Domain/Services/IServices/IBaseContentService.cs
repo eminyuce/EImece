@@ -21,6 +21,8 @@ namespace EImece.Domain.Services.IServices
 
         T GetBaseContent(int id);
 
+        Task<T> GetBaseContentAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
         List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language);
 
         Task<List<T>> SearchEntitiesAsync(Expression<Func<T, bool>> whereLambda, String search, int language);

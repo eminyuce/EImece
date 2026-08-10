@@ -231,6 +231,22 @@ namespace EImece.Domain.Repositories
             return result;
         }
 
+        public async Task<List<ProductCategory>> GetProductCategoryLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var productCategories = await GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+            var result = new List<ProductCategory>();
+
+            foreach (var m in productCategories)
+            {
+                if (!productCategories.Any(r => r.ParentId == m.Id))
+                {
+                    result.Add(m);
+                }
+            }
+
+            return result;
+        }
+
         public List<ProductCategory> GetMainPageProductCategories(int language)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -269,6 +285,26 @@ namespace EImece.Domain.Repositories
                 r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
             return result.ToList();
+        }
+
+        public async Task<List<ProductCategory>> GetAdminProductCategoriesAsync(string search, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.Template);
+            includeProperties.Add(r => r.Products);
+            Expression<Func<ProductCategory, bool>> match = r =>
+             r.Lang == language;
+            search = search.ToStr().Trim();
+            if (!String.IsNullOrEmpty(search))
+            {
+                Expression<Func<ProductCategory, bool>> match2 = r => r.Name.Contains(search);
+                match = match.And(match2);
+            }
+            var result = FindAllIncluding(match,
+                r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+
+            return await result.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public List<ProductCategory> GetProductCategoriesByParentId(int parentId)

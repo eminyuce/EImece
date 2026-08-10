@@ -38,6 +38,16 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task DeleteByUserIdAsync(string userId)
+        {
+            var orderObjs = await OrderRepository.GetOrdersUserIdAsync(userId, "").ConfigureAwait(false);
+            foreach (var order in orderObjs)
+            {
+                await OrderProductService.DeleteOrderProductsByOrderIdAsync(order.Id).ConfigureAwait(false);
+                await DeleteEntityAsync(order).ConfigureAwait(false);
+            }
+        }
+
         public Order GetByOrderGuid(string orderGuid)
         {
             var item = OrderRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();

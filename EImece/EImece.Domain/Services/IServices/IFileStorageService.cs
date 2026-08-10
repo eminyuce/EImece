@@ -22,6 +22,8 @@ namespace EImece.Domain.Services.IServices
 
         string DeleteFileStorage(int id);
 
+        Task<string> DeleteFileStorageAsync(int id);
+
         FileStorage GetFileStorage(int fileStorageId);
 
         Task<FileStorage> GetFileStorageAsync(int fileStorageId, CancellationToken cancellationToken = default(CancellationToken));
@@ -29,5 +31,7 @@ namespace EImece.Domain.Services.IServices
         void DeleteUploadImage(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod);
 
         void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId);
+
+        Task DeleteUploadImageByFileStorageAsync(int contentId, MediaModType? mod, int fileStorageId);
     }
 }

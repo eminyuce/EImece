@@ -24,11 +24,11 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<Product> GetAdminPageList(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter);
 
-        Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language);
+        Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language);
+        Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter);
+        Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter, CancellationToken cancellationToken = default(CancellationToken));
 
         Product GetProduct(int id);
 

@@ -121,20 +121,20 @@ namespace EImece.Domain.Repositories
             return products.ToList();
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language)
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await GetAdminPageListAsync(categoryId, -1, search, language, null).ConfigureAwait(false);
+            return await GetAdminPageListAsync(categoryId, -1, search, language, null, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language)
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await GetAdminPageListAsync(categoryId, brandId, search, language, null).ConfigureAwait(false);
+            return await GetAdminPageListAsync(categoryId, brandId, search, language, null, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter)
+        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter, CancellationToken cancellationToken = default(CancellationToken))
         {
             var products = BuildAdminPageListQuery(categoryId, brandId, search, language, filter);
-            return await products.ToListAsync().ConfigureAwait(false);
+            return await products.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         private IQueryable<Product> BuildAdminPageListQuery(int categoryId, int brandId, string search, int language, ProductAdminListFilter filter)

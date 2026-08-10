@@ -6,6 +6,7 @@ using EImece.Domain.Helpers.Extensions;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -64,6 +65,31 @@ namespace EImece.Domain.Repositories
                 {
                     this.Delete(whereLambda);
                     isResult = this.Save() == 1;
+                    transactionResult.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transactionResult.Rollback();
+                    BaseLogger.Error(ex, "DeleteEntityByWhere");
+                    throw;
+                }
+            }
+            return isResult;
+        }
+
+        public virtual async Task<bool> DeleteByWhereConditionAsync(Expression<Func<T, bool>> whereLambda)
+        {
+            var isResult = false;
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    var objects = await FindBy(whereLambda).ToListAsync().ConfigureAwait(false);
+                    foreach (var obj in objects)
+                    {
+                        GetDbContext().Set<T>().Remove(obj);
+                    }
+                    isResult = await this.SaveAsync().ConfigureAwait(false) == 1;
                     transactionResult.Commit();
                 }
                 catch (Exception ex)
@@ -155,6 +181,27 @@ namespace EImece.Domain.Repositories
                 {
                     this.Delete(item);
                     r = this.Save();
+                    transactionResult.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transactionResult.Rollback();
+                    BaseLogger.Error(ex, "DeleteItem");
+                    throw;
+                }
+            }
+            return r;
+        }
+
+        public virtual async Task<int> DeleteItemAsync(T item)
+        {
+            int r = 0;
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    this.Delete(item);
+                    r = await this.SaveAsync().ConfigureAwait(false);
                     transactionResult.Commit();
                 }
                 catch (Exception ex)

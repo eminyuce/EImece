@@ -15,9 +15,13 @@ namespace EImece.Domain.Repositories.IRepositories
 
         int DeleteItem(T item);
 
+        Task<int> DeleteItemAsync(T item);
+
         EntitiesContext GetDbContext();
 
         bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda);
+
+        Task<bool> DeleteByWhereConditionAsync(Expression<Func<T, bool>> whereLambda);
 
         T[] ExecuteStoreQuery(string commandText, params object[] parameters);
 

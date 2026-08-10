@@ -15,6 +15,8 @@ namespace EImece.Domain.Repositories.IRepositories
 
         T GetBaseContent(int id);
 
+        Task<T> GetBaseContentAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
 #pragma warning disable CS0109 // The member 'IBaseContentRepository<T>.SearchEntities(Expression<Func<T, bool>>, string, int)' does not hide an accessible member. The new keyword is not required.
 
         new List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language);

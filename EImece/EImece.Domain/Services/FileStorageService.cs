@@ -225,6 +225,31 @@ namespace EImece.Domain.Services
             }
         }
 
+        public async Task DeleteUploadImageByFileStorageAsync(int contentId, MediaModType? mod, int fileStorageId)
+        {
+            bool isResult = false;
+            switch (mod.Value)
+            {
+                case MediaModType.Stories:
+                    isResult = await StoryFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.StoryId == contentId).ConfigureAwait(false);
+                    await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
+                    break;
+
+                case MediaModType.Products:
+                    isResult = await ProductFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.ProductId == contentId).ConfigureAwait(false);
+                    await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
+                    break;
+
+                case MediaModType.Menus:
+                    isResult = await MenuFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.MenuId == contentId).ConfigureAwait(false);
+                    await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         public List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType)
         {
             switch (enumMod.Value)
@@ -318,6 +343,32 @@ namespace EImece.Domain.Services
 
                     var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
                     DeleteEntity(fileStorage);
+                    return deletedResult;
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            catch (Exception exception)
+            {
+                var innerExpMessage = exception.InnerException == null ? "" : exception.InnerException.Message;
+                Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
+            }
+            return "error";
+        }
+
+        public async Task<string> DeleteFileStorageAsync(int id)
+        {
+            try
+            {
+                var fileStorage = await GetSingleAsync(id).ConfigureAwait(false);
+                if (fileStorage != null)
+                {
+                    await FileStorageTagRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorage.Id).ConfigureAwait(false);
+
+                    var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
+                    await DeleteEntityAsync(fileStorage).ConfigureAwait(false);
                     return deletedResult;
                 }
                 else

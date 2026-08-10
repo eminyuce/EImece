@@ -66,6 +66,30 @@ namespace EImece.Domain.Services
             return item;
         }
 
+        public virtual async Task<T> GetBaseContentAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (id == 0)
+            {
+                throw new ArgumentException("Id cannot be zero");
+            }
+            var item = await BaseContentRepository.GetBaseContentAsync(id, cancellationToken).ConfigureAwait(false);
+            if (item.MainImageId.HasValue && item.MainImageId > 0)
+            {
+                var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);
+                item.ImageHeight = imageSize.ThumpBitmapHeight;
+                item.ImageWidth = imageSize.ThumpBitmapWidth;
+                if (item.MainImage != null)
+                    item.MainImageId = item.MainImage.Id;
+            }
+            else
+            {
+                item.ImageHeight = (await SettingService.GetSettingByKeyAsync(Constants.DefaultImageHeight).ConfigureAwait(false)).ToInt();
+                item.ImageWidth = (await SettingService.GetSettingByKeyAsync(Constants.DefaultImageWidth).ConfigureAwait(false)).ToInt();
+            }
+
+            return item;
+        }
+
         public virtual List<T> SearchEntities(Expression<Func<T, bool>> whereLambda, String search, int language)
         {
             return BaseContentRepository.SearchEntities(whereLambda, search, language);
