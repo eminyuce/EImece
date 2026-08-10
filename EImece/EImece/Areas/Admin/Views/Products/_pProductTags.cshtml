@@ -1,21 +1,11 @@
 ﻿@model EImece.Domain.Models.AdminModels.ProductAdminModel
-@using EImece.Domain.Entities;
+@using EImece.Domain.Entities
+@using System.Linq
 @{
-    var tagCategories = Model.TagCategories;
-    var selectedTags =
-        Model.Product.ProductTags!= null ?
-        Model.Product.ProductTags : new List<ProductTag>();
+    var tagCategories = Model.TagCategories ?? new List<TagCategory>();
+    var selectedTags = Model.Product != null && Model.Product.ProductTags != null
+        ? Model.Product.ProductTags.Select(t => t.TagId).ToList()
+        : new List<int>();
+    TempData["selectedTags"] = selectedTags;
 }
-
-@foreach (TagCategory tagCategory in tagCategories)
-{
-
-<span class="tags-checkboxes-flow">
-    @foreach (var tag in tagCategory.Tags)
-        {
-    <span>
-        <input type="checkbox" @String.Format("{0}", selectedTags.Any(t => t.TagId == tag.Id) ? "checked='checked'" : "") name="tags" value="@tag.Id" /> @tag.Name
-    </span>
-        }
-</span>
-}
+@Html.Partial("~/Areas/Admin/Views/Shared/pSelectedTags.cshtml", tagCategories.ToList())

@@ -6,12 +6,18 @@ const ADMIN = { email: 'admin@eimece.test', password: 'Test123!' };
 
 test.describe('Authentication flows', () => {
   test('login / register / forgot-password pages render forms', async ({ page }) => {
-    for (const path of ['/account/login/', '/account/register/', '/account/forgotpassword/', '/account/adminlogin/']) {
+    for (const path of ['/account/login/', '/account/register/', '/account/forgotpassword/']) {
       const res = await page.goto(path, { waitUntil: 'domcontentloaded' });
       expect(res?.status()).toBeLessThan(500);
       await assertCrizalChrome(page);
       await expect(loginForm(page)).toBeVisible();
     }
+
+    // Admin login uses a dedicated non-Crizal shell.
+    const adminRes = await page.goto('/account/adminlogin/', { waitUntil: 'domcontentloaded' });
+    expect(adminRes?.status()).toBeLessThan(500);
+    await expect(page.locator('form[action*="adminlogin"], form.needs-validation').first()).toBeVisible();
+    await expect(page.locator('input[name="Email"]')).toBeVisible();
   });
 
   test('customer login succeeds and reaches customers area', async ({ page }) => {

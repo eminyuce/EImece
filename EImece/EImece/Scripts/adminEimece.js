@@ -1100,3 +1100,60 @@ function setPreSelectedTreeNode(preSelectedNode) {
         initAdminSidebarShell();
     }
 })();
+/**
+ * Product/Story tag picker: chip selection, search filter, live counts.
+ * Call after AJAX injects pSelectedTags into a container.
+ */
+function initAdminTagPicker(root) {
+    var $root = root && root.jquery ? root : $(root);
+    if (!$root || !$root.length) {
+        return;
+    }
+    var $picker = $root.find('[data-admin-tag-picker]').addBack('[data-admin-tag-picker]').first();
+    if (!$picker.length) {
+        return;
+    }
+
+    function refreshCounts() {
+        var selectedTotal = $picker.find('.admin-tag-chip__input:checked').length;
+        $picker.find('[data-tag-selected-count]').text(selectedTotal);
+
+        $picker.find('[data-tag-category]').each(function () {
+            var $cat = $(this);
+            var selected = $cat.find('.admin-tag-chip__input:checked').length;
+            $cat.find('[data-tag-category-selected]').text(selected);
+        });
+    }
+
+    function applySearch() {
+        var q = ($picker.find('[data-tag-search]').val() || '').toString().trim().toLocaleLowerCase('tr-TR');
+        var anyVisible = false;
+
+        $picker.find('[data-tag-chip]').each(function () {
+            var $chip = $(this);
+            var name = ($chip.attr('data-tag-name') || $chip.text() || '').toString().toLocaleLowerCase('tr-TR');
+            var match = !q || name.indexOf(q) !== -1;
+            $chip.toggle(match);
+            if (match) {
+                anyVisible = true;
+            }
+        });
+
+        $picker.find('[data-tag-category]').each(function () {
+            var $cat = $(this);
+            var hasVisible = $cat.find('[data-tag-chip]:visible').length > 0;
+            $cat.toggle(hasVisible);
+        });
+
+        $picker.find('[data-tag-no-match]').prop('hidden', !q || anyVisible);
+    }
+
+    $picker.off('.adminTagPicker');
+    $picker.on('change.adminTagPicker', '.admin-tag-chip__input', function () {
+        $(this).closest('[data-tag-chip]').toggleClass('is-selected', this.checked);
+        refreshCounts();
+    });
+    $picker.on('input.adminTagPicker', '[data-tag-search]', applySearch);
+
+    refreshCounts();
+}

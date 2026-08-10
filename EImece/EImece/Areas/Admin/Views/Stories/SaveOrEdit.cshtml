@@ -139,9 +139,10 @@
                     @Html.Partial("pSliderResizing", (BaseContent)Model)
 
                     <div class="form-group">
-                        <label class="control-label col-md-2" for="Tags"> </label>
+                        <label class="control-label col-md-2" for="storyTagsHtml">@AdminResource.Tags</label>
                         <div class="col-md-10">
-                            <div id="storyTagsHtml">
+                            <div id="storyTagsHtml" aria-live="polite">
+                                <div class="text-muted" style="padding: 8px 0;">Etiketler yükleniyor…</div>
                             </div>
                         </div>
                     </div>
@@ -175,7 +176,11 @@
             function CreateTags() {
                 var postData = JSON.stringify({ "language": $("#Lang").val(), "storyId": $("#Id").val() });
                 ajaxMethodCall(postData, "/admin/Ajax/GetStoryTags", function (data) {
-                    $("#storyTagsHtml").html(data);
+                    var $box = $("#storyTagsHtml");
+                    $box.html(data);
+                    if (typeof initAdminTagPicker === "function") {
+                        initAdminTagPicker($box);
+                    }
                 });
             }
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-08T15:02:09.786Z",
+  "generatedAt": "2026-08-09T19:08:20.178Z",
   "baseURL": "http://localhost:81",
   "pages": [
     {
@@ -21,50 +21,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 10974,
-              "width": 14631
+              "right": 2880,
+              "width": 3840
             },
             {
               "tag": "div",
-              "cls": "owl-item active",
-              "right": 1220,
-              "width": 1219
+              "cls": "owl-item",
+              "right": 640,
+              "width": 320
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
-              "right": 1220,
-              "width": 1219
+              "cls": "item crizal-home-hero__slide",
+              "right": 640,
+              "width": 320
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
-              "right": 1220,
-              "width": 1219
+              "cls": "crizal-home-hero__veil",
+              "right": 640,
+              "width": 320
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 1220,
-              "width": 1219
+              "cls": "container",
+              "right": 640,
+              "width": 320
             },
             {
               "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 1220,
-              "width": 1219
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 1208,
-              "width": 1195
+              "cls": "crizal-home-hero__copy",
+              "right": 628,
+              "width": 296
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 1208,
-              "width": 1195
+              "cls": "crizal-home-hero__brand",
+              "right": 628,
+              "width": 296
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 628,
+              "width": 296
             }
           ],
           "navTogglerVisible": true,
@@ -80,50 +80,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 2880,
-              "width": 3840
+              "right": 3375,
+              "width": 4500
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 640,
-              "width": 320
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
-              "right": 640,
-              "width": 320
+              "cls": "item crizal-home-hero__slide",
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
-              "right": 640,
-              "width": 320
+              "cls": "crizal-home-hero__veil",
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 640,
-              "width": 320
+              "cls": "container",
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 640,
-              "width": 320
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 628,
-              "width": 296
+              "cls": "crizal-home-hero__copy",
+              "right": 738,
+              "width": 351
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 628,
-              "width": 296
+              "cls": "crizal-home-hero__brand",
+              "right": 738,
+              "width": 351
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 738,
+              "width": 351
             }
           ],
           "navTogglerVisible": true,
@@ -139,50 +139,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 3726,
-              "width": 4968
+              "right": 3375,
+              "width": 4500
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 828,
-              "width": 414
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
-              "right": 828,
-              "width": 414
+              "cls": "item crizal-home-hero__slide",
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
-              "right": 828,
-              "width": 414
+              "cls": "crizal-home-hero__veil",
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 828,
-              "width": 414
+              "cls": "container",
+              "right": 750,
+              "width": 375
             },
             {
               "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 828,
-              "width": 414
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 816,
-              "width": 390
+              "cls": "crizal-home-hero__copy",
+              "right": 738,
+              "width": 351
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 816,
-              "width": 390
+              "cls": "crizal-home-hero__brand",
+              "right": 738,
+              "width": 351
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 738,
+              "width": 351
             }
           ],
           "navTogglerVisible": true,
@@ -209,39 +209,39 @@
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
+              "cls": "item crizal-home-hero__slide",
               "right": 1536,
               "width": 768
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
+              "cls": "crizal-home-hero__veil",
+              "right": 1536,
+              "width": 768
+            },
+            {
+              "tag": "div",
+              "cls": "container",
               "right": 1512,
               "width": 720
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 1512,
-              "width": 720
-            },
-            {
-              "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 1512,
-              "width": 600
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 1500,
-              "width": 576
+              "cls": "crizal-home-hero__copy",
+              "right": 1348,
+              "width": 544
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 1500,
-              "width": 576
+              "cls": "crizal-home-hero__brand",
+              "right": 1348,
+              "width": 544
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 1133,
+              "width": 329
             }
           ],
           "navTogglerVisible": true,
@@ -257,50 +257,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 8700,
-              "width": 11559
+              "right": 9216,
+              "width": 12288
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 1957,
-              "width": 963
+              "right": 2048,
+              "width": 1024
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
-              "right": 1957,
-              "width": 963
+              "cls": "item crizal-home-hero__slide",
+              "right": 2048,
+              "width": 1024
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
-              "right": 1956,
+              "cls": "crizal-home-hero__veil",
+              "right": 2048,
+              "width": 1024
+            },
+            {
+              "tag": "div",
+              "cls": "container",
+              "right": 2016,
               "width": 960
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 1956,
-              "width": 960
-            },
-            {
-              "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 1956,
-              "width": 640
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 1944,
-              "width": 616
+              "cls": "crizal-home-hero__copy",
+              "right": 1612,
+              "width": 544
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 1944,
-              "width": 616
+              "cls": "crizal-home-hero__brand",
+              "right": 1612,
+              "width": 544
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 1489,
+              "width": 421
             }
           ],
           "navTogglerVisible": false,
@@ -316,50 +316,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 11004,
-              "width": 14631
+              "right": 11520,
+              "width": 15360
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 2469,
-              "width": 1219
+              "right": 2560,
+              "width": 1280
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
-              "right": 2469,
-              "width": 1219
+              "cls": "item crizal-home-hero__slide",
+              "right": 2560,
+              "width": 1280
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
-              "right": 2445,
+              "cls": "crizal-home-hero__veil",
+              "right": 2560,
+              "width": 1280
+            },
+            {
+              "tag": "div",
+              "cls": "container",
+              "right": 2505,
               "width": 1170
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 2445,
-              "width": 1170
-            },
-            {
-              "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 2445,
-              "width": 683
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 2433,
-              "width": 659
+              "cls": "crizal-home-hero__copy",
+              "right": 1891,
+              "width": 544
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 2433,
-              "width": 659
+              "cls": "crizal-home-hero__brand",
+              "right": 1891,
+              "width": 544
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 1874,
+              "width": 527
             }
           ],
           "navTogglerVisible": false,
@@ -375,50 +375,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 11464,
-              "width": 15168
+              "right": 12960,
+              "width": 17280
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 2616,
-              "width": 1264
+              "right": 2880,
+              "width": 1440
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
-              "right": 2616,
-              "width": 1264
+              "cls": "item crizal-home-hero__slide",
+              "right": 2880,
+              "width": 1440
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
-              "right": 2616,
-              "width": 1264
+              "cls": "crizal-home-hero__veil",
+              "right": 2880,
+              "width": 1440
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 2616,
-              "width": 1264
+              "cls": "container",
+              "right": 2820,
+              "width": 1320
             },
             {
               "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 2616,
-              "width": 737
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 2604,
-              "width": 713
+              "cls": "crizal-home-hero__copy",
+              "right": 2056,
+              "width": 544
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 2604,
-              "width": 713
+              "cls": "crizal-home-hero__brand",
+              "right": 2056,
+              "width": 544
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 2045,
+              "width": 533
             }
           ],
           "navTogglerVisible": false,
@@ -434,50 +434,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 15784,
-              "width": 20928
+              "right": 17280,
+              "width": 23040
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 3576,
-              "width": 1744
+              "right": 3840,
+              "width": 1920
             },
             {
               "tag": "div",
-              "cls": "item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-",
-              "right": 3576,
-              "width": 1744
+              "cls": "item crizal-home-hero__slide",
+              "right": 3840,
+              "width": 1920
             },
             {
               "tag": "div",
-              "cls": "container pt-6 pt-md-0 my-xxl-2",
-              "right": 3364,
+              "cls": "crizal-home-hero__veil",
+              "right": 3840,
+              "width": 1920
+            },
+            {
+              "tag": "div",
+              "cls": "container",
+              "right": 3540,
               "width": 1320
             },
             {
               "tag": "div",
-              "cls": "row justify-content-end text-end align-items-center",
-              "right": 3364,
-              "width": 1320
-            },
-            {
-              "tag": "div",
-              "cls": "col-md-10 col-lg-8 col-xl-7",
-              "right": 3364,
-              "width": 770
-            },
-            {
-              "tag": "h2",
-              "cls": "display-1 lh-1 font-weight-800 mb-3 text-white",
-              "right": 3352,
-              "width": 746
+              "cls": "crizal-home-hero__copy",
+              "right": 2776,
+              "width": 544
             },
             {
               "tag": "p",
-              "cls": "lead opacity7 text-white mb-4",
-              "right": 3352,
-              "width": 746
+              "cls": "crizal-home-hero__brand",
+              "right": 2776,
+              "width": 544
+            },
+            {
+              "tag": "h2",
+              "cls": "crizal-home-hero__title",
+              "right": 2765,
+              "width": 533
             }
           ],
           "navTogglerVisible": false,
@@ -499,21 +499,21 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1400,
-          "top": 3759,
+          "h": 860,
+          "top": 3140,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 3515,
+          "h": 2888,
           "top": 128,
           "left": 0
         },
         "containerBox": {
-          "w": 1219,
-          "h": 618,
-          "top": 128,
-          "left": 30
+          "w": 1170,
+          "h": 233,
+          "top": 296,
+          "left": -3785
         },
         "buttonBox": {
           "w": 0,
@@ -523,14 +523,14 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
@@ -539,12 +539,12 @@
           {
             "tag": "div",
             "cls": "owl-stage",
-            "width": 14631
+            "width": 15360
           }
         ],
-        "butnCount": 15,
+        "butnCount": 16,
         "mstoreMarkers": false,
-        "bootstrapGrid": 45
+        "bootstrapGrid": 29
       }
     },
     {
@@ -652,20 +652,20 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 1806,
+          "h": 860,
+          "top": 1787,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 1538,
+          "h": 1536,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 197,
-          "top": 128,
+          "h": 148,
+          "top": 146,
           "left": 55
         },
         "buttonBox": {
@@ -676,22 +676,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 5,
         "mstoreMarkers": false,
-        "bootstrapGrid": 17
+        "bootstrapGrid": 10
       }
     },
     {
@@ -713,8 +713,8 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 1492,
-              "width": 2072
+              "right": 900,
+              "width": 888
             },
             {
               "tag": "div",
@@ -753,10 +753,10 @@
               "width": 296
             },
             {
-              "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 1196,
-              "width": 296
+              "tag": "li",
+              "cls": "nav-item",
+              "right": 407,
+              "width": 147
             }
           ],
           "navTogglerVisible": true,
@@ -772,8 +772,8 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 1767,
-              "width": 2457
+              "right": 1065,
+              "width": 1053
             },
             {
               "tag": "div",
@@ -812,10 +812,10 @@
               "width": 351
             },
             {
-              "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 1416,
-              "width": 351
+              "tag": "li",
+              "cls": "nav-item",
+              "right": 407,
+              "width": 147
             }
           ],
           "navTogglerVisible": true,
@@ -831,50 +831,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 1767,
-              "width": 2457
+              "right": 1182,
+              "width": 1170
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 714,
-              "width": 351
+              "right": 792,
+              "width": 390
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 714,
-              "width": 351
+              "right": 792,
+              "width": 390
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 714,
-              "width": 351
+              "right": 792,
+              "width": 390
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 1065,
-              "width": 351
+              "right": 1182,
+              "width": 390
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 1065,
-              "width": 351
+              "right": 1182,
+              "width": 390
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 1065,
-              "width": 351
+              "right": 1182,
+              "width": 390
             },
             {
               "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 1416,
-              "width": 351
+              "cls": "owl-stage",
+              "right": 4062,
+              "width": 4050
             }
           ],
           "navTogglerVisible": true,
@@ -890,50 +890,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 1986,
-              "width": 2730
+              "right": 2124,
+              "width": 2088
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 816,
-              "width": 390
+              "right": 1428,
+              "width": 696
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 816,
-              "width": 390
+              "right": 1428,
+              "width": 696
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 816,
-              "width": 390
+              "right": 1428,
+              "width": 696
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 1206,
-              "width": 390
+              "right": 2124,
+              "width": 696
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 1206,
-              "width": 390
+              "right": 2124,
+              "width": 696
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 1206,
-              "width": 390
+              "right": 2124,
+              "width": 696
             },
             {
               "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 1596,
-              "width": 390
+              "cls": "owl-stage",
+              "right": 4776,
+              "width": 4740
             }
           ],
           "navTogglerVisible": true,
@@ -949,50 +949,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 2724,
-              "width": 3752
+              "right": 1482,
+              "width": 1352
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 1116,
-              "width": 536
+              "right": 1030,
+              "width": 450
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 1116,
-              "width": 536
+              "right": 1030,
+              "width": 450
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 1116,
-              "width": 536
+              "right": 1030,
+              "width": 450
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 1652,
-              "width": 536
+              "right": 1481,
+              "width": 450
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 1652,
-              "width": 536
+              "right": 1481,
+              "width": 450
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 1652,
-              "width": 536
+              "right": 1481,
+              "width": 450
             },
             {
               "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 2188,
-              "width": 536
+              "cls": "owl-stage",
+              "right": 4799,
+              "width": 4755
             }
           ],
           "navTogglerVisible": false,
@@ -1008,50 +1008,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 3360,
-              "width": 4610
+              "right": 1872,
+              "width": 1719
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 1384,
-              "width": 659
+              "right": 1298,
+              "width": 573
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 1384,
-              "width": 659
+              "right": 1298,
+              "width": 573
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 1384,
-              "width": 659
+              "right": 1298,
+              "width": 573
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 2043,
-              "width": 659
+              "right": 1871,
+              "width": 573
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 2043,
-              "width": 659
+              "right": 1871,
+              "width": 573
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 2043,
-              "width": 659
+              "right": 1871,
+              "width": 573
             },
             {
               "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 2701,
-              "width": 659
+              "cls": "owl-stage",
+              "right": 4711,
+              "width": 4644
             }
           ],
           "navTogglerVisible": false,
@@ -1067,50 +1067,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 3802,
-              "width": 5222
+              "right": 2140,
+              "width": 1982
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 1564,
-              "width": 746
+              "right": 1478,
+              "width": 660
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 1564,
-              "width": 746
+              "right": 1478,
+              "width": 660
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 1564,
-              "width": 746
+              "right": 1478,
+              "width": 660
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 2310,
-              "width": 746
+              "right": 2139,
+              "width": 660
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 2310,
-              "width": 746
+              "right": 2139,
+              "width": 660
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 2310,
-              "width": 746
+              "right": 2139,
+              "width": 660
             },
             {
               "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 3056,
-              "width": 746
+              "cls": "owl-stage",
+              "right": 5316,
+              "width": 5244
             }
           ],
           "navTogglerVisible": false,
@@ -1126,50 +1126,50 @@
             {
               "tag": "div",
               "cls": "owl-stage",
-              "right": 4042,
-              "width": 5222
+              "right": 2380,
+              "width": 1982
             },
             {
               "tag": "div",
               "cls": "owl-item",
-              "right": 2550,
-              "width": 746
+              "right": 2379,
+              "width": 660
             },
             {
               "tag": "a",
               "cls": "",
-              "right": 2550,
-              "width": 746
+              "right": 2379,
+              "width": 660
             },
             {
               "tag": "img",
               "cls": "",
-              "right": 2550,
-              "width": 746
+              "right": 2379,
+              "width": 660
             },
             {
               "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 3296,
-              "width": 746
-            },
-            {
-              "tag": "a",
-              "cls": "",
-              "right": 3296,
-              "width": 746
-            },
-            {
-              "tag": "img",
-              "cls": "",
-              "right": 3296,
-              "width": 746
+              "cls": "owl-stage",
+              "right": 5556,
+              "width": 5244
             },
             {
               "tag": "div",
-              "cls": "owl-item cloned",
-              "right": 4042,
-              "width": 746
+              "cls": "owl-item",
+              "right": 2131,
+              "width": 247
+            },
+            {
+              "tag": "div",
+              "cls": "product-card",
+              "right": 2127,
+              "width": 239
+            },
+            {
+              "tag": "div",
+              "cls": "product-thumb box-shadow-0",
+              "right": 2126,
+              "width": 237
             }
           ],
           "navTogglerVisible": false,
@@ -1191,20 +1191,20 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 2917,
+          "h": 860,
+          "top": 1990,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 2673,
+          "h": 1739,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 267,
-          "top": 128,
+          "h": 170,
+          "top": 146,
           "left": 55
         },
         "buttonBox": {
@@ -1214,20 +1214,20 @@
           "left": 0
         },
         "cardBox": {
-          "w": 464,
-          "h": 167,
-          "top": 808,
-          "left": 750
+          "w": 462,
+          "h": 146,
+          "top": 755,
+          "left": 751
         },
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
@@ -1236,17 +1236,17 @@
           {
             "tag": "div",
             "cls": "owl-stage",
-            "width": 4610
+            "width": 1719
           },
           {
             "tag": "div",
             "cls": "owl-stage",
-            "width": 45840
+            "width": 4644
           }
         ],
-        "butnCount": 2,
+        "butnCount": 6,
         "mstoreMarkers": false,
-        "bootstrapGrid": 23
+        "bootstrapGrid": 15
       }
     },
     {
@@ -1354,20 +1354,20 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 740,
+          "h": 860,
+          "top": 692,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 473,
+          "h": 440,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 136,
-          "top": 128,
+          "h": 78,
+          "top": 146,
           "left": 55
         },
         "buttonBox": {
@@ -1378,22 +1378,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 17
+        "bootstrapGrid": 10
       }
     },
     {
@@ -1501,8 +1501,8 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 1923,
+          "h": 860,
+          "top": 1907,
           "left": 0
         },
         "mainBox": {
@@ -1525,22 +1525,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 31
+        "bootstrapGrid": 24
       }
     },
     {
@@ -1648,20 +1648,20 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 1075,
+          "h": 860,
+          "top": 1003,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 807,
+          "h": 752,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 807,
-          "top": 128,
+          "h": 624,
+          "top": 184,
           "left": 55
         },
         "buttonBox": {
@@ -1670,29 +1670,24 @@
           "top": 0,
           "left": 0
         },
-        "cardBox": {
-          "w": 561,
-          "h": 695,
-          "top": 192,
-          "left": 360
-        },
+        "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 4,
+        "butnCount": 5,
         "mstoreMarkers": false,
-        "bootstrapGrid": 16
+        "bootstrapGrid": 8
       }
     },
     {
@@ -1800,19 +1795,19 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 1179,
+          "h": 860,
+          "top": 1013,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 911,
+          "h": 761,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 911,
+          "h": 761,
           "top": 128,
           "left": 55
         },
@@ -1824,22 +1819,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 17
+        "bootstrapGrid": 10
       }
     },
     {
@@ -1947,19 +1942,19 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 927,
+          "h": 860,
+          "top": 772,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 659,
+          "h": 521,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 659,
+          "h": 521,
           "top": 128,
           "left": 55
         },
@@ -1971,27 +1966,27 @@
         },
         "cardBox": {
           "w": 756,
-          "h": 320,
+          "h": 181,
           "top": 420,
           "left": 262
         },
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 15
+        "bootstrapGrid": 8
       }
     },
     {
@@ -2099,8 +2094,8 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1400,
-          "top": 2874,
+          "h": 860,
+          "top": 2842,
           "left": 0
         },
         "mainBox": {
@@ -2128,22 +2123,22 @@
           "left": 67
         },
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 16
+        "bootstrapGrid": 9
       }
     },
     {
@@ -2251,20 +2246,20 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 537,
+          "h": 860,
+          "top": 647,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 278,
+          "h": 396,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 217,
-          "top": 128,
+          "h": 144,
+          "top": 146,
           "left": 55
         },
         "buttonBox": {
@@ -2275,22 +2270,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 15
+        "bootstrapGrid": 8
       }
     },
     {
@@ -2398,20 +2393,20 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 1288,
+          "h": 860,
+          "top": 1884,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 1045,
+          "h": 1633,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 161,
-          "top": 128,
+          "h": 103,
+          "top": 146,
           "left": 55
         },
         "buttonBox": {
@@ -2422,22 +2417,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 18
+        "bootstrapGrid": 11
       }
     },
     {
@@ -2545,20 +2540,20 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 1288,
+          "h": 860,
+          "top": 1884,
           "left": 0
         },
         "mainBox": {
           "w": 1280,
-          "h": 1045,
+          "h": 1633,
           "top": 128,
           "left": 0
         },
         "containerBox": {
           "w": 1170,
-          "h": 161,
-          "top": 128,
+          "h": 103,
+          "top": 146,
           "left": 55
         },
         "buttonBox": {
@@ -2569,22 +2564,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 2,
+        "butnCount": 3,
         "mstoreMarkers": false,
-        "bootstrapGrid": 18
+        "bootstrapGrid": 11
       }
     },
     {
@@ -2694,8 +2689,8 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 672,
+          "h": 860,
+          "top": 680,
           "left": 0
         },
         "mainBox": {
@@ -2718,22 +2713,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 3,
+        "butnCount": 4,
         "mstoreMarkers": false,
-        "bootstrapGrid": 14
+        "bootstrapGrid": 7
       }
     },
     {
@@ -2841,8 +2836,8 @@
         },
         "footerBox": {
           "w": 1280,
-          "h": 1381,
-          "top": 621,
+          "h": 860,
+          "top": 629,
           "left": 0
         },
         "mainBox": {
@@ -2865,22 +2860,22 @@
         },
         "cardBox": null,
         "logoBox": {
-          "w": 54,
+          "w": 69,
           "h": 52,
           "top": 60,
           "left": 82
         },
         "logoNatural": {
-          "nw": 282,
-          "nh": 273,
+          "nw": 300,
+          "nh": 225,
           "complete": true
         },
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "overflowEls": [],
-        "butnCount": 3,
+        "butnCount": 4,
         "mstoreMarkers": false,
-        "bootstrapGrid": 14
+        "bootstrapGrid": 7
       }
     }
   ]

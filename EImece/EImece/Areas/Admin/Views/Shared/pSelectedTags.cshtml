@@ -1,32 +1,76 @@
-﻿@using EImece.Domain.Entities;
-@using System.Linq;
-@model  List<TagCategory>
+﻿@using EImece.Domain.Entities
+@using System.Linq
+@model List<TagCategory>
 @{
-    var tagCategories = Model;
-    var selectedTags = (List<int>)TempData["selectedTags"];
-    int splitterNumber = 4;
+    var tagCategories = Model ?? new List<TagCategory>();
+    var selectedTags = TempData["selectedTags"] as List<int> ?? new List<int>();
+    var totalSelected = tagCategories
+        .SelectMany(c => c.Tags ?? Enumerable.Empty<Tag>())
+        .Count(t => selectedTags.Contains(t.Id));
+    var totalTags = tagCategories.Sum(c => c.Tags != null ? c.Tags.Count : 0);
 }
-@foreach (TagCategory tagCategory in tagCategories)
-{
-<h4>@tagCategory.Name</h4>
-<hr class="adminLine" />
-@: <div class="container">
-        for (int i = 0; i < tagCategory.Tags.Count; i += splitterNumber)
-        {
-    @: <div class="row">
-                var items = tagCategory.Tags.Skip(i).Take(splitterNumber).ToList();
-                for (int j = 0; j < items.Count; j++)
-                {
-                    var tag = items.ElementAt(j);
-                    String id = String.Format("checkbox{0}", tag.Id);
-        <div class=@String.Format("col-md-{0}",12/splitterNumber)>
-            <input id="@id" name="tags" @String.Format("{0}", selectedTags.Any(t => t == tag.Id) ? "checked='checked'" : "") class="styled" data-image-tag="@tag.Id" value="@tag.Id" type="checkbox">
-            <label for="@id">
-                @tag.Name
-            </label>
+
+<div class="admin-tag-picker" data-admin-tag-picker>
+    <div class="admin-tag-picker__toolbar">
+        <div class="admin-tag-picker__summary">
+            <span class="admin-tag-picker__count" data-tag-selected-count>@totalSelected</span>
+            <span class="admin-tag-picker__summary-label">etiket seçili</span>
+            <span class="admin-tag-picker__total text-muted">/ @totalTags</span>
         </div>
-                }
-    @:             </div>
+        <div class="admin-tag-picker__search-wrap">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <input type="search"
+                   class="form-control admin-tag-picker__search"
+                   data-tag-search
+                   placeholder="Etiket ara…"
+                   autocomplete="off" />
+        </div>
+    </div>
+
+    @if (!tagCategories.Any() || totalTags == 0)
+    {
+        <div class="admin-tag-picker__empty text-muted">
+            Bu dil için henüz etiket tanımlanmamış.
+        </div>
+    }
+    else
+    {
+        foreach (var tagCategory in tagCategories)
+        {
+            var tags = (tagCategory.Tags ?? Enumerable.Empty<Tag>()).OrderBy(t => t.Name).ToList();
+            if (tags.Count == 0)
+            {
+                continue;
+            }
+            var categorySelected = tags.Count(t => selectedTags.Contains(t.Id));
+            <section class="admin-tag-picker__category" data-tag-category>
+                <header class="admin-tag-picker__category-head">
+                    <h4 class="admin-tag-picker__category-title">@tagCategory.Name</h4>
+                    <span class="admin-tag-picker__category-meta" data-tag-category-count>
+                        <span data-tag-category-selected>@categorySelected</span>/@tags.Count
+                    </span>
+                </header>
+                <div class="admin-tag-picker__chips">
+                    @foreach (var tag in tags)
+                    {
+                        var isChecked = selectedTags.Contains(tag.Id);
+                        var inputId = "tag-checkbox-" + tag.Id;
+                        <label class="admin-tag-chip@(isChecked ? " is-selected" : "")" data-tag-chip data-tag-name="@tag.Name.ToLowerInvariant()">
+                            <input id="@inputId"
+                                   type="checkbox"
+                                   name="tags"
+                                   value="@tag.Id"
+                                   class="admin-tag-chip__input"
+                                   data-image-tag="@tag.Id"
+                                   @(isChecked ? "checked=\"checked\"" : null) />
+                            <span class="admin-tag-chip__label">@tag.Name</span>
+                        </label>
+                    }
+                </div>
+            </section>
         }
-@: </div>
-}
+        <div class="admin-tag-picker__no-match text-muted" data-tag-no-match hidden>
+            Aramanızla eşleşen etiket yok.
+        </div>
+    }
+</div>

@@ -106,7 +106,11 @@
             var postData = JSON.stringify({ "language": $("#Lang").val() });
             console.log(postData);
             ajaxMethodCall(postData, "/admin/Ajax/GetTags", function (data) {
-                $("#imageTagsHtml").html(data);
+                var $box = $("#imageTagsHtml");
+                $box.html(data);
+                if (typeof initAdminTagPicker === "function") {
+                    initAdminTagPicker($box);
+                }
             });
         }
 

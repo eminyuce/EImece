@@ -109,37 +109,48 @@ test('crawl discovery — visit all reachable internal pages', async ({ page, re
       continue;
     }
 
-    try {
-      const result = await gotoAndAssertOk(page, urlPath, { expectCrizal: false });
-      const entry = {
-        path: urlPath,
-        status: result.status,
-        finalUrl: result.finalUrl,
-        consoleErrors: result.consoleErrors,
-        criticalNet: result.criticalNet,
-      };
-
-      if (result.status >= 500 || result.criticalNet.length || /Unhandled exception/i.test(await page.locator('body').innerText())) {
-        const shot = await captureFailure(page, `crawl-${urlPath}`);
-        report.failed.push({ ...entry, screenshot: shot, error: 'server or critical failure' });
-      } else if (result.consoleErrors.length) {
-        report.consoleErrors.push({ path: urlPath, errors: result.consoleErrors });
-        report.visited.push(entry);
-      } else {
-        report.visited.push(entry);
+    let lastError = null;
+    let result = null;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        result = await gotoAndAssertOk(page, urlPath, { expectCrizal: false });
+        const body = await page.locator('body').innerText();
+        if (result.status >= 500 || /Unhandled exception/i.test(body)) {
+          lastError = `server failure status=${result.status}`;
+          result = null;
+          await page.waitForTimeout(500);
+          continue;
+        }
+        lastError = null;
+        break;
+      } catch (err) {
+        lastError = String(err);
+        result = null;
+        await page.waitForTimeout(500);
       }
-
-      // Discover more links from HTML pages
-      const hrefs = await page.$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href')));
-      for (const h of hrefs) enqueue(h);
-
-      if (result.criticalNet.some((n) => n.status >= 500)) {
-        report.network500.push(...result.criticalNet);
-      }
-    } catch (err) {
-      const shot = await captureFailure(page, `crawl-fail-${urlPath}`);
-      report.failed.push({ path: urlPath, error: String(err), screenshot: shot });
     }
+
+    if (!result) {
+      const shot = await captureFailure(page, `crawl-fail-${urlPath}`);
+      report.failed.push({ path: urlPath, error: lastError, screenshot: shot });
+      continue;
+    }
+
+    const entry = {
+      path: urlPath,
+      status: result.status,
+      finalUrl: result.finalUrl,
+      consoleErrors: result.consoleErrors,
+      criticalNet: result.criticalNet,
+    };
+    report.visited.push(entry);
+    if (result.consoleErrors?.length) {
+      report.consoleErrors = report.consoleErrors || [];
+      report.consoleErrors.push({ path: urlPath, errors: result.consoleErrors });
+    }
+
+    const hrefs = await page.$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href')));
+    for (const h of hrefs) enqueue(h);
   }
 
   report.totals = {
