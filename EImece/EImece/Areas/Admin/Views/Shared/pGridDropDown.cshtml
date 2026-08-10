@@ -1,12 +1,25 @@
-﻿@using EImece.Domain.Entities;
-@model List<BaseEntity>
-@using EImece.Domain.Helpers;
-@using Resources;
+﻿@using System.Collections
+@using System.Linq
+@using Resources
+
+@* Accepts any enumerable (BaseEntity lists, view-models, etc.). *@
+@model IEnumerable
 
 @{
-    var contents = Model ?? new List<BaseEntity>();
     var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
-    var count = contents.Count();
+    int count;
+    if (Model == null)
+    {
+        count = 0;
+    }
+    else if (Model is ICollection collection)
+    {
+        count = collection.Count;
+    }
+    else
+    {
+        count = Model.Cast<object>().Count();
+    }
 }
 
 <div class="panel-heading grid-record-count" role="status" aria-live="polite">

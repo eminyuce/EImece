@@ -23,6 +23,7 @@
     var controllerName = "Orders";
     var gridName = "OrdersGrid";
     var contents = Model;
+    var baseList = contents.DownCasting<Order>();
 }
 
 <h2>@AdminResource.Orders</h2>
@@ -39,6 +40,7 @@
 @Html.Partial("Grid/_GridChrome")
 
 <div class="panel panel-primary eg-grid-shell">
+    @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
     columns.Add()

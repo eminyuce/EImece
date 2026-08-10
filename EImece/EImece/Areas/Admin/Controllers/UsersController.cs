@@ -34,11 +34,49 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
-        public ActionResult Index(String search = "")
+        public ActionResult Index(String search = "", String role = "", String twoFactor = "")
         {
-            List<EditUserViewModel> model = UsersService.GetUsers(search);
-            model = model.Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
-            return View(model);
+            var staffUsers = UsersService.GetUsers(string.Empty)
+                .Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase))
+                .OrderBy(r => r.FirstName)
+                .ToList();
+
+            ViewBag.AvailableRoles = staffUsers
+                .Select(r => r.Role)
+                .Where(r => !string.IsNullOrWhiteSpace(r))
+                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .OrderBy(r => r)
+                .ToList();
+
+            IEnumerable<EditUserViewModel> query = staffUsers;
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = UsersService.GetUsers(search)
+                    .Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderBy(r => r.FirstName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(role))
+            {
+                query = query.Where(r => r.Role.Equals(role.Trim(), StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (string.Equals(twoFactor, "yes", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(twoFactor, "1", StringComparison.OrdinalIgnoreCase))
+            {
+                query = query.Where(r => r.AuthenticatorEnabled);
+            }
+            else if (string.Equals(twoFactor, "no", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(twoFactor, "0", StringComparison.OrdinalIgnoreCase))
+            {
+                query = query.Where(r => !r.AuthenticatorEnabled);
+            }
+
+            ViewBag.Search = search ?? string.Empty;
+            ViewBag.Role = role ?? string.Empty;
+            ViewBag.TwoFactor = twoFactor ?? string.Empty;
+
+            return View(query.ToList());
         }
 
         public ActionResult CustomerRoles(String search = "")

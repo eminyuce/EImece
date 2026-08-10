@@ -6,92 +6,377 @@
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
+@using System.Collections.Generic
 @{
-    var users = Model;
-
-    ViewBag.Title = "Index";
+    ViewBag.Title = AdminResource.Users;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
+    var rowIndex = gridPage == 0 ? 0 : pageSizeNumber * (gridPage - 1);
 
     var controllerName = "Users";
     var gridName = "UsersGrid";
-    var contents = Model;
+    var contents = Model ?? new List<EditUserViewModel>();
+
+    var search = (ViewBag.Search as string) ?? Request.QueryString["search"].ToStr();
+    var selectedRole = (ViewBag.Role as string) ?? Request.QueryString["role"].ToStr();
+    var selectedTwoFactor = (ViewBag.TwoFactor as string) ?? Request.QueryString["twoFactor"].ToStr();
+    var availableRoles = (ViewBag.AvailableRoles as List<string>) ?? new List<string>();
+
+    Func<string, string> roleLabel = roleName =>
+    {
+        if (string.Equals(roleName, Constants.AdministratorRole, StringComparison.OrdinalIgnoreCase))
+        {
+            return "Yönetici";
+        }
+        if (string.Equals(roleName, Constants.EditorRole, StringComparison.OrdinalIgnoreCase))
+        {
+            return "Editör";
+        }
+        if (string.Equals(roleName, Constants.CustomerRole, StringComparison.OrdinalIgnoreCase))
+        {
+            return "Müşteri";
+        }
+        return roleName ?? string.Empty;
+    };
+
+    var activeFilterChips = new List<Tuple<string, string>>();
+    if (!string.IsNullOrWhiteSpace(search))
+    {
+        activeFilterChips.Add(Tuple.Create("Arama", search));
+    }
+    if (!string.IsNullOrWhiteSpace(selectedRole))
+    {
+        activeFilterChips.Add(Tuple.Create(AdminResource.Roles, roleLabel(selectedRole)));
+    }
+    if (string.Equals(selectedTwoFactor, "yes", StringComparison.OrdinalIgnoreCase)
+        || selectedTwoFactor == "1")
+    {
+        activeFilterChips.Add(Tuple.Create("2FA", "Aktif"));
+    }
+    else if (string.Equals(selectedTwoFactor, "no", StringComparison.OrdinalIgnoreCase)
+        || selectedTwoFactor == "0")
+    {
+        activeFilterChips.Add(Tuple.Create("2FA", "Yok"));
+    }
+
+    var hasAdvancedFilter = activeFilterChips.Count > 0;
+    var clearFiltersUrl = Url.Action("Index", controllerName);
 }
 
-<h2>@AdminResource.Users</h2>
-<hr class="adminLine" />
-<p>
-    @Html.ActionLink("Sitede Hesabı Olan Müşteriler", "CustomerRoles", controllerName, null, new { @class = "btn btn-info" })
-</p>
-<div class="panel panel-info">
-    <div class="row">
-        <span class="col-md-3">
-            <p>
-                @Html.ActionLink(AdminResource.NewUserInsert, "Register", controllerName, null, new { @class = "btn btn-primary btn-block" })
-            </p>
-        </span>
-        <span class="col-md-9">
-            @Html.Partial("pSearchForm")
-        </span>
+@helper RoleBadge(string role)
+{
+    var css = "eg-state-badge is-muted";
+    string label = role;
+    if (string.Equals(role, Constants.AdministratorRole, StringComparison.OrdinalIgnoreCase))
+    {
+        css = "eg-state-badge eg-role-admin";
+        label = "Yönetici";
+    }
+    else if (string.Equals(role, Constants.EditorRole, StringComparison.OrdinalIgnoreCase))
+    {
+        css = "eg-state-badge eg-role-editor";
+        label = "Editör";
+    }
+    else if (string.Equals(role, Constants.CustomerRole, StringComparison.OrdinalIgnoreCase))
+    {
+        label = "Müşteri";
+    }
+    <span class="@css">@label</span>
+}
+
+<div class="users-admin-page">
+    <div class="users-admin-header clearfix">
+        <div class="pull-right users-admin-header-actions">
+            <a href="@Url.Action("CustomerRoles", controllerName)" class="btn btn-default btn-sm">
+                <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+                Sitede hesabı olan müşteriler
+            </a>
+            <a href="@Url.Action("Register", controllerName)" class="btn btn-primary btn-sm">
+                <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                @AdminResource.NewUserInsert
+            </a>
+        </div>
+        <h2 class="admin-page-title">@AdminResource.Users</h2>
+        <p class="users-admin-lead">
+            Yönetici ve editör hesaplarını arayın, role / 2FA durumuna göre filtreleyin ve işlem menüsünden düzenleyin.
+        </p>
+    </div>
+    <hr class="adminLine" />
+
+    <div class="panel panel-default users-admin-filters" id="usersAdminFilters">
+        <div class="panel-heading users-admin-filters-heading">
+            <div class="users-admin-filters-heading-main">
+                <span class="users-admin-filters-title">
+                    <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>
+                    Filtreler
+                </span>
+                @if (activeFilterChips.Count > 0)
+                {
+                    <span class="badge users-admin-filters-count">@activeFilterChips.Count</span>
+                    foreach (var chip in activeFilterChips)
+                    {
+                        <span class="label label-info product-admin-filter-chip">@chip.Item1: @chip.Item2</span>
+                    }
+                    <a class="users-admin-filters-clear" href="@clearFiltersUrl" title="@Resource.Clear">
+                        <i class="glyphicon glyphicon-remove" aria-hidden="true"></i> @Resource.Clear
+                    </a>
+                }
+                else
+                {
+                    <span class="users-admin-filters-hint">Ad / e-posta, rol ve 2FA ile daraltın</span>
+                }
+            </div>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("Index", controllerName, FormMethod.Get, new { @class = "users-admin-filter-form", id = "usersAdminFilterForm" }))
+            {
+                <div class="users-admin-filter-grid">
+                    <div class="form-group users-admin-filter-search">
+                        <label for="usersSearch">Arama</label>
+                        <input type="text"
+                               class="form-control input-sm"
+                               id="usersSearch"
+                               name="search"
+                               value="@search"
+                               placeholder="Ad, soyad veya e-posta"
+                               autocomplete="off" />
+                    </div>
+                    <div class="form-group">
+                        <label for="usersRole">@AdminResource.Roles</label>
+                        <select class="form-control input-sm" id="usersRole" name="role">
+                            <option value="">Tümü</option>
+                            @foreach (var roleOption in availableRoles)
+                            {
+                                <option value="@roleOption" @(string.Equals(selectedRole, roleOption, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>
+                                    @roleLabel(roleOption)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="usersTwoFactor">2FA</label>
+                        <select class="form-control input-sm" id="usersTwoFactor" name="twoFactor">
+                            <option value="">Tümü</option>
+                            <option value="yes" @(string.Equals(selectedTwoFactor, "yes", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "1" ? "selected=\"selected\"" : null)>Aktif</option>
+                            <option value="no" @(string.Equals(selectedTwoFactor, "no", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "0" ? "selected=\"selected\"" : null)>Yok</option>
+                        </select>
+                    </div>
+                    <div class="form-group users-admin-filter-actions">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Uygula
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @Html.Partial("Grid/_GridChrome")
+
+    <div class="panel panel-primary eg-grid-shell">
+        @Html.Partial("pGridDropDown", contents)
+        @Html.Grid(contents).Named(gridName).Columns(columns =>
+    {
+        columns.Add()
+            .Titled("#")
+            .Encoded(false)
+            .Sanitized(false)
+            .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
+            .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
+
+        columns.Add(c => c.Email)
+            .Titled(AdminResource.Email)
+            .Filterable(true)
+            .Encoded(false)
+            .Sanitized(false)
+            .Css("eg-col-name")
+            .RenderValueAs(o => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
+                { "Name", o.Email },
+                { "Subtitle", String.Format("{0} {1}", o.FirstName, o.LastName) }
+            }));
+
+        columns.Add(o => o.Role)
+            .Encoded(false)
+            .Sanitized(false)
+            .Titled(AdminResource.Roles)
+            .Filterable(true)
+            .Css("eg-col-state")
+            .RenderValueAs(o => RoleBadge(o.Role).ToHtmlString());
+
+        columns.Add(o => o.AuthenticatorEnabled)
+            .Encoded(false)
+            .Sanitized(false)
+            .Titled("2FA")
+            .Filterable(true)
+            .Css("eg-col-state")
+            .RenderValueAs(o => o.AuthenticatorEnabled
+                ? "<span class='eg-state-badge'>Aktif</span>"
+                : "<span class='eg-state-badge is-muted'>Yok</span>");
+
+        columns.Add()
+            .Titled("İşlemler")
+            .Encoded(false)
+            .Sanitized(false)
+            .Css("eg-sticky-right eg-col-actions")
+            .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
+                { "ItemId", d.Id },
+                { "ItemName", String.Format("{0} {1}", d.FirstName, d.LastName) },
+                { "controllerName", controllerName },
+                { "ShowMedia", false },
+                { "ShowEdit", true },
+                { "EditAction", "Edit" },
+                { "ShowDelete", true },
+                { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = d.Id }) },
+                { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = d.Id }) },
+                { "RolesUrl", Url.Action("UserRoles", controllerName, new { id = d.Id }) }
+            }));
+
+    }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
     </div>
 </div>
 
-@Html.Partial("Grid/_GridChrome")
+<style>
+    .users-admin-page .users-admin-header {
+        margin-bottom: 2px;
+    }
 
-<div class="panel panel-primary eg-grid-shell">
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
-{
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-        .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
+    .users-admin-page .users-admin-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
 
-    columns.Add(c => c.Email)
-        .Titled(AdminResource.Email)
-        .Filterable(true)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-col-name")
-        .RenderValueAs(o => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-            { "Name", o.Email },
-            { "Subtitle", String.Format("{0} {1}", o.FirstName, o.LastName) }
-        }));
+    .users-admin-page .users-admin-lead {
+        margin: 0;
+        max-width: 64ch;
+        color: #627d98;
+        font-size: 13px;
+        line-height: 1.45;
+    }
 
-    columns.Add(o => o.Role)
-        .Encoded(false)
-        .Titled(AdminResource.Roles)
-        .RenderValueAs(o => String.Format("{0}", o.Role));
+    .users-admin-page .adminLine {
+        margin-top: 10px;
+        margin-bottom: 12px;
+    }
 
-    columns.Add(o => o.AuthenticatorEnabled)
-        .Encoded(false)
-        .Sanitized(false)
-        .Titled("2FA")
-        .Filterable(true)
-        .RenderValueAs(o => o.AuthenticatorEnabled
-            ? "<span class='eg-state-badge'>Aktif</span>"
-            : "<span class='eg-state-badge is-muted'>Yok</span>");
+    .users-admin-filters {
+        margin-bottom: 12px;
+        border-color: #d7dee8;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    }
 
-    columns.Add()
-        .Titled("İşlemler")
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-sticky-right eg-col-actions")
-        .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-            { "ItemId", d.Id },
-            { "ItemName", String.Format("{0} {1}", d.FirstName, d.LastName) },
-            { "controllerName", controllerName },
-            { "ShowMedia", false },
-            { "ShowEdit", true },
-            { "EditAction", "Edit" },
-            { "ShowDelete", true },
-            { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = d.Id }) },
-            { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = d.Id }) },
-            { "RolesUrl", Url.Action("UserRoles", controllerName, new { id = d.Id }) }
-        }));
+    .users-admin-filters-heading {
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        border-color: #d7dee8;
+        padding: 10px 14px;
+    }
 
-}).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-</div>
+    .users-admin-filters-heading-main {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .users-admin-filters-title {
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .users-admin-filters-title .glyphicon {
+        margin-right: 4px;
+        color: #3b6ea5;
+    }
+
+    .users-admin-filters-hint {
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+    .users-admin-filters-count {
+        background: #3b6ea5;
+        font-weight: 600;
+    }
+
+    .users-admin-filters-clear {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .users-admin-filters-clear:hover {
+        color: #b91c1c;
+        text-decoration: none;
+    }
+
+    .users-admin-filters .panel-body {
+        padding: 12px 14px 4px;
+        background: #fff;
+    }
+
+    .users-admin-filter-grid {
+        display: grid;
+        grid-template-columns: minmax(220px, 2fr) minmax(140px, 1fr) minmax(110px, 0.8fr) auto;
+        gap: 10px 12px;
+        align-items: end;
+    }
+
+    .users-admin-filter-form .form-group {
+        margin-bottom: 8px;
+    }
+
+    .users-admin-filter-form label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 4px;
+    }
+
+    .users-admin-filter-actions .btn {
+        min-width: 110px;
+        height: 30px;
+    }
+
+    @@media (max-width: 900px) {
+        .users-admin-filter-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .users-admin-filter-search {
+            grid-column: 1 / -1;
+        }
+    }
+
+    .users-admin-page .eg-grid-chrome {
+        margin-bottom: 8px;
+    }
+
+    .users-admin-page .eg-role-admin {
+        background: #e8f1fa;
+        color: #1e4e7a;
+        border: 1px solid #c5d9ee;
+    }
+
+    .users-admin-page .eg-role-editor {
+        background: #eef6ee;
+        color: #276749;
+        border: 1px solid #c6e0c8;
+    }
+
+    @@media (max-width: 767px) {
+        .users-admin-page .users-admin-header-actions {
+            float: none !important;
+            margin-bottom: 12px;
+        }
+
+        .users-admin-page .users-admin-header-actions .btn {
+            width: 100%;
+        }
+    }
+</style>

@@ -1305,7 +1305,7 @@ body.admin-app .eg-grid .grid-filter-btn {
     color: var(--eg-success);
 }
 
-/* Hide noisy first index badge column styling when modernized */
+/* First-column row index circle — light yellow surround on all modern grids */
 .eg-grid .eg-row-index {
     display: inline-flex;
     align-items: center;
@@ -1314,16 +1314,21 @@ body.admin-app .eg-grid .grid-filter-btn {
     height: 28px;
     padding: 0 6px;
     border-radius: 999px;
-    background: #eef2f6;
-    color: var(--eg-text-muted);
+    background: #fff8db;
+    border: 1px solid #f0e2a8;
+    color: #7a6410;
     font-size: 11px;
     font-weight: 700;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-pill,
 body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
     font-size: 11px !important;
     padding: 0.25rem 0.55rem !important;
+    background: #fff8db !important;
+    border: 1px solid #f0e2a8 !important;
+    color: #7a6410 !important;
 }
 
 /* Products page composition helpers */
