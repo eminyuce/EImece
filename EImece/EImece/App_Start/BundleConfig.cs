@@ -51,12 +51,14 @@ namespace EImece
                       "~/Content/checkBoxStyle.css",
                       "~/Content/adminSite.css",
                       "~/Content/adminShell.css",
-                      "~/Content/adminReports.css"
+                      "~/Content/adminReports.css",
+                      "~/Content/adminGridModern.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
                   "~/Scripts/rich-text-editor.js",
                   "~/Scripts/adminEimece.js",
+                  "~/Scripts/adminGridModern.js",
                   "~/Scripts/gridmvc.js"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

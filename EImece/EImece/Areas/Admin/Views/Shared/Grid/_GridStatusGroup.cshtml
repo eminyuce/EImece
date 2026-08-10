@@ -1,0 +1,11 @@
+@model EImece.Domain.Entities.Product
+@using EImece.Domain.Helpers.HtmlHelpers
+@using Resources
+@{
+    var o = Model;
+}
+@Html.GridStatusToggleGroupOpen()
+@Html.GridStatusToggle(o.Id, o.IsActive, "State", AdminResource.IsActive, "Yayında")
+@Html.GridStatusToggle(o.Id, o.MainPage, "MainPage", AdminResource.MainPage, "Vitrin")
+@Html.GridStatusToggle(o.Id, o.IsCampaign, "IsCampaign", AdminResource.IsCampaign, "Kampanya")
+@Html.GridStatusToggleGroupClose()

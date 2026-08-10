@@ -1,0 +1,743 @@
+/* Modern Grid.Mvc skin — progressive enhancement on top of Grid.Mvc 3.x
+   Does not replace the library; restyles tables, filters, pager, and status toggles.
+   Status toggles keep legacy span[name=span*] + gridActiveIcon/gridNotActiveIcon. */
+
+:root {
+    --eg-surface: #ffffff;
+    --eg-surface-muted: #f4f7fa;
+    --eg-border: #d7e0ea;
+    --eg-border-strong: #b8c7d9;
+    --eg-text: #1f2a37;
+    --eg-text-muted: #607487;
+    --eg-link: #0b6e99;
+    --eg-link-hover: #084d6b;
+    --eg-row-hover: #eef6fb;
+    --eg-row-selected: #e3f2e9;
+    --eg-sticky-bg: #ffffff;
+    --eg-sticky-head: #eef2f6;
+    --eg-accent: #0b6e99;
+    --eg-success: #1f7a45;
+    --eg-success-bg: #e7f6ec;
+    --eg-danger: #b42318;
+    --eg-danger-bg: #fceceb;
+    --eg-warn: #9a6700;
+    --eg-warn-bg: #fff6dd;
+    --eg-info: #175cd3;
+    --eg-info-bg: #e8f1fc;
+    --eg-radius: 8px;
+    --eg-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 12px rgba(16, 24, 40, 0.04);
+    --eg-row-pad-y: 10px;
+    --eg-row-pad-x: 12px;
+    --eg-font: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ----- Shell ----- */
+.eg-grid-shell {
+    background: var(--eg-surface);
+    border: 1px solid var(--eg-border);
+    border-radius: var(--eg-radius);
+    box-shadow: var(--eg-shadow);
+    overflow: hidden;
+}
+
+.eg-grid-shell > .panel,
+.eg-grid-shell.panel {
+    margin-bottom: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.eg-grid-chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--eg-surface-muted);
+    border: 1px solid var(--eg-border);
+    border-bottom: 0;
+    border-radius: var(--eg-radius) var(--eg-radius) 0 0;
+    font-family: var(--eg-font);
+}
+
+.eg-grid-shell .eg-grid-chrome {
+    border: 0;
+    border-bottom: 1px solid var(--eg-border);
+    border-radius: 0;
+}
+
+.eg-grid-chrome-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.eg-density-label,
+.eg-selected-count {
+    font-size: 12px;
+    color: var(--eg-text-muted);
+}
+
+.eg-selected-count strong {
+    color: var(--eg-success);
+}
+
+.eg-density-toggle .btn {
+    min-width: 64px;
+}
+
+.eg-density-toggle .btn.is-active,
+.eg-density-toggle .btn[aria-pressed="true"] {
+    background: var(--eg-accent);
+    border-color: var(--eg-accent);
+    color: #fff;
+}
+
+/* ----- Grid.Mvc table ----- */
+.eg-grid .grid-wrap,
+.eg-grid-scroll {
+    overflow: auto;
+    max-height: calc(100vh - 260px);
+    background: var(--eg-surface);
+}
+
+.eg-grid .grid-table,
+body.admin-app .eg-grid table.grid-table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: var(--eg-font);
+    font-size: 13px;
+    color: var(--eg-text);
+    background: var(--eg-surface);
+}
+
+.eg-grid .grid-table > thead > tr > th,
+body.admin-app .eg-grid table.grid-table > thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--eg-sticky-head) !important;
+    color: #334e68;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--eg-border-strong) !important;
+    padding: 10px var(--eg-row-pad-x) !important;
+    vertical-align: middle;
+}
+
+.eg-grid .grid-table > tbody > tr > td,
+body.admin-app .eg-grid table.grid-table > tbody > tr > td {
+    padding: var(--eg-row-pad-y) var(--eg-row-pad-x) !important;
+    vertical-align: middle !important;
+    border-top: 1px solid #e8eef5 !important;
+    background: var(--eg-surface);
+}
+
+.eg-grid .grid-table.table-striped > tbody > tr:nth-of-type(odd) > td {
+    background: #fbfcfe;
+}
+
+.eg-grid .grid-table > tbody > tr:hover > td,
+.eg-grid .grid-table > tbody > tr.eg-row-hover > td {
+    background: var(--eg-row-hover) !important;
+}
+
+.eg-grid .grid-table > tbody > tr.gridChecked > td,
+.eg-grid .grid-table > tbody > tr.eg-row-selected > td {
+    background: var(--eg-row-selected) !important;
+}
+
+.eg-grid .grid-table > tbody > tr.GridIsActive > td {
+    opacity: 0.78;
+}
+
+/* Compact density */
+.eg-grid.is-compact {
+    --eg-row-pad-y: 5px;
+    --eg-row-pad-x: 8px;
+}
+
+.eg-grid.is-compact .eg-name-link {
+    font-size: 13px;
+}
+
+.eg-grid.is-compact .eg-thumb,
+.eg-grid.is-compact .eg-thumb img {
+    width: 36px;
+    height: 36px;
+}
+
+/* Sticky columns */
+.eg-grid .grid-table > thead > tr > th.eg-sticky-left,
+.eg-grid .grid-table > tbody > tr > td.eg-sticky-left,
+.eg-grid .grid-table > thead > tr > th.eg-sticky-right,
+.eg-grid .grid-table > tbody > tr > td.eg-sticky-right {
+    position: sticky;
+    background: inherit;
+}
+
+.eg-grid .grid-table > thead > tr > th.eg-sticky-left,
+.eg-grid .grid-table > tbody > tr > td.eg-sticky-left {
+    left: 0;
+    z-index: 3;
+    box-shadow: 1px 0 0 var(--eg-border);
+}
+
+.eg-grid .grid-table > thead > tr > th.eg-sticky-left-1,
+.eg-grid .grid-table > tbody > tr > td.eg-sticky-left-1 {
+    left: 0;
+    min-width: 44px;
+    box-shadow: none;
+}
+
+.eg-grid .grid-table > thead > tr > th.eg-sticky-left-2,
+.eg-grid .grid-table > tbody > tr > td.eg-sticky-left-2 {
+    left: 44px;
+    min-width: 44px;
+    z-index: 3;
+}
+
+.eg-grid .grid-table > thead > tr > th.eg-sticky-right,
+.eg-grid .grid-table > tbody > tr > td.eg-sticky-right {
+    right: 0;
+    z-index: 3;
+    box-shadow: -1px 0 0 var(--eg-border);
+}
+
+.eg-grid .grid-table > thead > tr > th.eg-sticky-left,
+.eg-grid .grid-table > thead > tr > th.eg-sticky-right {
+    z-index: 6;
+    background: var(--eg-sticky-head) !important;
+}
+
+.eg-grid .grid-table > tbody > tr:hover > td.eg-sticky-left,
+.eg-grid .grid-table > tbody > tr:hover > td.eg-sticky-right {
+    background: var(--eg-row-hover) !important;
+}
+
+.eg-grid .grid-table > tbody > tr.gridChecked > td.eg-sticky-left,
+.eg-grid .grid-table > tbody > tr.gridChecked > td.eg-sticky-right,
+.eg-grid .grid-table > tbody > tr.eg-row-selected > td.eg-sticky-left,
+.eg-grid .grid-table > tbody > tr.eg-row-selected > td.eg-sticky-right {
+    background: var(--eg-row-selected) !important;
+}
+
+/* ----- Name / meta ----- */
+.eg-name-cell {
+    min-width: 180px;
+    max-width: 280px;
+}
+
+.eg-name-link {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 650;
+    color: var(--eg-link);
+    line-height: 1.3;
+    text-decoration: none;
+}
+
+.eg-name-link:hover,
+.eg-name-link:focus {
+    color: var(--eg-link-hover);
+    text-decoration: underline;
+}
+
+.eg-name-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin-top: 3px;
+}
+
+.eg-meta-item {
+    font-size: 11px;
+    color: var(--eg-text-muted);
+}
+
+.eg-meta-label {
+    opacity: 0.75;
+}
+
+.eg-meta-value {
+    font-variant-numeric: tabular-nums;
+}
+
+.eg-name-sub {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--eg-text-muted);
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ----- Image ----- */
+.eg-image-cell {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 170px;
+}
+
+.eg-thumb {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--eg-border);
+    background: var(--eg-surface-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eg-thumb img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    display: block;
+}
+
+.eg-thumb-placeholder {
+    color: #9aa5b1;
+    font-size: 16px;
+}
+
+.eg-image-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.eg-image-actions .btn {
+    margin: 0 4px 4px 0;
+}
+
+.eg-image-none {
+    font-size: 11px;
+    color: var(--eg-text-muted);
+}
+
+/* ----- Price ----- */
+.eg-price-cell {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.eg-price-current {
+    font-weight: 700;
+    color: var(--eg-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.eg-price-discount {
+    display: inline-block;
+    margin-top: 2px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--eg-warn-bg);
+    color: var(--eg-warn);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.eg-price-was {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--eg-text-muted);
+}
+
+/* ----- Product state badge ----- */
+.eg-state-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--eg-info-bg);
+    color: var(--eg-info);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.eg-state-badge.is-muted {
+    background: #eef2f6;
+    color: var(--eg-text-muted);
+}
+
+/* ----- Status toggles (critical) ----- */
+.eg-status-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    min-width: 132px;
+}
+
+.eg-status-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+    padding: 4px 8px 4px 6px;
+    border: 1px solid var(--eg-border);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--eg-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+    text-align: left;
+}
+
+.eg-status-toggle:hover,
+.eg-status-toggle:focus {
+    outline: none;
+    border-color: var(--eg-border-strong);
+    box-shadow: 0 0 0 3px rgba(11, 110, 153, 0.12);
+}
+
+.eg-status-toggle.is-on {
+    background: var(--eg-success-bg);
+    border-color: #b7e0c4;
+    color: var(--eg-success);
+}
+
+.eg-status-toggle.is-off {
+    background: #fff;
+    color: var(--eg-text-muted);
+}
+
+.eg-status-toggle.is-busy {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.eg-status-switch {
+    position: relative;
+    flex: 0 0 auto;
+    width: 28px;
+    height: 16px;
+    border-radius: 999px;
+    background: #c5d0db;
+    transition: background 140ms ease;
+}
+
+.eg-status-toggle.is-on .eg-status-switch {
+    background: var(--eg-success);
+}
+
+.eg-status-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 140ms ease;
+}
+
+.eg-status-toggle.is-on .eg-status-knob {
+    transform: translateX(12px);
+}
+
+/* Keep legacy glyphicon span in DOM for JS, but hide visually inside toggles */
+.eg-status-toggle .eg-status-icon,
+.eg-status-toggle .gridActiveIcon,
+.eg-status-toggle .gridNotActiveIcon {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    font-size: 0 !important;
+}
+
+.eg-status-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Soft modernization for legacy icon-only pages (no toggle wrapper) */
+body.admin-app .grid-table td .gridActiveIcon:not(.eg-status-icon) {
+    color: var(--eg-success);
+}
+
+body.admin-app .grid-table td .gridNotActiveIcon:not(.eg-status-icon) {
+    color: var(--eg-danger);
+}
+
+/* ----- Actions ----- */
+.eg-actions {
+    position: relative;
+}
+
+.eg-actions-menu {
+    min-width: 180px;
+    z-index: 30;
+}
+
+.eg-actions-menu > li > a,
+.eg-actions-menu .eg-actions-danger > a {
+    display: block;
+    padding: 6px 14px;
+    color: var(--eg-text);
+    text-decoration: none;
+}
+
+.eg-actions-menu > li > a i {
+    width: 16px;
+    margin-right: 6px;
+    color: var(--eg-text-muted);
+}
+
+.eg-actions-danger > a,
+.eg-actions-menu .eg-actions-danger > a.btn {
+    color: var(--eg-danger) !important;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    text-align: left;
+    width: 100%;
+    padding: 6px 14px;
+    font-weight: 600;
+}
+
+.eg-actions-menu .eg-actions-danger > a.btn:hover {
+    background: var(--eg-danger-bg);
+}
+
+.eg-actions-compact {
+    display: none;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+@media (max-width: 767px) {
+    .eg-actions {
+        display: none;
+    }
+
+    .eg-actions-compact {
+        display: inline-flex;
+    }
+
+    .eg-grid .grid-wrap,
+    .eg-grid-scroll {
+        max-height: none;
+    }
+}
+
+/* ----- Ordering input ----- */
+.eg-grid .GridOrderingTextbox {
+    width: 56px;
+    height: 28px;
+    text-align: center;
+    border: 1px solid var(--eg-border);
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+/* ----- Empty / loading ----- */
+.eg-grid .grid-empty-text td,
+.eg-grid-empty {
+    padding: 48px 16px !important;
+    text-align: center;
+    color: var(--eg-text-muted);
+    background: var(--eg-surface-muted) !important;
+    font-size: 14px;
+}
+
+.eg-grid.is-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.eg-grid.is-loading::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.55);
+    z-index: 8;
+}
+
+.eg-grid.is-loading::before {
+    content: "Yükleniyor…";
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--eg-border);
+    color: var(--eg-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: var(--eg-shadow);
+}
+
+/* ----- Filters & pager (Grid.Mvc widgets) ----- */
+.eg-grid .grid-filter,
+.eg-grid .grid-filter-btn,
+body.admin-app .eg-grid .grid-filter-btn {
+    color: var(--eg-text-muted);
+}
+
+.eg-grid .grid-dropdown-btn,
+.eg-grid .dropdown-menu {
+    border-radius: 8px;
+    border-color: var(--eg-border);
+    box-shadow: var(--eg-shadow);
+}
+
+.eg-grid .grid-footer,
+.eg-grid .site-pagination {
+    padding: 12px;
+    background: var(--eg-surface-muted);
+    border-top: 1px solid var(--eg-border);
+}
+
+.eg-grid .pagination {
+    margin: 0;
+}
+
+.eg-grid .pagination > li > a,
+.eg-grid .pagination > li > span,
+.eg-grid .page-link {
+    border-radius: 6px !important;
+    margin: 0 2px;
+    border-color: var(--eg-border);
+    color: var(--eg-link);
+}
+
+.eg-grid .pagination > .active > a,
+.eg-grid .pagination > .active > span,
+.eg-grid .page-item.active .page-link {
+    background: var(--eg-accent);
+    border-color: var(--eg-accent);
+    color: #fff;
+}
+
+/* ----- Bulk toolbar polish ----- */
+.admin-grid-ops.eg-bulk-bar {
+    border: 1px solid var(--eg-border);
+    border-radius: var(--eg-radius);
+    box-shadow: var(--eg-shadow);
+    background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+}
+
+.admin-grid-ops.eg-bulk-bar .panel-body {
+    padding: 12px 14px;
+}
+
+.admin-grid-ops.eg-bulk-bar .admin-grid-toolbar {
+    gap: 10px 14px;
+}
+
+.admin-grid-ops.eg-bulk-bar .admin-grid-toolbar-group {
+    background: #fff;
+    border: 1px solid var(--eg-border);
+    border-radius: 8px;
+    padding: 6px 8px;
+    margin-right: 0;
+}
+
+.admin-grid-ops.eg-bulk-bar #searchTxtInput {
+    border-radius: 8px 0 0 8px;
+    border-color: var(--eg-border);
+    height: 36px;
+}
+
+.admin-grid-ops.eg-bulk-bar #SearchButton {
+    height: 36px;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Quick filter chips row (products) */
+.eg-quick-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 12px;
+}
+
+.eg-quick-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--eg-border);
+    background: #fff;
+    color: var(--eg-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.eg-quick-chip:hover {
+    border-color: var(--eg-accent);
+    color: var(--eg-accent);
+}
+
+.eg-quick-chip.is-active {
+    background: var(--eg-success-bg);
+    border-color: #b7e0c4;
+    color: var(--eg-success);
+}
+
+/* Hide noisy first index badge column styling when modernized */
+.eg-grid .eg-row-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #eef2f6;
+    color: var(--eg-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-pill,
+body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
+    font-size: 11px !important;
+    padding: 0.25rem 0.55rem !important;
+}
+
+/* Products page composition helpers */
+.eg-products-toolbar-gap {
+    margin-bottom: 12px;
+}
+
+.eg-products-move-link {
+    display: inline-block;
+    margin: 0 0 12px;
+    font-size: 13px;
+}

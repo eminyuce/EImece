@@ -7,8 +7,8 @@
 }
 else
 {
-<div class="grid-mvc" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
-    <div class="grid-wrap">
+<div class="grid-mvc eg-grid" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
+    <div class="grid-wrap eg-grid-scroll">
         <table class="table table-striped grid-table">
             @* Draw grid header *@
             <thead>
@@ -26,9 +26,11 @@ else
 {
     if (!Model.ItemsToDisplay.Any())
     {
-<tr class="grid-empty-text">
+<tr class="grid-empty-text eg-grid-empty">
     <td colspan="@Model.Columns.Count()">
-        @Model.EmptyGridText
+        <div class="eg-grid-empty">
+            <div>@(!string.IsNullOrEmpty(Model.EmptyGridText) ? Model.EmptyGridText : "Kayıt bulunamadı")</div>
+        </div>
     </td>
 </tr>
     }

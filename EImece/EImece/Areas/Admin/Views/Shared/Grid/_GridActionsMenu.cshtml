@@ -1,0 +1,95 @@
+@model EImece.Domain.Entities.Product
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using Resources
+@{
+    var d = Model;
+    var controllerName = ViewData["controllerName"].ToStr("Products");
+    var hasSpecs = d.ProductCategory != null
+        && d.ProductCategory.TemplateId.HasValue
+        && d.ProductCategory.TemplateId > 0;
+    var hasComments = d.ProductComments.IsNotEmpty();
+}
+<div class="eg-actions btn-group">
+    <button type="button"
+            class="btn btn-default btn-sm dropdown-toggle eg-actions-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+        İşlemler <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right eg-actions-menu">
+        <li>
+            <a href="@Url.Action("Media", controllerName, new { Id = d.Id })">
+                <i class="glyphicon glyphicon-camera"></i> @AdminResource.GridImagesText
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("SaveOrEdit", controllerName, new { id = d.Id })">
+                <i class="glyphicon glyphicon-pencil"></i> @AdminResource.GridEditText
+            </a>
+        </li>
+        @if (hasSpecs)
+        {
+            <li>
+                <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = d.Id })">
+                    <i class="glyphicon glyphicon-plus"></i> Specs
+                </a>
+            </li>
+        }
+        @if (hasComments)
+        {
+            <li>
+                <a href="@Url.Action("Index", "ProductComments", new { Id = d.Id })">
+                    <i class="glyphicon glyphicon-user"></i> Yorumlar
+                </a>
+            </li>
+        }
+        @if (UserRoleHelper.IsDeletedEnableRoles())
+        {
+            <li class="divider"></li>
+            <li class="eg-actions-danger">
+                @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+                    { "ItemId", d.Id },
+                    { "controllerName", controllerName },
+                    { "DeleteIcon", "" },
+                    { "ItemDescription", d.Name },
+                    { "gridDeleteText", AdminResource.GridDeleteText }
+                })
+            </li>
+        }
+    </ul>
+</div>
+<div class="eg-actions-compact" aria-hidden="true">
+    <a href="@Url.Action("Media", controllerName, new { Id = d.Id })"
+       class="btn btn-default btn-xs" title="@AdminResource.GridImagesText">
+        <i class="glyphicon glyphicon-camera"></i>
+    </a>
+    <a href="@Url.Action("SaveOrEdit", controllerName, new { id = d.Id })"
+       class="btn btn-primary btn-xs" title="@AdminResource.GridEditText">
+        <i class="glyphicon glyphicon-pencil"></i>
+    </a>
+    @if (hasSpecs)
+    {
+        <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = d.Id })"
+           class="btn btn-default btn-xs" title="Specs">
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
+    }
+    @if (UserRoleHelper.IsDeletedEnableRoles())
+    {
+        @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
+            { "ItemId", d.Id },
+            { "controllerName", controllerName },
+            { "DeleteIcon", "btn btn-danger btn-xs glyphicon glyphicon-remove-circle" },
+            { "ItemDescription", d.Name }
+        })
+    }
+    @if (hasComments)
+    {
+        <a href="@Url.Action("Index", "ProductComments", new { Id = d.Id })"
+           class="btn btn-default btn-xs" title="Yorumlar">
+            <i class="glyphicon glyphicon-user"></i>
+        </a>
+    }
+</div>

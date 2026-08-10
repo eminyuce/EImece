@@ -1,0 +1,27 @@
+@model EImece.Domain.Entities.Product
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers.HtmlHelpers
+@using Resources
+@{
+    var product = Model;
+    var categoryName = product.ProductCategory != null ? product.ProductCategory.Name : "";
+    var seoCategory = GeneralHelper.GetUrlSeoString(categoryName);
+}
+<div class="eg-name-cell">
+    <a class="eg-name-link"
+       href="@Url.Action("Detail", "Products", new { area = "", categoryName = seoCategory, id = product.GetSeoUrl() })"
+       target="_blank"
+       rel="noopener">@product.Name</a>
+    <div class="eg-name-meta">
+        @Html.GridMeta("ID", product.Id.ToString())
+        @if (!string.IsNullOrEmpty(product.ProductCode))
+        {
+            @Html.GridMeta(AdminResource.ProductCode, product.ProductCode)
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(product.NameLong))
+    {
+        <div class="eg-name-sub">@product.NameLong</div>
+    }
+</div>

@@ -7,6 +7,7 @@
 @using EImece.Domain;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers.HtmlHelpers;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
 @using System.Globalization;
@@ -16,7 +17,7 @@
 
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ?  0 : AppConfig.GridPageSizeNumber * (gridPage-1);  
+    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
 
     var controllerName = "Products";
     var gridName = "productGrid";
@@ -98,6 +99,42 @@
     string clearFiltersUrl = Url.Action("Index", "Products", new { id = categoryIdForFilter, search = search });
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
 
+    string quickChipIsActiveUrl = Url.Action("Index", "Products", new
+    {
+        id = categoryIdForFilter,
+        brandId = selectedBrandId > 0 ? (int?)selectedBrandId : null,
+        search = string.IsNullOrEmpty(search) ? null : search,
+        state = string.IsNullOrEmpty(selectedState) ? null : selectedState,
+        isActive = filterIsActive ? null : (bool?)true,
+        mainPage = filterMainPage ? (bool?)true : null,
+        isCampaign = filterIsCampaign ? (bool?)true : null,
+        minPrice = priceEnabled ? minPrice : null,
+        maxPrice = priceEnabled ? maxPrice : null
+    });
+    string quickChipMainPageUrl = Url.Action("Index", "Products", new
+    {
+        id = categoryIdForFilter,
+        brandId = selectedBrandId > 0 ? (int?)selectedBrandId : null,
+        search = string.IsNullOrEmpty(search) ? null : search,
+        state = string.IsNullOrEmpty(selectedState) ? null : selectedState,
+        isActive = filterIsActive ? (bool?)true : null,
+        mainPage = filterMainPage ? null : (bool?)true,
+        isCampaign = filterIsCampaign ? (bool?)true : null,
+        minPrice = priceEnabled ? minPrice : null,
+        maxPrice = priceEnabled ? maxPrice : null
+    });
+    string quickChipCampaignUrl = Url.Action("Index", "Products", new
+    {
+        id = categoryIdForFilter,
+        brandId = selectedBrandId > 0 ? (int?)selectedBrandId : null,
+        search = string.IsNullOrEmpty(search) ? null : search,
+        state = string.IsNullOrEmpty(selectedState) ? null : selectedState,
+        isActive = filterIsActive ? (bool?)true : null,
+        mainPage = filterMainPage ? (bool?)true : null,
+        isCampaign = filterIsCampaign ? null : (bool?)true,
+        minPrice = priceEnabled ? minPrice : null,
+        maxPrice = priceEnabled ? maxPrice : null
+    });
 }
 <h2>@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
@@ -342,6 +379,23 @@
                 preserveQuery["maxPrice"] = maxPrice.Value.ToString(CultureInfo.InvariantCulture);
             }
         }
+
+        <div class="eg-quick-filters" aria-label="Hızlı filtreler">
+            <a class="eg-quick-chip @(filterIsActive ? "is-active" : "")" href="@quickChipIsActiveUrl">
+                @AdminResource.IsActive
+            </a>
+            <a class="eg-quick-chip @(filterMainPage ? "is-active" : "")" href="@quickChipMainPageUrl">
+                @AdminResource.MainPage
+            </a>
+            <a class="eg-quick-chip @(filterIsCampaign ? "is-active" : "")" href="@quickChipCampaignUrl">
+                @AdminResource.IsCampaign
+            </a>
+            @if (hasAdvancedFilter || !string.IsNullOrEmpty(search))
+            {
+                <a class="eg-quick-chip" href="@clearFiltersUrl">@AdminResource.Clear</a>
+            }
+        </div>
+
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
                             {"controllerName",controllerName}
             ,{"StateTypes","State,ImageState,MainPage,IsCampaign"}
@@ -354,48 +408,47 @@
             ,{"IdValueExists",true}
             ,{"PreserveQuery",preserveQuery}})
 
-        @Html.ActionLink(AdminResource.MoveProductsInTrees, "MoveProductsInTrees")
-        <div class="panel panel-primary">
+        <div class="eg-products-toolbar-gap">
+            @Html.ActionLink(AdminResource.MoveProductsInTrees, "MoveProductsInTrees", null, new { @class = "eg-products-move-link" })
+        </div>
+
+        @Html.Partial("Grid/_GridChrome")
+
+        <div class="panel panel-primary eg-grid-shell">
 
             @Html.Partial("pGridDropDown", baseList)
 
             @Html.Grid(contents).Named(gridName).Columns(columns =>
        {
-       columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+           columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
+    .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
 
-       columns.Add(o => o.Id, true);
+           columns.Add(o => o.Id, true);
 
-       columns.Add()
-                      .Encoded(false)
-                      .Sanitized(false)
-                       .Css("gridButtons")
-                      .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+           columns.Add()
+                          .Encoded(false)
+                          .Sanitized(false)
+                           .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
+                          .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-       columns.Add(c => c.Name)
-          .Titled(AdminResource.Name)
-          .Filterable(true)
-           .Encoded(false)
-            .Sanitized(false)
-      .RenderValueAs(d =>
-                        @<div>
+           columns.Add()
+              .Titled(AdminResource.Images)
+              .Encoded(false)
+              .Sanitized(false)
+              .Css("eg-col-image")
+              .RenderValueAs(o => Html.Partial("Grid/_GridImageCell", o));
 
-                            @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory != null ? d.ProductCategory.Name : ""), id = d.GetSeoUrl() }, new { @class = "", @target = "_blank" })
-                            @if (!string.IsNullOrEmpty(d.NameLong))
-                                 {
-                                <div style="max-width:220px">
-                                    @string.Format("{0}", d.NameLong)
-                                </div>
-                                 }
-                            <div>
-                                @GridToolsColumnAlt(d, controllerName)
-                            </div>
-                        </div>
-
-);
+           columns.Add(c => c.Name)
+              .Titled(AdminResource.Name)
+              .Filterable(true)
+               .Encoded(false)
+                .Sanitized(false)
+                .Css("eg-col-name")
+          .RenderValueAs(d => Html.Partial("Grid/_GridNameCell", d));
 
            columns.Add(c => c.ProductCategory)
            .Titled(AdminResource.ProductCategory)
@@ -417,20 +470,18 @@
                Sanitized(false).
                Sortable(true).
                Encoded(false).
-               RenderValueAs(o => DisplayPriceColumn(o));
+               Css("eg-col-price").
+               RenderValueAs(o => Html.Partial("Grid/_GridPriceCell", o));
 
            }
-
-           columns.Add(c => c.ProductCode)
-           .Titled(AdminResource.ProductCode);
 
            columns.Add(o => o.State)
             .Titled(AdminResource.ProductState)
             .Sortable(true)
-            .Css("smallGridColumn")
+            .Css("smallGridColumn eg-col-state")
             .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
             Sanitized(false)
-            .RenderValueAs(o => String.Format("<div  Product-State-Id='{0}'    name='ProductState'>{1}</div>", o.Id, GetProductStateResourceText(o.StateEnum)));
+            .RenderValueAs(o => String.Format("<div class='eg-state-badge' Product-State-Id='{0}' name='ProductState'>{1}</div>", o.Id, GetProductStateResourceText(o.StateEnum)));
 
            columns.Add(o => o.Position).Titled(AdminResource.Position)
      .Encoded(false).
@@ -441,130 +492,24 @@
            columns.Add(o => o.IsActive)
            .Titled(AdminResource.IsActive)
            .Sortable(true)
-           .Css("smallGridColumn")
+           .Css("smallGridColumn eg-col-status")
            .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
            Sanitized(false)
-           .RenderValueAs(o => GridImageActiveColumn(o, controllerName));
+           .RenderValueAs(o => Html.Partial("Grid/_GridStatusGroup", o));
 
-           columns.Add(r => r.ImageState)
-           .Titled(AdminResource.Images)
+           columns.Add()
+           .Titled("İşlemler")
            .Encoded(false)
            .Sanitized(false)
-           .Css("smallGridColumn")
-           .RenderValueAs(o => GridImageColumn(o, controllerName));
+           .Css("eg-sticky-right eg-col-actions")
+           .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", d, new ViewDataDictionary(ViewData){
+               {"controllerName", controllerName}
+           }));
 
        }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
         </div>
     </div>
 </div>
-@helper DisplayPriceColumn(Product o)
-{
-    if (o.HasDiscount)
-    {
-        <span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
-        <br />
-        <span class="badge badge-pill badge-warning mr-2 mb-2">
-            @string.Format("%{0} {1}", o.DiscountPercentage, Resource.Discount)
-        </span>
-        <br />
-        <del class="lead text-muted mr-2">
-            @o.Price.CurrencySign()
-        </del>
-
-    }
-    else
-    {
-        <span class="text-primary">@o.PriceWithDiscount.CurrencySign()</span>
-    }
-
-}
-@helper GridImageActiveColumn(Product o, String controllerName)
-{
-    <ul>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'></span><span>{3}</span>",
-                                                    o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive, AdminResource.IsActive))
-        </li>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanMainPage'></span><span>{3}</span>",
-                                                    o.Id, (o.MainPage ? Constants.OkStyle : Constants.CancelStyle), o.MainPage, AdminResource.MainPage))
-        </li>
-        <li>
-            @Html.Raw(String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanIsCampaign'></span><span>{3}</span>",
-                                                    o.Id, (o.IsCampaign ? Constants.OkStyle : Constants.CancelStyle), o.IsCampaign, AdminResource.IsCampaign))
-        </li>
-    </ul>
-
-}
-
-@helper GridImageColumn(Product o, String controllerName)
-{
-    Boolean IsMainImageExists = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
-    if (IsMainImageExists)
-    {
-        <ul>
-            <li>
-                @Html.Raw(String.Format("<span>{3}</span><span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanImageState'></span>",
-                                                        o.Id, (o.ImageState ? Constants.OkStyle : Constants.CancelStyle), o.ImageState, AdminResource.ImageState))
-            </li>
-            <li>
-                @Html.Partial("pGridImageMainPage", o)
-            </li>
-        </ul>
-    }
-    else
-    {
-        <ul>
-            <li>
-                <b style="font-size:0.8em;">
-
-                    @AdminResource.NoImage
-                </b>
-            </li>
-        </ul>
-
-    }
-
-}
-
-@helper GridToolsColumnAlt(Product d, String controllerName)
-{
-
-    <div class="gridToolBox">
-
-        <span>
-            @Html.ActionLink(" ", "Media", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-camera glyphicon-white " })
-        </span>
-        <span>
-            @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "gridBtn btn btn-primary btn-xs   glyphicon glyphicon-pencil glyphicon-white " })
-        </span>
-        @if (d.ProductCategory.TemplateId.HasValue && d.ProductCategory.TemplateId > 0)
-        {
-            <span>
-                @Html.ActionLink(" ", "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "gridBtn btn btn-xs  btn-default   glyphicon glyphicon-plus" })
-            </span>
-        }
-        @if (UserRoleHelper.IsDeletedEnableRoles())
-        {
-            <span>
-                @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-           { "ItemId", d.Id },
-           {"controllerName",controllerName},
-           { "DeleteIcon", "gridBtn btn btn-danger btn-xs glyphicon  glyphicon-remove-circle" },
-           { "ItemDescription", d.Name }
-
-           })
-            </span>
-        }
-        @if (d.ProductComments.IsNotEmpty())
-        {
-            <span>
-                @Html.ActionLink(" ", "Index", "ProductComments", new { Id = d.Id }, new { @class = "gridBtn btn  btn-default btn-xs     glyphicon glyphicon-user glyphicon-white " })
-            </span>
-        }
-    </div>
-
-}
 
 @section Scripts{
     <script>

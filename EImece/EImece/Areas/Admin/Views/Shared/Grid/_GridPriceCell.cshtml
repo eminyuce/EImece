@@ -1,0 +1,18 @@
+@model EImece.Domain.Entities.Product
+@using EImece.Domain.Helpers.Extensions
+@using Resources
+@{
+    var o = Model;
+}
+<div class="eg-price-cell">
+    @if (o.HasDiscount)
+    {
+        <div class="eg-price-current">@o.PriceWithDiscount.CurrencySign()</div>
+        <span class="eg-price-discount">%@o.DiscountPercentage @Resource.Discount</span>
+        <div class="eg-price-was"><del>@o.Price.CurrencySign()</del></div>
+    }
+    else
+    {
+        <div class="eg-price-current">@o.PriceWithDiscount.CurrencySign()</div>
+    }
+</div>

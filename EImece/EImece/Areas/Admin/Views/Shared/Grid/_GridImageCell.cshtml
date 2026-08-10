@@ -1,0 +1,38 @@
+@model EImece.Domain.Entities.Product
+@using EImece.Domain
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers.HtmlHelpers
+@using Resources
+@{
+    var o = Model;
+    var hasImage = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
+    var thumbUrl = hasImage ? o.GetCroppedImageUrl(o.MainImageId, 72, 72, false, true) : "";
+}
+<div class="eg-image-cell">
+    <div class="eg-thumb @(hasImage ? "" : "is-placeholder")">
+        @if (hasImage && !string.IsNullOrEmpty(thumbUrl))
+        {
+            <img src="@thumbUrl" alt="" width="48" height="48" loading="lazy" />
+        }
+        else
+        {
+            <span class="eg-thumb-placeholder" aria-hidden="true">
+                <i class="glyphicon glyphicon-picture"></i>
+            </span>
+        }
+    </div>
+    <div class="eg-image-meta">
+        @Html.GridStatusToggle(o.Id, o.ImageState, "ImageState", AdminResource.ImageState, "Resim")
+        @if (hasImage)
+        {
+            <div class="eg-image-actions">
+                @Html.Partial("pGridImageMainPage", o)
+            </div>
+        }
+        else
+        {
+            <span class="eg-image-none">@AdminResource.NoImage</span>
+        }
+    </div>
+</div>
