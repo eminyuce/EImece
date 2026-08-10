@@ -5,26 +5,34 @@
 @{
     var d = Model;
     var controllerName = ViewData["controllerName"].ToStr("Products");
-    var hasSpecs = d.ProductCategory != null
+    var itemId = d != null ? d.Id : ViewData["ItemId"].ToInt();
+    var itemName = d != null ? d.Name : ViewData["ItemName"].ToStr();
+    var showMedia = ViewData["ShowMedia"].ToBool(d != null);
+    var showEdit = ViewData["ShowEdit"].ToBool(true);
+    var showDelete = ViewData["ShowDelete"].ToBool(true);
+    var hasSpecs = d != null
+        && d.ProductCategory != null
         && d.ProductCategory.TemplateId.HasValue
         && d.ProductCategory.TemplateId > 0;
-    var hasComments = d.ProductComments.IsNotEmpty();
+    var hasComments = d != null && d.ProductComments.IsNotEmpty();
+    var hasDelete = showDelete && UserRoleHelper.IsDeletedEnableRoles();
+    var hasMenuItems = showMedia || showEdit || hasSpecs || hasComments || hasDelete;
 
-    // ViewDataDictionary collection initializers call Add() and throw if a key already exists
-    // in the copied parent ViewData (e.g. controllerName from Index).
     var deleteMenuVd = new ViewDataDictionary(ViewData);
-    deleteMenuVd["ItemId"] = d.Id;
+    deleteMenuVd["ItemId"] = itemId;
     deleteMenuVd["controllerName"] = controllerName;
     deleteMenuVd["DeleteIcon"] = "";
-    deleteMenuVd["ItemDescription"] = d.Name;
+    deleteMenuVd["ItemDescription"] = itemName;
     deleteMenuVd["gridDeleteText"] = AdminResource.GridDeleteText;
 
     var deleteCompactVd = new ViewDataDictionary(ViewData);
-    deleteCompactVd["ItemId"] = d.Id;
+    deleteCompactVd["ItemId"] = itemId;
     deleteCompactVd["controllerName"] = controllerName;
     deleteCompactVd["DeleteIcon"] = "btn btn-danger btn-xs glyphicon glyphicon-remove-circle";
-    deleteCompactVd["ItemDescription"] = d.Name;
+    deleteCompactVd["ItemDescription"] = itemName;
 }
+@if (hasMenuItems)
+{
 <div class="eg-actions btn-group">
     <button type="button"
             class="btn btn-default btn-sm dropdown-toggle eg-actions-toggle"
@@ -36,20 +44,26 @@
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right eg-actions-menu">
-        <li>
-            <a href="@Url.Action("Media", controllerName, new { Id = d.Id })">
-                <i class="glyphicon glyphicon-camera"></i> @AdminResource.GridImagesText
-            </a>
-        </li>
-        <li>
-            <a href="@Url.Action("SaveOrEdit", controllerName, new { id = d.Id })">
-                <i class="glyphicon glyphicon-pencil"></i> @AdminResource.GridEditText
-            </a>
-        </li>
+        @if (showMedia)
+        {
+            <li>
+                <a href="@Url.Action("Media", controllerName, new { Id = itemId })">
+                    <i class="glyphicon glyphicon-camera"></i> @AdminResource.GridImagesText
+                </a>
+            </li>
+        }
+        @if (showEdit)
+        {
+            <li>
+                <a href="@Url.Action("SaveOrEdit", controllerName, new { id = itemId })">
+                    <i class="glyphicon glyphicon-pencil"></i> @AdminResource.GridEditText
+                </a>
+            </li>
+        }
         @if (hasSpecs)
         {
             <li>
-                <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = d.Id })"
+                <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
                    title="@AdminResource.ProductSpecs">
                     <i class="glyphicon glyphicon-plus"></i> Özellikler
                 </a>
@@ -58,14 +72,17 @@
         @if (hasComments)
         {
             <li>
-                <a href="@Url.Action("Index", "ProductComments", new { Id = d.Id })">
+                <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })">
                     <i class="glyphicon glyphicon-user"></i> Yorumlar
                 </a>
             </li>
         }
-        @if (UserRoleHelper.IsDeletedEnableRoles())
+        @if (hasDelete)
         {
-            <li class="divider"></li>
+            if (showMedia || showEdit || hasSpecs || hasComments)
+            {
+                <li class="divider"></li>
+            }
             <li class="eg-actions-danger">
                 @Html.Partial("pDeleteModal", deleteMenuVd)
             </li>
@@ -73,30 +90,37 @@
     </ul>
 </div>
 <div class="eg-actions-compact" aria-hidden="true">
-    <a href="@Url.Action("Media", controllerName, new { Id = d.Id })"
-       class="btn btn-default btn-xs" title="@AdminResource.GridImagesText">
-        <i class="glyphicon glyphicon-camera"></i>
-    </a>
-    <a href="@Url.Action("SaveOrEdit", controllerName, new { id = d.Id })"
-       class="btn btn-primary btn-xs" title="@AdminResource.GridEditText">
-        <i class="glyphicon glyphicon-pencil"></i>
-    </a>
+    @if (showMedia)
+    {
+        <a href="@Url.Action("Media", controllerName, new { Id = itemId })"
+           class="btn btn-default btn-xs" title="@AdminResource.GridImagesText">
+            <i class="glyphicon glyphicon-camera"></i>
+        </a>
+    }
+    @if (showEdit)
+    {
+        <a href="@Url.Action("SaveOrEdit", controllerName, new { id = itemId })"
+           class="btn btn-primary btn-xs" title="@AdminResource.GridEditText">
+            <i class="glyphicon glyphicon-pencil"></i>
+        </a>
+    }
     @if (hasSpecs)
     {
-        <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = d.Id })"
+        <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
            class="btn btn-default btn-xs" title="@AdminResource.ProductSpecs">
             <i class="glyphicon glyphicon-plus"></i>
         </a>
     }
-    @if (UserRoleHelper.IsDeletedEnableRoles())
+    @if (hasDelete)
     {
         @Html.Partial("pDeleteModal", deleteCompactVd)
     }
     @if (hasComments)
     {
-        <a href="@Url.Action("Index", "ProductComments", new { Id = d.Id })"
+        <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })"
            class="btn btn-default btn-xs" title="Yorumlar">
             <i class="glyphicon glyphicon-user"></i>
         </a>
     }
 </div>
+}

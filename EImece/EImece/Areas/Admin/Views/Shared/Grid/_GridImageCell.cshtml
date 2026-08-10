@@ -1,4 +1,4 @@
-@model EImece.Domain.Entities.Product
+@model EImece.Domain.Entities.BaseContent
 @using EImece.Domain
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
@@ -8,6 +8,7 @@
     var o = Model;
     var hasImage = FilesHelper.IsMainImageExists(o.MainImageId, o.MainImage);
     var thumbUrl = hasImage ? o.GetCroppedImageUrl(o.MainImageId, 72, 72, false, true) : "";
+    bool showImageState = ViewData["ShowImageState"].ToBool(true);
 }
 <div class="eg-image-cell">
     <div class="eg-thumb @(hasImage ? "" : "is-placeholder")">
@@ -23,7 +24,10 @@
         }
     </div>
     <div class="eg-image-meta">
-        @Html.GridStatusToggle(o.Id, o.ImageState, "ImageState", AdminResource.ImageState, "Resim")
+        @if (showImageState)
+        {
+            @Html.GridStatusToggle(o.Id, o.ImageState, "ImageState", AdminResource.ImageState, "Resim")
+        }
         @if (hasImage)
         {
             <div class="eg-image-actions">
