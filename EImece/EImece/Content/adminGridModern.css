@@ -987,8 +987,8 @@ body.admin-app .eg-grid .grid-filter-btn {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
+    gap: 6px;
+    padding: 6px 8px;
     background: #fff;
     border: 1px solid var(--eg-border);
     border-radius: 10px;
@@ -1000,11 +1000,11 @@ body.admin-app .eg-grid .grid-filter-btn {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     background: transparent;
     border: 0;
     border-radius: 0;
-    padding: 0 10px 0 0;
+    padding: 0 8px 0 0;
     margin: 0;
     border-right: 1px solid var(--eg-border);
 }
@@ -1022,7 +1022,7 @@ body.admin-app .eg-grid .grid-filter-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 5px;
     height: 32px;
     padding: 0 11px;
     border-radius: 7px;
@@ -1033,9 +1033,21 @@ body.admin-app .eg-grid .grid-filter-btn {
     box-shadow: none;
 }
 
+/* Second-line bulk toolbar: slightly smaller controls */
+.admin-grid-ops.eg-bulk-bar .eg-ops-toolbar .eg-ops-btn {
+    height: 28px;
+    padding: 0 8px;
+    border-radius: 6px;
+    font-size: 11px;
+}
+
 .admin-grid-ops.eg-bulk-bar .eg-ops-btn > i {
     font-size: 12px;
     opacity: 0.9;
+}
+
+.admin-grid-ops.eg-bulk-bar .eg-ops-toolbar .eg-ops-btn > i {
+    font-size: 11px;
 }
 
 .admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-default {
@@ -1093,6 +1105,17 @@ body.admin-app .eg-grid .grid-filter-btn {
     font-weight: 600;
     line-height: 30px;
     box-shadow: none;
+}
+
+.admin-grid-ops.eg-bulk-bar .eg-ops-toolbar .eg-ops-select,
+.admin-grid-ops.eg-bulk-bar .eg-ops-toolbar select.admin-grid-state-select {
+    height: 28px;
+    min-width: 120px;
+    max-width: 170px;
+    padding: 0 22px 0 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 26px;
 }
 
 .admin-grid-ops.eg-bulk-bar .eg-ops-select-wide {
