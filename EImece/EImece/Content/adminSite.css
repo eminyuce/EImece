@@ -653,24 +653,108 @@ input[name='checkboxGrid'] {
     margin-bottom: 1px;
 }
 
-.checkbox label {
-    padding-left: 0px;
+/*
+ * Form-horizontal boolean fields: use a clear native checkbox.
+ * checkBoxStyle.css draws a custom box via label::before and expects
+ * <input> + <label> siblings (grid/tag pickers). Nested EditorFor(bool)
+ * inside <label> plus Bootstrap's absolute positioning made the control
+ * look broken on System Settings and similar admin forms.
+ */
+body.admin-app .form-horizontal .checkbox,
+body.admin-app .form-horizontal .checkbox.admin-bool-field {
+    padding-left: 0;
+    margin: 0;
+    min-height: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 10px;
 }
-    .checkbox label::before {
-        border: 1px solid #000000;
-    }
 
-/* Bare EditorFor(bool) checkboxes must stay in normal flow. Bootstrap's
-   .checkbox input { position:absolute; margin-left:-20px } is for inputs
-   nested inside a padded <label> and breaks form-horizontal columns. */
-.form-horizontal .checkbox > input[type="checkbox"],
-.form-horizontal .checkbox > input.check-box,
-.form-horizontal .col-md-10 > input[type="checkbox"],
-.form-horizontal .col-md-10 > input.check-box {
+body.admin-app .form-horizontal .form-group:has(> [class*="col-"] > .checkbox) > .control-label {
+    padding-top: 8px;
+}
+
+body.admin-app .form-horizontal .checkbox label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 0 !important;
+    margin: 0;
+    font-weight: 500;
+    line-height: 18px;
+    color: #334e68;
+    position: relative;
+    cursor: pointer;
+}
+
+body.admin-app .form-horizontal .checkbox label::before,
+body.admin-app .form-horizontal .checkbox label::after {
+    content: none !important;
+    display: none !important;
+    border: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+}
+
+body.admin-app .form-horizontal .checkbox input[type="checkbox"],
+body.admin-app .form-horizontal .checkbox input.check-box,
+body.admin-app .form-horizontal .col-md-9 > input[type="checkbox"],
+body.admin-app .form-horizontal .col-md-9 > input.check-box,
+body.admin-app .form-horizontal .col-md-10 > input[type="checkbox"],
+body.admin-app .form-horizontal .col-md-10 > input.check-box {
     position: static !important;
-    margin-left: 0 !important;
-    margin-top: 7px;
+    float: none !important;
+    margin: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
+    max-width: none !important;
+    opacity: 1 !important;
+    accent-color: #2b6cb0;
+    cursor: pointer;
+    flex-shrink: 0;
     vertical-align: middle;
+}
+
+/* MVC CheckBoxFor emits a hidden false-value input; keep it out of flex flow */
+body.admin-app .form-horizontal .checkbox input[type="hidden"] {
+    display: none !important;
+}
+
+body.admin-app .form-horizontal .checkbox > input[type="checkbox"] + .field-validation-error,
+body.admin-app .form-horizontal .checkbox > input.check-box + .field-validation-error,
+body.admin-app .form-horizontal .checkbox > input[type="checkbox"] + .field-validation-valid,
+body.admin-app .form-horizontal .checkbox > input.check-box + .field-validation-valid,
+body.admin-app .form-horizontal .checkbox > input[type="hidden"] + .field-validation-error,
+body.admin-app .form-horizontal .checkbox > input[type="hidden"] + .field-validation-valid {
+    margin-left: 0;
+    flex-basis: 100%;
+}
+
+/* Report filter panels share the same nested-label checkbox markup */
+body.admin-app .report-filter-panel .checkbox label::before,
+body.admin-app .report-filter-panel .checkbox label::after {
+    content: none !important;
+    display: none !important;
+    border: 0 !important;
+}
+
+body.admin-app .report-filter-panel .checkbox label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 0 !important;
+}
+
+body.admin-app .report-filter-panel .checkbox input[type="checkbox"] {
+    position: static !important;
+    margin: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    max-width: none !important;
+    opacity: 1 !important;
+    accent-color: #2b6cb0;
 }
 
 .form-horizontal .CodeMirror {

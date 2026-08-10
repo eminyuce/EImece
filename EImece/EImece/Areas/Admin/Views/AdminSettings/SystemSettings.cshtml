@@ -105,10 +105,9 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.IsProductPriceEnable, htmlAttributes: new { @class = "control-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="checkbox" style="padding-top:7px;">
-                                        <label>
-                                            @Html.EditorFor(model => model.IsProductPriceEnable) Ürün Fiyatları Gösterilsin mi?
-                                        </label>
+                                    <div class="checkbox admin-bool-field">
+                                        @Html.CheckBoxFor(model => model.IsProductPriceEnable)
+                                        <label for="IsProductPriceEnable">Ürün fiyatları sitede gösterilsin</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.IsProductPriceEnable, "", new { @class = "text-danger" })
                                 </div>
@@ -116,10 +115,9 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.IsProductReviewEnable, htmlAttributes: new { @class = "control-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="checkbox" style="padding-top:7px;">
-                                        <label>
-                                            @Html.EditorFor(model => model.IsProductReviewEnable) Ürün Yorumları Açılsın mı?
-                                        </label>
+                                    <div class="checkbox admin-bool-field">
+                                        @Html.CheckBoxFor(model => model.IsProductReviewEnable)
+                                        <label for="IsProductReviewEnable">Ürün yorumları açılsın</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.IsProductReviewEnable, "", new { @class = "text-danger" })
                                 </div>
@@ -221,10 +219,9 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.AdminEmailEnableSsl, htmlAttributes: new { @class = "control-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="checkbox" style="padding-top:7px;">
-                                        <label>
-                                            @Html.EditorFor(model => model.AdminEmailEnableSsl) SSL Kullanılsın mı?
-                                        </label>
+                                    <div class="checkbox admin-bool-field">
+                                        @Html.CheckBoxFor(model => model.AdminEmailEnableSsl)
+                                        <label for="AdminEmailEnableSsl">SMTP bağlantısında SSL kullanılsın</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminEmailEnableSsl, "", new { @class = "text-danger" })
                                 </div>
