@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@model EImece.Domain.Models.FrontModels.MenuPageViewModel
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
@@ -24,19 +24,14 @@
 
 <div class="page-title-wrapper" role="region" aria-label="Page title">
     <div class="container">
-        <div class="alert alert-secondary" role="alert">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="mt-n1 mr-1"><i data-feather="home"></i></li>
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        @menu.Name
-                    </li>
-                </ol>
-            </nav>
-        </div>
+        <nav class="crizal-breadcrumb" aria-label="breadcrumb">
+            <ol class="crizal-breadcrumb__list breadcrumb">
+                @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
+                <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+                    <span class="crizal-breadcrumb__current">@menu.Name</span>
+                </li>
+            </ol>
+        </nav>
         <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
     </div>

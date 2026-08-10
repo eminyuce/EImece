@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
@@ -10,12 +10,7 @@
 
 <nav class="crizal-breadcrumb" aria-label="breadcrumb">
     <ol class="crizal-breadcrumb__list breadcrumb">
-        <li class="crizal-breadcrumb__item breadcrumb-item">
-            <a href="@Url.Action("Index", "Home")" class="crizal-breadcrumb__link">
-                <i data-feather="home" aria-hidden="true"></i>
-                <span>@Resource.HomePage</span>
-            </a>
-        </li>
+        @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
         @for (int i = categories.Count() - 1; i >= 0; i--)
         {
             var category = categories[i];

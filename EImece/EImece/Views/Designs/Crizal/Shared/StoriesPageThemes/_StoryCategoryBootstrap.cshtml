@@ -12,9 +12,7 @@
     <div class="container">
         <nav class="crizal-breadcrumb" aria-label="breadcrumb">
             <ol class="crizal-breadcrumb__list breadcrumb">
-                <li class="crizal-breadcrumb__item breadcrumb-item">
-                    <a href="@Url.Action("Index", "Home")" class="crizal-breadcrumb__link">@Resource.HomePage</a>
-                </li>
+                @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
                 <li class="crizal-breadcrumb__item breadcrumb-item">
                     <a href="@Url.Action("Index", "Stories")" class="crizal-breadcrumb__link">@Resource.StoryCategories</a>
                 </li>

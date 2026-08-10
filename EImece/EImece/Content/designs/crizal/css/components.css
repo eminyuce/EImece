@@ -1044,60 +1044,94 @@ body[data-design="crizal"] .page-title-wrapper hr {
     border-color: var(--crizal-border);
 }
 
-/* ---------- Crizal breadcrumb ---------- */
+/* ---------- Crizal breadcrumb ----------
+   Intent: single optical baseline for icon + labels + › separators;
+   beat Bootstrap .breadcrumb-item quirks; no feather.js dependency. */
 body[data-design="crizal"] .crizal-breadcrumb {
-    margin: 0 0 1rem;
+    margin: 0 0 0.85rem;
 }
 
-body[data-design="crizal"] .crizal-breadcrumb__list.breadcrumb {
-    display: flex;
+body[data-design="crizal"] .crizal-breadcrumb__list.breadcrumb,
+body[data-design="crizal"] .page-title-wrapper .crizal-breadcrumb__list.breadcrumb {
+    display: flex !important;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.1rem 0;
+    column-gap: 0;
+    row-gap: 0.35rem;
     margin: 0;
-    padding: 0 0 0.85rem;
+    padding: 0 0 0.75rem;
     list-style: none;
-    background: transparent;
+    background: transparent !important;
     border: 0;
-    border-bottom: 1px solid var(--crizal-border);
     border-radius: 0;
+    border-bottom: 1px solid var(--crizal-border);
 }
 
-body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item {
-    display: inline-flex;
+body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item,
+body[data-design="crizal"] .page-title-wrapper .crizal-breadcrumb__item.breadcrumb-item {
+    display: inline-flex !important;
+    flex-direction: row;
     align-items: center;
+    align-self: center;
     max-width: 100%;
+    margin: 0;
+    padding: 0 !important;
     font-size: 0.875rem;
-    line-height: 1.35;
+    line-height: 1.2;
     color: var(--crizal-muted);
+    float: none !important;
 }
 
-body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item + .breadcrumb-item {
-    padding-left: 0;
+body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item + .breadcrumb-item,
+body[data-design="crizal"] .page-title-wrapper .crizal-breadcrumb__item.breadcrumb-item + .breadcrumb-item {
+    padding-left: 0 !important;
 }
 
-body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item + .breadcrumb-item::before {
-    content: "âº";
-    padding: 0 0.55rem;
-    color: rgba(122, 125, 154, 0.85);
+body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item + .breadcrumb-item::before,
+body[data-design="crizal"] .page-title-wrapper .crizal-breadcrumb__item.breadcrumb-item + .breadcrumb-item::before {
+    /* Encoding-safe › (U+203A) */
+    content: "\203A" !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    float: none !important;
+    width: auto;
+    height: 1.2em;
+    margin: 0;
+    padding: 0 0.5rem !important;
+    color: rgba(122, 125, 154, 0.75) !important;
+    font-size: 0.95em;
     font-weight: 600;
-    float: none;
+    line-height: 1;
+    vertical-align: middle;
 }
 
-/* Product name already shown as H1 â keep trail short on small screens */
+/* Product name already shown as H1 — keep trail short on small screens */
 @media (max-width: 767.98px) {
     body[data-design="crizal"] .crizal-product-hero .crizal-breadcrumb__item.active {
-        display: none;
+        display: none !important;
+    }
+
+    body[data-design="crizal"] .page-title-wrapper .crizal-breadcrumb__item.active .crizal-breadcrumb__current {
+        max-width: min(48vw, 12rem);
     }
 }
 
 body[data-design="crizal"] .crizal-breadcrumb__link {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
-    gap: 0.35rem;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    min-height: 1.2em;
     color: var(--crizal-heading);
     text-decoration: none;
     font-weight: 600;
+    line-height: 1.2;
+}
+
+body[data-design="crizal"] .crizal-breadcrumb__link span {
+    display: inline-block;
+    line-height: 1.2;
 }
 
 body[data-design="crizal"] .crizal-breadcrumb__link:hover {
@@ -1105,20 +1139,41 @@ body[data-design="crizal"] .crizal-breadcrumb__link:hover {
 }
 
 body[data-design="crizal"] .crizal-breadcrumb__link svg,
+body[data-design="crizal"] .crizal-breadcrumb__link .crizal-breadcrumb__home,
 body[data-design="crizal"] .crizal-breadcrumb__link i {
-    width: 14px;
-    height: 14px;
-    stroke-width: 2;
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    stroke-width: 2.25;
+    /* Roof peak makes the glyph top-heavy; nudge to match text x-height */
+    transform: translateY(1.5px);
+}
+
+/* Feather.js is not loaded on storefront — draw a home glyph when only a bare <i> remains */
+body[data-design="crizal"] .crizal-breadcrumb__link i[data-feather="home"]:not(:has(svg)) {
+    display: block !important;
+    position: relative;
+    overflow: hidden;
+    color: inherit;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 body[data-design="crizal"] .crizal-breadcrumb__current {
     display: inline-block;
-    max-width: min(42vw, 18rem);
+    max-width: min(48vw, 20rem);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--crizal-muted);
     font-weight: 500;
+    line-height: 1.2;
+    vertical-align: middle;
 }
 
 body[data-design="crizal"] .crizal-breadcrumb__item.active .crizal-breadcrumb__current {
