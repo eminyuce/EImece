@@ -592,10 +592,10 @@
     <value>Şirket Adı</value>
   </data>
   <data name="DefaultImageHeight" xml:space="preserve">
-    <value>Varsayılan Resim Yüksekliği</value>
+    <value>Varsayılan yükleme görsel yüksekliği</value>
   </data>
   <data name="DefaultImageWidth" xml:space="preserve">
-    <value>Varsayılan Resim Genişliği</value>
+    <value>Varsayılan yükleme görsel genişliği</value>
   </data>
   <data name="FacebookWebSiteLink" xml:space="preserve">
     <value>Facebook Link</value>

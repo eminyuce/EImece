@@ -75,14 +75,12 @@
             }
         });
         $('#fileupload').bind('fileuploadsubmit', function (e, data) {
-
-            console.log($("#sliderHeight").slider("option", "value") + "  " + $("#sliderWidth").slider("option", "value"));
             data.formData = {
                 contentId: $("#Id").val(),
                 imageType: $("#ImageType").val(),
                 mod: $("#MediaMod").val(),
-                imageHeight: $("#sliderHeight").slider("option", "value"),
-                imageWidth: $("#sliderWidth").slider("option", "value"),
+                imageHeight: $("#ImageHeight").val(),
+                imageWidth: $("#ImageWidth").val(),
                 selectedTags: GetSelectedTag()
             }
         });

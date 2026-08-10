@@ -484,60 +484,47 @@ $(document).ready(function () {
         }
     });
 
-    var defaultValueWidth = $('#ImageWidth').val();
-    var defaultValueHeight = $('#ImageHeight').val();
+    // Optional per-upload image size override (number inputs; collapsed by default).
+    var $sizeRoot = $("[data-admin-image-size]").first();
+    if ($sizeRoot.length && $("#imageWidthTxt").length && $("#imageHeightTxt").length) {
+        var defaultValueWidth = parseInt($("#ImageWidth").val(), 10) || parseInt($sizeRoot.attr("data-default-w"), 10) || 0;
+        var defaultValueHeight = parseInt($("#ImageHeight").val(), 10) || parseInt($sizeRoot.attr("data-default-h"), 10) || 0;
 
-    var handle1 = $("#sliderWidthHandle");
-    handle1.text(defaultValueWidth);
-    $("#sliderWidth").slider({
-        min: 0,
-        max: 2000,
-        value: defaultValueWidth,
-        step: 10,
-        create: function () {
-            handle1.text($(this).slider("value"));
-        },
-        slide: function (event, ui) {
-            handle1.text(ui.value);
-            $('#imageWidthTxt').val(ui.value);
-        },
-        change: function (event, ui) {
-            $('#imageWidthTxt').val(ui.value);
+        function syncImageSize(width, height) {
+            width = Math.max(0, Math.min(2000, parseInt(width, 10) || 0));
+            height = Math.max(0, Math.min(2000, parseInt(height, 10) || 0));
+            $("#ImageWidth").val(width);
+            $("#ImageHeight").val(height);
+            $("#imageWidthTxt").val(width);
+            $("#imageHeightTxt").val(height);
+            $sizeRoot.find("[data-image-size-summary]").text(width + " × " + height + " px");
         }
-    });
 
-    var handle2 = $("#sliderHeightHandle");
-    handle2.text(defaultValueHeight);
-    $("#sliderHeight").slider({
-        min: 0,
-        max: 2000,
-        value: defaultValueHeight,
-        step: 10,
-        create: function () {
-            handle2.text($(this).slider("value"));
-        },
-        slide: function (event, ui) {
-            handle2.text(ui.value);
-            $('#imageHeightTxt').val(ui.value);
-        },
-        change: function (event, ui) {
-            $('#imageHeightTxt').val(ui.value);
-        }
-    });
-    $("#imageHeightTxt").val(defaultValueHeight);
-    $("#imageHeightTxt").change(function () {
-        var value = this.value;
-        //  console.log(value);
-        $("#sliderHeight").slider("value", parseInt(value));
-        handle2.text(parseInt(value));
-    });
-    $("#imageWidthTxt").val(defaultValueWidth);
-    $("#imageWidthTxt").change(function () {
-        var value = this.value;
-        //  console.log(value);
-        $("#sliderWidth").slider("value", parseInt(value));
-        handle1.text(parseInt(value));
-    });
+        syncImageSize(defaultValueWidth, defaultValueHeight);
+
+        $("#imageWidthTxt").on("change input", function () {
+            syncImageSize(this.value, $("#imageHeightTxt").val());
+        });
+        $("#imageHeightTxt").on("change input", function () {
+            syncImageSize($("#imageWidthTxt").val(), this.value);
+        });
+
+        $sizeRoot.on("click", "[data-image-preset]", function (e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var w, h;
+            if ($btn.attr("data-image-preset") === "default") {
+                w = parseInt($sizeRoot.attr("data-default-w"), 10) || defaultValueWidth;
+                h = parseInt($sizeRoot.attr("data-default-h"), 10) || defaultValueHeight;
+            } else {
+                w = parseInt($btn.attr("data-w"), 10);
+                h = parseInt($btn.attr("data-h"), 10);
+            }
+            syncImageSize(w, h);
+            $sizeRoot.find("[data-image-preset]").removeClass("active");
+            $btn.addClass("active");
+        });
+    }
 });
 
 

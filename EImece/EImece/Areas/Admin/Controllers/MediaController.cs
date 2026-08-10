@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Helpers;
+﻿using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
@@ -87,6 +88,19 @@ namespace EImece.Areas.Admin.Controllers
 
                 default:
                     break;
+            }
+
+            // Silent resize defaults for gallery uploads (ImageWidth/Height are NotMapped).
+            if (returnModel.BaseContent != null)
+            {
+                if (returnModel.BaseContent.ImageWidth <= 0)
+                {
+                    returnModel.BaseContent.ImageWidth = SettingService.GetSettingByKey(Constants.DefaultImageWidth).ToInt();
+                }
+                if (returnModel.BaseContent.ImageHeight <= 0)
+                {
+                    returnModel.BaseContent.ImageHeight = SettingService.GetSettingByKey(Constants.DefaultImageHeight).ToInt();
+                }
             }
 
             return View(returnModel);
