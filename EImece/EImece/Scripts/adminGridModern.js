@@ -202,6 +202,7 @@
     function markModernGrids() {
         $('.grid-mvc').addClass('eg-grid');
         $('.admin-grid-ops').addClass('eg-bulk-bar');
+        $('.eg-grid table.grid-table > thead > tr > th').addClass('grid-header');
     }
 
     function wireLoadingState() {

@@ -4,28 +4,14 @@
 @using Resources;
 
 @{
-    var contents = Model;
+    var contents = Model ?? new List<BaseEntity>();
     var GridResultRecordNumber = Resource.GridResultRecordNumber;
-    var GridPagingDropDownText = Resource.GridPagingDropDownText;
+    var count = contents.Count();
 }
 
-<div class="panel-heading">
-    <div class="row">
-        <span class="col-md-6">
-            <span class="label ">
-                <span class="badge text-danger text-large">@contents.Count() </span>
-                @GridResultRecordNumber
-            </span>
-        </span>
-        @*<span class="col-md-3">
-                <p class="text-right">@GridPagingDropDownText</p>
-            </span>*@
-        @*<span class="col-md-3">
-                <select name="GridListItemSize" class="form-control dropdown-toggle" id="GridListItemSize">
-                    <option selected="selected" class="text-info" value="50">50</option>
-                    <option class="text-info" value="500">500</option>
-                    <option class="text-info" value="1000">1000</option>
-                </select>
-            </span>*@
+<div class="panel-heading grid-record-count" role="status" aria-live="polite">
+    <div class="grid-record-count-inner">
+        <span class="grid-record-count-badge">@count</span>
+        <span class="grid-record-count-label">@GridResultRecordNumber</span>
     </div>
 </div>

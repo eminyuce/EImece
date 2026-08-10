@@ -115,21 +115,106 @@ body.admin-app .eg-grid table.grid-table {
     background: var(--eg-surface);
 }
 
+/* Record count bar — shared across all admin Grid.Mvc shells */
+.eg-grid-shell > .panel-heading.grid-record-count,
+.eg-grid-shell .grid-record-count,
+.grid-record-count {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    margin: 0;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(135deg, #1e4e8c 0%, #2b6cb0 55%, #3182ce 100%);
+    color: #fff;
+    box-shadow: inset 0 -1px 0 rgba(15, 36, 64, 0.18);
+}
+
+.grid-record-count-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.grid-record-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+    line-height: 1;
+}
+
+.grid-record-count-label {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+/* Column headers — clean, modern Grid.Mvc thead */
 .eg-grid .grid-table > thead > tr > th,
-body.admin-app .eg-grid table.grid-table > thead > tr > th {
+.eg-grid .grid-table > thead > tr > th.grid-header,
+body.admin-app .eg-grid table.grid-table > thead > tr > th,
+.grid-header {
     position: sticky;
     top: 0;
     z-index: 5;
-    background: var(--eg-sticky-head) !important;
-    color: #334e68;
-    font-size: 11px;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
+    color: #1a365d;
+    font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-transform: none;
     white-space: nowrap;
-    border-bottom: 1px solid var(--eg-border-strong) !important;
-    padding: 10px var(--eg-row-pad-x) !important;
+    border-bottom: 2px solid #c3d4e8 !important;
+    border-top: 0 !important;
+    padding: 11px 12px !important;
     vertical-align: middle;
+}
+
+.eg-grid .grid-table > thead > tr > th .grid-header-title,
+.grid-header .grid-header-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: inherit;
+    font: inherit;
+    line-height: 1.25;
+}
+
+.eg-grid .grid-table > thead > tr > th a,
+.eg-grid .grid-table > thead > tr > th .grid-header-title a,
+.grid-header a {
+    color: #1a365d !important;
+    text-decoration: none !important;
+}
+
+.eg-grid .grid-table > thead > tr > th a:hover,
+.eg-grid .grid-table > thead > tr > th a:focus,
+.grid-header a:hover,
+.grid-header a:focus {
+    color: #2b6cb0 !important;
+}
+
+.eg-grid .grid-table > thead > tr > th .grid-sort-arrow,
+.eg-grid .grid-table > thead > tr > th [class*="glyphicon-sort"],
+.eg-grid .grid-table > thead > tr > th .sorted-asc,
+.eg-grid .grid-table > thead > tr > th .sorted-desc {
+    color: #2b6cb0;
+    opacity: 0.9;
 }
 
 .eg-grid .grid-table > tbody > tr > td,
@@ -212,9 +297,11 @@ body.admin-app .eg-grid table.grid-table > tbody > tr > td {
 }
 
 .eg-grid .grid-table > thead > tr > th.eg-sticky-left,
-.eg-grid .grid-table > thead > tr > th.eg-sticky-right {
+.eg-grid .grid-table > thead > tr > th.eg-sticky-right,
+.eg-grid .grid-table > thead > tr > th.grid-header.eg-sticky-left,
+.eg-grid .grid-table > thead > tr > th.grid-header.eg-sticky-right {
     z-index: 6;
-    background: var(--eg-sticky-head) !important;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
 }
 
 .eg-grid .grid-table > tbody > tr:hover > td.eg-sticky-left,
@@ -696,7 +783,15 @@ body.admin-app .grid-table td .gridNotActiveIcon:not(.eg-status-icon) {
 .eg-grid .grid-filter,
 .eg-grid .grid-filter-btn,
 body.admin-app .eg-grid .grid-filter-btn {
-    color: var(--eg-text-muted);
+    color: #627d98;
+    opacity: 0.85;
+}
+
+.eg-grid .grid-header .grid-filter-btn:hover,
+.eg-grid .grid-header .grid-filter-btn:focus,
+.eg-grid th.grid-header .grid-filter-btn:hover {
+    color: #2b6cb0;
+    opacity: 1;
 }
 
 .eg-grid .grid-dropdown-btn,
