@@ -19,17 +19,159 @@
 <h2>Uygulama Metrikleri</h2>
 <hr class="adminLine" />
 
-<div class="alert alert-info" style="margin-bottom: 15px;">
-    <p style="margin-bottom: 8px;">
-        Bu sayfa <strong>canlı performans ölçümlerini</strong> gösterir.
-        Her admin/site isteği, dış HTTP çağrısı ve veritabanı işlemi için sayım, hata ve süre tutulur.
-    </p>
-    <ul style="margin-bottom: 0; padding-left: 18px;">
-        <li>Veriler <strong>bellekte</strong> tutulur; uygulama yeniden başlayınca sıfırlanır.</li>
-        <li>İş raporları (satış, sipariş vb.) için <em>Raporlar</em> menüsünü kullanın.</li>
-        <li>Yavaş veya hatalı controller / service metotlarını bulmak için <strong>P90 / P95 / P99</strong> sürelerine bakın (ortalama yanıltıcı olabilir).</li>
-        <li>Yüzdelikler son ~2048 örnek üzerinden hesaplanır; <em>Adet</em> ömür boyu çağrı sayısıdır.</li>
-    </ul>
+<div class="panel panel-info metrics-help-panel">
+    <div class="panel-heading">
+        <strong>Bu sayfa ne işe yarar?</strong>
+    </div>
+    <div class="panel-body">
+        <p>
+            Site ve admin panelindeki işlemlerin <strong>ne kadar hızlı / yavaş</strong> çalıştığını gösterir.
+            Amaç yavaş sayfaları, servisleri veya dış bağlantıları bulmaktır.
+            Satış / sipariş raporları için <em>Raporlar</em> menüsünü kullanın.
+        </p>
+        <ul class="metrics-help-bullets">
+            <li>Veriler sunucu <strong>belleğinde</strong> tutulur; uygulama yeniden başlayınca sıfırlanır.</li>
+            <li>Süreler <strong>milisaniye (ms)</strong> cinsindendir. <strong>1000 ms = 1 saniye</strong>.</li>
+            <li>Karar verirken ortalamaya değil <strong>P90 / P95 / P99</strong> değerlerine bakın (aşağıda açıklanıyor).</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row metrics-help-cards">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Sütunlar ne anlama gelir?</strong></div>
+            <div class="panel-body">
+                <dl class="metrics-dl">
+                    <dt>Metrik Adı</dt>
+                    <dd>Ölçülen işlem. Önek türe göre değişir (<code>controller:</code>, <code>service:</code>, …).</dd>
+
+                    <dt>Adet</dt>
+                    <dd>Uygulama açıldığından beri bu işlemin <strong>kaç kez</strong> çağrıldığı (toplam çağrı sayısı).</dd>
+
+                    <dt>Hata</dt>
+                    <dd>Bu çağrıların kaçının başarısız olduğu (exception veya 5xx benzeri hata).</dd>
+
+                    <dt>Ort. süre (ms)</dt>
+                    <dd>Tüm çağrıların ortalama süresi. Tek tük çok yavaş çağrılar ortalamayı şişirebilir veya gizleyebilir; tek başına yeterli değildir.</dd>
+
+                    <dt>P90 (ms)</dt>
+                    <dd>
+                        <strong>%90 yüzdelik dilim.</strong>
+                        Çağrıların <strong>%90’ı bu süreden daha hızlı</strong> bitmiş; yalnızca en yavaş %10’u bundan uzun sürmüş.
+                    </dd>
+
+                    <dt>P95 (ms)</dt>
+                    <dd>
+                        <strong>%95 yüzdelik dilim.</strong>
+                        Çağrıların <strong>%95’i bu süreden daha hızlı</strong>; en yavaş %5’i bundan uzun.
+                        Günlük performans takibi için en kullanışlı göstergedir.
+                    </dd>
+
+                    <dt>P99 (ms)</dt>
+                    <dd>
+                        <strong>%99 yüzdelik dilim.</strong>
+                        Çağrıların <strong>%99’u bu süreden daha hızlı</strong>; yalnızca en kötü %1 bundan uzun.
+                        Nadir ama kullanıcıyı en çok rahatsız eden gecikmeleri gösterir.
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Yüzdelikler (P90 / P95 / P99) — kısa örnek</strong></div>
+            <div class="panel-body">
+                <p>100 sayfa açılışı ölçülmüş olsun. Süreler hızlıdan yavaşa sıralanınca:</p>
+                <table class="table table-condensed table-bordered metrics-example-table">
+                    <thead>
+                        <tr>
+                            <th>Değer</th>
+                            <th>Anlamı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>P90 = 120 ms</strong></td>
+                            <td>100 çağrıdan 90’ı ≤ 120 ms; 10’u daha yavaş.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>P95 = 200 ms</strong></td>
+                            <td>100 çağrıdan 95’i ≤ 200 ms; 5’i daha yavaş.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>P99 = 800 ms</strong></td>
+                            <td>100 çağrıdan 99’u ≤ 800 ms; 1’i daha yavaş (kuyruk / spike).</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-muted" style="margin-bottom: 0;">
+                    “P” = <em>percentile</em> (yüzdelik dilim). Sayı, çağrıların yüzde kaçının
+                    <strong>o süreden daha hızlı</strong> olduğunu gösterir — bir “puan” veya “başarı oranı” değildir.
+                </p>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Nasıl yorumlanır?</strong></div>
+            <div class="panel-body">
+                <ul class="metrics-help-bullets" style="margin-bottom: 0;">
+                    <li><strong>P95 düşük, P99 çok yüksek</strong> → çoğu kullanıcı hızlı; ara sıra çok yavaş istekler var.</li>
+                    <li><strong>P90 / P95 / P99 hepsi yüksek</strong> → işlem genel olarak yavaş; öncelikli inceleme adayı.</li>
+                    <li><strong>Hata &gt; 0</strong> → süreye bakmadan önce hataları kontrol edin.</li>
+                    <li><strong>Adet çok düşük</strong> (ör. 1–5) → yüzdelikler henüz güvenilir değildir; daha fazla trafik bekleyin.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" style="margin-bottom: 20px;">
+    <div class="panel-heading"><strong>Metrik adı önekleri (hangi katman ölçülüyor?)</strong></div>
+    <div class="panel-body" style="padding: 0;">
+        <div class="table-responsive">
+            <table class="table table-striped metrics-prefix-table" style="margin-bottom: 0;">
+                <thead>
+                    <tr>
+                        <th style="width: 28%;">Önek / örnek</th>
+                        <th>Ne ölçer?</th>
+                        <th style="width: 30%;">Ne zaman bakılır?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>controller:Products.Index</code></td>
+                        <td>Bir MVC sayfa / aksiyonun sunucu tarafı işlem süresi (controller action).</td>
+                        <td>Yavaş açılan sayfayı bulmak için.</td>
+                    </tr>
+                    <tr>
+                        <td><code>request:Products.Index</code></td>
+                        <td>Aynı aksiyonun eski / genel istek serisi (HTTP isteği özeti).</td>
+                        <td><code>controller:</code> ile birlikte; genelde aynı aksiyonu gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td><code>service:IProductService.GetMainPageProductsAsync</code></td>
+                        <td>İş mantığı (Service) metot süresi. Sayfanın içindeki asıl iş burada olabilir.</td>
+                        <td>Controller yavaşsa hangi servisin yavaşladığını görmek için.</td>
+                    </tr>
+                    <tr>
+                        <td><code>http:GET:200</code></td>
+                        <td>Uygulamanın dışarıya yaptığı HTTP çağrıları (CDN, ödeme, API…). <code>METHOD:STATUS</code>.</td>
+                        <td>Dış servis gecikmesi veya hata şüphesinde.</td>
+                    </tr>
+                    <tr>
+                        <td><code>db:...</code></td>
+                        <td>Veritabanı işlem süreleri.</td>
+                        <td>SQL / EF yavaşlığı şüphesinde.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted" style="padding: 10px 15px; margin: 0;">
+            Yüzdelikler (P90/P95/P99) son yaklaşık <strong>2048</strong> ölçüm üzerinden hesaplanır;
+            <em>Adet</em> ise uygulama ömrü boyunca toplam çağrı sayısıdır.
+        </p>
+    </div>
 </div>
 
 <div class="panel panel-default" style="margin-bottom: 20px;">
@@ -38,7 +180,7 @@
             <div class="form-group">
                 <label for="search">Metrik ara:</label>
                 <input type="text" id="search" name="search" class="form-control"
-                       placeholder="örn. request:, db:, http:, Orders"
+                       placeholder="örn. controller:, service:, db:, Products"
                        value="@Model.SearchTerm" />
             </div>
             <button type="submit" class="btn btn-primary">
@@ -48,6 +190,10 @@
                 <span class="glyphicon glyphicon-refresh"></span> Temizle
             </a>
         </form>
+        <p class="help-block" style="margin: 8px 0 0;">
+            İpucu: <code>controller:</code> yazarak yalnızca sayfa aksiyonlarını,
+            <code>service:</code> ile yalnızca servis metotlarını listeleyebilirsiniz.
+        </p>
     </div>
 </div>
 
@@ -69,6 +215,12 @@
 else
 {
     <div class="panel panel-primary">
+        <div class="panel-heading">
+            Canlı ölçümler
+            <span class="small" style="font-weight: normal; margin-left: 8px;">
+                Sütun başlıklarının üzerine gelerek kısa açıklamayı görebilirsiniz.
+            </span>
+        </div>
         <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
             @(Html.Grid(contents).Named(gridName).Columns(columns =>
 {
@@ -95,7 +247,7 @@ columns.Add(m => m.ErrorCount)
 .Filterable(false)
 .Encoded(false)
 .Sanitized(false)
-.RenderValueAs(m => string.Format("<span class='label label-{0}'>{1}</span>",
+.RenderValueAs(m => string.Format("<span class='label label-{0}' title='Başarısız çağrı sayısı'>{1}</span>",
     m.ErrorCount > 0 ? "danger" : "success", m.ErrorCount.ToString("N0")));
 
 columns.Add(m => m.AverageDurationMs)
@@ -123,20 +275,84 @@ columns.Add(m => m.P99DurationMs)
     </div>
 }
 
-<div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 4px;">
-    <h4 style="margin-top: 0;">Metrik adı formatı</h4>
-    <ul style="margin-bottom: 0;">
-        <li><code>request:Controller.Action</code> — sayfa / MVC aksiyon süreleri</li>
-        <li><code>controller:Controller.Action</code> — aynı aksiyonlar (P90/P95/P99 katmanı)</li>
-        <li><code>service:IService.Method</code> — servis metot süreleri (otomatik proxy)</li>
-        <li><code>http:METHOD:STATUS</code> — dış HTTP çağrıları (örn. <code>http:GET:200</code>)</li>
-        <li><code>db:...</code> — veritabanı sorgu süreleri</li>
-    </ul>
-</div>
-
 <style>
     .metric-name {
         font-family: Consolas, Monaco, monospace;
         font-size: 11px;
     }
+
+    .metrics-help-panel .panel-body {
+        padding-bottom: 10px;
+    }
+
+    .metrics-help-bullets {
+        margin-bottom: 0;
+        padding-left: 18px;
+    }
+
+    .metrics-help-cards .panel {
+        min-height: 0;
+    }
+
+    .metrics-dl {
+        margin-bottom: 0;
+    }
+
+    .metrics-dl dt {
+        margin-top: 10px;
+        font-weight: 700;
+    }
+
+    .metrics-dl dt:first-child {
+        margin-top: 0;
+    }
+
+    .metrics-dl dd {
+        margin-left: 0;
+        color: #444;
+    }
+
+    .metrics-example-table th,
+    .metrics-example-table td,
+    .metrics-prefix-table th,
+    .metrics-prefix-table td {
+        vertical-align: middle;
+    }
+
+    .metrics-prefix-table code {
+        white-space: normal;
+        word-break: break-all;
+    }
 </style>
+
+<script>
+    (function () {
+        // GridMvc renders plain text titles; add title tooltips after render for column headers.
+        var tips = {
+            "Metrik Adı": "Ölçülen işlem (controller, service, http veya db).",
+            "Adet": "Uygulama açıldığından beri toplam çağrı sayısı.",
+            "Hata": "Başarısız çağrı sayısı.",
+            "Ort. süre (ms)": "Tüm çağrıların ortalama süresi (milisaniye).",
+            "P90 (ms)": "%90 yüzdelik: çağrıların %90’ı bu süreden hızlı tamamlandı.",
+            "P95 (ms)": "%95 yüzdelik: çağrıların %95’i bu süreden hızlı tamamlandı.",
+            "P99 (ms)": "%99 yüzdelik: çağrıların %99’u bu süreden hızlı; en kötü %1 bundan yavaş."
+        };
+
+        function applyHeaderTips() {
+            var headers = document.querySelectorAll("#" + "@gridName" + " th, .grid-table th, table th");
+            for (var i = 0; i < headers.length; i++) {
+                var text = (headers[i].textContent || "").replace(/\s+/g, " ").trim();
+                if (tips[text]) {
+                    headers[i].setAttribute("title", tips[text]);
+                    headers[i].style.cursor = "help";
+                }
+            }
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", applyHeaderTips);
+        } else {
+            applyHeaderTips();
+        }
+    })();
+</script>
