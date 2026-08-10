@@ -6,52 +6,88 @@
 @model List<ProductCategoryTreeModel>
 @{
     var treeNodes = Model ?? new List<ProductCategoryTreeModel>();
-    String urlPattern= ViewData["UrlPattern"].ToStr();
+    String urlPattern = ViewData["UrlPattern"].ToStr();
     String urlQuery = ViewData["UrlQuery"].ToStr();
-    String jsFunctionName = ViewData["JsFunctionName"].ToStr();
-
-    var viewData = new ViewDataDictionary(){
-                            {"UrlPattern",urlPattern}
-                          ,{"UrlQuery",urlQuery}
-                          ,{"IsExcelButtonEnabled",true}};
+    var selectedCategoryId = ViewData["SelectedCategoryId"].ToInt();
+    var showAllLink = ViewData["ShowAllLink"].ToBool(true);
     string querySuffix = string.IsNullOrEmpty(urlQuery) ? "" : "?" + urlQuery;
 
+    var viewData = new ViewDataDictionary
+    {
+        { "UrlPattern", urlPattern },
+        { "UrlQuery", urlQuery },
+        { "SelectedCategoryId", selectedCategoryId },
+        { "IsExcelButtonEnabled", true }
+    };
+
+    string allHref = string.IsNullOrEmpty(urlPattern)
+        ? "#"
+        : string.Format("{0}{1}{2}", urlPattern, 0, querySuffix);
 }
+<div class="eg-category-tree" data-eg-category-tree="1" data-selected-id="@selectedCategoryId">
+    <div class="eg-category-tree-head">
+        <div class="eg-category-tree-title">
+            <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
+            <span>Kategoriler</span>
+        </div>
+        @if (showAllLink && !string.IsNullOrEmpty(urlPattern))
+        {
+            <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm ürünler">Tümü</a>
+        }
+    </div>
 
-<ul class="treeProducts" id="responsive">
-
-    @foreach (ProductCategoryTreeModel p in treeNodes)
-                {
-                    var productCategory = p.ProductCategory;
-                    if (p.Childrens != null && p.Childrens.Any())
+    <ul class="treeProducts eg-tree" id="responsive">
+        @foreach (ProductCategoryTreeModel p in treeNodes)
+        {
+            var productCategory = p.ProductCategory;
+            var hasChildren = p.Childrens != null && p.Childrens.Any();
+            var isActive = selectedCategoryId > 0 && productCategory != null && productCategory.Id == selectedCategoryId;
+            var count = p.ProductCountAdmin;
+            var name = productCategory != null ? productCategory.Name : p.AdminText;
+            var nodeId = productCategory != null ? productCategory.Id : 0;
+            <li class="eg-tree-node @(hasChildren ? "has-children is-open" : "is-leaf") @(isActive ? "is-active" : "")" data-category-id="@nodeId">
+                <div class="eg-tree-row">
+                    @if (hasChildren)
                     {
-    <li class="dropdown">
-        @if (String.IsNullOrEmpty(urlPattern))
-        {
-        <a onclick="productTreeClick(event,@productCategory.Id,'@HttpUtility.JavaScriptStringEncode(productCategory.Name)')">@p.AdminText</a>
-        }
-        else
-        {
-        <a href="@String.Format("{0}{1}{2}",urlPattern,productCategory.Id, querySuffix)">@p.AdminText</a>
-        }
+                        <button type="button" class="eg-tree-toggle" aria-expanded="true" aria-label="Alt kategorileri aç/kapat" title="Alt kategorileri aç/kapat">
+                            <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <span class="eg-tree-toggle eg-tree-toggle-spacer" aria-hidden="true"></span>
+                    }
 
-        @Html.Partial("_ProductCategoryTreeChildren", p.Childrens, viewData)
-    </li>
+                    @if (String.IsNullOrEmpty(urlPattern))
+                    {
+                        <a class="eg-tree-link @(isActive ? "is-active" : "")"
+                           href="javascript:void(0)"
+                           onclick="productTreeClick(event,@nodeId,'@HttpUtility.JavaScriptStringEncode(name)')">
+                            <span class="eg-tree-name">@name</span>
+                            @if (count > 0)
+                            {
+                                <span class="eg-tree-count">@count</span>
+                            }
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="eg-tree-link @(isActive ? "is-active" : "")"
+                           href="@String.Format("{0}{1}{2}", urlPattern, nodeId, querySuffix)">
+                            <span class="eg-tree-name">@name</span>
+                            @if (count > 0)
+                            {
+                                <span class="eg-tree-count">@count</span>
+                            }
+                        </a>
+                    }
+                </div>
 
+                @if (hasChildren)
+                {
+                    @Html.Partial("_ProductCategoryTreeChildren", p.Childrens, viewData)
+                }
+            </li>
         }
-        else
-        {
-
-    <li>
-        @if (String.IsNullOrEmpty(urlPattern))
-    {
-        <a onclick="productTreeClick(event,@productCategory.Id,'@HttpUtility.JavaScriptStringEncode(productCategory.Name)')">@p.AdminText</a>
-    }
-    else
-    {
-        <a href="@String.Format("{0}{1}{2}",urlPattern,productCategory.Id, querySuffix)">@p.AdminText</a>
-    }
-    </li>
-        }
-    }
-</ul>
+    </ul>
+</div>

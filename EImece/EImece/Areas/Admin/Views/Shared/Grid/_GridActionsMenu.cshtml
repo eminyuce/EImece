@@ -1,0 +1,203 @@
+@model object
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using Resources
+@{
+    var product = Model as Product;
+    var controllerName = ViewData["controllerName"].ToStr("Products");
+    var itemId = product != null ? product.Id.ToString() : ViewData["ItemId"].ToStr();
+    var itemName = product != null ? product.Name : ViewData["ItemName"].ToStr();
+
+    var showMedia = ViewData.ContainsKey("ShowMedia") ? ViewData["ShowMedia"].ToBool() : product != null;
+    var showEdit = ViewData.ContainsKey("ShowEdit") ? ViewData["ShowEdit"].ToBool() : true;
+    var showDelete = ViewData.ContainsKey("ShowDelete") ? ViewData["ShowDelete"].ToBool() : true;
+
+    var detailUrl = ViewData["DetailUrl"].ToStr();
+    var detailText = ViewData["DetailText"].ToStr(AdminResource.GridDetailText);
+    var ordersUrl = ViewData["OrdersUrl"].ToStr();
+    var ordersText = ViewData["OrdersText"].ToStr();
+
+    var editAction = ViewData["EditAction"].ToStr("SaveOrEdit");
+    var editUrl = ViewData["EditUrl"].ToStr();
+    if (string.IsNullOrEmpty(editUrl) && showEdit)
+    {
+        editUrl = Url.Action(editAction, controllerName, new { id = itemId });
+    }
+
+    var forgotPasswordUrl = ViewData["ForgotPasswordUrl"].ToStr();
+    var newPasswordUrl = ViewData["NewPasswordUrl"].ToStr();
+    var rolesUrl = ViewData["RolesUrl"].ToStr();
+
+    var hasSpecs = product != null
+        && product.ProductCategory != null
+        && product.ProductCategory.TemplateId.HasValue
+        && product.ProductCategory.TemplateId > 0;
+    var hasComments = product != null && product.ProductComments.IsNotEmpty();
+    var hasDelete = showDelete && UserRoleHelper.IsDeletedEnableRoles();
+    var hasMenuItems = !string.IsNullOrEmpty(detailUrl)
+        || !string.IsNullOrEmpty(ordersUrl)
+        || showMedia
+        || (showEdit && !string.IsNullOrEmpty(editUrl))
+        || hasSpecs
+        || hasComments
+        || !string.IsNullOrEmpty(forgotPasswordUrl)
+        || !string.IsNullOrEmpty(newPasswordUrl)
+        || !string.IsNullOrEmpty(rolesUrl)
+        || hasDelete;
+
+    var deleteMenuVd = new ViewDataDictionary(ViewData);
+    deleteMenuVd["ItemId"] = itemId;
+    deleteMenuVd["controllerName"] = controllerName;
+    deleteMenuVd["DeleteIcon"] = "";
+    deleteMenuVd["ItemDescription"] = itemName;
+    deleteMenuVd["gridDeleteText"] = ViewData["gridDeleteText"].ToStr(AdminResource.GridDeleteText);
+
+    var deleteCompactVd = new ViewDataDictionary(ViewData);
+    deleteCompactVd["ItemId"] = itemId;
+    deleteCompactVd["controllerName"] = controllerName;
+    deleteCompactVd["DeleteIcon"] = "btn btn-danger btn-xs glyphicon glyphicon-remove-circle";
+    deleteCompactVd["ItemDescription"] = itemName;
+    deleteCompactVd["gridDeleteText"] = ViewData["gridDeleteText"].ToStr(AdminResource.GridDeleteText);
+}
+@if (hasMenuItems)
+{
+<div class="eg-actions btn-group">
+    <button type="button"
+            class="btn btn-default btn-sm dropdown-toggle eg-actions-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+        <i class="glyphicon glyphicon-option-vertical" aria-hidden="true"></i>
+        <span>İşlemler</span>
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right eg-actions-menu">
+        @if (!string.IsNullOrEmpty(detailUrl))
+        {
+            <li>
+                <a href="@detailUrl">
+                    <i class="glyphicon glyphicon-info-sign"></i> @detailText
+                </a>
+            </li>
+        }
+        @if (!string.IsNullOrEmpty(ordersUrl))
+        {
+            <li>
+                <a href="@ordersUrl">
+                    <i class="glyphicon glyphicon-shopping-cart"></i> @ordersText
+                </a>
+            </li>
+        }
+        @if (showMedia)
+        {
+            <li>
+                <a href="@Url.Action("Media", controllerName, new { Id = itemId })">
+                    <i class="glyphicon glyphicon-camera"></i> @AdminResource.GridImagesText
+                </a>
+            </li>
+        }
+        @if (showEdit && !string.IsNullOrEmpty(editUrl))
+        {
+            <li>
+                <a href="@editUrl">
+                    <i class="glyphicon glyphicon-pencil"></i> @AdminResource.GridEditText
+                </a>
+            </li>
+        }
+        @if (hasSpecs)
+        {
+            <li>
+                <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
+                   title="@AdminResource.ProductSpecs">
+                    <i class="glyphicon glyphicon-plus"></i> Özellikler
+                </a>
+            </li>
+        }
+        @if (hasComments)
+        {
+            <li>
+                <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })">
+                    <i class="glyphicon glyphicon-user"></i> Yorumlar
+                </a>
+            </li>
+        }
+        @if (!string.IsNullOrEmpty(forgotPasswordUrl))
+        {
+            <li>
+                <a href="@forgotPasswordUrl">
+                    <i class="glyphicon glyphicon-envelope"></i> @AdminResource.ForgotPassword
+                </a>
+            </li>
+        }
+        @if (!string.IsNullOrEmpty(newPasswordUrl))
+        {
+            <li>
+                <a href="@newPasswordUrl">
+                    <i class="glyphicon glyphicon-lock"></i> @AdminResource.NewPassword
+                </a>
+            </li>
+        }
+        @if (!string.IsNullOrEmpty(rolesUrl))
+        {
+            <li>
+                <a href="@rolesUrl">
+                    <i class="glyphicon glyphicon-user"></i> @AdminResource.Roles
+                </a>
+            </li>
+        }
+        @if (hasDelete)
+        {
+            <li class="divider"></li>
+            <li class="eg-actions-danger">
+                @Html.Partial("pDeleteModal", deleteMenuVd)
+            </li>
+        }
+    </ul>
+</div>
+<div class="eg-actions-compact" aria-hidden="true">
+    @if (!string.IsNullOrEmpty(detailUrl))
+    {
+        <a href="@detailUrl" class="btn btn-info btn-xs" title="@detailText">
+            <i class="glyphicon glyphicon-info-sign"></i>
+        </a>
+    }
+    @if (!string.IsNullOrEmpty(ordersUrl))
+    {
+        <a href="@ordersUrl" class="btn btn-success btn-xs" title="@ordersText">
+            <i class="glyphicon glyphicon-shopping-cart"></i>
+        </a>
+    }
+    @if (showMedia)
+    {
+        <a href="@Url.Action("Media", controllerName, new { Id = itemId })"
+           class="btn btn-default btn-xs" title="@AdminResource.GridImagesText">
+            <i class="glyphicon glyphicon-camera"></i>
+        </a>
+    }
+    @if (showEdit && !string.IsNullOrEmpty(editUrl))
+    {
+        <a href="@editUrl" class="btn btn-primary btn-xs" title="@AdminResource.GridEditText">
+            <i class="glyphicon glyphicon-pencil"></i>
+        </a>
+    }
+    @if (hasSpecs)
+    {
+        <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
+           class="btn btn-default btn-xs" title="@AdminResource.ProductSpecs">
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
+    }
+    @if (hasDelete)
+    {
+        @Html.Partial("pDeleteModal", deleteCompactVd)
+    }
+    @if (hasComments)
+    {
+        <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })"
+           class="btn btn-default btn-xs" title="Yorumlar">
+            <i class="glyphicon glyphicon-user"></i>
+        </a>
+    }
+</div>
+}

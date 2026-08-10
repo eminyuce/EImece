@@ -7,8 +7,8 @@
 }
 else
 {
-<div class="grid-mvc" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
-    <div class="grid-wrap">
+<div class="grid-mvc eg-grid" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
+    <div class="grid-wrap eg-grid-scroll">
         <table class="table table-striped grid-table">
             @* Draw grid header *@
             <thead>
@@ -18,17 +18,19 @@ else
                 @RenderGridBody()
             </tbody>
         </table>
-        @RenderGridPager()
     </div>
+    @RenderGridPager()
 </div>
 }
 @helper RenderGridBody()
 {
     if (!Model.ItemsToDisplay.Any())
     {
-<tr class="grid-empty-text">
+<tr class="grid-empty-text eg-grid-empty">
     <td colspan="@Model.Columns.Count()">
-        @Model.EmptyGridText
+        <div class="eg-grid-empty">
+            <div>@(!string.IsNullOrEmpty(Model.EmptyGridText) ? Model.EmptyGridText : "Kayıt bulunamadı")</div>
+        </div>
     </td>
 </tr>
     }
@@ -61,12 +63,8 @@ else
 {
     if (Model.EnablePaging && Model.Pager != null)
     {
-<div class="row">
-    <div class="col-lg-offset-5 col-md-5 ">
-        <div class="grid-footer">
-            @Html.Partial(Model.Pager.TemplateName, Model.Pager)
-        </div>
-    </div>
+<div class="grid-footer eg-grid-footer">
+    @Html.Partial(Model.Pager.TemplateName, Model.Pager)
 </div>
     }
 }

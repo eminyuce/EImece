@@ -24,4 +24,5 @@
    data-delete-message="@AdminResource.DeletePopupDescription"
    data-delete-button="@gridDeleteText"
    title="@gridDeleteText"
-   aria-label="@gridDeleteText">@(String.IsNullOrEmpty(deleteIcon) ? gridDeleteText : "")</a>
+   aria-label="@gridDeleteText">@if (String.IsNullOrEmpty(deleteIcon))
+{<text><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> @gridDeleteText</text>}</a>

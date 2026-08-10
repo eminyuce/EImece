@@ -1,53 +1,108 @@
 ﻿@using System.Web;
-@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.FrontModels;
 @model List<MenuTreeModel>
 @{
-    var treeNodes = Model;
+    var treeNodes = Model ?? new List<MenuTreeModel>();
     String urlPattern = ViewData["UrlPattern"].ToStr();
-    String jsFunctionName = ViewData["JsFunctionName"].ToStr();
-    var viewData = new ViewDataDictionary(){
-                            {"UrlPattern",urlPattern}
-                          ,{"IsExcelButtonEnabled",true}};
+    String urlQuery = ViewData["UrlQuery"].ToStr();
+    var selectedCategoryId = ViewData["SelectedCategoryId"].ToInt();
+    var showAllLink = ViewData["ShowAllLink"].ToBool(true);
+    var treeTitle = ViewData["TreeTitle"].ToStr("Menüler");
+    string querySuffix = string.IsNullOrEmpty(urlQuery) ? "" : "?" + urlQuery;
 
-}
-
-<ul class="treeProducts" id="responsive">
-
-    @foreach (var p in treeNodes)
+    var viewData = new ViewDataDictionary
     {
-        var productCategory = p;
-        if (p.Childrens.IsNotEmpty())
+        { "UrlPattern", urlPattern },
+        { "UrlQuery", urlQuery },
+        { "SelectedCategoryId", selectedCategoryId },
+        { "IsExcelButtonEnabled", true }
+    };
+
+    string allHref = string.IsNullOrEmpty(urlPattern)
+        ? "#"
+        : string.Format("{0}{1}{2}", urlPattern, 0, querySuffix);
+}
+<div class="eg-category-tree" data-eg-category-tree="1" data-selected-id="@selectedCategoryId">
+    <div class="eg-category-tree-head">
+        <div class="eg-category-tree-title">
+            <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>
+            <span>@treeTitle</span>
+        </div>
+        @if (showAllLink && !string.IsNullOrEmpty(urlPattern))
         {
-    <li class="dropdown">
-        @if (String.IsNullOrEmpty(urlPattern))
-                {
-        <a onclick="menuTreeClick(event,@productCategory.Id,'@HttpUtility.JavaScriptStringEncode(productCategory.Name)')">@p.Name</a>
-                }
-                else
-                {
-        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
-                }
-
-        @Html.Partial("_MenuTreeChildren", p.Childrens, viewData)
-    </li>
-
+            <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm menüler">Tümü</a>
         }
-        else
+    </div>
+
+    <ul class="treeProducts eg-tree" id="responsive">
+        @foreach (MenuTreeModel p in treeNodes)
         {
+            var hasChildren = p.Childrens != null && p.Childrens.Any();
+            var isActive = selectedCategoryId > 0 && p.Id == selectedCategoryId;
+            var count = CountDescendants(p);
+            var name = p.Name;
+            var nodeId = p.Id;
+            <li class="eg-tree-node @(hasChildren ? "has-children is-open" : "is-leaf") @(isActive ? "is-active" : "")" data-category-id="@nodeId">
+                <div class="eg-tree-row">
+                    @if (hasChildren)
+                    {
+                        <button type="button" class="eg-tree-toggle" aria-expanded="true" aria-label="Alt menüleri aç/kapat" title="Alt menüleri aç/kapat">
+                            <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <span class="eg-tree-toggle eg-tree-toggle-spacer" aria-hidden="true"></span>
+                    }
 
-    <li>
-        @if (String.IsNullOrEmpty(urlPattern))
+                    @if (String.IsNullOrEmpty(urlPattern))
+                    {
+                        <a class="eg-tree-link @(isActive ? "is-active" : "")"
+                           href="javascript:void(0)"
+                           onclick="menuTreeClick(event,@nodeId,'@HttpUtility.JavaScriptStringEncode(name)')">
+                            <span class="eg-tree-name">@name</span>
+                            @if (count > 0)
+                            {
+                                <span class="eg-tree-count">@count</span>
+                            }
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="eg-tree-link @(isActive ? "is-active" : "")"
+                           href="@String.Format("{0}{1}{2}", urlPattern, nodeId, querySuffix)">
+                            <span class="eg-tree-name">@name</span>
+                            @if (count > 0)
+                            {
+                                <span class="eg-tree-count">@count</span>
+                            }
+                        </a>
+                    }
+                </div>
+
+                @if (hasChildren)
                 {
-        <a onclick="menuTreeClick(event,@productCategory.Id,'@HttpUtility.JavaScriptStringEncode(productCategory.Name)')">@p.Name</a>
+                    @Html.Partial("_MenuTreeChildren", p.Childrens, viewData)
                 }
-                else
-                {
-        <a href="@String.Format("{0}{1}",urlPattern,productCategory.Id)">@p.Name</a>
-                }
-    </li>
+            </li>
         }
+    </ul>
+</div>
+
+@functions {
+    private static int CountDescendants(MenuTreeModel node)
+    {
+        if (node == null || node.Childrens == null || !node.Childrens.Any())
+        {
+            return 0;
+        }
+        var count = node.Childrens.Count;
+        foreach (var child in node.Childrens)
+        {
+            count += CountDescendants(child);
+        }
+        return count;
     }
-</ul>
+}

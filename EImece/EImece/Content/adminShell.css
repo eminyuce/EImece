@@ -15,6 +15,9 @@
     --admin-content-bg: #f5f7fa;
     --admin-link: #334e68;
     --admin-sidebar-transition: 220ms ease;
+    --admin-page-title-font: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --admin-page-title-color: #102a43;
+    --admin-page-title-accent: #2b6cb0;
 }
 
 html,
@@ -388,19 +391,39 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     max-width: 100%;
 }
 
-/* Compact page title + divider — more room for grids */
+/* Page titles — clear left-aligned header across admin list pages */
 body.admin-app .admin-content > h2,
-body.admin-app .admin-content h2:first-of-type {
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0 0 8px;
-    padding: 8px 14px;
-    text-align: center;
-    color: #1e3a5f;
-    background: #eef2f6;
-    border: 1px solid #e1e7ee;
-    border-radius: 3px;
+body.admin-app .admin-content h2:first-of-type,
+body.admin-app .admin-content .admin-page-title,
+body.admin-app .admin-content .report-index-header h2 {
+    font-family: var(--admin-page-title-font);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 0 0 14px;
+    padding: 2px 0 10px;
+    text-align: left;
+    color: var(--admin-page-title-color);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid #d9e2ec;
+    border-radius: 0;
+    box-shadow: none;
+    position: relative;
+}
+
+body.admin-app .admin-content > h2::after,
+body.admin-app .admin-content h2:first-of-type::after,
+body.admin-app .admin-content .admin-page-title::after,
+body.admin-app .admin-content .report-index-header h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 56px;
+    height: 2px;
+    background: var(--admin-page-title-accent);
 }
 
 body.admin-app .admin-content .adminLine {

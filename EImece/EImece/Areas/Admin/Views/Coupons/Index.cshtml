@@ -1,10 +1,8 @@
 ﻿@model List<Coupon>
 @using EImece.Domain.Helpers;
-
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain;
-@using EImece.Domain.Models.Enums;
 @using EImece.Domain.Entities;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
@@ -16,20 +14,12 @@
 
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);  
+    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
 
     var controllerName = "Coupons";
-    var title = "Coupons";
     var gridName = "CouponGrid";
     var contents = Model;
-
     var baseList = contents.DownCasting();
-
-    var gridImagesText = AdminResource.GridImagesText;
-    var gridEditText = AdminResource.GridEditText;
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var gridDetailText = AdminResource.GridDetailText;
-    var gridMainPageImageText = AdminResource.GridMainPageImageText;
 }
 
 <h2>@AdminResource.Coupons</h2>
@@ -42,54 +32,39 @@
        ,{"selectAll",true}
        ,{"deleteAll",true}
         ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
-<div class="panel panel-primary">
+
+@Html.Partial("Grid/_GridChrome")
+
+<div class="panel panel-primary eg-grid-shell">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
-
 columns.Add()
 .Encoded(false)
 .Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+.Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
+.RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
 
 columns.Add(o => o.Id, true);
 
 columns.Add()
 .Encoded(false)
 .Sanitized(false)
-.Css("gridButtons")
+.Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
 .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
             {"ItemId",d.Id}}));
 
-columns.Add()
-   .Encoded(false)
-   .Sanitized(false)
-   .SetWidth(30)
-   .RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink(" ", "SaveOrEdit", controllerName, new { id = d.Id }, new { @class = "btn btn-primary  btn-xs   glyphicon glyphicon-pencil glyphicon-white  " })
-    </b>);
-
-if (UserRoleHelper.IsDeletedEnableRoles())
-{
-
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-{ "ItemId", d.Id },
-    {"controllerName",controllerName},
-    { "DeleteIcon", "gridBtn  btn btn-danger btn-xs   glyphicon  glyphicon-remove-circle" },
-    { "ItemDescription", d.Name }
-
-}));
-
-}
-
 columns.Add(c => c.Name)
 .Titled(AdminResource.CouponName)
-.Filterable(true);
+.Filterable(true)
+.Encoded(false)
+.Sanitized(false)
+.Css("eg-col-name")
+.RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
+    { "Name", d.Name },
+    { "ItemId", d.Id.ToString() }
+}));
+
 columns.Add(c => c.Code)
 .Titled(AdminResource.CouponCode)
 .Filterable(true);
@@ -103,7 +78,7 @@ columns.Add(c => c.DiscountPercentage)
 .Filterable(true);
 
 columns.Add(o => o.StartDate)
-   .Titled(AdminResource.CouponStartDate)
+.Titled(AdminResource.CouponStartDate)
 .Sortable(true)
 .Css("gridDateClass")
 .RenderValueAs(o => o.StartDate != null ? String.Format("{0}", o.StartDate.ToString("dd/MM/yyyy",
@@ -111,7 +86,7 @@ columns.Add(o => o.StartDate)
 .SortInitialDirection(GridSortDirection.Descending);
 
 columns.Add(o => o.EndDate)
-   .Titled(AdminResource.CouponEndDate)
+.Titled(AdminResource.CouponEndDate)
 .Sortable(true)
 .Css("gridDateClass")
 .RenderValueAs(o => o.EndDate != null ? String.Format("{0}", o.EndDate.ToString("dd/MM/yyyy",
@@ -119,25 +94,45 @@ columns.Add(o => o.EndDate)
 .SortInitialDirection(GridSortDirection.Descending);
 
 columns.Add(o => o.Position).Titled(AdminResource.Position)
-.Encoded(false).
-Sanitized(false).
-SetWidth(10).
-RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+.Encoded(false)
+.Sanitized(false)
+.Css("smallGridColumn")
+.RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
-       .Titled(AdminResource.IsActive)
-   .Sortable(true)
-   .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-    Sanitized(false)
-   .RenderValueAs(o => String.Format("<span  gridkey-id='{0}' grid-data-value='{2}' {1}   name='spanState'> </span>",
-                                     o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
+.Titled(AdminResource.IsActive)
+.Sortable(true)
+.Css("smallGridColumn eg-col-status")
+.SortInitialDirection(GridSortDirection.Descending).Encoded(false)
+.Sanitized(false)
+.RenderValueAs(o => Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) {
+    { "ItemId", o.Id },
+    { "IsActive", o.IsActive },
+    { "ShowState", true },
+    { "ShowMainPage", false },
+    { "ShowImageState", false }
+}));
 
 columns.Add(o => o.UpdatedDate)
-       .Titled(AdminResource.UpdatedDate)
-   .Sortable(true)
-   .Css("gridDateClass")
-   .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
-   .SortInitialDirection(GridSortDirection.Descending);
+.Titled(AdminResource.UpdatedDate)
+.Sortable(true)
+.Css("gridDateClass")
+.RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
+.SortInitialDirection(GridSortDirection.Descending);
+
+columns.Add()
+.Titled("İşlemler")
+.Encoded(false)
+.Sanitized(false)
+.Css("eg-sticky-right eg-col-actions")
+.RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
+    { "ItemId", d.Id },
+    { "ItemName", d.Name },
+    { "controllerName", controllerName },
+    { "ShowMedia", false },
+    { "ShowEdit", true },
+    { "ShowDelete", true }
+}));
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>

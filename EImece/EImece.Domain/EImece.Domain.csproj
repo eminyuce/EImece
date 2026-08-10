@@ -601,6 +601,7 @@
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\AuthenticatorHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
+    <Compile Include="Helpers\HtmlHelpers\AdminGridHtmlHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers\CaptchaHtmlHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers\MVCHtmlHelpers.cs" />

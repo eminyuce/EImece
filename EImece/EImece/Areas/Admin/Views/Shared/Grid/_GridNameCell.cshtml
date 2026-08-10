@@ -1,0 +1,84 @@
+@model object
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Helpers.HtmlHelpers
+@using Resources
+@{
+    var product = Model as Product;
+    string name;
+    string itemId;
+    string linkUrl = null;
+    string subName = null;
+    bool strongName = false;
+    bool openInNewTab = false;
+
+    if (product != null)
+    {
+        name = product.Name;
+        itemId = product.Id.ToString();
+        var categoryName = product.ProductCategory != null ? product.ProductCategory.Name : "";
+        var seoCategory = GeneralHelper.GetUrlSeoString(categoryName);
+        linkUrl = Url.Action("Detail", "Products", new { area = "", categoryName = seoCategory, id = product.GetSeoUrl() });
+        openInNewTab = true;
+        if (!string.IsNullOrEmpty(product.NameLong)
+            && !string.Equals(product.NameLong.Trim(), (product.Name ?? "").Trim(), StringComparison.OrdinalIgnoreCase))
+        {
+            subName = product.NameLong;
+        }
+    }
+    else
+    {
+        name = ViewData["Name"].ToStr();
+        itemId = ViewData["ItemId"].ToStr();
+        linkUrl = ViewData["LinkUrl"].ToStr();
+        if (string.IsNullOrEmpty(linkUrl))
+        {
+            linkUrl = ViewData["DetailUrl"].ToStr();
+        }
+        subName = ViewData["SubName"].ToStr();
+        if (string.IsNullOrEmpty(subName))
+        {
+            subName = ViewData["Subtitle"].ToStr();
+        }
+        strongName = ViewData["StrongName"].ToBool(false);
+        openInNewTab = ViewData["OpenInNewTab"].ToBool(false);
+    }
+}
+<div class="eg-name-cell">
+    @if (!string.IsNullOrEmpty(linkUrl))
+    {
+        if (openInNewTab)
+        {
+            <a class="eg-name-link" href="@linkUrl" target="_blank" rel="noopener">
+                @if (strongName) { <strong>@name</strong> } else { @name }
+            </a>
+        }
+        else
+        {
+            <a class="eg-name-link" href="@linkUrl">
+                @if (strongName) { <strong>@name</strong> } else { @name }
+            </a>
+        }
+    }
+    else if (!string.IsNullOrEmpty(name))
+    {
+        <span class="eg-name-text">
+            @if (strongName) { <strong>@name</strong> } else { @name }
+        </span>
+    }
+    @if (!string.IsNullOrEmpty(itemId))
+    {
+        <div class="eg-name-meta">
+            @Html.GridMeta("ID", itemId)
+            @if (product != null && !string.IsNullOrEmpty(product.ProductCode))
+            {
+                @Html.GridMeta(AdminResource.ProductCode, product.ProductCode)
+            }
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(subName))
+    {
+        <div class="eg-name-sub">@subName</div>
+    }
+</div>

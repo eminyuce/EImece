@@ -55,6 +55,16 @@
         }}
     };
 
+    var categoryIcons = new Dictionary<string, string>
+    {
+        { "Satış Raporları", "glyphicon-stats" },
+        { "Ödeme Raporları", "glyphicon-credit-card" },
+        { "Ürün Raporları", "glyphicon-tags" },
+        { "Risk ve Analiz", "glyphicon-warning-sign" },
+        { "Pazarlama ve Lojistik", "glyphicon-send" },
+        { "Finansal Raporlar", "glyphicon-briefcase" }
+    };
+
     var allActions = new List<string> {
         "CouponUsage", "FraudAnalysis", "PaymentMethod", "PaymentStatus",
         "GetRegionalSalesReport", "SalesByDateRange", "ShipmentCompany",
@@ -72,96 +82,114 @@
 
 <style>
     .report-index {
-        margin-bottom: 24px;
+        margin: 0 0 28px;
+        max-width: 1180px;
     }
 
     .report-index-header {
-        margin-bottom: 20px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #d9e2ec;
+        margin-bottom: 22px;
     }
 
     .report-index-header h2 {
-        margin-top: 0;
-        margin-bottom: 6px;
-        color: #102a43;
-        font-weight: 600;
+        margin: 0 0 8px;
     }
 
     .report-index-header p {
         margin: 0;
         color: #627d98;
-        font-size: 13px;
+        font-size: 14px;
+        line-height: 1.5;
         max-width: 720px;
     }
 
     .nav-form {
-        display: inline-block;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         margin: 0;
         padding: 0;
         width: 100%;
     }
 
     .nav-form .btn-link {
-        padding: 3px 20px;
-        color: #333;
-        display: block;
+        padding: 6px 0;
+        color: #243b53;
+        display: inline-block;
         text-decoration: none;
         background: none;
         border: none;
         text-align: left;
-        width: 100%;
+        font-weight: 600;
     }
 
     .nav-form .btn-link:hover,
     .nav-form .btn-link:focus {
-        color: #262626;
-        background-color: #f5f5f5;
-        text-decoration: none;
+        color: #2b6cb0;
+        text-decoration: underline;
+        background: none;
     }
 
     .report-category {
         margin-bottom: 28px;
     }
 
-    .report-category h3 {
-        margin-top: 0;
-        margin-bottom: 14px;
+    .report-category-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 14px;
         padding-bottom: 8px;
-        border-bottom: 1px solid #d9e2ec;
+        border-bottom: 1px solid #e1e7ee;
         color: #334e68;
-        font-size: 18px;
-        font-weight: 600;
+        font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    .report-category-title > i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: #e8f2fb;
+        color: #2b6cb0;
+        font-size: 13px;
     }
 
     .report-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
         gap: 14px;
     }
 
     .report-card {
         border: 1px solid #d9e2ec;
-        border-radius: 3px;
-        padding: 16px;
-        background: #fff;
-        transition: box-shadow 0.2s ease, border-color 0.2s ease;
-        min-height: 140px;
+        border-radius: 10px;
+        padding: 16px 16px 14px;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        box-shadow: 0 1px 2px rgba(16, 42, 67, 0.04);
+        transition: box-shadow 160ms ease, border-color 160ms ease, transform 160ms ease;
+        min-height: 148px;
         display: flex;
         flex-direction: column;
     }
 
     .report-card:hover {
         border-color: #9fb3c8;
-        box-shadow: 0 2px 8px rgba(16, 42, 67, 0.08);
+        box-shadow: 0 6px 18px rgba(16, 42, 67, 0.08);
+        transform: translateY(-1px);
     }
 
     .report-card h4 {
-        margin-top: 0;
-        margin-bottom: 8px;
+        margin: 0 0 8px;
         color: #102a43;
+        font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
         font-size: 15px;
-        font-weight: 600;
+        font-weight: 700;
+        letter-spacing: -0.01em;
     }
 
     .report-card p {
@@ -172,43 +200,73 @@
         line-height: 1.45;
     }
 
-    .report-card .btn {
+    .report-card .btn,
+    .report-card .nav-form .btn {
         align-self: flex-start;
+        border-radius: 7px;
+        font-weight: 600;
+        padding: 6px 12px;
+        background: #2b6cb0;
+        border-color: #2b6cb0;
+    }
+
+    .report-card .btn:hover,
+    .report-card .nav-form .btn:hover {
+        background: #1e4e8c;
+        border-color: #1e4e8c;
     }
 
     .report-quick-panel.panel {
-        margin-top: 10px;
-        border-color: #d9e2ec;
-        box-shadow: none;
+        margin-top: 8px;
+        border: 1px solid #d9e2ec;
+        border-radius: 10px;
+        box-shadow: 0 1px 2px rgba(16, 42, 67, 0.04);
+        overflow: hidden;
     }
 
     .report-quick-panel > .panel-heading {
-        background: #f0f4f8;
+        background: linear-gradient(180deg, #f7fbff 0%, #eef5fc 100%);
         border-color: #d9e2ec;
-        color: #334e68;
-        font-weight: 600;
+        color: #243b53;
+        font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: -0.01em;
     }
 
     .report-quick-panel h4 {
-        margin-top: 0;
-        margin-bottom: 10px;
+        margin: 0 0 10px;
         color: #334e68;
-        font-size: 14px;
-        font-weight: 600;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
     }
 
     .report-quick-panel ul li {
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
 
+    .report-quick-panel a,
     .report-quick-panel .btn-link {
         padding: 0;
         color: #243b53;
+        font-weight: 600;
     }
 
+    .report-quick-panel a:hover,
     .report-quick-panel .btn-link:hover {
-        color: #102a43;
+        color: #2b6cb0;
         text-decoration: underline;
+    }
+
+    .report-mobile-menu {
+        margin-bottom: 20px;
+    }
+
+    .report-mobile-menu .btn {
+        border-radius: 8px;
+        font-weight: 600;
     }
 
     @@media (max-width: 767px) {
@@ -218,14 +276,14 @@
     }
 </style>
 
-<div class="container body-content report-index">
+<div class="report-index">
     <div class="report-index-header">
-        <h2>@ViewBag.Title</h2>
+        <h2 class="admin-page-title">@ViewBag.Title</h2>
         <p>Aşağıdaki kategorilerden bir rapor seçerek satış, ödeme, stok ve risk özetlerine ulaşabilirsiniz.</p>
     </div>
 
     <!-- Mobile navigation -->
-    <div class="visible-xs" style="margin-bottom: 20px;">
+    <div class="visible-xs report-mobile-menu">
         <div class="dropdown">
             <button class="btn btn-default dropdown-toggle" type="button" id="mobileReportMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Rapor Seçin
@@ -266,8 +324,12 @@
     <div class="hidden-xs">
         @foreach (var category in reportCategories)
         {
+            var icon = categoryIcons.ContainsKey(category.Key) ? categoryIcons[category.Key] : "glyphicon-list-alt";
             <div class="report-category">
-                <h3>@category.Key</h3>
+                <h3 class="report-category-title">
+                    <i class="glyphicon @icon" aria-hidden="true"></i>
+                    <span>@category.Key</span>
+                </h3>
                 <div class="report-grid">
                     @foreach (var action in category.Value)
                     {

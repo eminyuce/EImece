@@ -681,10 +681,22 @@ function changeStateSuccess(data) {
     //var parsedPostData = jQuery.parseJSON(data);
     //  console.log(data);
     data.values.forEach(function (entry) {
+        var $span = $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]');
         if (entry.IsActive) {
-            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('class', 'gridActiveIcon glyphicon  glyphicon-ok-circle');
+            $span.attr('class', 'eg-status-icon gridActiveIcon glyphicon glyphicon-ok-circle');
+            $span.attr('grid-data-value', 'True');
         } else {
-            $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]').attr('class', ' gridNotActiveIcon glyphicon  glyphicon-remove-circle');
+            $span.attr('class', 'eg-status-icon gridNotActiveIcon glyphicon glyphicon-remove-circle');
+            $span.attr('grid-data-value', 'False');
+        }
+        // Sync modern pill/switch wrappers when present (Products reference + reusable toggles).
+        var $toggle = $span.closest('[data-eg-status-toggle]');
+        if ($toggle.length) {
+            $toggle
+                .toggleClass('is-on', !!entry.IsActive)
+                .toggleClass('is-off', !entry.IsActive)
+                .attr('aria-pressed', entry.IsActive ? 'true' : 'false')
+                .removeClass('is-busy');
         }
     });
 }
