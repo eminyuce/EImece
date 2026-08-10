@@ -5,7 +5,7 @@ After publishing EImece to IIS, the site runs as the **application pool identity
 Without those rights you typically see:
 
 - failed image / media uploads
-- empty or missing NLog files under `App_Data\logs`
+- empty or missing NLog files under `media\logs`
 - health check `fileStorage` reporting DOWN
 - ASP.NET “access exception” / HTTP 500 when the app tries to create files
 
@@ -41,44 +41,24 @@ icacls "PATH" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
 
 ---
 
-## Media / uploaded images
+## One writable root: `media`
 
-Admin and storefront code write uploaded images under `media\images`. Grant Modify so the pool can create and update files there:
+Uploads (`media\images`) and application logs (`media\logs`) share the **same parent folder** so you only grant write access once.
 
-```bat
-icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-```
-
-If `media\images` does not exist yet:
+NLog writes under `${basedir}/media/logs` (`NLog.config`). HTTP access to `/media/logs` is blocked in `media/Web.config` (hidden segment + deny handlers).
 
 ```bat
-mkdir "C:\inetpub\wwwroot\Eimece\media\images"
-icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-```
-
-Optional: if you also write elsewhere under `media` (thumbs, cache, etc.), grant the parent once:
-
-```bat
-mkdir "C:\inetpub\wwwroot\Eimece\media"
+mkdir "C:\inetpub\wwwroot\Eimece\media\images" 2>nul
+mkdir "C:\inetpub\wwwroot\Eimece\media\logs" 2>nul
 icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
 ```
 
----
+That single `icacls` on `media` covers:
 
-## Application logs (`App_Data\logs`)
-
-NLog is configured to write under `${basedir}/App_Data/logs` (see `NLog.config`). Create the folder if missing, then grant Modify:
-
-```bat
-mkdir "C:\inetpub\wwwroot\Eimece\App_Data\logs"
-icacls "C:\inetpub\wwwroot\Eimece\App_Data\logs" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-```
-
-Recommended: also grant Modify on `App_Data` itself so other runtime files (cache, temp, health probes) can be written:
-
-```bat
-icacls "C:\inetpub\wwwroot\Eimece\App_Data" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-```
+| Path | Purpose |
+| --- | --- |
+| `media\images` | Product / content image uploads |
+| `media\logs` | NLog / structured log files |
 
 ---
 
@@ -87,12 +67,10 @@ icacls "C:\inetpub\wwwroot\Eimece\App_Data" /grant "IIS AppPool\Eimece":(OI)(CI)
 Run as Administrator after each fresh deploy to a new machine (or after wiping ACLs):
 
 ```bat
-mkdir "C:\inetpub\wwwroot\Eimece\App_Data\logs" 2>nul
 mkdir "C:\inetpub\wwwroot\Eimece\media\images" 2>nul
+mkdir "C:\inetpub\wwwroot\Eimece\media\logs" 2>nul
 
-icacls "C:\inetpub\wwwroot\Eimece\App_Data" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-icacls "C:\inetpub\wwwroot\Eimece\App_Data\logs" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
+icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
 ```
 
 Then recycle the pool so workers pick up a clean start:
@@ -113,8 +91,7 @@ Restart-WebAppPool -Name Eimece
 ## Verify
 
 ```bat
-icacls "C:\inetpub\wwwroot\Eimece\media\images"
-icacls "C:\inetpub\wwwroot\Eimece\App_Data\logs"
+icacls "C:\inetpub\wwwroot\Eimece\media"
 ```
 
 You should see a line similar to:
@@ -127,13 +104,15 @@ Smoke-test the site:
 
 1. Open `http://localhost:81/health` — expect `{"status":"UP"}` (port may differ).
 2. Upload an image in Admin and confirm a new file appears under `media\images`.
-3. Confirm log files appear under `App_Data\logs` after traffic.
+3. Confirm log files appear under `media\logs` after traffic.
+4. Confirm `http://localhost:81/media/logs/EImeceLog.log` is **not** publicly downloadable (404 / blocked).
 
 ---
 
 ## Notes
 
-- **Do not** grant Modify on the whole site (`bin`, `Views`, `Web.config`) unless you have a specific reason. Prefer write access only on upload/log/data folders.
+- **Do not** grant Modify on the whole site (`bin`, `Views`, `Web.config`) unless you have a specific reason. Prefer write access only on `media`.
 - Republishing with the Folder publish profile usually **keeps** existing ACLs on folders that already exist (`DeleteExistingFiles` is `false` in `FolderProfile.pubxml`). Re-run `icacls` if you recreate the site folder or restore from a zip that drops ACLs.
 - If the app pool uses a custom identity (domain service account) instead of the default app-pool identity, grant that account instead of `IIS AppPool\Eimece`.
+- Older installs may still have logs under `App_Data\logs`; after upgrading, new logs go to `media\logs`. You can delete or archive the old folder once you no longer need those files.
 - Related: [BUILD_AND_RUN.md](BUILD_AND_RUN.md) (IIS setup), [SECURE_CONNECTION_STRINGS.md](SECURE_CONNECTION_STRINGS.md) (DB config for IIS).

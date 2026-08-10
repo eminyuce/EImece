@@ -244,6 +244,10 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /EImece/EImece/media/images
+# Runtime logs under media/logs (keep Web.config / .gitkeep)
+/EImece/EImece/media/logs/*
+!/EImece/EImece/media/logs/Web.config
+!/EImece/EImece/media/logs/.gitkeep
 # IIS/local junction: /images -> media/images (do not commit)
 /EImece/EImece/images/
 /Playwright/node_modules/

@@ -1,4 +1,4 @@
-/* Crizal Components — header, hero, cards, buttons, shop, footer */
+/* Crizal Components â header, hero, cards, buttons, shop, footer */
 
 /* ---------- Buttons (butn-style8 inspired) ---------- */
 .butn,
@@ -1077,14 +1077,14 @@ body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item + .breadcrum
 }
 
 body[data-design="crizal"] .crizal-breadcrumb__item.breadcrumb-item + .breadcrumb-item::before {
-    content: "›";
+    content: "âº";
     padding: 0 0.55rem;
     color: rgba(122, 125, 154, 0.85);
     font-weight: 600;
     float: none;
 }
 
-/* Product name already shown as H1 — keep trail short on small screens */
+/* Product name already shown as H1 â keep trail short on small screens */
 @media (max-width: 767.98px) {
     body[data-design="crizal"] .crizal-product-hero .crizal-breadcrumb__item.active {
         display: none;
@@ -1412,7 +1412,7 @@ body[data-design="crizal"] .sr-star {
 
 body[data-design="crizal"] .star-rating .sr-star::before,
 body[data-design="crizal"] .sr-star::before {
-    content: "★";
+    content: "â";
     position: absolute;
     inset: 0;
     color: #d5d8e3;
@@ -1522,7 +1522,7 @@ body[data-design="crizal"] .custom-checkbox .custom-control-label::before {
     border-radius: 0.25rem;
 }
 
-/* Edge knob unused — toolbar Filtrele button opens the drawer */
+/* Edge knob unused â toolbar Filtrele button opens the drawer */
 body[data-design="crizal"] .offcanvas-sidebar-toggle {
     display: none !important;
 }
@@ -1778,7 +1778,7 @@ body[data-design="crizal"] .col-lg-5 .btn-block {
 }
 
 /* ==========================================================================
-   Home � full-bleed hero, sections, product panels, stories
+   Home  full-bleed hero, sections, product panels, stories
    ========================================================================== */
 
 body[data-design="crizal"] .crizal-home-hero {
@@ -2391,7 +2391,7 @@ body[data-design="crizal"] .crizal-home-story-card__more:hover {
 }
 
 /* ==========================================================================
-   Stories � detail, category, tags, list cards
+   Stories  detail, category, tags, list cards
    ========================================================================== */
 
 body[data-design="crizal"] .crizal-tags {
@@ -2710,14 +2710,17 @@ body[data-design="crizal"] .crizal-story-detail__hero {
     border-radius: var(--crizal-radius-lg);
     overflow: hidden;
     background: #e8eef1;
+    border: 1px solid var(--crizal-border);
+    box-shadow: 0 1px 0 rgba(20, 33, 43, 0.04);
 }
 
 body[data-design="crizal"] .crizal-story-detail__hero img {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 28rem;
+    max-height: min(26rem, 48vh);
     object-fit: cover;
+    object-position: center 60%;
 }
 
 body[data-design="crizal"] .crizal-story-gallery {
@@ -2745,12 +2748,20 @@ body[data-design="crizal"] .crizal-story-detail__content {
     color: var(--crizal-heading);
     font-size: 1.05rem;
     line-height: 1.75;
+    max-width: 42rem;
 }
 
 body[data-design="crizal"] .crizal-story-detail__content p {
     margin-bottom: 1.1rem;
 }
 
+body[data-design="crizal"] .crizal-story-detail__content > p:first-child {
+    font-size: 1.12rem;
+    line-height: 1.65;
+    color: var(--crizal-heading);
+}
+
+/* Reset vendor `footer { background:#14212B; ... }` — this is article meta, not the site footer. */
 body[data-design="crizal"] .crizal-story-detail__footer {
     display: flex;
     flex-wrap: wrap;
@@ -2758,8 +2769,11 @@ body[data-design="crizal"] .crizal-story-detail__footer {
     gap: 1rem;
     align-items: center;
     margin-top: 2rem;
-    padding-top: 1.25rem;
+    margin-bottom: 0;
+    padding: 1.25rem 0 0;
     border-top: 1px solid var(--crizal-border);
+    background: transparent;
+    color: var(--crizal-muted);
 }
 
 body[data-design="crizal"] .crizal-story-share {
@@ -2789,76 +2803,140 @@ body[data-design="crizal"] .crizal-story-share__btn:hover {
 
 body[data-design="crizal"] .crizal-story-nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin: 1.75rem 0 0.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-story-nav__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
     align-items: stretch;
-    justify-content: space-between;
-    margin: 1.75rem 0 0.5rem;
+}
+
+body[data-design="crizal"] .crizal-story-nav--end .crizal-story-nav__row,
+body[data-design="crizal"] .crizal-story-nav--start .crizal-story-nav__row {
+    grid-template-columns: 1fr;
+}
+
+body[data-design="crizal"] .crizal-story-nav--end .crizal-story-nav__spacer,
+body[data-design="crizal"] .crizal-story-nav--start .crizal-story-nav__spacer {
+    display: none;
 }
 
 body[data-design="crizal"] .crizal-story-nav__link {
-    flex: 1 1 12rem;
-    max-width: 20rem;
-}
-
-body[data-design="crizal"] .crizal-story-nav__all {
-    flex: 0 0 auto;
-}
-
-body[data-design="crizal"] .crizal-story-nav--end {
-    justify-content: flex-end;
-}
-
-body[data-design="crizal"] .crizal-story-nav--start {
-    justify-content: flex-start;
-}
-
-body[data-design="crizal"] .crizal-story-nav__link,
-body[data-design="crizal"] .crizal-story-nav__all {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.2rem;
-    padding: 0.9rem 1rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: center;
+    min-height: 4.5rem;
+    padding: 0.95rem 1.1rem;
     border: 1px solid var(--crizal-border);
-    border-radius: var(--crizal-radius);
+    border-radius: var(--crizal-radius-lg);
     background: var(--crizal-surface);
     color: var(--crizal-heading);
     text-decoration: none !important;
-    min-height: 4.25rem;
     box-sizing: border-box;
-}
-
-body[data-design="crizal"] .crizal-story-nav__link span,
-body[data-design="crizal"] .crizal-story-nav__all {
-    color: var(--crizal-muted);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-
-body[data-design="crizal"] .crizal-story-nav__link strong {
-    font-size: 0.92rem;
-    line-height: 1.3;
-}
-
-body[data-design="crizal"] .crizal-story-nav__link:hover,
-body[data-design="crizal"] .crizal-story-nav__all:hover {
-    border-color: var(--crizal-primary);
-    color: var(--crizal-primary);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 body[data-design="crizal"] .crizal-story-nav__link--next {
+    grid-template-columns: minmax(0, 1fr) auto;
     text-align: right;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link--next .crizal-story-nav__copy {
     align-items: flex-end;
 }
 
-body[data-design="crizal"] .crizal-story-nav__all {
+body[data-design="crizal"] .crizal-story-nav__icon {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 50%;
+    background: rgba(20, 33, 43, 0.06);
     color: var(--crizal-secondary);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body[data-design="crizal"] .crizal-story-nav__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+body[data-design="crizal"] .crizal-story-nav__dir {
+    color: var(--crizal-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-story-nav__title {
+    color: var(--crizal-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link:hover {
+    border-color: var(--crizal-primary);
+    box-shadow: 0 8px 20px rgba(20, 33, 43, 0.08);
+    transform: translateY(-2px);
+}
+
+body[data-design="crizal"] .crizal-story-nav__link:hover .crizal-story-nav__icon {
+    background: var(--crizal-primary);
+    color: #fff;
+}
+
+body[data-design="crizal"] .crizal-story-nav__link:hover .crizal-story-nav__title {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-nav__spacer {
+    display: block;
+    min-height: 1px;
+}
+
+body[data-design="crizal"] .crizal-story-nav__all {
+    display: inline-flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.85rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--crizal-secondary);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none !important;
+    min-height: 0;
+}
+
+body[data-design="crizal"] .crizal-story-nav__all:hover {
+    color: var(--crizal-primary);
+    background: rgba(9, 184, 80, 0.08);
+}
+
+body[data-design="crizal"] .crizal-story-nav__all i {
+    font-size: 0.78rem;
 }
 
 body[data-design="crizal"] .crizal-story-related {
@@ -2939,12 +3017,19 @@ body[data-design="crizal"] .crizal-story-related__excerpt {
         grid-template-columns: 1fr;
     }
 
-    body[data-design="crizal"] .crizal-story-nav {
+    body[data-design="crizal"] .crizal-story-nav__row {
         grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-story-nav__spacer {
+        display: none;
     }
 
     body[data-design="crizal"] .crizal-story-nav__link--next {
         text-align: left;
+    }
+
+    body[data-design="crizal"] .crizal-story-nav__link--next .crizal-story-nav__copy {
         align-items: flex-start;
     }
 
@@ -2955,7 +3040,7 @@ body[data-design="crizal"] .crizal-story-related__excerpt {
 }
 
 /* ==========================================================================
-   Product detail � buy-box accordion + description/comments/payment tabs
+   Product detail  buy-box accordion + description/comments/payment tabs
    ========================================================================== */
 
 body[data-design="crizal"] #productPanels.accordion,

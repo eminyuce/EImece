@@ -21,11 +21,11 @@
 <h2>Uygulama Metrikleri</h2>
 <hr class="adminLine" />
 
-<div class="panel panel-info metrics-help-panel">
-    <div class="panel-heading">
-        <strong>Bu sayfa ne işe yarar?</strong>
-    </div>
-    <div class="panel-body">
+@{
+    ViewData["HelpId"] = "metricsHelp";
+    ViewData["HelpTitle"] = "Bu sayfa ne işe yarar?";
+}
+@Html.Partial("_AdminHelpAccordionStart")
         <p>
             Site ve admin panelindeki işlemlerin <strong>ne kadar hızlı / yavaş</strong> çalıştığını gösterir.
             Amaç yavaş sayfaları, servisleri veya dış bağlantıları bulmaktır.
@@ -37,151 +37,150 @@
             <li>Her satırdaki <strong>Açıkla</strong> düğmesi, o metriğin sayılarını düz metinle yorumlar.</li>
             <li>Karar verirken ortalamaya değil <strong>P50 → P99</strong> yüzdeliklerine bakın.</li>
         </ul>
-    </div>
-</div>
 
-<div class="row metrics-help-cards">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading"><strong>Sütunlar ne anlama gelir?</strong></div>
-            <div class="panel-body">
-                <dl class="metrics-dl">
-                    <dt>Metrik Adı</dt>
-                    <dd>Ölçülen işlem. Önek türe göre değişir (<code>controller:</code>, <code>service:</code>, …).</dd>
+        <div class="row metrics-help-cards" style="margin-top: 16px;">
+            <div class="col-md-6">
+                <div class="panel panel-default" style="margin-bottom: 15px;">
+                    <div class="panel-heading"><strong>Sütunlar ne anlama gelir?</strong></div>
+                    <div class="panel-body">
+                        <dl class="metrics-dl">
+                            <dt>Metrik Adı</dt>
+                            <dd>Ölçülen işlem. Önek türe göre değişir (<code>controller:</code>, <code>service:</code>, …).</dd>
 
-                    <dt>Adet</dt>
-                    <dd>Uygulama açıldığından beri bu işlemin <strong>kaç kez</strong> çağrıldığı.</dd>
+                            <dt>Adet</dt>
+                            <dd>Uygulama açıldığından beri bu işlemin <strong>kaç kez</strong> çağrıldığı.</dd>
 
-                    <dt>Hata</dt>
-                    <dd>Bu çağrıların kaçının başarısız olduğu.</dd>
+                            <dt>Hata</dt>
+                            <dd>Bu çağrıların kaçının başarısız olduğu.</dd>
 
-                    <dt>Ort. süre (ms)</dt>
-                    <dd>Tüm çağrıların ortalama süresi. Tek başına yanıltıcı olabilir.</dd>
+                            <dt>Ort. süre (ms)</dt>
+                            <dd>Tüm çağrıların ortalama süresi. Tek başına yanıltıcı olabilir.</dd>
 
-                    <dt>P50 (ms) — medyan</dt>
-                    <dd>
-                        <strong>%50 yüzdelik.</strong>
-                        Çağrıların yarısı bu süreden hızlı, yarısı daha yavaş. Tipik / “ortalama kullanıcı” deneyimine yakındır.
-                    </dd>
+                            <dt>P50 (ms) — medyan</dt>
+                            <dd>
+                                <strong>%50 yüzdelik.</strong>
+                                Çağrıların yarısı bu süreden hızlı, yarısı daha yavaş. Tipik / “ortalama kullanıcı” deneyimine yakındır.
+                            </dd>
 
-                    <dt>P75 (ms)</dt>
-                    <dd>
-                        <strong>%75 yüzdelik.</strong>
-                        Çağrıların <strong>%75’i bu süreden daha hızlı</strong>; en yavaş %25’i bundan uzun.
-                    </dd>
+                            <dt>P75 (ms)</dt>
+                            <dd>
+                                <strong>%75 yüzdelik.</strong>
+                                Çağrıların <strong>%75’i bu süreden daha hızlı</strong>; en yavaş %25’i bundan uzun.
+                            </dd>
 
-                    <dt>P90 / P95 / P99 (ms)</dt>
-                    <dd>
-                        Daha yüksek kuyruk: çağrıların sırasıyla %90 / %95 / %99’u bu süreden hızlı bitmiş.
-                        P95 günlük takip için; P99 nadir ama çok yavaş istekler için kullanılır.
-                    </dd>
-                </dl>
+                            <dt>P90 / P95 / P99 (ms)</dt>
+                            <dd>
+                                Daha yüksek kuyruk: çağrıların sırasıyla %90 / %95 / %99’u bu süreden hızlı bitmiş.
+                                P95 günlük takip için; P99 nadir ama çok yavaş istekler için kullanılır.
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" style="margin-bottom: 15px;">
+                    <div class="panel-heading"><strong>Yüzdelikler — kısa örnek (100 çağrı)</strong></div>
+                    <div class="panel-body">
+                        <table class="table table-condensed table-bordered metrics-example-table">
+                            <thead>
+                                <tr>
+                                    <th>Değer</th>
+                                    <th>Anlamı</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>P50 = 40 ms</strong></td>
+                                    <td>Yarıdan fazlası ≤ 40 ms (medyan).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>P75 = 70 ms</strong></td>
+                                    <td>100 çağrıdan 75’i ≤ 70 ms.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>P90 = 120 ms</strong></td>
+                                    <td>100 çağrıdan 90’ı ≤ 120 ms.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>P95 = 200 ms</strong></td>
+                                    <td>100 çağrıdan 95’i ≤ 200 ms.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>P99 = 800 ms</strong></td>
+                                    <td>100 çağrıdan 99’u ≤ 800 ms; 1’i daha yavaş.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="text-muted" style="margin-bottom: 0;">
+                            “P” = <em>percentile</em> (yüzdelik dilim). Sayı bir puan değildir;
+                            çağrıların yüzde kaçının <strong>o süreden daha hızlı</strong> olduğunu gösterir.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default" style="margin-bottom: 15px;">
+                    <div class="panel-heading"><strong>Nasıl yorumlanır?</strong></div>
+                    <div class="panel-body">
+                        <ul class="metrics-help-bullets" style="margin-bottom: 0;">
+                            <li><strong>P50 düşük, P99 çok yüksek</strong> → çoğu hızlı; ara sıra spike var.</li>
+                            <li><strong>P50 / P95 / P99 hepsi yüksek</strong> → işlem genel olarak yavaş.</li>
+                            <li><strong>Hata &gt; 0</strong> → önce hatalara bakın.</li>
+                            <li><strong>Adet çok düşük</strong> → yüzdelikler henüz güvenilir değil.</li>
+                            <li>Satırdaki <strong>Açıkla</strong> ile bu satıra özel yorumu okuyun.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading"><strong>Yüzdelikler — kısa örnek (100 çağrı)</strong></div>
-            <div class="panel-body">
-                <table class="table table-condensed table-bordered metrics-example-table">
-                    <thead>
-                        <tr>
-                            <th>Değer</th>
-                            <th>Anlamı</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>P50 = 40 ms</strong></td>
-                            <td>Yarıdan fazlası ≤ 40 ms (medyan).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>P75 = 70 ms</strong></td>
-                            <td>100 çağrıdan 75’i ≤ 70 ms.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>P90 = 120 ms</strong></td>
-                            <td>100 çağrıdan 90’ı ≤ 120 ms.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>P95 = 200 ms</strong></td>
-                            <td>100 çağrıdan 95’i ≤ 200 ms.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>P99 = 800 ms</strong></td>
-                            <td>100 çağrıdan 99’u ≤ 800 ms; 1’i daha yavaş.</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p class="text-muted" style="margin-bottom: 0;">
-                    “P” = <em>percentile</em> (yüzdelik dilim). Sayı bir puan değildir;
-                    çağrıların yüzde kaçının <strong>o süreden daha hızlı</strong> olduğunu gösterir.
+
+        <div class="panel panel-default" style="margin-bottom: 0;">
+            <div class="panel-heading"><strong>Metrik adı önekleri</strong></div>
+            <div class="panel-body" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="table table-striped metrics-prefix-table" style="margin-bottom: 0;">
+                        <thead>
+                            <tr>
+                                <th style="width: 28%;">Önek / örnek</th>
+                                <th>Ne ölçer?</th>
+                                <th style="width: 30%;">Ne zaman bakılır?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>controller:Products.Index</code></td>
+                                <td>MVC sayfa / aksiyon süresi.</td>
+                                <td>Yavaş açılan sayfa.</td>
+                            </tr>
+                            <tr>
+                                <td><code>request:Products.Index</code></td>
+                                <td>Aynı aksiyonun genel istek serisi.</td>
+                                <td><code>controller:</code> ile birlikte.</td>
+                            </tr>
+                            <tr>
+                                <td><code>service:IProductService.…</code></td>
+                                <td>İş mantığı (Service) metot süresi.</td>
+                                <td>Controller içinde hangi servisin yavaşladığı.</td>
+                            </tr>
+                            <tr>
+                                <td><code>http:GET:200</code></td>
+                                <td>Dış HTTP çağrıları.</td>
+                                <td>CDN / ödeme / API gecikmesi.</td>
+                            </tr>
+                            <tr>
+                                <td><code>db:...</code></td>
+                                <td>Veritabanı işlemleri.</td>
+                                <td>SQL / EF yavaşlığı.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted" style="padding: 10px 15px; margin: 0;">
+                    Yüzdelikler son yaklaşık <strong>2048</strong> ölçüm üzerinden hesaplanır;
+                    <em>Adet</em> uygulama ömrü boyunca toplam çağrı sayısıdır.
                 </p>
             </div>
         </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading"><strong>Nasıl yorumlanır?</strong></div>
-            <div class="panel-body">
-                <ul class="metrics-help-bullets" style="margin-bottom: 0;">
-                    <li><strong>P50 düşük, P99 çok yüksek</strong> → çoğu hızlı; ara sıra spike var.</li>
-                    <li><strong>P50 / P95 / P99 hepsi yüksek</strong> → işlem genel olarak yavaş.</li>
-                    <li><strong>Hata &gt; 0</strong> → önce hatalara bakın.</li>
-                    <li><strong>Adet çok düşük</strong> → yüzdelikler henüz güvenilir değil.</li>
-                    <li>Satırdaki <strong>Açıkla</strong> ile bu satıra özel yorumu okuyun.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="panel panel-default" style="margin-bottom: 20px;">
-    <div class="panel-heading"><strong>Metrik adı önekleri</strong></div>
-    <div class="panel-body" style="padding: 0;">
-        <div class="table-responsive">
-            <table class="table table-striped metrics-prefix-table" style="margin-bottom: 0;">
-                <thead>
-                    <tr>
-                        <th style="width: 28%;">Önek / örnek</th>
-                        <th>Ne ölçer?</th>
-                        <th style="width: 30%;">Ne zaman bakılır?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>controller:Products.Index</code></td>
-                        <td>MVC sayfa / aksiyon süresi.</td>
-                        <td>Yavaş açılan sayfa.</td>
-                    </tr>
-                    <tr>
-                        <td><code>request:Products.Index</code></td>
-                        <td>Aynı aksiyonun genel istek serisi.</td>
-                        <td><code>controller:</code> ile birlikte.</td>
-                    </tr>
-                    <tr>
-                        <td><code>service:IProductService.…</code></td>
-                        <td>İş mantığı (Service) metot süresi.</td>
-                        <td>Controller içinde hangi servisin yavaşladığı.</td>
-                    </tr>
-                    <tr>
-                        <td><code>http:GET:200</code></td>
-                        <td>Dış HTTP çağrıları.</td>
-                        <td>CDN / ödeme / API gecikmesi.</td>
-                    </tr>
-                    <tr>
-                        <td><code>db:...</code></td>
-                        <td>Veritabanı işlemleri.</td>
-                        <td>SQL / EF yavaşlığı.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <p class="text-muted" style="padding: 10px 15px; margin: 0;">
-            Yüzdelikler son yaklaşık <strong>2048</strong> ölçüm üzerinden hesaplanır;
-            <em>Adet</em> uygulama ömrü boyunca toplam çağrı sayısıdır.
-        </p>
-    </div>
-</div>
+@Html.Partial("_AdminHelpAccordionEnd")
 
 <div class="panel panel-default" style="margin-bottom: 20px;">
     <div class="panel-body">

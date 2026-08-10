@@ -26,7 +26,8 @@ namespace EImece.Domain.Observability.Logging
                 return;
             }
 
-            var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "logs");
+            // Same writable root as uploads (media/) — one IIS ACL for images + logs.
+            var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "media", "logs");
             Directory.CreateDirectory(logDirectory);
 
             var enableEfSqlLogging = options != null && options.EnableEfSqlLogging;

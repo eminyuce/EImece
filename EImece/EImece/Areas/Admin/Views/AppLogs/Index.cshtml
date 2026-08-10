@@ -1,4 +1,6 @@
 ﻿@model List<AppLog>
+@using System;
+@using System.Collections.Generic;
 @using EImece.Domain.Helpers;
 @using GridMvc.Html;
 @using GridMvc.Sorting;
@@ -19,10 +21,76 @@
     List<AppLog> contents = Model;
 
     var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
+    var currentSearch = (ViewBag.Search as string) ?? Request.QueryString["search"].ToStr();
+    var currentEventLevel = (ViewBag.EventLevel as string) ?? Request.QueryString["eventLevel"].ToStr();
+    var eventLevels = ViewBag.EventLevels as string[] ?? new[] { "Trace", "Debug", "Info", "Warn", "Error", "Fatal" };
+    var preserveQuery = new Dictionary<string, string>();
+    if (!string.IsNullOrEmpty(currentEventLevel))
+    {
+        preserveQuery["eventLevel"] = currentEventLevel;
+    }
 }
 
 <h2>@AdminResource.AppLogs</h2>
 <hr class="adminLine" />
+
+<div class="panel panel-default" style="margin-bottom: 15px;">
+    <div class="panel-heading"><strong>Log seviyesi filtrele / indir</strong></div>
+    <div class="panel-body">
+        <form method="get" action="@Url.Action("Index", controllerName)" class="form-inline" style="margin-bottom: 10px;">
+            @if (!string.IsNullOrEmpty(currentSearch))
+            {
+                <input type="hidden" name="search" value="@currentSearch" />
+            }
+            <div class="form-group" style="margin-right: 10px;">
+                <label for="eventLevel" style="margin-right: 6px;">Seviye (debug type):</label>
+                <select id="eventLevel" name="eventLevel" class="form-control">
+                    <option value="">Tümü</option>
+                    @foreach (var level in eventLevels)
+                    {
+                        <option value="@level" @(string.Equals(level, currentEventLevel, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>@level</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-filter"></span> Filtrele
+            </button>
+            @if (!string.IsNullOrEmpty(currentEventLevel) || !string.IsNullOrEmpty(currentSearch))
+            {
+                <a href="@Url.Action("Index", controllerName)" class="btn btn-default">Temizle</a>
+            }
+        </form>
+
+        <div class="btn-toolbar" role="toolbar" style="margin-bottom: 8px;">
+            <div class="btn-group" role="group">
+                <a class="btn btn-success"
+                   href="@Url.Action("Download", controllerName, new { search = currentSearch, eventLevel = currentEventLevel })">
+                    <span class="glyphicon glyphicon-download-alt"></span>
+                    İndir (.txt)@(string.IsNullOrEmpty(currentEventLevel) ? "" : " — " + currentEventLevel)
+                </a>
+                <a class="btn btn-default"
+                   href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch, eventLevel = currentEventLevel })">
+                    Excel
+                </a>
+                <a class="btn btn-default"
+                   href="@Url.Action("ExportExcel", controllerName, new { format = "csv", search = currentSearch, eventLevel = currentEventLevel })">
+                    CSV
+                </a>
+            </div>
+        </div>
+        <p class="text-muted" style="margin: 0;">
+            Gösterilen: <strong>@contents.Count</strong> kayıt
+            @if (!string.IsNullOrEmpty(currentEventLevel))
+            {
+                <span>· seviye: <code>@currentEventLevel</code></span>
+            }
+            @if (!string.IsNullOrEmpty(currentSearch))
+            {
+                <span>· arama: <code>@currentSearch</code></span>
+            }
+        </p>
+    </div>
+</div>
 
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
         {"controllerName",controllerName}
@@ -31,12 +99,17 @@
 ,{"IsNewRecordButtonEnabled",false}
        ,{"selectAll",true}
        ,{"deleteAll",true}
-        ,{"SetStateOnOrOff",false},{"IsExcelButtonEnabled",true}})
-@Html.ActionLink("Trace Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "trace" }, new { @class = "btn btn-default btn-sm" })
-@Html.ActionLink("Error Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "error" }, new { @class = "btn btn-danger btn-sm" })
-@Html.ActionLink("Debug Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "debug" }, new { @class = "btn btn-warning btn-sm" })
-@Html.ActionLink("Info Seviye Loglari Sil", "RemoveAll", new { @eventLevel = "INFO" }, new { @class = "btn btn-info btn-sm" })
-@Html.ActionLink("Bütün Loglari Sil", "RemoveAll", null, new { @class = "btn btn-link btn-sm" })
+        ,{"SetStateOnOrOff",false},{"IsExcelButtonEnabled",false}
+        ,{"PreserveQuery", preserveQuery}})
+<div style="margin-bottom: 12px;">
+    @Html.ActionLink("Trace Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Trace" }, new { @class = "btn btn-default btn-sm" })
+    @Html.ActionLink("Debug Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Debug" }, new { @class = "btn btn-warning btn-sm" })
+    @Html.ActionLink("Info Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Info" }, new { @class = "btn btn-info btn-sm" })
+    @Html.ActionLink("Warn Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Warn" }, new { @class = "btn btn-warning btn-sm" })
+    @Html.ActionLink("Error Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Error" }, new { @class = "btn btn-danger btn-sm" })
+    @Html.ActionLink("Fatal Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Fatal" }, new { @class = "btn btn-danger btn-sm" })
+    @Html.ActionLink("Bütün Loglari Sil", "RemoveAll", null, new { @class = "btn btn-link btn-sm" })
+</div>
 
 <div class="accordion" id="logAccordion">
 

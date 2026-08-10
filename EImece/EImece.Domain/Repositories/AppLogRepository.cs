@@ -14,12 +14,12 @@ namespace EImece.Domain.Repositories
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public List<AppLog> GetAppLogs(string search)
+        public List<AppLog> GetAppLogs(string search, string eventLevel = "")
         {
             var applogResult = new List<AppLog>();
             try
             {
-                applogResult = GetAppLogsFromDb(search);
+                applogResult = GetAppLogsFromDb(search, eventLevel);
             }
             catch (Exception ex)
             {
@@ -81,17 +81,17 @@ namespace EImece.Domain.Repositories
         public void RemoveAll(string eventLevel = "")
         {
             string connectionString = ConnectionStringProvider.GetConnectionString();
-            String commandText = "";
+            String commandText;
+            var parameterList = new List<SqlParameter>();
             if (string.IsNullOrEmpty(eventLevel))
             {
                 commandText = @"DELETE FROM dbo.AppLogs";
             }
             else
             {
-                commandText = @"DELETE FROM dbo.AppLogs where EventLevel=@EventLevel";
+                commandText = @"DELETE FROM dbo.AppLogs WHERE LOWER(EventLevel) = LOWER(@EventLevel)";
+                parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel.Trim(), SqlDbType.NVarChar));
             }
-            var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel, SqlDbType.NVarChar));
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))
             {
@@ -99,24 +99,28 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public List<AppLog> GetAppLogsFromDb(string search)
+        public List<AppLog> GetAppLogsFromDb(string search, string eventLevel = "")
         {
             var list = new List<AppLog>();
-            var commandText = "";
-            if (string.IsNullOrEmpty(search))
-            {
-                commandText = @"SELECT top 10000 * FROM dbo.AppLogs ORDER BY Id DESC";
-            }
-            else
-            {
-                commandText = @"SELECT top 10000 * FROM dbo.AppLogs where EventMessage LIKE @Search ORDER BY Id DESC";
-            }
-
+            var whereClauses = new List<string>();
             var parameterList = new List<SqlParameter>();
-            if (!string.IsNullOrEmpty(search))
+
+            if (!string.IsNullOrWhiteSpace(search))
             {
+                whereClauses.Add("EventMessage LIKE @Search");
                 parameterList.Add(DatabaseUtility.GetSqlParameter("Search", "%" + search.Trim() + "%", SqlDbType.NVarChar));
             }
+
+            if (!string.IsNullOrWhiteSpace(eventLevel))
+            {
+                whereClauses.Add("LOWER(EventLevel) = LOWER(@EventLevel)");
+                parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel.Trim(), SqlDbType.NVarChar));
+            }
+
+            var commandText = whereClauses.Count == 0
+                ? @"SELECT TOP 10000 * FROM dbo.AppLogs ORDER BY Id DESC"
+                : @"SELECT TOP 10000 * FROM dbo.AppLogs WHERE " + string.Join(" AND ", whereClauses) + " ORDER BY Id DESC";
+
             string connectionString = ConnectionStringProvider.GetConnectionString();
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))

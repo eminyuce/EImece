@@ -18,28 +18,16 @@ namespace EImece.Controllers
         {
             _healthCheckService = healthCheckService;
         }
-        /**
- *  icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
- *  icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS_IUSRS:(OI)(CI)M" /grant "IUSR:(OI)(CI)M" /T
-icacls "C:\inetpub\wwwroot\Eimece\media\images" /grant "IIS_IUSRS:(OI)(CI)M" /grant "IUSR:(OI)(CI)M" /T
-
-        iisreset
-
-Attempting stop...
-Internet services successfully stopped
-Attempting start...
-Internet services successfully restarted
- *  
- *  run it in command prompt to give permission to the app pool identity to write to the images folder as admin 
- *  
- *  
- *  If the directory does not exist yet:
-
-mkdir "C:\inetpub\wwwroot\Eimece\App_Data\logs"
-
-icacls "C:\inetpub\wwwroot\Eimece\App_Data\logs" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-
- */
+        /*
+         * One writable root for uploads + NLog files (media/images and media/logs).
+         * Run elevated after publish:
+         *
+         *   mkdir "C:\inetpub\wwwroot\Eimece\media\images" 2>nul
+         *   mkdir "C:\inetpub\wwwroot\Eimece\media\logs" 2>nul
+         *   icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
+         *
+         * See docs/IIS_APP_POOL_PERMISSIONS.md
+         */
 
         [HttpGet]
         [Route("health")]

@@ -198,7 +198,8 @@
                     @Html.Raw(story.Description)
                 </div>
 
-                <footer class="crizal-story-detail__footer">
+                @* Use a div — vendor `footer { background:#14212B }` styles the site chrome footer only. *@
+                <div class="crizal-story-detail__footer">
                     @if (storyTags.IsNotEmpty())
                     {
                         <div class="crizal-tags">
@@ -228,24 +229,43 @@
                             <i class="fab fa-pinterest-p" aria-hidden="true"></i>
                         </a>
                     </div>
-                </footer>
+                </div>
 
                 <nav class="crizal-story-nav@(Model.PreviousStory == null && Model.NextStory != null ? " crizal-story-nav--end" : (Model.PreviousStory != null && Model.NextStory == null ? " crizal-story-nav--start" : ""))" aria-label="@Resource.PostNavigation">
-                    @if (Model.PreviousStory != null)
-                    {
-                        <a class="crizal-story-nav__link" href="@Model.PreviousStory.DetailPageRelativeUrl">
-                            <span>@Resource.PrevPost</span>
-                            <strong>@Model.PreviousStory.Name</strong>
-                        </a>
-                    }
-                    <a class="crizal-story-nav__all" href="@Url.Action("Index", "Stories")">@Resource.AllPosts</a>
-                    @if (Model.NextStory != null)
-                    {
-                        <a class="crizal-story-nav__link crizal-story-nav__link--next" href="@Model.NextStory.DetailPageRelativeUrl">
-                            <span>@Resource.NextPost</span>
-                            <strong>@Model.NextStory.Name</strong>
-                        </a>
-                    }
+                    <div class="crizal-story-nav__row">
+                        @if (Model.PreviousStory != null)
+                        {
+                            <a class="crizal-story-nav__link crizal-story-nav__link--prev" href="@Model.PreviousStory.DetailPageRelativeUrl">
+                                <span class="crizal-story-nav__icon" aria-hidden="true"><i class="fas fa-arrow-left"></i></span>
+                                <span class="crizal-story-nav__copy">
+                                    <span class="crizal-story-nav__dir">@Resource.PrevPost</span>
+                                    <strong class="crizal-story-nav__title">@Model.PreviousStory.Name</strong>
+                                </span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="crizal-story-nav__spacer" aria-hidden="true"></span>
+                        }
+                        @if (Model.NextStory != null)
+                        {
+                            <a class="crizal-story-nav__link crizal-story-nav__link--next" href="@Model.NextStory.DetailPageRelativeUrl">
+                                <span class="crizal-story-nav__copy">
+                                    <span class="crizal-story-nav__dir">@Resource.NextPost</span>
+                                    <strong class="crizal-story-nav__title">@Model.NextStory.Name</strong>
+                                </span>
+                                <span class="crizal-story-nav__icon" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="crizal-story-nav__spacer" aria-hidden="true"></span>
+                        }
+                    </div>
+                    <a class="crizal-story-nav__all" href="@Url.Action("Index", "Stories")">
+                        <i class="fas fa-th-large" aria-hidden="true"></i>
+                        <span>@Resource.AllPosts</span>
+                    </a>
                 </nav>
 
                 @if (relatedStories.IsNotEmpty())

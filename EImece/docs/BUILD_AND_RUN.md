@@ -204,10 +204,7 @@ Visual Studio may assign a different port; check the browser address bar or proj
    EImece/EImece/
    ```
    (the folder containing `Web.config`, not the `bin` folder alone)
-4. Grant the app pool identity **read/write** access to:
-   - `EImece/App_Data/`
-   - `EImece/App_Data/logs/`
-   - Any media/upload directories your deployment uses
+4. Grant the app pool identity **read/write** access to `media/` once (covers uploads under `media/images` and logs under `media/logs`).
 
    Exact `icacls` commands for the published IIS site (`C:\inetpub\wwwroot\Eimece`) are documented in [IIS_APP_POOL_PERMISSIONS.md](IIS_APP_POOL_PERMISSIONS.md).
 5. Browse to the site URL configured in IIS.
@@ -284,11 +281,11 @@ curl -s http://localhost:31544/health | python3 -m json.tool
 After browsing a few pages, confirm log files are created:
 
 ```
-EImece/App_Data/logs/EImeceLog.log      # plain text
-EImece/App_Data/logs/EImeceLog.json     # structured JSON (correlation ID, path, etc.)
+EImece/media/logs/EImeceLog.log      # plain text
+EImece/media/logs/EImeceLog.json     # structured JSON (correlation ID, path, etc.)
 ```
 
-If these files are missing, check folder permissions and that `EnableRequestLogging` is `true` in `Web.config`.
+If these files are missing, check folder permissions on `media/` and that `EnableRequestLogging` is `true` in `Web.config`.
 
 ### 4.4 Security headers
 
@@ -357,7 +354,7 @@ vstest.console.exe EImece.Tests\bin\Release\EImece.Tests.dll
 | Compile | `./scripts/build.sh` | Source code and references are valid |
 | Health | `GET /health` | App starts, DI works, SQL reachable, file storage writable |
 | Smoke | Browse `/` and admin | Core UI and routing work |
-| Logs | Files in `App_Data/logs/` | Observability pipeline is active |
+| Logs | Files in `media/logs/` | Observability pipeline is active |
 | Tests | Visual Studio Test Explorer | Business logic and controllers behave as expected |
 
 ---
@@ -368,7 +365,7 @@ vstest.console.exe EImece.Tests\bin\Release\EImece.Tests.dll
 |---------|--------------|-----|
 | HTTP 500 on every page | SQL connection failure | Verify `EImeceDbConnection` and that the database exists |
 | `/health` returns 503, `sqlServer` down | Wrong server name or credentials | Test connection in SSMS with the same connection string |
-| `/health` returns 503, `fileStorage` down | IIS identity cannot write to `App_Data` | Grant modify permission on `App_Data` to the app pool identity |
+| `/health` returns 503, `fileStorage` down | IIS identity cannot write to `media` | Grant modify permission on `media` to the app pool identity (see [IIS_APP_POOL_PERMISSIONS.md](IIS_APP_POOL_PERMISSIONS.md)) |
 | Blank page, no error | `customErrors` hiding detail | Temporarily set `<customErrors mode="Off"/>` in dev only |
 | Tests fail, site works | Test `App.config` points elsewhere | Align test connection strings with a dedicated test database |
 

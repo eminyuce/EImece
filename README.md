@@ -50,7 +50,7 @@
 - OpenTelemetry traces/metrics (OTLP primary; optional Azure Monitor exporter)
 - Security response headers (`SecurityHeadersHttpModule`)
 - DB credentials and encryption keys via environment variables (not committed secrets)
-- Structured request logging under `App_Data/logs/` with CorrelationId / TraceId / SpanId
+- Structured request logging under `media/logs/` with CorrelationId / TraceId / SpanId
 
 ---
 
