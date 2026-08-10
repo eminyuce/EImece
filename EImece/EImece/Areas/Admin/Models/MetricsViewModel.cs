@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EImece.Areas.Admin.Models
 {
@@ -10,9 +9,26 @@ namespace EImece.Areas.Admin.Models
         public long ErrorCount { get; set; }
         public int SampleWindowSize { get; set; }
         public double AverageDurationMs { get; set; }
+        public long MinDurationMs { get; set; }
+        public long MaxDurationMs { get; set; }
+        public long P50DurationMs { get; set; }
+        public long P75DurationMs { get; set; }
         public long P90DurationMs { get; set; }
         public long P95DurationMs { get; set; }
         public long P99DurationMs { get; set; }
+
+        public double ErrorRatePercent
+        {
+            get
+            {
+                if (Count <= 0)
+                {
+                    return 0d;
+                }
+
+                return (ErrorCount * 100d) / Count;
+            }
+        }
     }
 
     public class MetricsIndexViewModel

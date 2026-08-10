@@ -3,6 +3,7 @@
 @using EImece.Domain.Helpers
 @using GridMvc.Html
 @using GridMvc.Sorting
+@using System.Globalization
 
 @{
     ViewBag.Title = "Metrikler";
@@ -14,6 +15,7 @@
 
     var gridName = "MetricsGrid";
     var contents = Model.Metrics;
+    var inv = CultureInfo.InvariantCulture;
 }
 
 <h2>Uygulama Metrikleri</h2>
@@ -32,7 +34,8 @@
         <ul class="metrics-help-bullets">
             <li>Veriler sunucu <strong>belleğinde</strong> tutulur; uygulama yeniden başlayınca sıfırlanır.</li>
             <li>Süreler <strong>milisaniye (ms)</strong> cinsindendir. <strong>1000 ms = 1 saniye</strong>.</li>
-            <li>Karar verirken ortalamaya değil <strong>P90 / P95 / P99</strong> değerlerine bakın (aşağıda açıklanıyor).</li>
+            <li>Her satırdaki <strong>Açıkla</strong> düğmesi, o metriğin sayılarını düz metinle yorumlar.</li>
+            <li>Karar verirken ortalamaya değil <strong>P50 → P99</strong> yüzdeliklerine bakın.</li>
         </ul>
     </div>
 </div>
@@ -47,32 +50,30 @@
                     <dd>Ölçülen işlem. Önek türe göre değişir (<code>controller:</code>, <code>service:</code>, …).</dd>
 
                     <dt>Adet</dt>
-                    <dd>Uygulama açıldığından beri bu işlemin <strong>kaç kez</strong> çağrıldığı (toplam çağrı sayısı).</dd>
+                    <dd>Uygulama açıldığından beri bu işlemin <strong>kaç kez</strong> çağrıldığı.</dd>
 
                     <dt>Hata</dt>
-                    <dd>Bu çağrıların kaçının başarısız olduğu (exception veya 5xx benzeri hata).</dd>
+                    <dd>Bu çağrıların kaçının başarısız olduğu.</dd>
 
                     <dt>Ort. süre (ms)</dt>
-                    <dd>Tüm çağrıların ortalama süresi. Tek tük çok yavaş çağrılar ortalamayı şişirebilir veya gizleyebilir; tek başına yeterli değildir.</dd>
+                    <dd>Tüm çağrıların ortalama süresi. Tek başına yanıltıcı olabilir.</dd>
 
-                    <dt>P90 (ms)</dt>
+                    <dt>P50 (ms) — medyan</dt>
                     <dd>
-                        <strong>%90 yüzdelik dilim.</strong>
-                        Çağrıların <strong>%90’ı bu süreden daha hızlı</strong> bitmiş; yalnızca en yavaş %10’u bundan uzun sürmüş.
+                        <strong>%50 yüzdelik.</strong>
+                        Çağrıların yarısı bu süreden hızlı, yarısı daha yavaş. Tipik / “ortalama kullanıcı” deneyimine yakındır.
                     </dd>
 
-                    <dt>P95 (ms)</dt>
+                    <dt>P75 (ms)</dt>
                     <dd>
-                        <strong>%95 yüzdelik dilim.</strong>
-                        Çağrıların <strong>%95’i bu süreden daha hızlı</strong>; en yavaş %5’i bundan uzun.
-                        Günlük performans takibi için en kullanışlı göstergedir.
+                        <strong>%75 yüzdelik.</strong>
+                        Çağrıların <strong>%75’i bu süreden daha hızlı</strong>; en yavaş %25’i bundan uzun.
                     </dd>
 
-                    <dt>P99 (ms)</dt>
+                    <dt>P90 / P95 / P99 (ms)</dt>
                     <dd>
-                        <strong>%99 yüzdelik dilim.</strong>
-                        Çağrıların <strong>%99’u bu süreden daha hızlı</strong>; yalnızca en kötü %1 bundan uzun.
-                        Nadir ama kullanıcıyı en çok rahatsız eden gecikmeleri gösterir.
+                        Daha yüksek kuyruk: çağrıların sırasıyla %90 / %95 / %99’u bu süreden hızlı bitmiş.
+                        P95 günlük takip için; P99 nadir ama çok yavaş istekler için kullanılır.
                     </dd>
                 </dl>
             </div>
@@ -80,9 +81,8 @@
     </div>
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading"><strong>Yüzdelikler (P90 / P95 / P99) — kısa örnek</strong></div>
+            <div class="panel-heading"><strong>Yüzdelikler — kısa örnek (100 çağrı)</strong></div>
             <div class="panel-body">
-                <p>100 sayfa açılışı ölçülmüş olsun. Süreler hızlıdan yavaşa sıralanınca:</p>
                 <table class="table table-condensed table-bordered metrics-example-table">
                     <thead>
                         <tr>
@@ -92,22 +92,30 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td><strong>P50 = 40 ms</strong></td>
+                            <td>Yarıdan fazlası ≤ 40 ms (medyan).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>P75 = 70 ms</strong></td>
+                            <td>100 çağrıdan 75’i ≤ 70 ms.</td>
+                        </tr>
+                        <tr>
                             <td><strong>P90 = 120 ms</strong></td>
-                            <td>100 çağrıdan 90’ı ≤ 120 ms; 10’u daha yavaş.</td>
+                            <td>100 çağrıdan 90’ı ≤ 120 ms.</td>
                         </tr>
                         <tr>
                             <td><strong>P95 = 200 ms</strong></td>
-                            <td>100 çağrıdan 95’i ≤ 200 ms; 5’i daha yavaş.</td>
+                            <td>100 çağrıdan 95’i ≤ 200 ms.</td>
                         </tr>
                         <tr>
                             <td><strong>P99 = 800 ms</strong></td>
-                            <td>100 çağrıdan 99’u ≤ 800 ms; 1’i daha yavaş (kuyruk / spike).</td>
+                            <td>100 çağrıdan 99’u ≤ 800 ms; 1’i daha yavaş.</td>
                         </tr>
                     </tbody>
                 </table>
                 <p class="text-muted" style="margin-bottom: 0;">
-                    “P” = <em>percentile</em> (yüzdelik dilim). Sayı, çağrıların yüzde kaçının
-                    <strong>o süreden daha hızlı</strong> olduğunu gösterir — bir “puan” veya “başarı oranı” değildir.
+                    “P” = <em>percentile</em> (yüzdelik dilim). Sayı bir puan değildir;
+                    çağrıların yüzde kaçının <strong>o süreden daha hızlı</strong> olduğunu gösterir.
                 </p>
             </div>
         </div>
@@ -116,10 +124,11 @@
             <div class="panel-heading"><strong>Nasıl yorumlanır?</strong></div>
             <div class="panel-body">
                 <ul class="metrics-help-bullets" style="margin-bottom: 0;">
-                    <li><strong>P95 düşük, P99 çok yüksek</strong> → çoğu kullanıcı hızlı; ara sıra çok yavaş istekler var.</li>
-                    <li><strong>P90 / P95 / P99 hepsi yüksek</strong> → işlem genel olarak yavaş; öncelikli inceleme adayı.</li>
-                    <li><strong>Hata &gt; 0</strong> → süreye bakmadan önce hataları kontrol edin.</li>
-                    <li><strong>Adet çok düşük</strong> (ör. 1–5) → yüzdelikler henüz güvenilir değildir; daha fazla trafik bekleyin.</li>
+                    <li><strong>P50 düşük, P99 çok yüksek</strong> → çoğu hızlı; ara sıra spike var.</li>
+                    <li><strong>P50 / P95 / P99 hepsi yüksek</strong> → işlem genel olarak yavaş.</li>
+                    <li><strong>Hata &gt; 0</strong> → önce hatalara bakın.</li>
+                    <li><strong>Adet çok düşük</strong> → yüzdelikler henüz güvenilir değil.</li>
+                    <li>Satırdaki <strong>Açıkla</strong> ile bu satıra özel yorumu okuyun.</li>
                 </ul>
             </div>
         </div>
@@ -127,7 +136,7 @@
 </div>
 
 <div class="panel panel-default" style="margin-bottom: 20px;">
-    <div class="panel-heading"><strong>Metrik adı önekleri (hangi katman ölçülüyor?)</strong></div>
+    <div class="panel-heading"><strong>Metrik adı önekleri</strong></div>
     <div class="panel-body" style="padding: 0;">
         <div class="table-responsive">
             <table class="table table-striped metrics-prefix-table" style="margin-bottom: 0;">
@@ -141,35 +150,35 @@
                 <tbody>
                     <tr>
                         <td><code>controller:Products.Index</code></td>
-                        <td>Bir MVC sayfa / aksiyonun sunucu tarafı işlem süresi (controller action).</td>
-                        <td>Yavaş açılan sayfayı bulmak için.</td>
+                        <td>MVC sayfa / aksiyon süresi.</td>
+                        <td>Yavaş açılan sayfa.</td>
                     </tr>
                     <tr>
                         <td><code>request:Products.Index</code></td>
-                        <td>Aynı aksiyonun eski / genel istek serisi (HTTP isteği özeti).</td>
-                        <td><code>controller:</code> ile birlikte; genelde aynı aksiyonu gösterir.</td>
+                        <td>Aynı aksiyonun genel istek serisi.</td>
+                        <td><code>controller:</code> ile birlikte.</td>
                     </tr>
                     <tr>
-                        <td><code>service:IProductService.GetMainPageProductsAsync</code></td>
-                        <td>İş mantığı (Service) metot süresi. Sayfanın içindeki asıl iş burada olabilir.</td>
-                        <td>Controller yavaşsa hangi servisin yavaşladığını görmek için.</td>
+                        <td><code>service:IProductService.…</code></td>
+                        <td>İş mantığı (Service) metot süresi.</td>
+                        <td>Controller içinde hangi servisin yavaşladığı.</td>
                     </tr>
                     <tr>
                         <td><code>http:GET:200</code></td>
-                        <td>Uygulamanın dışarıya yaptığı HTTP çağrıları (CDN, ödeme, API…). <code>METHOD:STATUS</code>.</td>
-                        <td>Dış servis gecikmesi veya hata şüphesinde.</td>
+                        <td>Dış HTTP çağrıları.</td>
+                        <td>CDN / ödeme / API gecikmesi.</td>
                     </tr>
                     <tr>
                         <td><code>db:...</code></td>
-                        <td>Veritabanı işlem süreleri.</td>
-                        <td>SQL / EF yavaşlığı şüphesinde.</td>
+                        <td>Veritabanı işlemleri.</td>
+                        <td>SQL / EF yavaşlığı.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <p class="text-muted" style="padding: 10px 15px; margin: 0;">
-            Yüzdelikler (P90/P95/P99) son yaklaşık <strong>2048</strong> ölçüm üzerinden hesaplanır;
-            <em>Adet</em> ise uygulama ömrü boyunca toplam çağrı sayısıdır.
+            Yüzdelikler son yaklaşık <strong>2048</strong> ölçüm üzerinden hesaplanır;
+            <em>Adet</em> uygulama ömrü boyunca toplam çağrı sayısıdır.
         </p>
     </div>
 </div>
@@ -191,8 +200,8 @@
             </a>
         </form>
         <p class="help-block" style="margin: 8px 0 0;">
-            İpucu: <code>controller:</code> yazarak yalnızca sayfa aksiyonlarını,
-            <code>service:</code> ile yalnızca servis metotlarını listeleyebilirsiniz.
+            İpucu: <code>controller:</code> / <code>service:</code> ile filtreleyin.
+            Her satırdaki <strong>Açıkla</strong> o metriğin ayrıntılı yorumunu açar.
         </p>
     </div>
 </div>
@@ -218,7 +227,7 @@ else
         <div class="panel-heading">
             Canlı ölçümler
             <span class="small" style="font-weight: normal; margin-left: 8px;">
-                Sütun başlıklarının üzerine gelerek kısa açıklamayı görebilirsiniz.
+                Sütun başlıklarına gelerek kısa ipucu görebilirsiniz. Satırdaki <strong>Açıkla</strong> ile ayrıntı açılır.
             </span>
         </div>
         <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
@@ -228,6 +237,32 @@ columns.Add()
 .Encoded(false)
 .Sanitized(false)
 .RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+
+columns.Add()
+.Titled("Açıkla")
+.Encoded(false)
+.Sanitized(false)
+.Sortable(false)
+.Filterable(false)
+.RenderValueAs(m => string.Format(
+    CultureInfo.InvariantCulture,
+    "<button type='button' class='btn btn-xs btn-info metrics-explain-btn' " +
+    "data-name='{0}' data-count='{1}' data-errors='{2}' data-window='{3}' " +
+    "data-avg='{4}' data-min='{5}' data-max='{6}' " +
+    "data-p50='{7}' data-p75='{8}' data-p90='{9}' data-p95='{10}' data-p99='{11}'>" +
+    "<span class='glyphicon glyphicon-question-sign'></span> Açıkla</button>",
+    System.Web.HttpUtility.HtmlAttributeEncode(m.Name ?? string.Empty),
+    m.Count,
+    m.ErrorCount,
+    m.SampleWindowSize,
+    m.AverageDurationMs.ToString("0.##", inv),
+    m.MinDurationMs,
+    m.MaxDurationMs,
+    m.P50DurationMs,
+    m.P75DurationMs,
+    m.P90DurationMs,
+    m.P95DurationMs,
+    m.P99DurationMs));
 
 columns.Add(m => m.Name)
 .Titled("Metrik Adı")
@@ -255,6 +290,16 @@ columns.Add(m => m.AverageDurationMs)
 .Sortable(true)
 .Filterable(false);
 
+columns.Add(m => m.P50DurationMs)
+.Titled("P50 (ms)")
+.Sortable(true)
+.Filterable(false);
+
+columns.Add(m => m.P75DurationMs)
+.Titled("P75 (ms)")
+.Sortable(true)
+.Filterable(false);
+
 columns.Add(m => m.P90DurationMs)
 .Titled("P90 (ms)")
 .Sortable(true)
@@ -275,23 +320,33 @@ columns.Add(m => m.P99DurationMs)
     </div>
 }
 
+@* Bootstrap 3 modal — per-row explain breakdown *@
+<div class="modal fade" id="metricExplainModal" tabindex="-1" role="dialog" aria-labelledby="metricExplainModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="metricExplainModalLabel">Metrik açıklaması</h4>
+            </div>
+            <div class="modal-body" id="metricExplainBody">
+                <p class="text-muted">Bir satırdan <strong>Açıkla</strong> seçin.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .metric-name {
         font-family: Consolas, Monaco, monospace;
         font-size: 11px;
     }
 
-    .metrics-help-panel .panel-body {
-        padding-bottom: 10px;
-    }
-
     .metrics-help-bullets {
         margin-bottom: 0;
         padding-left: 18px;
-    }
-
-    .metrics-help-cards .panel {
-        min-height: 0;
     }
 
     .metrics-dl {
@@ -323,23 +378,66 @@ columns.Add(m => m.P99DurationMs)
         white-space: normal;
         word-break: break-all;
     }
+
+    .metrics-explain-btn {
+        white-space: nowrap;
+    }
+
+    #metricExplainBody .explain-section {
+        margin-bottom: 16px;
+    }
+
+    #metricExplainBody .explain-section h5 {
+        margin-top: 0;
+        font-weight: 700;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 6px;
+    }
+
+    #metricExplainBody .percentile-table th {
+        width: 120px;
+    }
+
+    #metricExplainBody .insight {
+        padding: 8px 12px;
+        margin-bottom: 6px;
+        border-left: 4px solid #5bc0de;
+        background: #f5f5f5;
+    }
+
+    #metricExplainBody .insight.warn {
+        border-left-color: #f0ad4e;
+        background: #fcf8e3;
+    }
+
+    #metricExplainBody .insight.danger {
+        border-left-color: #d9534f;
+        background: #f2dede;
+    }
+
+    #metricExplainBody .insight.ok {
+        border-left-color: #5cb85c;
+        background: #dff0d8;
+    }
 </style>
 
 <script>
     (function () {
-        // GridMvc renders plain text titles; add title tooltips after render for column headers.
         var tips = {
+            "Açıkla": "Bu satırın sayılarını düz metinle yorumlar.",
             "Metrik Adı": "Ölçülen işlem (controller, service, http veya db).",
             "Adet": "Uygulama açıldığından beri toplam çağrı sayısı.",
             "Hata": "Başarısız çağrı sayısı.",
             "Ort. süre (ms)": "Tüm çağrıların ortalama süresi (milisaniye).",
-            "P90 (ms)": "%90 yüzdelik: çağrıların %90’ı bu süreden hızlı tamamlandı.",
-            "P95 (ms)": "%95 yüzdelik: çağrıların %95’i bu süreden hızlı tamamlandı.",
-            "P99 (ms)": "%99 yüzdelik: çağrıların %99’u bu süreden hızlı; en kötü %1 bundan yavaş."
+            "P50 (ms)": "%50 yüzdelik (medyan): çağrıların yarısı bu süreden hızlı.",
+            "P75 (ms)": "%75 yüzdelik: çağrıların %75’i bu süreden hızlı.",
+            "P90 (ms)": "%90 yüzdelik: çağrıların %90’ı bu süreden hızlı.",
+            "P95 (ms)": "%95 yüzdelik: çağrıların %95’i bu süreden hızlı.",
+            "P99 (ms)": "%99 yüzdelik: çağrıların %99’u bu süreden hızlı; en kötü %1 daha yavaş."
         };
 
         function applyHeaderTips() {
-            var headers = document.querySelectorAll("#" + "@gridName" + " th, .grid-table th, table th");
+            var headers = document.querySelectorAll("table th");
             for (var i = 0; i < headers.length; i++) {
                 var text = (headers[i].textContent || "").replace(/\s+/g, " ").trim();
                 if (tips[text]) {
@@ -349,10 +447,209 @@ columns.Add(m => m.P99DurationMs)
             }
         }
 
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", applyHeaderTips);
-        } else {
+        function esc(s) {
+            return String(s == null ? "" : s)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        function num(v) {
+            var n = Number(v);
+            return isFinite(n) ? n : 0;
+        }
+
+        function fmtMs(v) {
+            return num(v).toLocaleString("tr-TR") + " ms";
+        }
+
+        function fmtPct(v) {
+            return (Math.round(v * 10) / 10).toLocaleString("tr-TR") + "%";
+        }
+
+        function describeLayer(name) {
+            var n = (name || "").toLowerCase();
+            if (n.indexOf("controller:") === 0) {
+                return {
+                    title: "Controller (sayfa / aksiyon)",
+                    body: "Bu satır bir MVC controller aksiyonunun sunucu tarafı süresini ölçer. Kullanıcının gördüğü sayfa açılışının sunucu kısmıdır (görünüm render’ı hariç olabilir)."
+                };
+            }
+            if (n.indexOf("request:") === 0) {
+                return {
+                    title: "HTTP istek özeti",
+                    body: "Aynı controller aksiyonunun genel istek serisidir. Genelde controller: satırıyla birlikte okunur."
+                };
+            }
+            if (n.indexOf("service:") === 0) {
+                return {
+                    title: "Service (iş mantığı)",
+                    body: "Bir servis metodunun süresidir. Sayfa yavaşsa hangi iş kuralının zaman aldığını görmek için kullanılır."
+                };
+            }
+            if (n.indexOf("http:") === 0) {
+                return {
+                    title: "Dış HTTP çağrısı",
+                    body: "Uygulamanın dışarıya (CDN, ödeme, API vb.) yaptığı HTTP çağrıları. METHOD:STATUS formatındadır."
+                };
+            }
+            if (n.indexOf("db:") === 0) {
+                return {
+                    title: "Veritabanı işlemi",
+                    body: "Veritabanı / EF sorgu süresidir. Yüksek değerler SQL veya bağlantı gecikmesine işaret edebilir."
+                };
+            }
+            return {
+                title: "Uygulama metriği",
+                body: "Canlı performans ölçümü."
+            };
+        }
+
+        function buildExplainHtml(d) {
+            var name = d.name || "";
+            var count = num(d.count);
+            var errors = num(d.errors);
+            var windowSize = num(d.window);
+            var avg = num(d.avg);
+            var min = num(d.min);
+            var max = num(d.max);
+            var p50 = num(d.p50);
+            var p75 = num(d.p75);
+            var p90 = num(d.p90);
+            var p95 = num(d.p95);
+            var p99 = num(d.p99);
+            var errorRate = count > 0 ? (errors * 100) / count : 0;
+            var layer = describeLayer(name);
+
+            var insights = [];
+            if (count < 10) {
+                insights.push({ cls: "warn", text: "Adet henüz düşük (" + count + "). Yüzdelikler az örnekle dalgalanabilir; daha fazla trafik sonrası tekrar bakın." });
+            }
+            if (errors > 0) {
+                insights.push({ cls: "danger", text: "Hata oranı " + fmtPct(errorRate) + " (" + errors + " / " + count + "). Önce hataları inceleyin; süre yorumu ikinci plandadır." });
+            } else if (count > 0) {
+                insights.push({ cls: "ok", text: "Bu pencerede kaydedilen çağrıların tümü başarılı görünüyor (hata = 0)." });
+            }
+            if (p50 > 0 && p99 >= p50 * 3) {
+                insights.push({ cls: "warn", text: "P99, P50’nin en az 3 katı. Çoğu çağrı hızlı; ara sıra çok yavaş istekler (kuyruk / spike) var." });
+            }
+            if (p50 > 0 && p95 >= p50 * 2 && p99 < p50 * 3) {
+                insights.push({ cls: "warn", text: "P95, P50’nin belirgin üzerinde. Yavaşlık yalnızca en kötü %1’de değil, daha geniş bir dilimde de görülüyor." });
+            }
+            if (p95 > 1000) {
+                insights.push({ cls: "danger", text: "P95 bir saniyenin üzerinde (" + fmtMs(p95) + "). Kullanıcı deneyimi için öncelikli inceleme adayı." });
+            } else if (p95 > 300) {
+                insights.push({ cls: "warn", text: "P95 " + fmtMs(p95) + ". Kabul edilebilir olabilir ama izlenmeye değer." });
+            } else if (count >= 10) {
+                insights.push({ cls: "ok", text: "P95 " + fmtMs(p95) + " — çoğu çağrı için süre makul görünüyor." });
+            }
+            if (avg > 0 && p50 > 0 && avg > p50 * 1.5) {
+                insights.push({ cls: "warn", text: "Ortalama (" + fmtMs(avg) + "), medyandan (P50=" + fmtMs(p50) + ") belirgin yüksek. Birkaç çok yavaş çağrı ortalamayı şişiriyor olabilir; P95/P99’a bakın." });
+            }
+
+            var insightHtml = insights.map(function (x) {
+                return "<div class='insight " + x.cls + "'>" + esc(x.text) + "</div>";
+            }).join("");
+
+            return "" +
+                "<div class='explain-section'>" +
+                "<h5>" + esc(layer.title) + "</h5>" +
+                "<p><code>" + esc(name) + "</code></p>" +
+                "<p>" + esc(layer.body) + "</p>" +
+                "</div>" +
+
+                "<div class='explain-section'>" +
+                "<h5>Özet sayılar</h5>" +
+                "<ul>" +
+                "<li><strong>Adet:</strong> " + count.toLocaleString("tr-TR") + " çağrı (uygulama ömrü boyunca).</li>" +
+                "<li><strong>Hata:</strong> " + errors.toLocaleString("tr-TR") + " (" + fmtPct(errorRate) + " hata oranı).</li>" +
+                "<li><strong>Yüzdelik penceresi:</strong> son " + windowSize.toLocaleString("tr-TR") + " örnek üzerinden hesaplandı.</li>" +
+                "<li><strong>Ortalama:</strong> " + fmtMs(avg) + "</li>" +
+                "<li><strong>En hızlı / en yavaş (pencerede):</strong> " + fmtMs(min) + " → " + fmtMs(max) + "</li>" +
+                "</ul>" +
+                "</div>" +
+
+                "<div class='explain-section'>" +
+                "<h5>Yüzdelik dilimler (bu satır)</h5>" +
+                "<table class='table table-condensed table-bordered percentile-table'>" +
+                "<thead><tr><th>Dilimler</th><th>Süre</th><th>Bu satır için anlamı</th></tr></thead>" +
+                "<tbody>" +
+                "<tr><td><strong>P50</strong></td><td>" + fmtMs(p50) + "</td><td>Çağrıların <strong>%50’si</strong> " + fmtMs(p50) + " veya daha hızlı (medyan).</td></tr>" +
+                "<tr><td><strong>P75</strong></td><td>" + fmtMs(p75) + "</td><td>Çağrıların <strong>%75’i</strong> " + fmtMs(p75) + " veya daha hızlı; en yavaş %25 daha uzun.</td></tr>" +
+                "<tr><td><strong>P90</strong></td><td>" + fmtMs(p90) + "</td><td>Çağrıların <strong>%90’ı</strong> " + fmtMs(p90) + " veya daha hızlı; en yavaş %10 daha uzun.</td></tr>" +
+                "<tr><td><strong>P95</strong></td><td>" + fmtMs(p95) + "</td><td>Çağrıların <strong>%95’i</strong> " + fmtMs(p95) + " veya daha hızlı; en yavaş %5 daha uzun.</td></tr>" +
+                "<tr><td><strong>P99</strong></td><td>" + fmtMs(p99) + "</td><td>Çağrıların <strong>%99’u</strong> " + fmtMs(p99) + " veya daha hızlı; en kötü %1 daha uzun.</td></tr>" +
+                "</tbody></table>" +
+                "<p class='text-muted'>Bunlar başarı puanı değildir. Örneğin P95=" + fmtMs(p95) +
+                " demek: son örneklerde çağrıların yaklaşık %95’i en fazla " + fmtMs(p95) + " sürdü.</p>" +
+                "</div>" +
+
+                "<div class='explain-section'>" +
+                "<h5>Bu satıra özel yorum</h5>" +
+                (insightHtml || "<p class='text-muted'>Yorum üretmek için yeterli veri yok.</p>") +
+                "</div>";
+        }
+
+        function openExplain(btn) {
+            var data = {
+                name: btn.getAttribute("data-name"),
+                count: btn.getAttribute("data-count"),
+                errors: btn.getAttribute("data-errors"),
+                window: btn.getAttribute("data-window"),
+                avg: btn.getAttribute("data-avg"),
+                min: btn.getAttribute("data-min"),
+                max: btn.getAttribute("data-max"),
+                p50: btn.getAttribute("data-p50"),
+                p75: btn.getAttribute("data-p75"),
+                p90: btn.getAttribute("data-p90"),
+                p95: btn.getAttribute("data-p95"),
+                p99: btn.getAttribute("data-p99")
+            };
+
+            var title = document.getElementById("metricExplainModalLabel");
+            var body = document.getElementById("metricExplainBody");
+            if (title) {
+                title.textContent = "Açıklama: " + (data.name || "");
+            }
+            if (body) {
+                body.innerHTML = buildExplainHtml(data);
+            }
+
+            var $modal = window.jQuery && window.jQuery("#metricExplainModal");
+            if ($modal && $modal.modal) {
+                $modal.modal("show");
+            } else {
+                // Fallback if Bootstrap/jQuery modal is unavailable
+                var el = document.getElementById("metricExplainModal");
+                if (el) {
+                    el.style.display = "block";
+                    el.className = (el.className || "") + " in";
+                }
+            }
+        }
+
+        function onClick(e) {
+            var t = e.target;
+            while (t && t !== document) {
+                if (t.classList && t.classList.contains("metrics-explain-btn")) {
+                    e.preventDefault();
+                    openExplain(t);
+                    return;
+                }
+                t = t.parentNode;
+            }
+        }
+
+        function init() {
             applyHeaderTips();
+            document.addEventListener("click", onClick, false);
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init);
+        } else {
+            init();
         }
     })();
 </script>

@@ -36,6 +36,10 @@ namespace EImece.Areas.Admin.Controllers
                     ErrorCount = x.Value.ErrorCount,
                     SampleWindowSize = x.Value.SampleWindowSize,
                     AverageDurationMs = Math.Round(x.Value.AverageDurationMs, 2),
+                    MinDurationMs = x.Value.MinDurationMs,
+                    MaxDurationMs = x.Value.MaxDurationMs,
+                    P50DurationMs = x.Value.P50DurationMs,
+                    P75DurationMs = x.Value.P75DurationMs,
                     P90DurationMs = x.Value.P90DurationMs,
                     P95DurationMs = x.Value.P95DurationMs,
                     P99DurationMs = x.Value.P99DurationMs
