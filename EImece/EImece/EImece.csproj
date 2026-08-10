@@ -1342,6 +1342,7 @@
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridNameCell.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridPriceCell.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridStatusGroup.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Grid\_GridStatusToggles.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridActionsMenu.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pAdminSearchForm.cshtml" />

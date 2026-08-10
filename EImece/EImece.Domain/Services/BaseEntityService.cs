@@ -137,21 +137,7 @@ namespace EImece.Domain.Services
                         }
                         else if (checkbox.Equals(MAIN_PAGE, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            if (baseContent is Product)
-                            {
-                                var product = baseContent as Product;
-                                product.MainPage = item.IsActive;
-                            }
-                            else if (baseContent is Story)
-                            {
-                                var story = baseContent as Story;
-                                story.MainPage = item.IsActive;
-                            }
-                            else if (baseContent is ProductCategory)
-                            {
-                                var story = baseContent as ProductCategory;
-                                story.MainPage = item.IsActive;
-                            }
+                            ApplyMainPageFlag(baseContent, item.IsActive);
                         }
                         else if (checkbox.Equals(IMAGE_STATE, StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -209,21 +195,7 @@ namespace EImece.Domain.Services
                         }
                         else if (checkbox.Equals(MAIN_PAGE, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            if (baseContent is Product)
-                            {
-                                var product = baseContent as Product;
-                                product.MainPage = item.IsActive;
-                            }
-                            else if (baseContent is Story)
-                            {
-                                var story = baseContent as Story;
-                                story.MainPage = item.IsActive;
-                            }
-                            else if (baseContent is ProductCategory)
-                            {
-                                var story = baseContent as ProductCategory;
-                                story.MainPage = item.IsActive;
-                            }
+                            ApplyMainPageFlag(baseContent, item.IsActive);
                         }
                         else if (checkbox.Equals(IMAGE_STATE, StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -253,6 +225,30 @@ namespace EImece.Domain.Services
             if (isEdit)
             {
                 await baseEntityRepository.SaveAsync().ConfigureAwait(false);
+            }
+        }
+
+        private static void ApplyMainPageFlag(BaseEntity entity, bool isActive)
+        {
+            if (entity is Product)
+            {
+                ((Product)entity).MainPage = isActive;
+            }
+            else if (entity is Story)
+            {
+                ((Story)entity).MainPage = isActive;
+            }
+            else if (entity is ProductCategory)
+            {
+                ((ProductCategory)entity).MainPage = isActive;
+            }
+            else if (entity is Brand)
+            {
+                ((Brand)entity).MainPage = isActive;
+            }
+            else if (entity is Menu)
+            {
+                ((Menu)entity).MainPage = isActive;
             }
         }
     }
