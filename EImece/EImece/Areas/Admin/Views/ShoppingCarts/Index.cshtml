@@ -22,6 +22,7 @@
     var controllerName = "shoppingcarts";
     var gridName = "ShoppingCartGrid";
     var contents = Model;
+    var baseList = contents.DownCasting<ShoppingCart>();
     var showTotals = contents != null && contents.Any(c => SummarizeCart(c).Total.HasValue);
 }
 
@@ -45,6 +46,7 @@
 @Html.Partial("Grid/_GridChrome")
 
 <div class="panel panel-primary eg-grid-shell eg-shoppingcarts-grid">
+    @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
     columns.Add()

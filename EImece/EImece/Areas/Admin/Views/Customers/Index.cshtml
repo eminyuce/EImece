@@ -21,6 +21,7 @@
     var controllerName = "customers";
     var gridName = "CustomersGrid";
     var contents = Model;
+    var baseList = contents.DownCasting<Customer>();
 }
 <h2 class="admin-page-title">@AdminResource.Customers</h2>
 <hr class="adminLine" />
@@ -40,6 +41,7 @@
 @Html.Partial("Grid/_GridChrome")
 
 <div class="panel panel-primary eg-grid-shell">
+    @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
     columns.Add()
