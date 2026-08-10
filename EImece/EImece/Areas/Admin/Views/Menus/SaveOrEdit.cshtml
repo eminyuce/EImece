@@ -34,16 +34,18 @@
 
 <div class="row">
 
-    <div class="col-md-2">
+    <div class="col-md-3 eg-products-tree-col">
         @if (MenuTree != null)
         {
-        @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
-                    {"UrlPattern",""}
-                  ,{"IsExcelButtonEnabled",true}})
-
+            @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
+                        {"UrlPattern",""}
+                      ,{"SelectedCategoryId", Model != null ? Model.Id : 0}
+                      ,{"ShowAllLink", false}
+                      ,{"TreeTitle", "Menüler"}
+                      ,{"IsExcelButtonEnabled",true}})
         }
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9 eg-products-main-col">
         <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.MenuSameSelectionErrorMessage" />
         @using (Html.BeginForm("SaveOrEdit", "Menus", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

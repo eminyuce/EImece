@@ -24,17 +24,22 @@
     List<MenuTreeModel> MenuTree = ViewBag.MenuTree;
 }
 
-<h2>@AdminResource.Menu</h2>
+<h2 class="admin-page-title">@AdminResource.Menu</h2>
 <hr class="adminLine" />
-<div class="row">
-    <div class="col-md-2">
-        @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
-                           {"UrlPattern","/admin/menus/saveoredit/"}
-                         ,{"IsExcelButtonEnabled",true}})
+<div class="row eg-products-layout">
+    <div class="col-md-3 eg-products-tree-col">
+        @if (MenuTree != null)
+        {
+            @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
+                               {"UrlPattern","/admin/menus/saveoredit/"}
+                             ,{"ShowAllLink", true}
+                             ,{"TreeTitle", "Menüler"}
+                             ,{"IsExcelButtonEnabled",true}})
+        }
 
         <span id="treeClickContainer"></span>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9 eg-products-main-col">
 
         @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}

@@ -17,10 +17,15 @@
 <hr class="adminLine" />
 
 <div class="row">
-    <div class="col-md-3">
-        @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
-                    {"UrlPattern",""}
-                  ,{"IsExcelButtonEnabled",true}})
+    <div class="col-md-3 eg-products-tree-col">
+        @if (MenuTree != null)
+        {
+            @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
+                        {"UrlPattern",""}
+                      ,{"ShowAllLink", false}
+                      ,{"TreeTitle", "Menüler"}
+                      ,{"IsExcelButtonEnabled",true}})
+        }
         <span id="treeClickContainer"></span>
     </div>
     <div class="col-md-9">
