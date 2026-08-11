@@ -193,7 +193,20 @@
 }
 
 <script>
-    @Html.Raw(XmlEditorConfiguration)
+    // CodeMirror XML hint schema (must be valid JS — invalid attrs break the whole page script).
+    var tags = {
+        "!top": ["component"],
+        "!attrs": {},
+        component: { children: ["group"] },
+        group: { attrs: { name: null }, children: [] }
+    };
+    try {
+        @Html.Raw(XmlEditorConfiguration)
+    } catch (schemaErr) {
+        if (window.console && console.warn) {
+            console.warn('Template XML schema failed; using fallback.', schemaErr);
+        }
+    }
 
     function completeAfter(cm, pred) {
         var cur = cm.getCursor();
@@ -220,20 +233,39 @@
         });
     }
 
-    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode: "xml",
-        lineNumbers: true,
-        extraKeys: {
-            "'<'": completeAfter,
-            "'/'": completeIfAfterLt,
-            "' '": completeIfInTag,
-            "'='": completeIfInTag,
-            "Ctrl-Space": "autocomplete"
-        },
-        hintOptions: { schemaInfo: tags }
-    });
+    var editor = null;
+    try {
+        editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            mode: "xml",
+            lineNumbers: true,
+            extraKeys: {
+                "'<'": completeAfter,
+                "'/'": completeIfAfterLt,
+                "' '": completeIfInTag,
+                "'='": completeIfInTag,
+                "Ctrl-Space": "autocomplete"
+            },
+            hintOptions: { schemaInfo: tags }
+        });
+    } catch (cmErr) {
+        if (window.console && console.warn) {
+            console.warn('CodeMirror init failed; falling back to textarea.', cmErr);
+        }
+        editor = {
+            getValue: function () { return document.getElementById("code").value || ''; },
+            setValue: function (v) { document.getElementById("code").value = v || ''; },
+            save: function () { }
+        };
+    }
 
     (function ($) {
+        if (!window.AdminTemplateBuilder) {
+            if (window.console && console.error) {
+                console.error('adminTemplateBuilder.js did not load.');
+            }
+            return;
+        }
+
         var listNames = @Html.Raw(listNamesJson);
         var builder = new AdminTemplateBuilder({
             root: '#templateBuilder',

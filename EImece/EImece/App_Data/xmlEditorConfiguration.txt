@@ -14,7 +14,7 @@ textarea:{
                 name: textareanames,
                 unit: textareaunits,
                 display:textareanames,
-                html: truefalse
+                html: ["true", "false"]
             },
             children: null
 },
@@ -68,7 +68,7 @@ datetime:{
                 name: datetimenames,
                 unit: datetimeunits,
                 display:datetimenames,
-                time: truefalse
+                time: ["true", "false"]
             },
             children: null
 },
