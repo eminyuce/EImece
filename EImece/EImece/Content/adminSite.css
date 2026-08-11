@@ -2527,6 +2527,19 @@ label[for^="ImageState"]:not(.control-label) {
     margin: 0;
 }
 
+.admin-spec-group {
+    margin-bottom: 18px;
+}
+
+.admin-spec-group > .panel-heading {
+    background: #f3f6fb;
+}
+
+.admin-spec-group > .panel-heading .panel-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
 .tb-advanced {
     margin-top: 16px;
     border: 1px solid #d9dee7;

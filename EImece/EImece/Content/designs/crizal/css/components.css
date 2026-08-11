@@ -3356,6 +3356,21 @@ body[data-design="crizal"] .crizal-product-desc__specs-title {
     color: var(--crizal-heading);
 }
 
+body[data-design="crizal"] .crizal-product-desc__specs-group {
+    margin: 0 0 1rem;
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs-group:last-child {
+    margin-bottom: 0;
+}
+
+body[data-design="crizal"] .crizal-product-desc__specs-group-title {
+    margin: 0 0 0.45rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--crizal-heading);
+}
+
 body[data-design="crizal"] .crizal-product-desc__specs {
     list-style: none;
     margin: 0;

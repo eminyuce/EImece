@@ -242,53 +242,92 @@ namespace EImece.Domain.Models.FrontModels
                 }
 
                 XDocument xdoc = XDocument.Parse(template.TemplateXml);
-                // Prefer <group> children (legacy + correct seed shape); fall back to any named field/textbox.
-                IEnumerable<XElement> fields = xdoc.Root.Descendants("group").SelectMany(g => g.Elements());
-                if (!fields.Any())
+                var groups = xdoc.Root.Descendants()
+                    .Where(e => e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (groups.Any())
                 {
-                    fields = xdoc.Descendants().Where(e =>
+                    foreach (var group in groups)
+                    {
+                        var groupNameAttr = group.Attribute("name") ?? group.FirstAttribute;
+                        var groupName = groupNameAttr != null ? groupNameAttr.Value.ToStr().Trim() : string.Empty;
+                        AppendSpecFields(result, productSpecs, group.Elements(), groupName);
+                    }
+                }
+                else
+                {
+                    // Legacy: named fields without <group>
+                    var fields = xdoc.Descendants().Where(e =>
                         e.Attribute("name") != null
                         && !e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase)
                         && !e.Name.LocalName.Equals("fields", StringComparison.OrdinalIgnoreCase)
                         && !e.Name.LocalName.Equals("template", StringComparison.OrdinalIgnoreCase)
                         && !e.Name.LocalName.Equals("component", StringComparison.OrdinalIgnoreCase));
+                    AppendSpecFields(result, productSpecs, fields, string.Empty);
                 }
 
-                foreach (XElement field in fields)
-                {
-                    var name = field.Attribute("name");
-                    if (name == null || string.IsNullOrWhiteSpace(name.Value))
-                    {
-                        continue;
-                    }
-                    var unit = field.Attribute("unit");
-                    var values = field.Attribute("values");
-                    var display = field.Attribute("display");
-                    var dbValueObj = productSpecs.FirstOrDefault(r => r.Name != null && r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
-                    if (dbValueObj == null)
-                    {
-                        continue;
-                    }
-
-                    var isCheckbox = ProductSpecificationValueHelper.IsCheckboxField(field);
-                    var rawValue = dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim();
-
-                    // Non-checkbox empty values stay hidden; checkbox always shows Evet/Hayır.
-                    if (!isCheckbox && string.IsNullOrEmpty(rawValue))
-                    {
-                        continue;
-                    }
-
-                    string specsName = display != null ? display.Value : name.Value;
-                    string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(field, rawValue);
-                    string displayUnit = isCheckbox ? "" : (unit == null ? "" : unit.Value.ToStr());
-                    result.Add(new ProductSpecsModel(
-                        specsName.ToStr().Trim(),
-                        displayValue,
-                        displayUnit,
-                        values == null ? "" : values.Value.ToStr()));
-                }
                 return result;
+            }
+        }
+
+        /// <summary>
+        /// Specs grouped by template &lt;group name&gt; for storefront tables/sections.
+        /// </summary>
+        public List<ProductSpecsGroupModel> ProdSpecsGroups
+        {
+            get
+            {
+                return ProdSpecs
+                    .GroupBy(s => s.groupName ?? string.Empty, StringComparer.Ordinal)
+                    .Select(g => new ProductSpecsGroupModel(g.Key, g.ToList()))
+                    .Where(g => g.Items != null && g.Items.Any())
+                    .ToList();
+            }
+        }
+
+        private static void AppendSpecFields(
+            List<ProductSpecsModel> result,
+            List<ProductSpecification> productSpecs,
+            IEnumerable<XElement> fields,
+            string groupName)
+        {
+            foreach (XElement field in fields)
+            {
+                var name = field.Attribute("name");
+                if (name == null || string.IsNullOrWhiteSpace(name.Value))
+                {
+                    continue;
+                }
+
+                var unit = field.Attribute("unit");
+                var values = field.Attribute("values");
+                var display = field.Attribute("display");
+                var dbValueObj = productSpecs.FirstOrDefault(r =>
+                    r.Name != null && r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                if (dbValueObj == null)
+                {
+                    continue;
+                }
+
+                var isCheckbox = ProductSpecificationValueHelper.IsCheckboxField(field);
+                var rawValue = dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim();
+
+                // Non-checkbox empty values stay hidden; checkbox always shows Evet/Hayır.
+                if (!isCheckbox && string.IsNullOrEmpty(rawValue))
+                {
+                    continue;
+                }
+
+                string specsName = display != null ? display.Value : name.Value;
+                string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(field, rawValue);
+                string displayUnit = isCheckbox ? "" : (unit == null ? "" : unit.Value.ToStr());
+                result.Add(new ProductSpecsModel(
+                    specsName.ToStr().Trim(),
+                    displayValue,
+                    displayUnit,
+                    values == null ? "" : values.Value.ToStr(),
+                    groupName));
             }
         }
     }
