@@ -503,6 +503,22 @@ body[data-design="crizal"] .crizal-customer-login__forgot:hover {
 body[data-design="crizal"] .crizal-customer-login__submit {
     width: 100%;
     margin-top: 0.35rem;
+    background: var(--crizal-primary, #09b850) !important;
+    border-color: var(--crizal-primary, #09b850) !important;
+    color: #fff !important;
+    opacity: 1 !important;
+}
+
+body[data-design="crizal"] .crizal-customer-login__submit:before,
+body[data-design="crizal"] .crizal-customer-login__submit:after {
+    display: none !important;
+    content: none !important;
+}
+
+body[data-design="crizal"] .crizal-customer-login__submit:hover {
+    background: var(--crizal-secondary, #14212b) !important;
+    border-color: var(--crizal-secondary, #14212b) !important;
+    color: #fff !important;
 }
 
 body[data-design="crizal"] .crizal-customer-login__register {

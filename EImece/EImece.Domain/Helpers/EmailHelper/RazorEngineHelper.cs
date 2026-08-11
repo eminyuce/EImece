@@ -67,6 +67,9 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public async Task<Tuple<string, string>> ConfirmYourAccountEmailBodyAsync(string email, string name, string callbackUrl)
         {
+            // Capture before awaits — ConfigureAwait(false) clears HttpContext.Current.
+            string baseurl = GetSiteBaseUrl();
+
             MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ConfirmYourAccountMailTemplate).ConfigureAwait(false);
             if (emailTemplate == null)
             {
@@ -74,8 +77,6 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
 
             String companyname = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
-
-            string baseurl = GetSiteBaseUrl();
 
             var model = new
             {
@@ -95,9 +96,30 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         private string GetSiteBaseUrl()
         {
-            var Request = HttpContext.Create().Request;
-            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
-            return baseurl;
+            // Prefer live request URL; fall back when HttpContext.Current is null after
+            // ConfigureAwait(false) continuations (e.g. Register → confirmation email).
+            var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
+            if (!string.IsNullOrEmpty(baseurl))
+            {
+                return baseurl;
+            }
+
+            try
+            {
+                var request = HttpContext?.Create()?.Request;
+                if (request?.Url != null)
+                {
+                    return request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                // HttpContextWrapper rejects a null HttpContext.Current
+            }
+
+            var scheme = string.IsNullOrEmpty(AppConfig.HttpProtocol) ? "http" : AppConfig.HttpProtocol;
+            var domain = string.IsNullOrEmpty(AppConfig.Domain) ? "localhost" : AppConfig.Domain.TrimEnd('/');
+            return $"{scheme}://{domain}";
         }
 
         public Tuple<string, string> ForgotPasswordEmailBody(string email, string callbackUrl)
@@ -129,6 +151,8 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         public async Task<Tuple<string, string>> ForgotPasswordEmailBodyAsync(string email, string callbackUrl)
         {
+            string baseurl = GetSiteBaseUrl();
+
             MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ForgotPasswordMailTemplate).ConfigureAwait(false);
             if (emailTemplate == null)
             {
@@ -137,7 +161,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             String companyname = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
 
-            string baseurl = GetSiteBaseUrl();
             var model = new
             {
                 WebSiteIconUrl = baseurl + "/images/logo.jpg",

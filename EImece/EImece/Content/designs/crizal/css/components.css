@@ -3578,3 +3578,193 @@ body[data-design="crizal"] .crizal-review-modal .control-label {
     font-weight: 700;
     color: var(--crizal-heading);
 }
+
+/* ---------- Checkout wizard steps ---------- */
+body[data-design="crizal"] .steps {
+    margin: 0 0 1.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+body[data-design="crizal"] .steps-body {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    min-width: min(100%, 42rem);
+}
+
+body[data-design="crizal"] .steps .step {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 4.25rem;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    text-decoration: none !important;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--crizal-muted, #6c757d);
+    background: #f4f6f8;
+    border: 1px solid var(--crizal-border, #e5e8ec);
+    border-radius: var(--crizal-radius, 0.5rem);
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+body[data-design="crizal"] .steps .step .step-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    background: rgba(20, 33, 43, 0.08);
+    color: inherit;
+}
+
+body[data-design="crizal"] .steps .step .step-icon svg,
+body[data-design="crizal"] .steps .step .step-indicator svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+body[data-design="crizal"] .steps .step.step-active {
+    color: #fff;
+    background: linear-gradient(135deg, #0aad4a 0%, var(--crizal-primary, #09b850) 100%);
+    border-color: transparent;
+    box-shadow: 0 8px 18px rgba(9, 184, 80, 0.22);
+}
+
+body[data-design="crizal"] .steps .step.step-active .step-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+body[data-design="crizal"] .steps .step.step-done {
+    color: var(--crizal-secondary, #14212b);
+    background: #e8f8ef;
+    border-color: rgba(9, 184, 80, 0.35);
+}
+
+body[data-design="crizal"] .steps .step.step-done .step-indicator {
+    color: var(--crizal-primary, #09b850);
+    font-size: 0.75rem;
+}
+
+body[data-design="crizal"] .steps .step .step-label {
+    line-height: 1.2;
+}
+
+/* Crizal shop/checkout blocks (from template shop-cart / shop-checkout) */
+body[data-design="crizal"] .common-block {
+    background: #fff;
+    border: 1px solid var(--crizal-border, #e5e8ec);
+    border-radius: var(--crizal-radius-lg, 0.75rem);
+    box-shadow: var(--crizal-shadow, 0 8px 24px rgba(20, 33, 43, 0.06));
+    padding: 1.25rem 1.35rem;
+}
+
+body[data-design="crizal"] .line-title {
+    position: relative;
+    margin: 0 0 1rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 2px solid var(--crizal-border, #e5e8ec);
+}
+
+body[data-design="crizal"] .line-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 3.25rem;
+    height: 2px;
+    background: var(--crizal-primary, #09b850);
+}
+
+body[data-design="crizal"] .line-title h2,
+body[data-design="crizal"] .line-title .h5,
+body[data-design="crizal"] .line-title .h6 {
+    margin: 0;
+    font-weight: 800;
+    color: var(--crizal-heading, #14212b);
+}
+
+body[data-design="crizal"] .crizal-cart-total .cart-sub-total th {
+    font-weight: 600;
+    color: var(--crizal-muted, #6c757d);
+    padding: 0.45rem 0;
+}
+
+body[data-design="crizal"] .crizal-cart-total .cart-sub-total td {
+    padding: 0.45rem 0;
+    font-weight: 700;
+    color: var(--crizal-heading, #14212b);
+}
+
+body[data-design="crizal"] .crizal-cart-total__grand th,
+body[data-design="crizal"] .crizal-cart-total__grand td {
+    padding-top: 0.85rem !important;
+    font-size: 1.15rem;
+    color: var(--crizal-primary, #09b850) !important;
+    border-top: 1px solid var(--crizal-border, #e5e8ec);
+}
+
+body[data-design="crizal"] .crizal-checkout-form {
+    margin-bottom: 1.5rem;
+}
+
+body[data-design="crizal"] .crizal-payment-trust {
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.9rem;
+}
+
+body[data-design="crizal"] .crizal-payment-trust__logo {
+    height: 22px;
+    width: auto;
+}
+
+body[data-design="crizal"] .butn-style8.outline {
+    background: transparent !important;
+    color: var(--crizal-secondary, #14212b) !important;
+    border-color: var(--crizal-secondary, #14212b) !important;
+}
+
+body[data-design="crizal"] .butn-style8.outline:hover {
+    background: var(--crizal-secondary, #14212b) !important;
+    color: #fff !important;
+}
+
+/* ---------- Cart line polish (mobile stack) ---------- */
+body[data-design="crizal"] .media.d-block.d-sm-flex {
+    align-items: flex-start;
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-customer-login__panel {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-customer-login__intro {
+        padding: 1.75rem 1.35rem 1.25rem;
+    }
+
+    body[data-design="crizal"] .crizal-customer-login__form-wrap {
+        padding: 1.35rem;
+    }
+
+    body[data-design="crizal"] .steps .step {
+        min-width: 7.5rem;
+        font-size: 0.72rem;
+        min-height: 3.75rem;
+    }
+
+    body[data-design="crizal"] #ProceedToCheckout,
+    body[data-design="crizal"] #ContinueShoppingWithoutAccount {
+        font-size: 0.95rem;
+        padding-top: 0.85rem;
+        padding-bottom: 0.85rem;
+    }
+}

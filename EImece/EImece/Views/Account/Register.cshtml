@@ -18,6 +18,8 @@
             <p class="text-danger  mb-4">  @Resource.PasswordInfoMessage</p>
             @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
+                @Html.Hidden("returnUrl", (string)ViewBag.ReturnUrl)
+
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">

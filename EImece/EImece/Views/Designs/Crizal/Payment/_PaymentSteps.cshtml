@@ -7,60 +7,65 @@
 @using Resources;
 @model  String
 @{
-    var pageName = Model;
-    var page1 = @pageName.Equals("ShoppingCart", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
-    var page2 = @pageName.Equals("checkoutbillingdetails", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
-    var page3 = @pageName.Equals("checkoutPaymentOrderReview", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
-    var page4 = @pageName.Equals("PlaceOrder", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
+    var pageName = (Model ?? string.Empty).Trim();
     bool anyProducts = ViewData["AnyProducts"].ToBool(false);
 
+    // Wizard order for completed-state styling
+    var steps = new[]
+    {
+        "ShoppingCart",
+        "CheckoutBillingDetails",
+        "CheckoutPaymentOrderReview",
+        "PlaceOrder"
+    };
+    int current = 0;
+    for (int i = 0; i < steps.Length; i++)
+    {
+        if (pageName.Equals(steps[i], StringComparison.InvariantCultureIgnoreCase))
+        {
+            current = i;
+            break;
+        }
+    }
+
+    Func<int, string> stepClass = (index) =>
+    {
+        if (index == current) return "step-active";
+        if (index < current) return "step-done";
+        return "";
+    };
 }
 
 <!-- Steps (wizard)-->
-<div class="steps">
+<div class="steps crizal-checkout-steps" aria-label="@Resource.Payment">
     <div class="steps-body">
-        <a class="step @page1" href="@Url.Action("ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page1))
+        <a class="step @stepClass(0)" href="@Url.Action("ShoppingCart")">
+            @if (current > 0)
             {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
-            </span>
+                <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
             }
-
-            <span class="step-icon">
-                <i data-feather="shopping-cart"></i>
-            </span>1.@Resource.MyBasket
+            <span class="step-icon" aria-hidden="true"><i class="fas fa-shopping-cart"></i></span>
+            <span class="step-label">1.@Resource.MyBasket</span>
         </a>
-        <a class="step @page2" href="@Url.Action(anyProducts ?"checkoutbillingdetails" : "ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page2))
+        <a class="step @stepClass(1)" href="@Url.Action(anyProducts ? "checkoutbillingdetails" : "ShoppingCart")">
+            @if (current > 1)
             {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
-            </span>
+                <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
             }
-            <span class="step-icon">
-                <i data-feather="user"></i>
-            </span>2.@Resource.OrderDetails
+            <span class="step-icon" aria-hidden="true"><i class="fas fa-user"></i></span>
+            <span class="step-label">2.@Resource.OrderDetails</span>
         </a>
-        <a class="step  @page3" href="@Url.Action(anyProducts ? "checkoutPaymentOrderReview" : "ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page3))
+        <a class="step @stepClass(2)" href="@Url.Action(anyProducts ? "checkoutPaymentOrderReview" : "ShoppingCart")">
+            @if (current > 2)
             {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
-            </span>
+                <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
             }
-            <span class="step-icon">
-                <i data-feather="check-circle"></i>
-            </span>3.@Resource.OrderFinalReview
+            <span class="step-icon" aria-hidden="true"><i class="fas fa-check-circle"></i></span>
+            <span class="step-label">3.@Resource.OrderFinalReview</span>
         </a>
-        <a class="step   @page4" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page4))
-            {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
-            </span>
-            }
-            <span class="step-icon"><i data-feather="credit-card"></i></span>4.@Resource.Payment
+        <a class="step @stepClass(3)" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")">
+            <span class="step-icon" aria-hidden="true"><i class="fas fa-credit-card"></i></span>
+            <span class="step-label">4.@Resource.Payment</span>
         </a>
     </div>
 </div>

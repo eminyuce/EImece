@@ -36,22 +36,23 @@
     <div class="row pt-4 mt-2">
         <!-- Content-->
         <div class="col-md-12">
-            <div class="alert alert-secondary">
-                <div class="text-center">
-                    <b class="text-dark">
-                        @Resource.CustomerBillingDetailsNotFilledOut
-                    </b>
+            <div class="border mb-4 py-3 px-4 bg-light rounded crizal-checkout-notice">
+                <div class="text-center mb-0">
+                    <strong class="text-dark">@Resource.CustomerBillingDetailsNotFilledOut</strong>
                 </div>
             </div>
         </div>
         <div class="col-xl-9 col-md-8">
-            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @class = "common-block crizal-checkout-form" }))
             {
-                <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
+                <div class="line-title mb-3">
+                    <h2 class="h5 mb-0">@Resource.OrderDetails</h2>
+                </div>
+                <div class="d-sm-flex justify-content-between border mb-4 py-3 px-4 bg-light rounded">
                     <div class="media">
                         <div class="media-body align-self-center">
                             <h6 class="mb-1">@customer.FullName</h6>
-                            <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
+                            <div class="font-size-sm"><span class="text-primary font-weight-semibold">@customer.Email</span></div>
                             <div class="font-size-lg">
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             </div>
@@ -179,16 +180,17 @@
                 <!-- Navigation-->
                 <div class="d-flex pt-4 mt-3">
                     <div class="w-50 pr-3">
-                        <a class="btn btn-outline-secondary btn-block" href="@Url.Action("shoppingcart")">
-                            <i class="mr-1" data-feather="chevron-left"></i>
+                        <a class="butn-style8 outline btn-block" href="@Url.Action("shoppingcart")">
+                            <i class="fas fa-chevron-left mr-1" aria-hidden="true"></i>
                             <span class="d-none d-sm-inline">@Resource.MyBasket</span><span class="d-inline d-sm-none">@Resource.Back</span>
                         </a>
                     </div>
                     <div class="w-50 pl-2">
                         <input type="submit" id="ReviewYourOrder" style="display:none;" />
-                        <a class="btn btn-primary btn-block" onclick="javascript:document.getElementById('ReviewYourOrder').click()">
+                        <a class="butn-style8 btn-block" href="javascript:void(0)" onclick="document.getElementById('ReviewYourOrder').click()">
                             <span class="d-none d-sm-inline">@Resource.OrderFinalReview</span>
-                            <span class="d-inline d-sm-none">@Resource.Next</span><i class="ml-1" data-feather="chevron-right"></i>
+                            <span class="d-inline d-sm-none">@Resource.Next</span>
+                            <i class="fas fa-chevron-right ml-1" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>

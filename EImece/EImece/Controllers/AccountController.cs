@@ -479,15 +479,16 @@ namespace EImece.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(string returnUrl = "")
         {
-            Logger.Info("Entering Register action.");
+            Logger.Info($"Entering Register action. returnUrl={returnUrl}");
             if (!IsProductPriceEnabled)
             {
                 return RedirectToAction("Index", "Home");
             }
             var model = new RegisterViewModel();
             model.IsPermissionGranted = true;
+            ViewBag.ReturnUrl = returnUrl;
             Logger.Info("Returning Register view with default model.");
             return View(model);
         }
@@ -496,13 +497,14 @@ namespace EImece.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [ValidateCaptcha(Prefix = "CustomerRegister")]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl = "")
         {
-            Logger.Info($"Entering Register POST with email: {model.Email}");
+            Logger.Info($"Entering Register POST with email: {model.Email}, returnUrl={returnUrl}");
             if (!IsProductPriceEnabled)
             {
                 return RedirectToAction("Index", "Home");
             }
+            ViewBag.ReturnUrl = returnUrl;
             if (CaptchaService.HasValidationError(ModelState))
             {
                 Logger.Error("Captcha validation failed for Register.");
@@ -540,6 +542,11 @@ namespace EImece.Controllers
                     switch (result2)
                     {
                         case SignInStatus.Success:
+                            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                            {
+                                Logger.Info($"Post-registration sign-in successful. Redirecting to returnUrl: {returnUrl}");
+                                return Redirect(returnUrl);
+                            }
                             Logger.Info("Post-registration sign-in successful. Redirecting to Customer Home.");
                             return RedirectToAction("Index", "Home", new { @area = "customers" });
 

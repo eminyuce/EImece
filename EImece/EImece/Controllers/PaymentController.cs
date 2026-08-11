@@ -397,9 +397,11 @@ namespace EImece.Controllers
             }
             else
             {
-                PaymentLogger.Info("User is not authenticated. Redirecting to login.");
-                return RedirectToAction("Login", "Account",
-                    new { returnUrl = Url.Action("CheckoutPaymentOrderReview", "Payment") });
+                // Membership checkout requires an account + address; send guests to register
+                // (not login) so they can create a profile before billing details.
+                PaymentLogger.Info("User is not authenticated. Redirecting to register for membership checkout.");
+                return RedirectToAction("Register", "Account",
+                    new { returnUrl = Url.Action("CheckoutBillingDetails", "Payment") });
             }
         }
 
@@ -605,7 +607,16 @@ namespace EImece.Controllers
                     await SaveShoppingCartAsync(shoppingCart);
                     var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
                     PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id}");
-                    ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, user.Id);
+                    try
+                    {
+                        ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, user.Id);
+                    }
+                    catch (Exception ex)
+                    {
+                        PaymentLogger.Error(ex, "Failed to initialize iyzico checkout form.");
+                        ViewBag.CheckoutFormInitialize = null;
+                        ModelState.AddModelError("", "Ödeme formu başlatılamadı. Ödeme ayarlarını kontrol edin.");
+                    }
                     PaymentLogger.Info("Returning PlaceOrder view.");
                     return View(shoppingCart);
                 }

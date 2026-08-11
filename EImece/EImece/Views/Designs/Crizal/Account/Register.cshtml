@@ -1,100 +1,113 @@
 @model EImece.Models.RegisterViewModel
 @using Resources;
 @{
-    ViewBag.Title = "Register";
+    var companyName = Html.Action("GetCompanyName", "Home");
+    ViewBag.Title = Resource.CustomerRegister + " | " + companyName;
 }
-<div class="container pb-5 mb-sm-4">
-    <div class="row pt-5">
-        <div class="col-md-2 pt-sm-3">
-        </div>
-        <div class="col-md-8 pt-5 pt-sm-3">
-            <h2 class="h4 mb-1">@Resource.CustomerRegister</h2>
-            <hr />
-            <p class="text-muted mb-4">@Resource.RegistrationInfoText</p>
-            @{
-                var errorClass = ViewData.ModelState.IsValid ? "alert alert-success" : "alert alert-danger";
-            }
-            @Html.ValidationSummary(true, "", new { @class = errorClass })
-            <p class="text-danger  mb-4">  @Resource.PasswordInfoMessage</p>
-            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.ActionLink(Resource.AlreadyMembered, "Login", "Account", null, new { @class = "btn btn-pill  btn-sm btn-outline-info mb-2 mr-1" })
+
+<section class="crizal-customer-login crizal-customer-register" aria-labelledby="customer-register-title">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+                <div class="crizal-customer-login__panel">
+                    <aside class="crizal-customer-login__intro" aria-hidden="false">
+                        <p class="crizal-customer-login__eyebrow">@companyName</p>
+                        <h1 id="customer-register-title" class="crizal-customer-login__title">@Resource.CustomerRegister</h1>
+                        <p class="crizal-customer-login__lead">@Resource.RegistrationInfoText</p>
+                        <ul class="crizal-customer-login__benefits">
+                            <li><i class="fas fa-receipt" aria-hidden="true"></i><span>@Resource.MyOrder</span></li>
+                            <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>@Resource.ShippingAddress</span></li>
+                            <li><i class="fas fa-shopping-bag" aria-hidden="true"></i><span>@Resource.MyBasket</span></li>
+                        </ul>
+                    </aside>
+
+                    <div class="crizal-customer-login__form-wrap">
+                        <div class="crizal-customer-login__badge">
+                            <i class="fas fa-user-plus" aria-hidden="true"></i>
+                            <span>@Resource.CustomerAccount</span>
+                        </div>
+                        <h2 class="crizal-customer-login__form-title">@Resource.CustomerRegister</h2>
+                        <p class="crizal-customer-login__form-help">@Resource.PasswordInfoMessage</p>
+
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "crizal-customer-login__form form-horizontal", role = "form", autocomplete = "on" }))
+                        {
+                            @Html.Hidden("returnUrl", (string)ViewBag.ReturnUrl)
                             @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "alert alert-default text-danger" })
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger crizal-customer-login__errors" })
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.FirstName, new { @class = "crizal-customer-login__label" })
+                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", autocomplete = "given-name" })
+                                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger small d-block mt-1" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.LastName, new { @class = "crizal-customer-login__label" })
+                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", autocomplete = "family-name" })
+                                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger small d-block mt-1" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Email, new { @class = "crizal-customer-login__label" })
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", autocomplete = "email" })
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small d-block mt-1" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "crizal-customer-login__label" })
+                                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", autocomplete = "tel" })
+                                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger small d-block mt-1" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Password, new { @class = "crizal-customer-login__label" })
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "new-password" })
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small d-block mt-1" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "crizal-customer-login__label" })
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", autocomplete = "new-password" })
+                                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger small d-block mt-1" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group crizal-customer-login__captcha">
+                                        @Html.CaptchaWidget("CustomerRegister", "text-danger small d-block mt-1")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-checkbox mb-3">
+                                @Html.CheckBoxFor(m => m.IsPermissionGranted, new { @class = "custom-control-input" })
+                                @Html.LabelFor(m => m.IsPermissionGranted, new { @class = "custom-control-label" })
+                            </div>
+
+                            <button type="submit" class="butn-style8 crizal-customer-login__submit">
+                                <i class="fas fa-user-plus" aria-hidden="true"></i>
+                                <span>@Resource.CustomerRegister</span>
+                            </button>
+                        }
+
+                        <div class="crizal-customer-login__register">
+                            <p class="crizal-customer-login__register-prompt">@Resource.AlreadyMembered</p>
+                            @Html.ActionLink(Resource.Login, "Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, new { @class = "butn-style8 outline crizal-customer-login__register-btn" })
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.FirstName)
-                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "alert alert-default text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
-                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "alert alert-default text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Email, new { @class = "control-label" })
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "alert alert-default text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
-                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "alert alert-default text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "alert alert-default text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
-                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "alert alert-default text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            @Html.CaptchaWidget("CustomerRegister", "alert alert-default text-danger")
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div class="custom-control custom-checkbox">
-                            @Html.CheckBoxFor(m => m.IsPermissionGranted, new { @class = "custom-control-input" })
-                            @Html.LabelFor(m => m.IsPermissionGranted, new { @class = "custom-control-label" })
-                        </div>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <input type="submit" value="@Resource.CustomerRegister" class="btn btn-block btn-outline-warning" />
-                </div>
-            }
+            </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")
-
 }
