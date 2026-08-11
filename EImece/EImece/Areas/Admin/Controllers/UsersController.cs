@@ -1,7 +1,9 @@
 ﻿using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
 using EImece.Domain.DependencyInjection;
@@ -23,6 +25,9 @@ namespace EImece.Areas.Admin.Controllers
     {
         [Inject]
         public UsersService UsersService { get; set; }
+
+        [Inject]
+        public ICustomerService CustomerService { get; set; }
 
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
@@ -85,7 +90,75 @@ namespace EImece.Areas.Admin.Controllers
         {
             List<EditUserViewModel> model = await UsersService.GetUsersAsync(search);
             model = model.Where(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
+
+            var userIds = model.Select(m => m.Id).Where(id => !string.IsNullOrWhiteSpace(id)).ToList();
+            var customers = userIds.Count == 0
+                ? new List<Customer>()
+                : (await CustomerService.GetAllAsync())
+                    .Where(c => !string.IsNullOrWhiteSpace(c.UserId) && userIds.Contains(c.UserId))
+                    .ToList();
+            var customerByUserId = customers
+                .GroupBy(c => c.UserId, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.UpdatedDate).First(), StringComparer.OrdinalIgnoreCase);
+
+            foreach (var item in model)
+            {
+                EnrichCustomerDetailNote(item, customerByUserId);
+            }
+
             return View(model);
+        }
+
+        private static void EnrichCustomerDetailNote(EditUserViewModel item, IDictionary<string, Customer> customerByUserId)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            item.DetailNote = null;
+            Customer customer = null;
+            if (!string.IsNullOrWhiteSpace(item.Id))
+            {
+                customerByUserId.TryGetValue(item.Id, out customer);
+            }
+
+            if (customer == null)
+            {
+                item.AppendDetailLine(AdminResource.Roles, item.Role);
+                item.AppendDetailBlock("Müşteri profil kaydı bulunamadı.");
+                return;
+            }
+
+            item.AppendDetailLine(AdminResource.PhoneNumber, customer.GsmNumber);
+            item.AppendDetailLine(AdminResource.Company, customer.Company);
+            item.AppendDetailLine(AdminResource.IdentityNumber, customer.IdentityNumber);
+            item.AppendDetailLine(AdminResource.City, customer.City);
+            item.AppendDetailLine(AdminResource.Town, customer.Town);
+            item.AppendDetailLine(AdminResource.District, customer.District);
+            item.AppendDetailLine(AdminResource.Country, customer.Country);
+            item.AppendDetailLine(AdminResource.ZipCode, customer.ZipCode);
+            item.AppendDetailLine(AdminResource.CustomerOpenAddress, customer.Street);
+
+            if (!string.IsNullOrWhiteSpace(customer.Description))
+            {
+                item.AppendDetailLine("Açıklama", customer.Description);
+            }
+
+            if (customer.CreatedDate != default(DateTime))
+            {
+                item.AppendDetailLine(AdminResource.CreatedDate, customer.CreatedDate.ToString("dd.MM.yyyy HH:mm"));
+            }
+
+            if (customer.UpdatedDate != default(DateTime))
+            {
+                item.AppendDetailLine(AdminResource.UpdatedDate, customer.UpdatedDate.ToString("dd.MM.yyyy HH:mm"));
+            }
+
+            if (string.IsNullOrWhiteSpace(item.DetailNote))
+            {
+                item.AppendDetailBlock("Ek müşteri bilgisi yok.");
+            }
         }
 
         //[Authorize(Roles = "Admin")]
@@ -240,7 +313,7 @@ namespace EImece.Areas.Admin.Controllers
             ApplicationDbContext.Users.Remove(user);
             await ApplicationDbContext.SaveChangesAsync();
             SetSuccessMessage();
-            return RedirectToAction("Index");
+            return ReturnIndexIfNotUrlReferrer("Index");
         }
 
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]

@@ -88,8 +88,14 @@
 }
 
 <div class="users-admin-page">
-    <div class="users-admin-header clearfix">
-        <div class="pull-right users-admin-header-actions">
+    <div class="users-admin-header">
+        <div class="users-admin-header-main">
+            <h2 class="admin-page-title">@AdminResource.Users</h2>
+            <p class="users-admin-lead">
+                Yönetici ve editör hesaplarını arayın, role / 2FA durumuna göre filtreleyin ve işlem menüsünden düzenleyin.
+            </p>
+        </div>
+        <div class="users-admin-header-actions">
             <a href="@Url.Action("CustomerRoles", controllerName)" class="btn btn-default btn-sm">
                 <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
                 Sitede hesabı olan müşteriler
@@ -99,10 +105,6 @@
                 @AdminResource.NewUserInsert
             </a>
         </div>
-        <h2 class="admin-page-title">@AdminResource.Users</h2>
-        <p class="users-admin-lead">
-            Yönetici ve editör hesaplarını arayın, role / 2FA durumuna göre filtreleyin ve işlem menüsünden düzenleyin.
-        </p>
     </div>
     <hr class="adminLine" />
 
@@ -241,14 +243,32 @@
 
 <style>
     .users-admin-page .users-admin-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px 16px;
         margin-bottom: 2px;
+    }
+
+    .users-admin-page .users-admin-header-main {
+        flex: 1 1 280px;
+        min-width: 0;
     }
 
     .users-admin-page .users-admin-header-actions {
         display: flex;
         flex-wrap: wrap;
+        justify-content: flex-end;
         gap: 8px;
-        margin-bottom: 6px;
+        flex: 0 0 auto;
+        position: relative;
+        z-index: 2;
+        margin: 2px 0 0;
+    }
+
+    .users-admin-page .users-admin-header .admin-page-title {
+        margin-bottom: 8px;
     }
 
     .users-admin-page .users-admin-lead {
@@ -371,12 +391,13 @@
 
     @@media (max-width: 767px) {
         .users-admin-page .users-admin-header-actions {
-            float: none !important;
-            margin-bottom: 12px;
+            width: 100%;
+            margin-bottom: 4px;
         }
 
         .users-admin-page .users-admin-header-actions .btn {
-            width: 100%;
+            flex: 1 1 auto;
+            text-align: center;
         }
     }
 </style>

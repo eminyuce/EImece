@@ -6,103 +6,164 @@
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
-@using Resources;
 @{
-    var users = Model;
-
-    ViewBag.Title = "Index";
+    ViewBag.Title = AdminResource.Customers;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
+    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1); 
-    
+    var rowIndex = gridPage == 0 ? 0 : pageSizeNumber * (gridPage - 1);
+
     var controllerName = "Users";
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var title = "Users";
     var gridName = "UsersGrid";
-    var contents = Model;
-
-    var gridImagesText = AdminResource.GridImagesText;
-
-    var GridResultRecordNumber = AdminResource.GridResultRecordNumber;
-    var GridPagingDropDownText = AdminResource.GridPagingDropDownText;
+    var contents = Model ?? new List<EditUserViewModel>();
+    var search = Request.QueryString["search"].ToStr();
 }
 
-<h2>@AdminResource.Customers Customer Role Users</h2>
-<hr class="adminLine" />
-
-<div class="panel panel-info">
-    <div class="row">
-        <span class="col-md-9">
-            @Html.Partial("pSearchForm")
-        </span>
-    </div>
-</div>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <div class="row">
-            <span class="col-md-6">
-                <span class="label ">
-                    <span class="badge text-danger text-large">@contents.Count() </span>
-                    @GridResultRecordNumber
-                </span>
-            </span>
-            <span class="col-md-3">
-                <p class="text-right">@GridPagingDropDownText</p>
-            </span>
+<div class="users-admin-page customers-admin-page">
+    <div class="users-admin-header">
+        <div class="users-admin-header-main">
+            <h2 class="admin-page-title">@AdminResource.Customers</h2>
+            <p class="users-admin-lead">
+                Sitede hesabı olan müşteri kullanıcılarını arayın, seçin ve toplu olarak silebilirsiniz.
+            </p>
+        </div>
+        <div class="users-admin-header-actions">
+            <a href="@Url.Action("Index", controllerName)" class="btn btn-default btn-sm">
+                <i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i>
+                @AdminResource.Users
+            </a>
         </div>
     </div>
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
-{
+    <hr class="adminLine" />
 
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
+    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+        {"controllerName", controllerName},
+        {"selectAll", true},
+        {"deleteAll", true},
+        {"SetStateOnOrOff", false},
+        {"orderingButton", false},
+        {"IsNewRecordButtonEnabled", false},
+        {"IsSearchFormEnabled", true},
+        {"IsExcelButtonEnabled", false}
+    })
 
-    columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d => Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
-        { "ItemId", d.Id },
-        {"controllerName",controllerName},
-        { "DeleteText", gridDeleteText },
-        { "ItemDescription", String.Format("{0} {1}", d.FirstName, d.LastName) } }));
+    @Html.Partial("Grid/_GridChrome")
 
-    columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink(AdminResource.ForgotPassword, "ForgotPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
-    </b>);
+    <div class="panel panel-primary eg-grid-shell">
+        @Html.Partial("pGridDropDown", contents)
+        @Html.Grid(contents).Named(gridName).Columns(columns =>
+        {
+            columns.Add()
+                .Titled("#")
+                .Encoded(false)
+                .Sanitized(false)
+                .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
+                .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
 
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.SetWidth(30)
-.RenderValueAs(d =>
-    @<b>
-        @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", controllerName, new { id = d.Id }, new { @class = "btn btn-info btn-sm     " })
-    </b>);
+            columns.Add()
+                .Encoded(false)
+                .Sanitized(false)
+                .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
+                .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+                    {"ItemId", d.Id}
+                }));
 
+            columns.Add(c => c.Email)
+                .Titled(AdminResource.Email)
+                .Filterable(true)
+                .Encoded(false)
+                .Sanitized(false)
+                .Css("eg-col-name")
+                .RenderValueAs(o => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
+                    { "Name", o.Email },
+                    { "Subtitle", String.Format("{0} {1}", o.FirstName, o.LastName) }
+                }));
 
-columns.Add(c => c.Email)
- .Titled(AdminResource.Email)
- .Filterable(true);
+            columns.Add(o => o.FirstName)
+                .Encoded(false)
+                .Titled(AdminResource.Name)
+                .Filterable(true)
+                .RenderValueAs(o => String.Format("{0} {1}", o.FirstName, o.LastName));
 
-columns.Add(o => o.FirstName)
-.Encoded(false)
-.Titled(AdminResource.Name)
-.RenderValueAs(o => String.Format("{0} {1}", o.FirstName, o.LastName));
+            columns.Add(o => o.DetailNote)
+                .Titled(AdminResource.Note)
+                .Encoded(false)
+                .Sanitized(false)
+                .Css("eg-col-note")
+                .RenderValueAs(o => String.Format(
+                    "<textarea readonly class='eg-grid-note'>{0}</textarea>",
+                    System.Web.HttpUtility.HtmlEncode(o.DetailNote ?? string.Empty)));
 
-columns.Add(o => o.Role)
-.Encoded(false)
-.Titled(AdminResource.Roles)
-.RenderValueAs(o => String.Format("{0}", o.Role));
-
-}).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+            columns.Add()
+                .Titled("İşlemler")
+                .Encoded(false)
+                .Sanitized(false)
+                .Css("eg-sticky-right eg-col-actions")
+                .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
+                    { "ItemId", d.Id },
+                    { "ItemName", String.Format("{0} {1}", d.FirstName, d.LastName) },
+                    { "controllerName", controllerName },
+                    { "ShowMedia", false },
+                    { "ShowEdit", true },
+                    { "EditAction", "Edit" },
+                    { "ShowDelete", true },
+                    { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = d.Id }) },
+                    { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = d.Id }) }
+                }));
+        }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+    </div>
 </div>
+
+<style>
+    .customers-admin-page .users-admin-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px 16px;
+        margin-bottom: 2px;
+    }
+
+    .customers-admin-page .users-admin-header-main {
+        flex: 1 1 280px;
+        min-width: 0;
+    }
+
+    .customers-admin-page .users-admin-header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+        flex: 0 0 auto;
+        position: relative;
+        z-index: 2;
+        margin: 2px 0 0;
+    }
+
+    .customers-admin-page .users-admin-lead {
+        margin: 0;
+        max-width: 64ch;
+        color: #627d98;
+        font-size: 13px;
+        line-height: 1.45;
+    }
+
+    .customers-admin-page textarea.eg-grid-note {
+        display: block;
+        width: 399px;
+        max-width: 100%;
+        height: 146px;
+        margin: 0;
+        padding: 8px 10px;
+        border: 1px solid #d7dee8;
+        border-radius: 4px;
+        background-color: transparent;
+        color: #334155;
+        font-size: 12px;
+        line-height: 1.4;
+        resize: vertical;
+        white-space: pre-wrap;
+    }
+</style>

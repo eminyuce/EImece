@@ -10,6 +10,7 @@ using EImece.Domain.Repositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -34,6 +35,12 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
+
+        [Inject]
+        public UsersService UsersService { get; set; }
+
+        [Inject]
+        public ICustomerService CustomerService { get; set; }
 
         public AjaxController(AppLogRepository AppLogRepository)
         {
@@ -402,6 +409,53 @@ namespace EImece.Areas.Admin.Controllers
         {
             await TagService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Bulk-delete users selected on Users / CustomerRoles grids (grid name: UsersGrid).
+        /// Only Customer-role accounts are removed; related customer/order rows are cleaned up.
+        /// </summary>
+        [HttpPost]
+        [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteUsersGridItem(List<String> values)
+        {
+            var deleted = new List<string>();
+            if (values == null || values.Count == 0)
+            {
+                return Json(deleted, JsonRequestBehavior.AllowGet);
+            }
+
+            var currentUserId = User?.Identity?.GetUserId();
+            foreach (var userId in values.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                if (!string.IsNullOrEmpty(currentUserId)
+                    && string.Equals(currentUserId, userId, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                if (user == null)
+                {
+                    continue;
+                }
+
+                var roles = await UserManager.GetRolesAsync(userId);
+                var isCustomer = roles != null
+                    && roles.Any(r => r.Equals(Domain.Constants.CustomerRole, StringComparison.OrdinalIgnoreCase));
+                if (!isCustomer)
+                {
+                    // Safety: customer grid must not bulk-delete staff accounts.
+                    continue;
+                }
+
+                await CustomerService.DeleteByUserIdAsync(userId);
+                await OrderService.DeleteByUserIdAsync(userId);
+                await UsersService.DeleteUserAsync(userId);
+                deleted.Add(userId);
+            }
+
+            return Json(deleted, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
