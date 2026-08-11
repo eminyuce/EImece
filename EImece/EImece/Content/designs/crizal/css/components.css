@@ -3339,22 +3339,6 @@ body[data-design="crizal"] .crizal-product-tabs__content.tab-content {
     background: var(--crizal-surface);
 }
 
-/* Description + specs as peer sections (side by side on desktop) */
-body[data-design="crizal"] .crizal-product-desc {
-    display: block;
-}
-
-body[data-design="crizal"] .crizal-product-desc--with-specs {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.9fr);
-    gap: 1.75rem 2rem;
-    align-items: start;
-}
-
-body[data-design="crizal"] .crizal-product-desc__section {
-    min-width: 0;
-}
-
 body[data-design="crizal"] .crizal-product-desc__body {
     color: var(--crizal-heading);
     font-size: 1.02rem;
@@ -3365,21 +3349,19 @@ body[data-design="crizal"] .crizal-product-desc__body p:last-child {
     margin-bottom: 0;
 }
 
-body[data-design="crizal"] .crizal-product-specs-section {
-    min-width: 0;
-    position: sticky;
-    top: 1rem;
-    padding: 1rem 1.05rem 1.1rem;
-    border: 1px solid var(--crizal-border, #e2e8f0);
-    border-radius: var(--crizal-radius-lg, 12px);
-    background: #f8fafc;
-}
-
-/* Product specs: group caption as light-gray bold italic table header */
+/* Product specs tab: group tables with light-gray bold italic headers */
 body[data-design="crizal"] .crizal-product-specs {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 1rem;
+}
+
+body[data-design="crizal"] .crizal-product-specs--tab {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem 1.25rem;
+    align-items: start;
+    max-width: 920px;
 }
 
 body[data-design="crizal"] .crizal-product-specs__table {
@@ -3632,17 +3614,6 @@ body[data-design="crizal"] .crizal-product-payment__note {
 body[data-design="crizal"] .crizal-product-payment__note a {
     color: var(--crizal-primary);
     font-weight: 700;
-}
-
-@media (max-width: 991.98px) {
-    body[data-design="crizal"] .crizal-product-desc--with-specs {
-        grid-template-columns: 1fr;
-        gap: 1.35rem;
-    }
-
-    body[data-design="crizal"] .crizal-product-specs-section {
-        position: static;
-    }
 }
 
 @media (max-width: 767.98px) {

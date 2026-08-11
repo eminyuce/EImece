@@ -440,39 +440,19 @@
     color: #5c77fc;
 }
 
-/* Description + specs peer sections */
-.product-desc--with-specs {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.9fr);
-    gap: 1.5rem 2rem;
-    align-items: start;
-}
-
-.product-specs-section {
-    min-width: 0;
-    position: sticky;
-    top: 1rem;
-    padding: 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    background: #f8fafc;
-}
-
-@media (max-width: 991.98px) {
-    .product-desc--with-specs {
-        grid-template-columns: 1fr;
-    }
-
-    .product-specs-section {
-        position: static;
-    }
-}
-
 /* Product specs tables (group caption = light-gray bold italic header) */
 .product-specs {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 1rem;
+}
+
+.product-specs--tab {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem 1.25rem;
+    align-items: start;
+    max-width: 920px;
 }
 
 .product-specs__table {

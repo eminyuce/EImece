@@ -473,6 +473,15 @@
                     <span>@Resource.Description</span>
                 </a>
             </li>
+            @if (productSpecsExists)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="specs-tab" data-toggle="tab" href="#specs" role="tab" aria-controls="specs" aria-selected="false">
+                        <i class="fas fa-list-ul" aria-hidden="true"></i>
+                        <span>@Resource.Specifications</span>
+                    </a>
+                </li>
+            }
             @if (productReviewEnable)
             {
                 <li class="nav-item">
@@ -506,6 +515,12 @@
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 @ProductDescriptionHelper(Model)
             </div>
+            @if (productSpecsExists)
+            {
+                <div class="tab-pane fade" id="specs" role="tabpanel" aria-labelledby="specs-tab">
+                    @ProductSpecsHelper(Model)
+                </div>
+            }
             @if (productReviewEnable)
             {
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -537,41 +552,36 @@
 
 @helper ProductDescriptionHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
 {
-    var productSpecsExists = model.ProdSpecs.IsNotEmpty();
     var product = Model.Product;
+    <div class="crizal-product-desc">
+        <div class="crizal-product-desc__body">@Html.Raw(product.Description)</div>
+    </div>
+}
 
-    <div class="crizal-product-desc @(productSpecsExists ? "crizal-product-desc--with-specs" : null)">
-        <section class="crizal-product-desc__section" aria-label="@Resource.Description">
-            <div class="crizal-product-desc__body">@Html.Raw(product.Description)</div>
-        </section>
-        @if (productSpecsExists)
+@helper ProductSpecsHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
+{
+    <div class="crizal-product-specs crizal-product-specs--tab" aria-label="@Resource.Specifications">
+        @foreach (var group in model.ProdSpecsGroups)
         {
-            <aside class="crizal-product-specs-section" aria-label="@Resource.Specifications">
-                <div class="crizal-product-specs">
-                    @foreach (var group in model.ProdSpecsGroups)
+            <table class="crizal-product-specs__table">
+                @if (!string.IsNullOrWhiteSpace(group.Name))
+                {
+                    <thead>
+                        <tr>
+                            <th class="crizal-product-specs__caption" colspan="2" scope="colgroup">@group.Name</th>
+                        </tr>
+                    </thead>
+                }
+                <tbody>
+                    @foreach (var specs in group.Items)
                     {
-                        <table class="crizal-product-specs__table">
-                            @if (!string.IsNullOrWhiteSpace(group.Name))
-                            {
-                                <thead>
-                                    <tr>
-                                        <th class="crizal-product-specs__caption" colspan="2" scope="colgroup">@group.Name</th>
-                                    </tr>
-                                </thead>
-                            }
-                            <tbody>
-                                @foreach (var specs in group.Items)
-                                {
-                                    <tr>
-                                        <th scope="row">@specs.specsName</th>
-                                        <td>@Html.Raw(specs.value) @specs.unit</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                        <tr>
+                            <th scope="row">@specs.specsName</th>
+                            <td>@Html.Raw(specs.value) @specs.unit</td>
+                        </tr>
                     }
-                </div>
-            </aside>
+                </tbody>
+            </table>
         }
     </div>
 }

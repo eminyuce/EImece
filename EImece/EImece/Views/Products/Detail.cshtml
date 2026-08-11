@@ -488,6 +488,14 @@
                 <i class="fas fa-file-alt me-2" aria-hidden="true"></i> @Resource.Description
             </button>
         </li>
+        @if (productSpecsExists)
+        {
+            <li class="nav-item">
+                <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab" aria-controls="specs" aria-selected="false">
+                    <i class="fas fa-list-ul me-2" aria-hidden="true"></i> @Resource.Specifications
+                </button>
+            </li>
+        }
         @if (productReviewEnable)
         {
             <li class="nav-item">
@@ -519,6 +527,12 @@
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             @ProductDescriptionHelper(Model)
         </div>
+        @if (productSpecsExists)
+        {
+            <div class="tab-pane fade" id="specs" role="tabpanel" aria-labelledby="specs-tab">
+                @ProductSpecsHelper(Model)
+            </div>
+        }
         @if (productReviewEnable)
         {
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -550,42 +564,37 @@
 
 @helper ProductDescriptionHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
 {
-    var productSpecsExists = model.ProdSpecs.IsNotEmpty();
     var product = Model.Product;
-
     <div class="container pt-sm-3 pb-sm-3">
-        <div class="product-desc @(productSpecsExists ? "product-desc--with-specs" : null)">
-            <section class="product-desc__section" aria-label="@Resource.Description">
-                <div class="product-desc__body">@Html.Raw(product.Description)</div>
-            </section>
-            @if (productSpecsExists)
+        <div class="product-desc__body">@Html.Raw(product.Description)</div>
+    </div>
+}
+
+@helper ProductSpecsHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
+{
+    <div class="container pt-sm-3 pb-sm-3">
+        <div class="product-specs product-specs--tab" aria-label="@Resource.Specifications">
+            @foreach (var group in model.ProdSpecsGroups)
             {
-                <aside class="product-specs-section" aria-label="@Resource.Specifications">
-                    <div class="product-specs">
-                        @foreach (var group in model.ProdSpecsGroups)
+                <table class="product-specs__table">
+                    @if (!string.IsNullOrWhiteSpace(group.Name))
+                    {
+                        <thead>
+                            <tr>
+                                <th class="product-specs__caption" colspan="2" scope="colgroup">@group.Name</th>
+                            </tr>
+                        </thead>
+                    }
+                    <tbody>
+                        @foreach (var specs in group.Items)
                         {
-                            <table class="product-specs__table">
-                                @if (!string.IsNullOrWhiteSpace(group.Name))
-                                {
-                                    <thead>
-                                        <tr>
-                                            <th class="product-specs__caption" colspan="2" scope="colgroup">@group.Name</th>
-                                        </tr>
-                                    </thead>
-                                }
-                                <tbody>
-                                    @foreach (var specs in group.Items)
-                                    {
-                                        <tr>
-                                            <th scope="row">@specs.specsName</th>
-                                            <td>@Html.Raw(specs.value) @specs.unit</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                            <tr>
+                                <th scope="row">@specs.specsName</th>
+                                <td>@Html.Raw(specs.value) @specs.unit</td>
+                            </tr>
                         }
-                    </div>
-                </aside>
+                    </tbody>
+                </table>
             }
         </div>
     </div>
