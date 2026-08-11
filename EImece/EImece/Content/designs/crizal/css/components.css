@@ -2862,38 +2862,72 @@ body[data-design="crizal"] .crizal-story-detail__footer {
 }
 
 body[data-design="crizal"] .crizal-story-share {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.65rem 0.85rem;
     color: var(--crizal-muted);
     font-size: 0.85rem;
     font-weight: 600;
+}
+
+body[data-design="crizal"] .crizal-story-share__label {
+    color: var(--crizal-muted);
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+}
+
+body[data-design="crizal"] .crizal-story-share__actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
 }
 
 body[data-design="crizal"] .crizal-story-share__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.15rem;
-    height: 2.15rem;
-    border: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--crizal-border);
     padding: 0;
     border-radius: 50%;
-    background: var(--crizal-secondary);
-    color: #fff !important;
+    background: var(--crizal-surface);
+    color: var(--crizal-secondary) !important;
     text-decoration: none !important;
     cursor: pointer;
+    transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    font-size: 0.85rem;
+    line-height: 1;
+    box-shadow: none;
 }
 
-body[data-design="crizal"] .crizal-story-share__btn:hover {
-    background: var(--crizal-primary);
+body[data-design="crizal"] .crizal-story-share__btn:hover,
+body[data-design="crizal"] .crizal-story-share__btn:focus {
+    background: rgba(9, 184, 80, 0.08);
+    border-color: var(--crizal-primary);
+    color: var(--crizal-primary) !important;
+    outline: none;
+}
+
+body[data-design="crizal"] .crizal-story-share__btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(9, 184, 80, 0.22);
 }
 
 body[data-design="crizal"] .crizal-story-share__feedback {
-    margin-left: 0.35rem;
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--crizal-primary);
+}
+
+/* Product detail: separate share row from panels / tabs */
+body[data-design="crizal"] #productPanels + .crizal-story-share,
+body[data-design="crizal"] .crizal-product-panels + .crizal-story-share {
+    margin-top: 1.15rem;
+    margin-bottom: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--crizal-border);
 }
 
 body[data-design="crizal"] .crizal-story-nav {

@@ -10,42 +10,44 @@
 @if (share.HasContent)
 {
     <div class="crizal-story-share" data-share-root="true">
-        <span>@shareLabel</span>
-        @if (!string.IsNullOrWhiteSpace(shareUrl))
-        {
-            <button type="button"
-                    class="crizal-story-share__btn js-copy-share-link"
-                    data-share-url="@shareUrl"
-                    data-copied-text="@Resource.LinkCopied"
-                    title="@Resource.CopyLink"
-                    aria-label="@Resource.CopyLink">
-                <i class="fas fa-link" aria-hidden="true"></i>
-            </button>
-        }
-        @if (share.ContainsLink(Constants.FacebookWebSiteLink))
-        {
-            <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.FacebookWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                <i class="fab fa-facebook-f" aria-hidden="true"></i>
-            </a>
-        }
-        @if (share.ContainsLink(Constants.TwitterWebSiteLink))
-        {
-            <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.TwitterWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                <i class="fab fa-twitter" aria-hidden="true"></i>
-            </a>
-        }
-        @if (share.ContainsLink(Constants.LinkedinWebSiteLink))
-        {
-            <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.LinkedinWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-            </a>
-        }
-        @if (share.ContainsLink(Constants.PinterestWebSiteLink))
-        {
-            <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.PinterestWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
-                <i class="fab fa-pinterest-p" aria-hidden="true"></i>
-            </a>
-        }
+        <span class="crizal-story-share__label">@shareLabel</span>
+        <div class="crizal-story-share__actions">
+            @if (!string.IsNullOrWhiteSpace(shareUrl))
+            {
+                <button type="button"
+                        class="crizal-story-share__btn js-copy-share-link"
+                        data-share-url="@shareUrl"
+                        data-copied-text="@Resource.LinkCopied"
+                        title="@Resource.CopyLink"
+                        aria-label="@Resource.CopyLink">
+                    <i class="fas fa-link" aria-hidden="true"></i>
+                </button>
+            }
+            @if (share.ContainsLink(Constants.FacebookWebSiteLink))
+            {
+                <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.FacebookWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                    <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                </a>
+            }
+            @if (share.ContainsLink(Constants.TwitterWebSiteLink))
+            {
+                <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.TwitterWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            }
+            @if (share.ContainsLink(Constants.LinkedinWebSiteLink))
+            {
+                <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.LinkedinWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                </a>
+            }
+            @if (share.ContainsLink(Constants.PinterestWebSiteLink))
+            {
+                <a class="crizal-story-share__btn" href="@share.SocialMediaLinks[Constants.PinterestWebSiteLink]" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+                    <i class="fab fa-pinterest-p" aria-hidden="true"></i>
+                </a>
+            }
+        </div>
         <span class="crizal-story-share__feedback js-copy-share-feedback" aria-live="polite"></span>
     </div>
 }
