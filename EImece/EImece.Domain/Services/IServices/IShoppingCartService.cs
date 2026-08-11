@@ -1,6 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
-using Iyzipay.Model;
+using EImece.Domain.Models.Payment;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,21 +17,21 @@ namespace EImece.Domain.Services.IServices
 
         Task SaveOrEditShoppingCartAsync(ShoppingCart item);
 
-        Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId);
+        Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId);
 
-        Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId);
+        Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId);
 
         void DeleteByOrderGuid(string orderGuid);
 
         Task DeleteByOrderGuidAsync(string orderGuid);
 
-        Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm);
+        Order SaveBuyNow(BuyNowModel buyNowSession, PaymentResult paymentResult);
 
-        Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, CheckoutForm checkoutForm);
+        Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, PaymentResult paymentResult);
 
-        Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm);
+        Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult);
 
-        Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm);
+        Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult);
         List<ShoppingCart> GetAdminPageList(string search, int currentLanguage);
 
         Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken));

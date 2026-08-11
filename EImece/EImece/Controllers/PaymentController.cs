@@ -7,11 +7,12 @@ using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Models.Payment;
+using PaymentResultDto = EImece.Domain.Models.Payment.PaymentResult;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
 using EImece.Domain.Services;
+using EImece.Domain.Services.Payment;
 using EImece.Domain.Services.IServices;
-using Iyzipay.Model;
-using Iyzipay.Request;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
@@ -56,7 +57,7 @@ namespace EImece.Controllers
         public ICustomerService CustomerService { get; set; }
 
         [Inject]
-        public IyzicoService IyzicoService { get; set; }
+        public PaymentContext PaymentContext { get; set; }
 
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
@@ -606,14 +607,14 @@ namespace EImece.Controllers
                     await RevalidateCouponAsync(shoppingCart);
                     await SaveShoppingCartAsync(shoppingCart);
                     var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-                    PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id}");
+                    PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id} via {PaymentContext.ProviderName}");
                     try
                     {
-                        ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, user.Id);
+                        ViewBag.CheckoutFormInitialize = await PaymentContext.InitializeCheckoutAsync(shoppingCart, user.Id);
                     }
                     catch (Exception ex)
                     {
-                        PaymentLogger.Error(ex, "Failed to initialize iyzico checkout form.");
+                        PaymentLogger.Error(ex, "Failed to initialize payment checkout form via {0}.", PaymentContext.ProviderName);
                         ViewBag.CheckoutFormInitialize = null;
                         ModelState.AddModelError("", "Ödeme formu başlatılamadı. Ödeme ayarlarını kontrol edin.");
                     }
@@ -627,13 +628,14 @@ namespace EImece.Controllers
             }
         }
         
-        public async Task<ActionResult> PaymentResult(RetrieveCheckoutFormRequest model, string o, string u, String orderNumber)
+        public async Task<ActionResult> PaymentResult(PaymentCallbackRequest model, string o, string u, String orderNumber)
         {
-            CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
-            PaymentLogger.Info($"PaymentResult with ACCOUNT status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
-            if (!IsSuccessfulPayment(checkoutForm))
+            // iyzico Checkout Form callback POSTs "token" — same binding as the former RetrieveCheckoutFormRequest.
+            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
+            PaymentLogger.Info($"PaymentResult with ACCOUNT status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
+            if (!IsSuccessfulPayment(paymentResult))
             {
-                PaymentLogger.Error($"Payment failed. Status: {checkoutForm?.PaymentStatus}");
+                PaymentLogger.Error($"Payment failed. Status: {paymentResult?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
 
@@ -650,13 +652,13 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var bindingError = ValidatePaymentBinding(checkoutForm, orderGuid, orderNumber);
+            var bindingError = ValidatePaymentBinding(paymentResult, orderGuid, orderNumber);
             if (bindingError != null)
             {
                 return bindingError;
             }
 
-            var existingOrder = await FindExistingPaidOrderAsync(checkoutForm.PaymentId, orderGuid);
+            var existingOrder = await FindExistingPaidOrderAsync(paymentResult.PaymentId, orderGuid);
             if (existingOrder != null)
             {
                 TempData["LastCompletedOrderId"] = existingOrder.Id;
@@ -670,16 +672,16 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict);
             }
 
-            if (!PaidPriceMatches(checkoutForm.PaidPrice, shoppingCart.TotalPriceWithCargoPrice))
+            if (!PaidPriceMatches(paymentResult.PaidPrice, shoppingCart.TotalPriceWithCargoPrice))
             {
                 PaymentLogger.Error($"PaidPrice mismatch for OrderGuid. Expected cart total does not match payment.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var resolvedOrderNumber = string.IsNullOrWhiteSpace(checkoutForm.ConversationId)
+            var resolvedOrderNumber = string.IsNullOrWhiteSpace(paymentResult.ConversationId)
                 ? orderNumber
-                : checkoutForm.ConversationId;
-            var order = await ShoppingCartService.SaveShoppingCartAsync(resolvedOrderNumber, shoppingCart, checkoutForm, userId);
+                : paymentResult.ConversationId;
+            var order = await ShoppingCartService.SaveShoppingCartAsync(resolvedOrderNumber, shoppingCart, paymentResult, userId);
             PaymentLogger.Info($"Order saved with ID: {order.Id}");
             await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
             await ClearCartAsync(shoppingCart);
@@ -825,7 +827,7 @@ namespace EImece.Controllers
                 await ShoppingCartService.SaveOrEditShoppingCartAsync(item);
                 PaymentLogger.Info("Saved BuyNow shopping cart.");
 
-                ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeBuyNowAsync(buyNowModel);
+                ViewBag.CheckoutFormInitialize = await PaymentContext.InitializeBuyNowAsync(buyNowModel);
                 PaymentLogger.Info("Initialized checkout form for BuyNow.");
                 PaymentLogger.Info("Returning BuyNowPayment view.");
                 return View("BuyNowPayment", buyNowModel);
@@ -839,14 +841,14 @@ namespace EImece.Controllers
             }
         }
 
-        public async Task<ActionResult> BuyNowPaymentResult(RetrieveCheckoutFormRequest model, String o)
+        public async Task<ActionResult> BuyNowPaymentResult(PaymentCallbackRequest model, String o)
         {
             PaymentLogger.Info("Entering BuyNowPaymentResult action.");
-            CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
-            PaymentLogger.Info($"Payment status: {checkoutForm.PaymentStatus}");
-            if (!IsSuccessfulPayment(checkoutForm))
+            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
+            PaymentLogger.Info($"Payment status: {paymentResult.PaymentStatus}");
+            if (!IsSuccessfulPayment(paymentResult))
             {
-                PaymentLogger.Error($"BuyNow payment failed. Status: {checkoutForm?.PaymentStatus}");
+                PaymentLogger.Error($"BuyNow payment failed. Status: {paymentResult?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
 
@@ -861,13 +863,13 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (!string.Equals(checkoutForm.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(paymentResult.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
             {
                 PaymentLogger.Error("BuyNow payment BasketId does not match callback order reference.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var existingOrder = await FindExistingPaidOrderAsync(checkoutForm.PaymentId, orderGuid);
+            var existingOrder = await FindExistingPaidOrderAsync(paymentResult.PaymentId, orderGuid);
             if (existingOrder != null)
             {
                 TempData["LastCompletedOrderId"] = existingOrder.Id;
@@ -895,13 +897,13 @@ namespace EImece.Controllers
             }
 
             if (!string.IsNullOrEmpty(buyNowModel.ConversationId)
-                && !string.Equals(checkoutForm.ConversationId, buyNowModel.ConversationId, StringComparison.OrdinalIgnoreCase))
+                && !string.Equals(paymentResult.ConversationId, buyNowModel.ConversationId, StringComparison.OrdinalIgnoreCase))
             {
                 PaymentLogger.Error("BuyNow ConversationId does not match payment ConversationId.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (!PaidPriceMatches(checkoutForm.PaidPrice, buyNowModel.TotalPriceWithCargoPrice))
+            if (!PaidPriceMatches(paymentResult.PaidPrice, buyNowModel.TotalPriceWithCargoPrice))
             {
                 PaymentLogger.Error("BuyNow PaidPrice mismatch.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -913,7 +915,7 @@ namespace EImece.Controllers
             buyNowModel.Customer.Lang = CurrentLanguage;
             PaymentLogger.Info("Updated BuyNow model with cargo and language details.");
 
-            var order = await ShoppingCartService.SaveBuyNowAsync(buyNowModel, checkoutForm);
+            var order = await ShoppingCartService.SaveBuyNowAsync(buyNowModel, paymentResult);
             PaymentLogger.Info($"Order saved with ID: {order.Id}");
             await ClearBuyNowAsync(buyNowModel);
             PaymentLogger.Info("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
@@ -1181,7 +1183,7 @@ namespace EImece.Controllers
 
                 await RevalidateCouponAsync(shoppingCart);
                 await SaveShoppingCartAsync(shoppingCart);
-                ViewBag.CheckoutFormInitialize = await IyzicoService.CreateCheckoutFormInitializeAsync(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
+                ViewBag.CheckoutFormInitialize = await PaymentContext.InitializeCheckoutAsync(shoppingCart, item.UserId, "ShoppingWithoutAccountResult");
                 return View("ShoppingWithoutAccountPayment", buyWithNoAccountCreation);
             }
             else
@@ -1193,15 +1195,15 @@ namespace EImece.Controllers
             }
         }
 
-        public async Task<ActionResult> ShoppingWithoutAccountResult(RetrieveCheckoutFormRequest model, String o, String orderNumber)
+        public async Task<ActionResult> ShoppingWithoutAccountResult(PaymentCallbackRequest model, String o, String orderNumber)
         {
             PaymentLogger.Info("Entering ShoppingWithoutAccountResult action.");
-            CheckoutForm checkoutForm = await IyzicoService.GetCheckoutFormAsync(model);
-            PaymentLogger.Info($"ShoppingWithoutAccountResult status: {checkoutForm.PaymentStatus} ConversationId: {checkoutForm.ConversationId}");
+            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
+            PaymentLogger.Info($"ShoppingWithoutAccountResult status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
 
-            if (!IsSuccessfulPayment(checkoutForm))
+            if (!IsSuccessfulPayment(paymentResult))
             {
-                PaymentLogger.Error($"BuyWithNoAccountCreation payment failed. Status: {checkoutForm?.PaymentStatus}");
+                PaymentLogger.Error($"BuyWithNoAccountCreation payment failed. Status: {paymentResult?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
 
@@ -1216,13 +1218,13 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var bindingError = ValidatePaymentBinding(checkoutForm, orderGuid, orderNumber);
+            var bindingError = ValidatePaymentBinding(paymentResult, orderGuid, orderNumber);
             if (bindingError != null)
             {
                 return bindingError;
             }
 
-            var existingOrder = await FindExistingPaidOrderAsync(checkoutForm.PaymentId, orderGuid);
+            var existingOrder = await FindExistingPaidOrderAsync(paymentResult.PaymentId, orderGuid);
             if (existingOrder != null)
             {
                 TempData["LastCompletedOrderId"] = existingOrder.Id;
@@ -1250,7 +1252,7 @@ namespace EImece.Controllers
                 throw new ArgumentException("buyWithNoAccountCreation.Customer cannot be null");
             }
 
-            if (!PaidPriceMatches(checkoutForm.PaidPrice, buyWithNoAccountCreation.TotalPriceWithCargoPrice))
+            if (!PaidPriceMatches(paymentResult.PaidPrice, buyWithNoAccountCreation.TotalPriceWithCargoPrice))
             {
                 PaymentLogger.Error("ShoppingWithoutAccount PaidPrice mismatch.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -1262,10 +1264,10 @@ namespace EImece.Controllers
             buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
             PaymentLogger.Info("Updated buyWithNoAccountCreation model with cargo and language details.");
 
-            var resolvedOrderNumber = string.IsNullOrWhiteSpace(checkoutForm.ConversationId)
+            var resolvedOrderNumber = string.IsNullOrWhiteSpace(paymentResult.ConversationId)
                 ? orderNumber
-                : checkoutForm.ConversationId;
-            var order = await ShoppingCartService.SaveBuyWithNoAccountCreationAsync(resolvedOrderNumber, buyWithNoAccountCreation, checkoutForm);
+                : paymentResult.ConversationId;
+            var order = await ShoppingCartService.SaveBuyWithNoAccountCreationAsync(resolvedOrderNumber, buyWithNoAccountCreation, paymentResult);
             PaymentLogger.Info($"Order saved with ID: {order.Id}");
             await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
             await ClearBuyWithNoAccountCreationAsync(buyWithNoAccountCreation);
@@ -1304,14 +1306,14 @@ namespace EImece.Controllers
             }
         }
 
-        private static bool IsSuccessfulPayment(CheckoutForm checkoutForm)
+        private static bool IsSuccessfulPayment(PaymentResultDto paymentResult)
         {
-            return checkoutForm != null
-                && !string.IsNullOrEmpty(checkoutForm.PaymentStatus)
-                && checkoutForm.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase);
+            return paymentResult != null
+                && !string.IsNullOrEmpty(paymentResult.PaymentStatus)
+                && paymentResult.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private ActionResult ValidatePaymentBinding(CheckoutForm checkoutForm, string orderGuid, string orderNumber)
+        private ActionResult ValidatePaymentBinding(PaymentResultDto paymentResult, string orderGuid, string orderNumber)
         {
             if (string.IsNullOrWhiteSpace(orderGuid))
             {
@@ -1319,15 +1321,15 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (!string.Equals(checkoutForm.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(paymentResult.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
             {
                 PaymentLogger.Error("Payment BasketId does not match callback order reference.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (!string.IsNullOrWhiteSpace(orderNumber)
-                && !string.IsNullOrWhiteSpace(checkoutForm.ConversationId)
-                && !string.Equals(checkoutForm.ConversationId, orderNumber, StringComparison.OrdinalIgnoreCase))
+                && !string.IsNullOrWhiteSpace(paymentResult.ConversationId)
+                && !string.Equals(paymentResult.ConversationId, orderNumber, StringComparison.OrdinalIgnoreCase))
             {
                 PaymentLogger.Error("Payment ConversationId does not match callback orderNumber.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

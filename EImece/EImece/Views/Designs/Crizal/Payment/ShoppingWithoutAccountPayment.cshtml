@@ -1,6 +1,4 @@
-@using Iyzipay;
-@using Iyzipay.Model;
-@using Iyzipay.Request;
+@using EImece.Domain.Models.Payment;
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
@@ -15,7 +13,7 @@
     ViewBag.Title = Resources.Resource.PlaceOrder;
     BuyWithNoAccountCreation buyWithNoAccountCreation = Model;
     var customer = buyWithNoAccountCreation.Customer;
-    CheckoutFormInitialize checkoutFormInitialize = ViewBag.CheckoutFormInitialize;
+    PaymentInitializeResult checkoutFormInitialize = ViewBag.CheckoutFormInitialize;
 }
 @*
     İyzico Ödeme Ekranı
