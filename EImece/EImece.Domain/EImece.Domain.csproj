@@ -609,6 +609,7 @@
     <Compile Include="Helpers\Infrastructure\HtmlRenderExtensions.cs" />
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
+    <Compile Include="Helpers\ProductSortHelper.cs" />
     <Compile Include="Helpers\RazorCustomRssTemplate\AnonymousHelper.cs" />
     <Compile Include="Helpers\RazorCustomRssTemplate\RssInEmail.cs" />
     <Compile Include="Helpers\RazorCustomRssTemplate\SI.cs" />

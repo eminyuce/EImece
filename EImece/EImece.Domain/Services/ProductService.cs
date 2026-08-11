@@ -303,7 +303,7 @@ namespace EImece.Domain.Services
                 result.RelatedProducts.AddRange(this.GetRandomProductsByCategoryId(product.ProductCategoryId, relatedProductTake, product.Lang, id));
             }
 
-            result.RelatedProducts = result.RelatedProducts.Distinct().OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
+            result.RelatedProducts = result.RelatedProducts.Distinct().OrderByStorefrontDefault().Take(20).ToList();
 
             return result;
         }
@@ -365,7 +365,7 @@ namespace EImece.Domain.Services
                 result.RelatedProducts.AddRange(await GetRandomProductsByCategoryIdAsync(product.ProductCategoryId, relatedProductTake, product.Lang, id, cancellationToken).ConfigureAwait(false));
             }
 
-            result.RelatedProducts = result.RelatedProducts.Distinct().OrderBy(x => Guid.NewGuid()).Take(relatedProductTake).OrderByDescending(r => r.UpdatedDate).ToList();
+            result.RelatedProducts = result.RelatedProducts.Distinct().OrderByStorefrontDefault().Take(20).ToList();
 
             return result;
         }

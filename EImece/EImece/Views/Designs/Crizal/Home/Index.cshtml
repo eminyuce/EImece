@@ -68,9 +68,9 @@
             <h2 class="crizal-home-heading__title">@Resource.PopularProducts</h2>
         </div>
         <div class="row g-4 justify-content-center">
-            @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
-            @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
-            @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+            @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+            @CreateProductWidget(Resource.CampaignProducts, campaignProducts.Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+            @CreateProductWidget(Resource.NewProducts, latestProducts.Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
         </div>
     </div>
 </section>

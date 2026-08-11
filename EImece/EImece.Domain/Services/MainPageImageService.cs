@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -56,9 +57,9 @@ namespace EImece.Domain.Services
             var result = new MainPageViewModel();
 
             var activeProducts = ProductService.GetActiveProducts(language);
-            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
 
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
@@ -74,9 +75,9 @@ namespace EImece.Domain.Services
             var result = new MainPageViewModel();
 
             var activeProducts = await ProductService.GetActiveProductsAsync(language, cancellationToken).ConfigureAwait(false);
-            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
 
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
             result.MainPageMenu = menus.FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
