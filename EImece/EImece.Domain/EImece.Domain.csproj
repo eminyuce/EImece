@@ -669,6 +669,7 @@
     <Compile Include="Models\FrontModels\NavigationModel.cs" />
     <Compile Include="Models\FrontModels\PaginatedModelList.cs" />
     <Compile Include="Models\FrontModels\PaymentResultViewModel.cs" />
+    <Compile Include="Models\Payment\PaymentCallbackRequest.cs" />
     <Compile Include="Models\Payment\PaymentInitializeResult.cs" />
     <Compile Include="Models\Payment\PaymentResult.cs" />
     <Compile Include="Models\FrontModels\ProductCategoryTreeModel.cs" />

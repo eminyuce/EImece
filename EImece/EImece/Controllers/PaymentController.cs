@@ -617,9 +617,10 @@ namespace EImece.Controllers
             }
         }
         
-        public async Task<ActionResult> PaymentResult(string token, string o, string u, String orderNumber)
+        public async Task<ActionResult> PaymentResult(PaymentCallbackRequest model, string o, string u, String orderNumber)
         {
-            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(token);
+            // iyzico Checkout Form callback POSTs "token" — same binding as the former RetrieveCheckoutFormRequest.
+            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
             PaymentLogger.Info($"PaymentResult with ACCOUNT status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
             if (!IsSuccessfulPayment(paymentResult))
             {
@@ -829,10 +830,10 @@ namespace EImece.Controllers
             }
         }
 
-        public async Task<ActionResult> BuyNowPaymentResult(string token, String o)
+        public async Task<ActionResult> BuyNowPaymentResult(PaymentCallbackRequest model, String o)
         {
             PaymentLogger.Info("Entering BuyNowPaymentResult action.");
-            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(token);
+            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
             PaymentLogger.Info($"Payment status: {paymentResult.PaymentStatus}");
             if (!IsSuccessfulPayment(paymentResult))
             {
@@ -1183,10 +1184,10 @@ namespace EImece.Controllers
             }
         }
 
-        public async Task<ActionResult> ShoppingWithoutAccountResult(string token, String o, String orderNumber)
+        public async Task<ActionResult> ShoppingWithoutAccountResult(PaymentCallbackRequest model, String o, String orderNumber)
         {
             PaymentLogger.Info("Entering ShoppingWithoutAccountResult action.");
-            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(token);
+            PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
             PaymentLogger.Info($"ShoppingWithoutAccountResult status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
 
             if (!IsSuccessfulPayment(paymentResult))

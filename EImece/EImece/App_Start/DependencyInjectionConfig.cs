@@ -279,20 +279,23 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IEmailSender, EmailSender>();
             services.AddScopedWithProps<AdresService>();
 
-            // Payment Strategy pattern: IyzicoService is an internal detail of IyzicoPaymentStrategy.
+            // Payment Strategy: Iyzico remains the default/production provider.
+            // IyzicoService (Checkout Form initialize/retrieve) is unchanged and used only by IyzicoPaymentStrategy.
             services.AddScopedWithProps<IyzicoService>();
             services.AddScopedWithProps<IyzicoPaymentStrategy>();
             services.AddScoped<IPaymentStrategy>(sp =>
             {
+                // Default / blank / Iyzico → keep current live payment process.
                 var provider = AppConfig.PaymentProvider;
-                if (string.Equals(provider, "Iyzico", StringComparison.OrdinalIgnoreCase)
-                    || string.IsNullOrWhiteSpace(provider))
+                if (string.IsNullOrWhiteSpace(provider)
+                    || string.Equals(provider, "Iyzico", StringComparison.OrdinalIgnoreCase))
                 {
                     return sp.GetRequiredService<IyzicoPaymentStrategy>();
                 }
 
                 throw new InvalidOperationException(
-                    "Unsupported PaymentProvider '" + provider + "'. Register a matching IPaymentStrategy implementation.");
+                    "Unsupported PaymentProvider '" + provider + "'. "
+                    + "Keep PaymentProvider=Iyzico for production, or register a matching IPaymentStrategy.");
             });
             services.AddScoped<PaymentContext>(sp =>
                 new PaymentContext(sp.GetRequiredService<IPaymentStrategy>()));

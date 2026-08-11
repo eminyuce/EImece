@@ -1,3 +1,4 @@
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.Payment;
 using EImece.Domain.Services.IServices;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 namespace EImece.Domain.Services.Payment
 {
     /// <summary>
-    /// Concrete iyzico payment strategy. Wraps <see cref="IyzicoService"/> and maps SDK types to neutral DTOs.
+    /// Concrete iyzico Checkout Form strategy. Delegates entirely to <see cref="IyzicoService"/>
+    /// (initialize + retrieve) so the live payment process stays unchanged; only SDK→DTO mapping is added.
     /// </summary>
     public class IyzicoPaymentStrategy : IPaymentStrategy
     {
@@ -30,6 +32,7 @@ namespace EImece.Domain.Services.Payment
             string userId,
             string callbackAction = "PaymentResult")
         {
+            // Unchanged iyzico Checkout Form initialize path (callback URL, basket, installments, etc.).
             CheckoutFormInitialize sdkResult = await _iyzicoService
                 .CreateCheckoutFormInitializeAsync(cart, userId, callbackAction)
                 .ConfigureAwait(false);
@@ -48,11 +51,7 @@ namespace EImece.Domain.Services.Payment
 
         public async Task<PaymentResult> RetrievePaymentResultAsync(string token)
         {
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                throw new ArgumentException("Payment token cannot be null or empty.", nameof(token));
-            }
-
+            // Same retrieve call as before: pass token through to IyzicoService (no extra validation).
             var request = new RetrieveCheckoutFormRequest { Token = token };
             CheckoutForm checkoutForm = await _iyzicoService
                 .GetCheckoutFormAsync(request)
@@ -68,8 +67,7 @@ namespace EImece.Domain.Services.Payment
                 return null;
             }
 
-            // Checkout Form Initialize returns token + form HTML / paymentPageUrl (no BasketId).
-            // See https://docs.iyzico.com/en/payment-methods/checkoutform/cf-implementation
+            // CF Initialize returns token + form HTML / paymentPageUrl for the existing responsive form div.
             return new PaymentInitializeResult
             {
                 CheckoutFormContent = sdkResult.CheckoutFormContent,
@@ -90,13 +88,15 @@ namespace EImece.Domain.Services.Payment
                 return null;
             }
 
+            // Field mapping mirrors the previous ShoppingCartService ← CheckoutForm assignments exactly
+            // (including Installment via ToStr()) so order persistence stays bit-compatible.
             return new PaymentResult
             {
                 Token = checkoutForm.Token,
                 Price = checkoutForm.Price,
                 PaidPrice = checkoutForm.PaidPrice,
                 Installment = checkoutForm.Installment.HasValue
-                    ? checkoutForm.Installment.Value.ToString()
+                    ? checkoutForm.Installment.Value.ToStr()
                     : string.Empty,
                 Currency = checkoutForm.Currency,
                 PaymentId = checkoutForm.PaymentId,
