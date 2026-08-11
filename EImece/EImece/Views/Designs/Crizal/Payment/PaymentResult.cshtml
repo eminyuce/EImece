@@ -1,4 +1,4 @@
-﻿@using Iyzipay.Model;
+@using EImece.Domain.Models.Payment;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
@@ -9,7 +9,7 @@
 @model PaymentResultViewModel
 @{
     var item = Model;
-    var checkoutForm = Model.CheckoutForm;
+    var checkoutForm = Model.PaymentResult;
     ViewBag.Title = Resources.Resource.Payment;
     string urlActionLink = Url.Action("index", "home");
 }

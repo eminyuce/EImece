@@ -30,9 +30,6 @@ namespace EImece.Controllers
         public IProductService ProductService { get; set; }
 
         [Inject]
-        public IyzicoService IyzicoService { get; set; }
-
-        [Inject]
         public IAddressService AddressService { get; set; }
 
         [Inject]

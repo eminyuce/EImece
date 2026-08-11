@@ -1,4 +1,5 @@
 using AutoMapper;
+using EImece.Domain;
 using EImece.Domain.ApiRepositories;
 using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
@@ -17,6 +18,7 @@ using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Services.Payment;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -276,7 +278,28 @@ namespace EImece.App_Start
 
             services.AddScopedWithProps<IEmailSender, EmailSender>();
             services.AddScopedWithProps<AdresService>();
+
+            // Payment Strategy: Iyzico remains the default/production provider.
+            // IyzicoService (Checkout Form initialize/retrieve) is unchanged and used only by IyzicoPaymentStrategy.
             services.AddScopedWithProps<IyzicoService>();
+            services.AddScopedWithProps<IyzicoPaymentStrategy>();
+            services.AddScoped<IPaymentStrategy>(sp =>
+            {
+                // Default / blank / Iyzico → keep current live payment process.
+                var provider = AppConfig.PaymentProvider;
+                if (string.IsNullOrWhiteSpace(provider)
+                    || string.Equals(provider, "Iyzico", StringComparison.OrdinalIgnoreCase))
+                {
+                    return sp.GetRequiredService<IyzicoPaymentStrategy>();
+                }
+
+                throw new InvalidOperationException(
+                    "Unsupported PaymentProvider '" + provider + "'. "
+                    + "Keep PaymentProvider=Iyzico for production, or register a matching IPaymentStrategy.");
+            });
+            services.AddScoped<PaymentContext>(sp =>
+                new PaymentContext(sp.GetRequiredService<IPaymentStrategy>()));
+
             services.AddScopedWithProps<ReportService>();
             services.AddScopedWithProps<SiteMapService>();
             services.AddScopedWithProps<UsersService>();

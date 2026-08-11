@@ -2,9 +2,9 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Models.Payment;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using Iyzipay.Model;
 using Newtonsoft.Json;
 using NLog;
 using Resources;
@@ -123,7 +123,7 @@ namespace EImece.Domain.Services
             Logger.Info($"Shopping cart deleted for OrderGuid: {orderGuid}");
         }
 
-        public Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId)
+        public Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
             Logger.Info($"SaveShoppingCart started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
 
@@ -132,10 +132,10 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveShoppingCart failed: ShoppingCartSession is null");
                 throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
             }
-            if (checkoutForm == null)
+            if (paymentResult == null)
             {
-                Logger.Error("SaveShoppingCart failed: CheckoutForm is null");
-                throw new ArgumentNullException("CheckoutForm", "CheckoutForm is null");
+                Logger.Error("SaveShoppingCart failed: PaymentResult is null");
+                throw new ArgumentNullException("paymentResult", "PaymentResult is null");
             }
             if (string.IsNullOrEmpty(userId))
             {
@@ -178,7 +178,7 @@ namespace EImece.Domain.Services
             CustomerService.SaveCustomerTypeToNormal(userId);
 
             Logger.Info($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
-            Order savedOrder = SaveOrder(orderNumber,userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId);
+            Order savedOrder = SaveOrder(orderNumber,userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId);
             Logger.Info($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order products for OrderId: {savedOrder.Id}");
@@ -189,7 +189,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public async Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm, string userId)
+        public async Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
             Logger.Info($"SaveShoppingCartAsync started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
 
@@ -198,10 +198,10 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveShoppingCartAsync failed: ShoppingCartSession is null");
                 throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
             }
-            if (checkoutForm == null)
+            if (paymentResult == null)
             {
-                Logger.Error("SaveShoppingCartAsync failed: CheckoutForm is null");
-                throw new ArgumentNullException("CheckoutForm", "CheckoutForm is null");
+                Logger.Error("SaveShoppingCartAsync failed: PaymentResult is null");
+                throw new ArgumentNullException("paymentResult", "PaymentResult is null");
             }
             if (string.IsNullOrEmpty(userId))
             {
@@ -244,7 +244,7 @@ namespace EImece.Domain.Services
             await CustomerService.SaveCustomerTypeToNormalAsync(userId).ConfigureAwait(false);
 
             Logger.Info($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
-            Order savedOrder = await SaveOrderAsync(orderNumber, userId, shoppingCart, checkoutForm, shippingAddressId, billingAddressId).ConfigureAwait(false);
+            Order savedOrder = await SaveOrderAsync(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId).ConfigureAwait(false);
             Logger.Info($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order products for OrderId: {savedOrder.Id}");
@@ -255,7 +255,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private Order SaveOrder(string orderNumber, String userId, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
+        private Order SaveOrder(string orderNumber, String userId, ShoppingCartSession shoppingCart, PaymentResult paymentResult,
             int shippingAddressId,
            int billingAddressId)
         {
@@ -291,36 +291,36 @@ namespace EImece.Domain.Services
             item.Lang = AppConfig.MainLanguage;
             item.Coupon = shoppingCart.Coupon != null ? shoppingCart.Coupon.Name : "";
             item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice).CurrencySignForIyizo();
-            item.Token = checkoutForm.Token;
-            item.Price = checkoutForm.Price;
-            item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
-            item.Currency = checkoutForm.Currency;
-            item.PaymentId = checkoutForm.PaymentId;
-            item.PaymentStatus = checkoutForm.PaymentStatus;
-            item.FraudStatus = checkoutForm.FraudStatus;
-            item.MerchantCommissionRate = checkoutForm.MerchantCommissionRate;
-            item.MerchantCommissionRateAmount = checkoutForm.MerchantCommissionRateAmount;
-            item.IyziCommissionRateAmount = checkoutForm.IyziCommissionRateAmount;
-            item.IyziCommissionFee = checkoutForm.IyziCommissionFee;
-            item.CardType = checkoutForm.CardType;
-            item.CardAssociation = checkoutForm.CardAssociation;
-            item.CardFamily = checkoutForm.CardFamily;
-            item.CardToken = checkoutForm.CardToken;
-            item.CardUserKey = checkoutForm.CardUserKey;
-            item.BinNumber = checkoutForm.BinNumber;
-            item.LastFourDigits = checkoutForm.LastFourDigits;
-            item.BasketId = checkoutForm.BasketId;
-            item.ConversationId = checkoutForm.ConversationId;
-            item.ConnectorName = checkoutForm.ConnectorName;
-            item.AuthCode = checkoutForm.AuthCode;
-            item.HostReference = checkoutForm.HostReference;
-            item.Phase = checkoutForm.Phase;
-            item.Status = checkoutForm.Status;
-            item.ErrorCode = checkoutForm.ErrorCode;
-            item.ErrorMessage = checkoutForm.ErrorMessage;
-            item.Locale = checkoutForm.Locale;
-            item.SystemTime = checkoutForm.SystemTime;
+            item.Token = paymentResult.Token;
+            item.Price = paymentResult.Price;
+            item.PaidPrice = paymentResult.PaidPrice;
+            item.Installment = paymentResult.Installment ?? "";
+            item.Currency = paymentResult.Currency;
+            item.PaymentId = paymentResult.PaymentId;
+            item.PaymentStatus = paymentResult.PaymentStatus;
+            item.FraudStatus = paymentResult.FraudStatus;
+            item.MerchantCommissionRate = paymentResult.MerchantCommissionRate;
+            item.MerchantCommissionRateAmount = paymentResult.MerchantCommissionRateAmount;
+            item.IyziCommissionRateAmount = paymentResult.IyziCommissionRateAmount;
+            item.IyziCommissionFee = paymentResult.IyziCommissionFee;
+            item.CardType = paymentResult.CardType;
+            item.CardAssociation = paymentResult.CardAssociation;
+            item.CardFamily = paymentResult.CardFamily;
+            item.CardToken = paymentResult.CardToken;
+            item.CardUserKey = paymentResult.CardUserKey;
+            item.BinNumber = paymentResult.BinNumber;
+            item.LastFourDigits = paymentResult.LastFourDigits;
+            item.BasketId = paymentResult.BasketId;
+            item.ConversationId = paymentResult.ConversationId;
+            item.ConnectorName = paymentResult.ConnectorName;
+            item.AuthCode = paymentResult.AuthCode;
+            item.HostReference = paymentResult.HostReference;
+            item.Phase = paymentResult.Phase;
+            item.Status = paymentResult.Status;
+            item.ErrorCode = paymentResult.ErrorCode;
+            item.ErrorMessage = paymentResult.ErrorMessage;
+            item.Locale = paymentResult.Locale;
+            item.SystemTime = paymentResult.SystemTime;
 
             Logger.Info($"Saving order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = OrderService.SaveOrEditEntity(item);
@@ -329,7 +329,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private async Task<Order> SaveOrderAsync(string orderNumber, String userId, ShoppingCartSession shoppingCart, CheckoutForm checkoutForm,
+        private async Task<Order> SaveOrderAsync(string orderNumber, String userId, ShoppingCartSession shoppingCart, PaymentResult paymentResult,
             int shippingAddressId,
            int billingAddressId)
         {
@@ -365,36 +365,36 @@ namespace EImece.Domain.Services
             item.Lang = AppConfig.MainLanguage;
             item.Coupon = shoppingCart.Coupon != null ? shoppingCart.Coupon.Name : "";
             item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice).CurrencySignForIyizo();
-            item.Token = checkoutForm.Token;
-            item.Price = checkoutForm.Price;
-            item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
-            item.Currency = checkoutForm.Currency;
-            item.PaymentId = checkoutForm.PaymentId;
-            item.PaymentStatus = checkoutForm.PaymentStatus;
-            item.FraudStatus = checkoutForm.FraudStatus;
-            item.MerchantCommissionRate = checkoutForm.MerchantCommissionRate;
-            item.MerchantCommissionRateAmount = checkoutForm.MerchantCommissionRateAmount;
-            item.IyziCommissionRateAmount = checkoutForm.IyziCommissionRateAmount;
-            item.IyziCommissionFee = checkoutForm.IyziCommissionFee;
-            item.CardType = checkoutForm.CardType;
-            item.CardAssociation = checkoutForm.CardAssociation;
-            item.CardFamily = checkoutForm.CardFamily;
-            item.CardToken = checkoutForm.CardToken;
-            item.CardUserKey = checkoutForm.CardUserKey;
-            item.BinNumber = checkoutForm.BinNumber;
-            item.LastFourDigits = checkoutForm.LastFourDigits;
-            item.BasketId = checkoutForm.BasketId;
-            item.ConversationId = checkoutForm.ConversationId;
-            item.ConnectorName = checkoutForm.ConnectorName;
-            item.AuthCode = checkoutForm.AuthCode;
-            item.HostReference = checkoutForm.HostReference;
-            item.Phase = checkoutForm.Phase;
-            item.Status = checkoutForm.Status;
-            item.ErrorCode = checkoutForm.ErrorCode;
-            item.ErrorMessage = checkoutForm.ErrorMessage;
-            item.Locale = checkoutForm.Locale;
-            item.SystemTime = checkoutForm.SystemTime;
+            item.Token = paymentResult.Token;
+            item.Price = paymentResult.Price;
+            item.PaidPrice = paymentResult.PaidPrice;
+            item.Installment = paymentResult.Installment ?? "";
+            item.Currency = paymentResult.Currency;
+            item.PaymentId = paymentResult.PaymentId;
+            item.PaymentStatus = paymentResult.PaymentStatus;
+            item.FraudStatus = paymentResult.FraudStatus;
+            item.MerchantCommissionRate = paymentResult.MerchantCommissionRate;
+            item.MerchantCommissionRateAmount = paymentResult.MerchantCommissionRateAmount;
+            item.IyziCommissionRateAmount = paymentResult.IyziCommissionRateAmount;
+            item.IyziCommissionFee = paymentResult.IyziCommissionFee;
+            item.CardType = paymentResult.CardType;
+            item.CardAssociation = paymentResult.CardAssociation;
+            item.CardFamily = paymentResult.CardFamily;
+            item.CardToken = paymentResult.CardToken;
+            item.CardUserKey = paymentResult.CardUserKey;
+            item.BinNumber = paymentResult.BinNumber;
+            item.LastFourDigits = paymentResult.LastFourDigits;
+            item.BasketId = paymentResult.BasketId;
+            item.ConversationId = paymentResult.ConversationId;
+            item.ConnectorName = paymentResult.ConnectorName;
+            item.AuthCode = paymentResult.AuthCode;
+            item.HostReference = paymentResult.HostReference;
+            item.Phase = paymentResult.Phase;
+            item.Status = paymentResult.Status;
+            item.ErrorCode = paymentResult.ErrorCode;
+            item.ErrorMessage = paymentResult.ErrorMessage;
+            item.Locale = paymentResult.Locale;
+            item.SystemTime = paymentResult.SystemTime;
 
             Logger.Info($"Saving order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = await OrderService.SaveOrEditEntityAsync(item).ConfigureAwait(false);
@@ -403,7 +403,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm)
+        public Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyWithNoAccountCreation started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
@@ -412,10 +412,10 @@ namespace EImece.Domain.Services
                 Logger.Error("buyWithNoAccountCreation failed: buyWithNoAccountCreation is null");
                 throw new ArgumentNullException("buyWithNoAccountCreation", "buyWithNoAccountCreation is null");
             }
-            if (checkoutForm == null)
+            if (paymentResult == null)
             {
-                Logger.Error("SaveBuyNow failed: checkoutForm is null");
-                throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
+                Logger.Error("SaveBuyNow failed: paymentResult is null");
+                throw new ArgumentNullException("paymentResult", "paymentResult is null");
             }
 
             Customer customer = buyWithNoAccountCreation.Customer;
@@ -436,7 +436,7 @@ namespace EImece.Domain.Services
             }
 
             Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = SaveOrder(orderNumber,buyWithNoAccountCreation, checkoutForm, shippingAddressId);
+            Order savedOrder = SaveOrder(orderNumber,buyWithNoAccountCreation, paymentResult, shippingAddressId);
             Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
@@ -447,7 +447,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public Order SaveBuyNow(BuyNowModel buyNowSession, CheckoutForm checkoutForm)
+        public Order SaveBuyNow(BuyNowModel buyNowSession, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyNow started - OrderGuid: {buyNowSession?.OrderGuid}");
 
@@ -456,10 +456,10 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveBuyNow failed: buyNowSession is null");
                 throw new ArgumentNullException("buyNowSession", "buyNowSession is null");
             }
-            if (checkoutForm == null)
+            if (paymentResult == null)
             {
-                Logger.Error("SaveBuyNow failed: checkoutForm is null");
-                throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
+                Logger.Error("SaveBuyNow failed: paymentResult is null");
+                throw new ArgumentNullException("paymentResult", "paymentResult is null");
             }
 
             Logger.Info("Saving customer information");
@@ -490,7 +490,7 @@ namespace EImece.Domain.Services
             }
 
             Logger.Info($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = SaveOrder(buyNowSession.Customer.UserId, buyNowSession, checkoutForm, shippingAddressId);
+            Order savedOrder = SaveOrder(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId);
             Logger.Info($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order product for BuyNow OrderId: {savedOrder.Id}");
@@ -501,7 +501,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public async Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm)
+        public async Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyWithNoAccountCreationAsync started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
@@ -510,10 +510,10 @@ namespace EImece.Domain.Services
                 Logger.Error("buyWithNoAccountCreation failed: buyWithNoAccountCreation is null");
                 throw new ArgumentNullException("buyWithNoAccountCreation", "buyWithNoAccountCreation is null");
             }
-            if (checkoutForm == null)
+            if (paymentResult == null)
             {
-                Logger.Error("SaveBuyWithNoAccountCreationAsync failed: checkoutForm is null");
-                throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
+                Logger.Error("SaveBuyWithNoAccountCreationAsync failed: paymentResult is null");
+                throw new ArgumentNullException("paymentResult", "paymentResult is null");
             }
 
             Customer customer = buyWithNoAccountCreation.Customer;
@@ -534,7 +534,7 @@ namespace EImece.Domain.Services
             }
 
             Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = await SaveOrderAsync(orderNumber, buyWithNoAccountCreation, checkoutForm, shippingAddressId).ConfigureAwait(false);
+            Order savedOrder = await SaveOrderAsync(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId).ConfigureAwait(false);
             Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
@@ -545,7 +545,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public async Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, CheckoutForm checkoutForm)
+        public async Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyNowAsync started - OrderGuid: {buyNowSession?.OrderGuid}");
 
@@ -554,10 +554,10 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveBuyNowAsync failed: buyNowSession is null");
                 throw new ArgumentNullException("buyNowSession", "buyNowSession is null");
             }
-            if (checkoutForm == null)
+            if (paymentResult == null)
             {
-                Logger.Error("SaveBuyNowAsync failed: checkoutForm is null");
-                throw new ArgumentNullException("checkoutForm", "checkoutForm is null");
+                Logger.Error("SaveBuyNowAsync failed: paymentResult is null");
+                throw new ArgumentNullException("paymentResult", "paymentResult is null");
             }
 
             Logger.Info("Saving customer information");
@@ -588,7 +588,7 @@ namespace EImece.Domain.Services
             }
 
             Logger.Info($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = await SaveOrderAsync(buyNowSession.Customer.UserId, buyNowSession, checkoutForm, shippingAddressId).ConfigureAwait(false);
+            Order savedOrder = await SaveOrderAsync(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId).ConfigureAwait(false);
             Logger.Info($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
             Logger.Info($"Saving order product for BuyNow OrderId: {savedOrder.Id}");
@@ -599,7 +599,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private Order SaveOrder(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm,
+        private Order SaveOrder(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult,
           int shippingAddressId)
         {
             Logger.Info($"SaveOrder (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
@@ -624,36 +624,36 @@ namespace EImece.Domain.Services
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = shippingAddressId; // TODO: SOMETHING IS WRONG HERE
-            item.Token = checkoutForm.Token;
-            item.Price = checkoutForm.Price;
-            item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
-            item.Currency = checkoutForm.Currency;
-            item.PaymentId = checkoutForm.PaymentId;
-            item.PaymentStatus = checkoutForm.PaymentStatus;
-            item.FraudStatus = checkoutForm.FraudStatus;
-            item.MerchantCommissionRate = checkoutForm.MerchantCommissionRate;
-            item.MerchantCommissionRateAmount = checkoutForm.MerchantCommissionRateAmount;
-            item.IyziCommissionRateAmount = checkoutForm.IyziCommissionRateAmount;
-            item.IyziCommissionFee = checkoutForm.IyziCommissionFee;
-            item.CardType = checkoutForm.CardType;
-            item.CardAssociation = checkoutForm.CardAssociation;
-            item.CardFamily = checkoutForm.CardFamily;
-            item.CardToken = checkoutForm.CardToken;
-            item.CardUserKey = checkoutForm.CardUserKey;
-            item.BinNumber = checkoutForm.BinNumber;
-            item.LastFourDigits = checkoutForm.LastFourDigits;
-            item.BasketId = checkoutForm.BasketId;
-            item.ConversationId = checkoutForm.ConversationId;
-            item.ConnectorName = checkoutForm.ConnectorName;
-            item.AuthCode = checkoutForm.AuthCode;
-            item.HostReference = checkoutForm.HostReference;
-            item.Phase = checkoutForm.Phase;
-            item.Status = checkoutForm.Status;
-            item.ErrorCode = checkoutForm.ErrorCode;
-            item.ErrorMessage = checkoutForm.ErrorMessage;
-            item.Locale = checkoutForm.Locale;
-            item.SystemTime = checkoutForm.SystemTime;
+            item.Token = paymentResult.Token;
+            item.Price = paymentResult.Price;
+            item.PaidPrice = paymentResult.PaidPrice;
+            item.Installment = paymentResult.Installment ?? "";
+            item.Currency = paymentResult.Currency;
+            item.PaymentId = paymentResult.PaymentId;
+            item.PaymentStatus = paymentResult.PaymentStatus;
+            item.FraudStatus = paymentResult.FraudStatus;
+            item.MerchantCommissionRate = paymentResult.MerchantCommissionRate;
+            item.MerchantCommissionRateAmount = paymentResult.MerchantCommissionRateAmount;
+            item.IyziCommissionRateAmount = paymentResult.IyziCommissionRateAmount;
+            item.IyziCommissionFee = paymentResult.IyziCommissionFee;
+            item.CardType = paymentResult.CardType;
+            item.CardAssociation = paymentResult.CardAssociation;
+            item.CardFamily = paymentResult.CardFamily;
+            item.CardToken = paymentResult.CardToken;
+            item.CardUserKey = paymentResult.CardUserKey;
+            item.BinNumber = paymentResult.BinNumber;
+            item.LastFourDigits = paymentResult.LastFourDigits;
+            item.BasketId = paymentResult.BasketId;
+            item.ConversationId = paymentResult.ConversationId;
+            item.ConnectorName = paymentResult.ConnectorName;
+            item.AuthCode = paymentResult.AuthCode;
+            item.HostReference = paymentResult.HostReference;
+            item.Phase = paymentResult.Phase;
+            item.Status = paymentResult.Status;
+            item.ErrorCode = paymentResult.ErrorCode;
+            item.ErrorMessage = paymentResult.ErrorMessage;
+            item.Locale = paymentResult.Locale;
+            item.SystemTime = paymentResult.SystemTime;
 
             Logger.Info($"Saving buyWithNoAccountCreation order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = OrderService.SaveOrEditEntity(item);
@@ -662,7 +662,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private async Task<Order> SaveOrderAsync(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, CheckoutForm checkoutForm,
+        private async Task<Order> SaveOrderAsync(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult,
           int shippingAddressId)
         {
             Logger.Info($"SaveOrderAsync (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
@@ -687,36 +687,36 @@ namespace EImece.Domain.Services
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = shippingAddressId; // TODO: SOMETHING IS WRONG HERE
-            item.Token = checkoutForm.Token;
-            item.Price = checkoutForm.Price;
-            item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
-            item.Currency = checkoutForm.Currency;
-            item.PaymentId = checkoutForm.PaymentId;
-            item.PaymentStatus = checkoutForm.PaymentStatus;
-            item.FraudStatus = checkoutForm.FraudStatus;
-            item.MerchantCommissionRate = checkoutForm.MerchantCommissionRate;
-            item.MerchantCommissionRateAmount = checkoutForm.MerchantCommissionRateAmount;
-            item.IyziCommissionRateAmount = checkoutForm.IyziCommissionRateAmount;
-            item.IyziCommissionFee = checkoutForm.IyziCommissionFee;
-            item.CardType = checkoutForm.CardType;
-            item.CardAssociation = checkoutForm.CardAssociation;
-            item.CardFamily = checkoutForm.CardFamily;
-            item.CardToken = checkoutForm.CardToken;
-            item.CardUserKey = checkoutForm.CardUserKey;
-            item.BinNumber = checkoutForm.BinNumber;
-            item.LastFourDigits = checkoutForm.LastFourDigits;
-            item.BasketId = checkoutForm.BasketId;
-            item.ConversationId = checkoutForm.ConversationId;
-            item.ConnectorName = checkoutForm.ConnectorName;
-            item.AuthCode = checkoutForm.AuthCode;
-            item.HostReference = checkoutForm.HostReference;
-            item.Phase = checkoutForm.Phase;
-            item.Status = checkoutForm.Status;
-            item.ErrorCode = checkoutForm.ErrorCode;
-            item.ErrorMessage = checkoutForm.ErrorMessage;
-            item.Locale = checkoutForm.Locale;
-            item.SystemTime = checkoutForm.SystemTime;
+            item.Token = paymentResult.Token;
+            item.Price = paymentResult.Price;
+            item.PaidPrice = paymentResult.PaidPrice;
+            item.Installment = paymentResult.Installment ?? "";
+            item.Currency = paymentResult.Currency;
+            item.PaymentId = paymentResult.PaymentId;
+            item.PaymentStatus = paymentResult.PaymentStatus;
+            item.FraudStatus = paymentResult.FraudStatus;
+            item.MerchantCommissionRate = paymentResult.MerchantCommissionRate;
+            item.MerchantCommissionRateAmount = paymentResult.MerchantCommissionRateAmount;
+            item.IyziCommissionRateAmount = paymentResult.IyziCommissionRateAmount;
+            item.IyziCommissionFee = paymentResult.IyziCommissionFee;
+            item.CardType = paymentResult.CardType;
+            item.CardAssociation = paymentResult.CardAssociation;
+            item.CardFamily = paymentResult.CardFamily;
+            item.CardToken = paymentResult.CardToken;
+            item.CardUserKey = paymentResult.CardUserKey;
+            item.BinNumber = paymentResult.BinNumber;
+            item.LastFourDigits = paymentResult.LastFourDigits;
+            item.BasketId = paymentResult.BasketId;
+            item.ConversationId = paymentResult.ConversationId;
+            item.ConnectorName = paymentResult.ConnectorName;
+            item.AuthCode = paymentResult.AuthCode;
+            item.HostReference = paymentResult.HostReference;
+            item.Phase = paymentResult.Phase;
+            item.Status = paymentResult.Status;
+            item.ErrorCode = paymentResult.ErrorCode;
+            item.ErrorMessage = paymentResult.ErrorMessage;
+            item.Locale = paymentResult.Locale;
+            item.SystemTime = paymentResult.SystemTime;
 
             Logger.Info($"Saving buyWithNoAccountCreation order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = await OrderService.SaveOrEditEntityAsync(item).ConfigureAwait(false);
@@ -725,7 +725,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private Order SaveOrder(String userId, BuyNowModel buyNowSession, CheckoutForm checkoutForm,
+        private Order SaveOrder(String userId, BuyNowModel buyNowSession, PaymentResult paymentResult,
           int shippingAddressId)
         {
             Logger.Info($"SaveOrder (BuyNow) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
@@ -749,36 +749,36 @@ namespace EImece.Domain.Services
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = shippingAddressId;
             item.Coupon = "";
-            item.Token = checkoutForm.Token;
-            item.Price = checkoutForm.Price;
-            item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
-            item.Currency = checkoutForm.Currency;
-            item.PaymentId = checkoutForm.PaymentId;
-            item.PaymentStatus = checkoutForm.PaymentStatus;
-            item.FraudStatus = checkoutForm.FraudStatus;
-            item.MerchantCommissionRate = checkoutForm.MerchantCommissionRate;
-            item.MerchantCommissionRateAmount = checkoutForm.MerchantCommissionRateAmount;
-            item.IyziCommissionRateAmount = checkoutForm.IyziCommissionRateAmount;
-            item.IyziCommissionFee = checkoutForm.IyziCommissionFee;
-            item.CardType = checkoutForm.CardType;
-            item.CardAssociation = checkoutForm.CardAssociation;
-            item.CardFamily = checkoutForm.CardFamily;
-            item.CardToken = checkoutForm.CardToken;
-            item.CardUserKey = checkoutForm.CardUserKey;
-            item.BinNumber = checkoutForm.BinNumber;
-            item.LastFourDigits = checkoutForm.LastFourDigits;
-            item.BasketId = checkoutForm.BasketId;
-            item.ConversationId = checkoutForm.ConversationId;
-            item.ConnectorName = checkoutForm.ConnectorName;
-            item.AuthCode = checkoutForm.AuthCode;
-            item.HostReference = checkoutForm.HostReference;
-            item.Phase = checkoutForm.Phase;
-            item.Status = checkoutForm.Status;
-            item.ErrorCode = checkoutForm.ErrorCode;
-            item.ErrorMessage = checkoutForm.ErrorMessage;
-            item.Locale = checkoutForm.Locale;
-            item.SystemTime = checkoutForm.SystemTime;
+            item.Token = paymentResult.Token;
+            item.Price = paymentResult.Price;
+            item.PaidPrice = paymentResult.PaidPrice;
+            item.Installment = paymentResult.Installment ?? "";
+            item.Currency = paymentResult.Currency;
+            item.PaymentId = paymentResult.PaymentId;
+            item.PaymentStatus = paymentResult.PaymentStatus;
+            item.FraudStatus = paymentResult.FraudStatus;
+            item.MerchantCommissionRate = paymentResult.MerchantCommissionRate;
+            item.MerchantCommissionRateAmount = paymentResult.MerchantCommissionRateAmount;
+            item.IyziCommissionRateAmount = paymentResult.IyziCommissionRateAmount;
+            item.IyziCommissionFee = paymentResult.IyziCommissionFee;
+            item.CardType = paymentResult.CardType;
+            item.CardAssociation = paymentResult.CardAssociation;
+            item.CardFamily = paymentResult.CardFamily;
+            item.CardToken = paymentResult.CardToken;
+            item.CardUserKey = paymentResult.CardUserKey;
+            item.BinNumber = paymentResult.BinNumber;
+            item.LastFourDigits = paymentResult.LastFourDigits;
+            item.BasketId = paymentResult.BasketId;
+            item.ConversationId = paymentResult.ConversationId;
+            item.ConnectorName = paymentResult.ConnectorName;
+            item.AuthCode = paymentResult.AuthCode;
+            item.HostReference = paymentResult.HostReference;
+            item.Phase = paymentResult.Phase;
+            item.Status = paymentResult.Status;
+            item.ErrorCode = paymentResult.ErrorCode;
+            item.ErrorMessage = paymentResult.ErrorMessage;
+            item.Locale = paymentResult.Locale;
+            item.SystemTime = paymentResult.SystemTime;
 
             Logger.Info($"Saving BuyNow order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = OrderService.SaveOrEditEntity(item);
@@ -787,7 +787,7 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        private async Task<Order> SaveOrderAsync(String userId, BuyNowModel buyNowSession, CheckoutForm checkoutForm,
+        private async Task<Order> SaveOrderAsync(String userId, BuyNowModel buyNowSession, PaymentResult paymentResult,
           int shippingAddressId)
         {
             Logger.Info($"SaveOrderAsync (BuyNow) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
@@ -811,36 +811,36 @@ namespace EImece.Domain.Services
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = shippingAddressId;
             item.Coupon = "";
-            item.Token = checkoutForm.Token;
-            item.Price = checkoutForm.Price;
-            item.PaidPrice = checkoutForm.PaidPrice;
-            item.Installment = checkoutForm.Installment.HasValue ? checkoutForm.Installment.Value.ToStr() : "";
-            item.Currency = checkoutForm.Currency;
-            item.PaymentId = checkoutForm.PaymentId;
-            item.PaymentStatus = checkoutForm.PaymentStatus;
-            item.FraudStatus = checkoutForm.FraudStatus;
-            item.MerchantCommissionRate = checkoutForm.MerchantCommissionRate;
-            item.MerchantCommissionRateAmount = checkoutForm.MerchantCommissionRateAmount;
-            item.IyziCommissionRateAmount = checkoutForm.IyziCommissionRateAmount;
-            item.IyziCommissionFee = checkoutForm.IyziCommissionFee;
-            item.CardType = checkoutForm.CardType;
-            item.CardAssociation = checkoutForm.CardAssociation;
-            item.CardFamily = checkoutForm.CardFamily;
-            item.CardToken = checkoutForm.CardToken;
-            item.CardUserKey = checkoutForm.CardUserKey;
-            item.BinNumber = checkoutForm.BinNumber;
-            item.LastFourDigits = checkoutForm.LastFourDigits;
-            item.BasketId = checkoutForm.BasketId;
-            item.ConversationId = checkoutForm.ConversationId;
-            item.ConnectorName = checkoutForm.ConnectorName;
-            item.AuthCode = checkoutForm.AuthCode;
-            item.HostReference = checkoutForm.HostReference;
-            item.Phase = checkoutForm.Phase;
-            item.Status = checkoutForm.Status;
-            item.ErrorCode = checkoutForm.ErrorCode;
-            item.ErrorMessage = checkoutForm.ErrorMessage;
-            item.Locale = checkoutForm.Locale;
-            item.SystemTime = checkoutForm.SystemTime;
+            item.Token = paymentResult.Token;
+            item.Price = paymentResult.Price;
+            item.PaidPrice = paymentResult.PaidPrice;
+            item.Installment = paymentResult.Installment ?? "";
+            item.Currency = paymentResult.Currency;
+            item.PaymentId = paymentResult.PaymentId;
+            item.PaymentStatus = paymentResult.PaymentStatus;
+            item.FraudStatus = paymentResult.FraudStatus;
+            item.MerchantCommissionRate = paymentResult.MerchantCommissionRate;
+            item.MerchantCommissionRateAmount = paymentResult.MerchantCommissionRateAmount;
+            item.IyziCommissionRateAmount = paymentResult.IyziCommissionRateAmount;
+            item.IyziCommissionFee = paymentResult.IyziCommissionFee;
+            item.CardType = paymentResult.CardType;
+            item.CardAssociation = paymentResult.CardAssociation;
+            item.CardFamily = paymentResult.CardFamily;
+            item.CardToken = paymentResult.CardToken;
+            item.CardUserKey = paymentResult.CardUserKey;
+            item.BinNumber = paymentResult.BinNumber;
+            item.LastFourDigits = paymentResult.LastFourDigits;
+            item.BasketId = paymentResult.BasketId;
+            item.ConversationId = paymentResult.ConversationId;
+            item.ConnectorName = paymentResult.ConnectorName;
+            item.AuthCode = paymentResult.AuthCode;
+            item.HostReference = paymentResult.HostReference;
+            item.Phase = paymentResult.Phase;
+            item.Status = paymentResult.Status;
+            item.ErrorCode = paymentResult.ErrorCode;
+            item.ErrorMessage = paymentResult.ErrorMessage;
+            item.Locale = paymentResult.Locale;
+            item.SystemTime = paymentResult.SystemTime;
 
             Logger.Info($"Saving BuyNow order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = await OrderService.SaveOrEditEntityAsync(item).ConfigureAwait(false);
