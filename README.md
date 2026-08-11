@@ -305,10 +305,7 @@ EImece resolves Razor views through a **design-aware view engine**. Set the acti
 
 Design views live under `EImece/EImece/Views/Designs/{DesignName}/`. Missing design-specific views fall back to shared / default views. Admin and Customers areas are unaffected by `ActiveDesign`.
 
-Related docs:
-
-- [MULTI_DESIGN_RAZOR_ARCHITECTURE.md](EImece/docs/MULTI_DESIGN_RAZOR_ARCHITECTURE.md)
-- [DESIGN_REMOVAL_GUIDE.md](EImece/docs/DESIGN_REMOVAL_GUIDE.md)
+To remove a design without breaking MSBuild publish, follow [DESIGN_REMOVAL_GUIDE.md](EImece/docs/DESIGN_REMOVAL_GUIDE.md).
 
 ---
 
@@ -404,14 +401,12 @@ Full guide: **[DEPLOYMENT.md](DEPLOYMENT.md)**
 | [BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md) | Build, run, health checks, seed data, tests, common errors |
 | [SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md) | Env vars, `configSource`, TLS, production |
 | [OPENTELEMETRY.md](EImece/docs/OPENTELEMETRY.md) | OTLP, sampling, Azure Monitor exporter |
+| [LATENCY_PERCENTILES.md](EImece/docs/LATENCY_PERCENTILES.md) | P90/P95/P99 metrics and Admin `/metrics` |
 | [PERFORMANCE_AND_CACHING.md](EImece/docs/PERFORMANCE_AND_CACHING.md) | EF6 query tuning, SQL indexes, MemoryCache |
 | [ASYNC_AWAIT_GUIDE.md](EImece/docs/ASYNC_AWAIT_GUIDE.md) | Async EF6 / thread-pool guidance |
-| [MULTI_DESIGN_RAZOR_ARCHITECTURE.md](EImece/docs/MULTI_DESIGN_RAZOR_ARCHITECTURE.md) | Design-aware Razor architecture |
-| [DESIGN_REMOVAL_GUIDE.md](EImece/docs/DESIGN_REMOVAL_GUIDE.md) | Removing or replacing a design |
+| [DESIGN_REMOVAL_GUIDE.md](EImece/docs/DESIGN_REMOVAL_GUIDE.md) | Removing a storefront design from the `.csproj` safely |
 | [IIS_APP_POOL_PERMISSIONS.md](EImece/docs/IIS_APP_POOL_PERMISSIONS.md) | `media/` ACL for IIS |
 | [RECAPTCHA.md](EImece/RECAPTCHA.md) | Captcha providers and Web.config keys |
-| [LIGHTHOUSE_PERFORMANCE_FIXES.md](EImece/docs/LIGHTHOUSE_PERFORMANCE_FIXES.md) | Front-end performance notes |
-| [LATENCY_PERCENTILES.md](EImece/docs/LATENCY_PERCENTILES.md) | Latency measurement notes |
 
 ---
 
