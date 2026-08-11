@@ -1006,6 +1006,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bağlantıyı kopyala.
+        /// </summary>
+        public static string CopyLink {
+            get {
+                return ResourceManager.GetString("CopyLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Coupon.
         /// </summary>
         public static string Coupon {
@@ -2390,6 +2399,15 @@ namespace Resources {
         public static string Link {
             get {
                 return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bağlantı kopyalandı.
+        /// </summary>
+        public static string LinkCopied {
+            get {
+                return ResourceManager.GetString("LinkCopied", resourceCulture);
             }
         }
         
@@ -4482,6 +4500,33 @@ namespace Resources {
         public static string SettingValue {
             get {
                 return ResourceManager.GetString("SettingValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paylaş.
+        /// </summary>
+        public static string Share {
+            get {
+                return ResourceManager.GetString("Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sayfayı paylaş.
+        /// </summary>
+        public static string SharePage {
+            get {
+                return ResourceManager.GetString("SharePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yazıyı paylaş.
+        /// </summary>
+        public static string SharePost {
+            get {
+                return ResourceManager.GetString("SharePost", resourceCulture);
             }
         }
         

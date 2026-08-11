@@ -14256,6 +14256,17 @@ a.card:hover {
     color: #0077b5;
 }
 
+.sb-share-link {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: transparent;
+    cursor: pointer;
+}
+
+.sb-share-link:hover {
+    border-color: rgba(92, 119, 252, 0.35);
+    color: #5c77fc;
+}
+
 .sb-messenger:hover {
     border-color: rgba(0, 132, 255, 0.3);
     color: #0084ff;

@@ -64,6 +64,8 @@ namespace EImece.Domain.Models.FrontModels
         public ContactUsFormViewModel Contact { get; set; }
         public List<Setting> ApplicationSettings { get; set; }
 
+        public Dictionary<string, string> SocialMediaLinks { get; set; }
+
         public Setting GoogleMapScript
         {
             get

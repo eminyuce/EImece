@@ -115,6 +115,7 @@ namespace EImece.Domain.Services
             result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
+            result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
             return result;
         }
 
@@ -127,7 +128,25 @@ namespace EImece.Domain.Services
             var activeMenus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, result.Menu.Lang).ConfigureAwait(false);
             result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = await SettingService.GetAllActiveSettingsAsync().ConfigureAwait(false);
+            result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
             return result;
+        }
+
+        private Dictionary<string, string> CreateMenuShareLinks(Menu menu)
+        {
+            if (menu == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            var shareUrl = menu.GetDetailPageUrl("Detail", "Pages");
+            var imageUrl = string.Empty;
+            if (menu.MainImageId.HasValue)
+            {
+                imageUrl = menu.GetCroppedImageUrl(menu.MainImageId, 1000, 0, true) ?? string.Empty;
+            }
+
+            return SettingService.CreateShareableSocialMediaLinks(shareUrl, menu.Name, imageUrl);
         }
 
         public List<Menu> GetMenuLeaves(bool? isActive, int language)

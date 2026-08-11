@@ -2846,14 +2846,24 @@ body[data-design="crizal"] .crizal-story-share__btn {
     justify-content: center;
     width: 2.15rem;
     height: 2.15rem;
+    border: 0;
+    padding: 0;
     border-radius: 50%;
     background: var(--crizal-secondary);
     color: #fff !important;
     text-decoration: none !important;
+    cursor: pointer;
 }
 
 body[data-design="crizal"] .crizal-story-share__btn:hover {
     background: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .crizal-story-share__feedback {
+    margin-left: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--crizal-primary);
 }
 
 body[data-design="crizal"] .crizal-story-nav {
