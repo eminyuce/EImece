@@ -17,7 +17,7 @@
         .ToList();
     var storyCategory = story.StoryCategory;
     var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
-    var relatedProducts = Model.RelatedProducts.OrderBy(x => Guid.NewGuid()).Take(4).ToList();
+    var relatedProducts = Model.RelatedProducts.OrderByStorefrontDefault().Take(4).ToList();
     var cloudTags = Model.Tags != null ? Model.Tags.OrderByDescending(t => t.ItemCount).ThenBy(t => t.Name).Take(16).ToList() : new List<Tag>();
     var tagCounts = (Model.Tags ?? new List<Tag>())
         .GroupBy(t => t.Id)

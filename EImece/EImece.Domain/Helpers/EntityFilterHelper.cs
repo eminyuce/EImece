@@ -30,7 +30,7 @@ namespace EImece.Domain.Helpers
                 FilterProduct(item);
             }
 
-            return items.Where(r => r.IsActive).OrderBy(r => r.Position).ToList();
+            return items.Where(r => r.IsActive).OrderByStorefrontDefault().ToList();
         }
 
         public static void FilterProduct(Product item)

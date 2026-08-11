@@ -317,6 +317,7 @@
     <Compile Include="Helpers\EfSqlLoggerTests.cs" />
     <Compile Include="Helpers\ImageUtilitiesTests.cs" />
     <Compile Include="Helpers\MemoryCacheProviderTests.cs" />
+    <Compile Include="Helpers\ProductSortHelperTests.cs" />
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
     <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

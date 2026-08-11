@@ -105,9 +105,9 @@
 <!-- Product widgets-->
 <section class="container px-1 pt-1 pb-1 mb-md-1">
     <div class="row">
-        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
-        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
-        @CreateProductWidget(Resource.NewProducts, latestProducts.OrderBy(t => Guid.NewGuid()).Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+        @CreateProductWidget(Resource.ShowcaseProducts, mainPageProducts.Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+        @CreateProductWidget(Resource.CampaignProducts, campaignProducts.Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
+        @CreateProductWidget(Resource.NewProducts, latestProducts.Take(AppConfig.HomePageMainProductCountRandomLimit).ToList())
     </div>
 </section>
 <br />

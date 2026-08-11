@@ -89,14 +89,14 @@ namespace EImece.Domain.Models.FrontModels
                     case Enums.SortingType.LowHighPrice:
                         if (IsProductPriceEnabled)
                         {
-                            result = result.OrderBy(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+                            result = result.OrderBy(r => r.Price).ThenByStorefrontDefault().ToList();
                         }
                         break;
 
                     case Enums.SortingType.HighLowPrice:
                         if (IsProductPriceEnabled)
                         {
-                            result = result.OrderByDescending(r => r.Price).ThenByDescending(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+                            result = result.OrderByDescending(r => r.Price).ThenByStorefrontDefault().ToList();
                         }
                         break;
 
@@ -110,7 +110,7 @@ namespace EImece.Domain.Models.FrontModels
                         break;
 
                     default:
-                        result = result.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+                        result = result.OrderByStorefrontDefault().ToList();
                         break;
                 }
 
