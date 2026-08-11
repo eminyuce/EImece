@@ -439,3 +439,63 @@
     border-color: rgba(92, 119, 252, 0.35);
     color: #5c77fc;
 }
+
+/* Product specs tables (group caption = light-gray bold italic header) */
+.product-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.product-specs__table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.product-specs__table thead th.product-specs__caption {
+    padding: 0.7rem 0.95rem;
+    text-align: left;
+    font-size: 0.84rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #94a3b8;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.product-specs__table tbody th,
+.product-specs__table tbody td {
+    padding: 0.72rem 0.95rem;
+    font-size: 0.92rem;
+    vertical-align: middle;
+    border-top: 1px solid #e2e8f0;
+}
+
+.product-specs__table tbody tr:first-child th,
+.product-specs__table tbody tr:first-child td {
+    border-top: 0;
+}
+
+.product-specs__table tbody th {
+    width: 42%;
+    font-weight: 500;
+    color: #64748b;
+    text-align: left;
+}
+
+.product-specs__table tbody td {
+    font-weight: 700;
+    color: #1e293b;
+    text-align: right;
+    word-break: break-word;
+}
+
+.product-specs__table tbody tr:nth-child(even) {
+    background: #fcfdfe;
+}

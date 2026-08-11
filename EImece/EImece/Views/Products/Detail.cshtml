@@ -561,22 +561,30 @@
             @if (productSpecsExists)
             {
                 <div class="col-md-6">
-                    <h3 class="h5 mb-3">@Resource.Specifications</h3>
-                    @foreach (var group in model.ProdSpecsGroups)
-                    {
-                        <div class="product-specs-group mb-3">
-                            @if (!string.IsNullOrWhiteSpace(group.Name))
-                            {
-                                <h4 class="h6 mb-2">@group.Name</h4>
-                            }
-                            <ul class="list-unstyled mb-0 pb-0">
-                                @foreach (var specs in group.Items)
+                    <div class="product-specs" aria-label="@Resource.Specifications">
+                        @foreach (var group in model.ProdSpecsGroups)
+                        {
+                            <table class="product-specs__table">
+                                @if (!string.IsNullOrWhiteSpace(group.Name))
                                 {
-                                    <li class="d-block pb-2 border-bottom"><strong>@specs.specsName:</strong> @Html.Raw(specs.value) @specs.unit</li>
+                                    <thead>
+                                        <tr>
+                                            <th class="product-specs__caption" colspan="2" scope="colgroup">@group.Name</th>
+                                        </tr>
+                                    </thead>
                                 }
-                            </ul>
-                        </div>
-                    }
+                                <tbody>
+                                    @foreach (var specs in group.Items)
+                                    {
+                                        <tr>
+                                            <th scope="row">@specs.specsName</th>
+                                            <td>@Html.Raw(specs.value) @specs.unit</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
                 </div>
             }
         </div>
