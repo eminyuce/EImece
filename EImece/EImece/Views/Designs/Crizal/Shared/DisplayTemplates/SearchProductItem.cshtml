@@ -21,7 +21,7 @@
         <div class="product-img product-thumb">
             @if (product.Price > product.PriceWithDiscount && product.PriceWithDiscount > 0)
             {
-                <div class="label-offer bg-red">Sale</div>
+                <div class="label-offer bg-red">@Resource.Discount</div>
             }
             <a class="product-thumb-link" href="@productLink" aria-label="@product.Name">
                 <img src="@mainImageImgSrcUrl"
