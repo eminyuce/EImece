@@ -161,12 +161,27 @@
         initLeaveReviewModal($);
         initNavMenuBreakpoint($);
         initMobileSubmenuCleanup($);
+        initMobileNavOpenClass($);
     }
 
     function initMobileSubmenuCleanup($) {
         // Remove duplicate +/− controls if an older menumaker run created extras.
         $('#nav li.has-sub').each(function () {
             $(this).children('.submenu-button').slice(1).remove();
+        });
+    }
+
+    function syncCrizalNavOpenClass($) {
+        $('body').toggleClass('crizal-nav-open', $('#nav').hasClass('open'));
+    }
+
+    function initMobileNavOpenClass($) {
+        // Fallback for browsers without :has(); CSS uses both selectors.
+        syncCrizalNavOpenClass($);
+        $(document).off('click.crizalNavOpen', '.navbar-toggler');
+        $(document).on('click.crizalNavOpen', '.navbar-toggler', function () {
+            // menumaker toggles .open synchronously; sync after that handler.
+            window.setTimeout(function () { syncCrizalNavOpenClass($); }, 0);
         });
     }
 
@@ -187,6 +202,7 @@
                     this.removeAttribute('style');
                 });
             }
+            syncCrizalNavOpenClass($);
         };
         // Defer so this runs after nav-menu.js resizeFix (which calls ul.show()).
         $(window).off('resize.crizalNav').on('resize.crizalNav', function () {
