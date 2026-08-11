@@ -84,23 +84,49 @@ namespace EImece.Domain.Models.FrontModels
                 switch (Sorting)
                 {
                     case Enums.SortingType.Popularity:
+                        result = result.OrderByDescending(r => r.SoldCount).ThenByStorefrontDefault().ToList();
                         break;
 
                     case Enums.SortingType.LowHighPrice:
                         if (IsProductPriceEnabled)
                         {
-                            result = result.OrderBy(r => r.Price).ThenByStorefrontDefault().ToList();
+                            result = result.OrderBy(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
+                        }
+                        else
+                        {
+                            result = result.OrderByStorefrontDefault().ToList();
                         }
                         break;
 
                     case Enums.SortingType.HighLowPrice:
                         if (IsProductPriceEnabled)
                         {
-                            result = result.OrderByDescending(r => r.Price).ThenByStorefrontDefault().ToList();
+                            result = result.OrderByDescending(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
+                        }
+                        else
+                        {
+                            result = result.OrderByStorefrontDefault().ToList();
                         }
                         break;
 
                     case Enums.SortingType.AverageRating:
+                        if (IsProductReviewEnabled)
+                        {
+                            result = result.OrderByDescending(r => r.Rating).ThenByStorefrontDefault().ToList();
+                        }
+                        else
+                        {
+                            result = result.OrderByStorefrontDefault().ToList();
+                        }
+                        break;
+
+                    case Enums.SortingType.Newest:
+                        result = result
+                            .OrderByDescending(r => r.UpdatedDate)
+                            .ThenBy(r => r.Position)
+                            .ThenByDescending(r => r.MainPage)
+                            .ThenByDescending(r => r.IsCampaign)
+                            .ToList();
                         break;
 
                     case Enums.SortingType.AzOrder:

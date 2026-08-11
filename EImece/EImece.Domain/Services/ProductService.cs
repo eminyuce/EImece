@@ -931,6 +931,21 @@ namespace EImece.Domain.Services
             return await ProductRepository.GetChildrenProductsAsync(allCategoriesId.ToArray(), cancellationToken).ConfigureAwait(false);
         }
 
+        public void ApplySoldCounts(IList<Product> products)
+        {
+            if (products == null || products.Count == 0)
+            {
+                return;
+            }
+
+            var soldQuantities = OrderProductRepository.GetSoldQuantities(products.Select(p => p.Id));
+            foreach (var product in products)
+            {
+                int soldCount;
+                product.SoldCount = soldQuantities.TryGetValue(product.Id, out soldCount) ? soldCount : 0;
+            }
+        }
+
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
             var r = new SimiliarProductTagsViewModel();

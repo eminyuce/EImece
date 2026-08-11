@@ -24,6 +24,9 @@ namespace EImece.Controllers
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
+        [Inject]
+        public IProductService ProductService { get; set; }
+
         public async Task<ActionResult> GetProductCategoryDto(String id)
         {
             var productCategory = await ProductCategoryService.GetProductCategoryDtoAsync(id.GetId());
@@ -91,6 +94,11 @@ namespace EImece.Controllers
                 Logger.Info($"Retrieved {productsList.Count} products directly in category ID: {categoryId}");
                 productsList.AddRange(productCategory.CategoryChildrenProducts);
                 Logger.Info($"Added {productCategory.CategoryChildrenProducts.Count()} child category products. Total products: {productsList.Count}");
+                if ((SortingType)sorting == SortingType.Popularity)
+                {
+                    ProductService.ApplySoldCounts(productsList);
+                    Logger.Info("Applied sold counts for popularity sorting.");
+                }
                 productCategory.AllProducts = productsList;
 
                 SetCurrentCulture(productCategory.ProductCategory);

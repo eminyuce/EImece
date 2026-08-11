@@ -25,6 +25,7 @@
     ViewBag.Description = category.GetSeoDescription();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var productPriceEnabled = Model.IsProductPriceEnabled;
+    var productReviewEnabled = Model.IsProductReviewEnabled;
 }
 
 <div class="page-title-wrapper" role="region" aria-label="Page title">
@@ -143,14 +144,21 @@
                     <div class="form-inline flex-nowrap mr-1 mr-sm-1 pb-1">
                         <label class="text-nowrap mr-2 d-none d-sm-block" for="sorting">@Resource.SortBy:</label>
                         <div class="button-group tabs">
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
                             @if (productPriceEnabled)
                             {
                                 <a href="@category.ProductCategoryListPageUrl(SortingType.LowHighPrice,products)"
                                    rel="nofollow" class="@activeButtonClass(SortingType.LowHighPrice, products)">@Resource.LowHighPriceItems</a>
                                 <a href="@category.ProductCategoryListPageUrl(SortingType.HighLowPrice,products)"
                                    rel="nofollow" class="@activeButtonClass(SortingType.HighLowPrice, products)">@Resource.HighLowPriceItems</a>
+                            }
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
+                               rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
+                            <a href="@category.ProductCategoryListPageUrl(SortingType.Popularity,products)"
+                               rel="nofollow" class="@activeButtonClass(SortingType.Popularity, products)">@Resource.PopularityItems</a>
+                            @if (productReviewEnabled)
+                            {
+                                <a href="@category.ProductCategoryListPageUrl(SortingType.AverageRating,products)"
+                                   rel="nofollow" class="@activeButtonClass(SortingType.AverageRating, products)">@Resource.MostReviewedItems</a>
                             }
                         </div>
                     </div>
@@ -197,7 +205,7 @@
 
     public string activeButtonClass(SortingType selected, IPaginatedModelList products)
     {
-        return String.Format("{0}", products.Sorting == (int)selected ? "btn btn-pill btn-secondary mb-2 mr-1" : "btn btn-pill btn-outline-secondary mb-2 mr-1");
+        return String.Format("{0}", products.Sorting == (int)selected ? "btn btn-sm btn-pill btn-secondary mb-2 mr-1" : "btn btn-sm btn-pill btn-outline-secondary mb-2 mr-1");
     }
 }
 

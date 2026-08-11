@@ -2043,7 +2043,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to En yüksek fiyat.
+        ///   Looks up a localized string similar to En Yüksek Fiyat.
         /// </summary>
         public static string HighLowPriceItems {
             get {
@@ -2475,7 +2475,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to En düşük fiyat.
+        ///   Looks up a localized string similar to En Düşük Fiyat.
         /// </summary>
         public static string LowHighPriceItems {
             get {
@@ -2811,11 +2811,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to En yeniler.
+        ///   Looks up a localized string similar to En Yeniler.
         /// </summary>
         public static string NewestItems {
             get {
                 return ResourceManager.GetString("NewestItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to En Çok Değerlendirilen.
+        /// </summary>
+        public static string MostReviewedItems {
+            get {
+                return ResourceManager.GetString("MostReviewedItems", resourceCulture);
             }
         }
         
@@ -3546,6 +3555,15 @@ namespace Resources {
         public static string PriceErrorMessage {
             get {
                 return ResourceManager.GetString("PriceErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to En Çok Satan.
+        /// </summary>
+        public static string PopularityItems {
+            get {
+                return ResourceManager.GetString("PopularityItems", resourceCulture);
             }
         }
         
