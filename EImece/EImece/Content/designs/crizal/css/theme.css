@@ -843,4 +843,27 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
     body[data-design="crizal"] .attr-nav > ul > li.d-lg-inline-block {
         display: none !important;
     }
+
+    /*
+     * Keep page content (titles, leads, cards) under the open mobile dropdown.
+     * Without a stacking context on main, in-flow headings can paint above the
+     * absolute #nav panel even when the panel has a solid background + high z-index.
+     * Scope to the open state only so position:fixed drawers inside main (filters)
+     * are not trapped under the header while the menu is closed.
+     */
+    body[data-design="crizal"]:has(#nav.open) main,
+    body[data-design="crizal"].crizal-nav-open main {
+        position: relative;
+        z-index: 0;
+    }
+
+    body[data-design="crizal"] .navbar-default #nav.open,
+    body[data-design="crizal"] .navbar-default .navbar-nav.open {
+        background-color: #fff !important;
+    }
+
+    body[data-design="crizal"] .navbar-default #nav.open > li,
+    body[data-design="crizal"] .navbar-default .navbar-nav.open > li {
+        background-color: #fff;
+    }
 }

@@ -37,4 +37,68 @@ test.describe('Crizal Navigation', () => {
     await assertCrizalChrome(page);
     await expect(page.locator('.navbar-toggler').first()).toBeVisible();
   });
+
+  async function assertMobileMenuCoversPageTitle(page, path) {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(path);
+    await assertCrizalChrome(page);
+
+    const title = page.locator('h1.crizal-story-page__title, h1.page-title, main h1').first();
+    await expect(title).toBeVisible({ timeout: 15_000 });
+
+    await page.locator('.navbar-toggler').first().click();
+    await expect(page.locator('#nav.open, .navbar-nav.open').first()).toBeVisible({ timeout: 5_000 });
+
+    // Stacking guard: when the menu is open, main must sit under the header layer.
+    await expect.poll(async () => page.evaluate(() => getComputedStyle(document.querySelector('main')).zIndex)).toBe('0');
+    await expect.poll(async () => page.evaluate(() => document.body.classList.contains('crizal-nav-open'))).toBe(true);
+
+    const hit = await page.evaluate(() => {
+      const titleEl = document.querySelector('h1.crizal-story-page__title, h1.page-title, main h1');
+      const nav = document.querySelector('#nav.open, .navbar-nav.open');
+      if (!titleEl || !nav) return { ok: false, reason: 'missing-nodes' };
+      const tr = titleEl.getBoundingClientRect();
+      const nr = nav.getBoundingClientRect();
+      // Only assert when the title geometrically sits inside the open menu panel.
+      const overlaps = tr.top < nr.bottom && tr.bottom > nr.top && tr.left < nr.right && tr.right > nr.left;
+      if (!overlaps) return { ok: true, skipped: true };
+      const el = document.elementFromPoint(tr.left + Math.min(40, tr.width / 2), tr.top + tr.height / 2);
+      const inNav = !!(el && (el.closest('#nav') || el.closest('.navbar-nav')));
+      return {
+        ok: inNav,
+        skipped: false,
+        hit: el && { tag: el.tagName, cls: String(el.className || '').slice(0, 60) },
+      };
+    });
+
+    if (!hit.skipped) {
+      expect(hit.ok, `page title painted above mobile menu on ${path}: ${JSON.stringify(hit.hit)}`).toBeTruthy();
+    }
+  }
+
+  test('mobile menu covers page title on home/content pages', async ({ page }) => {
+    await page.goto('/');
+    await assertCrizalChrome(page);
+
+    // Prefer a story/tag page that renders a large in-flow page title under the header.
+    const titleLink = page.locator('a[href*="/s/t/"], a[href*="/s/sc/"], a[href*="/s/"], a[href*="/c/"], a[href*="/stories"]').first();
+    if (await titleLink.count()) {
+      await titleLink.click();
+      await page.waitForLoadState('domcontentloaded');
+      await assertMobileMenuCoversPageTitle(page, page.url());
+      return;
+    }
+
+    await assertMobileMenuCoversPageTitle(page, '/');
+  });
+
+  test('mobile menu covers page title on story category pages', async ({ page }) => {
+    await page.goto('/');
+    await assertCrizalChrome(page);
+
+    const categoryLink = page.locator('a[href*="/s/sc/"]').first();
+    test.skip(!(await categoryLink.count()), 'No story category link available in this environment');
+    const href = await categoryLink.getAttribute('href');
+    await assertMobileMenuCoversPageTitle(page, href);
+  });
 });
