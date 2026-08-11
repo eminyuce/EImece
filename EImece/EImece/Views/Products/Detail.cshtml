@@ -106,9 +106,20 @@
         </div>
         <h1 class="page-title">@product.ProductNameStr</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
-        @if (product.Brand != null)
+        @if (product.Brand != null && !string.IsNullOrEmpty(product.Brand.Name))
         {
-            <span class="d-block mt-1 text-muted">@Resource.ProductBrand : <strong>@product.Brand.Name</strong></span>
+            var brandUrl = product.Brand.GetProductsUrl(product.ProductCategory);
+            <span class="d-block mt-1 text-muted">
+                @Resource.ProductBrand :
+                @if (!string.IsNullOrEmpty(brandUrl))
+                {
+                    <a href="@brandUrl" title="@product.Brand.Name"><strong>@product.Brand.Name</strong></a>
+                }
+                else
+                {
+                    <strong>@product.Brand.Name</strong>
+                }
+            </span>
         }
         <span class="d-block mt-1 text-muted">@Resource.ProductCode : <strong>@product.ProductCode</strong></span>
         <span class="d-block mt-1 text-muted">@Html.Raw(product.ShortDescription)</span>
@@ -383,8 +394,19 @@
                         <div class="card-body">
                             @if (product.Brand != null && !String.IsNullOrEmpty(product.Brand.Name))
                             {
+                                var brandUrl = product.Brand.GetProductsUrl(product.ProductCategory);
                                 <span class="product-code">
-                                    <i>@Resource.ProductBrand : @product.Brand.Name</i>
+                                    <i>
+                                        @Resource.ProductBrand :
+                                        @if (!string.IsNullOrEmpty(brandUrl))
+                                        {
+                                            <a href="@brandUrl" title="@product.Brand.Name">@product.Brand.Name</a>
+                                        }
+                                        else
+                                        {
+                                            @product.Brand.Name
+                                        }
+                                    </i>
                                 </span>
                                 <br />
                             }

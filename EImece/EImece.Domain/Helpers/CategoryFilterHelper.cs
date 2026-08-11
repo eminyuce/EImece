@@ -87,31 +87,26 @@ namespace EImece.Domain.Helpers
 
         public ICollection<Product> FilterProductsByBrand(ICollection<Product> products)
         {
-            bool hasFilter = false;
-            List<Product> filteredProducts = new List<Product>();
-            foreach (var categoryFilter in categoryFilterTypes)
-            {
-                foreach (var filterId in selectedFilters)
-                {
-                    if (categoryFilter.CategoryFilters.Any(t => t.
-                    CategoryFilterId.Equals(filterId,
-                    StringComparison.InvariantCultureIgnoreCase)))
-                    {
-                        var filterProperty = categoryFilter.CategoryFilters.FirstOrDefault(t => t.CategoryFilterId == filterId);
-                        switch (categoryFilter.FilterTypeName.FilterType)
-                        {
-                            case FilterType.Brand:
-                                filteredProducts.AddRange(products.Where(r => r.BrandId >= filterProperty.ItemId).ToList());
-                                hasFilter = true;
-                                break;
+            // Brand filters use ids like "b12". Match exactly (not >=) so deep-links from
+            // product detail brand names return only that brand's products.
+            var brandIds = (selectedFilters ?? new List<string>())
+                .Where(f => !string.IsNullOrWhiteSpace(f)
+                            && f.Length > 1
+                            && (f[0] == 'b' || f[0] == 'B')
+                            && f.Substring(1).All(char.IsDigit))
+                .Select(f => f.Substring(1).ToInt())
+                .Where(id => id > 0)
+                .Distinct()
+                .ToList();
 
-                            default:
-                                break;
-                        }
-                    }
-                }
+            if (brandIds.Count == 0)
+            {
+                return products;
             }
-            return hasFilter ? filteredProducts : products;
+
+            return products
+                .Where(r => r.BrandId.HasValue && brandIds.Contains(r.BrandId.Value))
+                .ToList();
         }
 
         public void AddBrandFilter(List<CategoryFilterType> categoryFilterTypes, List<Brand> brands)

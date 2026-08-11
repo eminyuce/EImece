@@ -105,9 +105,20 @@
             <p class="crizal-product-hero__lead">@Html.Raw(product.ShortDescription)</p>
         }
         <ul class="crizal-product-hero__meta">
-            @if (product.Brand != null)
+            @if (product.Brand != null && !string.IsNullOrEmpty(product.Brand.Name))
             {
-                <li><span>@Resource.ProductBrand</span> <strong>@product.Brand.Name</strong></li>
+                var brandUrl = product.Brand.GetProductsUrl(product.ProductCategory);
+                <li>
+                    <span>@Resource.ProductBrand</span>
+                    @if (!string.IsNullOrEmpty(brandUrl))
+                    {
+                        <a class="crizal-product-brand-link" href="@brandUrl" title="@product.Brand.Name">@product.Brand.Name</a>
+                    }
+                    else
+                    {
+                        <strong>@product.Brand.Name</strong>
+                    }
+                </li>
             }
             <li><span>@Resource.ProductCode</span> <strong>@product.ProductCode</strong></li>
         </ul>
@@ -379,7 +390,18 @@
                         <div class="card-body">
                             @if (product.Brand != null && !String.IsNullOrEmpty(product.Brand.Name))
                             {
-                                <p class="product-code">@Resource.ProductBrand: <strong>@product.Brand.Name</strong></p>
+                                var brandUrl = product.Brand.GetProductsUrl(product.ProductCategory);
+                                <p class="product-code">
+                                    @Resource.ProductBrand:
+                                    @if (!string.IsNullOrEmpty(brandUrl))
+                                    {
+                                        <a class="crizal-product-brand-link" href="@brandUrl" title="@product.Brand.Name">@product.Brand.Name</a>
+                                    }
+                                    else
+                                    {
+                                        <strong>@product.Brand.Name</strong>
+                                    }
+                                </p>
                             }
                             @if (!String.IsNullOrEmpty(product.ProductCode))
                             {

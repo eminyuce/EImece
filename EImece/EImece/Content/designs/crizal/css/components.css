@@ -3811,6 +3811,21 @@ body[data-design="crizal"] .butn-style8.outline:hover {
     color: #fff !important;
 }
 
+/* Product detail: brand as filter link */
+body[data-design="crizal"] .crizal-product-brand-link {
+    font-weight: 700;
+    color: var(--crizal-primary, #09b850);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(9, 184, 80, 0.35);
+}
+
+body[data-design="crizal"] .crizal-product-brand-link:hover,
+body[data-design="crizal"] .crizal-product-brand-link:focus {
+    color: var(--crizal-secondary, #14212b);
+    border-bottom-color: var(--crizal-secondary, #14212b);
+    text-decoration: none;
+}
+
 /* ---------- Cart line polish (mobile stack) ---------- */
 body[data-design="crizal"] .media.d-block.d-sm-flex {
     align-items: flex-start;

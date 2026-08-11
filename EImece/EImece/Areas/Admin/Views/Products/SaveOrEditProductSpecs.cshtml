@@ -8,7 +8,7 @@
 @using Resources;
 @model Product
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = AdminResource.ProductSpecs;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var template = (Template)ViewBag.Template;
     var specs = Model.ProductSpecifications;
@@ -17,11 +17,31 @@
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
     ViewBag.BackUrl = Url.Action("Index", "Products", new { search = Model.Name });
     var p = Model;
-    var imageTag = p.GetCroppedImageUrl(p.MainImageId.HasValue?p.MainImageId.Value:0, 150, 0);
+    var imageTag = p.GetCroppedImageUrl(p.MainImageId.HasValue ? p.MainImageId.Value : 0, 150, 0);
+    var hasTemplate = template != null;
+    var hasTemplateXml = hasTemplate && !String.IsNullOrEmpty(template.TemplateXml);
 }
 
-<h2>@AdminResource.ProductSpecs   &#8594;   @AdminResource.TemplateXml : @Html.ActionLink(@template.Name, "SaveOrEdit", "Templates", new { id = template.Id }, new { @class = "" }) </h2>
+<h2>
+    @AdminResource.ProductSpecs
+    @if (hasTemplate)
+    {
+        <text>&#8594; @AdminResource.TemplateXml :</text>
+        @Html.ActionLink(template.Name, "SaveOrEdit", "Templates", new { id = template.Id }, null)
+    }
+</h2>
 <hr class="adminLine" />
+
+<div class="admin-workflow-callout">
+    <strong>Bu ekran ne işe yarar?</strong>
+    Kategori şablonundaki alanları bu ürün için doldurursunuz. Değerler ürün detay sayfasında görünür.
+    <br />
+    @if (hasTemplate)
+    {
+        <text>Şablon: <a href="@Url.Action("SaveOrEdit", "Templates", new { id = template.Id })">@template.Name</a> ·</text>
+    }
+    Değer listeleri: <a href="@Url.Action("Index", "Lists")">Listeler</a>
+</div>
 
 @{ ViewData["HelpId"] = "productSpecsHelp"; }
 @Html.Partial("_AdminHelpAccordionStart")
@@ -34,10 +54,10 @@
 <p style="margin-top: 12px; margin-bottom: 0;"><strong>Örnek:</strong> Şablon “Giyim” ise Renk = Kırmızı, Beden = M seçip Kaydet → ürün detayında bu özellikler görünür.</p>
 @Html.Partial("_AdminHelpAccordionEnd")
 
-<div class="row">
+<div class="row" style="margin-bottom: 16px;">
     <div class="col-md-3">
         <div class="text-center">
-            <img src="@imageTag" style="max-width: 300px; max-height: 300px;" />
+            <img src="@imageTag" style="max-width: 300px; max-height: 300px;" alt="@p.Name" />
         </div>
     </div>
     <div class="col-md-3">
@@ -47,7 +67,7 @@
         @GeneralHelper.GetDescription(p.Description, 300)
     </div>
 </div>
-@using (Html.BeginForm("SaveOrEditProductSpecs", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("SaveOrEditProductSpecs", "Products", FormMethod.Post, new { enctype = "multipart/form-data", id = "productSpecsForm" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
@@ -60,13 +80,30 @@
         <div class="panel panel-default admin-edit-form">
             @Html.Partial("_AdminEditSimpleToolbar")
             <div class="panel-body">
-                @if (!String.IsNullOrEmpty(template.TemplateXml))
+                @if (hasTemplateXml)
                 {
                     XDocument xdoc = XDocument.Parse(template.TemplateXml);
-                    var groups = xdoc.Root.Descendants("group");
+                    var groups = xdoc.Root.Descendants().Where(e =>
+                        e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase));
 
                     if (groups.Any())
                     {
+                        <div class="admin-sample-bar">
+                            <span class="admin-sample-bar__label">Hızlı doldur</span>
+                            <button type="button" id="btnFillSampleSpecs" class="btn btn-info btn-sm"
+                                    title="Boş alanlara örnek değer yazar; kaydetmeden önce düzenleyebilirsiniz.">
+                                <span class="glyphicon glyphicon-flash"></span> Örnek değerlerle doldur
+                            </button>
+                            <button type="button" id="btnClearSpecs" class="btn btn-default btn-sm"
+                                    title="Tüm alanları temizler (kaydetmeden).">
+                                Temizle
+                            </button>
+                            <p class="admin-sample-bar__hint">Boş metin / seçim alanlarına örnek değer yazar. Kaydetmeden önce kontrol edin.</p>
+                        </div>
+                        <div id="specsSampleExplain" class="admin-sample-explain" aria-live="polite"></div>
+
+                        <p class="admin-edit-section-help">Her alanın yanındaki <span class="glyphicon glyphicon-question-sign" style="color:#3b6ea5;"></span> ikonuna gelince kısa açıklama görünür.</p>
+
                         <input id="templateId" name="templateId" type="hidden" value="@template.Id">
 
                         foreach (var group in groups)
@@ -81,11 +118,15 @@
 
                             foreach (XElement field in group.Elements())
                             {
-                                var name = field.Attribute("name");
-                                var unit = field.Attribute("unit");
-                                var values = field.Attribute("values");
-                                var display = field.Attribute("display");
-                                var dbValueObj = specs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                                var nameAttr = field.Attribute("name");
+                                if (nameAttr == null || string.IsNullOrWhiteSpace(nameAttr.Value))
+                                {
+                                    continue;
+                                }
+
+                                var dbValueObj = specs != null
+                                    ? specs.FirstOrDefault(r => r.Name != null && r.Name.Equals(nameAttr.Value, StringComparison.InvariantCultureIgnoreCase))
+                                    : null;
 
                                 if (dbValueObj == null)
                                 {
@@ -94,12 +135,191 @@
 
                                 dbValueObj.FieldFormat = field;
 
-                                @Html.EditorFor(model => dbValueObj, field.Name.LocalName)
+                                // Map XML element names to EditorTemplate file names.
+                                // Use Partial (not EditorFor) so MVC cannot silently fall back to a generic textbox.
+                                string editorKind = (field.Name.LocalName ?? "textbox").Trim().ToLowerInvariant();
+                                string editorTemplate;
+                                switch (editorKind)
+                                {
+                                    case "dropdown":
+                                    case "select":
+                                        editorTemplate = "DropDown";
+                                        break;
+                                    case "radio":
+                                        editorTemplate = "Radio";
+                                        break;
+                                    case "multiselect":
+                                    case "checkboxes":
+                                    case "multicheckbox":
+                                        editorTemplate = "MultiSelect";
+                                        break;
+                                    case "checkbox":
+                                    case "bool":
+                                    case "boolean":
+                                        editorTemplate = "Checkbox";
+                                        break;
+                                    case "textarea":
+                                        editorTemplate = "TextArea";
+                                        break;
+                                    case "datetime":
+                                    case "date":
+                                        editorTemplate = "DateTimePicker";
+                                        break;
+                                    case "textbox":
+                                    case "text":
+                                    case "input":
+                                        editorTemplate = "TextBox";
+                                        break;
+                                    default:
+                                        editorTemplate = "TextBox";
+                                        break;
+                                }
+
+                                @Html.Partial("~/Areas/Admin/Views/Shared/EditorTemplates/" + editorTemplate + ".cshtml", dbValueObj)
                             }
                         }
                     }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            Şablonda <code>&lt;group&gt;</code> bulunamadı.
+                            <a href="@Url.Action("SaveOrEdit", "Templates", new { id = template.Id })">Şablonu düzenle</a>
+                            veya örnek XML üretin.
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        Bu ürünün kategorisine bağlı şablon yok veya XML boş.
+                        Önce <a href="@Url.Action("Index", "Templates")">Şablonlar</a> oluşturup kategoriye bağlayın.
+                    </div>
                 }
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+    <script>
+        (function ($) {
+            var sampleByHint = [
+                { re: /renk/i, values: ["Kırmızı", "Mavi", "Siyah", "Beyaz", "Gri"] },
+                { re: /beden|numara|size/i, values: ["S", "M", "L", "XL", "42"] },
+                { re: /malzeme|materyal|kuma[sş]/i, values: ["Pamuk", "Polyester", "Deri", "Metal"] },
+                { re: /marka/i, values: ["Örnek Marka", "Demo Brand"] },
+                { re: /model/i, values: ["X100", "Pro-12", "Classic"] },
+                { re: /garanti/i, values: ["12", "24", "36"] },
+                { re: /a[gğ][ıi]rl[ıi]k/i, values: ["0.5", "1.2", "250"] },
+                { re: /geni[sş]lik|y[üu]kseklik|derinlik|[öo]l[çc]/i, values: ["30", "45", "60", "120"] },
+                { re: /hacim/i, values: ["50", "100", "250"] },
+                { re: /i[çc]erik/i, values: ["Doğal özler", "Vitamin E"] }
+            ];
+
+            function sampleForName(name) {
+                name = name || "";
+                for (var i = 0; i < sampleByHint.length; i++) {
+                    if (sampleByHint[i].re.test(name)) {
+                        var arr = sampleByHint[i].values;
+                        return arr[Math.floor(Math.random() * arr.length)];
+                    }
+                }
+                return "Örnek";
+            }
+
+            $("#btnFillSampleSpecs").on("click", function () {
+                var filled = 0;
+                $("#productSpecsForm input[type=text], #productSpecsForm textarea").each(function () {
+                    var $el = $(this);
+                    if (($el.val() || "").trim()) { return; }
+                    var key = $el.attr("name") || "";
+                    var sample = sampleForName(key);
+                    if ($el.is("textarea")) {
+                        sample = "<p><b>" + sample + "</b></p>";
+                    }
+                    $el.val(sample);
+                    filled++;
+                });
+                $("#productSpecsForm input[type=date], #productSpecsForm input[type=datetime-local]").each(function () {
+                    var $el = $(this);
+                    if (($el.val() || "").trim()) { return; }
+                    var now = new Date();
+                    if ($el.attr("type") === "date") {
+                        var y = now.getFullYear();
+                        var m = ("0" + (now.getMonth() + 1)).slice(-2);
+                        var d = ("0" + now.getDate()).slice(-2);
+                        $el.val(y + "-" + m + "-" + d);
+                    } else {
+                        now.setMinutes(0);
+                        var local = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+                            .toISOString().slice(0, 16);
+                        $el.val(local);
+                    }
+                    filled++;
+                });
+                $("#productSpecsForm select").each(function () {
+                    var $el = $(this);
+                    if (($el.val() || "").trim()) { return; }
+                    var opts = $el.find("option").filter(function () {
+                        return ($(this).val() || "").trim().length > 0;
+                    });
+                    if (opts.length) {
+                        var pick = opts.eq(Math.floor(Math.random() * opts.length));
+                        $el.val(pick.val());
+                        filled++;
+                    }
+                });
+                $("#productSpecsForm .admin-spec-radio-list").each(function () {
+                    var $group = $(this);
+                    if ($group.find("input[type=radio]:checked").length) { return; }
+                    var $radios = $group.find("input[type=radio]");
+                    if ($radios.length) {
+                        $radios.eq(Math.floor(Math.random() * $radios.length)).prop("checked", true);
+                        filled++;
+                    }
+                });
+                $("#productSpecsForm .admin-spec-multiselect-list").each(function () {
+                    var $group = $(this);
+                    if ($group.find("input[type=checkbox]:checked").length) { return; }
+                    var $boxes = $group.find("input[type=checkbox]");
+                    var any = false;
+                    $boxes.each(function () {
+                        if (Math.random() > 0.45) {
+                            $(this).prop("checked", true);
+                            any = true;
+                        }
+                    });
+                    if (!any && $boxes.length) {
+                        $boxes.eq(0).prop("checked", true);
+                        any = true;
+                    }
+                    if (any) { filled++; }
+                });
+                $("#productSpecsForm input[type=checkbox]").not(".admin-spec-multiselect-list input").each(function () {
+                    if (Math.random() > 0.5) {
+                        $(this).prop("checked", true);
+                        filled++;
+                    }
+                });
+                $("#specsSampleExplain")
+                    .html("<strong>Örnek değerler yazıldı</strong> (" + filled + " alan). İstediğiniz gibi değiştirip Kaydet’e basın.")
+                    .addClass("is-visible");
+            });
+
+            $("#btnClearSpecs").on("click", function () {
+                if (!window.confirm("Tüm ek özellik alanları temizlensin mi? (Henüz kaydedilmez.)")) {
+                    return;
+                }
+                $("#productSpecsForm input[type=text], #productSpecsForm textarea").val("");
+                $("#productSpecsForm input[type=date], #productSpecsForm input[type=datetime-local]").val("");
+                $("#productSpecsForm select").val("");
+                $("#productSpecsForm input[type=radio]").prop("checked", false);
+                $("#productSpecsForm input[type=checkbox]").prop("checked", false);
+                $("#specsSampleExplain")
+                    .html("Alanlar temizlendi. Yeni değer girip Kaydet’e basın.")
+                    .addClass("is-visible");
+            });
+        })(jQuery);
+    </script>
+    @Html.Partial("_AdminInitTooltips")
 }

@@ -1,64 +1,56 @@
 ﻿@model EImece.Domain.Entities.Template
-
-@using Resources;
+@using System.Linq
+@using System.Web.Script.Serialization
+@using Resources
 
 @{
     var saveButtonText = AdminResource.SaveButtonText;
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     ViewBag.Title = AdminResource.Templates;
     var XmlEditorConfiguration = ViewBag.XmlEditorConfiguration;
+    var listNames = ViewBag.ListNames as IEnumerable<string> ?? Enumerable.Empty<string>();
+    var listNamesJson = new JavaScriptSerializer().Serialize(listNames.ToList());
+    var listsUrl = Url.Action("Index", "Lists");
 }
 @section Styles {
     <link href="~/Content/codemirror/codemirror.css" rel="stylesheet" />
     <link href="~/Content/codemirror/addon/hint/show-hint.css" rel="stylesheet" />
-
 }
 @section Scripts {
     <script src="~/Scripts/codemirror/codemirror.js"></script>
     <script src="~/Scripts/codemirror/xml/xml.js"></script>
     <script src="~/Content/codemirror/addon/hint/show-hint.js"></script>
     <script src="~/Content/codemirror/addon/hint/xml-hint.js"></script>
+    <script src="~/Scripts/adminTemplateBuilder.js"></script>
 }
+
 <h2>@AdminResource.Templates</h2>
 <hr class="adminLine" />
+
+<div class="admin-workflow-callout">
+    <strong>Nasıl çalışır?</strong>
+    1) Soldaki / üstteki bileşenleri sürükleyin veya tıklayın →
+    2) Grup ve alanları düzenleyip sıralayın →
+    3) Kaydet (XML otomatik üretilir) →
+    4) Şablonu ürün kategorisine bağlayın.
+    <br />
+    <span class="text-muted">Açılır liste için önce <a href="@listsUrl">Değer listeleri</a> oluşturun; listedeki ad ile <em>values</em> aynı olmalı.</span>
+</div>
 
 @{ ViewData["HelpId"] = "templatesHelp"; }
 @Html.Partial("_AdminHelpAccordionStart")
 <ul style="margin-top: 0;">
-    <li>Bu sayfada <strong>ürün ek özellik şablonları</strong> oluşturur veya düzenlersiniz. Şablon, ürünlerde doldurulacak alanları (renk, beden, ölçü vb.) tanımlar.</li>
-    <li><strong>Ad</strong>: Şablona anlaşılır bir isim verin (ör. “Giyim Özellikleri”, “Elektronik Özellikleri”).</li>
-    <li><strong>Aktif</strong>: İşaretliyse şablon kullanılabilir; işaretsizse listede durur ama yeni ürünlerde seçilmez.</li>
-    <li><strong>Sıra</strong>: Listede görünme sırasını belirler; küçük sayı önce gelir.</li>
-    <li><strong>Xml Şablon</strong>: Alanları XML ile tanımlayın. Alanlar ürün “Ek Özellikleri” ekranında form olarak çıkar.</li>
-    <li>Desteklenen alan türleri: <code>textbox</code> (metin), <code>dropdown</code> (liste), <code>checkbox</code> (evet/hayır).</li>
-    <li><code>dropdown</code> için <code>values</code> değeri, <strong>Listeler</strong> menüsünde tanımlı bir listenin adı olmalıdır.</li>
-    <li>Kaydettikten sonra ürün düzenleme ekranından bu şablonu seçerek alanları doldurabilirsiniz.</li>
+    <li>Bu sayfada <strong>ürün ek özellik şablonlarını</strong> görsel olarak oluşturursunuz; kayıtta XML otomatik üretilir.</li>
+    <li><strong>Grup</strong>: alanları böler (ürün formunda başlık olarak görünür).</li>
+    <li><strong>Metin / Metin alanı / Açılır liste / Radyo / Çoklu seçim / Tarih-Saat / Evet-Hayır</strong>: ürün “Ek Özellikleri” ekranındaki alan türleri.</li>
+    <li><strong>Metin alanı</strong> HTML kabul eder (<code>html="true"</code>). <strong>Tarih/Saat</strong>te “Saat göster” kapalıysa sadece tarih kaydedilir.</li>
+    <li><strong>Çoklu seçim</strong> birden fazla onay kutusu gösterir; değerler <code>A, B, C</code> biçiminde saklanır ve sitede aynı şekilde gösterilir.</li>
+    <li>Açılır liste, radyo ve çoklu seçimde <strong>Liste (values)</strong> liste adı veya <code>A, B, C</code> olabilir.</li>
+    <li>İsterseniz altta <strong>Gelişmiş XML</strong> panelinden ham XML’i de düzenleyebilirsiniz.</li>
 </ul>
-
-<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Giyim ürünleri:</strong></p>
-<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:12px; white-space:pre-wrap;">&lt;component&gt;
-  &lt;group name="Giyim Özellikleri"&gt;
-    &lt;dropdown name="Renk" values="Renkler" /&gt;
-    &lt;dropdown name="Beden" values="Bedenler" /&gt;
-    &lt;textbox name="Malzeme" display="Kumaş / Malzeme" /&gt;
-    &lt;checkbox name="Yıkamaya Uygun" /&gt;
-  &lt;/group&gt;
-&lt;/component&gt;</pre>
-
-<p style="margin-bottom: 6px;"><strong>Örnek 2 — Elektronik ürünleri:</strong></p>
-<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:0; white-space:pre-wrap;">&lt;component&gt;
-  &lt;group name="Teknik Özellikler"&gt;
-    &lt;textbox name="Marka" /&gt;
-    &lt;textbox name="Model" /&gt;
-    &lt;textbox name="Garanti" unit="ay" /&gt;
-    &lt;textbox name="Ağırlık" unit="kg" /&gt;
-    &lt;dropdown name="Renk" values="Renkler" /&gt;
-    &lt;checkbox name="Kutu İçeriği Tam mı?" /&gt;
-  &lt;/group&gt;
-&lt;/component&gt;</pre>
 @Html.Partial("_AdminHelpAccordionEnd")
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "templateSaveForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -74,42 +66,125 @@
         <div class="panel panel-default admin-edit-form">
             @Html.Partial("_AdminEditSimpleToolbar")
             <div class="panel-body">
+                <div class="admin-sample-bar">
+                    <span class="admin-sample-bar__label">Hızlı başlangıç</span>
+                    <button type="button" class="btn btn-info btn-sm" data-tb-sample title="Rastgele örnek şablonu görsel editöre yükler">
+                        <span class="glyphicon glyphicon-flash"></span> Rastgele örnek yükle
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm" data-tb-clear title="Tüm grup ve alanları temizler">
+                        Temizle
+                    </button>
+                    <p class="admin-sample-bar__hint">Örnek yükleyip sürükle-bırak ile düzenleyin. Kaydetmeden önce alan adlarını kontrol edin.</p>
+                </div>
+                <div id="templateSampleExplain" class="admin-sample-explain" aria-live="polite"></div>
+
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2" for="Name">
+                        @Html.DisplayNameFor(model => model.Name)
+                        @{ ViewData["TipText"] = "Şablona anlaşılır bir ad verin. Kategori seçerken bu adı görürsünüz."; }
+                        @Html.Partial("_AdminFieldTip")
+                    </label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Giyim Özellikleri", title = "Şablon adı" } })
+                        <span class="admin-field-help">Kategori ekranında görünen şablon adıdır.</span>
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-3">
-                        @Html.LabelFor(model => model.IsActive)
-                        @Html.EditorFor(model => model.IsActive)
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10 admin-checkbox-help-group">
+                        <label for="IsActive" title="İşaretliyse şablon kullanılabilir">
+                            @Html.EditorFor(model => model.IsActive)
+                            @Html.DisplayNameFor(model => model.IsActive)
+                            @{ ViewData["TipText"] = "Kapalı şablonlar listede kalır ama yeni ürün/kategorilerde seçilmez."; }
+                            @Html.Partial("_AdminFieldTip")
+                        </label>
+                        <span class="admin-field-help">Kapalıysa şablon arşivde kalır.</span>
                         @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2" for="Position">
+                        @Html.DisplayNameFor(model => model.Position)
+                        @{ ViewData["TipText"] = "Listede sıralama: küçük sayı önce gelir."; }
+                        @Html.Partial("_AdminFieldTip")
+                    </label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control", style = "max-width:120px;", title = "Sıra numarası" } })
+                        <span class="admin-field-help">Şablon listesindeki görünüm sırası.</span>
                         @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.TemplateXml, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2">
+                        Şablon alanları
+                        @{ ViewData["TipText"] = "Sürükle-bırak ile grup ve alan ekleyin. Kayıtta XML otomatik üretilir."; }
+                        @Html.Partial("_AdminFieldTip")
+                    </label>
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.TemplateXml, new
-                        {
-                            @id = "code",
-                            @class = "form-control",
-                            @cols = "20",
-                            @rows = "10"
-                        })
+                        <div id="templateBuilder" class="tb-builder">
+                            <div class="tb-palette">
+                                <div class="tb-palette__label">Bileşenler — tıklayın veya sürükleyin</div>
+                                <a href="#" class="tb-palette__item" data-tb-add="group" title="Yeni grup ekle">
+                                    <span class="glyphicon glyphicon-folder-open"></span> Grup
+                                </a>
+                                <a href="#" class="tb-palette__item" data-tb-add="textbox" title="Metin alanı ekle">
+                                    <span class="glyphicon glyphicon-font"></span> Metin
+                                </a>
+                                <a href="#" class="tb-palette__item" data-tb-add="dropdown" title="Açılır liste ekle">
+                                    <span class="glyphicon glyphicon-list"></span> Açılır liste
+                                </a>
+                                <a href="#" class="tb-palette__item" data-tb-add="checkbox" title="Evet/Hayır alanı ekle">
+                                    <span class="glyphicon glyphicon-check"></span> Evet / Hayır
+                                </a>
+                                <a href="#" class="tb-palette__item" data-tb-add="textarea" title="HTML kabul eden metin alanı ekle">
+                                    <span class="glyphicon glyphicon-align-left"></span> Metin alanı
+                                </a>
+                                <a href="#" class="tb-palette__item" data-tb-add="radio" title="Radyo düğmeleri ekle">
+                                    <span class="glyphicon glyphicon-record"></span> Radyo
+                                </a>
+                                <a href="#" class="tb-palette__item" data-tb-add="multiselect" title="Çoklu seçim onay kutuları ekle">
+                                    <span class="glyphicon glyphicon-ok"></span> Çoklu seçim
+                                </a>
+                                <a href="#" class="tb-palette__item" data-tb-add="datetime" title="Tarih / saat seçici ekle">
+                                    <span class="glyphicon glyphicon-calendar"></span> Tarih / Saat
+                                </a>
+                            </div>
+
+                            <div class="tb-toolbar">
+                                <span class="admin-field-help" style="margin:0;">Alanları grup içinde sürükleyerek sıralayın; gruplar arasında taşıyabilirsiniz.</span>
+                            </div>
+
+                            <div class="tb-canvas" data-tb-canvas></div>
+                            <div class="alert alert-danger tb-validation" data-tb-validation style="display:none;"></div>
+                        </div>
+
+                        <div class="tb-advanced">
+                            <a class="tb-advanced__toggle collapsed" data-toggle="collapse" href="#templateXmlAdvanced" aria-expanded="false">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                                Gelişmiş: XML önizleme / düzenle
+                            </a>
+                            <div id="templateXmlAdvanced" class="collapse tb-advanced__body">
+                                <span class="admin-field-help" style="margin:8px 0;">
+                                    Görsel editörden üretilen XML. Elle değiştirirseniz paneli kapattığınızda (geçerliyse) editöre geri yüklenir.
+                                </span>
+                                @Html.TextAreaFor(model => model.TemplateXml, new
+                                {
+                                    @id = "code",
+                                    @class = "form-control",
+                                    @cols = "20",
+                                    @rows = "12",
+                                    title = "TemplateXml"
+                                })
+                                @Html.ValidationMessageFor(model => model.TemplateXml, "", new { @class = "text-danger" })
+                                <button type="button" id="btnApplyXmlToBuilder" class="btn btn-default btn-sm" style="margin-top:8px;">
+                                    XML’i görsel editöre uygula
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,44 +193,133 @@
 }
 
 <script>
+    @Html.Raw(XmlEditorConfiguration)
 
-        @Html.Raw(XmlEditorConfiguration)
+    function completeAfter(cm, pred) {
+        var cur = cm.getCursor();
+        if (!pred || pred()) setTimeout(function () {
+            if (!cm.state.completionActive)
+                cm.showHint({ completeSingle: false });
+        }, 100);
+        return CodeMirror.Pass;
+    }
 
-        function completeAfter(cm, pred) {
+    function completeIfAfterLt(cm) {
+        return completeAfter(cm, function () {
             var cur = cm.getCursor();
-            if (!pred || pred()) setTimeout(function () {
-                if (!cm.state.completionActive)
-                    cm.showHint({ completeSingle: false });
-            }, 100);
-            return CodeMirror.Pass;
-        }
-
-        function completeIfAfterLt(cm) {
-            return completeAfter(cm, function () {
-                var cur = cm.getCursor();
-                return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
-            });
-        }
-
-        function completeIfInTag(cm) {
-            return completeAfter(cm, function () {
-                var tok = cm.getTokenAt(cm.getCursor());
-                if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
-                var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
-                return inner.tagName;
-            });
-        }
-
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-            mode: "xml",
-            lineNumbers: true,
-            extraKeys: {
-                "'<'": completeAfter,
-                "'/'": completeIfAfterLt,
-                "' '": completeIfInTag,
-                "'='": completeIfInTag,
-                "Ctrl-Space": "autocomplete"
-            },
-            hintOptions: { schemaInfo: tags }
+            return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
         });
+    }
+
+    function completeIfInTag(cm) {
+        return completeAfter(cm, function () {
+            var tok = cm.getTokenAt(cm.getCursor());
+            if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+            var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+            return inner.tagName;
+        });
+    }
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "xml",
+        lineNumbers: true,
+        extraKeys: {
+            "'<'": completeAfter,
+            "'/'": completeIfAfterLt,
+            "' '": completeIfInTag,
+            "'='": completeIfInTag,
+            "Ctrl-Space": "autocomplete"
+        },
+        hintOptions: { schemaInfo: tags }
+    });
+
+    (function ($) {
+        var listNames = @Html.Raw(listNamesJson);
+        var builder = new AdminTemplateBuilder({
+            root: '#templateBuilder',
+            listNames: listNames,
+            listsUrl: @Html.Raw(new JavaScriptSerializer().Serialize(listsUrl)),
+            onChange: function (xml) {
+                editor.setValue(xml || '');
+            }
+        });
+
+        // Sample / clear live in the sample bar (outside builder root)
+        $('.admin-sample-bar [data-tb-sample]').on('click', function (e) {
+            e.preventDefault();
+            if (builder.hasContent()) {
+                if (!window.confirm('Mevcut şablon üzerine örnek yazılacak. Devam edilsin mi?')) {
+                    return;
+                }
+            }
+            var samples = AdminTemplateBuilder.SAMPLES;
+            var sample = samples[Math.floor(Math.random() * samples.length)];
+            builder.fromXml(sample.xml);
+            $('#Name').val(sample.name);
+            $('#Position').val(sample.position);
+            $('#IsActive').prop('checked', true);
+            editor.setValue(sample.xml);
+            $('#templateSampleExplain')
+                .html('<strong>' + sample.name + '</strong> — ' + sample.explain)
+                .addClass('is-visible');
+        });
+        $('.admin-sample-bar [data-tb-clear]').on('click', function (e) {
+            e.preventDefault();
+            if (!window.confirm('Tüm grup ve alanlar temizlensin mi?')) {
+                return;
+            }
+            builder.clear();
+            builder.addGroup('Ürün Özellikleri');
+            editor.setValue(builder.toXml());
+            $('#templateSampleExplain').removeClass('is-visible').empty();
+        });
+
+        var initialXml = editor.getValue() || '';
+        if (initialXml.trim()) {
+            builder.fromXml(initialXml);
+        } else {
+            builder.addGroup('Ürün Özellikleri');
+            editor.setValue(builder.toXml());
+        }
+
+        $('#btnApplyXmlToBuilder').on('click', function () {
+            var xml = editor.getValue() || '';
+            if (!builder.fromXml(xml)) {
+                window.alert('XML çözümlenemedi. Lütfen formatı kontrol edin.');
+                return;
+            }
+            editor.setValue(builder.toXml());
+        });
+
+        $('#templateXmlAdvanced').on('hidden.bs.collapse', function () {
+            var xml = editor.getValue() || '';
+            if (!xml.trim()) {
+                return;
+            }
+            if (builder.fromXml(xml)) {
+                editor.setValue(builder.toXml());
+                builder.hideValidation();
+            }
+        });
+
+        $('#templateSaveForm').on('submit', function (e) {
+            var errors = builder.validate();
+            if (errors.length) {
+                e.preventDefault();
+                builder.showValidation(errors);
+                $('html, body').animate({ scrollTop: $('[data-tb-validation]').offset().top - 80 }, 200);
+                return false;
+            }
+            builder.hideValidation();
+            var xml = builder.toXml();
+            editor.setValue(xml);
+            // Ensure textarea posts (CodeMirror sync)
+            if (editor.save) {
+                editor.save();
+            }
+            $('#code').val(xml);
+            return true;
+        });
+    })(jQuery);
 </script>
+@Html.Partial("_AdminInitTooltips")

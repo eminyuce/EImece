@@ -234,7 +234,7 @@ namespace EImece.Domain.Models.FrontModels
                     return result;
                 }
 
-                var productSpecs = product.ProductSpecifications.Where(r => !String.IsNullOrEmpty(r.Value)).OrderBy(r => r.Position).ToList();
+                var productSpecs = product.ProductSpecifications.OrderBy(r => r.Position).ToList();
                 var template = Template;
                 if (!productSpecs.Any() || template == null || string.IsNullOrEmpty(template.TemplateXml))
                 {
@@ -264,16 +264,28 @@ namespace EImece.Domain.Models.FrontModels
                     var unit = field.Attribute("unit");
                     var values = field.Attribute("values");
                     var display = field.Attribute("display");
-                    var dbValueObj = productSpecs.FirstOrDefault(r => r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
+                    var dbValueObj = productSpecs.FirstOrDefault(r => r.Name != null && r.Name.Equals(name.Value, StringComparison.InvariantCultureIgnoreCase));
                     if (dbValueObj == null)
                     {
                         continue;
                     }
+
+                    var isCheckbox = ProductSpecificationValueHelper.IsCheckboxField(field);
+                    var rawValue = dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim();
+
+                    // Non-checkbox empty values stay hidden; checkbox always shows Evet/Hayır.
+                    if (!isCheckbox && string.IsNullOrEmpty(rawValue))
+                    {
+                        continue;
+                    }
+
                     string specsName = display != null ? display.Value : name.Value;
+                    string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(field, rawValue);
+                    string displayUnit = isCheckbox ? "" : (unit == null ? "" : unit.Value.ToStr());
                     result.Add(new ProductSpecsModel(
                         specsName.ToStr().Trim(),
-                        dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim(),
-                        unit == null ? "" : unit.Value.ToStr(),
+                        displayValue,
+                        displayUnit,
                         values == null ? "" : values.Value.ToStr()));
                 }
                 return result;

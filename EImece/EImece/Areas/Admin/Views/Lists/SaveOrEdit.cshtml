@@ -14,16 +14,23 @@
 <h2>@AdminResource.ProductSpecTemplateItemList</h2>
 <hr class="adminLine" />
 
+<div class="admin-workflow-callout">
+    <strong>Nasıl çalışır?</strong>
+    1) Liste adı verin (ör. <code>Renkler</code>) →
+    2) <strong>Şablon değer listesi</strong>ni işaretleyin →
+    3) Öğeleri satır satır yazın →
+    4) Şablonda <code>values="Renkler"</code> kullanın.
+    <br />
+    <span class="text-muted">Liste adı ile şablondaki <code>values</code> <strong>birebir aynı</strong> olmalı.
+    Şablonlar: <a href="@Url.Action("Index", "Templates")">Şablonlar</a></span>
+</div>
+
 @{ ViewData["HelpId"] = "listsHelp"; }
 @Html.Partial("_AdminHelpAccordionStart")
 <ul style="margin-top: 0;">
     <li>Bu sayfada ürün özelliklerinde kullanılan <strong>açılır menü seçeneklerini</strong> oluşturur veya düzenlersiniz (renk, beden vb.).</li>
-    <li><strong>İsim</strong>: Listenin adı. Ürün şablonundaki <code>values="..."</code> değeriyle <strong>birebir aynı</strong> olmalıdır (ör. İsim = <code>Renkler</code> → şablonda <code>values="Renkler"</code>).</li>
-    <li><strong>Yayında mı</strong>: İşaretliyse liste kullanılabilir.</li>
-    <li><strong>Şablon değer listesi</strong>: Ürün şablonlarında açılır menü kaynağı olarak kullanmak için işaretleyin.</li>
-    <li><strong>Hizmet listesi</strong>: Bu liste bir hizmet türü içinse işaretleyin; ürün özellikleri için genelde boş bırakın.</li>
-    <li><strong>Sırası</strong>: Listelerin görünme sırası; küçük sayı önce gelir.</li>
-    <li><strong>Liste öğeleri</strong>: Her satıra bir seçenek yazın. İsterseniz <code>Görünen metin, değer</code> biçiminde virgülle ayırın. Sadece metin yazarsanız ikisi de aynı olur.</li>
+    <li><strong>İsim</strong>: Listenin adı. Ürün şablonundaki <code>values="..."</code> değeriyle <strong>birebir aynı</strong> olmalıdır.</li>
+    <li><strong>Liste öğeleri</strong>: Her satıra bir seçenek. İsterseniz <code>Görünen metin, değer</code> biçiminde virgülle ayırın.</li>
 </ul>
 
 <p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Renkler listesi</strong> (İsim: <code>Renkler</code>, Şablon değer listesi işaretli):</p>
@@ -61,54 +68,104 @@ XXL</pre>
         <div class="panel panel-default admin-edit-form">
             @Html.Partial("_AdminEditSimpleToolbar")
             <div class="panel-body">
+                <div class="admin-sample-bar">
+                    <span class="admin-sample-bar__label">Hızlı başlangıç</span>
+                    <button type="button" id="btnGenerateListSample" class="btn btn-info btn-sm"
+                            title="Rastgele örnek liste doldurur; kaydetmeden önce düzenleyebilirsiniz.">
+                        <span class="glyphicon glyphicon-flash"></span> Rastgele örnek liste oluştur
+                    </button>
+                    <p class="admin-sample-bar__hint">Örnek üretip öğeleri düzenleyin. Kaydettiğinizde şablondaki <code>values</code> ile aynı adı kullanın.</p>
+                </div>
+                <div id="listSampleExplain" class="admin-sample-explain" aria-live="polite"></div>
+
+                <p class="admin-edit-section-help">Ürün şablonlarındaki dropdown’lar bu listelerden beslenir.</p>
+
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2" for="Name">
+                        @Html.DisplayNameFor(model => model.Name)
+                        @{ ViewData["TipText"] = "Şablondaki values=\"...\" ile birebir aynı olmalı. Büyük/küçük harf ve boşluklar önemli."; }
+                        @Html.Partial("_AdminFieldTip")
+                    </label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Renkler" } })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Renkler", title = "Liste adı = şablon values değeri" } })
+                        <span class="admin-field-help">Örn: İsim = <code>Renkler</code> → şablonda <code>values="Renkler"</code>.</span>
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-3">
-                        @Html.LabelFor(model => model.IsActive)
-                        @Html.EditorFor(model => model.IsActive)
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                        <div class="row admin-checkbox-help-group">
+                            <div class="col-md-4">
+                                <label for="IsActive" title="Liste kullanılabilir mi?">
+                                    @Html.EditorFor(model => model.IsActive)
+                                    @Html.DisplayNameFor(model => model.IsActive)
+                                    @{ ViewData["TipText"] = "Kapalı listeler dropdown’larda görünmez."; }
+                                    @Html.Partial("_AdminFieldTip")
+                                </label>
+                                <span class="admin-field-help">İşaretliyse ürün formlarında kullanılır.</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="IsValues" title="Şablon dropdown kaynağı mı?">
+                                    @Html.EditorFor(model => model.IsValues)
+                                    @Html.DisplayNameFor(model => model.IsValues)
+                                    @{ ViewData["TipText"] = "Ürün şablonu dropdown kaynağı için bunu işaretleyin."; }
+                                    @Html.Partial("_AdminFieldTip")
+                                </label>
+                                <span class="admin-field-help">Ürün ek özellik şablonları için genelde <strong>işaretli</strong> olmalı.</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="IsService" title="Hizmet listesi mi?">
+                                    @Html.EditorFor(model => model.IsService)
+                                    @Html.DisplayNameFor(model => model.IsService)
+                                    @{ ViewData["TipText"] = "Kargo/ödeme gibi hizmet listeleri için. Ürün özellikleri için genelde boş bırakın."; }
+                                    @Html.Partial("_AdminFieldTip")
+                                </label>
+                                <span class="admin-field-help">Ürün özellikleri için genelde <strong>işaretsiz</strong> bırakın.</span>
+                            </div>
+                        </div>
                         @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col-md-3">
-                        @Html.LabelFor(model => model.IsService)
-                        @Html.EditorFor(model => model.IsService)
                         @Html.ValidationMessageFor(model => model.IsService, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col-md-3">
-                        @Html.LabelFor(model => model.IsValues)
-                        @Html.EditorFor(model => model.IsValues)
                         @Html.ValidationMessageFor(model => model.IsValues, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2" for="Position">
+                        @Html.DisplayNameFor(model => model.Position)
+                        @{ ViewData["TipText"] = "Listeler ekranındaki sıra. Küçük sayı önce gelir."; }
+                        @Html.Partial("_AdminFieldTip")
+                    </label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control", style = "max-width:120px;", title = "Sıra numarası" } })
+                        <span class="admin-field-help">Admin listesindeki görünüm sırası.</span>
                         @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-2" for="itemText">Liste öğeleri</label>
+                    <label class="control-label col-md-2" for="itemText">
+                        Liste öğeleri
+                        @{ ViewData["TipText"] = "Her satır bir seçenek. İsteğe bağlı: Görünen metin, değer"; }
+                        @Html.Partial("_AdminFieldTip")
+                    </label>
                     <div class="col-md-10">
-                        <span class="help-block" style="margin-top:0;">Her satıra bir öğe yazın. İsterseniz görünen metin ile değeri virgülle ayırın: <code>Kırmızı, kirmizi</code></span>
-                        @Html.TextAreaFor(m => itemText, new { cols = 50, rows = 10, @class = "form-control", id = "itemText", placeholder = "Kırmızı, kirmizi&#10;Mavi, mavi&#10;Siyah, siyah" })
+                        <span class="admin-field-help" style="margin-top:0;margin-bottom:6px;">
+                            Her satıra bir öğe. İsterseniz: <code>Kırmızı, kirmizi</code> (görünen metin, kayıt değeri). Sadece <code>M</code> yazarsanız ikisi de M olur.
+                        </span>
+                        @Html.TextArea("itemText", itemText, new { cols = 50, rows = 10, @class = "form-control", id = "itemText", placeholder = "Kırmızı, kirmizi&#10;Mavi, mavi&#10;Siyah, siyah", title = "Satır başına bir liste öğesi" })
                     </div>
                 </div>
 
                 @if (Model.ListItems != null && Model.ListItems.Any())
                 {
                     <div class="form-group">
-                        <label class="control-label col-md-2">Kayıtlı öğeler</label>
+                        <label class="control-label col-md-2">
+                            Kayıtlı öğeler
+                            @{ ViewData["TipText"] = "Daha önce kaydedilmiş öğeler. Üstteki metin kutusunu düzenleyip tekrar kaydederek güncellersiniz."; }
+                            @Html.Partial("_AdminFieldTip")
+                        </label>
                         <div class="col-md-10">
                             <ul class="list-unstyled" style="margin-bottom:0;">
                                 @foreach (var item in Model.ListItems.OrderBy(i => i.Position))
@@ -116,6 +173,7 @@ XXL</pre>
                                     <li>Metin: <strong>@(item.Name)</strong>, Değer: <strong>@(item.Value)</strong>, Sıra: @(item.Position)</li>
                                 }
                             </ul>
+                            <span class="admin-field-help">Güncellemek için yukarıdaki “Liste öğeleri” kutusunu düzenleyip kaydedin.</span>
                         </div>
                     </div>
                 }
@@ -126,4 +184,85 @@ XXL</pre>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        (function () {
+            var samples = [
+                {
+                    name: "Renkler",
+                    position: 1,
+                    isValues: true,
+                    isService: false,
+                    explain: "Şablonda kullanım: &lt;dropdown name=\"Renk\" values=\"Renkler\" /&gt;. İsim ile values birebir aynı olmalı.",
+                    items: "Kırmızı, kirmizi\nMavi, mavi\nSiyah, siyah\nBeyaz, beyaz\nYeşil, yesil\nGri, gri\nBej, bej"
+                },
+                {
+                    name: "Bedenler",
+                    position: 2,
+                    isValues: true,
+                    isService: false,
+                    explain: "Şablonda: &lt;dropdown name=\"Beden\" values=\"Bedenler\" /&gt;. Tek sütun yeterli (görünen = değer).",
+                    items: "XS\nS\nM\nL\nXL\nXXL"
+                },
+                {
+                    name: "Ayakkabı Numaraları",
+                    position: 3,
+                    isValues: true,
+                    isService: false,
+                    explain: "Şablonda: &lt;dropdown name=\"Numara\" values=\"Ayakkabı Numaraları\" /&gt;.",
+                    items: "36\n37\n38\n39\n40\n41\n42\n43\n44\n45"
+                },
+                {
+                    name: "Cilt Tipleri",
+                    position: 4,
+                    isValues: true,
+                    isService: false,
+                    explain: "Kozmetik şablonları için. Örn: values=\"Cilt Tipleri\".",
+                    items: "Normal, normal\nKuru, kuru\nYağlı, yagli\nKarma, karma\nHassas, hassas"
+                },
+                {
+                    name: "Malzemeler",
+                    position: 5,
+                    isValues: true,
+                    isService: false,
+                    explain: "Şablonda: &lt;dropdown name=\"Malzeme\" values=\"Malzemeler\" /&gt;.",
+                    items: "Pamuk, pamuk\nPolyester, polyester\nDeri, deri\nMetal, metal\nAhşap, ahsap\nCam, cam"
+                },
+                {
+                    name: "Garanti Süreleri",
+                    position: 6,
+                    isValues: true,
+                    isService: false,
+                    explain: "Elektronik şablonlarında garanti seçimi için kullanılabilir.",
+                    items: "6 Ay, 6\n12 Ay, 12\n24 Ay, 24\n36 Ay, 36"
+                }
+            ];
+
+            function pickSample() {
+                return samples[Math.floor(Math.random() * samples.length)];
+            }
+
+            function hasExistingContent() {
+                var name = ($("#Name").val() || "").trim();
+                var items = ($("#itemText").val() || "").trim();
+                return name.length > 0 || items.length > 0;
+            }
+
+            $("#btnGenerateListSample").on("click", function () {
+                if (hasExistingContent()) {
+                    if (!window.confirm("Mevcut ad ve öğeler üzerine örnek yazılacak. Devam edilsin mi? (Kaydetmeden geri alabilirsiniz.)")) {
+                        return;
+                    }
+                }
+                var sample = pickSample();
+                $("#Name").val(sample.name);
+                $("#Position").val(sample.position);
+                $("#IsActive").prop("checked", true);
+                $("#IsValues").prop("checked", !!sample.isValues);
+                $("#IsService").prop("checked", !!sample.isService);
+                $("#itemText").val(sample.items);
+                $("#listSampleExplain").html("<strong>" + sample.name + "</strong> — " + sample.explain).addClass("is-visible");
+            });
+        })();
+    </script>
+    @Html.Partial("_AdminInitTooltips")
 }

@@ -1,0 +1,10 @@
+<script>
+    (function () {
+        if (!window.jQuery || !jQuery.fn.tooltip) {
+            return;
+        }
+        jQuery(function () {
+            jQuery('[data-toggle="tooltip"]').tooltip({ container: 'body' });
+        });
+    })();
+</script>

@@ -1,0 +1,64 @@
+@using System
+@using System.Globalization
+@using System.Xml.Linq
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@model ProductSpecification
+
+@{
+    var field = Model != null ? Model.FieldFormat : null;
+    var name = field != null ? field.Attribute("name") : null;
+    var unit = field != null ? field.Attribute("unit") : null;
+    var display = field != null ? field.Attribute("display") : null;
+    var dbValue = Model != null ? Model.Value : null;
+    var valueDisplayName = display != null ? display.Value : (name != null ? name.Value : "");
+    var fieldKey = name != null ? name.Value : "";
+    var includeTime = ProductSpecificationFieldHelper.IncludeTime(field);
+    var tipText = includeTime
+        ? "Tarih ve saat seçici."
+        : "Yalnızca tarih seçici (saat yok).";
+
+    var inputValue = "";
+    if (!string.IsNullOrWhiteSpace(dbValue))
+    {
+        DateTime dt;
+        if (DateTime.TryParse(dbValue, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out dt)
+            || DateTime.TryParse(dbValue, new CultureInfo("tr-TR"), DateTimeStyles.AssumeLocal, out dt))
+        {
+            inputValue = includeTime
+                ? dt.ToString("yyyy-MM-dd'T'HH:mm", CultureInfo.InvariantCulture)
+                : dt.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            inputValue = dbValue.Trim();
+        }
+    }
+
+    var inputType = includeTime ? "datetime-local" : "date";
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        <label class="control-label" for="spec_@fieldKey" style="text-align:left;">
+            @valueDisplayName
+            <span class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" tabindex="0">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </span>
+        </label>
+        <div class="admin-spec-field-meta">@(includeTime ? "tarih + saat" : "tarih")</div>
+    </div>
+    <div class="col-md-5">
+        <input id="spec_@fieldKey" name="@fieldKey" type="@inputType" class="form-control"
+               value="@inputValue" title="@tipText" style="max-width:280px;" />
+        <span class="admin-field-help">
+            @(includeTime ? "Tarih ve saat birlikte kaydedilir." : "Sadece tarih kaydedilir (time=\"false\").")
+        </span>
+    </div>
+    <div class="col-md-1">
+        @if (unit != null)
+        {
+            <span class="help-block" style="margin-top:8px;">@unit.Value</span>
+        }
+    </div>
+</div>

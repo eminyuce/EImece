@@ -1,46 +1,41 @@
-﻿@using System.Xml;
-@using System.Linq;
-@using System.Text;
-@using System.Xml.Linq;
-@using EImece.Domain.Entities;
+﻿@using System
+@using System.Xml.Linq
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
 @model ProductSpecification
 
 @{
     var field = Model.FieldFormat;
-    var name = field.Attribute("name");
-    var unit = field.Attribute("unit");
-    var values = field.Attribute("values");
-    var display = field.Attribute("display");
+    var name = field != null ? field.Attribute("name") : null;
+    var unit = field != null ? field.Attribute("unit") : null;
+    var display = field != null ? field.Attribute("display") : null;
     var dbValue = Model.Value;
-    String valueDisplayName = "";
-    if (display != null)
-    {
-        valueDisplayName = display.Value;
-    }
-    else
-    {
-        valueDisplayName = name != null ? name.Value : "";
-    }
+    var valueDisplayName = display != null ? display.Value : (name != null ? name.Value : "");
+    var fieldKey = name != null ? name.Value : "";
+    var tipText = "Evet/Hayır alanı. İşaretli = Evet (true), boş = Hayır (false).";
+    var isChecked = ProductSpecificationValueHelper.IsTruthyCheckboxValue(dbValue);
 }
 
 <div class="form-group">
     <div class="col-md-2">
-        @valueDisplayName
+        <label class="control-label" for="spec_@fieldKey" style="text-align:left;">
+            @valueDisplayName
+            <span class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" tabindex="0">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </span>
+        </label>
+        <div class="admin-spec-field-meta">evet / hayır</div>
     </div>
     <div class="col-md-5">
-        @if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals("on"))
-        {
-        <input name="@name.Value" class="form-control" checked="checked" type="checkbox" />
-        }
-        else
-        {
-        <input name="@name.Value" class="form-control" type="checkbox" />
-        }
+        <input id="spec_@fieldKey" name="@fieldKey" type="checkbox" value="true"
+               @(isChecked ? "checked=\"checked\"" : null)
+               title="@tipText" style="margin-top:8px;" />
+        <span class="admin-field-help">İşaretli → sitede <strong>Evet</strong>. İşaretsiz → <strong>Hayır</strong>.</span>
     </div>
     <div class="col-md-1">
         @if (unit != null)
-            {
-        @unit.Value
+        {
+            <span class="help-block" style="margin-top:8px;">@unit.Value</span>
         }
     </div>
 </div>

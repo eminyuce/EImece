@@ -777,9 +777,7 @@ namespace EImece.Domain.Services
                     var unit = field.Attribute("unit");
                     var values = field.Attribute("values");
 
-                    var value = request.Unvalidated.Form.Get(name.Value);
-
-                    //   var value = request.Form[name.Value];
+                    var value = ReadSpecFormValue(request, field, name != null ? name.Value : null);
 
                     if (name != null)
                     {
@@ -790,7 +788,7 @@ namespace EImece.Domain.Services
                         p.Unit = unit.Value;
                     }
 
-                    p.Value = value;
+                    p.Value = NormalizeSpecFieldValue(field, value);
                     Specifications.Add(p);
                 }
             }
@@ -823,9 +821,7 @@ namespace EImece.Domain.Services
                     var unit = field.Attribute("unit");
                     var values = field.Attribute("values");
 
-                    var value = request.Unvalidated.Form.Get(name.Value);
-
-                    //   var value = request.Form[name.Value];
+                    var value = ReadSpecFormValue(request, field, name != null ? name.Value : null);
 
                     if (name != null)
                     {
@@ -836,12 +832,57 @@ namespace EImece.Domain.Services
                         p.Unit = unit.Value;
                     }
 
-                    p.Value = value;
+                    p.Value = NormalizeSpecFieldValue(field, value);
                     Specifications.Add(p);
                 }
             }
 
             await SaveProductSpecificationsAsync(Specifications, productId).ConfigureAwait(false);
+        }
+
+        private static string ReadSpecFormValue(HttpRequestBase request, XElement field, string fieldName)
+        {
+            if (string.IsNullOrEmpty(fieldName) || request == null)
+            {
+                return null;
+            }
+
+            if (ProductSpecificationFieldHelper.IsMultiSelectField(field))
+            {
+                var posted = request.Unvalidated.Form.GetValues(fieldName);
+                if (posted != null && posted.Length > 0)
+                {
+                    return ProductSpecificationFieldHelper.NormalizeMultiSelectStorageValue(posted);
+                }
+
+                // Form.Get joins multi-values with commas when GetValues is unavailable.
+                return ProductSpecificationFieldHelper.NormalizeMultiSelectStorageValue(
+                    request.Unvalidated.Form.Get(fieldName));
+            }
+
+            return request.Unvalidated.Form.Get(fieldName);
+        }
+
+        private static string NormalizeSpecFieldValue(XElement field, string value)
+        {
+            if (ProductSpecificationValueHelper.IsCheckboxField(field))
+            {
+                return ProductSpecificationValueHelper.NormalizeCheckboxStorageValue(value);
+            }
+
+            if (ProductSpecificationFieldHelper.IsMultiSelectField(field))
+            {
+                return ProductSpecificationFieldHelper.NormalizeMultiSelectStorageValue(value);
+            }
+
+            if (ProductSpecificationFieldHelper.IsDateTimeField(field))
+            {
+                return ProductSpecificationFieldHelper.NormalizeDateTimeStorageValue(
+                    value,
+                    ProductSpecificationFieldHelper.IncludeTime(field));
+            }
+
+            return value;
         }
 
         public void MoveProductsInTrees(int newCategoryId, String products)

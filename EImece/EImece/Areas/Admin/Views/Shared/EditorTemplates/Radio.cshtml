@@ -1,0 +1,75 @@
+@using System
+@using System.Linq
+@using System.Xml.Linq
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@model ProductSpecification
+
+@{
+    var field = Model != null ? Model.FieldFormat : null;
+    var name = field != null ? field.Attribute("name") : null;
+    var unit = field != null ? field.Attribute("unit") : null;
+    var values = field != null ? field.Attribute("values") : null;
+    var display = field != null ? field.Attribute("display") : null;
+    var dbValue = Model != null ? Model.Value : null;
+    var valueDisplayName = display != null ? display.Value : (name != null ? name.Value : "");
+    var fieldKey = name != null ? name.Value : "";
+    var listName = values != null ? values.Value : "";
+    var tipText = string.IsNullOrEmpty(listName)
+        ? "Tek seçimli radyo düğmeleri."
+        : ("Radyo seçenekleri \"" + listName + "\" listesinden / değerlerinden gelir.");
+    var options = ProductSpecificationFieldHelper.ResolveOptions(listName, dbValue);
+    var listMissing = !string.IsNullOrEmpty(listName) && listName.IndexOf(',') < 0 && !options.Any();
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        <label class="control-label" style="text-align:left;">
+            @valueDisplayName
+            <span class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" tabindex="0">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </span>
+        </label>
+        <div class="admin-spec-field-meta">radyo düğmeleri</div>
+    </div>
+    <div class="col-md-8">
+        @if (options.Any())
+        {
+            <div class="admin-spec-radio-list" role="radiogroup" aria-label="@valueDisplayName">
+                @foreach (var opt in options)
+                {
+                    var optId = "spec_" + fieldKey + "_" + (opt.Value ?? "").GetHashCode().ToString("x");
+                    <label class="admin-spec-radio-item" for="@optId">
+                        <input id="@optId" type="radio" name="@fieldKey" value="@opt.Value"
+                               @(opt.Selected ? "checked=\"checked\"" : null) title="@tipText" />
+                        <span>@opt.Text</span>
+                    </label>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning" style="margin-bottom:0;">
+                Seçenek yok. Şablonda <code>values</code> tanımlayın
+                (<a href="@Url.Action("Index", "Lists")" target="_blank">Değer listeleri</a>
+                veya virgüllü liste: <code>values="A, B, C"</code>).
+            </div>
+        }
+        <span class="admin-field-help">
+            @if (!string.IsNullOrEmpty(listName))
+            {
+                <text>Kaynak: <code>@listName</code></text>
+                if (listMissing)
+                {
+                    <text> · liste bulunamadı</text>
+                }
+            }
+        </span>
+    </div>
+    <div class="col-md-1">
+        @if (unit != null)
+        {
+            <span class="help-block" style="margin-top:8px;">@unit.Value</span>
+        }
+    </div>
+</div>

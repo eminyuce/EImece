@@ -1,0 +1,51 @@
+@using System
+@using System.Xml.Linq
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@model ProductSpecification
+
+@{
+    var field = Model != null ? Model.FieldFormat : null;
+    var name = field != null ? field.Attribute("name") : null;
+    var unit = field != null ? field.Attribute("unit") : null;
+    var display = field != null ? field.Attribute("display") : null;
+    var dbValue = Model != null ? Model.Value : null;
+    var valueDisplayName = display != null ? display.Value : (name != null ? name.Value : "");
+    var fieldKey = name != null ? name.Value : "";
+    var allowsHtml = ProductSpecificationFieldHelper.AllowsHtml(field);
+    var tipText = allowsHtml
+        ? "Çok satırlı alan. HTML girebilirsiniz (ör. <b>kalın</b>, <br>). Sitede HTML olarak gösterilir."
+        : "Çok satırlı metin alanı.";
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        <label class="control-label" for="spec_@fieldKey" style="text-align:left;">
+            @valueDisplayName
+            <span class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" tabindex="0">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </span>
+        </label>
+        <div class="admin-spec-field-meta">metin alanı@(allowsHtml ? " · HTML" : "")</div>
+    </div>
+    <div class="col-md-8">
+        <textarea id="spec_@fieldKey" name="@fieldKey" class="form-control" rows="5"
+                  title="@tipText" placeholder="@(allowsHtml ? "HTML veya metin girin…" : "Metin girin…")">@dbValue</textarea>
+        <span class="admin-field-help">
+            @if (allowsHtml)
+            {
+                <text>HTML kabul edilir. Örn: <code>&lt;b&gt;kalın&lt;/b&gt;</code>, <code>&lt;ul&gt;&lt;li&gt;…&lt;/li&gt;&lt;/ul&gt;</code></text>
+            }
+            else
+            {
+                <text>Çok satırlı düz metin.</text>
+            }
+        </span>
+    </div>
+    <div class="col-md-1">
+        @if (unit != null)
+        {
+            <span class="help-block" style="margin-top:8px;">@unit.Value</span>
+        }
+    </div>
+</div>

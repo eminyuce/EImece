@@ -191,8 +191,9 @@ namespace EImece.Domain.Models.FrontModels
                 orderby t2.Position, t2.UpdatedDate
                 select t2;
                 List<Brand> brands = brandsWithProducts.Distinct().ToList();
-                // A single brand is not a useful filter choice for end users.
-                if (brands.Count > 1)
+                // Keep brand filters available so product-detail brand links (filtreler=b{id})
+                // can show the active filter chip even when only one brand exists.
+                if (brands.Count >= 1)
                 {
                     categoryFilterHelper.AddBrandFilter(categoryFilterTypes, brands);
                 }

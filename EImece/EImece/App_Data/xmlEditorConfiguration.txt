@@ -1,4 +1,4 @@
-//componentList: textbox, dropdown,checkbox
+//componentList: textbox, textarea, dropdown, radio, checkbox, multiselect, checkboxes, datetime, date
 textbox:{
     attrs:{
                 name: textboxnames,
@@ -6,6 +6,15 @@ textbox:{
                 values: textboxvalues,
 				display:textboxnames
 
+            },
+            children: null
+},
+textarea:{
+    attrs:{
+                name: textareanames,
+                unit: textareaunits,
+                display:textareanames,
+                html: truefalse
             },
             children: null
 },
@@ -18,12 +27,56 @@ dropdown:{
             },
             children: null
 },
+radio:{
+    attrs:{
+                name: radionames,
+                unit: radiounits,
+                values: radiovalues,
+				display:radionames
+            },
+            children: null
+},
 checkbox:{
     attrs:{
                 name: checkboxnames,
                 unit: checkboxunits,
                 values: checkboxvalues,
 				display:checkboxnames
+            },
+            children: null
+},
+multiselect:{
+    attrs:{
+                name: multiselectnames,
+                unit: multiselectunits,
+                values: multiselectvalues,
+				display:multiselectnames
+            },
+            children: null
+},
+checkboxes:{
+    attrs:{
+                name: checkboxesnames,
+                unit: checkboxesunits,
+                values: checkboxesvalues,
+				display:checkboxesnames
+            },
+            children: null
+},
+datetime:{
+    attrs:{
+                name: datetimenames,
+                unit: datetimeunits,
+                display:datetimenames,
+                time: truefalse
+            },
+            children: null
+},
+date:{
+    attrs:{
+                name: datenames,
+                unit: dateunits,
+                display:datenames
             },
             children: null
 }

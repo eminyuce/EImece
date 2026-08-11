@@ -25,6 +25,12 @@
 <h2>@AdminResource.ProductSpecTemplateItemList</h2>
 <hr class="adminLine" />
 
+<div class="admin-workflow-callout">
+    <strong>Değer listeleri</strong> şablonlardaki açılır menü seçenekleridir.
+    Yeni kayıtta <em>Rastgele örnek liste oluştur</em> kullanın; liste adı şablondaki <code>values="..."</code> ile aynı olmalı.
+    Sonraki adım: <a href="@Url.Action("Index", "Templates")">Şablonlar</a>.
+</div>
+
 <div class="panel panel-info">
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}

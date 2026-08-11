@@ -1,0 +1,16 @@
+@{
+    var tipText = ViewData["TipText"] as string ?? "";
+    var tipPlacement = ViewData["TipPlacement"] as string ?? "top";
+}
+@if (!string.IsNullOrWhiteSpace(tipText))
+{
+    <span class="admin-field-tip"
+          data-toggle="tooltip"
+          data-placement="@tipPlacement"
+          title="@tipText"
+          tabindex="0"
+          role="img"
+          aria-label="@tipText">
+        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+    </span>
+}

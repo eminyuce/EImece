@@ -5,6 +5,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using Resources;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
@@ -13,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using ListEntity = EImece.Domain.Entities.List;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -37,6 +39,7 @@ namespace EImece.Areas.Admin.Controllers
             TempData[ProductSpescUrl] = Request.UrlReferrer.ToStr();
             var template = EntityFactory.GetBaseEntityInstance<Template>();
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor(id);
+            PopulateTemplateBuilderListNames();
             if (id == 0)
             {
             }
@@ -68,6 +71,7 @@ namespace EImece.Areas.Admin.Controllers
                         {
                             ModelState.AddModelError("TemplateXml", "XDocument format exception while parsing it:" + ex.Message);
                             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
+                            PopulateTemplateBuilderListNames();
                             return View(template);
                         }
                     }
@@ -94,7 +98,28 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
+            PopulateTemplateBuilderListNames();
             return View(template);
+        }
+
+        private void PopulateTemplateBuilderListNames()
+        {
+            try
+            {
+                var lists = ListService.GetListItems() ?? Enumerable.Empty<ListEntity>();
+                ViewBag.ListNames = lists
+                    .Where(r => r != null && r.IsActive && r.IsValues && !string.IsNullOrWhiteSpace(r.Name))
+                    .OrderBy(r => r.Position)
+                    .ThenBy(r => r.Name)
+                    .Select(r => r.Name)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Unable to load list names for template builder");
+                ViewBag.ListNames = new List<string>();
+            }
         }
 
         [HttpPost, ActionName("Delete")]

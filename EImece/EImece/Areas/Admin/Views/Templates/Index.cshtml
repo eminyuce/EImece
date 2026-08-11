@@ -24,6 +24,12 @@
 <h2>@AdminResource.Templates</h2>
 <hr class="adminLine" />
 
+<div class="admin-workflow-callout">
+    <strong>Şablonlar</strong> ürün ek özellik formlarını tanımlar (XML).
+    Yeni kayıt açıp <em>Rastgele örnek şablon oluştur</em> ile başlayabilirsiniz.
+    Dropdown için önce <a href="@Url.Action("Index", "Lists")">Değer listeleri</a> tanımlayın.
+</div>
+
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
         {"controllerName",controllerName}
                   ,{"StateTypes","State"}

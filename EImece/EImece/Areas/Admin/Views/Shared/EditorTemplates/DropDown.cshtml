@@ -1,80 +1,134 @@
-﻿@using System.Xml;
-@using System.Linq;
-@using System.Text;
-@using System.Xml.Linq;
-@using EImece.Domain.Entities;
-@using EImece.Domain.Services.IServices;
-
+﻿@using System
+@using System.Linq
+@using System.Xml.Linq
+@using EImece.Domain.Entities
+@using EImece.Domain.Services.IServices
 @model ProductSpecification
 
 @{
-    var field = Model.FieldFormat;
-    var name = field.Attribute("name");
-    var unit = field.Attribute("unit");
-    var values = field.Attribute("values");
-    var display = field.Attribute("display");
-    var dbValue = Model.Value;
-    String valueDisplayName = "";
-    if (display != null)
+    var field = Model != null ? Model.FieldFormat : null;
+    var name = field != null ? field.Attribute("name") : null;
+    var unit = field != null ? field.Attribute("unit") : null;
+    var values = field != null ? field.Attribute("values") : null;
+    var display = field != null ? field.Attribute("display") : null;
+    var dbValue = Model != null ? Model.Value : null;
+    var valueDisplayName = display != null ? display.Value : (name != null ? name.Value : "");
+    var fieldKey = name != null ? name.Value : "";
+    var listName = values != null ? values.Value : "";
+    var tipText = string.IsNullOrEmpty(listName)
+        ? "Açılır liste alanı."
+        : ("Açılır liste. Seçenekler \"" + listName + "\" değer listesinden gelir.");
+
+    EImece.Domain.Entities.List list = null;
+    var listMissing = false;
+    var inlineOptions = new string[0];
+
+    if (field != null && values != null && !string.IsNullOrWhiteSpace(values.Value))
     {
-        valueDisplayName = display.Value;
-    }
-    else
-    {
-        valueDisplayName = name != null ? name.Value : "";
+        if (values.Value.IndexOf(',') >= 0)
+        {
+            inlineOptions = values.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(v => v.Trim())
+                .Where(v => v.Length > 0)
+                .ToArray();
+        }
+        else
+        {
+            try
+            {
+                var listService = DependencyResolver.Current.GetService<IListService>();
+                if (listService != null)
+                {
+                    list = listService.GetListByName(values.Value);
+                }
+            }
+            catch
+            {
+                list = null;
+            }
+            listMissing = list == null || list.ListItems == null || !list.ListItems.Any();
+            if (listMissing)
+            {
+                inlineOptions = new[] { values.Value.Trim() };
+            }
+        }
     }
 }
 
-<div class="form-group">
-    <div class="col-md-2">
-        @valueDisplayName
+@if (field == null)
+{
+    <div class="form-group">
+        <div class="col-md-10 col-md-offset-2">
+            <div class="alert alert-danger" style="margin-bottom:0;">Dropdown alanı için şablon XML bilgisi eksik.</div>
+        </div>
     </div>
-    <div class="col-md-5">
-        @if (values != null)
-        {
-        <select class="form-control" name="@name.Value">
-            @{
-                    var listService = DependencyResolver.Current.GetService<IListService>();
-                    var list = listService.GetListByName(values.Value);
-                    if (list != null)
+}
+else
+{
+    <div class="form-group">
+        <div class="col-md-2">
+            <label class="control-label" for="spec_@fieldKey" style="text-align:left;">
+                @valueDisplayName
+                <span class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" tabindex="0">
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                </span>
+            </label>
+            <div class="admin-spec-field-meta">açılır liste</div>
+        </div>
+        <div class="col-md-5">
+            <select id="spec_@fieldKey" class="form-control" name="@fieldKey" title="@tipText">
+                <option value="">— Seçiniz —</option>
+                @if (list != null && list.ListItems != null)
+                {
+                    foreach (var item in list.ListItems.OrderBy(i => i.Position))
                     {
-                        foreach (var item in list.ListItems)
+                        var selected = !string.IsNullOrEmpty(dbValue)
+                            && dbValue.Equals((item.Value ?? "").Trim(), StringComparison.InvariantCultureIgnoreCase);
+                        if (selected)
                         {
-                            if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(item.Value.Trim(), StringComparison.InvariantCultureIgnoreCase))
-                            {
-                <option value="@item.Value" selected="selected">@item.Name</option>
-                            }
-                            else
-                            {
-                <option value="@item.Value">@item.Name</option>
-                            }
+                            <option value="@item.Value" selected="selected">@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Name</option>
                         }
                     }
-                    else
+                }
+                else
+                {
+                    foreach (var v in inlineOptions)
                     {
-
-                        foreach (var v in values.Value.Split(",".ToCharArray()))
+                        if (!string.IsNullOrEmpty(dbValue) && dbValue.Equals(v, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            if (!String.IsNullOrEmpty(dbValue) && dbValue.Equals(v))
-                            {
-                <option selected="selected">@v</option>
-                            }
-                            else
-                            {
-                <option>@v</option>
-                            }
+                            <option value="@v" selected="selected">@v</option>
                         }
-
+                        else
+                        {
+                            <option value="@v">@v</option>
+                        }
                     }
-            }
-        </select>
-
+                }
+            </select>
+            <span class="admin-field-help">
+                @if (!string.IsNullOrEmpty(listName))
+                {
+                    <text>Kaynak liste: <code>@listName</code></text>
+                    if (listMissing)
+                    {
+                        <text> · liste bulunamadı — <a href="@Url.Action("Index", "Lists")" target="_blank">Değer listeleri</a> oluşturun (ad birebir aynı olmalı).</text>
                     }
-    </div>
-    <div class="col-md-1">
-        @if (unit != null)
+                }
+                else
+                {
+                    <text>Şablonda <code>values="ListeAdi"</code> eksik.</text>
+                }
+            </span>
+        </div>
+        <div class="col-md-1">
+            @if (unit != null)
             {
-        @unit.Value
-        }
+                <span class="help-block" style="margin-top:8px;">@unit.Value</span>
+            }
+        </div>
     </div>
-</div>
+}

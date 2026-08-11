@@ -43,9 +43,22 @@ namespace EImece.Domain.Repositories
 
         public List GetListByName(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ListItems);
-            var item = FindAllIncluding(r => r.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            // EF6 cannot translate StringComparison overloads; compare lowercased strings in SQL instead.
+            var nameLower = name.Trim().ToLower();
+            var item = FindAllIncluding(
+                r => r.Name != null && r.Name.ToLower() == nameLower,
+                r => r.Position,
+                OrderByType.Ascending,
+                null,
+                null,
+                includeProperties.ToArray());
             return item.FirstOrDefault();
         }
     }
