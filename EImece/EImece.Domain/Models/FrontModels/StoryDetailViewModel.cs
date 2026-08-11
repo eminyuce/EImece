@@ -23,5 +23,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public Story PreviousStory  { get; set; }
         public Story NextStory { get; set; }
+
+        public Dictionary<string, string> SocialMediaLinks { get; set; }
     }
 }

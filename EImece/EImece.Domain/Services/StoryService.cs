@@ -153,6 +153,7 @@ namespace EImece.Domain.Services
                 .ThenBy(t => t.Name)
                 .ToList();
             result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
+            result.SocialMediaLinks = CreateStoryShareLinks(result.Story);
             return result;
         }
 
@@ -185,7 +186,24 @@ namespace EImece.Domain.Services
                 .ThenBy(t => t.Name)
                 .ToList();
             result.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
+            result.SocialMediaLinks = CreateStoryShareLinks(result.Story);
             return result;
+        }
+
+        private Dictionary<string, string> CreateStoryShareLinks(Story story)
+        {
+            if (story == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            var imageUrl = string.Empty;
+            if (story.MainImageId.HasValue)
+            {
+                imageUrl = story.GetCroppedImageUrl(story.MainImageId, 1000, 0, true) ?? string.Empty;
+            }
+
+            return SettingService.CreateShareableSocialMediaLinks(story.DetailPageUrl, story.Name, imageUrl);
         }
 
         public async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int language, CancellationToken cancellationToken = default(CancellationToken))

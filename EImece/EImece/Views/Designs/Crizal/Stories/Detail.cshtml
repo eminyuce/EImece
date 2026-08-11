@@ -24,8 +24,6 @@
         .ToDictionary(g => g.Key, g => g.First().ItemCount);
     var heroImageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
     var heroUrl = heroImageId > 0 ? story.GetCroppedImageUrl(heroImageId, 1200, 675) : null;
-    var shareUrl = Request.Url != null ? Request.Url.AbsoluteUri : story.DetailPageUrl;
-    var shareText = Uri.EscapeDataString(story.Name ?? "");
 }
 
 <section class="crizal-story-detail">
@@ -215,18 +213,10 @@
                         </div>
                     }
 
-                    <div class="crizal-story-share">
-                        <span>@Resource.ShareProduct</span>
-                        <a class="crizal-story-share__btn" href="https://www.facebook.com/sharer/sharer.php?u=@Uri.EscapeDataString(shareUrl)" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                        </a>
-                        <a class="crizal-story-share__btn" href="https://twitter.com/intent/tweet?url=@Uri.EscapeDataString(shareUrl)&text=@shareText" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                            <i class="fab fa-twitter" aria-hidden="true"></i>
-                        </a>
-                        <a class="crizal-story-share__btn" href="https://pinterest.com/pin/create/button/?url=@Uri.EscapeDataString(shareUrl)&description=@shareText" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
-                            <i class="fab fa-pinterest-p" aria-hidden="true"></i>
-                        </a>
-                    </div>
+                    @if (Model.SocialMediaLinks.IsNotEmpty())
+                    {
+                        @Html.Partial("_SocialMediaShareLinks", EImece.Domain.Models.FrontModels.ShareLinksViewModel.Create(Model.SocialMediaLinks, Resource.SharePost))
+                    }
                 </div>
 
                 <nav class="crizal-story-nav@(Model.PreviousStory == null && Model.NextStory != null ? " crizal-story-nav--end" : (Model.PreviousStory != null && Model.NextStory == null ? " crizal-story-nav--start" : ""))" aria-label="@Resource.PostNavigation">

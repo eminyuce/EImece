@@ -1,5 +1,7 @@
 ﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.FrontModels;
+@using Resources;
 @{
     var menu = Model.Menu;
     ViewBag.Title = string.Format("{0} {1}", Model.CompanyName.SettingValue, menu.GetSeoTitle());
@@ -9,3 +11,9 @@
     var selectedPagePath = "PageThemes/PageTheme_" + menu.PageTheme;
 }
 @Html.Partial(selectedPagePath, Model)
+@if (Model.SocialMediaLinks.IsNotEmpty())
+{
+    <div class="container pb-4">
+        @Html.Partial("_SocialMediaShareLinks", ShareLinksViewModel.Create(Model.SocialMediaLinks, Resource.SharePage))
+    </div>
+}

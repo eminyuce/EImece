@@ -19,7 +19,6 @@
 @{
     var product = Model.Product;
     ProductState productState = product.StateEnum;
-    var sharedSocialLinks = Model.SocialMediaLinks;
     var ProductSizeOptions = Regex.Split(product.ProductSizeOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
     var ProductColorOptions = Regex.Split(product.ProductColorOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
 
@@ -437,7 +436,7 @@
 
             @if (Model.SocialMediaLinks.IsNotEmpty())
             {
-                @CreateSocialMediaLinks(Model.SocialMediaLinks)
+                @Html.Partial("_SocialMediaShareLinks", ShareLinksViewModel.Create(Model.SocialMediaLinks, Resource.ShareProduct))
             }
         </div>
     </div>
@@ -752,10 +751,6 @@
 }
 
 @functions {
-    public static bool ContainsValue(Dictionary<String, String> dic, String key)
-    {
-        return dic.ContainsKey(key) && !string.IsNullOrEmpty(dic[key]);
-    }
     // Split the videoUrl by common delimiters (e.g., comma, semicolon, or newline)
     public static List<string> SplitByCommaOrSemicolonOrNewline(string videoUrl)
     {
@@ -791,37 +786,6 @@
 
         return "";
     }
-}
-
-@helper CreateSocialMediaLinks(Dictionary<string, string> sharedSocialLinks)
-{
-    <div class="py-4">
-        <span class="d-inline-block align-middle font-size-sm mr-3 mb-2">@Resource.ShareProduct:</span>
-        @if (ContainsValue(sharedSocialLinks, Constants.InstagramWebSiteLink))
-        {
-            <a class="social-btn sb-instagram mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.InstagramWebSiteLink]">
-                <i class="flaticon-instagram"></i>
-            </a>
-        }
-        @if (ContainsValue(sharedSocialLinks, Constants.FacebookWebSiteLink))
-        {
-            <a class="social-btn sb-facebook mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.FacebookWebSiteLink]">
-                <i class="flaticon-facebook"></i>
-            </a>
-        }
-        @if (ContainsValue(sharedSocialLinks, Constants.TwitterWebSiteLink))
-        {
-            <a class="social-btn sb-twitter mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.TwitterWebSiteLink]">
-                <i class="flaticon-twitter"></i>
-            </a>
-        }
-        @if (ContainsValue(sharedSocialLinks, Constants.PinterestWebSiteLink))
-        {
-            <a class="social-btn sb-pinterest mr-2 mb-2" target="_blank" href="@sharedSocialLinks[Constants.PinterestWebSiteLink]">
-                <i class="flaticon-pinterest"></i>
-            </a>
-        }
-    </div>
 }
 
 @helper RelatedProductItem(Product product)

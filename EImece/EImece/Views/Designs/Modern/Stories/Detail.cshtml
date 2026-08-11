@@ -174,18 +174,10 @@
                 }
 
                 <div class="mt-3">
-                    <span class="d-inline-block align-middle text-muted font-size-sm mr-2 mb-2">
-                        Share post:
-                    </span>
-                    <a class="social-btn sb-facebook mr-2 mb-2" href="#">
-                        <i class="flaticon-facebook"></i>
-                    </a>
-                    <a class="social-btn sb-twitter mr-2 mb-2" href="#">
-                        <i class="flaticon-twitter"></i>
-                    </a>
-                    <a class="social-btn sb-pinterest mr-2 mb-2" href="#">
-                        <i class="flaticon-pinterest"></i>
-                    </a>
+                    @if (Model.SocialMediaLinks.IsNotEmpty())
+                    {
+                        @Html.Partial("_SocialMediaShareLinks", EImece.Domain.Models.FrontModels.ShareLinksViewModel.Create(Model.SocialMediaLinks, Resource.SharePost, true))
+                    }
                 </div>
             </div>
 
