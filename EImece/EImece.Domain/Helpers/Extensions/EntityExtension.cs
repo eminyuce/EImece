@@ -241,6 +241,10 @@ namespace EImece.Domain.Helpers.Extensions
                 var SettingService = DependencyResolver.Current.GetService<ISettingService>();
                 result = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
             }
+            if (string.IsNullOrEmpty(result) && entity != null)
+            {
+                result = entity.Name.ToStr(length);
+            }
             return result;
         }
 

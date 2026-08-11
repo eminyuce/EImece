@@ -3764,7 +3764,7 @@ body[data-design="crizal"] .steps .step .step-indicator svg {
 
 body[data-design="crizal"] .steps .step.step-active {
     color: #fff;
-    background: linear-gradient(135deg, #0aad4a 0%, var(--crizal-primary, #09b850) 100%);
+    background: linear-gradient(135deg, #0aad4a 0%, var(--crizal-primary, #067a36) 100%);
     border-color: transparent;
     box-shadow: 0 8px 18px rgba(9, 184, 80, 0.22);
 }
@@ -3781,7 +3781,7 @@ body[data-design="crizal"] .steps .step.step-done {
 }
 
 body[data-design="crizal"] .steps .step.step-done .step-indicator {
-    color: var(--crizal-primary, #09b850);
+    color: var(--crizal-primary, #067a36);
     font-size: 0.75rem;
 }
 
@@ -3812,7 +3812,7 @@ body[data-design="crizal"] .line-title::after {
     bottom: -2px;
     width: 3.25rem;
     height: 2px;
-    background: var(--crizal-primary, #09b850);
+    background: var(--crizal-primary, #067a36);
 }
 
 body[data-design="crizal"] .line-title h2,
@@ -3839,7 +3839,7 @@ body[data-design="crizal"] .crizal-cart-total__grand th,
 body[data-design="crizal"] .crizal-cart-total__grand td {
     padding-top: 0.85rem !important;
     font-size: 1.15rem;
-    color: var(--crizal-primary, #09b850) !important;
+    color: var(--crizal-primary, #067a36) !important;
     border-top: 1px solid var(--crizal-border, #e5e8ec);
 }
 
@@ -3872,7 +3872,7 @@ body[data-design="crizal"] .butn-style8.outline:hover {
 /* Product detail: brand as filter link */
 body[data-design="crizal"] .crizal-product-brand-link {
     font-weight: 700;
-    color: var(--crizal-primary, #09b850);
+    color: var(--crizal-primary, #067a36);
     text-decoration: none;
     border-bottom: 1px solid rgba(9, 184, 80, 0.35);
 }

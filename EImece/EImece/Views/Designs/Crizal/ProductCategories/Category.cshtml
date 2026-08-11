@@ -22,7 +22,20 @@
 
     ViewBag.Title = category.GetSeoTitle();
     ViewBag.Keywords = category.GetSeoKeywords();
-    ViewBag.Description = category.GetSeoDescription();
+    var seoDescription = GeneralHelper.GetDescriptionWithBody(category.Description, 150);
+    if (string.IsNullOrWhiteSpace(seoDescription))
+    {
+        seoDescription = GeneralHelper.GetDescriptionWithBody(category.ShortDescription, 150);
+    }
+    if (string.IsNullOrWhiteSpace(seoDescription))
+    {
+        seoDescription = category.GetSeoDescription();
+    }
+    if (string.IsNullOrWhiteSpace(seoDescription))
+    {
+        seoDescription = category.Name;
+    }
+    ViewBag.Description = seoDescription;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var productPriceEnabled = Model.IsProductPriceEnabled;
     var productReviewEnabled = Model.IsProductReviewEnabled;
@@ -220,7 +233,7 @@
     if (categoryFilter.FilterTypeName.FilterType == FilterType.Rating)
     {
         <div class="widget crizal-filter-widget mb-4">
-            <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
+            <h2 class="widget-title">@categoryFilter.FilterTypeName.Text</h2>
             <div class="crizal-rating-filters">
                 @foreach (var filter in categoryFilter.CategoryFilters.OrderByDescending(f => f.rating))
                 {
@@ -250,7 +263,7 @@
     else
     {
         <div class="widget crizal-filter-widget mb-4">
-            <h3 class="widget-title">@categoryFilter.FilterTypeName.Text</h3>
+            <h2 class="widget-title">@categoryFilter.FilterTypeName.Text</h2>
             <div class="crizal-filter-list">
                 @foreach (var filter in categoryFilter.CategoryFilters)
                 {
@@ -271,7 +284,7 @@
         if (categoryFilter.FilterTypeName.FilterType == FilterType.Price)
         {
             <div class="widget crizal-filter-widget mb-4">
-                <h3 class="widget-title">@Resource.FilterByPrice</h3>
+                <h2 class="widget-title">@Resource.FilterByPrice</h2>
                 <div class="crizal-price-range">
                     <input class="form-control" type="text" inputmode="numeric" id="minPriceOrginal" placeholder="Min TL" value="@Model.MinPrice" title="Lütfen bir tam sayı giriniz" aria-label="Min TL">
                     <span class="crizal-price-range__sep" aria-hidden="true">&ndash;</span>

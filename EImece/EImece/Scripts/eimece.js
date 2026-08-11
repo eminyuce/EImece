@@ -305,27 +305,30 @@ function randomString(length, chars) {
 }
 
 
-// Event handler when the user selects a city
-$("#Cities").change(function (e) {
-    var cityName = e.target.value;
-    GetTownsByCity(cityName, null, null);
-    $("#SelectedCity").val(cityName);  // Selected city
-});
-// Event handler when the user selects a town
-$("#Towns").change(function (e) {
-    var townName = e.target.value;
-    var cityName = $("#Cities").val();
-    GetDistrictsByTown(cityName, townName);
-    $("#SelectedCity").val(cityName);  // Selected city
-    $("#SelectedTown").val(townName);  // Selected town
-});
-$("#Districts").change(function (e) {
-    var districtName = e.target.value;
-    $("#SelectedDistrict").val(districtName);
-});
+// Address dropdowns only exist on checkout/account pages — skip city Ajax elsewhere
+if ($("#Cities").length) {
+    // Event handler when the user selects a city
+    $("#Cities").change(function (e) {
+        var cityName = e.target.value;
+        GetTownsByCity(cityName, null, null);
+        $("#SelectedCity").val(cityName);  // Selected city
+    });
+    // Event handler when the user selects a town
+    $("#Towns").change(function (e) {
+        var townName = e.target.value;
+        var cityName = $("#Cities").val();
+        GetDistrictsByTown(cityName, townName);
+        $("#SelectedCity").val(cityName);  // Selected city
+        $("#SelectedTown").val(townName);  // Selected town
+    });
+    $("#Districts").change(function (e) {
+        var districtName = e.target.value;
+        $("#SelectedDistrict").val(districtName);
+    });
 
-// Initially fetch cities, towns, and districts
-GetIller();
+    // Initially fetch cities, towns, and districts
+    GetIller();
+}
 
 // Function to get all cities
 function GetIller() {

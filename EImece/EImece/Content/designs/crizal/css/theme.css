@@ -1,16 +1,16 @@
 /* Crizal design tokens (single source of truth) */
 body[data-design="crizal"] {
-    --crizal-primary: #09b850;
+    --crizal-primary: #067a36;
     --crizal-secondary: #14212B;
     --crizal-heading: #14212B;
     --crizal-text: #575a7b;
-    --crizal-muted: #7a7d9a;
+    --crizal-muted: #5c5f7a;
     --crizal-background: #ffffff;
     --crizal-surface: #ffffff;
     --crizal-surface-alt: #f4f5f9;
     --crizal-border: #e6e8ef;
     --crizal-border-light: rgba(255, 255, 255, 0.15);
-    --crizal-sale: #ff214f;
+    --crizal-sale: #c9113a;
     --crizal-font: "Plus Jakarta Sans", Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --crizal-radius: 4px;
     --crizal-radius-sm: 3px;
@@ -66,7 +66,7 @@ body[data-design="crizal"] .home-stories-widget .media {
 
 /* Legacy contact-style01 fallback (superseded by .crizal-cta-band) */
 body[data-design="crizal"] .contact-style01 .bg-primary.bg {
-    background-color: var(--crizal-primary, #09b850) !important;
+    background-color: var(--crizal-primary, #067a36) !important;
 }
 
 body[data-design="crizal"] footer.bg-secondary.mt-n12,
@@ -89,15 +89,15 @@ body[data-design="crizal"] .navbar-nav > li > a {
 }
 body[data-design="crizal"] .navbar-nav > li.active > a,
 body[data-design="crizal"] .navbar-nav > li.current > a {
-    color: #09b850 !important;
+    color: var(--crizal-primary) !important;
 }
 body[data-design="crizal"] .navbar > ul > li.active.has-sub > a:after,
 body[data-design="crizal"] .navbar > ul > li.current.has-sub > a:after {
-    border-color: transparent #09b850 #09b850 transparent;
+    border-color: transparent var(--crizal-primary) var(--crizal-primary) transparent;
 }
 body[data-design="crizal"] .navbar-nav li li.active > a,
 body[data-design="crizal"] .navbar-nav li li.current > a {
-    color: #09b850 !important;
+    color: var(--crizal-primary) !important;
 }
 
 /* ---------- Header layout (Playwright visual audit fixes) ----------
@@ -503,8 +503,8 @@ body[data-design="crizal"] .crizal-customer-login__forgot:hover {
 body[data-design="crizal"] .crizal-customer-login__submit {
     width: 100%;
     margin-top: 0.35rem;
-    background: var(--crizal-primary, #09b850) !important;
-    border-color: var(--crizal-primary, #09b850) !important;
+    background: var(--crizal-primary, #067a36) !important;
+    border-color: var(--crizal-primary, #067a36) !important;
     color: #fff !important;
     opacity: 1 !important;
 }

@@ -11,6 +11,25 @@ namespace EImece.App_Start
         {
             if (bundles == null) return;
 
+            // Bundle path lives under plugins/ so relative font url(../../fonts/...) resolve correctly.
+            // StyleBundle enables CssMinify (no CSS custom properties in these vendor files).
+            bundles.Add(new StyleBundle("~/Content/designs/crizal/vendor/css/plugins/crizal-plugins").Include(
+                "~/Content/designs/crizal/vendor/css/plugins/bootstrap.min.css",
+                "~/Content/designs/crizal/vendor/css/plugins/animate.css",
+                "~/Content/designs/crizal/vendor/css/plugins/animated-headline.css",
+                "~/Content/designs/crizal/vendor/css/plugins/fontawesome-all.min.css",
+                "~/Content/designs/crizal/vendor/css/plugins/et-line.css",
+                "~/Content/designs/crizal/vendor/css/plugins/themify-icons.css",
+                "~/Content/designs/crizal/vendor/css/plugins/magnific-popup.css",
+                "~/Content/designs/crizal/vendor/css/plugins/owl.carousel.css",
+                "~/Content/designs/crizal/vendor/css/plugins/owl.theme.default.css",
+                "~/Content/designs/crizal/vendor/css/plugins/odometer-theme-default.css",
+                "~/Content/designs/crizal/vendor/css/plugins/lightgallery.css",
+                "~/Content/designs/crizal/vendor/css/plugins/xzoom.css",
+                "~/Content/designs/crizal/vendor/css/plugins/default.css",
+                "~/Content/designs/crizal/vendor/css/plugins/nav-menu.css",
+                "~/Content/designs/crizal/vendor/css/plugins/prism.css"));
+
             // Plain Bundle (not StyleBundle) — WebGrease CssMinify misparses CSS custom properties (--crizal-*).
             bundles.Add(new Bundle("~/bundles/designs/crizal/vendor/css").Include(
                 "~/Content/designs/crizal/vendor/css/styles.css",
@@ -19,7 +38,8 @@ namespace EImece.App_Start
                 "~/Content/designs/crizal/css/components.css",
                 "~/Content/designs/crizal/css/responsive.css"));
 
-            bundles.Add(new Bundle("~/bundles/designs/crizal/vendor/js").Include(
+            // ScriptBundle enables JsMinify for non-.min sources (jquery, nav-menu, owl, wow, main, theme).
+            bundles.Add(new ScriptBundle("~/bundles/designs/crizal/vendor/js").Include(
                 "~/Scripts/jquery-{version}.js",
                 "~/Content/designs/crizal/vendor/js/popper.min.js",
                 "~/Content/designs/crizal/vendor/js/bootstrap.min.js",
