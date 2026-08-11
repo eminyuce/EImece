@@ -1,4 +1,5 @@
 using AutoMapper;
+using EImece.Domain;
 using EImece.Domain.ApiRepositories;
 using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
@@ -17,6 +18,7 @@ using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Services.Payment;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -276,7 +278,25 @@ namespace EImece.App_Start
 
             services.AddScopedWithProps<IEmailSender, EmailSender>();
             services.AddScopedWithProps<AdresService>();
+
+            // Payment Strategy pattern: IyzicoService is an internal detail of IyzicoPaymentStrategy.
             services.AddScopedWithProps<IyzicoService>();
+            services.AddScopedWithProps<IyzicoPaymentStrategy>();
+            services.AddScoped<IPaymentStrategy>(sp =>
+            {
+                var provider = AppConfig.PaymentProvider;
+                if (string.Equals(provider, "Iyzico", StringComparison.OrdinalIgnoreCase)
+                    || string.IsNullOrWhiteSpace(provider))
+                {
+                    return sp.GetRequiredService<IyzicoPaymentStrategy>();
+                }
+
+                throw new InvalidOperationException(
+                    "Unsupported PaymentProvider '" + provider + "'. Register a matching IPaymentStrategy implementation.");
+            });
+            services.AddScoped<PaymentContext>(sp =>
+                new PaymentContext(sp.GetRequiredService<IPaymentStrategy>()));
+
             services.AddScopedWithProps<ReportService>();
             services.AddScopedWithProps<SiteMapService>();
             services.AddScopedWithProps<UsersService>();

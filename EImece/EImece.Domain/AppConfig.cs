@@ -394,6 +394,17 @@ namespace EImece.Domain
             get { return 8; }
         }
 
+        /// <summary>
+        /// Active payment provider strategy key (e.g. "Iyzico"). Used by DI to select <c>IPaymentStrategy</c>.
+        /// </summary>
+        public static string PaymentProvider
+        {
+            get
+            {
+                return GetConfigString("PaymentProvider", "Iyzico");
+            }
+        }
+
         public static List<int> IyzicoEnabledInstallments
         {
             get

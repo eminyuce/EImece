@@ -669,6 +669,8 @@
     <Compile Include="Models\FrontModels\NavigationModel.cs" />
     <Compile Include="Models\FrontModels\PaginatedModelList.cs" />
     <Compile Include="Models\FrontModels\PaymentResultViewModel.cs" />
+    <Compile Include="Models\Payment\PaymentInitializeResult.cs" />
+    <Compile Include="Models\Payment\PaymentResult.cs" />
     <Compile Include="Models\FrontModels\ProductCategoryTreeModel.cs" />
     <Compile Include="Models\FrontModels\ProductCategoryViewModel.cs" />
     <Compile Include="Models\FrontModels\ProductDetailViewModel.cs" />
@@ -827,6 +829,9 @@
     <Compile Include="Services\CaptchaService.cs" />
     <Compile Include="Services\RecaptchaService.cs" />
     <Compile Include="Services\IyzicoService.cs" />
+    <Compile Include="Services\IServices\IPaymentStrategy.cs" />
+    <Compile Include="Services\Payment\IyzicoPaymentStrategy.cs" />
+    <Compile Include="Services\Payment\PaymentContext.cs" />
     <Compile Include="Services\ListItemService.cs" />
     <Compile Include="Services\ListService.cs" />
     <Compile Include="Services\AddressService.cs" />
