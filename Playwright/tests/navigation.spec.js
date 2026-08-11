@@ -38,18 +38,10 @@ test.describe('Crizal Navigation', () => {
     await expect(page.locator('.navbar-toggler').first()).toBeVisible();
   });
 
-  test('mobile menu dropdown covers page title (no title bleed-through)', async ({ page }) => {
+  async function assertMobileMenuCoversPageTitle(page, path) {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/');
+    await page.goto(path);
     await assertCrizalChrome(page);
-
-    // Prefer a story/tag (or any) page that renders a large in-flow page title under the header.
-    const titleLink = page.locator('a[href*="/s/"], a[href*="/c/"], a[href*="/stories"]').first();
-    if (await titleLink.count()) {
-      await titleLink.click();
-      await page.waitForLoadState('domcontentloaded');
-      await assertCrizalChrome(page);
-    }
 
     const title = page.locator('h1.crizal-story-page__title, h1.page-title, main h1').first();
     await expect(title).toBeVisible({ timeout: 15_000 });
@@ -80,7 +72,33 @@ test.describe('Crizal Navigation', () => {
     });
 
     if (!hit.skipped) {
-      expect(hit.ok, `page title painted above mobile menu: ${JSON.stringify(hit.hit)}`).toBeTruthy();
+      expect(hit.ok, `page title painted above mobile menu on ${path}: ${JSON.stringify(hit.hit)}`).toBeTruthy();
     }
+  }
+
+  test('mobile menu covers page title on home/content pages', async ({ page }) => {
+    await page.goto('/');
+    await assertCrizalChrome(page);
+
+    // Prefer a story/tag page that renders a large in-flow page title under the header.
+    const titleLink = page.locator('a[href*="/s/t/"], a[href*="/s/sc/"], a[href*="/s/"], a[href*="/c/"], a[href*="/stories"]').first();
+    if (await titleLink.count()) {
+      await titleLink.click();
+      await page.waitForLoadState('domcontentloaded');
+      await assertMobileMenuCoversPageTitle(page, page.url());
+      return;
+    }
+
+    await assertMobileMenuCoversPageTitle(page, '/');
+  });
+
+  test('mobile menu covers page title on story category pages', async ({ page }) => {
+    await page.goto('/');
+    await assertCrizalChrome(page);
+
+    const categoryLink = page.locator('a[href*="/s/sc/"]').first();
+    test.skip(!(await categoryLink.count()), 'No story category link available in this environment');
+    const href = await categoryLink.getAttribute('href');
+    await assertMobileMenuCoversPageTitle(page, href);
   });
 });
