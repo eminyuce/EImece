@@ -38,8 +38,8 @@ namespace EImece.App_Start
                 "~/Content/designs/crizal/css/components.css",
                 "~/Content/designs/crizal/css/responsive.css"));
 
-            // ScriptBundle enables JsMinify for non-.min sources (jquery, nav-menu, owl, wow, main, theme).
-            bundles.Add(new ScriptBundle("~/bundles/designs/crizal/vendor/js").Include(
+            // Plain Bundle — WebGrease JsMinify fails on modern syntax in main.js / theme.js.
+            bundles.Add(new Bundle("~/bundles/designs/crizal/vendor/js").Include(
                 "~/Scripts/jquery-{version}.js",
                 "~/Content/designs/crizal/vendor/js/popper.min.js",
                 "~/Content/designs/crizal/vendor/js/bootstrap.min.js",

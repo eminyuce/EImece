@@ -52,6 +52,20 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
+        /// <summary>
+        /// Upload is POST-only. A GET (e.g. after Refresh redirects to the prior form URL) must not 404.
+        /// </summary>
+        [HttpGet]
+        public ActionResult UploadWebSiteLogo(int id = 0)
+        {
+            if (id > 0)
+            {
+                return RedirectToAction("WebSiteLogo", new { id });
+            }
+
+            return RedirectToAction("AddWebSiteLogo");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UploadWebSiteLogo(CancellationToken cancellationToken, int id = 0, int ImageWidth = 0, int ImageHeight = 0, HttpPostedFileBase postedImage = null)
@@ -79,8 +93,8 @@ namespace EImece.Areas.Admin.Controllers
                     var result = FilesHelper.SaveImageByte(ImageWidth, ImageHeight, postedImage);
                     if (result == null || string.IsNullOrWhiteSpace(result.NewFileName))
                     {
-                        ModelState.AddModelError("", "Logo kaydedilemedi. Lütfen geçerli bir görsel seçiniz.");
-                        return View("WebSiteLogo", webSiteLogoSetting);
+                        SetErrorMessage("Logo kaydedilemedi. Lütfen geçerli bir görsel seçiniz.");
+                        return RedirectToLogoPage(id, webSiteLogoSetting);
                     }
 
                     webSiteLogoSetting.Name = Constants.WebSiteLogo;
@@ -91,22 +105,30 @@ namespace EImece.Areas.Admin.Controllers
                     webSiteLogoSetting.Position = 1;
                     webSiteLogoSetting.Lang = CurrentLanguage;
                     await SettingService.SaveOrEditEntityAsync(webSiteLogoSetting);
-                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                    RemoveModelState();
                     Logger.Info("Website logo uploaded. SettingId={0}, File={1}", webSiteLogoSetting.Id, result.NewFileName);
-                    return View("WebSiteLogo", webSiteLogoSetting);
+                    SetSuccessMessage(AdminResource.SuccessfullySavedCompleted);
+                    return RedirectToAction("WebSiteLogo", new { id = webSiteLogoSetting.Id });
                 }
                 catch (Exception ex)
                 {
                     Logger.Error(ex, "UploadWebSiteLogo failed. id={0}, file={1}", id, postedImage.FileName);
-                    ModelState.AddModelError("", "Logo yüklenirken hata oluştu: " + ex.Message);
-                    var existing = id > 0 ? await SettingService.GetSingleAsync(id) : await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
-                    return View("WebSiteLogo", existing ?? EntityFactory.GetBaseEntityInstance<Setting>());
+                    SetErrorMessage("Logo yüklenirken hata oluştu: " + ex.Message);
+                    return RedirectToLogoPage(id, null);
                 }
             }
-            ModelState.AddModelError("", "Lütfen logo resmi seçiniz");
-            var l = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
-            return View("WebSiteLogo", l ?? EntityFactory.GetBaseEntityInstance<Setting>());
+            SetErrorMessage("Lütfen logo resmi seçiniz");
+            return RedirectToLogoPage(id, null);
+        }
+
+        private ActionResult RedirectToLogoPage(int id, Setting setting)
+        {
+            var logoId = setting != null && setting.Id > 0 ? setting.Id : id;
+            if (logoId > 0)
+            {
+                return RedirectToAction("WebSiteLogo", new { id = logoId });
+            }
+
+            return RedirectToAction("AddWebSiteLogo");
         }
 
         [HttpPost, ActionName("Delete")]

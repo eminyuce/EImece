@@ -1192,6 +1192,7 @@
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\SendMessageToSeller.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Shared\_Layout.cshtml" />
     <Content Include="Views\Designs\Crizal\design.json" />
+    <Content Include="Views\Designs\Modern\design.json" />
     <Content Include="Views\Designs\Crizal\Error\BadRequest.cshtml" />
     <Content Include="Views\Designs\Crizal\Error\Forbidden.cshtml" />
     <Content Include="Views\Designs\Crizal\Error\Index.cshtml" />
@@ -1335,6 +1336,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\ClearCache.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribers\Index.cshtml" />
     <Content Include="Areas\Admin\Views\StoryCategories\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Stories\Index.cshtml" />
@@ -1674,6 +1676,7 @@
     <Content Include="Views\Stories\Tag.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FileStorage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProductShort.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MainPageStoryShort.cshtml" />
     <Content Include="Views\Shared\PageThemes\PageTheme_T7.cshtml" />
     <Content Include="Views\Shared\PageThemes\PageTheme_T2.cshtml" />
     <Content Include="Views\Shared\PageThemes\PageTheme_T6.cshtml" />

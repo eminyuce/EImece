@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using EImece.Domain.DependencyInjection;
 using NLog;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,8 @@ namespace EImece.Areas.Admin.Controllers
 
         /// <summary>
         /// Admin top-bar Refresh button. Wipes every in-process cache layer (data + OutputCache)
-        /// then queues a background warm-up so the next storefront hit is already primed.
+        /// then shows a short refresh animation while background warm-up starts, then returns
+        /// the admin to a safe page (never a POST-only URL such as UploadWebSiteLogo).
         /// </summary>
         [HttpGet]
         public ActionResult ClearCache()
@@ -104,15 +106,57 @@ namespace EImece.Areas.Admin.Controllers
             // the (expensive) DB priming and sitemap crawl continue in the background.
             App_Start.CacheWarmUpJob.Queue(baseUrl, language);
 
-            SetSuccessMessage();
-
             string redirectUrl;
-            if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
+            if (!SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
-                return Redirect(redirectUrl);
+                redirectUrl = Url.Action("Index", "Dashboard", new { area = "admin" });
             }
 
-            return RedirectToAction("Index");
+            redirectUrl = NormalizeClearCacheReturnUrl(redirectUrl);
+
+            ViewBag.Title = AdminResource.Refresh;
+            ViewBag.ReturnUrl = redirectUrl;
+            return View();
+        }
+
+        /// <summary>
+        /// Map POST-only form URLs (e.g. /admin/settings/uploadwebsitelogo/) back to a GET page.
+        /// </summary>
+        private string NormalizeClearCacheReturnUrl(string redirectUrl)
+        {
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+            {
+                return Url.Action("Index", "Dashboard", new { area = "admin" });
+            }
+
+            try
+            {
+                var uri = new Uri(redirectUrl, UriKind.RelativeOrAbsolute);
+                var path = uri.IsAbsoluteUri ? uri.AbsolutePath : redirectUrl.Split('?')[0];
+                if (path.IndexOf("uploadwebsitelogo", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    var id = 0;
+                    if (uri.IsAbsoluteUri && !string.IsNullOrEmpty(uri.Query))
+                    {
+                        var query = HttpUtility.ParseQueryString(uri.Query);
+                        int.TryParse(query["id"], out id);
+                    }
+
+                    if (id > 0)
+                    {
+                        return Url.Action("WebSiteLogo", "Settings", new { area = "admin", id });
+                    }
+
+                    return Url.Action("AddWebSiteLogo", "Settings", new { area = "admin" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "NormalizeClearCacheReturnUrl failed for {0}", redirectUrl);
+                return Url.Action("Index", "Dashboard", new { area = "admin" });
+            }
+
+            return redirectUrl;
         }
 
         [HttpPost]
