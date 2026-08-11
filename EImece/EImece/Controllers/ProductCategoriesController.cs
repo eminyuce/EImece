@@ -94,11 +94,9 @@ namespace EImece.Controllers
                 Logger.Info($"Retrieved {productsList.Count} products directly in category ID: {categoryId}");
                 productsList.AddRange(productCategory.CategoryChildrenProducts);
                 Logger.Info($"Added {productCategory.CategoryChildrenProducts.Count()} child category products. Total products: {productsList.Count}");
-                if ((SortingType)sorting == SortingType.Popularity)
-                {
-                    ProductService.ApplySoldCounts(productsList);
-                    Logger.Info("Applied sold counts for popularity sorting.");
-                }
+                // Always load sold counts so we can hide "En Çok Satan" when nothing sold,
+                // and so popularity sorting works when that option is selected.
+                ProductService.ApplySoldCounts(productsList);
                 productCategory.AllProducts = productsList;
 
                 SetCurrentCulture(productCategory.ProductCategory);

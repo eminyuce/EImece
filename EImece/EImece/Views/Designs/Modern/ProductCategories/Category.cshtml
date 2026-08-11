@@ -26,6 +26,7 @@
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     var productPriceEnabled = Model.IsProductPriceEnabled;
     var productReviewEnabled = Model.IsProductReviewEnabled;
+    var hasAnySoldProducts = Model.HasAnySoldProducts;
 }
 
 <div class="page-title-wrapper" role="region" aria-label="Page title">
@@ -153,8 +154,11 @@
                             }
                             <a href="@category.ProductCategoryListPageUrl(SortingType.Newest,products)"
                                rel="nofollow" class="@activeButtonClass(SortingType.Newest, products)">@Resource.NewestItems</a>
-                            <a href="@category.ProductCategoryListPageUrl(SortingType.Popularity,products)"
-                               rel="nofollow" class="@activeButtonClass(SortingType.Popularity, products)">@Resource.PopularityItems</a>
+                            @if (hasAnySoldProducts)
+                            {
+                                <a href="@category.ProductCategoryListPageUrl(SortingType.Popularity,products)"
+                                   rel="nofollow" class="@activeButtonClass(SortingType.Popularity, products)">@Resource.PopularityItems</a>
+                            }
                             @if (productReviewEnabled)
                             {
                                 <a href="@category.ProductCategoryListPageUrl(SortingType.AverageRating,products)"

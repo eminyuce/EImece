@@ -116,5 +116,29 @@ namespace EImece.Tests.Helpers
 
             CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
         }
+
+        [TestMethod]
+        public void HasAnySoldProducts_IsFalse_WhenNoProductHasSales()
+        {
+            var products = new List<Product>
+            {
+                new Product { Id = 1, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
+                new Product { Id = 2, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 2 },
+            };
+
+            Assert.IsFalse(CreateViewModel(SortingType.Default, products).HasAnySoldProducts);
+        }
+
+        [TestMethod]
+        public void HasAnySoldProducts_IsTrue_WhenAnyProductHasSales()
+        {
+            var products = new List<Product>
+            {
+                new Product { Id = 1, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
+                new Product { Id = 2, Price = 10, SoldCount = 3, UpdatedDate = DateTime.UtcNow, Position = 2 },
+            };
+
+            Assert.IsTrue(CreateViewModel(SortingType.Default, products).HasAnySoldProducts);
+        }
     }
 }

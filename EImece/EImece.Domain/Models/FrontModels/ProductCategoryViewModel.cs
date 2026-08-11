@@ -33,6 +33,15 @@ namespace EImece.Domain.Models.FrontModels
             get { return IsProductReviewEnable == null || IsProductReviewEnable.SettingValue.ToBool(true); }
         }
 
+        /// <summary>
+        /// True when at least one product on this category page has sold quantity &gt; 0.
+        /// Used to hide the "En Çok Satan" sort option when it would have no effect.
+        /// </summary>
+        public bool HasAnySoldProducts
+        {
+            get { return AllProducts != null && AllProducts.Any(r => r.SoldCount > 0); }
+        }
+
         public bool HasAnyFilters
         {
             get { return CategoryFilterTypes != null && CategoryFilterTypes.Any(r => r.CategoryFilters != null && r.CategoryFilters.Any()); }
