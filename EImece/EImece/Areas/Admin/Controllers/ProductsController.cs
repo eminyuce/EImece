@@ -90,10 +90,16 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SaveOrEditProductSpecs(CancellationToken cancellationToken, int id, int templateId)
+        public async Task<ActionResult> SaveOrEditProductSpecs(CancellationToken cancellationToken, int id, int templateId, String saveButton = null)
         {
             int productId = id;
             await ProductService.ParseTemplateAndSaveProductSpecificationsAsync(productId, templateId, CurrentLanguage, Request, cancellationToken);
+
+            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return RedirectToAction("Index");
+            }
+
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             var productDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(id, cancellationToken);
             Product content = productDetailViewModel.Product;

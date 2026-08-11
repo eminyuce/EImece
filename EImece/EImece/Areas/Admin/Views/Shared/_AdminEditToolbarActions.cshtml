@@ -1,0 +1,20 @@
+@using Resources
+@{
+    var saveButtonText = ViewBag.SaveButtonText as string ?? AdminResource.SaveButtonText;
+    var saveButtonAndCloseText = ViewBag.SaveButtonAndCloseText as string ?? AdminResource.SaveButtonAndCloseText;
+    var backUrl = ViewBag.BackUrl as string ?? Url.Action("Index");
+}
+<div class="admin-edit-toolbar-actions">
+    <button type="submit" name="saveButton" value="@saveButtonText" class="btn btn-sm btn-success admin-edit-save-btn" title="@saveButtonText">
+        <i class="fa fa-save" aria-hidden="true"></i>
+        <span>@saveButtonText</span>
+    </button>
+    <button type="submit" name="saveButton" value="@saveButtonAndCloseText" class="btn btn-sm btn-success admin-edit-save-close-btn" title="@saveButtonAndCloseText">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+        <span>@saveButtonAndCloseText</span>
+    </button>
+    <button type="button" onclick="parent.location='@backUrl'" class="btn btn-sm admin-edit-back-to-list-btn" title="@AdminResource.BackToList">
+        <span class="admin-edit-back-to-list-icon" aria-hidden="true">←</span>
+        <span>@AdminResource.BackToList</span>
+    </button>
+</div>

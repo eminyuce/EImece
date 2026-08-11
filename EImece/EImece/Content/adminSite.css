@@ -1544,6 +1544,27 @@ label[for^="ImageState"]:not(.control-label) {
     text-transform: lowercase;
 }
 
+.admin-edit-simple-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+}
+
+.admin-edit-simple-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 6px 0;
+    color: #16324f;
+    font-weight: 600;
+}
+
+.admin-edit-simple-heading .admin-edit-toolbar-actions {
+    margin-bottom: 0;
+}
+
 .admin-edit-toolbar-actions {
     display: flex;
     flex-wrap: wrap;
@@ -1552,8 +1573,26 @@ label[for^="ImageState"]:not(.control-label) {
 }
 
 .admin-edit-toolbar-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     min-width: 110px;
     margin: 0 !important;
+}
+
+.admin-edit-toolbar-actions .admin-edit-save-btn,
+.admin-edit-toolbar-actions .admin-edit-save-close-btn {
+    min-height: 30px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.admin-edit-toolbar-actions .admin-edit-save-btn .fa,
+.admin-edit-toolbar-actions .admin-edit-save-close-btn .fa {
+    font-size: 13px;
+    line-height: 1;
 }
 
 .admin-edit-next-step,

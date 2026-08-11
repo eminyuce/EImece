@@ -42,7 +42,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SaveOrEdit(TagCategory TagCategory)
+        public async Task<ActionResult> SaveOrEdit(TagCategory TagCategory, String saveButton = null)
         {
             if (TagCategory == null)
             {
@@ -54,8 +54,13 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     TagCategory.Lang = CurrentLanguage;
                     await TagCategoryService.SaveOrEditEntityAsync(TagCategory);
-                    int contentId = TagCategory.Id;
-                    return RedirectToAction("Index");
+
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return RedirectToAction("Index");
+                    }
+
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
                 else
                 {
@@ -68,6 +73,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
+            RemoveModelState();
             return View(TagCategory);
         }
 

@@ -51,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public async Task<ActionResult> SaveOrEdit(Template template)
+        public async Task<ActionResult> SaveOrEdit(Template template, String saveButton = null)
         {
             try
             {
@@ -67,21 +67,25 @@ namespace EImece.Areas.Admin.Controllers
                         catch (Exception ex)
                         {
                             ModelState.AddModelError("TemplateXml", "XDocument format exception while parsing it:" + ex.Message);
+                            ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
                             return View(template);
                         }
                     }
 
                     template.Lang = CurrentLanguage;
                     await TemplateService.SaveOrEditEntityAsync(template);
-                    int contentId = template.Id;
-                    if (string.IsNullOrEmpty(TempData[ProductSpescUrl].ToStr()))
+
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
+                        if (string.IsNullOrEmpty(TempData[ProductSpescUrl].ToStr()))
+                        {
+                            return RedirectToAction("Index");
+                        }
                         return Redirect(TempData[ProductSpescUrl].ToStr());
                     }
+
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                    RemoveModelState();
                 }
             }
             catch (Exception ex)

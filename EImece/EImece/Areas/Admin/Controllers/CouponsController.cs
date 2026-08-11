@@ -46,7 +46,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SaveOrEdit(Coupon coupon)
+        public async Task<ActionResult> SaveOrEdit(Coupon coupon, String saveButton = null)
         {
             try
             {
@@ -61,7 +61,13 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     coupon.Lang = CurrentLanguage;
                     await CouponService.SaveOrEditEntityAsync(coupon);
-                    return RedirectToAction("Index");
+
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return RedirectToAction("Index");
+                    }
+
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
                 else
                 {
@@ -74,6 +80,7 @@ namespace EImece.Areas.Admin.Controllers
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, coupon);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
+            RemoveModelState();
             return View(coupon);
         }
 

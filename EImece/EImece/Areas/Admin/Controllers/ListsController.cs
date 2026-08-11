@@ -39,7 +39,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SaveOrEdit(List list, string itemText)
+        public async Task<ActionResult> SaveOrEdit(List list, string itemText, String saveButton = null)
         {
             if (list == null)
             {
@@ -54,7 +54,14 @@ namespace EImece.Areas.Admin.Controllers
                     var listItems = list.SetListItems(itemText);
                     await ListItemService.SaveListItemAsync(list.Id, listItems);
 
-                    return RedirectToAction("Index");
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return RedirectToAction("Index");
+                    }
+
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+                    RemoveModelState();
+                    return View(list);
                 }
             }
             catch (Exception ex)
@@ -62,7 +69,6 @@ namespace EImece.Areas.Admin.Controllers
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, list);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
-            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(list);
         }
 

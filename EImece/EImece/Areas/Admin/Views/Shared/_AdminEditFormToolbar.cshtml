@@ -1,8 +1,5 @@
 @using Resources
 @{
-    var saveButtonText = ViewBag.SaveButtonText as string ?? AdminResource.SaveButtonText;
-    var saveButtonAndCloseText = ViewBag.SaveButtonAndCloseText as string ?? AdminResource.SaveButtonAndCloseText;
-    var backUrl = ViewBag.BackUrl as string ?? Url.Action("Index");
     var contentSectionTitle = ViewBag.ContentSectionTitle as string ?? AdminResource.EntityDescriptionPage;
 }
 <div class="panel-heading admin-edit-tabs-heading">
@@ -30,12 +27,5 @@
             </a>
         </li>
     </ul>
-    <div class="admin-edit-toolbar-actions">
-        <input type="submit" name="saveButton" value="@saveButtonText" class="btn btn-sm btn-success" />
-        <input type="submit" name="saveButton" value="@saveButtonAndCloseText" class="btn btn-sm btn-success" />
-        <button type="button" onclick="parent.location='@backUrl'" class="btn btn-sm admin-edit-back-to-list-btn" title="@AdminResource.BackToList">
-            <span class="admin-edit-back-to-list-icon" aria-hidden="true">←</span>
-            <span>@AdminResource.BackToList</span>
-        </button>
-    </div>
+    @Html.Partial("_AdminEditToolbarActions")
 </div>

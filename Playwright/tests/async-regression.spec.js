@@ -37,7 +37,7 @@ const STATIC_ROUTES = [
   '/c/pc/elektronik-0j5i6g1b/',
   '/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/',
   '/p/aydinlatma/homeglow-akilli-led-ampul-9w-4h3f1b5i4h1b/',
-  '/s/categories/stil-rehberi-8c6g/',
+  '/s/sc/stil-rehberi-8c6g/',
   '/s/stil-rehberi/2024-sonbahar-kombin-onerileri-1b3f1b/',
   '/health',
   '/sitemap.xml',

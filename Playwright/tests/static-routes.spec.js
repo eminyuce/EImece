@@ -31,7 +31,7 @@ const PUBLIC_GET_ROUTES = [
   { name: 'faq-page', path: '/i/sikca-sorulan-sorular-4h4h8c6g/' },
   { name: 'category-electronics', path: '/c/pc/elektronik-0j5i6g1b/' },
   { name: 'category-headphones', path: '/c/pc/kulaklik--ses-4h0j6g1b/' },
-  { name: 'story-category', path: '/s/categories/stil-rehberi-8c6g/' },
+  { name: 'story-category', path: '/s/sc/stil-rehberi-8c6g/' },
   { name: 'rss-products', path: '/rss/products/', raw: true },
   { name: 'rss-stories', path: '/rss/storycategories/', raw: true },
   { name: 'ajax-cities', path: '/ajax/getallcities/', raw: true },

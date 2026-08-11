@@ -51,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Tag tag)
+        public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Tag tag, String saveButton = null)
         {
             try
             {
@@ -64,7 +64,13 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     tag.Lang = CurrentLanguage;
                     await TagService.SaveOrEditEntityAsync(tag);
-                    return RedirectToAction("Index");
+
+                    if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return RedirectToAction("Index");
+                    }
+
+                    ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 }
                 else
                 {
@@ -76,6 +82,7 @@ namespace EImece.Areas.Admin.Controllers
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, tag);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
+            RemoveModelState();
             ViewBag.Categories = await GetCategoriesSelectListAsync(cancellationToken);
             return View(tag);
         }

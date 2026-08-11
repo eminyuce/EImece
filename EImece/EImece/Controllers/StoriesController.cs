@@ -70,6 +70,7 @@ namespace EImece.Controllers
             }
         }
 
+        [Route(Constants.StoryCategoryPrefix)]
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Categories(CancellationToken cancellationToken, String id, int page = 1)
         {
@@ -99,6 +100,29 @@ namespace EImece.Controllers
             {
                 return HandleUnexpectedError(ex, $"Exception in Categories action for id: '{id}'. Message: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Permanent redirect from legacy /s/categories/{id} to /s/sc/{id}.
+        /// </summary>
+        public ActionResult CategoriesLegacy(String id, int page = 1)
+        {
+            if (String.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var destination = page > 1
+                ? Url.RouteUrl("Storycategories", new { id, page })
+                : Url.RouteUrl("Storycategories", new { id });
+            if (String.IsNullOrEmpty(destination))
+            {
+                destination = page > 1
+                    ? Url.Action("Categories", "Stories", new { id, page })
+                    : Url.Action("Categories", "Stories", new { id });
+            }
+
+            return RedirectPermanent(destination);
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]

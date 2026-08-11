@@ -82,8 +82,16 @@ namespace EImece
 
             routes.MapRoute(
                    name: "Storycategories",
-                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/categories/{id}",
+                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/" + Constants.StoryCategoryPrefix,
                    defaults: new { controller = "stories", action = "categories", id = UrlParameter.Optional },
+                   namespaces: new[] { "EImece.Controllers" }
+               );
+
+            // SEO: keep old /s/categories/{id} URLs working via 301 → /s/sc/{id}
+            routes.MapRoute(
+                   name: "StorycategoriesLegacy",
+                   url: Constants.StoriesCategoriesControllerRoutingPrefix + "/categories/{id}",
+                   defaults: new { controller = "stories", action = "CategoriesLegacy", id = UrlParameter.Optional },
                    namespaces: new[] { "EImece.Controllers" }
                );
 

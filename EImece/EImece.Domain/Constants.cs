@@ -14,7 +14,8 @@ namespace EImece.Domain
         public const string SearchProductPrefix = "arama";
         public const string ProductTagPrefix = "t/{id}"; // tags
         public const string StoryTagPrefix = "t/{id}"; // tags
-        public const string CategoryPrefix = "pc/{id}"; //
+        public const string CategoryPrefix = "pc/{id}"; // product categories → /c/pc/{id}
+        public const string StoryCategoryPrefix = "sc/{id}"; // story categories → /s/sc/{id}
 
         public const string LogoImagePath = "/images/logo.jpg";
         public const string ShipmentTrackingCompanyLink = "https://geliver.io/takip";
