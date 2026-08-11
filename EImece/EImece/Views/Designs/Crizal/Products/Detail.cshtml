@@ -540,41 +540,39 @@
     var productSpecsExists = model.ProdSpecs.IsNotEmpty();
     var product = Model.Product;
 
-    <div class="crizal-product-desc">
-        <div class="row g-4">
-            <div class="@(productSpecsExists ? "col-md-7" : "col-12")">
-                <div class="crizal-product-desc__body">@Html.Raw(product.Description)</div>
-            </div>
-            @if (productSpecsExists)
-            {
-                <div class="col-md-5">
-                    <div class="crizal-product-specs" aria-label="@Resource.Specifications">
-                        @foreach (var group in model.ProdSpecsGroups)
-                        {
-                            <table class="crizal-product-specs__table">
-                                @if (!string.IsNullOrWhiteSpace(group.Name))
+    <div class="crizal-product-desc @(productSpecsExists ? "crizal-product-desc--with-specs" : null)">
+        <section class="crizal-product-desc__section" aria-label="@Resource.Description">
+            <div class="crizal-product-desc__body">@Html.Raw(product.Description)</div>
+        </section>
+        @if (productSpecsExists)
+        {
+            <aside class="crizal-product-specs-section" aria-label="@Resource.Specifications">
+                <div class="crizal-product-specs">
+                    @foreach (var group in model.ProdSpecsGroups)
+                    {
+                        <table class="crizal-product-specs__table">
+                            @if (!string.IsNullOrWhiteSpace(group.Name))
+                            {
+                                <thead>
+                                    <tr>
+                                        <th class="crizal-product-specs__caption" colspan="2" scope="colgroup">@group.Name</th>
+                                    </tr>
+                                </thead>
+                            }
+                            <tbody>
+                                @foreach (var specs in group.Items)
                                 {
-                                    <thead>
-                                        <tr>
-                                            <th class="crizal-product-specs__caption" colspan="2" scope="colgroup">@group.Name</th>
-                                        </tr>
-                                    </thead>
+                                    <tr>
+                                        <th scope="row">@specs.specsName</th>
+                                        <td>@Html.Raw(specs.value) @specs.unit</td>
+                                    </tr>
                                 }
-                                <tbody>
-                                    @foreach (var specs in group.Items)
-                                    {
-                                        <tr>
-                                            <th scope="row">@specs.specsName</th>
-                                            <td>@Html.Raw(specs.value) @specs.unit</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                    </div>
+                            </tbody>
+                        </table>
+                    }
                 </div>
-            }
-        </div>
+            </aside>
+        }
     </div>
 }
 
