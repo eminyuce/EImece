@@ -4243,6 +4243,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Satışta.
+        /// </summary>
+        public static string Sale {
+            get {
+                return ResourceManager.GetString("Sale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ara.
         /// </summary>
         public static string Search {

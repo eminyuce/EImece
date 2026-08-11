@@ -22,9 +22,9 @@
 <div class="col-xl-3 col-lg-4 col-sm-6 mb-4">
     <div class="product-details product-card">
         <div class="product-img product-thumb">
-            @if (product.Price > product.PriceWithDiscount && product.PriceWithDiscount > 0)
+            @if (product.IsOnSale)
             {
-                <div class="label-offer bg-red">Sale</div>
+                <div class="label-offer bg-red">@Resource.Sale</div>
             }
             <a class="product-thumb-link" href="@productLink" aria-label="@product.Name">
                 <img src="@mainImageImgSrcUrl"

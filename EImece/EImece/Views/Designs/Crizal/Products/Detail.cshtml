@@ -796,6 +796,10 @@
 
     <div class="product-card">
         <div class="product-thumb box-shadow-0">
+            @if (product.IsOnSale)
+            {
+                <div class="label-offer bg-red">@Resource.Sale</div>
+            }
             <a class="product-thumb-link" href="@product.DetailPageRelativeUrl" aria-label="@product.Name">
                 <img src="@relatedProductImgTag" width="300" height="300" alt="@product.Name" loading="lazy" decoding="async">
             </a>
@@ -806,6 +810,10 @@
             @if (relatedProductPriceEnabled && product.PriceWithDiscount > 0)
             {
                 <p class="price text-center m-0">
+                    @if (product.Price > product.PriceWithDiscount)
+                    {
+                        <span class="text-muted small mr-1"><s>@product.Price.CurrencySign()</s></span>
+                    }
                     <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
                 </p>
             }

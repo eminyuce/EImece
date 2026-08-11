@@ -1282,6 +1282,9 @@
   <data name="SaveButtonText" xml:space="preserve">
     <value>Kaydet</value>
   </data>
+  <data name="Sale" xml:space="preserve">
+    <value>Satışta</value>
+  </data>
   <data name="SearchResults" xml:space="preserve">
     <value>Arama Sonuçları</value>
   </data>
