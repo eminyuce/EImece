@@ -110,6 +110,10 @@
                                         <label for="IsProductPriceEnable">Ürün fiyatları sitede gösterilsin</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.IsProductPriceEnable, "", new { @class = "text-danger" })
+                                    <p class="help-block" style="margin-top:10px; margin-bottom:0;">
+                                        Açık: e-ticaret (fiyat, sepet, ödeme, sipariş). Kapalı: ürün listeleme sitesi;
+                                        fiyat/sepet/ödeme gizlenir, ziyaretçi iletişimle ilerler.
+                                    </p>
                                 </div>
                             </div>
                             <div class="form-group">

@@ -2161,6 +2161,405 @@ label[for^="ImageState"]:not(.control-label) {
     max-width: 140px;
 }
 
+/* ---------- Our Site Features educational guide ---------- */
+.osf-guide {
+    --osf-text: #0f172a;
+    --osf-muted: #475569;
+    --osf-accent: #1e4e7a;
+    max-width: 1080px;
+    margin: 0 auto 48px;
+    padding: 8px 4px 24px;
+    color: var(--osf-text);
+    font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Reset admin page-title h2 chrome (underline accent) inside the guide. */
+body.admin-app .admin-content .osf-guide h1,
+body.admin-app .admin-content .osf-guide h2,
+body.admin-app .admin-content .osf-guide h3 {
+    font-family: inherit;
+    letter-spacing: normal;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    position: static;
+}
+
+body.admin-app .admin-content .osf-guide h1::after,
+body.admin-app .admin-content .osf-guide h2::after,
+body.admin-app .admin-content .osf-guide h3::after {
+    content: none;
+    display: none;
+}
+
+.osf-guide__hero {
+    margin-bottom: 32px;
+    padding: 28px 28px 24px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+}
+
+.osf-guide__eyebrow {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    /* Avoid text-transform:uppercase; default casing breaks Turkish dotted I. */
+    color: var(--osf-accent);
+}
+
+.osf-guide__title {
+    margin: 0 0 12px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--osf-accent);
+}
+
+.osf-guide__lead {
+    margin: 0 0 18px;
+    max-width: 36em; /* ~75ch reading measure */
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--osf-muted);
+}
+
+.osf-guide__layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 36px;
+    align-items: start;
+}
+
+.osf-guide__toc {
+    position: sticky;
+    top: 16px;
+    padding: 16px 16px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+}
+
+body.admin-app .admin-content .osf-guide .osf-guide__toc-title,
+.osf-guide__toc-title {
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    /* Explicit Turkish capitals in markup; avoid CSS uppercase. */
+    letter-spacing: 0.06em !important;
+    color: var(--osf-muted) !important;
+    border: 0 !important;
+}
+
+.osf-guide__progress {
+    margin-bottom: 14px;
+}
+
+.osf-guide__progress-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--osf-muted);
+}
+
+.osf-guide__progress-track {
+    height: 8px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+
+.osf-guide__progress-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--osf-accent);
+    transition: width 0.2s ease;
+}
+
+.osf-guide__toc-list {
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+}
+
+.osf-guide__toc-list li {
+    margin: 0 0 2px;
+}
+
+.osf-guide__toc-list a {
+    display: block;
+    padding: 7px 10px;
+    border-radius: 8px;
+    color: var(--osf-accent);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.osf-guide__toc-list a:hover,
+.osf-guide__toc-list a:focus {
+    background: #f1f5f9;
+    color: var(--osf-text);
+}
+
+.osf-guide__toc-list a.is-active {
+    background: #e8f1fa;
+    color: var(--osf-accent);
+}
+
+.osf-guide__stage {
+    min-width: 0;
+}
+
+.osf-guide__content {
+    max-width: 40em; /* single reading column, ~75 characters */
+    min-height: 320px;
+}
+
+.osf-guide__content.is-turning .osf-guide__section.is-active {
+    animation: osf-page-in 0.28s ease;
+}
+
+@keyframes osf-page-in {
+    from {
+        opacity: 0;
+        transform: translateX(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.osf-guide__section {
+    margin: 0;
+    padding: 24px 26px 22px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+}
+
+.osf-guide__section[hidden] {
+    display: none !important;
+}
+
+.osf-guide__pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    max-width: 40em;
+    margin-top: 16px;
+    padding: 12px 4px 0;
+}
+
+.osf-guide__pager-status {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--osf-muted);
+}
+
+.osf-guide__pager-btn {
+    min-width: 140px;
+}
+
+.osf-guide__pager-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.osf-guide__section-label {
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    /* Explicit Turkish capitals in markup; avoid CSS uppercase. */
+    color: var(--osf-muted);
+}
+
+.osf-guide__section-head {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+body.admin-app .admin-content .osf-guide .osf-guide__section-head h2,
+.osf-guide__section-head h2 {
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    letter-spacing: normal !important;
+    color: var(--osf-accent) !important;
+    border: 0 !important;
+}
+
+.osf-guide__section-head p {
+    margin: 0;
+    max-width: 34em;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--osf-muted);
+}
+
+.osf-guide__subhead {
+    margin: 18px 0 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--osf-text);
+}
+
+.osf-guide__icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #e8f1fa;
+    color: var(--osf-accent);
+    font-size: 18px;
+}
+
+.osf-guide__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.osf-guide__list li {
+    position: relative;
+    margin: 0 0 10px;
+    padding: 10px 14px 10px 36px;
+    border-radius: 10px;
+    background: #f8fafc;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--osf-text);
+}
+
+.osf-guide__list li:last-child {
+    margin-bottom: 0;
+}
+
+.osf-guide__list li::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--osf-accent);
+}
+
+.osf-guide__callout {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border-left: 4px solid var(--osf-accent);
+    background: #f8fafc;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--osf-text);
+}
+
+.osf-guide__callout strong {
+    color: var(--osf-accent);
+}
+
+.osf-guide__callout--tip {
+    border-left-color: #1e4e7a;
+    background: #eef5fb;
+}
+
+.osf-guide__callout--note {
+    border-left-color: #475569;
+    background: #f1f5f9;
+}
+
+.osf-guide__callout--warn {
+    border-left-color: #b45309;
+    background: #fffbeb;
+}
+
+.osf-guide__callout--warn strong {
+    color: #92400e;
+}
+
+.osf-guide__where {
+    margin: 18px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: var(--osf-muted);
+}
+
+.osf-guide__where a {
+    font-weight: 600;
+    color: var(--osf-accent);
+    text-decoration: none;
+}
+
+.osf-guide__where a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .osf-guide__layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .osf-guide__toc {
+        position: static;
+    }
+
+    .osf-guide__toc-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px 8px;
+    }
+
+    .osf-guide__content {
+        max-width: none;
+        min-height: 0;
+    }
+
+    .osf-guide__pager {
+        max-width: none;
+    }
+
+    .osf-guide__pager-btn {
+        flex: 1 1 auto;
+    }
+
+    .osf-guide__title {
+        font-size: 26px;
+    }
+
+    .osf-guide__hero,
+    .osf-guide__section {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+
 /* ---------- Admin field help / tooltips / sample generators ---------- */
 .admin-field-tip {
     display: inline-flex;

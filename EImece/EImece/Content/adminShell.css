@@ -441,9 +441,10 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     overflow-x: hidden;
 }
 
-/* Page titles — clear left-aligned header across admin list pages */
+/* Page titles — clear left-aligned header across admin list pages.
+   Avoid bare h2:first-of-type (matches every nested first h2, e.g. guide sections). */
 body.admin-app .admin-content > h2,
-body.admin-app .admin-content h2:first-of-type,
+body.admin-app .admin-content > h2:first-of-type,
 body.admin-app .admin-content .admin-page-title,
 body.admin-app .admin-content .report-index-header h2 {
     font-family: var(--admin-page-title-font);
@@ -464,7 +465,7 @@ body.admin-app .admin-content .report-index-header h2 {
 }
 
 body.admin-app .admin-content > h2::after,
-body.admin-app .admin-content h2:first-of-type::after,
+body.admin-app .admin-content > h2:first-of-type::after,
 body.admin-app .admin-content .admin-page-title::after,
 body.admin-app .admin-content .report-index-header h2::after {
     content: "";
@@ -791,7 +792,7 @@ body.admin-app .table-responsive {
     }
 
     body.admin-app .admin-content > h2,
-    body.admin-app .admin-content h2:first-of-type,
+    body.admin-app .admin-content > h2:first-of-type,
     body.admin-app .admin-content .admin-page-title,
     body.admin-app .admin-content .report-index-header h2 {
         font-size: 20px;

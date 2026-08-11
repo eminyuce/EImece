@@ -1,94 +1,440 @@
-﻿
+﻿@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using Resources
 @{
-    ViewBag.Title = "E-Ticaret Sitemizin Özellikleri";
+    ViewBag.Title = AdminResource.OurSiteFeatures;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+    var totalPages = productPriceEnabled ? 8 : 6;
+    var page = 0;
 }
-<style>
-     
-    .container {
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        padding: 30px;
-    }
 
-    h1 {
-        color: #0d6efd;
-        margin-bottom: 30px;
-    }
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+}
 
-    h2 {
-        color: #343a40;
-        margin-top: 20px;
-        border-bottom: 2px solid #0d6efd;
-        padding-bottom: 10px;
-    }
+<div class="osf-guide" data-osf-guide lang="tr">
+    <header class="osf-guide__hero">
+        <p class="osf-guide__eyebrow">YÖNETİCİ REHBERİ</p>
+        <h1 class="osf-guide__title">Sitenizin özellikleri</h1>
+        @if (productPriceEnabled)
+        {
+            <p class="osf-guide__lead">
+                E-ticaret sitenizde neleri yönetebileceğinizi küçük adımlarla öğrenin.
+                Her bölüm bir kitap sayfası gibi açılır; uzun sayfada aşağı kaydırmanız gerekmez.
+            </p>
+        }
+        else
+        {
+            <p class="osf-guide__lead">
+                Bu site bir ürün listeleme web sitesidir: fiyat, sepet ve ödeme kapalıdır.
+                Ziyaretçiler ürünleri inceler; satış için iletişim kurar.
+                Her bölüm bir kitap sayfası gibi açılır.
+            </p>
+            <aside class="osf-guide__callout osf-guide__callout--note" role="note">
+                <strong>Mod:</strong> Ürün fiyatları kapalı. Yönetim paneli katalog ve içerik odaklıdır;
+                sipariş, sepet ve ödeme menüleri gizlidir.
+            </aside>
+        }
+        <aside class="osf-guide__callout osf-guide__callout--tip" role="note">
+            <strong>İpucu:</strong> İçindekilerden bir başlık seçin veya alttaki
+            "Önceki / Sonraki sayfa" düğmeleriyle ilerleyin.
+        </aside>
+    </header>
 
-    .list-group-item {
-        border: none;
-        background-color: #f1f3f5;
-        margin-bottom: 10px;
-        border-radius: 5px;
-    }
-</style>
-<div class="container">
-    <h1 class="text-center">E-Ticaret Sitemizin Özellikleri</h1>
+    <div class="osf-guide__layout">
+        <nav class="osf-guide__toc" aria-label="İçindekiler">
+            <h2 class="osf-guide__toc-title">İÇİNDEKİLER</h2>
 
-    <h2>Ana Sayfa Özellikleri</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Kayan resimler ekleyebilir, her resme link vererek ilgili sayfalara yönlendirme yapabilirsiniz</li>
-        <li class="list-group-item">Ana sayfa menüsü ve farklı sayfa temaları ile içerik sayfaları oluşturabilirsiniz</li>
-    </ul>
+            <div class="osf-guide__progress" aria-live="polite">
+                <div class="osf-guide__progress-meta">
+                    <span>Sayfa</span>
+                    <span data-osf-progress-label>1 / @totalPages</span>
+                </div>
+                <div class="osf-guide__progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@Math.Round(100.0 / totalPages)" data-osf-progress-bar>
+                    <span class="osf-guide__progress-fill" data-osf-progress-fill></span>
+                </div>
+            </div>
 
-    <h2>Ürün Yönetimi</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Ürünlerinizi kategorilere ayırabilirsiniz</li>
-        <li class="list-group-item">Ürünlerinizi etiketlerle gruplayabilirsiniz</li>
-        <li class="list-group-item">Ürünlere galeri ile resimler ekleyebilirsiniz (ana resim + galeri resimleri)</li>
-        <li class="list-group-item">Ürün kategorisi, etiket ve marka bazlı fiyat güncellemeleri yapabilirsiniz</li>
-        <li class="list-group-item">Ürünleri fiyat, kategori, yorum yıldızı veya marka bazlı filtreleyebilirsiniz</li>
-    </ul>
+            <ol class="osf-guide__toc-list">
+                @{ page = 0; }
+                <li><a href="#osf-home" data-osf-toc-link data-osf-page="@(page++)">@(page). Ana sayfa</a></li>
+                <li><a href="#osf-products" data-osf-toc-link data-osf-page="@(page++)">@(page). Ürünler</a></li>
+                @if (productPriceEnabled)
+                {
+                    <li><a href="#osf-checkout" data-osf-toc-link data-osf-page="@(page++)">@(page). Ödeme</a></li>
+                    <li><a href="#osf-orders" data-osf-toc-link data-osf-page="@(page++)">@(page). Siparişler</a></li>
+                }
+                <li><a href="#osf-contact" data-osf-toc-link data-osf-page="@(page++)">@(page). İletişim</a></li>
+                <li><a href="#osf-gallery" data-osf-toc-link data-osf-page="@(page++)">@(page). Galeri</a></li>
+                <li><a href="#osf-settings" data-osf-toc-link data-osf-page="@(page++)">@(page). Ayarlar</a></li>
+                <li><a href="#osf-users" data-osf-toc-link data-osf-page="@(page++)">@(page). Kullanıcılar</a></li>
+            </ol>
+        </nav>
 
-    <h2>Alışveriş ve Ödeme</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Sepete ekleme ve iyzico ödeme altyapısı ile güvenli satın alma</li>
-        <li class="list-group-item">Üyelikli veya üyeliksiz satın alma seçenekleri</li>
-        <li class="list-group-item">Kargo takip numarası ile müşterilerin kargolarını takip etmesi</li>
-        <li class="list-group-item">İyzico ile güvenli ödeme sistemi entegrasyonu</li>
-    </ul>
+        <div class="osf-guide__stage">
+            <div class="osf-guide__content" data-osf-book aria-live="polite">
+                @{ page = 0; }
 
-    <h2>Müşteri ve Sipariş Yönetimi</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Müşteriler admin panelde yönetilir</li>
-        <li class="list-group-item">Sipariş yönetimi: kargo no ekleme, sipariş durumu değiştirme, yorum yazma</li>
-        <li class="list-group-item">Ürünler için sık sorulan soruları ekleyebilir, müşteri hesap sayfasında görüntüleyebilirsiniz</li>
-    </ul>
+                <section class="osf-guide__section is-active" id="osf-home" data-osf-section aria-labelledby="osf-home-title">
+                    <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                    <header class="osf-guide__section-head">
+                        <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-home"></i></span>
+                        <div>
+                            <h2 id="osf-home-title">Ana sayfa</h2>
+                            <p>Ziyaretçinin ilk gördüğü vitrindir.</p>
+                        </div>
+                    </header>
+                    <h3 class="osf-guide__subhead">Ne yapabilirsiniz?</h3>
+                    <ul class="osf-guide__list">
+                        <li>Kayan resimler ekleyin</li>
+                        <li>Her resme hedef sayfa bağlantısı verin</li>
+                        <li>Menü ve sayfa temalarıyla içerik oluşturun</li>
+                    </ul>
+                    <p class="osf-guide__where">
+                        Yönetim:
+                        <a href="@Url.Action("Index", "MainPageImages", new { area = "admin" })">Ana sayfa görselleri</a>
+                        |
+                        <a href="@Url.Action("Index", "Menus", new { area = "admin" })">Menüler</a>
+                    </p>
+                </section>
 
-    <h2>İletişim ve Sosyal Özellikler</h2>
-    <ul class="list-group">
-        <li class="list-group-item">İletişim sayfası ile e-posta veya WhatsApp üzerinden doğrudan iletişim</li>
-        <li class="list-group-item">Ürünler için WhatsApp ile sipariş verme özelliği</li>
-        <li class="list-group-item">Sosyal medya linkleri ekleme</li>
-        <li class="list-group-item">Abonelik yontemi ile musterilerin epostalarini toplamak ve zamani gelince onlari yeni urunlerden haberdar etmek</li>
-    </ul>
+                <section class="osf-guide__section" id="osf-products" data-osf-section aria-labelledby="osf-products-title" hidden>
+                    <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                    <header class="osf-guide__section-head">
+                        <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-th-list"></i></span>
+                        <div>
+                            @if (productPriceEnabled)
+                            {
+                                <h2 id="osf-products-title">Ürün yönetimi</h2>
+                                <p>Kataloğu düzenleyin ve satışa hazırlayın.</p>
+                            }
+                            else
+                            {
+                                <h2 id="osf-products-title">Ürün listeleme</h2>
+                                <p>Ürünleri kategorilerle sergileyin; fiyat ve sepet yoktur.</p>
+                            }
+                        </div>
+                    </header>
+                    <h3 class="osf-guide__subhead">Düzenleme</h3>
+                    <ul class="osf-guide__list">
+                        <li>Ürünleri kategorilere ayırın</li>
+                        <li>Etiketlerle gruplayın</li>
+                        <li>Ana görsel ve galeri ekleyin</li>
+                        @if (!productPriceEnabled)
+                        {
+                            <li>Ürün açıklaması ve özelliklerini doldurun</li>
+                        }
+                    </ul>
+                    @if (productPriceEnabled)
+                    {
+                        <h3 class="osf-guide__subhead">Satış araçları</h3>
+                        <ul class="osf-guide__list">
+                            <li>Kategori, etiket veya markaya göre toplu fiyat güncelleyin</li>
+                            <li>Ziyaretçi filtreleri: fiyat, kategori, yıldız ve marka</li>
+                        </ul>
+                        <aside class="osf-guide__callout osf-guide__callout--note" role="note">
+                            <strong>Not:</strong> İyi görseller satışa yardımcı olur.
+                            Ürün başına birkaç net fotoğraf yeterlidir.
+                        </aside>
+                    }
+                    else
+                    {
+                        <h3 class="osf-guide__subhead">Vitrin</h3>
+                        <ul class="osf-guide__list">
+                            <li>Ziyaretçi filtreleri: kategori, yıldız ve marka</li>
+                            <li>Ürün detay sayfasında SSS ekleyebilirsiniz</li>
+                        </ul>
+                        <aside class="osf-guide__callout osf-guide__callout--note" role="note">
+                            <strong>Not:</strong> Fiyat gösterilmez. Güçlü görseller ve net açıklamalar
+                            ziyaretçinin ürünü anlamasına yardımcı olur.
+                        </aside>
+                    }
+                    <p class="osf-guide__where">
+                        Yönetim:
+                        <a href="@Url.Action("Index", "Products", new { area = "admin" })">Ürünler</a>
+                        |
+                        <a href="@Url.Action("Index", "ProductCategories", new { area = "admin" })">Kategoriler</a>
+                        |
+                        <a href="@Url.Action("Index", "Brands", new { area = "admin" })">Markalar</a>
+                    </p>
+                </section>
 
-    <h2>Galeri ve Görsellik</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Galeri sayfası ile büyük resim galerisi oluşturabilirsiniz</li>
-    </ul>
+                @if (productPriceEnabled)
+                {
+                    <section class="osf-guide__section" id="osf-checkout" data-osf-section aria-labelledby="osf-checkout-title" hidden>
+                        <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                        <header class="osf-guide__section-head">
+                            <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-credit-card"></i></span>
+                            <div>
+                                <h2 id="osf-checkout-title">Alışveriş ve ödeme</h2>
+                                <p>Sepetten ödemeye kadar güvenli alışveriş akışı.</p>
+                            </div>
+                        </header>
+                        <ul class="osf-guide__list">
+                            <li>Sepete ürün ekleme</li>
+                            <li>iyzico ile güvenli ödeme</li>
+                            <li>Üyelikli veya misafir alışveriş</li>
+                            <li>Kargo takip numarası</li>
+                        </ul>
+                    </section>
 
-    <h2>Ayarlar ve Özelleştirme</h2>
-    <ul class="list-group">
-        <li class="list-group-item">SEO bilgileri ekleme</li>
-        <li class="list-group-item">Kargo açıklaması girme</li>
-        <li class="list-group-item">Şirket bilgileri</li>
-        <li class="list-group-item">Site ikonu ve e-posta ayarları</li>
-        <li class="list-group-item">Filtreleme fiyat aralıkları</li>
-        <li class="list-group-item">Footer HTML içeriği</li>
-        <li class="list-group-item">Google Maps, Google Analytics ve WhatsApp widget scriptleri</li>
-    </ul>
+                    <section class="osf-guide__section" id="osf-orders" data-osf-section aria-labelledby="osf-orders-title" hidden>
+                        <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                        <header class="osf-guide__section-head">
+                            <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-list-alt"></i></span>
+                            <div>
+                                <h2 id="osf-orders-title">Müşteri ve sipariş</h2>
+                                <p>Satış sonrası işlemler.</p>
+                            </div>
+                        </header>
+                        <ul class="osf-guide__list">
+                            <li>Müşterileri yönetim panelinden yönetin</li>
+                            <li>Siparişe kargo numarası ekleyin</li>
+                            <li>Sipariş durumunu değiştirin</li>
+                            <li>Ürün için sık sorulan sorular (SSS) ekleyin</li>
+                        </ul>
+                        <p class="osf-guide__where">
+                            Yönetim:
+                            <a href="@Url.Action("Index", "Orders", new { area = "admin" })">Siparişler</a>
+                            |
+                            <a href="@Url.Action("Index", "Customers", new { area = "admin" })">Müşteriler</a>
+                        </p>
+                    </section>
+                }
 
-    <h2>Kullanıcı Yönetimi</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Admin panel için Normal Kullanıcı veya Admin Kullanıcı oluşturabilirsiniz</li>
-    </ul>
+                <section class="osf-guide__section" id="osf-contact" data-osf-section aria-labelledby="osf-contact-title" hidden>
+                    <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                    <header class="osf-guide__section-head">
+                        <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-comment"></i></span>
+                        <div>
+                            <h2 id="osf-contact-title">İletişim ve sosyal medya</h2>
+                            @if (productPriceEnabled)
+                            {
+                                <p>Müşteriyle nasıl bağlantı kurarsınız?</p>
+                            }
+                            else
+                            {
+                                <p>Ziyaretçi ürün hakkında soru sormak veya teklif istemek için buradan ulaşır.</p>
+                            }
+                        </div>
+                    </header>
+                    <ul class="osf-guide__list">
+                        <li>İletişim formu (e-posta)</li>
+                        @if (productPriceEnabled)
+                        {
+                            <li>WhatsApp ile soru veya sipariş</li>
+                        }
+                        else
+                        {
+                            <li>WhatsApp ile soru veya bilgi talebi</li>
+                        }
+                        <li>Sosyal medya bağlantıları</li>
+                        <li>E-posta aboneliği (bülten)</li>
+                    </ul>
+                </section>
+
+                <section class="osf-guide__section" id="osf-gallery" data-osf-section aria-labelledby="osf-gallery-title" hidden>
+                    <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                    <header class="osf-guide__section-head">
+                        <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-picture"></i></span>
+                        <div>
+                            <h2 id="osf-gallery-title">Galeri</h2>
+                            <p>Büyük görsel koleksiyonları.</p>
+                        </div>
+                    </header>
+                    <ul class="osf-guide__list">
+                        <li>Ayrı bir galeri sayfası oluşturun</li>
+                        <li>Büyük görselleri vitrinde gösterin</li>
+                    </ul>
+                </section>
+
+                <section class="osf-guide__section" id="osf-settings" data-osf-section aria-labelledby="osf-settings-title" hidden>
+                    <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                    <header class="osf-guide__section-head">
+                        <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-cog"></i></span>
+                        <div>
+                            <h2 id="osf-settings-title">Ayarlar</h2>
+                            <p>Site kimliği ve teknik özelleştirme.</p>
+                        </div>
+                    </header>
+                    <h3 class="osf-guide__subhead">Temel bilgiler</h3>
+                    <ul class="osf-guide__list">
+                        <li>SEO metinleri</li>
+                        <li>Şirket bilgileri</li>
+                        @if (productPriceEnabled)
+                        {
+                            <li>Kargo açıklaması</li>
+                        }
+                        <li>Site simgesi ve e-posta ayarları</li>
+                    </ul>
+                    <h3 class="osf-guide__subhead">Gelişmiş</h3>
+                    <ul class="osf-guide__list">
+                        @if (productPriceEnabled)
+                        {
+                            <li>Fiyat filtre aralıkları</li>
+                        }
+                        <li>Altbilgi (footer) HTML içeriği</li>
+                        <li>Google Maps, Analytics ve WhatsApp scriptleri</li>
+                        @if (!productPriceEnabled)
+                        {
+                            <li>"Ürün fiyatları sitede gösterilsin" seçeneği (e-ticareti açar/kapatır)</li>
+                        }
+                    </ul>
+                    <aside class="osf-guide__callout osf-guide__callout--warn" role="note">
+                        <strong>Dikkat:</strong> Script alanlarına yalnızca güvendiğiniz kodları yapıştırın.
+                        Yanlış kod siteyi bozabilir.
+                    </aside>
+                    <p class="osf-guide__where">
+                        Yönetim:
+                        <a href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })">Sistem ayarları</a>
+                    </p>
+                </section>
+
+                <section class="osf-guide__section" id="osf-users" data-osf-section aria-labelledby="osf-users-title" hidden>
+                    <div class="osf-guide__section-label">SAYFA @(++page) / @totalPages</div>
+                    <header class="osf-guide__section-head">
+                        <span class="osf-guide__icon" aria-hidden="true"><i class="glyphicon glyphicon-user"></i></span>
+                        <div>
+                            <h2 id="osf-users-title">Kullanıcı yönetimi</h2>
+                            <p>Yönetim paneline kimler girebilir?</p>
+                        </div>
+                    </header>
+                    <ul class="osf-guide__list">
+                        <li>Normal kullanıcı oluşturun</li>
+                        <li>Yönetici (admin) kullanıcı oluşturun</li>
+                    </ul>
+                    <aside class="osf-guide__callout osf-guide__callout--tip" role="note">
+                        <strong>İpucu:</strong> Yönetici yetkisini az kişiye verin.
+                        Günlük işler için normal kullanıcı yeterli olabilir.
+                    </aside>
+                    <p class="osf-guide__where">
+                        Yönetim:
+                        <a href="@Url.Action("Index", "Users", new { area = "admin" })">Kullanıcılar</a>
+                    </p>
+                </section>
+            </div>
+
+            <div class="osf-guide__pager">
+                <button type="button" class="btn btn-default osf-guide__pager-btn" data-osf-prev disabled>
+                    &#8592; &#214;nceki sayfa
+                </button>
+                <span class="osf-guide__pager-status" data-osf-pager-status>1 / @totalPages</span>
+                <button type="button" class="btn btn-primary osf-guide__pager-btn" data-osf-next>
+                    Sonraki sayfa &#8594;
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+(function () {
+    var root = document.querySelector("[data-osf-guide]");
+    if (!root) return;
+
+    var sections = Array.prototype.slice.call(root.querySelectorAll("[data-osf-section]"));
+    var links = Array.prototype.slice.call(root.querySelectorAll("[data-osf-toc-link]"));
+    var fill = root.querySelector("[data-osf-progress-fill]");
+    var bar = root.querySelector("[data-osf-progress-bar]");
+    var label = root.querySelector("[data-osf-progress-label]");
+    var pagerStatus = root.querySelector("[data-osf-pager-status]");
+    var prevBtn = root.querySelector("[data-osf-prev]");
+    var nextBtn = root.querySelector("[data-osf-next]");
+    var book = root.querySelector("[data-osf-book]");
+    var total = sections.length;
+    var current = 0;
+
+    if (!total || !fill || !bar || !label || !prevBtn || !nextBtn) return;
+
+    function indexFromHash() {
+        var hash = (window.location.hash || "").replace(/^#/, "");
+        if (!hash) return 0;
+        for (var i = 0; i < sections.length; i++) {
+            if (sections[i].id === hash) return i;
+        }
+        return 0;
+    }
+
+    function goTo(index, updateHash) {
+        if (index < 0 || index >= total) return;
+        current = index;
+
+        sections.forEach(function (section, i) {
+            var active = i === current;
+            section.hidden = !active;
+            section.classList.toggle("is-active", active);
+        });
+
+        links.forEach(function (link, i) {
+            link.classList.toggle("is-active", i === current);
+            link.setAttribute("aria-current", i === current ? "page" : "false");
+        });
+
+        var pageNo = current + 1;
+        var pct = Math.round((pageNo / total) * 100);
+        fill.style.width = pct + "%";
+        bar.setAttribute("aria-valuenow", String(pct));
+        label.textContent = pageNo + " / " + total;
+        if (pagerStatus) pagerStatus.textContent = pageNo + " / " + total;
+
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === total - 1;
+        prevBtn.textContent = "\u2190 \u00d6nceki sayfa";
+        nextBtn.textContent = "Sonraki sayfa \u2192";
+
+        if (book) {
+            book.classList.remove("is-turning");
+            void book.offsetWidth;
+            book.classList.add("is-turning");
+        }
+
+        if (updateHash !== false) {
+            var id = sections[current].id;
+            if (history.replaceState) {
+                history.replaceState(null, "", "#" + id);
+            } else {
+                window.location.hash = id;
+            }
+        }
+
+        var stage = root.querySelector(".osf-guide__stage");
+        if (stage && typeof stage.scrollIntoView === "function") {
+            var rect = stage.getBoundingClientRect();
+            if (rect.top < 0 || rect.top > window.innerHeight * 0.35) {
+                stage.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+        }
+    }
+
+    links.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+            var pageIndex = parseInt(link.getAttribute("data-osf-page"), 10);
+            if (isNaN(pageIndex)) {
+                pageIndex = links.indexOf(link);
+            }
+            goTo(pageIndex);
+        });
+    });
+
+    prevBtn.addEventListener("click", function () { goTo(current - 1); });
+    nextBtn.addEventListener("click", function () { goTo(current + 1); });
+
+    window.addEventListener("keydown", function (e) {
+        if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
+        if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            goTo(current - 1);
+        } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            goTo(current + 1);
+        }
+    });
+
+    goTo(indexFromHash(), false);
+})();
+</script>
