@@ -32,6 +32,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public Setting CargoDescription { get; set; }
         public Setting CargoPrice { get; set; }
+        public Setting PaymentDetailHtml { get; set; }
         public Setting IsProductPriceEnable { get; set; }
         public Setting IsProductReviewEnable { get; set; }
         public Setting WhatsAppCommunicationLink { get; set; }

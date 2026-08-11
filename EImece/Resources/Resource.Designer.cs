@@ -3220,6 +3220,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Detay Ödeme HTML.
+        /// </summary>
+        public static string PaymentDetailHtml {
+            get {
+                return ResourceManager.GetString("PaymentDetailHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ödeme Ayrıntıları.
         /// </summary>
         public static string PaymentDetails {

@@ -90,6 +90,10 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsProductPriceEnable))]
         public bool IsProductPriceEnable { get; set; }
 
+        [AllowHtml]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PaymentDetailHtml))]
+        public string PaymentDetailHtml { get; set; }
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsProductReviewEnable))]
         public bool IsProductReviewEnable { get; set; }
 

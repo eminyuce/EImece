@@ -252,6 +252,7 @@ namespace EImece.Domain.Services
             }
             result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable);
+            result.PaymentDetailHtml = SettingService.GetSettingObjectByKey(Constants.PaymentDetailHtml);
             result.WhatsAppCommunicationLink = SettingService.GetSettingObjectByKey(Constants.WhatsAppCommunicationLink);
             result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
             // if (product.MainImageId.HasValue)
@@ -323,6 +324,7 @@ namespace EImece.Domain.Services
             }
             result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
             result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
+            result.PaymentDetailHtml = await SettingService.GetSettingObjectByKeyAsync(Constants.PaymentDetailHtml).ConfigureAwait(false);
             result.WhatsAppCommunicationLink = await SettingService.GetSettingObjectByKeyAsync(Constants.WhatsAppCommunicationLink).ConfigureAwait(false);
             result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             if (product.MainImageId.HasValue)
