@@ -91,6 +91,12 @@ namespace EImece.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public double Rating { get; set; }
 
+        /// <summary>
+        /// Total sold quantity from orders. Populated for bestseller sorting; not mapped to DB.
+        /// </summary>
+        [NotMapped]
+        public int SoldCount { get; set; }
+
         [NotMapped]
         public string DetailPageAbsoluteUrl
         {

@@ -1309,6 +1309,22 @@ body[data-design="crizal"] .product-card .product-meta {
     }
 }
 
+/* ---------- Category sorting buttons ---------- */
+body[data-design="crizal"] .button-group.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+}
+
+body[data-design="crizal"] .button-group.tabs .btn {
+    margin: 0 !important;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    padding: 0.28rem 0.65rem;
+    white-space: nowrap;
+}
+
 /* ---------- Category filters / sidebar ---------- */
 body[data-design="crizal"] .widget-categories ul,
 body[data-design="crizal"] .widget-categories li,

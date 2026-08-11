@@ -556,13 +556,19 @@
     <value>Sırala</value>
   </data>
   <data name="HighLowPriceItems" xml:space="preserve">
-    <value>En yüksek fiyat</value>
+    <value>En Yüksek Fiyat</value>
   </data>
   <data name="LowHighPriceItems" xml:space="preserve">
-    <value>En düşük fiyat</value>
+    <value>En Düşük Fiyat</value>
   </data>
   <data name="NewestItems" xml:space="preserve">
-    <value>En yeniler</value>
+    <value>En Yeniler</value>
+  </data>
+  <data name="PopularityItems" xml:space="preserve">
+    <value>En Çok Satan</value>
+  </data>
+  <data name="MostReviewedItems" xml:space="preserve">
+    <value>En Çok Değerlendirilen</value>
   </data>
   <data name="DatePurchased" xml:space="preserve">
     <value>Satın Alma Tarihi</value>

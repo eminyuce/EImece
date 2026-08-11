@@ -24,6 +24,9 @@ namespace EImece.Controllers
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
 
+        [Inject]
+        public IProductService ProductService { get; set; }
+
         public async Task<ActionResult> GetProductCategoryDto(String id)
         {
             var productCategory = await ProductCategoryService.GetProductCategoryDtoAsync(id.GetId());
@@ -91,6 +94,9 @@ namespace EImece.Controllers
                 Logger.Info($"Retrieved {productsList.Count} products directly in category ID: {categoryId}");
                 productsList.AddRange(productCategory.CategoryChildrenProducts);
                 Logger.Info($"Added {productCategory.CategoryChildrenProducts.Count()} child category products. Total products: {productsList.Count}");
+                // Always load sold counts so we can hide "En Çok Satan" when nothing sold,
+                // and so popularity sorting works when that option is selected.
+                ProductService.ApplySoldCounts(productsList);
                 productCategory.AllProducts = productsList;
 
                 SetCurrentCulture(productCategory.ProductCategory);

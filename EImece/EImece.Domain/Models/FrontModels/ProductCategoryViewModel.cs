@@ -33,6 +33,15 @@ namespace EImece.Domain.Models.FrontModels
             get { return IsProductReviewEnable == null || IsProductReviewEnable.SettingValue.ToBool(true); }
         }
 
+        /// <summary>
+        /// True when at least one product on this category page has sold quantity &gt; 0.
+        /// Used to hide the "En Çok Satan" sort option when it would have no effect.
+        /// </summary>
+        public bool HasAnySoldProducts
+        {
+            get { return AllProducts != null && AllProducts.Any(r => r.SoldCount > 0); }
+        }
+
         public bool HasAnyFilters
         {
             get { return CategoryFilterTypes != null && CategoryFilterTypes.Any(r => r.CategoryFilters != null && r.CategoryFilters.Any()); }
@@ -84,23 +93,49 @@ namespace EImece.Domain.Models.FrontModels
                 switch (Sorting)
                 {
                     case Enums.SortingType.Popularity:
+                        result = result.OrderByDescending(r => r.SoldCount).ThenByStorefrontDefault().ToList();
                         break;
 
                     case Enums.SortingType.LowHighPrice:
                         if (IsProductPriceEnabled)
                         {
-                            result = result.OrderBy(r => r.Price).ThenByStorefrontDefault().ToList();
+                            result = result.OrderBy(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
+                        }
+                        else
+                        {
+                            result = result.OrderByStorefrontDefault().ToList();
                         }
                         break;
 
                     case Enums.SortingType.HighLowPrice:
                         if (IsProductPriceEnabled)
                         {
-                            result = result.OrderByDescending(r => r.Price).ThenByStorefrontDefault().ToList();
+                            result = result.OrderByDescending(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
+                        }
+                        else
+                        {
+                            result = result.OrderByStorefrontDefault().ToList();
                         }
                         break;
 
                     case Enums.SortingType.AverageRating:
+                        if (IsProductReviewEnabled)
+                        {
+                            result = result.OrderByDescending(r => r.Rating).ThenByStorefrontDefault().ToList();
+                        }
+                        else
+                        {
+                            result = result.OrderByStorefrontDefault().ToList();
+                        }
+                        break;
+
+                    case Enums.SortingType.Newest:
+                        result = result
+                            .OrderByDescending(r => r.UpdatedDate)
+                            .ThenBy(r => r.Position)
+                            .ThenByDescending(r => r.MainPage)
+                            .ThenByDescending(r => r.IsCampaign)
+                            .ToList();
                         break;
 
                     case Enums.SortingType.AzOrder:
