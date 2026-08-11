@@ -1,45 +1,81 @@
-﻿@using EImece.Domain.Helpers;
-@using EImece.Domain.Entities;
-@using Resources;
+﻿@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using Resources
 @model List<BaseContent>
-
 @{
-    ViewBag.Title = "SearchContent";
+    ViewBag.Title = AdminResource.SearchResults;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var searchKey = (String)ViewBag.SearchKey;
-    var searchList = Model;
+    var searchKey = (string)ViewBag.SearchKey;
+    var searchList = Model ?? new List<BaseContent>();
+    var hasResults = searchList.Any();
 }
 
-<link href="~/Content/adminSearchResult.css?v=1" rel="stylesheet" />
+<link href="~/Content/adminSearchResult.css?v=20260811c" rel="stylesheet" />
 
-<div class="container">
-    <hgroup class="mb20">
-        @if (Model.Any())
-        {
-        <h1>@AdminResource.SearchResults</h1>
-        <h2 class="lead">
-            <strong class="text-danger">@searchList.Count</strong>
-            @AdminResource.SearchResultsText
-            <strong class="text-danger">@searchKey</strong>
-        </h2>
-        }
-        else
-        {
-        <h2 class="lead">
-            @AdminResource.NoSearchResultsText
-            <strong class="text-danger">@searchKey</strong>
-        </h2>
-        }
-    </hgroup>
-    @if (Model.Any())
-    {
-    <section class="col-xs-12 col-sm-6 col-md-12">
-        @for (int i = 0; i < searchList.Count; i++)
+<div class="admin-search" lang="tr">
+    <header class="admin-search__hero">
+        <div class="admin-search__hero-text">
+            <p class="admin-search__eyebrow">
+                <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })">@AdminResource.AdminHome</a>
+                <span aria-hidden="true">/</span>
+                @AdminResource.SearchResults
+            </p>
+            <h1 class="admin-search__title">@AdminResource.SearchResults</h1>
+            @if (hasResults)
             {
-                var baseContent = searchList[i];
-        @Html.DisplayFor(item => baseContent, "BaseContentSearchItem")
-
+                <p class="admin-search__lead">
+                    <strong>@searchList.Count</strong>
+                    @AdminResource.SearchResultsText
+                    <mark class="admin-search__query">@searchKey</mark>
+                </p>
             }
-    </section>
+            else
+            {
+                <p class="admin-search__lead">
+                    @AdminResource.NoSearchResultsText
+                    <mark class="admin-search__query">@searchKey</mark>
+                </p>
+            }
+        </div>
+    </header>
+
+    <form class="admin-search__form" action="@Url.Action("SearchContent", "Dashboard", new { area = "admin" })" method="get" role="search">
+        <label class="sr-only" for="searchTxt">@AdminResource.AdminMainSeachPlaceHolder</label>
+        <div class="admin-search__form-box">
+            <span class="admin-search__form-icon" aria-hidden="true"><i class="fa fa-search"></i></span>
+            <input type="text"
+                   name="searchContent"
+                   id="searchTxt"
+                   value="@searchKey"
+                   data-provide="typehead"
+                   class="form-control"
+                   placeholder="@AdminResource.AdminMainSeachPlaceHolder"
+                   autocomplete="off" />
+            <button type="submit" class="btn btn-primary">Ara</button>
+            <a class="btn btn-default admin-search__clear"
+               href="@Url.Action("Index", "Dashboard", new { area = "admin" })"
+               title="@AdminResource.Clear">
+                <i class="fa fa-times" aria-hidden="true"></i>
+                @AdminResource.Clear
+            </a>
+        </div>
+    </form>
+
+    @if (hasResults)
+    {
+        <div class="admin-search__list" role="list">
+            @foreach (var baseContent in searchList)
+            {
+                @Html.DisplayFor(item => baseContent, "BaseContentSearchItem")
+            }
+        </div>
+    }
+    else
+    {
+        <div class="admin-search__empty" role="status">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <p>Farklı bir anahtar kelime deneyin veya panele dönün.</p>
+            <a class="btn btn-default" href="@Url.Action("Index", "Dashboard", new { area = "admin" })">@AdminResource.AdminHome</a>
+        </div>
     }
 </div>

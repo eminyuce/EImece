@@ -1,100 +1,120 @@
 ﻿@using EImece.Domain.Entities
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain;
-@using Resources;
-@using EImece.Domain.Helpers;
-
-@model  BaseContent
-
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using Resources
+@model BaseContent
 @{
     var gridEditText = AdminResource.GridEditText;
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var actionNameDelete = "Delete";
     var actionNameEdit = "SaveOrEdit";
     var controllerName = "";
-    string itemTypeName = "";
+    var itemTypeName = "";
+    var typeClass = "admin-search-card__type--default";
     var baseContent = Model;
-    int Width = ViewData["Width"].ToInt(150);
-    int Height = ViewData["Height"].ToInt(0);
+    var editUrl = "#";
 
     if (Model is Product)
     {
-        Product product = (Product)Model;
         controllerName = "Products";
         itemTypeName = AdminResource.Product;
+        typeClass = "admin-search-card__type--product";
     }
     else if (Model is Story)
     {
-        Story item = (Story)Model;
         controllerName = "Stories";
         itemTypeName = AdminResource.Story;
+        typeClass = "admin-search-card__type--story";
     }
     else if (Model is Menu)
     {
-        Menu item = (Menu)Model;
         controllerName = "Menus";
         itemTypeName = AdminResource.Menu;
+        typeClass = "admin-search-card__type--menu";
     }
     else if (Model is StoryCategory)
     {
-        StoryCategory item = (StoryCategory)Model;
         controllerName = "StoryCategories";
         itemTypeName = AdminResource.StoryCategory;
+        typeClass = "admin-search-card__type--story";
     }
     else if (Model is ProductCategory)
     {
-        ProductCategory item = (ProductCategory)Model;
         controllerName = "ProductCategories";
         itemTypeName = AdminResource.ProductCategory;
+        typeClass = "admin-search-card__type--product";
     }
+
+    if (!string.IsNullOrEmpty(controllerName))
+    {
+        editUrl = Url.Action(actionNameEdit, controllerName, new { area = "admin", id = baseContent.Id });
+    }
+
+    string imageUrl = null;
+    if (baseContent.MainImageId > 0 && baseContent.MainImage != null)
+    {
+        imageUrl = baseContent.GetCroppedImageUrl(baseContent.MainImageId, 96, 96);
+        if (string.IsNullOrWhiteSpace(imageUrl))
+        {
+            imageUrl = baseContent.MainImage.GetAdminCroppedImageUrl(96, 96);
+        }
+    }
+
+    var description = !string.IsNullOrEmpty(baseContent.Description)
+        ? GeneralHelper.GetDescription(baseContent.Description, 180)
+        : "";
 }
 
-<article class="search-result row">
-    <div class="col-xs-12 col-sm-12 col-md-2">
-
-        @if (baseContent.MainImageId > 0)
+<article class="admin-search-card" role="listitem">
+    <div class="admin-search-card__media" aria-hidden="true">
+        @if (!string.IsNullOrWhiteSpace(imageUrl))
         {
-        <img src="@Html.Raw(baseContent.MainImage.GetAdminCroppedImageUrl(Width, Height))" />
+            <img src="@Html.Raw(imageUrl)"
+                 alt=""
+                 width="96"
+                 height="96"
+                 loading="lazy"
+                 onerror="this.style.display='none'; this.parentNode.classList.add('is-empty');" />
         }
         else
         {
-        @AdminResource.GridNoMainPageImageText
-
+            <span class="admin-search-card__media-fallback"><i class="fa fa-picture-o"></i></span>
         }
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-2">
-        <ul class="meta-search">
-            <li><i class="glyphicon glyphicon-calendar"></i> <span>@baseContent.UpdatedDate.ToShortDateString()</span></li>
-            <li><i class="glyphicon glyphicon-tags"></i> <span>@itemTypeName</span></li>
-            <li>
-                <i class="glyphicon glyphicon-edit"></i>   @Html.ActionLink(gridEditText, actionNameEdit, controllerName,
-new { id = baseContent.Id }, new { @class = "  ", @target = "_blank" })
-            </li>
-        </ul>
-    </div>
-    <div class="col-sm-12 col-md-8 excerpet">
-        <span class="searchItemTitle">
+
+    <div class="admin-search-card__body">
+        <div class="admin-search-card__meta">
+            <span class="admin-search-card__type @typeClass">@itemTypeName</span>
+            <span class="admin-search-card__date">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                @baseContent.UpdatedDate.ToShortDateString()
+            </span>
+        </div>
+
+        <div class="admin-search-card__content">
             @if (baseContent is Product)
             {
-                var p = (Product)baseContent;
-            @Html.Partial("BaseContentSearchItem/ProductSearchItem", p)
+                @Html.Partial("BaseContentSearchItem/ProductSearchItem", (Product)baseContent)
             }
             else
             {
-            @Html.DisplayFor(model => baseContent.Name)
+                <h2 class="admin-search-card__title">
+                    <a href="@editUrl" target="_blank" rel="noopener noreferrer">@baseContent.Name</a>
+                </h2>
             }
-        </span>
-        <dl>
-            @if (!string.IsNullOrEmpty(baseContent.Description))
+
+            @if (!string.IsNullOrEmpty(description))
             {
-            <dt>
-                @Html.DisplayNameFor(model => baseContent.Description)
-            </dt>
-            <dd>
-                @GeneralHelper.GetDescription(baseContent.Description, 300)
-            </dd>
+                <p class="admin-search-card__desc">@description</p>
             }
-        </dl>
+        </div>
     </div>
-    <span class="clearfix borda"></span>
+
+    <div class="admin-search-card__actions">
+        <a class="btn btn-primary btn-sm admin-search-card__edit"
+           href="@editUrl"
+           target="_blank"
+           rel="noopener noreferrer">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            @gridEditText
+        </a>
+    </div>
 </article>

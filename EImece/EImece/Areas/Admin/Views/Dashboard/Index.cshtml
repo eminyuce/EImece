@@ -1,115 +1,169 @@
-﻿@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using EImece.Domain.Entities;
-@using Resources;
-@using System.Threading;
-@using EImece.Domain.Models.Enums;
-@using EImece.Domain.Services.IServices;
-@using Microsoft.AspNet.Identity;
-@using System.Globalization;
+﻿@using EImece.Domain
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using EImece.Domain.Services.IServices
+@using Resources
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = AdminResource.AdminHome;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
     var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+    var settingService = DependencyResolver.Current.GetService<ISettingService>();
+    var companyName = settingService != null
+        ? settingService.GetSettingByKey(Constants.CompanyName).ToStr()
+        : (ViewBag.CompanyNameSetting as string ?? "");
+    var searchValue = Request.QueryString["searchContent"].ToStr();
 }
 
-<h2 class="text-center">@AdminResource.AdminPanelWelcome</h2>
-<hr class="adminLine" />
-<div class="container">
-    <div class="row justify-content-md-center">
-
-        @using (Html.BeginForm("SearchContent", "Dashboard", FormMethod.Get, new { @class = "" }))
-        {
-            <div class="col-md-5 col-md-offset-3">
-                <input type="text" name="searchContent"
-                       value="@Request.QueryString["searchContent"].ToStr()"
-                       id="searchTxt"
-                       data-provide="typehead"
-                       title="Aramaya başlamak için en az 2 karakter yazmalısınız"
-                       class="form-control"
-                       placeholder="@AdminResource.AdminMainSeachPlaceHolder"
-                       autocomplete="off">
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-default btn-block"><span class="glyphicon glyphicon-search"></span></button>
-            </div>
-        }
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <br /><br />
+<div class="admin-home" lang="tr">
+    <header class="admin-home__hero">
+        <div class="admin-home__hero-text">
+            <p class="admin-home__eyebrow">@(string.IsNullOrWhiteSpace(companyName) ? "Yönetim paneli" : companyName)</p>
+            <h1 class="admin-home__title">@AdminResource.AdminPanelWelcome</h1>
+            <p class="admin-home__lead">Katalog ve içerik işlemlerine buradan hızlıca geçin.</p>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <div class="MainPage">
-                <div>
-                    <a href="@Url.Action("Index","MainPageImages")">
-                        <img src="~/Areas/Admin/Content/main/giris-kayan-gorseller.png" />
-                    </a>
-                    <a href="@Url.Action("Index","Menus")">
-                        <img src="~/Areas/Admin/Content/main/hakkimizda-iletisim-diger-menuler.png" />
-                    </a>
-                    <a href="@Url.Action("Index","Products")">
-                        <img src="~/Areas/Admin/Content/main/urun-ekle-yonet.png" />
-                    </a>
-                    <a href="@Url.Action("Index","ProductCategories")">
-                        <img src="~/Areas/Admin/Content/main/urun-kategorileri.png" />
-                    </a>
-                </div>
-            </div>
+        <div class="admin-home__hero-aside">
+            <a class="admin-home__guide-link" href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })">
+                <i class="fa fa-book" aria-hidden="true"></i>
+                @AdminResource.OurSiteFeatures
+            </a>
         </div>
-    </div>
+    </header>
 
-    <div class="col-md-12">
-
-        <div class="MainPage">
-            <div>
-                <a href="@Url.Action("Index","adminsettings")">
-                    <img src="~/Areas/Admin/Content/main/yonetici-ayarlari.png" />
-                </a>
-                @if (productPriceEnabled)
-                {
-                    <a href="@Url.Action("Index","adminsettings")">
-                        <img src="~/Areas/Admin/Content/main/kargo.png" />
-                    </a>
-                    <a href="@Url.Action("Index","customers")">
-                        <img src="~/Areas/Admin/Content/main/uyeler.png" />
-                    </a>
-                    <a href="https://merchant.iyzipay.com/auth/login">
-                        <img src="~/Areas/Admin/Content/main/iyzico.png" />
-                    </a>
-                }
-            </div>
+    <form class="admin-home__search" action="@Url.Action("SearchContent", "Dashboard", new { area = "admin" })" method="get" role="search">
+        <label class="sr-only" for="searchTxt">@AdminResource.AdminMainSeachPlaceHolder</label>
+        <div class="admin-home__search-box">
+            <span class="admin-home__search-icon" aria-hidden="true"><i class="fa fa-search"></i></span>
+            <input type="text"
+                   name="searchContent"
+                   value="@searchValue"
+                   id="searchTxt"
+                   data-provide="typehead"
+                   title="Aramaya başlamak için en az 2 karakter yazmalısınız"
+                   class="form-control admin-home__search-input"
+                   placeholder="@AdminResource.AdminMainSeachPlaceHolder"
+                   autocomplete="off" />
+            <button type="submit" class="btn btn-primary admin-home__search-btn">
+                <span>Ara</span>
+            </button>
         </div>
-    </div>
+    </form>
 
-    <div class="col-md-12">
-
-        <div class="MainPage">
-            <div>
-                <a href="@Url.Action("Index","brands")">
-                    <img src="~/Areas/Admin/Content/main/brand.png" />
-                </a>
-                <a href="@Url.Action("SystemSettings","adminsettings")">
-                    <img src="~/Areas/Admin/Content/main/settings.png" />
-                </a>
-                <a href="@Url.Action("Index","MailTemplates")">
-                    <img src="~/Areas/Admin/Content/main/MailTemplates.png" />
-                </a>
-                @if (productPriceEnabled)
-                {
-                    <a href="@Url.Action("Index","Customers")">
-                        <img src="~/Areas/Admin/Content/main/Customers.png" />
-                    </a>
-                }
-            </div>
+    <section class="admin-home__section" aria-labelledby="admin-home-content">
+        <h2 id="admin-home-content" class="admin-home__section-title">İçerik ve vitrin</h2>
+        <div class="admin-home__grid">
+            <a class="admin-home__tile" href="@Url.Action("Index", "MainPageImages", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-picture-o"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">Ana sayfa görselleri</span>
+                    <span class="admin-home__tile-desc">Kayan banner ve vitrin görselleri</span>
+                </span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("Index", "Menus", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-bars"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.Menus</span>
+                    <span class="admin-home__tile-desc">Hakkımızda, iletişim ve diğer sayfalar</span>
+                </span>
+            </a>
         </div>
-    </div>
+    </section>
 
+    <section class="admin-home__section" aria-labelledby="admin-home-catalog">
+        <h2 id="admin-home-catalog" class="admin-home__section-title">@AdminResource.Catalog</h2>
+        <div class="admin-home__grid">
+            <a class="admin-home__tile" href="@Url.Action("Index", "Products", new { area = "admin" })">
+                <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-cube"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.Products</span>
+                    <span class="admin-home__tile-desc">@(productPriceEnabled ? "Ürün ekle, düzenle ve fiyatlandır" : "Ürünleri listeleyin ve düzenleyin")</span>
+                </span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("Index", "ProductCategories", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sitemap"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.ProductCategories</span>
+                    <span class="admin-home__tile-desc">Kategori ağacı ve sıralama</span>
+                </span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("Index", "Brands", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-tags"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.Brands</span>
+                    <span class="admin-home__tile-desc">Marka listesi ve görselleri</span>
+                </span>
+            </a>
+        </div>
+    </section>
+
+    @if (productPriceEnabled)
+    {
+        <section class="admin-home__section" aria-labelledby="admin-home-sales">
+            <h2 id="admin-home-sales" class="admin-home__section-title">@AdminResource.Sales</h2>
+            <div class="admin-home__grid">
+                <a class="admin-home__tile" href="@Url.Action("Index", "Orders", new { area = "admin" })">
+                    <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-shopping-bag"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">@AdminResource.Orders</span>
+                        <span class="admin-home__tile-desc">Sipariş durumu ve kargo takibi</span>
+                    </span>
+                </a>
+                <a class="admin-home__tile" href="@Url.Action("Index", "Customers", new { area = "admin" })">
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-users"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">@AdminResource.Customers</span>
+                        <span class="admin-home__tile-desc">Üye ve müşteri kayıtları</span>
+                    </span>
+                </a>
+                <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-truck"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">Kargo ve mağaza</span>
+                        <span class="admin-home__tile-desc">Kargo açıklaması ve mağaza bilgileri</span>
+                    </span>
+                </a>
+                <a class="admin-home__tile" href="https://merchant.iyzipay.com/auth/login" target="_blank" rel="noopener noreferrer">
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-credit-card"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">iyzico</span>
+                        <span class="admin-home__tile-desc">Ödeme paneli (yeni sekme)</span>
+                    </span>
+                </a>
+            </div>
+        </section>
+    }
+
+    <section class="admin-home__section" aria-labelledby="admin-home-system">
+        <h2 id="admin-home-system" class="admin-home__section-title">Sistem</h2>
+        <div class="admin-home__grid">
+            <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">Yönetici ayarları</span>
+                    <span class="admin-home__tile-desc">Şirket ve genel site bilgileri</span>
+                </span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-cogs"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.SystemSettings</span>
+                    <span class="admin-home__tile-desc">@(productPriceEnabled ? "Fiyat, SEO ve teknik ayarlar" : "Listeleme modu, SEO ve teknik ayarlar")</span>
+                </span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("Index", "MailTemplates", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-envelope-o"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.MailTemplates</span>
+                    <span class="admin-home__tile-desc">E-posta şablonlarını düzenleyin</span>
+                </span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("Index", "Users", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-user"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.Users</span>
+                    <span class="admin-home__tile-desc">Yönetici ve panel kullanıcıları</span>
+                </span>
+            </a>
+        </div>
+    </section>
 </div>

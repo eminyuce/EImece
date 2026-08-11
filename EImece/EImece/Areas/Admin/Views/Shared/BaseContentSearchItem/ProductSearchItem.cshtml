@@ -1,50 +1,28 @@
 ﻿@using EImece.Domain.Entities
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain;
-@using Resources;
-@using EImece.Domain.Helpers;
-@model  Product
-
+@using Resources
+@model Product
 @{
-    var baseContent = Model;
-    int Width = ViewData["Width"].ToInt(150);
-    int Height = ViewData["Height"].ToInt(0);
+    var product = Model;
+    var editUrl = Url.Action("SaveOrEdit", "Products", new { area = "admin", id = product.Id });
+    var showLongName = !string.IsNullOrEmpty(product.NameLong)
+        && !string.Equals(product.NameLong.Trim(), (product.Name ?? "").Trim(), StringComparison.OrdinalIgnoreCase);
 }
-<dl>
-    @if (!string.IsNullOrEmpty(baseContent.Name))
+
+<h2 class="admin-search-card__title">
+    <a href="@editUrl" target="_blank" rel="noopener noreferrer">@product.Name</a>
+</h2>
+
+<ul class="admin-search-card__facts">
+    @if (!string.IsNullOrEmpty(product.ProductCode))
     {
-    <dt>
-        @Html.DisplayNameFor(model => model.Name)
-    </dt>
-    <dd>
-        @Html.DisplayFor(model => baseContent.Name)
-    </dd>
+        <li><span>Kod</span> @product.ProductCode</li>
     }
-    @if (baseContent.ProductCategory!=null && !string.IsNullOrEmpty(baseContent.ProductCategory.Name))
+    @if (product.ProductCategory != null && !string.IsNullOrEmpty(product.ProductCategory.Name))
     {
-    <dt>
-        @AdminResource.ProductCategory
-    </dt>
-    <dd>
-        @Html.DisplayFor(model => baseContent.ProductCategory.Name)
-    </dd>
+        <li><span>@AdminResource.ProductCategory</span> @product.ProductCategory.Name</li>
     }
-    @if (!string.IsNullOrEmpty(baseContent.NameLong))
+    @if (showLongName)
     {
-    <dt>
-        @Html.DisplayNameFor(model => model.NameLong)
-    </dt>
-    <dd>
-        @Html.DisplayFor(model => baseContent.NameLong)
-    </dd>
+        <li><span>Uzun ad</span> @product.NameLong</li>
     }
-    @if (!string.IsNullOrEmpty(baseContent.ProductCode))
-    {
-    <dt>
-        @Html.DisplayNameFor(model => model.ProductCode)
-    </dt>
-    <dd>
-        @Html.DisplayFor(model => baseContent.ProductCode)
-    </dd>
-    }
-</dl>
+</ul>
