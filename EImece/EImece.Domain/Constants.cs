@@ -97,6 +97,7 @@ namespace EImece.Domain
         public const string BasketMinTotalPriceForCargo = "BasketMinTotalPriceForCargo";
         public const string CargoPrice = "CargoPrice";
         public const string CargoDescription = "CargoDescription";
+        public const string PaymentDetailHtml = "PaymentDetailHtml";
 
         public const string TempPath = "~/media/tempFiles/";
         public const string ServerMapPath = "~/media/images/";

@@ -1548,7 +1548,8 @@ PRINT N'Seeding Settings...';
         (N'LinkedinWebSiteLink', N'https://linkedin.com/company/eimece', N'LinkedIn'),
         (N'YotubeWebSiteLink', N'https://youtube.com/@eimece', N'YouTube'),
         (N'PinterestWebSiteLink', N'https://pinterest.com/eimece', N'Pinterest'),
-        (N'WhatsAppCommunicationLink', N'https://wa.me/905555550123', N'WhatsApp')
+        (N'WhatsAppCommunicationLink', N'https://wa.me/905555550123', N'WhatsApp'),
+        (N'PaymentDetailHtml', N'<div class="product-payment-detail"><h3>İyzico ile güvenli ödeme</h3><p><strong>Siz alışverişin keyfini çıkarın, ödeme güvenliğini İyzico’ya bırakın.</strong></p><p>İyzico, Türkiye''nin önde gelen ödeme altyapı sağlayıcılarından biridir ve milyonlarca kullanıcı tarafından güvenle tercih edilmektedir. Web sitemiz üzerinden yapacağınız ödemelerde İyzico altyapısı kullanılmaktadır.</p><ul><li><strong>Kart bilgileriniz 256-bit SSL ile şifrelenir</strong> ve güvenle saklanır.</li><li><strong>Her ödeme İyzico güvencesi altındadır.</strong> Ödemeniz tarafımıza ulaşmadan önce doğrulanır.</li><li><strong>Kolay iade ve iptal süreçleri</strong> sayesinde alışveriş deneyiminiz kontrolünüzdedir.</li><li><strong>BDDK lisanslı bir ödeme kuruluşudur.</strong> Türkiye Cumhuriyeti yasalarına uygun ve denetimli şekilde hizmet verir.</li><li><strong>Kullanıcı dostu ve hızlı ödeme deneyimi</strong> sunar.</li><li><strong>İyzico Korumalı Alışveriş</strong> seçeneğiyle, ürün elinize ulaşmazsa paranız iade edilir.</li></ul><p>Siparişinizi tamamlarken tüm ödeme süreci İyzico’nun yüksek güvenlik standartları ile gerçekleştirilir. <a href="https://www.iyzico.com" target="_blank" rel="noopener noreferrer">iyzico.com</a></p></div>', N'SystemSettings')
     ) v(SettingKey, SettingValue, Description)
 )
 INSERT INTO dbo.Settings

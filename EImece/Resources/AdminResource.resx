@@ -915,6 +915,9 @@
   <data name="GoogleMapScript" xml:space="preserve">
     <value>Google Harita Script</value>
   </data>
+  <data name="PaymentDetailHtml" xml:space="preserve">
+    <value>Ürün Detay Ödeme HTML</value>
+  </data>
   <data name="CargoSettings" xml:space="preserve">
     <value>Kargo Ayarları</value>
   </data>

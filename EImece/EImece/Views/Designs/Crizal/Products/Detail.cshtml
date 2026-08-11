@@ -500,7 +500,14 @@
             @if (productPriceEnabled)
             {
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                    @PaymentOptionsHelper(Model)
+                    @if (Model.PaymentDetailHtml != null && Model.PaymentDetailHtml.IsNotEmpty())
+                    {
+                        @Html.Raw(Model.PaymentDetailHtml.SettingValue)
+                    }
+                    else
+                    {
+                        @PaymentOptionsHelper(Model)
+                    }
                 </div>
             }
         </div>

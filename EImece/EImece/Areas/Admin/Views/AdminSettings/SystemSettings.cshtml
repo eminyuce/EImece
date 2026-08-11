@@ -113,6 +113,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                @Html.LabelFor(model => model.PaymentDetailHtml, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(model => model.PaymentDetailHtml, 12, 50, new { @class = "form-control", placeholder = "Ürün detay sayfası Ödeme sekmesinde gösterilecek HTML" })
+                                    @Html.ValidationMessageFor(model => model.PaymentDetailHtml, "", new { @class = "text-danger" })
+                                    <p class="help-block" style="margin-top:10px; margin-bottom:0;">
+                                        Ürün detay sayfasındaki Ödeme Bilgisi sekmesinde gösterilir. Ödeme altyapısı değiştiğinde bu HTML’i güncellemeniz yeterlidir.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.IsProductReviewEnable, htmlAttributes: new { @class = "control-label col-md-3" })
                                 <div class="col-md-9">
                                     <div class="checkbox admin-bool-field">
