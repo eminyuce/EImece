@@ -1745,6 +1745,8 @@
     <Content Include="Scripts\popper.min.js.map" />
     <Content Include="Scripts\README.md" />
     <Content Include="Scripts\Web.config" />
+    <Content Include="Views\Designs\Crizal\Shared\_CrizalBreadcrumbHomeItem.cshtml" />
+    <Content Include="Views\Designs\Crizal\Shared\_CrizalBreadcrumbHomeIcon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customers\Data\" />
