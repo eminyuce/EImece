@@ -110,10 +110,17 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageById(int menuId)
         {
+            var menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
+            if (menu == null)
+            {
+                Logger.Warn("GetPageById: menu id {0} was not found.", menuId);
+                return null;
+            }
+
             var result = new MenuPageViewModel();
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-            result.Menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, result.Menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.Menu = menu;
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
             result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
             return result;
@@ -121,11 +128,18 @@ namespace EImece.Domain.Services
 
         public async Task<MenuPageViewModel> GetPageByIdAsync(int menuId)
         {
+            var menus = await GetMenusAsync().ConfigureAwait(false);
+            var menu = menus.FirstOrDefault(r => r.Id.Equals(menuId));
+            if (menu == null)
+            {
+                Logger.Warn("GetPageByIdAsync: menu id {0} was not found.", menuId);
+                return null;
+            }
+
             var result = new MenuPageViewModel();
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-            var menus = await GetMenusAsync().ConfigureAwait(false);
-            result.Menu = menus.FirstOrDefault(r => r.Id.Equals(menuId));
-            var activeMenus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, result.Menu.Lang).ConfigureAwait(false);
+            result.Menu = menu;
+            var activeMenus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, menu.Lang).ConfigureAwait(false);
             result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = await SettingService.GetAllActiveSettingsAsync().ConfigureAwait(false);
             result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);

@@ -255,6 +255,12 @@ namespace EImece.Controllers
                 {
                     HomeLogger.Info($"ItemType is Menu with ID: {contact.ItemId}");
                     var page = await MenuService.GetPageByIdAsync(contact.ItemId);
+                    if (page == null || page.Menu == null)
+                    {
+                        HomeLogger.Warn($"Menu page not found for contact ItemId: {contact.ItemId}");
+                        return RedirectToAction("NotFound", "Error");
+                    }
+
                     page.Contact = contact;
                     HomeLogger.Info("Returning Page Detail view with captcha error.");
                     return View("../Pages/Detail", page);
