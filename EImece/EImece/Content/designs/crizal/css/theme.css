@@ -183,14 +183,14 @@ body[data-design="crizal"] .attr-nav > ul > li > a {
     body[data-design="crizal"] .navbar-default .navbar-nav > li {
         float: none;
         width: auto !important;
-        margin-left: 0.1rem;
+        margin-left: 0.35rem;
         border-top: 0;
     }
 
     body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
         font-size: 0.72rem;
         letter-spacing: 0.01em;
-        padding: 1.15rem 0.28rem;
+        padding: 1.15rem 0.42rem;
         line-height: 1.15;
         white-space: nowrap;
     }
@@ -652,9 +652,13 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
+    body[data-design="crizal"] .navbar-default .navbar-nav > li {
+        margin-left: 0.2rem;
+    }
+
     body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
-        font-size: 0.72rem;
-        padding: 1rem 0.25rem;
+        font-size: 0.7rem;
+        padding: 1rem 0.32rem;
         letter-spacing: 0;
     }
 }
@@ -685,11 +689,32 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
 }
 
 @media (max-width: 991.98px) {
+    /* Tighter top bar + tap-friendly phone/email row */
+    body[data-design="crizal"] .top-bar {
+        padding: 0.5rem 0.85rem;
+    }
+
+    body[data-design="crizal"] .top-bar-info ul {
+        padding-left: 0;
+        margin: 0;
+    }
+
+    body[data-design="crizal"] .top-bar-info li {
+        padding: 0.2rem 0.15rem;
+        font-size: 0.8125rem;
+        line-height: 1.35;
+    }
+
+    body[data-design="crizal"] .top-bar-info li i {
+        margin-right: 0.4rem;
+    }
+
     /* Restore Crizal nav-menu.css mobile dropdown (overrides desktop flex polish) */
     body[data-design="crizal"] .navbar-default .navbar {
         flex-wrap: nowrap;
         align-items: center;
         position: relative;
+        min-height: 3.5rem;
     }
 
     body[data-design="crizal"] .navbar-default .navbar-header,
@@ -699,6 +724,13 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
         margin-right: 0.5rem;
         min-width: 0;
         z-index: 5;
+        padding: 0.35rem 0 !important;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-brand img,
+    body[data-design="crizal"] #logo {
+        max-height: 44px;
+        max-width: 132px;
     }
 
     body[data-design="crizal"] .attr-nav {
@@ -712,14 +744,25 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
         z-index: 5;
     }
 
+    body[data-design="crizal"] .attr-nav > ul > li > a {
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.45rem !important;
+    }
+
     body[data-design="crizal"] .navbar-toggler {
         order: 3;
         flex: 0 0 auto;
         position: absolute;
         right: 0;
-        top: 13px;
-        transform: none;
+        top: 50%;
+        transform: translateY(-50%);
         margin: 0;
+        width: 46px;
+        height: 42px;
         z-index: 12399994;
     }
 

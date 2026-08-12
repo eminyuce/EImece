@@ -1890,9 +1890,17 @@ body[data-design="crizal"] .crizal-home-hero .slider-fade3 .item {
     margin: 0 !important;
     padding: 4.5rem 0 5rem !important;
     border-radius: 0 !important;
+    background-color: var(--crizal-secondary);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+/* Graceful missing-media state: atmospheric gradient, never raw filenames */
+body[data-design="crizal"] .crizal-home-hero__slide--placeholder {
+    background-image:
+        radial-gradient(ellipse 80% 70% at 70% 40%, rgba(9, 184, 80, 0.28) 0%, transparent 55%),
+        linear-gradient(135deg, #0f1a22 0%, #14212B 45%, #1a3340 100%) !important;
 }
 
 body[data-design="crizal"] .crizal-home-hero__veil {
@@ -1902,6 +1910,22 @@ body[data-design="crizal"] .crizal-home-hero__veil {
     pointer-events: none;
     background:
         linear-gradient(105deg, rgba(20, 33, 43, 0.94) 0%, rgba(20, 33, 43, 0.82) 38%, rgba(20, 33, 43, 0.55) 68%, rgba(20, 33, 43, 0.4) 100%);
+}
+
+/* Belt-and-suspenders: owl theme forces .owl-item img visible; keep any residual imgs hidden */
+body[data-design="crizal"] .crizal-home-hero .owl-item img,
+body[data-design="crizal"] .crizal-home-hero__slide img {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 body[data-design="crizal"] .crizal-home-hero__slide > .container {
@@ -2144,6 +2168,42 @@ body[data-design="crizal"] .crizal-home-category-card .crizal-card-body p {
 /* Subscribe band */
 body[data-design="crizal"] .crizal-home-subscribe {
     padding: 0 0 0.5rem;
+    position: relative;
+}
+
+/* Chat / WhatsApp FAB must not cover the newsletter email field on small screens */
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-home-subscribe {
+        padding-bottom: 1.25rem;
+    }
+
+    body[data-design="crizal"] .crizal-home-subscribe__form {
+        position: relative;
+        z-index: 2;
+    }
+
+    body[data-design="crizal"] .crizal-home-subscribe__row .form-control {
+        min-height: 2.75rem;
+    }
+
+    /* Move common floating chat widgets to bottom-right so the email field stays tappable */
+    body[data-design="crizal"] #WAButton,
+    body[data-design="crizal"] .floating-wpp,
+    body[data-design="crizal"] .whatsapp-button,
+    body[data-design="crizal"] .whatsapp-float,
+    body[data-design="crizal"] .wa-float,
+    body[data-design="crizal"] .blantershow-chat,
+    body[data-design="crizal"] a[href*="wa.me"][style*="position"],
+    body[data-design="crizal"] a[href*="api.whatsapp.com"][style*="position"],
+    body[data-design="crizal"] [class*="whatsapp"][style*="fixed"],
+    body[data-design="crizal"] [class*="WhatsApp"][style*="fixed"],
+    body[data-design="crizal"] [id*="whatsapp"],
+    body[data-design="crizal"] [id*="WhatsApp"] {
+        left: auto !important;
+        right: 1rem !important;
+        bottom: 1rem !important;
+        z-index: 1040 !important;
+    }
 }
 
 body[data-design="crizal"] .crizal-home-subscribe__panel {
