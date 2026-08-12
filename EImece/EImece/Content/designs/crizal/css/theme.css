@@ -1407,10 +1407,22 @@ body[data-design="crizal"] .customer-profile-actions__submit {
 
 body[data-design="crizal"] .customer-page .form-control {
     min-height: 44px;
+    max-width: 100%;
 }
 
 body[data-design="crizal"] .customer-page textarea.form-control {
     min-height: 96px;
+}
+
+body[data-design="crizal"] .customer-page .badge,
+body[data-design="crizal"] .customer-page .badge-pill {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+    height: auto;
+    line-height: 1.4;
+    text-align: left;
 }
 
 body[data-design="crizal"] .customer-contact-form .control-label {
