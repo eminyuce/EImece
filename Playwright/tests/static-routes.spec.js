@@ -31,6 +31,9 @@ const PUBLIC_GET_ROUTES = [
   { name: 'faq-page', path: '/i/sikca-sorulan-sorular-4h4h8c6g/' },
   { name: 'category-electronics', path: '/c/pc/elektronik-0j5i6g1b/' },
   { name: 'category-headphones', path: '/c/pc/kulaklik--ses-4h0j6g1b/' },
+  // BUG-006 / BUG-010: legacy and bare category URLs should not 5xx (redirect or friendly page).
+  { name: 'category-legacy-ev-yasam', path: '/c/Ev-Yasam' },
+  { name: 'category-pc-root', path: '/c/pc/' },
   { name: 'story-category', path: '/s/sc/stil-rehberi-8c6g/' },
   { name: 'rss-products', path: '/rss/products/', raw: true },
   { name: 'rss-stories', path: '/rss/storycategories/', raw: true },
@@ -49,6 +52,9 @@ const AUTH_REDIRECT_ROUTES = [
   { name: 'admin-root', path: '/admin/', expectLogin: true },
   { name: 'customers-root', path: '/customers/', expectLogin: true },
   { name: 'manage-root', path: '/manage/', expectLogin: true },
+  // BUG-007 / BUG-008: legacy Manage URLs redirect into Customers (still require auth).
+  { name: 'manage-change-password', path: '/Manage/ChangePassword', expectLogin: true },
+  { name: 'manage-logins', path: '/Manage/ManageLogins', expectLogin: true },
 ];
 
 test.describe('Static route inventory', () => {
