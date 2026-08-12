@@ -53,6 +53,20 @@ test.describe('Crizal Home', () => {
     await page.screenshot({ path: 'screenshots/home.png', fullPage: true });
   });
 
+  test('product detail does not dump media filenames', async ({ page }) => {
+    await page.goto('/');
+    await assertCrizalChrome(page);
+    const pdp = page.locator('a[href*="/p/"]').first();
+    test.skip(!(await pdp.count()), 'No product detail link on home');
+    await pdp.click();
+    await page.waitForLoadState('domcontentloaded');
+    await assertCrizalChrome(page);
+    const text = await page.locator('main').innerText();
+    expect(text).not.toMatch(/Eimece Media/i);
+    expect(text).not.toMatch(/product-\d+\.jpg/i);
+    await expect(page.locator('.product-gallery').first()).toBeVisible();
+  });
+
   test('mobile newsletter email is not covered by chat FAB', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/', { waitUntil: 'domcontentloaded' });

@@ -521,6 +521,12 @@ namespace EImece.Domain.Helpers.Extensions
                     return null;
                 }
 
+                // Seed demo thumbs still contain burned-in filenames — force resize proxy.
+                if (FilesHelper.IsSeedPlaceholderMedia(fileStorage))
+                {
+                    return null;
+                }
+
                 if (!FilesHelper.CanServeRequestFromThumbnail(width, height, fileStorage.Width, fileStorage.Height))
                 {
                     return null;

@@ -800,10 +800,31 @@ namespace EImece.Domain.Helpers
             {
                 return new Tuple<string, string>("", "");
             }
-            else
+
+            // Seed demo JPEGs paint "EImece Media {filename}" into the pixels — never expose
+            // those as static /media/images URLs. Callers fall through to the resize proxy /
+            // abstract placeholder instead.
+            if (IsSeedPlaceholderMedia(fileStorage))
             {
-                return GetFileStorageSrcPath(fileStorage.FileName);
+                return new Tuple<string, string>("", "");
             }
+
+            return GetFileStorageSrcPath(fileStorage.FileName);
+        }
+
+        /// <summary>
+        /// SeedDummyData marks demo FileStorage rows with FileUrl under /media/seed/.
+        /// GenerateSeedImages historically burned the filename into those JPEGs.
+        /// </summary>
+        public static bool IsSeedPlaceholderMedia(FileStorage fileStorage)
+        {
+            if (fileStorage == null)
+            {
+                return false;
+            }
+
+            var url = fileStorage.FileUrl ?? string.Empty;
+            return url.IndexOf("/media/seed/", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         public static Tuple<string, string> GetFileStorageSrcPath(String fileName)
@@ -894,12 +915,18 @@ namespace EImece.Domain.Helpers
             fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             if (fileStorage != null)
             {
-                if (imageBytes == null)
+                if (IsSeedPlaceholderMedia(fileStorage))
+                {
+                    int w = fileStorage.Width > 0 ? fileStorage.Width : 1200;
+                    int h = fileStorage.Height > 0 ? fileStorage.Height : 900;
+                    imageBytes = GenerateAbstractPlaceholder(fileStorage.Id, w, h);
+                }
+                else
                 {
                     String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
                     if (File.Exists(fullPath))
                     {
-                        imageBytes = File.ReadAllBytes(Path.Combine(fullPath));
+                        imageBytes = File.ReadAllBytes(fullPath);
                     }
                 }
             }
@@ -916,6 +943,13 @@ namespace EImece.Domain.Helpers
             if (fileStorage == null)
             {
                 return Tuple.Create<byte[], FileStorage>(null, null);
+            }
+
+            if (IsSeedPlaceholderMedia(fileStorage))
+            {
+                int w = fileStorage.Width > 0 ? fileStorage.Width : 1200;
+                int h = fileStorage.Height > 0 ? fileStorage.Height : 900;
+                return Tuple.Create(GenerateAbstractPlaceholder(fileStorage.Id, w, h), fileStorage);
             }
 
             String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
@@ -1282,33 +1316,58 @@ namespace EImece.Domain.Helpers
 
         public Byte[] GenerateDefaultImg(string text = "", int width = 200, int height = 200)
         {
-            int emSize = 120;
+            // Ignore legacy text overlays (e.g. "X") — never dump filenames into placeholders.
+            return GenerateAbstractPlaceholder(0, width > 0 ? width : 200, height > 0 ? height : 200);
+        }
+
+        /// <summary>
+        /// Soft branded abstract JPEG with no filename / label text (safe for hero + PDP).
+        /// </summary>
+        public byte[] GenerateAbstractPlaceholder(int seedKey, int width, int height)
+        {
+            if (width <= 0) width = 800;
+            if (height <= 0) height = 600;
+            if (width > 2400) width = 2400;
+            if (height > 2400) height = 2400;
+
+            var palette = new[]
+            {
+                Color.FromArgb(255, 20, 33, 43),
+                Color.FromArgb(255, 9, 184, 80),
+                Color.FromArgb(255, 26, 51, 64),
+                Color.FromArgb(255, 10, 125, 58),
+                Color.FromArgb(255, 15, 26, 34),
+                Color.FromArgb(255, 14, 163, 74)
+            };
+            var baseColor = palette[Math.Abs(seedKey) % palette.Length];
+            var accent = palette[(Math.Abs(seedKey) + 1) % palette.Length];
+
             using (var mem = new MemoryStream())
             using (var bmp = new Bitmap(width, height))
             using (var gfx = Graphics.FromImage(bmp))
             {
-                gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                 gfx.SmoothingMode = SmoothingMode.AntiAlias;
-                gfx.FillRectangle(Brushes.White, new Rectangle(0, 0, bmp.Width, bmp.Height));
+                using (var bg = new LinearGradientBrush(
+                    new Rectangle(0, 0, width, height),
+                    baseColor,
+                    accent,
+                    35f))
+                {
+                    gfx.FillRectangle(bg, 0, 0, width, height);
+                }
 
-                var sf = new StringFormat();
-                sf.Alignment = StringAlignment.Center;
-                sf.LineAlignment = StringAlignment.Center;
+                using (var veil = new SolidBrush(Color.FromArgb(55, 255, 255, 255)))
+                {
+                    gfx.FillEllipse(veil, (int)(width * 0.45), (int)(-height * 0.15), (int)(width * 0.7), (int)(height * 0.7));
+                }
 
-                //add question\
-                var font = new Font("Tahoma", emSize);
-                string color = "#F2F3F4";
-                byte R = System.Convert.ToByte(color.Substring(1, 2), 16);
-                byte G = System.Convert.ToByte(color.Substring(3, 2), 16);
-                byte B = System.Convert.ToByte(color.Substring(5, 2), 16);
-                Brush brush = new SolidBrush(Color.FromArgb(R, G, B));
-                gfx.DrawString(text, font, brush, new Rectangle(0, 0, bmp.Width, bmp.Height), sf);
-                //render as Jpeg
+                using (var veil2 = new SolidBrush(Color.FromArgb(40, 0, 0, 0)))
+                {
+                    gfx.FillEllipse(veil2, (int)(-width * 0.2), (int)(height * 0.35), (int)(width * 0.65), (int)(height * 0.8));
+                }
+
                 bmp.Save(mem, ImageFormat.Jpeg);
-                font.Dispose();
-                brush.Dispose();
-                sf.Dispose();
-                return mem.GetBuffer();
+                return mem.ToArray();
             }
         }
 

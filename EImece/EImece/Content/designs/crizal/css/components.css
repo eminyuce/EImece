@@ -1820,6 +1820,24 @@ body[data-design="crizal"] .product-gallery .product-carousel img {
     height: auto;
 }
 
+/* Broken / missing product media: soft abstract block, never alt/filename text */
+body[data-design="crizal"] .product-gallery .product-carousel a.crizal-product-media,
+body[data-design="crizal"] .product-gallery .product-thumbnails li > a {
+    position: relative;
+    background:
+        radial-gradient(ellipse 70% 60% at 70% 30%, rgba(9, 184, 80, 0.22) 0%, transparent 55%),
+        linear-gradient(135deg, #14212B 0%, #1a3340 55%, #0f1a22 100%);
+}
+
+body[data-design="crizal"] .product-gallery img.is-broken {
+    opacity: 0 !important;
+    min-height: 12rem;
+}
+
+body[data-design="crizal"] .product-gallery .product-thumbnails img.is-broken {
+    min-height: 4.25rem;
+}
+
 body[data-design="crizal"] .product-gallery .owl-nav,
 body[data-design="crizal"] .product-gallery .owl-dots {
     display: none;
@@ -3847,6 +3865,55 @@ body[data-design="crizal"] .steps .step.step-done .step-indicator {
 
 body[data-design="crizal"] .steps .step .step-label {
     line-height: 1.2;
+}
+
+/* Empty cart copy must wrap fully on ~390px (no horizontal clip) */
+body[data-design="crizal"] .crizal-cart-empty {
+    max-width: 100%;
+    overflow: visible;
+    background: var(--crizal-surface-alt, #f4f5f9);
+    border: 1px solid var(--crizal-border, #e6e8ef);
+    border-radius: var(--crizal-radius-lg, 0.75rem);
+    padding: 1.5rem 1.15rem;
+    margin: 0;
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 0.35rem 0.15rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner h1,
+body[data-design="crizal"] .crizal-cart-empty__inner .h2,
+body[data-design="crizal"] .crizal-cart-empty__inner p {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: 100%;
+    hyphens: auto;
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner h1,
+body[data-design="crizal"] .crizal-cart-empty__inner .h2 {
+    font-size: clamp(1.2rem, 4.8vw, 1.65rem);
+    line-height: 1.3;
+    margin: 0 0 0.75rem;
+    color: var(--crizal-heading, #14212b);
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    body[data-design="crizal"] .crizal-cart-empty {
+        padding: 1.25rem 0.9rem;
+    }
 }
 
 /* Crizal shop/checkout blocks (from template shop-cart / shop-checkout) */

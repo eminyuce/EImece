@@ -94,9 +94,12 @@
 {
     var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 1600, 900);
     var hasImage = !string.IsNullOrWhiteSpace(imgLink);
-    // Prefer a direct media URL when the resize proxy would only paint the gray "X" default.
+    // Direct /media/images fallback only for real uploads — never seed demo JPEGs
+    // (those historically burned "EImece Media {filename}" into the pixels).
     var staticMediaUrl = "";
-    if (mainPageImage.MainImage != null && !string.IsNullOrWhiteSpace(mainPageImage.MainImage.FileName)
+    if (mainPageImage.MainImage != null
+        && !EImece.Domain.Helpers.FilesHelper.IsSeedPlaceholderMedia(mainPageImage.MainImage)
+        && !string.IsNullOrWhiteSpace(mainPageImage.MainImage.FileName)
         && !mainPageImage.MainImage.FileName.Equals(EImece.Domain.Helpers.FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
     {
         staticMediaUrl = EImece.Domain.Constants.UrlBase + System.IO.Path.GetFileName(mainPageImage.MainImage.FileName);
