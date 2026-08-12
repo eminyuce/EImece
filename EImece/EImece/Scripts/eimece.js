@@ -1,4 +1,4 @@
-﻿
+
 
 // Use currentTarget/this (not e.target): Crizal/Modern buttons wrap the label in <span>,
 // so clicks on the text would otherwise miss data-add-product-cart on the <button>.
@@ -146,7 +146,7 @@ $('[data-shopping-button-price]').each(function () {
     $(this).on("click", function (e) {
         var caller = e.target;
         var shoppingItemId = $(caller).attr('data-shopping-button-price');
-        var quantity = parseInt($('[data-shopping-quantity-id=' + shoppingItemId + ']').val(), 10);
+        var quantity = Number.parseInt($('[data-shopping-quantity-id=' + shoppingItemId + ']').val(), 10);
         if (isNaN(quantity)) return;
         if (quantity == 0) return;
         triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
@@ -154,11 +154,11 @@ $('[data-shopping-button-price]').each(function () {
 });
 
 $('[data-shopping-quantity-id]').each(function () {
-    let previousValue = parseInt($(this).val(), 10);
+    let previousValue = Number.parseInt($(this).val(), 10);
 
     $(this).off('input').on('input', function (e) {
         const $input = $(this);
-        const currentValue = parseInt($input.val(), 10);
+        const currentValue = Number.parseInt($input.val(), 10);
 
         if (isNaN(currentValue)) return;
 

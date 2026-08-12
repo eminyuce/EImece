@@ -1,4 +1,4 @@
-﻿function isEmpty(str) {
+function isEmpty(str) {
     return (!str || 0 === str.length);
 }
 
@@ -446,7 +446,7 @@ $(document).ready(function () {
     $("#ProductStateChanged").click(function (e) {
         e.preventDefault();
 
-        var ProductStateSelection = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($("#ProductStateSelection").val(), 10);
+        var ProductStateSelection = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($("#ProductStateSelection").val(), 10);
         var ProductStateText = $("#ProductStateSelection option:selected").text();
 
         var selectedProductId = GetSelectedCheckBoxValuesArray();
@@ -495,12 +495,12 @@ $(document).ready(function () {
     // Optional per-upload image size override (number inputs; collapsed by default).
     var $sizeRoot = $("[data-admin-image-size]").first();
     if ($sizeRoot.length && $("#imageWidthTxt").length && $("#imageHeightTxt").length) {
-        var defaultValueWidth = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($("#ImageWidth").val(), 10) || Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-w"), 10) || 0;
-        var defaultValueHeight = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($("#ImageHeight").val(), 10) || Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-h"), 10) || 0;
+        var defaultValueWidth = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($("#ImageWidth").val(), 10) || Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-w"), 10) || 0;
+        var defaultValueHeight = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($("#ImageHeight").val(), 10) || Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-h"), 10) || 0;
 
         function syncImageSize(width, height) {
-            width = Math.max(0, Math.min(2000, Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(width, 10) || 0));
-            height = Math.max(0, Math.min(2000, Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(height, 10) || 0));
+            width = Math.max(0, Math.min(2000, Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(width, 10) || 0));
+            height = Math.max(0, Math.min(2000, Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(height, 10) || 0));
             $("#ImageWidth").val(width);
             $("#ImageHeight").val(height);
             $("#imageWidthTxt").val(width);
@@ -522,11 +522,11 @@ $(document).ready(function () {
             var $btn = $(this);
             var w, h;
             if ($btn.attr("data-image-preset") === "default") {
-                w = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-w"), 10) || defaultValueWidth;
-                h = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-h"), 10) || defaultValueHeight;
+                w = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-w"), 10) || defaultValueWidth;
+                h = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($sizeRoot.attr("data-default-h"), 10) || defaultValueHeight;
             } else {
-                w = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($btn.attr("data-w"), 10);
-                h = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($btn.attr("data-h"), 10);
+                w = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($btn.attr("data-w"), 10);
+                h = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt($btn.attr("data-h"), 10);
             }
             syncImageSize(w, h);
             $sizeRoot.find("[data-image-preset]").removeClass("active");
@@ -554,11 +554,11 @@ function fiyatlariGuncelleGeneric(e) {
 
     // Add the appropriate ID property based on type
     if (itemType === 'ProductCategory') {
-        payload.categoryId = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(itemId);
+        payload.categoryId = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(itemId);
     } else if (itemType === 'Brand') {
-        payload.brandId = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(itemId);
+        payload.brandId = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(itemId);
     } else if (itemType === 'Tag') {
-        payload.tagId = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(itemId);
+        payload.tagId = Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.Number.parseInt(itemId);
     }
 
     var payloadData = JSON.stringify(payload);

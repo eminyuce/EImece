@@ -1,4 +1,4 @@
-﻿/* Admin delete confirmation modal (Bootstrap 3, .modal-confirm) */
+/* Admin delete confirmation modal (Bootstrap 3, .modal-confirm) */
 
 .modal-confirm {
     color: #52606d;
@@ -85,7 +85,7 @@
     font-size: 15px;
     font-weight: 600;
     color: #334e68;
-    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .modal-confirm .admin-delete-count {
