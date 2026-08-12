@@ -159,14 +159,18 @@ namespace EImece.Domain.Services
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            List<Setting> Settings = GetAllSettingsNoCache().Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            // Prefer Description=SystemSettings, but fall back by SettingKey so seed rows
+            // (human-readable Description) still populate the admin form before first save.
+            List<Setting> allSettings = GetAllSettingsNoCache();
+            List<Setting> Settings = allSettings.Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
                 // Get name.
                 string name = propertyInfo.Name;
                 // Get value on the target instance.
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                    ?? allSettings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting != null)
                 {
                     if (propertyInfo.PropertyType == typeof(int))
@@ -192,7 +196,10 @@ namespace EImece.Domain.Services
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            List<Setting> Settings = (await GetAllSettingsNoCacheAsync(cancellationToken).ConfigureAwait(false))
+            // Prefer Description=SystemSettings, but fall back by SettingKey so seed rows
+            // (human-readable Description) still populate the admin form before first save.
+            List<Setting> allSettings = await GetAllSettingsNoCacheAsync(cancellationToken).ConfigureAwait(false);
+            List<Setting> Settings = allSettings
                 .Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
@@ -200,7 +207,8 @@ namespace EImece.Domain.Services
                 // Get name.
                 string name = propertyInfo.Name;
                 // Get value on the target instance.
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                    ?? allSettings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting != null)
                 {
                     if (propertyInfo.PropertyType == typeof(int))

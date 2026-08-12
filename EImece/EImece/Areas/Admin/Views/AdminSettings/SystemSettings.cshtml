@@ -196,6 +196,14 @@
                         <div class="panel-heading"><h3 class="panel-title">@AdminResource.SmtpEmailSettings</h3></div>
                         <div class="panel-body">
                             <div class="form-group">
+                                @Html.LabelFor(model => model.AdminEmail, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.AdminEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "gonderen@ornek.com" } })
+                                    @Html.ValidationMessageFor(model => model.AdminEmail, "", new { @class = "text-danger" })
+                                    <span class="help-block">Gönderen e-posta (From) adresi</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 @Html.LabelFor(model => model.AdminEmailHost, htmlAttributes: new { @class = "control-label col-md-3" })
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.AdminEmailHost, new { htmlAttributes = new { @class = "form-control" } })
@@ -238,6 +246,16 @@
                                         <label for="AdminEmailEnableSsl">SMTP bağlantısında SSL kullanılsın</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminEmailEnableSsl, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AdminEmailUseDefaultCredentials, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="checkbox admin-bool-field">
+                                        @Html.CheckBoxFor(model => model.AdminEmailUseDefaultCredentials)
+                                        <label for="AdminEmailUseDefaultCredentials">SMTP için varsayılan kimlik bilgileri kullanılsın</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.AdminEmailUseDefaultCredentials, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -293,10 +311,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.YoutubeWebSiteLink, htmlAttributes: new { @class = "control-label col-md-3" })
+                                @Html.LabelFor(model => model.YotubeWebSiteLink, htmlAttributes: new { @class = "control-label col-md-3" })
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.YoutubeWebSiteLink, new { htmlAttributes = new { @class = "form-control", placeholder = "https://youtube.com/..." } })
-                                    @Html.ValidationMessageFor(model => model.YoutubeWebSiteLink, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.YotubeWebSiteLink, new { htmlAttributes = new { @class = "form-control", placeholder = "https://youtube.com/..." } })
+                                    @Html.ValidationMessageFor(model => model.YotubeWebSiteLink, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <hr />
