@@ -1057,10 +1057,16 @@ body[data-design="crizal"] .customer-chrome__action {
     transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
-body[data-design="crizal"] .customer-chrome__action svg {
+body[data-design="crizal"] .customer-chrome__action svg,
+body[data-design="crizal"] .customer-chrome__action i {
     width: 1.1rem;
     height: 1.1rem;
+    font-size: 1rem;
+    line-height: 1;
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 body[data-design="crizal"] .customer-chrome__action:hover,
@@ -1072,9 +1078,9 @@ body[data-design="crizal"] .customer-chrome__action:focus {
 }
 
 body[data-design="crizal"] .customer-chrome__action--logout {
-    border-color: rgba(20, 33, 43, 0.18);
-    color: var(--crizal-text);
-    background: var(--crizal-surface-alt);
+    border-color: rgba(192, 57, 43, 0.35);
+    color: #a93226;
+    background: #fff5f4;
 }
 
 body[data-design="crizal"] .customer-chrome__action--logout:hover,
@@ -1164,9 +1170,12 @@ body[data-design="crizal"] .customer-segment__item {
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-body[data-design="crizal"] .customer-segment__item svg {
+body[data-design="crizal"] .customer-segment__item svg,
+body[data-design="crizal"] .customer-segment__item i {
     width: 1.2rem;
     height: 1.2rem;
+    font-size: 1.05rem;
+    line-height: 1;
 }
 
 body[data-design="crizal"] .customer-segment__item:hover,
@@ -1239,9 +1248,12 @@ body[data-design="crizal"] .customer-tabs__link {
     transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-body[data-design="crizal"] .customer-tabs__link svg {
+body[data-design="crizal"] .customer-tabs__link svg,
+body[data-design="crizal"] .customer-tabs__link i {
     width: 1.05rem;
     height: 1.05rem;
+    font-size: 0.95rem;
+    line-height: 1;
 }
 
 body[data-design="crizal"] .customer-tabs__link:hover,
@@ -1289,9 +1301,104 @@ body[data-design="crizal"] .customer-orders-empty__icon {
     color: var(--crizal-primary);
 }
 
-body[data-design="crizal"] .customer-orders-empty__icon svg {
+body[data-design="crizal"] .customer-orders-empty__icon svg,
+body[data-design="crizal"] .customer-orders-empty__icon i {
     width: 1.5rem;
     height: 1.5rem;
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+body[data-design="crizal"] .customer-panel .validation-summary-valid,
+body[data-design="crizal"] .customer-panel .alert:empty {
+    display: none !important;
+}
+
+body[data-design="crizal"] .customer-faq-intro {
+    margin: 0 0 1.15rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--crizal-radius);
+    background: var(--crizal-surface-alt);
+    border: 1px solid var(--crizal-border);
+    color: var(--crizal-text);
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+body[data-design="crizal"] .customer-faq__item {
+    margin-bottom: 0.65rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    overflow: hidden;
+    background: #fff;
+    box-shadow: none;
+}
+
+body[data-design="crizal"] .customer-faq__item.is-open {
+    border-color: rgba(6, 122, 54, 0.35);
+    box-shadow: 0 8px 20px rgba(20, 33, 43, 0.05);
+}
+
+body[data-design="crizal"] .customer-faq__header {
+    padding: 0;
+    background: #fff;
+    border-bottom: 0;
+}
+
+body[data-design="crizal"] .customer-faq__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 56px;
+    padding: 0.85rem 1rem;
+    color: var(--crizal-heading);
+    font-weight: 700;
+    text-align: left;
+    text-decoration: none !important;
+    white-space: normal;
+}
+
+body[data-design="crizal"] .customer-faq__toggle:hover,
+body[data-design="crizal"] .customer-faq__toggle:focus {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-faq__index {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    background: rgba(6, 122, 54, 0.1);
+    color: var(--crizal-primary);
+    font-size: 0.8rem;
+}
+
+body[data-design="crizal"] .customer-faq__text {
+    flex: 1 1 auto;
+    line-height: 1.35;
+}
+
+body[data-design="crizal"] .customer-faq__chevron {
+    flex: 0 0 auto;
+    color: var(--crizal-muted);
+    transition: transform 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-faq__item.is-open .customer-faq__chevron {
+    transform: rotate(180deg);
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-faq__body {
+    padding: 0 1rem 1rem 3.5rem;
+    color: var(--crizal-text);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    border-top: 1px solid var(--crizal-border);
 }
 
 body[data-design="crizal"] .customer-order-card {
@@ -1437,42 +1544,8 @@ body[data-design="crizal"] .customer-contact-form .control-label {
         padding-right: 0.9rem;
     }
 
-    body[data-design="crizal"] .customer-chrome {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-    }
-
     body[data-design="crizal"] .customer-chrome__name {
         font-size: 1.4rem;
-    }
-
-    body[data-design="crizal"] .customer-chrome__actions {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.45rem;
-        width: 100%;
-    }
-
-    body[data-design="crizal"] .customer-chrome__action {
-        width: 100%;
-        min-height: 52px;
-        padding: 0.4rem 0.35rem;
-        flex-direction: column;
-        gap: 0.2rem;
-        border-radius: 12px;
-        font-size: 0.7rem;
-        line-height: 1.15;
-        white-space: normal;
-        text-align: center;
-    }
-
-    body[data-design="crizal"] .customer-chrome__action-label--full {
-        display: none;
-    }
-
-    body[data-design="crizal"] .customer-chrome__action-label--short {
-        display: inline;
     }
 
     body[data-design="crizal"] .customer-summary__item {
@@ -1520,5 +1593,398 @@ body[data-design="crizal"] .customer-contact-form .control-label {
     body[data-design="crizal"] .customer-tabs__link {
         padding-left: 1.1rem;
         padding-right: 1.1rem;
+    }
+}
+
+/* --- Customer account pages inside storefront chrome --- */
+body.customer-app[data-design="crizal"],
+body[data-design="crizal"]:has(.customer-page) {
+    background:
+        radial-gradient(900px 320px at 10% -5%, rgba(6, 122, 54, 0.08), transparent 55%),
+        linear-gradient(180deg, #f7f8fb 0%, #eef1f6 100%);
+}
+
+body[data-design="crizal"] .customer-main,
+body[data-design="crizal"] main:has(.customer-page) {
+    min-height: 50vh;
+}
+
+body[data-design="crizal"] .customer-store-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid var(--crizal-border);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(20, 33, 43, 0.04);
+}
+
+body[data-design="crizal"] .customer-store-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 72px;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+}
+
+body[data-design="crizal"] .customer-store-header__brand img {
+    display: block;
+    width: auto;
+    max-width: 150px;
+    height: 44px;
+    object-fit: contain;
+}
+
+body[data-design="crizal"] .customer-store-header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.4rem;
+}
+
+body[data-design="crizal"] .customer-store-header__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--crizal-border);
+    background: #fff;
+    color: var(--crizal-heading);
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-store-header__link:hover,
+body[data-design="crizal"] .customer-store-header__link:focus {
+    border-color: var(--crizal-primary);
+    color: var(--crizal-primary);
+    background: rgba(6, 122, 54, 0.06);
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .customer-store-header__link.is-active {
+    background: rgba(6, 122, 54, 0.1);
+    border-color: rgba(6, 122, 54, 0.28);
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-store-header__link--logout {
+    border-color: rgba(192, 57, 43, 0.35);
+    color: #a93226;
+    background: #fff5f4;
+}
+
+body[data-design="crizal"] .customer-store-header__link--logout:hover,
+body[data-design="crizal"] .customer-store-header__link--logout:focus {
+    border-color: #c0392b;
+    color: #c0392b;
+    background: rgba(192, 57, 43, 0.08);
+}
+
+body[data-design="crizal"] .customer-store-header__link--accent {
+    background: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+    color: #fff !important;
+}
+
+body[data-design="crizal"] .customer-store-header__link--accent:hover,
+body[data-design="crizal"] .customer-store-header__link--accent:focus {
+    background: #056b2f;
+    border-color: #056b2f;
+    color: #fff !important;
+}
+
+body[data-design="crizal"] .customer-store-footer {
+    margin-top: 2rem;
+}
+
+body[data-design="crizal"] .customer-store-footer__cta {
+    margin-top: 1rem;
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .customer-store-header__inner {
+        flex-direction: row;
+        align-items: center;
+        min-height: 0;
+        gap: 0.55rem;
+        padding-top: 0.55rem;
+        padding-bottom: 0.55rem;
+    }
+
+    body[data-design="crizal"] .customer-store-header__brand img {
+        height: 38px;
+        max-width: 120px;
+    }
+
+    body[data-design="crizal"] .customer-store-header__nav {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 0.35rem;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    body[data-design="crizal"] .customer-store-header__link {
+        justify-content: center;
+        border: 1px solid var(--crizal-border);
+        background: #fff;
+        font-size: 0.72rem;
+        padding: 0.4rem 0.55rem;
+        min-height: 38px;
+        white-space: nowrap;
+    }
+
+    body[data-design="crizal"] .customer-store-header__link span {
+        display: none;
+    }
+
+    body[data-design="crizal"] .customer-store-header__link--accent {
+        padding: 0.4rem 0.7rem;
+    }
+
+    body[data-design="crizal"] .customer-store-header__link--accent span {
+        display: inline;
+    }
+
+    body[data-design="crizal"] .customer-store-header__link--account {
+        display: none;
+    }
+}
+
+body[data-design="crizal"] .customer-page {
+    padding-top: 1.25rem;
+}
+
+body[data-design="crizal"] .customer-shell {
+    padding: 1.15rem 1.25rem 0.35rem;
+    margin-bottom: 1.1rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-xl);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 28px rgba(20, 33, 43, 0.05);
+}
+
+body[data-design="crizal"] .customer-btn-primary {
+    box-shadow: 0 6px 16px rgba(6, 122, 54, 0.22);
+}
+
+body[data-design="crizal"] .customer-btn-primary:hover,
+body[data-design="crizal"] .customer-btn-primary:focus {
+    background: #056b2f;
+    box-shadow: 0 8px 20px rgba(6, 122, 54, 0.28);
+}
+
+body[data-design="crizal"] .customer-banner {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    margin: 0 0 1.1rem;
+    padding: 0.95rem 1.1rem;
+    border-radius: var(--crizal-radius-lg);
+    border: 1px solid rgba(194, 120, 3, 0.28);
+    background: linear-gradient(135deg, #fff8eb 0%, #fff 70%);
+}
+
+body[data-design="crizal"] .customer-banner__icon {
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(194, 120, 3, 0.14);
+    color: #9a5f02;
+}
+
+body[data-design="crizal"] .customer-banner__icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+body[data-design="crizal"] .customer-banner__body strong {
+    display: block;
+    color: var(--crizal-heading);
+    margin-bottom: 0.2rem;
+}
+
+body[data-design="crizal"] .customer-banner__body p {
+    color: var(--crizal-text);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+body[data-design="crizal"] .customer-panel {
+    display: block;
+    margin: 0 0 1.5rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-xl);
+    background: #fff;
+    box-shadow: 0 12px 32px rgba(20, 33, 43, 0.05);
+    overflow: hidden;
+}
+
+body[data-design="crizal"] .customer-panel--narrow {
+    max-width: 640px;
+}
+
+body[data-design="crizal"] .customer-panel__section {
+    padding: 1.35rem 1.35rem 0.35rem;
+    border-bottom: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .customer-panel__section--last {
+    border-bottom: 0;
+    padding-bottom: 1.35rem;
+}
+
+body[data-design="crizal"] .customer-panel__section-head {
+    margin-bottom: 1rem;
+}
+
+body[data-design="crizal"] .customer-panel__section-title {
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .customer-panel__section-lead {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--crizal-muted);
+    line-height: 1.4;
+}
+
+body[data-design="crizal"] .customer-panel__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0 1.1rem;
+}
+
+body[data-design="crizal"] .customer-panel__stack .form-group {
+    margin-bottom: 1rem;
+}
+
+body[data-design="crizal"] .customer-panel .control-label {
+    font-weight: 650;
+    color: var(--crizal-heading);
+    margin-bottom: 0.35rem;
+}
+
+body[data-design="crizal"] .customer-gender {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.15rem;
+}
+
+body[data-design="crizal"] .customer-gender__option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.4rem 0.95rem;
+    margin: 0;
+    border: 1px solid var(--crizal-border);
+    border-radius: 999px;
+    background: var(--crizal-surface-alt);
+    font-weight: 600;
+    color: var(--crizal-heading);
+    cursor: pointer;
+}
+
+body[data-design="crizal"] .customer-gender__option:has(.customer-gender__input:checked) {
+    border-color: var(--crizal-primary);
+    background: rgba(6, 122, 54, 0.08);
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-gender__input {
+    margin: 0;
+}
+
+body[data-design="crizal"] .customer-profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem 1rem;
+}
+
+body[data-design="crizal"] .customer-profile-actions--end {
+    justify-content: flex-end;
+}
+
+body[data-design="crizal"] .customer-consent {
+    max-width: 36rem;
+    padding-left: 1.6rem;
+}
+
+body[data-design="crizal"] .customer-consent .custom-control-label {
+    line-height: 1.4;
+    color: var(--crizal-text);
+}
+
+body[data-design="crizal"] .crizal-cta-band__btn--ghost.butn-style8 {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    color: #fff !important;
+}
+
+body[data-design="crizal"] .crizal-cta-band__btn--ghost.butn-style8:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+@media (min-width: 768px) {
+    body[data-design="crizal"] .customer-panel__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    body[data-design="crizal"] .customer-panel__section {
+        padding: 1.5rem 1.65rem 0.5rem;
+    }
+
+    body[data-design="crizal"] .customer-panel__section--last {
+        padding-bottom: 1.65rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body[data-design="crizal"] .customer-shell {
+        padding: 0.95rem 0.9rem 0.2rem;
+        border-radius: var(--crizal-radius-lg);
+    }
+
+    body[data-design="crizal"] .customer-panel {
+        border-radius: var(--crizal-radius-lg);
+    }
+
+    body[data-design="crizal"] .customer-panel__section {
+        padding: 1.1rem 0.95rem 0.25rem;
+    }
+
+    body[data-design="crizal"] .customer-panel__section--last {
+        padding-bottom: 1.1rem;
+    }
+
+    body[data-design="crizal"] .customer-banner {
+        padding: 0.85rem;
     }
 }

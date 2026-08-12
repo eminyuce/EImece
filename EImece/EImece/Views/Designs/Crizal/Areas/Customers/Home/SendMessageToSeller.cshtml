@@ -16,7 +16,7 @@
     <div class="toast-container toast-bottom-center">
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">@Resource.Updated!</span>
+                <i class="fas fa-check-circle mr-2" aria-hidden="true"></i><span class="font-weight-semibold mr-auto">@Resource.Updated!</span>
                 <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
@@ -56,8 +56,12 @@
                 </div>
             }
 
-            <div class="row">
-                <div class="col-md-12">
+            <div class="customer-panel">
+                <section class="customer-panel__section customer-panel__section--last">
+                    <header class="customer-panel__section-head">
+                        <h2 class="customer-panel__section-title">@Resource.SendMessageToSeller</h2>
+                        <p class="customer-panel__section-lead">Sipariş veya ürünleriniz hakkında bize yazın.</p>
+                    </header>
                     @{
                         var customer = Model.Customer;
                         var contactForm = new ContactUsFormViewModel
@@ -70,7 +74,7 @@
                         };
                     }
                     @Html.Partial("_SendContactSellerForCustomer", contactForm)
-                </div>
+                </section>
             </div>
         </div>
     </div>

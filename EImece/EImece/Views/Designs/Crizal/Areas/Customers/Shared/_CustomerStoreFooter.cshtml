@@ -1,0 +1,62 @@
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using System.Web.Routing;
+@{
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var homeUrl = Url.Action("Index", "Home", new RouteValueDictionary { { "area", "" } });
+    var aboutUrl = Url.Action(Constants.AboutUs, "Info", new RouteValueDictionary { { "area", "" }, { "lang", countryCode } });
+    var deliveryUrl = Url.Action(Constants.DeliveryInfo, "Info", new RouteValueDictionary { { "area", "" } });
+    var cargoUrl = Url.Action("CargoTracking", "Payment", new RouteValueDictionary { { "area", "" } });
+    var ordersUrl = Url.Action("CustomerOrders", "Home", new RouteValueDictionary { { "area", "customers" } });
+    var faqUrl = Url.Action("Faq", "Home", new RouteValueDictionary { { "area", "customers" } });
+    var accountUrl = Url.Action("Index", "Home", new RouteValueDictionary { { "area", "customers" } });
+}
+
+<footer class="crizal-footer customer-store-footer">
+    <div class="container">
+        <div class="crizal-footer__grid">
+            <div class="crizal-footer__brand">
+                <a class="crizal-footer__logo" href="@homeUrl" aria-label="Yuvadan.com.tr">
+                    <img src="/images/logo.jpg" width="160" height="48" alt="Yuvadan.com.tr" loading="lazy" decoding="async" />
+                </a>
+                <p class="crizal-footer__lead">Hesabınızdan sipariş, adres ve destek işlemlerinizi yönetebilirsiniz.</p>
+                <div class="customer-store-footer__cta">
+                    <a class="btn customer-btn-primary" href="@homeUrl">@Resource.ContinueShopping</a>
+                </div>
+            </div>
+
+            <div class="crizal-footer__col">
+                <h2 class="crizal-footer__heading">Hesabım</h2>
+                <ul class="crizal-footer__links">
+                    <li><a href="@accountUrl">@Resource.MyAccount</a></li>
+                    <li><a href="@ordersUrl">@Resource.MyOrder</a></li>
+                    <li><a href="@faqUrl">@Resource.Faq</a></li>
+                </ul>
+            </div>
+
+            <div class="crizal-footer__col">
+                <h2 class="crizal-footer__heading">@Resource.AboutUs</h2>
+                <ul class="crizal-footer__links">
+                    <li><a href="@aboutUrl">@Resource.AboutUs</a></li>
+                    <li><a href="@deliveryUrl">@Resource.DeliveryInfo</a></li>
+                </ul>
+            </div>
+
+            <div class="crizal-footer__col">
+                <h2 class="crizal-footer__heading">@Resource.CustomerRelationship</h2>
+                <ul class="crizal-footer__links">
+                    <li><a href="@cargoUrl">@Resource.TrackYourCargo</a></li>
+                    <li><a href="@homeUrl">@Resource.ContinueShopping</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="crizal-footer__bottom">
+            <p class="mb-0">&copy; <span class="current-year">@DateTime.Now.Year</span> Yuvadan.com.tr.</p>
+            <p class="mb-0 crizal-footer__credit">
+                Made by <a href="http://www.erayweb.com/" target="_blank" rel="noopener noreferrer">Erayweb</a>
+            </p>
+        </div>
+    </div>
+</footer>

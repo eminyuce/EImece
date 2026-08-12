@@ -32,7 +32,7 @@
     <div class="toast-container toast-bottom-center">
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">Updated!</span>
+                <i class="fas fa-check-circle mr-2" aria-hidden="true"></i><span class="font-weight-semibold mr-auto">Updated!</span>
                 <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
@@ -44,20 +44,23 @@
 
             @if (!hasOrders)
             {
-                <div class="customer-orders-empty text-center py-5 px-3" role="status">
-                    <div class="customer-orders-empty__icon" aria-hidden="true">
-                        <i data-feather="package"></i>
+                <div class="customer-panel">
+                    <div class="customer-orders-empty text-center py-5 px-3" role="status">
+                        <div class="customer-orders-empty__icon" aria-hidden="true">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <h2 class="customer-orders-empty__title h4 mb-2">Henüz siparişiniz yok</h2>
+                        <p class="customer-orders-empty__text text-muted mb-4">Alışverişe başladığınızda siparişleriniz burada listelenir.</p>
+                        <a class="btn customer-btn-primary px-4" href="@Url.Action("Index", "Home", new { area = "" })">
+                            <i class="fas fa-home mr-1" aria-hidden="true"></i>
+                            Alışverişe devam et
+                        </a>
                     </div>
-                    <h2 class="customer-orders-empty__title h4 mb-2">Henüz siparişiniz yok</h2>
-                    <p class="customer-orders-empty__text text-muted mb-4">Alışverişe başladığınızda siparişleriniz burada listelenir.</p>
-                    <a class="btn customer-btn-primary px-4" href="@Url.Action("Index", "Home", new { area = "" })">
-                        <i class="mr-1" data-feather="home" aria-hidden="true"></i>
-                        Alışverişe devam et
-                    </a>
                 </div>
             }
             else
             {
+                <div class="customer-panel customer-panel__section customer-panel__section--last">
                 <!-- Desktop / tablet table -->
                 <div class="table-responsive font-size-sm d-none d-md-block">
                     <table class="table table-hover mb-0">
@@ -160,6 +163,7 @@
 
                 <hr class="pb-4">
                 @Html.Partial("_PaginatedOrderList", paginatedOrders)
+                </div>
             }
         </div>
     </div>

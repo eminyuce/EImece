@@ -1191,6 +1191,8 @@
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\Index.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\SendMessageToSeller.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Shared\_Layout.cshtml" />
+    <Content Include="Views\Designs\Crizal\Areas\Customers\Shared\_CustomerStoreHeader.cshtml" />
+    <Content Include="Views\Designs\Crizal\Areas\Customers\Shared\_CustomerStoreFooter.cshtml" />
     <Content Include="Views\Designs\Crizal\design.json" />
     <Content Include="Views\Designs\Modern\design.json" />
     <Content Include="Views\Designs\Crizal\Error\BadRequest.cshtml" />

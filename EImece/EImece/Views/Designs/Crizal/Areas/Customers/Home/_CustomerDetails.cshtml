@@ -27,46 +27,14 @@
 }
 
 <div class="customer-shell">
-    <!-- Identity + quick actions -->
     <header class="customer-chrome">
         <div class="customer-chrome__identity">
             <p class="customer-chrome__eyebrow mb-1">Müşteri hesabı</p>
             <h1 class="customer-chrome__name">@Model.FullName</h1>
             <p class="customer-chrome__email mb-0">@Model.Email</p>
         </div>
-        <div class="customer-chrome__actions" role="group" aria-label="Hızlı işlemler">
-            <a class="customer-chrome__action"
-               href="@Url.Action("Index", "Home", new { area = "" })"
-               title="@Resource.ContinueShopping"
-               aria-label="@Resource.ContinueShopping">
-                <i data-feather="home" aria-hidden="true"></i>
-                <span class="customer-chrome__action-label customer-chrome__action-label--full">@Resource.ContinueShopping</span>
-                <span class="customer-chrome__action-label customer-chrome__action-label--short">Alışveriş</span>
-            </a>
-            <a class="customer-chrome__action"
-               href="@Url.Action("ShoppingCart", "Payment", new { area = "" })"
-               title="@Resource.MyBasket"
-               aria-label="@Resource.MyBasket">
-                <i data-feather="shopping-bag" aria-hidden="true"></i>
-                <span class="customer-chrome__action-label">@Resource.MyBasket</span>
-            </a>
-            <button type="button"
-                    class="customer-chrome__action customer-chrome__action--logout"
-                    title="@Resource.Logout"
-                    aria-label="@Resource.Logout"
-                    onclick="document.getElementById('logoutForm').submit();">
-                <i data-feather="log-out" aria-hidden="true"></i>
-                <span class="customer-chrome__action-label customer-chrome__action-label--full">@Resource.Logout</span>
-                <span class="customer-chrome__action-label customer-chrome__action-label--short">Çıkış</span>
-            </button>
-            @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "d-none" }))
-            {
-                @Html.AntiForgeryToken()
-            }
-        </div>
     </header>
 
-    <!-- Compact account summary -->
     <div class="customer-summary" aria-label="Hesap özeti">
         <div class="customer-summary__item">
             <span class="customer-summary__label">@Resource.CreatedDate</span>
@@ -85,7 +53,6 @@
         }
     </div>
 
-    <!-- Mobile: horizontal segment control (scannable, current section obvious) -->
     <nav class="customer-segment d-sm-none" aria-label="Hesap bölümleri">
         <div class="customer-segment__track" role="tablist">
             <a class="customer-segment__item @(isAccount ? "is-active" : "")"
@@ -93,7 +60,7 @@
                role="tab"
                aria-selected="@(isAccount ? "true" : "false")"
                @(isAccount ? "aria-current=\"page\"" : null)>
-                <i data-feather="user" aria-hidden="true"></i>
+                <i class="fas fa-user" aria-hidden="true"></i>
                 <span>Hesabım</span>
             </a>
             <a class="customer-segment__item @(isOrders ? "is-active" : "")"
@@ -101,7 +68,7 @@
                role="tab"
                aria-selected="@(isOrders ? "true" : "false")"
                @(isOrders ? "aria-current=\"page\"" : null)>
-                <i data-feather="package" aria-hidden="true"></i>
+                <i class="fas fa-box" aria-hidden="true"></i>
                 <span>Siparişlerim</span>
                 @if (orderCount > 0)
                 {
@@ -113,7 +80,7 @@
                role="tab"
                aria-selected="@(isPassword ? "true" : "false")"
                @(isPassword ? "aria-current=\"page\"" : null)>
-                <i data-feather="lock" aria-hidden="true"></i>
+                <i class="fas fa-lock" aria-hidden="true"></i>
                 <span>Şifre</span>
             </a>
             <a class="customer-segment__item @(isMessage ? "is-active" : "")"
@@ -121,7 +88,7 @@
                role="tab"
                aria-selected="@(isMessage ? "true" : "false")"
                @(isMessage ? "aria-current=\"page\"" : null)>
-                <i data-feather="message-circle" aria-hidden="true"></i>
+                <i class="fas fa-comment-dots" aria-hidden="true"></i>
                 <span>Mesaj</span>
             </a>
             <a class="customer-segment__item @(isFaq ? "is-active" : "")"
@@ -129,7 +96,7 @@
                role="tab"
                aria-selected="@(isFaq ? "true" : "false")"
                @(isFaq ? "aria-current=\"page\"" : null)>
-                <i data-feather="help-circle" aria-hidden="true"></i>
+                <i class="fas fa-question-circle" aria-hidden="true"></i>
                 <span>SSS</span>
             </a>
         </div>
@@ -139,14 +106,13 @@
         </p>
     </nav>
 
-    <!-- Desktop: intentional horizontal tabs -->
     <nav class="customer-tabs d-none d-sm-block" aria-label="Hesap menüsü">
         <ul class="customer-tabs__list">
             <li>
                 <a class="customer-tabs__link @(isAccount ? "is-active" : "")"
                    href="@Url.Action("Index", "Home")"
                    @(isAccount ? "aria-current=\"page\"" : null)>
-                    <i data-feather="user" aria-hidden="true"></i>
+                    <i class="fas fa-user" aria-hidden="true"></i>
                     <span>@Resource.MyAccount</span>
                 </a>
             </li>
@@ -154,7 +120,7 @@
                 <a class="customer-tabs__link @(isPassword ? "is-active" : "")"
                    href="@Url.Action("ChangePassword", "Home")"
                    @(isPassword ? "aria-current=\"page\"" : null)>
-                    <i data-feather="lock" aria-hidden="true"></i>
+                    <i class="fas fa-lock" aria-hidden="true"></i>
                     <span>@Resource.ChangePassword</span>
                 </a>
             </li>
@@ -162,7 +128,7 @@
                 <a class="customer-tabs__link @(isOrders ? "is-active" : "")"
                    href="@Url.Action("CustomerOrders")"
                    @(isOrders ? "aria-current=\"page\"" : null)>
-                    <i data-feather="package" aria-hidden="true"></i>
+                    <i class="fas fa-box" aria-hidden="true"></i>
                     <span>@Resource.MyOrder</span>
                     <span class="customer-tabs__count">@orderCount</span>
                 </a>
@@ -171,7 +137,7 @@
                 <a class="customer-tabs__link @(isMessage ? "is-active" : "")"
                    href="@Url.Action("SendMessageToSeller")"
                    @(isMessage ? "aria-current=\"page\"" : null)>
-                    <i data-feather="message-circle" aria-hidden="true"></i>
+                    <i class="fas fa-comment-dots" aria-hidden="true"></i>
                     <span>@Resource.SendMessageToSeller</span>
                 </a>
             </li>
@@ -179,7 +145,7 @@
                 <a class="customer-tabs__link @(isFaq ? "is-active" : "")"
                    href="@Url.Action("Faq")"
                    @(isFaq ? "aria-current=\"page\"" : null)>
-                    <i data-feather="help-circle" aria-hidden="true"></i>
+                    <i class="fas fa-question-circle" aria-hidden="true"></i>
                     <span>@Resource.Faq</span>
                 </a>
             </li>

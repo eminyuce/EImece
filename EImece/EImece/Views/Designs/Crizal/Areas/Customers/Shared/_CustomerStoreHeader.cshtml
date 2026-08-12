@@ -1,0 +1,50 @@
+@using EImece.Domain;
+@using Resources;
+@using System.Threading;
+@using System.Web.Routing;
+@{
+    var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
+    var homeUrl = Url.Action("Index", "Home", new RouteValueDictionary { { "area", "" } });
+    var cartUrl = Url.Action("ShoppingCart", "Payment", new RouteValueDictionary { { "area", "" } });
+    var aboutUrl = Url.Action(Constants.AboutUs, "Info", new RouteValueDictionary { { "area", "" }, { "lang", countryCode } });
+    var accountUrl = Url.Action("Index", "Home", new RouteValueDictionary { { "area", "customers" } });
+}
+
+<header class="customer-store-header">
+    <div class="customer-store-header__bar">
+        <div class="container customer-store-header__inner">
+            <a class="customer-store-header__brand" href="@homeUrl" aria-label="Yuvadan.com.tr">
+                <img src="/images/logo.jpg" width="160" height="48" alt="Yuvadan.com.tr" decoding="async" fetchpriority="high" />
+            </a>
+            <nav class="customer-store-header__nav" aria-label="Hesap üst menü">
+                <a class="customer-store-header__link" href="@homeUrl">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                    <span>@Resource.ContinueShopping</span>
+                </a>
+                <a class="customer-store-header__link" href="@cartUrl">
+                    <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+                    <span>@Resource.MyBasket</span>
+                </a>
+                <a class="customer-store-header__link is-active customer-store-header__link--account" href="@accountUrl" aria-current="page">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                    <span>@Resource.MyAccount</span>
+                </a>
+                <button type="button"
+                        class="customer-store-header__link customer-store-header__link--logout"
+                        title="@Resource.Logout"
+                        aria-label="@Resource.Logout"
+                        onclick="document.getElementById('customerLogoutForm').submit();">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    <span>@Resource.Logout</span>
+                </button>
+                <a class="customer-store-header__link customer-store-header__link--accent" href="@aboutUrl">
+                    <span>@Resource.AboutUs</span>
+                </a>
+            </nav>
+            @using (Html.BeginForm("LogOff", "Home", new { area = "customers" }, FormMethod.Post, new { id = "customerLogoutForm", @class = "d-none" }))
+            {
+                @Html.AntiForgeryToken()
+            }
+        </div>
+    </div>
+</header>
