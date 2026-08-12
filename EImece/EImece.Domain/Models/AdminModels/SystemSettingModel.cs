@@ -6,6 +6,10 @@ namespace EImece.Domain.Models.AdminModels
 {
     public class SystemSettingModel
     {
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AdminEmail))]
+        [EmailAddress]
+        public string AdminEmail { get; set; }
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AdminEmailHost))]
         public string AdminEmailHost { get; set; }
 
@@ -69,9 +73,11 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PinterestWebSiteLink))]
         public string PinterestWebSiteLink { get; set; }
 
+        // Property name is the SettingKey. Keep the historical typo "YotubeWebSiteLink"
+        // so admin save/load matches Constants / seed / storefront HomeController.
         [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.YoutubeWebSiteLink))]
-        public string YoutubeWebSiteLink { get; set; }
+        public string YotubeWebSiteLink { get; set; }
 
         [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Zopim))]
