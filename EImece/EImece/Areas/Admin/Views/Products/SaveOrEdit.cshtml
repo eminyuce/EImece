@@ -31,7 +31,8 @@
     <li><strong>Fiyat</strong>: Satış fiyatı. <strong>Ürün indirimi</strong> varsa fiyat üzerinden ek indirim uygulanır.</li>
     <li><strong>Ana sayfa</strong>: Ürünü ana sayfada gösterir. <strong>Kampanya</strong>: Kampanya listelerinde öne çıkarır.</li>
     <li><strong>Marka / etiketler</strong>: Filtreleme ve vitrin için kullanılır.</li>
-    <li>Ek özellikler (renk, beden vb.) kategori şablonuna bağlıdır; ürün listesinden “özellik” ikonuyla doldurulur.</li>
+    <li><strong>Ürün Ölçü Seçenekleri</strong> / <strong>Ürün Renk Seçenekleri</strong>: Mağaza ürün detayında beden ve renk açılır listeleri için virgülle ayırın (ör. <code>S,M,L,XL</code> ve renk adları).</li>
+    <li>Kategori şablonuna bağlı ek özellikler (özellik satırları) ürün listesinden “özellik” ikonuyla doldurulur; ölçü/renk seçeneklerinden ayrıdır.</li>
 </ul>
 <p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1:</strong> Kategori “Tişörtler” → İsim “Basic Beyaz Tişört” → Fiyat 499 → Kaydet.</p>
 <p style="margin-bottom: 0;"><strong>Örnek 2:</strong> Aynı ürün → Kampanya işaretli + indirim 50 → kampanya vitrininde görünür.</p>
@@ -181,6 +182,13 @@
                                     @Html.HiddenFor(model => model.PriceStr)
                                     @Html.HiddenFor(model => model.DiscountStr)
                                 }
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ProductSizeOptions, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.ProductSizeOptions, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ProductSizeOptions, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.ProductColorOptions, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
