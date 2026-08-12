@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Services;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
@@ -14,6 +14,7 @@ namespace EImece.Controllers
     public class ManageController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); // Initialize NLog Logger
+        private const string IndexAction = "Index";
 
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -23,17 +24,6 @@ namespace EImece.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
-        }
-
-        /// <summary>
-        /// Legacy Identity template URL → Customers account home.
-        /// </summary>
-        // GET: /Manage/ChangePassword
-        [HttpGet]
-        public ActionResult ChangePassword()
-        {
-            Logger.Info("Legacy /Manage/ChangePassword redirected to Customers/Home/ChangePassword.");
-            return RedirectToActionPermanent("ChangePassword", "Home", new { area = "Customers" });
         }
 
         /// <summary>
@@ -287,6 +277,17 @@ namespace EImece.Controllers
             }
 
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
+        }
+
+        /// <summary>
+        /// Legacy Identity template URL → Customers account home.
+        /// </summary>
+        // GET: /Manage/ChangePassword
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            Logger.Info("Legacy /Manage/ChangePassword redirected to Customers/Home/ChangePassword.");
+            return RedirectToActionPermanent("ChangePassword", "Home", new { area = "Customers" });
         }
 
         // POST: /Manage/ChangePassword

@@ -3560,7 +3560,7 @@ body.tox-dialog__disable-scroll {
   text-align: center;
   white-space: normal;
   word-break: break-all;
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .tox .tox-notification__body > * {
   margin: 0;

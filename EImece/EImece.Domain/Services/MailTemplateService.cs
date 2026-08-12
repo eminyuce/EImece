@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -14,6 +14,7 @@ namespace EImece.Domain.Services
 {
     public class MailTemplateService : BaseEntityService<MailTemplate>, IMailTemplateService
     {
+        private const string DefaultLogoPath = "/images/logo.jpg";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private IMailTemplateRepository MailTemplateRepository { get; set; }
@@ -80,7 +81,7 @@ namespace EImece.Domain.Services
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
             pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
-            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
+            pp.ImgLogoSrc = baseurl + DefaultLogoPath;
             return pp;
         }
 

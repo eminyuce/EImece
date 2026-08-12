@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using NLog;
@@ -36,14 +36,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(r);
         }
 
-        public ActionResult BackUpDb()
-        {
-            BackupService backupService = new BackupService("");
-            backupService.BackupSystemDatabase();
-
-            return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SystemSettings(CancellationToken cancellationToken, SystemSettingModel settingModel)
@@ -51,6 +43,14 @@ namespace EImece.Areas.Admin.Controllers
             await SettingService.SaveSystemSettingModelAsync(settingModel);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));
+        }
+
+        public ActionResult BackUpDb()
+        {
+            BackupService backupService = new BackupService("");
+            backupService.BackupSystemDatabase();
+
+            return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
         }
 
         public async Task<ActionResult> SendSampleEmail(CancellationToken cancellationToken)

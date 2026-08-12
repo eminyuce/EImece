@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -241,78 +241,81 @@ namespace EImece.Controllers
             contact.IPAddress = ipAddress;
             if (CaptchaService.HasValidationError(ModelState))
             {
-                HomeLogger.Error("Captcha validation failed for SendContactUs.");
-                ModelState.AddModelError("", CaptchaService.GetErrorMessage());
-                if (contact.ItemType == EImeceItemType.Product)
-                {
-                    HomeLogger.Info($"ItemType is Product with ID: {contact.ItemId}");
-                    var product = await ProductService.GetProductDetailViewModelByIdAsync(contact.ItemId);
-                    product.Contact = contact;
-                    HomeLogger.Info("Returning Product Detail view with captcha error.");
-                    return View("../Products/Detail", product);
-                }
-                else if (contact.ItemType == EImeceItemType.Menu)
-                {
-                    HomeLogger.Info($"ItemType is Menu with ID: {contact.ItemId}");
-                    var page = await MenuService.GetPageByIdAsync(contact.ItemId);
-                    if (page == null || page.Menu == null)
-                    {
-                        HomeLogger.Warn($"Menu page not found for contact ItemId: {contact.ItemId}");
-                        return RedirectToAction("NotFound", "Error");
-                    }
-
-                    page.Contact = contact;
-                    HomeLogger.Info("Returning Page Detail view with captcha error.");
-                    return View("../Pages/Detail", page);
-                }
-                HomeLogger.Info("Returning _ContactUsFormViewModel view with captcha error.");
-                return View("_ContactUsFormViewModel", contact);
+                return await HandleCaptchaValidationErrorAsync(contact);
             }
-            else if (!validateContactUsFormViewModel(contact))
+            if (!validateContactUsFormViewModel(contact))
             {
                 HomeLogger.Info("Contact form validation failed.");
                 HomeLogger.Info("Returning _ContactUsFormViewModel view with errors.");
                 return View("_ContactUsFormViewModel", contact);
             }
-            else
+
+            try
             {
-                try
+                HomeLogger.Info("Saving subscriber from contact form.");
+                await saveSubsciberAsync(contact);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
+                HomeLogger.Error($"DbEntityValidationException while saving subscriber: {message}", ex);
+            }
+            catch (Exception ex)
+            {
+                HomeLogger.Error($"Exception while saving subscriber: {ex.Message}", ex);
+            }
+
+            try
+            {
+                if (contact.ItemType == EImeceItemType.Product)
                 {
-                    HomeLogger.Info("Saving subscriber from contact form.");
-                    await saveSubsciberAsync(contact);
+                    HomeLogger.Info($"Sending contact email for product ID: {contact.ItemId}");
+                    await RazorEngineHelper.SendContactUsAboutProductDetailEmailAsync(contact);
+                    HomeLogger.Info("Product contact email sent.");
                 }
-                catch (DbEntityValidationException ex)
+                else
                 {
-                    var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                    HomeLogger.Error($"DbEntityValidationException while saving subscriber: {message}", ex);
+                    HomeLogger.Info("Sending general contact email.");
+                    await RazorEngineHelper.SendContactUsForCommunicationAsync(contact);
+                    HomeLogger.Info("General contact email sent.");
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                HomeLogger.Error($"Exception while sending email: {ex.Message}", ex);
+            }
+            HomeLogger.Info("Returning _pThankYouForContactingUs view.");
+            return View("_pThankYouForContactingUs", contact);
+        }
+
+        private async Task<ActionResult> HandleCaptchaValidationErrorAsync(ContactUsFormViewModel contact)
+        {
+            HomeLogger.Error("Captcha validation failed for SendContactUs.");
+            ModelState.AddModelError("", CaptchaService.GetErrorMessage());
+            if (contact.ItemType == EImeceItemType.Product)
+            {
+                HomeLogger.Info($"ItemType is Product with ID: {contact.ItemId}");
+                var product = await ProductService.GetProductDetailViewModelByIdAsync(contact.ItemId);
+                product.Contact = contact;
+                HomeLogger.Info("Returning Product Detail view with captcha error.");
+                return View("../Products/Detail", product);
+            }
+            if (contact.ItemType == EImeceItemType.Menu)
+            {
+                HomeLogger.Info($"ItemType is Menu with ID: {contact.ItemId}");
+                var page = await MenuService.GetPageByIdAsync(contact.ItemId);
+                if (page == null || page.Menu == null)
                 {
-                    HomeLogger.Error($"Exception while saving subscriber: {ex.Message}", ex);
+                    HomeLogger.Warn($"Menu page not found for contact ItemId: {contact.ItemId}");
+                    return RedirectToAction("NotFound", "Error");
                 }
 
-                try
-                {
-                    if (contact.ItemType == EImeceItemType.Product)
-                    {
-                        HomeLogger.Info($"Sending contact email for product ID: {contact.ItemId}");
-                        await RazorEngineHelper.SendContactUsAboutProductDetailEmailAsync(contact);
-                        HomeLogger.Info("Product contact email sent.");
-                    }
-                    else
-                    {
-                        HomeLogger.Info("Sending general contact email.");
-                        await RazorEngineHelper.SendContactUsForCommunicationAsync(contact);
-                        HomeLogger.Info("General contact email sent.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    HomeLogger.Error($"Exception while sending email: {ex.Message}", ex);
-                }
-                HomeLogger.Info("Returning _pThankYouForContactingUs view.");
-                return View("_pThankYouForContactingUs", contact);
+                page.Contact = contact;
+                HomeLogger.Info("Returning Page Detail view with captcha error.");
+                return View("../Pages/Detail", page);
             }
+            HomeLogger.Info("Returning _ContactUsFormViewModel view with captcha error.");
+            return View("_ContactUsFormViewModel", contact);
         }
 
         private bool validateContactUsFormViewModel(ContactUsFormViewModel contact)

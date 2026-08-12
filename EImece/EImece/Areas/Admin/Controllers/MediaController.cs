@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
@@ -18,6 +18,7 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class MediaController : BaseAdminController
     {
+        private const string DashboardIndexAction = "Index";
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private FilesHelper filesHelper;
 
@@ -46,7 +47,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 // Media is opened from a parent entity editor with query params; bare /admin/media/ is not a listing.
                 SetErrorMessage("Medya yönetimi bir içerik kaydı üzerinden açılmalıdır.");
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction(DashboardIndexAction, "Dashboard");
             }
 
             var currentSelectedModul = new Dictionary<string, string>();
@@ -62,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
             if (!enumMod.HasValue || !enumImageType.HasValue)
             {
                 SetErrorMessage("Geçersiz medya parametreleri.");
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction(DashboardIndexAction, "Dashboard");
             }
 
             returnModel.Id = id;

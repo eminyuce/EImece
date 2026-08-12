@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
@@ -224,13 +224,7 @@ namespace EImece.Areas.Admin.Controllers
         /// </summary>
         private bool MustRedirectToEnableAuthenticator(ActionExecutingContext filterContext)
         {
-            if (!AppConfig.RequireAdminAuthenticator || AppConfig.BypassAdminAuth)
-            {
-                return false;
-            }
-
-            // Child actions (e.g. Html.Action in _AdminTopbar) cannot redirect.
-            if (filterContext.IsChildAction)
+            if (!AppConfig.RequireAdminAuthenticator || AppConfig.BypassAdminAuth || filterContext.IsChildAction)
             {
                 return false;
             }
@@ -244,35 +238,25 @@ namespace EImece.Areas.Admin.Controllers
             var controllerName = filterContext.RouteData.Values["controller"] as string ?? string.Empty;
             var actionName = filterContext.RouteData.Values["action"] as string ?? string.Empty;
 
-            // Allow setup page and logout (otherwise LogOff is intercepted by this redirect).
             if (IsAuthenticatorSetupOrLogOffAction(controllerName, actionName))
             {
                 return false;
             }
 
-            if (httpContext.User == null || httpContext.User.Identity == null || !httpContext.User.Identity.IsAuthenticated)
+            var identity = httpContext.User?.Identity;
+            if (identity == null || !identity.IsAuthenticated || UserManager == null)
             {
                 return false;
             }
 
-            if (UserManager == null)
-            {
-                return false;
-            }
-
-            var userId = httpContext.User.Identity.GetUserId();
+            var userId = identity.GetUserId();
             if (string.IsNullOrEmpty(userId))
             {
                 return false;
             }
 
             var user = UserManager.FindById(userId);
-            if (user == null)
-            {
-                return false;
-            }
-
-            if (AppConfig.IsTwoFactorBypassUser(user.Email) || AppConfig.IsTwoFactorBypassUser(user.UserName))
+            if (user == null || AppConfig.IsTwoFactorBypassUser(user.Email) || AppConfig.IsTwoFactorBypassUser(user.UserName))
             {
                 return false;
             }
