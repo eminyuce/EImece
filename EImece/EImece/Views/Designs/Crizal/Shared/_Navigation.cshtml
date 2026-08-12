@@ -15,7 +15,7 @@
     var isAccountArea = pageController == "account"
         || (Request.RequestContext != null
             && Request.RequestContext.RouteData != null
-            && string.Equals(Convert.ToString(Request.RequestContext.RouteData.DataTokens["area"]), "customers", StringComparison.OrdinalIgnoreCase));
+            && string.Equals(System.Convert.ToString(Request.RequestContext.RouteData.DataTokens["area"]), "customers", StringComparison.OrdinalIgnoreCase));
 }
 
 <ul class="navbar-nav ms-auto" id="nav" style="display: none;">
@@ -182,3 +182,4 @@
         return string.IsNullOrEmpty(value) ? "/" : value.ToLowerInvariant();
     }
 }
+
