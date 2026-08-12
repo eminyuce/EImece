@@ -146,8 +146,8 @@ body.admin-app .eg-grid table.grid-table {
     height: 26px;
     padding: 0 10px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     color: #fff;
     font-size: 13px;
     font-weight: 700;
@@ -848,8 +848,7 @@ body.admin-app .eg-grid .grid-filter-btn {
     font-variant-numeric: tabular-nums;
 }
 
-.eg-grid .eg-pager-pages-list.pagination,
-.eg-grid .pagination.eg-pager-pages-list {
+.eg-grid .eg-pager-pages-list.pagination {
     display: inline-flex;
     flex-wrap: wrap;
     align-items: center;
@@ -913,7 +912,7 @@ body.admin-app .eg-grid .grid-filter-btn {
 .eg-grid .eg-pager-pages-list > .disabled > .eg-pager-btn {
     background: #eef2f6;
     border-color: #d5deea;
-    color: #7b8b9c;
+    color: #526472;
     cursor: default;
     opacity: 1;
 }
@@ -1500,7 +1499,7 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
 
 .eg-status-pill.is-off {
     background: #f5f7fa;
-    color: #627d98;
+    color: #3d4f5f;
     border: 1px solid #d9e2ec;
 }
 
@@ -1696,11 +1695,16 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
     flex: 1 1 auto;
     min-width: 0;
     padding: 5px 8px;
+    border: 0;
     border-radius: 7px;
+    background: transparent;
     color: var(--eg-text) !important;
+    font: inherit;
     font-size: 12px;
     font-weight: 600;
+    text-align: left;
     text-decoration: none !important;
+    cursor: pointer;
     transition: background 120ms ease, color 120ms ease;
 }
 
@@ -2046,7 +2050,7 @@ body.admin-app .eg-grid .grid-wrap {
     .eg-name-link {
         font-size: 14px;
         line-height: 1.35;
-        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     body.admin-app .eg-grid table.grid-table > tbody > tr > td {
@@ -2217,7 +2221,6 @@ body.admin-app .eg-grid .grid-wrap {
     }
 
     body.admin-app .eg-grid .grid-table > tbody > tr > td {
-        word-break: break-word;
         overflow-wrap: anywhere;
         vertical-align: middle !important;
     }
@@ -2354,8 +2357,8 @@ body.admin-app .eg-grid .grid-wrap {
         margin: 0 !important;
         z-index: 1;
         cursor: pointer;
-        -webkit-appearance: checkbox;
-        appearance: checkbox;
+        -webkit-appearance: auto;
+        appearance: auto;
     }
 
     body.admin-app .eg-grid .grid-table > thead > tr > th,
@@ -2449,18 +2452,14 @@ body.admin-app .eg-grid .grid-wrap {
         overflow: hidden;
         padding-left: 4px !important;
         padding-right: 4px !important;
+        min-width: 88px;
+        max-width: 108px;
     }
 
     body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-name,
     body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-name {
         min-width: 120px;
         max-width: 180px;
-    }
-
-    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-actions,
-    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-actions {
-        min-width: 88px;
-        max-width: 108px;
     }
 
     body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-state,
@@ -2755,7 +2754,17 @@ body.admin-app .eg-grid .grid-wrap {
         display: none !important;
     }
 
+    /* Card chrome: index + checkbox + actions on one row */
     body.admin-app .eg-orders-grid .grid-table > tbody > tr {
+        display: grid !important;
+        grid-template-columns: auto auto 1fr auto;
+        grid-template-areas:
+            "index check name actions"
+            "status status status status"
+            "amount amount amount amount";
+        column-gap: 8px;
+        row-gap: 8px;
+        align-items: center;
         margin: 0 0 12px;
         padding: 12px 12px 10px;
         border: 1px solid var(--eg-border);
@@ -2770,19 +2779,6 @@ body.admin-app .eg-grid .grid-wrap {
         border: 0 !important;
         padding: 0 !important;
         box-shadow: none !important;
-    }
-
-    /* Card chrome: index + checkbox + actions on one row */
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr {
-        display: grid !important;
-        grid-template-columns: auto auto 1fr auto;
-        grid-template-areas:
-            "index check name actions"
-            "status status status status"
-            "amount amount amount amount";
-        column-gap: 8px;
-        row-gap: 8px;
-        align-items: center;
     }
 
     body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-index {

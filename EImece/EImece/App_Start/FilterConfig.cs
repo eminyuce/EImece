@@ -8,7 +8,7 @@ namespace EImece
         {
             filters.Add(new HandleErrorAttribute());
             filters.Add(new Filters.RequestLoggingActionFilter());
-            filters.Add(new Filters.RobotsNoIndexFilter());
+            filters.Add(new Filters.RobotsNoIndexAttribute());
         }
     }
 }

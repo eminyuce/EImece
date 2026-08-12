@@ -3,7 +3,6 @@ using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,7 +15,6 @@ namespace EImece.Domain.Repositories
 {
     public class StoryRepository : BaseContentRepository<Story>, IStoryRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private IEImeceContext dbContext;
 
         public StoryRepository(IEImeceContext dbContext) : base(dbContext)
@@ -198,12 +196,11 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get main page stories.", exception);
             }
         }
 
-        public async Task<PaginatedList<Story>> GetMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<PaginatedList<Story>> GetMainPageStoriesAsync(int page, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
@@ -214,12 +211,11 @@ namespace EImece.Domain.Repositories
                 includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
                 Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
                 Expression<Func<Story, int>> keySelector = t => t.Position;
-                return await this.PaginateDescendingAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+                return await this.PaginateDescendingAsync(page, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get main page stories asynchronously.", exception);
             }
         }
 
@@ -266,8 +262,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get stories by story category id.", exception);
             }
         }
 
@@ -286,8 +281,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get stories by story category id asynchronously.", exception);
             }
         }
 

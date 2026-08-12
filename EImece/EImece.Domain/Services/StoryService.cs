@@ -206,16 +206,16 @@ namespace EImece.Domain.Services
             return SettingService.CreateShareableSocialMediaLinks(story.DetailPageUrl, story.Name, imageUrl);
         }
 
-        public async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int language, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language) + AsyncCacheKeySuffix;
+            var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, currentLanguage) + AsyncCacheKeySuffix;
 
             return await DataCachingProvider.GetOrAddAsync(cacheKey, async () =>
             {
                 var vm = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
-                vm.Stories = await StoryRepository.GetMainPageStoriesAsync(page, pageSize, language, CancellationToken.None).ConfigureAwait(false);
-                vm.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(language, CancellationToken.None).ConfigureAwait(false);
+                vm.Stories = await StoryRepository.GetMainPageStoriesAsync(page, pageSize, currentLanguage, CancellationToken.None).ConfigureAwait(false);
+                vm.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(currentLanguage, CancellationToken.None).ConfigureAwait(false);
                 return vm;
             }, AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
@@ -333,12 +333,12 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<SimiliarStoryTagsViewModel> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SimiliarStoryTagsViewModel> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new SimiliarStoryTagsViewModel();
             result.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            result.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, lang, cancellationToken).ConfigureAwait(false);
-            result.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
+            result.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, currentLanguage, cancellationToken).ConfigureAwait(false);
+            result.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, currentLanguage, cancellationToken).ConfigureAwait(false);
             result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             return result;
         }
@@ -459,14 +459,14 @@ namespace EImece.Domain.Services
             return formatter;
         }
 
-        public List<Story> GetFeaturedStories(int take, int language, int excludedStoryId)
+        public List<Story> GetFeaturedStories(int take, int language, int storyId)
         {
-            return StoryRepository.GetFeaturedStories(take, language, excludedStoryId);
+            return StoryRepository.GetFeaturedStories(take, language, storyId);
         }
 
-        public async Task<List<Story>> GetFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<Story>> GetFeaturedStoriesAsync(int take, int language, int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryRepository.GetFeaturedStoriesAsync(take, language, excludedStoryId, cancellationToken).ConfigureAwait(false);
+            return await StoryRepository.GetFeaturedStoriesAsync(take, language, storyId, cancellationToken).ConfigureAwait(false);
         }
 
         public Story GetPreviousStory(int currentStoryId, int language)

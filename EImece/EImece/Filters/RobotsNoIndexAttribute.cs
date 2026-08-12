@@ -1,4 +1,5 @@
 using EImece.Domain.Helpers;
+using System;
 using System.Web.Mvc;
 
 namespace EImece.Filters
@@ -6,7 +7,8 @@ namespace EImece.Filters
     /// <summary>
     /// When search engine indexing is disabled, emits X-Robots-Tag on every MVC response.
     /// </summary>
-    public sealed class RobotsNoIndexFilter : ActionFilterAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public sealed class RobotsNoIndexAttribute : ActionFilterAttribute
     {
         private const string XRobotsTagHeader = "X-Robots-Tag";
         private const string NoIndexDirectives = "noindex, nofollow, noarchive";

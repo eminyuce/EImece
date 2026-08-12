@@ -54,7 +54,7 @@ namespace EImece.Tests.Helpers
 
             var orderedIds = CreateViewModel(SortingType.Newest, products).Products.Select(p => p.Id).ToList();
 
-            CollectionAssert.AreEqual(new List<int> { 2, 1 }, orderedIds);
+            Assert.AreSequenceEqual(new List<int> { 2, 1 }, orderedIds);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace EImece.Tests.Helpers
 
             var orderedIds = CreateViewModel(SortingType.LowHighPrice, products).Products.Select(p => p.Id).ToList();
 
-            CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
+            Assert.AreSequenceEqual(new List<int> { 2, 3, 1 }, orderedIds);
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace EImece.Tests.Helpers
 
             var orderedIds = CreateViewModel(SortingType.HighLowPrice, products).Products.Select(p => p.Id).ToList();
 
-            CollectionAssert.AreEqual(new List<int> { 1, 3, 2 }, orderedIds);
+            Assert.AreSequenceEqual(new List<int> { 1, 3, 2 }, orderedIds);
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace EImece.Tests.Helpers
 
             var orderedIds = CreateViewModel(SortingType.Popularity, products).Products.Select(p => p.Id).ToList();
 
-            CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
+            Assert.AreSequenceEqual(new List<int> { 2, 3, 1 }, orderedIds);
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace EImece.Tests.Helpers
 
             var orderedIds = CreateViewModel(SortingType.AverageRating, products).Products.Select(p => p.Id).ToList();
 
-            CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
+            Assert.AreSequenceEqual(new List<int> { 2, 3, 1 }, orderedIds);
         }
 
         [TestMethod]

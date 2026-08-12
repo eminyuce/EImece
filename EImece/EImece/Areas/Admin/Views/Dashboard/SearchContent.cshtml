@@ -63,7 +63,7 @@
 
     @if (hasResults)
     {
-        <div class="admin-search__list" role="list">
+        <div class="admin-search__list">
             @foreach (var baseContent in searchList)
             {
                 @Html.DisplayFor(item => baseContent, "BaseContentSearchItem")
@@ -72,10 +72,10 @@
     }
     else
     {
-        <div class="admin-search__empty" role="status">
+        <output class="admin-search__empty">
             <i class="fa fa-search" aria-hidden="true"></i>
             <p>Farklı bir anahtar kelime deneyin veya panele dönün.</p>
             <a class="btn btn-default" href="@Url.Action("Index", "Dashboard", new { area = "admin" })">@AdminResource.AdminHome</a>
-        </div>
+        </output>
     }
 </div>

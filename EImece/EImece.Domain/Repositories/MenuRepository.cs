@@ -89,11 +89,7 @@ namespace EImece.Domain.Repositories
 
             foreach (var m in menus)
             {
-                if (menus.Any(r => r.ParentId == m.Id))
-                {
-                    continue;
-                }
-                else
+                if (!menus.Any(r => r.ParentId == m.Id))
                 {
                     result.Add(m);
                 }
@@ -132,11 +128,7 @@ namespace EImece.Domain.Repositories
 
             foreach (var m in menus)
             {
-                if (menus.Any(r => r.ParentId == m.Id))
-                {
-                    continue;
-                }
-                else
+                if (!menus.Any(r => r.ParentId == m.Id))
                 {
                     result.Add(m);
                 }

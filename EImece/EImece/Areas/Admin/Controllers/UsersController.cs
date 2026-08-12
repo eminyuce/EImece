@@ -1,4 +1,5 @@
-﻿using EImece.Domain.DbContext;
+﻿using EImece.Domain;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -248,7 +249,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
             if (user == null)
             {
                 return HttpNotFound();
@@ -260,14 +261,14 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GenerateNewPasswordConfirm(string id)
+        public async Task<ActionResult> GenerateNewPasswordConfirm(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
             if (user == null)
             {
                 return HttpNotFound();
@@ -309,9 +310,9 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, string id)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id, cancellationToken);
             ApplicationDbContext.Users.Remove(user);
-            await ApplicationDbContext.SaveChangesAsync();
+            await ApplicationDbContext.SaveChangesAsync(cancellationToken);
             SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer("Index");
         }
@@ -319,7 +320,7 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> UserRoles(CancellationToken cancellationToken, string id)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id, cancellationToken);
             var model = new SelectUserRolesViewModel(user);
             model.SetAdminRoles(user);
             return View(model);
@@ -328,9 +329,9 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UserRoles(SelectUserRolesViewModel model)
+        public async Task<ActionResult> UserRoles(SelectUserRolesViewModel model, CancellationToken cancellationToken)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == model.Id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == model.Id, cancellationToken);
             IdentityManager.ClearUserRoles(user.Id);
             foreach (var role in model.Roles)
             {
@@ -351,7 +352,7 @@ namespace EImece.Areas.Admin.Controllers
             var model = new ForgotPasswordViewModel();
             if (!String.IsNullOrEmpty(id))
             {
-                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
                 if (user == null)
                 {
                     return HttpNotFound();
@@ -485,6 +486,11 @@ namespace EImece.Areas.Admin.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)
             {
+                if (AppConfig.BypassAdminAuth)
+                {
+                    SetErrorMessage("Authenticator kurulumu gerçek bir admin girişi gerektirir. BypassAdminAuth debug principal'ının kullanıcı kaydı yoktur.");
+                    return RedirectToAction("ChangePassword");
+                }
                 return HttpNotFound();
             }
 
@@ -510,6 +516,11 @@ namespace EImece.Areas.Admin.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)
             {
+                if (AppConfig.BypassAdminAuth)
+                {
+                    SetErrorMessage("Authenticator kurulumu gerçek bir admin girişi gerektirir. BypassAdminAuth debug principal'ının kullanıcı kaydı yoktur.");
+                    return RedirectToAction("ChangePassword");
+                }
                 return HttpNotFound();
             }
 

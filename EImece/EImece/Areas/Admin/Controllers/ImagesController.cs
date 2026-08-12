@@ -16,6 +16,12 @@ namespace EImece.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, string id, int width = 0, int height = 0)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                // Index without id is not a page; send admins to Media library.
+                return RedirectToAction("Index", "Media");
+            }
+
             var fileStorageId = id.Replace(".jpg", "").ToInt();
             var imageByte = await FilesHelper.GetResizedImageAsync(fileStorageId, width, height, cancellationToken);
             if (imageByte != null)

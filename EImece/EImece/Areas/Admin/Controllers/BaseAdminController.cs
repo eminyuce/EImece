@@ -245,10 +245,7 @@ namespace EImece.Areas.Admin.Controllers
             var actionName = filterContext.RouteData.Values["action"] as string ?? string.Empty;
 
             // Allow setup page and logout (otherwise LogOff is intercepted by this redirect).
-            if (string.Equals(actionName, "LogOff", StringComparison.OrdinalIgnoreCase)
-                || (string.Equals(controllerName, "Users", StringComparison.OrdinalIgnoreCase)
-                    && (string.Equals(actionName, "EnableAuthenticator", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase))))
+            if (IsAuthenticatorSetupOrLogOffAction(controllerName, actionName))
             {
                 return false;
             }
@@ -281,6 +278,18 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return !user.TwoFactorAuthenticatorEnabled;
+        }
+
+        private static bool IsAuthenticatorSetupOrLogOffAction(string controllerName, string actionName)
+        {
+            if (string.Equals(actionName, "LogOff", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return string.Equals(controllerName, "Users", StringComparison.OrdinalIgnoreCase)
+                && (string.Equals(actionName, "EnableAuthenticator", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase));
         }
 
         [Inject]

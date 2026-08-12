@@ -28,7 +28,7 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
             // includeProperties.Add(r => r.Stories);
-            Expression<Func<StoryCategory, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.Stories.Count() > 0;
+            Expression<Func<StoryCategory, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.Stories.Any();
             Expression<Func<StoryCategory, int>> keySelector = t => t.Position;
             var item = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
             //var item = FindAll(match,keySelector,OrderByType.Descending, null,null);
@@ -41,7 +41,7 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
-            Expression<Func<StoryCategory, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.Stories.Count() > 0;
+            Expression<Func<StoryCategory, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.Stories.Any();
             Expression<Func<StoryCategory, int>> keySelector = t => t.Position;
             var item = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
             return await item.ToListAsync(cancellationToken).ConfigureAwait(false);

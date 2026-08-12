@@ -59,7 +59,7 @@
                 }
                 @if (IsExcelButtonEnabled)
                 {
-                    <div class="eg-ops-export" role="group" aria-label="@AdminResource.Excel">
+                    <div class="eg-ops-export" aria-label="@AdminResource.Excel">
                         <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch })" title="@AdminResource.Excel">
                             <i class="glyphicon glyphicon-export" aria-hidden="true"></i>
                             <span>@AdminResource.Excel</span>
@@ -87,7 +87,7 @@
 
                     @if (selectAll)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group eg-ops-group-select" role="group" aria-label="@GridSelectAllButtonText">
+                        <div class="admin-grid-toolbar-group eg-ops-group eg-ops-group-select" aria-label="@GridSelectAllButtonText">
                             <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="SelectAll" title="@GridSelectAllButtonText">
                                 <i class="glyphicon glyphicon-check" aria-hidden="true"></i>
                                 <span>Tümü</span>
@@ -101,7 +101,8 @@
 
                     @if (SetStateOnOrOff)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group" role="group" aria-label="@State">
+                        <div class="admin-grid-toolbar-group eg-ops-group" aria-label="@State">
+                            <label class="sr-only" for="ItemStateSelection">@State</label>
                             @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                             {
                                 <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
@@ -148,7 +149,7 @@
 
                     @if (orderingButton)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group" role="group">
+                        <div class="admin-grid-toolbar-group eg-ops-group">
                             <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="OrderingAll" title="@GridOrderingAllButtonText">
                                 <i class="glyphicon glyphicon-sort" aria-hidden="true"></i>
                                 <span>Sıra</span>
@@ -158,7 +159,8 @@
 
                     @if (ProductState)
                     {
-                        <div class="admin-grid-toolbar-group admin-grid-toolbar-product eg-ops-group eg-ops-group-product" role="group" aria-label="@ProductStateChangeText">
+                        <div class="admin-grid-toolbar-group admin-grid-toolbar-product eg-ops-group eg-ops-group-product" aria-label="@ProductStateChangeText">
+                            <label class="sr-only" for="ProductStateSelection">@ProductStateChangeText</label>
                             <select class="form-control input-sm admin-grid-state-select eg-ops-select eg-ops-select-wide" name="ProductStateSelection" id="ProductStateSelection" title="@ProductStateChangeText">
                                 @foreach (EImece.Domain.Models.Enums.ProductState state in Enum.GetValues(typeof(EImece.Domain.Models.Enums.ProductState)))
                                 {
@@ -174,7 +176,7 @@
 
                     @if (deleteAll)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group eg-ops-group-danger" role="group">
+                        <div class="admin-grid-toolbar-group eg-ops-group eg-ops-group-danger">
                             <button type="button" class="btn btn-danger btn-sm eg-ops-btn eg-ops-btn-danger" id="DeleteAll" title="@GridDeleteSelectedButtonText">
                                 <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
                                 <span>Sil</span>

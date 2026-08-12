@@ -44,15 +44,13 @@
 
                 @if (String.IsNullOrEmpty(urlPattern))
                 {
-                    <a class="eg-tree-link @(isActive ? "is-active" : "")"
-                       href="javascript:void(0)"
-                       onclick="productTreeClick(event,@nodeId,'@HttpUtility.JavaScriptStringEncode(name)')">
+                    <button type="button" class="eg-tree-link @(isActive ? "is-active" : "")" onclick="productTreeClick(event,@nodeId,'@HttpUtility.JavaScriptStringEncode(name)')">
                         <span class="eg-tree-name">@name</span>
                         @if (count > 0)
                         {
                             <span class="eg-tree-count">@count</span>
                         }
-                    </a>
+                    </button>
                 }
                 else
                 {

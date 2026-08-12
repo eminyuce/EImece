@@ -15,7 +15,7 @@
     ViewBag.Description = (companyName + " - " + String.Join(",", storyTags.Where(r => r.Story != null).Select(r => r.Story.Name))).ToStr(150);
 }
 
-<div class="page-title-wrapper" role="region" aria-label="Page title">
+<section class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <div class="alert alert-secondary" role="alert">
             <nav aria-label="breadcrumb">
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <div class="container potrfolio-container">
 

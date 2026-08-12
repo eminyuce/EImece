@@ -26,7 +26,7 @@ namespace EImece.Tests.Helpers
 
             var orderedIds = products.OrderByStorefrontDefault().Select(p => p.Id).ToList();
 
-            CollectionAssert.AreEqual(new List<int> { 5, 4, 3, 2, 1 }, orderedIds);
+            Assert.AreSequenceEqual(new List<int> { 5, 4, 3, 2, 1 }, orderedIds);
         }
     }
 }

@@ -278,9 +278,9 @@ namespace EImece.Domain.Services
         public DataSet GetProductInventoryReport(string state = null, bool? isCampaign = null, bool? mainPage = null)
         {
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("State", state, SqlDbType.NVarChar));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("IsCampaign", isCampaign, SqlDbType.Bit));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("MainPage", mainPage, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@State", state, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@IsCampaign", isCampaign, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@MainPage", mainPage, SqlDbType.Bit));
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetProductInventoryReport",
@@ -319,8 +319,8 @@ namespace EImece.Domain.Services
             }
 
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime));
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetProductStatsByDateRange",
@@ -458,9 +458,9 @@ namespace EImece.Domain.Services
         public Task<DataSet> GetProductInventoryReportAsync(string state = null, bool? isCampaign = null, bool? mainPage = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("State", state, SqlDbType.NVarChar));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("IsCampaign", isCampaign, SqlDbType.Bit));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("MainPage", mainPage, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@State", state, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@IsCampaign", isCampaign, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@MainPage", mainPage, SqlDbType.Bit));
             return ExecuteDataSetStoredProcAsync("GetProductInventoryReport", parameterList.ToArray(), cancellationToken);
         }
 
@@ -471,8 +471,8 @@ namespace EImece.Domain.Services
                 return Task.FromResult<DataSet>(null);
             }
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime));
             return ExecuteDataSetStoredProcAsync("GetProductStatsByDateRange", parameterList.ToArray(), cancellationToken);
         }
 
@@ -499,12 +499,15 @@ namespace EImece.Domain.Services
             }
         }
 
-        private static async Task<DataSet> ExecuteDataSetStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
+        private static Task<DataSet> ExecuteDataSetStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
         {
-            var connectionString = ConnectionStringProvider.GetConnectionString();
-            using (var connection = new SqlConnection(connectionString))
+            // SqlDataAdapter.Fill loads all result sets correctly. DataTable.Load closes the
+            // reader, so pairing Load with NextResultAsync throws and caused report 500s.
+            return Task.Factory.StartNew(() =>
             {
-                await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+                var connectionString = ConnectionStringProvider.GetConnectionString();
+                using (var connection = new SqlConnection(connectionString))
                 using (var command = new SqlCommand(commandText, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
@@ -512,20 +515,15 @@ namespace EImece.Domain.Services
                     {
                         command.Parameters.AddRange(parameters);
                     }
-                    using (var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false))
+
+                    using (var adapter = new SqlDataAdapter(command))
                     {
                         var dataSet = new DataSet();
-                        do
-                        {
-                            var dt = new DataTable();
-                            dt.Load(reader);
-                            dataSet.Tables.Add(dt);
-                        }
-                        while (await reader.NextResultAsync(cancellationToken).ConfigureAwait(false));
+                        adapter.Fill(dataSet);
                         return dataSet;
                     }
                 }
-            }
+            }, cancellationToken);
         }
 
         #endregion Async Report Methods

@@ -340,18 +340,16 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [DeleteAuthorize()]
-        public async Task<JsonResult> DeleteCouponGridItem(List<String> values)
+        public Task<JsonResult> DeleteCouponGridItem(List<String> values)
         {
-            await CouponService.DeleteBaseEntityAsync(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
+            return DeleteCouponsGridItem(values);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
-        public async Task<JsonResult> StoryCategoryGridItem(List<String> values)
+        public Task<JsonResult> StoryCategoryGridItem(List<String> values)
         {
-            await StoryCategoryService.DeleteBaseEntityAsync(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
+            return DeleteStoryCategoryGridItem(values);
         }
 
         // GET: Admin/Ajax
@@ -468,10 +466,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [DeleteAuthorize()]
-        public async Task<JsonResult> DeleteMainPageImageGridItem(List<String> values)
+        public Task<JsonResult> DeleteMainPageImageGridItem(List<String> values)
         {
-            await MainPageImageService.DeleteBaseEntityAsync(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
+            return MainPageImageGridItem(values);
         }
 
         [HttpPost]

@@ -33,7 +33,7 @@
 else
 {
 
-<div class="page-title-wrapper crizal-search-hero" role="region" aria-label="Page title">
+<section class="page-title-wrapper crizal-search-hero" aria-label="Page title">
     <div class="container">
         <nav class="crizal-breadcrumb" aria-label="breadcrumb">
             <ol class="crizal-breadcrumb__list breadcrumb">
@@ -47,7 +47,7 @@ else
         <h1 class="page-title">@Model.Search</h1>
         <p class="crizal-search-hero__count">@Html.Raw(String.Format(Resource.SearchResultTotalCountText, HttpUtility.HtmlEncode(Model.Search), productsAll.TotalCount))</p>
     </div>
-</div>
+</section>
 
 <div class="container pb-5 mb-2">
     @if (products.IsNotEmpty())

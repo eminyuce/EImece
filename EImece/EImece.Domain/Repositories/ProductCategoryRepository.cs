@@ -218,33 +218,17 @@ namespace EImece.Domain.Repositories
         public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
         {
             var productCategories = GetActiveBaseContents(isActive, language);
-            var result = new List<ProductCategory>();
-
-            foreach (var m in productCategories)
-            {
-                if (!productCategories.Any(r => r.ParentId == m.Id))
-                {
-                    result.Add(m);
-                }
-            }
-
-            return result;
+            return productCategories
+                .Where(m => !productCategories.Any(r => r.ParentId == m.Id))
+                .ToList();
         }
 
         public async Task<List<ProductCategory>> GetProductCategoryLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var productCategories = await GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
-            var result = new List<ProductCategory>();
-
-            foreach (var m in productCategories)
-            {
-                if (!productCategories.Any(r => r.ParentId == m.Id))
-                {
-                    result.Add(m);
-                }
-            }
-
-            return result;
+            return productCategories
+                .Where(m => !productCategories.Any(r => r.ParentId == m.Id))
+                .ToList();
         }
 
         public List<ProductCategory> GetMainPageProductCategories(int language)

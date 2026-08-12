@@ -214,7 +214,7 @@ body.admin-app .admin-content .admin-search h2::after {
 
 .admin-search-card__media.is-empty::after {
     content: "\f03e";
-    font-family: FontAwesome;
+    font-family: FontAwesome, "Font Awesome 5 Free", "Font Awesome 6 Free", sans-serif;
     color: #9fb3c8;
     font-size: 28px;
 }

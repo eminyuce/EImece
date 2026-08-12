@@ -198,7 +198,7 @@
                 {
                     var summaryRating = product.Rating > 5 ? 5 : (product.Rating < 0 ? 0 : product.Rating);
                     <a class="d-inline-block scroll-to" href="#reviews">
-                        <span class="product-stars" aria-label="@summaryRating stars" role="img">
+                        <span class="product-stars" aria-label="@summaryRating stars">
                             @for (int i = 1; i <= 5; i++)
                             {
                                 <span class="product-stars__star@(i <= summaryRating ? " is-on" : "")" aria-hidden="true">★</span>
@@ -571,7 +571,7 @@
 {
     <div class="container pt-sm-3 pb-sm-3">
         <div class="product-specs product-specs--tab" aria-label="@Resource.Specifications">
-            @foreach (var group in model.ProdSpecsGroups)
+            @foreach (var group in model.GetProdSpecsGroups())
             {
                 <table class="product-specs__table">
                     @if (!string.IsNullOrWhiteSpace(group.Name))

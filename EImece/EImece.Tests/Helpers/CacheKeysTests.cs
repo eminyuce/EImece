@@ -12,7 +12,7 @@ namespace EImece.Tests.Helpers
         {
             var key = CacheKeys.MainPageProducts(2, 1);
             Assert.AreEqual("product:list:mainpage:p2:lang1", key);
-            StringAssert.StartsWith(key, CacheKeys.ProductListPrefix);
+            Assert.StartsWith(CacheKeys.ProductListPrefix, key);
         }
 
         [TestMethod]
@@ -33,8 +33,8 @@ namespace EImece.Tests.Helpers
 
             Assert.AreEqual(a, b);
             Assert.AreNotEqual(a, c);
-            StringAssert.StartsWith(a, CacheKeys.ProductSearchPrefix);
-            StringAssert.Contains(a, "qshoes");
+            Assert.StartsWith(CacheKeys.ProductSearchPrefix, a);
+            Assert.Contains("qshoes", a);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace EImece.Tests.Helpers
             var longTerm = new string('a', 100) + "!!!";
             var normalized = CacheKeys.NormalizeSearchTerm(longTerm);
             Assert.AreEqual(64, normalized.Length);
-            Assert.IsFalse(normalized.Contains("!"));
+            Assert.DoesNotContain("!", normalized);
         }
     }
 }

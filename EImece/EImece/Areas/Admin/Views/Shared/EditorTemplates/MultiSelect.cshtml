@@ -27,16 +27,14 @@
     <div class="col-md-2">
         <label class="control-label" style="text-align:left;">
             @valueDisplayName
-            <span class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" tabindex="0">
-                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-            </span>
+            <button type="button" class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" aria-label="@tipText"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></button>
         </label>
         <div class="admin-spec-field-meta">çoklu seçim</div>
     </div>
     <div class="col-md-8">
         @if (options.Any())
         {
-            <div class="admin-spec-multiselect-list" role="group" aria-label="@valueDisplayName" data-spec-multiselect="@fieldKey">
+            <div class="admin-spec-multiselect-list" aria-label="@valueDisplayName" data-spec-multiselect="@fieldKey">
                 @foreach (var opt in options)
                 {
                     var optId = "spec_" + fieldKey + "_" + (opt.Value ?? "").GetHashCode().ToString("x");

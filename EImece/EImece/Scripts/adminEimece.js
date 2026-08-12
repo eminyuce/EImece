@@ -276,7 +276,11 @@ $(document).ready(function () {
                     if (window.sessionStorage && href) {
                         window.sessionStorage.setItem(storageKey, href);
                     }
-                } catch (err) { }
+                } catch (err) {
+                    if (typeof console !== "undefined" && console.debug) {
+                        console.debug("admin edit tab save skipped", err);
+                    }
+                }
 
                 if (href === "#admin-edit-tab-content") {
                     refreshEditorsSoon();
@@ -291,7 +295,11 @@ $(document).ready(function () {
                     refreshEditorsSoon();
                 }
             }
-        } catch (err) { }
+        } catch (err) {
+            if (typeof console !== "undefined" && console.debug) {
+                console.debug("admin edit tab restore skipped", err);
+            }
+        }
     }
     $("input[name=checkboxGrid]").each(function () {
         $(this).off("click");
@@ -487,12 +495,12 @@ $(document).ready(function () {
     // Optional per-upload image size override (number inputs; collapsed by default).
     var $sizeRoot = $("[data-admin-image-size]").first();
     if ($sizeRoot.length && $("#imageWidthTxt").length && $("#imageHeightTxt").length) {
-        var defaultValueWidth = parseInt($("#ImageWidth").val(), 10) || parseInt($sizeRoot.attr("data-default-w"), 10) || 0;
-        var defaultValueHeight = parseInt($("#ImageHeight").val(), 10) || parseInt($sizeRoot.attr("data-default-h"), 10) || 0;
+        var defaultValueWidth = Number.parseInt($("#ImageWidth").val(), 10) || Number.parseInt($sizeRoot.attr("data-default-w"), 10) || 0;
+        var defaultValueHeight = Number.parseInt($("#ImageHeight").val(), 10) || Number.parseInt($sizeRoot.attr("data-default-h"), 10) || 0;
 
         function syncImageSize(width, height) {
-            width = Math.max(0, Math.min(2000, parseInt(width, 10) || 0));
-            height = Math.max(0, Math.min(2000, parseInt(height, 10) || 0));
+            width = Math.max(0, Math.min(2000, Number.parseInt(width, 10) || 0));
+            height = Math.max(0, Math.min(2000, Number.parseInt(height, 10) || 0));
             $("#ImageWidth").val(width);
             $("#ImageHeight").val(height);
             $("#imageWidthTxt").val(width);
@@ -514,11 +522,11 @@ $(document).ready(function () {
             var $btn = $(this);
             var w, h;
             if ($btn.attr("data-image-preset") === "default") {
-                w = parseInt($sizeRoot.attr("data-default-w"), 10) || defaultValueWidth;
-                h = parseInt($sizeRoot.attr("data-default-h"), 10) || defaultValueHeight;
+                w = Number.parseInt($sizeRoot.attr("data-default-w"), 10) || defaultValueWidth;
+                h = Number.parseInt($sizeRoot.attr("data-default-h"), 10) || defaultValueHeight;
             } else {
-                w = parseInt($btn.attr("data-w"), 10);
-                h = parseInt($btn.attr("data-h"), 10);
+                w = Number.parseInt($btn.attr("data-w"), 10);
+                h = Number.parseInt($btn.attr("data-h"), 10);
             }
             syncImageSize(w, h);
             $sizeRoot.find("[data-image-preset]").removeClass("active");
@@ -1123,7 +1131,7 @@ function setPreSelectedTreeNode(preSelectedNode) {
         }
 
         document.addEventListener("keydown", function (e) {
-            if ((e.key === "Escape" || e.keyCode === 27)
+            if (e.key === "Escape"
                 && !isDesktop()
                 && body.classList.contains("sidebar-open")) {
                 setMobileDrawerOpen(false);
@@ -1199,7 +1207,7 @@ function initAdminTagPicker(root) {
         $picker.find('[data-tag-chip]').each(function () {
             var $chip = $(this);
             var name = ($chip.attr('data-tag-name') || $chip.text() || '').toString().toLocaleLowerCase('tr-TR');
-            var match = !q || name.indexOf(q) !== -1;
+            var match = !q || name.includes(q);
             $chip.toggle(match);
             if (match) {
                 anyVisible = true;

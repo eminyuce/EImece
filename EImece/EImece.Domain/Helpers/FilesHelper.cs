@@ -1323,7 +1323,7 @@ namespace EImece.Domain.Helpers
         /// <summary>
         /// Soft branded abstract JPEG with no filename / label text (safe for hero + PDP).
         /// </summary>
-        public byte[] GenerateAbstractPlaceholder(int seedKey, int width, int height)
+        public static byte[] GenerateAbstractPlaceholder(int seedKey, int width, int height)
         {
             if (width <= 0) width = 800;
             if (height <= 0) height = 600;

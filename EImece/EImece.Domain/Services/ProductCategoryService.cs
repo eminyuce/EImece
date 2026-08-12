@@ -324,10 +324,10 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int productCategoryId)
+        public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int categoryId)
         {
             var result = new ProductCategoryViewModel();
-            result.ProductCategory = await GetProductCategoryAsync(productCategoryId).ConfigureAwait(false);
+            result.ProductCategory = await GetProductCategoryAsync(categoryId).ConfigureAwait(false);
             if (result.ProductCategory == null)
             {
                 return null;
@@ -349,7 +349,7 @@ namespace EImece.Domain.Services
             result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
             result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
             result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
-            result.ChildrenProductCategories = await ProductCategoryRepository.GetProductCategoriesByParentIdAsync(productCategoryId).ConfigureAwait(false);
+            result.ChildrenProductCategories = await ProductCategoryRepository.GetProductCategoriesByParentIdAsync(categoryId).ConfigureAwait(false);
             result.CategoryChildrenProducts = await ProductService.GetChildrenProductsAsync(result.ProductCategory, result.ChildrenProductCategories).ConfigureAwait(false);
             return result;
         }

@@ -1,7 +1,6 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,8 +13,6 @@ namespace EImece.Domain.Repositories
     // AppLog  NLog.config dosyasi uzerinden veritabani kayiti yapilir.
     public class AppLogRepository
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public List<AppLog> GetAppLogs(string search, string eventLevel = "")
         {
             var applogResult = new List<AppLog>();
@@ -25,25 +22,21 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get app logs.", ex);
             }
             return applogResult;
         }
 
         public async Task<List<AppLog>> GetAppLogsAsync(string search, string eventLevel = "", CancellationToken cancellationToken = default(CancellationToken))
         {
-            var applogResult = new List<AppLog>();
             try
             {
-                applogResult = await GetAppLogsFromDbAsync(search, eventLevel, cancellationToken).ConfigureAwait(false);
+                return await GetAppLogsFromDbAsync(search, eventLevel, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get app logs asynchronously.", ex);
             }
-            return applogResult;
         }
 
         public void DeleteAppLogs(List<string> values)

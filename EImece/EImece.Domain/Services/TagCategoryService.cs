@@ -11,8 +11,6 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {

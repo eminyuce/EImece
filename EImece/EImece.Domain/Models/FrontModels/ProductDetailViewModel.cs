@@ -48,10 +48,18 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
+                if (Product == null)
+                {
+                    return "{}";
+                }
+
                 string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(Product.ShortDescription)) ?? "No description available";
                 var productComments = Product.ProductComments.IsNotEmpty() ? Product.ProductComments : new List<ProductComment>();
-                var productTags = Product.ProductTags.Select(r => r.Tag).ToList();
-                var productFiles = Product.ProductFiles.ToList();
+                var productTags = (Product.ProductTags ?? Enumerable.Empty<ProductTag>())
+                    .Where(r => r != null && r.Tag != null)
+                    .Select(r => r.Tag)
+                    .ToList();
+                var productFiles = (Product.ProductFiles ?? Enumerable.Empty<ProductFile>()).Where(f => f != null).ToList();
                 List<string> images = new List<string>();
                 images.Add(Product.ImageFullPath(200, 200));
 
@@ -64,17 +72,21 @@ namespace EImece.Domain.Models.FrontModels
                     }
                 }
 
+                var brandName = Product.Brand != null ? Product.Brand.Name : null;
+                var categoryName = Product.ProductCategory != null ? Product.ProductCategory.Name : null;
+                var sellerName = CompanyName != null ? CompanyName.SettingValue.ToStr() : null;
+                var cargoPriceValue = CargoPrice != null ? CargoPrice.SettingValue.ToDecimal() : 0m;
+
                 var schema = new GoogleProductSchema
                 {
                     Name = Product.ProductNameStr,
-                    Category = Product.ProductCategory.Name,
-                    Keywords = productTags.IsNotEmpty() ? string.Join(", ", productTags.Select(r => r.Name)) : null, // fixed line
-                    //Image = new string[] { Product.ImageFullPath(200, 200) },
+                    Category = categoryName,
+                    Keywords = productTags.IsNotEmpty() ? string.Join(", ", productTags.Select(r => r.Name)) : null,
                     Image = images.ToArray(),
                     Description = plainDescription,
-                    Brand = new GoogleBrand
+                    Brand = string.IsNullOrEmpty(brandName) ? null : new GoogleBrand
                     {
-                        Name = Product.Brand.Name
+                        Name = brandName
                     },
                     Sku = Product.ProductCode,
                     Offers = new GoogleOffer
@@ -87,14 +99,14 @@ namespace EImece.Domain.Models.FrontModels
                         ItemCondition = "https://schema.org/NewCondition",
                         Seller = new GoogleSeller
                         {
-                            Name = CompanyName.SettingValue.ToStr()
+                            Name = sellerName
                         },
                         HasMerchantReturnPolicy = new GoogleReturnPolicy(),
                         ShippingDetails = new GoogleShippingDetails
                         {
                             ShippingRate = new GoogleShippingRate
                             {
-                                Value = CargoPrice.SettingValue.ToDecimal().GoogleProductSchema(),
+                                Value = cargoPriceValue.GoogleProductSchema(),
                                 Currency = Constants.CURRENCY_TURKISH
                             },
                             ShippingDestination = new GoogleShippingDestination
@@ -241,7 +253,21 @@ namespace EImece.Domain.Models.FrontModels
                     return result;
                 }
 
-                XDocument xdoc = XDocument.Parse(template.TemplateXml);
+                XDocument xdoc;
+                try
+                {
+                    xdoc = XDocument.Parse(template.TemplateXml);
+                }
+                catch (System.Xml.XmlException)
+                {
+                    return result;
+                }
+
+                if (xdoc.Root == null)
+                {
+                    return result;
+                }
+
                 var groups = xdoc.Root.Descendants()
                     .Where(e => e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase))
                     .ToList();
@@ -274,16 +300,18 @@ namespace EImece.Domain.Models.FrontModels
         /// <summary>
         /// Specs grouped by template &lt;group name&gt; for storefront tables/sections.
         /// </summary>
-        public List<ProductSpecsGroupModel> ProdSpecsGroups
+        public List<ProductSpecsGroupModel> GetProdSpecsGroups()
         {
-            get
+            if (ProdSpecs == null)
             {
-                return ProdSpecs
-                    .GroupBy(s => s.groupName ?? string.Empty, StringComparer.Ordinal)
-                    .Select(g => new ProductSpecsGroupModel(g.Key, g.ToList()))
-                    .Where(g => g.Items != null && g.Items.Any())
-                    .ToList();
+                return new List<ProductSpecsGroupModel>();
             }
+
+            return ProdSpecs
+                .GroupBy(s => s.groupName ?? string.Empty, StringComparer.Ordinal)
+                .Select(g => new ProductSpecsGroupModel(g.Key, g.ToList()))
+                .Where(g => g.Items != null && g.Items.Any())
+                .ToList();
         }
 
         private static void AppendSpecFields(
@@ -321,7 +349,19 @@ namespace EImece.Domain.Models.FrontModels
 
                 string specsName = display != null ? display.Value : name.Value;
                 string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(field, rawValue);
-                string displayUnit = isCheckbox ? "" : (unit == null ? "" : unit.Value.ToStr());
+                string displayUnit;
+                if (isCheckbox)
+                {
+                    displayUnit = "";
+                }
+                else if (unit == null)
+                {
+                    displayUnit = "";
+                }
+                else
+                {
+                    displayUnit = unit.Value.ToStr();
+                }
                 result.Add(new ProductSpecsModel(
                     specsName.ToStr().Trim(),
                     displayValue,

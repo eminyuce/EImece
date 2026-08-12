@@ -152,13 +152,9 @@ namespace EImece.Controllers
                     return RedirectToAction("NotFound", "Error");
                 }
 
-                if (stories.StoryTags == null || stories.StoryTags.TotalCount == 0)
-                {
-                    Logger.Warn($"Tag '{id}' has no associated stories; redirecting to NotFound.");
-                    return RedirectToAction("NotFound", "Error");
-                }
-
-                Logger.Info($"Retrieved {stories.StoryTags.Count} stories for tag ID: {tagId}, language: {CurrentLanguage}");
+                // Tag exists but may have zero stories — still render the Tag view with empty data.
+                int storyCount = stories.StoryTags != null ? stories.StoryTags.Count : 0;
+                Logger.Info($"Retrieved {storyCount} stories for tag ID: {tagId}, language: {CurrentLanguage}");
 
                 ViewBag.SeoId = stories.Tag.GetSeoUrl();
                 Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");

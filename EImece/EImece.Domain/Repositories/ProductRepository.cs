@@ -52,8 +52,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get active products.", exception);
             }
         }
 
@@ -80,8 +79,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get active products asynchronously.", exception);
             }
         }
 
@@ -102,8 +100,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                throw new InvalidOperationException("Failed to get main page products.", exception);
             }
         }
 
@@ -656,7 +653,7 @@ namespace EImece.Domain.Repositories
 
                 searchResult.Products = products.OrderByStorefrontDefault().ToList();
 
-                reader.NextResult();
+                await reader.NextResultAsync(cancellationToken).ConfigureAwait(false);
                 var productCategories = ((IObjectContextAdapter)db)
                     .ObjectContext
                     .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);

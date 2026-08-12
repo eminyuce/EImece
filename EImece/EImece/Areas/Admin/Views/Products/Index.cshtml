@@ -177,9 +177,10 @@
         }
 
         <div class="panel panel-default product-admin-filters @(hasAdvancedFilter ? "is-open" : "is-collapsed")" id="productAdminFilters">
-            <div class="panel-heading product-admin-filters-heading" role="button"
+            <div class="panel-heading product-admin-filters-heading" role="button" tabindex="0"
                  data-toggle="collapse" data-target="#productAdminFiltersBody"
-                 aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="productAdminFiltersBody">
+                 aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="productAdminFiltersBody"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
                 <div class="product-admin-filters-heading-main">
                     <span class="product-admin-filters-title">
                         <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>
@@ -199,7 +200,7 @@
 
             @if (activeFilterChips.Count > 0)
             {
-                <div class="product-admin-filters-summary" onclick="event.stopPropagation();">
+                <div class="product-admin-filters-summary" onclick="event.stopPropagation();" onkeydown="event.stopPropagation();">
                     @foreach (var chip in activeFilterChips)
                     {
                         string chipText = chip.Item1;
@@ -298,14 +299,17 @@
                             {
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>@AdminResource.Price</label>
+                                        <label for="minPrice">@AdminResource.Price</label>
                                         <div class="product-admin-price-range">
                                             <input type="number" step="0.01" min="0" class="form-control input-sm" id="minPrice" name="minPrice"
                                                    placeholder="Min"
+                                                   aria-label="Min fiyat"
                                                    value="@(minPrice.HasValue ? minPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />
                                             <span class="product-admin-price-sep">–</span>
+                                            <label class="sr-only" for="maxPrice">Max fiyat</label>
                                             <input type="number" step="0.01" min="0" class="form-control input-sm" id="maxPrice" name="maxPrice"
                                                    placeholder="Max"
+                                                   aria-label="Max fiyat"
                                                    value="@(maxPrice.HasValue ? maxPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />
                                         </div>
                                     </div>
@@ -489,7 +493,7 @@
      .Encoded(false).
      Sanitized(false).
      Css("smallGridColumn").
-     RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+     RenderValueAs(o => String.Format("<input   id='gridOrdering_{0}' gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='text' aria-label='Sıra'>", o.Id, o.Position));
 
            columns.Add(o => o.IsActive)
            .Titled(AdminResource.IsActive)

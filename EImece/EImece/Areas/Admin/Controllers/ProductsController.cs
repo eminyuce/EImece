@@ -149,7 +149,6 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
                     if (product.ProductCategoryId == 0)
                     {
                         ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);

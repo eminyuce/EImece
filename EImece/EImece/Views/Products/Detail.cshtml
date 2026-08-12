@@ -574,7 +574,7 @@
 {
     <div class="container pt-sm-3 pb-sm-3">
         <div class="product-specs product-specs--tab" aria-label="@Resource.Specifications">
-            @foreach (var group in model.ProdSpecsGroups)
+            @foreach (var group in model.GetProdSpecsGroups())
             {
                 <table class="product-specs__table">
                     @if (!string.IsNullOrWhiteSpace(group.Name))

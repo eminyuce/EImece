@@ -42,7 +42,7 @@
     var hasAnySoldProducts = Model.HasAnySoldProducts;
 }
 
-<div class="page-title-wrapper" role="region" aria-label="Page title">
+<section class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <nav class="crizal-breadcrumb" aria-label="breadcrumb">
             <ol class="crizal-breadcrumb__list breadcrumb">
@@ -80,9 +80,9 @@
         <p class="text-muted mb-2">
             @Html.Raw(category.ShortDescription)
             <!-- Link with href -->
-            <a href="#collapseExample" id="ClickHereForMoreDetails" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <button type="button" class="btn-link" id="ClickHereForMoreDetails" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 @Resource.ClickHereForMoreDetails
-            </a>
+            </button>
         </p>
  <!-- Collapse -->
         <div class="collapse" id="collapseExample">
@@ -94,7 +94,7 @@
 
         <hr class="mt-4">
     </div>
-</div>
+</section>
 
 <div class="container pb-5 mb-4">
     <div class="row">
@@ -243,7 +243,7 @@
                     <div class="custom-control custom-checkbox crizal-rating-filter">
                         <input class="custom-control-input" type="checkbox" @(selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : null) value="@filter.CategoryFilterId" name="filters" id="@filterId">
                         <label class="custom-control-label" for="@filterId">
-                            <span class="crizal-stars" aria-label="@filter.name" role="img">
+                            <span class="crizal-stars" aria-label="@filter.name">
                                 @for (int i = 1; i <= 5; i++)
                                 {
                                     <span class="crizal-stars__star@(i <= rating ? " is-on" : "")" aria-hidden="true">★</span>

@@ -48,7 +48,7 @@ namespace EImece.Tests.Helpers
             _cache.Set(dropKey, "drop-value", CachePolicy.Absolute(60));
 
             var removed = _cache.ClearByPrefix(_prefix + "list:");
-            Assert.IsTrue(removed >= 1);
+            Assert.IsGreaterThanOrEqualTo(1, removed);
 
             Assert.IsTrue(_cache.Get(keepKey, out string keep));
             Assert.AreEqual("keep-value", keep);

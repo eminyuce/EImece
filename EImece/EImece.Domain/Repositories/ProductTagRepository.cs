@@ -66,15 +66,15 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task SaveProductTagsAsync(int productId, int[] tags)
+        public async Task SaveProductTagsAsync(int id, int[] tags)
         {
-            await DeleteProductTagsAsync(productId).ConfigureAwait(false);
+            await DeleteProductTagsAsync(id).ConfigureAwait(false);
             if (tags != null)
             {
                 foreach (var tag in tags)
                 {
                     ProductTag item = new ProductTag();
-                    item.ProductId = productId;
+                    item.ProductId = id;
                     item.TagId = tag;
                     this.Add(item);
                 }

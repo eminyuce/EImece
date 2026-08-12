@@ -473,7 +473,7 @@
     <Compile Include="Filters\MetricsActionFilter.cs" />
     <Compile Include="Filters\TelemetryActionFilter.cs" />
     <Compile Include="Filters\RequestLoggingActionFilter.cs" />
-    <Compile Include="Filters\RobotsNoIndexFilter.cs" />
+    <Compile Include="Filters\RobotsNoIndexAttribute.cs" />
     <Compile Include="Filters\StructuredExceptionFilter.cs" />
     <Compile Include="Filters\WebApiExceptionFilter.cs" />
     <Compile Include="App_Start\DesignConfig.cs" />

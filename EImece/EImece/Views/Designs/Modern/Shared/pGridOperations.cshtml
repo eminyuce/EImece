@@ -60,7 +60,7 @@
                     <span class="btn btn-sm  btn-link" id="SelectAll">
                         @GridSelectAllButtonText<span class="vl"></span>
                     </span>
-                    <div class="btn-group" role="group">
+                    <div class="btn-group">
                     </div>
                     <span class="btn btn-sm  btn-link" id="DeselectAll">
                         @GridDeSelectAllButtonText<span class="vl"></span>
@@ -76,7 +76,7 @@
 
                     @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                     {
-                    <div class="btn-group" role="group">
+                    <div class="btn-group">
                         <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
                             <option value="State">@State</option>
                             <option value="ImageState">@ImageState</option>
@@ -87,7 +87,7 @@
                     }
                     else if (StateTypes.Equals("State,ImageState,MainPage"))
                     {
-                    <div class="btn-group" role="group">
+                    <div class="btn-group">
                         <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
                             <option value="State">@State</option>
                             <option value="ImageState">@ImageState</option>
@@ -97,7 +97,7 @@
                     }
                     else if (StateTypes.Equals("State,ImageState"))
                     {
-                    <div class="btn-group" role="group">
+                    <div class="btn-group">
                         <select class="form-control input-sm" name="ItemStateSelection" id="ItemStateSelection">
                             <option value="State">@State</option>
                             <option value="ImageState">@ImageState</option>
@@ -111,7 +111,7 @@
 
                     @if (SetStateOnOrOff)
                     {
-                    <div class="btn-group" role="group">
+                    <div class="btn-group">
                         <span>
 
                             <a href="#" class="btn btn-sm  btn-link" id="SetStateOnAll">@GridActiveSelectedButtonText <span class="vl"></span></a>
@@ -122,7 +122,7 @@
 
                     @if (orderingButton)
                             {
-                    <div class="btn-group" role="group">
+                    <div class="btn-group">
                         <span class="btn btn-sm  btn-link" id="OrderingAll">
                             @GridOrderingAllButtonText
                         </span>
@@ -130,7 +130,7 @@
                             }
                     @if (IsExcelButtonEnabled)
                             {
-                    <div class="btn-group pull-right" role="group">
+                    <div class="btn-group pull-right">
                         <a href="@Url.Action("ExportExcel", controllerName)">
                             <span>
                                 <img src="~/Areas/Admin/Content/main/excel.jpg" />
