@@ -84,8 +84,8 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                BaseContentLogger.Error(exception);
-                throw;
+                BaseContentLogger.Error(exception, "GetActiveBaseContentsAsync failed.");
+                throw new InvalidOperationException("GetActiveBaseContentsAsync failed.", exception);
             }
         }
 

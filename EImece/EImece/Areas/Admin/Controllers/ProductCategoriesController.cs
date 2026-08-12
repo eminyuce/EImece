@@ -222,6 +222,7 @@ namespace EImece.Areas.Admin.Controllers
 
         private async Task<ActionResult> DownloadFileAsync(CancellationToken cancellationToken, string format = "excel")
         {
+            cancellationToken.ThrowIfCancellationRequested();
             String search = "";
             Expression<Func<ProductCategory, bool>> whereLambda = r => string.Equals(r.Name, r.Name, StringComparison.OrdinalIgnoreCase);
             var productCategories = await ProductCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);

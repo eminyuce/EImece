@@ -68,13 +68,13 @@ columns.Add(o => o.Answer)
 .Titled(AdminResource.Answer)
 .Encoded(false)
 .Sanitized(false)
-.RenderValueAs(o => String.Format("<textarea readonly  style='height: 100px; background-color: transparent; width: 589px; margin: 0px;'>{0}</textarea>", GeneralHelper.StripHtml(o.Answer).ToStr(1000)));
+.RenderValueAs(o => String.Format("<label class='sr-only' for='faq-answer-{0}'>Cevap</label><textarea id='faq-answer-{0}' readonly  style='height: 100px; background-color: transparent; width: 589px; margin: 0px;'>{1}</textarea>", o.Id, GeneralHelper.StripHtml(o.Answer).ToStr(1000)));
 
 columns.Add(o => o.Position).Titled(AdminResource.Position)
 .Encoded(false)
 .Sanitized(false)
 .Css("smallGridColumn")
-.RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+.RenderValueAs(o => String.Format("<label class='sr-only' for='faq-pos-{0}'>Sıra</label><input id='faq-pos-{0}'   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
 
 columns.Add(o => o.IsActive)
 .Titled(AdminResource.IsActive)

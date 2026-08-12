@@ -49,8 +49,11 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<Product> Products
         {
-            get
-            {
+            get { return GetFilteredSortedProducts(); }
+        }
+
+        private List<Product> GetFilteredSortedProducts()
+        {
                 List<Product> result = new List<Product>();
                 var products = AllProducts;
                 bool hasMinPrice = IsProductPriceEnabled && MinPrice.HasValue && MinPrice.Value > 0;
@@ -150,7 +153,6 @@ namespace EImece.Domain.Models.FrontModels
                 }
 
                 return result;
-            }
         }
 
         private List<CategoryFilter> CreateSelectedFilterList()

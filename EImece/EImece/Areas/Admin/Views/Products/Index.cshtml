@@ -177,7 +177,7 @@
         }
 
         <div class="panel panel-default product-admin-filters @(hasAdvancedFilter ? "is-open" : "is-collapsed")" id="productAdminFilters">
-            <div class="panel-heading product-admin-filters-heading" role="button"
+            <button type="button" class="panel-heading product-admin-filters-heading"
                  data-toggle="collapse" data-target="#productAdminFiltersBody"
                  aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="productAdminFiltersBody">
                 <div class="product-admin-filters-heading-main">
@@ -195,11 +195,11 @@
                     }
                 </div>
                 <span class="product-admin-filters-chevron glyphicon @(hasAdvancedFilter ? "glyphicon-chevron-up" : "glyphicon-chevron-down")" aria-hidden="true"></span>
-            </div>
+            </button>
 
             @if (activeFilterChips.Count > 0)
             {
-                <div class="product-admin-filters-summary" onclick="event.stopPropagation();">
+                <div class="product-admin-filters-summary">
                     @foreach (var chip in activeFilterChips)
                     {
                         string chipText = chip.Item1;
@@ -298,12 +298,13 @@
                             {
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>@AdminResource.Price</label>
+                                        <label for="minPrice">@AdminResource.Price</label>
                                         <div class="product-admin-price-range">
                                             <input type="number" step="0.01" min="0" class="form-control input-sm" id="minPrice" name="minPrice"
                                                    placeholder="Min"
                                                    value="@(minPrice.HasValue ? minPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />
                                             <span class="product-admin-price-sep">–</span>
+                                            <label class="sr-only" for="maxPrice">Max</label>
                                             <input type="number" step="0.01" min="0" class="form-control input-sm" id="maxPrice" name="maxPrice"
                                                    placeholder="Max"
                                                    value="@(maxPrice.HasValue ? maxPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />

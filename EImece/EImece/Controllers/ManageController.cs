@@ -13,7 +13,8 @@ namespace EImece.Controllers
     [Authorize]
     public class ManageController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); // Initialize NLog Logger
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index"; // Initialize NLog Logger
 
         public ApplicationSignInManager SignInManager { get; set; }
 
@@ -44,7 +45,7 @@ namespace EImece.Controllers
         public ActionResult ManageLogins(ManageMessageId? message)
         {
             Logger.Info("Legacy /Manage/ManageLogins redirected to Customers/Home/Index. Message={0}", message);
-            return RedirectToActionPermanent("Index", "Home", new { area = "Customers" });
+            return RedirectToActionPermanent(IndexAction, "Home", new { area = "Customers" });
         }
 
         // GET: /Manage/Index
@@ -52,14 +53,7 @@ namespace EImece.Controllers
         {
             Logger.Info("Index action called with message: {0}", message);
 
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
+            ViewBag.StatusMessage = GetIndexStatusMessage(message);
 
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
@@ -90,7 +84,7 @@ namespace EImece.Controllers
             if (user.TwoFactorAuthenticatorEnabled)
             {
                 TempData["StatusMessage"] = "İki faktörlü doğrulama zaten etkin.";
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
 
             if (string.IsNullOrEmpty(user.AuthenticatorKey))
@@ -128,7 +122,7 @@ namespace EImece.Controllers
             await UserManager.UpdateAsync(user);
 
             TempData["StatusMessage"] = "İki faktörlü doğrulama başarıyla etkinleştirildi.";
-            return RedirectToAction("Index", new { Message = ManageMessageId.SetTwoFactorSuccess });
+            return RedirectToAction(IndexAction, new { Message = ManageMessageId.SetTwoFactorSuccess });
         }
 
         [HttpPost]
@@ -146,7 +140,7 @@ namespace EImece.Controllers
             await UserManager.UpdateAsync(user);
 
             TempData["StatusMessage"] = "İki faktörlü doğrulama kapatıldı.";
-            return RedirectToAction("Index");
+            return RedirectToAction(IndexAction);
         }
 
         private async Task<EnableAuthenticatorViewModel> BuildEnableAuthenticatorViewModelAsync(ApplicationUser user)
@@ -198,7 +192,7 @@ namespace EImece.Controllers
                 message = ManageMessageId.Error;
             }
 
-            return RedirectToAction("Index", "Home", new { area = "Customers", Message = message });
+            return RedirectToAction(IndexAction, "Home", new { area = "Customers", Message = message });
         }
 
         // POST: /Manage/AddPhoneNumber
@@ -244,7 +238,7 @@ namespace EImece.Controllers
                 Logger.Info("Two-factor authentication enabled, user signed in.");
             }
 
-            return RedirectToAction("Index", "Manage");
+            return RedirectToAction(IndexAction, "Manage");
         }
 
         // POST: /Manage/DisableTwoFactorAuthentication
@@ -262,7 +256,7 @@ namespace EImece.Controllers
                 Logger.Info("Two-factor authentication disabled, user signed in.");
             }
 
-            return RedirectToAction("Index", "Manage");
+            return RedirectToAction(IndexAction, "Manage");
         }
 
         // POST: /Manage/RemovePhoneNumber
@@ -276,7 +270,7 @@ namespace EImece.Controllers
             if (!result.Succeeded)
             {
                 Logger.Error("Failed to remove phone number.");
-                return RedirectToAction("Index", new { Message = ManageMessageId.Error });
+                return RedirectToAction(IndexAction, new { Message = ManageMessageId.Error });
             }
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -286,7 +280,7 @@ namespace EImece.Controllers
                 Logger.Info("Phone number removed, user signed in.");
             }
 
-            return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
+            return RedirectToAction(IndexAction, new { Message = ManageMessageId.RemovePhoneSuccess });
         }
 
         // POST: /Manage/ChangePassword
@@ -314,7 +308,7 @@ namespace EImece.Controllers
                     Logger.Info("User signed in after changing password.");
                 }
 
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction(IndexAction, new { Message = ManageMessageId.ChangePasswordSuccess });
             }
 
             AddErrors(result);
@@ -342,6 +336,36 @@ namespace EImece.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        private static string GetIndexStatusMessage(ManageMessageId? message)
+        {
+            if (message == ManageMessageId.ChangePasswordSuccess)
+            {
+                return "Your password has been changed.";
+            }
+            if (message == ManageMessageId.SetPasswordSuccess)
+            {
+                return "Your password has been set.";
+            }
+            if (message == ManageMessageId.SetTwoFactorSuccess)
+            {
+                return "Your two-factor authentication provider has been set.";
+            }
+            if (message == ManageMessageId.Error)
+            {
+                return "An error has occurred.";
+            }
+            if (message == ManageMessageId.AddPhoneSuccess)
+            {
+                return "Your phone number was added.";
+            }
+            if (message == ManageMessageId.RemovePhoneSuccess)
+            {
+                return "Your phone number was removed.";
+            }
+
+            return "";
         }
 
         public enum ManageMessageId

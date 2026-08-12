@@ -115,8 +115,6 @@ namespace EImece.Filters
 
             if (_options.EnableMetrics && _metrics != null)
             {
-                // request:* keeps the existing Admin/Metrics + HTTP server series;
-                // controller:* feeds the same P90/P95/P99 pipeline used for services.
                 _metrics.RecordRequest(route, durationMs, success, httpMethod, statusCode);
                 _metrics.RecordMethod("controller", controller, action, durationMs, success);
             }

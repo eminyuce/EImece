@@ -95,7 +95,7 @@
         .Titled(AdminResource.Review)
         .Encoded(false)
         .Sanitized(false)
-        .RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.Review));
+        .RenderValueAs(o => String.Format("<label class='sr-only' for='pcomment-{0}'>Yorum</label><textarea id='pcomment-{0}' readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{1}</textarea>", o.Id, o.Review));
 
     columns.Add(o => o.IsActive)
         .Titled(AdminResource.IsActive)

@@ -59,7 +59,8 @@
                 }
                 @if (IsExcelButtonEnabled)
                 {
-                    <div class="eg-ops-export" role="group" aria-label="@AdminResource.Excel">
+                    <fieldset class="eg-ops-export" style="border:0;padding:0;margin:0;min-width:0">
+                        <legend class="sr-only">@AdminResource.Excel</legend>
                         <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch })" title="@AdminResource.Excel">
                             <i class="glyphicon glyphicon-export" aria-hidden="true"></i>
                             <span>@AdminResource.Excel</span>
@@ -68,7 +69,7 @@
                             <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
                             <span>@AdminResource.Csv</span>
                         </a>
-                    </div>
+                    </fieldset>
                 }
             </div>
         }
@@ -87,7 +88,8 @@
 
                     @if (selectAll)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group eg-ops-group-select" role="group" aria-label="@GridSelectAllButtonText">
+                        <fieldset class="admin-grid-toolbar-group eg-ops-group eg-ops-group-select" style="border:0;padding:0;margin:0;min-width:0">
+                            <legend class="sr-only">@GridSelectAllButtonText</legend>
                             <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="SelectAll" title="@GridSelectAllButtonText">
                                 <i class="glyphicon glyphicon-check" aria-hidden="true"></i>
                                 <span>Tümü</span>
@@ -96,12 +98,14 @@
                                 <i class="glyphicon glyphicon-unchecked" aria-hidden="true"></i>
                                 <span>Temizle</span>
                             </button>
-                        </div>
+                        </fieldset>
                     }
 
                     @if (SetStateOnOrOff)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group" role="group" aria-label="@State">
+                        <fieldset class="admin-grid-toolbar-group eg-ops-group" style="border:0;padding:0;margin:0;min-width:0">
+                            <legend class="sr-only">@State</legend>
+                            <label class="sr-only" for="ItemStateSelection">@State</label>
                             @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                             {
                                 <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
@@ -128,7 +132,7 @@
                             }
                             else if (StateTypes.Equals("State"))
                             {
-                                <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" />
+                                <input value="State" type="hidden" name="ItemStateSelection" id="ItemStateSelection" aria-label="@State" />
                             }
 
                             <button type="button" class="btn btn-success btn-sm eg-ops-btn eg-ops-btn-success" id="SetStateOnAll" title="@GridActiveSelectedButtonText">
@@ -139,7 +143,7 @@
                                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                                 <span>Kaldır</span>
                             </button>
-                        </div>
+                        </fieldset>
                     }
                     else if (StateTypes.Equals("State"))
                     {
@@ -148,17 +152,20 @@
 
                     @if (orderingButton)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group" role="group">
+                        <fieldset class="admin-grid-toolbar-group eg-ops-group" style="border:0;padding:0;margin:0;min-width:0">
+                            <legend class="sr-only">@GridOrderingAllButtonText</legend>
                             <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="OrderingAll" title="@GridOrderingAllButtonText">
                                 <i class="glyphicon glyphicon-sort" aria-hidden="true"></i>
                                 <span>Sıra</span>
                             </button>
-                        </div>
+                        </fieldset>
                     }
 
                     @if (ProductState)
                     {
-                        <div class="admin-grid-toolbar-group admin-grid-toolbar-product eg-ops-group eg-ops-group-product" role="group" aria-label="@ProductStateChangeText">
+                        <fieldset class="admin-grid-toolbar-group admin-grid-toolbar-product eg-ops-group eg-ops-group-product" style="border:0;padding:0;margin:0;min-width:0">
+                            <legend class="sr-only">@ProductStateChangeText</legend>
+                            <label class="sr-only" for="ProductStateSelection">@ProductStateChangeText</label>
                             <select class="form-control input-sm admin-grid-state-select eg-ops-select eg-ops-select-wide" name="ProductStateSelection" id="ProductStateSelection" title="@ProductStateChangeText">
                                 @foreach (EImece.Domain.Models.Enums.ProductState state in Enum.GetValues(typeof(EImece.Domain.Models.Enums.ProductState)))
                                 {
@@ -169,17 +176,18 @@
                                 <i class="glyphicon glyphicon-refresh" aria-hidden="true"></i>
                                 <span>Güncelle</span>
                             </button>
-                        </div>
+                        </fieldset>
                     }
 
                     @if (deleteAll)
                     {
-                        <div class="admin-grid-toolbar-group eg-ops-group eg-ops-group-danger" role="group">
+                        <fieldset class="admin-grid-toolbar-group eg-ops-group eg-ops-group-danger" style="border:0;padding:0;margin:0;min-width:0">
+                            <legend class="sr-only">@GridDeleteSelectedButtonText</legend>
                             <button type="button" class="btn btn-danger btn-sm eg-ops-btn eg-ops-btn-danger" id="DeleteAll" title="@GridDeleteSelectedButtonText">
                                 <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
                                 <span>Sil</span>
                             </button>
-                        </div>
+                        </fieldset>
                     }
                 </div>
             </details>

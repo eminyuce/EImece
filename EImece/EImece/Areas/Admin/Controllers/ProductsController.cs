@@ -20,6 +20,7 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index";
 
         [HttpGet]
         public async Task<ActionResult> Index(
@@ -97,7 +98,7 @@ namespace EImece.Areas.Admin.Controllers
 
             if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
 
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
@@ -149,7 +150,6 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
                     if (product.ProductCategoryId == 0)
                     {
                         ModelState.AddModelError("ProductCategoryId", AdminResource.ProductCategoryIdErrorMessage);
@@ -169,10 +169,7 @@ namespace EImece.Areas.Admin.Controllers
                              EImeceImageType.ProductMainImage,
                               product);
 
-                        if (!string.IsNullOrEmpty(product.PriceStr))
-                            product.Price = decimal.Round((decimal)product.PriceStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
-                        if (!string.IsNullOrEmpty(product.DiscountStr))
-                            product.Discount = decimal.Round((decimal)product.DiscountStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
+                        ApplyPostedProductPrices(product);
 
                         product.Lang = CurrentLanguage;
                         await ProductService.SaveOrEditEntityAsync(product);
@@ -182,7 +179,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            return RedirectToAction("Index");
+                            return RedirectToAction(IndexAction);
                         }
                         else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -247,20 +244,20 @@ namespace EImece.Areas.Admin.Controllers
                         SetErrorMessage();
                         break;
                 }
-                return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
+                return ReturnIndexIfNotUrlReferrer(IndexAction, new { id = product.ProductCategoryId });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, product);
                 SetErrorMessage();
-                return ReturnIndexIfNotUrlReferrer("Index", new { id = product.ProductCategoryId });
+                return ReturnIndexIfNotUrlReferrer(IndexAction, new { id = product.ProductCategoryId });
             }
         }
 
         [HttpGet]
         public ActionResult Media(int id)
         {
-            return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
+            return RedirectToAction(IndexAction, "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
 
         [HttpGet, ActionName("ExportExcel")]
@@ -332,6 +329,18 @@ namespace EImece.Areas.Admin.Controllers
                 Text = r.Name.ToStr(),
                 Value = r.Id.ToStr()
             }).ToList();
+        }
+
+        private static void ApplyPostedProductPrices(Product product)
+        {
+            if (!string.IsNullOrEmpty(product.PriceStr))
+            {
+                product.Price = decimal.Round((decimal)product.PriceStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
+            }
+            if (!string.IsNullOrEmpty(product.DiscountStr))
+            {
+                product.Discount = decimal.Round((decimal)product.DiscountStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
+            }
         }
     }
 }

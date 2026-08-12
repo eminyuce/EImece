@@ -77,7 +77,7 @@
         .Titled(AdminResource.CustomerRegistrationAddress)
         .Encoded(false)
         .Sanitized(false)
-        .RenderValueAs(o => String.Format("<textarea readonly style='height: 40px; background-color: transparent; width: 300px; margin: 0px;'>{0}</textarea>", o.RegistrationAddress));
+        .RenderValueAs(o => String.Format("<label class='sr-only' for='cust-addr-{0}'>Adres</label><textarea id='cust-addr-{0}' readonly style='height: 40px; background-color: transparent; width: 300px; margin: 0px;'>{1}</textarea>", o.UserId, o.RegistrationAddress));
 
     columns.Add(o => o.CreatedDate)
         .Titled(AdminResource.CustomerRegistrationDate)

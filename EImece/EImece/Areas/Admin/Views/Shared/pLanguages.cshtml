@@ -1,14 +1,18 @@
 ﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
+@using System.Linq;
 @model  List<SelectListItem>
 @{
     var listItems = Model;
+    var selectedLang = listItems.FirstOrDefault(l => l.Selected);
+    var selectedLangText = selectedLang != null ? selectedLang.Text : "";
 }
 @if (listItems.Count() > 1)
 {
 <li class="admin-topbar-action--essential admin-topbar-lang-item">
-    <select class="form-control admin-topbar-lang" id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)" aria-label="Language">
+    <label class="sr-only" for="CookieLanguage">Language @selectedLangText</label>
+    <select class="form-control admin-topbar-lang" id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)" aria-label="Language @selectedLangText">
         @foreach (var l in listItems)
         {
             if (l.Selected)

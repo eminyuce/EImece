@@ -56,7 +56,11 @@ namespace EImece.Controllers
                 Logger.Info($"Parsed story ID: {storyId}");
 
                 var story = await StoryService.GetStoryDetailViewModelAsync(storyId, cancellationToken);
-                Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story?.Story?.Name}");
+                if (story == null || story.Story == null)
+                {
+                    return HttpNotFound();
+                }
+                Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story.Story.Name}");
 
                 ViewBag.SeoId = story.Story.GetSeoUrl();
                 Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");
@@ -88,7 +92,11 @@ namespace EImece.Controllers
                 Logger.Info($"Parsed story category ID: {storyCategoryId}");
 
                 var storyCategory = await StoryService.GetStoryCategoriesViewModelAsync(storyCategoryId, page, cancellationToken);
-                Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory?.StoryCategory?.Name}, Stories Count: {storyCategory?.Stories?.Count ?? 0}");
+                if (storyCategory == null || storyCategory.StoryCategory == null)
+                {
+                    return HttpNotFound();
+                }
+                Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory.StoryCategory.Name}, Stories Count: {storyCategory.Stories?.Count ?? 0}");
 
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
                 Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");

@@ -19,6 +19,7 @@ namespace EImece.Areas.Admin.Controllers
     public class MediaController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index";
         private FilesHelper filesHelper;
 
         private Dictionary<string, string> CurrentSelectedModul
@@ -46,7 +47,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 // Media is opened from a parent entity editor with query params; bare /admin/media/ is not a listing.
                 SetErrorMessage("Medya yönetimi bir içerik kaydı üzerinden açılmalıdır.");
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction(IndexAction, "Dashboard");
             }
 
             var currentSelectedModul = new Dictionary<string, string>();
@@ -62,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
             if (!enumMod.HasValue || !enumImageType.HasValue)
             {
                 SetErrorMessage("Geçersiz medya parametreleri.");
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction(IndexAction, "Dashboard");
             }
 
             returnModel.Id = id;
@@ -199,7 +200,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 await FileStorageService.DeleteUploadImageAsync(id, contentId, enumImageType, enumMod);
                 SetSuccessMessage();
-                return RedirectToAction("Index",
+                return RedirectToAction(IndexAction,
                     new
                     {
                         contentId = CurrentSelectedModul["contentId"],
@@ -212,7 +213,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 Logger.Error(ex, "Unable to delete fileStorage:" + ex.StackTrace, fileStorage);
                 SetErrorMessage();
-                return RedirectToAction("Index",
+                return RedirectToAction(IndexAction,
                     new
                     {
                         contentId = CurrentSelectedModul["contentId"],

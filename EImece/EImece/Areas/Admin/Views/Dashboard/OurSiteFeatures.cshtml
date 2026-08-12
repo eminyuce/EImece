@@ -34,12 +34,12 @@
                 Ziyaretçiler ürünleri inceler; satış için iletişim kurar.
                 Her bölüm bir kitap sayfası gibi açılır.
             </p>
-            <aside class="osf-guide__callout osf-guide__callout--note" role="note">
+            <aside class="osf-guide__callout osf-guide__callout--note" role="note" aria-label="Not">
                 <strong>Mod:</strong> Ürün fiyatları kapalı. Yönetim paneli katalog ve içerik odaklıdır;
                 sipariş, sepet ve ödeme menüleri gizlidir.
             </aside>
         }
-        <aside class="osf-guide__callout osf-guide__callout--tip" role="note">
+        <aside class="osf-guide__callout osf-guide__callout--tip" role="note" aria-label="İpucu">
             <strong>İpucu:</strong> İçindekilerden bir başlık seçin veya alttaki
             "Önceki / Sonraki sayfa" düğmeleriyle ilerleyin.
         </aside>
@@ -54,9 +54,7 @@
                     <span>Sayfa</span>
                     <span data-osf-progress-label>1 / @totalPages</span>
                 </div>
-                <div class="osf-guide__progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@Math.Round(100.0 / totalPages)" data-osf-progress-bar>
-                    <span class="osf-guide__progress-fill" data-osf-progress-fill></span>
-                </div>
+                <progress class="osf-guide__progress-track" max="100" value="@Math.Round(100.0 / totalPages)" data-osf-progress-bar aria-label="Rehber ilerleme"></progress>
             </div>
 
             <ol class="osf-guide__toc-list">
@@ -136,7 +134,7 @@
                             <li>Kategori, etiket veya markaya göre toplu fiyat güncelleyin</li>
                             <li>Ziyaretçi filtreleri: fiyat, kategori, yıldız ve marka</li>
                         </ul>
-                        <aside class="osf-guide__callout osf-guide__callout--note" role="note">
+                        <aside class="osf-guide__callout osf-guide__callout--note" role="note" aria-label="Not">
                             <strong>Not:</strong> İyi görseller satışa yardımcı olur.
                             Ürün başına birkaç net fotoğraf yeterlidir.
                         </aside>
@@ -148,7 +146,7 @@
                             <li>Ziyaretçi filtreleri: kategori, yıldız ve marka</li>
                             <li>Ürün detay sayfasında SSS ekleyebilirsiniz</li>
                         </ul>
-                        <aside class="osf-guide__callout osf-guide__callout--note" role="note">
+                        <aside class="osf-guide__callout osf-guide__callout--note" role="note" aria-label="Not">
                             <strong>Not:</strong> Fiyat gösterilmez. Güçlü görseller ve net açıklamalar
                             ziyaretçinin ürünü anlamasına yardımcı olur.
                         </aside>
@@ -284,7 +282,7 @@
                             <li>"Ürün fiyatları sitede gösterilsin" seçeneği (e-ticareti açar/kapatır)</li>
                         }
                     </ul>
-                    <aside class="osf-guide__callout osf-guide__callout--warn" role="note">
+                    <aside class="osf-guide__callout osf-guide__callout--warn" role="note" aria-label="Dikkat">
                         <strong>Dikkat:</strong> Script alanlarına yalnızca güvendiğiniz kodları yapıştırın.
                         Yanlış kod siteyi bozabilir.
                     </aside>
@@ -307,7 +305,7 @@
                         <li>Normal kullanıcı oluşturun</li>
                         <li>Yönetici (admin) kullanıcı oluşturun</li>
                     </ul>
-                    <aside class="osf-guide__callout osf-guide__callout--tip" role="note">
+                    <aside class="osf-guide__callout osf-guide__callout--tip" role="note" aria-label="İpucu">
                         <strong>İpucu:</strong> Yönetici yetkisini az kişiye verin.
                         Günlük işler için normal kullanıcı yeterli olabilir.
                     </aside>
@@ -338,7 +336,6 @@
 
     var sections = Array.prototype.slice.call(root.querySelectorAll("[data-osf-section]"));
     var links = Array.prototype.slice.call(root.querySelectorAll("[data-osf-toc-link]"));
-    var fill = root.querySelector("[data-osf-progress-fill]");
     var bar = root.querySelector("[data-osf-progress-bar]");
     var label = root.querySelector("[data-osf-progress-label]");
     var pagerStatus = root.querySelector("[data-osf-pager-status]");
@@ -348,7 +345,7 @@
     var total = sections.length;
     var current = 0;
 
-    if (!total || !fill || !bar || !label || !prevBtn || !nextBtn) return;
+    if (!total || !bar || !label || !prevBtn || !nextBtn) return;
 
     function indexFromHash() {
         var hash = (window.location.hash || "").replace(/^#/, "");
@@ -376,8 +373,7 @@
 
         var pageNo = current + 1;
         var pct = Math.round((pageNo / total) * 100);
-        fill.style.width = pct + "%";
-        bar.setAttribute("aria-valuenow", String(pct));
+        bar.value = pct;
         label.textContent = pageNo + " / " + total;
         if (pagerStatus) pagerStatus.textContent = pageNo + " / " + total;
 

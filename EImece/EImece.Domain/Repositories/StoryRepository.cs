@@ -203,7 +203,7 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<PaginatedList<Story>> GetMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<PaginatedList<Story>> GetMainPageStoriesAsync(int page, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
@@ -214,12 +214,12 @@ namespace EImece.Domain.Repositories
                 includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
                 Expression<Func<Story, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
                 Expression<Func<Story, int>> keySelector = t => t.Position;
-                return await this.PaginateDescendingAsync(pageIndex, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
+                return await this.PaginateDescendingAsync(page, pageSize, keySelector, match, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                Logger.Error(exception, "GetMainPageStoriesAsync failed.");
+                throw new InvalidOperationException("GetMainPageStoriesAsync failed.", exception);
             }
         }
 
@@ -286,8 +286,8 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                Logger.Error(exception, "GetStoriesByStoryCategoryIdAsync failed.");
+                throw new InvalidOperationException("GetStoriesByStoryCategoryIdAsync failed.", exception);
             }
         }
 

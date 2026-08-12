@@ -89,15 +89,15 @@ namespace EImece.Domain.Services
             return SelectSettingByKey(GetAllSettings(), key);
         }
 
+        public Setting GetSettingObjectByKey(string key, int language)
+        {
+            return SelectSettingByKey(GetAllSettings(), key, language);
+        }
+
         public async Task<Setting> GetSettingObjectByKeyAsync(string key)
         {
             var allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
             return SelectSettingByKey(allSettings, key);
-        }
-
-        public Setting GetSettingObjectByKey(string key, int language)
-        {
-            return SelectSettingByKey(GetAllSettings(), key, language);
         }
 
         public async Task<Setting> GetSettingObjectByKeyAsync(string key, int language)

@@ -80,8 +80,8 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                Logger.Error(exception, "GetActiveProductsAsync failed.");
+                throw new InvalidOperationException("GetActiveProductsAsync failed.", exception);
             }
         }
 
@@ -102,8 +102,8 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                Logger.Error(exception, "GetMainPageProducts failed.");
+                throw new InvalidOperationException("GetMainPageProducts failed.", exception);
             }
         }
 
@@ -173,39 +173,7 @@ namespace EImece.Domain.Repositories
 
             if (filter != null)
             {
-                if (!String.IsNullOrWhiteSpace(filter.State))
-                {
-                    var state = filter.State.Trim();
-                    products = products.Where(r => r.State == state);
-                }
-                if (filter.IsActive.HasValue)
-                {
-                    var isActive = filter.IsActive.Value;
-                    products = products.Where(r => r.IsActive == isActive);
-                }
-                if (filter.MainPage.HasValue)
-                {
-                    var mainPage = filter.MainPage.Value;
-                    products = products.Where(r => r.MainPage == mainPage);
-                }
-                if (filter.IsCampaign.HasValue)
-                {
-                    var isCampaign = filter.IsCampaign.Value;
-                    products = products.Where(r => r.IsCampaign == isCampaign);
-                }
-                if (filter.ApplyPriceFilter)
-                {
-                    if (filter.MinPrice.HasValue)
-                    {
-                        var minPrice = filter.MinPrice.Value;
-                        products = products.Where(r => r.Price >= minPrice);
-                    }
-                    if (filter.MaxPrice.HasValue)
-                    {
-                        var maxPrice = filter.MaxPrice.Value;
-                        products = products.Where(r => r.Price <= maxPrice);
-                    }
-                }
+                products = ApplyAdminListFilters(products, filter);
             }
 
             if (categoryId > 0)
@@ -223,6 +191,45 @@ namespace EImece.Domain.Repositories
                 }
             }
             products = products.OrderByStorefrontDefault();
+
+            return products;
+        }
+
+        private static IQueryable<Product> ApplyAdminListFilters(IQueryable<Product> products, ProductAdminListFilter filter)
+        {
+            if (!String.IsNullOrWhiteSpace(filter.State))
+            {
+                var state = filter.State.Trim();
+                products = products.Where(r => r.State == state);
+            }
+            if (filter.IsActive.HasValue)
+            {
+                var isActive = filter.IsActive.Value;
+                products = products.Where(r => r.IsActive == isActive);
+            }
+            if (filter.MainPage.HasValue)
+            {
+                var mainPage = filter.MainPage.Value;
+                products = products.Where(r => r.MainPage == mainPage);
+            }
+            if (filter.IsCampaign.HasValue)
+            {
+                var isCampaign = filter.IsCampaign.Value;
+                products = products.Where(r => r.IsCampaign == isCampaign);
+            }
+            if (filter.ApplyPriceFilter)
+            {
+                if (filter.MinPrice.HasValue)
+                {
+                    var minPrice = filter.MinPrice.Value;
+                    products = products.Where(r => r.Price >= minPrice);
+                }
+                if (filter.MaxPrice.HasValue)
+                {
+                    var maxPrice = filter.MaxPrice.Value;
+                    products = products.Where(r => r.Price <= maxPrice);
+                }
+            }
 
             return products;
         }
@@ -537,18 +544,18 @@ namespace EImece.Domain.Repositories
 
             var dtFilters = new DataTable("med_tpt_Filter");
 
-            dtFilters.Columns.Add("FieldName");
-            dtFilters.Columns.Add("ValueFirst");
-            dtFilters.Columns.Add("ValueLast");
+            dtFilters.Columns.Add(Constants.FieldNameColumn);
+            dtFilters.Columns.Add(Constants.ValueFirstColumn);
+            dtFilters.Columns.Add(Constants.ValueLastColumn);
 
             if (filters != null && filters.Any())
             {
                 foreach (var filter in filters)
                 {
                     DataRow dr = dtFilters.NewRow();
-                    dr["FieldName"] = filter.FieldName;
-                    dr["ValueFirst"] = filter.ValueFirst;
-                    dr["ValueLast"] = filter.ValueLast;
+                    dr[Constants.FieldNameColumn] = filter.FieldName;
+                    dr[Constants.ValueFirstColumn] = filter.ValueFirst;
+                    dr[Constants.ValueLastColumn] = filter.ValueLast;
                     dtFilters.Rows.Add(dr);
                 }
             }
@@ -616,18 +623,18 @@ namespace EImece.Domain.Repositories
 
             var dtFilters = new DataTable("med_tpt_Filter");
 
-            dtFilters.Columns.Add("FieldName");
-            dtFilters.Columns.Add("ValueFirst");
-            dtFilters.Columns.Add("ValueLast");
+            dtFilters.Columns.Add(Constants.FieldNameColumn);
+            dtFilters.Columns.Add(Constants.ValueFirstColumn);
+            dtFilters.Columns.Add(Constants.ValueLastColumn);
 
             if (filters != null && filters.Any())
             {
                 foreach (var filter in filters)
                 {
                     DataRow dr = dtFilters.NewRow();
-                    dr["FieldName"] = filter.FieldName;
-                    dr["ValueFirst"] = filter.ValueFirst;
-                    dr["ValueLast"] = filter.ValueLast;
+                    dr[Constants.FieldNameColumn] = filter.FieldName;
+                    dr[Constants.ValueFirstColumn] = filter.ValueFirst;
+                    dr[Constants.ValueLastColumn] = filter.ValueLast;
                     dtFilters.Rows.Add(dr);
                 }
             }
@@ -656,7 +663,7 @@ namespace EImece.Domain.Repositories
 
                 searchResult.Products = products.OrderByStorefrontDefault().ToList();
 
-                reader.NextResult();
+                await reader.NextResultAsync(cancellationToken).ConfigureAwait(false);
                 var productCategories = ((IObjectContextAdapter)db)
                     .ObjectContext
                     .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);

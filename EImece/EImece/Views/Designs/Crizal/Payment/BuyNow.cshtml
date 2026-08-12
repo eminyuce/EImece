@@ -30,7 +30,7 @@
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
 }
 <!-- Page Title-->
-<div class="page-title-wrapper" role="region" aria-label="Page title">
+<section class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <div class="alert alert-secondary" role="alert">
             @Html.Partial("_ProductBreadCrumb", Model.ProductDetailViewModel)
@@ -38,7 +38,7 @@
         <h1 class="page-title">@product.NameLong</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
     </div>
-</div>
+</section>
 
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     <div class="row">
@@ -206,8 +206,8 @@
             </div>
             <h6 class="mb-3 pt-4 pb-3 border-bottom">@Resource.BillingAdress</h6>
             <div class="custom-control custom-checkbox">
-                <input class="custom-control-input" type="checkbox" checked="">
-                @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
+                <input class="custom-control-input" type="checkbox" id="buyNowSameAsShipping" checked="">
+                <label class="custom-control-label" for="buyNowSameAsShipping">@Html.DisplayNameFor(model => customer.IsSameAsShippingAddress)</label>
             </div>
  <!-- Navigation-->
             <div class="row">

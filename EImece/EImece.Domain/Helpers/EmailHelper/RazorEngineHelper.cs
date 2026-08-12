@@ -51,7 +51,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             var model = new
             {
-                WebSiteIconUrl = baseurl + "/images/logo.jpg",
+                WebSiteIconUrl = baseurl + Constants.LogoImagePath,
                 Email = email,
                 callbackUrl = callbackUrl,
                 Name = name,
@@ -80,7 +80,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             var model = new
             {
-                WebSiteIconUrl = baseurl + "/images/logo.jpg",
+                WebSiteIconUrl = baseurl + Constants.LogoImagePath,
                 Email = email,
                 callbackUrl = callbackUrl,
                 Name = name,
@@ -135,7 +135,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             string baseurl = GetSiteBaseUrl();
             var model = new
             {
-                WebSiteIconUrl = baseurl + "/images/logo.jpg",
+                WebSiteIconUrl = baseurl + Constants.LogoImagePath,
                 Email = email,
                 ForgotPasswordLink = callbackUrl,
                 CompanyName = companyname,
@@ -163,7 +163,7 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             var model = new
             {
-                WebSiteIconUrl = baseurl + "/images/logo.jpg",
+                WebSiteIconUrl = baseurl + Constants.LogoImagePath,
                 Email = email,
                 ForgotPasswordLink = callbackUrl,
                 CompanyName = companyname,
@@ -258,7 +258,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             OrderConfirmationEmailRazorTemplate model = await MailTemplateService.GenerateOrderConfirmationEmailRazorTemplateAsync(orderId).ConfigureAwait(false);
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             var result = GetRenderOutputByRazorEngineModel(template, model);
             return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }

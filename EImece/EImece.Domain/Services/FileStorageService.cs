@@ -109,7 +109,6 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
-                    //fileStorage.EntityHash = file.imageHash;
                     fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
                     fileStorage.Lang = language;
@@ -177,7 +176,7 @@ namespace EImece.Domain.Services
                 catch (DbEntityValidationException ex)
                 {
                     var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                    Logger.Error(ex, "DbEntityValidationException:" + message);
+                    Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
                 }
                 catch (Exception ex)
                 {
@@ -211,7 +210,6 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
-                    //fileStorage.EntityHash = file.imageHash;
                     fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
                     fileStorage.Lang = language;
@@ -279,7 +277,7 @@ namespace EImece.Domain.Services
                 catch (DbEntityValidationException ex)
                 {
                     var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                    Logger.Error(ex, "DbEntityValidationException:" + message);
+                    Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
                 }
                 catch (Exception ex)
                 {
@@ -335,21 +333,20 @@ namespace EImece.Domain.Services
 
         public async Task DeleteUploadImageByFileStorageAsync(int contentId, MediaModType? mod, int fileStorageId)
         {
-            bool isResult = false;
             switch (mod.Value)
             {
                 case MediaModType.Stories:
-                    isResult = await StoryFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.StoryId == contentId).ConfigureAwait(false);
+                    await StoryFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.StoryId == contentId).ConfigureAwait(false);
                     await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
                     break;
 
                 case MediaModType.Products:
-                    isResult = await ProductFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.ProductId == contentId).ConfigureAwait(false);
+                    await ProductFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.ProductId == contentId).ConfigureAwait(false);
                     await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
                     break;
 
                 case MediaModType.Menus:
-                    isResult = await MenuFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.MenuId == contentId).ConfigureAwait(false);
+                    await MenuFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.MenuId == contentId).ConfigureAwait(false);
                     await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
                     break;
 
@@ -467,7 +464,7 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
             }
             catch (Exception exception)
             {
@@ -513,7 +510,7 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
             }
             catch (Exception exception)
             {
@@ -536,7 +533,7 @@ namespace EImece.Domain.Services
                 }
                 else
                 {
-                    return "error";
+                    return Constants.ErrorResult;
                 }
             }
             catch (Exception exception)
@@ -544,7 +541,7 @@ namespace EImece.Domain.Services
                 var innerExpMessage = exception.InnerException == null ? "" : exception.InnerException.Message;
                 Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
             }
-            return "error";
+            return Constants.ErrorResult;
         }
 
         public async Task<string> DeleteFileStorageAsync(int id)
@@ -562,7 +559,7 @@ namespace EImece.Domain.Services
                 }
                 else
                 {
-                    return "error";
+                    return Constants.ErrorResult;
                 }
             }
             catch (Exception exception)
@@ -570,7 +567,7 @@ namespace EImece.Domain.Services
                 var innerExpMessage = exception.InnerException == null ? "" : exception.InnerException.Message;
                 Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
             }
-            return "error";
+            return Constants.ErrorResult;
         }
     }
 }

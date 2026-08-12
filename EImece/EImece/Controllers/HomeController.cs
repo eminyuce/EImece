@@ -243,30 +243,7 @@ namespace EImece.Controllers
             {
                 HomeLogger.Error("Captcha validation failed for SendContactUs.");
                 ModelState.AddModelError("", CaptchaService.GetErrorMessage());
-                if (contact.ItemType == EImeceItemType.Product)
-                {
-                    HomeLogger.Info($"ItemType is Product with ID: {contact.ItemId}");
-                    var product = await ProductService.GetProductDetailViewModelByIdAsync(contact.ItemId);
-                    product.Contact = contact;
-                    HomeLogger.Info("Returning Product Detail view with captcha error.");
-                    return View("../Products/Detail", product);
-                }
-                else if (contact.ItemType == EImeceItemType.Menu)
-                {
-                    HomeLogger.Info($"ItemType is Menu with ID: {contact.ItemId}");
-                    var page = await MenuService.GetPageByIdAsync(contact.ItemId);
-                    if (page == null || page.Menu == null)
-                    {
-                        HomeLogger.Warn($"Menu page not found for contact ItemId: {contact.ItemId}");
-                        return RedirectToAction("NotFound", "Error");
-                    }
-
-                    page.Contact = contact;
-                    HomeLogger.Info("Returning Page Detail view with captcha error.");
-                    return View("../Pages/Detail", page);
-                }
-                HomeLogger.Info("Returning _ContactUsFormViewModel view with captcha error.");
-                return View("_ContactUsFormViewModel", contact);
+                return await ReturnContactCaptchaErrorAsync(contact);
             }
             else if (!validateContactUsFormViewModel(contact))
             {
@@ -339,6 +316,31 @@ namespace EImece.Controllers
             }
             HomeLogger.Info($"Validation result: {result}");
             return result;
+        }
+
+        private async Task<ActionResult> ReturnContactCaptchaErrorAsync(ContactUsFormViewModel contact)
+        {
+            if (contact.ItemType == EImeceItemType.Product)
+            {
+                var product = await ProductService.GetProductDetailViewModelByIdAsync(contact.ItemId);
+                product.Contact = contact;
+                return View("../Products/Detail", product);
+            }
+
+            if (contact.ItemType == EImeceItemType.Menu)
+            {
+                var page = await MenuService.GetPageByIdAsync(contact.ItemId);
+                if (page == null || page.Menu == null)
+                {
+                    HomeLogger.Warn($"Menu page not found for contact ItemId: {contact.ItemId}");
+                    return RedirectToAction("NotFound", "Error");
+                }
+
+                page.Contact = contact;
+                return View("../Pages/Detail", page);
+            }
+
+            return View("_ContactUsFormViewModel", contact);
         }
 
         private async Task saveSubsciberAsync(ContactUsFormViewModel contact)

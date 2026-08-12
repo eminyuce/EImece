@@ -174,8 +174,14 @@ namespace EImece.Areas.Admin.Controllers
                 throw new ArgumentException("term or actionName or controllerName cannot be empty");
             }
             String searchKey = term.ToStr().ToLower(CultureInfo.InvariantCulture).Trim();
-            var list = new List<String>();
             Boolean isIndexAction = actionName.Equals("Index", StringComparison.InvariantCultureIgnoreCase);
+            var list = await SearchIndexActionAsync(isIndexAction, controllerName, searchKey, term, actionName);
+            return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
+        }
+
+        private async Task<List<string>> SearchIndexActionAsync(bool isIndexAction, string controllerName, string searchKey, string term, string actionName)
+        {
+            var list = new List<String>();
             if (isIndexAction && controllerName.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
             {
                 Expression<Func<Product, bool>> whereLambda1 = r =>
@@ -258,7 +264,7 @@ namespace EImece.Areas.Admin.Controllers
                 throw new NotImplementedException(term + " " + actionName + " " + controllerName);
             }
 
-            return Json(list.Take(15).ToList(), JsonRequestBehavior.AllowGet);
+            return list;
         }
 
         [DeleteAuthorize()]
@@ -342,16 +348,14 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteCouponGridItem(List<String> values)
         {
-            await CouponService.DeleteBaseEntityAsync(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
+            return await DeleteCouponsGridItem(values);
         }
 
         [HttpPost]
         [DeleteAuthorize()]
         public async Task<JsonResult> StoryCategoryGridItem(List<String> values)
         {
-            await StoryCategoryService.DeleteBaseEntityAsync(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
+            return await DeleteStoryCategoryGridItem(values);
         }
 
         // GET: Admin/Ajax
@@ -470,8 +474,7 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteMainPageImageGridItem(List<String> values)
         {
-            await MainPageImageService.DeleteBaseEntityAsync(values);
-            return Json(values, JsonRequestBehavior.AllowGet);
+            return await MainPageImageGridItem(values);
         }
 
         [HttpPost]

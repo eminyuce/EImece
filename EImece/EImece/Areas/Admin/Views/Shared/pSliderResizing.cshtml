@@ -14,17 +14,16 @@
              data-admin-image-size
              data-default-w="@Model.ImageWidth"
              data-default-h="@Model.ImageHeight">
-            <a class="admin-image-size-override__toggle collapsed"
-               role="button"
+            <button type="button" class="admin-image-size-override__toggle collapsed"
                data-toggle="collapse"
-               href="#adminImageSizeOverride"
+               data-target="#adminImageSizeOverride"
                aria-expanded="false"
                aria-controls="adminImageSizeOverride">
                 <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
                 Görsel boyutunu bu yükleme için özelleştir
                 <span class="admin-image-size-override__summary text-muted"
                       data-image-size-summary>@Model.ImageWidth × @Model.ImageHeight px</span>
-            </a>
+            </button>
             <div id="adminImageSizeOverride" class="collapse admin-image-size-override__panel">
                 <p class="help-block" style="margin-top:10px; margin-bottom:12px;">
                     Varsayılan değerler sistem ayarlarından gelir (ör. 1200×900).

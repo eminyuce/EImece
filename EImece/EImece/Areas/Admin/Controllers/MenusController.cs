@@ -222,7 +222,6 @@ namespace EImece.Areas.Admin.Controllers
         private async Task<List<SelectListItem>> GetMenuPagesAsync(CancellationToken cancellationToken)
         {
             var menus = await MenuService.GetActiveBaseContentsAsync(true, CurrentLanguage, cancellationToken);
-            var storyCategories = await StoryCategoryService.GetActiveBaseContentsAsync(true, CurrentLanguage, cancellationToken);
             var menuLinks = new List<SelectListItem>();
             menuLinks.Add(new SelectListItem() { Text = "Seçim Yapın", Value = "-1" });
 

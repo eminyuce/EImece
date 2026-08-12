@@ -36,7 +36,7 @@ namespace EImece.Domain.Repositories
             try
             {
                 Expression<Func<TagCategory, object>> includeProperty1 = r => r.Tags;
-                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language && r2.Tags.Count() > 0;
+                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language && r2.Tags.Any();
                 Expression<Func<TagCategory, int>> keySelector = t => t.Position;
                 Expression<Func<TagCategory, object>>[] includeProperties = { includeProperty1 };
                 var result = this.FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties);
@@ -55,7 +55,7 @@ namespace EImece.Domain.Repositories
             try
             {
                 Expression<Func<TagCategory, object>> includeProperty1 = r => r.Tags;
-                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language && r2.Tags.Count() > 0;
+                Expression<Func<TagCategory, bool>> match = r2 => r2.IsActive && r2.Lang == (int)language && r2.Tags.Any();
                 Expression<Func<TagCategory, int>> keySelector = t => t.Position;
                 Expression<Func<TagCategory, object>>[] includeProperties = { includeProperty1 };
                 var result = this.FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties);
@@ -64,8 +64,8 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
-                throw;
+                Logger.Error(exception, "GetTagsByTagTypeAsync failed.");
+                throw new InvalidOperationException("GetTagsByTagTypeAsync failed.", exception);
             }
         }
     }

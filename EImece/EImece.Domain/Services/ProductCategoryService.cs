@@ -294,10 +294,10 @@ namespace EImece.Domain.Services
             return null;
         }
 
-        public ProductCategoryViewModel GetProductCategoryViewModel(int productCategoryId)
+        public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
         {
             var result = new ProductCategoryViewModel();
-            result.ProductCategory = GetProductCategory(productCategoryId);
+            result.ProductCategory = GetProductCategory(categoryId);
             if (result.ProductCategory == null)
             {
                 return null;
@@ -312,22 +312,22 @@ namespace EImece.Domain.Services
             }
             int lang = result.ProductCategory.Lang;
             List<Menu> lists = MenuService.GetActiveBaseContentsFromCache(true, lang);
-            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
             result.Brands = BrandService.GetBrandsIfAnyProductExists(lang);
             result.ProductCategoryTree = BuildTree(true, lang);
             result.PriceFilterSetting = SettingService.GetSettingObjectByKey(Constants.ProductPriceFilterSetting);
             result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable);
-            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
+            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
 
-        public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int productCategoryId)
+        public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int categoryId)
         {
             var result = new ProductCategoryViewModel();
-            result.ProductCategory = await GetProductCategoryAsync(productCategoryId).ConfigureAwait(false);
+            result.ProductCategory = await GetProductCategoryAsync(categoryId).ConfigureAwait(false);
             if (result.ProductCategory == null)
             {
                 return null;
@@ -342,14 +342,14 @@ namespace EImece.Domain.Services
             }
             int lang = result.ProductCategory.Lang;
             List<Menu> lists = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
             result.Brands = await BrandService.GetBrandsIfAnyProductExistsAsync(lang).ConfigureAwait(false);
             result.ProductCategoryTree = await BuildTreeAsync(true, lang).ConfigureAwait(false);
             result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
             result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
             result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
-            result.ChildrenProductCategories = await ProductCategoryRepository.GetProductCategoriesByParentIdAsync(productCategoryId).ConfigureAwait(false);
+            result.ChildrenProductCategories = await ProductCategoryRepository.GetProductCategoriesByParentIdAsync(categoryId).ConfigureAwait(false);
             result.CategoryChildrenProducts = await ProductService.GetChildrenProductsAsync(result.ProductCategory, result.ChildrenProductCategories).ConfigureAwait(false);
             return result;
         }

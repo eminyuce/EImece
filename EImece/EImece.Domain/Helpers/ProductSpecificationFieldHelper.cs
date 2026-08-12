@@ -193,20 +193,7 @@ namespace EImece.Domain.Helpers
 
             if (valuesAttr.IndexOf(',') >= 0)
             {
-                foreach (var part in valuesAttr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    var v = part.Trim();
-                    if (v.Length == 0)
-                    {
-                        continue;
-                    }
-                    items.Add(new SelectListItem
-                    {
-                        Text = v,
-                        Value = v,
-                        Selected = selectedValue.Equals(v, StringComparison.OrdinalIgnoreCase)
-                    });
-                }
+                AddCommaSeparatedOptions(items, valuesAttr, selectedValue);
                 return items;
             }
 
@@ -250,6 +237,24 @@ namespace EImece.Domain.Helpers
             return items;
         }
 
+        private static void AddCommaSeparatedOptions(List<SelectListItem> items, string valuesAttr, string selectedValue)
+        {
+            foreach (var part in valuesAttr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                var v = part.Trim();
+                if (v.Length == 0)
+                {
+                    continue;
+                }
+                items.Add(new SelectListItem
+                {
+                    Text = v,
+                    Value = v,
+                    Selected = selectedValue.Equals(v, StringComparison.OrdinalIgnoreCase)
+                });
+            }
+        }
+
         public static string FormatDateTimeDisplay(string storedValue, bool includeTime)
         {
             if (string.IsNullOrWhiteSpace(storedValue))
@@ -272,11 +277,11 @@ namespace EImece.Domain.Helpers
 
             if (DateTime.TryParseExact(raw, formats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out dt)
                 || DateTime.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out dt)
-                || DateTime.TryParse(raw, new CultureInfo("tr-TR"), DateTimeStyles.AssumeLocal, out dt))
+                || DateTime.TryParse(raw, new CultureInfo(Constants.TR), DateTimeStyles.AssumeLocal, out dt))
             {
                 return includeTime
-                    ? dt.ToString("dd.MM.yyyy HH:mm", CultureInfo.GetCultureInfo("tr-TR"))
-                    : dt.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR"));
+                    ? dt.ToString("dd.MM.yyyy HH:mm", CultureInfo.GetCultureInfo(Constants.TR))
+                    : dt.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo(Constants.TR));
             }
 
             return raw;
@@ -295,7 +300,7 @@ namespace EImece.Domain.Helpers
             var raw = formValue.Trim();
             DateTime dt;
             if (DateTime.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out dt)
-                || DateTime.TryParse(raw, new CultureInfo("tr-TR"), DateTimeStyles.AssumeLocal, out dt))
+                || DateTime.TryParse(raw, new CultureInfo(Constants.TR), DateTimeStyles.AssumeLocal, out dt))
             {
                 return includeTime
                     ? dt.ToString("yyyy-MM-dd'T'HH:mm", CultureInfo.InvariantCulture)

@@ -44,16 +44,15 @@
         <ul class="admin-topbar-actions">
             @Html.Action("Languages", "Dashboard")
             <li class="admin-topbar-overflow dropdown">
-                <a href="#"
+                <button type="button"
                    class="dropdown-toggle admin-topbar-overflow-toggle"
                    data-toggle="dropdown"
-                   role="button"
                    aria-haspopup="true"
                    aria-expanded="false"
                    title="Diğer bağlantılar">
                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                     <span class="sr-only">Diğer bağlantılar</span>
-                </a>
+                </button>
                 <ul class="dropdown-menu dropdown-menu-right admin-topbar-overflow-menu">
                     <li>
                         <a href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })">

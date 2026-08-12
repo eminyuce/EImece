@@ -26,6 +26,7 @@ namespace EImece.Areas.Admin.Controllers
 
         private async Task<List<SelectListItem>> GetCategoriesSelectListAsync(CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             List<TagCategory> tagCategories = (await TagCategoryService.GetAllAsync()).Where(r => r.IsActive && r.Lang == CurrentLanguage).OrderBy(r => r.Position).ToList();
             return tagCategories.Select(r => new SelectListItem()
             {

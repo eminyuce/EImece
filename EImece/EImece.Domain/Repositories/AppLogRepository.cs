@@ -33,17 +33,15 @@ namespace EImece.Domain.Repositories
 
         public async Task<List<AppLog>> GetAppLogsAsync(string search, string eventLevel = "", CancellationToken cancellationToken = default(CancellationToken))
         {
-            var applogResult = new List<AppLog>();
             try
             {
-                applogResult = await GetAppLogsFromDbAsync(search, eventLevel, cancellationToken).ConfigureAwait(false);
+                return await GetAppLogsFromDbAsync(search, eventLevel, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
-                throw;
+                Logger.Error(ex, "GetAppLogsAsync failed.");
+                throw new InvalidOperationException("GetAppLogsAsync failed.", ex);
             }
-            return applogResult;
         }
 
         public void DeleteAppLogs(List<string> values)
@@ -156,7 +154,7 @@ namespace EImece.Domain.Repositories
             else
             {
                 commandText = @"DELETE FROM dbo.AppLogs WHERE LOWER(EventLevel) = LOWER(@EventLevel)";
-                parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel.Trim(), SqlDbType.NVarChar));
+                parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EventLevelColumn, eventLevel.Trim(), SqlDbType.NVarChar));
             }
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))
@@ -177,7 +175,7 @@ namespace EImece.Domain.Repositories
             else
             {
                 commandText = @"DELETE FROM dbo.AppLogs WHERE LOWER(EventLevel) = LOWER(@EventLevel)";
-                parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel.Trim(), SqlDbType.NVarChar));
+                parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EventLevelColumn, eventLevel.Trim(), SqlDbType.NVarChar));
             }
             var commandType = CommandType.Text;
             using (var connection = new SqlConnection(connectionString))
@@ -201,7 +199,7 @@ namespace EImece.Domain.Repositories
             if (!string.IsNullOrWhiteSpace(eventLevel))
             {
                 whereClauses.Add("LOWER(EventLevel) = LOWER(@EventLevel)");
-                parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel.Trim(), SqlDbType.NVarChar));
+                parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EventLevelColumn, eventLevel.Trim(), SqlDbType.NVarChar));
             }
 
             var commandText = whereClauses.Count == 0
@@ -244,7 +242,7 @@ namespace EImece.Domain.Repositories
             if (!string.IsNullOrWhiteSpace(eventLevel))
             {
                 whereClauses.Add("LOWER(EventLevel) = LOWER(@EventLevel)");
-                parameterList.Add(DatabaseUtility.GetSqlParameter("EventLevel", eventLevel.Trim(), SqlDbType.NVarChar));
+                parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EventLevelColumn, eventLevel.Trim(), SqlDbType.NVarChar));
             }
 
             var commandText = whereClauses.Count == 0

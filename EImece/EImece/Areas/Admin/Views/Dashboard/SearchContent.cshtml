@@ -63,19 +63,30 @@
 
     @if (hasResults)
     {
-        <div class="admin-search__list" role="list">
+        <ul class="admin-search__list">
             @foreach (var baseContent in searchList)
             {
                 @Html.DisplayFor(item => baseContent, "BaseContentSearchItem")
             }
-        </div>
+        </ul>
     }
     else
     {
-        <div class="admin-search__empty" role="status">
+        <output class="admin-search__empty" style="display:block">
             <i class="fa fa-search" aria-hidden="true"></i>
             <p>Farklı bir anahtar kelime deneyin veya panele dönün.</p>
             <a class="btn btn-default" href="@Url.Action("Index", "Dashboard", new { area = "admin" })">@AdminResource.AdminHome</a>
-        </div>
+        </output>
     }
 </div>
+<script>
+document.addEventListener("error", function (e) {
+    var t = e.target;
+    if (t && t.classList && t.classList.contains("js-admin-search-img")) {
+        t.style.display = "none";
+        if (t.parentNode) {
+            t.parentNode.classList.add("is-empty");
+        }
+    }
+}, true);
+</script>

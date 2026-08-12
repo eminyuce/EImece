@@ -26,7 +26,7 @@
     </ol>
 
     <!-- Wrapper for slides -->
-    <div class="carousel-inner" role="listbox">
+    <div class="carousel-inner">
         @foreach (var mainPageImage in mainPageImages)
             {
                 var cssClass = cnt2 == 0 ? "item active" : "item";
@@ -42,13 +42,13 @@
     </div>
 
     <!-- Controls -->
-    <a class="left carousel-control" href="#carousel-main-page-image" role="button" data-slide="prev">
+    <button type="button" class="left carousel-control" data-target="#carousel-main-page-image" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#carousel-main-page-image" role="button" data-slide="next">
+    </button>
+    <button type="button" class="right carousel-control" data-target="#carousel-main-page-image" data-slide="next">
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
-    </a>
+    </button>
 </div>
 }
