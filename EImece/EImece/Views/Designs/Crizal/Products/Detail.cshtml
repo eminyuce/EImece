@@ -195,20 +195,14 @@
             <div class="pb-4">
                 @if (productReviewEnable && product.ProductComments.IsNotEmpty())
                 {
+                    var summaryRating = product.Rating > 5 ? 5 : (product.Rating < 0 ? 0 : product.Rating);
                     <a class="d-inline-block scroll-to" href="#reviews">
-                        <div class="star-rating">
-                            @for (int i = 0; i < 5; i++)
+                        <span class="crizal-stars" aria-label="@summaryRating stars" role="img">
+                            @for (int i = 1; i <= 5; i++)
                             {
-                                if (i + 1 > product.Rating)
-                                {
-                                    <i class="sr-star" data-feather="star"></i>
-                                }
-                                else
-                                {
-                                    <i class="sr-star active" data-feather="star"></i>
-                                }
+                                <span class="crizal-stars__star@(i <= summaryRating ? " is-on" : "")" aria-hidden="true">★</span>
                             }
-                        </div><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
+                        </span><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
                     </a>
                 }
                 @if (productPriceEnabled)
@@ -275,8 +269,8 @@
                 @if (ProductSizeOptions.IsNotEmpty())
                 {
                     <div class="form-group">
-                        <div class="pb-2 text-right"></div>
-                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="color" name="@Resource.ProductSize" required>
+                        <label class="pb-2 d-block" for="productSize">@Resource.ProductSize</label>
+                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="productSize" name="@Resource.ProductSize" required>
                             @foreach (var pSize in ProductSizeOptions)
                             {
                                 <option value="@pSize">@pSize</option>
@@ -287,8 +281,8 @@
                 @if (ProductColorOptions.IsNotEmpty())
                 {
                     <div class="form-group">
-                        <div class="pb-2 text-right"></div>
-                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="color" name="@Resource.ProductColor" required>
+                        <label class="pb-2 d-block" for="productColor">@Resource.ProductColor</label>
+                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="productColor" name="@Resource.ProductColor" required>
                             @foreach (var pColor in ProductColorOptions)
                             {
                                 <option value="@pColor">@pColor</option>
@@ -304,8 +298,11 @@
                     {
                         case ProductState.ProductInStock:
                         case ProductState.LimitedStock:
-                            <div class="d-flex align-items-center pt-2">
-                                <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
+                            <div class="d-flex align-items-end pt-2">
+                                <div class="form-group mb-0 mr-3 flex-shrink-0">
+                                    <label class="d-block mb-1" for="quantity">@Resource.Quantity</label>
+                                    <input class="px-2 form-control" min="1" id="quantity" type="number" name="quantity" style="width: 5.5rem;" value="1" required aria-label="@Resource.Quantity">
+                                </div>
                                 <button id="AddToCart" class="butn-style8 btn-block" type="button" data-toggle="toast" data-target="#cart-toast">
                                     <span>@Resource.AddToCart</span>
                                 </button>

@@ -507,3 +507,22 @@
 .product-specs__table tbody tr:nth-child(even) {
     background: #fcfdfe;
 }
+
+/* Product detail summary rating (Unicode stars; avoids broken Feather icons) */
+body[data-design="modern"] .product-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.12rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+body[data-design="modern"] .product-stars__star {
+    font-size: 1.1rem;
+    color: #d0d5dd;
+    letter-spacing: 0;
+}
+
+body[data-design="modern"] .product-stars__star.is-on {
+    color: #fc8c3a;
+}
