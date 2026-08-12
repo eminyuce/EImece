@@ -130,7 +130,7 @@ namespace EImece.Domain.Services
             if (shoppingCart == null)
             {
                 Logger.Error("SaveShoppingCart failed: ShoppingCartSession is null");
-                throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
+                throw new ArgumentNullException(nameof(shoppingCart), "ShoppingCartSession is null");
             }
             if (paymentResult == null)
             {
@@ -196,7 +196,7 @@ namespace EImece.Domain.Services
             if (shoppingCart == null)
             {
                 Logger.Error("SaveShoppingCartAsync failed: ShoppingCartSession is null");
-                throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
+                throw new ArgumentNullException(nameof(shoppingCart), "ShoppingCartSession is null");
             }
             if (paymentResult == null)
             {

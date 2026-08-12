@@ -1314,7 +1314,7 @@ namespace EImece.Controllers
                 && paymentResult.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private ActionResult ValidatePaymentBinding(PaymentResultDto paymentResult, string orderGuid, string orderNumber)
+        private static ActionResult ValidatePaymentBinding(PaymentResultDto paymentResult, string orderGuid, string orderNumber)
         {
             if (string.IsNullOrWhiteSpace(orderGuid))
             {

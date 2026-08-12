@@ -65,8 +65,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error saving RegisterViewModel.");
-                throw;
+                throw new InvalidOperationException("Error saving RegisterViewModel.", ex);
             }
         }
 
@@ -100,8 +99,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error saving RegisterViewModel.");
-                throw;
+                throw new InvalidOperationException("Error saving RegisterViewModel asynchronously.", ex);
             }
         }
 
@@ -117,7 +115,7 @@ namespace EImece.Domain.Services
         {
             Logger.Info($"Retrieving customer by userId: {userId}");
             var item = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
-            GetUserFields(item);
+            await GetUserFieldsAsync(item).ConfigureAwait(false);
             return item;
         }
 

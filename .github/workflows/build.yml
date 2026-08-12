@@ -89,7 +89,8 @@ jobs:
             /k:"Eimece" `
             /d:sonar.token="$env:SONAR_TOKEN" `
             /d:sonar.host.url="$env:SONAR_HOST_URL" `
-            /d:sonar.scanner.scanAll=false
+            /d:sonar.scanner.scanAll=false `
+            /d:sonar.exclusions="**/Content/tinymce/**,**/Scripts/jquery*,**/Scripts/bootstrap*,**/media/logs/**"
 
           msbuild "${{ env.SOLUTION }}" `
             /t:Rebuild `

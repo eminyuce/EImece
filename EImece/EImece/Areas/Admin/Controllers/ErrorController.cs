@@ -15,7 +15,15 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            // Landing page for admin error helpers (Index.cshtml expects HandleErrorInfo — avoid that).
+            this.Response.StatusCode = (int)HttpStatusCode.OK;
+            this.Response.TrySkipIisCustomErrors = true;
+            var error = new ErrorModel
+            {
+                RequestedUrl = this.Request.Url != null ? this.Request.Url.ToString() : null,
+                ReferrerUrl = this.Request.UrlReferrer != null ? this.Request.UrlReferrer.ToString() : null
+            };
+            return View("NotFound", error);
         }
 
         /// <summary>

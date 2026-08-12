@@ -2683,7 +2683,7 @@ namespace EImece.Domain.DbContext
             var t = new SqlParameter();
             t.SqlDbType = sqlDbType;
             t.ParameterName = parameterName;
-            t.Value = value;
+            t.Value = value ?? (object)DBNull.Value;
 
             return t;
         }

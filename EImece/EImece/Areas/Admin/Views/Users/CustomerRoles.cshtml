@@ -93,7 +93,8 @@
                 .Sanitized(false)
                 .Css("eg-col-note")
                 .RenderValueAs(o => String.Format(
-                    "<textarea readonly class='eg-grid-note'>{0}</textarea>",
+                    "<textarea id='gridTa_{0}' readonly class='eg-grid-note' aria-label='Not'>{1}</textarea>",
+                    o.Id,
                     System.Web.HttpUtility.HtmlEncode(o.DetailNote ?? string.Empty)));
 
             columns.Add()

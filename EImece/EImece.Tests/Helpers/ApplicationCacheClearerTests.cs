@@ -16,7 +16,7 @@ namespace EImece.Tests.Helpers
             Assert.IsNotNull(MemoryCache.Default.Get(key));
 
             var removed = ApplicationCacheClearer.ClearMemoryCacheDefault();
-            Assert.IsTrue(removed >= 1);
+            Assert.IsGreaterThanOrEqualTo(1, removed);
             Assert.IsNull(MemoryCache.Default.Get(key));
         }
 
@@ -28,7 +28,7 @@ namespace EImece.Tests.Helpers
             cache.Set(key, 1, CachePolicy.Absolute(60));
 
             var removed = cache.ClearAll();
-            Assert.IsTrue(removed >= 1);
+            Assert.IsGreaterThanOrEqualTo(1, removed);
             Assert.IsFalse(cache.Get(key, out int _));
         }
     }

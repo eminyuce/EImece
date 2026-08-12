@@ -109,7 +109,6 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
-                    //fileStorage.EntityHash = file.imageHash;
                     fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
                     fileStorage.Lang = language;
@@ -211,7 +210,6 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
-                    //fileStorage.EntityHash = file.imageHash;
                     fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
                     fileStorage.Lang = language;
@@ -335,21 +333,20 @@ namespace EImece.Domain.Services
 
         public async Task DeleteUploadImageByFileStorageAsync(int contentId, MediaModType? mod, int fileStorageId)
         {
-            bool isResult = false;
             switch (mod.Value)
             {
                 case MediaModType.Stories:
-                    isResult = await StoryFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.StoryId == contentId).ConfigureAwait(false);
+                    await StoryFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.StoryId == contentId).ConfigureAwait(false);
                     await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
                     break;
 
                 case MediaModType.Products:
-                    isResult = await ProductFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.ProductId == contentId).ConfigureAwait(false);
+                    await ProductFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.ProductId == contentId).ConfigureAwait(false);
                     await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
                     break;
 
                 case MediaModType.Menus:
-                    isResult = await MenuFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.MenuId == contentId).ConfigureAwait(false);
+                    await MenuFileRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorageId && r.MenuId == contentId).ConfigureAwait(false);
                     await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
                     break;
 

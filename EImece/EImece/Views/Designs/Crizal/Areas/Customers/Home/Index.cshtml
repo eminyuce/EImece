@@ -37,13 +37,13 @@
 
     @if (billingIncomplete)
     {
-        <div class="customer-banner customer-banner--warn" role="status">
+        <output class="customer-banner customer-banner--warn">
             <div class="customer-banner__icon" aria-hidden="true"><i class="fas fa-exclamation-circle"></i></div>
             <div class="customer-banner__body">
                 <strong>@Resource.CustomerBillingDetailsNotFilledOut</strong>
                 <p class="mb-0">Teslimat ve fatura için aşağıdaki bilgileri tamamlayın.</p>
             </div>
-        </div>
+        </output>
     }
 
     @using (Html.BeginForm("Index", "Home", null, FormMethod.Post, new { @class = "customer-panel" }))

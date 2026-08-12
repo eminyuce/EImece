@@ -162,7 +162,7 @@
 
 .crizal-navbar .navbar-toggler {
     border: 0;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.35);
     padding: 0.5rem 0.65rem;
     color: #fff;
 }
@@ -766,9 +766,9 @@ body[data-design="crizal"] .crizal-subscribe__row {
 body[data-design="crizal"] .crizal-subscribe__input {
     flex: 1 1 11rem;
     min-height: 2.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: var(--crizal-radius);
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.28);
     color: #fff;
     padding: 0.55rem 0.9rem;
 }
@@ -820,7 +820,7 @@ body[data-design="crizal"] .crizal-footer-social a {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.28);
     color: #fff !important;
 }
 
@@ -2597,7 +2597,7 @@ body[data-design="crizal"] .crizal-tag__count {
 }
 
 body[data-design="crizal"] .crizal-tag:hover .crizal-tag__count {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(0, 0, 0, 0.28);
     color: #fff;
 }
 
@@ -3269,7 +3269,8 @@ body[data-design="crizal"] .crizal-product-panels .accordion-indicator {
     transition: transform 0.2s ease;
 }
 
-body[data-design="crizal"] .crizal-product-panels .accordion-heading > a:not(.collapsed) .accordion-indicator {
+body[data-design="crizal"] .crizal-product-panels .accordion-heading > a:not(.collapsed) .accordion-indicator,
+body[data-design="crizal"] .crizal-product-panels .accordion-heading > button:not(.collapsed) .accordion-indicator {
     transform: rotate(180deg);
     color: var(--crizal-primary);
 }
@@ -3312,23 +3313,31 @@ body[data-design="crizal"] #productPanels .accordion-heading {
     font-size: 0.95rem;
 }
 
-body[data-design="crizal"] #productPanels .accordion-heading > a {
+body[data-design="crizal"] #productPanels .accordion-heading > a,
+body[data-design="crizal"] #productPanels .accordion-heading > button {
     display: flex;
     align-items: center;
     gap: 0.65rem;
     width: 100%;
     padding: 0.95rem 1.1rem;
+    border: 0;
+    background: transparent;
     color: var(--crizal-heading) !important;
+    font: inherit;
     font-weight: 700;
+    text-align: left;
     text-decoration: none !important;
+    cursor: pointer;
 }
 
-body[data-design="crizal"] #productPanels .accordion-heading > a:hover {
+body[data-design="crizal"] #productPanels .accordion-heading > a:hover,
+body[data-design="crizal"] #productPanels .accordion-heading > button:hover {
     color: var(--crizal-primary) !important;
     background: #f6f9f7;
 }
 
-body[data-design="crizal"] #productPanels .accordion-heading > a .border-right {
+body[data-design="crizal"] #productPanels .accordion-heading > a .border-right,
+body[data-design="crizal"] #productPanels .accordion-heading > button .border-right {
     border-color: var(--crizal-border) !important;
     color: var(--crizal-primary);
 }
@@ -3461,7 +3470,7 @@ body[data-design="crizal"] .crizal-product-specs__table thead th.crizal-product-
     font-weight: 700;
     font-style: italic;
     letter-spacing: 0.01em;
-    color: #94a3b8;
+    color: #475569;
     background: #f1f5f9;
     border-top: 0;
     border-bottom: 1px solid var(--crizal-border, #e2e8f0);
@@ -3491,7 +3500,7 @@ body[data-design="crizal"] .crizal-product-specs__table tbody td {
     font-weight: 700;
     color: var(--crizal-heading, #14212b);
     text-align: right;
-    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 body[data-design="crizal"] .crizal-product-specs__table tbody tr:nth-child(even) {
@@ -3853,7 +3862,7 @@ body[data-design="crizal"] .steps .step.step-active {
 }
 
 body[data-design="crizal"] .steps .step.step-active .step-icon {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.22);
     color: #fff;
 }
 
@@ -3872,7 +3881,6 @@ body[data-design="crizal"] .steps .step .step-label {
     line-height: 1.2;
     white-space: normal;
     overflow-wrap: anywhere;
-    word-break: break-word;
     max-width: 100%;
 }
 
@@ -3899,7 +3907,6 @@ body[data-design="crizal"] .crizal-cart-empty__inner {
     margin: 0 auto;
     padding: 0.35rem 0.15rem;
     overflow-wrap: anywhere;
-    word-break: break-word;
 }
 
 body[data-design="crizal"] .crizal-cart-empty__inner h1,
@@ -4081,7 +4088,6 @@ body[data-design="crizal"] .media.d-block.d-sm-flex {
         max-width: 100%;
         min-width: 0;
         overflow-wrap: anywhere;
-        word-break: break-word;
     }
 
     body[data-design="crizal"] #ProceedToCheckout,

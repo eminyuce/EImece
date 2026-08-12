@@ -13,8 +13,7 @@
         ? deleteIcon
         : "btn btn-danger btn-sm";
 }
-<a href="#"
-   role="button"
+<button type="button"
    class="@triggerClass"
    data-admin-delete="1"
    data-delete-url="@deleteUrl"
@@ -25,4 +24,4 @@
    data-delete-button="@gridDeleteText"
    title="@gridDeleteText"
    aria-label="@gridDeleteText">@if (String.IsNullOrEmpty(deleteIcon))
-{<text><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> @gridDeleteText</text>}</a>
+{<text><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> @gridDeleteText</text>}</button>

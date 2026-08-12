@@ -2116,9 +2116,14 @@ label[for^="ImageState"]:not(.control-label) {
     flex-wrap: wrap;
     align-items: center;
     gap: 6px 10px;
+    padding: 0;
+    border: 0;
+    background: transparent;
     font-weight: 600;
     color: #1e4e7a;
+    text-align: left;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .admin-image-size-override__toggle:hover,
@@ -2252,7 +2257,7 @@ body.admin-app .admin-content .osf-guide .osf-guide__toc-title,
     font-weight: 700 !important;
     line-height: 1.3 !important;
     /* Explicit Turkish capitals in markup; avoid CSS uppercase. */
-    letter-spacing: 0.06em !important;
+    letter-spacing: 0.06em;
     color: var(--osf-muted) !important;
     border: 0 !important;
 }
@@ -2566,6 +2571,9 @@ body.admin-app .admin-content .osf-guide .osf-guide__section-head h2,
     align-items: center;
     justify-content: center;
     margin-left: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: #3b6ea5;
     cursor: help;
     vertical-align: middle;
@@ -3187,7 +3195,7 @@ body.admin-app .admin-content .admin-home h2::after {
     line-height: 1.3 !important;
     color: var(--ah-muted) !important;
     text-align: left !important;
-    letter-spacing: 0.04em !important;
+    letter-spacing: 0.04em;
 }
 
 .admin-home__grid {

@@ -114,7 +114,7 @@
                .Encoded(false)
                .Sanitized(false)
                .Css("smallGridColumn")
-               .RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
+               .RenderValueAs(o => String.Format("<input   id='gridOrdering_{0}' gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='text' aria-label='Sıra'>", o.Id, o.Position));
 
            columns.Add(o => o.IsActive)
                .Titled(AdminResource.IsActive)

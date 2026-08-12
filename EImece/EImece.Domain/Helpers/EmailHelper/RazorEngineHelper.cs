@@ -258,7 +258,6 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             OrderConfirmationEmailRazorTemplate model = await MailTemplateService.GenerateOrderConfirmationEmailRazorTemplateAsync(orderId).ConfigureAwait(false);
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "" + GeneralHelper.GetHashString(template);
             var result = GetRenderOutputByRazorEngineModel(template, model);
             return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }

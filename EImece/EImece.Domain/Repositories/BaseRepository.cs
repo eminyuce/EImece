@@ -3,7 +3,6 @@ using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,8 +17,6 @@ namespace EImece.Domain.Repositories
     public abstract class BaseRepository<T> : EntityRepository<T, int>
        where T : class, IEntity<int>
     {
-        protected static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
-
         protected IEImeceContext DbContext;
 
         protected EImeceContext EImeceDbContext
@@ -70,8 +67,7 @@ namespace EImece.Domain.Repositories
                 catch (Exception ex)
                 {
                     transactionResult.Rollback();
-                    BaseLogger.Error(ex, "DeleteEntityByWhere");
-                    throw;
+                    throw new InvalidOperationException("DeleteEntityByWhere failed.", ex);
                 }
             }
             return isResult;
@@ -95,8 +91,7 @@ namespace EImece.Domain.Repositories
                 catch (Exception ex)
                 {
                     transactionResult.Rollback();
-                    BaseLogger.Error(ex, "DeleteEntityByWhere");
-                    throw;
+                    throw new InvalidOperationException("DeleteEntityByWhereAsync failed.", ex);
                 }
             }
             return isResult;
@@ -134,8 +129,7 @@ namespace EImece.Domain.Repositories
                         errorMessage += " " + validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
                     }
                 }
-                BaseLogger.Error(errorMessage);
-                throw;
+                throw new InvalidOperationException("SaveOrEdit validation failed: " + errorMessage, ex);
             }
         }
 
@@ -166,8 +160,7 @@ namespace EImece.Domain.Repositories
                         errorMessage += " " + validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
                     }
                 }
-                BaseLogger.Error(errorMessage);
-                throw;
+                throw new InvalidOperationException("SaveOrEditAsync validation failed: " + errorMessage, ex);
             }
         }
 
@@ -186,8 +179,7 @@ namespace EImece.Domain.Repositories
                 catch (Exception ex)
                 {
                     transactionResult.Rollback();
-                    BaseLogger.Error(ex, "DeleteItem");
-                    throw;
+                    throw new InvalidOperationException("DeleteItem failed.", ex);
                 }
             }
             return r;
@@ -207,8 +199,7 @@ namespace EImece.Domain.Repositories
                 catch (Exception ex)
                 {
                     transactionResult.Rollback();
-                    BaseLogger.Error(ex, "DeleteItem");
-                    throw;
+                    throw new InvalidOperationException("DeleteItemAsync failed.", ex);
                 }
             }
             return r;
@@ -236,13 +227,11 @@ namespace EImece.Domain.Repositories
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                BaseLogger.Error(ex, "DbEntityValidationException:" + message);
-                throw;
+                throw new InvalidOperationException("DeleteBaseEntity validation failed: " + message, ex);
             }
             catch (Exception exception)
             {
-                BaseLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
-                throw;
+                throw new InvalidOperationException("DeleteBaseEntity failed for ids: " + String.Join(",", values), exception);
             }
         }
 
@@ -261,13 +250,11 @@ namespace EImece.Domain.Repositories
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                BaseLogger.Error(ex, "DbEntityValidationException:" + message);
-                throw;
+                throw new InvalidOperationException("DeleteBaseEntityAsync validation failed: " + message, ex);
             }
             catch (Exception exception)
             {
-                BaseLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
-                throw;
+                throw new InvalidOperationException("DeleteBaseEntityAsync failed for ids: " + String.Join(",", values), exception);
             }
         }
 

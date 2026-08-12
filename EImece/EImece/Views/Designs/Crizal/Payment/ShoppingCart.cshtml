@@ -15,7 +15,7 @@
 }
 
 <!-- Page Title-->
-<div class="page-title-wrapper" role="region" aria-label="Page title">
+<section class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <nav class="crizal-breadcrumb" aria-label="breadcrumb">
             <ol class="crizal-breadcrumb__list breadcrumb">
@@ -27,7 +27,7 @@
         </nav>
         <h1 class="page-title">@Resource.MyBasket</h1><span class="d-block mt-2 text-muted"></span>
     </div>
-</div>
+</section>
 <!-- Page Content-->
 <div class="container pb-5 mb-sm-4 mt-n2 mt-md-n3">
     @if (TempData["StatusMessage"] != null)
@@ -60,11 +60,11 @@
                     }
                     else
                     {
-                        <div class="alert alert-secondary crizal-cart-empty" role="status">
+                        <output class="alert alert-secondary crizal-cart-empty">
                             <div class="crizal-cart-empty__inner text-center">
                                 @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))))
                             </div>
-                        </div>
+                        </output>
                     }
                 </div>
 

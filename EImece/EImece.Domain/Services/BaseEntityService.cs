@@ -230,25 +230,25 @@ namespace EImece.Domain.Services
 
         private static void ApplyMainPageFlag(BaseEntity entity, bool isActive)
         {
-            if (entity is Product)
+            if (entity is Product product)
             {
-                ((Product)entity).MainPage = isActive;
+                product.MainPage = isActive;
             }
-            else if (entity is Story)
+            else if (entity is Story story)
             {
-                ((Story)entity).MainPage = isActive;
+                story.MainPage = isActive;
             }
-            else if (entity is ProductCategory)
+            else if (entity is ProductCategory productCategory)
             {
-                ((ProductCategory)entity).MainPage = isActive;
+                productCategory.MainPage = isActive;
             }
-            else if (entity is Brand)
+            else if (entity is Brand brand)
             {
-                ((Brand)entity).MainPage = isActive;
+                brand.MainPage = isActive;
             }
-            else if (entity is Menu)
+            else if (entity is Menu menu)
             {
-                ((Menu)entity).MainPage = isActive;
+                menu.MainPage = isActive;
             }
         }
     }

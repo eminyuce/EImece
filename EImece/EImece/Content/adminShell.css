@@ -914,6 +914,7 @@ body.admin-app .table-responsive {
 
 @media (max-width: 991px) {
     .admin-topbar-overflow > a,
+    .admin-topbar-overflow > button,
     .admin-topbar-overflow-toggle {
         min-width: var(--admin-touch-min);
         min-height: var(--admin-touch-min);
@@ -923,11 +924,15 @@ body.admin-app .table-responsive {
         padding: 10px 8px;
         color: var(--admin-link);
         text-decoration: none;
+        border: 0;
+        background: transparent;
         border-radius: 6px;
         touch-action: manipulation;
+        cursor: pointer;
     }
 
     .admin-topbar-overflow.open > a,
+    .admin-topbar-overflow.open > button,
     .admin-topbar-overflow-toggle:hover,
     .admin-topbar-overflow-toggle:focus {
         background: #f0f4f8;

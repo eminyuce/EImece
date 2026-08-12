@@ -8,7 +8,7 @@
     var stories = Model.Stories;
 }
 
-<div class="page-title-wrapper" role="region" aria-label="Page title">
+<section class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <div class="alert alert-secondary" role="alert">
             <nav aria-label="breadcrumb">
@@ -40,7 +40,7 @@
         }
         <hr class="mt-4 mb-0">
     </div>
-</div>
+</section>
 
 <div class="container my-4 mb-5">
     <div class="row">
@@ -54,7 +54,7 @@
             }
             else
             {
-                <div class="alert alert-secondary" role="status">@Resource.NOSearchResult</div>
+                <output class="alert alert-secondary">@Resource.NOSearchResult</output>
             }
         </div>
 

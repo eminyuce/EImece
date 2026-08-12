@@ -679,7 +679,9 @@ namespace EImece.Domain.Helpers.Extensions
 
             if (entity != null)
             {
-                if (HttpContext.Current != null)
+                // Prefer SEO routes from RouteConfig. UrlHelper often emits /products/tag/... which 404s.
+                path = BuildDetailRelativePathWithoutHttpContext(entity, action, controller, categoryName, authorName);
+                if (string.IsNullOrEmpty(path) && HttpContext.Current != null)
                 {
                     var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                     if (!String.IsNullOrEmpty(authorName))
@@ -699,11 +701,6 @@ namespace EImece.Domain.Helpers.Extensions
                             area = ""
                         });
                     }
-                }
-                else
-                {
-                    // Async service continuations lose HttpContext; reconstruct SEO routes used by RouteConfig.
-                    path = BuildDetailRelativePathWithoutHttpContext(entity, action, controller, categoryName, authorName);
                 }
             }
 
@@ -767,6 +764,18 @@ namespace EImece.Domain.Helpers.Extensions
             var categorySeo = string.IsNullOrEmpty(categoryName)
                 ? string.Empty
                 : GeneralHelper.GetUrlSeoString(categoryName);
+
+            if (string.Equals(controller, "Products", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Tag", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.ProductsControllerRoutingPrefix}/t/{seoId}";
+            }
+
+            if (string.Equals(controller, "Stories", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Tag", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/t/{seoId}";
+            }
 
             if (string.Equals(controller, "Products", StringComparison.OrdinalIgnoreCase)
                 && string.Equals(action, "Detail", StringComparison.OrdinalIgnoreCase)

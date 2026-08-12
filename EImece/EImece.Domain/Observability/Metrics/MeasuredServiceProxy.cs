@@ -50,7 +50,7 @@ namespace EImece.Domain.Observability.Metrics
             var serviceType = typeof(TService);
             if (!serviceType.IsInterface)
             {
-                throw new ArgumentException("MeasuredServiceProxy requires an interface service type.", nameof(TService));
+                throw new ArgumentException("MeasuredServiceProxy requires an interface service type.", nameof(target));
             }
 
             // Avoid double-wrapping.

@@ -22,7 +22,7 @@
     var imgMenuUrl = menu.ImageState ? menu.GetCroppedImageUrl(menu.MainImageId, 0, 500) : "";
 }
 
-<div class="page-title-wrapper" role="region" aria-label="Page title">
+<section class="page-title-wrapper" aria-label="Page title">
     <div class="container">
         <nav class="crizal-breadcrumb" aria-label="breadcrumb">
             <ol class="crizal-breadcrumb__list breadcrumb">
@@ -35,7 +35,7 @@
         <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
     </div>
-</div>
+</section>
 
 <div class="container">
     @if (!string.IsNullOrEmpty(imgMenuUrl))

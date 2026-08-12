@@ -303,8 +303,11 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var tags = TagService.GetProductTags(language);
-                AddTagSitemapItems(sitemapItems, tags);
+                var productTags = TagService.GetProductTags(language);
+                AddProductTagSitemapItems(sitemapItems, productTags);
+
+                var storyTags = TagService.GetTagsWithStoryCounts(language);
+                AddStoryTagSitemapItems(sitemapItems, storyTags);
             }
             catch (Exception ex)
             {
@@ -316,8 +319,11 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var tags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
-                AddTagSitemapItems(sitemapItems, tags);
+                var productTags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
+                AddProductTagSitemapItems(sitemapItems, productTags);
+
+                var storyTags = await TagService.GetTagsWithStoryCountsAsync(language, cancellationToken: cancellationToken).ConfigureAwait(false);
+                AddStoryTagSitemapItems(sitemapItems, storyTags);
             }
             catch (Exception ex)
             {
@@ -325,24 +331,31 @@ namespace EImece.Domain.Services
             }
         }
 
-        private static void AddTagSitemapItems(List<SitemapItem> sitemapItems, List<Tag> tags)
+        private static void AddProductTagSitemapItems(List<SitemapItem> sitemapItems, List<Tag> tags)
         {
+            AddTagSitemapItems(sitemapItems, tags, "Products");
+        }
+
+        private static void AddStoryTagSitemapItems(List<SitemapItem> sitemapItems, List<Tag> tags)
+        {
+            AddTagSitemapItems(sitemapItems, tags, "Stories");
+        }
+
+        private static void AddTagSitemapItems(List<SitemapItem> sitemapItems, List<Tag> tags, string controller)
+        {
+            if (tags == null)
+            {
+                return;
+            }
+
             foreach (var item in tags)
             {
                 DateTime? lastModified = item.UpdatedDate;
-                SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
+                SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", controller, null,
                          AppConfig.HttpProtocol),
                                lastModified,
                                SitemapChangeFrequency.Daily,
                                priority: 1.0);
-
-                sitemapItems.Add(sm);
-
-                sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
-                  AppConfig.HttpProtocol),
-                        lastModified,
-                        SitemapChangeFrequency.Daily,
-                        priority: 1.0);
 
                 sitemapItems.Add(sm);
             }

@@ -95,7 +95,7 @@ namespace EImece.Tests.Helpers
             Assert.AreEqual(100, snapshot.Count);
             Assert.AreEqual(32, snapshot.SampleWindowSize);
             // Window holds the most recent 32 samples (68..99) → P99 near the top of that window
-            Assert.IsTrue(snapshot.P99DurationMs >= 90);
+            Assert.IsGreaterThanOrEqualTo(90, snapshot.P99DurationMs);
         }
 
         [TestMethod]

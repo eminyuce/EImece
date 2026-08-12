@@ -52,9 +52,21 @@ else
 {
 <tr>
     @foreach (IGridColumn column in Model.Columns)
+    {
+        @* Web:S5256 — emit explicit th; unwrap GridMvc header if it already wraps th/td *@
         {
-    @column.HeaderRenderer.Render(column)
+            var headerHtml = column.HeaderRenderer.Render(column).ToHtmlString() ?? "";
+            var trimmed = headerHtml.Trim();
+            if (trimmed.StartsWith("<th", StringComparison.OrdinalIgnoreCase) || trimmed.StartsWith("<td", StringComparison.OrdinalIgnoreCase))
+            {
+                @Html.Raw(headerHtml)
+            }
+            else
+            {
+                <th scope="col">@Html.Raw(headerHtml)</th>
+            }
         }
+    }
 </tr>
 }
 @helper RenderGridPager()

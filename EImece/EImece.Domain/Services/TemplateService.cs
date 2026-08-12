@@ -23,7 +23,7 @@ namespace EImece.Domain.Services
 
         public List<Template> GetAllActiveTemplates()
         {
-            var cacheKey = String.Format("GetAllActiveTemplates");
+            var cacheKey = "GetAllActiveTemplates";
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => TemplateRepository.GetAllActiveTemplates(),
@@ -32,7 +32,7 @@ namespace EImece.Domain.Services
 
         private async Task<List<Template>> GetAllActiveTemplatesAsync()
         {
-            var cacheKey = String.Format("GetAllActiveTemplates") + AsyncCacheKeySuffix;
+            var cacheKey = "GetAllActiveTemplates" + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => TemplateRepository.GetAllActiveTemplatesAsync(CancellationToken.None),
@@ -66,7 +66,7 @@ namespace EImece.Domain.Services
                 else
                 {
                     Logger.Warn("GetTemplate cache miss for id" + id + "; loaded from database.");
-                    DataCachingProvider.Clear(String.Format("GetAllActiveTemplates"));
+                    DataCachingProvider.Clear("GetAllActiveTemplates");
                 }
             }
             return result;
@@ -94,8 +94,8 @@ namespace EImece.Domain.Services
                 else
                 {
                     Logger.Warn("GetTemplateAsync cache miss for id" + id + "; loaded from database.");
-                    DataCachingProvider.Clear(String.Format("GetAllActiveTemplates"));
-                    DataCachingProvider.Clear(String.Format("GetAllActiveTemplates") + AsyncCacheKeySuffix);
+                    DataCachingProvider.Clear("GetAllActiveTemplates");
+                    DataCachingProvider.Clear("GetAllActiveTemplates" + AsyncCacheKeySuffix);
                 }
             }
             return result;

@@ -95,7 +95,7 @@
         .Titled(AdminResource.Review)
         .Encoded(false)
         .Sanitized(false)
-        .RenderValueAs(o => String.Format("<textarea readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.Review));
+        .RenderValueAs(o => String.Format("<textarea id='gridTa_{0}' readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;' aria-label='İçerik'>{1}</textarea>", o.Id, o.Review));
 
     columns.Add(o => o.IsActive)
         .Titled(AdminResource.IsActive)
