@@ -471,21 +471,33 @@ namespace EImece.Domain
             }
         }
 
+        private static bool _bypassAdminAuthIgnoredWarningLogged;
+
         /// <summary>
         /// TEMPORARY debug switch: when true, admin auth/login is bypassed and a debug Admin principal is injected.
         /// Keep false in production (Web.Release.config forces false).
-        /// Hard-disabled whenever SiteStatus indicates a live environment.
+        /// Hard-disabled whenever SiteStatus indicates a live environment (safety latch).
+        /// If BypassAdminAuth=true while SiteStatus=live, a Warning is logged once and bypass stays off.
         /// </summary>
         public static bool BypassAdminAuth
         {
             get
             {
+                var configured = GetConfigBool("BypassAdminAuth", false);
                 if (IsSiteLive)
                 {
+                    if (configured && !_bypassAdminAuthIgnoredWarningLogged)
+                    {
+                        _bypassAdminAuthIgnoredWarningLogged = true;
+                        Logger.Warn(
+                            "BypassAdminAuth=true is ignored because SiteStatus is live. " +
+                            "Admin auth bypass is hard-disabled in production; set SiteStatus to a non-live value (e.g. dev) only for local debugging.");
+                    }
+
                     return false;
                 }
 
-                return GetConfigBool("BypassAdminAuth", false);
+                return configured;
             }
         }
 
