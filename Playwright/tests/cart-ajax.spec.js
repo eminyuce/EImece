@@ -102,4 +102,40 @@ test.describe('Cart and AJAX interactions', () => {
       expect(res.status(), path).toBeLessThan(500);
     }
   });
+
+  // BUG-002: clicking the inner <span> label on [data-add-product-cart] must still POST AddToCart.
+  test('add-to-cart via span inside data-add-product-cart button', async ({ page }) => {
+    test.setTimeout(120_000);
+    await page.goto('/c/pc/elektronik-0j5i6g1b/', { waitUntil: 'domcontentloaded' });
+
+    const cartBtn = page.locator('[data-add-product-cart]').first();
+    if (!(await cartBtn.count())) {
+      test.info().annotations.push({
+        type: 'note',
+        description: 'No data-add-product-cart control on category page; skipped',
+      });
+      return;
+    }
+
+    const productId = await cartBtn.getAttribute('data-add-product-cart');
+    expect(productId).toBeTruthy();
+
+    const responsePromise = page.waitForResponse(
+      (r) => /\/Payment\/AddToCart|\/payment\/addtocart/i.test(r.url()),
+      { timeout: 20_000 }
+    );
+
+    // Click the inner span text (the failure mode of reading e.target attributes).
+    const label = cartBtn.locator('span').first();
+    if (await label.count()) {
+      await label.click({ force: true });
+    } else {
+      await cartBtn.click({ force: true });
+    }
+
+    const resp = await responsePromise;
+    expect(resp.status(), 'AddToCart from span click').toBeLessThan(500);
+    const body = (await resp.text()).toLowerCase();
+    expect(body, 'AddToCart should not return bare failed for a valid product').not.toBe('failed');
+  });
 });
