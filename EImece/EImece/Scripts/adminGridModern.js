@@ -352,6 +352,17 @@
             return;
         }
 
+        var mobileTreeMq = window.matchMedia('(max-width: 991px)');
+
+        function syncMobileTreeCollapse($tree) {
+            var selectedId = String($tree.attr('data-selected-id') || '0');
+            var hasSelection = selectedId && selectedId !== '0';
+            var collapsed = mobileTreeMq.matches && !hasSelection;
+            $tree.toggleClass('is-mobile-collapsed', collapsed);
+            $tree.find('> .eg-category-tree-head .eg-category-tree-toggle')
+                .attr('aria-expanded', collapsed ? 'false' : 'true');
+        }
+
         $trees.each(function () {
             var $tree = $(this);
             var selectedId = String($tree.attr('data-selected-id') || '0');
@@ -372,6 +383,7 @@
                     }
                 });
             }
+            syncMobileTreeCollapse($tree);
         });
 
         $(document).on('click', '[data-eg-category-tree] .eg-tree-toggle', function (e) {
@@ -383,6 +395,50 @@
             $node.toggleClass('is-open', open);
             $btn.attr('aria-expanded', open ? 'true' : 'false');
         });
+
+        $(document).on('click', '[data-eg-category-tree] .eg-category-tree-toggle', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!mobileTreeMq.matches) {
+                return;
+            }
+            var $btn = $(this);
+            var $tree = $btn.closest('[data-eg-category-tree]');
+            var collapsed = !$tree.hasClass('is-mobile-collapsed');
+            $tree.toggleClass('is-mobile-collapsed', collapsed);
+            $btn.attr('aria-expanded', collapsed ? 'false' : 'true');
+        });
+
+        function onTreeMqChange() {
+            $trees.each(function () {
+                syncMobileTreeCollapse($(this));
+            });
+        }
+        if (mobileTreeMq.addEventListener) {
+            mobileTreeMq.addEventListener('change', onTreeMqChange);
+        } else if (mobileTreeMq.addListener) {
+            mobileTreeMq.addListener(onTreeMqChange);
+        }
+    }
+
+    function wireOpsMore() {
+        var $more = $('details.eg-ops-more');
+        if (!$more.length) {
+            return;
+        }
+        var mq = window.matchMedia('(max-width: 767px)');
+        function sync() {
+            $more.each(function () {
+                // Desktop: keep bulk toolbar expanded. Mobile: collapse so Sil/search stay secondary.
+                this.open = !mq.matches;
+            });
+        }
+        sync();
+        if (mq.addEventListener) {
+            mq.addEventListener('change', sync);
+        } else if (mq.addListener) {
+            mq.addListener(sync);
+        }
     }
 
     $(function () {
@@ -393,6 +449,7 @@
         wireLoadingState();
         wireActionMenus();
         wireCategoryTree();
+        wireOpsMore();
     });
 
     // Re-mark after Grid.Mvc AJAX redraws

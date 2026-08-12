@@ -3219,6 +3219,15 @@ body.admin-app .admin-content .admin-home h2::after {
     color: inherit;
 }
 
+.admin-home__tile-chevron {
+    flex: 0 0 auto;
+    align-self: center;
+    margin-left: auto;
+    color: #9fb3c8;
+    font-size: 18px;
+    line-height: 1;
+}
+
 .admin-home__tile-icon {
     flex: 0 0 auto;
     display: inline-flex;
@@ -3257,6 +3266,10 @@ body.admin-app .admin-content .admin-home h2::after {
     color: var(--ah-muted);
 }
 
+.admin-home__search-btn-icon {
+    display: none;
+}
+
 @media (max-width: 767px) {
     .admin-home__hero {
         padding: 18px 16px;
@@ -3271,20 +3284,51 @@ body.admin-app .admin-content .admin-home h2::after {
         align-items: flex-start;
     }
 
+    /* Keep search on one compact row — icon submit instead of full-width Ara */
+    .admin-home__search {
+        margin-bottom: 18px;
+    }
+
     .admin-home__search-box {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        min-height: 44px;
+    }
+
+    .admin-home__search-icon {
+        flex-basis: 40px;
+        width: 40px;
+        height: 44px;
     }
 
     .admin-home__search-input {
-        width: 100%;
+        width: auto;
+        flex: 1 1 auto;
+        min-width: 0;
+        height: 44px !important;
+        line-height: 44px;
         font-size: 16px;
+        padding-right: 8px !important;
     }
 
     .admin-home__search-btn {
-        width: 100%;
+        flex: 0 0 48px;
+        width: 48px;
+        min-width: 48px;
+        min-height: 44px;
+        padding: 0 !important;
         justify-content: center;
-        border-left: 0;
-        border-top: 1px solid var(--ah-border);
+        border-left: 1px solid var(--ah-border) !important;
+        border-top: 0 !important;
+    }
+
+    .admin-home__search-btn-label {
+        display: none;
+    }
+
+    .admin-home__search-btn-icon {
+        display: inline-block;
+        font-size: 16px;
+        line-height: 1;
     }
 
     .admin-home__grid {
@@ -3293,6 +3337,13 @@ body.admin-app .admin-content .admin-home h2::after {
     }
 
     .admin-home__tile {
+        align-items: center;
         min-height: 72px;
+        padding-right: 10px;
+    }
+
+    .admin-home__tile-chevron {
+        font-size: 20px;
+        color: #829ab1;
     }
 }

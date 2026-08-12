@@ -23,20 +23,29 @@
     string allHref = string.IsNullOrEmpty(urlPattern)
         ? "#"
         : string.Format("{0}{1}{2}", urlPattern, 0, querySuffix);
+    // Collapse by default on mobile unless a category is already selected.
+    var mobileCollapsedClass = selectedCategoryId > 0 ? "" : "is-mobile-collapsed";
+    var treeToggleExpanded = selectedCategoryId > 0 ? "true" : "false";
 }
-<div class="eg-category-tree" data-eg-category-tree="1" data-selected-id="@selectedCategoryId">
+<div class="eg-category-tree @mobileCollapsedClass" data-eg-category-tree="1" data-selected-id="@selectedCategoryId">
     <div class="eg-category-tree-head">
-        <div class="eg-category-tree-title">
-            <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
-            <span>Kategoriler</span>
-        </div>
+        <button type="button"
+                class="eg-category-tree-toggle"
+                aria-expanded="@treeToggleExpanded"
+                title="Kategori listesini aç/kapat">
+            <span class="eg-category-tree-title">
+                <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
+                <span>Kategoriler</span>
+            </span>
+            <i class="glyphicon glyphicon-chevron-down eg-category-tree-chevron" aria-hidden="true"></i>
+        </button>
         @if (showAllLink && !string.IsNullOrEmpty(urlPattern))
         {
             <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm ürünler">Tümü</a>
         }
     </div>
 
-    <ul class="treeProducts eg-tree" id="responsive">
+    <ul class="treeProducts eg-tree eg-category-tree-body" id="responsive">
         @foreach (ProductCategoryTreeModel p in treeNodes)
         {
             var productCategory = p.ProductCategory;

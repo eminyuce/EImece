@@ -1550,6 +1550,30 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
     border-bottom: 1px solid var(--eg-border);
 }
 
+.eg-category-tree-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: default;
+}
+
+.eg-category-tree-chevron {
+    display: none;
+    flex: 0 0 auto;
+    color: var(--eg-text-muted);
+    font-size: 12px;
+    transition: transform 140ms ease;
+}
+
 .eg-category-tree-title {
     display: inline-flex;
     align-items: center;
@@ -1763,6 +1787,38 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
 @media (max-width: 991px) {
     .eg-products-tree-col {
         width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Accordion category tree — one compact header by default on phones/tablets
+       so filters / search / Yeni Giriş stay near the top of the fold. */
+    .eg-category-tree-toggle {
+        min-height: 44px;
+        padding: 4px 0;
+        cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .eg-category-tree-chevron {
+        display: inline-block;
+    }
+
+    .eg-category-tree.is-mobile-collapsed .eg-category-tree-chevron {
+        transform: rotate(-90deg);
+    }
+
+    .eg-category-tree.is-mobile-collapsed > .eg-category-tree-body,
+    .eg-category-tree.is-mobile-collapsed > ul.treeProducts.eg-tree {
+        display: none !important;
+    }
+
+    .eg-category-tree.is-mobile-collapsed {
+        max-height: none;
+    }
+
+    .eg-category-tree.is-mobile-collapsed .eg-category-tree-head {
+        border-bottom: 0;
     }
 }
 
@@ -2530,5 +2586,303 @@ body.admin-app .eg-grid .grid-wrap {
     body.admin-app .eg-grid .eg-state-badge {
         max-width: 100%;
         box-sizing: border-box;
+    }
+}
+
+/* ==========================================================================
+   Bulk toolbar: collapse secondary/destructive actions on phones
+   Intent: Yeni Giriş + search stay first; Sil is not a full-width hero control.
+   Desktop (≥768px): <details> stays open via JS; summary is hidden.
+   ========================================================================== */
+.eg-ops-more {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.eg-ops-more-summary {
+    display: none;
+    list-style: none;
+}
+
+.eg-ops-more-summary::-webkit-details-marker {
+    display: none;
+}
+
+.eg-ops-more-summary-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--eg-text);
+}
+
+.eg-ops-more-hint {
+    color: var(--eg-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 767px) {
+    .admin-grid-ops.eg-bulk-bar .panel-body {
+        padding: 12px;
+    }
+
+    .eg-ops-more-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-height: 44px;
+        margin: 0 0 10px;
+        padding: 8px 12px;
+        border: 1px solid var(--eg-border);
+        border-radius: 10px;
+        background: #fff;
+        cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .eg-ops-more[open] > .eg-ops-more-summary {
+        margin-bottom: 10px;
+        border-color: var(--eg-border-strong);
+        background: var(--eg-surface-muted);
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-toolbar {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-group,
+    .admin-grid-ops.eg-bulk-bar .admin-grid-toolbar-group {
+        width: auto;
+        flex: 1 1 auto;
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-group-select {
+        display: inline-flex;
+        flex: 1 1 100%;
+        gap: 6px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-group-select .eg-ops-btn {
+        flex: 1 1 0;
+    }
+
+    /* Demote destructive delete — compact outline, never the largest control */
+    .admin-grid-ops.eg-bulk-bar .eg-ops-group-danger {
+        flex: 0 0 auto;
+        width: auto;
+        margin-left: auto;
+        border-bottom: 0;
+        padding-top: 4px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn-danger,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-danger {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-width: 44px;
+        min-height: 36px !important;
+        height: 36px;
+        padding: 0 12px !important;
+        font-size: 12px !important;
+        background: #fff !important;
+        border: 1px solid #f3b0ab !important;
+        color: var(--eg-danger) !important;
+        box-shadow: none !important;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn-danger:hover,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn-danger:focus,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-danger:hover,
+    .admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-danger:focus {
+        background: var(--eg-danger-bg) !important;
+        border-color: var(--eg-danger) !important;
+        color: var(--eg-danger) !important;
+    }
+
+    /* Primary path: add + search first, export as secondary row */
+    .admin-grid-ops.eg-bulk-bar .eg-ops-primary {
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .admin-grid-ops.eg-bulk-bar .eg-ops-export {
+        order: 3;
+    }
+}
+
+/* ==========================================================================
+   Orders grid — card rows on phones so status text is fully readable
+   Desktop table layout unchanged (≥768px).
+   ========================================================================== */
+@media (max-width: 767px) {
+    body.admin-app .eg-orders-grid .eg-grid,
+    body.admin-app .eg-orders-grid .grid-wrap,
+    body.admin-app .eg-orders-grid .eg-grid-scroll {
+        overflow-x: visible !important;
+        background: transparent !important;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table,
+    body.admin-app .eg-orders-grid .grid-table > thead,
+    body.admin-app .eg-orders-grid .grid-table > tbody,
+    body.admin-app .eg-orders-grid .grid-table > thead > tr,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr,
+    body.admin-app .eg-orders-grid .grid-table > thead > tr > th,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        height: auto !important;
+        box-sizing: border-box;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table {
+        table-layout: auto !important;
+        border: 0 !important;
+        background: transparent;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > thead {
+        display: none !important;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr {
+        margin: 0 0 12px;
+        padding: 12px 12px 10px;
+        border: 1px solid var(--eg-border);
+        border-radius: 12px;
+        background: #fff !important;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr:hover > td,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td {
+        background: transparent !important;
+        border: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* Card chrome: index + checkbox + actions on one row */
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr {
+        display: grid !important;
+        grid-template-columns: auto auto 1fr auto;
+        grid-template-areas:
+            "index check name actions"
+            "status status status status"
+            "amount amount amount amount";
+        column-gap: 8px;
+        row-gap: 8px;
+        align-items: center;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-index {
+        grid-area: index;
+        width: auto !important;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-check,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.gridButtons {
+        grid-area: check;
+        width: auto !important;
+        max-width: none !important;
+        overflow: visible;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-name {
+        grid-area: name;
+        min-width: 0 !important;
+        max-width: none !important;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-actions {
+        grid-area: actions;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        justify-self: end;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-state,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-order-status {
+        grid-area: status;
+        width: 100% !important;
+        max-width: none !important;
+        padding-top: 4px !important;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-order-amount {
+        grid-area: amount;
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+        color: var(--eg-text-muted);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* Hide secondary order fields in the card (details page covers the rest) */
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-secondary,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.gridDateClass {
+        display: none !important;
+    }
+
+    body.admin-app .eg-orders-grid .eg-order-status-badge,
+    body.admin-app .eg-orders-grid .eg-state-badge {
+        display: inline-flex !important;
+        align-items: center;
+        width: auto;
+        max-width: 100% !important;
+        min-height: 32px;
+        padding: 6px 12px !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        line-height: 1.35 !important;
+        font-size: 13px !important;
+        font-weight: 700;
+        border-radius: 999px;
+        word-break: normal;
+        overflow-wrap: anywhere;
+    }
+
+    body.admin-app .eg-orders-grid .eg-name-link {
+        -webkit-line-clamp: unset;
+        display: inline-block;
+        font-size: 15px;
+    }
+
+    body.admin-app .eg-orders-grid .eg-actions-compact {
+        justify-content: flex-end;
+    }
+}
+
+/* Tablet bridge: keep order status readable even before card layout */
+@media (max-width: 991px) {
+    body.admin-app .eg-orders-grid .eg-order-status-badge,
+    body.admin-app .eg-orders-grid .eg-col-order-status .eg-state-badge {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        max-width: none !important;
+        line-height: 1.35;
+    }
+
+    body.admin-app .eg-orders-grid .grid-table > thead > tr > th.eg-col-order-status,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-order-status,
+    body.admin-app .eg-orders-grid .grid-table > thead > tr > th.eg-col-state,
+    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-state {
+        min-width: 160px;
+        max-width: none;
+        white-space: normal;
     }
 }
