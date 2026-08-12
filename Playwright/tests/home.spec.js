@@ -35,6 +35,15 @@ test.describe('Crizal Home', () => {
     // Visible Crizal CTA (hero uses butn-style8; header About is xxl-only/hidden)
     await expect(page.locator('main .butn-style8, .slider-fade3 .butn-style8').first()).toBeVisible();
 
+    // Home must appear once in primary nav (hardcoded + CMS home-index used to duplicate)
+    const homeNavLinks = page.locator('#nav > li > a').filter({ hasText: /ana\s*sayfa|home/i });
+    await expect(homeNavLinks).toHaveCount(1);
+
+    // Hero must not dump raw media filenames as visible text
+    const bodyText = await page.locator('main').innerText();
+    expect(bodyText).not.toMatch(/product-\d+\.jpg/i);
+    expect(bodyText).not.toMatch(/Eimece Media/i);
+
     await page.waitForTimeout(1500);
     const consoleErrors = filterConsoleNoise(issues.consoleErrors);
     const assetFails = filterAssetFailures(issues.failedRequests);
@@ -42,5 +51,46 @@ test.describe('Crizal Home', () => {
     expect(assetFails, `Failed assets: ${JSON.stringify(assetFails, null, 2)}`).toEqual([]);
 
     await page.screenshot({ path: 'screenshots/home.png', fullPage: true });
+  });
+
+  test('product detail does not dump media filenames', async ({ page }) => {
+    await page.goto('/');
+    await assertCrizalChrome(page);
+    const pdp = page.locator('a[href*="/p/"]').first();
+    test.skip(!(await pdp.count()), 'No product detail link on home');
+    await pdp.click();
+    await page.waitForLoadState('domcontentloaded');
+    await assertCrizalChrome(page);
+    const text = await page.locator('main').innerText();
+    expect(text).not.toMatch(/Eimece Media/i);
+    expect(text).not.toMatch(/product-\d+\.jpg/i);
+    await expect(page.locator('.product-gallery').first()).toBeVisible();
+  });
+
+  test('mobile newsletter email is not covered by chat FAB', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await assertCrizalChrome(page);
+
+    const email = page.locator('#SubscribeEmailText');
+    await expect(email).toBeVisible();
+    await email.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(900);
+
+    const hit = await page.evaluate(() => {
+      const input = document.querySelector('#SubscribeEmailText');
+      if (!input) return { ok: false, reason: 'missing-input' };
+      const r = input.getBoundingClientRect();
+      const x = r.left + Math.min(24, r.width / 3);
+      const y = r.top + r.height / 2;
+      const el = document.elementFromPoint(x, y);
+      const covers = !!(el && el !== input && !input.contains(el) && !el.closest('.crizal-home-subscribe'));
+      return {
+        ok: !covers,
+        hit: el && { tag: el.tagName, id: el.id, cls: String(el.className || '').slice(0, 80) },
+      };
+    });
+
+    expect(hit.ok, `newsletter input covered by ${JSON.stringify(hit.hit)}`).toBeTruthy();
   });
 });

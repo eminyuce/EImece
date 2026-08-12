@@ -148,7 +148,13 @@
                     {
                         <li class="active">
                             <a href="#one">
-                                <img alt="@product.Name" src="@mainImageThbImgSrc" width="95" height="105" />
+                                <img alt=""
+                                     src="@mainImageThbImgSrc"
+                                     width="95"
+                                     height="105"
+                                     loading="lazy"
+                                     decoding="async"
+                                     onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
                             </a>
                         </li>
                     }
@@ -158,22 +164,41 @@
                         var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 95, 105);
                         <li class="">
                             <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
-                                <img alt="@f.Name" src="@imgTag" />
+                                <img alt=""
+                                     src="@imgTag"
+                                     width="95"
+                                     height="105"
+                                     loading="lazy"
+                                     decoding="async"
+                                     onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
                             </a>
                         </li>
                     }
                 </ul>
                 <div class="product-carousel owl-carousel">
-                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgSrc))
+                    @{
+                        // Prefer resize-proxy URLs (handles seed placeholders without filename dumps).
+                        // Avoid static /media/images/{FileName} which may still be on-disk seed art.
+                        var mainDisplaySrc = !string.IsNullOrEmpty(mainImageImgSrcUrl)
+                            ? mainImageImgSrcUrl
+                            : EImece.Domain.AppConfig.GetDefaultImage("w610h610");
+                    }
+                    @if (product.ImageState && productMainImageId > 0)
                     {
-                        <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
-                            <img src="@mainImageImgSrc" width="610" height="610" alt="@product.Name">
+                        <a href="@mainDisplaySrc" data-fancybox="prod-gallery" data-hash="one" class="crizal-product-media">
+                            <img src="@mainDisplaySrc"
+                                 width="610"
+                                 height="610"
+                                 alt="@product.Name"
+                                 loading="eager"
+                                 decoding="async"
+                                 onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
                         </a>
                     }
                     else
                     {
-                        <a href="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" data-fancybox="prod-gallery" data-hash="one">
-                            <img src="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" width="610" height="610" alt="Product">
+                        <a href="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" data-fancybox="prod-gallery" data-hash="one" class="crizal-product-media">
+                            <img src="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" width="610" height="610" alt="@product.Name" loading="eager" decoding="async">
                         </a>
                     }
                     @for (int i = 0; i < productFiles.Count; i++)
@@ -182,8 +207,12 @@
                         var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
                         if (!string.IsNullOrEmpty(imgTag))
                         {
-                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
-                                <img src="@imgTag" alt="@f.Name">
+                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))" class="crizal-product-media">
+                                <img src="@imgTag"
+                                     alt=""
+                                     loading="lazy"
+                                     decoding="async"
+                                     onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
                             </a>
                         }
                     }

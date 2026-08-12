@@ -183,14 +183,19 @@ body[data-design="crizal"] .attr-nav > ul > li > a {
     body[data-design="crizal"] .navbar-default .navbar-nav > li {
         float: none;
         width: auto !important;
-        margin-left: 0.1rem;
+        margin-left: 0.35rem;
         border-top: 0;
+    }
+
+    /* DESIGN-005: Giriş/Hesabım text lives in the mobile menu only; desktop uses attr-nav icon */
+    body[data-design="crizal"] .navbar-default .navbar-nav > li.crizal-nav-account {
+        display: none !important;
     }
 
     body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
         font-size: 0.72rem;
         letter-spacing: 0.01em;
-        padding: 1.15rem 0.28rem;
+        padding: 1.15rem 0.42rem;
         line-height: 1.15;
         white-space: nowrap;
     }
@@ -486,6 +491,11 @@ body[data-design="crizal"] .crizal-customer-login__meta {
     justify-content: space-between;
     gap: 0.75rem 1rem;
     margin: 0.25rem 0 1.1rem;
+    min-width: 0;
+}
+
+body[data-design="crizal"] .crizal-customer-login__meta > * {
+    min-width: 0;
 }
 
 body[data-design="crizal"] .crizal-customer-login__forgot {
@@ -494,6 +504,9 @@ body[data-design="crizal"] .crizal-customer-login__forgot {
     color: var(--crizal-secondary);
     text-decoration: underline;
     text-underline-offset: 2px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    max-width: 100%;
 }
 
 body[data-design="crizal"] .crizal-customer-login__forgot:hover {
@@ -560,15 +573,32 @@ body[data-design="crizal"] a.butn-style8.outline:hover {
 
     body[data-design="crizal"] .crizal-customer-login__panel {
         grid-template-columns: 1fr;
+        overflow: visible;
     }
 
     body[data-design="crizal"] .crizal-customer-login__intro,
     body[data-design="crizal"] .crizal-customer-login__form-wrap {
         padding: 1.75rem 1.35rem;
+        overflow: visible;
+        min-width: 0;
     }
 
     body[data-design="crizal"] .crizal-customer-login__benefits li:last-child {
         display: none;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body[data-design="crizal"] .crizal-customer-login__meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.65rem;
+    }
+
+    body[data-design="crizal"] .crizal-customer-login__forgot {
+        display: inline-block;
+        width: 100%;
+        line-height: 1.35;
     }
 }
 
@@ -652,9 +682,13 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
+    body[data-design="crizal"] .navbar-default .navbar-nav > li {
+        margin-left: 0.2rem;
+    }
+
     body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
-        font-size: 0.72rem;
-        padding: 1rem 0.25rem;
+        font-size: 0.7rem;
+        padding: 1rem 0.32rem;
         letter-spacing: 0;
     }
 }
@@ -685,11 +719,32 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
 }
 
 @media (max-width: 991.98px) {
+    /* Tighter top bar + tap-friendly phone/email row */
+    body[data-design="crizal"] .top-bar {
+        padding: 0.5rem 0.85rem;
+    }
+
+    body[data-design="crizal"] .top-bar-info ul {
+        padding-left: 0;
+        margin: 0;
+    }
+
+    body[data-design="crizal"] .top-bar-info li {
+        padding: 0.2rem 0.15rem;
+        font-size: 0.8125rem;
+        line-height: 1.35;
+    }
+
+    body[data-design="crizal"] .top-bar-info li i {
+        margin-right: 0.4rem;
+    }
+
     /* Restore Crizal nav-menu.css mobile dropdown (overrides desktop flex polish) */
     body[data-design="crizal"] .navbar-default .navbar {
         flex-wrap: nowrap;
         align-items: center;
         position: relative;
+        min-height: 3.5rem;
     }
 
     body[data-design="crizal"] .navbar-default .navbar-header,
@@ -699,6 +754,13 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
         margin-right: 0.5rem;
         min-width: 0;
         z-index: 5;
+        padding: 0.35rem 0 !important;
+    }
+
+    body[data-design="crizal"] .navbar-default .navbar-brand img,
+    body[data-design="crizal"] #logo {
+        max-height: 44px;
+        max-width: 132px;
     }
 
     body[data-design="crizal"] .attr-nav {
@@ -712,15 +774,37 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
         z-index: 5;
     }
 
+    body[data-design="crizal"] .attr-nav > ul > li > a,
+    body[data-design="crizal"] .attr-nav > ul > li.search > a {
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.45rem !important;
+    }
+
     body[data-design="crizal"] .navbar-toggler {
         order: 3;
         flex: 0 0 auto;
         position: absolute;
         right: 0;
-        top: 13px;
-        transform: none;
+        top: 50%;
+        transform: translateY(-50%);
         margin: 0;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
         z-index: 12399994;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    body[data-design="crizal"] .attr-nav > ul > li.search {
+        display: inline-block !important;
+        visibility: visible !important;
     }
 
     body[data-design="crizal"] .navbar-default .navbar-nav,
@@ -839,9 +923,9 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
         font-size: 1rem;
     }
 
-    /* Mobile: hide desktop-only account icon (Bootstrap d-lg may be overridden elsewhere) */
-    body[data-design="crizal"] .attr-nav > ul > li.d-lg-inline-block {
-        display: none !important;
+    /* Account icon stays visible on mobile (DESIGN-005); About CTA still xxl-only via Bootstrap */
+    body[data-design="crizal"] .attr-nav > ul > li.crizal-account-nav {
+        display: inline-block !important;
     }
 
     /*

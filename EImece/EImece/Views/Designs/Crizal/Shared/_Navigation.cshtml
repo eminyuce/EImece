@@ -2,6 +2,7 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.FrontModels;
+@using Resources;
 @model NavigationModel
 @{
     var productCategories = Model.ProductCategories;
@@ -9,14 +10,20 @@
     var pageAction = (HtmlRequestHelper.Action() ?? string.Empty).ToLowerInvariant();
     var isHome = pageController == "home" && pageAction == "index";
     var isProductArea = pageController == "productcategories" || pageController == "products";
+    var homeHref = Url.Action("Index", "Home") ?? "/";
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
+    var isAccountArea = pageController == "account"
+        || (Request.RequestContext != null
+            && Request.RequestContext.RouteData != null
+            && string.Equals(Convert.ToString(Request.RequestContext.RouteData.DataTokens["area"]), "customers", StringComparison.OrdinalIgnoreCase));
 }
 
 <ul class="navbar-nav ms-auto" id="nav" style="display: none;">
     <li class="@(isHome ? "active current" : null)">
-        <a href="@Url.Action("Index", "Home")">@Resources.Resource.HomePage</a>
+        <a href="@homeHref">@Resource.HomePage</a>
     </li>
     <li class="@(isProductArea ? "active current" : null)">
-        <a href="#!">@Resources.Resource.ProductCategories</a>
+        <a href="#!">@Resource.ProductCategories</a>
         <ul>
             @for (int i = 0; i < productCategories.Count; i++)
             {
@@ -24,7 +31,20 @@
             }
         </ul>
     </li>
-    @CreateMenuTree(Model)
+    @CreateMenuTree(Model, homeHref)
+    @if (productPriceEnabled)
+    {
+        <li class="crizal-nav-account d-lg-none @(isAccountArea ? "active current" : null)">
+            @if (Request.IsAuthenticated)
+            {
+                <a href="@Url.Action("index", "home", new { area = "customers" })">@Resource.MyAccount</a>
+            }
+            else
+            {
+                <a href="@Url.Action("login", "account")">@Resource.SignInOrUp</a>
+            }
+        </li>
+    }
 </ul>
 
 @helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)
@@ -49,10 +69,14 @@
     }
 }
 
-@helper CreateMenuTree(NavigationModel navigationMenu)
+@helper CreateMenuTree(NavigationModel navigationMenu, string homeHref)
 {
     foreach (var menu in navigationMenu.Menus)
     {
+        if (menu == null || menu.Menu == null || IsDuplicateHomeMenu(menu.Menu, homeHref))
+        {
+            continue;
+        }
         @CreateMenuChildrenTree(menu)
     }
 }
@@ -100,5 +124,61 @@
         <li class="@activeClass">
             <a href="@menu.DetailPageLink">@menu.Name</a>
         </li>
+    }
+}
+
+@functions {
+    /// <summary>
+    /// Crizal nav already emits a dedicated Home link. Skip CMS "Ana Sayfa" / home-index
+    /// roots so Home does not appear twice.
+    /// </summary>
+    bool IsDuplicateHomeMenu(Menu menu, string homeHref)
+    {
+        if (menu == null)
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(menu.MenuLink)
+            && menu.MenuLink.Equals("home-index", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(menu.Name)
+            && menu.Name.Equals(Resource.HomePage, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        var detail = menu.DetailPageLink;
+        if (string.IsNullOrWhiteSpace(detail) || detail == "#" || detail == "#!")
+        {
+            return false;
+        }
+
+        return PathsEqual(detail, homeHref) || PathsEqual(detail, "/");
+    }
+
+    bool PathsEqual(string a, string b)
+    {
+        if (string.IsNullOrWhiteSpace(a) || string.IsNullOrWhiteSpace(b))
+        {
+            return false;
+        }
+
+        return NormalizeNavPath(a) == NormalizeNavPath(b);
+    }
+
+    string NormalizeNavPath(string value)
+    {
+        Uri abs;
+        if (Uri.TryCreate(value, UriKind.Absolute, out abs))
+        {
+            value = abs.AbsolutePath;
+        }
+
+        value = value.Split('?')[0].Trim().TrimEnd('/');
+        return string.IsNullOrEmpty(value) ? "/" : value.ToLowerInvariant();
     }
 }

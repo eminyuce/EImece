@@ -9,7 +9,17 @@
 
 @{
     bool IsAdditionalComment = ViewData["IsAdditionalComment"].ToBool(false);
-    bool anyProducts = ViewData["AnyProducts"].ToBool(false);
+    bool modelHasProducts = Model != null && Model.ShoppingCartItems.IsNotEmpty();
+    // Prefer explicit ViewData from ShoppingCart; otherwise infer from the session model
+    // so checkout pages that omit AnyProducts still render the summary.
+    bool anyProducts = ViewData["AnyProducts"] != null
+        ? ViewData["AnyProducts"].ToBool(false)
+        : modelHasProducts;
+    // DESIGN-008: do not show order summary / free-shipping badge on an empty cart
+    if (!anyProducts)
+    {
+        return;
+    }
 }
 <!-- Sidebar-->
 <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">

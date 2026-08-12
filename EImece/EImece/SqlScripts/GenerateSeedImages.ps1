@@ -112,17 +112,14 @@ function New-SeedJpeg {
             $g.FillRectangle($panelBrush, [int]($ImgWidth * 0.08), [int]($ImgHeight * 0.12), [int]($ImgWidth * 0.84), [int]($ImgHeight * 0.76))
             $panelBrush.Dispose()
 
-            $font = New-Object System.Drawing.Font "Segoe UI", ([Math]::Max(14, [int]($ImgWidth / 28))), ([System.Drawing.FontStyle]::Bold)
-            $brush = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(230, 255, 255, 255))
-            $sf = New-Object System.Drawing.StringFormat
-            $sf.Alignment = [System.Drawing.StringAlignment]::Center
-            $sf.LineAlignment = [System.Drawing.StringAlignment]::Center
-            $rect = New-Object System.Drawing.RectangleF 0, 0, $ImgWidth, $ImgHeight
-            $g.DrawString($Label, $font, $brush, $rect, $sf)
+            # Soft light veil only — never burn filenames / "EImece Media …" into pixels.
+            $veil = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(48, 255, 255, 255))
+            $g.FillEllipse($veil, [int]($ImgWidth * 0.42), [int](-$ImgHeight * 0.12), [int]($ImgWidth * 0.72), [int]($ImgHeight * 0.68))
+            $veil.Dispose()
 
-            $font.Dispose()
-            $brush.Dispose()
-            $sf.Dispose()
+            $veil2 = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(36, 0, 0, 0))
+            $g.FillEllipse($veil2, [int](-$ImgWidth * 0.18), [int]($ImgHeight * 0.38), [int]($ImgWidth * 0.62), [int]($ImgHeight * 0.78))
+            $veil2.Dispose()
         }
         finally {
             $g.Dispose()
@@ -182,10 +179,9 @@ foreach ($name in $fileNames) {
     $fullPath = Join-Path $MediaRoot $safeName
     $thumbPath = Join-Path $thumbRoot ("thb" + $safeName)
     $color = $palette[($index - 1) % $palette.Count]
-    $label = "EImece Media`n$safeName"
 
-    New-SeedJpeg -Path $fullPath -ImgWidth $Width -ImgHeight $Height -Label $label -BackColor $color
-    New-SeedJpeg -Path $thumbPath -ImgWidth $ThumbWidth -ImgHeight $thumbHeight -Label $safeName -BackColor $color
+    New-SeedJpeg -Path $fullPath -ImgWidth $Width -ImgHeight $Height -Label "" -BackColor $color
+    New-SeedJpeg -Path $thumbPath -ImgWidth $ThumbWidth -ImgHeight $thumbHeight -Label "" -BackColor $color
     $written++
 
     if ($written % 50 -eq 0) {

@@ -292,26 +292,28 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 return String.Empty;
             }
-            else
-            {
-                if (mainImage.FileName.Equals(FilesHelper.EXTERNAL_IMAGE))
-                {
-                    return mainImage.FileUrl;
-                }
-                else
-                {
-                    string imagePath = Constants.UrlBase + mainImage.FileName;
-                    String fullPath = Path.Combine(AppConfig.StorageRoot, mainImage.FileName);
 
-                    if (isThump)
-                    {
-                        string fileName = mainImage.FileName;
-                        string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
-                        imagePath = Path.Combine(partThumb1, "thb" + fileName);
-                    }
-                    return imagePath;
-                }
+            if (FilesHelper.IsSeedPlaceholderMedia(mainImage))
+            {
+                // Force callers to use GetCroppedImageUrl / default placeholder instead of
+                // static /media/images seed JPEGs that used to embed filenames as pixels.
+                return string.Empty;
             }
+
+            if (mainImage.FileName.Equals(FilesHelper.EXTERNAL_IMAGE))
+            {
+                return mainImage.FileUrl;
+            }
+
+            string imagePath = Constants.UrlBase + mainImage.FileName;
+
+            if (isThump)
+            {
+                string fileName = mainImage.FileName;
+                string partThumb1 = Path.Combine(Constants.UrlBase, "thumbs");
+                imagePath = Path.Combine(partThumb1, "thb" + fileName);
+            }
+            return imagePath;
         }
 
         public static string GetFullPathImageUrlFromFileSystem(this BaseContent entity, bool isThump)
@@ -517,6 +519,12 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 var fileStorage = ResolveFileStorageForImageUrl(entity, fileStorageId);
                 if (fileStorage == null || string.IsNullOrWhiteSpace(fileStorage.FileName))
+                {
+                    return null;
+                }
+
+                // Seed demo thumbs still contain burned-in filenames — force resize proxy.
+                if (FilesHelper.IsSeedPlaceholderMedia(fileStorage))
                 {
                     return null;
                 }

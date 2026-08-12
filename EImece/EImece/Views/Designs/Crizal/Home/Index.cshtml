@@ -93,13 +93,26 @@
 @helper CreateMainPageImage(MainPageImage mainPageImage, bool isLcp, string brandName)
 {
     var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 1600, 900);
-    var loadingAttr = isLcp ? "eager" : "lazy";
-    var fetchPriorityAttr = isLcp ? "high" : "auto";
+    var hasImage = !string.IsNullOrWhiteSpace(imgLink);
+    // Direct /media/images fallback only for real uploads — never seed demo JPEGs
+    // (those historically burned "EImece Media {filename}" into the pixels).
+    var staticMediaUrl = "";
+    if (mainPageImage.MainImage != null
+        && !EImece.Domain.Helpers.FilesHelper.IsSeedPlaceholderMedia(mainPageImage.MainImage)
+        && !string.IsNullOrWhiteSpace(mainPageImage.MainImage.FileName)
+        && !mainPageImage.MainImage.FileName.Equals(EImece.Domain.Helpers.FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
+    {
+        staticMediaUrl = EImece.Domain.Constants.UrlBase + System.IO.Path.GetFileName(mainPageImage.MainImage.FileName);
+    }
     var lead = GeneralHelper.GetDescriptionWithBody(mainPageImage.Description, 110);
-    <div class="item crizal-home-hero__slide"
-         data-background="@imgLink"
-         style="background-image: url('@imgLink');">
+    var slideClass = hasImage ? "item crizal-home-hero__slide" : "item crizal-home-hero__slide crizal-home-hero__slide--placeholder";
+    // CSS url() must stay quoted so spaces in media filenames cannot break the background.
+    var bgStyle = hasImage ? ("background-image: url('" + imgLink.Replace("'", "%27") + "');") : null;
+    <div class="@slideClass"
+         @if (hasImage) { <text>data-background="@imgLink" data-hero-fallback="@staticMediaUrl" style="@bgStyle"</text> }>
         <div class="crizal-home-hero__veil" aria-hidden="true"></div>
+        @* Do NOT put a visible/sr-only <img> inside owl-carousel: .owl-item img { display:block;width:100% }
+           overrides .sr-only and dumps broken-image alt/filename text into the hero. *@
         <div class="container">
             <div class="crizal-home-hero__copy">
                 <p class="crizal-home-hero__brand">@brandName</p>
@@ -111,7 +124,6 @@
                 <a href="@mainPageImage.Link" class="butn-style8 crizal-home-hero__btn"><span>@Resource.ContinueShopping</span></a>
             </div>
         </div>
-        <img src="@imgLink" alt="@mainPageImage.Name" class="sr-only" loading="@loadingAttr" fetchpriority="@fetchPriorityAttr" width="1600" height="900" />
     </div>
 }
 

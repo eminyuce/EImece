@@ -156,12 +156,71 @@
         initProductGallery($);
         initRelatedCarousel($);
         initHomeHero($);
+        initChatFabSafeArea();
         initProductTabs($);
         initProductPanels($);
         initLeaveReviewModal($);
         initNavMenuBreakpoint($);
         initMobileSubmenuCleanup($);
         initMobileNavOpenClass($);
+    }
+
+    /**
+     * WhatsApp / chat FABs are often injected with inline position:fixed;left:…;bottom:…
+     * and cover the newsletter email field on ~390px. Park them bottom-right under 768px.
+     */
+    function initChatFabSafeArea() {
+        function parkRight(el) {
+            if (!el) {
+                return;
+            }
+            el.style.setProperty('left', 'auto', 'important');
+            el.style.setProperty('right', '1rem', 'important');
+            el.style.setProperty('bottom', '1rem', 'important');
+        }
+
+        function reposition() {
+            if (window.innerWidth > 767 || !document.body) {
+                return;
+            }
+
+            var known = document.querySelectorAll(
+                '#WAButton, .floating-wpp, .whatsapp-button, .whatsapp-float, .wa-float, .blantershow-chat,' +
+                ' a[href*="wa.me"], a[href*="api.whatsapp.com"], [id*="whatsapp"], [id*="WhatsApp"],' +
+                ' [class*="whatsapp"], [class*="WhatsApp"]'
+            );
+            for (var i = 0; i < known.length; i++) {
+                parkRight(known[i]);
+            }
+
+            // Late-injected widgets are usually direct body children
+            var kids = document.body.children;
+            for (var k = 0; k < kids.length; k++) {
+                var el = kids[k];
+                if (!el || el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.tagName === 'LINK') {
+                    continue;
+                }
+                var style = window.getComputedStyle(el);
+                if (style.position !== 'fixed') {
+                    continue;
+                }
+                var rect = el.getBoundingClientRect();
+                var nearBottomLeft = rect.bottom > window.innerHeight - 96
+                    && rect.left < 96
+                    && rect.width <= 88
+                    && rect.height <= 88
+                    && rect.width >= 36
+                    && rect.height >= 36;
+                if (nearBottomLeft) {
+                    parkRight(el);
+                }
+            }
+        }
+
+        reposition();
+        window.setTimeout(reposition, 800);
+        window.setTimeout(reposition, 2000);
+        window.addEventListener('resize', reposition);
     }
 
     function initMobileSubmenuCleanup($) {
@@ -285,7 +344,69 @@
         syncPanelLinks();
     }
 
+    function markHeroSlidePlaceholder(slide) {
+        if (!slide) {
+            return;
+        }
+        slide.classList.add('crizal-home-hero__slide--placeholder');
+        slide.style.backgroundImage = 'none';
+        slide.removeAttribute('data-background');
+    }
+
+    function applyHeroBackground(slide, url) {
+        if (!slide || !url) {
+            return;
+        }
+        var safe = String(url).replace(/'/g, '%27');
+        slide.style.backgroundImage = "url('" + safe + "')";
+        slide.setAttribute('data-background', url);
+        slide.classList.remove('crizal-home-hero__slide--placeholder');
+    }
+
+    /**
+     * Probe hero slide backgrounds. Missing media must never surface as a visible
+     * broken <img> / filename dump (owl forces .owl-item img display:block).
+     */
+    function ensureHeroSlideMedia(slide) {
+        if (!slide || !window.Image) {
+            return;
+        }
+        var primary = slide.getAttribute('data-background')
+            || (slide.style && slide.style.backgroundImage
+                ? String(slide.style.backgroundImage).replace(/^url\(["']?/, '').replace(/["']?\)$/, '')
+                : '');
+        var fallback = slide.getAttribute('data-hero-fallback') || '';
+        if (!primary) {
+            markHeroSlidePlaceholder(slide);
+            return;
+        }
+
+        var probe = new Image();
+        probe.onload = function () {
+            applyHeroBackground(slide, primary);
+        };
+        probe.onerror = function () {
+            if (fallback && fallback !== primary) {
+                var probe2 = new Image();
+                probe2.onload = function () {
+                    applyHeroBackground(slide, fallback);
+                };
+                probe2.onerror = function () {
+                    markHeroSlidePlaceholder(slide);
+                };
+                probe2.src = fallback;
+                return;
+            }
+            markHeroSlidePlaceholder(slide);
+        };
+        probe.src = primary;
+    }
+
     function initHomeHero($) {
+        $('.crizal-home-hero .crizal-home-hero__slide').each(function () {
+            ensureHeroSlideMedia(this);
+        });
+
         $('.crizal-home-hero .slider-fade3').each(function () {
             var $el = $(this);
             if (typeof $el.owlCarousel !== 'function') {

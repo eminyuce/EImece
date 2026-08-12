@@ -1820,6 +1820,24 @@ body[data-design="crizal"] .product-gallery .product-carousel img {
     height: auto;
 }
 
+/* Broken / missing product media: soft abstract block, never alt/filename text */
+body[data-design="crizal"] .product-gallery .product-carousel a.crizal-product-media,
+body[data-design="crizal"] .product-gallery .product-thumbnails li > a {
+    position: relative;
+    background:
+        radial-gradient(ellipse 70% 60% at 70% 30%, rgba(9, 184, 80, 0.22) 0%, transparent 55%),
+        linear-gradient(135deg, #14212B 0%, #1a3340 55%, #0f1a22 100%);
+}
+
+body[data-design="crizal"] .product-gallery img.is-broken {
+    opacity: 0 !important;
+    min-height: 12rem;
+}
+
+body[data-design="crizal"] .product-gallery .product-thumbnails img.is-broken {
+    min-height: 4.25rem;
+}
+
 body[data-design="crizal"] .product-gallery .owl-nav,
 body[data-design="crizal"] .product-gallery .owl-dots {
     display: none;
@@ -1890,9 +1908,17 @@ body[data-design="crizal"] .crizal-home-hero .slider-fade3 .item {
     margin: 0 !important;
     padding: 4.5rem 0 5rem !important;
     border-radius: 0 !important;
+    background-color: var(--crizal-secondary);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+/* Graceful missing-media state: atmospheric gradient, never raw filenames */
+body[data-design="crizal"] .crizal-home-hero__slide--placeholder {
+    background-image:
+        radial-gradient(ellipse 80% 70% at 70% 40%, rgba(9, 184, 80, 0.28) 0%, transparent 55%),
+        linear-gradient(135deg, #0f1a22 0%, #14212B 45%, #1a3340 100%) !important;
 }
 
 body[data-design="crizal"] .crizal-home-hero__veil {
@@ -1902,6 +1928,22 @@ body[data-design="crizal"] .crizal-home-hero__veil {
     pointer-events: none;
     background:
         linear-gradient(105deg, rgba(20, 33, 43, 0.94) 0%, rgba(20, 33, 43, 0.82) 38%, rgba(20, 33, 43, 0.55) 68%, rgba(20, 33, 43, 0.4) 100%);
+}
+
+/* Belt-and-suspenders: owl theme forces .owl-item img visible; keep any residual imgs hidden */
+body[data-design="crizal"] .crizal-home-hero .owl-item img,
+body[data-design="crizal"] .crizal-home-hero__slide img {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 body[data-design="crizal"] .crizal-home-hero__slide > .container {
@@ -2144,6 +2186,42 @@ body[data-design="crizal"] .crizal-home-category-card .crizal-card-body p {
 /* Subscribe band */
 body[data-design="crizal"] .crizal-home-subscribe {
     padding: 0 0 0.5rem;
+    position: relative;
+}
+
+/* Chat / WhatsApp FAB must not cover the newsletter email field on small screens */
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-home-subscribe {
+        padding-bottom: 1.25rem;
+    }
+
+    body[data-design="crizal"] .crizal-home-subscribe__form {
+        position: relative;
+        z-index: 2;
+    }
+
+    body[data-design="crizal"] .crizal-home-subscribe__row .form-control {
+        min-height: 2.75rem;
+    }
+
+    /* Move common floating chat widgets to bottom-right so the email field stays tappable */
+    body[data-design="crizal"] #WAButton,
+    body[data-design="crizal"] .floating-wpp,
+    body[data-design="crizal"] .whatsapp-button,
+    body[data-design="crizal"] .whatsapp-float,
+    body[data-design="crizal"] .wa-float,
+    body[data-design="crizal"] .blantershow-chat,
+    body[data-design="crizal"] a[href*="wa.me"][style*="position"],
+    body[data-design="crizal"] a[href*="api.whatsapp.com"][style*="position"],
+    body[data-design="crizal"] [class*="whatsapp"][style*="fixed"],
+    body[data-design="crizal"] [class*="WhatsApp"][style*="fixed"],
+    body[data-design="crizal"] [id*="whatsapp"],
+    body[data-design="crizal"] [id*="WhatsApp"] {
+        left: auto !important;
+        right: 1rem !important;
+        bottom: 1rem !important;
+        z-index: 1040 !important;
+    }
 }
 
 body[data-design="crizal"] .crizal-home-subscribe__panel {
@@ -3712,17 +3790,21 @@ body[data-design="crizal"] .crizal-review-modal .control-label {
 }
 
 /* ---------- Checkout wizard steps ---------- */
-body[data-design="crizal"] .steps {
+body[data-design="crizal"] .steps,
+body[data-design="crizal"] .steps.crizal-checkout-steps {
     margin: 0 0 1.5rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: visible;
 }
 
 body[data-design="crizal"] .steps-body {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 0.5rem;
-    min-width: min(100%, 42rem);
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
 }
 
 body[data-design="crizal"] .steps .step {
@@ -3732,6 +3814,7 @@ body[data-design="crizal"] .steps .step {
     align-items: center;
     justify-content: center;
     gap: 0.35rem;
+    min-width: 0;
     min-height: 4.25rem;
     padding: 0.75rem 0.5rem;
     text-align: center;
@@ -3787,6 +3870,66 @@ body[data-design="crizal"] .steps .step.step-done .step-indicator {
 
 body[data-design="crizal"] .steps .step .step-label {
     line-height: 1.2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+/* Desktop/tablet: keep a single row when there is room */
+@media (min-width: 768px) {
+    body[data-design="crizal"] .steps-body {
+        flex-wrap: nowrap;
+    }
+}
+
+/* Empty cart copy must wrap fully on ~390px (no horizontal clip) */
+body[data-design="crizal"] .crizal-cart-empty {
+    max-width: 100%;
+    overflow: visible;
+    background: var(--crizal-surface-alt, #f4f5f9);
+    border: 1px solid var(--crizal-border, #e6e8ef);
+    border-radius: var(--crizal-radius-lg, 0.75rem);
+    padding: 1.5rem 1.15rem;
+    margin: 0;
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 0.35rem 0.15rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner h1,
+body[data-design="crizal"] .crizal-cart-empty__inner .h2,
+body[data-design="crizal"] .crizal-cart-empty__inner p {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: 100%;
+    hyphens: auto;
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner h1,
+body[data-design="crizal"] .crizal-cart-empty__inner .h2 {
+    font-size: clamp(1.2rem, 4.8vw, 1.65rem);
+    line-height: 1.3;
+    margin: 0 0 0.75rem;
+    color: var(--crizal-heading, #14212b);
+}
+
+body[data-design="crizal"] .crizal-cart-empty__inner p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    body[data-design="crizal"] .crizal-cart-empty {
+        padding: 1.25rem 0.9rem;
+    }
 }
 
 /* Crizal shop/checkout blocks (from template shop-cart / shop-checkout) */
@@ -3900,12 +4043,45 @@ body[data-design="crizal"] .media.d-block.d-sm-flex {
 
     body[data-design="crizal"] .crizal-customer-login__form-wrap {
         padding: 1.35rem;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* Compact 2×2 stepper — no horizontal page scroll on ~390px */
+    body[data-design="crizal"] .steps,
+    body[data-design="crizal"] .steps.crizal-checkout-steps {
+        overflow-x: visible;
+    }
+
+    body[data-design="crizal"] .steps-body {
+        flex-wrap: wrap;
+        gap: 0.4rem;
     }
 
     body[data-design="crizal"] .steps .step {
-        min-width: 7.5rem;
-        font-size: 0.72rem;
-        min-height: 3.75rem;
+        flex: 1 1 calc(50% - 0.4rem);
+        min-width: 0;
+        max-width: calc(50% - 0.2rem);
+        font-size: 0.68rem;
+        min-height: 3.15rem;
+        padding: 0.5rem 0.35rem;
+        gap: 0.25rem;
+    }
+
+    body[data-design="crizal"] .steps .step .step-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    body[data-design="crizal"] .alert,
+    body[data-design="crizal"] .crizal-cart-empty,
+    body[data-design="crizal"] .common-block,
+    body[data-design="crizal"] .form-control,
+    body[data-design="crizal"] .needs-validation {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     body[data-design="crizal"] #ProceedToCheckout,
@@ -3913,5 +4089,7 @@ body[data-design="crizal"] .media.d-block.d-sm-flex {
         font-size: 0.95rem;
         padding-top: 0.85rem;
         padding-bottom: 0.85rem;
+        max-width: 100%;
+        white-space: normal;
     }
 }
