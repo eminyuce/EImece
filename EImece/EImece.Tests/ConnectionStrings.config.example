@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Optional: copy to ConnectionStrings.config (gitignored) for local/CI tests.
+  Prefer EIMECE_DB_CONNECTION_STRING. See docs/SECURE_CONNECTION_STRINGS.md.
+-->
+<connectionStrings>
+  <add name="EImeceDbConnection"
+       connectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
+       providerName="System.Data.SqlClient" />
+  <add name="EImeceDbConnectionNewSite"
+       connectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
+       providerName="System.Data.SqlClient" />
+</connectionStrings>

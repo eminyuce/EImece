@@ -318,6 +318,8 @@
     <Compile Include="Helpers\ImageUtilitiesTests.cs" />
     <Compile Include="Helpers\MemoryCacheProviderTests.cs" />
     <Compile Include="Helpers\ProductSortHelperTests.cs" />
+    <Compile Include="Helpers\CategorySlugHelperTests.cs" />
+    <Compile Include="Helpers\MenuPageNullSafetyTests.cs" />
     <Compile Include="Helpers\ProductCategorySortingTests.cs" />
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
     <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />

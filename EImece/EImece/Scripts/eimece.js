@@ -1,21 +1,24 @@
 ﻿
 
-$('[data-add-product-cart]').each(function () {
-    $(this).off("click");
-    $(this).on("click", function (e) {
-        e.preventDefault();
-        var caller = e.target;
-        var productId = $(caller).attr('data-add-product-cart');
-        var postData = JSON.stringify({
-            productId: productId,
-            quantity: 1,
-            orderGuid: getOrderGuid()
-        });
-        console.log(postData);
-        ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
-            console.log(data);
-            GetShoppingCartLinks();
-        });
+// Use currentTarget/this (not e.target): Crizal/Modern buttons wrap the label in <span>,
+// so clicks on the text would otherwise miss data-add-product-cart on the <button>.
+$(document).off("click.eimeceAddCart", "[data-add-product-cart]").on("click.eimeceAddCart", "[data-add-product-cart]", function (e) {
+    e.preventDefault();
+    var $btn = $(e.currentTarget).closest("[data-add-product-cart]");
+    var productId = $btn.attr("data-add-product-cart");
+    if (!productId) {
+        console.warn("data-add-product-cart missing on click target");
+        return;
+    }
+    var postData = JSON.stringify({
+        productId: productId,
+        quantity: 1,
+        orderGuid: getOrderGuid()
+    });
+    console.log(postData);
+    ajaxMethodCall(postData, "/Payment/AddToCart", function (data) {
+        console.log(data);
+        GetShoppingCartLinks();
     });
 });
 function getOrderGuid() {
@@ -29,12 +32,15 @@ function getOrderGuid() {
 
     return orderGuid;
 }
- 
 
-
-$("#AddToCart").click(function () {
+// Primary PDP button (#AddToCart). Delegated so it still works if the control is rendered after script load.
+$(document).off("click.eimeceAddToCart", "#AddToCart").on("click.eimeceAddToCart", "#AddToCart", function () {
     var nProductId = $("#productId").val();
-   
+    if (!nProductId) {
+        console.warn("#AddToCart clicked but #productId is missing");
+        return;
+    }
+
     var selectedTotalSpecs = new Array();
     $('[data-product-selected-specs=' + nProductId + ']').each(function () {
         var obj = {
@@ -46,7 +52,7 @@ $("#AddToCart").click(function () {
    
     var postData = JSON.stringify({
         productId: nProductId,
-        quantity: $("#quantity").val(),
+        quantity: $("#quantity").val() || 1,
         orderGuid: getOrderGuid(),
         productSpecItems: JSON.stringify({
             selectedTotalSpecs
@@ -93,20 +99,19 @@ function removeCart(shoppingItemId) {
     });
 }
 function bindOnRemove() {
-    $('[data-shopping-item-remove]').each(function () {
-        $(this).off("click");
-        $(this).on("click", function (e) {
-            e.preventDefault();
-            var caller = e.target;
-            var shoppingItemId = $(caller).attr('data-shopping-item-remove');
-            var postData = JSON.stringify({ shoppingItemId: shoppingItemId });
-            console.log(postData);
-            ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
-                $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
-                $('[data-shopping-home-page-item=' + shoppingItemId + ']').remove();
-                bindCalcuateTotalPrice();
-                GetShoppingCartLinks();
-            });
+    $(document).off("click.eimeceRemoveCart", "[data-shopping-item-remove]").on("click.eimeceRemoveCart", "[data-shopping-item-remove]", function (e) {
+        e.preventDefault();
+        var shoppingItemId = $(e.currentTarget).closest("[data-shopping-item-remove]").attr("data-shopping-item-remove");
+        if (!shoppingItemId) {
+            return;
+        }
+        var postData = JSON.stringify({ shoppingItemId: shoppingItemId });
+        console.log(postData);
+        ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
+            $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
+            $('[data-shopping-home-page-item=' + shoppingItemId + ']').remove();
+            bindCalcuateTotalPrice();
+            GetShoppingCartLinks();
         });
     });
 }

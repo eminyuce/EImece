@@ -1497,6 +1497,7 @@
     <Content Include="Areas\Admin\Views\Metrics\Index.cshtml" />
     <Content Include="ApplicationInsights.config" />
     <None Include="ApplicationInsights.config.example" />
+    <None Include="ConnectionStrings.config.example" />
     <Content Include="Areas\Admin\Views\Shared\_AdminTopbar.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminSidebar.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_DeleteConfirmationModal.cshtml" />

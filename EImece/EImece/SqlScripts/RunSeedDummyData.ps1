@@ -82,7 +82,16 @@ if ([string]::IsNullOrWhiteSpace($ConnectionString)) {
 }
 
 if ([string]::IsNullOrWhiteSpace($ConnectionString)) {
-    $ConnectionString = "Data Source=YUCE\SQLEXPRESS;Initial Catalog=yuva8905_yuvadan;User ID=sqluser;Password=sqluser;Encrypt=True;TrustServerCertificate=True;"
+    throw @"
+No database connection string available.
+Set -ConnectionString, environment variable EIMECE_DB_CONNECTION_STRING, or a non-placeholder
+EImeceDbConnection in Web.config / gitignored ConnectionStrings.config.
+Do not hard-code SQL passwords in this script. See docs/SECURE_CONNECTION_STRINGS.md.
+"@
+}
+
+if ($ConnectionString -match 'YOUR_SERVER|YOUR_DATABASE|YOUR_PASSWORD|CHANGEME|REPLACE_ME') {
+    throw "Connection string still contains placeholders. Set EIMECE_DB_CONNECTION_STRING or pass -ConnectionString with real values."
 }
 
 # Auto-detect local project media path

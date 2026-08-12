@@ -73,6 +73,8 @@ Same rules apply to `EImece.Tests/App.config`. Prefer `EIMECE_DB_CONNECTION_STRI
 
 ## Production
 
+**Do not** put plaintext SQL passwords into the committed `Web.config` or into `Web.Release.config` transforms. Release publishes should leave placeholders (or omit secrets) and inject credentials at deploy time.
+
 ### IIS (Windows Server)
 
 1. Set a machine or app-pool environment variable `EIMECE_DB_CONNECTION_STRING`, **or**

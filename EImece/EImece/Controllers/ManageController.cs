@@ -25,6 +25,28 @@ namespace EImece.Controllers
             SignInManager = signInManager;
         }
 
+        /// <summary>
+        /// Legacy Identity template URL → Customers account home.
+        /// </summary>
+        // GET: /Manage/ChangePassword
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            Logger.Info("Legacy /Manage/ChangePassword redirected to Customers/Home/ChangePassword.");
+            return RedirectToActionPermanent("ChangePassword", "Home", new { area = "Customers" });
+        }
+
+        /// <summary>
+        /// Legacy Identity ManageLogins URL. External logins are managed from the customer account area.
+        /// </summary>
+        // GET: /Manage/ManageLogins
+        [HttpGet]
+        public ActionResult ManageLogins(ManageMessageId? message)
+        {
+            Logger.Info("Legacy /Manage/ManageLogins redirected to Customers/Home/Index. Message={0}", message);
+            return RedirectToActionPermanent("Index", "Home", new { area = "Customers" });
+        }
+
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
@@ -176,7 +198,7 @@ namespace EImece.Controllers
                 message = ManageMessageId.Error;
             }
 
-            return RedirectToAction("ManageLogins", new { Message = message });
+            return RedirectToAction("Index", "Home", new { area = "Customers", Message = message });
         }
 
         // POST: /Manage/AddPhoneNumber

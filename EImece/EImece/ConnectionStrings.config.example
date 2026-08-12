@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy this file to ConnectionStrings.config (gitignored) next to Web.config, then either:
+  1) Prefer setting environment variable EIMECE_DB_CONNECTION_STRING (no file edit needed), or
+  2) In Web.config replace the <connectionStrings>...</connectionStrings> block with:
+       <connectionStrings configSource="ConnectionStrings.config" />
+
+  Never commit ConnectionStrings.config with real credentials.
+  See docs/SECURE_CONNECTION_STRINGS.md.
+-->
+<connectionStrings>
+  <add name="EImeceDbConnection"
+       connectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;"
+       providerName="System.Data.SqlClient" />
+</connectionStrings>

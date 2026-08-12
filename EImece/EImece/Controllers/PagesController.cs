@@ -31,6 +31,12 @@ namespace EImece.Controllers
                 }
                 var menuId = id.GetId();
                 var page = await MenuService.GetPageByIdAsync(menuId);
+                if (page == null || page.Menu == null)
+                {
+                    Logger.Warn("Pages/Detail: menu not found for id '{0}' (parsed {1}).", id, menuId);
+                    return RedirectToAction("NotFound", "Error");
+                }
+
                 ViewBag.SeoId = page.Menu.GetSeoUrl();
                 if (page.Menu.IsActive)
                 {

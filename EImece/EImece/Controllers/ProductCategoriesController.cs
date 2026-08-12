@@ -33,6 +33,66 @@ namespace EImece.Controllers
             return View(productCategory);
         }
 
+        /// <summary>
+        /// Bare /c/pc/ (no slug) → home. Optional nice-to-have for bookmarks that omit the category id.
+        /// </summary>
+        [Route("pc")]
+        public ActionResult CategoryRoot()
+        {
+            Logger.Info("CategoryRoot: redirecting bare /c/pc/ to home.");
+            return RedirectToActionPermanent("Index", "Home");
+        }
+
+        /// <summary>
+        /// Legacy bookmarks such as /c/Ev-Yasam → permanent redirect to /c/pc/{seo-hash}/ when resolvable.
+        /// </summary>
+        [Route("{slug}")]
+        public async Task<ActionResult> CategoryLegacy(string slug)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(slug) || slug.Equals("pc", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToActionPermanent("Index", "Home");
+                }
+
+                var categoryId = slug.GetId();
+                if (categoryId > 0)
+                {
+                    var byId = await ProductCategoryService.GetProductCategoryAsync(categoryId);
+                    if (byId != null && byId.IsActive)
+                    {
+                        var canonicalFromId = Url.Action("Category", new { id = byId.GetSeoUrl() });
+                        if (!string.IsNullOrEmpty(canonicalFromId))
+                        {
+                            return RedirectPermanent(canonicalFromId);
+                        }
+                    }
+                }
+
+                var tree = await ProductCategoryService.BuildTreeAsync(true, CurrentLanguage);
+                var match = CategorySlugHelper.FindMatchingCategory(tree, slug);
+                if (match == null)
+                {
+                    Logger.Info("CategoryLegacy: no category matched slug '{0}'.", slug);
+                    return RedirectToAction("NotFound", "Error");
+                }
+
+                var destination = Url.Action("Category", new { id = match.GetSeoUrl() });
+                if (string.IsNullOrEmpty(destination))
+                {
+                    return RedirectToAction("NotFound", "Error");
+                }
+
+                Logger.Info("CategoryLegacy: '{0}' → '{1}'.", slug, destination);
+                return RedirectPermanent(destination);
+            }
+            catch (Exception ex)
+            {
+                return HandleUnexpectedError(ex, $"Exception in CategoryLegacy for slug: '{slug}'. Message: {ex.Message}");
+            }
+        }
+
         [Route(Constants.CategoryPrefix)]
         public async Task<ActionResult> Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {
@@ -41,9 +101,8 @@ namespace EImece.Controllers
             {
                 if (String.IsNullOrEmpty(id))
                 {
-                    Logger.Error("Category ID is null or empty.");
-                    Logger.Info("Returning BadRequest status.");
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    Logger.Info("Category ID is null or empty. Redirecting bare category URL to home.");
+                    return RedirectToActionPermanent("Index", "Home");
                 }
 
                 var categoryId = id.GetId();
