@@ -27,7 +27,7 @@
 }
 
 <!-- Page Content-->
-<div class="container pt-lg-3 pb-5 mb-sm-3">
+<div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
     <!-- Toast notifications-->
     <div class="toast-container toast-bottom-center">
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
@@ -45,11 +45,14 @@
             @if (!hasOrders)
             {
                 <div class="customer-orders-empty text-center py-5 px-3" role="status">
-                    <h4 class="mb-2">Henüz siparişiniz yok</h4>
-                    <p class="text-muted mb-4">Alışverişe başladığınızda siparişleriniz burada listelenir.</p>
-                    <a class="btn btn-outline-success rounded px-4" href="@Url.Action("Index", "Home", new { area = "" })">
+                    <div class="customer-orders-empty__icon" aria-hidden="true">
+                        <i data-feather="package"></i>
+                    </div>
+                    <h2 class="customer-orders-empty__title h4 mb-2">Henüz siparişiniz yok</h2>
+                    <p class="customer-orders-empty__text text-muted mb-4">Alışverişe başladığınızda siparişleriniz burada listelenir.</p>
+                    <a class="btn customer-btn-primary px-4" href="@Url.Action("Index", "Home", new { area = "" })">
                         <i class="mr-1" data-feather="home" aria-hidden="true"></i>
-                        @Resource.ContinueShopping
+                        Alışverişe devam et
                     </a>
                 </div>
             }
@@ -150,7 +153,7 @@
                             </dl>
                             @Html.ActionLink(Resource.OrderSummary,
                                 "CustomerOrderDetail", "Home", new { id = o.Id },
-                                new { @class = "btn btn-sm btn-outline-success btn-block", area = "customers" })
+                                new { @class = "btn customer-btn-primary btn-block", area = "customers" })
                         </article>
                     }
                 </div>

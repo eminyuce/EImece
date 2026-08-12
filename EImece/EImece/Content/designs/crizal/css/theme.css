@@ -953,20 +953,77 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
 }
 
 /* ==========================================================================
-   Customer panel (Areas/Customers) — account chrome, nav, orders, profile
+   Customer panel shell (Areas/Customers) — mobile-first account chrome
    ========================================================================== */
 
+body[data-design="crizal"] .customer-page {
+    max-width: 1140px;
+    overflow-x: hidden;
+}
+
+body[data-design="crizal"] .customer-shell {
+    margin-bottom: 1.25rem;
+}
+
+body[data-design="crizal"] .customer-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.7rem 1.35rem;
+    border: 0;
+    border-radius: var(--crizal-radius);
+    background: var(--crizal-primary);
+    color: #fff !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 16px rgba(9, 184, 80, 0.22);
+}
+
+body[data-design="crizal"] .customer-btn-primary:hover,
+body[data-design="crizal"] .customer-btn-primary:focus {
+    background: #08a247;
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba(9, 184, 80, 0.28);
+}
+
+body[data-design="crizal"] .customer-btn-primary:active {
+    transform: translateY(1px);
+}
+
+/* --- Chrome: identity + actions --- */
 body[data-design="crizal"] .customer-chrome {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 0.75rem 1rem;
-    padding-bottom: 0.75rem;
+    gap: 0.85rem 1.25rem;
+    padding: 0.35rem 0 1rem;
 }
 
-body[data-design="crizal"] .customer-chrome__identity h3 {
+body[data-design="crizal"] .customer-chrome__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--crizal-muted);
+}
+
+body[data-design="crizal"] .customer-chrome__name {
+    margin: 0;
+    font-size: 1.65rem;
+    line-height: 1.2;
+    font-weight: 800;
     color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .customer-chrome__email {
+    margin-top: 0.2rem;
+    font-size: 0.9rem;
+    color: #c27803;
+    word-break: break-word;
 }
 
 body[data-design="crizal"] .customer-chrome__actions {
@@ -980,66 +1037,256 @@ body[data-design="crizal"] .customer-chrome__action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--crizal-heading);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
     white-space: nowrap;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-chrome__action svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-chrome__action:hover,
+body[data-design="crizal"] .customer-chrome__action:focus {
+    border-color: var(--crizal-primary);
+    color: var(--crizal-primary);
+    background: rgba(9, 184, 80, 0.06);
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .customer-chrome__action--logout {
+    border-color: rgba(20, 33, 43, 0.18);
+    color: var(--crizal-text);
+    background: var(--crizal-surface-alt);
+}
+
+body[data-design="crizal"] .customer-chrome__action--logout:hover,
+body[data-design="crizal"] .customer-chrome__action--logout:focus {
+    border-color: #c0392b;
+    color: #c0392b;
+    background: rgba(192, 57, 43, 0.06);
 }
 
 body[data-design="crizal"] .customer-chrome__action-label--short {
     display: none;
 }
 
+/* --- Summary metrics --- */
 body[data-design="crizal"] .customer-summary {
-    background: var(--crizal-surface-alt);
-    border-color: var(--crizal-border) !important;
-    border-radius: var(--crizal-radius);
-}
-
-body[data-design="crizal"] .customer-account-nav--mobile .customer-account-nav__list {
-    border: 1px solid var(--crizal-border);
-    border-radius: var(--crizal-radius);
-    overflow: hidden;
-    background: #fff;
-}
-
-body[data-design="crizal"] .customer-account-nav__link {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     gap: 0.65rem;
-    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+}
+
+body[data-design="crizal"] .customer-summary__item {
+    flex: 1 1 140px;
+    min-width: 0;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: linear-gradient(180deg, #fff 0%, var(--crizal-surface-alt) 100%);
+}
+
+body[data-design="crizal"] .customer-summary__label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--crizal-muted);
+    margin-bottom: 0.2rem;
+}
+
+body[data-design="crizal"] .customer-summary__value {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--crizal-heading);
+    line-height: 1.3;
+}
+
+/* --- Mobile segment control --- */
+body[data-design="crizal"] .customer-segment {
+    margin: 0 0 1.15rem;
+}
+
+body[data-design="crizal"] .customer-segment__track {
+    display: flex;
+    gap: 0.45rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    padding: 0.15rem 0.1rem 0.45rem;
+    margin: 0 -0.15rem;
+}
+
+body[data-design="crizal"] .customer-segment__track::-webkit-scrollbar {
+    height: 0;
+}
+
+body[data-design="crizal"] .customer-segment__item {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    flex: 0 0 auto;
+    min-width: 76px;
+    min-height: 64px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: 14px;
+    background: #fff;
+    color: var(--crizal-text);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-decoration: none;
+    scroll-snap-align: start;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-segment__item svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+body[data-design="crizal"] .customer-segment__item:hover,
+body[data-design="crizal"] .customer-segment__item:focus {
+    border-color: rgba(9, 184, 80, 0.45);
     color: var(--crizal-heading);
     text-decoration: none;
+}
+
+body[data-design="crizal"] .customer-segment__item.is-active {
+    background: var(--crizal-primary);
+    border-color: var(--crizal-primary);
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(9, 184, 80, 0.25);
+}
+
+body[data-design="crizal"] .customer-segment__badge {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.35rem;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    background: #14212B;
+    color: #fff;
+    font-size: 0.65rem;
+    line-height: 1.1rem;
+    text-align: center;
+}
+
+body[data-design="crizal"] .customer-segment__item.is-active .customer-segment__badge {
+    background: #fff;
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-segment__current {
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--crizal-heading);
+}
+
+/* --- Desktop tabs --- */
+body[data-design="crizal"] .customer-tabs {
+    margin: 0 0 1.35rem;
     border-bottom: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .customer-tabs__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+body[data-design="crizal"] .customer-tabs__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 48px;
+    padding: 0.65rem 1rem;
+    color: var(--crizal-text);
     font-weight: 600;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-body[data-design="crizal"] .customer-account-nav__list > li:last-child .customer-account-nav__link {
-    border-bottom: 0;
+body[data-design="crizal"] .customer-tabs__link svg {
+    width: 1.05rem;
+    height: 1.05rem;
 }
 
-body[data-design="crizal"] .customer-account-nav__link:hover,
-body[data-design="crizal"] .customer-account-nav__link:focus {
-    background: var(--crizal-surface-alt);
+body[data-design="crizal"] .customer-tabs__link:hover,
+body[data-design="crizal"] .customer-tabs__link:focus {
     color: var(--crizal-primary);
     text-decoration: none;
 }
 
-body[data-design="crizal"] .customer-account-nav__link.is-active {
-    background: rgba(9, 184, 80, 0.08);
+body[data-design="crizal"] .customer-tabs__link.is-active {
     color: var(--crizal-primary);
-    box-shadow: inset 3px 0 0 var(--crizal-primary);
+    border-bottom-color: var(--crizal-primary);
 }
 
-body[data-design="crizal"] .customer-account-nav__link svg {
-    width: 1.1rem;
-    height: 1.1rem;
-    flex-shrink: 0;
-}
-
-body[data-design="crizal"] .customer-orders-empty {
-    border: 1px dashed var(--crizal-border);
-    border-radius: var(--crizal-radius-lg);
+body[data-design="crizal"] .customer-tabs__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    padding: 0 0.35rem;
+    border-radius: 999px;
     background: var(--crizal-surface-alt);
+    border: 1px solid var(--crizal-border);
+    color: var(--crizal-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* --- Orders --- */
+body[data-design="crizal"] .customer-orders-empty {
+    border: 1px dashed rgba(9, 184, 80, 0.35);
+    border-radius: var(--crizal-radius-xl);
+    background: linear-gradient(180deg, rgba(9, 184, 80, 0.05) 0%, var(--crizal-surface-alt) 100%);
+}
+
+body[data-design="crizal"] .customer-orders-empty__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    margin-bottom: 0.85rem;
+    border-radius: 999px;
+    background: rgba(9, 184, 80, 0.12);
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-orders-empty__icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 body[data-design="crizal"] .customer-order-card {
@@ -1047,6 +1294,7 @@ body[data-design="crizal"] .customer-order-card {
     border-radius: var(--crizal-radius-lg);
     padding: 1rem;
     background: #fff;
+    box-shadow: 0 4px 14px rgba(20, 33, 43, 0.04);
 }
 
 body[data-design="crizal"] .customer-order-card__header {
@@ -1058,10 +1306,11 @@ body[data-design="crizal"] .customer-order-card__header {
 }
 
 body[data-design="crizal"] .customer-order-card__label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--crizal-muted);
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
+    font-weight: 700;
 }
 
 body[data-design="crizal"] .customer-order-card__meta {
@@ -1071,36 +1320,46 @@ body[data-design="crizal"] .customer-order-card__meta {
 }
 
 body[data-design="crizal"] .customer-order-card__meta dt {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--crizal-muted);
     margin: 0;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 body[data-design="crizal"] .customer-order-card__meta dd {
     margin: 0.15rem 0 0;
     font-size: 0.9rem;
     color: var(--crizal-heading);
+    word-break: break-word;
 }
 
+body[data-design="crizal"] .customer-order-card .customer-btn-primary {
+    min-height: 44px;
+}
+
+/* --- Forms --- */
 body[data-design="crizal"] .customer-help-text {
     display: block;
     margin-top: 0.35rem;
-    line-height: 1.35;
+    line-height: 1.4;
+    font-size: 0.82rem;
 }
 
 body[data-design="crizal"] .customer-address-help {
     border: 1px solid var(--crizal-border);
     border-radius: var(--crizal-radius);
     background: var(--crizal-surface-alt);
-    padding: 0.65rem 0.85rem;
+    padding: 0.7rem 0.9rem;
 }
 
 body[data-design="crizal"] .customer-address-help__summary {
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--crizal-heading);
     outline: none;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
 }
 
 body[data-design="crizal"] .customer-address-help__summary:focus-visible {
@@ -1108,45 +1367,64 @@ body[data-design="crizal"] .customer-address-help__summary:focus-visible {
 }
 
 body[data-design="crizal"] .customer-address-help__body {
-    margin-top: 0.65rem;
+    margin-top: 0.55rem;
     color: var(--crizal-text);
     font-size: 0.9rem;
     line-height: 1.45;
 }
 
 body[data-design="crizal"] .customer-profile-actions__submit {
-    min-width: 10rem;
+    min-width: 11rem;
 }
 
-body[data-design="crizal"] .customer-contact-form .btn-outline-success {
-    border-width: 1px;
+body[data-design="crizal"] .customer-page .form-control {
+    min-height: 44px;
 }
 
+body[data-design="crizal"] .customer-page textarea.form-control {
+    min-height: 96px;
+}
+
+body[data-design="crizal"] .customer-contact-form .control-label {
+    font-weight: 600;
+    color: var(--crizal-heading);
+}
+
+/* --- Mobile refinements (~390px) --- */
 @media (max-width: 575.98px) {
+    body[data-design="crizal"] .customer-page {
+        padding-left: 0.9rem;
+        padding-right: 0.9rem;
+    }
+
     body[data-design="crizal"] .customer-chrome {
         flex-direction: column;
         align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    body[data-design="crizal"] .customer-chrome__name {
+        font-size: 1.4rem;
     }
 
     body[data-design="crizal"] .customer-chrome__actions {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.5rem;
+        gap: 0.45rem;
         width: 100%;
     }
 
     body[data-design="crizal"] .customer-chrome__action {
         width: 100%;
-        padding-left: 0.4rem;
-        padding-right: 0.4rem;
-        font-size: 0.78rem;
+        min-height: 52px;
+        padding: 0.4rem 0.35rem;
         flex-direction: column;
-        gap: 0.15rem;
-        min-height: 3.25rem;
-    }
-
-    body[data-design="crizal"] .customer-chrome__action .mr-1 {
-        margin-right: 0 !important;
+        gap: 0.2rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        line-height: 1.15;
+        white-space: normal;
+        text-align: center;
     }
 
     body[data-design="crizal"] .customer-chrome__action-label--full {
@@ -1157,27 +1435,50 @@ body[data-design="crizal"] .customer-contact-form .btn-outline-success {
         display: inline;
     }
 
-    body[data-design="crizal"] .customer-chrome__action-label:not(.customer-chrome__action-label--full):not(.customer-chrome__action-label--short) {
-        display: inline;
+    body[data-design="crizal"] .customer-summary__item {
+        flex: 1 1 calc(50% - 0.65rem);
     }
 
     body[data-design="crizal"] .customer-profile-actions {
         position: sticky;
         bottom: 0;
-        z-index: 20;
-        margin: 0 -0.75rem;
-        padding: 0.75rem;
-        background: rgba(255, 255, 255, 0.96);
+        z-index: 30;
+        margin: 0 -0.9rem;
+        padding: 0.75rem 0.9rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+        background: rgba(255, 255, 255, 0.97);
         border-top: 1px solid var(--crizal-border);
-        box-shadow: 0 -6px 18px rgba(20, 33, 43, 0.06);
+        box-shadow: 0 -8px 22px rgba(20, 33, 43, 0.08);
+        backdrop-filter: blur(6px);
     }
 
     body[data-design="crizal"] .customer-profile-actions__submit {
         width: 100%;
-        margin-top: 0.5rem;
+        margin-top: 0.55rem;
     }
 
     body[data-design="crizal"] .customer-order-card__meta {
         grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .customer-page .row {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+    }
+
+    body[data-design="crizal"] .customer-page [class*="col-"] {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+/* Desktop alignment polish */
+@media (min-width: 1200px) {
+    body[data-design="crizal"] .customer-chrome__name {
+        font-size: 1.85rem;
+    }
+
+    body[data-design="crizal"] .customer-tabs__link {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
     }
 }

@@ -61,6 +61,21 @@
     <script src="~/Content/mstore/js/theme.min.js"></script>
     <script src="~/Scripts/cookie-consent.js?v=1"></script>
     @Scripts.Render("~/bundles/eimeceScripts")
+    <script>
+        (function () {
+            function syncCustomerSegment() {
+                var active = document.querySelector('.customer-segment__item.is-active');
+                if (active && typeof active.scrollIntoView === 'function') {
+                    active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', syncCustomerSegment);
+            } else {
+                syncCustomerSegment();
+            }
+        })();
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

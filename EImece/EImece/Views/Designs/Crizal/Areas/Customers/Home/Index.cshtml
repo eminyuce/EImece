@@ -15,7 +15,7 @@
 }
 
 <!-- Page Content-->
-<div class="container pt-lg-3 pb-5 mb-sm-3">
+<div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
     <!-- Toast notifications-->
     <div class="toast-container toast-bottom-center">
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
@@ -178,7 +178,7 @@
                             @Html.EditorFor(model => model.IsPermissionGranted, new { htmlAttributes = new { @class = "custom-control-input" } })
                             <label class="custom-control-label" for="subscribe_me">@Resource.IsPermissionGrantedDescription</label>
                         </div>
-                        <button class="btn btn-outline-success rounded customer-profile-actions__submit" type="submit" data-toggle="toast" data-target="#profile-toast">@Resource.Update</button>
+                        <button class="btn customer-btn-primary customer-profile-actions__submit" type="submit" data-toggle="toast" data-target="#profile-toast">@Resource.Update</button>
                     </div>
                 </div>
                     }
