@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminHelperModels;
@@ -217,10 +217,10 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public async Task<ActionResult> ExportExcel(CancellationToken cancellationToken, string format = "excel")
         {
-            return await DownloadFileAsync(cancellationToken, format);
+            return await DownloadFileAsync(format);
         }
 
-        private async Task<ActionResult> DownloadFileAsync(CancellationToken cancellationToken, string format = "excel")
+        private async Task<ActionResult> DownloadFileAsync(string format = "excel")
         {
             String search = "";
             Expression<Func<ProductCategory, bool>> whereLambda = r => string.Equals(r.Name, r.Name, StringComparison.OrdinalIgnoreCase);

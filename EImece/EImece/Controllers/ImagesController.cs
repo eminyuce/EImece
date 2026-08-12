@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -72,38 +72,32 @@ namespace EImece.Controllers
             }
 
             var fileStorageId = id.Replace(".jpg", "").GetId();
-
-            if (fileStorageId > 0)
-            {
-                int height = 0;
-                int width = 0;
-                if (String.IsNullOrEmpty(imageSize))
-                {
-                    imageSize = "w150h150";
-                }
-
-                width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
-                height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
-
-                bool wantsWebP = Request.AcceptTypes != null
-                    && Request.AcceptTypes.Any(t => t != null && t.IndexOf("image/webp", StringComparison.OrdinalIgnoreCase) >= 0);
-                var imageByte = wantsWebP
-                    ? await FilesHelper.GetResizedImageAsWebPAsync(fileStorageId, width, height)
-                    : await FilesHelper.GetResizedImageAsync(fileStorageId, width, height);
-                if (imageByte != null && imageByte.ImageBytes != null)
-                {
-                    ApplyPublicImageCacheHeaders(imageByte.UpdatedDated);
-                    return File(imageByte.ImageBytes, imageByte.ContentType);
-                }
-                else
-                {
-                    return this.GetDefaultFileContentResult((string)imageSize);
-                }
-            }
-            else
+            if (fileStorageId <= 0)
             {
                 return new EmptyResult();
             }
+
+            if (String.IsNullOrEmpty(imageSize))
+            {
+                imageSize = "w150h150";
+            }
+
+            int width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
+            int height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
+
+            bool wantsWebP = Request.AcceptTypes != null
+                && Request.AcceptTypes.Any(t => t != null && t.IndexOf("image/webp", StringComparison.OrdinalIgnoreCase) >= 0);
+            var imageByte = wantsWebP
+                ? await FilesHelper.GetResizedImageAsWebPAsync(fileStorageId, width, height)
+                : await FilesHelper.GetResizedImageAsync(fileStorageId, width, height);
+
+            if (imageByte != null && imageByte.ImageBytes != null)
+            {
+                ApplyPublicImageCacheHeaders(imageByte.UpdatedDated);
+                return File(imageByte.ImageBytes, imageByte.ContentType);
+            }
+
+            return this.GetDefaultFileContentResult(imageSize);
         }
 
         private void ApplyPublicImageCacheHeaders(DateTime updatedDated)

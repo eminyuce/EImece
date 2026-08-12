@@ -294,10 +294,10 @@ namespace EImece.Domain.Services
             return null;
         }
 
-        public ProductCategoryViewModel GetProductCategoryViewModel(int productCategoryId)
+        public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
         {
             var result = new ProductCategoryViewModel();
-            result.ProductCategory = GetProductCategory(productCategoryId);
+            result.ProductCategory = GetProductCategory(categoryId);
             if (result.ProductCategory == null)
             {
                 return null;
@@ -319,7 +319,7 @@ namespace EImece.Domain.Services
             result.PriceFilterSetting = SettingService.GetSettingObjectByKey(Constants.ProductPriceFilterSetting);
             result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
             result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable);
-            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(productCategoryId);
+            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
             result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
             return result;
         }
