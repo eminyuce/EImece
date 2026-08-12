@@ -1045,10 +1045,15 @@ body[data-design="crizal"] .customer-chrome__action {
     border-radius: 999px;
     background: #fff;
     color: var(--crizal-heading);
+    font: inherit;
     font-size: 0.875rem;
     font-weight: 600;
+    line-height: 1.2;
     text-decoration: none;
     white-space: nowrap;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
     transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -1343,6 +1348,29 @@ body[data-design="crizal"] .customer-help-text {
     margin-top: 0.35rem;
     line-height: 1.4;
     font-size: 0.82rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+body[data-design="crizal"] .customer-password-hint {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: var(--crizal-radius);
+    background: rgba(9, 184, 80, 0.08);
+    border: 1px solid rgba(9, 184, 80, 0.22);
+    color: var(--crizal-heading);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.45;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    box-sizing: border-box;
 }
 
 body[data-design="crizal"] .customer-address-help {

@@ -58,7 +58,18 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    @Html.Partial("_SendContactSellerForCustomer", new ContactUsFormViewModel())
+                    @{
+                        var customer = Model.Customer;
+                        var contactForm = new ContactUsFormViewModel
+                        {
+                            Name = customer != null ? customer.FullName : null,
+                            Email = customer != null ? customer.Email : null,
+                            Phone = customer != null ? customer.GsmNumber : null,
+                            ContactFormType = "Customer",
+                            ItemType = EImeceItemType.Ticket
+                        };
+                    }
+                    @Html.Partial("_SendContactSellerForCustomer", contactForm)
                 </div>
             </div>
         </div>

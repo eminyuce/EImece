@@ -14,7 +14,7 @@
 @{
     var controllerName = "Home";
     var gridName = "OrderGrid";
-    var myOrders = Model.Orders;
+    var myOrders = Model.Orders ?? new List<Order>();
     var paginatedOrders = new PaginatedModelList<Order>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
     var baseList = myOrders.DownCasting<Order>();
 
@@ -23,7 +23,7 @@
     var gridDeleteText = AdminResource.GridDeleteText;
     var gridDetailText = AdminResource.GridDetailText;
     var gridMainPageImageText = AdminResource.GridMainPageImageText;
-    var hasOrders = paginatedOrders != null && paginatedOrders.Any();
+    var hasOrders = myOrders.Count > 0;
 }
 
 <!-- Page Content-->
