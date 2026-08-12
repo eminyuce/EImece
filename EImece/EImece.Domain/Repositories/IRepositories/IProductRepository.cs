@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
@@ -15,6 +15,10 @@ namespace EImece.Domain.Repositories.IRepositories
         PaginatedList<Product> GetActiveProducts(int pageIndex, int pageSize, int language);
 
         Task<PaginatedList<Product>> GetActiveProductsAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<Product> GetActiveProducts(int? language);
+
+        Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken));
 
         PaginatedList<Product> GetMainPageProducts(int pageIndex, int pageSize, int language);
 
@@ -43,10 +47,6 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Product> GetRelatedProducts(int[] tagIdList, int take, int lang, int excludedProductId);
 
         Task<List<Product>> GetRelatedProductsAsync(int[] tagIdList, int take, int lang, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
-
-        List<Product> GetActiveProducts(int? language);
-
-        Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken));
 
         ProductsSearchResult GetProductsSearchResult(
    string search,

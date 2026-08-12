@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Newtonsoft.Json;
@@ -31,7 +31,7 @@ namespace EImece.Domain.Models.FrontModels
         // İstek esnasında gönderip, sonuçta alabileceğiniz bir değer,
         // request/response eşleşmesi yapmak için kullanılabilir.
         // En yaygın kullanış biçimi üye iş yerinin ürün numarasıdır.
-        public string ConversationId
+        public static string ConversationId
         {
             get
             {

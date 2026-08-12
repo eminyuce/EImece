@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.MigrationModels;
 using Newtonsoft.Json;
 using System;
@@ -47,7 +47,7 @@ namespace EImece.Domain.DbContext
         private static readonly HttpClient GroqHttpClient = new HttpClient();
         // Prefer EIMECE_DB_CONNECTION_STRING. Optional overrides for one-off migration tools:
         // EIMECE_DB_CONNECTION_STRING_PROD / EIMECE_DB_CONNECTION_STRING_DEV
-        private string prodConnectionString
+        private static string prodConnectionString
         {
             get
             {
@@ -55,7 +55,7 @@ namespace EImece.Domain.DbContext
             }
         }
 
-        private string devConnectionString
+        private static string devConnectionString
         {
             get
             {

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
@@ -94,19 +94,6 @@ namespace EImece.Domain.Repositories
                 .ToPaginatedList(pageIndex, pageSize);
         }
 
-        public async Task<PaginatedList<ProductTag>> GetProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.Product);
-            includeProperties.Add(r => r.Product.MainImage);
-            includeProperties.Add(r => r.Product.ProductCategory);
-            return await GetAllIncludingReadOnly(includeProperties.ToArray())
-                .Where(r => r.TagId == tagId)
-                .OrderByProductStorefrontDefault()
-                .ToPaginatedListAsync(pageIndex, pageSize, cancellationToken)
-                .ConfigureAwait(false);
-        }
-
         public PaginatedList<ProductTag> GetProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
         {
             var includeProperties = GetIncludePropertyExpressionList();
@@ -135,6 +122,19 @@ namespace EImece.Domain.Repositories
             {
                 return query.OrderByProductStorefrontDefault().ToPaginatedList(pageIndex, pageSize);
             }
+        }
+
+        public async Task<PaginatedList<ProductTag>> GetProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.Product);
+            includeProperties.Add(r => r.Product.MainImage);
+            includeProperties.Add(r => r.Product.ProductCategory);
+            return await GetAllIncludingReadOnly(includeProperties.ToArray())
+                .Where(r => r.TagId == tagId)
+                .OrderByProductStorefrontDefault()
+                .ToPaginatedListAsync(pageIndex, pageSize, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         public async Task<PaginatedList<ProductTag>> GetProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))

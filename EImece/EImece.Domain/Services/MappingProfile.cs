@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
@@ -51,7 +51,7 @@ namespace EImece.Domain.Services
         }
 
         // Helper to safely get UrlHelper only when HttpContext is available
-        private UrlHelper GetUrlHelper()
+        private static UrlHelper GetUrlHelper()
         {
             return HttpContext.Current?.Request?.RequestContext != null
                 ? new UrlHelper(HttpContext.Current.Request.RequestContext)

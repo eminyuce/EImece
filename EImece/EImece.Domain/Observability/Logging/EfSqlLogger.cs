@@ -18,7 +18,7 @@ namespace EImece.Domain.Observability.Logging
         private static readonly Logger NLogLogger = LogManager.GetLogger(LoggerName);
         private static readonly Regex CommandTypePattern = new Regex(
             @"^\s*(SELECT|INSERT|UPDATE|DELETE|EXEC|EXECUTE|MERGE)\b",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled, System.TimeSpan.FromSeconds(1));
 
         private static readonly object Sync = new object();
         private static bool _enabled;

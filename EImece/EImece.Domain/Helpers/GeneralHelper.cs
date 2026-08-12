@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Http;
 using LazyCache;
@@ -201,7 +201,7 @@ namespace EImece.Domain.Helpers
 
             // Regular expression for validating an email address
             string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-            var regex = new Regex(emailPattern);
+            var regex = new Regex(emailPattern, RegexOptions.None, TimeSpan.FromSeconds(1));
 
             // Return true if the email doesn't match the pattern
             return !regex.IsMatch(subscribeEmail);
