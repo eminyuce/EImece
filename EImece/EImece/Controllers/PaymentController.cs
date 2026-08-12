@@ -393,6 +393,7 @@ namespace EImece.Controllers
                 else
                 {
                     PaymentLogger.Info("Shopping cart is empty. Redirecting to shoppingcart.");
+                    TempData["StatusMessage"] = "Sepetiniz boş";
                     return RedirectToAction("shoppingcart", "Payment");
                 }
             }
