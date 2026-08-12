@@ -11,6 +11,11 @@
     var isHome = pageController == "home" && pageAction == "index";
     var isProductArea = pageController == "productcategories" || pageController == "products";
     var homeHref = Url.Action("Index", "Home") ?? "/";
+    var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
+    var isAccountArea = pageController == "account"
+        || (Request.RequestContext != null
+            && Request.RequestContext.RouteData != null
+            && string.Equals(Convert.ToString(Request.RequestContext.RouteData.DataTokens["area"]), "customers", StringComparison.OrdinalIgnoreCase));
 }
 
 <ul class="navbar-nav ms-auto" id="nav" style="display: none;">
@@ -27,6 +32,19 @@
         </ul>
     </li>
     @CreateMenuTree(Model, homeHref)
+    @if (productPriceEnabled)
+    {
+        <li class="crizal-nav-account d-lg-none @(isAccountArea ? "active current" : null)">
+            @if (Request.IsAuthenticated)
+            {
+                <a href="@Url.Action("index", "home", new { area = "customers" })">@Resource.MyAccount</a>
+            }
+            else
+            {
+                <a href="@Url.Action("login", "account")">@Resource.SignInOrUp</a>
+            }
+        </li>
+    }
 </ul>
 
 @helper CreateProductTree(ProductCategoryTreeModel categoryTreeModel)

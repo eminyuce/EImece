@@ -187,6 +187,11 @@ body[data-design="crizal"] .attr-nav > ul > li > a {
         border-top: 0;
     }
 
+    /* DESIGN-005: Giriş/Hesabım text lives in the mobile menu only; desktop uses attr-nav icon */
+    body[data-design="crizal"] .navbar-default .navbar-nav > li.crizal-nav-account {
+        display: none !important;
+    }
+
     body[data-design="crizal"] .navbar-default .navbar-nav > li > a {
         font-size: 0.72rem;
         letter-spacing: 0.01em;
@@ -907,9 +912,9 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
         font-size: 1rem;
     }
 
-    /* Mobile: hide desktop-only account icon (Bootstrap d-lg may be overridden elsewhere) */
-    body[data-design="crizal"] .attr-nav > ul > li.d-lg-inline-block {
-        display: none !important;
+    /* Account icon stays visible on mobile (DESIGN-005); About CTA still xxl-only via Bootstrap */
+    body[data-design="crizal"] .attr-nav > ul > li.crizal-account-nav {
+        display: inline-block !important;
     }
 
     /*

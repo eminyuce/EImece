@@ -51,17 +51,17 @@
                                     {
                                         if (Request.IsAuthenticated)
                                         {
-                                            <li class="d-none d-lg-inline-block me-2">
-                                                <a href="@Url.Action("index", "home", new { area = "customers" })" title="@Resource.MyAccount">
-                                                    <i class="fas fa-user"></i>
+                                            <li class="crizal-account-nav me-2">
+                                                <a href="@Url.Action("index", "home", new { area = "customers" })" title="@Resource.MyAccount" aria-label="@Resource.MyAccount">
+                                                    <i class="fas fa-user" aria-hidden="true"></i>
                                                 </a>
                                             </li>
                                         }
                                         else
                                         {
-                                            <li class="d-none d-lg-inline-block me-2">
-                                                <a href="@Url.Action("login", "account")" title="@Resource.SignInOrUp">
-                                                    <i class="fas fa-sign-in-alt"></i>
+                                            <li class="crizal-account-nav me-2">
+                                                <a href="@Url.Action("login", "account")" title="@Resource.SignInOrUp" aria-label="@Resource.SignInOrUp">
+                                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
                                                 </a>
                                             </li>
                                         }
