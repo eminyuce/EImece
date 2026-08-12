@@ -951,3 +951,233 @@ body[data-design="crizal"] .widget-categories .crizal-cat-toggle[aria-expanded="
         background-color: #fff;
     }
 }
+
+/* ==========================================================================
+   Customer panel (Areas/Customers) — account chrome, nav, orders, profile
+   ========================================================================== */
+
+body[data-design="crizal"] .customer-chrome {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    padding-bottom: 0.75rem;
+}
+
+body[data-design="crizal"] .customer-chrome__identity h3 {
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .customer-chrome__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+body[data-design="crizal"] .customer-chrome__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+body[data-design="crizal"] .customer-chrome__action-label--short {
+    display: none;
+}
+
+body[data-design="crizal"] .customer-summary {
+    background: var(--crizal-surface-alt);
+    border-color: var(--crizal-border) !important;
+    border-radius: var(--crizal-radius);
+}
+
+body[data-design="crizal"] .customer-account-nav--mobile .customer-account-nav__list {
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    overflow: hidden;
+    background: #fff;
+}
+
+body[data-design="crizal"] .customer-account-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.85rem 1rem;
+    color: var(--crizal-heading);
+    text-decoration: none;
+    border-bottom: 1px solid var(--crizal-border);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-account-nav__list > li:last-child .customer-account-nav__link {
+    border-bottom: 0;
+}
+
+body[data-design="crizal"] .customer-account-nav__link:hover,
+body[data-design="crizal"] .customer-account-nav__link:focus {
+    background: var(--crizal-surface-alt);
+    color: var(--crizal-primary);
+    text-decoration: none;
+}
+
+body[data-design="crizal"] .customer-account-nav__link.is-active {
+    background: rgba(9, 184, 80, 0.08);
+    color: var(--crizal-primary);
+    box-shadow: inset 3px 0 0 var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-account-nav__link svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-orders-empty {
+    border: 1px dashed var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: var(--crizal-surface-alt);
+}
+
+body[data-design="crizal"] .customer-order-card {
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    padding: 1rem;
+    background: #fff;
+}
+
+body[data-design="crizal"] .customer-order-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+}
+
+body[data-design="crizal"] .customer-order-card__label {
+    font-size: 0.75rem;
+    color: var(--crizal-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+body[data-design="crizal"] .customer-order-card__meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem 1rem;
+}
+
+body[data-design="crizal"] .customer-order-card__meta dt {
+    font-size: 0.75rem;
+    color: var(--crizal-muted);
+    margin: 0;
+    font-weight: 500;
+}
+
+body[data-design="crizal"] .customer-order-card__meta dd {
+    margin: 0.15rem 0 0;
+    font-size: 0.9rem;
+    color: var(--crizal-heading);
+}
+
+body[data-design="crizal"] .customer-help-text {
+    display: block;
+    margin-top: 0.35rem;
+    line-height: 1.35;
+}
+
+body[data-design="crizal"] .customer-address-help {
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius);
+    background: var(--crizal-surface-alt);
+    padding: 0.65rem 0.85rem;
+}
+
+body[data-design="crizal"] .customer-address-help__summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--crizal-heading);
+    outline: none;
+}
+
+body[data-design="crizal"] .customer-address-help__summary:focus-visible {
+    color: var(--crizal-primary);
+}
+
+body[data-design="crizal"] .customer-address-help__body {
+    margin-top: 0.65rem;
+    color: var(--crizal-text);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+body[data-design="crizal"] .customer-profile-actions__submit {
+    min-width: 10rem;
+}
+
+body[data-design="crizal"] .customer-contact-form .btn-outline-success {
+    border-width: 1px;
+}
+
+@media (max-width: 575.98px) {
+    body[data-design="crizal"] .customer-chrome {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body[data-design="crizal"] .customer-chrome__actions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    body[data-design="crizal"] .customer-chrome__action {
+        width: 100%;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        font-size: 0.78rem;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-height: 3.25rem;
+    }
+
+    body[data-design="crizal"] .customer-chrome__action .mr-1 {
+        margin-right: 0 !important;
+    }
+
+    body[data-design="crizal"] .customer-chrome__action-label--full {
+        display: none;
+    }
+
+    body[data-design="crizal"] .customer-chrome__action-label--short {
+        display: inline;
+    }
+
+    body[data-design="crizal"] .customer-chrome__action-label:not(.customer-chrome__action-label--full):not(.customer-chrome__action-label--short) {
+        display: inline;
+    }
+
+    body[data-design="crizal"] .customer-profile-actions {
+        position: sticky;
+        bottom: 0;
+        z-index: 20;
+        margin: 0 -0.75rem;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.96);
+        border-top: 1px solid var(--crizal-border);
+        box-shadow: 0 -6px 18px rgba(20, 33, 43, 0.06);
+    }
+
+    body[data-design="crizal"] .customer-profile-actions__submit {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    body[data-design="crizal"] .customer-order-card__meta {
+        grid-template-columns: 1fr;
+    }
+}

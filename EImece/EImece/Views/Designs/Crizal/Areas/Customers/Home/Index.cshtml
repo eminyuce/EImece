@@ -76,7 +76,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.IdentityNumber, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
-                        <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
+                        <small class="form-text text-muted customer-help-text">@Resource.WhyNeedIdentityNumber</small>
                         @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "control-label", @for = "account-phone" })
                         @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone", placeholder = "+90 5XX XXX XX XX" } })
-                        <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
+                        <small class="form-text text-muted customer-help-text">@Resource.WhyNeedGsmNumber</small>
                         @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -163,19 +163,22 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <div class="alert alert-secondary" role="alert">
-                            @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
-                        </div>
+                        <details class="customer-address-help">
+                            <summary class="customer-address-help__summary">Adres yazımı için kısa ipucu</summary>
+                            <div class="customer-address-help__body">
+                                @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
+                            </div>
+                        </details>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <hr class="mt-2 mb-3">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="custom-control custom-checkbox d-block">
+                    <div class="customer-profile-actions d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="custom-control custom-checkbox d-block mb-2 mb-md-0">
                             @Html.EditorFor(model => model.IsPermissionGranted, new { htmlAttributes = new { @class = "custom-control-input" } })
                             <label class="custom-control-label" for="subscribe_me">@Resource.IsPermissionGrantedDescription</label>
                         </div>
-                        <button class="btn btn-outline-success rounded mb-2 mr-1 btn-block" type="submit" data-toggle="toast" data-target="#profile-toast">@Resource.Update</button>
+                        <button class="btn btn-outline-success rounded customer-profile-actions__submit" type="submit" data-toggle="toast" data-target="#profile-toast">@Resource.Update</button>
                     </div>
                 </div>
                     }

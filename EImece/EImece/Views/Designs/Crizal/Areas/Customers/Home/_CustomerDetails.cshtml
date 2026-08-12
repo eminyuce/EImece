@@ -11,99 +11,131 @@
     {
         orders = new List<Order>();
     }
+    var orderCount = orders.Count;
+    var totalSpent = orders.Sum(r => r.PaidPriceDecimal);
+    var isAccount = actionName.Equals("index", StringComparison.InvariantCultureIgnoreCase);
+    var isPassword = actionName.Equals("ChangePassword", StringComparison.InvariantCultureIgnoreCase);
+    var isOrders = actionName.Equals("CustomerOrders", StringComparison.InvariantCultureIgnoreCase)
+                   || actionName.Equals("CustomerOrderDetail", StringComparison.InvariantCultureIgnoreCase);
+    var isMessage = actionName.Equals("SendMessageToSeller", StringComparison.InvariantCultureIgnoreCase);
+    var isFaq = actionName.Equals("Faq", StringComparison.InvariantCultureIgnoreCase);
 }
 
 <!-- Customer details-->
-<div class="d-flex flex-wrap pb-1">
-    <div class="pt-3 mr-3">
+<div class="customer-chrome">
+    <div class="customer-chrome__identity">
         <h3 class="mb-0">@Model.FullName</h3>
         <span class="font-size-sm text-warning">@Model.Email</span>
     </div>
-    <div class="pt-3 mr-3">
-        <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Index","Home",new { area = "" })">
-            <i class="mr-1" data-feather="home"></i> @Resource.ContinueShopping
+    <div class="customer-chrome__actions" role="group" aria-label="Hesap işlemleri">
+        <a class="btn btn-outline-primary btn-sm customer-chrome__action" href="@Url.Action("Index","Home",new { area = "" })">
+            <i class="mr-1" data-feather="home" aria-hidden="true"></i>
+            <span class="customer-chrome__action-label customer-chrome__action-label--full">@Resource.ContinueShopping</span>
+            <span class="customer-chrome__action-label customer-chrome__action-label--short">Alışveriş</span>
         </a>
-    </div>
-    <div class="pt-3 mr-3">
-        <a class="btn btn-outline-primary btn-sm" href="@Url.Action("ShoppingCart","Payment",new { area = "" })">
-            <i class="mr-1" data-feather="shopping-bag"></i> @Resource.MyBasket
+        <a class="btn btn-outline-primary btn-sm customer-chrome__action" href="@Url.Action("ShoppingCart","Payment",new { area = "" })">
+            <i class="mr-1" data-feather="shopping-bag" aria-hidden="true"></i>
+            <span class="customer-chrome__action-label">@Resource.MyBasket</span>
         </a>
-    </div>
-    <div class="pt-3 mr-3">
-        <a class="btn btn-outline-primary btn-sm" href="javascript:document.getElementById('logoutForm').submit()">
-            <i class="mr-1" data-feather="log-out"></i> @Resource.Logout
+        <a class="btn btn-outline-primary btn-sm customer-chrome__action customer-chrome__action--logout" href="javascript:document.getElementById('logoutForm').submit()">
+            <i class="mr-1" data-feather="log-out" aria-hidden="true"></i>
+            <span class="customer-chrome__action-label customer-chrome__action-label--full">@Resource.Logout</span>
+            <span class="customer-chrome__action-label customer-chrome__action-label--short">Çıkış</span>
         </a>
-        @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right d-none" }))
         {
             @Html.AntiForgeryToken()
         }
     </div>
 </div>
-<ul class="list-unstyled border p-3 mb-4">
-    <li class="pb-1"><span class="opacity-80">&ndash;@Resource.CreatedDate:</span><span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span></li>
-    <li class="pb-1"><span class="opacity-80">&ndash;@Resource.TotalOrderNumber:</span><span class="font-weight-semibold ml-1">@orders.Count</span></li>
+
+<ul class="list-unstyled border p-3 mb-4 customer-summary">
     <li class="pb-1">
-        <span class="opacity-80">&ndash; @Resource.TotalPrice:</span><span class="font-weight-semibold ml-1">
-            @orders.Sum(r => r.PaidPriceDecimal).CurrencySign()
-        </span>
+        <span class="opacity-80">@Resource.CreatedDate:</span>
+        <span class="font-weight-semibold ml-1">@Model.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</span>
     </li>
+    <li class="pb-1">
+        <span class="opacity-80">Sipariş sayısı:</span>
+        <span class="font-weight-semibold ml-1">@orderCount</span>
+    </li>
+    @if (totalSpent > 0)
+    {
+        <li class="pb-1">
+            <span class="opacity-80">Toplam harcama:</span>
+            <span class="font-weight-semibold ml-1">@totalSpent.CurrencySign()</span>
+        </li>
+    }
 </ul>
-<!-- Navigation (visible sm-up)-->
-<ul class="nav nav-tabs d-none d-sm-flex">
-    <li class="nav-item">
-        <a class="nav-link @(actionName.Equals("index", StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("Index","Home")">
-            <i data-feather="settings"></i>&nbsp;@Resource.MyAccount
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(actionName.Equals("ChangePassword", StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("ChangePassword","Home")">
-            <i data-feather="lock"></i>&nbsp;@Resource.ChangePassword
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(actionName.Equals("CustomerOrders", StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("CustomerOrders")">
-            <i data-feather="shopping-bag"></i>&nbsp;@Resource.MyOrder
-            <span class="badge badge-pill badge-secondary bg-0 border ml-2">
-                <span class="text-primary">@orders.Count</span>
-            </span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(actionName.Equals("SendMessageToSeller", StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("SendMessageToSeller")">
-            <i data-feather="phone"></i>&nbsp;@Resource.SendMessageToSeller
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(actionName.Equals("Faq", StringComparison.InvariantCultureIgnoreCase) ? "active" : "")" href="@Url.Action("Faq")">
-            <i data-feather="info"></i>&nbsp;@Resource.Faq
-        </a>
-    </li>
-</ul>
-<!-- Navigation (visible sm-down)-->
-<div class="d-sm-none pb-4">
-    <button class="btn btn-primary btn-block mb-2" type="button" data-toggle="collapse" data-target="#account-menu">
-        <i class="mr-2" data-feather="menu"></i>@Resource.Menu
-    </button>
-    <div class="collapse" id="account-menu">
-        <div class="list-group">
-            <a class="list-group-item list-group-item-action" href="@Url.Action("Index","Home")">
-                <i data-feather="settings"></i>&nbsp;@Resource.MyAccount
+
+<!-- Desktop tabs -->
+<nav class="customer-account-nav customer-account-nav--desktop d-none d-sm-block" aria-label="Hesap menüsü">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link @(isAccount ? "active" : "")" href="@Url.Action("Index","Home")" @(isAccount ? "aria-current=\"page\"" : null)>
+                <i data-feather="settings" aria-hidden="true"></i>&nbsp;@Resource.MyAccount
             </a>
-            <a class="list-group-item list-group-item-action" href="@Url.Action("ChangePassword","Home")">
-                <i data-feather="lock"></i>&nbsp;@Resource.ChangePassword
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(isPassword ? "active" : "")" href="@Url.Action("ChangePassword","Home")" @(isPassword ? "aria-current=\"page\"" : null)>
+                <i data-feather="lock" aria-hidden="true"></i>&nbsp;@Resource.ChangePassword
             </a>
-            <a class="list-group-item list-group-item-action" href="@Url.Action("CustomerOrders")">
-                <i data-feather="shopping-bag"></i>&nbsp;@Resource.MyOrder
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(isOrders ? "active" : "")" href="@Url.Action("CustomerOrders")" @(isOrders ? "aria-current=\"page\"" : null)>
+                <i data-feather="shopping-bag" aria-hidden="true"></i>&nbsp;@Resource.MyOrder
                 <span class="badge badge-pill badge-secondary bg-0 border ml-2">
-                    <span class="text-primary">@orders.Count</span>
+                    <span class="text-primary">@orderCount</span>
                 </span>
             </a>
-            <a class="list-group-item list-group-item-action" href="@Url.Action("SendMessageToSeller")">
-                <i data-feather="phone"></i>&nbsp;@Resource.SendMessageToSeller
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(isMessage ? "active" : "")" href="@Url.Action("SendMessageToSeller")" @(isMessage ? "aria-current=\"page\"" : null)>
+                <i data-feather="phone" aria-hidden="true"></i>&nbsp;@Resource.SendMessageToSeller
             </a>
-            <a class="list-group-item list-group-item-action" href="@Url.Action("Faq")">
-                <i data-feather="info"></i>&nbsp;@Resource.Faq
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(isFaq ? "active" : "")" href="@Url.Action("Faq")" @(isFaq ? "aria-current=\"page\"" : null)>
+                <i data-feather="info" aria-hidden="true"></i>&nbsp;@Resource.Faq
             </a>
-        </div>
-    </div>
-</div>
+        </li>
+    </ul>
+</nav>
+
+<!-- Mobile: always-visible stacked account links (no MENÜ toggle) -->
+<nav class="customer-account-nav customer-account-nav--mobile d-sm-none mb-4" aria-label="Hesap menüsü">
+    <ul class="list-unstyled customer-account-nav__list mb-0">
+        <li>
+            <a class="customer-account-nav__link @(isAccount ? "is-active" : "")" href="@Url.Action("Index","Home")" @(isAccount ? "aria-current=\"page\"" : null)>
+                <i data-feather="settings" aria-hidden="true"></i>
+                <span>@Resource.MyAccount</span>
+            </a>
+        </li>
+        <li>
+            <a class="customer-account-nav__link @(isPassword ? "is-active" : "")" href="@Url.Action("ChangePassword","Home")" @(isPassword ? "aria-current=\"page\"" : null)>
+                <i data-feather="lock" aria-hidden="true"></i>
+                <span>@Resource.ChangePassword</span>
+            </a>
+        </li>
+        <li>
+            <a class="customer-account-nav__link @(isOrders ? "is-active" : "")" href="@Url.Action("CustomerOrders")" @(isOrders ? "aria-current=\"page\"" : null)>
+                <i data-feather="shopping-bag" aria-hidden="true"></i>
+                <span>@Resource.MyOrder</span>
+                <span class="badge badge-pill badge-secondary bg-0 border ml-auto">
+                    <span class="text-primary">@orderCount</span>
+                </span>
+            </a>
+        </li>
+        <li>
+            <a class="customer-account-nav__link @(isMessage ? "is-active" : "")" href="@Url.Action("SendMessageToSeller")" @(isMessage ? "aria-current=\"page\"" : null)>
+                <i data-feather="phone" aria-hidden="true"></i>
+                <span>@Resource.SendMessageToSeller</span>
+            </a>
+        </li>
+        <li>
+            <a class="customer-account-nav__link @(isFaq ? "is-active" : "")" href="@Url.Action("Faq")" @(isFaq ? "aria-current=\"page\"" : null)>
+                <i data-feather="info" aria-hidden="true"></i>
+                <span>@Resource.Faq</span>
+            </a>
+        </li>
+    </ul>
+</nav>
