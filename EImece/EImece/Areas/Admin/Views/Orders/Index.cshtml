@@ -43,7 +43,7 @@
 
 @Html.Partial("Grid/_GridChrome")
 
-<div class="panel panel-primary eg-grid-shell">
+<div class="panel panel-primary eg-grid-shell eg-orders-grid">
     @Html.Partial("pGridDropDown", baseList)
     @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
@@ -80,51 +80,58 @@
         .Sortable(true)
         .Encoded(false)
         .Sanitized(false)
-        .Css("eg-col-state")
+        .Css("eg-col-state eg-col-order-status")
         .RenderValueAs(o => OrderStatusBadge(o.OrderStatus));
 
     columns.Add(o => o.CreatedDate)
         .Titled(AdminResource.CreatedDate)
         .Sortable(true)
-        .Css("gridDateClass")
+        .Css("gridDateClass eg-col-secondary")
         .RenderValueAs(o => o.CreatedDate != null ? o.CreatedDate.ToShortDateString() : "-")
         .SortInitialDirection(GridSortDirection.Descending);
 
     columns.Add(o => o.PaidPrice)
         .Titled("Ödenen Tutar")
         .Sortable(true)
+        .Css("eg-col-order-amount")
         .RenderValueAs(o => o.PaidPrice + " " + o.Currency);
 
     columns.Add(o => o.PaymentStatus)
         .Titled(AdminResource.PaymentStatus)
-        .Sortable(true);
+        .Sortable(true)
+        .Css("eg-col-secondary");
 
     columns.Add(o => o.ShipmentCompanyName)
         .Titled(AdminResource.CargoCompany)
-        .Sortable(true);
+        .Sortable(true)
+        .Css("eg-col-secondary");
 
     columns.Add(o => o.ShipmentTrackingNumber)
         .Titled(AdminResource.ShipmentTrackingNumber)
-        .Sortable(true);
+        .Sortable(true)
+        .Css("eg-col-secondary");
 
     columns.Add(o => o.AdminOrderNote)
         .Titled(AdminResource.AdminOrderNote)
-        .Sortable(true);
+        .Sortable(true)
+        .Css("eg-col-secondary");
 
     columns.Add(o => o.DeliveryDate)
         .Titled("Teslimat Tarihi")
         .Sortable(true)
-        .Css("gridDateClass")
+        .Css("gridDateClass eg-col-secondary")
         .RenderValueAs(o => o.DeliveryDate != null ? o.DeliveryDate.ToShortDateString() : "-");
 
     columns.Add(o => o.CargoPrice)
         .Titled(AdminResource.CargoPrice)
         .Sortable(true)
+        .Css("eg-col-secondary")
         .RenderValueAs(o => o.CargoPrice.ToString() + " " + o.Currency);
 
     columns.Add(o => o.CardType)
         .Titled("Ödeme Yöntemi")
-        .Sortable(true);
+        .Sortable(true)
+        .Css("eg-col-secondary");
 
     columns.Add()
         .Titled("İşlemler")
@@ -148,5 +155,6 @@
 @helper OrderStatusBadge(int orderStatusValue)
 {
     var status = (EImeceOrderStatus)orderStatusValue;
-    <span class="eg-state-badge">@status.ToDescription()</span>
+    var text = status.ToDescription();
+    <span class="eg-state-badge eg-order-status-badge" title="@text">@text</span>
 }

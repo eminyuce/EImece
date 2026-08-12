@@ -22,14 +22,20 @@
             <span class="sr-only">@AdminResource.ToggleSidebar</span>
         </button>
         <div class="admin-topbar-title">
-            <span class="admin-topbar-panel">@String.Format("{0} Yönetim Paneli", companyNameSetting)</span>
+            <span class="admin-topbar-panel">
+                <span class="admin-topbar-panel-full">@String.Format("{0} Yönetim Paneli", companyNameSetting)</span>
+                <span class="admin-topbar-panel-short">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    <span>Yönetim</span>
+                </span>
+            </span>
             @if (!string.IsNullOrWhiteSpace(pageTitle))
             {
                 <span class="admin-topbar-page">@pageTitle</span>
             }
             @if (AppConfig.BypassAdminAuth)
             {
-                <span class="admin-topbar-page" style="color:#b32d2e;">TEMP: Admin auth bypass ON</span>
+                <span class="admin-topbar-page admin-topbar-bypass">TEMP: Admin auth bypass ON</span>
             }
         </div>
     </div>
@@ -37,6 +43,38 @@
     <div class="admin-topbar-right">
         <ul class="admin-topbar-actions">
             @Html.Action("Languages", "Dashboard")
+            <li class="admin-topbar-overflow dropdown">
+                <a href="#"
+                   class="dropdown-toggle admin-topbar-overflow-toggle"
+                   data-toggle="dropdown"
+                   role="button"
+                   aria-haspopup="true"
+                   aria-expanded="false"
+                   title="Diğer bağlantılar">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <span class="sr-only">Diğer bağlantılar</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right admin-topbar-overflow-menu">
+                    <li>
+                        <a href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                            @AdminResource.OurSiteFeatures
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                            @AdminResource.Refresh
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/" target="_blank" rel="noopener noreferrer">
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            @AdminResource.WebSite
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="admin-topbar-action--secondary">
                 <a href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })" title="@AdminResource.OurSiteFeatures">
                     <i class="fa fa-book" aria-hidden="true"></i>

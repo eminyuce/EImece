@@ -369,12 +369,64 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     text-overflow: ellipsis;
 }
 
+.admin-topbar-panel-full {
+    display: inline;
+}
+
+.admin-topbar-panel-short {
+    display: none;
+    align-items: center;
+    gap: 6px;
+}
+
+.admin-topbar-panel-short .fa {
+    color: #2b6cb0;
+}
+
 .admin-topbar-page {
     font-size: 11px;
     color: #627d98;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.admin-topbar-overflow {
+    display: none;
+    position: relative;
+}
+
+.admin-topbar-overflow-menu {
+    min-width: 200px;
+    margin-top: 6px;
+    padding: 6px 0;
+    border: 1px solid var(--admin-topbar-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(16, 42, 67, 0.12);
+}
+
+.admin-topbar-overflow-menu > li > a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    color: var(--admin-link);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-topbar-overflow-menu > li > a:hover,
+.admin-topbar-overflow-menu > li > a:focus {
+    background: #f0f4f8;
+    color: #102a43;
+    text-decoration: none;
+}
+
+.admin-topbar-overflow-menu .fa {
+    width: 16px;
+    text-align: center;
+    color: #627d98;
 }
 
 .admin-topbar-actions {
@@ -757,9 +809,29 @@ body.admin-app .table-responsive {
         max-width: 100%;
     }
 
+    .admin-topbar-panel-full {
+        display: none;
+    }
+
+    .admin-topbar-panel-short {
+        display: inline-flex;
+    }
+
     .admin-topbar-right {
         flex: 0 0 auto;
-        max-width: 58%;
+        max-width: none;
+    }
+
+    .admin-topbar-overflow {
+        display: list-item;
+    }
+
+    .admin-topbar-actions > li.admin-topbar-action--secondary {
+        display: none;
+    }
+
+    .admin-topbar-bypass {
+        display: none;
     }
 
     .admin-topbar-actions {
@@ -840,23 +912,43 @@ body.admin-app .table-responsive {
     }
 }
 
-@media (max-width: 575px) {
-    .admin-topbar-panel {
-        font-size: 11px;
-        max-width: 140px;
+@media (max-width: 991px) {
+    .admin-topbar-overflow > a,
+    .admin-topbar-overflow-toggle {
+        min-width: var(--admin-touch-min);
+        min-height: var(--admin-touch-min);
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 8px;
+        color: var(--admin-link);
+        text-decoration: none;
+        border-radius: 6px;
+        touch-action: manipulation;
     }
 
+    .admin-topbar-overflow.open > a,
+    .admin-topbar-overflow-toggle:hover,
+    .admin-topbar-overflow-toggle:focus {
+        background: #f0f4f8;
+        color: #102a43;
+    }
+
+    .admin-topbar-panel {
+        font-size: 13px;
+        max-width: none;
+        overflow: visible;
+        text-overflow: unset;
+    }
+}
+
+@media (max-width: 575px) {
     .admin-topbar-page {
         display: none;
     }
 
     .admin-topbar-actions > li > a {
         padding: 10px 6px;
-    }
-
-    /* Keep language + user + logout; tuck secondary actions into the sidebar instead */
-    .admin-topbar-actions > li.admin-topbar-action--secondary {
-        display: none;
     }
 }
 
