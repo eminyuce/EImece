@@ -3790,17 +3790,21 @@ body[data-design="crizal"] .crizal-review-modal .control-label {
 }
 
 /* ---------- Checkout wizard steps ---------- */
-body[data-design="crizal"] .steps {
+body[data-design="crizal"] .steps,
+body[data-design="crizal"] .steps.crizal-checkout-steps {
     margin: 0 0 1.5rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: visible;
 }
 
 body[data-design="crizal"] .steps-body {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 0.5rem;
-    min-width: min(100%, 42rem);
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
 }
 
 body[data-design="crizal"] .steps .step {
@@ -3810,6 +3814,7 @@ body[data-design="crizal"] .steps .step {
     align-items: center;
     justify-content: center;
     gap: 0.35rem;
+    min-width: 0;
     min-height: 4.25rem;
     padding: 0.75rem 0.5rem;
     text-align: center;
@@ -3865,6 +3870,17 @@ body[data-design="crizal"] .steps .step.step-done .step-indicator {
 
 body[data-design="crizal"] .steps .step .step-label {
     line-height: 1.2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+/* Desktop/tablet: keep a single row when there is room */
+@media (min-width: 768px) {
+    body[data-design="crizal"] .steps-body {
+        flex-wrap: nowrap;
+    }
 }
 
 /* Empty cart copy must wrap fully on ~390px (no horizontal clip) */
@@ -4027,12 +4043,45 @@ body[data-design="crizal"] .media.d-block.d-sm-flex {
 
     body[data-design="crizal"] .crizal-customer-login__form-wrap {
         padding: 1.35rem;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* Compact 2×2 stepper — no horizontal page scroll on ~390px */
+    body[data-design="crizal"] .steps,
+    body[data-design="crizal"] .steps.crizal-checkout-steps {
+        overflow-x: visible;
+    }
+
+    body[data-design="crizal"] .steps-body {
+        flex-wrap: wrap;
+        gap: 0.4rem;
     }
 
     body[data-design="crizal"] .steps .step {
-        min-width: 7.5rem;
-        font-size: 0.72rem;
-        min-height: 3.75rem;
+        flex: 1 1 calc(50% - 0.4rem);
+        min-width: 0;
+        max-width: calc(50% - 0.2rem);
+        font-size: 0.68rem;
+        min-height: 3.15rem;
+        padding: 0.5rem 0.35rem;
+        gap: 0.25rem;
+    }
+
+    body[data-design="crizal"] .steps .step .step-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    body[data-design="crizal"] .alert,
+    body[data-design="crizal"] .crizal-cart-empty,
+    body[data-design="crizal"] .common-block,
+    body[data-design="crizal"] .form-control,
+    body[data-design="crizal"] .needs-validation {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     body[data-design="crizal"] #ProceedToCheckout,
@@ -4040,5 +4089,7 @@ body[data-design="crizal"] .media.d-block.d-sm-flex {
         font-size: 0.95rem;
         padding-top: 0.85rem;
         padding-bottom: 0.85rem;
+        max-width: 100%;
+        white-space: normal;
     }
 }
