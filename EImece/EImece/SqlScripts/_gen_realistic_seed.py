@@ -267,7 +267,7 @@ MENUS = [
     ("Ana Sayfa", "<p>EImece vitrine hoş geldiniz.</p>", "home-index", None, True),
     ("Kurumsal", "<p>Hakkımızda ve şirket bilgileri.</p>", "pages-index", None, True),
     ("Hakkımızda", "<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>", "info-aboutus", None, False),
-    ("İletişim", "<p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p>", "pages-index", None, False),
+    ("İletişim", "<h2>İletişim</h2><p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p><p>Sipariş, iade ve ürün sorularınız için aşağıdaki formu kullanabilir veya <strong>info@eimece.test</strong> adresine yazabilirsiniz.</p><p>Çalışma saatleri: Hafta içi 09:00–18:00</p>", "pages-index", None, False),
     ("Kargo & Teslimat", "<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>", "info-deliveryinfo", None, True),
     ("Sıkça Sorulan Sorular", "<p>Sipariş, ödeme ve iade hakkında SSS.</p>", "pages-index", None, True),
     ("Kampanyalar", "<p>Güncel indirimler ve kuponlar.</p>", "pages-index", None, True),
@@ -275,7 +275,8 @@ MENUS = [
     ("Gizlilik Politikası", "<p>Kişisel verilerin korunması.</p>", "info-privacypolicy", None, False),
     ("Mesafeli Satış Sözleşmesi", "<p>Mesafeli satış ve tüketici hakları.</p>", "info-termsandconditions", None, False),
     ("İade & Değişim", "<p>14 gün içinde iade ve değişim koşulları.</p>", "pages-index", None, False),
-    ("Mağazalarımız", None, "pages-index", "https://maps.example.com/eimece", True),
+    # Do not seed a production maps URL; Admin must set Menus.Link to the real store locator.
+    ("Mağazalarımız", "<p>Mağaza konumlarımız yakında burada listelenecek.</p><p><em>Yönetici notu:</em> Admin → Menüler ekranından bu öğeye gerçek harita bağlantısını (Menus.Link) ekleyin.</p>", "pages-index", None, True),
 ]
 
 SLIDES = [
