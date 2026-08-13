@@ -177,15 +177,15 @@
     <div class="row">
         <div class="col-lg-7">
             @{
-                // Prefer resize-proxy URLs (handles seed placeholders without filename dumps).
-                // Avoid static /media/images/{FileName} which may still be on-disk seed art.
-                var mainDisplaySrc = !string.IsNullOrEmpty(mainImageImgSrcUrl)
-                    ? mainImageImgSrcUrl
+                // Fit-width URLs (h0) keep the original aspect ratio. Square wNhN URLs stretch
+                // landscape studio shots and they look tiny on the dark gallery canvas.
+                var mainDisplaySrc = product.ImageState && productMainImageId > 0
+                    ? FitProductImageUrl(product, productMainImageId, 1000)
                     : EImece.Domain.AppConfig.GetDefaultImage("w610h610");
                 var defaultImageSrc = EImece.Domain.AppConfig.GetDefaultImage("w610h610");
                 var lightboxId = "prodGalleryLightbox";
                 var lightboxCarouselId = lightboxId + "Carousel";
-                var gallerySlides = new List<Tuple<string, string, string>>();
+                var gallerySlides = new List<Tuple<string, string, string, string>>();
                 if (product.ImageState && productMainImageId > 0)
                 {
                     var mainLargeSrc = product.GetCroppedImageUrl(productMainImageId, 0, 0);
@@ -193,15 +193,20 @@
                     {
                         mainLargeSrc = mainDisplaySrc;
                     }
-                    gallerySlides.Add(Tuple.Create(mainDisplaySrc, mainLargeSrc, product.Name ?? ""));
+                    var mainThumbSrc = FitProductImageUrl(product, productMainImageId, 200);
+                    gallerySlides.Add(Tuple.Create(mainDisplaySrc, mainLargeSrc, product.Name ?? "", mainThumbSrc));
                 }
                 else
                 {
-                    gallerySlides.Add(Tuple.Create(defaultImageSrc, defaultImageSrc, product.Name ?? ""));
+                    gallerySlides.Add(Tuple.Create(defaultImageSrc, defaultImageSrc, product.Name ?? "", defaultImageSrc));
                 }
                 foreach (var f in productFiles)
                 {
-                    var displaySrc = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
+                    if (f == null || f.FileStorageId <= 0 || f.FileStorageId == productMainImageId)
+                    {
+                        continue;
+                    }
+                    var displaySrc = FitProductImageUrl(f, f.FileStorageId, 1000);
                     if (string.IsNullOrEmpty(displaySrc))
                     {
                         continue;
@@ -211,37 +216,31 @@
                     {
                         largeSrc = displaySrc;
                     }
+                    var thumbSrc = FitProductImageUrl(f, f.FileStorageId, 200);
                     var alt = !string.IsNullOrEmpty(f.Name) ? f.Name : (product.Name ?? "");
-                    gallerySlides.Add(Tuple.Create(displaySrc, largeSrc, alt));
+                    gallerySlides.Add(Tuple.Create(displaySrc, largeSrc, alt, thumbSrc));
                 }
                 var useLightbox = gallerySlides.Count > 0;
             }
             <!-- Product gallery-->
             <div class="product-gallery" @if (useLightbox) { <text>data-pt-lightbox="@lightboxId"</text> }>
                 <ul class="product-thumbnails">
-                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgSrc))
+                    @for (int i = 0; i < gallerySlides.Count; i++)
                     {
-                        <li class="active">
-                            <a href="#one">
-                                <img alt=""
-                                     src="@mainImageThbImgSrc"
+                        var slide = gallerySlides[i];
+                        var hash = "one";
+                        if (i > 0)
+                        {
+                            hash = (i - 1) < Constants.NumbersArr.Length
+                                ? Constants.NumbersArr.ElementAt(i - 1)
+                                : ("img" + (i + 1));
+                        }
+                        <li class="@(i == 0 ? "active" : "")">
+                            <a href="#@hash">
+                                <img alt="@slide.Item3"
+                                     src="@slide.Item4"
                                      width="95"
-                                     height="105"
-                                     loading="lazy"
-                                     decoding="async" />
-                            </a>
-                        </li>
-                    }
-                    @for (int i = 0; i < productFiles.Count; i++)
-                    {
-                        var f = productFiles[i];
-                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 95, 105);
-                        <li class="">
-                            <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
-                                <img alt=""
-                                     src="@imgTag"
-                                     width="95"
-                                     height="105"
+                                     height="95"
                                      loading="lazy"
                                      decoding="async" />
                             </a>
@@ -264,8 +263,6 @@
                            class="crizal-product-media"
                            @if (useLightbox) { <text>data-pt-slide="@i"</text> }>
                             <img src="@slide.Item1"
-                                 width="610"
-                                 height="610"
                                  alt="@slide.Item3"
                                  loading="@(i == 0 ? "eager" : "lazy")"
                                  decoding="async" />
@@ -275,7 +272,7 @@
             </div>
             @if (useLightbox)
             {
-                <div class="modal fade pt-lightbox" id="@lightboxId" tabindex="-1" aria-hidden="true">
+                <div class="modal fade pt-lightbox pt-lightbox--media" id="@lightboxId" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
                             <button type="button" class="pt-lightbox__close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">&times;</button>
@@ -911,6 +908,19 @@
 }
 
 @functions {
+    public static string FitProductImageUrl(BaseEntity entity, int fileStorageId, int width)
+    {
+        if (entity == null || fileStorageId <= 0)
+        {
+            return AppConfig.GetDefaultImage(Math.Max(width, 1), Math.Max(width, 1));
+        }
+        if (width <= 0)
+        {
+            return entity.GetCroppedImageUrl(fileStorageId, 0, 0);
+        }
+        return string.Format("/images/w{0}h0/{1}/", width, entity.GetImageSeoUrl(fileStorageId));
+    }
+
     // Split the videoUrl by common delimiters (e.g., comma, semicolon, or newline)
     public static List<string> SplitByCommaOrSemicolonOrNewline(string videoUrl)
     {

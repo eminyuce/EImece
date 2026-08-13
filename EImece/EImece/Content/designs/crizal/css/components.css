@@ -2075,17 +2075,21 @@ body[data-design="crizal"] .product-gallery .product-thumbnails li {
 
 body[data-design="crizal"] .product-gallery .product-thumbnails li > a {
     display: block;
+    aspect-ratio: 1 / 1;
     border: 2px solid var(--crizal-border);
     border-radius: var(--crizal-radius);
     overflow: hidden;
     opacity: 0.65;
     transition: opacity 0.2s ease, border-color 0.2s ease;
+    background: #f3f4f6;
 }
 
 body[data-design="crizal"] .product-gallery .product-thumbnails li > a > img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 body[data-design="crizal"] .product-gallery .product-thumbnails li.active > a,
@@ -2099,11 +2103,17 @@ body[data-design="crizal"] .product-gallery .product-carousel {
     min-width: 0;
     border-radius: var(--crizal-radius-lg);
     overflow: hidden;
-    background: var(--crizal-surface-alt);
+    background: #f3f4f6;
 }
 
 body[data-design="crizal"] .product-gallery .product-carousel a {
     display: block;
+}
+
+body[data-design="crizal"] .product-gallery .product-carousel a.crizal-product-media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    height: auto;
 }
 
 body[data-design="crizal"] .product-gallery .product-carousel a[data-pt-slide] {
@@ -2117,6 +2127,7 @@ body[data-design="crizal"] .product-gallery .product-carousel a[data-pt-slide]::
     background: rgba(20, 33, 43, 0);
     transition: background 0.2s ease;
     pointer-events: none;
+    z-index: 1;
 }
 
 body[data-design="crizal"] .product-gallery .product-carousel a[data-pt-slide]:hover::after {
@@ -2124,9 +2135,14 @@ body[data-design="crizal"] .product-gallery .product-carousel a[data-pt-slide]:h
 }
 
 body[data-design="crizal"] .product-gallery .product-carousel img {
-    display: block;
-    width: 100%;
-    height: auto;
+    position: absolute;
+    inset: 0;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: cover;
+    object-position: center;
 }
 
 /* Broken / missing product media: soft abstract block, never alt/filename text */
@@ -2134,8 +2150,13 @@ body[data-design="crizal"] .product-gallery .product-carousel a.crizal-product-m
 body[data-design="crizal"] .product-gallery .product-thumbnails li > a {
     position: relative;
     background:
-        radial-gradient(ellipse 70% 60% at 70% 30%, rgba(9, 184, 80, 0.22) 0%, transparent 55%),
-        linear-gradient(135deg, #14212B 0%, #1a3340 55%, #0f1a22 100%);
+        radial-gradient(ellipse 70% 60% at 70% 30%, rgba(9, 184, 80, 0.12) 0%, transparent 55%),
+        #f3f4f6;
+}
+
+body[data-design="crizal"] .pt-lightbox--media .modal-content,
+body[data-design="crizal"] .pt-lightbox--media .pt-lightbox__img {
+    background: #f4f4f4;
 }
 
 body[data-design="crizal"] .product-gallery img.is-broken {
@@ -4076,6 +4097,10 @@ body[data-design="crizal"] .crizal-review-modal {
     z-index: 1080;
 }
 
+body[data-design="crizal"] .pt-lightbox {
+    z-index: 1080;
+}
+
 body[data-design="crizal"] .crizal-review-modal.show {
     display: block;
     background-color: rgba(20, 33, 43, 0.62);
@@ -4731,14 +4756,15 @@ body[data-design="crizal"] .pt-lightbox .carousel-control-prev,
 body[data-design="crizal"] .pt-lightbox .carousel-control-next {
     width: 6.25rem;
     opacity: 1 !important;
-    z-index: 6;
+    z-index: 7;
+    pointer-events: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.45rem;
     text-decoration: none;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 body[data-design="crizal"] .pt-lightbox .carousel-control-prev {
@@ -4747,7 +4773,7 @@ body[data-design="crizal"] .pt-lightbox .carousel-control-prev {
 
 body[data-design="crizal"] .pt-lightbox .carousel-control-next {
     right: 0;
-    background: linear-gradient(270deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 body[data-design="crizal"] .pt-lightbox .carousel-control-prev:hover,

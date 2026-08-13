@@ -183,6 +183,10 @@
     transform: scale(1.04);
 }
 
+.pt-lightbox {
+    z-index: 1080;
+}
+
 .pt-lightbox .modal-content {
     background: #111;
     border: 0;
@@ -225,14 +229,15 @@
 .pt-lightbox .carousel-control-next {
     width: 6.25rem;
     opacity: 1 !important;
-    z-index: 6;
+    z-index: 7;
+    pointer-events: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.45rem;
     text-decoration: none;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 .pt-lightbox .carousel-control-prev {
@@ -241,7 +246,7 @@
 
 .pt-lightbox .carousel-control-next {
     right: 0;
-    background: linear-gradient(270deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 .pt-lightbox .carousel-control-prev:hover,
