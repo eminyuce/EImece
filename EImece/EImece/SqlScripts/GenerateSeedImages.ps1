@@ -24,6 +24,12 @@ param(
 
     [int] $Count = 0,
 
+    # Optional SQL LIKE filter on FileStorages.FileName (e.g. 'menu-theme-%')
+    [string] $FileNameLike = "",
+
+    # Skip writing a JPEG when the file already exists on disk
+    [switch] $SkipExisting,
+
     [int] $Width = 1200,
 
     [int] $Height = 900,
@@ -56,7 +62,12 @@ function Get-SeedFileNames {
         return 1..$Count | ForEach-Object { "product-{0:D5}.jpg" -f $_ }
     }
 
-    $sql = "SELECT DISTINCT FileName FROM dbo.FileStorages WHERE FileName IS NOT NULL AND FileName <> '' ORDER BY FileName;"
+    $sql = "SELECT DISTINCT FileName FROM dbo.FileStorages WHERE FileName IS NOT NULL AND FileName <> ''"
+    if (-not [string]::IsNullOrWhiteSpace($FileNameLike)) {
+        $escaped = $FileNameLike.Replace("'", "''")
+        $sql += " AND FileName LIKE N'$escaped'"
+    }
+    $sql += " ORDER BY FileName;"
 
     # Preferred: System.Data.SqlClient
     try {
@@ -179,6 +190,10 @@ foreach ($name in $fileNames) {
     $fullPath = Join-Path $MediaRoot $safeName
     $thumbPath = Join-Path $thumbRoot ("thb" + $safeName)
     $color = $palette[($index - 1) % $palette.Count]
+
+    if ($SkipExisting -and (Test-Path $fullPath) -and (Test-Path $thumbPath)) {
+        continue
+    }
 
     New-SeedJpeg -Path $fullPath -ImgWidth $Width -ImgHeight $Height -Label "" -BackColor $color
     New-SeedJpeg -Path $thumbPath -ImgWidth $ThumbWidth -ImgHeight $thumbHeight -Label "" -BackColor $color

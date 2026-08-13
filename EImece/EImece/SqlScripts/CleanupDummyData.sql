@@ -113,10 +113,16 @@ IF OBJECT_ID(N'dbo.MenuFiles', N'U') IS NOT NULL
     DELETE mf
     FROM dbo.MenuFiles mf
     INNER JOIN dbo.Menus m ON m.Id = mf.MenuId
-    WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %';
+    WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %'
+       OR m.Name LIKE N'PT Dummy T%' OR m.Name = N'Tema Ornekleri';
 
 IF OBJECT_ID(N'dbo.Menus', N'U') IS NOT NULL
-    DELETE FROM dbo.Menus WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+BEGIN
+    UPDATE dbo.Menus SET MainImageId = NULL
+    WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %' OR Name LIKE N'PT Dummy T%' OR Name = N'Tema Ornekleri';
+    DELETE FROM dbo.Menus
+    WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %' OR Name LIKE N'PT Dummy T%' OR Name = N'Tema Ornekleri';
+END
 
 IF OBJECT_ID(N'dbo.MainPageImages', N'U') IS NOT NULL
     DELETE FROM dbo.MainPageImages WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';

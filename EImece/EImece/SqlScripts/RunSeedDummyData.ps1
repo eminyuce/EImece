@@ -14,12 +14,19 @@
     2. Data + Images (Full Seed):
        .\RunSeedDummyData.ps1 -SeedDatabase
        (Populates SQL tables with dummy data AND generates missing JPEG image files).
+       Includes Tema Ornekleri + PT Dummy T1-T8 menus, each with MenuMainImage and 12 MenuGallery files.
 
     3. Data Only (No Images):
        .\RunSeedDummyData.ps1 -SeedDatabase -SkipImages
        (Populates SQL tables with dummy data without creating image files on disk).
 
-    4. Cleanup:
+    4. Theme pages only (no catalog wipe):
+       .\RunSeedDummyData.ps1 -ThemePages
+       (Upserts T1-T8 CMS menus in the storefront nav, attaches main + gallery images,
+        writes menu-theme-*.jpg files. Same association as Admin media:
+        /admin/media/?contentId={menuId}&mod=Menus&imageType=MenuGallery)
+
+    5. Cleanup:
        .\RunSeedDummyData.ps1 -CleanupDatabase
        (Cleans up dummy seed data from the SQL database).
 
@@ -28,6 +35,9 @@
 
 .EXAMPLE
     .\RunSeedDummyData.ps1 -SeedDatabase
+
+.EXAMPLE
+    .\RunSeedDummyData.ps1 -ThemePages
 
 .EXAMPLE
     .\RunSeedDummyData.ps1 -SeedDatabase -SkipImages
@@ -55,7 +65,10 @@ param(
     # Mode 3: Skip image generation when seeding database data
     [switch] $SkipImages,
 
-    # Mode 4: Run SQL cleanup script
+    # Mode 4: Upsert PT Dummy T1-T8 menus + MenuMainImage + MenuGallery (no catalog wipe)
+    [switch] $ThemePages,
+
+    # Mode 5: Run SQL cleanup script
     [switch] $CleanupDatabase
 )
 
@@ -108,6 +121,9 @@ if ([string]::IsNullOrWhiteSpace($MediaRoot)) {
 $modeName = "Images Only"
 if ($CleanupDatabase) {
     $modeName = "Database Cleanup"
+} elseif ($ThemePages -and -not $SeedDatabase) {
+    $modeName = "Theme Pages (T1-T8 menus + gallery)"
+    if ($SkipImages) { $modeName = "Theme Pages (SQL only)" }
 } elseif ($SeedDatabase -and $SkipImages) {
     $modeName = "Data Only (No Images)"
 } elseif ($SeedDatabase) {
@@ -140,12 +156,37 @@ function Invoke-SqlScriptFile {
 
     Add-Type -AssemblyName System.Data
     $conn = New-Object System.Data.SqlClient.SqlConnection $ConnectionString
+    $conn.add_InfoMessage({
+        param($eventSender, $eventArgs)
+        if ($eventArgs -and $eventArgs.Message) {
+            Write-Host $eventArgs.Message
+        }
+    })
     $conn.Open()
     try {
         $cmd = $conn.CreateCommand()
         $cmd.CommandText = $sql
         $cmd.CommandTimeout = 0
-        $null = $cmd.ExecuteNonQuery()
+        $reader = $cmd.ExecuteReader()
+        try {
+            do {
+                $printedHeader = $false
+                while ($reader.Read()) {
+                    if (-not $printedHeader) {
+                        $cols = for ($i = 0; $i -lt $reader.FieldCount; $i++) { $reader.GetName($i) }
+                        Write-Host ($cols -join " | ") -ForegroundColor DarkGray
+                        $printedHeader = $true
+                    }
+                    $vals = for ($i = 0; $i -lt $reader.FieldCount; $i++) {
+                        if ($reader.IsDBNull($i)) { "" } else { [string]$reader.GetValue($i) }
+                    }
+                    Write-Host ($vals -join " | ")
+                }
+            } while ($reader.NextResult())
+        }
+        finally {
+            $reader.Close()
+        }
         Write-Host "SQL script executed successfully." -ForegroundColor Green
     }
     finally {
@@ -160,9 +201,11 @@ if ($CleanupDatabase) {
     if (-not $SkipImages -and (Test-Path $MediaRoot)) {
         Write-Host "Removing generated seed image files from $MediaRoot ..." -ForegroundColor Cyan
         Get-ChildItem -Path $MediaRoot -Filter "product-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
+        Get-ChildItem -Path $MediaRoot -Filter "menu-theme-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
         $thumbRoot = Join-Path $MediaRoot "thumbs"
         if (Test-Path $thumbRoot) {
             Get-ChildItem -Path $thumbRoot -Filter "thbproduct-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
+            Get-ChildItem -Path $thumbRoot -Filter "thbmenu-theme-*.jpg" -File -ErrorAction SilentlyContinue | Remove-Item -Force
         }
     }
     Write-Host "`nCleanup Complete!" -ForegroundColor Green
@@ -178,16 +221,30 @@ if ($SeedDatabase) {
     }
     Invoke-SqlScriptFile -Path $seedPath -Replacements $replacements
 }
+elseif ($ThemePages) {
+    $themePath = Join-Path $scriptDir "SeedThemePages.sql"
+    Invoke-SqlScriptFile -Path $themePath
+}
 
-# Mode 1 & 2: Generate Image Files (unless -SkipImages is passed)
+# Mode 1, 2 & 4: Generate Image Files (unless -SkipImages is passed)
 if (-not $SkipImages) {
     $genScript = Join-Path $scriptDir "GenerateSeedImages.ps1"
     if (-not (Test-Path $genScript)) {
         throw "GenerateSeedImages.ps1 script not found: $genScript"
     }
 
-    Write-Host "`nGenerating images for all FileStorage records in database..." -ForegroundColor Cyan
-    & $genScript -MediaRoot $MediaRoot -ConnectionString $ConnectionString -MarkExisting
+    Write-Host "`nGenerating images for FileStorage records in database..." -ForegroundColor Cyan
+    $genArgs = @{
+        MediaRoot        = $MediaRoot
+        ConnectionString = $ConnectionString
+        MarkExisting     = $true
+    }
+    if ($ThemePages -and -not $SeedDatabase) {
+        $genArgs.FileNameLike = "menu-theme-%"
+        $genArgs.SkipExisting = $true
+        Write-Host "  (theme pages: FileName LIKE 'menu-theme-%', skip existing files)" -ForegroundColor Yellow
+    }
+    & $genScript @genArgs
 
     # Sync generated images to IIS website directory if present
     $iisMedia = "C:\inetpub\wwwroot\Eimece\media\images"

@@ -7,7 +7,9 @@
 @if (!string.IsNullOrEmpty(Model))
 {
     <div class="@extraClass">
-        <img src="@Model" class="img-thumbnail rounded" alt="@alt" loading="lazy" decoding="async" />
+        <a href="@Model" class="pt-hero__zoom" data-pt-lightbox-single>
+            <img src="@Model" class="img-thumbnail rounded" alt="@alt" loading="lazy" decoding="async" />
+        </a>
     </div>
 }
 else

@@ -7,19 +7,26 @@
     var minCount = ViewData["MinCount"].ToInt(4);
     var width = ViewData["Width"].ToInt(300);
     var height = ViewData["Height"].ToInt(300);
+    var lightboxId = (ViewData["LightboxId"] as string) ?? "ptGalleryLightbox";
+    var carouselId = lightboxId + "Carousel";
     var files = (Model ?? Enumerable.Empty<EImece.Domain.Entities.MenuFile>())
-        .Where(f => f != null && f.FileStorage != null)
+        .Where(f => f != null && f.FileStorage != null && f.FileStorage.IsActive)
         .OrderBy(f => f.FileStorage.Position)
         .Select(f => f.FileStorage)
         .ToList();
     var labels = new[] { "FOTO", "ALBÜM" };
 }
-<div class="row pt-gallery">
+<div class="row pt-gallery" data-pt-lightbox="@lightboxId">
     @for (int i = 0; i < files.Count; i++)
     {
         var f = files[i];
+        var thumbSrc = f.GetCroppedImageUrl(f.Id, width, height);
+        var largeSrc = f.GetCroppedImageUrl(f.Id, 0, 0);
+        var alt = !string.IsNullOrEmpty(f.FileName) ? f.FileName : (!string.IsNullOrEmpty(f.Name) ? f.Name : "Gallery");
         <div class="@colClass">
-            @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = width, Height = height })
+            <a href="@largeSrc" class="pt-gallery__item" data-pt-slide="@i">
+                <img src="@thumbSrc" class="img-thumbnail rounded" alt="@alt" loading="lazy" decoding="async" />
+            </a>
         </div>
     }
     @for (int i = files.Count; i < minCount; i++)
@@ -30,3 +37,41 @@
         </div>
     }
 </div>
+@if (files.Count > 0)
+{
+    <div class="modal fade pt-lightbox" id="@lightboxId" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <button type="button" class="pt-lightbox__close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">&times;</button>
+                <div class="modal-body p-0">
+                    <div id="@carouselId" class="carousel slide" data-bs-interval="false" data-interval="false">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < files.Count; i++)
+                            {
+                                var f = files[i];
+                                var largeSrc = f.GetCroppedImageUrl(f.Id, 0, 0);
+                                var alt = !string.IsNullOrEmpty(f.FileName) ? f.FileName : (!string.IsNullOrEmpty(f.Name) ? f.Name : "Gallery");
+                                <div class="carousel-item@(i == 0 ? " active" : "")">
+                                    <img src="@largeSrc" class="pt-lightbox__img" alt="@alt" />
+                                </div>
+                            }
+                        </div>
+                        @if (files.Count > 1)
+                        {
+                            <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev" data-target="#@carouselId" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="pt-lightbox__nav-label">Önceki</span>
+                                <span class="visually-hidden sr-only">Önceki</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next" data-target="#@carouselId" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="pt-lightbox__nav-label">Sonraki</span>
+                                <span class="visually-hidden sr-only">Sonraki</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

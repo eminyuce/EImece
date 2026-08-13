@@ -4,56 +4,76 @@
 @using Resources;
 
 @{
-    var actionNameEdit = "Index";
     var controllerName = "";
     var baseContent = Model.BaseContent;
     string itemTypeName = "";
     if (baseContent is Product)
     {
-        Product product = (Product)baseContent;
         controllerName = "Products";
         itemTypeName = AdminResource.Product;
     }
     else if (baseContent is Story)
     {
-        Story item = (Story)baseContent;
         controllerName = "Stories";
         itemTypeName = AdminResource.Story;
     }
     else if (baseContent is Menu)
     {
-        Menu item = (Menu)baseContent;
         controllerName = "Menus";
         itemTypeName = AdminResource.Menu;
     }
     else if (baseContent is StoryCategory)
     {
-        StoryCategory item = (StoryCategory)baseContent;
         controllerName = "StoryCategories";
         itemTypeName = AdminResource.StoryCategory;
     }
     else if (baseContent is ProductCategory)
     {
-        ProductCategory item = (ProductCategory)baseContent;
         controllerName = "ProductCategories";
         itemTypeName = AdminResource.ProductCategory;
     }
+    else if (baseContent is MainPageImage)
+    {
+        controllerName = "MainPageImages";
+        itemTypeName = AdminResource.MainPageImages;
+    }
 
+    var editorUrl = !string.IsNullOrEmpty(controllerName) && baseContent != null && baseContent.Id > 0
+        ? Url.Action("SaveOrEdit", controllerName, new { id = baseContent.Id })
+        : "";
+    var listUrl = !string.IsNullOrEmpty(controllerName)
+        ? Url.Action("Index", controllerName)
+        : Url.Action("Index", "Dashboard");
 }
 <h2>
     @AdminResource.FileUploadingPage
 </h2>
 <hr class="adminLine" />
 <div class="row">
-    <div class="col-md-4">
-        <h3>
-            @Html.DisplayFor(model => baseContent.Name)
-            @Html.ActionLink(AdminResource.BackToList, actionNameEdit, controllerName, new { search = baseContent.Name }, new { @class = "btn btn-default btn-sm" })
-        </h3>
-        <p>
-            @itemTypeName
-        </p>
-    </div>
     <div class="col-md-8">
+        <h3>
+            @if (baseContent != null)
+            {
+                @Html.DisplayFor(model => baseContent.Name)
+            }
+        </h3>
+        @if (!string.IsNullOrEmpty(itemTypeName))
+        {
+            <p>@itemTypeName</p>
+        }
+    </div>
+    <div class="col-md-4">
+        <div class="admin-edit-toolbar-actions admin-media-toolbar-actions">
+            @if (!string.IsNullOrEmpty(editorUrl))
+            {
+                <a href="@editorUrl" class="btn btn-sm admin-edit-back-to-editor-btn" title="@AdminResource.BackToEditor">
+                    <span class="admin-edit-back-to-list-icon" aria-hidden="true">←</span>
+                    <span>@AdminResource.BackToEditor</span>
+                </a>
+            }
+            <a href="@listUrl" class="btn btn-sm admin-edit-back-to-list-btn" title="@AdminResource.BackToList">
+                <span>@AdminResource.BackToList</span>
+            </a>
+        </div>
     </div>
 </div>

@@ -264,19 +264,29 @@ STORIES = [
 
 # MenuLink MUST be controller-action (or controller-action_id). See Menu.DetailPageLink / GetMenuPages.
 MENUS = [
-    ("Ana Sayfa", "<p>EImece vitrine hoş geldiniz.</p>", "home-index", None, True),
-    ("Kurumsal", "<p>Hakkımızda ve şirket bilgileri.</p>", "pages-index", None, True),
-    ("Hakkımızda", "<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>", "info-aboutus", None, False),
-    ("İletişim", "<h2>İletişim</h2><p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p><p>Sipariş, iade ve ürün sorularınız için aşağıdaki formu kullanabilir veya <strong>info@eimece.test</strong> adresine yazabilirsiniz.</p><p>Çalışma saatleri: Hafta içi 09:00–18:00</p>", "pages-index", None, False),
-    ("Kargo & Teslimat", "<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>", "info-deliveryinfo", None, True),
-    ("Sıkça Sorulan Sorular", "<p>Sipariş, ödeme ve iade hakkında SSS.</p>", "pages-index", None, True),
-    ("Kampanyalar", "<p>Güncel indirimler ve kuponlar.</p>", "pages-index", None, True),
-    ("Blog", "<p>Stil, yaşam ve ürün rehberleri.</p>", "stories-index", None, True),
-    ("Gizlilik Politikası", "<p>Kişisel verilerin korunması.</p>", "info-privacypolicy", None, False),
-    ("Mesafeli Satış Sözleşmesi", "<p>Mesafeli satış ve tüketici hakları.</p>", "info-termsandconditions", None, False),
-    ("İade & Değişim", "<p>14 gün içinde iade ve değişim koşulları.</p>", "pages-index", None, False),
+    # (name, html, menulink, external, mainpage, pagetheme, gallery_count)
+    ("Ana Sayfa", "<p>EImece vitrine hoş geldiniz.</p>", "home-index", None, True, None, 0),
+    ("Kurumsal", "<p>Hakkımızda ve şirket bilgileri.</p>", "pages-index", None, True, "T1", 0),
+    ("Hakkımızda", "<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>", "info-aboutus", None, False, None, 0),
+    ("İletişim", "<h2>İletişim</h2><p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p><p>Sipariş, iade ve ürün sorularınız için aşağıdaki formu kullanabilir veya <strong>info@eimece.test</strong> adresine yazabilirsiniz.</p><p>Çalışma saatleri: Hafta içi 09:00–18:00</p>", "pages-index", None, False, "T8", 0),
+    ("Kargo & Teslimat", "<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>", "info-deliveryinfo", None, True, None, 0),
+    ("Sıkça Sorulan Sorular", "<p>Sipariş, ödeme ve iade hakkında SSS.</p>", "pages-index", None, True, "T2", 0),
+    ("Kampanyalar", "<p>Güncel indirimler ve kuponlar.</p>", "pages-index", None, True, "T1", 0),
+    ("Blog", "<p>Stil, yaşam ve ürün rehberleri.</p>", "stories-index", None, True, None, 0),
+    ("Gizlilik Politikası", "<p>Kişisel verilerin korunması.</p>", "info-privacypolicy", None, False, None, 0),
+    ("Mesafeli Satış Sözleşmesi", "<p>Mesafeli satış ve tüketici hakları.</p>", "info-termsandconditions", None, False, None, 0),
+    ("İade & Değişim", "<p>14 gün içinde iade ve değişim koşulları.</p>", "pages-index", None, False, "T3", 0),
     # Do not seed a production maps URL; Admin must set Menus.Link to the real store locator.
-    ("Mağazalarımız", "<p>Mağaza konumlarımız yakında burada listelenecek.</p><p><em>Yönetici notu:</em> Admin → Menüler ekranından bu öğeye gerçek harita bağlantısını (Menus.Link) ekleyin.</p>", "pages-index", None, True),
+    ("Mağazalarımız", "<p>Mağaza konumlarımız yakında burada listelenecek.</p><p><em>Yönetici notu:</em> Admin → Menüler ekranından bu öğeye gerçek harita bağlantısını (Menus.Link) ekleyin.</p>", "pages-index", None, True, "T4", 0),
+    ("Tema Ornekleri", "<p>Sayfa teması örnekleri (T1–T8). Her alt sayfada ana görsel (MenuMainImage) ve menü galerisi (MenuGallery) vardır.</p>", "pages-index", None, True, "T1", 0),
+    ("PT Dummy T1", "<p>Bu sayfa <strong>PageTheme T1</strong> düzenini gösterir. Üstteki büyük görsel menünün ana resmidir. Alttaki ızgara menü galerisidir.</p>", "pages-index", None, False, "T1", 12),
+    ("PT Dummy T2", "<p>Bu sayfa <strong>PageTheme T2</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>", "pages-index", None, False, "T2", 12),
+    ("PT Dummy T3", "<p>Bu sayfa <strong>PageTheme T3</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>", "pages-index", None, False, "T3", 12),
+    ("PT Dummy T4", "<p>Bu sayfa <strong>PageTheme T4</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>", "pages-index", None, False, "T4", 12),
+    ("PT Dummy T5", "<p>Bu sayfa <strong>PageTheme T5</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>", "pages-index", None, False, "T5", 12),
+    ("PT Dummy T6", "<p>Bu sayfa <strong>PageTheme T6</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>", "pages-index", None, False, "T6", 12),
+    ("PT Dummy T7", "<p>Bu sayfa <strong>PageTheme T7</strong> (büyük görsel galeri) düzenini gösterir. En az 12 menü galeri görseli eklenir.</p>", "pages-index", None, False, "T7", 12),
+    ("PT Dummy T8", "<h2>İletişim</h2><p>Bu sayfa <strong>PageTheme T8</strong> iletişim düzenini gösterir. Form, şirket bilgileri ve harita temada yer alır.</p><p>Sipariş, iade ve ürün sorularınız için <strong>info@eimece.test</strong> adresine yazabilirsiniz.</p><p>Çalışma saatleri: Hafta içi 09:00–18:00</p>", "pages-index", None, False, "T8", 12),
 ]
 
 SLIDES = [
@@ -498,8 +508,9 @@ def main() -> None:
     - SettingKey LIKE N'SEED_%' or N'__EIMECE_SEED%'
 
   Default shape (@Scale = 1):
-    ~12 menus, ~6 homepage slides, ~20 brands, ~25 categories, ~150 products,
-    ~30 stories, ~40 customers/users, ~100 orders, plus supporting rows.
+    ~21 menus (12 nav/CMS + Tema Ornekleri + PT Dummy T1–T8), ~6 homepage slides,
+    ~20 brands, ~25 categories, ~150 products, ~30 stories, ~40 customers/users,
+    ~100 orders, plus supporting rows.
 
   HOW TO RUN
   ----------
@@ -554,8 +565,8 @@ DECLARE @PasswordHash  NVARCHAR(MAX) = N'AAECAwQFBgcICQoLDA0ODxDDsDqHD/P2DJthJqY
 DECLARE @SecurityStamp NVARCHAR(MAX) = N'A1B2C3D4E5F64789A0B1C2D3E4F50607';
 
 /* ---- Structural / UX-sensitive (NOT scaled) ---- */
-DECLARE @SeedMenus              INT = 12;   -- main nav / CMS pages
-DECLARE @SeedMenuFiles          INT = 12;
+DECLARE @SeedMenus              INT = 21;   -- 12 nav/CMS + Tema Ornekleri + PT Dummy T1–T8
+DECLARE @SeedMenuFiles          INT = 96;   -- 8 theme pages × 12 MenuGallery images
 DECLARE @SeedMainPageImages     INT = 6;    -- homepage slider
 DECLARE @SeedTemplates          INT = 6;
 DECLARE @SeedTagCategories      INT = 6;
@@ -773,12 +784,23 @@ CREATE TABLE #StoryLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(200) NOT N
 
     a("""
 IF OBJECT_ID(N'tempdb..#MenuLookup') IS NOT NULL DROP TABLE #MenuLookup;
-CREATE TABLE #MenuLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, Description NVARCHAR(MAX) NULL, MenuLink NVARCHAR(100) NOT NULL, ExternalLink NVARCHAR(200) NULL, MainPage BIT NOT NULL);
+CREATE TABLE #MenuLookup
+(
+    rn INT NOT NULL PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX) NULL,
+    MenuLink NVARCHAR(100) NOT NULL,
+    ExternalLink NVARCHAR(200) NULL,
+    MainPage BIT NOT NULL,
+    PageTheme NVARCHAR(10) NULL,
+    GalleryCount INT NOT NULL
+);
 """)
-    for i, (n, d, link, ext, mp) in enumerate(MENUS, 1):
+    for i, (n, d, link, ext, mp, theme, gallery) in enumerate(MENUS, 1):
         dd = "NULL" if d is None else sql_n(d)
         ee = "NULL" if ext is None else sql_n(ext)
-        a(f"INSERT INTO #MenuLookup VALUES ({i},{sql_n(n)},{dd},{sql_n(link)},{ee},{1 if mp else 0});")
+        th = "NULL" if theme is None else sql_n(theme)
+        a(f"INSERT INTO #MenuLookup VALUES ({i},{sql_n(n)},{dd},{sql_n(link)},{ee},{1 if mp else 0},{th},{gallery});")
 
     a("""
 IF OBJECT_ID(N'tempdb..#SlideLookup') IS NOT NULL DROP TABLE #SlideLookup;
@@ -1014,6 +1036,18 @@ END;
 PRINT N'FileStorage exclusive ranges ready. MinId=' + CAST(@MinFileId AS VARCHAR(20))
     + N', Count=' + CAST(@FileCount AS VARCHAR(20))
     + N', Required=' + CAST(@FsRequired AS VARCHAR(20));
+
+UPDATE dbo.FileStorages
+SET Type = N'MenuMainImage'
+WHERE Id >= @MinFileId + @FsOffMenu
+  AND Id <  @MinFileId + @FsOffMenuFile
+  AND FileUrl LIKE N'/media/seed/%';
+
+UPDATE dbo.FileStorages
+SET Type = N'MenuGallery'
+WHERE Id >= @MinFileId + @FsOffMenuFile
+  AND Id <  @MinFileId + @FsOffSlide
+  AND FileUrl LIKE N'/media/seed/%';
 """)
 
     # Templates
@@ -1509,7 +1543,7 @@ SELECT
     ml.MainPage,
     ml.MenuLink,
     ml.ExternalLink,
-    N'T' + CAST(1 + (n.n % 8) AS NVARCHAR(2)),
+    ml.PageTheme,
     CASE WHEN ml.ExternalLink IS NOT NULL THEN 1 ELSE 0 END
 FROM #Nums n
 INNER JOIN #MenuLookup ml ON ml.rn = ((n.n - 1) % @MenuLookupCount) + 1
@@ -1519,30 +1553,40 @@ DECLARE @MinMenuId INT = (SELECT MIN(Id) FROM dbo.Menus WHERE AddUserId = @SeedM
 DECLARE @MenuCount INT = (SELECT COUNT(*) FROM dbo.Menus WHERE AddUserId = @SeedMarker);
 
 /* Menu tree by Position:
-   1 = root (Ana Sayfa / Kurumsal area)
+   1,2,5,6,7,8,12,13 = roots (13 = Tema Ornekleri)
    3,4,9,10,11 = children of position 2 (Kurumsal)
-   others under position 1 when applicable */
+   14–21 = PT Dummy T1–T8 children of position 13 */
 UPDATE m
 SET ParentId = CASE
-    WHEN m.Position IN (1, 2, 5, 6, 7, 8, 12) THEN 0
+    WHEN m.Position IN (1, 2, 5, 6, 7, 8, 12, 13) THEN 0
     WHEN m.Position IN (3, 4, 9, 10, 11)
         THEN (SELECT TOP 1 Id FROM dbo.Menus WHERE AddUserId = @SeedMarker AND Position = 2 AND Lang = @Lang)
+    WHEN m.Position BETWEEN 14 AND 21
+        THEN (SELECT TOP 1 Id FROM dbo.Menus WHERE AddUserId = @SeedMarker AND Position = 13 AND Lang = @Lang)
     ELSE 0
 END
 FROM dbo.Menus m
 WHERE m.AddUserId = @SeedMarker AND m.Lang = @Lang;
 
+/* MenuGallery files: 12 per PT Dummy T1–T8 (Admin media imageType=MenuGallery). */
 INSERT INTO dbo.MenuFiles
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, MenuId, FileStorageId)
 SELECT
-    N'Sayfa görseli — ' + LEFT(m.Name, 80),
-    @Now, @Now, 1, n.n, @Lang,
-    m.Id,
-    @MinFileId + @FsOffMenuFile + (n.n - 1)
-FROM #Nums n
-INNER JOIN dbo.Menus m ON m.Id = @MinMenuId + ((n.n - 1) % @MenuCount)
-WHERE n.n <= @SeedMenuFiles
-  AND m.AddUserId = @SeedMarker;
+    N'SEED Galeri — ' + LEFT(tm.Name, 60) + N' #' + CAST(g.n AS NVARCHAR(10)),
+    @Now, @Now, 1, g.n, @Lang,
+    tm.MenuId,
+    @MinFileId + @FsOffMenuFile + ((tm.ThemeRn - 1) * 12) + (g.n - 1)
+FROM (
+    SELECT
+        m.Id AS MenuId,
+        m.Name,
+        ROW_NUMBER() OVER (ORDER BY m.Position, m.Id) AS ThemeRn
+    FROM dbo.Menus m
+    WHERE m.AddUserId = @SeedMarker
+      AND m.Name LIKE N'PT Dummy T%'
+) tm
+CROSS JOIN #Nums g
+WHERE g.n <= 12;
 
 INSERT INTO dbo.MainPageImages
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang,
@@ -2214,9 +2258,16 @@ def cleanup_sql_body() -> str:
         DELETE FROM dbo.StoryCategories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
 
     IF OBJECT_ID(N'dbo.MenuFiles', N'U') IS NOT NULL
-        DELETE mf FROM dbo.MenuFiles mf INNER JOIN dbo.Menus m ON m.Id = mf.MenuId WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %';
+        DELETE mf FROM dbo.MenuFiles mf INNER JOIN dbo.Menus m ON m.Id = mf.MenuId
+        WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %'
+           OR m.Name LIKE N'PT Dummy T%' OR m.Name = N'Tema Ornekleri';
     IF OBJECT_ID(N'dbo.Menus', N'U') IS NOT NULL
-        DELETE FROM dbo.Menus WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    BEGIN
+        UPDATE dbo.Menus SET MainImageId = NULL
+        WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %' OR Name LIKE N'PT Dummy T%' OR Name = N'Tema Ornekleri';
+        DELETE FROM dbo.Menus
+        WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %' OR Name LIKE N'PT Dummy T%' OR Name = N'Tema Ornekleri';
+    END
     IF OBJECT_ID(N'dbo.MainPageImages', N'U') IS NOT NULL
         DELETE FROM dbo.MainPageImages WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
 

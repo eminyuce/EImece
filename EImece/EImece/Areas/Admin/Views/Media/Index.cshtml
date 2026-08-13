@@ -81,36 +81,9 @@
                 mod: $("#MediaMod").val(),
                 imageHeight: $("#ImageHeight").val(),
                 imageWidth: $("#ImageWidth").val(),
-                selectedTags: GetSelectedTag()
+                selectedTags: ""
             }
         });
-
-        $("#target").click(function () {
-            console.log(GetSelectedTag());
-        });
-        function GetSelectedTag() {
-            var arr = [];
-            $('[data-image-tag]').each(function () {
-                var m = $(this).is(':checked');
-                if (m) {
-                    arr.push($(this).val());
-                }
-            });
-
-            return arr;
-        }
-        CreateTags();
-        function CreateTags() {
-            var postData = JSON.stringify({ "language": $("#Lang").val() });
-            console.log(postData);
-            ajaxMethodCall(postData, "/admin/Ajax/GetTags", function (data) {
-                var $box = $("#imageTagsHtml");
-                $box.html(data);
-                if (typeof initAdminTagPicker === "function") {
-                    initAdminTagPicker($box);
-                }
-            });
-        }
 
     });
 </script>
@@ -125,22 +98,10 @@
     <div class="panel-body">
         <div class="tab-content">
             <div class="tab-pane fade in active" id="tab1default">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 20%; vertical-align: top;">
-                            <h5><strong>@AdminResource.Tags</strong></h5>
-                            <div id="imageTagsHtml">
-                                <!-- Tag checkboxes will load here -->
-                            </div>
-                        </td>
-                        <td style="width: 80%; vertical-align: top;">
-                            <div>
-                                @Html.Partial("pSliderResizing", baseContent)
-                            </div>
-                            @Html.Partial("_Files")
-                        </td>
-                    </tr>
-                </table>
+                <div>
+                    @Html.Partial("pSliderResizing", baseContent)
+                </div>
+                @Html.Partial("_Files")
             </div>
             <div class="tab-pane fade" id="tab2default">
 

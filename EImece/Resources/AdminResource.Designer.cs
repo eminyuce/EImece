@@ -331,6 +331,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Düzenlemeye Dön.
+        /// </summary>
+        public static string BackToEditor {
+            get {
+                return ResourceManager.GetString("BackToEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sepet Minimum Toplam Fiyat.
         /// </summary>
         public static string BasketMinTotalPrice {

@@ -17,8 +17,12 @@
     - SettingKey LIKE N'SEED_%' or N'__EIMECE_SEED%'
 
   Default shape (@Scale = 1):
-    ~12 menus, ~6 homepage slides, ~20 brands, ~25 categories, ~150 products,
-    ~30 stories, ~40 customers/users, ~100 orders, plus supporting rows.
+    ~21 menus (12 nav/CMS + Tema Ornekleri + PT Dummy T1–T8 with MenuMainImage
+    and 12 MenuGallery files each), ~6 homepage slides, ~20 brands, ~25
+    categories, ~150 products, ~30 stories, ~40 customers/users, ~100 orders.
+
+  Page-theme menus only (no catalog wipe):
+    .\RunSeedDummyData.ps1 -ThemePages
 
   HOW TO RUN
   ----------
@@ -73,8 +77,8 @@ DECLARE @PasswordHash  NVARCHAR(MAX) = N'AAECAwQFBgcICQoLDA0ODxDDsDqHD/P2DJthJqY
 DECLARE @SecurityStamp NVARCHAR(MAX) = N'A1B2C3D4E5F64789A0B1C2D3E4F50607';
 
 /* ---- Structural / UX-sensitive (NOT scaled) ---- */
-DECLARE @SeedMenus              INT = 12;   -- main nav / CMS pages
-DECLARE @SeedMenuFiles          INT = 12;
+DECLARE @SeedMenus              INT = 21;   -- 12 nav/CMS + Tema Ornekleri + PT Dummy T1–T8
+DECLARE @SeedMenuFiles          INT = 96;   -- 8 theme pages × 12 MenuGallery images (covers T7)
 DECLARE @SeedMainPageImages     INT = 6;    -- homepage slider
 DECLARE @SeedTemplates          INT = 6;
 DECLARE @SeedTagCategories      INT = 6;
@@ -207,9 +211,16 @@ BEGIN
         DELETE FROM dbo.StoryCategories WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
 
     IF OBJECT_ID(N'dbo.MenuFiles', N'U') IS NOT NULL
-        DELETE mf FROM dbo.MenuFiles mf INNER JOIN dbo.Menus m ON m.Id = mf.MenuId WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %';
+        DELETE mf FROM dbo.MenuFiles mf INNER JOIN dbo.Menus m ON m.Id = mf.MenuId
+        WHERE m.AddUserId = N'SEED' OR m.Name LIKE N'SEED %' OR mf.Name LIKE N'SEED %'
+           OR m.Name LIKE N'PT Dummy T%' OR m.Name = N'Tema Ornekleri';
     IF OBJECT_ID(N'dbo.Menus', N'U') IS NOT NULL
-        DELETE FROM dbo.Menus WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
+    BEGIN
+        UPDATE dbo.Menus SET MainImageId = NULL
+        WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %' OR Name LIKE N'PT Dummy T%' OR Name = N'Tema Ornekleri';
+        DELETE FROM dbo.Menus
+        WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %' OR Name LIKE N'PT Dummy T%' OR Name = N'Tema Ornekleri';
+    END
     IF OBJECT_ID(N'dbo.MainPageImages', N'U') IS NOT NULL
         DELETE FROM dbo.MainPageImages WHERE AddUserId = N'SEED' OR Name LIKE N'SEED %';
 
@@ -584,22 +595,41 @@ INSERT INTO #StoryLookup VALUES (14,N'Kışlık Mont Katmanlama',N'Polar + dış
 INSERT INTO #StoryLookup VALUES (15,N'Pet Dostu Ev Düzeni',N'Mama alanı ve güvenlik.',N'Buse Aksoy',N'<p>Kaymaz mama kapları ve kablo düzeni ile evcil dostunuz için güvenli alan.</p>');
 
 IF OBJECT_ID(N'tempdb..#MenuLookup') IS NOT NULL DROP TABLE #MenuLookup;
-CREATE TABLE #MenuLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(100) NOT NULL, Description NVARCHAR(MAX) NULL, MenuLink NVARCHAR(100) NOT NULL, ExternalLink NVARCHAR(200) NULL, MainPage BIT NOT NULL);
+CREATE TABLE #MenuLookup
+(
+    rn INT NOT NULL PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX) NULL,
+    MenuLink NVARCHAR(100) NOT NULL,
+    ExternalLink NVARCHAR(200) NULL,
+    MainPage BIT NOT NULL,
+    PageTheme NVARCHAR(10) NULL,
+    GalleryCount INT NOT NULL
+);
 
-INSERT INTO #MenuLookup VALUES (1,N'Ana Sayfa',N'<p>EImece vitrine hoş geldiniz.</p>',N'home-index',NULL,1);
-INSERT INTO #MenuLookup VALUES (2,N'Kurumsal',N'<p>Hakkımızda ve şirket bilgileri.</p>',N'pages-index',NULL,1);
-INSERT INTO #MenuLookup VALUES (3,N'Hakkımızda',N'<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>',N'info-aboutus',NULL,0);
+INSERT INTO #MenuLookup VALUES (1,N'Ana Sayfa',N'<p>EImece vitrine hoş geldiniz.</p>',N'home-index',NULL,1,NULL,0);
+INSERT INTO #MenuLookup VALUES (2,N'Kurumsal',N'<p>Hakkımızda ve şirket bilgileri.</p>',N'pages-index',NULL,1,N'T1',0);
+INSERT INTO #MenuLookup VALUES (3,N'Hakkımızda',N'<p>EImece, seçili markaları tek çatı altında sunan online mağazadır.</p>',N'info-aboutus',NULL,0,NULL,0);
 -- CMS contact page: MenuLink=pages-index routes to /i/{seo}; Link/ExternalLink stays NULL (internal page body in Description).
-INSERT INTO #MenuLookup VALUES (4,N'İletişim',N'<h2>İletişim</h2><p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p><p>Sipariş, iade ve ürün sorularınız için aşağıdaki formu kullanabilir veya <strong>info@eimece.test</strong> adresine yazabilirsiniz.</p><p>Çalışma saatleri: Hafta içi 09:00–18:00</p>',N'pages-index',NULL,0);
-INSERT INTO #MenuLookup VALUES (5,N'Kargo & Teslimat',N'<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>',N'info-deliveryinfo',NULL,1);
-INSERT INTO #MenuLookup VALUES (6,N'Sıkça Sorulan Sorular',N'<p>Sipariş, ödeme ve iade hakkında SSS.</p>',N'pages-index',NULL,1);
-INSERT INTO #MenuLookup VALUES (7,N'Kampanyalar',N'<p>Güncel indirimler ve kuponlar.</p>',N'pages-index',NULL,1);
-INSERT INTO #MenuLookup VALUES (8,N'Blog',N'<p>Stil, yaşam ve ürün rehberleri.</p>',N'stories-index',NULL,1);
-INSERT INTO #MenuLookup VALUES (9,N'Gizlilik Politikası',N'<p>Kişisel verilerin korunması.</p>',N'info-privacypolicy',NULL,0);
-INSERT INTO #MenuLookup VALUES (10,N'Mesafeli Satış Sözleşmesi',N'<p>Mesafeli satış ve tüketici hakları.</p>',N'info-termsandconditions',NULL,0);
-INSERT INTO #MenuLookup VALUES (11,N'İade & Değişim',N'<p>14 gün içinde iade ve değişim koşulları.</p>',N'pages-index',NULL,0);
+INSERT INTO #MenuLookup VALUES (4,N'İletişim',N'<h2>İletişim</h2><p>Müşteri hizmetleri ve mağaza iletişim bilgileri.</p><p>Sipariş, iade ve ürün sorularınız için aşağıdaki formu kullanabilir veya <strong>info@eimece.test</strong> adresine yazabilirsiniz.</p><p>Çalışma saatleri: Hafta içi 09:00–18:00</p>',N'pages-index',NULL,0,N'T8',0);
+INSERT INTO #MenuLookup VALUES (5,N'Kargo & Teslimat',N'<p>Kargo süreleri, ücretsiz kargo limiti ve iade süreci.</p>',N'info-deliveryinfo',NULL,1,NULL,0);
+INSERT INTO #MenuLookup VALUES (6,N'Sıkça Sorulan Sorular',N'<p>Sipariş, ödeme ve iade hakkında SSS.</p>',N'pages-index',NULL,1,N'T2',0);
+INSERT INTO #MenuLookup VALUES (7,N'Kampanyalar',N'<p>Güncel indirimler ve kuponlar.</p>',N'pages-index',NULL,1,N'T1',0);
+INSERT INTO #MenuLookup VALUES (8,N'Blog',N'<p>Stil, yaşam ve ürün rehberleri.</p>',N'stories-index',NULL,1,NULL,0);
+INSERT INTO #MenuLookup VALUES (9,N'Gizlilik Politikası',N'<p>Kişisel verilerin korunması.</p>',N'info-privacypolicy',NULL,0,NULL,0);
+INSERT INTO #MenuLookup VALUES (10,N'Mesafeli Satış Sözleşmesi',N'<p>Mesafeli satış ve tüketici hakları.</p>',N'info-termsandconditions',NULL,0,NULL,0);
+INSERT INTO #MenuLookup VALUES (11,N'İade & Değişim',N'<p>14 gün içinde iade ve değişim koşulları.</p>',N'pages-index',NULL,0,N'T3',0);
 -- Do not seed a production maps URL. Admin must set Menus.Link (external) to the real Google Maps / store locator URL.
-INSERT INTO #MenuLookup VALUES (12,N'Mağazalarımız',N'<p>Mağaza konumlarımız yakında burada listelenecek.</p><p><em>Yönetici notu:</em> Admin → Menüler ekranından bu öğeye gerçek harita bağlantısını (Menus.Link) ekleyin. Seed ortamında harici maps URL kullanılmaz.</p>',N'pages-index',NULL,1);
+INSERT INTO #MenuLookup VALUES (12,N'Mağazalarımız',N'<p>Mağaza konumlarımız yakında burada listelenecek.</p><p><em>Yönetici notu:</em> Admin → Menüler ekranından bu öğeye gerçek harita bağlantısını (Menus.Link) ekleyin. Seed ortamında harici maps URL kullanılmaz.</p>',N'pages-index',NULL,1,N'T4',0);
+INSERT INTO #MenuLookup VALUES (13,N'Tema Ornekleri',N'<p>Sayfa teması örnekleri (T1–T8). Her alt sayfada ana görsel (MenuMainImage) ve menü galerisi (MenuGallery) vardır.</p>',N'pages-index',NULL,1,N'T1',0);
+INSERT INTO #MenuLookup VALUES (14,N'PT Dummy T1',N'<p>Bu sayfa <strong>PageTheme T1</strong> düzenini gösterir. Üstteki büyük görsel menünün ana resmidir. Alttaki ızgara menü galerisidir.</p>',N'pages-index',NULL,0,N'T1',12);
+INSERT INTO #MenuLookup VALUES (15,N'PT Dummy T2',N'<p>Bu sayfa <strong>PageTheme T2</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>',N'pages-index',NULL,0,N'T2',12);
+INSERT INTO #MenuLookup VALUES (16,N'PT Dummy T3',N'<p>Bu sayfa <strong>PageTheme T3</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>',N'pages-index',NULL,0,N'T3',12);
+INSERT INTO #MenuLookup VALUES (17,N'PT Dummy T4',N'<p>Bu sayfa <strong>PageTheme T4</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>',N'pages-index',NULL,0,N'T4',12);
+INSERT INTO #MenuLookup VALUES (18,N'PT Dummy T5',N'<p>Bu sayfa <strong>PageTheme T5</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>',N'pages-index',NULL,0,N'T5',12);
+INSERT INTO #MenuLookup VALUES (19,N'PT Dummy T6',N'<p>Bu sayfa <strong>PageTheme T6</strong> düzenini gösterir. Ana görsel ve menü galerisi seed tarafından üretilir.</p>',N'pages-index',NULL,0,N'T6',12);
+INSERT INTO #MenuLookup VALUES (20,N'PT Dummy T7',N'<p>Bu sayfa <strong>PageTheme T7</strong> (büyük görsel galeri) düzenini gösterir. En az 12 menü galeri görseli eklenir.</p>',N'pages-index',NULL,0,N'T7',12);
+INSERT INTO #MenuLookup VALUES (21,N'PT Dummy T8',N'<h2>İletişim</h2><p>Bu sayfa <strong>PageTheme T8</strong> iletişim düzenini gösterir. Form, şirket bilgileri ve harita temada yer alır.</p><p>Sipariş, iade ve ürün sorularınız için <strong>info@eimece.test</strong> adresine yazabilirsiniz.</p><p>Çalışma saatleri: Hafta içi 09:00–18:00</p>',N'pages-index',NULL,0,N'T8',12);
 
 IF OBJECT_ID(N'tempdb..#SlideLookup') IS NOT NULL DROP TABLE #SlideLookup;
 CREATE TABLE #SlideLookup (rn INT NOT NULL PRIMARY KEY, Name NVARCHAR(150) NOT NULL, Description NVARCHAR(400) NOT NULL, Link NVARCHAR(200) NOT NULL);
@@ -963,6 +993,18 @@ END;
 PRINT N'FileStorage exclusive ranges ready. MinId=' + CAST(@MinFileId AS VARCHAR(20))
     + N', Count=' + CAST(@FileCount AS VARCHAR(20))
     + N', Required=' + CAST(@FsRequired AS VARCHAR(20));
+
+UPDATE dbo.FileStorages
+SET Type = N'MenuMainImage'
+WHERE Id >= @MinFileId + @FsOffMenu
+  AND Id <  @MinFileId + @FsOffMenuFile
+  AND FileUrl LIKE N'/media/seed/%';
+
+UPDATE dbo.FileStorages
+SET Type = N'MenuGallery'
+WHERE Id >= @MinFileId + @FsOffMenuFile
+  AND Id <  @MinFileId + @FsOffSlide
+  AND FileUrl LIKE N'/media/seed/%';
 
 
 /* ============================================================
@@ -1442,7 +1484,7 @@ SELECT
     ml.MainPage,
     ml.MenuLink,
     ml.ExternalLink,
-    N'T' + CAST(1 + (n.n % 8) AS NVARCHAR(2)),
+    ml.PageTheme,
     CASE WHEN ml.ExternalLink IS NOT NULL THEN 1 ELSE 0 END
 FROM #Nums n
 INNER JOIN #MenuLookup ml ON ml.rn = ((n.n - 1) % @MenuLookupCount) + 1
@@ -1452,30 +1494,40 @@ DECLARE @MinMenuId INT = (SELECT MIN(Id) FROM dbo.Menus WHERE AddUserId = @SeedM
 DECLARE @MenuCount INT = (SELECT COUNT(*) FROM dbo.Menus WHERE AddUserId = @SeedMarker);
 
 /* Menu tree by Position:
-   1 = root (Ana Sayfa / Kurumsal area)
+   1,2,5,6,7,8,12,13 = roots (13 = Tema Ornekleri)
    3,4,9,10,11 = children of position 2 (Kurumsal)
-   others under position 1 when applicable */
+   14–21 = PT Dummy T1–T8 children of position 13 */
 UPDATE m
 SET ParentId = CASE
-    WHEN m.Position IN (1, 2, 5, 6, 7, 8, 12) THEN 0
+    WHEN m.Position IN (1, 2, 5, 6, 7, 8, 12, 13) THEN 0
     WHEN m.Position IN (3, 4, 9, 10, 11)
         THEN (SELECT TOP 1 Id FROM dbo.Menus WHERE AddUserId = @SeedMarker AND Position = 2 AND Lang = @Lang)
+    WHEN m.Position BETWEEN 14 AND 21
+        THEN (SELECT TOP 1 Id FROM dbo.Menus WHERE AddUserId = @SeedMarker AND Position = 13 AND Lang = @Lang)
     ELSE 0
 END
 FROM dbo.Menus m
 WHERE m.AddUserId = @SeedMarker AND m.Lang = @Lang;
 
+/* MenuGallery files: 12 per PT Dummy T1–T8 (Admin media imageType=MenuGallery). */
 INSERT INTO dbo.MenuFiles
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang, MenuId, FileStorageId)
 SELECT
-    N'Sayfa görseli — ' + LEFT(m.Name, 80),
-    @Now, @Now, 1, n.n, @Lang,
-    m.Id,
-    @MinFileId + @FsOffMenuFile + (n.n - 1)
-FROM #Nums n
-INNER JOIN dbo.Menus m ON m.Id = @MinMenuId + ((n.n - 1) % @MenuCount)
-WHERE n.n <= @SeedMenuFiles
-  AND m.AddUserId = @SeedMarker;
+    N'SEED Galeri — ' + LEFT(tm.Name, 60) + N' #' + CAST(g.n AS NVARCHAR(10)),
+    @Now, @Now, 1, g.n, @Lang,
+    tm.MenuId,
+    @MinFileId + @FsOffMenuFile + ((tm.ThemeRn - 1) * 12) + (g.n - 1)
+FROM (
+    SELECT
+        m.Id AS MenuId,
+        m.Name,
+        ROW_NUMBER() OVER (ORDER BY m.Position, m.Id) AS ThemeRn
+    FROM dbo.Menus m
+    WHERE m.AddUserId = @SeedMarker
+      AND m.Name LIKE N'PT Dummy T%'
+) tm
+CROSS JOIN #Nums g
+WHERE g.n <= 12;
 
 INSERT INTO dbo.MainPageImages
     (Name, CreatedDate, UpdatedDate, IsActive, Position, Lang,

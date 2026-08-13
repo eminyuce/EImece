@@ -1,8 +1,21 @@
+@using System
+@using EImece.Domain.Entities
 @using Resources
 @{
     var saveButtonText = ViewBag.SaveButtonText as string ?? AdminResource.SaveButtonText;
     var saveButtonAndCloseText = ViewBag.SaveButtonAndCloseText as string ?? AdminResource.SaveButtonAndCloseText;
     var backUrl = ViewBag.BackUrl as string ?? Url.Action("Index");
+
+    var entity = ViewData.Model as BaseEntity;
+    var recordId = entity != null ? entity.Id : 0;
+    var currentController = Convert.ToString(ViewContext.RouteData.Values["controller"]) ?? "";
+    var showImageGallery = recordId > 0
+        && (currentController.Equals("Products", StringComparison.OrdinalIgnoreCase)
+            || currentController.Equals("Stories", StringComparison.OrdinalIgnoreCase)
+            || currentController.Equals("Menus", StringComparison.OrdinalIgnoreCase));
+    var galleryUrl = showImageGallery
+        ? Url.Action("Media", currentController, new { id = recordId })
+        : "";
 }
 <div class="admin-edit-toolbar-actions">
     <button type="submit" name="saveButton" value="@saveButtonText" class="btn btn-sm btn-success admin-edit-save-btn" title="@saveButtonText">
@@ -13,6 +26,13 @@
         <i class="fa fa-times-circle" aria-hidden="true"></i>
         <span>@saveButtonAndCloseText</span>
     </button>
+    @if (showImageGallery)
+    {
+        <a href="@galleryUrl" class="btn btn-sm admin-edit-gallery-btn" title="@AdminResource.ImageGallery">
+            <i class="fa fa-camera" aria-hidden="true"></i>
+            <span>@AdminResource.GridImagesText</span>
+        </a>
+    }
     <button type="button" onclick="parent.location='@backUrl'" class="btn btn-sm admin-edit-back-to-list-btn" title="@AdminResource.BackToList">
         <span class="admin-edit-back-to-list-icon" aria-hidden="true">←</span>
         <span>@AdminResource.BackToList</span>

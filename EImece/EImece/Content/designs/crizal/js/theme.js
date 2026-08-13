@@ -172,6 +172,7 @@
         initProductTabs($);
         initProductPanels($);
         initProductShortDescription($);
+        initPageThemeLightbox();
         initLeaveReviewModal($);
         initNavMenuBreakpoint($);
         initMobileSubmenuCleanup($);
@@ -359,6 +360,90 @@
                 syncToggle(willOpen);
             });
         });
+    }
+
+    function initPageThemeLightbox() {
+        document.querySelectorAll('.pt-gallery[data-pt-lightbox]').forEach(function (gallery) {
+            var modalId = gallery.getAttribute('data-pt-lightbox');
+            var modalEl = document.getElementById(modalId);
+            if (!modalEl) {
+                return;
+            }
+            var carouselEl = modalEl.querySelector('.carousel');
+
+            var pendingIdx = 0;
+            modalEl.addEventListener('shown.bs.modal', function () {
+                if (carouselEl && window.bootstrap && window.bootstrap.Carousel) {
+                    window.bootstrap.Carousel.getOrCreateInstance(carouselEl, { interval: false }).to(pendingIdx);
+                }
+            });
+
+            gallery.addEventListener('click', function (e) {
+                var item = e.target.closest('[data-pt-slide]');
+                if (!item || !gallery.contains(item)) {
+                    return;
+                }
+                e.preventDefault();
+                pendingIdx = parseInt(item.getAttribute('data-pt-slide'), 10) || 0;
+                showLightbox(modalEl, carouselEl, pendingIdx);
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            var trigger = e.target.closest('[data-pt-lightbox-single]');
+            if (!trigger) {
+                return;
+            }
+            var href = trigger.getAttribute('href');
+            if (!href) {
+                return;
+            }
+            e.preventDefault();
+            var modalEl = ensureSingleLightbox();
+            var img = modalEl.querySelector('.pt-lightbox__img');
+            if (img) {
+                img.src = href;
+                img.alt = (trigger.querySelector('img') && trigger.querySelector('img').alt) || '';
+            }
+            showLightbox(modalEl, null, 0);
+        });
+
+        function showLightbox(modalEl, carouselEl, idx) {
+            if (window.bootstrap && window.bootstrap.Modal) {
+                if (carouselEl && window.bootstrap.Carousel) {
+                    window.bootstrap.Carousel.getOrCreateInstance(carouselEl, { interval: false }).to(idx);
+                }
+                window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                return;
+            }
+            if (window.jQuery) {
+                var $ = window.jQuery;
+                if (carouselEl) {
+                    $(carouselEl).carousel(idx);
+                }
+                $(modalEl).modal('show');
+            }
+        }
+
+        function ensureSingleLightbox() {
+            var existing = document.getElementById('ptSingleLightbox');
+            if (existing) {
+                return existing;
+            }
+            var wrap = document.createElement('div');
+            wrap.id = 'ptSingleLightbox';
+            wrap.className = 'modal fade pt-lightbox';
+            wrap.setAttribute('tabindex', '-1');
+            wrap.setAttribute('aria-hidden', 'true');
+            wrap.innerHTML =
+                '<div class="modal-dialog modal-dialog-centered modal-xl">' +
+                '<div class="modal-content">' +
+                '<button type="button" class="pt-lightbox__close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">&times;</button>' +
+                '<div class="modal-body p-0"><img class="pt-lightbox__img" alt=""></div>' +
+                '</div></div>';
+            document.body.appendChild(wrap);
+            return wrap;
+        }
     }
 
     function initProductPanels($) {
