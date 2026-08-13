@@ -528,6 +528,11 @@
     <Content Include="Areas\Admin\Content\PageThemes\tema-05.gif" />
     <Content Include="Areas\Admin\Content\PageThemes\tema-06.gif" />
     <Content Include="Content\adminSite.css" />
+    <Content Include="Content\pageThemes.css" />
+    <Content Include="Content\designs\crizal\css\components.css" />
+    <Content Include="Content\designs\crizal\css\theme.css" />
+    <Content Include="Content\designs\crizal\css\responsive.css" />
+    <Content Include="Content\designs\crizal\js\theme.js" />
     <Content Include="Content\tinymce\icons\default\icons.js" />
     <Content Include="Content\tinymce\icons\default\icons.min.js" />
     <Content Include="Content\tinymce\icons\default\index.js" />
