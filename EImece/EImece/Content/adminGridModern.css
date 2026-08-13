@@ -2937,3 +2937,162 @@ body.admin-app .eg-grid .grid-wrap {
         white-space: normal;
     }
 }
+
+/* ----- Product comments admin ----- */
+.product-comments-admin-page .product-comments-admin-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.product-comments-admin-page .product-comments-admin-header-main {
+    min-width: 0;
+    flex: 1 1 280px;
+}
+
+.product-comments-admin-page .product-comments-admin-header .admin-page-title {
+    margin-bottom: 6px;
+}
+
+.product-comments-admin-page .product-comments-admin-lead {
+    margin: 0 0 8px;
+    color: var(--eg-text-muted);
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.product-comments-admin-page .product-comments-admin-lead strong {
+    color: var(--eg-text);
+}
+
+.product-comments-admin-page .product-comments-admin-meta {
+    display: inline;
+}
+
+.product-comments-admin-page .product-comments-admin-pending {
+    color: var(--eg-warn);
+    font-weight: 600;
+}
+
+.product-comments-admin-page .product-comments-admin-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.product-comments-admin-page .product-comments-empty {
+    padding: 28px 20px;
+    text-align: center;
+    color: var(--eg-text-muted);
+    background: var(--eg-surface-muted);
+}
+
+.product-comments-admin-page .product-comments-empty p {
+    margin: 0;
+    font-size: 14px;
+}
+
+body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-review,
+body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-review,
+body.admin-app .eg-product-comments-grid .grid-table > thead > tr > th.eg-col-review,
+body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-review {
+    width: 1%;
+    min-width: 0;
+    max-width: 36rem;
+    white-space: normal;
+    vertical-align: top;
+}
+
+body.admin-app .eg-product-comments-grid .grid-table > thead > tr > th.eg-col-rating,
+body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-rating {
+    width: 1%;
+    white-space: nowrap;
+    text-align: left;
+}
+
+body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-email {
+    max-width: 220px;
+    white-space: normal;
+    word-break: break-all;
+}
+
+.eg-email-link {
+    color: var(--eg-link);
+    font-size: 13px;
+}
+
+.eg-email-link:hover {
+    color: var(--eg-link-hover);
+}
+
+.eg-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.eg-rating-stars {
+    letter-spacing: 1px;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.eg-rating-star {
+    color: #d0d7de;
+}
+
+.eg-rating-star.is-on {
+    color: #f5a524;
+}
+
+.eg-review-empty {
+    color: var(--eg-text-muted);
+}
+
+.eg-review-note {
+    display: inline-block;
+    box-sizing: border-box;
+    field-sizing: content;
+    width: auto;
+    min-width: 4ch;
+    max-width: 36rem;
+    min-height: 1.9rem;
+    height: auto;
+    max-height: 14rem;
+    margin: 0;
+    padding: 5px 8px;
+    border: 1px solid var(--eg-border);
+    border-radius: 6px;
+    background: var(--eg-surface-muted);
+    color: var(--eg-text);
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    resize: none;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    vertical-align: top;
+}
+
+.eg-review-note.is-short {
+    max-width: 16rem;
+}
+
+.eg-review-note.is-medium {
+    max-width: 26rem;
+}
+
+.eg-review-note.is-long {
+    max-width: 36rem;
+}
+
+.eg-review-note:focus {
+    outline: 2px solid var(--eg-accent);
+    outline-offset: 1px;
+    background: #fff;
+}

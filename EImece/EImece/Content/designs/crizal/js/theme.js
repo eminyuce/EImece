@@ -66,18 +66,18 @@
             }
 
             var options = {
-                nav: false,
+                nav: true,
                 dots: true,
                 loop: false,
-                margin: 15,
+                margin: 16,
                 autoplay: false,
                 smartSpeed: 450,
                 responsive: {
-                    0: { items: 1 },
-                    480: { items: 2 },
-                    768: { items: 3 },
-                    992: { items: 4 },
-                    1200: { items: 5 }
+                    0: { items: 2 },
+                    576: { items: 3 },
+                    768: { items: 4 },
+                    992: { items: 5 },
+                    1200: { items: 6 }
                 }
             };
 

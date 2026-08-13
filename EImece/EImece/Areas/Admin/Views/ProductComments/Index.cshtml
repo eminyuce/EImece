@@ -1,4 +1,5 @@
 ﻿@model List<ProductComment>
+@using System.Linq
 @using EImece.Domain.Helpers;
 @using GridMvc.Html
 @using GridMvc.Sorting;
@@ -8,7 +9,7 @@
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @{
-    ViewBag.Title = "ProductComments";
+    ViewBag.Title = AdminResource.ProductComments;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
@@ -17,27 +18,65 @@
 
     var controllerName = "ProductComments";
     var gridName = "ProductCommentGrid";
-    var contents = Model;
+    var contents = Model ?? new List<ProductComment>();
     var baseList = contents.DownCasting();
     var search = Request.QueryString["search"].ToStr();
-    var ExportToExcel = AdminResource.ExportToExcel;
-    Product product = ViewBag.Product;
+    Product product = ViewBag.Product as Product;
+    var productName = product != null ? product.Name : "";
+    var productId = product != null ? product.Id : 0;
+    var commentCount = contents.Count;
+    var ratedComments = contents.Where(c => c.Rating > 0).ToList();
+    var averageRating = ratedComments.Count > 0 ? Math.Round(ratedComments.Average(c => (double)c.Rating), 1) : 0;
+    var pendingCount = contents.Count(c => !c.IsActive);
+    var storefrontUrl = product != null ? product.DetailPageRelativeUrl : "";
 }
 
-<h2>@AdminResource.ProductComments</h2>
-<hr class="adminLine" />
-<div class="row">
-    <div class="col-md-4">
-        <h3>
-            @Html.DisplayFor(model => product.Name)
-            @Html.ActionLink(AdminResource.BackToList, "index", "products", new { search = product.Name }, new { @class = "btn btn-link" })
-        </h3>
+<div class="product-comments-admin-page">
+    <div class="product-comments-admin-header">
+        <div class="product-comments-admin-header-main">
+            <h2 class="admin-page-title">@AdminResource.ProductComments</h2>
+            @if (product != null)
+            {
+                <p class="product-comments-admin-lead">
+                    <strong>@productName</strong>
+                    <span class="product-comments-admin-meta">
+                        @commentCount yorum
+                        @if (ratedComments.Count > 0)
+                        {
+                            <span>· ortalama @averageRating / 5</span>
+                        }
+                        @if (pendingCount > 0)
+                        {
+                            <span class="product-comments-admin-pending">· @pendingCount onay bekliyor</span>
+                        }
+                    </span>
+                </p>
+            }
+        </div>
+        <div class="product-comments-admin-header-actions">
+            @if (product != null)
+            {
+                <a class="btn btn-default btn-sm" href="@Url.Action("Index", "Products", new { search = productName })">
+                    <i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i>
+                    @AdminResource.BackToList
+                </a>
+                <a class="btn btn-default btn-sm" href="@Url.Action("SaveOrEdit", "Products", new { id = productId })">
+                    <i class="glyphicon glyphicon-pencil" aria-hidden="true"></i>
+                    Ürünü düzenle
+                </a>
+                if (!string.IsNullOrEmpty(storefrontUrl))
+                {
+                    <a class="btn btn-default btn-sm" href="@storefrontUrl" target="_blank" rel="noopener">
+                        <i class="glyphicon glyphicon-new-window" aria-hidden="true"></i>
+                        Sitede gör
+                    </a>
+                }
+            }
+        </div>
     </div>
-    <div class="col-md-8">
-    </div>
-</div>
+    <hr class="adminLine" />
 
-@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
         {"controllerName",controllerName}
         ,{"StateTypes","State"}
        ,{"orderingButton",false}
@@ -46,12 +85,20 @@
         ,{"SetStateOnOrOff",true},
 { "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
 
-@Html.Partial("Grid/_GridChrome")
+    @Html.Partial("Grid/_GridChrome")
 
-<div class="panel panel-primary eg-grid-shell">
-    @Html.Partial("pGridDropDown", baseList)
+    <div class="panel panel-primary eg-grid-shell eg-product-comments-grid">
+        @Html.Partial("pGridDropDown", baseList)
 
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
+        @if (!contents.Any())
+        {
+            <div class="product-comments-empty">
+                <p>Bu ürüne henüz yorum yok.</p>
+            </div>
+        }
+        else
+        {
+            @Html.Grid(contents).Named(gridName).Columns(columns =>
 {
     columns.Add()
         .Encoded(false)
@@ -76,26 +123,32 @@
         .Css("eg-col-name")
         .RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
             { "Name", d.Subject },
-            { "ItemId", d.Id.ToString() }
+            { "ItemId", d.Id.ToString() },
+            { "SubName", ReviewerSubName(d) }
         }));
 
     columns.Add(c => c.Email)
         .Titled(AdminResource.Email)
-        .Filterable(true);
+        .Filterable(true)
+        .Encoded(false)
+        .Sanitized(false)
+        .Css("eg-col-email")
+        .RenderValueAs(d => EmailCell(d.Email).ToHtmlString());
 
     columns.Add(c => c.Rating)
         .Titled(AdminResource.Rating)
         .Filterable(true)
         .Encoded(false)
         .Sanitized(false)
-        .Css("smallGridColumn")
-        .RenderValueAs(o => String.Format("{0} Yıldız", o.Rating));
+        .Css("smallGridColumn eg-col-rating")
+        .RenderValueAs(o => RatingCell(o.Rating).ToHtmlString());
 
     columns.Add(o => o.Review)
         .Titled(AdminResource.Review)
         .Encoded(false)
         .Sanitized(false)
-        .RenderValueAs(o => String.Format("<label class='sr-only' for='pcomment-{0}'>Yorum</label><textarea id='pcomment-{0}' readonly  style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{1}</textarea>", o.Id, o.Review));
+        .Css("eg-col-review")
+        .RenderValueAs(o => ReviewNoteCell(o).ToHtmlString());
 
     columns.Add(o => o.IsActive)
         .Titled(AdminResource.IsActive)
@@ -112,11 +165,11 @@
             { "ShowImageState", false }
         }));
 
-    columns.Add(o => o.UpdatedDate)
+    columns.Add(o => o.CreatedDate)
         .Titled(AdminResource.UpdatedDate)
         .Sortable(true)
         .Css("gridDateClass")
-        .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
+        .RenderValueAs(o => o.CreatedDate != default(DateTime) ? o.CreatedDate.ToString("dd.MM.yyyy HH:mm") : null)
         .SortInitialDirection(GridSortDirection.Descending);
 
     if (UserRoleHelper.IsDeletedEnableRoles())
@@ -137,4 +190,66 @@
     }
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
+        }
+    </div>
 </div>
+
+@helper RatingCell(int rating)
+{
+    var r = rating < 0 ? 0 : (rating > 5 ? 5 : rating);
+    <span class="eg-rating" title="@r / 5">
+        <span class="eg-rating-stars" aria-hidden="true">
+            @for (var i = 1; i <= 5; i++)
+            {
+                <span class="eg-rating-star@(i <= r ? " is-on" : "")">★</span>
+            }
+        </span>
+        <span class="sr-only">@r yıldız</span>
+    </span>
+}
+
+@helper EmailCell(string email)
+{
+    if (string.IsNullOrWhiteSpace(email))
+    {
+        <span class="text-muted">—</span>
+    }
+    else
+    {
+        <a class="eg-email-link" href="mailto:@email">@email</a>
+    }
+}
+
+@helper ReviewNoteCell(ProductComment comment)
+{
+    var text = (comment.Review ?? "").Trim();
+    var len = text.Length;
+    var sizeClass = len == 0 ? "is-empty" : (len <= 48 ? "is-short" : (len <= 140 ? "is-medium" : "is-long"));
+    var lineCount = string.IsNullOrEmpty(text) ? 1 : text.Split(new[] { '\n' }, StringSplitOptions.None).Length;
+    var rows = Math.Max(1, Math.Min(lineCount, 8));
+    <label class="sr-only" for="pcomment-@comment.Id">Yorum</label>
+    if (len == 0)
+    {
+        <span class="eg-review-empty">—</span>
+    }
+    else
+    {
+        <textarea id="pcomment-@comment.Id" class="eg-review-note @sizeClass" readonly rows="@rows" cols="1">@text</textarea>
+    }
+}
+
+@functions {
+    public static string ReviewerSubName(ProductComment comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+        var name = (comment.Name ?? "").Trim();
+        if (string.IsNullOrEmpty(name) || string.Equals(name, comment.Subject, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+        return name;
+    }
+}

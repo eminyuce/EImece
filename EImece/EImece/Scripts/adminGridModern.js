@@ -421,6 +421,37 @@
         }
     }
 
+    function sizeReviewNote(el) {
+        if (!el) {
+            return;
+        }
+        var text = el.value || '';
+        var lines = text.split(/\r?\n/);
+        var maxLen = 0;
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].length > maxLen) {
+                maxLen = lines[i].length;
+            }
+        }
+        var cap = 56;
+        if (el.classList.contains('is-short')) {
+            cap = 28;
+        } else if (el.classList.contains('is-medium')) {
+            cap = 40;
+        }
+        el.style.width = Math.max(6, Math.min(maxLen + 1, cap)) + 'ch';
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 220) + 'px';
+    }
+
+    function sizeReviewNotes(context) {
+        var root = context && context.querySelectorAll ? context : document;
+        var notes = root.querySelectorAll('.eg-review-note');
+        for (var i = 0; i < notes.length; i++) {
+            sizeReviewNote(notes[i]);
+        }
+    }
+
     function wireOpsMore() {
         var $more = $('details.eg-ops-more');
         if (!$more.length) {
@@ -450,10 +481,12 @@
         wireActionMenus();
         wireCategoryTree();
         wireOpsMore();
+        sizeReviewNotes(document);
     });
 
     // Re-mark after Grid.Mvc AJAX redraws
     $(document).on('gridmvc.loaded', function () {
         markModernGrids();
+        sizeReviewNotes(document);
     });
 }(window, window.jQuery));
