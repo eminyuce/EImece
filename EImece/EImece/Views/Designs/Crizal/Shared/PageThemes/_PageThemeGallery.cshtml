@@ -1,0 +1,32 @@
+@model IEnumerable<EImece.Domain.Entities.MenuFile>
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using System.Linq
+@{
+    var colClass = (ViewData["ColClass"] as string) ?? "col-6 col-sm-3 col-md-2";
+    var minCount = ViewData["MinCount"].ToInt(4);
+    var width = ViewData["Width"].ToInt(300);
+    var height = ViewData["Height"].ToInt(300);
+    var files = (Model ?? Enumerable.Empty<EImece.Domain.Entities.MenuFile>())
+        .Where(f => f != null && f.FileStorage != null)
+        .OrderBy(f => f.FileStorage.Position)
+        .Select(f => f.FileStorage)
+        .ToList();
+    var labels = new[] { "FOTO", "ALBÜM" };
+}
+<div class="row pt-gallery">
+    @for (int i = 0; i < files.Count; i++)
+    {
+        var f = files[i];
+        <div class="@colClass">
+            @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = width, Height = height })
+        </div>
+    }
+    @for (int i = files.Count; i < minCount; i++)
+    {
+        var label = i < labels.Length ? labels[i] : "";
+        <div class="@colClass">
+            <div class="pt-ph pt-ph--thumb">@label</div>
+        </div>
+    }
+</div>

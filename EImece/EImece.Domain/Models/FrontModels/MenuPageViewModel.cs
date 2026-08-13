@@ -61,6 +61,11 @@ namespace EImece.Domain.Models.FrontModels
 
         public Menu MainPageMenu { get; set; }
 
+        /// <summary>
+        /// Sibling (or child) pages used by themes T5/T6 left navigation.
+        /// </summary>
+        public List<Menu> SideMenus { get; set; }
+
         public ContactUsFormViewModel Contact { get; set; }
         public List<Setting> ApplicationSettings { get; set; }
 

@@ -110,7 +110,8 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageById(int menuId)
         {
-            var menu = GetMenus().FirstOrDefault(r => r.Id.Equals(menuId));
+            var menus = GetMenus();
+            var menu = menus.FirstOrDefault(r => r.Id.Equals(menuId));
             if (menu == null)
             {
                 Logger.Warn("GetPageById: menu id {0} was not found.", menuId);
@@ -123,6 +124,7 @@ namespace EImece.Domain.Services
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
             result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
+            result.SideMenus = ResolveSideMenus(menu, menus);
             return result;
         }
 
@@ -143,7 +145,30 @@ namespace EImece.Domain.Services
             result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = await SettingService.GetAllActiveSettingsAsync().ConfigureAwait(false);
             result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
+            result.SideMenus = ResolveSideMenus(menu, menus);
             return result;
+        }
+
+        private static List<Menu> ResolveSideMenus(Menu menu, IEnumerable<Menu> allMenus)
+        {
+            if (menu == null || allMenus == null)
+            {
+                return new List<Menu>();
+            }
+
+            var active = allMenus.Where(m => m != null && m.IsActive && m.Lang == menu.Lang);
+            if (menu.ParentId > 0)
+            {
+                return active.Where(m => m.ParentId == menu.ParentId)
+                    .OrderBy(m => m.Position)
+                    .ThenBy(m => m.Name)
+                    .ToList();
+            }
+
+            return active.Where(m => m.ParentId == menu.Id)
+                .OrderBy(m => m.Position)
+                .ThenBy(m => m.Name)
+                .ToList();
         }
 
         private Dictionary<string, string> CreateMenuShareLinks(Menu menu)

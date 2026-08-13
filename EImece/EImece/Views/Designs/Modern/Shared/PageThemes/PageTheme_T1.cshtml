@@ -1,25 +1,18 @@
 ﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
-@using EImece.Domain.Models.FrontModels;
-@using EImece.Domain.Entities
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain;
-@using Resources;
-@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers.Extensions
+@using Resources
+@using System.Linq
+@using System.Web.Mvc
 @{
-
     var menu = Model.Menu;
-    var files = Model.Menu.MenuFiles.ToList().OrderBy(r => r.FileStorage != null ? r.FileStorage.Position : 0).ToList();
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     ViewBag.Keywords = menu.GetSeoKeywords();
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
-
-    int Width = ViewData["Width"].ToInt(300);
-    int Height = ViewData["Height"].ToInt(214);
-    var imgMenuUrl = menu.ImageState ?  menu.GetCroppedImageUrl(menu.MainImageId, 0, 500) : "";
+    var files = menu.MenuFiles ?? Enumerable.Empty<EImece.Domain.Entities.MenuFile>();
+    var imgMenuUrl = menu.ImageState ? (menu.GetCroppedImageUrl(menu.MainImageId, 0, 500) ?? "") : "";
+    var heroVd = new ViewDataDictionary { { "Alt", menu.Name } };
+    var galleryVd = new ViewDataDictionary { { "ColClass", "col-6 col-sm-4 col-md-2" }, { "MinCount", 6 } };
 }
-
 <div class="page-title-wrapper" role="region" aria-label="Page title">
     <div class="container">
         <div class="alert alert-secondary" role="alert">
@@ -29,48 +22,18 @@
                     <li class="breadcrumb-item">
                         <a href="@Url.Action("Index","Home")">@Resource.HomePage</a>
                     </li>
-                    <li class="breadcrumb-item active">
-                        @menu.Name
-                    </li>
+                    <li class="breadcrumb-item active">@menu.Name</li>
                 </ol>
             </nav>
         </div>
-        <h1 class="page-title">@menu.Name</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@menu.Name</h1>
         <hr class="mt-4">
     </div>
 </div>
-
-<div class="container">
-    @if (!string.IsNullOrEmpty(imgMenuUrl))
-    {
-        <!-- Row-->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="text-center">
-                <img src="@imgMenuUrl" class="img-thumbnail rounded" alt="Rounded image">
-            </div>
-        </div>
+<div class="container pt-page pt-t1">
+    @Html.Partial("~/Views/Shared/PageThemes/_PageThemeHero.cshtml", (object)imgMenuUrl, heroVd)
+    <div class="pt-body-text">
+        @Html.Raw(menu.Description)
     </div>
-    }
-
-    <!-- Row-->
-    <div class="row">
-        <div class="col-md-12">
-            @Html.Raw(menu.Description)
-        </div>
-    </div>
-    <!-- Row-->
-    <div class="row">
-        @if (files.IsNotEmpty())
-        {
-            <!-- Row-->
-            for (int i = 0; i < files.Count; i++)
-            {
-                var f = files[i].FileStorage;
-        <div class="col-md-4">
-            @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
-        </div>
-            }
-        }
-    </div>
+    @Html.Partial("~/Views/Shared/PageThemes/_PageThemeGallery.cshtml", files, galleryVd)
 </div>

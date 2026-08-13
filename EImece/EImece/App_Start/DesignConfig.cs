@@ -36,7 +36,8 @@ namespace EImece.App_Start
                 "~/Content/designs/crizal/search/search.css",
                 "~/Content/designs/crizal/css/theme.css",
                 "~/Content/designs/crizal/css/components.css",
-                "~/Content/designs/crizal/css/responsive.css"));
+                "~/Content/designs/crizal/css/responsive.css",
+                "~/Content/pageThemes.css"));
 
             // Plain Bundle — WebGrease JsMinify fails on modern syntax in main.js / theme.js.
             bundles.Add(new Bundle("~/bundles/designs/crizal/vendor/js").Include(

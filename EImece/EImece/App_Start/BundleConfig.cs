@@ -37,7 +37,8 @@ namespace EImece
             bundles.Add(new StyleBundle("~/Content/eimeceTheme").Include(
                  "~/Content/mstore/css/theme.min.css",
                   "~/Content/mstore/css/vendor.min.css",
-                  "~/Content/mstore/css/perf-overrides.css"
+                  "~/Content/mstore/css/perf-overrides.css",
+                  "~/Content/pageThemes.css"
                  ));
 
             // vendor.min.js already includes jQuery 3.3.1 + Bootstrap + Owl + Feather + Fancybox.

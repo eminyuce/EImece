@@ -1,0 +1,16 @@
+@model string
+@{
+    var alt = (ViewData["Alt"] as string) ?? "";
+    var extraClass = (ViewData["Class"] as string) ?? "pt-hero";
+    var phClass = (ViewData["PlaceholderClass"] as string) ?? "pt-ph pt-ph--hero";
+}
+@if (!string.IsNullOrEmpty(Model))
+{
+    <div class="@extraClass">
+        <img src="@Model" class="img-thumbnail rounded" alt="@alt" loading="lazy" decoding="async" />
+    </div>
+}
+else
+{
+    <div class="@phClass" aria-hidden="true"><span>RESİM</span></div>
+}
