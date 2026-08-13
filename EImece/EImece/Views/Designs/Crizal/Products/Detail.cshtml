@@ -110,10 +110,6 @@
 <!-- Page Title-->
 <div class="page-title-wrapper crizal-product-hero" aria-label="Page title">
     <div class="container">
-        @if (TempData["RecaptchaError"] != null)
-        {
-            <div class="alert alert-danger" role="alert">@TempData["RecaptchaError"]</div>
-        }
         @Html.Partial("_ProductBreadCrumb", Model)
         <h1 class="page-title">@product.ProductNameStr</h1>
         @if (!string.IsNullOrEmpty(shortDescriptionPlain))

@@ -203,10 +203,16 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (CaptchaService.HasValidationError(ModelState))
+            if (!ModelState.IsValid)
             {
-                Logger.Error("Captcha validation failed for product review.");
-                TempData["RecaptchaError"] = CaptchaService.GetErrorMessage();
+                var firstError = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .FirstOrDefault(m => !string.IsNullOrWhiteSpace(m));
+                var message = firstError ?? CaptchaService.GetErrorMessage();
+                Logger.Error($"Product review validation failed: {message}");
+                TempData["ReviewFormError"] = message;
+                TempData["RecaptchaError"] = message;
                 Logger.Info($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");
                 return RedirectToAction("Detail", new { id = productComment.SeoUrl });
             }

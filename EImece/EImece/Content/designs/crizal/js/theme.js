@@ -287,29 +287,323 @@
     }
 
     function initLeaveReviewModal($) {
-        if (typeof $.fn.modal !== 'function') {
+        var $modal = $('#leaveReview');
+        if (!$modal.length) {
             return;
         }
 
-        var $modal = $('#leaveReview');
-        if ($modal.length && $modal.parent()[0] !== document.body) {
+        if ($modal.parent()[0] !== document.body) {
             $modal.appendTo(document.body);
         }
 
-        $(document).off('click.crizalLeaveReview', '[data-toggle="modal"][href="#leaveReview"], [data-toggle="modal"][data-target="#leaveReview"], .crizal-product-reviews__cta');
-        $(document).on('click.crizalLeaveReview', '[data-toggle="modal"][href="#leaveReview"], [data-toggle="modal"][data-target="#leaveReview"], .crizal-product-reviews__cta', function (e) {
+        var $form = $modal.is('form') ? $modal : $modal.find('form').first();
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+        function showModal() {
+            if (typeof $.fn.modal === 'function') {
+                $modal.modal('show');
+                return;
+            }
+            if (window.bootstrap && window.bootstrap.Modal) {
+                window.bootstrap.Modal.getOrCreateInstance($modal[0]).show();
+            }
+        }
+
+        function hideModal() {
+            if (typeof $.fn.modal === 'function') {
+                $modal.modal('hide');
+                return;
+            }
+            if (window.bootstrap && window.bootstrap.Modal) {
+                var instance = window.bootstrap.Modal.getInstance($modal[0]);
+                if (instance) {
+                    instance.hide();
+                }
+            }
+        }
+
+        function messages() {
+            return {
+                required: $form.attr('data-msg-required') || 'This field is required.',
+                name: $form.attr('data-msg-name') || $form.attr('data-msg-required') || 'This field is required.',
+                email: $form.attr('data-msg-email') || $form.attr('data-msg-required') || 'This field is required.',
+                emailFormat: $form.attr('data-msg-email-format') || 'Please enter a valid email address.',
+                subject: $form.attr('data-msg-subject') || $form.attr('data-msg-required') || 'This field is required.',
+                review: $form.attr('data-msg-review') || $form.attr('data-msg-required') || 'This field is required.',
+                rating: $form.attr('data-msg-rating') || $form.attr('data-msg-required') || 'This field is required.',
+                captcha: $form.attr('data-msg-captcha') || 'Please answer the security question.',
+                recaptcha: $form.attr('data-msg-recaptcha') || 'Please complete the captcha.'
+            };
+        }
+
+        function errorTarget($input) {
+            var name = $input.attr('name');
+            var $group = $input.closest('.crizal-review-field, .crizal-review-captcha, .captcha-container, .recaptcha-container, .form-group');
+            var $msg = $();
+            if (name) {
+                $msg = $group.find("[data-valmsg-for='" + name + "']");
+            }
+            if (!$msg.length) {
+                $msg = $group.find('.crizal-review-modal__error').first();
+            }
+            return $msg;
+        }
+
+        function showFieldError($input, message) {
+            $input.addClass('is-invalid input-validation-error').attr('aria-invalid', 'true');
+            var $group = $input.closest('.crizal-review-field, .crizal-review-captcha');
+            $group.addClass('is-invalid');
+            var $msg = errorTarget($input);
+            if ($msg.length) {
+                $msg.text(message)
+                    .removeClass('field-validation-valid d-none')
+                    .addClass('field-validation-error is-visible');
+            }
+        }
+
+        function clearFieldError($input) {
+            $input.removeClass('is-invalid input-validation-error').removeAttr('aria-invalid');
+            var $group = $input.closest('.crizal-review-field, .crizal-review-captcha');
+            $group.removeClass('is-invalid');
+            var $msg = errorTarget($input);
+            if ($msg.length) {
+                $msg.text('')
+                    .removeClass('field-validation-error is-visible')
+                    .addClass('field-validation-valid');
+            }
+        }
+
+        function fieldValue($input) {
+            return $.trim($input.val() || '');
+        }
+
+        function findField(key) {
+            return $form.find('[data-review-field="' + key + '"]').filter('input, textarea, select');
+        }
+
+        function validateOneField($input) {
+            var msg = messages();
+            var key = ($input.attr('data-review-field') || '').toLowerCase();
+            var value = fieldValue($input);
+            var type = ($input.attr('type') || '').toLowerCase();
+
+            if (type === 'hidden' && key !== 'rating') {
+                return true;
+            }
+
+            if (key === 'rating') {
+                var rating = parseInt(value, 10);
+                if (!rating || rating < 1 || rating > 5) {
+                    showFieldError($input, msg.rating);
+                    $form.find('.crizal-review-stars').addClass('is-invalid');
+                    return false;
+                }
+                clearFieldError($input);
+                $form.find('.crizal-review-stars').removeClass('is-invalid');
+                return true;
+            }
+
+            if (key === 'email' || type === 'email') {
+                if (!value) {
+                    showFieldError($input, msg.email);
+                    return false;
+                }
+                if (!emailPattern.test(value)) {
+                    showFieldError($input, msg.emailFormat);
+                    return false;
+                }
+                clearFieldError($input);
+                return true;
+            }
+
+            if (key === 'captcha' || $input.attr('name') === 'Captcha') {
+                if (!value) {
+                    showFieldError($input, msg.captcha);
+                    $form.find('.crizal-review-captcha').addClass('is-invalid');
+                    return false;
+                }
+                clearFieldError($input);
+                $form.find('.crizal-review-captcha').removeClass('is-invalid');
+                return true;
+            }
+
+            if ($input.prop('required') || $input.attr('data-val-required') || key) {
+                if (!value) {
+                    var requiredMessage = msg[key] || $input.attr('data-val-required') || msg.required;
+                    showFieldError($input, requiredMessage);
+                    return false;
+                }
+                clearFieldError($input);
+            }
+
+            return true;
+        }
+
+        function validateReviewForm() {
+            var msg = messages();
+            var valid = true;
+            var $firstInvalid = null;
+
+            $form.find('input, textarea, select').each(function () {
+                var $input = $(this);
+                var type = ($input.attr('type') || '').toLowerCase();
+                var fieldKey = ($input.attr('data-review-field') || '').toLowerCase();
+                if (type === 'hidden' && fieldKey !== 'rating') {
+                    return;
+                }
+                if (type === 'submit' || type === 'button' || type === 'reset') {
+                    return;
+                }
+                if (!validateOneField($input)) {
+                    valid = false;
+                    if (!$firstInvalid) {
+                        $firstInvalid = fieldKey === 'rating' ? $form.find('.crizal-review-stars__btn').first() : $input;
+                    }
+                }
+            });
+
+            var $captcha = $form.find('input[name="Captcha"]');
+            if ($captcha.length && !validateOneField($captcha)) {
+                valid = false;
+                if (!$firstInvalid) {
+                    $firstInvalid = $captcha;
+                }
+            }
+
+            var $recaptcha = $form.find('.g-recaptcha');
+            if ($recaptcha.length) {
+                var recaptchaValue = '';
+                try {
+                    if (window.grecaptcha && typeof window.grecaptcha.getResponse === 'function') {
+                        recaptchaValue = window.grecaptcha.getResponse();
+                    }
+                } catch (err) {
+                    recaptchaValue = '';
+                }
+                var $recaptchaMsg = $form.find('.recaptcha-container .crizal-review-modal__error, .recaptcha-container [data-valmsg-for]').first();
+                if (!recaptchaValue) {
+                    $form.find('.crizal-review-captcha, .recaptcha-container').addClass('is-invalid');
+                    if ($recaptchaMsg.length) {
+                        $recaptchaMsg.text(msg.recaptcha)
+                            .removeClass('field-validation-valid d-none')
+                            .addClass('field-validation-error is-visible');
+                    }
+                    valid = false;
+                } else if ($recaptchaMsg.length) {
+                    $recaptchaMsg.text('').removeClass('field-validation-error is-visible').addClass('field-validation-valid');
+                }
+            }
+
+            var $alert = $form.find('.crizal-review-modal__alert').first();
+            if ($alert.length && $alert.attr('data-server-error') !== 'true') {
+                if (!valid) {
+                    $alert.removeClass('d-none').text(msg.required);
+                } else {
+                    $alert.addClass('d-none').text('');
+                }
+            }
+
+            if (!valid && $firstInvalid && $firstInvalid.length) {
+                try {
+                    $firstInvalid.trigger('focus');
+                    var el = $firstInvalid.get(0);
+                    if (el && typeof el.scrollIntoView === 'function') {
+                        el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                    }
+                } catch (err) { /* ignore */ }
+            }
+
+            return valid;
+        }
+
+        function paintStars(value, hoverValue) {
+            $modal.find('.crizal-review-stars__btn').each(function () {
+                var star = parseInt($(this).attr('data-rating'), 10) || 0;
+                $(this).toggleClass('is-on', star <= (value || 0) && !hoverValue);
+                $(this).toggleClass('is-hover-on', !!hoverValue && star <= hoverValue);
+                $(this).attr('aria-pressed', star <= (value || 0) ? 'true' : 'false');
+            });
+            $modal.find('.crizal-review-stars').toggleClass('is-hover', !!hoverValue);
+        }
+
+        function currentRating() {
+            var value = parseInt($('#review-rating').val(), 10);
+            return value >= 1 && value <= 5 ? value : 0;
+        }
+
+        $(document).off('click.crizalLeaveReview', '[data-toggle="modal"][href="#leaveReview"], [data-toggle="modal"][data-target="#leaveReview"], [data-bs-toggle="modal"][data-bs-target="#leaveReview"], .crizal-product-reviews__cta');
+        $(document).on('click.crizalLeaveReview', '[data-toggle="modal"][href="#leaveReview"], [data-toggle="modal"][data-target="#leaveReview"], [data-bs-toggle="modal"][data-bs-target="#leaveReview"], .crizal-product-reviews__cta', function (e) {
             e.preventDefault();
-            var $target = $('#leaveReview');
-            if ($target.length) {
-                $target.modal('show');
+            showModal();
+        });
+
+        $(document).off('click.crizalLeaveReviewDismiss', '#leaveReview [data-dismiss="modal"], #leaveReview [data-bs-dismiss="modal"]');
+        $(document).on('click.crizalLeaveReviewDismiss', '#leaveReview [data-dismiss="modal"], #leaveReview [data-bs-dismiss="modal"]', function (e) {
+            e.preventDefault();
+            hideModal();
+        });
+
+        $modal.off('click.crizalReviewStars', '.crizal-review-stars__btn');
+        $modal.on('click.crizalReviewStars', '.crizal-review-stars__btn', function () {
+            var value = parseInt($(this).attr('data-rating'), 10) || 0;
+            $('#review-rating').val(value);
+            paintStars(value);
+            validateOneField($('#review-rating'));
+        });
+        $modal.off('mouseenter.crizalReviewStars mouseleave.crizalReviewStars', '.crizal-review-stars__btn');
+        $modal.on('mouseenter.crizalReviewStars', '.crizal-review-stars__btn', function () {
+            paintStars(currentRating(), parseInt($(this).attr('data-rating'), 10) || 0);
+        });
+        $modal.on('mouseleave.crizalReviewStars', '.crizal-review-stars', function () {
+            paintStars(currentRating());
+        });
+        paintStars(currentRating());
+
+        $form.off('submit.crizalReview');
+        $form.on('submit.crizalReview', function (e) {
+            $form.addClass('was-validated');
+            if (!validateReviewForm()) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            }
+            return true;
+        });
+
+        $form.off('click.crizalReviewSubmit', '[type="submit"]');
+        $form.on('click.crizalReviewSubmit', '[type="submit"]', function (e) {
+            $form.addClass('was-validated');
+            if (!validateReviewForm()) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            }
+            return true;
+        });
+
+        $form.off('blur.crizalReview input.crizalReview change.crizalReview', 'input, textarea, select');
+        $form.on('blur.crizalReview change.crizalReview', 'input, textarea, select', function () {
+            validateOneField($(this));
+        });
+        $form.on('input.crizalReview', 'input, textarea, select', function () {
+            var $input = $(this);
+            if ($input.hasClass('is-invalid') || $input.hasClass('input-validation-error') || $form.hasClass('was-validated')) {
+                validateOneField($input);
             }
         });
 
-        // Bootstrap data-api dismiss is not wired; close buttons need an explicit hide.
-        $(document).off('click.crizalLeaveReviewDismiss', '#leaveReview [data-dismiss="modal"]');
-        $(document).on('click.crizalLeaveReviewDismiss', '#leaveReview [data-dismiss="modal"]', function (e) {
-            e.preventDefault();
-            $('#leaveReview').modal('hide');
+        if ($form.attr('data-open-on-error') === 'true' || $modal.find('.crizal-review-modal__alert:not(.d-none)').filter(function () {
+            return $.trim($(this).text()).length > 0;
+        }).length) {
+            window.setTimeout(showModal, 150);
+        }
+
+        $modal.off('shown.bs.modal.crizalReview');
+        $modal.on('shown.bs.modal.crizalReview', function () {
+            var $name = findField('name').add($form.find('input[name$=".Name"], input[name="Name"]')).first();
+            if ($name.length) {
+                $name.trigger('focus');
+            }
         });
     }
 

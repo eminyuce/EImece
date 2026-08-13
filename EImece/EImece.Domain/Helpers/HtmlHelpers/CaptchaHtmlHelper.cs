@@ -111,19 +111,22 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             }
 
             var inputPlaceholder = placeholder ?? Resource.AnswerSecurityQuestion;
+            var requiredMessage = Resource.AnswerSecurityQuestion;
+
             var value = htmlHelper.ViewData.Model != null
                 ? (htmlHelper.ViewData.Eval("Captcha") as string) ?? string.Empty
                 : string.Empty;
 
             var sb = new StringBuilder();
             sb.Append("<div class=\"form-group captcha-container mb-3\">");
-            sb.AppendFormat("<label>{0}</label>", HttpUtility.HtmlEncode(label));
+            sb.AppendFormat("<label for=\"Captcha\">{0} <span class=\"text-danger\" aria-hidden=\"true\">*</span></label>", HttpUtility.HtmlEncode(label));
             sb.AppendFormat(
                 "<div class=\"mb-2\"><img width=\"180\" height=\"50\" rel=\"nofollow\" src=\"{0}\" alt=\"Captcha\" class=\"captcha-img\" /></div>",
                 HttpUtility.HtmlAttributeEncode(imageUrl));
             sb.AppendFormat(
-                "<input type=\"text\" name=\"Captcha\" id=\"Captcha\" value=\"{0}\" class=\"form-control\" autocomplete=\"off\" placeholder=\"{1}\" />",
+                "<input type=\"text\" name=\"Captcha\" id=\"Captcha\" value=\"{0}\" class=\"form-control\" autocomplete=\"off\" inputmode=\"numeric\" maxlength=\"2\" required=\"required\" aria-required=\"true\" data-val=\"true\" data-val-required=\"{1}\" data-review-field=\"captcha\" placeholder=\"{2}\" />",
                 HttpUtility.HtmlAttributeEncode(value),
+                HttpUtility.HtmlAttributeEncode(requiredMessage),
                 HttpUtility.HtmlAttributeEncode(inputPlaceholder));
             sb.Append(htmlHelper.ValidationMessage(CaptchaService.ModelStateKey, new { @class = validationCssClass }));
             sb.Append("</div>");
