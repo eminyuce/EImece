@@ -1,0 +1,1 @@
+Roslyn version: 5.9.0.0Language version: CSharp7_3!Concurrent execution: enabledùòFile 'C:\Users\eminy\source\repos\EImece\EImece\EImece.Tests\obj\Release\.NETFramework,Version=v4.8.1.AssemblyAttributes.cs' was recognized as generated

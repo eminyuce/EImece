@@ -1,0 +1,1 @@
+RRDC:\Users\eminy\source\repos\EImece\EImece\Resources\Resources.csprojò	CSharp7_3

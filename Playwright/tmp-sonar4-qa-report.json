@@ -1,0 +1,468 @@
+{
+  "startedAt": "2026-08-12T20:32:00.352Z",
+  "sitemap": {
+    "total": 300,
+    "ok": 15,
+    "fail": [
+      {
+        "loc": "http://localhost:81/productcategories/category/elektronik-7e7e4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/moda--giyim-3f7e4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/ev--yasam-6g7e4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/spor--outdoor-4h7e4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/kozmetik--bakim-5i7e4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/bebek--cocuk-0j7e4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/kitap--hobi-9a3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/mutfak-1b3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/kulaklik--ses-8c3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/telefon-aksesuarlari-2d3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/kadin-giyim-7e3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/erkek-giyim-3f3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/ayakkabi-6g3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/oturma-grubu-4h3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/yatak-odasi-5i3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/aydinlatma-0j3f4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/kosu--fitness-9a6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/kamp--doga-1b6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/cilt-bakimi-8c6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/sac-bakimi-2d6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/bebek-bakim-7e6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/oyuncak-3f6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/roman--edebiyat-6g6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/kirtasiye-4h6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      },
+      {
+        "loc": "http://localhost:81/productcategories/category/pisirme-gerecleri-5i6g4h1b",
+        "status": 404,
+        "err": "exception page",
+        "js": [],
+        "pe": []
+      }
+    ],
+    "http": 200,
+    "crawled": 40
+  },
+  "admin": {
+    "pages": [
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/dashboard/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/products/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/productcategories/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/orders/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/shoppingcarts/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/customers/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/users/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/faq/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/brands/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/tags/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/coupons/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/stories/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/menus/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/settings/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/report/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/applogs/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/media/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/subscribers/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/mailtemplates/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/templates/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/mainpageimages/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/dashboard/oursitefeatures",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "admin",
+        "url": "http://localhost:81/admin/dashboard/searchcontent",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      }
+    ],
+    "crud": {
+      "name": "QA-SONAR4-msqjrcr0",
+      "listed": 2,
+      "url": "http://localhost:81/admin/faq/",
+      "status": "created"
+    }
+  },
+  "customer": {
+    "login": null,
+    "cart": null,
+    "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('button[type=\"submit\"], input[type=\"submit\"]').first()\n    - locator resolved to <input type=\"submit\" tabindex=\"-1\" aria-hidden=\"true\" id=\"searchSubmitButton\"/>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 2"
+  },
+  "mobile": {
+    "pages": [
+      {
+        "label": "mobile",
+        "url": "http://localhost:81/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "Yuvadan – Kudret Narı ve Daha Fazlası"
+      },
+      {
+        "label": "mobile",
+        "url": "http://localhost:81/account/login/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "Müşteri Girişi | EImece"
+      },
+      {
+        "label": "mobile",
+        "url": "http://localhost:81/payment/shoppingcart/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "Sepetim"
+      },
+      {
+        "label": "mobile",
+        "url": "http://localhost:81/admin/products/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      },
+      {
+        "label": "mobile",
+        "url": "http://localhost:81/admin/faq/",
+        "status": 200,
+        "err": null,
+        "js": [],
+        "pe": [],
+        "title": "EImece Admin Panel"
+      }
+    ]
+  },
+  "errors": [],
+  "finishedAt": "2026-08-12T20:34:27.299Z"
+}

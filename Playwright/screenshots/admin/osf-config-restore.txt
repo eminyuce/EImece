@@ -1,0 +1,3 @@
+<add key="SiteStatus" value="live" />
+<add key="BypassAdminAuth" value="false" />
+<!-- true = admin/editor must enable Authenticator 2FA before using admin (skipped when compilation debug=true or BypassAdminAuth). -->

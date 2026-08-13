@@ -1,0 +1,3593 @@
+[
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1695,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 40
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1770,
+    "msg": "Duplicate selector \"body[data-design=\"crizal\"] .customer-page\", first used at line 959",
+    "start": 0,
+    "end": 41
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1774,
+    "msg": "Duplicate selector \"body[data-design=\"crizal\"] .customer-shell\", first used at line 964",
+    "start": 0,
+    "end": 42
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1783,
+    "msg": "Duplicate selector \"body[data-design=\"crizal\"] .customer-btn-primary\", first used at line 968",
+    "start": 0,
+    "end": 48
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1787,
+    "msg": "Duplicate selector \"body[data-design=\"crizal\"] .customer-btn-primary:hover,\r\nbody[data-design=\"crizal\"] .customer-btn-primary:focus\", first used at line 985",
+    "start": 0,
+    "end": 54
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1813,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 19
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Areas/Customers/Home/Faq.cshtml",
+    "line": 63,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 16,
+    "end": 87
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Areas/Customers/Home/Index.cshtml",
+    "line": 40,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 8,
+    "end": 73
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_AdminTopbar.cshtml",
+    "line": 47,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 16,
+    "end": 45
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_AdminTopbar.cshtml",
+    "line": 47,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 16,
+    "end": 45
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 90,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 146
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 177,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 108
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 2776,
+    "msg": "Duplicate selector \"body.admin-app .eg-orders-grid .grid-table > tbody > tr\", first used at line 2758",
+    "start": 4,
+    "end": 59
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1460,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1479,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1528,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 988,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 27
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1026,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1090,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 40
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 1445,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Areas/Customers/Home/CustomerOrders.cshtml",
+    "line": 48,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 20,
+    "end": 91
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Areas/Customers/Home/CustomerOrders.cshtml",
+    "line": 130,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 36,
+    "end": 40
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Areas/Customers/Home/CustomerOrders.cshtml",
+    "line": 134,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 36,
+    "end": 40
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Areas/Customers/Home/CustomerOrders.cshtml",
+    "line": 138,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 36,
+    "end": 40
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Areas/Customers/Home/CustomerOrders.cshtml",
+    "line": 142,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 36,
+    "end": 40
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 3875,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 4084,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 20,
+    "end": 30
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Helpers/FilesHelper.cs",
+    "line": 1326,
+    "msg": "Make 'GenerateAbstractPlaceholder' a static method.",
+    "start": 22,
+    "end": 49
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 3902,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingCart.cshtml",
+    "line": 63,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 91
+  },
+  {
+    "rule": "Web:S6847",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 151,
+    "msg": "Non-interactive elements should not be assigned mouse or keyboard event listeners.",
+    "start": 0,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6847",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 167,
+    "msg": "Non-interactive elements should not be assigned mouse or keyboard event listeners.",
+    "start": 0,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6847",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 189,
+    "msg": "Non-interactive elements should not be assigned mouse or keyboard event listeners.",
+    "start": 0,
+    "end": 54
+  },
+  {
+    "rule": "Web:S6847",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 211,
+    "msg": "Non-interactive elements should not be assigned mouse or keyboard event listeners.",
+    "start": 0,
+    "end": 50
+  },
+  {
+    "rule": "Web:ImgWithoutAltCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Home/Index.cshtml",
+    "line": 114,
+    "msg": "Provide alternative text for this element.",
+    "start": 40,
+    "end": 45
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 229,
+    "msg": "Use <img> or <svg> instead of the img role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 96
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Modern/Products/Detail.cshtml",
+    "line": 201,
+    "msg": "Use <img> or <svg> instead of the img role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 97
+  },
+  {
+    "rule": "csharpsquid:S6444",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Helpers/CategorySlugHelper.cs",
+    "line": 16,
+    "msg": "Pass a timeout to limit the execution time.",
+    "start": 50,
+    "end": 91
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/ManageController.cs",
+    "line": 33,
+    "msg": "All 'ChangePassword' method overloads should be adjacent.",
+    "start": 28,
+    "end": 42
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/ClearCache.cshtml",
+    "line": 9,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 60
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/SearchContent.cshtml",
+    "line": 66,
+    "msg": "Use <menu> or <ol> or <ul> instead of the list role to ensure accessibility across all devices.",
+    "start": 8,
+    "end": 52
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/SearchContent.cshtml",
+    "line": 75,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 8,
+    "end": 55
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/DisplayTemplates/BaseContentSearchItem.cshtml",
+    "line": 66,
+    "msg": "Use <li> instead of the listitem role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 51
+  },
+  {
+    "rule": "Web:S6847",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/DisplayTemplates/BaseContentSearchItem.cshtml",
+    "line": 70,
+    "msg": "Non-interactive elements should not be assigned mouse or keyboard event listeners.",
+    "start": 0,
+    "end": 42
+  },
+  {
+    "rule": "css:S4649",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/adminSearchResult.css",
+    "line": 217,
+    "msg": "Missing generic font family",
+    "start": 17,
+    "end": 28
+  },
+  {
+    "rule": "css:S7925",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/adminSite.css",
+    "line": 3190,
+    "msg": "Increase this value or remove '!important' from letter-spacing to allow accessibility adjustments.",
+    "start": 4,
+    "end": 38
+  },
+  {
+    "rule": "Web:S5255",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/OurSiteFeatures.cshtml",
+    "line": 37,
+    "msg": "Add an \"aria-label\" or \"aria-labbelledby\" attribute to this element.",
+    "start": 12,
+    "end": 83
+  },
+  {
+    "rule": "Web:S5255",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/OurSiteFeatures.cshtml",
+    "line": 42,
+    "msg": "Add an \"aria-label\" or \"aria-labbelledby\" attribute to this element.",
+    "start": 8,
+    "end": 78
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/OurSiteFeatures.cshtml",
+    "line": 57,
+    "msg": "Use <progress> instead of the progressbar role to ensure accessibility across all devices.",
+    "start": 16,
+    "end": 182
+  },
+  {
+    "rule": "Web:S5255",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/OurSiteFeatures.cshtml",
+    "line": 139,
+    "msg": "Add an \"aria-label\" or \"aria-labbelledby\" attribute to this element.",
+    "start": 24,
+    "end": 95
+  },
+  {
+    "rule": "Web:S5255",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/OurSiteFeatures.cshtml",
+    "line": 151,
+    "msg": "Add an \"aria-label\" or \"aria-labbelledby\" attribute to this element.",
+    "start": 24,
+    "end": 95
+  },
+  {
+    "rule": "Web:S5255",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/OurSiteFeatures.cshtml",
+    "line": 287,
+    "msg": "Add an \"aria-label\" or \"aria-labbelledby\" attribute to this element.",
+    "start": 20,
+    "end": 91
+  },
+  {
+    "rule": "Web:S5255",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Dashboard/OurSiteFeatures.cshtml",
+    "line": 310,
+    "msg": "Add an \"aria-label\" or \"aria-labbelledby\" attribute to this element.",
+    "start": 20,
+    "end": 90
+  },
+  {
+    "rule": "css:S7925",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/adminSite.css",
+    "line": 2255,
+    "msg": "Increase this value or remove '!important' from letter-spacing to allow accessibility adjustments.",
+    "start": 4,
+    "end": 38
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/Site.css",
+    "line": 398,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 24
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/Site.css",
+    "line": 426,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 3465,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 24
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 3494,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/modern/css/components.css",
+    "line": 476,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 24
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/designs/modern/css/components.css",
+    "line": 504,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 16,
+    "end": 26
+  },
+  {
+    "rule": "csharpsquid:S2365",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Models/FrontModels/ProductDetailViewModel.cs",
+    "line": 281,
+    "msg": "Refactor 'ProdSpecsGroups' into a method, properties should not copy collections.",
+    "start": 23,
+    "end": 27
+  },
+  {
+    "rule": "csharpsquid:S3358",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Models/FrontModels/ProductDetailViewModel.cs",
+    "line": 324,
+    "msg": "Extract this nested ternary operation into an independent statement.",
+    "start": 56,
+    "end": 94
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/Checkbox.cshtml",
+    "line": 23,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 12,
+    "end": 115
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/DateTimePicker.cshtml",
+    "line": 45,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 12,
+    "end": 115
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/DropDown.cshtml",
+    "line": 72,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 16,
+    "end": 119
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/MultiSelect.cshtml",
+    "line": 28,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 8,
+    "end": 62
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/MultiSelect.cshtml",
+    "line": 30,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 12,
+    "end": 115
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/MultiSelect.cshtml",
+    "line": 39,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 12,
+    "end": 131
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/Radio.cshtml",
+    "line": 27,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 8,
+    "end": 62
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/Radio.cshtml",
+    "line": 29,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 12,
+    "end": 115
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/TextArea.cshtml",
+    "line": 25,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 12,
+    "end": 115
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/EditorTemplates/TextBox.cshtml",
+    "line": 36,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 12,
+    "end": 115
+  },
+  {
+    "rule": "Web:S6845",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_AdminFieldTip.cshtml",
+    "line": 7,
+    "msg": "\"tabindex\" should only be declared on interactive elements.",
+    "start": 4,
+    "end": 32
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_AdminFieldTip.cshtml",
+    "line": 7,
+    "msg": "Use <img> or <svg> instead of the img role to ensure accessibility across all devices.",
+    "start": 4,
+    "end": 32
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 944,
+    "msg": "Duplicate selector \"body[data-design=\"crizal\"] .navbar-default #nav.open,\r\n    body[data-design=\"crizal\"] .navbar-default .navbar-nav.open\", first used at line 836",
+    "start": 4,
+    "end": 63
+  },
+  {
+    "rule": "external_roslyn:MSTEST0068",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+    "line": 57,
+    "msg": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+    "start": 12,
+    "end": 73
+  },
+  {
+    "rule": "external_roslyn:MSTEST0068",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+    "line": 72,
+    "msg": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+    "start": 12,
+    "end": 76
+  },
+  {
+    "rule": "external_roslyn:MSTEST0068",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+    "line": 87,
+    "msg": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+    "start": 12,
+    "end": 76
+  },
+  {
+    "rule": "external_roslyn:MSTEST0068",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+    "line": 102,
+    "msg": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+    "start": 12,
+    "end": 76
+  },
+  {
+    "rule": "external_roslyn:MSTEST0068",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+    "line": 117,
+    "msg": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+    "start": 12,
+    "end": 76
+  },
+  {
+    "rule": "external_roslyn:MSTEST0068",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ProductSortHelperTests.cs",
+    "line": 29,
+    "msg": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+    "start": 12,
+    "end": 82
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 3857,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 16
+  },
+  {
+    "rule": "Web:S6844",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/CheckoutBillingDetails.cshtml",
+    "line": 190,
+    "msg": "Anchor tags should not be used as buttons.",
+    "start": 24,
+    "end": 144
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/_OrderSummary.cshtml",
+    "line": 94,
+    "msg": "Associate a valid label to this input field.",
+    "start": 12,
+    "end": 65
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 258,
+    "msg": "All 'SaveOrder' method overloads should be adjacent.",
+    "start": 22,
+    "end": 31
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 332,
+    "msg": "All 'SaveOrderAsync' method overloads should be adjacent.",
+    "start": 34,
+    "end": 48
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 636,
+    "msg": "Reduce the number of Information logging calls within this code block from 3 to the 2 allowed.",
+    "start": 12,
+    "end": 146
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 847,
+    "msg": "Reduce the number of Information logging calls within this code block from 6 to the 2 allowed.",
+    "start": 12,
+    "end": 70
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 1201,
+    "msg": "Reduce the number of Information logging calls within this code block from 6 to the 2 allowed.",
+    "start": 12,
+    "end": 79
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 1317,
+    "msg": "Make 'ValidatePaymentBinding' a static method.",
+    "start": 29,
+    "end": 51
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Users/CustomerRoles.cshtml",
+    "line": 96,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 21,
+    "end": 61
+  },
+  {
+    "rule": "csharpsquid:S1075",
+    "sev": "MINOR",
+    "file": "EImece/EImece/App_Start/RouteConfig.cs",
+    "line": 85,
+    "msg": "Remove this hardcoded path-delimiter.",
+    "start": 77,
+    "end": 80
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml",
+    "line": 2,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 0,
+    "end": 52
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 2220,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 20,
+    "end": 30
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 2358,
+    "msg": "Expected \"checkbox\" to be \"auto\"",
+    "start": 20,
+    "end": 28
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 2460,
+    "msg": "Duplicate selector \"body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-actions,\r\n    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-actions\", first used at line 2447",
+    "start": 4,
+    "end": 72
+  },
+  {
+    "rule": "Web:S7927",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pLanguages.cshtml",
+    "line": 11,
+    "msg": "The accessible name should be part of the visible label.",
+    "start": 4,
+    "end": 150
+  },
+  {
+    "rule": "Web:S7927",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pLanguages.cshtml",
+    "line": 11,
+    "msg": "The accessible name should be part of the visible label.",
+    "start": 4,
+    "end": 150
+  },
+  {
+    "rule": "Web:S7927",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pLanguages.cshtml",
+    "line": 11,
+    "msg": "The accessible name should be part of the visible label.",
+    "start": 4,
+    "end": 150
+  },
+  {
+    "rule": "css:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 2049,
+    "msg": "Deprecated keyword \"break-word\" for property \"word-break\"",
+    "start": 20,
+    "end": 30
+  },
+  {
+    "rule": "javascript:S1874",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 1126,
+    "msg": "'keyCode' is deprecated.",
+    "start": 41,
+    "end": 48
+  },
+  {
+    "rule": "csharpsquid:S1854",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/AppLogRepository.cs",
+    "line": 36,
+    "msg": "Remove this useless assignment to local variable 'applogResult'.",
+    "start": 16,
+    "end": 49
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/AppLogRepository.cs",
+    "line": 41,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 31
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/AppLogRepository.cs",
+    "line": 85,
+    "msg": "Make 'DeleteAppLogsAsync' a static method.",
+    "start": 26,
+    "end": 44
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/AppLogRepository.cs",
+    "line": 134,
+    "msg": "Make 'DeleteAppLogAsync' a static method.",
+    "start": 26,
+    "end": 43
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/AppLogRepository.cs",
+    "line": 168,
+    "msg": "Make 'RemoveAllAsync' a static method.",
+    "start": 26,
+    "end": 40
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/AppLogRepository.cs",
+    "line": 232,
+    "msg": "Make 'GetAppLogsFromDbAsync' a static method.",
+    "start": 40,
+    "end": 61
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/BaseRepository.cs",
+    "line": 261,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 47,
+    "end": 49
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/BaseRepository.cs",
+    "line": 267,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 38
+  },
+  {
+    "rule": "csharpsquid:S3626",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/MenuRepository.cs",
+    "line": 137,
+    "msg": "Remove this redundant jump.",
+    "start": 20,
+    "end": 29
+  },
+  {
+    "rule": "csharpsquid:S2971",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/TagCategoryRepository.cs",
+    "line": 58,
+    "msg": "Use 'Count' property here instead.",
+    "start": 117,
+    "end": 122
+  },
+  {
+    "rule": "csharpsquid:S1155",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/TagCategoryRepository.cs",
+    "line": 58,
+    "msg": "Use '.Any()' to test whether this 'IEnumerable<EImece.Domain.Entities.Tag>' is empty or not.",
+    "start": 117,
+    "end": 122
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/TagCategoryRepository.cs",
+    "line": 65,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 38
+  },
+  {
+    "rule": "csharpsquid:S125",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/FileStorageService.cs",
+    "line": 214,
+    "msg": "Remove this commented out code.",
+    "start": 20,
+    "end": 62
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 336,
+    "msg": "Make 'GetCouponUsageReportAsync' a static method.",
+    "start": 31,
+    "end": 56
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 341,
+    "msg": "Make 'GetFraudAnalysisReportAsync' a static method.",
+    "start": 31,
+    "end": 58
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 346,
+    "msg": "Make 'GetPaymentMethodReportAsync' a static method.",
+    "start": 31,
+    "end": 58
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 351,
+    "msg": "Make 'GetPaymentStatusReportAsync' a static method.",
+    "start": 31,
+    "end": 58
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 356,
+    "msg": "Make 'GetRegionalSalesReportAsync' a static method.",
+    "start": 31,
+    "end": 58
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 368,
+    "msg": "Make 'GetSalesReportByDateRangeAsync' a static method.",
+    "start": 31,
+    "end": 61
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 380,
+    "msg": "Make 'GetShipmentCompanyReportAsync' a static method.",
+    "start": 31,
+    "end": 60
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 385,
+    "msg": "Make 'GetPerformanceSystemReportAsync' a static method.",
+    "start": 29,
+    "end": 60
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 395,
+    "msg": "Make 'GetFinancialReportAsync' a static method.",
+    "start": 29,
+    "end": 52
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 405,
+    "msg": "Make 'GetFraudRiskReportAsync' a static method.",
+    "start": 29,
+    "end": 52
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 415,
+    "msg": "Make 'GetOrderVolumeReportAsync' a static method.",
+    "start": 29,
+    "end": 54
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 425,
+    "msg": "Make 'GetPaymentTransactionReportAsync' a static method.",
+    "start": 29,
+    "end": 61
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 435,
+    "msg": "Make 'GetProductSummaryReportAsync' a static method.",
+    "start": 29,
+    "end": 57
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 447,
+    "msg": "Make 'GetPriceAnalysisReportAsync' a static method.",
+    "start": 29,
+    "end": 56
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 458,
+    "msg": "Make 'GetProductInventoryReportAsync' a static method.",
+    "start": 29,
+    "end": 59
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ReportService.cs",
+    "line": 467,
+    "msg": "Make 'GetProductStatsByDateRangeAsync' a static method.",
+    "start": 29,
+    "end": 60
+  },
+  {
+    "rule": "external_roslyn:CS0105",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/TagCategoryService.cs",
+    "line": 14,
+    "msg": "The using directive for 'System.Threading' appeared previously in this namespace",
+    "start": 6,
+    "end": 22
+  },
+  {
+    "rule": "external_roslyn:CS0105",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/TagCategoryService.cs",
+    "line": 15,
+    "msg": "The using directive for 'System.Threading.Tasks' appeared previously in this namespace",
+    "start": 6,
+    "end": 28
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/AdminSettingsController.cs",
+    "line": 33,
+    "msg": "All 'SystemSettings' method overloads should be adjacent.",
+    "start": 40,
+    "end": 54
+  },
+  {
+    "rule": "csharpsquid:S4144",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/AjaxController.cs",
+    "line": 343,
+    "msg": "Update this method so that its implementation is not identical to 'DeleteCouponsGridItem'.",
+    "start": 38,
+    "end": 58
+  },
+  {
+    "rule": "csharpsquid:S4144",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/AjaxController.cs",
+    "line": 351,
+    "msg": "Update this method so that its implementation is not identical to 'DeleteStoryCategoryGridItem'.",
+    "start": 38,
+    "end": 59
+  },
+  {
+    "rule": "csharpsquid:S4144",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/AjaxController.cs",
+    "line": 471,
+    "msg": "Update this method so that its implementation is not identical to 'MainPageImageGridItem'.",
+    "start": 38,
+    "end": 65
+  },
+  {
+    "rule": "csharpsquid:S1481",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/MenusController.cs",
+    "line": 225,
+    "msg": "Remove the unused local variable 'storyCategories'.",
+    "start": 16,
+    "end": 31
+  },
+  {
+    "rule": "csharpsquid:S107",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/ReportController.cs",
+    "line": 592,
+    "msg": "Method has 13 parameters, which is greater than the 7 authorized.",
+    "start": 46,
+    "end": 40
+  },
+  {
+    "rule": "csharpsquid:S107",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/ReportController.cs",
+    "line": 686,
+    "msg": "Method has 12 parameters, which is greater than the 7 authorized.",
+    "start": 63,
+    "end": 40
+  },
+  {
+    "rule": "csharpsquid:S1172",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/TagsController.cs",
+    "line": 27,
+    "msg": "Remove this unused method parameter 'cancellationToken'.",
+    "start": 78,
+    "end": 113
+  },
+  {
+    "rule": "csharpsquid:S8949",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/UsersController.cs",
+    "line": 251,
+    "msg": "Pass the 'cancellationToken' to this method to allow cancellation of the operation, or use 'CancellationToken.None' to opt out explicitly.",
+    "start": 29,
+    "end": 75
+  },
+  {
+    "rule": "csharpsquid:S8949",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/UsersController.cs",
+    "line": 312,
+    "msg": "Pass the 'cancellationToken' to this method to allow cancellation of the operation, or use 'CancellationToken.None' to opt out explicitly.",
+    "start": 29,
+    "end": 66
+  },
+  {
+    "rule": "csharpsquid:S8949",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/UsersController.cs",
+    "line": 314,
+    "msg": "Pass the 'cancellationToken' to this method to allow cancellation of the operation, or use 'CancellationToken.None' to opt out explicitly.",
+    "start": 18,
+    "end": 55
+  },
+  {
+    "rule": "csharpsquid:S8949",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/UsersController.cs",
+    "line": 322,
+    "msg": "Pass the 'cancellationToken' to this method to allow cancellation of the operation, or use 'CancellationToken.None' to opt out explicitly.",
+    "start": 29,
+    "end": 66
+  },
+  {
+    "rule": "csharpsquid:S8949",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/UsersController.cs",
+    "line": 354,
+    "msg": "Pass the 'cancellationToken' to this method to allow cancellation of the operation, or use 'CancellationToken.None' to opt out explicitly.",
+    "start": 33,
+    "end": 79
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/BaseRepository.cs",
+    "line": 95,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 33,
+    "end": 35
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/BaseRepository.cs",
+    "line": 207,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 33,
+    "end": 35
+  },
+  {
+    "rule": "csharpsquid:S3267",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/ProductCategoryRepository.cs",
+    "line": 239,
+    "msg": "Loops should be simplified using the \"Where\" LINQ method",
+    "start": 30,
+    "end": 47
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Repositories/ProductTagRepository.cs",
+    "line": 69,
+    "msg": "Rename parameter 'productId' to 'id' to match the interface declaration.",
+    "start": 51,
+    "end": 60
+  },
+  {
+    "rule": "csharpsquid:S1854",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/FileStorageService.cs",
+    "line": 342,
+    "msg": "Remove this useless assignment to local variable 'isResult'.",
+    "start": 20,
+    "end": 171
+  },
+  {
+    "rule": "csharpsquid:S1854",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/FileStorageService.cs",
+    "line": 347,
+    "msg": "Remove this useless assignment to local variable 'isResult'.",
+    "start": 20,
+    "end": 175
+  },
+  {
+    "rule": "csharpsquid:S1854",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/FileStorageService.cs",
+    "line": 352,
+    "msg": "Remove this useless assignment to local variable 'isResult'.",
+    "start": 20,
+    "end": 169
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 78,
+    "msg": "Rename parameter 'categoryId' to 'id' to match the interface declaration.",
+    "start": 67,
+    "end": 77
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 83,
+    "msg": "Rename parameter 'categoryId' to 'id' to match the interface declaration.",
+    "start": 67,
+    "end": 77
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 88,
+    "msg": "Rename parameter 'categoryId' to 'id' to match the interface declaration.",
+    "start": 67,
+    "end": 77
+  },
+  {
+    "rule": "csharpsquid:S3267",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 614,
+    "msg": "Loops should be simplified using the \"Where\" LINQ method",
+    "start": 37,
+    "end": 51
+  },
+  {
+    "rule": "csharpsquid:S1481",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 822,
+    "msg": "Remove the unused local variable 'values'.",
+    "start": 24,
+    "end": 30
+  },
+  {
+    "rule": "csharpsquid:S1172",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/ProductCategoriesController.cs",
+    "line": 223,
+    "msg": "Remove this unused method parameter 'cancellationToken'.",
+    "start": 59,
+    "end": 94
+  },
+  {
+    "rule": "csharpsquid:S107",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/ProductsController.cs",
+    "line": 25,
+    "msg": "Method has 10 parameters, which is greater than the 7 authorized.",
+    "start": 45,
+    "end": 37
+  },
+  {
+    "rule": "csharpsquid:S1481",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Controllers/ProductsController.cs",
+    "line": 152,
+    "msg": "Remove the unused local variable 'isProductPriceEnable'.",
+    "start": 24,
+    "end": 44
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Users/Index.cshtml",
+    "line": 170,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 24,
+    "end": 31
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridDropDown.cshtml",
+    "line": 18,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 78
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 151,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 16
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/pGridDropDown.cshtml",
+    "line": 12,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 78
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Modern/Shared/pGridDropDown.cshtml",
+    "line": 12,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 78
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Shared/pGridDropDown.cshtml",
+    "line": 12,
+    "msg": "Use <output> instead of the status role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 78
+  },
+  {
+    "rule": "Web:S6844",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Menus/_MenuTree.cshtml",
+    "line": 62,
+    "msg": "Anchor tags should not be used as buttons.",
+    "start": 24,
+    "end": 110
+  },
+  {
+    "rule": "Web:LinksIdenticalTextsDifferentTargetsCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Menus/_MenuTree.cshtml",
+    "line": 74,
+    "msg": "Use distinct texts or point to the same target for this link and the one at line 62.",
+    "start": 0,
+    "end": 78
+  },
+  {
+    "rule": "Web:S6844",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Menus/_MenuTreeChildren.cshtml",
+    "line": 45,
+    "msg": "Anchor tags should not be used as buttons.",
+    "start": 20,
+    "end": 106
+  },
+  {
+    "rule": "Web:LinksIdenticalTextsDifferentTargetsCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Menus/_MenuTreeChildren.cshtml",
+    "line": 57,
+    "msg": "Use distinct texts or point to the same target for this link and the one at line 45.",
+    "start": 0,
+    "end": 74
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 143,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 20,
+    "end": 24
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 147,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 20,
+    "end": 24
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 151,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 20,
+    "end": 24
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 155,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 20,
+    "end": 24
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 159,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 20,
+    "end": 24
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 172,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 20,
+    "end": 24
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 185,
+    "msg": "Surround this <dt> item tag by a <dl> container one.",
+    "start": 20,
+    "end": 24
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ShoppingCarts/Detail.cshtml",
+    "line": 212,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 12,
+    "end": 62
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 1503,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 19
+  },
+  {
+    "rule": "csharpsquid:S3247",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/BaseEntityService.cs",
+    "line": 233,
+    "msg": "Replace this type-check-and-cast sequence to use pattern matching.",
+    "start": 16,
+    "end": 33
+  },
+  {
+    "rule": "csharpsquid:S3247",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/BaseEntityService.cs",
+    "line": 237,
+    "msg": "Replace this type-check-and-cast sequence to use pattern matching.",
+    "start": 21,
+    "end": 36
+  },
+  {
+    "rule": "csharpsquid:S3247",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/BaseEntityService.cs",
+    "line": 241,
+    "msg": "Replace this type-check-and-cast sequence to use pattern matching.",
+    "start": 21,
+    "end": 46
+  },
+  {
+    "rule": "csharpsquid:S3247",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/BaseEntityService.cs",
+    "line": 245,
+    "msg": "Replace this type-check-and-cast sequence to use pattern matching.",
+    "start": 21,
+    "end": 36
+  },
+  {
+    "rule": "csharpsquid:S3247",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/BaseEntityService.cs",
+    "line": 249,
+    "msg": "Replace this type-check-and-cast sequence to use pattern matching.",
+    "start": 21,
+    "end": 35
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/AppLogs/Index.cshtml",
+    "line": 184,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 61,
+    "end": 161
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/AppLogs/Index.cshtml",
+    "line": 191,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 61,
+    "end": 161
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Customers/Index.cshtml",
+    "line": 80,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 43,
+    "end": 142
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ProductCategories/Index.cshtml",
+    "line": 117,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 50,
+    "end": 159
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/ProductComments/Index.cshtml",
+    "line": 98,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 43,
+    "end": 144
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Subscribers/Index.cshtml",
+    "line": 80,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 43,
+    "end": 144
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Coupons/Index.cshtml",
+    "line": 100,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 35,
+    "end": 144
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Faq/Index.cshtml",
+    "line": 71,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 35,
+    "end": 136
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Faq/Index.cshtml",
+    "line": 77,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 35,
+    "end": 144
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/MailTemplates/Index.cshtml",
+    "line": 75,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 35,
+    "end": 144
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/MainPageImages/Index.cshtml",
+    "line": 80,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 35,
+    "end": 144
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Templates/Index.cshtml",
+    "line": 77,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 35,
+    "end": 144
+  },
+  {
+    "rule": "Web:S6844",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_ProductCategoryTree.cshtml",
+    "line": 72,
+    "msg": "Anchor tags should not be used as buttons.",
+    "start": 24,
+    "end": 113
+  },
+  {
+    "rule": "Web:LinksIdenticalTextsDifferentTargetsCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_ProductCategoryTree.cshtml",
+    "line": 84,
+    "msg": "Use distinct texts or point to the same target for this link and the one at line 72.",
+    "start": 0,
+    "end": 78
+  },
+  {
+    "rule": "Web:S6844",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_ProductCategoryTreeChildren.cshtml",
+    "line": 47,
+    "msg": "Anchor tags should not be used as buttons.",
+    "start": 20,
+    "end": 109
+  },
+  {
+    "rule": "Web:LinksIdenticalTextsDifferentTargetsCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_ProductCategoryTreeChildren.cshtml",
+    "line": 59,
+    "msg": "Use distinct texts or point to the same target for this link and the one at line 47.",
+    "start": 0,
+    "end": 74
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pAdminSearchForm.cshtml",
+    "line": 38,
+    "msg": "Associate a valid label to this input field.",
+    "start": 8,
+    "end": 36
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pDeleteModal.cshtml",
+    "line": 16,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 0,
+    "end": 32
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pDeleteModal.cshtml",
+    "line": 16,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 32
+  },
+  {
+    "rule": "Web:S7927",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pDeleteModal.cshtml",
+    "line": 16,
+    "msg": "The accessible name should be part of the visible label.",
+    "start": 0,
+    "end": 32
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 62,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 20,
+    "end": 94
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 104,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 108
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 107,
+    "msg": "Associate a valid label to this input field.",
+    "start": 32,
+    "end": 173
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 116,
+    "msg": "Associate a valid label to this input field.",
+    "start": 32,
+    "end": 173
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 124,
+    "msg": "Associate a valid label to this input field.",
+    "start": 32,
+    "end": 173
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 151,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 88
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 161,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 24,
+    "end": 173
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pGridOperations.cshtml",
+    "line": 162,
+    "msg": "Associate a valid label to this input field.",
+    "start": 28,
+    "end": 211
+  },
+  {
+    "rule": "css:S4666",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 852,
+    "msg": "Duplicate selector \".eg-grid .pagination.eg-pager-pages-list\", first used at line 851",
+    "start": 0,
+    "end": 40
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/adminGridModern.css",
+    "line": 916,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 19
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/Grid/_GridChrome.cshtml",
+    "line": 8,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 4,
+    "end": 80
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pSliderResizing.cshtml",
+    "line": 17,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 12,
+    "end": 54
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pSliderResizing.cshtml",
+    "line": 17,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 12,
+    "end": 54
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 490,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 72,
+    "end": 80
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 490,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 32,
+    "end": 40
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 491,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 74,
+    "end": 82
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 491,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 33,
+    "end": 41
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 494,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 47,
+    "end": 55
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 495,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 48,
+    "end": 56
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 517,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 20,
+    "end": 28
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 518,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 20,
+    "end": 28
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 520,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 20,
+    "end": 28
+  },
+  {
+    "rule": "javascript:S7773",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 521,
+    "msg": "Prefer `Number.parseInt` over `parseInt`.",
+    "start": 20,
+    "end": 28
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/pSelectedTags.cshtml",
+    "line": 22,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 12,
+    "end": 40
+  },
+  {
+    "rule": "javascript:S6582",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 1175,
+    "msg": "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
+    "start": 16,
+    "end": 35
+  },
+  {
+    "rule": "javascript:S6582",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 1176,
+    "msg": "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
+    "start": 8,
+    "end": 31
+  },
+  {
+    "rule": "javascript:S7765",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 1202,
+    "msg": "Use `.includes()`, rather than `.indexOf()`, when checking for existence.",
+    "start": 35,
+    "end": 42
+  },
+  {
+    "rule": "csharpsquid:S2325",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/AppLogRepository.cs",
+    "line": 189,
+    "msg": "Make 'GetAppLogsFromDb' a static method.",
+    "start": 28,
+    "end": 44
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/AppLogs/Index.cshtml",
+    "line": 65,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 12,
+    "end": 48
+  },
+  {
+    "rule": "xml:S3330",
+    "sev": "MINOR",
+    "file": "EImece/EImece/media/logs/Web.config",
+    "line": 4,
+    "msg": "Global <httpCookies> tag is missing or its 'httpOnlyCookies' attribute is not set to true.",
+    "start": 3,
+    "end": 13
+  },
+  {
+    "rule": "xml:S5734",
+    "sev": "MINOR",
+    "file": "EImece/EImece/media/logs/Web.config",
+    "line": 9,
+    "msg": "Set the \"X-Content-Type-Options\" HTTP header to \"nosniff\" to mitigate MIME Confusion Attacks.",
+    "start": 3,
+    "end": 19
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Metrics/Index.cshtml",
+    "line": 323,
+    "msg": "Use <dialog> instead of the dialog role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 118
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Metrics/Index.cshtml",
+    "line": 324,
+    "msg": "Use <html> instead of the document role to ensure accessibility across all devices.",
+    "start": 4,
+    "end": 55
+  },
+  {
+    "rule": "csharpsquid:S3011",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Observability/Metrics/MeasuredServiceProxy.cs",
+    "line": 19,
+    "msg": "Make sure that this accessibility bypass is safe here.",
+    "start": 72,
+    "end": 94
+  },
+  {
+    "rule": "csharpsquid:S3928",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Observability/Metrics/MeasuredServiceProxy.cs",
+    "line": 53,
+    "msg": "The parameter name 'TService' is not declared in the argument list.",
+    "start": 22,
+    "end": 121
+  },
+  {
+    "rule": "external_roslyn:MSTEST0037",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+    "line": 98,
+    "msg": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+    "start": 12,
+    "end": 55
+  },
+  {
+    "rule": "csharpsquid:S125",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Filters/TelemetryActionFilter.cs",
+    "line": 118,
+    "msg": "Remove this commented out code.",
+    "start": 16,
+    "end": 83
+  },
+  {
+    "rule": "csharpsquid:S1075",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Entities/Menu.cs",
+    "line": 219,
+    "msg": "Remove this hardcoded path-delimiter.",
+    "start": 23,
+    "end": 26
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_Navigation.cshtml",
+    "line": 91,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 8,
+    "end": 33
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_Navigation.cshtml",
+    "line": 124,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 8,
+    "end": 33
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Modern/Shared/_Navigation.cshtml",
+    "line": 99,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 0,
+    "end": 43
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Modern/Shared/_Navigation.cshtml",
+    "line": 141,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 0,
+    "end": 34
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Shared/_Navigation.cshtml",
+    "line": 99,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 0,
+    "end": 43
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Shared/_Navigation.cshtml",
+    "line": 141,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 0,
+    "end": 34
+  },
+  {
+    "rule": "external_roslyn:MSTEST0037",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+    "line": 19,
+    "msg": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+    "start": 12,
+    "end": 39
+  },
+  {
+    "rule": "external_roslyn:MSTEST0037",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+    "line": 31,
+    "msg": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+    "start": 12,
+    "end": 39
+  },
+  {
+    "rule": "external_roslyn:MSTEST0046",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+    "line": 15,
+    "msg": "Use 'Assert.StartsWith' instead of 'StringAssert.StartsWith'",
+    "start": 12,
+    "end": 69
+  },
+  {
+    "rule": "external_roslyn:MSTEST0046",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+    "line": 36,
+    "msg": "Use 'Assert.StartsWith' instead of 'StringAssert.StartsWith'",
+    "start": 12,
+    "end": 69
+  },
+  {
+    "rule": "external_roslyn:MSTEST0046",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+    "line": 37,
+    "msg": "Use 'Assert.Contains' instead of 'StringAssert.Contains'",
+    "start": 12,
+    "end": 46
+  },
+  {
+    "rule": "external_roslyn:MSTEST0037",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+    "line": 46,
+    "msg": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+    "start": 12,
+    "end": 52
+  },
+  {
+    "rule": "external_roslyn:MSTEST0037",
+    "sev": "INFO",
+    "file": "EImece/EImece.Tests/Helpers/MemoryCacheProviderTests.cs",
+    "line": 51,
+    "msg": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+    "start": 12,
+    "end": 39
+  },
+  {
+    "rule": "csharpsquid:S2925",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Tests/Helpers/MemoryCacheProviderTests.cs",
+    "line": 65,
+    "msg": "Do not use 'Thread.Sleep()' in a test.",
+    "start": 12,
+    "end": 29
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/AccountController.cs",
+    "line": 96,
+    "msg": "Reduce the number of Information logging calls within this code block from 4 to the 2 allowed.",
+    "start": 12,
+    "end": 103
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/AccountController.cs",
+    "line": 260,
+    "msg": "Reduce the number of Information logging calls within this code block from 4 to the 2 allowed.",
+    "start": 12,
+    "end": 98
+  },
+  {
+    "rule": "csharpsquid:S1481",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Helpers/EmailHelper/RazorEngineHelper.cs",
+    "line": 261,
+    "msg": "Remove the unused local variable 'templateKey'.",
+    "start": 19,
+    "end": 30
+  },
+  {
+    "rule": "csharpsquid:S3457",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/TemplateService.cs",
+    "line": 35,
+    "msg": "Remove this formatting call and simply use the input string.",
+    "start": 27,
+    "end": 40
+  },
+  {
+    "rule": "csharpsquid:S3457",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/TemplateService.cs",
+    "line": 97,
+    "msg": "Remove this formatting call and simply use the input string.",
+    "start": 46,
+    "end": 59
+  },
+  {
+    "rule": "csharpsquid:S3457",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/TemplateService.cs",
+    "line": 98,
+    "msg": "Remove this formatting call and simply use the input string.",
+    "start": 46,
+    "end": 59
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/CustomerService.cs",
+    "line": 101,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 31
+  },
+  {
+    "rule": "csharpsquid:S6966",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/CustomerService.cs",
+    "line": 120,
+    "msg": "Await GetUserFieldsAsync instead.",
+    "start": 12,
+    "end": 31
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 194,
+    "msg": "Reduce the number of Information logging calls within this code block from 8 to the 2 allowed.",
+    "start": 12,
+    "end": 114
+  },
+  {
+    "rule": "csharpsquid:S3928",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 199,
+    "msg": "The parameter name 'ShoppingCartSession' is not declared in the argument list.",
+    "start": 22,
+    "end": 101
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 336,
+    "msg": "Reduce the number of Information logging calls within this code block from 3 to the 2 allowed.",
+    "start": 12,
+    "end": 147
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 506,
+    "msg": "Reduce the number of Information logging calls within this code block from 6 to the 2 allowed.",
+    "start": 12,
+    "end": 120
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 550,
+    "msg": "Reduce the number of Information logging calls within this code block from 9 to the 2 allowed.",
+    "start": 12,
+    "end": 91
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 668,
+    "msg": "Reduce the number of Information logging calls within this code block from 3 to the 2 allowed.",
+    "start": 12,
+    "end": 170
+  },
+  {
+    "rule": "csharpsquid:S1135",
+    "sev": "INFO",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 689,
+    "msg": "Complete the task associated to this 'TODO' comment.",
+    "start": 58,
+    "end": 62
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ShoppingCartService.cs",
+    "line": 793,
+    "msg": "Reduce the number of Information logging calls within this code block from 3 to the 2 allowed.",
+    "start": 12,
+    "end": 118
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Customers/Controllers/HomeController.cs",
+    "line": 96,
+    "msg": "All 'Index' method overloads should be adjacent.",
+    "start": 40,
+    "end": 45
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 252,
+    "msg": "Reduce the number of Information logging calls within this code block from 3 to the 2 allowed.",
+    "start": 12,
+    "end": 72
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 291,
+    "msg": "Reduce the number of Information logging calls within this code block from 3 to the 2 allowed.",
+    "start": 12,
+    "end": 85
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 747,
+    "msg": "All 'BuyNow' method overloads should be adjacent.",
+    "start": 40,
+    "end": 46
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/PaymentController.cs",
+    "line": 775,
+    "msg": "Reduce the number of Information logging calls within this code block from 4 to the 2 allowed.",
+    "start": 12,
+    "end": 94
+  },
+  {
+    "rule": "csharpsquid:S1155",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/StoryCategoryRepository.cs",
+    "line": 44,
+    "msg": "Use '.Any()' to test whether this 'IEnumerable<EImece.Domain.Entities.Story>' is empty or not.",
+    "start": 113,
+    "end": 118
+  },
+  {
+    "rule": "csharpsquid:S2971",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/StoryCategoryRepository.cs",
+    "line": 44,
+    "msg": "Use 'Count' property here instead.",
+    "start": 113,
+    "end": 118
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Repositories/StoryRepository.cs",
+    "line": 206,
+    "msg": "Rename parameter 'pageIndex' to 'page' to match the interface declaration.",
+    "start": 76,
+    "end": 85
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/StoryRepository.cs",
+    "line": 219,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 38
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/StoryRepository.cs",
+    "line": 287,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 38
+  },
+  {
+    "rule": "csharpsquid:S1125",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/MenuService.cs",
+    "line": 75,
+    "msg": "Remove the unnecessary Boolean literal(s).",
+    "start": 99,
+    "end": 103
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductCategoryService.cs",
+    "line": 327,
+    "msg": "Rename parameter 'productCategoryId' to 'categoryId' to match the interface declaration.",
+    "start": 89,
+    "end": 106
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/StoryService.cs",
+    "line": 209,
+    "msg": "Rename parameter 'language' to 'currentLanguage' to match the interface declaration.",
+    "start": 85,
+    "end": 93
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/StoryService.cs",
+    "line": 336,
+    "msg": "Rename parameter 'lang' to 'currentLanguage' to match the interface declaration.",
+    "start": 121,
+    "end": 125
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/StoryService.cs",
+    "line": 467,
+    "msg": "Rename parameter 'excludedStoryId' to 'storyId' to match the interface declaration.",
+    "start": 91,
+    "end": 106
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/IRepositories/IProductRepository.cs",
+    "line": 17,
+    "msg": "All 'GetActiveProductsAsync' method overloads should be adjacent.",
+    "start": 37,
+    "end": 59
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/IRepositories/IProductTagRepository.cs",
+    "line": 26,
+    "msg": "All 'GetProductsByTagIdAsync' method overloads should be adjacent.",
+    "start": 40,
+    "end": 63
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/ProductRepository.cs",
+    "line": 60,
+    "msg": "All 'GetActiveProductsAsync' method overloads should be adjacent.",
+    "start": 50,
+    "end": 72
+  },
+  {
+    "rule": "csharpsquid:S6966",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/ProductRepository.cs",
+    "line": 659,
+    "msg": "Await NextResultAsync instead.",
+    "start": 16,
+    "end": 35
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Repositories/ProductTagRepository.cs",
+    "line": 97,
+    "msg": "All 'GetProductsByTagIdAsync' method overloads should be adjacent.",
+    "start": 53,
+    "end": 76
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/IServices/IProductService.cs",
+    "line": 68,
+    "msg": "All 'GetProductByTagIdAsync' method overloads should be adjacent.",
+    "start": 43,
+    "end": 65
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 999,
+    "msg": "All 'GetProductByTagIdAsync' method overloads should be adjacent.",
+    "start": 56,
+    "end": 78
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 1017,
+    "msg": "Rename parameter 'lang' to 'currentLanguage' to match the interface declaration.",
+    "start": 123,
+    "end": 127
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 1017,
+    "msg": "Rename parameter 'pageIndex' to 'page' to match the interface declaration.",
+    "start": 94,
+    "end": 103
+  },
+  {
+    "rule": "csharpsquid:S6664",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Controllers/ProductsController.cs",
+    "line": 55,
+    "msg": "Reduce the number of Information logging calls within this code block from 3 to the 2 allowed.",
+    "start": 12,
+    "end": 96
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Index.cshtml",
+    "line": 20,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 89
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Modern/Products/Index.cshtml",
+    "line": 20,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Products/Index.cshtml",
+    "line": 20,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/BaseContentRepository.cs",
+    "line": 85,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 38
+  },
+  {
+    "rule": "csharpsquid:S2139",
+    "sev": "MAJOR",
+    "file": "EImece/EImece.Domain/Repositories/ProductRepository.cs",
+    "line": 81,
+    "msg": "Either log this exception and handle it, or rethrow it with some contextual information.",
+    "start": 29,
+    "end": 38
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 177,
+    "msg": "Rename parameter 'language' to 'lang' to match the interface declaration.",
+    "start": 88,
+    "end": 96
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 177,
+    "msg": "Rename parameter 'page' to 'pageIndex' to match the interface declaration.",
+    "start": 78,
+    "end": 82
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/SettingService.cs",
+    "line": 87,
+    "msg": "All 'GetSettingObjectByKey' method overloads should be adjacent.",
+    "start": 23,
+    "end": 44
+  },
+  {
+    "rule": "csharpsquid:S4136",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/Services/SettingService.cs",
+    "line": 92,
+    "msg": "All 'GetSettingObjectByKeyAsync' method overloads should be adjacent.",
+    "start": 35,
+    "end": 61
+  },
+  {
+    "rule": "csharpsquid:S3376",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Filters/RobotsNoIndexFilter.cs",
+    "line": 9,
+    "msg": "Make this class name end with 'Attribute'.",
+    "start": 24,
+    "end": 43
+  },
+  {
+    "rule": "csharpsquid:S3993",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Filters/RobotsNoIndexFilter.cs",
+    "line": 9,
+    "msg": "Specify AttributeUsage on 'RobotsNoIndexFilter' to improve readability, even though it inherits it from its base type.",
+    "start": 24,
+    "end": 43
+  },
+  {
+    "rule": "csharpsquid:S3267",
+    "sev": "MINOR",
+    "file": "EImece/EImece.Domain/AppConfig.cs",
+    "line": 556,
+    "msg": "Loops should be simplified using the \"Where\" LINQ method",
+    "start": 33,
+    "end": 101
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Users/Edit.cshtml",
+    "line": 70,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 24,
+    "end": 62
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Users/EnableAuthenticator.cshtml",
+    "line": 56,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 24,
+    "end": 31
+  },
+  {
+    "rule": "Web:S5725",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Account/VerifyAuthenticator.cshtml",
+    "line": 16,
+    "msg": "Add integrity and crossorigin=\"anonymous\" attributes to this element to enforce integrity checks.",
+    "start": 4,
+    "end": 106
+  },
+  {
+    "rule": "Web:S5725",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Account/VerifyAuthenticator.cshtml",
+    "line": 17,
+    "msg": "Add integrity and crossorigin=\"anonymous\" attributes to this element to enforce integrity checks.",
+    "start": 4,
+    "end": 109
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Manage/EnableAuthenticator.cshtml",
+    "line": 32,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 12,
+    "end": 41
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Modern/Manage/EnableAuthenticator.cshtml",
+    "line": 32,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 12,
+    "end": 41
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Manage/EnableAuthenticator.cshtml",
+    "line": 32,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 12,
+    "end": 41
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/theme.css",
+    "line": 264,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 30
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_AdminEditFormToolbar.cshtml",
+    "line": 7,
+    "msg": "Use <img> instead of the presentation role to ensure accessibility across all devices.",
+    "start": 8,
+    "end": 47
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Shared/_AdminEditFormToolbar.cshtml",
+    "line": 17,
+    "msg": "Use <img> instead of the presentation role to ensure accessibility across all devices.",
+    "start": 8,
+    "end": 32
+  },
+  {
+    "rule": "javascript:S2486",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Scripts/adminEimece.js",
+    "line": 294,
+    "msg": "Handle this exception or don't catch it at all.",
+    "start": 10,
+    "end": 25
+  },
+  {
+    "rule": "csharpsquid:S927",
+    "sev": "CRITICAL",
+    "file": "EImece/EImece.Domain/Services/ProductService.cs",
+    "line": 73,
+    "msg": "Rename parameter 'categoryId' to 'id' to match the interface declaration.",
+    "start": 50,
+    "end": 60
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Products/Index.cshtml",
+    "line": 180,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <div> tag.",
+    "start": 12,
+    "end": 113
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Products/Index.cshtml",
+    "line": 180,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 12,
+    "end": 113
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Products/Index.cshtml",
+    "line": 202,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <div> tag.",
+    "start": 16,
+    "end": 94
+  },
+  {
+    "rule": "Web:S6848",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Products/Index.cshtml",
+    "line": 202,
+    "msg": "Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element.",
+    "start": 0,
+    "end": 94
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Products/Index.cshtml",
+    "line": 301,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 40,
+    "end": 47
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Products/Index.cshtml",
+    "line": 303,
+    "msg": "Associate a valid label to this input field.",
+    "start": 44,
+    "end": 143
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Areas/Admin/Views/Products/Index.cshtml",
+    "line": 307,
+    "msg": "Associate a valid label to this input field.",
+    "start": 44,
+    "end": 143
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 731,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 16,
+    "end": 148
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 731,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 16,
+    "end": 148
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/EditorTemplates/ProductComment.cshtml",
+    "line": 24,
+    "msg": "Use <html> instead of the document role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 73
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 2601,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 16
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 725,
+    "msg": "Use <progress> instead of the progressbar role to ensure accessibility across all devices.",
+    "start": 32,
+    "end": 193
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 914,
+    "msg": "Use <img> or <svg> instead of the img role to ensure accessibility across all devices.",
+    "start": 12,
+    "end": 94
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/DisplayTemplates/MainPageProductShort.cshtml",
+    "line": 25,
+    "msg": "Use <img> or <svg> instead of the img role to ensure accessibility across all devices.",
+    "start": 12,
+    "end": 94
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/ProductCategories/Category.cshtml",
+    "line": 246,
+    "msg": "Use <img> or <svg> instead of the img role to ensure accessibility across all devices.",
+    "start": 28,
+    "end": 92
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/SearchProducts.cshtml",
+    "line": 36,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 89
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 772,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 16
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_Navigation.cshtml",
+    "line": 55,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 8,
+    "end": 12
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_Navigation.cshtml",
+    "line": 68,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 8,
+    "end": 12
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 167,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 16
+  },
+  {
+    "rule": "css:S7924",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Content/designs/crizal/css/components.css",
+    "line": 824,
+    "msg": "Text does not meet the minimal contrast requirement with its background.",
+    "start": 4,
+    "end": 27
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Info/Index.cshtml",
+    "line": 25,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/BuyNow.cshtml",
+    "line": 33,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/BuyNow.cshtml",
+    "line": 209,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 16,
+    "end": 79
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/BuyNowPayment.cshtml",
+    "line": 22,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/CargoTracking.cshtml",
+    "line": 25,
+    "msg": "Associate a valid label to this input field.",
+    "start": 24,
+    "end": 160
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/CheckoutBillingDetails.cshtml",
+    "line": 16,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/CheckoutBillingDetails.cshtml",
+    "line": 177,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 20,
+    "end": 83
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/CheckoutPaymentOrderReview.cshtml",
+    "line": 16,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/PlaceOrder.cshtml",
+    "line": 23,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingCart.cshtml",
+    "line": 18,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 51,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 58,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 68,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 75,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 86,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 112,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 120,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 148,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccount.cshtml",
+    "line": 155,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/ShoppingWithoutAccountPayment.cshtml",
+    "line": 24,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Payment/_OrderSummary.cshtml",
+    "line": 87,
+    "msg": "Associate a valid label to this input field.",
+    "start": 20,
+    "end": 171
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/ProductCategories/Category.cshtml",
+    "line": 45,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/ProductCategories/Category.cshtml",
+    "line": 83,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 12,
+    "end": 159
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/ProductCategories/Category.cshtml",
+    "line": 83,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 12,
+    "end": 159
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 408,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 28,
+    "end": 137
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 408,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 28,
+    "end": 137
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 445,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 32,
+    "end": 168
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 445,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 32,
+    "end": 168
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 464,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 32,
+    "end": 154
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 464,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 32,
+    "end": 154
+  },
+  {
+    "rule": "Web:S1827",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 636,
+    "msg": "Remove this deprecated \"frameborder\" attribute.",
+    "start": 32,
+    "end": 56
+  },
+  {
+    "rule": "Web:S1827",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Detail.cshtml",
+    "line": 665,
+    "msg": "Remove this deprecated \"frameborder\" attribute.",
+    "start": 36,
+    "end": 60
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Products/Tag.cshtml",
+    "line": 24,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6851",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/DisplayTemplates/FileStorageThumbnails.cshtml",
+    "line": 22,
+    "msg": "Remove redundant word \"image\" from the \"alt\" attribute of your \"img\" tag.",
+    "start": 0,
+    "end": 118
+  },
+  {
+    "rule": "Web:ItemTagNotWithinContainerTagCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/DisplayTemplates/MainPageImage.cshtml",
+    "line": 12,
+    "msg": "Surround this <li> item tag by a <ul>, <ol> or <menu> container one.",
+    "start": 0,
+    "end": 71
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T1.cshtml",
+    "line": 23,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6851",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T1.cshtml",
+    "line": 45,
+    "msg": "Remove redundant word \"image\" from the \"alt\" attribute of your \"img\" tag.",
+    "start": 0,
+    "end": 89
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T2.cshtml",
+    "line": 23,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6851",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T2.cshtml",
+    "line": 45,
+    "msg": "Remove redundant word \"image\" from the \"alt\" attribute of your \"img\" tag.",
+    "start": 0,
+    "end": 89
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T3.cshtml",
+    "line": 24,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6851",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T3.cshtml",
+    "line": 63,
+    "msg": "Remove redundant word \"image\" from the \"alt\" attribute of your \"img\" tag.",
+    "start": 0,
+    "end": 85
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T4.cshtml",
+    "line": 24,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6851",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T4.cshtml",
+    "line": 46,
+    "msg": "Remove redundant word \"image\" from the \"alt\" attribute of your \"img\" tag.",
+    "start": 0,
+    "end": 89
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T5.cshtml",
+    "line": 24,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T6.cshtml",
+    "line": 25,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T7.cshtml",
+    "line": 22,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/PageThemes/PageTheme_T8.cshtml",
+    "line": 24,
+    "msg": "Use <section> instead of the region role to ensure accessibility across all devices.",
+    "start": 0,
+    "end": 70
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/ShoppingCartTemplates/_AddressReview.cshtml",
+    "line": 55,
+    "msg": "Associate a valid label to this input field.",
+    "start": 4,
+    "end": 84
+  },
+  {
+    "rule": "Web:InputWithoutLabelCheck",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_AddSubscriber.cshtml",
+    "line": 22,
+    "msg": "Add an \"id\" attribute to this input field and associate it with a label.",
+    "start": 8,
+    "end": 87
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_CarouselMainPageImages.cshtml",
+    "line": 29,
+    "msg": "Use <datalist> or <select> instead of the listbox role to ensure accessibility across all devices.",
+    "start": 4,
+    "end": 47
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_CarouselMainPageImages.cshtml",
+    "line": 45,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 4,
+    "end": 102
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_CarouselMainPageImages.cshtml",
+    "line": 45,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 4,
+    "end": 102
+  },
+  {
+    "rule": "Web:MouseEventWithoutKeyboardEquivalentCheck",
+    "sev": "MINOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_CarouselMainPageImages.cshtml",
+    "line": 49,
+    "msg": "Add a 'onKeyDown|onKeyUp' attribute to this <a> tag.",
+    "start": 4,
+    "end": 103
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_CarouselMainPageImages.cshtml",
+    "line": 49,
+    "msg": "Use <button> or <input> instead of the button role to ensure accessibility across all devices.",
+    "start": 4,
+    "end": 103
+  },
+  {
+    "rule": "Web:S5256",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/_Grid.cshtml",
+    "line": 12,
+    "msg": "Add \"<th>\" headers to this \"<table>\".",
+    "start": 8,
+    "end": 54
+  },
+  {
+    "rule": "Web:S6853",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/pGridCheckbox.cshtml",
+    "line": 18,
+    "msg": "A form label must be associated with a control and have accessible text.",
+    "start": 8,
+    "end": 54
+  },
+  {
+    "rule": "Web:S6819",
+    "sev": "MAJOR",
+    "file": "EImece/EImece/Views/Designs/Crizal/Shared/pGridOperations.cshtml",
+    "line": 63,
+    "msg": "Use <address> or <details> or <fieldset> or <optgroup> instead of the group role to ensure accessibility across all devices.",
+    "start": 20,
+    "end": 56
+  }
+]

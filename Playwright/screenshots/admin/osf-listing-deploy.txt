@@ -1,0 +1,4 @@
+views deployed
+DB IsProductPriceEnable=False
+DB IsProductPriceEnable=False
+apppool recycled

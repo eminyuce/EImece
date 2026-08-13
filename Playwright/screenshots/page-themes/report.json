@@ -1,0 +1,76 @@
+{
+  "when": "2026-08-13T05:39:28.670Z",
+  "parentId": "6310",
+  "results": [
+    {
+      "name": "PT Dummy T1",
+      "value": "T1",
+      "id": "6311",
+      "url": "/pages/detail/pt-dummy-t1-1b1b2d6g/",
+      "status": 200,
+      "screenshot": "C:\\Users\\eminy\\source\\repos\\EImece\\Playwright\\screenshots\\page-themes\\T1.png",
+      "ok": true,
+      "hasThemeClass": 1
+    },
+    {
+      "name": "PT Dummy T2",
+      "value": "T2",
+      "id": "6312",
+      "url": "/pages/detail/pt-dummy-t2-8c1b2d6g/",
+      "status": 200,
+      "screenshot": "C:\\Users\\eminy\\source\\repos\\EImece\\Playwright\\screenshots\\page-themes\\T2.png",
+      "ok": true,
+      "hasThemeClass": 1
+    },
+    {
+      "name": "PT Dummy T3",
+      "value": "T3",
+      "id": "6313",
+      "url": "/pages/detail/pt-dummy-t3-2d1b2d6g/",
+      "status": 200,
+      "screenshot": "C:\\Users\\eminy\\source\\repos\\EImece\\Playwright\\screenshots\\page-themes\\T3.png",
+      "ok": true,
+      "hasThemeClass": 1
+    },
+    {
+      "name": "PT Dummy T4",
+      "value": "T4",
+      "id": "6314",
+      "url": "/pages/detail/pt-dummy-t4-7e1b2d6g/",
+      "status": 200,
+      "screenshot": "C:\\Users\\eminy\\source\\repos\\EImece\\Playwright\\screenshots\\page-themes\\T4.png",
+      "ok": true,
+      "hasThemeClass": 1
+    },
+    {
+      "name": "PT Dummy T5",
+      "value": "T5",
+      "id": "6315",
+      "url": "/pages/detail/pt-dummy-t5-3f1b2d6g/",
+      "status": 200,
+      "screenshot": "C:\\Users\\eminy\\source\\repos\\EImece\\Playwright\\screenshots\\page-themes\\T5.png",
+      "ok": true,
+      "hasThemeClass": 1
+    },
+    {
+      "name": "PT Dummy T6",
+      "value": "T6",
+      "id": "6316",
+      "url": "/pages/detail/pt-dummy-t6-6g1b2d6g/",
+      "status": 200,
+      "screenshot": "C:\\Users\\eminy\\source\\repos\\EImece\\Playwright\\screenshots\\page-themes\\T6.png",
+      "ok": true,
+      "hasThemeClass": 1
+    },
+    {
+      "name": "PT Dummy T7",
+      "value": "T7",
+      "id": "6317",
+      "url": "/pages/detail/pt-dummy-t7-4h1b2d6g/",
+      "status": 200,
+      "screenshot": "C:\\Users\\eminy\\source\\repos\\EImece\\Playwright\\screenshots\\page-themes\\T7.png",
+      "ok": true,
+      "hasThemeClass": 1
+    }
+  ]
+}

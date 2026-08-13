@@ -1,0 +1,2479 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "5.9.0.0",
+        "fileVersion": "5.9.0-1.26357.3 (35d9211b841e7613c1d2f8f5af6d628ace696c4c)",
+        "semanticVersion": "5.9.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "MSTEST0001",
+          "level": "note",
+          "message": "Explicitly enable or disable tests parallelization",
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ImageUtilitiesTests.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 21,
+                  "endLine": 16,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/EfSqlLoggerTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 21,
+                  "endLine": 31,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/EfSqlLoggerTests.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 21,
+                  "endLine": 38,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0046",
+          "level": "note",
+          "message": "Use 'Assert.Contains' instead of 'StringAssert.Contains'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 13,
+                  "endLine": 15,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ProperAssertMethodNameKey": "Contains"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 17,
+                  "endLine": 23,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0046",
+          "level": "note",
+          "message": "Use 'Assert.Contains' instead of 'StringAssert.Contains'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 13,
+                  "endLine": 16,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ProperAssertMethodNameKey": "Contains"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0046",
+          "level": "note",
+          "message": "Use 'Assert.Contains' instead of 'StringAssert.Contains'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 17,
+                  "endLine": 23,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ProperAssertMethodNameKey": "Contains"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0046",
+          "level": "note",
+          "message": "Use 'Assert.StartsWith' instead of 'StringAssert.StartsWith'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 13,
+                  "endLine": 15,
+                  "endColumn": 70
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ProperAssertMethodNameKey": "StartsWith"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/EfSqlLoggerTests.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 21,
+                  "endLine": 45,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ImageUtilitiesTests.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 21,
+                  "endLine": 24,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0032",
+          "level": "warning",
+          "message": "Review or remove the assertion as its condition is known to be always true",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 13,
+                  "endLine": 54,
+                  "endColumn": 109
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0032",
+          "level": "warning",
+          "message": "Review or remove the assertion as its condition is known to be always true",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 55,
+                  "startColumn": 13,
+                  "endLine": 55,
+                  "endColumn": 109
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0046",
+          "level": "note",
+          "message": "Use 'Assert.StartsWith' instead of 'StringAssert.StartsWith'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 13,
+                  "endLine": 36,
+                  "endColumn": 70
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ProperAssertMethodNameKey": "StartsWith"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0046",
+          "level": "note",
+          "message": "Use 'Assert.Contains' instead of 'StringAssert.Contains'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 13,
+                  "endLine": 37,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ProperAssertMethodNameKey": "Contains"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 13,
+                  "endLine": 13,
+                  "endColumn": 106
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 28,
+                  "endLine": 13,
+                  "endColumn": 59
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 44,
+                  "endLine": 13,
+                  "endColumn": 58
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 28,
+                  "endLine": 13,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 13,
+                  "endLine": 14,
+                  "endColumn": 97
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 28,
+                  "endLine": 14,
+                  "endColumn": 53
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 44,
+                  "endLine": 14,
+                  "endColumn": 52
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 28,
+                  "endLine": 14,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/EfSqlLoggerTests.cs",
+                "region": {
+                  "startLine": 53,
+                  "startColumn": 21,
+                  "endLine": 53,
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 13,
+                  "endLine": 34,
+                  "endColumn": 64
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 28,
+                  "endLine": 34,
+                  "endColumn": 63
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 44,
+                  "endLine": 34,
+                  "endColumn": 62
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 28,
+                  "endLine": 34,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.Contains' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 13,
+                  "endLine": 35,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 27,
+                  "endLine": 35,
+                  "endColumn": 65
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 43,
+                  "endLine": 35,
+                  "endColumn": 64
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 27,
+                  "endLine": 35,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "Contains"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/EfSqlLoggerTests.cs",
+                "region": {
+                  "startLine": 60,
+                  "startColumn": 21,
+                  "endLine": 60,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0068",
+          "level": "note",
+          "message": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ProductSortHelperTests.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 13,
+                  "endLine": 29,
+                  "endColumn": 83
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "FixKindKey": "Simple",
+              "ProperAssertMethodNameKey": "AreSequenceEqual"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 13,
+                  "endLine": 23,
+                  "endColumn": 103
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 28,
+                  "endLine": 23,
+                  "endColumn": 67
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 44,
+                  "endLine": 23,
+                  "endColumn": 66
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 28,
+                  "endLine": 23,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 13,
+                  "endLine": 46,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 28,
+                  "endLine": 46,
+                  "endColumn": 52
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 48,
+                  "endLine": 46,
+                  "endColumn": 51
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/CacheKeysTests.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 28,
+                  "endLine": 46,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 13,
+                  "endLine": 42,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 28,
+                  "endLine": 42,
+                  "endColumn": 54
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 44,
+                  "endLine": 42,
+                  "endColumn": 53
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 28,
+                  "endLine": 42,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.Contains' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 13,
+                  "endLine": 43,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 27,
+                  "endLine": 43,
+                  "endColumn": 58
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 43,
+                  "endLine": 43,
+                  "endColumn": 57
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/SensitiveDataMaskerTests.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 27,
+                  "endLine": 43,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "Contains"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0068",
+          "level": "note",
+          "message": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 13,
+                  "endLine": 57,
+                  "endColumn": 74
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "FixKindKey": "Simple",
+              "ProperAssertMethodNameKey": "AreSequenceEqual"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/ParallelPocessingTest.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 21,
+                  "endLine": 19,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 79,
+                  "startColumn": 21,
+                  "endLine": 79,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2925",
+          "level": "warning",
+          "message": "Do not use 'Thread.Sleep()' in a test.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/ParallelPocessingTest.cs",
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 13,
+                  "endLine": 57,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2925",
+          "level": "warning",
+          "message": "Do not use 'Thread.Sleep()' in a test.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/MemoryCacheProviderTests.cs",
+                "region": {
+                  "startLine": 65,
+                  "startColumn": 13,
+                  "endLine": 65,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 17,
+                  "endLine": 96,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 97,
+                  "startColumn": 17,
+                  "endLine": 97,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 17,
+                  "endLine": 98,
+                  "endColumn": 64
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0068",
+          "level": "note",
+          "message": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 13,
+                  "endLine": 72,
+                  "endColumn": 77
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "FixKindKey": "Simple",
+              "ProperAssertMethodNameKey": "AreSequenceEqual"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ImageUtilitiesTests.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 21,
+                  "endLine": 52,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 13,
+                  "endLine": 19,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 27,
+                  "endLine": 19,
+                  "endColumn": 39
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 38,
+                  "endLine": 19,
+                  "endColumn": 39
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 27,
+                  "endLine": 19,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "IsGreaterThanOrEqualTo"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 13,
+                  "endLine": 31,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 27,
+                  "endLine": 31,
+                  "endColumn": 39
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 38,
+                  "endLine": 31,
+                  "endColumn": 39
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationCacheClearerTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 27,
+                  "endLine": 31,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "IsGreaterThanOrEqualTo"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/ParallelPocessingTest.cs",
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 21,
+                  "endLine": 67,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2925",
+          "level": "warning",
+          "message": "Do not use 'Thread.Sleep()' in a test.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/ParallelPocessingTest.cs",
+                "region": {
+                  "startLine": 87,
+                  "startColumn": 17,
+                  "endLine": 87,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2925",
+          "level": "warning",
+          "message": "Do not use 'Thread.Sleep()' in a test.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/ParallelPocessingTest.cs",
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 17,
+                  "endLine": 96,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0068",
+          "level": "note",
+          "message": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+                "region": {
+                  "startLine": 87,
+                  "startColumn": 13,
+                  "endLine": 87,
+                  "endColumn": 77
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "FixKindKey": "Simple",
+              "ProperAssertMethodNameKey": "AreSequenceEqual"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 13,
+                  "endLine": 48,
+                  "endColumn": 96
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 27,
+                  "endLine": 48,
+                  "endColumn": 95
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 94,
+                  "endLine": 48,
+                  "endColumn": 95
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ConnectionStringProviderTests.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 27,
+                  "endLine": 48,
+                  "endColumn": 90
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "IsGreaterThanOrEqualTo"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 120,
+                  "startColumn": 17,
+                  "endLine": 120,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 121,
+                  "startColumn": 17,
+                  "endLine": 121,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 122,
+                  "startColumn": 17,
+                  "endLine": 122,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 95,
+                  "startColumn": 21,
+                  "endLine": 95,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 110,
+                  "startColumn": 21,
+                  "endLine": 110,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 144,
+                  "startColumn": 17,
+                  "endLine": 144,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 145,
+                  "startColumn": 17,
+                  "endLine": 145,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 13,
+                  "endLine": 98,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 27,
+                  "endLine": 98,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 53,
+                  "endLine": 98,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 27,
+                  "endLine": 98,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "IsGreaterThanOrEqualTo"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/ParallelPocessingTest.cs",
+                "region": {
+                  "startLine": 104,
+                  "startColumn": 21,
+                  "endLine": 104,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0068",
+          "level": "note",
+          "message": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+                "region": {
+                  "startLine": 117,
+                  "startColumn": 13,
+                  "endLine": 117,
+                  "endColumn": 77
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "FixKindKey": "Simple",
+              "ProperAssertMethodNameKey": "AreSequenceEqual"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0068",
+          "level": "note",
+          "message": "Use 'Assert.AreSequenceEqual' instead of 'CollectionAssert.AreEqual'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ProductCategorySortingTests.cs",
+                "region": {
+                  "startLine": 102,
+                  "startColumn": 13,
+                  "endLine": 102,
+                  "endColumn": 77
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "FixKindKey": "Simple",
+              "ProperAssertMethodNameKey": "AreSequenceEqual"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsGreaterThan' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 282,
+                  "startColumn": 13,
+                  "endLine": 282,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 282,
+                  "startColumn": 27,
+                  "endLine": 282,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 282,
+                  "startColumn": 55,
+                  "endLine": 282,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 282,
+                  "startColumn": 27,
+                  "endLine": 282,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "IsGreaterThan"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 287,
+                  "startColumn": 21,
+                  "endLine": 287,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 276,
+                  "startColumn": 21,
+                  "endLine": 276,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0058",
+          "level": "note",
+          "message": "Do not use asserts in catch blocks because they may not fail the test if no exception is thrown",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 223,
+                  "startColumn": 17,
+                  "endLine": 223,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 318,
+                  "startColumn": 21,
+                  "endLine": 318,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsGreaterThanOrEqualTo' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/MemoryCacheProviderTests.cs",
+                "region": {
+                  "startLine": 51,
+                  "startColumn": 13,
+                  "endLine": 51,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/MemoryCacheProviderTests.cs",
+                "region": {
+                  "startLine": 51,
+                  "startColumn": 27,
+                  "endLine": 51,
+                  "endColumn": 39
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/MemoryCacheProviderTests.cs",
+                "region": {
+                  "startLine": 51,
+                  "startColumn": 38,
+                  "endLine": 51,
+                  "endColumn": 39
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/MemoryCacheProviderTests.cs",
+                "region": {
+                  "startLine": 51,
+                  "startColumn": 27,
+                  "endLine": 51,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "IsGreaterThanOrEqualTo"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 345,
+                  "startColumn": 21,
+                  "endLine": 345,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 393,
+                  "startColumn": 21,
+                  "endLine": 393,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 161,
+                  "startColumn": 21,
+                  "endLine": 161,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 361,
+                  "startColumn": 21,
+                  "endLine": 361,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 293,
+                  "startColumn": 21,
+                  "endLine": 293,
+                  "endColumn": 45
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 432,
+                  "startColumn": 21,
+                  "endLine": 432,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 471,
+                  "startColumn": 21,
+                  "endLine": 471,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 13,
+                  "endLine": 31,
+                  "endColumn": 86
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 28,
+                  "endLine": 31,
+                  "endColumn": 85
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 70,
+                  "endLine": 31,
+                  "endColumn": 84
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 28,
+                  "endLine": 31,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.DoesNotContain' instead of 'Assert.IsFalse'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 13,
+                  "endLine": 32,
+                  "endColumn": 83
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 28,
+                  "endLine": 32,
+                  "endColumn": 82
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 70,
+                  "endLine": 32,
+                  "endColumn": 81
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Helpers/ApplicationMetricsTests.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 28,
+                  "endLine": 32,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeAddArgument",
+              "ProperAssertMethodNameKey": "DoesNotContain"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 439,
+                  "startColumn": 21,
+                  "endLine": 439,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 547,
+                  "startColumn": 21,
+                  "endLine": 547,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 253,
+                  "startColumn": 21,
+                  "endLine": 253,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 266,
+                  "startColumn": 21,
+                  "endLine": 266,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 503,
+                  "startColumn": 21,
+                  "endLine": 503,
+                  "endColumn": 45
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 584,
+                  "startColumn": 21,
+                  "endLine": 584,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 410,
+                  "startColumn": 21,
+                  "endLine": 410,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsNotEmpty' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 201,
+                  "startColumn": 13,
+                  "endLine": 201,
+                  "endColumn": 61
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 201,
+                  "startColumn": 27,
+                  "endLine": 201,
+                  "endColumn": 60
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 201,
+                  "startColumn": 27,
+                  "endLine": 201,
+                  "endColumn": 50
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeSimple",
+              "ProperAssertMethodNameKey": "IsNotEmpty"
+            }
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Controllers/HomeControllerTest.cs",
+                "region": {
+                  "startLine": 483,
+                  "startColumn": 21,
+                  "endLine": 483,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "MSTEST0037",
+          "level": "note",
+          "message": "Use 'Assert.IsNotEmpty' instead of 'Assert.IsTrue'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 298,
+                  "startColumn": 13,
+                  "endLine": 298,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 298,
+                  "startColumn": 27,
+                  "endLine": 298,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/eminy/source/repos/EImece/EImece/EImece.Tests/Infrastructure/DesignSystemTests.cs",
+                "region": {
+                  "startLine": 298,
+                  "startColumn": 27,
+                  "endLine": 298,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "CodeFixModeKey": "CodeFixModeSimple",
+              "ProperAssertMethodNameKey": "IsNotEmpty"
+            }
+          }
+        }
+      ],
+      "rules": {
+        "MSTEST0001": {
+          "id": "MSTEST0001",
+          "shortDescription": "Explicitly enable or disable tests parallelization",
+          "fullDescription": "By default, MSTest runs tests within the same assembly sequentially, which can lead to severe performance limitations. It is recommended to enable assembly attribute '[Parallelize]' to run tests in parallel, or if the assembly is known to not be parallelizable, to use explicitly the assembly level attribute '[DoNotParallelize]'.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/core/testing/mstest-analyzers/mstest0001",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true
+          }
+        },
+        "MSTEST0032": {
+          "id": "MSTEST0032",
+          "shortDescription": "Assertion condition is always true",
+          "defaultLevel": "warning",
+          "helpUri": "https://learn.microsoft.com/dotnet/core/testing/mstest-analyzers/mstest0032",
+          "properties": {
+            "category": "Design",
+            "isEnabledByDefault": true
+          }
+        },
+        "MSTEST0037": {
+          "id": "MSTEST0037",
+          "shortDescription": "Use proper 'Assert' methods",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/core/testing/mstest-analyzers/mstest0037",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true
+          }
+        },
+        "MSTEST0046": {
+          "id": "MSTEST0046",
+          "shortDescription": "Use 'Assert' instead of 'StringAssert'",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/core/testing/mstest-analyzers/mstest0046",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true
+          }
+        },
+        "MSTEST0058": {
+          "id": "MSTEST0058",
+          "shortDescription": "Do not use asserts in catch blocks",
+          "fullDescription": "Using asserts in catch blocks is problematic because the test will pass even if no exception is thrown and the catch block is never executed. Use 'Assert.Throws', 'Assert.ThrowsExactly', 'Assert.ThrowsAsync' or 'Assert.ThrowsExactlyAsync' to verify that an exception is thrown, and then make additional assertions on the caught exception without using the try-catch block. The rule also flags 'throw new AssertFailedException(...)' and 'throw new AssertInconclusiveException(...)' (the desugared forms of 'Assert.Fail' and 'Assert.Inconclusive'). 'Assert.Inconclusive' (and 'throw new AssertInconclusiveException(...)') is exempt when used inside a filtered catch ('catch (...) when (...)'), because demoting a caught failure to an Inconclusive outcome is the only use case that cannot be expressed without a catch block. For other intentional bypasses (for example, attaching a runtime-built message to the failure), suppress the diagnostic with '#pragma warning disable MSTEST0058'.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/core/testing/mstest-analyzers/mstest0058",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true
+          }
+        },
+        "MSTEST0068": {
+          "id": "MSTEST0068",
+          "shortDescription": "Use 'Assert' instead of 'CollectionAssert'",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/core/testing/mstest-analyzers/mstest0068",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true
+          }
+        },
+        "S2699": {
+          "id": "S2699",
+          "shortDescription": "Tests should include assertions",
+          "fullDescription": "The rule targets test methods that lack an assertion and consist solely of an action and, optionally, a setup.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Blocker Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2925": {
+          "id": "S2925",
+          "shortDescription": "\"Thread.Sleep\" should not be used in tests",
+          "fullDescription": "Using Thread.Sleep in a test might introduce unpredictable and inconsistent results depending on the environment. Furthermore, it will block the thread, which means the system resources are not being fully used.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "summary": {
+    "totalIssues": 12,
+    "critical": 0,
+    "high": 7,
+    "medium": 4,
+    "low": 1,
+    "testedAreas": [
+      "Frontend/Customer pages (desktop + mobile)",
+      "Admin panel pages and grids",
+      "Authentication (customer login/register, admin bypass)",
+      "Shopping cart, checkout, billing",
+      "Payment (Iyzico PlaceOrder)",
+      "Admin AJAX endpoints",
+      "File uploads / media library",
+      "Reports and CSV/Excel exports",
+      "Error pages",
+      "Sitemap / SEO URLs",
+      "Application logs (NLog files + AppLogs table)"
+    ]
+  },
+  "issues": [
+    {
+      "id": "BUG-001",
+      "severity": "High",
+      "area": "Frontend",
+      "page": "/sitemap.xml",
+      "title": "Sitemap advertises conventional MVC URLs that 404",
+      "description": "SiteMapService builds category URLs via GetDetailPageUrl after ConfigureAwait(false), so HttpContext is often null. BuildDetailRelativePathWithoutHttpContext has no mappings for ProductCategories/Category or Stories/Categories, so sitemap emits /productcategories/category/{slug} and /stories/categories/{slug} instead of canonical /c/pc/{slug}/ and /s/sc/{slug}/. 71 of 300 sitemap loc entries return HTTP 404. Canonical equivalents return 200. Search engines will index dead URLs.",
+      "stepsToReproduce": [
+        "GET http://localhost:81/sitemap.xml",
+        "Open a product-category loc such as http://localhost:81/productcategories/category/elektronik-7e7e4h1b",
+        "Open the canonical URL http://localhost:81/c/pc/elektronik-7e7e4h1b/"
+      ],
+      "expected": "Sitemap loc values are live canonical SEO routes (/c/pc/, /p/, /s/sc/, /s/, /i/).",
+      "actual": "71 sitemap URLs 404. Samples: /productcategories/category/elektronik-7e7e4h1b, /stories/categories/stil-rehberi-4h4h (canonical /s/sc/stil-rehberi-4h4h/ is 200).",
+      "device": "Both",
+      "screenshotOrLog": "http://localhost:81/productcategories/category/elektronik-7e7e4h1b",
+      "suggestedFix": "In EntityExtension.BuildDetailRelativePathWithoutHttpContext add: ProductCategories/Category → /c/pc/{seoId}, Stories/Categories → /s/sc/{seoId}, Products/Tag → /p/t/{seoId}, Stories/Tag → /s/t/{seoId}. Prefer Url.Action with attribute routes when HttpContext exists. After deploy, clear output cache and regenerate sitemap."
+    },
+    {
+      "id": "BUG-002",
+      "severity": "Medium",
+      "area": "Frontend",
+      "page": "/productcategories/category/{id}",
+      "title": "Legacy MVC category URLs 404 instead of 301 to /c/pc/",
+      "description": "ProductCategoriesController.Category is attribute-routed at /c/pc/{id}. Conventional /productcategories/category/{id} is not registered and has no legacy redirect (unlike /c/{slug} CategoryLegacy and /s/categories/{id} StoriesCategoriesLegacy).",
+      "stepsToReproduce": [
+        "Open http://localhost:81/productcategories/category/elektronik-7e7e4h1b",
+        "Open http://localhost:81/c/pc/elektronik-7e7e4h1b/"
+      ],
+      "expected": "HTTP 301 to /c/pc/{seo-hash}/",
+      "actual": "HTTP 404 vs HTTP 200 on canonical",
+      "device": "Both",
+      "suggestedFix": "Add a conventional or attribute legacy action that 301s /productcategories/category/{id} → /c/pc/{id}/, and /stories/categories/{id} → /s/sc/{id}/ if not already covered by StorycategoriesLegacy."
+    },
+    {
+      "id": "BUG-003",
+      "severity": "High",
+      "area": "Frontend",
+      "page": "/images/logo.jpg",
+      "title": "Site logo returns HTTP 404 on every storefront page",
+      "description": "Header uses <img id=\"logo\" src=\"/images/logo.jpg\">. ImagesController.Logo looks up Settings.WebSiteLogo (value logo-11212_1856486114.png) under ~/media/images/. That file does not exist on disk. The action returns 404 with no fallback default image, so the header shows a broken image on desktop and mobile.",
+      "stepsToReproduce": [
+        "GET http://localhost:81/images/logo.jpg",
+        "Open http://localhost:81/ and inspect the header logo"
+      ],
+      "expected": "JPEG 200 of the configured logo, or a bundled default logo",
+      "actual": "HTTP 404, Content-Length 0. File C:\\inetpub\\wwwroot\\Eimece\\media\\images\\logo-11212_1856486114.png is missing.",
+      "device": "Both",
+      "screenshotOrLog": "Playwright MCP home-desktop.png / home-mobile.png (broken header image)",
+      "suggestedFix": "Re-upload the logo in Admin Settings (WebSiteLogo) so the file exists under media/images. In ImagesController.Logo, if the setting/file is missing, serve a default Content image instead of 404. Do not OutputCache a 404 (already NoCache on miss)."
+    },
+    {
+      "id": "BUG-004",
+      "severity": "High",
+      "area": "Reports",
+      "page": "/admin/report/productsummary/",
+      "title": "Product Summary, Price Analysis, and Product Inventory reports return HTTP 500",
+      "description": "GET /admin/report/productsummary/, /priceanalysis/, and /productinventory/ all return IIS 500.0. ReportService passes optional null filters through DatabaseUtility.GetSqlParameter, which sets SqlParameter.Value = value without converting null to DBNull.Value. ADO.NET then fails when executing GetProductSummaryReport / GetPriceAnalysisReport / GetProductInventoryReport. The same SPs succeed in SSMS with NULL parameters. ProductInventory CSV export also 500s.",
+      "stepsToReproduce": [
+        "With admin auth (BypassAdminAuth), open /admin/report/productsummary/",
+        "Open /admin/report/priceanalysis/",
+        "Open /admin/report/productinventory/",
+        "GET /admin/report/export?reportKey=ProductInventory&format=csv"
+      ],
+      "expected": "Report HTML 200 (empty-state or data) and CSV download",
+      "actual": "HTTP 500.0 Internal Server Error on all three pages and ProductInventory export",
+      "device": "Desktop",
+      "screenshotOrLog": "Playwright/screenshots/prod-qa/report-_admin_report_productsummary_.png",
+      "suggestedFix": "In DatabaseUtility.GetSqlParameter, use t.Value = value ?? DBNull.Value. Prefix ProductInventory params with @ (SP expects @State, @IsCampaign, @MainPage). Use SqlDbType.Money for GetPriceAnalysisReport @MinPrice/@MaxPrice. Catch should return a friendly empty report view, not a raw 500."
+    },
+    {
+      "id": "BUG-005",
+      "severity": "High",
+      "area": "Reports",
+      "page": "/admin/report/export?reportKey=FinancialReport&format=csv&startDate=2026-01-01&endDate=2026-12-31",
+      "title": "FinancialReport CSV export returns HTTP 500",
+      "description": "sp_GetFinancialReport succeeds in SQL for 2026-01-01..2026-12-31 (returns data). The MVC export endpoint still returns 500, so the failure is in DownloadReportCsv/DownloadReportExcel after LoadReportDataForExportAsync (likely DataSet multi-table handling or ExcelHelper). The same URL with Turkish dates (01.01.2026) returns 400 (model binder does not parse dd.MM.yyyy into ReportExportFilter.StartDate/EndDate).",
+      "stepsToReproduce": [
+        "GET /admin/report/export?reportKey=FinancialReport&format=csv&startDate=2026-01-01&endDate=2026-12-31",
+        "GET the same URL with startDate=01.01.2026&endDate=31.12.2026"
+      ],
+      "expected": "CSV 200 download; date query-string should accept the format the UI posts",
+      "actual": "ISO dates → HTTP 500; TR dates → HTTP 400 missing filters",
+      "device": "Desktop",
+      "suggestedFix": "Fix DataSet→CSV export (null TableName, multiple result sets, DataTable.Load vs NextResult). Bind ReportExportFilter dates with a culture-invariant parser (yyyy-MM-dd) matching _ReportExportButtons. Do not 500 on export exceptions; return 400 with the exception logged."
+    },
+    {
+      "id": "BUG-006",
+      "severity": "High",
+      "area": "Payment",
+      "page": "/Payment/PlaceOrder",
+      "title": "Iyzico checkout cannot complete because API keys are empty",
+      "description": "IIS web.config has PaymentProvider=Iyzico, IyzicoBaseUrl=sandbox, but IyzicoApiKey and IyzicoSecretKey are empty. Guest add-to-cart → register → billing → PlaceOrder succeeds without exception, then the page shows the empty-form warning instead of the sandbox iframe. Orders cannot be paid on this environment.",
+      "stepsToReproduce": [
+        "Add an in-stock product (State=ProductInStock), e.g. /p/bebek-bakim/mininest-bebek-bakim-seti-5li-140-4h1b7e5i4h1b/",
+        "Proceed to checkout, register, fill billing, reach PlaceOrder"
+      ],
+      "expected": "Iyzico sandbox checkout form (iframe) when PaymentProvider=Iyzico",
+      "actual": "PlaceOrder renders without iframe: 'iyzico form empty — set IyzicoApiKey/IyzicoSecretKey (sandbox) on IIS'",
+      "device": "Both",
+      "screenshotOrLog": "Playwright/screenshots/prod-qa/placeorder.png",
+      "suggestedFix": "Set sandbox IyzicoApiKey/IyzicoSecretKey in IIS (or env vars). Keep the blocking warning, but also surface it in Admin Dashboard when keys are empty so operators do not discover this only at PlaceOrder."
+    },
+    {
+      "id": "BUG-007",
+      "severity": "High",
+      "area": "Cart",
+      "page": "/",
+      "title": "Homepage featured products are out of stock (no Add to Cart)",
+      "description": "Home hero/featured SKUs such as Nordline Wireless Bluetooth Kulaklık Pro are shown with price but ProductState is not ProductInStock. Product detail shows 'Ürün Stokta Yok' and omits #AddToCart. Only 15 of ~150 products are ProductInStock; many listing/home cards still promote AwaitingRestock/OutOfStock items. Guests cannot start checkout from the primary merchandising surface. A previously used SEO URL /p/ayakkabi/fitlife-unisex-kosu-ayakkabisi-airflex-9a6g9a5i4h1b/ now 404s.",
+      "stepsToReproduce": [
+        "Open http://localhost:81/",
+        "Click a featured product (e.g. Nordline Wireless Bluetooth Kulaklık Pro)",
+        "Observe no Sepete Ekle button"
+      ],
+      "expected": "Featured/home products are buyable, or OOS items are labeled and excluded from 'add to cart' carousels",
+      "actual": "Detail page: 'Ürün Stokta Yok', no #AddToCart. In-stock SKUs (State=ProductInStock) still add to cart correctly when opened directly.",
+      "device": "Both",
+      "suggestedFix": "Filter home/main-page product queries to ProductState.ProductInStock (IsBuyableState). Show an OOS badge on cards instead of a buy CTA. Fix or 301 stale product SEO URLs still linked from tests/emails."
+    },
+    {
+      "id": "BUG-008",
+      "severity": "Medium",
+      "area": "Frontend",
+      "page": "/",
+      "title": "Header phone link is an invalid tel: URI",
+      "description": "_WebSiteAddressInfo.cshtml sets href='tel:{WebSiteCompanyPhoneAndLocation}'. The setting value is a combined string like '+90 216 555 01 23 | İstanbul', producing tel:+90 216 555 01 23 | İstanbul which mobile dialers reject.",
+      "stepsToReproduce": [
+        "Open http://localhost:81/",
+        "Inspect the top-bar phone link",
+        "Tap it on a phone"
+      ],
+      "expected": "tel:+902165550123 (digits only)",
+      "actual": "href=\"tel:+90 216 555 01 23 | İstanbul\"",
+      "device": "Both",
+      "suggestedFix": "Store phone and location separately, or strip non-dialable characters when building the tel: href. Keep the display text as-is."
+    },
+    {
+      "id": "BUG-009",
+      "severity": "Medium",
+      "area": "Other",
+      "page": "/",
+      "title": "Duplicate X-Frame-Options: SAMEORIGIN response header",
+      "description": "Every response sends X-Frame-Options twice. web.config customHeaders adds it, and SecurityHeadersHttpModule.OnPreSendRequestHeaders sets it again. Duplicate security headers can confuse proxies and fail some security scanners.",
+      "stepsToReproduce": [
+        "curl -sI http://localhost:81/ | findstr X-Frame"
+      ],
+      "expected": "A single X-Frame-Options: SAMEORIGIN",
+      "actual": "Two identical X-Frame-Options headers",
+      "device": "Both",
+      "suggestedFix": "Remove the header from web.config customHeaders and keep SecurityHeadersHttpModule (or vice versa). In the module, Remove then Add to avoid duplicates."
+    },
+    {
+      "id": "BUG-010",
+      "severity": "Medium",
+      "area": "Other",
+      "page": "C:\\inetpub\\wwwroot\\Eimece\\media\\logs",
+      "title": "NLog file target writes nothing; AppLogs table is synthetic seed data",
+      "description": "NLog.config fileName is ${basedir}/media/logs/EImeceLog.log but media/logs contains only Web.config (no .log/.json). The AppLogs SQL table has exactly 20 rows of each of 5 repeating messages (Fatal payment timeout, Error payment validation, Warn slow ProductRepository, Info login, Debug cache) at 1-minute offsets — not traces from this QA run. Report 500s and logo 404s did not appear as new ERROR rows, so operators cannot debug from Admin AppLogs.",
+      "stepsToReproduce": [
+        "Trigger /admin/report/productsummary/ (500)",
+        "List C:\\inetpub\\wwwroot\\Eimece\\media\\logs",
+        "Open /admin/applogs/?eventLevel=ERROR"
+      ],
+      "expected": "EImeceLog.log/json updated; AppLogs shows the real exception",
+      "actual": "No log files. AppLogs still only the 100 seed rows.",
+      "device": "Both",
+      "suggestedFix": "Grant the IIS app-pool identity Modify on media/logs. Confirm ${basedir} is the site root. Enable NLog internalLogFile temporarily. Ensure minLevel includes Error for the database target. Stop or flag demo seed rows in AppLogs."
+    },
+    {
+      "id": "BUG-011",
+      "severity": "Medium",
+      "area": "Frontend",
+      "page": "/",
+      "title": "Mobile menu toggle is a non-accessible empty div",
+      "description": "Crizal _Header.cshtml renders <div class=\"navbar-toggler bg-secondary\"></div> with no role=button, aria-label, tabindex, or keyboard handler. Click/tap does open #nav (theme.js + nav-menu.js), so this is not a functional mobile-nav failure, but keyboard and screen-reader users cannot operate the menu. Contrast: the control is a 44×44 div, not a button.",
+      "stepsToReproduce": [
+        "Viewport 390×844, open /",
+        "Tab through the header — hamburger is skipped",
+        "Click .navbar-toggler — menu does open"
+      ],
+      "expected": "<button type=\"button\" class=\"navbar-toggler\" aria-label=\"Menu\" aria-expanded=\"false\" aria-controls=\"nav\">",
+      "actual": "Empty div; menu only via pointer click",
+      "device": "Mobile",
+      "screenshotOrLog": "home-mobile-menu-open.png (menu works after click)",
+      "suggestedFix": "Change the toggler to a <button type=\"button\"> with aria-label/aria-expanded/aria-controls. Keep existing .navbar-toggler CSS/JS hooks."
+    },
+    {
+      "id": "BUG-012",
+      "severity": "Low",
+      "area": "Frontend",
+      "page": "/info/aboutus/",
+      "title": "Image resize URLs use a zero dimension (w0h500 / w610h0)",
+      "description": "Info and product gallery src values include /images/w0h500/... and /images/w610h0/.... Those requests currently return 200 JPEG, but a 0 width/height is an invalid crop size and can break the ImagesController resize math or produce oddly sized images after a cache/code change.",
+      "stepsToReproduce": [
+        "Open /info/aboutus/ and inspect images",
+        "Open a product gallery image such as /images/w610h0/nordline-wireless-bluetooth-kulaklik-pro-1b8c8c5i1b.jpg/"
+      ],
+      "expected": "Resize URLs always have positive width and height (e.g. w420h280)",
+      "actual": "w0h500 on about/delivery; w610h0 on product gallery",
+      "device": "Both",
+      "suggestedFix": "In GetCroppedImageUrl / image-size helpers, coerce 0 to the configured default width/height before building /images/w{W}h{H}/ paths."
+    }
+  ]
+}

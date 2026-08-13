@@ -1,0 +1,1 @@
+LR>C:\Users\eminy\source\repos\EImece\EImece\EImece\EImece.csprojò	CSharp7_3

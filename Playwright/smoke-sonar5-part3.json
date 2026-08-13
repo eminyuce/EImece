@@ -1,0 +1,323 @@
+{
+  "fail": [],
+  "warn": [
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Users",
+      "status": 400,
+      "final": "http://localhost:81/admin/error/badrequest/",
+      "kind": "4xx",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    }
+  ],
+  "rows": [
+    {
+      "area": "customer-login",
+      "url": "http://localhost:81/customers/",
+      "kind": "ok",
+      "status": 200
+    },
+    {
+      "area": "customer",
+      "url": "http://localhost:81/Customers/Home/Index",
+      "status": 200,
+      "kind": "ok",
+      "snippet": "Hesabım"
+    },
+    {
+      "area": "customer",
+      "url": "http://localhost:81/Customers/Home/CustomerOrders",
+      "status": 200,
+      "kind": "ok",
+      "snippet": "Müşteri Detayı"
+    },
+    {
+      "area": "customer",
+      "url": "http://localhost:81/Customers/Home/Faq",
+      "status": 200,
+      "kind": "ok",
+      "snippet": "Sıkça Sorulan Sorular"
+    },
+    {
+      "area": "customer",
+      "url": "http://localhost:81/Customers/Home/ChangePassword",
+      "status": 200,
+      "kind": "ok",
+      "snippet": "Şifre değiştir"
+    },
+    {
+      "area": "customer",
+      "url": "http://localhost:81/Customers/Home/SendMessageToSeller",
+      "status": 200,
+      "kind": "ok",
+      "snippet": "Satıcıya Mesaj Gönder"
+    },
+    {
+      "area": "customer",
+      "url": "http://localhost:81/Customers/Home/WebSiteAddressInfo",
+      "status": 200,
+      "kind": "ok",
+      "snippet": ""
+    },
+    {
+      "area": "admin-dashboard",
+      "url": "http://localhost:81/admin",
+      "kind": "ok",
+      "status": 200,
+      "snippet": "EImece Admin Panel"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Dashboard",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Dashboard",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Products",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Products",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/ProductCategories",
+      "status": 200,
+      "final": "http://localhost:81/Admin/ProductCategories",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Brands",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Brands",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Menus",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Menus",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Stories",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Stories",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/StoryCategories",
+      "status": 200,
+      "final": "http://localhost:81/Admin/StoryCategories",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Tags",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Tags",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/TagCategories",
+      "status": 200,
+      "final": "http://localhost:81/Admin/TagCategories",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Users",
+      "status": 400,
+      "final": "http://localhost:81/admin/error/badrequest/",
+      "kind": "4xx",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Customers",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Customers",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Orders",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Orders",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/ShoppingCarts",
+      "status": 200,
+      "final": "http://localhost:81/Admin/ShoppingCarts",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Coupons",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Coupons",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Subscribers",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Subscribers",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/MailTemplates",
+      "status": 200,
+      "final": "http://localhost:81/Admin/MailTemplates",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Settings",
+      "status": 200,
+      "final": "http://localhost:81/admin/settings/websitelogo/4090/",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/AdminSettings",
+      "status": 200,
+      "final": "http://localhost:81/Admin/AdminSettings",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Templates",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Templates",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Lists",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Lists",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Faq",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Faq",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/MainPageImages",
+      "status": 200,
+      "final": "http://localhost:81/Admin/MainPageImages",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/ProductComments",
+      "status": 200,
+      "final": "http://localhost:81/admin/products/",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/AppLogs",
+      "status": 200,
+      "final": "http://localhost:81/Admin/AppLogs",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Media",
+      "status": 200,
+      "final": "http://localhost:81/admin/",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Report",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Report",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/Metrics",
+      "status": 200,
+      "final": "http://localhost:81/Admin/Metrics",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    },
+    {
+      "area": "admin",
+      "url": "http://localhost:81/Admin/ImportData",
+      "status": 200,
+      "final": "http://localhost:81/Admin/ImportData",
+      "kind": "ok",
+      "unhandled": false,
+      "snippet": " <!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"> <title>EImece Admin Panel </title"
+    }
+  ]
+}
