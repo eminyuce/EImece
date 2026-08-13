@@ -260,6 +260,7 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IListItemService, ListItemService>();
             services.AddScopedWithProps<IListService, ListService>();
             services.AddScopedWithProps<IMailTemplateService, MailTemplateService>();
+            services.AddScopedWithProps<IMailTemplateTestService, MailTemplateTestService>();
             services.AddScopedWithProps<IMainPageImageService, MainPageImageService>();
             services.AddScopedWithProps<IMenuService, MenuService>();
             services.AddScopedWithProps<IProductCategoryService, ProductCategoryService>();

@@ -3963,3 +3963,64 @@ body.admin-app .admin-content .admin-home h2::after {
         padding: 8px 10px 10px;
     }
 }
+
+.mail-template-test-toolbar {
+    margin: 0 0 8px;
+}
+
+.eg-mail-template-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+
+.mail-template-test-modal .mail-template-test-help {
+    margin-bottom: 12px;
+}
+
+.mail-template-test-model {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #f8fafc;
+}
+
+.mail-template-test-model-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.mail-template-test-field .label {
+    margin-left: 6px;
+    font-weight: 500;
+}
+
+.mail-template-test-preview-wrap {
+    margin-top: 8px;
+}
+
+.mail-template-test-preview {
+    margin-top: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.mail-template-test-preview-subject {
+    padding: 8px 12px;
+    background: #f3f4f6;
+    font-weight: 600;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.mail-template-test-preview iframe {
+    width: 100%;
+    min-height: 320px;
+    border: 0;
+    background: #fff;
+}

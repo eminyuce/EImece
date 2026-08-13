@@ -112,6 +112,13 @@ columns.Add()
             @Html.ActionLink("HTML İndir", "GenerateHtmlBody", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-xs", title = "Şablondan HTML gövde oluştur ve indir" })
         }
         @Html.ActionLink("Yedekle", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-xs", title = "Şablonun bir kopyasını oluştur" })
+        <button type="button"
+                class="btn btn-info btn-xs js-mail-template-test"
+                data-template-id="@d.Id"
+                data-template-name="@d.Name"
+                title="Şablonu SMTP ile test e-postası olarak gönder">
+            Test E-posta
+        </button>
     </div>);
 
 columns.Add()
@@ -130,3 +137,5 @@ columns.Add()
 
 }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
 </div>
+
+@Html.Partial("_TestEmailModal")

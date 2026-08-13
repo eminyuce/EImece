@@ -11,6 +11,17 @@
 }
 
 <h2>@AdminResource.MailTemplates</h2>
+<div class="mail-template-test-toolbar">
+    <button type="button"
+            class="btn btn-info js-mail-template-test"
+            data-template-id="@(Model != null ? Model.Id : 0)"
+            data-template-name="@(Model != null ? Model.Name : "Taslak")"
+            data-use-editor="true"
+            title="Şablonu SMTP ile test e-postası olarak gönder">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        Test E-posta Gönder
+    </button>
+</div>
 <hr class="adminLine" />
 
 @{ ViewData["HelpId"] = "mailTemplatesHelp"; }
@@ -21,6 +32,7 @@
     <li><strong>Konu</strong>: E-posta konusu. Dinamik alanlar Razor sözdizimi ile yazılabilir.</li>
     <li><strong>E-Posta İçerik</strong>: 2. sekmedeki editörde düzenlenen HTML e-posta içeriği.</li>
     <li><strong>Yayında / Sıra</strong>: Şablonun kullanımı ve listelenme sırası.</li>
+    <li><strong>Test E-posta</strong>: Şablonu kaydetmeden veya kaydettikten sonra SMTP ayarlarıyla gerçek bir deneme e-postası gönderebilirsiniz. Model alanları şablondaki <code>@@Model</code> özelliklerinden otomatik üretilir.</li>
 </ul>
 <p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Konu:</strong></p>
 <pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:12px; white-space:pre-wrap;">Siparişiniz alındı - #@@Model.OrderNumber</pre>
@@ -108,3 +120,4 @@
         }
 
 @Html.Partial("_AdminEditBackToList")
+@Html.Partial("_TestEmailModal")

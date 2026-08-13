@@ -325,6 +325,7 @@
     <Compile Include="Helpers\ProductCategorySortingTests.cs" />
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
     <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />
+    <Compile Include="Helpers\MailTemplateModelInspectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
