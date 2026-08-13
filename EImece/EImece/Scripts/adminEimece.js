@@ -1228,3 +1228,28 @@ function initAdminTagPicker(root) {
 
     refreshCounts();
 }
+
+function syncAdminValidationSummaryTone() {
+    $("[data-admin-success-message]").each(function () {
+        var $el = $(this);
+        var success = ($el.attr("data-admin-success-message") || "").trim();
+        var messages = $el.find("li").map(function () {
+            return $(this).text().replace(/\s+/g, " ").trim();
+        }).get().filter(function (t) { return t.length > 0; });
+        if (!messages.length) {
+            return;
+        }
+        var allSuccess = !!success && messages.every(function (t) { return t === success; });
+        $el.toggleClass("alert-success", allSuccess);
+        $el.toggleClass("alert-danger", !allSuccess);
+    });
+}
+
+$(document).on("invalid-form.validate", "form", function () {
+    window.setTimeout(syncAdminValidationSummaryTone, 0);
+});
+
+$(function () {
+    syncAdminValidationSummaryTone();
+});
+

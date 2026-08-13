@@ -53,10 +53,7 @@
 
         <div class="form-horizontal">
 
-            @{
-            var errorClass = ViewData.ModelState.IsValid ? "alert alert-success" : "alert alert-danger";
-            }
-            @Html.ValidationSummary(true, "", new { @class = errorClass })
+            @Html.AdminValidationSummary()
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.AddUserId)
             @Html.HiddenFor(model => model.CreatedDate)
@@ -181,11 +178,16 @@
                                     @Html.ValidationMessageFor(model => model.LinkIsActive, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div id="pageThemeWrapper" style="@String.Format("{0}", (Model.Id>0 && Model.MenuLink.Equals("pages-index") ) ? "" : "display: none;")" class="form-group">
-                                @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.Partial("pPageThemes", Model)
-                                    @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
+                            <div id="pageThemeWrapper" style="@String.Format("{0}", (Model.Id>0 && Model.MenuLink.Equals("pages-index") ) ? "" : "display: none;")" class="form-group page-theme-form-group">
+                                <div class="col-md-12">
+                                    <div class="page-theme-section">
+                                        <div class="page-theme-section__head">
+                                            @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label page-theme-section__label" })
+                                            <p class="page-theme-section__hint">Sayfa içeriğinin yerleşimini seçin. Karta tıklayarak uygulayın; büyüteç ile yerleşimi büyütün.</p>
+                                        </div>
+                                        @Html.Partial("pPageThemes", Model)
+                                        @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
                             @Html.Partial("_AdminEditNextStep")
@@ -258,6 +260,35 @@
                     $("#pageThemeWrapper").hide();
                 }
             }
+
+            var $picker = $("#SayfaDuzenleri");
+            $picker.on("change", ".page-theme-card__input", function () {
+                $picker.find(".page-theme-card").removeClass("is-selected");
+                $(this).closest(".page-theme-card").addClass("is-selected");
+            });
+
+            var $lightbox = $("#pageThemeLightbox");
+            var $lightboxImg = $lightbox.find("img");
+            var $lightboxTitle = $("#pageThemeLightboxTitle");
+            function closeThemeLightbox() {
+                $lightbox.attr("hidden", "hidden");
+                $lightboxImg.attr("src", "");
+            }
+            $picker.on("click", ".page-theme-card__zoom", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $btn = $(this);
+                $lightboxTitle.text($btn.data("title") || "");
+                $lightboxImg.attr("src", $btn.data("preview"));
+                $lightboxImg.attr("alt", ($btn.data("title") || "") + " önizleme");
+                $lightbox.removeAttr("hidden");
+            });
+            $lightbox.on("click", ".page-theme-lightbox__backdrop, .page-theme-lightbox__close", closeThemeLightbox);
+            $(document).on("keydown.pageThemeLightbox", function (e) {
+                if (e.key === "Escape" && !$lightbox.is("[hidden]")) {
+                    closeThemeLightbox();
+                }
+            });
 
         });
     </script>

@@ -1121,6 +1121,9 @@
     <Content Include="Views\Designs\Modern\Shared\PageThemes\PageTheme_T6.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\PageThemes\PageTheme_T7.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\PageThemes\PageTheme_T8.cshtml" />
+    <Content Include="Views\Designs\Modern\Shared\PageThemes\_PageThemeGallery.cshtml" />
+    <Content Include="Views\Designs\Modern\Shared\PageThemes\_PageThemeHero.cshtml" />
+    <Content Include="Views\Designs\Modern\Shared\PageThemes\_PageThemeSideNav.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\pGridCheckbox.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\pGridDropDown.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\pGridOperations.cshtml" />
@@ -1287,6 +1290,9 @@
     <Content Include="Views\Designs\Crizal\Shared\PageThemes\PageTheme_T6.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\PageThemes\PageTheme_T7.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\PageThemes\PageTheme_T8.cshtml" />
+    <Content Include="Views\Designs\Crizal\Shared\PageThemes\_PageThemeGallery.cshtml" />
+    <Content Include="Views\Designs\Crizal\Shared\PageThemes\_PageThemeHero.cshtml" />
+    <Content Include="Views\Designs\Crizal\Shared\PageThemes\_PageThemeSideNav.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\pGridCheckbox.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\pGridDropDown.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\pGridOperations.cshtml" />
@@ -1687,6 +1693,9 @@
     <Content Include="Views\Shared\PageThemes\PageTheme_T3.cshtml" />
     <Content Include="Views\Products\AdvancedSearchProducts.cshtml" />
     <Content Include="Views\Shared\PageThemes\PageTheme_T8.cshtml" />
+    <Content Include="Views\Shared\PageThemes\_PageThemeGallery.cshtml" />
+    <Content Include="Views\Shared\PageThemes\_PageThemeHero.cshtml" />
+    <Content Include="Views\Shared\PageThemes\_PageThemeSideNav.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RelatedProduct.cshtml" />
     <Content Include="Views\Shared\_Languages.cshtml" />
     <Content Include="Views\Payment\PlaceOrder.cshtml" />

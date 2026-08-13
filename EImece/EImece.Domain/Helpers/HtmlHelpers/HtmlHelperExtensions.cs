@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace EImece.Domain.Helpers.HtmlHelpers
 {
@@ -76,6 +79,51 @@ namespace EImece.Domain.Helpers.HtmlHelpers
 
             html.Append("</ul></nav>");
             return MvcHtmlString.Create(html.ToString());
+        }
+
+        /// <summary>
+        /// Validation summary that stays green for the admin success message
+        /// ("İşleminiz başarıyla gerçekleşmiştir.") even though it is stored via ModelState.AddModelError.
+        /// Real model-level errors still render as danger.
+        /// </summary>
+        public static MvcHtmlString AdminValidationSummary(this HtmlHelper html, bool excludePropertyErrors = true)
+        {
+            if (html == null)
+            {
+                throw new ArgumentNullException(nameof(html));
+            }
+
+            return html.ValidationSummary(excludePropertyErrors, "", new
+            {
+                @class = GetAdminValidationSummaryCss(html.ViewData.ModelState),
+                data_admin_success_message = AdminResource.SuccessfullySavedCompleted
+            });
+        }
+
+        internal static string GetAdminValidationSummaryCss(ModelStateDictionary modelState)
+        {
+            if (modelState == null)
+            {
+                return "alert alert-success";
+            }
+
+            var modelErrors = modelState
+                .Where(kvp => string.IsNullOrEmpty(kvp.Key))
+                .SelectMany(kvp => kvp.Value.Errors)
+                .Select(e => e.ErrorMessage)
+                .Where(m => !string.IsNullOrWhiteSpace(m))
+                .ToList();
+
+            if (modelErrors.Count == 0)
+            {
+                return "alert alert-success";
+            }
+
+            var successMessage = AdminResource.SuccessfullySavedCompleted;
+            var isSuccessOnly = modelErrors.All(m =>
+                string.Equals(m.Trim(), successMessage, StringComparison.Ordinal));
+
+            return isSuccessOnly ? "alert alert-success" : "alert alert-danger";
         }
 
         private static string BuildPageItem(int index, Func<int, string> action, bool isDisabled, bool isActive, string linkText, string ariaLabel)
