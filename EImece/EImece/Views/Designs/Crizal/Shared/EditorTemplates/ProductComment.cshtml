@@ -22,22 +22,7 @@
      aria-modal="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            @using (Html.BeginForm("Review", "Products", FormMethod.Post, new
-            {
-                @class = "crizal-review-modal__form needs-validation",
-                role = "form",
-                novalidate = "novalidate",
-                data_msg_required = requiredMsg,
-                data_msg_name = nameMsg,
-                data_msg_email = emailRequiredMsg,
-                data_msg_email_format = emailFormatMsg,
-                data_msg_subject = requiredMsg,
-                data_msg_review = requiredMsg,
-                data_msg_rating = requiredMsg,
-                data_msg_captcha = captchaMsg,
-                data_msg_recaptcha = Resource.ContactUsCaptchaErrorMessage,
-                data_open_on_error = string.IsNullOrEmpty(reviewError) ? "false" : "true"
-            }))
+            @using (Html.BeginForm("Review", "Products", FormMethod.Post, new { @class = "crizal-review-modal__form needs-validation", role = "form", novalidate = "novalidate", data_msg_required = requiredMsg, data_msg_name = nameMsg, data_msg_email = emailRequiredMsg, data_msg_email_format = emailFormatMsg, data_msg_subject = requiredMsg, data_msg_review = requiredMsg, data_msg_rating = requiredMsg, data_msg_captcha = captchaMsg, data_msg_recaptcha = Resource.ContactUsCaptchaErrorMessage, data_open_on_error = string.IsNullOrEmpty(reviewError) ? "false" : "true" }))
             {
                 <div class="modal-header">
                     <div class="crizal-review-modal__heading">
@@ -57,20 +42,7 @@
                             <div class="crizal-review-field">
                                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "crizal-review-field__label" })
                                 <span class="crizal-review-field__req" aria-hidden="true">*</span>
-                                @Html.TextBoxFor(model => model.Name, new
-                                {
-                                    @class = "form-control",
-                                    autocomplete = "name",
-                                    maxlength = "500",
-                                    placeholder = Resource.Name,
-                                    required = "required",
-                                    aria_required = "true",
-                                    data_review_field = "name",
-                                    data_val = "true",
-                                    data_val_required = nameMsg,
-                                    data_val_length = Resource.NamePropertyErrorMessage,
-                                    data_val_length_max = "500"
-                                })
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", autocomplete = "name", maxlength = "500", placeholder = Resource.Name, required = "required", aria_required = "true", data_review_field = "name", data_val = "true", data_val_required = nameMsg, data_val_length = Resource.NamePropertyErrorMessage, data_val_length_max = "500" })
                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "crizal-review-modal__error" })
                             </div>
                         </div>
@@ -78,20 +50,7 @@
                             <div class="crizal-review-field">
                                 @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "crizal-review-field__label" })
                                 <span class="crizal-review-field__req" aria-hidden="true">*</span>
-                                @Html.TextBoxFor(model => model.Email, new
-                                {
-                                    @class = "form-control",
-                                    @type = "email",
-                                    autocomplete = "email",
-                                    inputmode = "email",
-                                    placeholder = Resource.Email,
-                                    required = "required",
-                                    aria_required = "true",
-                                    data_review_field = "email",
-                                    data_val = "true",
-                                    data_val_required = emailRequiredMsg,
-                                    data_val_email = emailFormatMsg
-                                })
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", type = "email", autocomplete = "email", inputmode = "email", placeholder = Resource.Email, required = "required", aria_required = "true", data_review_field = "email", data_val = "true", data_val_required = emailRequiredMsg, data_val_email = emailFormatMsg })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "crizal-review-modal__error" })
                             </div>
                         </div>
@@ -101,17 +60,7 @@
                             <div class="crizal-review-field">
                                 @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "crizal-review-field__label" })
                                 <span class="crizal-review-field__req" aria-hidden="true">*</span>
-                                @Html.TextBoxFor(model => model.Subject, new
-                                {
-                                    @class = "form-control",
-                                    maxlength = "500",
-                                    placeholder = Resource.ReviewSubject,
-                                    required = "required",
-                                    aria_required = "true",
-                                    data_review_field = "subject",
-                                    data_val = "true",
-                                    data_val_required = requiredMsg
-                                })
+                                @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", maxlength = "500", placeholder = Resource.ReviewSubject, required = "required", aria_required = "true", data_review_field = "subject", data_val = "true", data_val_required = requiredMsg })
                                 @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "crizal-review-modal__error" })
                             </div>
                         </div>
@@ -147,16 +96,7 @@
                     <div class="crizal-review-field">
                         @Html.LabelFor(model => model.Review, htmlAttributes: new { @class = "crizal-review-field__label" })
                         <span class="crizal-review-field__req" aria-hidden="true">*</span>
-                        @Html.TextAreaFor(model => model.Review, 3, 0, new)
-                        {
-                            @class = "form-control",
-                            placeholder = Resource.Review,
-                            required = "required",
-                            aria_required = "true",
-                            data_review_field = "review",
-                            data_val = "true",
-                            data_val_required = requiredMsg
-                        })
+                        @Html.TextAreaFor(model => model.Review, 3, 0, new { @class = "form-control", placeholder = Resource.Review, required = "required", aria_required = "true", data_review_field = "review", data_val = "true", data_val_required = requiredMsg })
                         @Html.ValidationMessageFor(model => model.Review, "", new { @class = "crizal-review-modal__error" })
                     </div>
                     <div class="crizal-review-captcha" data-review-field="captcha">
