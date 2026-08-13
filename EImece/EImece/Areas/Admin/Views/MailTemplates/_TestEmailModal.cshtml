@@ -1,0 +1,69 @@
+@using Microsoft.AspNet.Identity
+@using Resources
+<div class="modal fade" id="mailTemplateTestModal" tabindex="-1" role="dialog" aria-labelledby="mailTemplateTestTitle">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content mail-template-test-modal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="mailTemplateTestTitle">Test E-posta Gönder</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mail-template-test-help">
+                    Şablon, Sistem Ayarları’ndaki SMTP bilgileriyle gerçek bir e-posta olarak gönderilir.
+                    Model alanları şablondaki <code>@("@Model")</code> özelliklerinden üretilir; göndermeden önce düzenleyebilirsiniz.
+                </p>
+                <div id="mailTemplateTestAlert" class="alert" role="alert" style="display:none;"></div>
+                <div class="form-group">
+                    <label for="mailTemplateTestRecipient">Alıcı e-posta <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="mailTemplateTestRecipient" required placeholder="ornek@sirket.com" />
+                </div>
+                <div class="form-group">
+                    <label for="mailTemplateTestSubject">Konu (isteğe bağlı)</label>
+                    <input type="text" class="form-control" id="mailTemplateTestSubject" placeholder="Boş bırakırsanız şablon konusu kullanılır" />
+                    <span class="help-block">Gönderilen konunun başına <strong>[TEST]</strong> eklenir.</span>
+                </div>
+                <div class="mail-template-test-model">
+                    <div class="mail-template-test-model-header">
+                        <strong>Örnek model verisi</strong>
+                        <button type="button" class="btn btn-default btn-xs" id="mailTemplateTestReload">
+                            <i class="fa fa-refresh"></i> Yeniden üret
+                        </button>
+                    </div>
+                    <p class="text-muted" id="mailTemplateTestEmptyModel" style="display:none;">
+                        Bu şablonda <code>@("@Model")</code> özelliği bulunamadı. E-posta yine de gönderilebilir.
+                    </p>
+                    <div id="mailTemplateTestFields"></div>
+                </div>
+                <div class="mail-template-test-preview-wrap">
+                    <button type="button" class="btn btn-default btn-sm" id="mailTemplateTestPreviewBtn">
+                        <i class="fa fa-eye"></i> Önizleme
+                    </button>
+                    <div id="mailTemplateTestPreview" class="mail-template-test-preview" style="display:none;">
+                        <div class="mail-template-test-preview-subject"></div>
+                        <iframe title="E-posta önizleme" sandbox="allow-same-origin"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" id="mailTemplateTestSendBtn">
+                    <i class="fa fa-paper-plane"></i> Test E-posta Gönder
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/adminMailTemplateTest.js")"></script>
+<script>
+    (function () {
+        if (!window.EimeceMailTemplateTest) {
+            return;
+        }
+        window.EimeceMailTemplateTest.init({
+            inspectUrl: '@Url.Action("InspectTemplate", "MailTemplates")',
+            previewUrl: '@Url.Action("PreviewTestEmail", "MailTemplates")',
+            sendUrl: '@Url.Action("SendTestEmail", "MailTemplates")',
+            defaultRecipient: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(User.Identity.GetUserName() ?? ""))
+        });
+    })();
+</script>

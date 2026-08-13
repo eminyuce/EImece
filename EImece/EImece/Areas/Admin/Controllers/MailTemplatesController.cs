@@ -1,7 +1,9 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Services.IServices;
+using EImece.Domain.DependencyInjection;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using NLog;
@@ -11,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -22,6 +25,9 @@ namespace EImece.Areas.Admin.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
+
+        [Inject]
+        public IMailTemplateTestService MailTemplateTestService { get; set; }
 
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
@@ -190,6 +196,65 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
+        [ValidateInput(false)]
+        public async Task<JsonResult> InspectTemplate()
+        {
+            var request = ReadJsonBody<SendMailTemplateTestRequest>() ?? new SendMailTemplateTestRequest();
+            try
+            {
+                var preview = await MailTemplateTestService.InspectAsync(request, GetDefaultTestRecipient());
+                return JsonPayload(new { success = true, data = preview });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "InspectTemplate failed for MailTemplate Id = {0}", request.Id);
+                return JsonPayload(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
+        [ValidateInput(false)]
+        public async Task<JsonResult> PreviewTestEmail()
+        {
+            var request = ReadJsonBody<SendMailTemplateTestRequest>() ?? new SendMailTemplateTestRequest();
+            try
+            {
+                var render = await MailTemplateTestService.PreviewAsync(request);
+                if (!render.Success)
+                {
+                    return JsonPayload(new { success = false, message = render.ErrorMessage });
+                }
+
+                return JsonPayload(new { success = true, subject = render.Subject, body = render.Body });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "PreviewTestEmail failed for MailTemplate Id = {0}", request.Id);
+                return JsonPayload(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
+        [ValidateInput(false)]
+        public async Task<JsonResult> SendTestEmail()
+        {
+            var request = ReadJsonBody<SendMailTemplateTestRequest>() ?? new SendMailTemplateTestRequest();
+            try
+            {
+                var result = await MailTemplateTestService.SendTestEmailAsync(request);
+                return JsonPayload(new { success = result.Success, message = result.Message, subject = result.Subject });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "SendTestEmail failed for MailTemplate Id = {0}", request.Id);
+                return JsonPayload(new { success = false, message = "E-posta gönderilemedi: " + ex.ToFormattedString() });
+            }
+        }
+
         [HttpGet, ActionName("ExportExcel")]
         public async Task<ActionResult> ExportExcelAsync(CancellationToken cancellationToken, string format = "excel")
         {
@@ -215,6 +280,44 @@ namespace EImece.Areas.Admin.Controllers
                          };
 
             return DownloadFile(result, String.Format("MailTemplates-{0}", GetCurrentLanguage), format);
+        }
+
+        private string GetDefaultTestRecipient()
+        {
+            return User != null && User.Identity != null
+                ? User.Identity.GetUserName()
+                : string.Empty;
+        }
+
+        private T ReadJsonBody<T>()
+        {
+            if (Request == null || Request.InputStream == null)
+            {
+                return default(T);
+            }
+
+            if (Request.InputStream.CanSeek)
+            {
+                Request.InputStream.Position = 0;
+            }
+
+            using (var reader = new StreamReader(Request.InputStream, Encoding.UTF8, true, 1024, true))
+            {
+                var json = reader.ReadToEnd();
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    return default(T);
+                }
+
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+        }
+
+        private JsonResult JsonPayload(object data)
+        {
+            var result = Json(data, JsonRequestBehavior.AllowGet);
+            result.MaxJsonLength = int.MaxValue;
+            return result;
         }
     }
 }

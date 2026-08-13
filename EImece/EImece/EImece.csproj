@@ -1433,6 +1433,7 @@
     <Content Include="Areas\Admin\Views\ImportData\DisplayTable.cshtml" />
     <Content Include="Areas\Admin\Views\MailTemplates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\MailTemplates\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\MailTemplates\_TestEmailModal.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridCheckbox.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSettings\Index.cshtml" />
     <Content Include="Content\Web.config" />
@@ -1558,6 +1559,7 @@
     <Content Include="Scripts\codemirror\xml\xml.js" />
     <Content Include="Scripts\adminEimece.js" />
     <Content Include="Scripts\adminGridModern.js" />
+    <Content Include="Scripts\adminMailTemplateTest.js" />
     <Content Include="Scripts\adminTemplateBuilder.js" />
     <Content Include="Scripts\cookie-consent.js" />
     <Content Include="Scripts\eimece.js" />
