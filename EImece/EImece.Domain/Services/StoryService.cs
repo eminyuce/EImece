@@ -67,19 +67,16 @@ namespace EImece.Domain.Services
         public void DeleteStoryById(int storyId)
         {
             var story = GetStoryById(storyId);
+            if (story == null)
+            {
+                return;
+            }
+
             StoryTagRepository.DeleteByWhereCondition(r => r.StoryId == storyId);
+            FileStorageService.DeleteGalleryImages(storyId, MediaModType.Stories);
             if (story.MainImageId.HasValue)
             {
                 FileStorageService.DeleteFileStorage(story.MainImageId.Value);
-            }
-            if (story.StoryFiles != null)
-            {
-                var menuFiles = new List<StoryFile>(story.StoryFiles);
-                foreach (var file in menuFiles)
-                {
-                    FileStorageService.DeleteUploadImageByFileStorage(storyId, MediaModType.Stories, file.FileStorageId);
-                }
-                StoryFileRepository.DeleteByWhereCondition(r => r.StoryId == storyId);
             }
             DeleteEntity(story);
         }
@@ -87,19 +84,16 @@ namespace EImece.Domain.Services
         public async Task DeleteStoryByIdAsync(int storyId)
         {
             var story = await GetStoryByIdAsync(storyId).ConfigureAwait(false);
+            if (story == null)
+            {
+                return;
+            }
+
             await StoryTagRepository.DeleteByWhereConditionAsync(r => r.StoryId == storyId).ConfigureAwait(false);
+            await FileStorageService.DeleteGalleryImagesAsync(storyId, MediaModType.Stories).ConfigureAwait(false);
             if (story.MainImageId.HasValue)
             {
                 await FileStorageService.DeleteFileStorageAsync(story.MainImageId.Value).ConfigureAwait(false);
-            }
-            if (story.StoryFiles != null)
-            {
-                var menuFiles = new List<StoryFile>(story.StoryFiles);
-                foreach (var file in menuFiles)
-                {
-                    await FileStorageService.DeleteUploadImageByFileStorageAsync(storyId, MediaModType.Stories, file.FileStorageId).ConfigureAwait(false);
-                }
-                await StoryFileRepository.DeleteByWhereConditionAsync(r => r.StoryId == storyId).ConfigureAwait(false);
             }
             await DeleteEntityAsync(story).ConfigureAwait(false);
         }

@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -30,12 +31,60 @@ namespace EImece.Domain.Services
 
         public bool DeleteBrandById(int brandId)
         {
+            var brand = BrandRepository.GetSingle(brandId);
+            if (brand == null)
+            {
+                return false;
+            }
+
+            if (brand.MainImageId.HasValue && brand.MainImageId.Value > 0)
+            {
+                FileStorageService.DeleteFileStorage(brand.MainImageId.Value);
+            }
+
             return BrandRepository.DeleteByWhereCondition(r => r.Id == brandId);
         }
 
         public async Task<bool> DeleteBrandByIdAsync(int brandId)
         {
+            var brand = await BrandRepository.GetSingleAsync(brandId).ConfigureAwait(false);
+            if (brand == null)
+            {
+                return false;
+            }
+
+            if (brand.MainImageId.HasValue && brand.MainImageId.Value > 0)
+            {
+                await FileStorageService.DeleteFileStorageAsync(brand.MainImageId.Value).ConfigureAwait(false);
+            }
+
             return await BrandRepository.DeleteByWhereConditionAsync(r => r.Id == brandId).ConfigureAwait(false);
+        }
+
+        public virtual new void DeleteBaseEntity(List<string> values)
+        {
+            if (values == null)
+            {
+                return;
+            }
+
+            foreach (var v in values)
+            {
+                DeleteBrandById(v.ToInt());
+            }
+        }
+
+        public virtual new async Task DeleteBaseEntityAsync(List<string> values)
+        {
+            if (values == null)
+            {
+                return;
+            }
+
+            foreach (var v in values)
+            {
+                await DeleteBrandByIdAsync(v.ToInt()).ConfigureAwait(false);
+            }
         }
 
         public Brand GetBrandById(int brandId)

@@ -460,18 +460,10 @@ namespace EImece.Domain.Services
                 ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
+                FileStorageService.DeleteGalleryImages(id, MediaModType.Products);
                 if (product.MainImageId.HasValue)
                 {
                     FileStorageService.DeleteFileStorage(product.MainImageId.Value);
-                }
-                if (product.ProductFiles != null)
-                {
-                    var menuFiles = new List<ProductFile>(product.ProductFiles);
-                    foreach (var file in menuFiles)
-                    {
-                        FileStorageService.DeleteUploadImageByFileStorage(id, MediaModType.Products, file.FileStorageId);
-                    }
-                    ProductFileRepository.DeleteByWhereCondition(r => r.ProductId == id);
                 }
                 DeleteEntity(product);
                 InvalidateProductListCaches();
@@ -504,18 +496,10 @@ namespace EImece.Domain.Services
                 await ProductCommentRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
                 await ProductSpecificationRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
                 await ProductTagRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+                await FileStorageService.DeleteGalleryImagesAsync(id, MediaModType.Products).ConfigureAwait(false);
                 if (product.MainImageId.HasValue)
                 {
                     await FileStorageService.DeleteFileStorageAsync(product.MainImageId.Value).ConfigureAwait(false);
-                }
-                if (product.ProductFiles != null)
-                {
-                    var menuFiles = new List<ProductFile>(product.ProductFiles);
-                    foreach (var file in menuFiles)
-                    {
-                        await FileStorageService.DeleteUploadImageByFileStorageAsync(id, MediaModType.Products, file.FileStorageId).ConfigureAwait(false);
-                    }
-                    await ProductFileRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
                 }
                 await DeleteEntityAsync(product).ConfigureAwait(false);
                 InvalidateProductListCaches();

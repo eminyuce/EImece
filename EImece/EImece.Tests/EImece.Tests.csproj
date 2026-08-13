@@ -316,6 +316,8 @@
     <Compile Include="Helpers\CorrelationIdContextTests.cs" />
     <Compile Include="Helpers\EfSqlLoggerTests.cs" />
     <Compile Include="Helpers\ImageUtilitiesTests.cs" />
+    <Compile Include="Helpers\ImageUploadOptimizerTests.cs" />
+    <Compile Include="Helpers\ImageStorageDeleteTests.cs" />
     <Compile Include="Helpers\MemoryCacheProviderTests.cs" />
     <Compile Include="Helpers\ProductSortHelperTests.cs" />
     <Compile Include="Helpers\CategorySlugHelperTests.cs" />

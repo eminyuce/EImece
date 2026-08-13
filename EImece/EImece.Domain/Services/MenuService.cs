@@ -209,15 +209,7 @@ namespace EImece.Domain.Services
                 {
                     FileStorageService.DeleteFileStorage(menu.MainImageId.Value);
                 }
-                if (menu.MenuFiles != null)
-                {
-                    var menuFiles = new List<MenuFile>(menu.MenuFiles);
-                    foreach (var file in menuFiles)
-                    {
-                        FileStorageService.DeleteUploadImageByFileStorage(menuId, MediaModType.Menus, file.FileStorageId);
-                    }
-                    MenuFileRepository.DeleteByWhereCondition(r => r.MenuId == menuId);
-                }
+                FileStorageService.DeleteGalleryImages(menuId, MediaModType.Menus);
                 DeleteEntity(menu);
 
                 return true;
@@ -236,15 +228,7 @@ namespace EImece.Domain.Services
                 {
                     await FileStorageService.DeleteFileStorageAsync(menu.MainImageId.Value).ConfigureAwait(false);
                 }
-                if (menu.MenuFiles != null)
-                {
-                    var menuFiles = new List<MenuFile>(menu.MenuFiles);
-                    foreach (var file in menuFiles)
-                    {
-                        await FileStorageService.DeleteUploadImageByFileStorageAsync(menuId, MediaModType.Menus, file.FileStorageId).ConfigureAwait(false);
-                    }
-                    await MenuFileRepository.DeleteByWhereConditionAsync(r => r.MenuId == menuId).ConfigureAwait(false);
-                }
+                await FileStorageService.DeleteGalleryImagesAsync(menuId, MediaModType.Menus).ConfigureAwait(false);
                 await DeleteEntityAsync(menu).ConfigureAwait(false);
 
                 return true;
