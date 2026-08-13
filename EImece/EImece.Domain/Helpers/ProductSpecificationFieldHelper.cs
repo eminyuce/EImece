@@ -197,34 +197,9 @@ namespace EImece.Domain.Helpers
                 return items;
             }
 
-            try
+            if (TryAddOptionsFromListService(items, valuesAttr, selectedValue))
             {
-                var listService = DependencyResolver.Current.GetService<IListService>();
-                var list = listService != null ? listService.GetListByName(valuesAttr.Trim()) : null;
-                if (list != null && list.ListItems != null)
-                {
-                    foreach (var li in list.ListItems.OrderBy(i => i.Position))
-                    {
-                        var val = (li.Value ?? li.Name ?? "").Trim();
-                        var text = (li.Name ?? li.Value ?? "").Trim();
-                        if (string.IsNullOrEmpty(val) && string.IsNullOrEmpty(text))
-                        {
-                            continue;
-                        }
-                        items.Add(new SelectListItem
-                        {
-                            Text = string.IsNullOrEmpty(text) ? val : text,
-                            Value = string.IsNullOrEmpty(val) ? text : val,
-                            Selected = selectedValue.Equals(val, StringComparison.OrdinalIgnoreCase)
-                                || selectedValue.Equals(text, StringComparison.OrdinalIgnoreCase)
-                        });
-                    }
-                    return items;
-                }
-            }
-            catch
-            {
-                // fall through to single inline option
+                return items;
             }
 
             var single = valuesAttr.Trim();
@@ -235,6 +210,42 @@ namespace EImece.Domain.Helpers
                 Selected = selectedValue.Equals(single, StringComparison.OrdinalIgnoreCase)
             });
             return items;
+        }
+
+        private static bool TryAddOptionsFromListService(List<SelectListItem> items, string valuesAttr, string selectedValue)
+        {
+            try
+            {
+                var listService = DependencyResolver.Current.GetService<IListService>();
+                var list = listService != null ? listService.GetListByName(valuesAttr.Trim()) : null;
+                if (list == null || list.ListItems == null)
+                {
+                    return false;
+                }
+
+                foreach (var li in list.ListItems.OrderBy(i => i.Position))
+                {
+                    var val = (li.Value ?? li.Name ?? "").Trim();
+                    var text = (li.Name ?? li.Value ?? "").Trim();
+                    if (string.IsNullOrEmpty(val) && string.IsNullOrEmpty(text))
+                    {
+                        continue;
+                    }
+                    items.Add(new SelectListItem
+                    {
+                        Text = string.IsNullOrEmpty(text) ? val : text,
+                        Value = string.IsNullOrEmpty(val) ? text : val,
+                        Selected = selectedValue.Equals(val, StringComparison.OrdinalIgnoreCase)
+                            || selectedValue.Equals(text, StringComparison.OrdinalIgnoreCase)
+                    });
+                }
+                return true;
+            }
+            catch
+            {
+                // fall through to single inline option
+                return false;
+            }
         }
 
         private static void AddCommaSeparatedOptions(List<SelectListItem> items, string valuesAttr, string selectedValue)

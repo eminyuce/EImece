@@ -81,6 +81,10 @@ namespace EImece.Domain.Observability.Metrics
         public static void SetHealthStatus(bool isUp)
         {
             _healthStatusValue = isUp ? 1 : 0;
+            if (_healthGauge == null)
+            {
+                return;
+            }
         }
 
         public static void RecordServerRequest(string httpMethod, string route, int statusCode, double durationMs)

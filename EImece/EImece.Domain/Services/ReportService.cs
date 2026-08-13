@@ -97,6 +97,7 @@ namespace EImece.Domain.Services
                 DatabaseUtility.GetSqlParameter("@PaymentStatus", statusValue, SqlDbType.NVarChar)
             };
 
+            DatabaseUtility.Connection = _connection;
             return DatabaseUtility.ExecuteDataTable(
                 "GetRegionalSalesReport",
                 CommandType.StoredProcedure,
@@ -476,10 +477,9 @@ namespace EImece.Domain.Services
             return ExecuteDataSetStoredProcAsync("GetProductStatsByDateRange", parameterList.ToArray(), cancellationToken);
         }
 
-        private static async Task<DataTable> ExecuteDataTableStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
+        private async Task<DataTable> ExecuteDataTableStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
         {
-            var connectionString = ConnectionStringProvider.GetConnectionString();
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(_connection.ConnectionString))
             {
                 await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
                 using (var command = new SqlCommand(commandText, connection))
@@ -499,10 +499,9 @@ namespace EImece.Domain.Services
             }
         }
 
-        private static async Task<DataSet> ExecuteDataSetStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
+        private async Task<DataSet> ExecuteDataSetStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
         {
-            var connectionString = ConnectionStringProvider.GetConnectionString();
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(_connection.ConnectionString))
             {
                 await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
                 using (var command = new SqlCommand(commandText, connection))

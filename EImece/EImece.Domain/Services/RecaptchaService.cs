@@ -17,7 +17,7 @@ namespace EImece.Domain.Services
     {
         public const string ResponseFormKey = "g-recaptcha-response";
         public const string ModelStateKey = "Recaptcha";
-        public const string SiteVerifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+        private const string SiteVerifyUrl = "https://www.google.com/recaptcha/api/siteverify";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

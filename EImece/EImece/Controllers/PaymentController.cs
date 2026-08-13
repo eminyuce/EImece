@@ -34,6 +34,9 @@ namespace EImece.Controllers
     {
         
         private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
+        private const string ShoppingCartAction = "shoppingcart";
+        private const string LastCompletedOrderIdKey = "LastCompletedOrderId";
+        private const string ThankYouForYourOrderAction = "ThankYouForYourOrder";
 
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
@@ -249,7 +252,6 @@ namespace EImece.Controllers
 
         private async Task<ShoppingCart> SaveShoppingCartAsync(ShoppingCartSession shoppingCart)
         {
-            PaymentLogger.Info("Entering SaveShoppingCartAsync method.");
             var item = new ShoppingCart();
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;
@@ -265,7 +267,7 @@ namespace EImece.Controllers
 
             shoppingCart.CurrentLanguage = CurrentLanguage;
             await ShoppingCartService.SaveOrEditShoppingCartAsync(item);
-            PaymentLogger.Info("Shopping cart saved to data source.");
+            PaymentLogger.Debug("Shopping cart saved to data source.");
 
             return item;
         }
@@ -293,7 +295,7 @@ namespace EImece.Controllers
             string orderGuid2 = orderGuid == null ? null : orderGuid.Value;
             PaymentLogger.Info($"Retrieved OrderGuid from cookie: {orderGuid2}");
             var result = await GetShoppingCartByOrderGuidAsync(orderGuid2);
-            PaymentLogger.Info("Shopping cart retrieved from GetShoppingCartByOrderGuidAsync.");
+            PaymentLogger.Debug("Shopping cart retrieved from GetShoppingCartByOrderGuidAsync.");
             return result;
         }
 
@@ -394,7 +396,7 @@ namespace EImece.Controllers
                 {
                     PaymentLogger.Info("Shopping cart is empty. Redirecting to shoppingcart.");
                     TempData["StatusMessage"] = "Sepetiniz boş";
-                    return RedirectToAction("shoppingcart", Domain.Constants.PaymentAction);
+                    return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
                 }
             }
             else
@@ -496,7 +498,7 @@ namespace EImece.Controllers
             else
             {
                 PaymentLogger.Info("Shopping cart is empty. Redirecting to shoppingcart.");
-                return RedirectToAction("shoppingcart", Domain.Constants.PaymentAction);
+                return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
             }
         }
 
@@ -594,7 +596,7 @@ namespace EImece.Controllers
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
                 PaymentLogger.Info("Shopping cart is null or empty. Redirecting to shoppingcart.");
-                return RedirectToAction("shoppingcart", Domain.Constants.PaymentAction);
+                return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
             }
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
@@ -662,8 +664,8 @@ namespace EImece.Controllers
             var existingOrder = await FindExistingPaidOrderAsync(paymentResult.PaymentId, orderGuid);
             if (existingOrder != null)
             {
-                TempData["LastCompletedOrderId"] = existingOrder.Id;
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = existingOrder.Id });
+                TempData[LastCompletedOrderIdKey] = existingOrder.Id;
+                return RedirectToAction(ThankYouForYourOrderAction, new { orderId = existingOrder.Id });
             }
 
             ShoppingCartSession shoppingCart = await GetShoppingCartByOrderGuidAsync(orderGuid);
@@ -683,12 +685,12 @@ namespace EImece.Controllers
                 ? orderNumber
                 : paymentResult.ConversationId;
             var order = await ShoppingCartService.SaveShoppingCartAsync(resolvedOrderNumber, shoppingCart, paymentResult, userId);
-            PaymentLogger.Info($"Order saved with ID: {order.Id}");
+            PaymentLogger.Info($"Order saved with ID: {order.Id}. Cart cleared. Redirecting to ThankYouForYourOrder.");
             await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
             await ClearCartAsync(shoppingCart);
-            PaymentLogger.Info("Cart cleared. Redirecting to ThankYouForYourOrder.");
-            TempData["LastCompletedOrderId"] = order.Id;
-            return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
+            PaymentLogger.Debug("Cart cleared. Redirecting to ThankYouForYourOrder.");
+            TempData[LastCompletedOrderIdKey] = order.Id;
+            return RedirectToAction(ThankYouForYourOrderAction, new { orderId = order.Id });
         }
 
         public async Task<ActionResult> ThankYouForYourOrder(int orderId)
@@ -716,7 +718,7 @@ namespace EImece.Controllers
                     && order.UserId.Equals(userId, StringComparison.OrdinalIgnoreCase);
             }
 
-            var lastCompletedOrderId = TempData["LastCompletedOrderId"] as int?;
+            var lastCompletedOrderId = TempData[LastCompletedOrderIdKey] as int?;
             return lastCompletedOrderId.HasValue && lastCompletedOrderId.Value == order.Id;
         }
 
@@ -768,26 +770,6 @@ namespace EImece.Controllers
             {
                 return HandleUnexpectedError(e, $"Exception in BuyNow: {e.Message}");
             }
-        }
-
-        private async Task<BuyNowModel> CreateBuyNowModelAsync(int productId)
-        {
-            PaymentLogger.Info($"Entering CreateBuyNowModelAsync with productId: {productId}");
-            BuyNowModel buyNowModel = new BuyNowModel();
-            buyNowModel.ProductId = productId;
-            buyNowModel.ProductDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(productId);
-            PaymentLogger.Info("Set product details in BuyNow model.");
-            buyNowModel.ShoppingCartItem = new ShoppingCartItem();
-            var buyNowProduct = await ProductService.GetProductByIdAsync(productId);
-            buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(buyNowProduct, new List<ProductSpecItem>());
-            buyNowModel.ShoppingCartItem.Quantity = 1;
-            buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
-            PaymentLogger.Info($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");
-            buyNowModel.CargoCompany = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoCompany);
-            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            buyNowModel.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
-            PaymentLogger.Info("Set cargo details in BuyNow model.");
-            return buyNowModel;
         }
 
         [HttpPost]
@@ -842,11 +824,30 @@ namespace EImece.Controllers
             }
         }
 
+        private async Task<BuyNowModel> CreateBuyNowModelAsync(int productId)
+        {
+            PaymentLogger.Info($"Entering CreateBuyNowModelAsync with productId: {productId}");
+            BuyNowModel buyNowModel = new BuyNowModel();
+            buyNowModel.ProductId = productId;
+            buyNowModel.ProductDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(productId);
+            PaymentLogger.Debug("Set product details in BuyNow model.");
+            buyNowModel.ShoppingCartItem = new ShoppingCartItem();
+            var buyNowProduct = await ProductService.GetProductByIdAsync(productId);
+            buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(buyNowProduct, new List<ProductSpecItem>());
+            buyNowModel.ShoppingCartItem.Quantity = 1;
+            buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
+            PaymentLogger.Info($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");
+            buyNowModel.CargoCompany = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoCompany);
+            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyNowModel.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
+            PaymentLogger.Debug("Set cargo details in BuyNow model.");
+            return buyNowModel;
+        }
+
         public async Task<ActionResult> BuyNowPaymentResult(PaymentCallbackRequest model, String o)
         {
-            PaymentLogger.Info("Entering BuyNowPaymentResult action.");
             PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
-            PaymentLogger.Info($"Payment status: {paymentResult.PaymentStatus}");
+            PaymentLogger.Info("Entering BuyNowPaymentResult action. Payment status: {0}", paymentResult.PaymentStatus);
             if (!IsSuccessfulPayment(paymentResult))
             {
                 PaymentLogger.Error($"BuyNow payment failed. Status: {paymentResult?.PaymentStatus}");
@@ -873,8 +874,8 @@ namespace EImece.Controllers
             var existingOrder = await FindExistingPaidOrderAsync(paymentResult.PaymentId, orderGuid);
             if (existingOrder != null)
             {
-                TempData["LastCompletedOrderId"] = existingOrder.Id;
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = existingOrder.Id });
+                TempData[LastCompletedOrderIdKey] = existingOrder.Id;
+                return RedirectToAction(ThankYouForYourOrderAction, new { orderId = existingOrder.Id });
             }
 
             var item = await ShoppingCartService.GetShoppingCartByOrderGuidAsync(orderGuid);
@@ -885,7 +886,7 @@ namespace EImece.Controllers
             }
 
             BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
-            PaymentLogger.Info("Deserialized BuyNow model from shopping cart.");
+            PaymentLogger.Debug("Deserialized BuyNow model from shopping cart.");
             if (buyNowModel.ShoppingCartItem == null || buyNowModel.ShoppingCartItem.Product == null)
             {
                 PaymentLogger.Error("ShoppingCartItem or Product is null in BuyNow model.");
@@ -914,14 +915,14 @@ namespace EImece.Controllers
             buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
             buyNowModel.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
             buyNowModel.Customer.Lang = CurrentLanguage;
-            PaymentLogger.Info("Updated BuyNow model with cargo and language details.");
+            PaymentLogger.Debug("Updated BuyNow model with cargo and language details.");
 
             var order = await ShoppingCartService.SaveBuyNowAsync(buyNowModel, paymentResult);
-            PaymentLogger.Info($"Order saved with ID: {order.Id}");
+            PaymentLogger.Info($"Order saved with ID: {order.Id}. Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
             await ClearBuyNowAsync(buyNowModel);
-            PaymentLogger.Info("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
-            TempData["LastCompletedOrderId"] = order.Id;
-            return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
+            PaymentLogger.Debug("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
+            TempData[LastCompletedOrderIdKey] = order.Id;
+            return RedirectToAction(ThankYouForYourOrderAction, new { orderId = order.Id });
         }
 
         [HttpPost]
@@ -939,7 +940,7 @@ namespace EImece.Controllers
                 shoppingCart.Coupon = null;
             }
             await SaveShoppingCartAsync(shoppingCart);
-            return RedirectToAction("shoppingcart");
+            return RedirectToAction(ShoppingCartAction);
         }
 
         private async Task ClearBuyNowAsync(BuyNowModel buyNowModel)
@@ -1198,9 +1199,8 @@ namespace EImece.Controllers
 
         public async Task<ActionResult> ShoppingWithoutAccountResult(PaymentCallbackRequest model, String o, String orderNumber)
         {
-            PaymentLogger.Info("Entering ShoppingWithoutAccountResult action.");
             PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
-            PaymentLogger.Info($"ShoppingWithoutAccountResult status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
+            PaymentLogger.Info("Entering ShoppingWithoutAccountResult action. Status: {0} ConversationId: {1}", paymentResult.PaymentStatus, paymentResult.ConversationId);
 
             if (!IsSuccessfulPayment(paymentResult))
             {
@@ -1228,8 +1228,8 @@ namespace EImece.Controllers
             var existingOrder = await FindExistingPaidOrderAsync(paymentResult.PaymentId, orderGuid);
             if (existingOrder != null)
             {
-                TempData["LastCompletedOrderId"] = existingOrder.Id;
-                return RedirectToAction("ThankYouForYourOrder", new { orderId = existingOrder.Id });
+                TempData[LastCompletedOrderIdKey] = existingOrder.Id;
+                return RedirectToAction(ThankYouForYourOrderAction, new { orderId = existingOrder.Id });
             }
 
             var item = await ShoppingCartService.GetShoppingCartByOrderGuidAsync(orderGuid);
@@ -1241,7 +1241,7 @@ namespace EImece.Controllers
             }
 
             BuyWithNoAccountCreation buyWithNoAccountCreation = JsonConvert.DeserializeObject<BuyWithNoAccountCreation>(item.ShoppingCartJson);
-            PaymentLogger.Info("Deserialized BuyWithNoAccountCreation model from shopping cart.");
+            PaymentLogger.Debug("Deserialized BuyWithNoAccountCreation model from shopping cart.");
             if (buyWithNoAccountCreation.ShoppingCartItems.IsEmpty())
             {
                 PaymentLogger.Error("ShoppingCartItem or Product is null in buyWithNoAccountCreation model.");
@@ -1263,19 +1263,19 @@ namespace EImece.Controllers
             buyWithNoAccountCreation.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
             buyWithNoAccountCreation.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
             buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
-            PaymentLogger.Info("Updated buyWithNoAccountCreation model with cargo and language details.");
+            PaymentLogger.Debug("Updated buyWithNoAccountCreation model with cargo and language details.");
 
             var resolvedOrderNumber = string.IsNullOrWhiteSpace(paymentResult.ConversationId)
                 ? orderNumber
                 : paymentResult.ConversationId;
             var order = await ShoppingCartService.SaveBuyWithNoAccountCreationAsync(resolvedOrderNumber, buyWithNoAccountCreation, paymentResult);
-            PaymentLogger.Info($"Order saved with ID: {order.Id}");
+            PaymentLogger.Info($"Order saved with ID: {order.Id}. Cleared cart. Redirecting to ThankYouForYourOrder.");
             await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
             await ClearBuyWithNoAccountCreationAsync(buyWithNoAccountCreation);
             await ClearCartAsync(shoppingCart);
-            PaymentLogger.Info("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
-            TempData["LastCompletedOrderId"] = order.Id;
-            return RedirectToAction("ThankYouForYourOrder", new { orderId = order.Id });
+            PaymentLogger.Debug("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
+            TempData[LastCompletedOrderIdKey] = order.Id;
+            return RedirectToAction(ThankYouForYourOrderAction, new { orderId = order.Id });
         }
 
         private async Task ClearBuyWithNoAccountCreationAsync(BuyWithNoAccountCreation buyWithNoAccountCreation)
@@ -1314,7 +1314,7 @@ namespace EImece.Controllers
                 && paymentResult.PaymentStatus.Equals(Domain.Constants.SUCCESS, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private ActionResult ValidatePaymentBinding(PaymentResultDto paymentResult, string orderGuid, string orderNumber)
+        private static ActionResult ValidatePaymentBinding(PaymentResultDto paymentResult, string orderGuid, string orderNumber)
         {
             if (string.IsNullOrWhiteSpace(orderGuid))
             {

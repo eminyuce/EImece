@@ -704,28 +704,13 @@ namespace EImece.Domain.Helpers
 
             if (type == typeof(DateTime) || raw is DateTime)
             {
-                var dtValue = (DateTime)raw;
-                if (dtValue.TimeOfDay.TotalSeconds == 0)
-                {
-                    return dtValue.ToString("dd.MM.yyyy", culture);
-                }
-                return dtValue.ToString("dd.MM.yyyy HH:mm:ss", culture);
+                return FormatReportCsvDateTime((DateTime)raw, culture);
             }
 
             if (type == typeof(decimal) || type == typeof(double) || type == typeof(float)
                 || raw is decimal || raw is double || raw is float)
             {
-                decimal number = System.Convert.ToDecimal(raw, System.Globalization.CultureInfo.InvariantCulture);
-                string name = column != null ? column.ColumnName : string.Empty;
-                if (!string.IsNullOrEmpty(name)
-                    && (name.IndexOf("Count", StringComparison.OrdinalIgnoreCase) >= 0
-                        || name.IndexOf("Quantity", StringComparison.OrdinalIgnoreCase) >= 0
-                        || name.IndexOf("Installment", StringComparison.OrdinalIgnoreCase) >= 0))
-                {
-                    return number.ToString("0", culture);
-                }
-                // Money / totals: always 2 decimal places (tr-TR → 485,00)
-                return number.ToString("0.00", culture);
+                return FormatReportCsvNumber(raw, column, culture);
             }
 
             if (type == typeof(bool) || raw is bool)
@@ -734,6 +719,32 @@ namespace EImece.Domain.Helpers
             }
 
             return System.Convert.ToString(raw, culture) ?? string.Empty;
+        }
+
+        private static string FormatReportCsvDateTime(DateTime dtValue, System.Globalization.CultureInfo culture)
+        {
+            if (dtValue.TimeOfDay.TotalSeconds == 0)
+            {
+                return dtValue.ToString("dd.MM.yyyy", culture);
+            }
+
+            return dtValue.ToString("dd.MM.yyyy HH:mm:ss", culture);
+        }
+
+        private static string FormatReportCsvNumber(object raw, DataColumn column, System.Globalization.CultureInfo culture)
+        {
+            decimal number = System.Convert.ToDecimal(raw, System.Globalization.CultureInfo.InvariantCulture);
+            string name = column != null ? column.ColumnName : string.Empty;
+            if (!string.IsNullOrEmpty(name)
+                && (name.IndexOf("Count", StringComparison.OrdinalIgnoreCase) >= 0
+                    || name.IndexOf("Quantity", StringComparison.OrdinalIgnoreCase) >= 0
+                    || name.IndexOf("Installment", StringComparison.OrdinalIgnoreCase) >= 0))
+            {
+                return number.ToString("0", culture);
+            }
+
+            // Money / totals: always 2 decimal places (tr-TR → 485,00)
+            return number.ToString("0.00", culture);
         }
 
         public static byte[] GetExcelByteArrayFromDataTable(DataTable dt)

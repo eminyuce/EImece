@@ -109,12 +109,9 @@ namespace EImece.Domain.DependencyInjection
             }
 
             // Interface / base-type [Inject] properties map to the concrete being built.
-            foreach (var kvp in tracker)
+            foreach (var kvp in tracker.Where(pair => serviceType.IsAssignableFrom(pair.Key)))
             {
-                if (serviceType.IsAssignableFrom(kvp.Key))
-                {
-                    return kvp.Value;
-                }
+                return kvp.Value;
             }
 
             return null;
@@ -162,7 +159,7 @@ namespace EImece.Domain.DependencyInjection
 
         private static void InvokeConstructor(object instance, Type implementationType, IServiceProvider provider)
         {
-            var ctor = SelectConstructor(implementationType, provider);
+            var ctor = SelectConstructor(implementationType);
             if (ctor == null)
             {
                 return;
@@ -205,7 +202,7 @@ namespace EImece.Domain.DependencyInjection
         /// Picks the greediest public constructor whose parameters are DI services or optional,
         /// matching <see cref="ActivatorUtilities"/> (skips ctors with bool/string/primitive deps).
         /// </summary>
-        private static ConstructorInfo SelectConstructor(Type type, IServiceProvider provider)
+        private static ConstructorInfo SelectConstructor(Type type)
         {
             var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
             if (constructors.Length == 0)
@@ -263,10 +260,13 @@ namespace EImece.Domain.DependencyInjection
                 var props = new List<PropertyInfo>();
                 for (var current = t; current != null && current != typeof(object); current = current.BaseType)
                 {
+                    // NonPublic is required: [Inject] may be on private/protected properties, including on base types.
+#pragma warning disable S3011 // Reflection must reach non-public [Inject] members on base types
                     props.AddRange(
                         current.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
                             .Where(p => p.CanWrite && p.GetIndexParameters().Length == 0
                                         && p.IsDefined(typeof(InjectAttribute), inherit: true)));
+#pragma warning restore S3011
                 }
 
                 return props.ToArray();
@@ -280,10 +280,13 @@ namespace EImece.Domain.DependencyInjection
                 var fields = new List<FieldInfo>();
                 for (var current = t; current != null && current != typeof(object); current = current.BaseType)
                 {
+                    // NonPublic is required: [Inject] may be on private/protected fields, including on base types.
+#pragma warning disable S3011 // Reflection must reach non-public [Inject] members on base types
                     fields.AddRange(
                         current.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
                             .Where(f => !f.IsInitOnly && !f.IsLiteral
                                         && f.IsDefined(typeof(InjectAttribute), inherit: true)));
+#pragma warning restore S3011
                 }
 
                 return fields.ToArray();

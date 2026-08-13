@@ -212,7 +212,9 @@ namespace EImece.Domain.Observability.Http
                         retryCount,
                         CorrelationIdContext.Current,
                         Activity.Current?.TraceId.ToString());
-                    throw;
+                    throw new HttpRequestException(
+                        "HTTP " + request.Method.Method + " " + operation + " failed after " + stopwatch.ElapsedMilliseconds + "ms.",
+                        ex);
                 }
             }
         }

@@ -20,6 +20,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
+        private const string ContentIdKey = "contentId";
         private FilesHelper filesHelper;
 
         private Dictionary<string, string> CurrentSelectedModul
@@ -51,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var currentSelectedModul = new Dictionary<string, string>();
-            currentSelectedModul.Add("contentId", contentId + "");
+            currentSelectedModul.Add(ContentIdKey, contentId + "");
             currentSelectedModul.Add("mod", mod);
             currentSelectedModul.Add("imageType", imageType);
             CurrentSelectedModul = currentSelectedModul;
@@ -130,7 +131,7 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateJsonAntiForgeryToken]
         public async Task<JsonResult> Upload()
         {
-            int Id = Request.Form["contentId"].ToInt();
+            int Id = Request.Form[ContentIdKey].ToInt();
             var imageType = EnumHelper.Parse<EImeceImageType>(Request.Form["imageType"].ToStr());
             var mod = EnumHelper.Parse<MediaModType>(Request.Form["mod"].ToStr());
             int imageHeight = Request.Form["imageHeight"].ToInt();
@@ -193,7 +194,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                int contentId = CurrentSelectedModul["contentId"].ToInt();
+                int contentId = CurrentSelectedModul[ContentIdKey].ToInt();
                 var returnModel = new MediaAdminIndexModel();
                 MediaModType? enumMod = EnumHelper.Parse<MediaModType>(CurrentSelectedModul["mod"]);
                 EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(CurrentSelectedModul["imageType"]);
@@ -203,7 +204,7 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction(IndexAction,
                     new
                     {
-                        contentId = CurrentSelectedModul["contentId"],
+                        contentId = CurrentSelectedModul[ContentIdKey],
                         mod = CurrentSelectedModul["mod"],
                         imageType = CurrentSelectedModul["imageType"]
                     }
@@ -216,7 +217,7 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction(IndexAction,
                     new
                     {
-                        contentId = CurrentSelectedModul["contentId"],
+                        contentId = CurrentSelectedModul[ContentIdKey],
                         mod = CurrentSelectedModul["mod"],
                         imageType = CurrentSelectedModul["imageType"]
                     }

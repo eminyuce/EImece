@@ -24,6 +24,7 @@ namespace EImece.Controllers
     public class ProductsController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string ErrorKey = "Error";
         private readonly IProductCommentService productCommentService;
 
         [Inject]
@@ -69,7 +70,7 @@ namespace EImece.Controllers
             products.RecordPerPage = AppConfig.RecordPerPage;
 
             Logger.Info($"Retrieved {products.Products.Count} of {products.Products.TotalCount} products for page: {page}");
-            Logger.Info("Returning Index view.");
+            Logger.Debug("Returning Index view.");
             return View(products);
         }
 
@@ -91,7 +92,7 @@ namespace EImece.Controllers
             {
                 Logger.Error("Product ID is null or empty.");
                 Logger.Info("Redirecting to BadRequest error page.");
-                return RedirectToAction("BadRequest", "Error");
+                return RedirectToAction("BadRequest", ErrorKey);
             }
             try
             {
@@ -105,12 +106,12 @@ namespace EImece.Controllers
                 if (product == null || product.Product == null || !product.Product.IsActive)
                 {
                     Logger.Info($"Product with ID: {productId} is null or inactive. Redirecting to NotFound error page.");
-                    return RedirectToAction("NotFound", "Error");
+                    return RedirectToAction("NotFound", ErrorKey);
                 }
                 if (product.Product.ProductCategory == null || !product.Product.ProductCategory.IsActive)
                 {
                     Logger.Info($"ProductCategory for product ID: {productId} is null or inactive. Redirecting to NotFound error page.");
-                    return RedirectToAction("NotFound", "Error");
+                    return RedirectToAction("NotFound", ErrorKey);
                 }
                 ViewBag.SeoId = product.Product.GetSeoUrl();
                 product.Page = page;
@@ -124,8 +125,8 @@ namespace EImece.Controllers
             }
             catch (ArgumentNullException ex)
             {
-                Logger.Info($"Product not found for id '{id}': {ex.Message}. Redirecting to NotFound.");
-                return RedirectToAction("NotFound", "Error");
+                Logger.Info(ex, "Product not found for id '{0}'. Redirecting to NotFound.", id);
+                return RedirectToAction("NotFound", ErrorKey);
             }
             catch (Exception e)
             {

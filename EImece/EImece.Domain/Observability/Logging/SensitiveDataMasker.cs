@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 
 namespace EImece.Domain.Observability.Logging
@@ -7,27 +8,33 @@ namespace EImece.Domain.Observability.Logging
         // Use \S+ for values (Mono mishandles \s inside some character classes).
         private static readonly Regex PasswordPattern = new Regex(
             @"\b(password|pwd|secret|token|apikey|api_key|connectionstring|connection_string)\s*[:=]\s*\S+",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         private static readonly Regex AuthorizationBearerPattern = new Regex(
             @"\bauthorization\s*[:=]\s*Bearer\s+\S+",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         private static readonly Regex BearerPattern = new Regex(
             @"Bearer\s+\S+",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         private static readonly Regex CardNumberPattern = new Regex(
             @"\b(?:\d[ -]*?){13,19}\b",
-            RegexOptions.Compiled);
+            RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         private static readonly Regex Cv2Pattern = new Regex(
             @"\b(cvc|cvv|cv2)\s*[:=]\s*\d{3,4}\b",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         private static readonly Regex ConnectionStringPattern = new Regex(
             @"(Password|Pwd|User ID|UserId|AccountKey|SharedAccessKey)\s*=\s*[^;""'\s]+",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         public static string Mask(string value)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
 
 namespace EImece.Domain.Observability.Configuration
 {
@@ -142,12 +143,9 @@ namespace EImece.Domain.Observability.Configuration
                 return null;
             }
 
-            foreach (var value in values)
+            foreach (var value in values.Where(v => !string.IsNullOrWhiteSpace(v)))
             {
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    return value.Trim();
-                }
+                return value.Trim();
             }
 
             return null;

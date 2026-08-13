@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Linq;
 using System.Reflection;
 
 namespace EImece.Domain.Helpers
@@ -109,15 +110,13 @@ namespace EImece.Domain.Helpers
                     "Set '" + EnvironmentVariableName + "' or provide a real connection string in configuration.");
             }
 
-            foreach (var marker in PlaceholderMarkers)
+            foreach (var marker in PlaceholderMarkers.Where(m =>
+                connectionString.IndexOf(m, StringComparison.OrdinalIgnoreCase) >= 0))
             {
-                if (connectionString.IndexOf(marker, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    throw new ConfigurationErrorsException(
-                        "Database connection string '" + connectionName + "' still contains placeholder value '" + marker + "'. " +
-                        "Replace placeholders with real values via environment variable '" + EnvironmentVariableName + "' " +
-                        "or a gitignored ConnectionStrings.config. See docs/SECURE_CONNECTION_STRINGS.md.");
-                }
+                throw new ConfigurationErrorsException(
+                    "Database connection string '" + connectionName + "' still contains placeholder value '" + marker + "'. " +
+                    "Replace placeholders with real values via environment variable '" + EnvironmentVariableName + "' " +
+                    "or a gitignored ConnectionStrings.config. See docs/SECURE_CONNECTION_STRINGS.md.");
             }
 
             return connectionString;
@@ -137,10 +136,12 @@ namespace EImece.Domain.Helpers
                     "(placeholder value is fine; the environment variable supplies the real secret).");
             }
 
-            // ConnectionStringSettings is read-only after config load; clear the internal flag.
+            // NonPublic is required: ConfigurationElement._bReadOnly is a private field that must be cleared after config load.
+#pragma warning disable S3011 // Must clear private ConfigurationElement._bReadOnly after loading connection strings
             var readOnlyField = typeof(ConfigurationElement).GetField(
                 "_bReadOnly",
                 BindingFlags.Instance | BindingFlags.NonPublic);
+#pragma warning restore S3011
             if (readOnlyField != null)
             {
                 readOnlyField.SetValue(settings, false);

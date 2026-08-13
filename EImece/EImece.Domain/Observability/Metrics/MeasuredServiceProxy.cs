@@ -16,8 +16,10 @@ namespace EImece.Domain.Observability.Metrics
     public sealed class MeasuredServiceProxy : RealProxy
     {
         // RealProxy must bind the private generic Task<T> wrapper via reflection; NonPublic is required.
+#pragma warning disable S3011 // RealProxy must bind the private generic Task<T> wrapper
         private static readonly MethodInfo WrapTaskOfTDefinition =
             typeof(MeasuredServiceProxy).GetMethod(nameof(WrapTaskOfT), BindingFlags.NonPublic | BindingFlags.Instance);
+#pragma warning restore S3011
 
         private readonly object _target;
         private readonly IApplicationMetrics _metrics;

@@ -119,17 +119,20 @@ namespace EImece.Domain.Observability
             {
                 _tracerProvider?.Shutdown();
             }
-            catch
+            catch (Exception ex)
             {
-                // Best-effort during AppDomain recycle.
+                // Intentionally ignored: best-effort TracerProvider shutdown during AppDomain recycle.
+                System.Diagnostics.Debug.WriteLine(ex);
             }
 
             try
             {
                 _meterProvider?.Shutdown();
             }
-            catch
+            catch (Exception ex)
             {
+                // Intentionally ignored: best-effort MeterProvider shutdown during AppDomain recycle.
+                System.Diagnostics.Debug.WriteLine(ex);
             }
 
             _tracerProvider?.Dispose();

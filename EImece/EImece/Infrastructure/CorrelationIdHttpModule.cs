@@ -81,8 +81,9 @@ namespace EImece.Infrastructure
                     application.Response.Headers[CorrelationIdContext.HeaderName] = correlationId;
                 }
             }
-            catch (HttpException)
+            catch (Exception)
             {
+                // Headers may be restricted for some pipeline stages; Items still hold the value.
             }
         }
     }
