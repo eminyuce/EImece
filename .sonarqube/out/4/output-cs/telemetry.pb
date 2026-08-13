@@ -1,1 +1,0 @@
-`RRC:\Users\eminy\source\repos\EImece\EImece\EImece.MyConsole\EImece.MyConsole.csprojò	CSharp7_3

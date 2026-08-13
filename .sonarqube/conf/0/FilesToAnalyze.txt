@@ -1,5 +1,0 @@
-﻿C:\Users\eminy\source\repos\EImece\EImece\Resources\Properties\AssemblyInfo.cs
-C:\Users\eminy\source\repos\EImece\EImece\Resources\AdminResource.resx
-C:\Users\eminy\source\repos\EImece\EImece\Resources\Resource.resx
-C:\Users\eminy\source\repos\EImece\EImece\Resources\App.config
-C:\Users\eminy\source\repos\EImece\EImece\Resources\packages.config

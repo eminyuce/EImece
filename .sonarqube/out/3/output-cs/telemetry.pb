@@ -1,1 +1,0 @@
-XRJC:\Users\eminy\source\repos\EImece\EImece\EImece.Tests\EImece.Tests.csprojò	CSharp7_3
