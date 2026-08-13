@@ -715,6 +715,23 @@ body.admin-app .grid-table td .gridNotActiveIcon:not(.eg-status-icon) {
     justify-content: flex-end;
 }
 
+.eg-actions-compact.eg-actions-single {
+    display: inline-flex;
+    align-items: center;
+}
+
+.eg-actions-compact.eg-actions-single .btn {
+    height: 30px;
+    min-height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 @media (max-width: 767px) {
     .eg-actions,
     .eg-actions.btn-group {

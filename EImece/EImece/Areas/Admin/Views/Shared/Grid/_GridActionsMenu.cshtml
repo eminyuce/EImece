@@ -35,16 +35,20 @@
         && product.ProductCategory.TemplateId > 0;
     var hasComments = product != null && product.ProductComments.IsNotEmpty();
     var hasDelete = showDelete && UserRoleHelper.IsDeletedEnableRoles();
-    var hasMenuItems = !string.IsNullOrEmpty(detailUrl)
-        || !string.IsNullOrEmpty(ordersUrl)
-        || showMedia
-        || (showEdit && !string.IsNullOrEmpty(editUrl))
-        || hasSpecs
-        || hasComments
-        || !string.IsNullOrEmpty(forgotPasswordUrl)
-        || !string.IsNullOrEmpty(newPasswordUrl)
-        || !string.IsNullOrEmpty(rolesUrl)
-        || hasDelete;
+    var hasEdit = showEdit && !string.IsNullOrEmpty(editUrl);
+    var actionCount = 0;
+    if (!string.IsNullOrEmpty(detailUrl)) { actionCount++; }
+    if (!string.IsNullOrEmpty(ordersUrl)) { actionCount++; }
+    if (showMedia) { actionCount++; }
+    if (hasEdit) { actionCount++; }
+    if (hasSpecs) { actionCount++; }
+    if (hasComments) { actionCount++; }
+    if (!string.IsNullOrEmpty(forgotPasswordUrl)) { actionCount++; }
+    if (!string.IsNullOrEmpty(newPasswordUrl)) { actionCount++; }
+    if (!string.IsNullOrEmpty(rolesUrl)) { actionCount++; }
+    if (hasDelete) { actionCount++; }
+    var isSingleAction = actionCount == 1;
+    var hasMenuItems = actionCount > 0;
 
     var deleteMenuVd = new ViewDataDictionary(ViewData);
     deleteMenuVd["ItemId"] = itemId;
@@ -61,6 +65,8 @@
     deleteCompactVd["gridDeleteText"] = ViewData["gridDeleteText"].ToStr(AdminResource.GridDeleteText);
 }
 @if (hasMenuItems)
+{
+if (!isSingleAction)
 {
 <div class="eg-actions btn-group">
     <button type="button"
@@ -97,7 +103,7 @@
                 </a>
             </li>
         }
-        @if (showEdit && !string.IsNullOrEmpty(editUrl))
+        @if (hasEdit)
         {
             <li>
                 <a href="@editUrl">
@@ -155,7 +161,8 @@
         }
     </ul>
 </div>
-<div class="eg-actions-compact" aria-hidden="true">
+}
+<div class="eg-actions-compact@(isSingleAction ? " eg-actions-single" : "")" aria-hidden="@(isSingleAction ? "false" : "true")">
     @if (!string.IsNullOrEmpty(detailUrl))
     {
         <a href="@detailUrl" class="btn btn-info btn-xs" title="@detailText">
@@ -175,10 +182,14 @@
             <i class="glyphicon glyphicon-camera"></i>
         </a>
     }
-    @if (showEdit && !string.IsNullOrEmpty(editUrl))
+    @if (hasEdit)
     {
         <a href="@editUrl" class="btn btn-primary btn-xs" title="@AdminResource.GridEditText">
             <i class="glyphicon glyphicon-pencil"></i>
+            @if (isSingleAction)
+            {
+                <span>@AdminResource.GridEditText</span>
+            }
         </a>
     }
     @if (hasSpecs)
@@ -190,7 +201,7 @@
     }
     @if (hasDelete)
     {
-        @Html.Partial("pDeleteModal", deleteCompactVd)
+        @Html.Partial("pDeleteModal", isSingleAction ? deleteMenuVd : deleteCompactVd)
     }
     @if (hasComments)
     {
