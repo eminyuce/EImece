@@ -180,8 +180,48 @@
 <div class="container pb-4">
     <div class="row">
         <div class="col-lg-7">
+            @{
+                // Prefer resize-proxy URLs (handles seed placeholders without filename dumps).
+                // Avoid static /media/images/{FileName} which may still be on-disk seed art.
+                var mainDisplaySrc = !string.IsNullOrEmpty(mainImageImgSrcUrl)
+                    ? mainImageImgSrcUrl
+                    : EImece.Domain.AppConfig.GetDefaultImage("w610h610");
+                var defaultImageSrc = EImece.Domain.AppConfig.GetDefaultImage("w610h610");
+                var lightboxId = "prodGalleryLightbox";
+                var lightboxCarouselId = lightboxId + "Carousel";
+                var gallerySlides = new List<Tuple<string, string, string>>();
+                if (product.ImageState && productMainImageId > 0)
+                {
+                    var mainLargeSrc = product.GetCroppedImageUrl(productMainImageId, 0, 0);
+                    if (string.IsNullOrEmpty(mainLargeSrc))
+                    {
+                        mainLargeSrc = mainDisplaySrc;
+                    }
+                    gallerySlides.Add(Tuple.Create(mainDisplaySrc, mainLargeSrc, product.Name ?? ""));
+                }
+                else
+                {
+                    gallerySlides.Add(Tuple.Create(defaultImageSrc, defaultImageSrc, product.Name ?? ""));
+                }
+                foreach (var f in productFiles)
+                {
+                    var displaySrc = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
+                    if (string.IsNullOrEmpty(displaySrc))
+                    {
+                        continue;
+                    }
+                    var largeSrc = f.GetCroppedImageUrl(f.FileStorageId, 0, 0);
+                    if (string.IsNullOrEmpty(largeSrc))
+                    {
+                        largeSrc = displaySrc;
+                    }
+                    var alt = !string.IsNullOrEmpty(f.Name) ? f.Name : (product.Name ?? "");
+                    gallerySlides.Add(Tuple.Create(displaySrc, largeSrc, alt));
+                }
+                var useLightbox = gallerySlides.Count > 0;
+            }
             <!-- Product gallery-->
-            <div class="product-gallery">
+            <div class="product-gallery" @if (useLightbox) { <text>data-pt-lightbox="@lightboxId"</text> }>
                 <ul class="product-thumbnails">
                     @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgSrc))
                     {
@@ -213,46 +253,66 @@
                     }
                 </ul>
                 <div class="product-carousel owl-carousel">
-                    @{
-                        // Prefer resize-proxy URLs (handles seed placeholders without filename dumps).
-                        // Avoid static /media/images/{FileName} which may still be on-disk seed art.
-                        var mainDisplaySrc = !string.IsNullOrEmpty(mainImageImgSrcUrl)
-                            ? mainImageImgSrcUrl
-                            : EImece.Domain.AppConfig.GetDefaultImage("w610h610");
-                    }
-                    @if (product.ImageState && productMainImageId > 0)
+                    @for (int i = 0; i < gallerySlides.Count; i++)
                     {
-                        <a href="@mainDisplaySrc" data-fancybox="prod-gallery" data-hash="one" class="crizal-product-media">
-                            <img src="@mainDisplaySrc"
+                        var slide = gallerySlides[i];
+                        var hash = "one";
+                        if (i > 0)
+                        {
+                            hash = (i - 1) < Constants.NumbersArr.Length
+                                ? Constants.NumbersArr.ElementAt(i - 1)
+                                : ("img" + (i + 1));
+                        }
+                        <a href="@slide.Item2"
+                           data-hash="@hash"
+                           class="crizal-product-media"
+                           @if (useLightbox) { <text>data-pt-slide="@i"</text> }>
+                            <img src="@slide.Item1"
                                  width="610"
                                  height="610"
-                                 alt="@product.Name"
-                                 loading="eager"
+                                 alt="@slide.Item3"
+                                 loading="@(i == 0 ? "eager" : "lazy")"
                                  decoding="async" />
                         </a>
                     }
-                    else
-                    {
-                        <a href="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" data-fancybox="prod-gallery" data-hash="one" class="crizal-product-media">
-                            <img src="@EImece.Domain.AppConfig.GetDefaultImage("w610h610")" width="610" height="610" alt="@product.Name" loading="eager" decoding="async">
-                        </a>
-                    }
-                    @for (int i = 0; i < productFiles.Count; i++)
-                    {
-                        var f = productFiles[i];
-                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
-                        if (!string.IsNullOrEmpty(imgTag))
-                        {
-                            <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))" class="crizal-product-media">
-                                <img src="@imgTag"
-                                     alt=""
-                                     loading="lazy"
-                                     decoding="async" />
-                            </a>
-                        }
-                    }
                 </div>
             </div>
+            @if (useLightbox)
+            {
+                <div class="modal fade pt-lightbox" id="@lightboxId" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <button type="button" class="pt-lightbox__close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">&times;</button>
+                            <div class="modal-body p-0">
+                                <div id="@lightboxCarouselId" class="carousel slide" data-bs-interval="false" data-interval="false">
+                                    <div class="carousel-inner">
+                                        @for (int i = 0; i < gallerySlides.Count; i++)
+                                        {
+                                            var slide = gallerySlides[i];
+                                            <div class="carousel-item@(i == 0 ? " active" : "")">
+                                                <img src="@slide.Item2" class="pt-lightbox__img" alt="@slide.Item3" />
+                                            </div>
+                                        }
+                                    </div>
+                                    @if (gallerySlides.Count > 1)
+                                    {
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#@lightboxCarouselId" data-bs-slide="prev" data-target="#@lightboxCarouselId" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="pt-lightbox__nav-label">Önceki</span>
+                                            <span class="visually-hidden sr-only">Önceki</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#@lightboxCarouselId" data-bs-slide="next" data-target="#@lightboxCarouselId" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="pt-lightbox__nav-label">Sonraki</span>
+                                            <span class="visually-hidden sr-only">Sonraki</span>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
         <!-- Product details -->
         <div class="col-lg-5 pt-4 pt-lg-0">

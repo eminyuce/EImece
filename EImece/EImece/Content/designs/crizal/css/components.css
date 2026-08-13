@@ -2015,6 +2015,23 @@ body[data-design="crizal"] .product-gallery .product-carousel a {
     display: block;
 }
 
+body[data-design="crizal"] .product-gallery .product-carousel a[data-pt-slide] {
+    cursor: zoom-in;
+}
+
+body[data-design="crizal"] .product-gallery .product-carousel a[data-pt-slide]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 33, 43, 0);
+    transition: background 0.2s ease;
+    pointer-events: none;
+}
+
+body[data-design="crizal"] .product-gallery .product-carousel a[data-pt-slide]:hover::after {
+    background: rgba(20, 33, 43, 0.18);
+}
+
 body[data-design="crizal"] .product-gallery .product-carousel img {
     display: block;
     width: 100%;
@@ -3086,6 +3103,11 @@ body[data-design="crizal"] .crizal-story-detail__hero img {
     max-height: min(26rem, 48vh);
     object-fit: cover;
     object-position: center 60%;
+}
+
+body[data-design="crizal"] .crizal-story-detail__gallery {
+    margin-top: 1.75rem;
+    margin-bottom: 1.5rem;
 }
 
 body[data-design="crizal"] .crizal-story-gallery {

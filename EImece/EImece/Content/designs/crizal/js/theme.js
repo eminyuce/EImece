@@ -365,7 +365,7 @@
     }
 
     function initPageThemeLightbox() {
-        document.querySelectorAll('.pt-gallery[data-pt-lightbox]').forEach(function (gallery) {
+        document.querySelectorAll('[data-pt-lightbox]').forEach(function (gallery) {
             var modalId = gallery.getAttribute('data-pt-lightbox');
             var modalEl = document.getElementById(modalId);
             if (!modalEl) {
@@ -374,15 +374,27 @@
             var carouselEl = modalEl.querySelector('.carousel');
 
             var pendingIdx = 0;
+            var pointerStart = null;
             modalEl.addEventListener('shown.bs.modal', function () {
                 if (carouselEl && window.bootstrap && window.bootstrap.Carousel) {
                     window.bootstrap.Carousel.getOrCreateInstance(carouselEl, { interval: false }).to(pendingIdx);
                 }
             });
 
+            gallery.addEventListener('pointerdown', function (e) {
+                pointerStart = { x: e.clientX, y: e.clientY };
+            });
+
             gallery.addEventListener('click', function (e) {
                 var item = e.target.closest('[data-pt-slide]');
                 if (!item || !gallery.contains(item)) {
+                    return;
+                }
+                if (item.closest('.product-thumbnails')) {
+                    return;
+                }
+                if (pointerStart && (Math.abs(e.clientX - pointerStart.x) > 8 || Math.abs(e.clientY - pointerStart.y) > 8)) {
+                    e.preventDefault();
                     return;
                 }
                 e.preventDefault();
@@ -411,6 +423,9 @@
         });
 
         function showLightbox(modalEl, carouselEl, idx) {
+            if (modalEl.parentElement !== document.body) {
+                document.body.appendChild(modalEl);
+            }
             if (window.bootstrap && window.bootstrap.Modal) {
                 if (carouselEl && window.bootstrap.Carousel) {
                     window.bootstrap.Carousel.getOrCreateInstance(carouselEl, { interval: false }).to(idx);

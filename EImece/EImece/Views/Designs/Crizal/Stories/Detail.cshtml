@@ -10,7 +10,13 @@
     ViewBag.Title = story.GetSeoTitle();
     ViewBag.Description = story.GetSeoDescription();
     ViewBag.Keywords = story.GetSeoKeywords();
-    var storyFiles = story.StoryFiles != null ? story.StoryFiles.ToList() : new List<StoryFile>();
+    var storyFiles = (story.StoryFiles ?? Enumerable.Empty<StoryFile>())
+        .Where(f => f != null && (f.FileStorage == null || f.FileStorage.IsActive))
+        .OrderBy(f => f.FileStorage != null ? f.FileStorage.Position : f.Position)
+        .ThenBy(f => f.Position)
+        .ToList();
+    var lightboxId = "storyGalleryLightbox";
+    var lightboxCarouselId = lightboxId + "Carousel";
     var storyTags = (story.StoryTags ?? Enumerable.Empty<StoryTag>())
         .Where(r => r.Tag != null)
         .Select(r => r.Tag)
@@ -153,46 +159,109 @@
                     </div>
                 </header>
 
-                @if (!string.IsNullOrEmpty(heroUrl))
-                {
-                    <figure class="crizal-story-detail__hero">
-                        <img src="@heroUrl"
-                             alt="@story.Name"
-                             width="1200"
-                             height="675"
-                             loading="eager"
-                             fetchpriority="high"
-                             decoding="async" />
-                    </figure>
-                }
-                else if (storyFiles.IsNotEmpty())
-                {
-                    var first = storyFiles[0];
-                    var firstUrl = first.GetCroppedImageUrl(first.FileStorageId, 1200, 675);
-                    <figure class="crizal-story-detail__hero">
-                        <img src="@firstUrl" alt="@first.Name" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async" />
-                    </figure>
-                }
-
-                @* When a cover/hero image exists, keep the article focused on one visual plane.
-                   Extra story files are only shown when there is no dedicated hero. *@
-                @if (string.IsNullOrEmpty(heroUrl) && storyFiles.Count > 1)
-                {
-                    <div class="crizal-story-gallery">
-                        @foreach (var file in storyFiles.Skip(1))
+                @{
+                    var galleryFiles = storyFiles;
+                    if (!string.IsNullOrEmpty(heroUrl))
+                    {
+                        var heroLarge = story.GetCroppedImageUrl(heroImageId, 0, 0);
+                        if (string.IsNullOrEmpty(heroLarge))
                         {
-                            var imgTag = file.GetCroppedImageUrl(file.FileStorageId, 800, 600);
-                            var thumbTag = file.GetCroppedImageUrl(file.FileStorageId, 400, 280);
-                            <a class="crizal-story-gallery__item" href="@imgTag" data-fancybox="blogGallery" data-caption="@file.Name">
-                                <img src="@thumbTag" alt="@file.Name" loading="lazy" decoding="async" />
-                            </a>
+                            heroLarge = heroUrl;
                         }
-                    </div>
+                        <figure class="crizal-story-detail__hero">
+                            <a href="@heroLarge" class="pt-hero__zoom" data-pt-lightbox-single>
+                                <img src="@heroUrl"
+                                     alt="@story.Name"
+                                     width="1200"
+                                     height="675"
+                                     loading="eager"
+                                     fetchpriority="high"
+                                     decoding="async" />
+                            </a>
+                        </figure>
+                    }
+                    else if (storyFiles.IsNotEmpty())
+                    {
+                        var first = storyFiles[0];
+                        var firstUrl = first.GetCroppedImageUrl(first.FileStorageId, 1200, 675);
+                        var firstLarge = first.GetCroppedImageUrl(first.FileStorageId, 0, 0);
+                        if (string.IsNullOrEmpty(firstLarge))
+                        {
+                            firstLarge = firstUrl;
+                        }
+                        <figure class="crizal-story-detail__hero">
+                            <a href="@firstLarge" class="pt-hero__zoom" data-pt-lightbox-single>
+                                <img src="@firstUrl" alt="@first.Name" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async" />
+                            </a>
+                        </figure>
+                        galleryFiles = storyFiles.Skip(1).ToList();
+                    }
                 }
 
                 <div class="crizal-story-detail__content post-content">
                     @Html.Raw(story.Description)
                 </div>
+
+                @if (galleryFiles.IsNotEmpty())
+                {
+                    <div class="row pt-gallery crizal-story-detail__gallery" data-pt-lightbox="@lightboxId">
+                        @for (int i = 0; i < galleryFiles.Count; i++)
+                        {
+                            var file = galleryFiles[i];
+                            var thumbSrc = file.GetCroppedImageUrl(file.FileStorageId, 300, 300);
+                            var largeSrc = file.GetCroppedImageUrl(file.FileStorageId, 0, 0);
+                            if (string.IsNullOrEmpty(largeSrc))
+                            {
+                                largeSrc = file.GetCroppedImageUrl(file.FileStorageId, 800, 600);
+                            }
+                            var alt = !string.IsNullOrEmpty(file.Name) ? file.Name : story.Name;
+                            <div class="col-6 col-md-3">
+                                <a href="@largeSrc" class="pt-gallery__item" data-pt-slide="@i">
+                                    <img src="@thumbSrc" class="img-thumbnail rounded" alt="@alt" loading="lazy" decoding="async" />
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <div class="modal fade pt-lightbox" id="@lightboxId" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <button type="button" class="pt-lightbox__close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">&times;</button>
+                                <div class="modal-body p-0">
+                                    <div id="@lightboxCarouselId" class="carousel slide" data-bs-interval="false" data-interval="false">
+                                        <div class="carousel-inner">
+                                            @for (int i = 0; i < galleryFiles.Count; i++)
+                                            {
+                                                var file = galleryFiles[i];
+                                                var largeSrc = file.GetCroppedImageUrl(file.FileStorageId, 0, 0);
+                                                if (string.IsNullOrEmpty(largeSrc))
+                                                {
+                                                    largeSrc = file.GetCroppedImageUrl(file.FileStorageId, 800, 600);
+                                                }
+                                                var alt = !string.IsNullOrEmpty(file.Name) ? file.Name : story.Name;
+                                                <div class="carousel-item@(i == 0 ? " active" : "")">
+                                                    <img src="@largeSrc" class="pt-lightbox__img" alt="@alt" />
+                                                </div>
+                                            }
+                                        </div>
+                                        @if (galleryFiles.Count > 1)
+                                        {
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#@lightboxCarouselId" data-bs-slide="prev" data-target="#@lightboxCarouselId" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="pt-lightbox__nav-label">Önceki</span>
+                                                <span class="visually-hidden sr-only">Önceki</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#@lightboxCarouselId" data-bs-slide="next" data-target="#@lightboxCarouselId" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="pt-lightbox__nav-label">Sonraki</span>
+                                                <span class="visually-hidden sr-only">Sonraki</span>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
 
                 @* Use a div — vendor `footer { background:#14212B }` styles the site chrome footer only. *@
                 <div class="crizal-story-detail__footer">
@@ -307,15 +376,3 @@
     </div>
 </section>
 
-@section scripts
-{
-    <script>
-        $(function () {
-            if ($.fn.fancybox) {
-                $('[data-fancybox="blogGallery"]').fancybox({
-                    buttons: ["zoom", "slideShow", "fullScreen", "thumbs", "close"]
-                });
-            }
-        });
-    </script>
-}
