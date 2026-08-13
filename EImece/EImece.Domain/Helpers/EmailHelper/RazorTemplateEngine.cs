@@ -22,6 +22,9 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         /// <summary>Renders a template against a strongly-typed <see cref="RazorTemplateModel"/>.</summary>
         RazorRenderResult GetRenderOutputByModel<T>(string template, T model) where T : RazorTemplateModel;
+
+        /// <summary>Renders a template against a dynamic model (mail template test emails).</summary>
+        RazorRenderResult GetRenderOutputDynamic(string template, object model);
     }
 
     /// <summary>
@@ -66,6 +69,11 @@ namespace EImece.Domain.Helpers.EmailHelper
         public RazorRenderResult GetRenderOutputByModel<T>(string template, T model) where T : RazorTemplateModel
         {
             return Render(template, typeof(T), model, "typed_" + typeof(T).FullName);
+        }
+
+        public RazorRenderResult GetRenderOutputDynamic(string template, object model)
+        {
+            return Render(template, null, model ?? new DynamicMailTemplateModel(), "maildyn");
         }
 
         private RazorRenderResult Render(string template, Type modelType, object model, string keyPrefix)

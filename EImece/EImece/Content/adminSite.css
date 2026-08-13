@@ -4023,6 +4023,8 @@ body.admin-app .admin-content .admin-home h2::after {
     min-height: 320px;
     border: 0;
     background: #fff;
+}
+
 /* -------------------------------------------------------------------------
    Admin tree picker (parent / category selection on SaveOrEdit)
    ------------------------------------------------------------------------- */

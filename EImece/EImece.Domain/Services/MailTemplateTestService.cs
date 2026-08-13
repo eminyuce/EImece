@@ -7,6 +7,8 @@ using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -25,18 +27,21 @@ namespace EImece.Domain.Services
         [Inject]
         public IEmailSender EmailSender { get; set; }
 
+        [Inject]
+        public IRazorTemplateEngine RazorTemplateEngine { get; set; }
+
         public async Task<MailTemplateTestPreview> InspectAsync(SendMailTemplateTestRequest request, string defaultRecipientEmail)
         {
             var template = await ResolveTemplateAsync(request).ConfigureAwait(false);
             var context = await BuildDummyDataContextAsync(defaultRecipientEmail).ConfigureAwait(false);
-            var paths = MailTemplateModelInspector.ExtractPropertyPaths(template.Subject, template.Body);
+            var usage = MailTemplateModelInspector.Analyze(template.Subject, template.Body);
 
             return new MailTemplateTestPreview
             {
                 Id = template.Id,
                 Name = template.Name,
                 Subject = template.Subject,
-                Properties = MailTemplateModelInspector.BuildProperties(paths, context)
+                Properties = MailTemplateModelInspector.BuildProperties(usage.PropertyPaths, context, usage.CollectionItemPaths)
             };
         }
 
@@ -44,7 +49,7 @@ namespace EImece.Domain.Services
         {
             var template = await ResolveTemplateAsync(request).ConfigureAwait(false);
             var modelData = request != null ? request.ModelData : null;
-            return MailTemplateModelInspector.Render(template.Subject, template.Body, modelData);
+            return RenderTemplate(template.Subject, template.Body, modelData);
         }
 
         public async Task<MailTemplateTestSendResult> SendTestEmailAsync(SendMailTemplateTestRequest request)
@@ -101,7 +106,7 @@ namespace EImece.Domain.Services
                 ? template.Subject
                 : request.SubjectOverride;
 
-            var render = MailTemplateModelInspector.Render(subjectTemplate, template.Body, request.ModelData);
+            var render = RenderTemplate(subjectTemplate, template.Body, request.ModelData);
             if (!render.Success)
             {
                 return Fail(render.ErrorMessage);
@@ -181,6 +186,21 @@ namespace EImece.Domain.Services
             }
 
             return template;
+        }
+
+        private MailTemplateTestRenderResult RenderTemplate(string subject, string body, IDictionary<string, string> modelData)
+        {
+            if (RazorTemplateEngine == null)
+            {
+                return MailTemplateModelInspector.Render(subject, body, modelData);
+            }
+
+            var model = MailTemplateModelInspector.BuildDynamicModel(modelData);
+            var subjectDecoded = WebUtility.HtmlDecode(subject ?? string.Empty) ?? string.Empty;
+            var bodyDecoded = WebUtility.HtmlDecode(body ?? string.Empty) ?? string.Empty;
+            var subjectRender = RazorTemplateEngine.GetRenderOutputDynamic(subjectDecoded, model);
+            var bodyRender = RazorTemplateEngine.GetRenderOutputDynamic(bodyDecoded, model);
+            return MailTemplateModelInspector.FromRazorResult(subjectDecoded, subjectRender, bodyRender);
         }
 
         private async Task<MailTemplateDummyDataContext> BuildDummyDataContextAsync(string defaultRecipientEmail)

@@ -9,6 +9,7 @@ namespace EImece.Domain.Models.AdminModels
         Phone = 4,
         Date = 5,
         Number = 6,
-        Boolean = 7
+        Boolean = 7,
+        Collection = 8
     }
 }

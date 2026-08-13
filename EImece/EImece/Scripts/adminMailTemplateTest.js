@@ -9,7 +9,8 @@
         Phone: "Telefon",
         Date: "Tarih",
         Number: "Sayı",
-        Boolean: "Evet/Hayır"
+        Boolean: "Evet/Hayır",
+        Collection: "Liste"
     };
 
     var state = {
@@ -119,14 +120,18 @@
             var $group = $("<div/>", { "class": "form-group mail-template-test-field" });
             var $label = $("<label/>").text(path + " ");
             $label.append($("<span/>", { "class": "label label-default" }).text(label));
-            var isLong = (value || "").length > 80;
+            var isCollection = kind === "Collection";
+            var isLong = isCollection || (value || "").length > 80;
             var $input = $(isLong ? "<textarea/>" : "<input/>", {
                 "class": "form-control js-mail-template-model-value",
                 "data-path": path,
-                rows: isLong ? 2 : undefined,
+                rows: isCollection ? 6 : (isLong ? 2 : undefined),
                 type: isLong ? undefined : inputTypeForKind(kind)
             }).val(value);
             $group.append($label).append($input);
+            if (isCollection) {
+                $group.append($("<p/>", { "class": "help-block" }).text("JSON liste. Her eleman şablondaki @item alanlarını içerir."));
+            }
             $fields.append($group);
         });
     }

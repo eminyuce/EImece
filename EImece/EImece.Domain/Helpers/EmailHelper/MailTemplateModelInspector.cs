@@ -1,4 +1,7 @@
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Helpers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RazorEngine;
 using RazorEngine.Templating;
 using System;
@@ -25,12 +28,23 @@ namespace EImece.Domain.Helpers.EmailHelper
             @"(?<!@)@Model\[\s*[""']([^""']+)[""']\s*\]",
             RegexOptions.Compiled);
 
-        public static List<string> ExtractPropertyPaths(params string[] sources)
+        private static readonly Regex ForeachRegex = new Regex(
+            @"@foreach\s*\(\s*var\s+(\w+)\s+in\s+@?Model\.([A-Za-z_][A-Za-z0-9_]*)",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly HashSet<string> MethodNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
+            "ToString", "CurrencySign", "ToDecimal", "Equals", "ToInt", "ToDouble",
+            "Trim", "ToLower", "ToUpper", "Contains", "Replace", "Substring"
+        };
+
+        public static MailTemplateModelUsage Analyze(params string[] sources)
+        {
+            var usage = new MailTemplateModelUsage();
             var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (sources == null)
             {
-                return new List<string>();
+                return usage;
             }
 
             foreach (var source in sources)
@@ -43,7 +57,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                 var decoded = WebUtility.HtmlDecode(source) ?? source;
                 foreach (Match match in DotPropertyRegex.Matches(decoded))
                 {
-                    var path = match.Groups[1].Value;
+                    var path = StripMethodNames(match.Groups[1].Value);
                     if (!string.IsNullOrWhiteSpace(path))
                     {
                         paths.Add(path);
@@ -52,17 +66,62 @@ namespace EImece.Domain.Helpers.EmailHelper
 
                 foreach (Match match in IndexerPropertyRegex.Matches(decoded))
                 {
-                    var path = match.Groups[1].Value;
+                    var path = StripMethodNames(match.Groups[1].Value);
                     if (!string.IsNullOrWhiteSpace(path))
                     {
                         paths.Add(path);
                     }
                 }
+
+                foreach (Match loop in ForeachRegex.Matches(decoded))
+                {
+                    var loopVar = loop.Groups[1].Value;
+                    var collectionPath = loop.Groups[2].Value;
+                    if (string.IsNullOrWhiteSpace(collectionPath))
+                    {
+                        continue;
+                    }
+
+                    paths.Add(collectionPath);
+                    var itemRegex = new Regex(
+                        @"@" + Regex.Escape(loopVar) + @"\.([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*)",
+                        RegexOptions.IgnoreCase);
+                    var itemFields = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    foreach (Match itemMatch in itemRegex.Matches(decoded))
+                    {
+                        var field = StripMethodNames(itemMatch.Groups[1].Value);
+                        if (!string.IsNullOrWhiteSpace(field))
+                        {
+                            itemFields.Add(field);
+                        }
+                    }
+
+                    List<string> existing;
+                    if (!usage.CollectionItemPaths.TryGetValue(collectionPath, out existing))
+                    {
+                        existing = new List<string>();
+                        usage.CollectionItemPaths[collectionPath] = existing;
+                    }
+
+                    foreach (var field in itemFields.OrderBy(f => f, StringComparer.OrdinalIgnoreCase))
+                    {
+                        if (!existing.Contains(field, StringComparer.OrdinalIgnoreCase))
+                        {
+                            existing.Add(field);
+                        }
+                    }
+                }
             }
 
-            return paths
+            usage.PropertyPaths = paths
                 .OrderBy(p => p, StringComparer.OrdinalIgnoreCase)
                 .ToList();
+            return usage;
+        }
+
+        public static List<string> ExtractPropertyPaths(params string[] sources)
+        {
+            return Analyze(sources).PropertyPaths;
         }
 
         public static MailTemplateValueKind InferValueKind(string propertyPath)
@@ -102,9 +161,17 @@ namespace EImece.Domain.Helpers.EmailHelper
                 return MailTemplateValueKind.Boolean;
             }
 
-            if (ContainsAny(name, "count", "qty", "quantity", "number", "amount", "price", "total", "position"))
+            if (ContainsAny(name, "count", "qty", "quantity", "number", "amount", "price", "total", "position", "fee", "rate"))
             {
                 return MailTemplateValueKind.Number;
+            }
+
+            if (name.EndsWith("products", StringComparison.Ordinal)
+                || name.EndsWith("items", StringComparison.Ordinal)
+                || name.EndsWith("list", StringComparison.Ordinal)
+                || name.EndsWith("collection", StringComparison.Ordinal))
+            {
+                return MailTemplateValueKind.Collection;
             }
 
             return MailTemplateValueKind.String;
@@ -137,18 +204,44 @@ namespace EImece.Domain.Helpers.EmailHelper
                     return "True";
                 case MailTemplateValueKind.Number:
                     return "1";
+                case MailTemplateValueKind.Collection:
+                    return GenerateCollectionSample(propertyPath, null, ctx);
                 default:
                     if (ContainsAny(last.ToLowerInvariant(), "company", "sirket", "şirket"))
                     {
                         return ctx.CompanyName;
                     }
-                    if (ContainsAny(last.ToLowerInvariant(), "address", "adres"))
+                    if (ContainsAny(last.ToLowerInvariant(), "address", "adres", "street"))
                     {
                         return ctx.CompanyAddress;
                     }
-                    if (ContainsAny(last.ToLowerInvariant(), "name", "adsoyad"))
+                    if (ContainsAny(last.ToLowerInvariant(), "name", "adsoyad", "fullname"))
                     {
                         return "Test Kullanıcı";
+                    }
+                    if (ContainsAny(last.ToLowerInvariant(), "message", "comment", "note"))
+                    {
+                        return "Bu bir test mesajıdır. Şablon görselini doğrulamak için gönderildi.";
+                    }
+                    if (ContainsAny(last.ToLowerInvariant(), "city", "sehir", "şehir"))
+                    {
+                        return "İstanbul";
+                    }
+                    if (ContainsAny(last.ToLowerInvariant(), "country", "ulke", "ülke"))
+                    {
+                        return "Türkiye";
+                    }
+                    if (ContainsAny(last.ToLowerInvariant(), "district", "ilce", "ilçe"))
+                    {
+                        return "Kadıköy";
+                    }
+                    if (ContainsAny(last.ToLowerInvariant(), "zip", "posta"))
+                    {
+                        return "34710";
+                    }
+                    if (ContainsAny(last.ToLowerInvariant(), "ip"))
+                    {
+                        return "127.0.0.1";
                     }
                     return "Örnek " + last;
             }
@@ -157,6 +250,14 @@ namespace EImece.Domain.Helpers.EmailHelper
         public static List<MailTemplateModelProperty> BuildProperties(
             IEnumerable<string> propertyPaths,
             MailTemplateDummyDataContext context = null)
+        {
+            return BuildProperties(propertyPaths, context, null);
+        }
+
+        public static List<MailTemplateModelProperty> BuildProperties(
+            IEnumerable<string> propertyPaths,
+            MailTemplateDummyDataContext context,
+            IDictionary<string, List<string>> collectionItemPaths)
         {
             var ctx = NormalizeContext(context);
             var result = new List<MailTemplateModelProperty>();
@@ -173,11 +274,27 @@ namespace EImece.Domain.Helpers.EmailHelper
                 }
 
                 var kind = InferValueKind(path);
+                List<string> itemFields = null;
+                if (collectionItemPaths != null && collectionItemPaths.TryGetValue(path, out itemFields))
+                {
+                    kind = MailTemplateValueKind.Collection;
+                }
+
+                string sample;
+                if (kind == MailTemplateValueKind.Collection)
+                {
+                    sample = GenerateCollectionSample(path, itemFields, ctx);
+                }
+                else
+                {
+                    sample = GenerateSampleValue(path, ctx);
+                }
+
                 result.Add(new MailTemplateModelProperty
                 {
                     Path = path,
                     ValueKind = kind.ToString(),
-                    SampleValue = GenerateSampleValue(path, ctx)
+                    SampleValue = sample
                 });
             }
 
@@ -259,6 +376,48 @@ namespace EImece.Domain.Helpers.EmailHelper
             return Engine.Razor.RunCompile(decoded, key, null, model ?? new DynamicMailTemplateModel());
         }
 
+        public static MailTemplateTestRenderResult FromRazorResult(string subject, RazorRenderResult subjectRender, RazorRenderResult bodyRender)
+        {
+            var result = new MailTemplateTestRenderResult();
+            string error;
+            if (TryGetRenderError(subjectRender, out error) || TryGetRenderError(bodyRender, out error))
+            {
+                result.Success = false;
+                result.ErrorMessage = error;
+                return result;
+            }
+
+            result.Success = true;
+            result.Subject = subjectRender != null && !string.IsNullOrEmpty(subjectRender.Result)
+                ? subjectRender.Result
+                : (subject ?? string.Empty);
+            result.Body = bodyRender != null ? (bodyRender.Result ?? string.Empty) : string.Empty;
+            return result;
+        }
+
+        public static bool TryGetRenderError(RazorRenderResult render, out string error)
+        {
+            error = null;
+            if (render == null)
+            {
+                return false;
+            }
+
+            if (render.templateCompilationException != null)
+            {
+                error = FormatCompilationError(render.templateCompilationException);
+                return true;
+            }
+
+            if (render.GeneralError != null)
+            {
+                error = render.GeneralError.ToFormattedString();
+                return true;
+            }
+
+            return false;
+        }
+
         private static string FormatCompilationError(TemplateCompilationException ex)
         {
             if (ex != null && ex.CompilerErrors != null)
@@ -326,12 +485,92 @@ namespace EImece.Domain.Helpers.EmailHelper
                     return ctx.BaseUrl.TrimEnd('/') + "/account/adminlogin/";
                 case "name":
                 case "customername":
+                case "fullname":
                     return "Test Kullanıcı";
                 case "ordernumber":
                     return "ORD-1001";
+                case "emailsubject":
+                    return "Test sipariş bildirimi";
+                case "ipaddress":
+                    return "127.0.0.1";
+                case "message":
+                    return "Bu bir test mesajıdır. Şablon görselini doğrulamak için gönderildi.";
+                case "reasons":
+                    return "Ürün hakkında bilgi";
+                case "captcha":
+                    return "TEST";
+                case "itemid":
+                    return "1001";
+                case "itemtype":
+                    return "Product";
+                case "installment":
+                    return "1";
+                case "installmentdescription":
+                    return "Tek çekim";
+                case "cardfamily":
+                    return "Bonus";
+                case "cardtype":
+                    return "CREDIT_CARD";
+                case "cardassociation":
+                    return "VISA";
+                case "lastfourdigits":
+                    return "4242";
+                case "paymentstatus":
+                    return "SUCCESS";
+                case "coupon":
+                    return string.Empty;
+                case "ordercomments":
+                    return "Test sipariş notu";
+                case "cargoprice":
+                    return "25.00";
+                case "paidpricedecimal":
+                    return "299.90";
+                case "coupondiscount":
+                    return "0";
+                case "productname":
+                    return "Örnek Ürün";
                 default:
                     return null;
             }
+        }
+
+        private static string GenerateCollectionSample(
+            string propertyPath,
+            IList<string> itemFields,
+            MailTemplateDummyDataContext ctx)
+        {
+            var fields = (itemFields != null && itemFields.Count > 0)
+                ? itemFields
+                : new List<string> { "ProductName", "Quantity", "Price", "TotalPrice" };
+
+            var items = new List<Dictionary<string, string>>();
+            for (var n = 1; n <= 2; n++)
+            {
+                var row = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var field in fields)
+                {
+                    var value = GenerateSampleValue(field, ctx);
+                    if (field.Equals("ProductName", StringComparison.OrdinalIgnoreCase)
+                        || field.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                    {
+                        value = "Örnek Ürün " + n;
+                    }
+                    else if (field.Equals("Quantity", StringComparison.OrdinalIgnoreCase))
+                    {
+                        value = n.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else if (ContainsAny(field.ToLowerInvariant(), "price", "total"))
+                    {
+                        value = (n * 149.90m).ToString("0.00", CultureInfo.InvariantCulture);
+                    }
+
+                    row[field] = value;
+                }
+
+                items.Add(row);
+            }
+
+            return JsonConvert.SerializeObject(items, Formatting.Indented);
         }
 
         private static object CoerceValue(string propertyName, string value)
@@ -339,6 +578,16 @@ namespace EImece.Domain.Helpers.EmailHelper
             if (value == null)
             {
                 return string.Empty;
+            }
+
+            var trimmed = value.Trim();
+            if (trimmed.StartsWith("[", StringComparison.Ordinal) || trimmed.StartsWith("{", StringComparison.Ordinal))
+            {
+                object parsed;
+                if (TryParseJsonValue(propertyName, trimmed, out parsed))
+                {
+                    return parsed;
+                }
             }
 
             var kind = InferValueKind(propertyName);
@@ -353,20 +602,126 @@ namespace EImece.Domain.Helpers.EmailHelper
 
             if (kind == MailTemplateValueKind.Number)
             {
-                int i;
-                if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out i))
+                return new DummyMailValue(ParseDecimalOrDefault(value));
+            }
+
+            if (kind == MailTemplateValueKind.Date)
+            {
+                DateTime date;
+                if (DateTime.TryParse(value, CultureInfo.GetCultureInfo("tr-TR"), DateTimeStyles.None, out date)
+                    || DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                 {
-                    return i;
+                    return new DummyMailValue(date);
                 }
 
-                decimal d;
-                if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out d))
-                {
-                    return d;
-                }
+                return new DummyMailValue(DateTime.Now);
             }
 
             return value;
+        }
+
+        private static bool TryParseJsonValue(string propertyName, string json, out object parsed)
+        {
+            parsed = null;
+            try
+            {
+                var token = JToken.Parse(json);
+                parsed = ConvertJsonToken(propertyName, token);
+                return parsed != null;
+            }
+            catch (JsonReaderException)
+            {
+                return false;
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+        }
+
+        private static object ConvertJsonToken(string propertyName, JToken token)
+        {
+            if (token == null || token.Type == JTokenType.Null)
+            {
+                return string.Empty;
+            }
+
+            var array = token as JArray;
+            if (array != null)
+            {
+                var list = new List<DynamicMailTemplateModel>();
+                foreach (var item in array)
+                {
+                    var child = ConvertJsonToken(propertyName, item) as DynamicMailTemplateModel;
+                    list.Add(child ?? WrapScalarAsModel(propertyName, item));
+                }
+
+                return list;
+            }
+
+            var obj = token as JObject;
+            if (obj != null)
+            {
+                var model = new DynamicMailTemplateModel();
+                foreach (var prop in obj.Properties())
+                {
+                    model.SetValue(prop.Name, ConvertJsonToken(prop.Name, prop.Value));
+                }
+
+                return model;
+            }
+
+            return CoerceLeafFromJson(propertyName, token);
+        }
+
+        private static DynamicMailTemplateModel WrapScalarAsModel(string propertyName, JToken token)
+        {
+            var model = new DynamicMailTemplateModel();
+            model.SetValue(propertyName, CoerceLeafFromJson(propertyName, token));
+            return model;
+        }
+
+        private static object CoerceLeafFromJson(string propertyName, JToken token)
+        {
+            if (token == null || token.Type == JTokenType.Null)
+            {
+                return string.Empty;
+            }
+
+            if (token.Type == JTokenType.Object || token.Type == JTokenType.Array)
+            {
+                return ConvertJsonToken(propertyName, token);
+            }
+
+            return CoerceValue(propertyName, token.ToString());
+        }
+
+        private static decimal ParseDecimalOrDefault(string value)
+        {
+            decimal d;
+            if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out d)
+                || decimal.TryParse(value, NumberStyles.Any, CultureInfo.GetCultureInfo("tr-TR"), out d))
+            {
+                return d;
+            }
+
+            return 1m;
+        }
+
+        private static string StripMethodNames(string propertyPath)
+        {
+            if (string.IsNullOrWhiteSpace(propertyPath))
+            {
+                return string.Empty;
+            }
+
+            var parts = propertyPath.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            while (parts.Count > 1 && MethodNames.Contains(parts[parts.Count - 1]))
+            {
+                parts.RemoveAt(parts.Count - 1);
+            }
+
+            return string.Join(".", parts);
         }
 
         private static string GetLastSegment(string propertyPath)

@@ -125,6 +125,81 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
+        public void ExtractPropertyPaths_StripsMethodCallsAndFindsForeachCollections()
+        {
+            var template = @"
+@Model.FinishedOrder.CreatedDate.ToString(""dd MMMM yyyy"")
+@Model.FinishedOrder.PaidPriceDecimal.CurrencySign()
+@foreach (var item in Model.OrderProducts)
+{
+    <td>@item.ProductName</td>
+    <td>@item.Price.CurrencySign()</td>
+}";
+            var usage = MailTemplateModelInspector.Analyze(template);
+
+            CollectionAssert.AreEquivalent(
+                new[] { "FinishedOrder.CreatedDate", "FinishedOrder.PaidPriceDecimal", "OrderProducts" },
+                usage.PropertyPaths);
+            CollectionAssert.AreEquivalent(
+                new[] { "ProductName", "Price" },
+                usage.CollectionItemPaths["OrderProducts"]);
+        }
+
+        [TestMethod]
+        public void Render_SupportsNestedContactUsAndFormattedDate()
+        {
+            var model = new Dictionary<string, string>
+            {
+                { "ContactUs.Name", "Ada" },
+                { "ContactUs.Email", "ada@example.com" },
+                { "FinishedOrder.CreatedDate", "13.08.2026 17:00" },
+                { "FinishedOrder.PaidPriceDecimal", "299.90" }
+            };
+
+            var result = MailTemplateModelInspector.Render(
+                null,
+                "<p>@Model.ContactUs.Name - @Model.ContactUs.Email</p><p>@Model.FinishedOrder.CreatedDate.ToString(\"dd.MM.yyyy\")</p><p>@Model.FinishedOrder.PaidPriceDecimal.CurrencySign()</p>",
+                model);
+
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            StringAssert.Contains(result.Body, "Ada");
+            StringAssert.Contains(result.Body, "ada@example.com");
+            StringAssert.Contains(result.Body, "13.08.2026");
+            StringAssert.Contains(result.Body, "₺");
+        }
+
+        [TestMethod]
+        public void Render_SupportsOrderProductsCollectionJson()
+        {
+            var json = @"[
+              { ""ProductName"": ""Lamba"", ""Quantity"": ""2"", ""Price"": ""50.00"", ""TotalPrice"": ""100.00"" }
+            ]";
+            var result = MailTemplateModelInspector.Render(
+                null,
+                "@foreach (var item in Model.OrderProducts) { <span>@item.ProductName</span> }",
+                new Dictionary<string, string> { { "OrderProducts", json } });
+
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            StringAssert.Contains(result.Body, "Lamba");
+        }
+
+        [TestMethod]
+        public void BuildProperties_GeneratesCollectionJsonForForeachTemplates()
+        {
+            var usage = MailTemplateModelInspector.Analyze(
+                "@foreach (var item in Model.OrderProducts) { @item.ProductName @item.Quantity }");
+            var properties = MailTemplateModelInspector.BuildProperties(
+                usage.PropertyPaths,
+                MailTemplateDummyDataContext.CreateDefaults(),
+                usage.CollectionItemPaths);
+
+            var orderProducts = properties.Single(p => p.Path == "OrderProducts");
+            Assert.AreEqual("Collection", orderProducts.ValueKind);
+            StringAssert.Contains(orderProducts.SampleValue, "ProductName");
+            StringAssert.Contains(orderProducts.SampleValue, "Quantity");
+        }
+
+        [TestMethod]
         public void Render_SupportsNestedProperties()
         {
             var result = MailTemplateModelInspector.Render(

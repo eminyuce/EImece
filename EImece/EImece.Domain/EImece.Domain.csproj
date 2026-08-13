@@ -591,6 +591,7 @@
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />
     <Compile Include="Helpers\EmailHelper\EmailSender.cs" />
     <Compile Include="Helpers\EmailHelper\IEmailSender.cs" />
+    <Compile Include="Helpers\EmailHelper\DummyMailValue.cs" />
     <Compile Include="Helpers\EmailHelper\DynamicMailTemplateModel.cs" />
     <Compile Include="Helpers\EmailHelper\MailTemplateModelInspector.cs" />
     <Compile Include="Helpers\EmailHelper\RazorEngineHelper.cs" />
@@ -646,6 +647,7 @@
     <Compile Include="Models\AdminModels\ProductAdminListFilter.cs" />
     <Compile Include="Models\AdminModels\MailTemplateDummyDataContext.cs" />
     <Compile Include="Models\AdminModels\MailTemplateModelProperty.cs" />
+    <Compile Include="Models\AdminModels\MailTemplateModelUsage.cs" />
     <Compile Include="Models\AdminModels\MailTemplateTestPreview.cs" />
     <Compile Include="Models\AdminModels\MailTemplateTestRenderResult.cs" />
     <Compile Include="Models\AdminModels\MailTemplateTestSendResult.cs" />
