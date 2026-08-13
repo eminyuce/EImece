@@ -184,15 +184,24 @@
 }
 
 .pt-lightbox {
-    z-index: 1080;
+    z-index: 100010;
 }
 
 .pt-lightbox .modal-content {
     background: #111;
+    background-color: #111;
     border: 0;
     border-radius: 0.5rem;
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.45);
     overflow: hidden;
+    isolation: isolate;
+}
+
+.pt-lightbox .modal-body,
+.pt-lightbox .carousel,
+.pt-lightbox .carousel-inner,
+.pt-lightbox .carousel-item {
+    background-color: inherit;
 }
 
 .pt-lightbox__close {

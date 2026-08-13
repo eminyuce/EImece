@@ -2155,8 +2155,14 @@ body[data-design="crizal"] .product-gallery .product-thumbnails li > a {
 }
 
 body[data-design="crizal"] .pt-lightbox--media .modal-content,
+body[data-design="crizal"] .pt-lightbox--media .modal-body,
+body[data-design="crizal"] .pt-lightbox--media .carousel,
+body[data-design="crizal"] .pt-lightbox--media .carousel-inner,
+body[data-design="crizal"] .pt-lightbox--media .carousel-item,
 body[data-design="crizal"] .pt-lightbox--media .pt-lightbox__img {
     background: #f4f4f4;
+    background-color: #f4f4f4;
+    opacity: 1;
 }
 
 body[data-design="crizal"] .product-gallery img.is-broken {
@@ -4092,13 +4098,20 @@ body[data-design="crizal"] .crizal-product-payment__note a {
     }
 }
 
+/* Vendor nav-menu.css sets header { z-index: 99999 }, which paints the menu
+   on top of Bootstrap modals (1080) and looks like a transparent lightbox. */
+body[data-design="crizal"].modal-open header.header-style3,
+body[data-design="crizal"].modal-open .crizal-header {
+    z-index: 0;
+}
+
 /* Leave review modal */
 body[data-design="crizal"] .crizal-review-modal {
-    z-index: 1080;
+    z-index: 100010;
 }
 
 body[data-design="crizal"] .pt-lightbox {
-    z-index: 1080;
+    z-index: 100010;
 }
 
 body[data-design="crizal"] .crizal-review-modal.show {
@@ -4109,7 +4122,7 @@ body[data-design="crizal"] .crizal-review-modal.show {
 body[data-design="crizal"].modal-open .modal-backdrop {
     background-color: #14212B;
     opacity: 0.62;
-    z-index: 1070;
+    z-index: 100000;
 }
 
 body[data-design="crizal"] .crizal-review-modal .modal-dialog {
