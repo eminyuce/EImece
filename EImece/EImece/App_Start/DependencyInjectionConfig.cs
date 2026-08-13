@@ -73,8 +73,13 @@ namespace EImece.App_Start
                 throw new InvalidOperationException("DependencyInjectionConfig.Register() must be called first.");
             }
 
-            _ambientScope = ServiceProvider.CreateScope();
+            SetAmbientScope(ServiceProvider.CreateScope());
             return new AmbientScopeReleaser();
+        }
+
+        private static void SetAmbientScope(IServiceScope scope)
+        {
+            _ambientScope = scope;
         }
 
         private sealed class AmbientScopeReleaser : IDisposable

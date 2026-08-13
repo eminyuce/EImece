@@ -20,6 +20,8 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
+        private const string ContentIdKey = "contentId";
+        private const string ImageTypeKey = "imageType";
         private FilesHelper filesHelper;
 
         private Dictionary<string, string> CurrentSelectedModul
@@ -51,9 +53,9 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var currentSelectedModul = new Dictionary<string, string>();
-            currentSelectedModul.Add("contentId", contentId + "");
+            currentSelectedModul.Add(ContentIdKey, contentId + "");
             currentSelectedModul.Add("mod", mod);
-            currentSelectedModul.Add("imageType", imageType);
+            currentSelectedModul.Add(ImageTypeKey, imageType);
             CurrentSelectedModul = currentSelectedModul;
 
             int id = contentId.Value;
@@ -130,8 +132,8 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateJsonAntiForgeryToken]
         public async Task<JsonResult> Upload()
         {
-            int Id = Request.Form["contentId"].ToInt();
-            var imageType = EnumHelper.Parse<EImeceImageType>(Request.Form["imageType"].ToStr());
+            int Id = Request.Form[ContentIdKey].ToInt();
+            var imageType = EnumHelper.Parse<EImeceImageType>(Request.Form[ImageTypeKey].ToStr());
             var mod = EnumHelper.Parse<MediaModType>(Request.Form["mod"].ToStr());
             int imageHeight = Request.Form["imageHeight"].ToInt();
             int imageWidth = Request.Form["imageWidth"].ToInt();
@@ -193,19 +195,19 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
-                int contentId = CurrentSelectedModul["contentId"].ToInt();
+                int contentId = CurrentSelectedModul[ContentIdKey].ToInt();
                 var returnModel = new MediaAdminIndexModel();
                 MediaModType? enumMod = EnumHelper.Parse<MediaModType>(CurrentSelectedModul["mod"]);
-                EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(CurrentSelectedModul["imageType"]);
+                EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(CurrentSelectedModul[ImageTypeKey]);
 
                 await FileStorageService.DeleteUploadImageAsync(id, contentId, enumImageType, enumMod);
                 SetSuccessMessage();
                 return RedirectToAction(IndexAction,
                     new
                     {
-                        contentId = CurrentSelectedModul["contentId"],
+                        contentId = CurrentSelectedModul[ContentIdKey],
                         mod = CurrentSelectedModul["mod"],
-                        imageType = CurrentSelectedModul["imageType"]
+                        imageType = CurrentSelectedModul[ImageTypeKey]
                     }
                 );
             }
@@ -216,9 +218,9 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction(IndexAction,
                     new
                     {
-                        contentId = CurrentSelectedModul["contentId"],
+                        contentId = CurrentSelectedModul[ContentIdKey],
                         mod = CurrentSelectedModul["mod"],
-                        imageType = CurrentSelectedModul["imageType"]
+                        imageType = CurrentSelectedModul[ImageTypeKey]
                     }
                 );
             }

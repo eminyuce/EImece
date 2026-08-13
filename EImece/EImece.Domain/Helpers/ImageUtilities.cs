@@ -49,15 +49,15 @@ namespace EImece.Domain.Helpers
                 try
                 {
                     var newBytes = GetSomeBytes(uri, currentStart, currentStart + ChunkSize - 1);
-                    if (newBytes != null)
+                    if (newBytes.Length == 0)
+                    {
+                        moreBytes = false;
+                    }
+                    else
                     {
                         if (newBytes.Length < ChunkSize) moreBytes = false;
                         allBytes = Combine(allBytes, newBytes);
                         return GetDimensions(new BinaryReader(new MemoryStream(allBytes)));
-                    }
-                    else
-                    {
-                        moreBytes = false;
                     }
                 }
                 catch
@@ -85,7 +85,7 @@ namespace EImece.Domain.Helpers
                 {
                     if (stream == null)
                     {
-                        return null;
+                        return new byte[0];
                     }
 
                     stream.CopyTo(memory);
@@ -94,7 +94,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception)
             {
-                return null;
+                return new byte[0];
             }
         }
 

@@ -29,11 +29,9 @@ namespace EImece.Domain.Helpers
         private const string KEYID = "9182736450";
         private const string ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
 
-        // System.Random is not thread-safe. RandomNumber()/GenerateOrderNumber() run concurrently on
-        // checkout request threads, so a single shared instance could corrupt its state and emit
-        // predictable/zero digits (risking duplicate order numbers). Give each thread its own generator.
-        private static readonly ThreadLocal<Random> random =
-            new ThreadLocal<Random>(() => new Random(Guid.NewGuid().GetHashCode()));
+        // Cryptographically strong RNG for order numbers. RandomNumberGenerator is thread-safe
+        // for GetBytes, so a single shared instance is used instead of System.Random.
+        private static readonly RandomNumberGenerator CryptoRandom = RandomNumberGenerator.Create();
 
         // Stampede-safe image cache: LazyCache coalesces concurrent misses for the same key so the
         // remote image is fetched once instead of once per concurrent caller.
@@ -151,7 +149,14 @@ namespace EImece.Domain.Helpers
         {
             const string chars = "0123456789";
             return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Value.Next(s.Length)]).ToArray());
+              .Select(s => s[NextCryptoInt(s.Length)]).ToArray());
+        }
+
+        private static int NextCryptoInt(int maxExclusive)
+        {
+            var bytes = new byte[4];
+            CryptoRandom.GetBytes(bytes);
+            return (int)(BitConverter.ToUInt32(bytes, 0) % (uint)maxExclusive);
         }
 
         public static String GetIpAddress()

@@ -12,6 +12,10 @@ namespace EImece.Domain.Observability.Logging
 {
     public static class StructuredLoggingBootstrap
     {
+        private const string CorrelationIdProperty = "CorrelationId";
+        private const string TraceIdProperty = "TraceId";
+        private const string SpanIdProperty = "SpanId";
+
         private static bool _initialized;
 
         public static void Configure()
@@ -63,7 +67,7 @@ namespace EImece.Domain.Observability.Logging
             var traceId = activity?.TraceId.ToString();
             var spanId = activity?.SpanId.ToString();
 
-            LogContext.PushProperty("CorrelationId", correlationId);
+            LogContext.PushProperty(CorrelationIdProperty, correlationId);
             LogContext.PushProperty("RequestId", context.Items["RequestId"]);
             LogContext.PushProperty("ClientIp", context.Request.UserHostAddress);
             LogContext.PushProperty("RequestPath", context.Request.Url?.AbsolutePath);
@@ -71,24 +75,24 @@ namespace EImece.Domain.Observability.Logging
 
             if (!string.IsNullOrEmpty(traceId))
             {
-                LogContext.PushProperty("TraceId", traceId);
+                LogContext.PushProperty(TraceIdProperty, traceId);
             }
 
             if (!string.IsNullOrEmpty(spanId))
             {
-                LogContext.PushProperty("SpanId", spanId);
+                LogContext.PushProperty(SpanIdProperty, spanId);
             }
 
             // NLog scope properties for layouts that read ${scopeproperty:item=...}
-            ScopeContext.PushProperty("CorrelationId", correlationId);
+            ScopeContext.PushProperty(CorrelationIdProperty, correlationId);
             if (!string.IsNullOrEmpty(traceId))
             {
-                ScopeContext.PushProperty("TraceId", traceId);
+                ScopeContext.PushProperty(TraceIdProperty, traceId);
             }
 
             if (!string.IsNullOrEmpty(spanId))
             {
-                ScopeContext.PushProperty("SpanId", spanId);
+                ScopeContext.PushProperty(SpanIdProperty, spanId);
             }
 
             if (context.User?.Identity?.IsAuthenticated == true)
@@ -101,8 +105,8 @@ namespace EImece.Domain.Observability.Logging
         {
             activity = activity ?? Activity.Current;
             var correlationId = CorrelationIdContext.Ensure();
-            LogContext.PushProperty("CorrelationId", correlationId);
-            ScopeContext.PushProperty("CorrelationId", correlationId);
+            LogContext.PushProperty(CorrelationIdProperty, correlationId);
+            ScopeContext.PushProperty(CorrelationIdProperty, correlationId);
 
             if (activity == null)
             {
@@ -111,28 +115,28 @@ namespace EImece.Domain.Observability.Logging
 
             var traceId = activity.TraceId.ToString();
             var spanId = activity.SpanId.ToString();
-            LogContext.PushProperty("TraceId", traceId);
-            LogContext.PushProperty("SpanId", spanId);
-            ScopeContext.PushProperty("TraceId", traceId);
-            ScopeContext.PushProperty("SpanId", spanId);
+            LogContext.PushProperty(TraceIdProperty, traceId);
+            LogContext.PushProperty(SpanIdProperty, spanId);
+            ScopeContext.PushProperty(TraceIdProperty, traceId);
+            ScopeContext.PushProperty(SpanIdProperty, spanId);
         }
 
         public static void LogRequestCompleted(long durationMs, int statusCode)
         {
             Log.ForContext("ExecutionTimeMs", durationMs)
                 .ForContext("StatusCode", statusCode)
-                .ForContext("CorrelationId", CorrelationIdContext.Current)
-                .ForContext("TraceId", Activity.Current?.TraceId.ToString())
-                .ForContext("SpanId", Activity.Current?.SpanId.ToString())
+                .ForContext(CorrelationIdProperty, CorrelationIdContext.Current)
+                .ForContext(TraceIdProperty, Activity.Current?.TraceId.ToString())
+                .ForContext(SpanIdProperty, Activity.Current?.SpanId.ToString())
                 .Write(LogEventLevel.Information, "HTTP request completed");
         }
 
         public static void LogException(Exception exception, string message)
         {
             Log.ForContext("ExceptionType", exception.GetType().FullName)
-                .ForContext("CorrelationId", CorrelationIdContext.Current)
-                .ForContext("TraceId", Activity.Current?.TraceId.ToString())
-                .ForContext("SpanId", Activity.Current?.SpanId.ToString())
+                .ForContext(CorrelationIdProperty, CorrelationIdContext.Current)
+                .ForContext(TraceIdProperty, Activity.Current?.TraceId.ToString())
+                .ForContext(SpanIdProperty, Activity.Current?.SpanId.ToString())
                 .Error(exception, SensitiveDataMasker.Mask(message));
         }
 

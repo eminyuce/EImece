@@ -21,6 +21,7 @@ namespace EImece.Areas.Admin.Controllers
     public class MailTemplatesController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index";
 
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
@@ -37,7 +38,7 @@ namespace EImece.Areas.Admin.Controllers
             itemCopy.Id = 0;
             itemCopy.Body = item.Body;
             await MailTemplateService.SaveOrEditEntityAsync(itemCopy);
-            return RedirectToAction("Index");
+            return RedirectToAction(IndexAction);
         }
 
         public async Task<ActionResult> GenerateHtmlBody(CancellationToken cancellationToken, int id = 0)
@@ -45,7 +46,7 @@ namespace EImece.Areas.Admin.Controllers
             if (id <= 0)
             {
                 SetErrorMessage("Geçersiz e-posta şablonu.");
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
 
             var rssTemplate = await MailTemplateService.GetSingleAsync(id);
@@ -76,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(body))
             {
                 SetErrorMessage("HTML gövde oluşturulamadı: şablon içeriği boş.");
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
 
             if (!string.IsNullOrEmpty(warning))
@@ -143,7 +144,7 @@ namespace EImece.Areas.Admin.Controllers
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction(IndexAction);
                     }
                     else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -179,13 +180,13 @@ namespace EImece.Areas.Admin.Controllers
             {
                 await MailTemplateService.DeleteEntityAsync(MailTemplate);
                 SetSuccessMessage();
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, MailTemplate);
                 SetErrorMessage();
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
         }
 

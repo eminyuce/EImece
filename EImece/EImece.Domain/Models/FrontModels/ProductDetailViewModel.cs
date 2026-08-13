@@ -310,22 +310,54 @@ namespace EImece.Domain.Models.FrontModels
                 var isCheckbox = ProductSpecificationValueHelper.IsCheckboxField(field);
                 var rawValue = dbValueObj.Value == null ? "" : dbValueObj.Value.ToStr().Trim();
 
-                // Non-checkbox empty values stay hidden; checkbox always shows Evet/Hayır.
-                if (!isCheckbox && string.IsNullOrEmpty(rawValue))
+                if (ShouldOmitEmptyNonCheckboxSpec(isCheckbox, rawValue))
                 {
                     continue;
                 }
 
-                string specsName = display != null ? display.Value : name.Value;
-                string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(field, rawValue);
-                string displayUnit = ResolveSpecDisplayUnit(isCheckbox, unit);
-                result.Add(new ProductSpecsModel(
-                    specsName.ToStr().Trim(),
-                    displayValue,
-                    displayUnit,
-                    values == null ? "" : values.Value.ToStr(),
-                    groupName));
+                result.Add(CreateSpecModel(new SpecModelArgs
+                {
+                    Field = field,
+                    Name = name,
+                    Unit = unit,
+                    Values = values,
+                    Display = display,
+                    RawValue = rawValue,
+                    IsCheckbox = isCheckbox,
+                    GroupName = groupName
+                }));
             }
+        }
+
+        private static bool ShouldOmitEmptyNonCheckboxSpec(bool isCheckbox, string rawValue)
+        {
+            // Non-checkbox empty values stay hidden; checkbox always shows Evet/Hayır.
+            return !isCheckbox && string.IsNullOrEmpty(rawValue);
+        }
+
+        private static ProductSpecsModel CreateSpecModel(SpecModelArgs args)
+        {
+            string specsName = args.Display != null ? args.Display.Value : args.Name.Value;
+            string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(args.Field, args.RawValue);
+            string displayUnit = ResolveSpecDisplayUnit(args.IsCheckbox, args.Unit);
+            return new ProductSpecsModel(
+                specsName.ToStr().Trim(),
+                displayValue,
+                displayUnit,
+                args.Values == null ? "" : args.Values.Value.ToStr(),
+                args.GroupName);
+        }
+
+        private sealed class SpecModelArgs
+        {
+            public XElement Field { get; set; }
+            public XAttribute Name { get; set; }
+            public XAttribute Unit { get; set; }
+            public XAttribute Values { get; set; }
+            public XAttribute Display { get; set; }
+            public string RawValue { get; set; }
+            public bool IsCheckbox { get; set; }
+            public string GroupName { get; set; }
         }
 
         private static string ResolveSpecDisplayUnit(bool isCheckbox, XAttribute unit)

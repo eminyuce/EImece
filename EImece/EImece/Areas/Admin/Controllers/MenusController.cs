@@ -23,6 +23,7 @@ namespace EImece.Areas.Admin.Controllers
     public class MenusController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index";
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
@@ -146,7 +147,7 @@ namespace EImece.Areas.Admin.Controllers
                     await MenuService.SaveOrEditEntityAsync(menu);
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction(IndexAction);
                     }
                     else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -187,17 +188,17 @@ namespace EImece.Areas.Admin.Controllers
                 if (!deleted)
                 {
                     SetErrorMessage(AdminResource.MenuCannotDeleteHasChildren);
-                    return ReturnIndexIfNotUrlReferrer("Index");
+                    return ReturnIndexIfNotUrlReferrer(IndexAction);
                 }
                 SetSuccessMessage();
-                return ReturnIndexIfNotUrlReferrer("Index");
+                return ReturnIndexIfNotUrlReferrer(IndexAction);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete menu:" +
                     ex.StackTrace, menu);
                 SetErrorMessage();
-                return ReturnIndexIfNotUrlReferrer("Index");
+                return ReturnIndexIfNotUrlReferrer(IndexAction);
             }
         }
 
@@ -211,7 +212,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Media(int id)
         {
-            return RedirectToAction("Index", "Media", new
+            return RedirectToAction(IndexAction, "Media", new
             {
                 contentId = id,
                 mod = MediaModType.Menus,

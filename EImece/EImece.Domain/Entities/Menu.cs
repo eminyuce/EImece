@@ -74,112 +74,194 @@ namespace EImece.Domain.Entities
 
         private string ComputeIsPageActived()
         {
-                // Match the current request URL to this menu item's own link.
-                // Do NOT mark every pages/detail item active — many CMS pages share MenuLink "pages-index".
-                if (HttpContext.Current == null || HttpContext.Current.Request == null || HttpContext.Current.Request.Url == null)
-                {
-                    return "";
-                }
-
-                var currentPath = NormalizeAppPath(HttpContext.Current.Request.Url.AbsolutePath);
-                if (string.IsNullOrEmpty(currentPath))
-                {
-                    return "";
-                }
-
-                // External / absolute Link targets: only active when browsing that exact URL.
-                if (LinkIsActive && !string.IsNullOrWhiteSpace(Link))
-                {
-                    if (Uri.TryCreate(Link, UriKind.Absolute, out var absolute) &&
-                        string.Equals(absolute.Host, HttpContext.Current.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return PathsMatch(currentPath, NormalizeAppPath(absolute.AbsolutePath)) ? Constants.ActiveCssClass : "";
-                    }
-
-                    if (Link.StartsWith("/", StringComparison.Ordinal))
-                    {
-                        return PathsMatch(currentPath, NormalizeAppPath(Link)) ? Constants.ActiveCssClass : "";
-                    }
-
-                    return "";
-                }
-
-                if (!string.IsNullOrWhiteSpace(DetailPageLink) && DetailPageLink != "#" && DetailPageLink != "#!")
-                {
-                    var detailPath = ToAppPath(DetailPageLink);
-                    if (!string.IsNullOrEmpty(detailPath) && PathsMatch(currentPath, detailPath))
-                    {
-                        return Constants.ActiveCssClass;
-                    }
-                }
-
-                // Route-id fallback for pages/detail when MenuLink is the generic "pages-index"
-                // but the SEO slug in the URL belongs to this menu row.
-                if (!TryParseMenuLink(out var controller, out var action, out var mid))
-                {
-                    return "";
-                }
-
-                var pageController = HtmlRequestHelper.Controller();
-                var pageAction = HtmlRequestHelper.Action();
-                var routeId = HtmlRequestHelper.Id() ?? string.Empty;
-
-                if (pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase)
-                    && pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase)
-                    && controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var seo = this.GetSeoUrl() ?? string.Empty;
-                    if (!string.IsNullOrEmpty(seo)
-                        && (routeId.Equals(seo, StringComparison.OrdinalIgnoreCase)
-                            || currentPath.IndexOf("/" + seo.Trim('/'), StringComparison.OrdinalIgnoreCase) >= 0))
-                    {
-                        return Constants.ActiveCssClass;
-                    }
-
-                    return "";
-                }
-
-                if (pageController.Equals("info", StringComparison.InvariantCultureIgnoreCase)
-                    && pageAction.Equals("index", StringComparison.InvariantCultureIgnoreCase)
-                    && controller.Equals("info", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var infoKey = "/" + MenuLink.Replace("-", "/").Trim('/').ToLowerInvariant();
-                    return PathsMatch(currentPath, infoKey) || currentPath.StartsWith(infoKey + "/", StringComparison.OrdinalIgnoreCase)
-                        ? Constants.ActiveCssClass
-                        : "";
-                }
-
-                if (pageController.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                    && controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (pageAction.Equals("categories", StringComparison.InvariantCultureIgnoreCase)
-                        && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        if (string.IsNullOrEmpty(mid) || routeId.Equals(mid, StringComparison.OrdinalIgnoreCase))
-                        {
-                            return Constants.ActiveCssClass;
-                        }
-
-                        return "";
-                    }
-
-                    if (pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return Constants.ActiveCssClass;
-                    }
-                }
-
-                // Generic controller/action match only when MenuLink is unique enough
-                // (not the shared pages-index bucket used by many CMS pages).
-                if (!MenuLink.Equals("pages-index", StringComparison.OrdinalIgnoreCase)
-                    && pageController.Equals(controller, StringComparison.InvariantCultureIgnoreCase)
-                    && pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase)
-                    && !pageController.Equals("products", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return Constants.ActiveCssClass;
-                }
-
+            // Match the current request URL to this menu item's own link.
+            // Do NOT mark every pages/detail item active — many CMS pages share MenuLink "pages-index".
+            var currentPath = TryGetCurrentAppPath();
+            if (string.IsNullOrEmpty(currentPath))
+            {
                 return "";
+            }
+
+            string linkResult;
+            if (TryMatchActiveLink(currentPath, out linkResult))
+            {
+                return linkResult;
+            }
+
+            if (MatchesDetailPageLink(currentPath))
+            {
+                return Constants.ActiveCssClass;
+            }
+
+            // Route-id fallback for pages/detail when MenuLink is the generic "pages-index"
+            // but the SEO slug in the URL belongs to this menu row.
+            if (!TryParseMenuLink(out var controller, out var action, out var mid))
+            {
+                return "";
+            }
+
+            var pageController = HtmlRequestHelper.Controller();
+            var pageAction = HtmlRequestHelper.Action();
+            var routeId = HtmlRequestHelper.Id() ?? string.Empty;
+
+            string routeResult;
+            if (TryMatchPagesDetail(pageController, pageAction, controller, routeId, currentPath, out routeResult))
+            {
+                return routeResult;
+            }
+
+            if (TryMatchInfoIndex(pageController, pageAction, controller, currentPath, out routeResult))
+            {
+                return routeResult;
+            }
+
+            if (TryMatchStories(pageController, pageAction, controller, action, mid, routeId, out routeResult))
+            {
+                return routeResult;
+            }
+
+            if (MatchesGenericControllerAction(pageController, pageAction, controller, action))
+            {
+                return Constants.ActiveCssClass;
+            }
+
+            return "";
+        }
+
+        private static string TryGetCurrentAppPath()
+        {
+            if (HttpContext.Current == null || HttpContext.Current.Request == null || HttpContext.Current.Request.Url == null)
+            {
+                return "";
+            }
+
+            return NormalizeAppPath(HttpContext.Current.Request.Url.AbsolutePath);
+        }
+
+        private bool TryMatchActiveLink(string currentPath, out string result)
+        {
+            result = "";
+            if (!LinkIsActive || string.IsNullOrWhiteSpace(Link))
+            {
+                return false;
+            }
+
+            // External / absolute Link targets: only active when browsing that exact URL.
+            if (Uri.TryCreate(Link, UriKind.Absolute, out var absolute) &&
+                string.Equals(absolute.Host, HttpContext.Current.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
+            {
+                result = PathsMatch(currentPath, NormalizeAppPath(absolute.AbsolutePath)) ? Constants.ActiveCssClass : "";
+                return true;
+            }
+
+            if (Link.StartsWith("/", StringComparison.Ordinal))
+            {
+                result = PathsMatch(currentPath, NormalizeAppPath(Link)) ? Constants.ActiveCssClass : "";
+                return true;
+            }
+
+            return true;
+        }
+
+        private bool MatchesDetailPageLink(string currentPath)
+        {
+            if (string.IsNullOrWhiteSpace(DetailPageLink) || DetailPageLink == "#" || DetailPageLink == "#!")
+            {
+                return false;
+            }
+
+            var detailPath = ToAppPath(DetailPageLink);
+            return !string.IsNullOrEmpty(detailPath) && PathsMatch(currentPath, detailPath);
+        }
+
+        private bool TryMatchPagesDetail(
+            string pageController,
+            string pageAction,
+            string controller,
+            string routeId,
+            string currentPath,
+            out string result)
+        {
+            result = "";
+            if (!pageController.Equals("pages", StringComparison.InvariantCultureIgnoreCase)
+                || !pageAction.Equals("detail", StringComparison.InvariantCultureIgnoreCase)
+                || !controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+
+            var seo = this.GetSeoUrl() ?? string.Empty;
+            if (!string.IsNullOrEmpty(seo)
+                && (routeId.Equals(seo, StringComparison.OrdinalIgnoreCase)
+                    || currentPath.IndexOf("/" + seo.Trim('/'), StringComparison.OrdinalIgnoreCase) >= 0))
+            {
+                result = Constants.ActiveCssClass;
+            }
+
+            return true;
+        }
+
+        private bool TryMatchInfoIndex(string pageController, string pageAction, string controller, string currentPath, out string result)
+        {
+            result = "";
+            if (!pageController.Equals("info", StringComparison.InvariantCultureIgnoreCase)
+                || !pageAction.Equals("index", StringComparison.InvariantCultureIgnoreCase)
+                || !controller.Equals("info", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+
+            var infoKey = "/" + MenuLink.Replace("-", "/").Trim('/').ToLowerInvariant();
+            result = PathsMatch(currentPath, infoKey) || currentPath.StartsWith(infoKey + "/", StringComparison.OrdinalIgnoreCase)
+                ? Constants.ActiveCssClass
+                : "";
+            return true;
+        }
+
+        private static bool TryMatchStories(
+            string pageController,
+            string pageAction,
+            string controller,
+            string action,
+            string mid,
+            string routeId,
+            out string result)
+        {
+            result = "";
+            if (!pageController.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
+                || !controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+
+            if (pageAction.Equals("categories", StringComparison.InvariantCultureIgnoreCase)
+                && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (string.IsNullOrEmpty(mid) || routeId.Equals(mid, StringComparison.OrdinalIgnoreCase))
+                {
+                    result = Constants.ActiveCssClass;
+                }
+
+                return true;
+            }
+
+            if (pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase))
+            {
+                result = Constants.ActiveCssClass;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool MatchesGenericControllerAction(string pageController, string pageAction, string controller, string action)
+        {
+            // Generic controller/action match only when MenuLink is unique enough
+            // (not the shared pages-index bucket used by many CMS pages).
+            return !MenuLink.Equals("pages-index", StringComparison.OrdinalIgnoreCase)
+                && pageController.Equals(controller, StringComparison.InvariantCultureIgnoreCase)
+                && pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase)
+                && !pageController.Equals("products", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static string ToAppPath(string href)

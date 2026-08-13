@@ -47,7 +47,7 @@ namespace EImece.Domain.DbContext
         private static readonly HttpClient GroqHttpClient = new HttpClient();
         // Prefer EIMECE_DB_CONNECTION_STRING. Optional overrides for one-off migration tools:
         // EIMECE_DB_CONNECTION_STRING_PROD / EIMECE_DB_CONNECTION_STRING_DEV
-        private string prodConnectionString
+        private static string prodConnectionString
         {
             get
             {
@@ -55,7 +55,7 @@ namespace EImece.Domain.DbContext
             }
         }
 
-        private string devConnectionString
+        private static string devConnectionString
         {
             get
             {
@@ -74,7 +74,7 @@ namespace EImece.Domain.DbContext
             return ConnectionStringProvider.GetConnectionString();
         }
 
-        public void updateProductDescription()
+        public static void updateProductDescription()
         {
             Dictionary<int, Tuple<string, string>> devProducts = GetProducts(devConnectionString);
             foreach (var kvp in devProducts)

@@ -67,8 +67,10 @@ namespace EImece.Areas.Admin.Controllers
                     // Worst-case fallback to System.Diagnostics if NLog fails
                     System.Diagnostics.Trace.TraceError("Error while logging exception in AjaxController: " + logEx.ToString());
                 }
-                catch
+                catch (Exception fallbackEx)
                 {
+                    // Ignore: NLog and Trace both failed; further logging from OnException could recurse.
+                    Logger.Debug(fallbackEx, "AjaxController OnException fallback Trace.TraceError failed.");
                 }
             }
 
@@ -181,90 +183,158 @@ namespace EImece.Areas.Admin.Controllers
 
         private async Task<List<string>> SearchIndexActionAsync(bool isIndexAction, string controllerName, string searchKey, string term, string actionName)
         {
-            var list = new List<String>();
-            if (isIndexAction && controllerName.Equals("Products", StringComparison.InvariantCultureIgnoreCase))
+            if (!isIndexAction)
             {
-                Expression<Func<Product, bool>> whereLambda1 = r =>
-                    r.Name.ToLower().Contains(searchKey)
-                    || (r.ProductCode != null && r.ProductCode.ToLower().Contains(searchKey))
-                    || (r.NameLong != null && r.NameLong.ToLower().Contains(searchKey))
-                    || (r.NameShort != null && r.NameShort.ToLower().Contains(searchKey));
-                var products = await ProductService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage);
-                list = products
-                    .SelectMany(r => new[] { r.Name, r.ProductCode })
-                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                    .Distinct(StringComparer.OrdinalIgnoreCase)
-                    .ToList();
+                throw new NotImplementedException(term + " " + actionName + " " + controllerName);
             }
-            else if (isIndexAction && controllerName.Equals("Stories", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<Story, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await StoryService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction && controllerName.Equals("ProductCategories", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await ProductCategoryService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction && controllerName.Equals("StoryCategories", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await StoryCategoryService.SearchEntitiesAsync(whereLambda3, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-                  controllerName.Equals("Menus", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await MenuService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-                controllerName.Equals("Tags", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<Tag, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await TagService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-              controllerName.Equals("Coupons", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<Coupon, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await CouponService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-               controllerName.Equals("TagCategories", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<TagCategory, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await TagCategoryService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-            controllerName.Equals("Subscribers", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<Subscriber, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await SubscriberService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-         controllerName.Equals("Settings", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<Setting, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await SettingService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-        controllerName.Equals("MainPageImages", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Expression<Func<MainPageImage, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
-                list = (await MainPageImageService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
-            }
-            else if (isIndexAction &&
-    controllerName.Equals("Users", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var users = ApplicationDbContext.Users.AsQueryable();
-                list = await users.Where(r => r.Email.ToLower().Contains(searchKey) || r.FirstName.ToLower().Contains(searchKey) || r.LastName.ToLower().Contains(searchKey)).Select(r => r.Email).ToListAsync();
-            }
-            else
+
+            var list = await SearchIndexByControllerAsync(controllerName, searchKey);
+            if (list == null)
             {
                 throw new NotImplementedException(term + " " + actionName + " " + controllerName);
             }
 
             return list;
+        }
+
+        private async Task<List<string>> SearchIndexByControllerAsync(string controllerName, string searchKey)
+        {
+            if (IsController(controllerName, "Products"))
+            {
+                return await SearchProductsIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "Stories"))
+            {
+                return await SearchStoriesIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "ProductCategories"))
+            {
+                return await SearchProductCategoriesIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "StoryCategories"))
+            {
+                return await SearchStoryCategoriesIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "Menus"))
+            {
+                return await SearchMenusIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "Tags"))
+            {
+                return await SearchTagsIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "Coupons"))
+            {
+                return await SearchCouponsIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "TagCategories"))
+            {
+                return await SearchTagCategoriesIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "Subscribers"))
+            {
+                return await SearchSubscribersIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "Settings"))
+            {
+                return await SearchSettingsIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "MainPageImages"))
+            {
+                return await SearchMainPageImagesIndexAsync(searchKey);
+            }
+            if (IsController(controllerName, "Users"))
+            {
+                return await SearchUsersIndexAsync(searchKey);
+            }
+
+            return null;
+        }
+
+        private static bool IsController(string controllerName, string name)
+        {
+            return controllerName.Equals(name, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private async Task<List<string>> SearchProductsIndexAsync(string searchKey)
+        {
+            Expression<Func<Product, bool>> whereLambda1 = r =>
+                r.Name.ToLower().Contains(searchKey)
+                || (r.ProductCode != null && r.ProductCode.ToLower().Contains(searchKey))
+                || (r.NameLong != null && r.NameLong.ToLower().Contains(searchKey))
+                || (r.NameShort != null && r.NameShort.ToLower().Contains(searchKey));
+            var products = await ProductService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage);
+            return products
+                .SelectMany(r => new[] { r.Name, r.ProductCode })
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
+        private async Task<List<string>> SearchStoriesIndexAsync(string searchKey)
+        {
+            Expression<Func<Story, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
+            return (await StoryService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchProductCategoriesIndexAsync(string searchKey)
+        {
+            Expression<Func<ProductCategory, bool>> whereLambda1 = r => r.Name.ToLower().Contains(searchKey);
+            return (await ProductCategoryService.SearchEntitiesAsync(whereLambda1, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchStoryCategoriesIndexAsync(string searchKey)
+        {
+            Expression<Func<StoryCategory, bool>> whereLambda3 = r => r.Name.ToLower().Contains(searchKey);
+            return (await StoryCategoryService.SearchEntitiesAsync(whereLambda3, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchMenusIndexAsync(string searchKey)
+        {
+            Expression<Func<Menu, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+            return (await MenuService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchTagsIndexAsync(string searchKey)
+        {
+            Expression<Func<Tag, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+            return (await TagService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchCouponsIndexAsync(string searchKey)
+        {
+            Expression<Func<Coupon, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+            return (await CouponService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchTagCategoriesIndexAsync(string searchKey)
+        {
+            Expression<Func<TagCategory, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+            return (await TagCategoryService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchSubscribersIndexAsync(string searchKey)
+        {
+            Expression<Func<Subscriber, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+            return (await SubscriberService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchSettingsIndexAsync(string searchKey)
+        {
+            Expression<Func<Setting, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+            return (await SettingService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchMainPageImagesIndexAsync(string searchKey)
+        {
+            Expression<Func<MainPageImage, bool>> whereLamba5 = r => r.Name.ToLower().Contains(searchKey);
+            return (await MainPageImageService.SearchEntitiesAsync(whereLamba5, searchKey, CurrentLanguage)).Select(r => r.Name).ToList();
+        }
+
+        private async Task<List<string>> SearchUsersIndexAsync(string searchKey)
+        {
+            var users = ApplicationDbContext.Users.AsQueryable();
+            return await users.Where(r => r.Email.ToLower().Contains(searchKey) || r.FirstName.ToLower().Contains(searchKey) || r.LastName.ToLower().Contains(searchKey)).Select(r => r.Email).ToListAsync();
         }
 
         [DeleteAuthorize()]

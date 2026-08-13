@@ -14,7 +14,7 @@ namespace EImece.Domain.Repositories
     // AppLog  NLog.config dosyasi uzerinden veritabani kayiti yapilir.
     public class AppLogRepository
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public List<AppLog> GetAppLogs(string search, string eventLevel = "")
         {
@@ -25,7 +25,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 throw;
             }
             return applogResult;
@@ -39,7 +39,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "GetAppLogsAsync failed.");
+                _logger.Error(ex, "GetAppLogsAsync failed.");
                 throw new InvalidOperationException("GetAppLogsAsync failed.", ex);
             }
         }
@@ -187,24 +187,8 @@ namespace EImece.Domain.Repositories
         public List<AppLog> GetAppLogsFromDb(string search, string eventLevel = "")
         {
             var list = new List<AppLog>();
-            var whereClauses = new List<string>();
             var parameterList = new List<SqlParameter>();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                whereClauses.Add("EventMessage LIKE @Search");
-                parameterList.Add(DatabaseUtility.GetSqlParameter("Search", "%" + search.Trim() + "%", SqlDbType.NVarChar));
-            }
-
-            if (!string.IsNullOrWhiteSpace(eventLevel))
-            {
-                whereClauses.Add("LOWER(EventLevel) = LOWER(@EventLevel)");
-                parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EventLevelColumn, eventLevel.Trim(), SqlDbType.NVarChar));
-            }
-
-            var commandText = whereClauses.Count == 0
-                ? @"SELECT TOP 10000 * FROM dbo.AppLogs ORDER BY Id DESC"
-                : @"SELECT TOP 10000 * FROM dbo.AppLogs WHERE " + string.Join(" AND ", whereClauses) + " ORDER BY Id DESC";
+            var commandText = BuildAppLogsCommandText(search, eventLevel, parameterList);
 
             string connectionString = ConnectionStringProvider.GetConnectionString();
             var commandType = CommandType.Text;
@@ -230,24 +214,8 @@ namespace EImece.Domain.Repositories
         public async Task<List<AppLog>> GetAppLogsFromDbAsync(string search, string eventLevel = "", CancellationToken cancellationToken = default(CancellationToken))
         {
             var list = new List<AppLog>();
-            var whereClauses = new List<string>();
             var parameterList = new List<SqlParameter>();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                whereClauses.Add("EventMessage LIKE @Search");
-                parameterList.Add(DatabaseUtility.GetSqlParameter("Search", "%" + search.Trim() + "%", SqlDbType.NVarChar));
-            }
-
-            if (!string.IsNullOrWhiteSpace(eventLevel))
-            {
-                whereClauses.Add("LOWER(EventLevel) = LOWER(@EventLevel)");
-                parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EventLevelColumn, eventLevel.Trim(), SqlDbType.NVarChar));
-            }
-
-            var commandText = whereClauses.Count == 0
-                ? @"SELECT TOP 10000 * FROM dbo.AppLogs ORDER BY Id DESC"
-                : @"SELECT TOP 10000 * FROM dbo.AppLogs WHERE " + string.Join(" AND ", whereClauses) + " ORDER BY Id DESC";
+            var commandText = BuildAppLogsCommandText(search, eventLevel, parameterList);
 
             string connectionString = ConnectionStringProvider.GetConnectionString();
             var commandType = CommandType.Text;
@@ -284,6 +252,27 @@ namespace EImece.Domain.Repositories
                 }
             }
             return list;
+        }
+
+        private static string BuildAppLogsCommandText(string search, string eventLevel, List<SqlParameter> parameterList)
+        {
+            var whereClauses = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                whereClauses.Add("EventMessage LIKE @Search");
+                parameterList.Add(DatabaseUtility.GetSqlParameter("Search", "%" + search.Trim() + "%", SqlDbType.NVarChar));
+            }
+
+            if (!string.IsNullOrWhiteSpace(eventLevel))
+            {
+                whereClauses.Add("LOWER(EventLevel) = LOWER(@EventLevel)");
+                parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EventLevelColumn, eventLevel.Trim(), SqlDbType.NVarChar));
+            }
+
+            return whereClauses.Count == 0
+                ? @"SELECT TOP 10000 * FROM dbo.AppLogs ORDER BY Id DESC"
+                : @"SELECT TOP 10000 * FROM dbo.AppLogs WHERE " + string.Join(" AND ", whereClauses) + " ORDER BY Id DESC";
         }
 
         private static async Task ExecuteNonQueryAsync(SqlConnection connection, string commandText, CommandType commandType, SqlParameter[] parameters, CancellationToken cancellationToken = default(CancellationToken))

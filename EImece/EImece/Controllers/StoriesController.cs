@@ -48,12 +48,12 @@ namespace EImece.Controllers
                 if (String.IsNullOrEmpty(id))
                 {
                     Logger.Error("Story ID is null or empty.");
-                    Logger.Info("Returning BadRequest status.");
+                    Logger.Debug("Returning BadRequest status.");
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
                 var storyId = id.GetId();
-                Logger.Info($"Parsed story ID: {storyId}");
+                Logger.Debug($"Parsed story ID: {storyId}");
 
                 var story = await StoryService.GetStoryDetailViewModelAsync(storyId, cancellationToken);
                 if (story == null || story.Story == null)
@@ -63,9 +63,9 @@ namespace EImece.Controllers
                 Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story.Story.Name}");
 
                 ViewBag.SeoId = story.Story.GetSeoUrl();
-                Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");
+                Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");
 
-                Logger.Info("Returning Detail view.");
+                Logger.Debug("Returning Detail view.");
                 return View(story);
             }
             catch (Exception ex)
@@ -84,12 +84,12 @@ namespace EImece.Controllers
                 if (String.IsNullOrEmpty(id))
                 {
                     Logger.Error("Story category ID is null or empty.");
-                    Logger.Info("Returning BadRequest status.");
+                    Logger.Debug("Returning BadRequest status.");
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
                 var storyCategoryId = id.GetId();
-                Logger.Info($"Parsed story category ID: {storyCategoryId}");
+                Logger.Debug($"Parsed story category ID: {storyCategoryId}");
 
                 var storyCategory = await StoryService.GetStoryCategoriesViewModelAsync(storyCategoryId, page, cancellationToken);
                 if (storyCategory == null || storyCategory.StoryCategory == null)
@@ -99,9 +99,9 @@ namespace EImece.Controllers
                 Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory.StoryCategory.Name}, Stories Count: {storyCategory.Stories?.Count ?? 0}");
 
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
-                Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");
+                Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");
 
-                Logger.Info("Returning Categories view.");
+                Logger.Debug("Returning Categories view.");
                 return View(storyCategory);
             }
             catch (Exception ex)

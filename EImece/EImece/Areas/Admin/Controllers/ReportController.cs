@@ -27,6 +27,14 @@ namespace EImece.Areas.Admin.Controllers
         private const string PriceAnalysisKey = "PriceAnalysis";
         private const string ProductInventoryKey = "ProductInventory";
         private const string ProductStatsByDateRangeKey = "ProductStatsByDateRange";
+        private const string DataSetReportViewName = "DataSetReportView";
+        private const string PerformanceSystemReportTitle = "Performance System Report";
+        private const string FinancialReportTitle = "Financial Report";
+        private const string FraudRiskReportTitle = "Fraud Risk Report";
+        private const string OrderVolumeReportTitle = "Order Volume Report";
+        private const string PaymentTransactionReportTitle = "Payment Transaction Report";
+        private const string IsoDateFormat = "yyyy-MM-dd";
+        private const string StartDateAfterEndDateMessage = "Start date cannot be after end date";
 
         [Inject]
         public ReportService _reportService { get; set; }
@@ -134,15 +142,15 @@ namespace EImece.Areas.Admin.Controllers
                 var resolvedEnd = endDate ?? DateTime.Today;
                 var resolvedStart = startDate ?? resolvedEnd.AddMonths(-1);
 
-                ViewBag.StartDate = resolvedStart.ToString("yyyy-MM-dd");
-                ViewBag.EndDate = resolvedEnd.ToString("yyyy-MM-dd");
+                ViewBag.StartDate = resolvedStart.ToString(IsoDateFormat);
+                ViewBag.EndDate = resolvedEnd.ToString(IsoDateFormat);
 
                 // Auto-load when both dates are supplied via query string
                 if (startDate.HasValue && endDate.HasValue)
                 {
                     if (resolvedStart > resolvedEnd)
                     {
-                        ModelState.AddModelError("", "Start date cannot be after end date");
+                        ModelState.AddModelError("", StartDateAfterEndDateMessage);
                         return View();
                     }
 
@@ -167,15 +175,15 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (startDate > endDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
-                    ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
-                    ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+                    ModelState.AddModelError("", StartDateAfterEndDateMessage);
+                    ViewBag.StartDate = startDate.ToString(IsoDateFormat);
+                    ViewBag.EndDate = endDate.ToString(IsoDateFormat);
                     return View();
                 }
 
                 var report = await _reportService.GetSalesReportByDateRangeAsync(startDate, endDate, cancellationToken);
-                ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
-                ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+                ViewBag.StartDate = startDate.ToString(IsoDateFormat);
+                ViewBag.EndDate = endDate.ToString(IsoDateFormat);
                 return View(report);
             }
             catch (Exception ex)
@@ -206,7 +214,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult PerformanceSystemReport()
         {
-            return View("DataSetReportView", CreateEmptyDateRangeModel(PerformanceSystemReportKey, "Performance System Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(PerformanceSystemReportKey, PerformanceSystemReportTitle));
         }
 
         [HttpPost]
@@ -216,8 +224,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
-                    return View("DataSetReportView", CreateEmptyDateRangeModel(PerformanceSystemReportKey, "Performance System Report",
+                    ModelState.AddModelError("", StartDateAfterEndDateMessage);
+                    return View(DataSetReportViewName, CreateEmptyDateRangeModel(PerformanceSystemReportKey, PerformanceSystemReportTitle,
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
@@ -226,20 +234,20 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     ReportData = report,
                     ReportActionName = PerformanceSystemReportKey,
-                    ReportTitle = "Performance System Report",
+                    ReportTitle = PerformanceSystemReportTitle,
                     StartDate = dataSetReportViewModel.StartDate,
                     EndDate = dataSetReportViewModel.EndDate
                 };
-                return View("DataSetReportView", model);
+                return View(DataSetReportViewName, model);
             }
 
-            return View("DataSetReportView", CreateEmptyDateRangeModel(PerformanceSystemReportKey, "Performance System Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(PerformanceSystemReportKey, PerformanceSystemReportTitle));
         }
 
         [HttpGet]
         public ActionResult FinancialReport()
         {
-            return View("DataSetReportView", CreateEmptyDateRangeModel(FinancialReportKey, "Financial Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(FinancialReportKey, FinancialReportTitle));
         }
 
         [HttpPost]
@@ -249,8 +257,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
-                    return View("DataSetReportView", CreateEmptyDateRangeModel(FinancialReportKey, "Financial Report",
+                    ModelState.AddModelError("", StartDateAfterEndDateMessage);
+                    return View(DataSetReportViewName, CreateEmptyDateRangeModel(FinancialReportKey, FinancialReportTitle,
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
@@ -259,20 +267,20 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     ReportData = report,
                     ReportActionName = FinancialReportKey,
-                    ReportTitle = "Financial Report",
+                    ReportTitle = FinancialReportTitle,
                     StartDate = dataSetReportViewModel.StartDate,
                     EndDate = dataSetReportViewModel.EndDate
                 };
-                return View("DataSetReportView", model);
+                return View(DataSetReportViewName, model);
             }
 
-            return View("DataSetReportView", CreateEmptyDateRangeModel(FinancialReportKey, "Financial Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(FinancialReportKey, FinancialReportTitle));
         }
 
         [HttpGet]
         public ActionResult FraudRiskReport()
         {
-            return View("DataSetReportView", CreateEmptyDateRangeModel(FraudRiskReportKey, "Fraud Risk Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(FraudRiskReportKey, FraudRiskReportTitle));
         }
 
         [HttpPost]
@@ -282,8 +290,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
-                    return View("DataSetReportView", CreateEmptyDateRangeModel(FraudRiskReportKey, "Fraud Risk Report",
+                    ModelState.AddModelError("", StartDateAfterEndDateMessage);
+                    return View(DataSetReportViewName, CreateEmptyDateRangeModel(FraudRiskReportKey, FraudRiskReportTitle,
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
@@ -292,20 +300,20 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     ReportData = report,
                     ReportActionName = FraudRiskReportKey,
-                    ReportTitle = "Fraud Risk Report",
+                    ReportTitle = FraudRiskReportTitle,
                     StartDate = dataSetReportViewModel.StartDate,
                     EndDate = dataSetReportViewModel.EndDate
                 };
-                return View("DataSetReportView", model);
+                return View(DataSetReportViewName, model);
             }
 
-            return View("DataSetReportView", CreateEmptyDateRangeModel(FraudRiskReportKey, "Fraud Risk Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(FraudRiskReportKey, FraudRiskReportTitle));
         }
 
         [HttpGet]
         public ActionResult OrderVolumeReport()
         {
-            return View("DataSetReportView", CreateEmptyDateRangeModel(OrderVolumeReportKey, "Order Volume Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(OrderVolumeReportKey, OrderVolumeReportTitle));
         }
 
         [HttpPost]
@@ -315,8 +323,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
-                    return View("DataSetReportView", CreateEmptyDateRangeModel(OrderVolumeReportKey, "Order Volume Report",
+                    ModelState.AddModelError("", StartDateAfterEndDateMessage);
+                    return View(DataSetReportViewName, CreateEmptyDateRangeModel(OrderVolumeReportKey, OrderVolumeReportTitle,
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
@@ -325,20 +333,20 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     ReportData = report,
                     ReportActionName = OrderVolumeReportKey,
-                    ReportTitle = "Order Volume Report",
+                    ReportTitle = OrderVolumeReportTitle,
                     StartDate = dataSetReportViewModel.StartDate,
                     EndDate = dataSetReportViewModel.EndDate
                 };
-                return View("DataSetReportView", model);
+                return View(DataSetReportViewName, model);
             }
 
-            return View("DataSetReportView", CreateEmptyDateRangeModel(OrderVolumeReportKey, "Order Volume Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(OrderVolumeReportKey, OrderVolumeReportTitle));
         }
 
         [HttpGet]
         public ActionResult PaymentTransactionReport()
         {
-            return View("DataSetReportView", CreateEmptyDateRangeModel(PaymentTransactionReportKey, "Payment Transaction Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(PaymentTransactionReportKey, PaymentTransactionReportTitle));
         }
 
         [HttpPost]
@@ -348,8 +356,8 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (dataSetReportViewModel.StartDate > dataSetReportViewModel.EndDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
-                    return View("DataSetReportView", CreateEmptyDateRangeModel(PaymentTransactionReportKey, "Payment Transaction Report",
+                    ModelState.AddModelError("", StartDateAfterEndDateMessage);
+                    return View(DataSetReportViewName, CreateEmptyDateRangeModel(PaymentTransactionReportKey, PaymentTransactionReportTitle,
                         dataSetReportViewModel.StartDate, dataSetReportViewModel.EndDate));
                 }
 
@@ -358,14 +366,14 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     ReportData = report,
                     ReportActionName = PaymentTransactionReportKey,
-                    ReportTitle = "Payment Transaction Report",
+                    ReportTitle = PaymentTransactionReportTitle,
                     StartDate = dataSetReportViewModel.StartDate,
                     EndDate = dataSetReportViewModel.EndDate
                 };
-                return View("DataSetReportView", model);
+                return View(DataSetReportViewName, model);
             }
 
-            return View("DataSetReportView", CreateEmptyDateRangeModel(PaymentTransactionReportKey, "Payment Transaction Report"));
+            return View(DataSetReportViewName, CreateEmptyDateRangeModel(PaymentTransactionReportKey, PaymentTransactionReportTitle));
         }
 
         [HttpGet]
@@ -396,7 +404,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (startDate.HasValue && endDate.HasValue && startDate > endDate)
                 {
-                    ModelState.AddModelError("", "Start date cannot be after end date");
+                    ModelState.AddModelError("", StartDateAfterEndDateMessage);
                     return View();
                 }
 
@@ -533,8 +541,8 @@ namespace EImece.Areas.Admin.Controllers
                 var endDate = DateTime.Today;
                 var startDate = endDate.AddMonths(-1);
 
-                ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
-                ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+                ViewBag.StartDate = startDate.ToString(IsoDateFormat);
+                ViewBag.EndDate = endDate.ToString(IsoDateFormat);
                 var report = await _reportService.GetProductStatsByDateRangeAsync(startDate, endDate, cancellationToken);
                 return View(new DataSetReportViewModel
                 {
@@ -581,8 +589,8 @@ namespace EImece.Areas.Admin.Controllers
                 model.ReportActionName = ProductStatsByDateRangeKey;
                 model.ReportTitle = "Product Stats By DateRange";
 
-                ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
-                ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+                ViewBag.StartDate = startDate.ToString(IsoDateFormat);
+                ViewBag.EndDate = endDate.ToString(IsoDateFormat);
 
                 return View(model);
             }
@@ -628,43 +636,46 @@ namespace EImece.Areas.Admin.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Unknown reportKey or missing required filters.");
                 }
 
-                var fileBaseName = reportKey;
-
-                if (reportData is DataTable dataTable)
-                {
-                    if (string.IsNullOrEmpty(dataTable.TableName))
-                    {
-                        dataTable.TableName = reportKey;
-                    }
-
-                    // Single-table Excel can reuse BaseAdminController helper (filename + .xls)
-                    if (isExcel)
-                    {
-                        return DownloadFileDataTable(dataTable, fileBaseName);
-                    }
-
-                    return DownloadReportCsv(dataTable, fileBaseName);
-                }
-
-                if (reportData is DataSet dataSet)
-                {
-                    var tables = DataSetToTableList(dataSet, reportKey);
-                    if (isExcel)
-                    {
-                        return DownloadReportExcel(tables, fileBaseName);
-                    }
-
-                    // CSV: first sheet, or concatenate sheets with a blank separator row
-                    return DownloadReportCsv(tables, fileBaseName);
-                }
-
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Unsupported report data type.");
+                return CreateExportFileResult(reportData, reportKey, isExcel);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Error exporting report {0} as {1}", reportKey, format);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
+        }
+
+        private ActionResult CreateExportFileResult(object reportData, string reportKey, bool isExcel)
+        {
+            var fileBaseName = reportKey;
+
+            if (reportData is DataTable dataTable)
+            {
+                if (string.IsNullOrEmpty(dataTable.TableName))
+                {
+                    dataTable.TableName = reportKey;
+                }
+
+                if (isExcel)
+                {
+                    return DownloadFileDataTable(dataTable, fileBaseName);
+                }
+
+                return DownloadReportCsv(dataTable, fileBaseName);
+            }
+
+            if (reportData is DataSet dataSet)
+            {
+                var tables = DataSetToTableList(dataSet, reportKey);
+                if (isExcel)
+                {
+                    return DownloadReportExcel(tables, fileBaseName);
+                }
+
+                return DownloadReportCsv(tables, fileBaseName);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Unsupported report data type.");
         }
 
         /// <summary>
@@ -761,102 +772,6 @@ namespace EImece.Areas.Admin.Controllers
             return null;
         }
 
-        private object LoadReportDataForExport(
-            string reportKey,
-            DateTime? startDate,
-            DateTime? endDate,
-            decimal? minPrice,
-            decimal? maxPrice,
-            int? productCategoryId,
-            bool? isActive,
-            string state,
-            bool? isCampaign,
-            bool? mainPage,
-            string paymentStatus = null)
-        {
-            switch (reportKey)
-            {
-                case "CouponUsage":
-                    return _reportService.GetCouponUsageReport();
-
-                case "FraudAnalysis":
-                    return _reportService.GetFraudAnalysisReport();
-
-                case "PaymentMethod":
-                    return _reportService.GetPaymentMethodReport();
-
-                case "PaymentStatus":
-                    return _reportService.GetPaymentStatusReport();
-
-                case "GetRegionalSalesReport":
-                    return _reportService.GetRegionalSalesReport(paymentStatus);
-
-                case "SalesByDateRange":
-                    if (!startDate.HasValue || !endDate.HasValue)
-                    {
-                        return null;
-                    }
-                    return _reportService.GetSalesReportByDateRange(startDate.Value, endDate.Value);
-
-                case "ShipmentCompany":
-                    return _reportService.GetShipmentCompanyReport();
-
-                case PerformanceSystemReportKey:
-                    if (!startDate.HasValue || !endDate.HasValue)
-                    {
-                        return null;
-                    }
-                    return _reportService.GetPerformanceSystemReport(startDate.Value, endDate.Value);
-
-                case FinancialReportKey:
-                    if (!startDate.HasValue || !endDate.HasValue)
-                    {
-                        return null;
-                    }
-                    return _reportService.GetFinancialReport(startDate.Value, endDate.Value);
-
-                case FraudRiskReportKey:
-                    if (!startDate.HasValue || !endDate.HasValue)
-                    {
-                        return null;
-                    }
-                    return _reportService.GetFraudRiskReport(startDate.Value, endDate.Value);
-
-                case OrderVolumeReportKey:
-                    if (!startDate.HasValue || !endDate.HasValue)
-                    {
-                        return null;
-                    }
-                    return _reportService.GetOrderVolumeReport(startDate.Value, endDate.Value);
-
-                case PaymentTransactionReportKey:
-                    if (!startDate.HasValue || !endDate.HasValue)
-                    {
-                        return null;
-                    }
-                    return _reportService.GetPaymentTransactionReport(startDate.Value, endDate.Value);
-
-                case ProductSummaryKey:
-                    return _reportService.GetProductSummaryReport(startDate, endDate, isActive, productCategoryId);
-
-                case PriceAnalysisKey:
-                    return _reportService.GetPriceAnalysisReport(minPrice, maxPrice, productCategoryId);
-
-                case ProductInventoryKey:
-                    return _reportService.GetProductInventoryReport(state, isCampaign, mainPage);
-
-                case ProductStatsByDateRangeKey:
-                    if (!startDate.HasValue || !endDate.HasValue)
-                    {
-                        return null;
-                    }
-                    return _reportService.GetProductStatsByDateRange(startDate.Value, endDate.Value);
-
-                default:
-                    return null;
-            }
-        }
-
         private static DataSetReportViewModel CreateEmptyDateRangeModel(
             string actionName,
             string title,
@@ -905,7 +820,7 @@ namespace EImece.Areas.Admin.Controllers
         /// </summary>
         private ActionResult DownloadReportExcel(List<DataTable> tables, string fileName)
         {
-            var stampedName = string.Format("{1}-{0}", DateTime.Now.ToString("yyyy-MM-dd"), fileName);
+            var stampedName = string.Format("{1}-{0}", DateTime.Now.ToString(IsoDateFormat), fileName);
             var bytes = ExcelHelper.GetExcelByteArrayFromDataTable(tables);
             return File(bytes, "application/vnd.ms-excel", stampedName + ".xls");
         }
@@ -915,7 +830,7 @@ namespace EImece.Areas.Admin.Controllers
         /// </summary>
         private ActionResult DownloadReportCsv(DataTable table, string fileName)
         {
-            var stampedName = string.Format("{1}-{0}", DateTime.Now.ToString("yyyy-MM-dd"), fileName);
+            var stampedName = string.Format("{1}-{0}", DateTime.Now.ToString(IsoDateFormat), fileName);
             var data = ExcelHelper.ExportReportCsv(table ?? new DataTable());
             return File(data, "text/csv", stampedName + ".csv");
         }
@@ -935,7 +850,7 @@ namespace EImece.Areas.Admin.Controllers
                 return DownloadReportCsv(tables[0], fileName);
             }
 
-            var stampedName = string.Format("{1}-{0}", DateTime.Now.ToString("yyyy-MM-dd"), fileName);
+            var stampedName = string.Format("{1}-{0}", DateTime.Now.ToString(IsoDateFormat), fileName);
             var utf8 = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
             var sb = new StringBuilder();
             // One BOM + one sep=; for the whole file

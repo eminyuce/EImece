@@ -9,6 +9,8 @@ namespace EImece.Infrastructure.Designs
 {
     public class DesignAwareRazorViewEngine : RazorViewEngine
     {
+        private const string CshtmlExtension = ".cshtml";
+
         private readonly IDesignProvider _designProvider;
         public Func<string, bool> FileExistsOverride { get; set; }
 
@@ -98,21 +100,7 @@ namespace EImece.Infrastructure.Designs
             // Admin area is excluded from design overrides
             if (IsAdminArea(areaName) || string.IsNullOrEmpty(activeDesign))
             {
-                if (FileExistsOverride != null)
-                {
-                    string path = string.IsNullOrEmpty(areaName)
-                        ? $"~/Views/{controllerName}/{partialViewName}.cshtml"
-                        : $"~/Areas/{areaName}/Views/{controllerName}/{partialViewName}.cshtml";
-
-                    if (FileExistsOverride(path))
-                    {
-                        IView v = CreatePartialView(controllerContext, path);
-                        return new ViewEngineResult(v, this);
-                    }
-                    return new ViewEngineResult(new[] { path });
-                }
-
-                return base.FindPartialView(controllerContext, partialViewName, useCache);
+                return FindPartialViewWithoutDesign(controllerContext, partialViewName, areaName, controllerName, useCache);
             }
 
             List<string> searchedLocations = new List<string>();
@@ -124,10 +112,7 @@ namespace EImece.Infrastructure.Designs
                 return new ViewEngineResult(view, this);
             }
 
-            bool isBuiltInTemplate = partialViewName.StartsWith("EditorTemplates/", StringComparison.OrdinalIgnoreCase) ||
-                                     partialViewName.StartsWith("DisplayTemplates/", StringComparison.OrdinalIgnoreCase);
-
-            if (isBuiltInTemplate)
+            if (IsBuiltInMvcTemplate(partialViewName))
             {
                 return base.FindPartialView(controllerContext, partialViewName, useCache);
             }
@@ -143,66 +128,125 @@ namespace EImece.Infrastructure.Designs
                 searchedLocations.ToArray());
         }
 
+        private ViewEngineResult FindPartialViewWithoutDesign(
+            ControllerContext controllerContext,
+            string partialViewName,
+            string areaName,
+            string controllerName,
+            bool useCache)
+        {
+            if (FileExistsOverride != null)
+            {
+                string path = string.IsNullOrEmpty(areaName)
+                    ? $"~/Views/{controllerName}/{partialViewName}.cshtml"
+                    : $"~/Areas/{areaName}/Views/{controllerName}/{partialViewName}.cshtml";
+
+                if (FileExistsOverride(path))
+                {
+                    IView v = CreatePartialView(controllerContext, path);
+                    return new ViewEngineResult(v, this);
+                }
+                return new ViewEngineResult(new[] { path });
+            }
+
+            return base.FindPartialView(controllerContext, partialViewName, useCache);
+        }
+
+        private static bool IsBuiltInMvcTemplate(string partialViewName)
+        {
+            return partialViewName.StartsWith("EditorTemplates/", StringComparison.OrdinalIgnoreCase) ||
+                   partialViewName.StartsWith("DisplayTemplates/", StringComparison.OrdinalIgnoreCase);
+        }
+
         private string ResolveDesignViewPath(string design, string area, string controller, string viewName, List<string> searchedLocations)
         {
-            // Format view name extension if missing
-            string viewNameWithExt = viewName.EndsWith(".cshtml", StringComparison.OrdinalIgnoreCase) ? viewName : viewName + ".cshtml";
+            string viewNameWithExt = viewName.EndsWith(CshtmlExtension, StringComparison.OrdinalIgnoreCase)
+                ? viewName
+                : viewName + CshtmlExtension;
 
-            // Case A: Specific path starting with ~ or /
-            if (viewName.StartsWith("~/", StringComparison.Ordinal) || viewName.StartsWith("/", StringComparison.Ordinal))
+            if (IsAbsoluteViewName(viewName))
             {
-                string mappedPath;
-                if (viewName.StartsWith("~/Views/Designs/", StringComparison.OrdinalIgnoreCase))
-                {
-                    mappedPath = viewName;
-                }
-                else if (viewName.StartsWith("~/Areas/", StringComparison.OrdinalIgnoreCase))
-                {
-                    // ~/Areas/Customers/Views/Home/Index.cshtml -> ~/Views/Designs/{design}/Areas/Customers/Home/Index.cshtml
-                    string pathWithoutAreas = viewName.Substring("~/Areas/".Length);
-                    int firstSlash = pathWithoutAreas.IndexOf('/');
-                    if (firstSlash > 0)
-                    {
-                        string targetArea = pathWithoutAreas.Substring(0, firstSlash);
-                        string rest = pathWithoutAreas.Substring(firstSlash).Replace("/Views/", "/");
-                        mappedPath = $"~/Views/Designs/{design}/Areas/{targetArea}{rest}";
-                    }
-                    else
-                    {
-                        mappedPath = $"~/Views/Designs/{design}/{pathWithoutAreas}";
-                    }
-                }
-                else if (viewName.StartsWith("~/Views/", StringComparison.OrdinalIgnoreCase))
-                {
-                    mappedPath = $"~/Views/Designs/{design}/" + viewName.Substring("~/Views/".Length);
-                }
-                else
-                {
-                    mappedPath = $"~/Views/Designs/{design}/" + viewName.TrimStart('~', '/');
-                }
-
-                searchedLocations.Add(mappedPath);
-                if (DoesFileExist(mappedPath))
-                {
-                    return mappedPath;
-                }
-                return null;
+                return ResolveAbsoluteDesignView(design, viewName, searchedLocations);
             }
 
-            // Case B: Relative cross-folder path e.g. "../Products/Detail"
             if (viewName.StartsWith("../", StringComparison.Ordinal))
             {
-                string relativePath = viewName.Substring(3);
-                string mappedPath = $"~/Views/Designs/{design}/{relativePath}{(relativePath.EndsWith(".cshtml", StringComparison.OrdinalIgnoreCase) ? "" : ".cshtml")}";
-                searchedLocations.Add(mappedPath);
-                if (DoesFileExist(mappedPath))
-                {
-                    return mappedPath;
-                }
-                return null;
+                return ResolveParentRelativeDesignView(design, viewName, searchedLocations);
             }
 
-            // Case C: Standard view probing
+            return ProbeStandardDesignViewLocations(design, area, controller, viewName, viewNameWithExt, searchedLocations);
+        }
+
+        private static bool IsAbsoluteViewName(string viewName)
+        {
+            return viewName.StartsWith("~/", StringComparison.Ordinal) || viewName.StartsWith("/", StringComparison.Ordinal);
+        }
+
+        private string ResolveAbsoluteDesignView(string design, string viewName, List<string> searchedLocations)
+        {
+            string mappedPath = MapAbsoluteViewToDesignPath(design, viewName);
+            searchedLocations.Add(mappedPath);
+            if (DoesFileExist(mappedPath))
+            {
+                return mappedPath;
+            }
+            return null;
+        }
+
+        private static string MapAbsoluteViewToDesignPath(string design, string viewName)
+        {
+            if (viewName.StartsWith("~/Views/Designs/", StringComparison.OrdinalIgnoreCase))
+            {
+                return viewName;
+            }
+
+            if (viewName.StartsWith("~/Areas/", StringComparison.OrdinalIgnoreCase))
+            {
+                return MapAreasViewToDesignPath(design, viewName);
+            }
+
+            if (viewName.StartsWith("~/Views/", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"~/Views/Designs/{design}/" + viewName.Substring("~/Views/".Length);
+            }
+
+            return $"~/Views/Designs/{design}/" + viewName.TrimStart('~', '/');
+        }
+
+        private static string MapAreasViewToDesignPath(string design, string viewName)
+        {
+            string pathWithoutAreas = viewName.Substring("~/Areas/".Length);
+            int firstSlash = pathWithoutAreas.IndexOf('/');
+            if (firstSlash > 0)
+            {
+                string targetArea = pathWithoutAreas.Substring(0, firstSlash);
+                string rest = pathWithoutAreas.Substring(firstSlash).Replace("/Views/", "/");
+                return $"~/Views/Designs/{design}/Areas/{targetArea}{rest}";
+            }
+
+            return $"~/Views/Designs/{design}/{pathWithoutAreas}";
+        }
+
+        private string ResolveParentRelativeDesignView(string design, string viewName, List<string> searchedLocations)
+        {
+            string relativePath = viewName.Substring(3);
+            string mappedPath = $"~/Views/Designs/{design}/{relativePath}{(relativePath.EndsWith(CshtmlExtension, StringComparison.OrdinalIgnoreCase) ? "" : CshtmlExtension)}";
+            searchedLocations.Add(mappedPath);
+            if (DoesFileExist(mappedPath))
+            {
+                return mappedPath;
+            }
+            return null;
+        }
+
+        private string ProbeStandardDesignViewLocations(
+            string design,
+            string area,
+            string controller,
+            string viewName,
+            string viewNameWithExt,
+            List<string> searchedLocations)
+        {
             List<string> probeLocations = new List<string>();
 
             if (!string.IsNullOrEmpty(area))
@@ -214,7 +258,6 @@ namespace EImece.Infrastructure.Designs
             probeLocations.Add($"~/Views/Designs/{design}/{controller}/{viewNameWithExt}");
             probeLocations.Add($"~/Views/Designs/{design}/Shared/{viewNameWithExt}");
 
-            // Also check subfolders if viewName contains slashes like "ShoppingCartTemplates/_HomePageShoppingCart"
             if (viewName.Contains("/"))
             {
                 probeLocations.Add($"~/Views/Designs/{design}/{viewNameWithExt}");

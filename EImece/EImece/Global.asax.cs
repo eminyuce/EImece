@@ -65,11 +65,6 @@ namespace EImece
 
                 var adresService = DependencyResolver.Current.GetService<AdresService>();
             }
-            // To enable the Quartz scheduler, resolve QuartzService and await its async start.
-            // Application_Start is not async, so block ONCE here at startup (no request thread,
-            // no AspNetSynchronizationContext => deadlock-free):
-            //  DependencyResolver.Current.GetService<QuartzService>()
-            //      .StartSchedulerServiceAsync().GetAwaiter().GetResult();
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
             GlobalConfiguration.Configuration.DependencyResolver =
@@ -202,32 +197,63 @@ namespace EImece
 
         private void redirectErrorController(object sender)
         {
-            // When detailed errors are enabled (appSetting or compilation debug), leave the exception
-            // for ASP.NET's yellow screen / MVC detailed error output.
-            bool useCustomError = !AppConfig.ExposeDetailedErrors
-                && (HttpContext.Current == null || !HttpContext.Current.IsDebuggingEnabled);
-
             Exception exception = Server.GetLastError();
             var httpContext = ((MvcApplication)sender).Context;
-            var currentController = " ";
-            var currentAction = " ";
-            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
+            string currentController;
+            string currentAction;
+            TryGetRouteControllerAndAction(httpContext, out currentController, out currentAction);
 
-            if (currentRouteData != null)
+            LogApplicationError(exception, httpContext, currentController, currentAction);
+
+            if (!ShouldUseCustomErrorPage())
             {
-                if (currentRouteData.Values["controller"] != null &&
-                    !String.IsNullOrEmpty(currentRouteData.Values["controller"].ToString()))
-                {
-                    currentController = currentRouteData.Values["controller"].ToString();
-                }
-
-                if (currentRouteData.Values["action"] != null &&
-                    !String.IsNullOrEmpty(currentRouteData.Values["action"].ToString()))
-                {
-                    currentAction = currentRouteData.Values["action"].ToString();
-                }
+                return;
             }
 
+            if (IsAjaxRequest())
+            {
+                WriteAjaxErrorResponse(httpContext, exception);
+            }
+            else
+            {
+                ExecuteErrorController(httpContext, exception, currentController, currentAction);
+            }
+        }
+
+        private static bool ShouldUseCustomErrorPage()
+        {
+            // When detailed errors are enabled (appSetting or compilation debug), leave the exception
+            // for ASP.NET's yellow screen / MVC detailed error output.
+            return !AppConfig.ExposeDetailedErrors
+                && (HttpContext.Current == null || !HttpContext.Current.IsDebuggingEnabled);
+        }
+
+        private static void TryGetRouteControllerAndAction(HttpContext httpContext, out string currentController, out string currentAction)
+        {
+            currentController = " ";
+            currentAction = " ";
+            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
+
+            if (currentRouteData == null)
+            {
+                return;
+            }
+
+            if (currentRouteData.Values["controller"] != null &&
+                !String.IsNullOrEmpty(currentRouteData.Values["controller"].ToString()))
+            {
+                currentController = currentRouteData.Values["controller"].ToString();
+            }
+
+            if (currentRouteData.Values["action"] != null &&
+                !String.IsNullOrEmpty(currentRouteData.Values["action"].ToString()))
+            {
+                currentAction = currentRouteData.Values["action"].ToString();
+            }
+        }
+
+        private static void LogApplicationError(Exception exception, HttpContext httpContext, string currentController, string currentAction)
+        {
             var requestUrl = httpContext.Request.Url.ToStr();
             String requestUrlReferrer = "";
             if (httpContext.Request.UrlReferrer != null)
@@ -248,43 +274,41 @@ namespace EImece
             {
                 Logger.Error(logMessage);
             }
+        }
 
-            if (!useCustomError)
-            {
-                return;
-            }
+        private static int GetErrorHttpStatusCode(Exception exception)
+        {
+            return exception is HttpException
+                ? ((HttpException)exception).GetHttpCode()
+                : 500;
+        }
 
-            //We check if we have an AJAX request and return JSON in this case
-            if (IsAjaxRequest())
-            {
-                httpContext.ClearError();
-                httpContext.Response.Clear();
-                httpContext.Response.StatusCode = exception is HttpException
-                                                      ? ((HttpException)exception).GetHttpCode()
-                                                      : 500;
-                httpContext.Response.TrySkipIisCustomErrors = true;
-                httpContext.Response.ContentType = "application/json";
-                httpContext.Response.Write("{\"success\":false,\"message\":\"An unexpected error occurred.\"}");
-            }
-            else
-            {
-                var controller = new ErrorController();
-                var routeData = new RouteData();
-                var action = "Index";
+        private static void WriteAjaxErrorResponse(HttpContext httpContext, Exception exception)
+        {
+            httpContext.ClearError();
+            httpContext.Response.Clear();
+            httpContext.Response.StatusCode = GetErrorHttpStatusCode(exception);
+            httpContext.Response.TrySkipIisCustomErrors = true;
+            httpContext.Response.ContentType = "application/json";
+            httpContext.Response.Write("{\"success\":false,\"message\":\"An unexpected error occurred.\"}");
+        }
 
-                httpContext.ClearError();
-                httpContext.Response.Clear();
-                httpContext.Response.StatusCode = exception is HttpException
-                                                      ? ((HttpException)exception).GetHttpCode()
-                                                      : 500;
-                httpContext.Response.TrySkipIisCustomErrors = true;
+        private static void ExecuteErrorController(HttpContext httpContext, Exception exception, string currentController, string currentAction)
+        {
+            var controller = new ErrorController();
+            var routeData = new RouteData();
+            var action = "Index";
 
-                routeData.Values["controller"] = "Error";
-                routeData.Values["action"] = action;
+            httpContext.ClearError();
+            httpContext.Response.Clear();
+            httpContext.Response.StatusCode = GetErrorHttpStatusCode(exception);
+            httpContext.Response.TrySkipIisCustomErrors = true;
 
-                controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
-                ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
-            }
+            routeData.Values["controller"] = "Error";
+            routeData.Values["action"] = action;
+
+            controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
+            ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
         }
 
         //This method checks if we have an AJAX request or not

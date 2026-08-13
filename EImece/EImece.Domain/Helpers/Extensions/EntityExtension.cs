@@ -342,7 +342,14 @@ namespace EImece.Domain.Helpers.Extensions
             }
             else
             {
-                return BuildImageTag(AppConfig.GetDefaultImage(width, height), "Default image", width, height, lazy: true);
+                return BuildImageTag(new ImageTagArgs
+                {
+                    Src = AppConfig.GetDefaultImage(width, height),
+                    Alt = "Default image",
+                    Width = width,
+                    Height = height,
+                    Lazy = true
+                });
             }
 
             return imageTag;
@@ -361,11 +368,28 @@ namespace EImece.Domain.Helpers.Extensions
                 if (!string.IsNullOrEmpty(imagePath))
                 {
                     string srcset = GetResponsiveImageSrcSet(entity, fileStorageId, width, height);
-                    return BuildImageTag(imagePath, entity.Name, width, height, lazy, fetchPriority, srcset, sizes);
+                    return BuildImageTag(new ImageTagArgs
+                    {
+                        Src = imagePath,
+                        Alt = entity.Name,
+                        Width = width,
+                        Height = height,
+                        Lazy = lazy,
+                        FetchPriority = fetchPriority,
+                        SrcSet = srcset,
+                        Sizes = sizes
+                    });
                 }
             }
 
-            return BuildImageTag(AppConfig.GetDefaultImage(width, height), "Default image", width, height, lazy);
+            return BuildImageTag(new ImageTagArgs
+            {
+                Src = AppConfig.GetDefaultImage(width, height),
+                Alt = "Default image",
+                Width = width,
+                Height = height,
+                Lazy = lazy
+            });
         }
 
         /// <summary>
@@ -378,7 +402,19 @@ namespace EImece.Domain.Helpers.Extensions
                 return string.Empty;
             }
 
-            int baseWidth = width > 0 ? width : (height > 0 ? height : 400);
+            int baseWidth;
+            if (width > 0)
+            {
+                baseWidth = width;
+            }
+            else if (height > 0)
+            {
+                baseWidth = height;
+            }
+            else
+            {
+                baseWidth = 400;
+            }
             int baseHeight = height > 0 ? height : 0;
             var widths = new[] { baseWidth, baseWidth * 2 };
             var parts = new List<string>();
@@ -394,32 +430,49 @@ namespace EImece.Domain.Helpers.Extensions
             return string.Join(", ", parts);
         }
 
-        private static string BuildImageTag(string src, string alt, int width, int height, bool lazy = true, string fetchPriority = null, string srcset = null, string sizes = null)
+        private sealed class ImageTagArgs
+        {
+            public string Src { get; set; }
+            public string Alt { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
+            public bool Lazy { get; set; }
+            public string FetchPriority { get; set; }
+            public string SrcSet { get; set; }
+            public string Sizes { get; set; }
+        }
+
+        private static string BuildImageTag(ImageTagArgs args)
         {
             var attrs = new List<string>
             {
-                string.Format("src='{0}'", src),
-                string.Format("alt='{0}'", HttpUtility.HtmlAttributeEncode(alt ?? string.Empty))
+                string.Format("src='{0}'", args.Src),
+                string.Format("alt='{0}'", HttpUtility.HtmlAttributeEncode(args.Alt ?? string.Empty))
             };
 
-            if (width > 0)
+            if (args.Width > 0)
             {
-                attrs.Add(string.Format("width='{0}'", width));
+                attrs.Add(string.Format("width='{0}'", args.Width));
             }
-            if (height > 0)
+            if (args.Height > 0)
             {
-                attrs.Add(string.Format("height='{0}'", height));
+                attrs.Add(string.Format("height='{0}'", args.Height));
             }
-            if (!string.IsNullOrEmpty(srcset))
+            if (!string.IsNullOrEmpty(args.SrcSet))
             {
-                attrs.Add(string.Format("srcset='{0}'", srcset));
-                attrs.Add(string.Format("sizes='{0}'", string.IsNullOrEmpty(sizes) ? string.Format("{0}px", width > 0 ? width : 300) : sizes));
+                attrs.Add(string.Format("srcset='{0}'", args.SrcSet));
+                string sizesValue = args.Sizes;
+                if (string.IsNullOrEmpty(sizesValue))
+                {
+                    sizesValue = string.Format("{0}px", args.Width > 0 ? args.Width : 300);
+                }
+                attrs.Add(string.Format("sizes='{0}'", sizesValue));
             }
-            if (!string.IsNullOrEmpty(fetchPriority))
+            if (!string.IsNullOrEmpty(args.FetchPriority))
             {
-                attrs.Add(string.Format("fetchpriority='{0}'", fetchPriority));
+                attrs.Add(string.Format("fetchpriority='{0}'", args.FetchPriority));
             }
-            attrs.Add(lazy ? "loading='lazy'" : "loading='eager'");
+            attrs.Add(args.Lazy ? "loading='lazy'" : "loading='eager'");
             attrs.Add("decoding='async'");
 
             return string.Format("<img {0} />", string.Join(" ", attrs));
@@ -435,13 +488,15 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0, bool isFullPathImageUrl = false, bool isThump=false)
         {
-            if (entity != null && fileStorageId > 0)
+            if (entity == null || fileStorageId <= 0)
             {
-                // When explicit dimensions are requested, prefer resize proxy (or static thumb below)
-                // so clients never download full-resolution originals for small display slots.
-                bool preferResizedProxy = width > 0 || height > 0;
-                bool isImageFullSrcUnderMediaFolder = AppConfig.IsImageFullSrcUnderMediaFolder && !preferResizedProxy;
-            if (isImageFullSrcUnderMediaFolder)
+                return AppConfig.GetDefaultImage(width, height);
+            }
+
+            // When explicit dimensions are requested, prefer resize proxy (or static thumb below)
+            // so clients never download full-resolution originals for small display slots.
+            bool preferResizedProxy = width > 0 || height > 0;
+            if (AppConfig.IsImageFullSrcUnderMediaFolder && !preferResizedProxy)
             {
                 var mediaFolderUrl = TryGetMediaFolderImageUrl(entity, isThump, width, height);
                 if (mediaFolderUrl != null)
@@ -449,70 +504,68 @@ namespace EImece.Domain.Helpers.Extensions
                     return mediaFolderUrl;
                 }
             }
-                    // Prefer prebuilt thumb when it exists and can cover the requested display size.
-                    // Layout can still show it at 100x100 via width/height/CSS; browser downscales.
-                    if (preferResizedProxy)
-                    {
-                        var staticThumbUrl = TryGetStaticThumbnailUrl(entity, fileStorageId, width, height, isFullPathImageUrl);
-                        if (!string.IsNullOrEmpty(staticThumbUrl))
-                        {
-                            return staticThumbUrl;
-                        }
-                    }
 
-                    var imageSize = $"w{width}h{height}";
-                    var imageId = entity.GetImageSeoUrl(fileStorageId);
-                    if (HttpContext.Current == null)
-                    {
-                        // Async service continuations (ConfigureAwait(false)) lose HttpContext; build the known route.
-                        var relative = $"/images/{imageSize}/{imageId}";
-                        if (!isFullPathImageUrl)
-                        {
-                            return relative;
-                        }
-
-                        var baseUrl = GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocolForImages);
-                        return string.IsNullOrEmpty(baseUrl) ? relative : baseUrl + relative;
-                    }
-
-                    var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                    if (isFullPathImageUrl)
-                    {
-                        return urlHelper.Action(Constants.ImageActionName,
-                            "Images", new { imageSize, id = imageId, area = "" },
-                            AppConfig.HttpProtocolForImages);
-                    }
-                    else
-                    {
-                        return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area = "" });
-                    }
+            // Prefer prebuilt thumb when it exists and can cover the requested display size.
+            // Layout can still show it at 100x100 via width/height/CSS; browser downscales.
+            if (preferResizedProxy)
+            {
+                var staticThumbUrl = TryGetStaticThumbnailUrl(entity, fileStorageId, width, height, isFullPathImageUrl);
+                if (!string.IsNullOrEmpty(staticThumbUrl))
+                {
+                    return staticThumbUrl;
+                }
             }
-            return AppConfig.GetDefaultImage(width, height);
+
+            return BuildResizeProxyImageUrl(entity, fileStorageId, width, height, isFullPathImageUrl);
+        }
+
+        private static string BuildResizeProxyImageUrl(BaseEntity entity, int fileStorageId, int width, int height, bool isFullPathImageUrl)
+        {
+            var imageSize = $"w{width}h{height}";
+            var imageId = entity.GetImageSeoUrl(fileStorageId);
+            if (HttpContext.Current == null)
+            {
+                // Async service continuations (ConfigureAwait(false)) lose HttpContext; build the known route.
+                var relative = $"/images/{imageSize}/{imageId}";
+                if (!isFullPathImageUrl)
+                {
+                    return relative;
+                }
+
+                var baseUrl = GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocolForImages);
+                return string.IsNullOrEmpty(baseUrl) ? relative : baseUrl + relative;
+            }
+
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+            if (isFullPathImageUrl)
+            {
+                return urlHelper.Action(Constants.ImageActionName,
+                    "Images", new { imageSize, id = imageId, area = "" },
+                    AppConfig.HttpProtocolForImages);
+            }
+
+            return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area = "" });
         }
 
         private static string TryGetMediaFolderImageUrl(BaseEntity entity, bool isThump, int width, int height)
         {
-            if (entity is BaseContent)
+            if (entity is BaseContent baseContentEntity)
             {
-                var baseContentEntity = (BaseContent)entity;
                 var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, isThump);
                 return GetImagePathOrDefaultImage(width, height, imagePath);
             }
-            if (entity is ProductFile)
+            if (entity is ProductFile productFile)
             {
-                var baseContentEntity = (ProductFile)entity;
-                var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
+                var imagePath = GetFullPathImageUrlFromFileStorage(productFile.FileStorage, isThump);
                 return GetImagePathOrDefaultImage(width, height, imagePath);
             }
-            if (entity is StoryFile)
+            if (entity is StoryFile storyFile)
             {
-                var baseContentEntity = (StoryFile)entity;
-                var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
+                var imagePath = GetFullPathImageUrlFromFileStorage(storyFile.FileStorage, isThump);
                 return GetImagePathOrDefaultImage(width, height, imagePath);
             }
-            if (entity is FileStorage)
+            if (entity is FileStorage fileStorage)
             {
-                var fileStorage = (FileStorage)entity;
                 var imagePath = GetFullPathImageUrlFromFileStorage(fileStorage, isThump);
                 return GetImagePathOrDefaultImage(width, height, imagePath);
             }

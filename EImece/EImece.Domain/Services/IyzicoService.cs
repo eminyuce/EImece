@@ -191,7 +191,7 @@ namespace EImece.Domain.Services
                 + request.BasketId));
 
             // Execute the request
-            Logger.Info("Initializing CheckoutFormInitialize.Create for user: " + userId);
+            Logger.Debug("Initializing CheckoutFormInitialize.Create for user: " + userId);
             using (var activity = StartPaymentActivity("authorize"))
             {
                 activity?.SetTag("order.conversation_id", request.ConversationId);

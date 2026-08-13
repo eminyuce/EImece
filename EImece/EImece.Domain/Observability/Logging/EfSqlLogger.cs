@@ -2,6 +2,7 @@ using EImece.Domain.Observability.Metrics;
 using EImece.Domain.Observability.Telemetry;
 using NLog;
 using Serilog;
+using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -15,10 +16,11 @@ namespace EImece.Domain.Observability.Logging
     {
         public const string LoggerName = "EntityFramework.Sql";
 
-        private static readonly Logger NLogLogger = LogManager.GetLogger(LoggerName);
+        private static readonly Logger Logger = LogManager.GetLogger(LoggerName);
         private static readonly Regex CommandTypePattern = new Regex(
             @"^\s*(SELECT|INSERT|UPDATE|DELETE|EXEC|EXECUTE|MERGE)\b",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         private static readonly object Sync = new object();
         private static bool _enabled;
@@ -91,7 +93,7 @@ namespace EImece.Domain.Observability.Logging
                 return;
             }
 
-            NLogLogger.Debug(message);
+            Logger.Debug(message);
             Log.ForContext("SourceContext", LoggerName)
                 .Debug("{Sql}", message);
         }

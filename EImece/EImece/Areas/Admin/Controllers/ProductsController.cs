@@ -26,40 +26,38 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> Index(
             CancellationToken cancellationToken,
             int id = 0,
-            int brandId = -1,
-            String search = "",
-            string state = "",
-            bool? isActive = null,
-            bool? mainPage = null,
-            bool? isCampaign = null,
-            decimal? minPrice = null,
-            decimal? maxPrice = null)
+            AdminProductsIndexQuery query = null)
         {
+            if (query == null)
+            {
+                query = new AdminProductsIndexQuery();
+            }
+
             var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
             bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
             var filter = new ProductAdminListFilter
             {
-                State = state,
-                IsActive = isActive == true ? true : (bool?)null,
-                MainPage = mainPage == true ? true : (bool?)null,
-                IsCampaign = isCampaign == true ? true : (bool?)null,
-                MinPrice = minPrice,
-                MaxPrice = maxPrice,
+                State = query.State,
+                IsActive = query.IsActive == true ? true : (bool?)null,
+                MainPage = query.MainPage == true ? true : (bool?)null,
+                IsCampaign = query.IsCampaign == true ? true : (bool?)null,
+                MinPrice = query.MinPrice,
+                MaxPrice = query.MaxPrice,
                 ApplyPriceFilter = priceEnabled
             };
 
             ViewBag.ProductCategoryTree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
-            var products = await ProductService.GetAdminPageListAsync(id, brandId, search, CurrentLanguage, filter, cancellationToken);
+            var products = await ProductService.GetAdminPageListAsync(id, query.BrandId, query.Search, CurrentLanguage, filter, cancellationToken);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             ViewBag.SelectedCategory = await ProductCategoryService.GetSingleAsync(id);
-            ViewBag.SelectedBrandId = brandId;
-            ViewBag.SelectedState = state.ToStr();
+            ViewBag.SelectedBrandId = query.BrandId;
+            ViewBag.SelectedState = query.State.ToStr();
             ViewBag.FilterIsActive = filter.IsActive;
             ViewBag.FilterMainPage = filter.MainPage;
             ViewBag.FilterIsCampaign = filter.IsCampaign;
-            ViewBag.MinPrice = priceEnabled ? minPrice : null;
-            ViewBag.MaxPrice = priceEnabled ? maxPrice : null;
+            ViewBag.MinPrice = priceEnabled ? query.MinPrice : null;
+            ViewBag.MaxPrice = priceEnabled ? query.MaxPrice : null;
             ViewBag.ProductFilter = filter;
             ViewBag.Brands = (await BrandService.GetBrandsIfAnyProductExistsAsync(CurrentLanguage, id))
                 .Where(b => b.IsActive)
@@ -342,5 +340,28 @@ namespace EImece.Areas.Admin.Controllers
                 product.Discount = decimal.Round((decimal)product.DiscountStr.Replace(",", ".").ToDouble(), 2, MidpointRounding.AwayFromZero);
             }
         }
+    }
+
+    /// <summary>
+    /// Query-string filters for Admin Products Index (keeps the action under S107 parameter limits).
+    /// Property names match the previous action parameters so MVC binding is unchanged.
+    /// </summary>
+    public sealed class AdminProductsIndexQuery
+    {
+        public int BrandId { get; set; } = -1;
+
+        public string Search { get; set; } = "";
+
+        public string State { get; set; } = "";
+
+        public bool? IsActive { get; set; }
+
+        public bool? MainPage { get; set; }
+
+        public bool? IsCampaign { get; set; }
+
+        public decimal? MinPrice { get; set; }
+
+        public decimal? MaxPrice { get; set; }
     }
 }

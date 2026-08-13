@@ -18,6 +18,7 @@ namespace EImece.Areas.Admin.Controllers
     public class StoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index";
 
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int id = 0, String search = "")
         {
@@ -71,7 +72,7 @@ namespace EImece.Areas.Admin.Controllers
 
                     if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction(IndexAction);
                     }
                     else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -109,20 +110,20 @@ namespace EImece.Areas.Admin.Controllers
             {
                 await StoryService.DeleteStoryByIdAsync(id);
                 SetSuccessMessage();
-                return ReturnIndexIfNotUrlReferrer("Index");
+                return ReturnIndexIfNotUrlReferrer(IndexAction);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, story);
                 SetErrorMessage();
-                return ReturnIndexIfNotUrlReferrer("Index");
+                return ReturnIndexIfNotUrlReferrer(IndexAction);
             }
         }
 
         [HttpGet]
         public ActionResult Media(int id)
         {
-            return RedirectToAction("Index", "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
+            return RedirectToAction(IndexAction, "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
         }
 
         [HttpGet, ActionName("ExportExcel")]

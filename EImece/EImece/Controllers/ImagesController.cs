@@ -116,7 +116,7 @@ namespace EImece.Controllers
             Response.Cache.SetOmitVaryStar(true);
             Response.Cache.SetValidUntilExpires(true);
             Response.Headers.Set("Vary",
-                string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
+                string.Join(",", "Accept", "Accept-Encoding"));
             Response.Headers["Cache-Control"] = "public, max-age=31536000, immutable";
             if (updatedDated != null && updatedDated > DateTime.MinValue)
             {

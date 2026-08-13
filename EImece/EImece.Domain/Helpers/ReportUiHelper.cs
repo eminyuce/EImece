@@ -22,6 +22,8 @@ namespace EImece.Domain.Helpers
 
     public static class ReportUiHelper
     {
+        private const string QuantityColumnName = "Quantity";
+
         private static readonly CultureInfo TrCulture = CultureInfo.GetCultureInfo("tr-TR");
 
         private static readonly Dictionary<string, string> ColumnLabels =
@@ -58,7 +60,7 @@ namespace EImece.Domain.Helpers
                 { "ProductName", "Ürün Adı" },
                 { "ProductCode", "Ürün Kodu" },
                 { "ProductId", "Ürün ID" },
-                { "Quantity", "Adet" },
+                { QuantityColumnName, "Adet" },
                 { "Stock", "Stok" },
                 { "StockQuantity", "Stok Adedi" },
                 { "Price", "Fiyat" },
@@ -90,7 +92,7 @@ namespace EImece.Domain.Helpers
             "TotalCargoCost",
             "TotalQuantity",
             "SalesCount",
-            "Quantity",
+            QuantityColumnName,
             "PaidPrice",
             "Amount",
             "Revenue",
@@ -107,8 +109,18 @@ namespace EImece.Domain.Helpers
         private static readonly HashSet<string> CountColumnHints =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                "Count", "Quantity", "Qty", "Stock", "Installment"
+                "Count", QuantityColumnName, "Qty", "Stock", "Installment"
             };
+
+        private static readonly Regex PascalCaseLowerToUpper = new Regex(
+            "([a-z0-9])([A-Z])",
+            RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
+
+        private static readonly Regex PascalCaseAcronym = new Regex(
+            "([A-Z]+)([A-Z][a-z])",
+            RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         public static string GetDisplayColumnName(string columnName)
         {
@@ -154,40 +166,58 @@ namespace EImece.Domain.Helpers
 
             if (IsNumericType(type))
             {
-                decimal number;
-                if (!decimal.TryParse(System.Convert.ToString(value, CultureInfo.InvariantCulture), NumberStyles.Any, CultureInfo.InvariantCulture, out number))
-                {
-                    return System.Convert.ToString(value, TrCulture) ?? string.Empty;
-                }
-
-                if (IsCountColumn(columnName, type))
-                {
-                    return number.ToString("N0", TrCulture);
-                }
-
-                if (IsMoneyColumn(columnName) || type == typeof(decimal) || type == typeof(double) || type == typeof(float))
-                {
-                    return number.ToString("N2", TrCulture);
-                }
-
-                if (type == typeof(byte) || type == typeof(short) || type == typeof(int) || type == typeof(long)
-                    || type == typeof(ushort) || type == typeof(uint) || type == typeof(ulong))
-                {
-                    return number.ToString("N0", TrCulture);
-                }
-
-                return number.ToString("N2", TrCulture);
+                return FormatNumericCell(value, columnName, type);
             }
 
-            DateTime parsedDate;
-            if (!string.IsNullOrWhiteSpace(columnName)
-                && columnName.IndexOf("Date", StringComparison.OrdinalIgnoreCase) >= 0
-                && DateTime.TryParse(System.Convert.ToString(value, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            string dateText;
+            if (TryFormatDateNamedColumn(value, columnName, out dateText))
             {
-                return parsedDate.ToString("dd.MM.yyyy", TrCulture);
+                return dateText;
             }
 
             return System.Convert.ToString(value, TrCulture) ?? string.Empty;
+        }
+
+        private static string FormatNumericCell(object value, string columnName, Type type)
+        {
+            decimal number;
+            if (!decimal.TryParse(System.Convert.ToString(value, CultureInfo.InvariantCulture), NumberStyles.Any, CultureInfo.InvariantCulture, out number))
+            {
+                return System.Convert.ToString(value, TrCulture) ?? string.Empty;
+            }
+
+            if (IsCountColumn(columnName, type))
+            {
+                return number.ToString("N0", TrCulture);
+            }
+
+            if (IsMoneyColumn(columnName) || type == typeof(decimal) || type == typeof(double) || type == typeof(float))
+            {
+                return number.ToString("N2", TrCulture);
+            }
+
+            if (type == typeof(byte) || type == typeof(short) || type == typeof(int) || type == typeof(long)
+                || type == typeof(ushort) || type == typeof(uint) || type == typeof(ulong))
+            {
+                return number.ToString("N0", TrCulture);
+            }
+
+            return number.ToString("N2", TrCulture);
+        }
+
+        private static bool TryFormatDateNamedColumn(object value, string columnName, out string formatted)
+        {
+            formatted = null;
+            DateTime parsedDate;
+            if (string.IsNullOrWhiteSpace(columnName)
+                || columnName.IndexOf("Date", StringComparison.OrdinalIgnoreCase) < 0
+                || !DateTime.TryParse(System.Convert.ToString(value, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            {
+                return false;
+            }
+
+            formatted = parsedDate.ToString("dd.MM.yyyy", TrCulture);
+            return true;
         }
 
         public static bool IsRightAlignedColumn(string columnName, Type dataType)
@@ -254,8 +284,8 @@ namespace EImece.Domain.Helpers
                 return string.Empty;
             }
 
-            string withSpaces = Regex.Replace(value.Replace('_', ' '), "([a-z0-9])([A-Z])", "$1 $2");
-            withSpaces = Regex.Replace(withSpaces, "([A-Z]+)([A-Z][a-z])", "$1 $2");
+            string withSpaces = PascalCaseLowerToUpper.Replace(value.Replace('_', ' '), "$1 $2");
+            withSpaces = PascalCaseAcronym.Replace(withSpaces, "$1 $2");
             return withSpaces.Trim();
         }
 
@@ -320,7 +350,7 @@ namespace EImece.Domain.Helpers
             if (columnName.Equals("OrderCount", StringComparison.OrdinalIgnoreCase)
                 || columnName.Equals("UsageCount", StringComparison.OrdinalIgnoreCase)
                 || columnName.Equals("SalesCount", StringComparison.OrdinalIgnoreCase)
-                || columnName.Equals("Quantity", StringComparison.OrdinalIgnoreCase)
+                || columnName.Equals(QuantityColumnName, StringComparison.OrdinalIgnoreCase)
                 || columnName.Equals("TotalQuantity", StringComparison.OrdinalIgnoreCase)
                 || columnName.Equals("Stock", StringComparison.OrdinalIgnoreCase)
                 || columnName.Equals("StockQuantity", StringComparison.OrdinalIgnoreCase)

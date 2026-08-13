@@ -17,8 +17,10 @@ namespace EImece.Domain.Helpers
             {
                 return JsonConvert.SerializeObject(JsonConvert.DeserializeObject<ShoppingCartSession>(obj), Formatting.Indented);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Intentionally ignored: PrettyJsonFormatter returns the original string when JSON is not a ShoppingCartSession.
+                System.Diagnostics.Debug.WriteLine(ex);
             }
             return obj;
 

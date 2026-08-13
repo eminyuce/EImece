@@ -85,17 +85,7 @@ namespace EImece.Domain.Repositories
         public List<Menu> GetMenuLeaves(bool? isActive, int language)
         {
             var menus = GetActiveBaseContents(isActive, language);
-            var result = new List<Menu>();
-
-            foreach (var m in menus)
-            {
-                if (!menus.Any(r => r.ParentId == m.Id))
-                {
-                    result.Add(m);
-                }
-            }
-
-            return result;
+            return menus.Where(m => !menus.Any(r => r.ParentId == m.Id)).ToList();
         }
 
         public async Task<List<MenuTreeModel>> BuildTreeAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
@@ -124,17 +114,7 @@ namespace EImece.Domain.Repositories
         public async Task<List<Menu>> GetMenuLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var menus = await GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
-            var result = new List<Menu>();
-
-            foreach (var m in menus)
-            {
-                if (!menus.Any(r => r.ParentId == m.Id))
-                {
-                    result.Add(m);
-                }
-            }
-
-            return result;
+            return menus.Where(m => !menus.Any(r => r.ParentId == m.Id)).ToList();
         }
     }
 }

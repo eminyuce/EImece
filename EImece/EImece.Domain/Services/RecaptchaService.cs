@@ -17,7 +17,6 @@ namespace EImece.Domain.Services
     {
         public const string ResponseFormKey = "g-recaptcha-response";
         public const string ModelStateKey = "Recaptcha";
-        public const string SiteVerifyUrl = "https://www.google.com/recaptcha/api/siteverify";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -88,7 +87,7 @@ namespace EImece.Domain.Services
                         values.Add("remoteip", remoteIp);
                     }
 
-                    var resultBytes = client.UploadValues(SiteVerifyUrl, "POST", values);
+                    var resultBytes = client.UploadValues(AppConfig.RecaptchaSiteVerifyUrl, "POST", values);
                     var json = Encoding.UTF8.GetString(resultBytes);
                     var result = JsonConvert.DeserializeObject<RecaptchaVerifyResponse>(json);
 

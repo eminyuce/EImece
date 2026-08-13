@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
 
 namespace EImece.Domain.Observability.Configuration
 {
@@ -142,15 +143,8 @@ namespace EImece.Domain.Observability.Configuration
                 return null;
             }
 
-            foreach (var value in values)
-            {
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    return value.Trim();
-                }
-            }
-
-            return null;
+            var value = values.FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
+            return value == null ? null : value.Trim();
         }
 
         private static double GetConfigDouble(string configName, double defaultValue)

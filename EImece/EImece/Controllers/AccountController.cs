@@ -102,7 +102,7 @@ namespace EImece.Controllers
 
             if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)
             {
-                Logger.Info("AdminLoginEnabled is false. Rejecting AdminLogin POST.");
+                Logger.Debug("AdminLoginEnabled is false. Rejecting AdminLogin POST.");
                 return RedirectToAction(IndexAction, "Home", new { area = "" });
             }
 
@@ -116,23 +116,23 @@ namespace EImece.Controllers
             {
                 Logger.Error("Captcha validation failed for AdminLogin.");
                 ModelState.AddModelError("", CaptchaService.GetErrorMessage());
-                Logger.Info("Returning AdminLogin view with captcha error.");
+                Logger.Debug("Returning AdminLogin view with captcha error.");
                 return View(model);
             }
             if (!ModelState.IsValid)
             {
-                Logger.Info("Model state is invalid. Adding error. Returning AdminLogin view with errors.");
+                Logger.Debug("Model state is invalid. Adding error. Returning AdminLogin view with errors.");
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);
                 return View(model);
             }
 
             bool isCustomer = this.isUserAsCustomerRole(model);
-            Logger.Info($"User role check: isCustomer = {isCustomer}");
+            Logger.Debug($"User role check: isCustomer = {isCustomer}");
             if (isCustomer)
             {
-                Logger.Info("Customer role detected for admin login. Adding error.");
+                Logger.Debug("Customer role detected for admin login. Adding error.");
                 ModelState.AddModelError("", AdminResource.WrongAccountLoginAttempt);
-                Logger.Info("Returning AdminLogin view with role error.");
+                Logger.Debug("Returning AdminLogin view with role error.");
                 return View(model);
             }
 
@@ -140,7 +140,7 @@ namespace EImece.Controllers
             var user = await FindUserByEmailOrUserNameAsync(model.Email);
             if (user == null)
             {
-                Logger.Info($"No user found for email: {model.Email}");
+                Logger.Debug($"No user found for email: {model.Email}");
                 ModelState.AddModelError("", Resource.NoUserFound);
                 return View(model);
             }
@@ -155,7 +155,7 @@ namespace EImece.Controllers
             if (!await UserManager.CheckPasswordAsync(user, model.Password))
             {
                 await UserManager.AccessFailedAsync(user.Id);
-                Logger.Info($"Password check failed for {model.Email}");
+                Logger.Debug($"Password check failed for {model.Email}");
                 ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
                 return View(model);
             }
@@ -166,7 +166,7 @@ namespace EImece.Controllers
             if (user.TwoFactorAuthenticatorEnabled && !string.IsNullOrEmpty(user.AuthenticatorKey))
             {
                 string token = await TwoFactorTokenService.CreateTokenAsync(user.Id);
-                Logger.Info("Authenticator 2FA required. Redirecting to VerifyAuthenticator.");
+                Logger.Debug("Authenticator 2FA required. Redirecting to VerifyAuthenticator.");
                 return RedirectToAction("VerifyAuthenticator", new
                 {
                     token = token,
@@ -177,31 +177,31 @@ namespace EImece.Controllers
 
             Logger.Info($"Attempting sign-in for user: {user.UserName} (email: {model.Email})");
             var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            Logger.Info($"Sign-in result: {result}");
+            Logger.Debug($"Sign-in result: {result}");
 
             switch (result)
             {
                 case SignInStatus.Success:
-                    Logger.Info("Sign-in successful. Redirecting to Dashboard.");
+                    Logger.Debug("Sign-in successful. Redirecting to Dashboard.");
                     return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
 
                 case SignInStatus.LockedOut:
                     Logger.Debug($"Account locked out for email: {model.Email}");
                     ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
-                    Logger.Info("Returning Lockout view.");
+                    Logger.Debug("Returning Lockout view.");
                     return View(LockoutAction);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
                     ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
-                    Logger.Info("Redirecting to SendCode.");
+                    Logger.Debug("Redirecting to SendCode.");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                 case SignInStatus.Failure:
                 default:
                     Logger.Debug($"Unexpected sign-in result for email: {model.Email}: {result}");
                     ModelState.AddModelError("", Resource.InvalidLoginAttempt);
-                    Logger.Info("Returning AdminLogin view with failure error.");
+                    Logger.Debug("Returning AdminLogin view with failure error.");
                     return View(model);
             }
         }
@@ -276,7 +276,7 @@ namespace EImece.Controllers
             {
                 Logger.Error("Captcha validation failed for Login.");
                 ModelState.AddModelError("", CaptchaService.GetErrorMessage());
-                Logger.Info("Returning Login view with captcha error.");
+                Logger.Debug("Returning Login view with captcha error.");
                 return View(model);
             }
             if (!ModelState.IsValid)
@@ -286,43 +286,43 @@ namespace EImece.Controllers
             }
 
             bool isCustomer = this.isUserAsCustomerRole(model);
-            Logger.Info($"User role check: isCustomer = {isCustomer}");
+            Logger.Debug($"User role check: isCustomer = {isCustomer}");
             if (!isCustomer)
             {
-                Logger.Info("Non-customer role detected for customer login. Adding error.");
+                Logger.Debug("Non-customer role detected for customer login. Adding error.");
                 ModelState.AddModelError("", AdminResource.WrongAccountLoginAttempt);
-                Logger.Info("Returning Login view with role error.");
+                Logger.Debug("Returning Login view with role error.");
                 return View(model);
             }
 
             var customerUser = await FindUserByEmailOrUserNameAsync(model.Email);
             if (customerUser == null)
             {
-                Logger.Info($"No customer user found for email: {model.Email}");
+                Logger.Debug($"No customer user found for email: {model.Email}");
                 ModelState.AddModelError("", Resource.NoUserFound);
                 return View(model);
             }
 
             Logger.Info($"Attempting sign-in for user: {customerUser.UserName} (email: {model.Email})");
             var result = await SignInManager.PasswordSignInAsync(customerUser.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            Logger.Info($"Sign-in result: {result}");
+            Logger.Debug($"Sign-in result: {result}");
 
             switch (result)
             {
                 case SignInStatus.Success:
-                    Logger.Info("Sign-in successful. Redirecting to Customer Home.");
+                    Logger.Debug("Sign-in successful. Redirecting to Customer Home.");
                     return RedirectToAction(IndexAction, "Home", new { @area = "customers" });
 
                 case SignInStatus.LockedOut:
                     Logger.Debug($"Account locked out for email: {model.Email}");
                     ModelState.AddModelError("", $"The account {model.Email} LockedOut");
-                    Logger.Info("Returning Lockout view.");
+                    Logger.Debug("Returning Lockout view.");
                     return View(LockoutAction);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
                     ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
-                    Logger.Info("Redirecting to SendCode.");
+                    Logger.Debug("Redirecting to SendCode.");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                 case SignInStatus.Failure:
@@ -330,7 +330,7 @@ namespace EImece.Controllers
                     if (user != null)
                     {
                         bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user, model.Password);
-                        Logger.Info($"Password check for {model.Email}: {checkPassword}");
+                        Logger.Debug($"Password check for {model.Email}: {checkPassword}");
                         if (!checkPassword)
                         {
                             ModelState.AddModelError("", Resource.InvalidLoginAttemptPasswordNotCorrect);
@@ -342,16 +342,16 @@ namespace EImece.Controllers
                     }
                     else
                     {
-                        Logger.Info($"No user found for email: {model.Email}");
+                        Logger.Debug($"No user found for email: {model.Email}");
                         ModelState.AddModelError("", Resource.NoUserFound);
                     }
-                    Logger.Info("Returning Login view with failure error.");
+                    Logger.Debug("Returning Login view with failure error.");
                     return View(model);
 
                 default:
                     Logger.Debug($"Unexpected sign-in result for email: {model.Email}");
                     ModelState.AddModelError("", Resource.InvalidLoginAttempt);
-                    Logger.Info("Returning Login view with default error.");
+                    Logger.Debug("Returning Login view with default error.");
                     return View(model);
             }
         }

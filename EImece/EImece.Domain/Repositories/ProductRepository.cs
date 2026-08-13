@@ -85,6 +85,21 @@ namespace EImece.Domain.Repositories
             }
         }
 
+        public async Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductTags);
+            includeProperties.Add(r => r.MainImage);
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.Brand);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            return await GetAllIncludingReadOnly(includeProperties.ToArray())
+                .Where(match)
+                .OrderByStorefrontDefault()
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         public PaginatedList<Product> GetMainPageProducts(int pageIndex, int pageSize, int language)
         {
             try
@@ -476,21 +491,6 @@ namespace EImece.Domain.Repositories
                 .Where(match)
                 .OrderByStorefrontDefault()
                 .ToList();
-        }
-
-        public async Task<List<Product>> GetActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.ProductTags);
-            includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.ProductCategory);
-            includeProperties.Add(r => r.Brand);
-            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
-            return await GetAllIncludingReadOnly(includeProperties.ToArray())
-                .Where(match)
-                .OrderByStorefrontDefault()
-                .ToListAsync(cancellationToken)
-                .ConfigureAwait(false);
         }
 
         public static ItemType ProductsItem

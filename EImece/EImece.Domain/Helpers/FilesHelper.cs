@@ -566,7 +566,11 @@ namespace EImece.Domain.Helpers
                     File.SetAttributes(filePath, FileAttributes.Normal);
                     File.Delete(filePath);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    // Intentionally ignored: deleting a locked existing file is best-effort; the file is overwritten next.
+                    Logger.Debug(ex, "Could not delete existing file before save: {0}", filePath);
+                }
             }
 
             using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -1243,7 +1247,16 @@ namespace EImece.Domain.Helpers
             EnsureDirectoryExists(filePath);
             if (File.Exists(filePath))
             {
-                try { File.SetAttributes(filePath, FileAttributes.Normal); File.Delete(filePath); } catch { }
+                try
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    File.Delete(filePath);
+                }
+                catch (Exception ex)
+                {
+                    // Intentionally ignored: deleting a locked existing file is best-effort; the resized file is overwritten next.
+                    Logger.Debug(ex, "Could not delete existing file before resize save: {0}", filePath);
+                }
             }
 
             // Get an ImageCodecInfo object that represents the format codec.

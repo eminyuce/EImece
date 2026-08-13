@@ -54,105 +54,111 @@ namespace EImece.Domain.Models.FrontModels
 
         private List<Product> GetFilteredSortedProducts()
         {
-                List<Product> result = new List<Product>();
-                var products = AllProducts;
-                bool hasMinPrice = IsProductPriceEnabled && MinPrice.HasValue && MinPrice.Value > 0;
-                bool hasMaxPrice = IsProductPriceEnabled && MaxPrice.HasValue && MaxPrice.Value > 0;
-                if (hasMinPrice || hasMaxPrice)
-                {
-                    if (hasMinPrice && hasMaxPrice)
-                    {
-                        products = products.Where(r => r.PriceWithDiscount >= MinPrice.Value && r.PriceWithDiscount <= MaxPrice.Value).ToList();
-                    }
-                    else if (hasMinPrice)
-                    {
-                        products = products.Where(r => r.PriceWithDiscount >= MinPrice.Value).ToList();
-                    }
-                    else
-                    {
-                        products = products.Where(r => r.PriceWithDiscount <= MaxPrice.Value).ToList();
-                    }
-                }
-                if (!string.IsNullOrEmpty(Filter))
-                {
-                    var categoryFilterHelper = new CategoryFilterHelper(CategoryFilterTypes, SelectedFilters);
-                    ICollection<Product> filteredProducts = IsProductPriceEnabled
-                        ? categoryFilterHelper.FilterProductsByPrice(products)
-                        : products;
-                    if (IsProductReviewEnabled)
-                    {
-                        filteredProducts = categoryFilterHelper.FilterProductsByRating(filteredProducts);
-                    }
-                    filteredProducts = categoryFilterHelper.FilterProductsByBrand(filteredProducts);
-                    result = filteredProducts.ToList();
-                }
-                else
-                {
-                    result = products.ToList();
-                }
+            var products = ApplyPriceRangeFilter(AllProducts);
+            var result = ApplySelectedCategoryFilters(products);
+            SelectedFilterTypes = CreateSelectedFilterList();
+            return ApplyProductSorting(result);
+        }
 
-                SelectedFilterTypes = CreateSelectedFilterList();
+        private List<Product> ApplyPriceRangeFilter(List<Product> products)
+        {
+            bool hasMinPrice = IsProductPriceEnabled && MinPrice.HasValue && MinPrice.Value > 0;
+            bool hasMaxPrice = IsProductPriceEnabled && MaxPrice.HasValue && MaxPrice.Value > 0;
+            if (!hasMinPrice && !hasMaxPrice)
+            {
+                return products;
+            }
 
-                switch (Sorting)
-                {
-                    case Enums.SortingType.Popularity:
-                        result = result.OrderByDescending(r => r.SoldCount).ThenByStorefrontDefault().ToList();
-                        break;
+            if (hasMinPrice && hasMaxPrice)
+            {
+                return products.Where(r => r.PriceWithDiscount >= MinPrice.Value && r.PriceWithDiscount <= MaxPrice.Value).ToList();
+            }
 
-                    case Enums.SortingType.LowHighPrice:
-                        if (IsProductPriceEnabled)
-                        {
-                            result = result.OrderBy(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
-                        }
-                        else
-                        {
-                            result = result.OrderByStorefrontDefault().ToList();
-                        }
-                        break;
+            if (hasMinPrice)
+            {
+                return products.Where(r => r.PriceWithDiscount >= MinPrice.Value).ToList();
+            }
 
-                    case Enums.SortingType.HighLowPrice:
-                        if (IsProductPriceEnabled)
-                        {
-                            result = result.OrderByDescending(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
-                        }
-                        else
-                        {
-                            result = result.OrderByStorefrontDefault().ToList();
-                        }
-                        break;
+            return products.Where(r => r.PriceWithDiscount <= MaxPrice.Value).ToList();
+        }
 
-                    case Enums.SortingType.AverageRating:
-                        if (IsProductReviewEnabled)
-                        {
-                            result = result.OrderByDescending(r => r.Rating).ThenByStorefrontDefault().ToList();
-                        }
-                        else
-                        {
-                            result = result.OrderByStorefrontDefault().ToList();
-                        }
-                        break;
+        private List<Product> ApplySelectedCategoryFilters(List<Product> products)
+        {
+            if (string.IsNullOrEmpty(Filter))
+            {
+                return products.ToList();
+            }
 
-                    case Enums.SortingType.Newest:
-                        result = result
-                            .OrderByDescending(r => r.UpdatedDate)
-                            .ThenBy(r => r.Position)
-                            .ThenByDescending(r => r.MainPage)
-                            .ThenByDescending(r => r.IsCampaign)
-                            .ToList();
-                        break;
+            var categoryFilterHelper = new CategoryFilterHelper(CategoryFilterTypes, SelectedFilters);
+            ICollection<Product> filteredProducts = IsProductPriceEnabled
+                ? categoryFilterHelper.FilterProductsByPrice(products)
+                : products;
+            if (IsProductReviewEnabled)
+            {
+                filteredProducts = categoryFilterHelper.FilterProductsByRating(filteredProducts);
+            }
+            filteredProducts = categoryFilterHelper.FilterProductsByBrand(filteredProducts);
+            return filteredProducts.ToList();
+        }
 
-                    case Enums.SortingType.AzOrder:
-                        break;
+        private List<Product> ApplyProductSorting(List<Product> result)
+        {
+            switch (Sorting)
+            {
+                case Enums.SortingType.Popularity:
+                    return result.OrderByDescending(r => r.SoldCount).ThenByStorefrontDefault().ToList();
 
-                    case Enums.SortingType.ZaOrder:
-                        break;
+                case Enums.SortingType.LowHighPrice:
+                    return SortByPrice(result, ascending: true);
 
-                    default:
-                        result = result.OrderByStorefrontDefault().ToList();
-                        break;
-                }
+                case Enums.SortingType.HighLowPrice:
+                    return SortByPrice(result, ascending: false);
 
-                return result;
+                case Enums.SortingType.AverageRating:
+                    return SortByAverageRating(result);
+
+                case Enums.SortingType.Newest:
+                    return result
+                        .OrderByDescending(r => r.UpdatedDate)
+                        .ThenBy(r => r.Position)
+                        .ThenByDescending(r => r.MainPage)
+                        .ThenByDescending(r => r.IsCampaign)
+                        .ToList();
+
+                case Enums.SortingType.AzOrder:
+                    return result;
+
+                case Enums.SortingType.ZaOrder:
+                    return result;
+
+                default:
+                    return result.OrderByStorefrontDefault().ToList();
+            }
+        }
+
+        private List<Product> SortByPrice(List<Product> result, bool ascending)
+        {
+            if (!IsProductPriceEnabled)
+            {
+                return result.OrderByStorefrontDefault().ToList();
+            }
+
+            if (ascending)
+            {
+                return result.OrderBy(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
+            }
+
+            return result.OrderByDescending(r => r.PriceWithDiscount).ThenByStorefrontDefault().ToList();
+        }
+
+        private List<Product> SortByAverageRating(List<Product> result)
+        {
+            if (IsProductReviewEnabled)
+            {
+                return result.OrderByDescending(r => r.Rating).ThenByStorefrontDefault().ToList();
+            }
+
+            return result.OrderByStorefrontDefault().ToList();
         }
 
         private List<CategoryFilter> CreateSelectedFilterList()

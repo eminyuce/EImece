@@ -22,6 +22,8 @@ namespace EImece.Domain.Helpers.EmailHelper
         public ISettingService SettingService { get; set; }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string FromAddressRequiredMessage = "From Address cannot be null";
+        private const string FromDisplayNameRequiredMessage = "from Address DisplayName cannot be null";
 
         /// <summary>
         /// Sends an email
@@ -154,12 +156,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             var fromAddress = emailAccount.Email;
             if (string.IsNullOrEmpty(fromAddress))
             {
-                throw new ArgumentException("From Address cannot be null");
+                throw new ArgumentException(FromAddressRequiredMessage);
             }
             var fromAddressDisplayName = emailAccount.DisplayName;
             if (string.IsNullOrEmpty(fromAddressDisplayName))
             {
-                throw new ArgumentException("from Address DisplayName cannot be null");
+                throw new ArgumentException(FromDisplayNameRequiredMessage);
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(destination);
@@ -174,7 +176,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         /// unavailable, so it falls back to a synchronous send. Exceptions are logged, never
         /// propagated, because the caller has already returned to the user.
         /// </summary>
-        private void QueueOrRunSend(Action sendAction, string subjectForLog)
+        private static void QueueOrRunSend(Action sendAction, string subjectForLog)
         {
             if (HostingEnvironment.IsHosted)
             {
@@ -214,12 +216,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             var fromAddress = emailAccount.Email;
             if (string.IsNullOrEmpty(fromAddress))
             {
-                throw new ArgumentException("From Address cannot be null");
+                throw new ArgumentException(FromAddressRequiredMessage);
             }
             var fromAddressDisplayName = emailAccount.DisplayName;
             if (string.IsNullOrEmpty(fromAddressDisplayName))
             {
-                throw new ArgumentException("from Address DisplayName cannot be null");
+                throw new ArgumentException(FromDisplayNameRequiredMessage);
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(destination);
@@ -255,12 +257,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             var fromAddress = emailAccount.Email;
             if (string.IsNullOrEmpty(fromAddress))
             {
-                throw new ArgumentException("From Address cannot be null");
+                throw new ArgumentException(FromAddressRequiredMessage);
             }
             var fromAddressDisplayName = emailAccount.DisplayName;
             if (string.IsNullOrEmpty(fromAddressDisplayName))
             {
-                throw new ArgumentException("from Address DisplayName cannot be null");
+                throw new ArgumentException(FromDisplayNameRequiredMessage);
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(customer.Email, customer.FullName);
@@ -308,12 +310,12 @@ namespace EImece.Domain.Helpers.EmailHelper
             var fromAddress = emailAccount.Email;
             if (string.IsNullOrEmpty(fromAddress))
             {
-                throw new ArgumentException("From Address cannot be null");
+                throw new ArgumentException(FromAddressRequiredMessage);
             }
             var fromAddressDisplayName = emailAccount.DisplayName;
             if (string.IsNullOrEmpty(fromAddressDisplayName))
             {
-                throw new ArgumentException("from Address DisplayName cannot be null");
+                throw new ArgumentException(FromDisplayNameRequiredMessage);
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
 

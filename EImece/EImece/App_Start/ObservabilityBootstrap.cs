@@ -13,6 +13,11 @@ namespace EImece.App_Start
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static OpenTelemetryBootstrap _openTelemetry;
 
+        /// <summary>
+        /// The OpenTelemetry SDK instance kept alive for the AppDomain lifetime.
+        /// </summary>
+        public static OpenTelemetryBootstrap OpenTelemetry => _openTelemetry;
+
         public static void Configure()
         {
             var options = ObservabilityOptions.FromAppConfig();
@@ -36,8 +41,14 @@ namespace EImece.App_Start
         {
             try
             {
+                var telemetry = _openTelemetry;
+                if (telemetry != null)
+                {
+                    telemetry.Dispose();
+                    _openTelemetry = null;
+                }
+
                 OpenTelemetryBootstrap.Shutdown();
-                _openTelemetry = null;
                 StructuredLoggingBootstrap.CloseAndFlush();
             }
             catch (Exception ex)

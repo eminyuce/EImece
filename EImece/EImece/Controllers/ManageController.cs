@@ -37,6 +37,39 @@ namespace EImece.Controllers
             return RedirectToActionPermanent("ChangePassword", "Home", new { area = "Customers" });
         }
 
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            Logger.Info("ChangePassword action called with model: {@Model}", model);
+
+            if (!ModelState.IsValid)
+            {
+                Logger.Warn("ModelState is invalid for ChangePassword.");
+                return View(model);
+            }
+
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                Logger.Info("Password changed successfully.");
+
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    Logger.Info("User signed in after changing password.");
+                }
+
+                return RedirectToAction(IndexAction, new { Message = ManageMessageId.ChangePasswordSuccess });
+            }
+
+            AddErrors(result);
+            Logger.Error("Failed to change password: {0}", string.Join(", ", result.Errors));
+            return View(model);
+        }
+
         /// <summary>
         /// Legacy Identity ManageLogins URL. External logins are managed from the customer account area.
         /// </summary>
@@ -281,39 +314,6 @@ namespace EImece.Controllers
             }
 
             return RedirectToAction(IndexAction, new { Message = ManageMessageId.RemovePhoneSuccess });
-        }
-
-        // POST: /Manage/ChangePassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            Logger.Info("ChangePassword action called with model: {@Model}", model);
-
-            if (!ModelState.IsValid)
-            {
-                Logger.Warn("ModelState is invalid for ChangePassword.");
-                return View(model);
-            }
-
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-            if (result.Succeeded)
-            {
-                Logger.Info("Password changed successfully.");
-
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                if (user != null)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    Logger.Info("User signed in after changing password.");
-                }
-
-                return RedirectToAction(IndexAction, new { Message = ManageMessageId.ChangePasswordSuccess });
-            }
-
-            AddErrors(result);
-            Logger.Error("Failed to change password: {0}", string.Join(", ", result.Errors));
-            return View(model);
         }
 
         // Other methods follow the same pattern for adding logging...
