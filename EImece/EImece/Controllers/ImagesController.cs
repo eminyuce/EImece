@@ -93,19 +93,7 @@ namespace EImece.Controllers
                 if (imageByte != null && imageByte.ImageBytes != null)
                 {
                     Response.StatusCode = 200;
-                    Response.Cache.SetExpires(DateTime.Now.AddDays(365));
-                    Response.Cache.SetCacheability(HttpCacheability.Public);
-                    Response.Cache.SetMaxAge(TimeSpan.FromDays(365));
-                    Response.Cache.SetSlidingExpiration(true);
-                    Response.Cache.SetOmitVaryStar(true);
-                    Response.Cache.SetValidUntilExpires(true);
-                    Response.Headers.Set("Vary",
-                        string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
-                    Response.Headers["Cache-Control"] = "public, max-age=31536000, immutable";
-                    if (imageByte.UpdatedDated != null && imageByte.UpdatedDated > DateTime.MinValue)
-                    {
-                        Response.Cache.SetLastModified(imageByte.UpdatedDated.ToLocalTime());
-                    }
+                    ApplyLongLivedImageCache(imageByte.UpdatedDated);
                     return File(imageByte.ImageBytes, imageByte.ContentType);
                 }
                 else
@@ -116,6 +104,23 @@ namespace EImece.Controllers
             else
             {
                 return new EmptyResult();
+            }
+        }
+
+        private void ApplyLongLivedImageCache(DateTime updatedDated)
+        {
+            Response.Cache.SetExpires(DateTime.Now.AddDays(365));
+            Response.Cache.SetCacheability(HttpCacheability.Public);
+            Response.Cache.SetMaxAge(TimeSpan.FromDays(365));
+            Response.Cache.SetSlidingExpiration(true);
+            Response.Cache.SetOmitVaryStar(true);
+            Response.Cache.SetValidUntilExpires(true);
+            Response.Headers.Set("Vary",
+                string.Join(",", new string[] { "Accept", "Accept-Encoding" }));
+            Response.Headers["Cache-Control"] = "public, max-age=31536000, immutable";
+            if (updatedDated != null && updatedDated > DateTime.MinValue)
+            {
+                Response.Cache.SetLastModified(updatedDated.ToLocalTime());
             }
         }
 

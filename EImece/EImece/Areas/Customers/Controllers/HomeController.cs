@@ -100,30 +100,6 @@ namespace EImece.Areas.Customers.Controllers
             return View(customer);
         }
 
-        private async Task<Customer> GetCustomerAsync()
-        {
-            ApplicationUser user;
-            Customer customer;
-            user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-            customer = await CustomerService.GetUserIdAsync(user.Id);
-            customer.Orders = await OrderService.GetOrdersByUserIdAsync(customer.UserId);
-            if (customer.Gender == 0)
-            {
-                customer.Gender = (int)GenderType.Man;
-            }
-            return customer;
-        }
-
-        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
-        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
-        {
-            var item = new SettingLayoutViewModel();
-            item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyEmailAddress);
-            return PartialView("_WebSiteAddressInfo", item);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(Customer customer)
@@ -154,6 +130,30 @@ namespace EImece.Areas.Customers.Controllers
                 InformCustomerToFillOutForm(customer);
                 return View(customer);
             }
+        }
+
+        private async Task<Customer> GetCustomerAsync()
+        {
+            ApplicationUser user;
+            Customer customer;
+            user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
+            customer = await CustomerService.GetUserIdAsync(user.Id);
+            customer.Orders = await OrderService.GetOrdersByUserIdAsync(customer.UserId);
+            if (customer.Gender == 0)
+            {
+                customer.Gender = (int)GenderType.Man;
+            }
+            return customer;
+        }
+
+        // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
+        public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
+        {
+            var item = new SettingLayoutViewModel();
+            item.isMobilePage = isMobilePage;
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyEmailAddress);
+            return PartialView("_WebSiteAddressInfo", item);
         }
 
         private void InformCustomerToFillOutForm(Customer customer)

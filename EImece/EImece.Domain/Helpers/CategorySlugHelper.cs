@@ -13,7 +13,7 @@ namespace EImece.Domain.Helpers
     /// </summary>
     public static class CategorySlugHelper
     {
-        private static readonly Regex MultiDash = new Regex("-{2,}", RegexOptions.Compiled);
+        private static readonly Regex MultiDash = new Regex("-{2,}", RegexOptions.Compiled, TimeSpan.FromMilliseconds(250));
 
         public static string NormalizeSlug(string slug)
         {

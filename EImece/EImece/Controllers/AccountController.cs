@@ -25,6 +25,11 @@ namespace EImece.Controllers
     public class AccountController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index";
+        private const string AdminAreaName = "admin";
+        private const string DashboardAction = "Dashboard";
+        private const string LockoutAction = "Lockout";
+        private const string AdminLoginAction = "AdminLogin";
 
         [Inject]
         public IdentityManager IdentityManager { get; set; }
@@ -64,7 +69,7 @@ namespace EImece.Controllers
             if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)
             {
                 Logger.Info("AdminLoginEnabled is false. Redirecting AdminLogin to home.");
-                return RedirectToAction("Index", "Home", new { area = "" });
+                return RedirectToAction(IndexAction, "Home", new { area = "" });
             }
 
             // TEMPORARY: skip the admin login panel while BypassAdminAuth is enabled.
@@ -76,7 +81,7 @@ namespace EImece.Controllers
                     return Redirect(returnUrl);
                 }
 
-                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+                return RedirectToAction(IndexAction, DashboardAction, new { area = AdminAreaName });
             }
 
             ViewBag.ReturnUrl = returnUrl;
@@ -98,7 +103,7 @@ namespace EImece.Controllers
             if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)
             {
                 Logger.Info("AdminLoginEnabled is false. Rejecting AdminLogin POST.");
-                return RedirectToAction("Index", "Home", new { area = "" });
+                return RedirectToAction(IndexAction, "Home", new { area = "" });
             }
 
             if (model == null)
@@ -116,9 +121,8 @@ namespace EImece.Controllers
             }
             if (!ModelState.IsValid)
             {
-                Logger.Info("Model state is invalid. Adding error.");
+                Logger.Info("Model state is invalid. Adding error. Returning AdminLogin view with errors.");
                 ModelState.AddModelError("", AdminResource.RequestIsNotValid);
-                Logger.Info("Returning AdminLogin view with errors.");
                 return View(model);
             }
 
@@ -145,7 +149,7 @@ namespace EImece.Controllers
             {
                 Logger.Debug($"Account locked out for email: {model.Email}");
                 ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
-                return View("Lockout");
+                return View(LockoutAction);
             }
 
             if (!await UserManager.CheckPasswordAsync(user, model.Password))
@@ -179,13 +183,13 @@ namespace EImece.Controllers
             {
                 case SignInStatus.Success:
                     Logger.Info("Sign-in successful. Redirecting to Dashboard.");
-                    return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+                    return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
 
                 case SignInStatus.LockedOut:
                     Logger.Debug($"Account locked out for email: {model.Email}");
                     ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
                     Logger.Info("Returning Lockout view.");
-                    return View("Lockout");
+                    return View(LockoutAction);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
@@ -244,7 +248,7 @@ namespace EImece.Controllers
             Logger.Info($"Entering Login with returnUrl: {returnUrl}");
             if (!IsProductPriceEnabled)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(IndexAction, "Home");
             }
             ViewBag.ReturnUrl = returnUrl;
             Logger.Info("Returning Login view.");
@@ -260,7 +264,7 @@ namespace EImece.Controllers
             Logger.Info($"Entering Login POST with email: {model?.Email}, returnUrl: {returnUrl}");
             if (!IsProductPriceEnabled)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(IndexAction, "Home");
             }
             if (model == null)
             {
@@ -307,13 +311,13 @@ namespace EImece.Controllers
             {
                 case SignInStatus.Success:
                     Logger.Info("Sign-in successful. Redirecting to Customer Home.");
-                    return RedirectToAction("Index", "Home", new { @area = "customers" });
+                    return RedirectToAction(IndexAction, "Home", new { @area = "customers" });
 
                 case SignInStatus.LockedOut:
                     Logger.Debug($"Account locked out for email: {model.Email}");
                     ModelState.AddModelError("", $"The account {model.Email} LockedOut");
                     Logger.Info("Returning Lockout view.");
-                    return View("Lockout");
+                    return View(LockoutAction);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
@@ -390,7 +394,7 @@ namespace EImece.Controllers
 
                 case SignInStatus.LockedOut:
                     Logger.Info("Account locked out. Returning Lockout view.");
-                    return View("Lockout");
+                    return View(LockoutAction);
 
                 case SignInStatus.Failure:
                 default:
@@ -410,7 +414,7 @@ namespace EImece.Controllers
             Logger.Info("Entering VerifyAuthenticator GET.");
             if (string.IsNullOrEmpty(token))
             {
-                return RedirectToAction("AdminLogin");
+                return RedirectToAction(AdminLoginAction);
             }
 
             return View(new VerifyAuthenticatorViewModel
@@ -429,7 +433,7 @@ namespace EImece.Controllers
             Logger.Info("Entering VerifyAuthenticator POST.");
             if (model == null || string.IsNullOrEmpty(model.Token))
             {
-                return RedirectToAction("AdminLogin");
+                return RedirectToAction(AdminLoginAction);
             }
 
             if (!ModelState.IsValid)
@@ -441,18 +445,18 @@ namespace EImece.Controllers
             if (userId == null)
             {
                 ModelState.AddModelError("", "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın.");
-                return RedirectToAction("AdminLogin");
+                return RedirectToAction(AdminLoginAction);
             }
 
             var user = await UserManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return RedirectToAction("AdminLogin");
+                return RedirectToAction(AdminLoginAction);
             }
 
             if (await UserManager.IsLockedOutAsync(user.Id))
             {
-                return View("Lockout");
+                return View(LockoutAction);
             }
 
             bool isValid = Domain.Helpers.AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model.Code);
@@ -467,7 +471,7 @@ namespace EImece.Controllers
                     return Redirect(model.ReturnUrl);
                 }
 
-                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+                return RedirectToAction(IndexAction, DashboardAction, new { area = AdminAreaName });
             }
 
             await UserManager.AccessFailedAsync(user.Id);
@@ -484,7 +488,7 @@ namespace EImece.Controllers
             Logger.Info($"Entering Register action. returnUrl={returnUrl}");
             if (!IsProductPriceEnabled)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(IndexAction, "Home");
             }
             var model = new RegisterViewModel();
             model.IsPermissionGranted = true;
@@ -502,7 +506,7 @@ namespace EImece.Controllers
             Logger.Info($"Entering Register POST with email: {model.Email}, returnUrl={returnUrl}");
             if (!IsProductPriceEnabled)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(IndexAction, "Home");
             }
             ViewBag.ReturnUrl = returnUrl;
             if (CaptchaService.HasValidationError(ModelState))
@@ -539,46 +543,7 @@ namespace EImece.Controllers
 
                     var result2 = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
                     Logger.Info($"Post-registration sign-in result: {result2}");
-                    switch (result2)
-                    {
-                        case SignInStatus.Success:
-                            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
-                            {
-                                Logger.Info($"Post-registration sign-in successful. Redirecting to returnUrl: {returnUrl}");
-                                return Redirect(returnUrl);
-                            }
-                            Logger.Info("Post-registration sign-in successful. Redirecting to Customer Home.");
-                            return RedirectToAction("Index", "Home", new { @area = "customers" });
-
-                        case SignInStatus.LockedOut:
-                            Logger.Debug($"Account locked out for email: {model.Email}");
-                            ModelState.AddModelError("", $"The account {model.Email} LockedOut");
-                            Logger.Info("Returning Lockout view.");
-                            return View("Lockout");
-
-                        case SignInStatus.RequiresVerification:
-                            Logger.Debug($"Account requires verification for email: {model.Email}");
-                            ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
-                            Logger.Info("Returning Register view with verification error.");
-                            return View(model);
-
-                        case SignInStatus.Failure:
-                            var user2 = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
-                            bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user2, model.Password);
-                            Logger.Info($"Password check for {model.Email}: {checkPassword}");
-                            if (!checkPassword)
-                                ModelState.AddModelError("", "Invalid login attempt. Password is not correct");
-                            else
-                                ModelState.AddModelError("", "Invalid login attempt." + result2.ToString());
-                            Logger.Info("Returning Register view with failure error.");
-                            return View(model);
-
-                        default:
-                            Logger.Debug($"Unexpected sign-in result for email: {model.Email}");
-                            ModelState.AddModelError("", "Invalid login attempt.");
-                            Logger.Info("Returning Register view with default error.");
-                            return View(model);
-                    }
+                    return await CompleteRegistrationSignInAsync(model, returnUrl, result2);
                 }
                 else
                 {
@@ -602,6 +567,46 @@ namespace EImece.Controllers
             }
             Logger.Info("Returning Register view with errors.");
             return View(model);
+        }
+
+        private async Task<ActionResult> CompleteRegistrationSignInAsync(RegisterViewModel model, string returnUrl, SignInStatus result2)
+        {
+            switch (result2)
+            {
+                case SignInStatus.Success:
+                    if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        Logger.Info($"Post-registration sign-in successful. Redirecting to returnUrl: {returnUrl}");
+                        return Redirect(returnUrl);
+                    }
+                    Logger.Info("Post-registration sign-in successful. Redirecting to Customer Home.");
+                    return RedirectToAction(IndexAction, "Home", new { @area = "customers" });
+
+                case SignInStatus.LockedOut:
+                    Logger.Debug($"Account locked out for email: {model.Email}");
+                    ModelState.AddModelError("", $"The account {model.Email} LockedOut");
+                    return View(LockoutAction);
+
+                case SignInStatus.RequiresVerification:
+                    Logger.Debug($"Account requires verification for email: {model.Email}");
+                    ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
+                    return View(model);
+
+                case SignInStatus.Failure:
+                    var user2 = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
+                    bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user2, model.Password);
+                    Logger.Info($"Password check for {model.Email}: {checkPassword}");
+                    if (!checkPassword)
+                        ModelState.AddModelError("", "Invalid login attempt. Password is not correct");
+                    else
+                        ModelState.AddModelError("", "Invalid login attempt." + result2.ToString());
+                    return View(model);
+
+                default:
+                    Logger.Debug($"Unexpected sign-in result for email: {model.Email}");
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
         }
 
         public void IdentitySignout()
@@ -822,7 +827,7 @@ namespace EImece.Controllers
 
                 case SignInStatus.LockedOut:
                     Logger.Info("Account locked out. Returning Lockout view.");
-                    return View("Lockout");
+                    return View(LockoutAction);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Info("Requires verification. Redirecting to SendCode.");
@@ -846,7 +851,7 @@ namespace EImece.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 Logger.Info("User already authenticated. Redirecting to Manage Index.");
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction(IndexAction, "Manage");
             }
 
             if (ModelState.IsValid)
@@ -887,7 +892,7 @@ namespace EImece.Controllers
             Logger.Info("Entering LogOff action.");
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Logger.Info("User signed out. Redirecting to Home Index.");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(IndexAction, "Home");
         }
 
         [AllowAnonymous]
@@ -943,7 +948,7 @@ namespace EImece.Controllers
             if (isAdmin)
             {
                 Logger.Info("Admin role detected. Redirecting to Admin Dashboard.");
-                return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+                return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
             }
             else if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
@@ -951,7 +956,7 @@ namespace EImece.Controllers
                 return Redirect(returnUrl);
             }
             Logger.Info("Default redirect to Admin Dashboard.");
-            return RedirectToAction("Index", "Dashboard", new { @area = "admin" });
+            return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

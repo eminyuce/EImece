@@ -209,7 +209,7 @@ namespace EImece.Areas.Admin.Controllers
 
             if (MustRedirectToEnableAuthenticator(filterContext))
             {
-                TempData["StatusMessage"] = "Yönetici paneline devam etmek için Authenticator 2FA etkinleştirmeniz zorunludur.";
+                TempData[DomainConstants.StatusMessageKey] = "Yönetici paneline devam etmek için Authenticator 2FA etkinleştirmeniz zorunludur.";
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary(new { area = "Admin", controller = "Users", action = "EnableAuthenticator" }));
                 return;
@@ -244,11 +244,7 @@ namespace EImece.Areas.Admin.Controllers
             var controllerName = filterContext.RouteData.Values["controller"] as string ?? string.Empty;
             var actionName = filterContext.RouteData.Values["action"] as string ?? string.Empty;
 
-            // Allow setup page and logout (otherwise LogOff is intercepted by this redirect).
-            if (string.Equals(actionName, "LogOff", StringComparison.OrdinalIgnoreCase)
-                || (string.Equals(controllerName, "Users", StringComparison.OrdinalIgnoreCase)
-                    && (string.Equals(actionName, "EnableAuthenticator", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase))))
+            if (IsAuthenticatorSetupOrLogOff(controllerName, actionName))
             {
                 return false;
             }
@@ -281,6 +277,18 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return !user.TwoFactorAuthenticatorEnabled;
+        }
+
+        private static bool IsAuthenticatorSetupOrLogOff(string controllerName, string actionName)
+        {
+            if (string.Equals(actionName, "LogOff", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return string.Equals(controllerName, "Users", StringComparison.OrdinalIgnoreCase)
+                && (string.Equals(actionName, "EnableAuthenticator", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase));
         }
 
         [Inject]
@@ -432,7 +440,7 @@ namespace EImece.Areas.Admin.Controllers
 
         protected void SetSuccessMessage(string message = null)
         {
-            TempData["StatusMessage"] = string.IsNullOrEmpty(message)
+            TempData[DomainConstants.StatusMessageKey] = string.IsNullOrEmpty(message)
                 ? AdminResource.SuccessfullySavedCompleted
                 : message;
             TempData["StatusMessageType"] = "success";
@@ -440,7 +448,7 @@ namespace EImece.Areas.Admin.Controllers
 
         protected void SetErrorMessage(string message = null)
         {
-            TempData["StatusMessage"] = string.IsNullOrEmpty(message)
+            TempData[DomainConstants.StatusMessageKey] = string.IsNullOrEmpty(message)
                 ? AdminResource.GeneralSaveErrorMessage
                 : message;
             TempData["StatusMessageType"] = "danger";
@@ -448,7 +456,7 @@ namespace EImece.Areas.Admin.Controllers
 
         protected void SetStatusMessage(string message, string messageType)
         {
-            TempData["StatusMessage"] = message;
+            TempData[DomainConstants.StatusMessageKey] = message;
             TempData["StatusMessageType"] = string.IsNullOrEmpty(messageType) ? "info" : messageType;
         }
 

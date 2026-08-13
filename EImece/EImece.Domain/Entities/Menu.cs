@@ -13,6 +13,8 @@ namespace EImece.Domain.Entities
 {
     public class Menu : BaseContent
     {
+        private const string UrlPathSeparator = "/";
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MenuParentId))]
         public int ParentId { get; set; }
 
@@ -67,8 +69,11 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public string IsPageActived
         {
-            get
-            {
+            get { return ComputeIsPageActived(); }
+        }
+
+        private string ComputeIsPageActived()
+        {
                 // Match the current request URL to this menu item's own link.
                 // Do NOT mark every pages/detail item active — many CMS pages share MenuLink "pages-index".
                 if (HttpContext.Current == null || HttpContext.Current.Request == null || HttpContext.Current.Request.Url == null)
@@ -88,12 +93,12 @@ namespace EImece.Domain.Entities
                     if (Uri.TryCreate(Link, UriKind.Absolute, out var absolute) &&
                         string.Equals(absolute.Host, HttpContext.Current.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
                     {
-                        return PathsMatch(currentPath, NormalizeAppPath(absolute.AbsolutePath)) ? "active" : "";
+                        return PathsMatch(currentPath, NormalizeAppPath(absolute.AbsolutePath)) ? Constants.ActiveCssClass : "";
                     }
 
                     if (Link.StartsWith("/", StringComparison.Ordinal))
                     {
-                        return PathsMatch(currentPath, NormalizeAppPath(Link)) ? "active" : "";
+                        return PathsMatch(currentPath, NormalizeAppPath(Link)) ? Constants.ActiveCssClass : "";
                     }
 
                     return "";
@@ -104,7 +109,7 @@ namespace EImece.Domain.Entities
                     var detailPath = ToAppPath(DetailPageLink);
                     if (!string.IsNullOrEmpty(detailPath) && PathsMatch(currentPath, detailPath))
                     {
-                        return "active";
+                        return Constants.ActiveCssClass;
                     }
                 }
 
@@ -128,7 +133,7 @@ namespace EImece.Domain.Entities
                         && (routeId.Equals(seo, StringComparison.OrdinalIgnoreCase)
                             || currentPath.IndexOf("/" + seo.Trim('/'), StringComparison.OrdinalIgnoreCase) >= 0))
                     {
-                        return "active";
+                        return Constants.ActiveCssClass;
                     }
 
                     return "";
@@ -140,7 +145,7 @@ namespace EImece.Domain.Entities
                 {
                     var infoKey = "/" + MenuLink.Replace("-", "/").Trim('/').ToLowerInvariant();
                     return PathsMatch(currentPath, infoKey) || currentPath.StartsWith(infoKey + "/", StringComparison.OrdinalIgnoreCase)
-                        ? "active"
+                        ? Constants.ActiveCssClass
                         : "";
                 }
 
@@ -152,7 +157,7 @@ namespace EImece.Domain.Entities
                     {
                         if (string.IsNullOrEmpty(mid) || routeId.Equals(mid, StringComparison.OrdinalIgnoreCase))
                         {
-                            return "active";
+                            return Constants.ActiveCssClass;
                         }
 
                         return "";
@@ -160,7 +165,7 @@ namespace EImece.Domain.Entities
 
                     if (pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return "active";
+                        return Constants.ActiveCssClass;
                     }
                 }
 
@@ -171,11 +176,10 @@ namespace EImece.Domain.Entities
                     && pageAction.Equals(action, StringComparison.InvariantCultureIgnoreCase)
                     && !pageController.Equals("products", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return "active";
+                    return Constants.ActiveCssClass;
                 }
 
                 return "";
-            }
         }
 
         private static string ToAppPath(string href)
@@ -210,13 +214,13 @@ namespace EImece.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(path))
             {
-                return "/";
+                return UrlPathSeparator;
             }
 
             path = path.Trim().Replace('\\', '/');
-            if (!path.StartsWith("/", StringComparison.Ordinal))
+            if (!path.StartsWith(UrlPathSeparator, StringComparison.Ordinal))
             {
-                path = "/" + path;
+                path = UrlPathSeparator + path;
             }
 
             // Collapse duplicate slashes and trim trailing slash (except root)

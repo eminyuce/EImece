@@ -23,6 +23,8 @@ namespace EImece.Areas.Admin.Controllers
     public class DashboardController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string IndexAction = "Index";
+        private const string AdminAreaName = "admin";
 
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
@@ -48,7 +50,7 @@ namespace EImece.Areas.Admin.Controllers
                     return Redirect(redirectUrl);
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
             List<BaseContent> resultList = await SearchDatabaseForDashboardAsync(search);
 
@@ -109,7 +111,7 @@ namespace EImece.Areas.Admin.Controllers
             string redirectUrl;
             if (!SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
-                redirectUrl = Url.Action("Index", "Dashboard", new { area = "admin" });
+                redirectUrl = Url.Action(IndexAction, "Dashboard", new { area = AdminAreaName });
             }
 
             redirectUrl = NormalizeClearCacheReturnUrl(redirectUrl);
@@ -126,7 +128,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(redirectUrl))
             {
-                return Url.Action("Index", "Dashboard", new { area = "admin" });
+                return Url.Action(IndexAction, "Dashboard", new { area = AdminAreaName });
             }
 
             try
@@ -144,16 +146,16 @@ namespace EImece.Areas.Admin.Controllers
 
                     if (id > 0)
                     {
-                        return Url.Action("WebSiteLogo", "Settings", new { area = "admin", id });
+                        return Url.Action("WebSiteLogo", "Settings", new { area = AdminAreaName, id });
                     }
 
-                    return Url.Action("AddWebSiteLogo", "Settings", new { area = "admin" });
+                    return Url.Action("AddWebSiteLogo", "Settings", new { area = AdminAreaName });
                 }
             }
             catch (Exception ex)
             {
                 Logger.Warn(ex, "NormalizeClearCacheReturnUrl failed for {0}", redirectUrl);
-                return Url.Action("Index", "Dashboard", new { area = "admin" });
+                return Url.Action(IndexAction, "Dashboard", new { area = AdminAreaName });
             }
 
             return redirectUrl;
@@ -185,7 +187,7 @@ namespace EImece.Areas.Admin.Controllers
             EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
             CreateLanguageCookie(selectedLanguage, Domain.Constants.AdminCultureCookieName);
             MemoryCacheProvider.ClearAll();
-            var returnDefault = RedirectToAction("Index");
+            var returnDefault = RedirectToAction(IndexAction);
             return RequestReturn(returnDefault);
         }
 

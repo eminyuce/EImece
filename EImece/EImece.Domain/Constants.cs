@@ -18,6 +18,7 @@ namespace EImece.Domain
         public const string StoryCategoryPrefix = "sc/{id}"; // story categories → /s/sc/{id}
 
         public const string LogoImagePath = "/images/logo.jpg";
+        public const string UrlPathSeparator = "/";
         public const string ShipmentTrackingCompanyLink = "https://geliver.io/takip";
         public const string INFO_PREFIX = "info-";
         public const string IyzicoDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -151,6 +152,35 @@ namespace EImece.Domain
         public static string CURRENCY_TURKISH = "TRY";
         public const string IYZICO_ADDRESS_COUNTRY = "Turkiye";
         public static string TR = "tr-TR";
-       
+
+        public const string IndexAction = "Index";
+        public const string AdminAreaName = "admin";
+        public const string DashboardAction = "Dashboard";
+        public const string LockoutAction = "Lockout";
+        public const string AdminLoginAction = "AdminLogin";
+        public const string PaymentAction = "Payment";
+        public const string DetailAction = "Detail";
+        public const string StoriesAction = "Stories";
+        public const string StartDateParam = "StartDate";
+        public const string EndDateParam = "EndDate";
+        public const string StartDateSqlParam = "@StartDate";
+        public const string EndDateSqlParam = "@EndDate";
+        public const string ProductCategoryIdSqlParam = "@ProductCategoryId";
+        public const string EventLevelColumn = "EventLevel";
+        public const string HomeIndexMenuLink = "home-index";
+        public const string ProductsIndexMenuLink = "products-index";
+        public const string CustomerNotFoundMessage = "Customer not found.";
+        public const string PaymentResultIsNullMessage = "paymentResult is null";
+        public const string ControllersNamespace = "EImece.Controllers";
+        public const string StoriesRoute = "stories";
+        public const string RobotsUserAgentAll = "User-agent: *";
+        public const string GetAllActiveTemplatesCacheKey = "GetAllActiveTemplates";
+        public const string DbEntityValidationExceptionPrefix = "DbEntityValidationException:";
+        public const string ErrorResult = "error";
+        public const string FieldNameColumn = "FieldName";
+        public const string ValueFirstColumn = "ValueFirst";
+        public const string ValueLastColumn = "ValueLast";
+        public const string StatusMessageKey = "StatusMessage";
+        public const string ActiveCssClass = "active";
     }
 }

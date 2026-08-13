@@ -912,8 +912,18 @@ body.admin-app .table-responsive {
     }
 }
 
+.admin-topbar-overflow-toggle {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
 @media (max-width: 991px) {
     .admin-topbar-overflow > a,
+    .admin-topbar-overflow > button,
     .admin-topbar-overflow-toggle {
         min-width: var(--admin-touch-min);
         min-height: var(--admin-touch-min);
@@ -928,6 +938,7 @@ body.admin-app .table-responsive {
     }
 
     .admin-topbar-overflow.open > a,
+    .admin-topbar-overflow.open > button,
     .admin-topbar-overflow-toggle:hover,
     .admin-topbar-overflow-toggle:focus {
         background: #f0f4f8;

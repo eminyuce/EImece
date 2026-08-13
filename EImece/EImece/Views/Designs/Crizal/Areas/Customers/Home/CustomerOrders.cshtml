@@ -45,7 +45,7 @@
             @if (!hasOrders)
             {
                 <div class="customer-panel">
-                    <div class="customer-orders-empty text-center py-5 px-3" role="status">
+                    <output class="customer-orders-empty text-center py-5 px-3 d-block">
                         <div class="customer-orders-empty__icon" aria-hidden="true">
                             <i class="fas fa-box-open"></i>
                         </div>
@@ -55,7 +55,7 @@
                             <i class="fas fa-home mr-1" aria-hidden="true"></i>
                             Alışverişe devam et
                         </a>
-                    </div>
+                    </output>
                 </div>
             }
             else
@@ -125,20 +125,20 @@
                                 </div>
                                 <div>@createOrderStatus(o)</div>
                             </div>
-                            <dl class="customer-order-card__meta mb-3">
-                                <div>
+                            <div class="customer-order-card__meta mb-3">
+                                <dl class="mb-0">
                                     <dt>@Resource.DatePurchased</dt>
                                     <dd>@o.CreatedDate.ToString("dd MMMM yyyy HH:mm")</dd>
-                                </div>
-                                <div>
+                                </dl>
+                                <dl class="mb-0">
                                     <dt>@Resource.Total</dt>
                                     <dd>@o.PaidPriceDecimal.CurrencySign()</dd>
-                                </div>
-                                <div>
+                                </dl>
+                                <dl class="mb-0">
                                     <dt>@Resource.ShipmentCompanyName</dt>
                                     <dd>@(string.IsNullOrEmpty(o.ShipmentCompanyName) ? "—" : o.ShipmentCompanyName)</dd>
-                                </div>
-                                <div>
+                                </dl>
+                                <dl class="mb-0">
                                     <dt>@Resource.ShipmentTrackingNumber</dt>
                                     <dd>
                                         @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
@@ -152,8 +152,8 @@
                                             @Resource.NoShipmentDoneYetForYourOrder
                                         }
                                     </dd>
-                                </div>
-                            </dl>
+                                </dl>
+                            </div>
                             @Html.ActionLink(Resource.OrderSummary,
                                 "CustomerOrderDetail", "Home", new { id = o.Id },
                                 new { @class = "btn customer-btn-primary btn-block", area = "customers" })

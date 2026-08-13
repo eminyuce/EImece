@@ -62,7 +62,8 @@
         </form>
 
         <div class="btn-toolbar" role="toolbar" style="margin-bottom: 8px;">
-            <div class="btn-group" role="group">
+            <fieldset class="btn-group" style="border:0;padding:0;margin:0;min-width:0">
+                <legend class="sr-only">İndir</legend>
                 <a class="btn btn-success"
                    href="@Url.Action("Download", controllerName, new { search = currentSearch, eventLevel = currentEventLevel })">
                     <span class="glyphicon glyphicon-download-alt"></span>
@@ -76,7 +77,7 @@
                    href="@Url.Action("ExportExcel", controllerName, new { format = "csv", search = currentSearch, eventLevel = currentEventLevel })">
                     CSV
                 </a>
-            </div>
+            </fieldset>
         </div>
         <p class="text-muted" style="margin: 0;">
             Gösterilen: <strong>@contents.Count</strong> kayıt
@@ -181,14 +182,14 @@
                           .Encoded(false)
                           .Sanitized(false)
                           .SetWidth(10)
-                          .RenderValueAs(o => String.Format("<textarea readonly style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", String.Format("{0} {1} {2}", o.EventMessage, o.ErrorSource, o.ErrorMessage)));
+                          .RenderValueAs(o => String.Format("<label class='sr-only' for='applog-msg-{0}'>Mesaj</label><textarea id='applog-msg-{0}' readonly style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{1}</textarea>", o.Id, String.Format("{0} {1} {2}", o.EventMessage, o.ErrorSource, o.ErrorMessage)));
 
                       columns.Add(o => o.InnerErrorMessage)
                           .Titled("İç Hata Mesajı")
                           .Encoded(false)
                           .Sanitized(false)
                           .SetWidth(10)
-                          .RenderValueAs(o => String.Format("<textarea readonly style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{0}</textarea>", o.InnerErrorMessage));
+                          .RenderValueAs(o => String.Format("<label class='sr-only' for='applog-inner-{0}'>İç Hata Mesajı</label><textarea id='applog-inner-{0}' readonly style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{1}</textarea>", o.Id, o.InnerErrorMessage));
 
                       columns.Add(o => o.CreatedDate)
                           .Titled(AdminResource.CreatedDate)

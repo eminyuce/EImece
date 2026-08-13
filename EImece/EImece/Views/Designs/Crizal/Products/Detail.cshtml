@@ -153,8 +153,7 @@
                                      width="95"
                                      height="105"
                                      loading="lazy"
-                                     decoding="async"
-                                     onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
+                                     decoding="async" />
                             </a>
                         </li>
                     }
@@ -169,8 +168,7 @@
                                      width="95"
                                      height="105"
                                      loading="lazy"
-                                     decoding="async"
-                                     onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
+                                     decoding="async" />
                             </a>
                         </li>
                     }
@@ -191,8 +189,7 @@
                                  height="610"
                                  alt="@product.Name"
                                  loading="eager"
-                                 decoding="async"
-                                 onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
+                                 decoding="async" />
                         </a>
                     }
                     else
@@ -211,8 +208,7 @@
                                 <img src="@imgTag"
                                      alt=""
                                      loading="lazy"
-                                     decoding="async"
-                                     onerror="this.onerror=null;this.classList.add('is-broken');this.removeAttribute('src');" />
+                                     decoding="async" />
                             </a>
                         }
                     }
@@ -225,11 +221,11 @@
                 @if (productReviewEnable && product.ProductComments.IsNotEmpty())
                 {
                     var summaryRating = product.Rating > 5 ? 5 : (product.Rating < 0 ? 0 : product.Rating);
-                    <a class="d-inline-block scroll-to" href="#reviews">
-                        <span class="crizal-stars" aria-label="@summaryRating stars" role="img">
+                    <a class="d-inline-block scroll-to" href="#reviews" aria-label="@summaryRating stars, @product.ProductComments.Count @Resource.Review">
+                        <span class="crizal-stars" aria-hidden="true">
                             @for (int i = 1; i <= 5; i++)
                             {
-                                <span class="crizal-stars__star@(i <= summaryRating ? " is-on" : "")" aria-hidden="true">★</span>
+                                <span class="crizal-stars__star@(i <= summaryRating ? " is-on" : "")">★</span>
                             }
                         </span><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
                     </a>
@@ -405,11 +401,11 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="accordion-heading">
-                            <a href="#productInfo" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
+                            <button type="button" data-toggle="collapse" data-target="#productInfo" aria-expanded="true" aria-controls="productInfo">
                                 <i class="fas fa-info-circle crizal-product-panels__icon" aria-hidden="true"></i>
                                 <span>@Resource.ProductInformation</span>
                                 <span class="accordion-indicator" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
-                            </a>
+                            </button>
                         </h3>
                     </div>
                     <div class="collapse show" id="productInfo" data-parent="#productPanels">
@@ -442,11 +438,11 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
+                                <button type="button" class="collapsed" data-toggle="collapse" data-target="#shippingOptions" aria-expanded="false" aria-controls="shippingOptions">
                                     <i class="fas fa-truck crizal-product-panels__icon" aria-hidden="true"></i>
                                     <span>@Resource.ShippingOptions</span>
                                     <span class="accordion-indicator" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
-                                </a>
+                                </button>
                             </h3>
                         </div>
                         <div class="collapse" id="shippingOptions" data-parent="#productPanels">
@@ -461,11 +457,11 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
+                                <button type="button" class="collapsed" data-toggle="collapse" data-target="#tagCloud" aria-expanded="false" aria-controls="tagCloud">
                                     <i class="fas fa-tags crizal-product-panels__icon" aria-hidden="true"></i>
                                     <span>@Resource.Tags</span>
                                     <span class="accordion-indicator" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
-                                </a>
+                                </button>
                             </h3>
                         </div>
                         <div class="collapse" id="tagCloud" data-parent="#productPanels">
@@ -587,7 +583,7 @@
 @helper ProductSpecsHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
 {
     <div class="crizal-product-specs crizal-product-specs--tab" aria-label="@Resource.Specifications">
-        @foreach (var group in model.ProdSpecsGroups)
+        @foreach (var group in model.GetProdSpecsGroups())
         {
             <table class="crizal-product-specs__table">
                 @if (!string.IsNullOrWhiteSpace(group.Name))
@@ -635,7 +631,7 @@
                             <div class="ratio ratio-16x9">
                                 <iframe src="@embedUrl"
                                         title="YouTube video player"
-                                        frameborder="0"
+                                        style="border:0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen>
                                 </iframe>
@@ -664,7 +660,7 @@
                                 <div class="ratio ratio-16x9">
                                     <iframe src="@embedUrl"
                                             title="YouTube video player"
-                                            frameborder="0"
+                                            style="border:0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             allowfullscreen>
                                     </iframe>
@@ -722,13 +718,13 @@
                         <div class="crizal-product-reviews__bar">
                             <span>@item.Key</span>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                                <progress class="progress-bar" value="@item.Value.Percentage" max="100" style="width:@item.Value.Percentage%"></progress>
                             </div>
                             <em>@item.Value.Count</em>
                         </div>
                     }
                 }
-                <a class="butn-style8 crizal-product-reviews__cta" href="#leaveReview" data-toggle="modal" data-target="#leaveReview" role="button"><span>@Resource.LeaveReview</span></a>
+                <button type="button" class="butn-style8 crizal-product-reviews__cta" data-toggle="modal" data-target="#leaveReview"><span>@Resource.LeaveReview</span></button>
             </div>
         </div>
         @if (productReviewEnable)
@@ -911,12 +907,13 @@
                 <strong>@productComment.Name</strong>
                 <time datetime="@productComment.CreatedDate.ToString("yyyy-MM-dd")">@productComment.CreatedDate.ToString("dd MMM yyyy")</time>
             </div>
-            <span class="crizal-stars crizal-stars--sm" aria-label="@rating stars" role="img">
+            <span class="crizal-stars crizal-stars--sm" aria-hidden="true">
                 @for (int i = 1; i <= 5; i++)
                 {
-                    <span class="crizal-stars__star@(i <= rating ? " is-on" : "")" aria-hidden="true">★</span>
+                    <span class="crizal-stars__star@(i <= rating ? " is-on" : "")">★</span>
                 }
             </span>
+            <span class="sr-only">@rating stars</span>
         </header>
         <p>@productComment.Review</p>
     </article>

@@ -94,6 +94,9 @@
         gap: 12px 16px;
         margin: 0;
     }
+    .eg-cart-meta-grid > dl {
+        margin: 0;
+    }
     .eg-cart-meta-grid dt {
         margin: 0 0 2px;
         color: #829ab1;
@@ -130,32 +133,32 @@
     <div class="eg-cart-detail-card">
         <div class="eg-cart-detail-head">Özet</div>
         <div class="eg-cart-detail-body">
-            <dl class="eg-cart-meta-grid">
-                <div>
+            <div class="eg-cart-meta-grid">
+                <dl>
                     <dt>@Html.DisplayNameFor(model => model.Id)</dt>
                     <dd>@Model.Id</dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>@Html.DisplayNameFor(model => model.Name)</dt>
                     <dd>@Model.Name</dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>Sipariş GUID</dt>
                     <dd><code class="eg-mono-chip" title="@Model.OrderGuid">@Model.OrderGuid</code></dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>Kullanıcı</dt>
                     <dd><code class="eg-mono-chip" title="@Model.UserId">@Model.UserId</code></dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>Müşteri</dt>
                     <dd>@(string.IsNullOrWhiteSpace(customerName) ? "—" : customerName)</dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>E-posta</dt>
                     <dd>@(string.IsNullOrWhiteSpace(customerEmail) ? "—" : customerEmail)</dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>Ürün kalemi</dt>
                     <dd>
                         @if (itemCount > 0)
@@ -167,8 +170,8 @@
                             <span class="eg-muted">—</span>
                         }
                     </dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>Tutar</dt>
                     <dd>
                         @if (total.HasValue)
@@ -180,8 +183,8 @@
                             <span class="eg-muted">—</span>
                         }
                     </dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>Durum</dt>
                     <dd>
                         @if (Model.IsActive)
@@ -193,23 +196,23 @@
                             <span class="eg-status-pill is-off">Pasif</span>
                         }
                     </dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>@Html.DisplayNameFor(model => model.CreatedDate)</dt>
                     <dd>@Model.CreatedDate.ToString("g")</dd>
-                </div>
-                <div>
+                </dl>
+                <dl>
                     <dt>@Html.DisplayNameFor(model => model.UpdatedDate)</dt>
                     <dd>@Model.UpdatedDate.ToString("g")</dd>
-                </div>
-            </dl>
+                </dl>
+            </div>
         </div>
     </div>
 
     <div class="eg-cart-detail-card">
         <div class="eg-cart-detail-head">Sepet JSON</div>
         <div class="eg-cart-detail-body">
-            <textarea class="eg-cart-json" readonly rows="18">@prettyJson</textarea>
+            <textarea id="cart-json-preview" class="eg-cart-json" readonly rows="18" aria-label="Sepet JSON">@prettyJson</textarea>
         </div>
     </div>
 

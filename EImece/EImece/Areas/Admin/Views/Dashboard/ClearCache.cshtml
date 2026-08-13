@@ -6,7 +6,7 @@
     var returnUrl = (ViewBag.ReturnUrl as string) ?? Url.Action("Index", "Dashboard", new { area = "admin" });
 }
 
-<div class="admin-refresh" role="status" aria-live="polite">
+<output class="admin-refresh" aria-live="polite">
     <div class="admin-refresh__card">
         <div class="admin-refresh__orbit" aria-hidden="true">
             <span class="admin-refresh__planet"></span>
@@ -21,7 +21,7 @@
         <p class="admin-refresh__hint">Birazdan önceki sayfanıza yönlendirileceksiniz.</p>
         <a class="admin-refresh__skip" href="@returnUrl">Hemen devam et</a>
     </div>
-</div>
+</output>
 
 <style>
     .admin-refresh {

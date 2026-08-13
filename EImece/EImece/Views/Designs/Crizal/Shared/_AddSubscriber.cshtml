@@ -13,13 +13,15 @@
 @using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "crizal-subscribe validate" }))
 {
     <div class="crizal-subscribe__row">
-        @Html.TextBoxFor(model => subscriber.Email, new { @class = "crizal-subscribe__input form-control", @placeholder = @Resource.Email, type = "email", autocomplete = "email" })
+        <label class="sr-only" for="subscriber-email">@Resource.Email</label>
+        @Html.TextBoxFor(model => subscriber.Email, new { @class = "crizal-subscribe__input form-control", @placeholder = @Resource.Email, type = "email", autocomplete = "email", id = "subscriber-email" })
         <button class="butn-style8 small crizal-subscribe__btn" type="submit" name="subscribe" id="mc-embedded-subscribe"><span>@Resource.Subscribe</span></button>
     </div>
 
     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
     <div style="position: absolute; left: -5000px;" aria-hidden="true">
-        <input type="text" name="b_c7103e2c981361a6639545bd5_29ca296126" tabindex="-1">
+        <label class="sr-only" for="subscriber-honeypot">Leave blank</label>
+        <input type="text" id="subscriber-honeypot" name="b_c7103e2c981361a6639545bd5_29ca296126" tabindex="-1">
     </div>
 
     if (Model.FooterEmailListDescription != null)

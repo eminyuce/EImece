@@ -61,7 +61,7 @@ namespace EImece.Domain.Services
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
         {
             List<Menu> lists = GetMenus();
-            var menu = lists.FirstOrDefault(r => (language.HasValue ? (r.Lang == language.Value) : true) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            var menu = lists.FirstOrDefault(r => (!language.HasValue || r.Lang == language.Value) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             if (menu == null)
             {
                 return null;
@@ -72,7 +72,7 @@ namespace EImece.Domain.Services
         public async Task<MenuPageViewModel> GetPageByMenuLinkAsync(string menuLink, int? language)
         {
             List<Menu> lists = await GetMenusAsync().ConfigureAwait(false);
-            var menu = lists.FirstOrDefault(r => (language.HasValue ? (r.Lang == language.Value) : true) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
+            var menu = lists.FirstOrDefault(r => (!language.HasValue || r.Lang == language.Value) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             if (menu == null)
             {
                 return null;

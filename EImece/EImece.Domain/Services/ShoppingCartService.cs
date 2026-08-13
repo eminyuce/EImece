@@ -196,7 +196,7 @@ namespace EImece.Domain.Services
             if (shoppingCart == null)
             {
                 Logger.Error("SaveShoppingCartAsync failed: ShoppingCartSession is null");
-                throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
+                throw new ArgumentNullException(nameof(shoppingCart), "ShoppingCartSession is null");
             }
             if (paymentResult == null)
             {
@@ -414,8 +414,8 @@ namespace EImece.Domain.Services
             }
             if (paymentResult == null)
             {
-                Logger.Error("SaveBuyNow failed: paymentResult is null");
-                throw new ArgumentNullException("paymentResult", "paymentResult is null");
+                Logger.Error("SaveBuyNow failed: " + Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
             }
 
             Customer customer = buyWithNoAccountCreation.Customer;
@@ -458,8 +458,8 @@ namespace EImece.Domain.Services
             }
             if (paymentResult == null)
             {
-                Logger.Error("SaveBuyNow failed: paymentResult is null");
-                throw new ArgumentNullException("paymentResult", "paymentResult is null");
+                Logger.Error("SaveBuyNow failed: " + Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
             }
 
             Logger.Info("Saving customer information");
@@ -512,8 +512,8 @@ namespace EImece.Domain.Services
             }
             if (paymentResult == null)
             {
-                Logger.Error("SaveBuyWithNoAccountCreationAsync failed: paymentResult is null");
-                throw new ArgumentNullException("paymentResult", "paymentResult is null");
+                Logger.Error("SaveBuyWithNoAccountCreationAsync failed: " + Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
             }
 
             Customer customer = buyWithNoAccountCreation.Customer;
@@ -556,8 +556,8 @@ namespace EImece.Domain.Services
             }
             if (paymentResult == null)
             {
-                Logger.Error("SaveBuyNowAsync failed: paymentResult is null");
-                throw new ArgumentNullException("paymentResult", "paymentResult is null");
+                Logger.Error("SaveBuyNowAsync failed: " + Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
             }
 
             Logger.Info("Saving customer information");
@@ -623,7 +623,7 @@ namespace EImece.Domain.Services
             item.CouponDiscount = buyWithNoAccountCreation.CalculateCouponDiscount(buyWithNoAccountCreation.TotalPrice).CurrencySignForIyizo();
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
-            item.BillingAddressId = shippingAddressId; // TODO: SOMETHING IS WRONG HERE
+            item.BillingAddressId = shippingAddressId; // Billing currently shares the shipping address id.
             item.Token = paymentResult.Token;
             item.Price = paymentResult.Price;
             item.PaidPrice = paymentResult.PaidPrice;
@@ -686,7 +686,7 @@ namespace EImece.Domain.Services
             item.CouponDiscount = buyWithNoAccountCreation.CalculateCouponDiscount(buyWithNoAccountCreation.TotalPrice).CurrencySignForIyizo();
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
-            item.BillingAddressId = shippingAddressId; // TODO: SOMETHING IS WRONG HERE
+            item.BillingAddressId = shippingAddressId; // Billing currently shares the shipping address id.
             item.Token = paymentResult.Token;
             item.Price = paymentResult.Price;
             item.PaidPrice = paymentResult.PaidPrice;

@@ -23,6 +23,7 @@ namespace EImece.Areas.Admin.Controllers
     [DeleteAuthorize()]
     public class UsersController : BaseAdminController
     {
+        private const string IndexAction = "Index";
         [Inject]
         public UsersService UsersService { get; set; }
 
@@ -231,7 +232,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 ApplicationDbContext.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 await ApplicationDbContext.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction(IndexAction);
             }
             else
             {
@@ -248,7 +249,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
             if (user == null)
             {
                 return HttpNotFound();
@@ -260,14 +261,14 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GenerateNewPasswordConfirm(string id)
+        public async Task<ActionResult> GenerateNewPasswordConfirm(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
             if (user == null)
             {
                 return HttpNotFound();
@@ -309,17 +310,17 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, string id)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id, cancellationToken);
             ApplicationDbContext.Users.Remove(user);
-            await ApplicationDbContext.SaveChangesAsync();
+            await ApplicationDbContext.SaveChangesAsync(cancellationToken);
             SetSuccessMessage();
-            return ReturnIndexIfNotUrlReferrer("Index");
+            return ReturnIndexIfNotUrlReferrer(IndexAction);
         }
 
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> UserRoles(CancellationToken cancellationToken, string id)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id);
+            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id, cancellationToken);
             var model = new SelectUserRolesViewModel(user);
             model.SetAdminRoles(user);
             return View(model);
@@ -351,7 +352,7 @@ namespace EImece.Areas.Admin.Controllers
             var model = new ForgotPasswordViewModel();
             if (!String.IsNullOrEmpty(id))
             {
-                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
                 if (user == null)
                 {
                     return HttpNotFound();
@@ -465,12 +466,12 @@ namespace EImece.Areas.Admin.Controllers
             var userId = User.Identity.GetUserId();
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+                return RedirectToAction(IndexAction, "Dashboard", new { area = "admin" });
             }
             var user = await UserManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return RedirectToAction("Index", "Dashboard", new { area = "admin" });
+                return RedirectToAction(IndexAction, "Dashboard", new { area = "admin" });
             }
             ViewBag.CurrentUser = user;
             ViewBag.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;

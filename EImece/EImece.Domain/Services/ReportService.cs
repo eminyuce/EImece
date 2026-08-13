@@ -116,8 +116,8 @@ namespace EImece.Domain.Services
             }
 
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.StartDateParam, startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EndDateParam, endDate, SqlDbType.DateTime));
 
             return DatabaseUtility.ExecuteDataTable(
                 "GetSalesReportByDateRange",
@@ -169,7 +169,7 @@ namespace EImece.Domain.Services
             {
                 DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Decimal),
                 DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Decimal),
-                DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
+                DatabaseUtility.GetSqlParameter(Constants.ProductCategoryIdSqlParam, productCategoryId, SqlDbType.Int)
             };
 
             return DatabaseUtility.ExecuteDataSet(
@@ -183,8 +183,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
                 {
-                    DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-                    DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+                    DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+                    DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
                 };
 
             return DatabaseUtility.ExecuteDataSet(
@@ -198,8 +198,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
     {
-        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+        DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
     };
 
             return DatabaseUtility.ExecuteDataSet(
@@ -213,8 +213,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
     {
-        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+        DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
     };
 
             return DatabaseUtility.ExecuteDataSet(
@@ -228,8 +228,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
     {
-        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+        DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
     };
 
             return DatabaseUtility.ExecuteDataSet(
@@ -243,8 +243,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
     {
-        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+        DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
     };
 
             return DatabaseUtility.ExecuteDataSet(
@@ -258,10 +258,10 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
     {
-        DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-        DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+        DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime),
         DatabaseUtility.GetSqlParameter("@IsActive", isActive, SqlDbType.Bit),
-        DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
+        DatabaseUtility.GetSqlParameter(Constants.ProductCategoryIdSqlParam, productCategoryId, SqlDbType.Int)
     };
 
             return DatabaseUtility.ExecuteDataSet(
@@ -319,8 +319,8 @@ namespace EImece.Domain.Services
             }
 
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.StartDateParam, startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EndDateParam, endDate, SqlDbType.DateTime));
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetProductStatsByDateRange",
@@ -372,8 +372,8 @@ namespace EImece.Domain.Services
                 return Task.FromResult<DataTable>(null);
             }
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.StartDateParam, startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EndDateParam, endDate, SqlDbType.DateTime));
             return ExecuteDataTableStoredProcAsync("GetSalesReportByDateRange", parameterList.ToArray(), cancellationToken);
         }
 
@@ -386,8 +386,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+                DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
             };
             return ExecuteDataSetStoredProcAsync("sp_GetPerformanceSystemReport", parameterList.ToArray(), cancellationToken);
         }
@@ -396,8 +396,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+                DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
             };
             return ExecuteDataSetStoredProcAsync("sp_GetFinancialReport", parameterList.ToArray(), cancellationToken);
         }
@@ -406,8 +406,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+                DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
             };
             return ExecuteDataSetStoredProcAsync("sp_GetFraudRiskReport", parameterList.ToArray(), cancellationToken);
         }
@@ -416,8 +416,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+                DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
             };
             return ExecuteDataSetStoredProcAsync("sp_GetOrderVolumeReport", parameterList.ToArray(), cancellationToken);
         }
@@ -426,8 +426,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime)
+                DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime)
             };
             return ExecuteDataSetStoredProcAsync("sp_GetPaymentTransactionReport", parameterList.ToArray(), cancellationToken);
         }
@@ -436,10 +436,10 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", startDate, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", endDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(Constants.StartDateSqlParam, startDate, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(Constants.EndDateSqlParam, endDate, SqlDbType.DateTime),
                 DatabaseUtility.GetSqlParameter("@IsActive", isActive, SqlDbType.Bit),
-                DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
+                DatabaseUtility.GetSqlParameter(Constants.ProductCategoryIdSqlParam, productCategoryId, SqlDbType.Int)
             };
             return ExecuteDataSetStoredProcAsync("GetProductSummaryReport", parameterList.ToArray(), cancellationToken);
         }
@@ -450,7 +450,7 @@ namespace EImece.Domain.Services
             {
                 DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Decimal),
                 DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Decimal),
-                DatabaseUtility.GetSqlParameter("@ProductCategoryId", productCategoryId, SqlDbType.Int)
+                DatabaseUtility.GetSqlParameter(Constants.ProductCategoryIdSqlParam, productCategoryId, SqlDbType.Int)
             };
             return ExecuteDataSetStoredProcAsync("GetPriceAnalysisReport", parameterList.ToArray(), cancellationToken);
         }
@@ -471,8 +471,8 @@ namespace EImece.Domain.Services
                 return Task.FromResult<DataSet>(null);
             }
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("StartDate", startDate, SqlDbType.DateTime));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("EndDate", endDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.StartDateParam, startDate, SqlDbType.DateTime));
+            parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EndDateParam, endDate, SqlDbType.DateTime));
             return ExecuteDataSetStoredProcAsync("GetProductStatsByDateRange", parameterList.ToArray(), cancellationToken);
         }
 

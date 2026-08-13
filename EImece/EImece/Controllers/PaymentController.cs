@@ -394,7 +394,7 @@ namespace EImece.Controllers
                 {
                     PaymentLogger.Info("Shopping cart is empty. Redirecting to shoppingcart.");
                     TempData["StatusMessage"] = "Sepetiniz boş";
-                    return RedirectToAction("shoppingcart", "Payment");
+                    return RedirectToAction("shoppingcart", Domain.Constants.PaymentAction);
                 }
             }
             else
@@ -403,7 +403,7 @@ namespace EImece.Controllers
                 // (not login) so they can create a profile before billing details.
                 PaymentLogger.Info("User is not authenticated. Redirecting to register for membership checkout.");
                 return RedirectToAction("Register", "Account",
-                    new { returnUrl = Url.Action("CheckoutBillingDetails", "Payment") });
+                    new { returnUrl = Url.Action("CheckoutBillingDetails", Domain.Constants.PaymentAction) });
             }
         }
 
@@ -496,7 +496,7 @@ namespace EImece.Controllers
             else
             {
                 PaymentLogger.Info("Shopping cart is empty. Redirecting to shoppingcart.");
-                return RedirectToAction("shoppingcart", "Payment");
+                return RedirectToAction("shoppingcart", Domain.Constants.PaymentAction);
             }
         }
 
@@ -594,7 +594,7 @@ namespace EImece.Controllers
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
                 PaymentLogger.Info("Shopping cart is null or empty. Redirecting to shoppingcart.");
-                return RedirectToAction("shoppingcart", "Payment");
+                return RedirectToAction("shoppingcart", Domain.Constants.PaymentAction);
             }
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {

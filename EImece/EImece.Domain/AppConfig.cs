@@ -553,15 +553,8 @@ namespace EImece.Domain
             }
 
             var needle = emailOrUserName.Trim();
-            foreach (var part in raw.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                if (string.Equals(part.Trim(), needle, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return raw.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .Any(part => string.Equals(part.Trim(), needle, StringComparison.OrdinalIgnoreCase));
         }
 
         public static string DummyIdentityNumber

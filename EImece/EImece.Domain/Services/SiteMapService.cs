@@ -226,7 +226,7 @@ namespace EImece.Domain.Services
                     string productCategoryName = productCategory.Name;
 
                     DateTime? lastModified = product.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl("Detail", "Products", productCategoryName,
+                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
@@ -251,7 +251,7 @@ namespace EImece.Domain.Services
                 foreach (var storyCategory in storyCategories)
                 {
                     DateTime? lastModified = storyCategory.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", "Stories", "",
+                    SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", Constants.StoriesAction, "",
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
@@ -284,7 +284,7 @@ namespace EImece.Domain.Services
                     string storyCategoryName = storyCategory.Name;
 
                     DateTime? lastModified = story.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(story.GetDetailPageUrl("Detail", "Stories", storyCategoryName,
+                    SitemapItem sm = new SitemapItem(story.GetDetailPageUrl(Constants.DetailAction, Constants.StoriesAction, storyCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
@@ -330,7 +330,7 @@ namespace EImece.Domain.Services
             foreach (var item in tags)
             {
                 DateTime? lastModified = item.UpdatedDate;
-                SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Stories", null,
+                SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", Constants.StoriesAction, null,
                          AppConfig.HttpProtocol),
                                lastModified,
                                SitemapChangeFrequency.Daily,
@@ -363,7 +363,7 @@ namespace EImece.Domain.Services
                     string storyCategoryName = storyCategory.Name;
 
                     DateTime? lastModified = story.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(story.GetDetailPageUrl("Detail", "Stories", storyCategoryName,
+                    SitemapItem sm = new SitemapItem(story.GetDetailPageUrl(Constants.DetailAction, Constants.StoriesAction, storyCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
@@ -386,7 +386,7 @@ namespace EImece.Domain.Services
                 foreach (var storyCategory in storyCategories)
                 {
                     DateTime? lastModified = storyCategory.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", "Stories", "",
+                    SitemapItem sm = new SitemapItem(storyCategory.GetDetailPageUrl("Categories", Constants.StoriesAction, "",
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
@@ -418,7 +418,7 @@ namespace EImece.Domain.Services
                     string productCategoryName = productCategory.Name;
 
                     DateTime? lastModified = product.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl("Detail", "Products", productCategoryName,
+                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,

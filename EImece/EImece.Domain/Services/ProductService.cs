@@ -60,34 +60,34 @@ namespace EImece.Domain.Services
             ProductRepository = repository;
         }
 
-        public List<Product> GetAdminPageList(int categoryId, string search, int lang)
+        public List<Product> GetAdminPageList(int id, string search, int lang)
         {
-            return ProductRepository.GetAdminPageList(categoryId, search, lang);
+            return ProductRepository.GetAdminPageList(id, search, lang);
         }
 
-        public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int lang)
+        public List<Product> GetAdminPageList(int id, int brandId, string search, int lang)
         {
-            return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang);
+            return ProductRepository.GetAdminPageList(id, brandId, search, lang);
         }
 
-        public List<Product> GetAdminPageList(int categoryId, int brandId, string search, int lang, ProductAdminListFilter filter)
+        public List<Product> GetAdminPageList(int id, int brandId, string search, int lang, ProductAdminListFilter filter)
         {
-            return ProductRepository.GetAdminPageList(categoryId, brandId, search, lang, filter);
+            return ProductRepository.GetAdminPageList(id, brandId, search, lang, filter);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<Product>> GetAdminPageListAsync(int id, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductRepository.GetAdminPageListAsync(categoryId, search, lang, cancellationToken).ConfigureAwait(false);
+            return await ProductRepository.GetAdminPageListAsync(id, search, lang, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<Product>> GetAdminPageListAsync(int id, int brandId, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang, cancellationToken).ConfigureAwait(false);
+            return await ProductRepository.GetAdminPageListAsync(id, brandId, search, lang, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<Product>> GetAdminPageListAsync(int categoryId, int brandId, string search, int lang, ProductAdminListFilter filter, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<Product>> GetAdminPageListAsync(int id, int brandId, string search, int lang, ProductAdminListFilter filter, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductRepository.GetAdminPageListAsync(categoryId, brandId, search, lang, filter, cancellationToken).ConfigureAwait(false);
+            return await ProductRepository.GetAdminPageListAsync(id, brandId, search, lang, filter, cancellationToken).ConfigureAwait(false);
         }
 
         public string UpdatePrices(UpdatePriceRequest request)
@@ -139,9 +139,9 @@ namespace EImece.Domain.Services
             }
         }
 
-        public ProductIndexViewModel GetMainPageProducts(int page, int language)
+        public ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
         {
-            var cacheKey = CacheKeys.MainPageProducts(page, language);
+            var cacheKey = CacheKeys.MainPageProducts(pageIndex, lang);
 
             // Absolute expiration: catalogue pages must refresh within CacheMediumSeconds even when
             // they stay hot. Single-flight: one DB build per (page, language) after expiry.
@@ -152,12 +152,12 @@ namespace EImece.Domain.Services
                     var result = new ProductIndexViewModel();
                     int pageSize = AppConfig.RecordPerPage;
                     result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
-                    result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-                    result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+                    result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+                    result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
-                    var items = ProductRepository.GetActiveProducts(page, pageSize, language);
+                    var items = ProductRepository.GetActiveProducts(pageIndex, pageSize, lang);
                     result.Products = items;
-                    result.Tags = TagService.GetActiveBaseEntities(true, language);
+                    result.Tags = TagService.GetActiveBaseEntities(true, lang);
                     return result;
                 },
                 CachePolicy.Absolute(AppConfig.CacheMediumSeconds));
@@ -174,19 +174,19 @@ namespace EImece.Domain.Services
         /// (CustomOutputCache) rather than a shared view-model cache entry, because a shared entry
         /// cannot honour a per-request token.
         /// </summary>
-        public async Task<ProductIndexViewModel> GetMainPageProductsAsync(int page, int language, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new ProductIndexViewModel();
             int pageSize = AppConfig.RecordPerPage;
 
             result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
 
-            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
-            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
+            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
-            result.Products = await ProductRepository.GetActiveProductsAsync(page, pageSize, language, cancellationToken).ConfigureAwait(false);
-            result.Tags = await TagService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+            result.Products = await ProductRepository.GetActiveProductsAsync(pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
+            result.Tags = await TagService.GetActiveBaseEntitiesFromCacheAsync(true, lang).ConfigureAwait(false);
 
             return result;
         }
@@ -273,8 +273,8 @@ namespace EImece.Domain.Services
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, product.Lang);
             result.CargoPrice = SettingService.GetSettingObjectByKey(Constants.CargoPrice, product.Lang);
             List<Menu> menuList = MenuService.GetActiveBaseContentsFromCache(true, product.Lang);
-            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong, product.ImageFullPath(1000, 0));
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
@@ -340,8 +340,8 @@ namespace EImece.Domain.Services
             result.CargoDescription = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoDescription, product.Lang).ConfigureAwait(false);
             result.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoPrice, product.Lang).ConfigureAwait(false);
             List<Menu> menuList = await MenuService.GetActiveBaseContentsFromCacheAsync(true, product.Lang).ConfigureAwait(false);
-            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(product.DetailPageAbsoluteUrl, product.NameLong, product.ImageFullPath(1000, 0));
             result.Product = product;
             EntityFilterHelper.FilterProduct(result.Product);
@@ -563,8 +563,8 @@ namespace EImece.Domain.Services
                 r.Products = new PaginatedList<Product>(new List<Product>(), pageIndex, pageSize, 0);
             }
 
-            r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            r.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            r.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
             return r;
         }
@@ -583,8 +583,8 @@ namespace EImece.Domain.Services
             }
 
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            r.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            r.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("products-index", StringComparison.InvariantCultureIgnoreCase));
+            r.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            r.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
             return r;
         }
@@ -611,12 +611,9 @@ namespace EImece.Domain.Services
             if (specifications.IsNotEmpty())
             {
                 await ProductSpecificationRepository.DeleteByWhereConditionAsync(r => r.ProductId == productId).ConfigureAwait(false);
-                foreach (var item in specifications)
+                foreach (var item in specifications.Where(s => !string.IsNullOrEmpty(s.Value)))
                 {
-                    if (!string.IsNullOrEmpty(item.Value))
-                    {
-                        ProductSpecificationRepository.Add(item);
-                    }
+                    ProductSpecificationRepository.Add(item);
                 }
 
                 await ProductSpecificationRepository.SaveAsync().ConfigureAwait(false);
@@ -775,7 +772,6 @@ namespace EImece.Domain.Services
                     p.Lang = currentLanguage;
                     var name = field.Attribute("name");
                     var unit = field.Attribute("unit");
-                    var values = field.Attribute("values");
 
                     var value = ReadSpecFormValue(request, field, name != null ? name.Value : null);
 
@@ -819,7 +815,6 @@ namespace EImece.Domain.Services
                     p.Lang = currentLanguage;
                     var name = field.Attribute("name");
                     var unit = field.Attribute("unit");
-                    var values = field.Attribute("values");
 
                     var value = ReadSpecFormValue(request, field, name != null ? name.Value : null);
 
@@ -996,6 +991,15 @@ namespace EImece.Domain.Services
             return r;
         }
 
+        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting)
+        {
+            var r = new SimiliarProductTagsViewModel();
+            r.Tag = TagService.GetSingle(tagId);
+            r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, page, pageSize, currentLanguage, sorting);
+            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, currentLanguage);
+            return r;
+        }
+
         public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
@@ -1005,21 +1009,12 @@ namespace EImece.Domain.Services
             return r;
         }
 
-        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
-        {
-            var r = new SimiliarProductTagsViewModel();
-            r.Tag = TagService.GetSingle(tagId);
-            r.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, pageIndex, pageSize, lang, sorting);
-            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
-            return r;
-        }
-
-        public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
             r.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            r.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, sorting, cancellationToken).ConfigureAwait(false);
-            r.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, 1, 10, lang, cancellationToken).ConfigureAwait(false);
+            r.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, page, pageSize, currentLanguage, sorting, cancellationToken).ConfigureAwait(false);
+            r.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, 1, 10, currentLanguage, cancellationToken).ConfigureAwait(false);
             return r;
         }
 

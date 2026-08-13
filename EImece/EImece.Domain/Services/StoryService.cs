@@ -144,7 +144,7 @@ namespace EImece.Domain.Services
                 var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
                 result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, result.Story.Lang, 0);
             }
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
             string menuLink = "stories-categories_" + result.Story.GetSeoUrl();
             result.BlogMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             // Sidebar/footer tag cloud needs story ItemCount (same source as category pages).
@@ -178,7 +178,7 @@ namespace EImece.Domain.Services
                 result.RelatedProducts = await ProductRepository.GetRelatedProductsAsync(tagIdList, 10, result.Story.Lang, 0, cancellationToken).ConfigureAwait(false);
             }
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
-            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
             string menuLink = "stories-categories_" + result.Story.GetSeoUrl();
             result.BlogMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             result.Tags = (await TagService.GetTagsWithStoryCountsAsync(language, minStoryCount: 1, cancellationToken).ConfigureAwait(false))
@@ -206,16 +206,16 @@ namespace EImece.Domain.Services
             return SettingService.CreateShareableSocialMediaLinks(story.DetailPageUrl, story.Name, imageUrl);
         }
 
-        public async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int language, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language) + AsyncCacheKeySuffix;
+            var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, currentLanguage) + AsyncCacheKeySuffix;
 
             return await DataCachingProvider.GetOrAddAsync(cacheKey, async () =>
             {
                 var vm = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
-                vm.Stories = await StoryRepository.GetMainPageStoriesAsync(page, pageSize, language, CancellationToken.None).ConfigureAwait(false);
-                vm.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(language, CancellationToken.None).ConfigureAwait(false);
+                vm.Stories = await StoryRepository.GetMainPageStoriesAsync(page, pageSize, currentLanguage, CancellationToken.None).ConfigureAwait(false);
+                vm.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(currentLanguage, CancellationToken.None).ConfigureAwait(false);
                 return vm;
             }, AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
@@ -285,6 +285,10 @@ namespace EImece.Domain.Services
             int pageSize = AppConfig.RecordPerPage;
 
             result.StoryCategory = StoryCategoryService.GetSingle(storyCategoryId);
+            if (result.StoryCategory == null)
+            {
+                return null;
+            }
             int lang = result.StoryCategory.Lang;
             result.StoryCategories = StoryCategoryService.GetActiveBaseContents(true, result.StoryCategory.Lang);
             // Story category sidebar links to /s/t/{tag}. Only show tags that have at least one active story.
@@ -293,7 +297,7 @@ namespace EImece.Domain.Services
                 .ThenBy(t => t.Name)
                 .ToList();
             result.Stories = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
             return result;
         }
@@ -304,6 +308,10 @@ namespace EImece.Domain.Services
             int pageSize = AppConfig.RecordPerPage;
 
             result.StoryCategory = await StoryCategoryService.GetSingleAsync(storyCategoryId).ConfigureAwait(false);
+            if (result.StoryCategory == null)
+            {
+                return null;
+            }
             int lang = result.StoryCategory.Lang;
             result.StoryCategories = await StoryCategoryService.GetActiveBaseContentsAsync(true, result.StoryCategory.Lang, cancellationToken).ConfigureAwait(false);
             result.Tags = (await TagService.GetTagsWithStoryCountsAsync(lang, minStoryCount: 1, cancellationToken).ConfigureAwait(false))
@@ -312,7 +320,7 @@ namespace EImece.Domain.Services
                 .ToList();
             result.Stories = await StoryRepository.GetStoriesByStoryCategoryIdAsync(storyCategoryId, result.StoryCategory.Lang, page, pageSize, cancellationToken).ConfigureAwait(false);
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
             return result;
         }
@@ -323,22 +331,22 @@ namespace EImece.Domain.Services
         }
         
 
-        public SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int lang)
+        public SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int currentLanguage)
         {
             var result = new SimiliarStoryTagsViewModel();
             result.Tag = TagService.GetSingle(tagId);
-            result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, lang);
-            result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, lang);
+            result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, currentLanguage);
+            result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, currentLanguage);
             result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
             return result;
         }
 
-        public async Task<SimiliarStoryTagsViewModel> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SimiliarStoryTagsViewModel> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new SimiliarStoryTagsViewModel();
             result.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            result.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, lang, cancellationToken).ConfigureAwait(false);
-            result.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
+            result.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, currentLanguage, cancellationToken).ConfigureAwait(false);
+            result.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, currentLanguage, cancellationToken).ConfigureAwait(false);
             result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             return result;
         }
@@ -459,14 +467,14 @@ namespace EImece.Domain.Services
             return formatter;
         }
 
-        public List<Story> GetFeaturedStories(int take, int language, int excludedStoryId)
+        public List<Story> GetFeaturedStories(int take, int language, int storyId)
         {
-            return StoryRepository.GetFeaturedStories(take, language, excludedStoryId);
+            return StoryRepository.GetFeaturedStories(take, language, storyId);
         }
 
-        public async Task<List<Story>> GetFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<Story>> GetFeaturedStoriesAsync(int take, int language, int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryRepository.GetFeaturedStoriesAsync(take, language, excludedStoryId, cancellationToken).ConfigureAwait(false);
+            return await StoryRepository.GetFeaturedStoriesAsync(take, language, storyId, cancellationToken).ConfigureAwait(false);
         }
 
         public Story GetPreviousStory(int currentStoryId, int language)

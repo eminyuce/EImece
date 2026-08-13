@@ -472,7 +472,7 @@
     font-size: 0.84rem;
     font-weight: 700;
     font-style: italic;
-    color: #94a3b8;
+    color: #475569;
     background: #f1f5f9;
     border-bottom: 1px solid #e2e8f0;
 }
@@ -501,7 +501,7 @@
     font-weight: 700;
     color: #1e293b;
     text-align: right;
-    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .product-specs__table tbody tr:nth-child(even) {

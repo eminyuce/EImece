@@ -274,16 +274,13 @@ namespace EImece.Domain.Models.FrontModels
         /// <summary>
         /// Specs grouped by template &lt;group name&gt; for storefront tables/sections.
         /// </summary>
-        public List<ProductSpecsGroupModel> ProdSpecsGroups
+        public List<ProductSpecsGroupModel> GetProdSpecsGroups()
         {
-            get
-            {
-                return ProdSpecs
-                    .GroupBy(s => s.groupName ?? string.Empty, StringComparer.Ordinal)
-                    .Select(g => new ProductSpecsGroupModel(g.Key, g.ToList()))
-                    .Where(g => g.Items != null && g.Items.Any())
-                    .ToList();
-            }
+            return ProdSpecs
+                .GroupBy(s => s.groupName ?? string.Empty, StringComparer.Ordinal)
+                .Select(g => new ProductSpecsGroupModel(g.Key, g.ToList()))
+                .Where(g => g.Items != null && g.Items.Any())
+                .ToList();
         }
 
         private static void AppendSpecFields(
@@ -321,7 +318,7 @@ namespace EImece.Domain.Models.FrontModels
 
                 string specsName = display != null ? display.Value : name.Value;
                 string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(field, rawValue);
-                string displayUnit = isCheckbox ? "" : (unit == null ? "" : unit.Value.ToStr());
+                string displayUnit = ResolveSpecDisplayUnit(isCheckbox, unit);
                 result.Add(new ProductSpecsModel(
                     specsName.ToStr().Trim(),
                     displayValue,
@@ -329,6 +326,16 @@ namespace EImece.Domain.Models.FrontModels
                     values == null ? "" : values.Value.ToStr(),
                     groupName));
             }
+        }
+
+        private static string ResolveSpecDisplayUnit(bool isCheckbox, XAttribute unit)
+        {
+            if (isCheckbox || unit == null)
+            {
+                return "";
+            }
+
+            return unit.Value.ToStr();
         }
     }
 

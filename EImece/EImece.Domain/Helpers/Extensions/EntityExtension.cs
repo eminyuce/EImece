@@ -19,7 +19,7 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static SyndicationItem GetStorySyndicationItem(this Story product, string categoryName, string url, RssParams rssParams)
         {
-            String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Stories", categoryName,
+            String link = String.Format("{0}", product.GetDetailPageUrl(Constants.DetailAction, Constants.StoriesAction, categoryName,
                          AppConfig.HttpProtocol));
 
             var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
@@ -63,7 +63,7 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static SyndicationItem GetStorySyndicationItemFull(this Story product, string categoryName, string url, RssParams rssParams)
         {
-            String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Stories", categoryName,
+            String link = String.Format("{0}", product.GetDetailPageUrl(Constants.DetailAction, Constants.StoriesAction, categoryName,
                          AppConfig.HttpProtocol));
 
             var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
@@ -99,7 +99,7 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static SyndicationItem GetProductSyndicationItem(this Product product, string url, RssParams rssParams)
         {
-            String link = String.Format("{0}", product.GetDetailPageUrl("Detail", "Products", product.ProductCategory.Name,
+            String link = String.Format("{0}", product.GetDetailPageUrl(Constants.DetailAction, "Products", product.ProductCategory.Name,
                          AppConfig.HttpProtocol));
 
             var desc = GeneralHelper.StripHtml(product.Description).ToStr(rssParams.Description);
@@ -441,32 +441,14 @@ namespace EImece.Domain.Helpers.Extensions
                 // so clients never download full-resolution originals for small display slots.
                 bool preferResizedProxy = width > 0 || height > 0;
                 bool isImageFullSrcUnderMediaFolder = AppConfig.IsImageFullSrcUnderMediaFolder && !preferResizedProxy;
-                if (isImageFullSrcUnderMediaFolder && entity is BaseContent)
+            if (isImageFullSrcUnderMediaFolder)
+            {
+                var mediaFolderUrl = TryGetMediaFolderImageUrl(entity, isThump, width, height);
+                if (mediaFolderUrl != null)
                 {
-                    var baseContentEntity = (BaseContent)entity;
-                    var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, isThump);
-                    return GetImagePathOrDefaultImage(width, height, imagePath);
+                    return mediaFolderUrl;
                 }
-                else if (isImageFullSrcUnderMediaFolder && entity is ProductFile)
-                {
-                    var baseContentEntity = (ProductFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
-                    return GetImagePathOrDefaultImage(width, height, imagePath);
-                }
-                else if (isImageFullSrcUnderMediaFolder && entity is StoryFile)
-                {
-                    var baseContentEntity = (StoryFile)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
-                    return GetImagePathOrDefaultImage(width, height, imagePath);
-                }
-                else if (isImageFullSrcUnderMediaFolder && entity is FileStorage)
-                {
-                    var fileStorage = (FileStorage)entity;
-                    var imagePath = GetFullPathImageUrlFromFileStorage(fileStorage, isThump);
-                    return GetImagePathOrDefaultImage(width, height, imagePath);
-                }
-                else
-                {
+            }
                     // Prefer prebuilt thumb when it exists and can cover the requested display size.
                     // Layout can still show it at 100x100 via width/height/CSS; browser downscales.
                     if (preferResizedProxy)
@@ -504,9 +486,38 @@ namespace EImece.Domain.Helpers.Extensions
                     {
                         return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area = "" });
                     }
-                }
             }
             return AppConfig.GetDefaultImage(width, height);
+        }
+
+        private static string TryGetMediaFolderImageUrl(BaseEntity entity, bool isThump, int width, int height)
+        {
+            if (entity is BaseContent)
+            {
+                var baseContentEntity = (BaseContent)entity;
+                var imagePath = GetFullPathImageUrlFromFileSystem(baseContentEntity, isThump);
+                return GetImagePathOrDefaultImage(width, height, imagePath);
+            }
+            if (entity is ProductFile)
+            {
+                var baseContentEntity = (ProductFile)entity;
+                var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
+                return GetImagePathOrDefaultImage(width, height, imagePath);
+            }
+            if (entity is StoryFile)
+            {
+                var baseContentEntity = (StoryFile)entity;
+                var imagePath = GetFullPathImageUrlFromFileStorage(baseContentEntity.FileStorage, isThump);
+                return GetImagePathOrDefaultImage(width, height, imagePath);
+            }
+            if (entity is FileStorage)
+            {
+                var fileStorage = (FileStorage)entity;
+                var imagePath = GetFullPathImageUrlFromFileStorage(fileStorage, isThump);
+                return GetImagePathOrDefaultImage(width, height, imagePath);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -769,21 +780,21 @@ namespace EImece.Domain.Helpers.Extensions
                 : GeneralHelper.GetUrlSeoString(categoryName);
 
             if (string.Equals(controller, "Products", StringComparison.OrdinalIgnoreCase)
-                && string.Equals(action, "Detail", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, Constants.DetailAction, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrEmpty(categorySeo))
             {
                 return $"/{Constants.ProductsControllerRoutingPrefix}/{categorySeo}/{seoId}";
             }
 
             if (string.Equals(controller, "Stories", StringComparison.OrdinalIgnoreCase)
-                && string.Equals(action, "Detail", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, Constants.DetailAction, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrEmpty(categorySeo))
             {
                 return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/{categorySeo}/{seoId}";
             }
 
             if (string.Equals(controller, "Pages", StringComparison.OrdinalIgnoreCase)
-                && string.Equals(action, "Detail", StringComparison.OrdinalIgnoreCase))
+                && string.Equals(action, Constants.DetailAction, StringComparison.OrdinalIgnoreCase))
             {
                 return $"/{Constants.PagesControllerRoutingPrefix}/{seoId}";
             }

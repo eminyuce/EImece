@@ -34,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
                 webSiteLogo.SettingKey = Constants.WebSiteLogo;
             }
             int id = webSiteLogo != null ? webSiteLogo.Id : 0;
-            return RedirectToAction("WebSiteLogo", new { id });
+            return RedirectToAction(Constants.WebSiteLogo, new { id });
         }
 
         public async Task<ActionResult> WebSiteLogo(CancellationToken cancellationToken, int id = 0)
@@ -60,7 +60,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (id > 0)
             {
-                return RedirectToAction("WebSiteLogo", new { id });
+                return RedirectToAction(Constants.WebSiteLogo, new { id });
             }
 
             return RedirectToAction("AddWebSiteLogo");
@@ -107,7 +107,7 @@ namespace EImece.Areas.Admin.Controllers
                     await SettingService.SaveOrEditEntityAsync(webSiteLogoSetting);
                     Logger.Info("Website logo uploaded. SettingId={0}, File={1}", webSiteLogoSetting.Id, result.NewFileName);
                     SetSuccessMessage(AdminResource.SuccessfullySavedCompleted);
-                    return RedirectToAction("WebSiteLogo", new { id = webSiteLogoSetting.Id });
+                    return RedirectToAction(Constants.WebSiteLogo, new { id = webSiteLogoSetting.Id });
                 }
                 catch (Exception ex)
                 {
@@ -125,7 +125,7 @@ namespace EImece.Areas.Admin.Controllers
             var logoId = setting != null && setting.Id > 0 ? setting.Id : id;
             if (logoId > 0)
             {
-                return RedirectToAction("WebSiteLogo", new { id = logoId });
+                return RedirectToAction(Constants.WebSiteLogo, new { id = logoId });
             }
 
             return RedirectToAction("AddWebSiteLogo");

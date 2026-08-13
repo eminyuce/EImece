@@ -24,13 +24,13 @@ namespace EImece.Controllers
             if (!SeoSettings.AllowIndexing)
             {
                 Logger.Info("Search engine indexing is disabled. Setting robots.txt to disallow all.");
-                content = "User-agent: *" + Environment.NewLine
+                content = Constants.RobotsUserAgentAll + Environment.NewLine
                         + "Disallow: /" + Environment.NewLine;
             }
             else if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
             {
                 Logger.Info("Site is under construction or development. Setting robots.txt to disallow all.");
-                content = "User-agent: *" + Environment.NewLine
+                content = Constants.RobotsUserAgentAll + Environment.NewLine
                         + "Disallow: /" + Environment.NewLine
                         + "# Disallow Robots (Debug)" + Environment.NewLine;
             }
@@ -42,7 +42,7 @@ namespace EImece.Controllers
                 var fLink = builder.Uri;
                 Logger.Info($"Generated sitemap URL: {fLink}");
 
-                content = "User-agent: *" + Environment.NewLine
+                content = Constants.RobotsUserAgentAll + Environment.NewLine
                         + "Allow: /" + Environment.NewLine
                         + "Sitemap: " + fLink + Environment.NewLine
                         + "Disallow: /Ajax/ " + Environment.NewLine
@@ -56,7 +56,7 @@ namespace EImece.Controllers
             else
             {
                 Logger.Info("No specific site status matched. Returning allow-all robots.txt.");
-                content = "User-agent: *" + Environment.NewLine
+                content = Constants.RobotsUserAgentAll + Environment.NewLine
                         + "Allow: /" + Environment.NewLine;
             }
 

@@ -111,7 +111,7 @@
     <div class="@slideClass"
          @if (hasImage) { <text>data-background="@imgLink" data-hero-fallback="@staticMediaUrl" style="@bgStyle"</text> }>
         <div class="crizal-home-hero__veil" aria-hidden="true"></div>
-        @* Do NOT put a visible/sr-only <img> inside owl-carousel: .owl-item img { display:block;width:100% }
+        @* Do NOT put a visible/sr-only image inside owl-carousel: .owl-item img { display:block;width:100% }
            overrides .sr-only and dumps broken-image alt/filename text into the hero. *@
         <div class="container">
             <div class="crizal-home-hero__copy">

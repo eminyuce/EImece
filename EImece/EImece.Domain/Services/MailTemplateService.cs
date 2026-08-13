@@ -80,7 +80,7 @@ namespace EImece.Domain.Services
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
             pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
-            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
+            pp.ImgLogoSrc = baseurl + Constants.LogoImagePath;
             return pp;
         }
 
@@ -102,7 +102,7 @@ namespace EImece.Domain.Services
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
             pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
-            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
+            pp.ImgLogoSrc = baseurl + Constants.LogoImagePath;
             return pp;
         }
 
@@ -132,7 +132,7 @@ namespace EImece.Domain.Services
             string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
-            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
+            pp.ImgLogoSrc = baseurl + Constants.LogoImagePath;
             return pp;
         }
 
@@ -153,7 +153,7 @@ namespace EImece.Domain.Services
             string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
-            pp.ImgLogoSrc = baseurl + "/images/logo.jpg";
+            pp.ImgLogoSrc = baseurl + Constants.LogoImagePath;
             return pp;
         }
     }

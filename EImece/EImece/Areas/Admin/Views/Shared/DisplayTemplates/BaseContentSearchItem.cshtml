@@ -63,7 +63,7 @@
         : "";
 }
 
-<article class="admin-search-card" role="listitem">
+<li class="admin-search-card">
     <div class="admin-search-card__media" aria-hidden="true">
         @if (!string.IsNullOrWhiteSpace(imageUrl))
         {
@@ -72,7 +72,7 @@
                  width="96"
                  height="96"
                  loading="lazy"
-                 onerror="this.style.display='none'; this.parentNode.classList.add('is-empty');" />
+                 class="js-admin-search-img" />
         }
         else
         {
@@ -117,4 +117,4 @@
             @gridEditText
         </a>
     </div>
-</article>
+</li>

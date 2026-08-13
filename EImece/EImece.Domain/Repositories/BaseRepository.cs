@@ -96,7 +96,7 @@ namespace EImece.Domain.Repositories
                 {
                     transactionResult.Rollback();
                     BaseLogger.Error(ex, "DeleteEntityByWhere");
-                    throw;
+                    throw new InvalidOperationException("DeleteByWhereConditionAsync failed.", ex);
                 }
             }
             return isResult;
@@ -208,7 +208,7 @@ namespace EImece.Domain.Repositories
                 {
                     transactionResult.Rollback();
                     BaseLogger.Error(ex, "DeleteItem");
-                    throw;
+                    throw new InvalidOperationException("DeleteItemAsync failed.", ex);
                 }
             }
             return r;
@@ -262,12 +262,12 @@ namespace EImece.Domain.Repositories
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
                 BaseLogger.Error(ex, "DbEntityValidationException:" + message);
-                throw;
+                throw new InvalidOperationException("DeleteBaseEntityAsync validation failed.", ex);
             }
             catch (Exception exception)
             {
                 BaseLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
-                throw;
+                throw new InvalidOperationException("DeleteBaseEntityAsync failed.", exception);
             }
         }
 

@@ -140,6 +140,18 @@
             window.setTimeout(function () { try { btn.blur(); } catch (err) { /* ignore */ } }, 0);
         });
 
+        document.addEventListener('error', function (e) {
+            var t = e.target;
+            if (!t || t.tagName !== 'IMG') {
+                return;
+            }
+            if (t.closest && t.closest('.product-gallery')) {
+                t.onerror = null;
+                t.classList.add('is-broken');
+                t.removeAttribute('src');
+            }
+        }, true);
+
         // Product gallery thumbnails → owl carousel
         $(document).off('click.crizalGallery', '.product-gallery .product-thumbnails a');
         $(document).on('click.crizalGallery', '.product-gallery .product-thumbnails a', function (e) {
