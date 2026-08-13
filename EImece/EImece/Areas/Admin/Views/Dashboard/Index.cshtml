@@ -50,6 +50,14 @@
         </div>
     </form>
 
+    @if (ViewBag.IyzicoCredentialsMissing == true)
+    {
+        <div class="alert alert-warning" role="alert">
+            Iyzico ödeme anahtarları (IyzicoApiKey / IyzicoSecretKey) boş. Ödeme formu PlaceOrder sayfasında yüklenmez.
+            Sandbox veya canlı anahtarları IIS web.config veya ortam değişkenlerine ekleyin.
+        </div>
+    }
+
     <section class="admin-home__section" aria-labelledby="admin-home-content">
         <h2 id="admin-home-content" class="admin-home__section-title">İçerik ve vitrin</h2>
         <div class="admin-home__grid">

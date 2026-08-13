@@ -308,6 +308,9 @@
   <ItemGroup>
     <Compile Include="Infrastructure\DesignSystemTests.cs" />
     <Compile Include="Controllers\ParallelPocessingTest.cs" />
+    <Compile Include="Helpers\DatabaseUtilityTests.cs" />
+    <Compile Include="Helpers\GeneralHelperQaFixTests.cs" />
+    <Compile Include="Helpers\EntityExtensionQaFixTests.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipherTests.cs" />
     <Compile Include="Helpers\ApplicationCacheClearerTests.cs" />
@@ -325,6 +328,7 @@
     <Compile Include="Helpers\ProductCategorySortingTests.cs" />
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
     <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />
+    <Compile Include="Helpers\MailTemplateModelInspectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>

@@ -207,10 +207,9 @@ namespace EImece.Controllers
                 var webSiteLogo = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
                 if (webSiteLogo == null || string.IsNullOrWhiteSpace(webSiteLogo.SettingValue))
                 {
-                    // Avoid OutputCache storing a miss while the logo file/setting is temporarily absent.
+                    Logger.Warn("WebSiteLogo setting is empty; serving default placeholder logo.");
                     Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                    Response.TrySkipIisCustomErrors = true;
-                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                    return GetDefaultImage("w200h60");
                 }
 
                 var p = FilesHelper.GetFileNames2(webSiteLogo.SettingValue);
@@ -222,19 +221,13 @@ namespace EImece.Controllers
                     ms.Dispose();
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                 }
-                else
-                {
-                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                    Response.TrySkipIisCustomErrors = true;
-                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-                }
             }
 
             if (result == null)
             {
+                Logger.Warn("WebSiteLogo setting or file is missing; serving default placeholder logo.");
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Response.TrySkipIisCustomErrors = true;
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                return GetDefaultImage("w200h60");
             }
 
             return result;

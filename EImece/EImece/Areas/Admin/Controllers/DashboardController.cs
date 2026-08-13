@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
@@ -33,6 +34,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Gösterge Paneli";
+            ViewBag.IyzicoCredentialsMissing = string.Equals(AppConfig.PaymentProvider, "Iyzico", StringComparison.OrdinalIgnoreCase)
+                && !AppConfig.HasConfiguredIyzicoCredentials;
             return View();
         }
 

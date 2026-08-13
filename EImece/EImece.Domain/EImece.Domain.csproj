@@ -591,6 +591,8 @@
     <Compile Include="Helpers\EmailHelper\EmailAccount.cs" />
     <Compile Include="Helpers\EmailHelper\EmailSender.cs" />
     <Compile Include="Helpers\EmailHelper\IEmailSender.cs" />
+    <Compile Include="Helpers\EmailHelper\DynamicMailTemplateModel.cs" />
+    <Compile Include="Helpers\EmailHelper\MailTemplateModelInspector.cs" />
     <Compile Include="Helpers\EmailHelper\RazorEngineHelper.cs" />
     <Compile Include="Helpers\EmailHelper\RazorTemplateEngine.cs" />
     <Compile Include="Helpers\EntityFilterHelper.cs" />
@@ -642,6 +644,13 @@
     <Compile Include="Models\AdminModels\MediaAdminIndexModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminModel.cs" />
     <Compile Include="Models\AdminModels\ProductAdminListFilter.cs" />
+    <Compile Include="Models\AdminModels\MailTemplateDummyDataContext.cs" />
+    <Compile Include="Models\AdminModels\MailTemplateModelProperty.cs" />
+    <Compile Include="Models\AdminModels\MailTemplateTestPreview.cs" />
+    <Compile Include="Models\AdminModels\MailTemplateTestRenderResult.cs" />
+    <Compile Include="Models\AdminModels\MailTemplateTestSendResult.cs" />
+    <Compile Include="Models\AdminModels\MailTemplateValueKind.cs" />
+    <Compile Include="Models\AdminModels\SendMailTemplateTestRequest.cs" />
     <Compile Include="Models\AdminModels\RazorEngineModel.cs" />
     <Compile Include="Models\AdminModels\RazorError.cs" />
     <Compile Include="Models\AdminModels\RazorRenderResult.cs" />
@@ -822,6 +831,7 @@
     <Compile Include="Services\IServices\IListService.cs" />
     <Compile Include="Services\IServices\IAddressService.cs" />
     <Compile Include="Services\IServices\IMailTemplateService.cs" />
+    <Compile Include="Services\IServices\IMailTemplateTestService.cs" />
     <Compile Include="Services\IServices\IMainPageImageService.cs" />
     <Compile Include="Services\IServices\IMenuService.cs" />
     <Compile Include="Services\IServices\IProductCategoryService.cs" />
@@ -843,6 +853,7 @@
     <Compile Include="Services\ListService.cs" />
     <Compile Include="Services\AddressService.cs" />
     <Compile Include="Services\MailTemplateService.cs" />
+    <Compile Include="Services\MailTemplateTestService.cs" />
     <Compile Include="Services\MainPageImageService.cs" />
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\ProductCategoryService.cs" />

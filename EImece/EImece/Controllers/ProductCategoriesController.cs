@@ -93,6 +93,26 @@ namespace EImece.Controllers
             }
         }
 
+        /// <summary>
+        /// Permanent redirect from conventional /productcategories/category/{id} to /c/pc/{id}/.
+        /// </summary>
+        public ActionResult CategoryLegacyMvc(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return RedirectToActionPermanent("Index", "Home");
+            }
+
+            var destination = Url.Action("Category", new { id });
+            if (string.IsNullOrEmpty(destination))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+
+            Logger.Info("CategoryLegacyMvc: '{0}' → '{1}'.", id, destination);
+            return RedirectPermanent(destination);
+        }
+
         [Route(Constants.CategoryPrefix)]
         public async Task<ActionResult> Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {

@@ -168,8 +168,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Decimal),
-                DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Decimal),
+                DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Money),
+                DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Money),
                 DatabaseUtility.GetSqlParameter(Constants.ProductCategoryIdSqlParam, productCategoryId, SqlDbType.Int)
             };
 
@@ -279,9 +279,9 @@ namespace EImece.Domain.Services
         public DataSet GetProductInventoryReport(string state = null, bool? isCampaign = null, bool? mainPage = null)
         {
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("State", state, SqlDbType.NVarChar));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("IsCampaign", isCampaign, SqlDbType.Bit));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("MainPage", mainPage, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@State", state, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@IsCampaign", isCampaign, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@MainPage", mainPage, SqlDbType.Bit));
 
             return DatabaseUtility.ExecuteDataSet(
                 "GetProductInventoryReport",
@@ -449,8 +449,8 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Decimal),
-                DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Decimal),
+                DatabaseUtility.GetSqlParameter("@MinPrice", minPrice, SqlDbType.Money),
+                DatabaseUtility.GetSqlParameter("@MaxPrice", maxPrice, SqlDbType.Money),
                 DatabaseUtility.GetSqlParameter(Constants.ProductCategoryIdSqlParam, productCategoryId, SqlDbType.Int)
             };
             return ExecuteDataSetStoredProcAsync("GetPriceAnalysisReport", parameterList.ToArray(), cancellationToken);
@@ -459,9 +459,9 @@ namespace EImece.Domain.Services
         public Task<DataSet> GetProductInventoryReportAsync(string state = null, bool? isCampaign = null, bool? mainPage = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("State", state, SqlDbType.NVarChar));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("IsCampaign", isCampaign, SqlDbType.Bit));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("MainPage", mainPage, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@State", state, SqlDbType.NVarChar));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@IsCampaign", isCampaign, SqlDbType.Bit));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("@MainPage", mainPage, SqlDbType.Bit));
             return ExecuteDataSetStoredProcAsync("GetProductInventoryReport", parameterList.ToArray(), cancellationToken);
         }
 
@@ -511,16 +511,10 @@ namespace EImece.Domain.Services
                     {
                         command.Parameters.AddRange(parameters);
                     }
-                    using (var reader = await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false))
+                    using (var adapter = new SqlDataAdapter(command))
                     {
                         var dataSet = new DataSet();
-                        do
-                        {
-                            var dt = new DataTable();
-                            dt.Load(reader);
-                            dataSet.Tables.Add(dt);
-                        }
-                        while (await reader.NextResultAsync(cancellationToken).ConfigureAwait(false));
+                        adapter.Fill(dataSet);
                         return dataSet;
                     }
                 }

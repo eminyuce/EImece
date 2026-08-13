@@ -109,7 +109,9 @@ namespace EImece.Domain.Repositories
                 Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
                 Expression<Func<Product, object>> includeProperty4 = r => r.ProductTags.Select(t => t.Tag);
                 Expression<Func<Product, object>>[] includeProperties = { includeProperty1, includeProperty2, includeProperty4, includeProperty3 };
-                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language;
+                var inStock = ProductState.ProductInStock.ToString();
+                Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.MainPage && r2.Lang == language
+                    && r2.State == inStock && r2.Price > 0;
                 return GetAllIncludingReadOnly(includeProperties)
                     .Where(match)
                     .OrderByStorefrontDefault()

@@ -1390,6 +1390,60 @@ namespace EImece.Domain.Helpers
             }
         }
 
+        /// <summary>
+        /// Builds a dialable tel: href from mixed display text such as "+90 216 555 01 23 | İstanbul".
+        /// </summary>
+        public static string ToTelHref(string phoneAndLocation)
+        {
+            if (string.IsNullOrWhiteSpace(phoneAndLocation))
+            {
+                return string.Empty;
+            }
+
+            var sb = new StringBuilder();
+            foreach (var c in phoneAndLocation)
+            {
+                if (c == '+' && sb.Length == 0)
+                {
+                    sb.Append(c);
+                }
+                else if (char.IsDigit(c))
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.Length == 0 ? string.Empty : "tel:" + sb.ToString();
+        }
+
+        private static readonly string[] FlexibleDateFormats =
+        {
+            "yyyy-MM-dd", "dd.MM.yyyy", "dd/MM/yyyy", "yyyy/MM/dd", "dd-MM-yyyy"
+        };
+
+        public static DateTime? TryParseFlexibleDate(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return null;
+            }
+
+            DateTime dt;
+            if (DateTime.TryParseExact(raw.Trim(), FlexibleDateFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+            {
+                return dt;
+            }
+            if (DateTime.TryParse(raw, CultureInfo.GetCultureInfo("tr-TR"), DateTimeStyles.None, out dt))
+            {
+                return dt;
+            }
+            if (DateTime.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+            {
+                return dt;
+            }
+            return null;
+        }
+
         public static String LetterDigitsOnly(string filters)
         {
             if (string.IsNullOrEmpty(filters))
