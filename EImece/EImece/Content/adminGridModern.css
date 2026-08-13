@@ -1733,11 +1733,47 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
     color: var(--eg-link) !important;
 }
 
+.eg-category-tree-pick-hint {
+    display: block;
+    margin: 0;
+    padding: 6px 12px 8px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--eg-border);
+    color: var(--eg-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
 .eg-category-tree .eg-tree-link.is-active,
 .eg-category-tree .eg-tree-node.is-active > .eg-tree-row > .eg-tree-link {
     background: #e7f3f8;
     color: var(--eg-link) !important;
     box-shadow: inset 0 0 0 1px #b7d7e8;
+}
+
+.eg-category-tree .eg-tree-current-badge {
+    flex: 0 0 auto;
+    margin-left: 4px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: #fff7ed;
+    color: #9a3412;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 16px;
+}
+
+.eg-category-tree .eg-tree-node.is-current > .eg-tree-row > .eg-tree-link,
+.eg-category-tree .eg-tree-node.is-current > .eg-tree-row > .eg-tree-link:hover,
+.eg-category-tree .eg-tree-node.is-current > .eg-tree-row > .eg-tree-link:focus,
+.eg-category-tree .eg-tree-node.is-current > .eg-tree-row > .eg-tree-link:disabled {
+    background: #fff7ed;
+    color: #9a3412 !important;
+    box-shadow: inset 0 0 0 1px #f59e0b;
+    cursor: not-allowed;
+    opacity: 1;
 }
 
 .eg-category-tree .eg-tree-name {

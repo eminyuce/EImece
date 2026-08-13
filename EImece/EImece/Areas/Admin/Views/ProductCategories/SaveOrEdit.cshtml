@@ -35,16 +35,20 @@
 
 <div class="row">
 
-    <div class="col-md-2">
+    <div class="col-md-3 eg-products-tree-col">
         @if (ProductCategoryTree != null)
         {
         @Html.Partial("_ProductCategoryTree", ProductCategoryTree, new ViewDataDictionary(ViewData){
                                  {"UrlPattern",""}
+                               ,{"SelectedCategoryId", Model != null ? Model.ParentId : 0}
+                               ,{"CurrentItemId", Model != null ? Model.Id : 0}
+                               ,{"ShowAllLink", false}
+                               ,{"ShowPickHint", true}
                                ,{"IsExcelButtonEnabled",true}})
 
         }
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9 eg-products-main-col">
         <input id="errorMessageForSameSelection" type="hidden" value="@AdminResource.ProductSameSelectionErrorMessage" />
         @using (Html.BeginForm("SaveOrEdit", "ProductCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -69,19 +73,16 @@
                                 @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.HiddenFor(model => model.ParentId)
-
-                                    @if (Model.ParentId > 0 && parentCategory != null)
-                                {
-                                    <span style="color:red;font-size:x-large" id="ParentName">
-                                        @parentCategory.Name
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span style="color:red;font-size:x-large" id="ParentName">
-                                    </span>
-                                }
-                                    <input id="SetParentIdRoot" value="@AdminResource.MakeItRootCategory" type="button">
+                                    @Html.Partial("_AdminTreePicker", null, new ViewDataDictionary(ViewData) {
+                                        { "Mode", "parent" },
+                                        { "NameId", "ParentName" },
+                                        { "HiddenId", "ParentId" },
+                                        { "SelectedId", Model.ParentId },
+                                        { "SelectedName", parentCategory != null ? parentCategory.Name : "" },
+                                        { "ShowRootButton", true },
+                                        { "RootText", "Ana kategori" },
+                                        { "Hint", "Soldaki ağaçtan bir kategoriye tıklayın; bu kayıt onun altına yerleşir." }
+                                    })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -196,25 +197,13 @@
 
     <script>
         function productTreeClick(e, id, name) {
-            e.preventDefault();   // use this to NOT go to href site
-            console.log(e);
-
-            if (id != $('#Id').val()) {
-                $('#ParentName').text(name);
-                $('#ParentId').val(id);
-            } else {
-                alert($('#errorMessageForSameSelection').val());
+            if (e && e.preventDefault) { e.preventDefault(); }
+            if (typeof adminTreePick === "function") {
+                adminTreePick(id, name, $("#ParentId"), $("#errorMessageForSameSelection").val());
             }
-
         }
         $(document).ready(function () {
             setPreSelectedTreeNode($("#ParentId"));
-            $("#SetParentIdRoot").click(function () {
-                $("#ParentId").val("0");
-                console.log("111");
-                $("#ParentName").text("");
-            });
-
         });
     </script>
 }

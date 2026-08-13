@@ -9,7 +9,9 @@
     String urlPattern = ViewData["UrlPattern"].ToStr();
     String urlQuery = ViewData["UrlQuery"].ToStr();
     var selectedCategoryId = ViewData["SelectedCategoryId"].ToInt();
+    var currentItemId = ViewData["CurrentItemId"].ToInt();
     var showAllLink = ViewData["ShowAllLink"].ToBool(true);
+    var showPickHint = ViewData["ShowPickHint"].ToBool(false);
     string querySuffix = string.IsNullOrEmpty(urlQuery) ? "" : "?" + urlQuery;
 
     var viewData = new ViewDataDictionary
@@ -17,6 +19,7 @@
         { "UrlPattern", urlPattern },
         { "UrlQuery", urlQuery },
         { "SelectedCategoryId", selectedCategoryId },
+        { "CurrentItemId", currentItemId },
         { "IsExcelButtonEnabled", true }
     };
 
@@ -44,6 +47,10 @@
             <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm ürünler">Tümü</a>
         }
     </div>
+    @if (showPickHint)
+    {
+        <p class="eg-category-tree-pick-hint">Seçmek için bir kategoriye tıklayın</p>
+    }
 
     <ul class="treeProducts eg-tree eg-category-tree-body" id="responsive">
         @foreach (ProductCategoryTreeModel p in treeNodes)
@@ -51,10 +58,11 @@
             var productCategory = p.ProductCategory;
             var hasChildren = p.Childrens != null && p.Childrens.Any();
             var isActive = selectedCategoryId > 0 && productCategory != null && productCategory.Id == selectedCategoryId;
+            var isCurrent = currentItemId > 0 && productCategory != null && productCategory.Id == currentItemId;
             var count = p.ProductCountAdmin;
             var name = productCategory != null ? productCategory.Name : p.AdminText;
             var nodeId = productCategory != null ? productCategory.Id : 0;
-            <li class="eg-tree-node @(hasChildren ? "has-children is-open" : "is-leaf") @(isActive ? "is-active" : "")" data-category-id="@nodeId">
+            <li class="eg-tree-node @(hasChildren ? "has-children is-open" : "is-leaf") @(isActive ? "is-active" : "") @(isCurrent ? "is-current" : "")" data-category-id="@nodeId">
                 <div class="eg-tree-row">
                     @if (hasChildren)
                     {
@@ -70,9 +78,17 @@
                     @if (String.IsNullOrEmpty(urlPattern))
                     {
                         <button type="button" class="eg-tree-link @(isActive ? "is-active" : "")"
+                           @(isCurrent ? "disabled=\"disabled\" title=\"Bu kayıt üst olarak seçilemez\"" : null)
                            onclick="productTreeClick(event,@nodeId,'@HttpUtility.JavaScriptStringEncode(name)')">
                             <span class="eg-tree-name">@name</span>
-                            <span class="sr-only">seç</span>
+                            @if (isCurrent)
+                            {
+                                <span class="eg-tree-current-badge">bu kayıt</span>
+                            }
+                            else
+                            {
+                                <span class="sr-only">seç</span>
+                            }
                             @if (count > 0)
                             {
                                 <span class="eg-tree-count">@count</span>

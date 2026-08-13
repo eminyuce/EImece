@@ -1329,6 +1329,7 @@
     <Content Include="Areas\Admin\Views\Shared\_AdminEditNextStep.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionEnd.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminTreePicker.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridChrome.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridImageCell.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridNameCell.cshtml" />

@@ -39,8 +39,10 @@
         {
             @Html.Partial("_MenuTree", MenuTree, new ViewDataDictionary(ViewData){
                         {"UrlPattern",""}
-                      ,{"SelectedCategoryId", Model != null ? Model.Id : 0}
+                      ,{"SelectedCategoryId", Model != null ? Model.ParentId : 0}
+                      ,{"CurrentItemId", Model != null ? Model.Id : 0}
                       ,{"ShowAllLink", false}
+                      ,{"ShowPickHint", true}
                       ,{"TreeTitle", "Menüler"}
                       ,{"IsExcelButtonEnabled",true}})
         }
@@ -69,21 +71,17 @@
 <div class="form-group">
                                 @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-
-                                    @if (parentMenu != null && Model.ParentId > 0)
-                                {
-                                    <span style="color:red;font-size:x-large" id="ParentName">
-                                        @parentMenu.Name
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span style="color:red;font-size:x-large" id="ParentName">
-                                    </span>
-                                }
-
-                                    <input id="SetParentIdRoot" value="@AdminResource.MakeItRootCategory" type="button">
                                     @Html.HiddenFor(model => model.ParentId)
+                                    @Html.Partial("_AdminTreePicker", null, new ViewDataDictionary(ViewData) {
+                                        { "Mode", "parent" },
+                                        { "NameId", "ParentName" },
+                                        { "HiddenId", "ParentId" },
+                                        { "SelectedId", Model.ParentId },
+                                        { "SelectedName", parentMenu != null ? parentMenu.Name : "" },
+                                        { "ShowRootButton", true },
+                                        { "RootText", "Ana menü" },
+                                        { "Hint", "Soldaki ağaçtan bir menüye tıklayın; bu kayıt onun altına yerleşir." }
+                                    })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -234,23 +232,14 @@
 
     <script>
         function menuTreeClick(e, id, name) {
-            console.log(e);
-            if (id != $('#Id').val()) {
-                $('#ParentName').text(name);
-                $('#ParentId').val(id);
-            } else {
-                alert($('#errorMessageForSameSelection').val());
+            if (e && e.preventDefault) { e.preventDefault(); }
+            if (typeof adminTreePick === "function") {
+                adminTreePick(id, name, $("#ParentId"), $("#errorMessageForSameSelection").val());
             }
-
         }
 
         $(document).ready(function () {
-
-            $("#SetParentIdRoot").click(function () {
-                $("#ParentId").val("0");
-                $("#ParentName").text("");
-            });
-            // menuChangeEvent();
+            setPreSelectedTreeNode($("#ParentId"));
             $("#MenuLink").change(menuChangeEvent);
             function menuChangeEvent() {
                 var selectedValue = $("#MenuLink option:selected").val();
