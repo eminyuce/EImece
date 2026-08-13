@@ -23,8 +23,10 @@ namespace EImece.Infrastructure
             }
 
             response.Headers.Remove("Server");
-            response.Headers["X-Content-Type-Options"] = "nosniff";
-            response.Headers["X-Frame-Options"] = "SAMEORIGIN";
+            response.Headers.Remove("X-Frame-Options");
+            response.Headers.Remove("X-Content-Type-Options");
+            response.AddHeader("X-Content-Type-Options", "nosniff");
+            response.AddHeader("X-Frame-Options", "SAMEORIGIN");
             response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
             response.Headers["X-XSS-Protection"] = "1; mode=block";
         }

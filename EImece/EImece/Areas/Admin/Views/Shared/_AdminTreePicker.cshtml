@@ -1,0 +1,52 @@
+@using EImece.Domain.Helpers
+@using Resources
+@{
+    var mode = ViewData["Mode"].ToStr("parent");
+    var nameId = ViewData["NameId"].ToStr("ParentName");
+    var hiddenId = ViewData["HiddenId"].ToStr();
+    var selectedName = ViewData["SelectedName"].ToStr();
+    var selectedId = ViewData["SelectedId"].ToInt();
+    var showRootButton = ViewData["ShowRootButton"].ToBool(true);
+    var emptyText = ViewData["EmptyText"].ToStr();
+    var hint = ViewData["Hint"].ToStr();
+    var rootText = ViewData["RootText"].ToStr("Ana kategori");
+    var rootButtonText = ViewData["RootButtonText"].ToStr(AdminResource.MakeItRootCategory);
+    var isChild = selectedId > 0;
+    var isEmpty = mode == "required" && !isChild;
+    var isRoot = !isChild && !isEmpty;
+    var stateClass = isChild ? "is-child" : (isEmpty ? "is-empty" : "is-root");
+    var badgeText = isChild ? "Seçilen" : (isEmpty ? "Seçilmedi" : rootText);
+    var displayName = isChild ? selectedName : (isEmpty ? emptyText : rootText);
+    var iconClass = isChild ? "glyphicon-folder-open" : (isEmpty ? "glyphicon-exclamation-sign" : "glyphicon-home");
+}
+<div class="admin-tree-picker @stateClass"
+     data-admin-tree-picker
+     data-mode="@mode"
+     data-hidden-id="@hiddenId"
+     data-root-text="@rootText"
+     data-empty-text="@emptyText">
+    <div class="admin-tree-picker__card">
+        <span class="admin-tree-picker__icon glyphicon @iconClass" data-tree-picker-icon aria-hidden="true"></span>
+        <div class="admin-tree-picker__body">
+            <div class="admin-tree-picker__row">
+                <span class="admin-tree-picker__badge" data-tree-picker-badge>@badgeText</span>
+                <strong class="admin-tree-picker__name" id="@nameId">@displayName</strong>
+            </div>
+            @if (!string.IsNullOrEmpty(hint))
+            {
+                <p class="admin-tree-picker__hint">@hint</p>
+            }
+            @if (showRootButton)
+            {
+                <button type="button"
+                        id="SetParentIdRoot"
+                        class="btn btn-default btn-sm admin-tree-picker__root-btn"
+                        data-tree-root-btn
+                        @(isRoot ? "disabled=\"disabled\"" : null)>
+                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+                    @rootButtonText
+                </button>
+            }
+        </div>
+    </div>
+</div>

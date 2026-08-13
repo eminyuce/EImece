@@ -841,14 +841,132 @@ function handleProductDetailToolTip(e) {
 }
 
 function setPreSelectedTreeNode(preSelectedNode) {
-    var productCategoryId = preSelectedNode.val();
+    var productCategoryId = preSelectedNode && preSelectedNode.val ? preSelectedNode.val() : "0";
     if (productCategoryId !== "0") {
-        var textSpan = $("#Content_" + productCategoryId).text();
-        $("#Content_" + productCategoryId).text("");
-        $("#Content_" + productCategoryId).addClass("hover2");
-        $("#Content_" + productCategoryId).append("<span id='contentInside' class='contentSelected'>" + textSpan + "</span>");
+        var $legacy = $("#Content_" + productCategoryId);
+        if ($legacy.length) {
+            var textSpan = $legacy.text();
+            $legacy.text("");
+            $legacy.addClass("hover2");
+            $legacy.append("<span id='contentInside' class='contentSelected'>" + textSpan + "</span>");
+        }
+    }
+    var $picker = $("[data-admin-tree-picker]").first();
+    if ($picker.length) {
+        adminTreeSyncPicker($picker, { skipValidation: true });
+    } else {
+        adminTreeMarkPicked(productCategoryId);
     }
 }
+
+function adminTreeHidden($picker) {
+    var hiddenId = $picker && $picker.attr ? $picker.attr("data-hidden-id") : "";
+    if (hiddenId) {
+        var $byId = $("#" + hiddenId);
+        if ($byId.length) {
+            return $byId;
+        }
+    }
+    var $fromGroup = $picker.closest(".form-group").find("input[type='hidden']").first();
+    if ($fromGroup.length) {
+        return $fromGroup;
+    }
+    return $picker.prevAll("input[type='hidden']").first();
+}
+
+function adminTreeMarkPicked(id) {
+    var $tree = $("[data-eg-category-tree]");
+    if (!$tree.length) {
+        return;
+    }
+    $tree.find(".eg-tree-link.is-active, .eg-tree-node.is-active").removeClass("is-active");
+    var numericId = parseInt(id, 10);
+    if (numericId > 0) {
+        var $node = $tree.find("[data-category-id='" + numericId + "']").first();
+        $node.addClass("is-active");
+        $node.children(".eg-tree-row").find(".eg-tree-link").addClass("is-active");
+    }
+}
+
+function adminTreeSetIcon($picker, state) {
+    var $icon = $picker.find("[data-tree-picker-icon]");
+    $icon.removeClass("glyphicon-home glyphicon-folder-open glyphicon-exclamation-sign");
+    if (state === "child") {
+        $icon.addClass("glyphicon-folder-open");
+    } else if (state === "empty") {
+        $icon.addClass("glyphicon-exclamation-sign");
+    } else {
+        $icon.addClass("glyphicon-home");
+    }
+}
+
+function adminTreeSyncPicker($picker, options) {
+    if (!$picker || !$picker.length) {
+        return;
+    }
+    var $hidden = adminTreeHidden($picker);
+    var id = parseInt($hidden.val(), 10) || 0;
+    var $name = $picker.find(".admin-tree-picker__name");
+    var $badge = $picker.find("[data-tree-picker-badge]");
+    var $rootBtn = $picker.find("[data-tree-root-btn]");
+    var mode = $picker.attr("data-mode") || "parent";
+    var rootText = $picker.attr("data-root-text") || "Ana kategori";
+    var emptyText = $picker.attr("data-empty-text") || "";
+    var skipValidation = options && options.skipValidation;
+    $picker.removeClass("is-root is-child is-empty");
+    if (id > 0) {
+        $picker.addClass("is-child");
+        $badge.text("Seçilen");
+        $rootBtn.prop("disabled", false);
+        adminTreeSetIcon($picker, "child");
+    } else if (mode === "required") {
+        $picker.addClass("is-empty");
+        $badge.text("Seçilmedi");
+        if (!$name.text().trim()) {
+            $name.text(emptyText);
+        }
+        $rootBtn.prop("disabled", true);
+        adminTreeSetIcon($picker, "empty");
+    } else {
+        $picker.addClass("is-root");
+        $badge.text(rootText);
+        $name.text(rootText);
+        $rootBtn.prop("disabled", true);
+        adminTreeSetIcon($picker, "root");
+    }
+    adminTreeMarkPicked(id);
+    if (!skipValidation && $hidden.length && typeof $hidden.valid === "function") {
+        try {
+            var $form = $hidden.closest("form");
+            if ($form.length && $form.data("validator")) {
+                $hidden.valid();
+            }
+        } catch (ignore) { }
+    }
+}
+
+function adminTreePick(id, name, $hidden, sameSelectionMessage) {
+    var currentId = $("#Id").val();
+    if (sameSelectionMessage && currentId && String(id) === String(currentId)) {
+        alert(sameSelectionMessage);
+        return;
+    }
+    if ($hidden && $hidden.length) {
+        $hidden.val(id);
+    }
+    var $picker = $hidden && $hidden.length
+        ? $hidden.closest(".form-group").find("[data-admin-tree-picker]").first()
+        : $("[data-admin-tree-picker]").first();
+    $picker.find(".admin-tree-picker__name").text(name || "");
+    adminTreeSyncPicker($picker);
+}
+
+$(document).on("click", "[data-tree-root-btn]", function () {
+    var $picker = $(this).closest("[data-admin-tree-picker]");
+    var $hidden = adminTreeHidden($picker);
+    $hidden.val("0");
+    adminTreeSyncPicker($picker);
+});
 
 /* Admin sidebar shell: desktop collapse + groups + mobile drawer */
 (function () {

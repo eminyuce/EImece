@@ -613,7 +613,20 @@ namespace EImece.Controllers
                     PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id} via {PaymentContext.ProviderName}");
                     try
                     {
-                        ViewBag.CheckoutFormInitialize = await PaymentContext.InitializeCheckoutAsync(shoppingCart, user.Id);
+                        if (!AppConfig.HasConfiguredIyzicoCredentials)
+                        {
+                            PaymentLogger.Warn("Iyzico API keys are empty; skipping checkout form initialize.");
+                            ViewBag.CheckoutFormInitialize = new PaymentInitializeResult
+                            {
+                                ErrorMessage = "IyzicoApiKey / IyzicoSecretKey tanımlı değil. Ödeme ayarlarını kontrol edin.",
+                                ProviderName = PaymentContext.ProviderName
+                            };
+                            ModelState.AddModelError("", "Ödeme formu başlatılamadı. Iyzico API anahtarlarını yapılandırın.");
+                        }
+                        else
+                        {
+                            ViewBag.CheckoutFormInitialize = await PaymentContext.InitializeCheckoutAsync(shoppingCart, user.Id);
+                        }
                     }
                     catch (Exception ex)
                     {

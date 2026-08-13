@@ -308,6 +308,9 @@
   <ItemGroup>
     <Compile Include="Infrastructure\DesignSystemTests.cs" />
     <Compile Include="Controllers\ParallelPocessingTest.cs" />
+    <Compile Include="Helpers\DatabaseUtilityTests.cs" />
+    <Compile Include="Helpers\GeneralHelperQaFixTests.cs" />
+    <Compile Include="Helpers\EntityExtensionQaFixTests.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipherTests.cs" />
     <Compile Include="Helpers\ApplicationCacheClearerTests.cs" />
