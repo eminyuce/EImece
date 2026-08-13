@@ -40,6 +40,22 @@
     var productPriceEnabled = Model.IsProductPriceEnabled;
     var productReviewEnabled = Model.IsProductReviewEnabled;
     var hasAnySoldProducts = Model.HasAnySoldProducts;
+
+    var shortDescriptionPreviewLength = AppConfig.ProductShortDescriptionPreviewLength;
+    var shortDescriptionPlain = GeneralHelper.StripHtml(category.ShortDescription).Trim();
+    var shortDescriptionNeedsContinue = !string.IsNullOrEmpty(shortDescriptionPlain)
+        && shortDescriptionPlain.Length > shortDescriptionPreviewLength;
+    var shortDescriptionPreview = shortDescriptionPlain;
+    if (shortDescriptionNeedsContinue)
+    {
+        var cut = shortDescriptionPreviewLength;
+        var lastSpace = shortDescriptionPlain.LastIndexOf(' ', cut);
+        if (lastSpace >= (int)(shortDescriptionPreviewLength * 0.7))
+        {
+            cut = lastSpace;
+        }
+        shortDescriptionPreview = shortDescriptionPlain.Substring(0, cut).Trim() + "…";
+    }
 }
 
 <section class="page-title-wrapper" aria-label="Page title">
@@ -64,32 +80,33 @@
                 </li>
             </ol>
         </nav>
-        <h1 class="page-title">@category.Name</h1><span class="d-block mt-2 text-muted"></span>
-        @if (!string.IsNullOrEmpty(category.ShortDescription))
+        <h1 class="page-title">@category.Name</h1>
+        @if (!string.IsNullOrEmpty(shortDescriptionPlain))
         {
-
-            if (string.IsNullOrEmpty(category.Description))
-            {
-        <p class="text-muted mb-2">
-            @Html.Raw(category.ShortDescription)
-        </p>
-            }
-            else
-            {
-
-        <p class="text-muted mb-2">
-            @Html.Raw(category.ShortDescription)
-            <!-- Link with href -->
-            <button type="button" class="btn btn-link p-0 align-baseline" id="ClickHereForMoreDetails" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                @Resource.ClickHereForMoreDetails
-            </button>
-        </p>
- <!-- Collapse -->
-        <div class="collapse" id="collapseExample">
-            @Html.Raw(category.Description)
-        </div>
-            }
-
+            <div class="crizal-product-shortdesc">
+                @if (shortDescriptionNeedsContinue)
+                {
+                    <div class="crizal-product-shortdesc__preview" id="categoryShortDescPreview">
+                        <p>@shortDescriptionPreview</p>
+                    </div>
+                    <div class="collapse crizal-product-shortdesc__full" id="categoryShortDescFull">
+                        <div class="crizal-product-shortdesc__body">@Html.Raw(!string.IsNullOrEmpty(category.Description) ? category.Description : category.ShortDescription)</div>
+                    </div>
+                    <button type="button"
+                            class="crizal-product-shortdesc__toggle"
+                            aria-expanded="false"
+                            aria-controls="categoryShortDescFull"
+                            data-continue-text="@Resource.ClickHereForMoreDetails"
+                            data-less-text="@Resource.ShowLess">
+                        <span class="crizal-product-shortdesc__toggle-label">@Resource.ClickHereForMoreDetails</span>
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                }
+                else
+                {
+                    <div class="crizal-product-shortdesc__body">@Html.Raw(category.ShortDescription)</div>
+                }
+            </div>
         }
 
         <hr class="mt-4">
@@ -316,9 +333,6 @@
                 });
                 return stringArray;
             }
-            $("#ClickHereForMoreDetails").click(function () {
-                $(this).hide();
-            });
             $("#FilterButton").click(function () {
 
                 var minPriceOrginal = $("#minPriceOrginal").val();

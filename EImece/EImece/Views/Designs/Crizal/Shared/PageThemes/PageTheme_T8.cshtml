@@ -1,63 +1,111 @@
 @model EImece.Domain.Models.FrontModels.MenuPageViewModel
-@using EImece.Domain.Models.FrontModels;
-@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain;
-@using Resources;
 @using EImece.Domain.Helpers;
+@using Resources;
+@using System.Linq;
 @{
-
     var menu = Model.Menu;
-    var files = Model.Menu.MenuFiles.ToList().OrderBy(r => r.FileStorage != null ? r.FileStorage.Position : 0).ToList();
-
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     ViewBag.Keywords = menu.GetSeoKeywords();
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
-    int Width = ViewData["Width"].ToInt(300);
-    int Height = ViewData["Height"].ToInt(214);
-    var desc = Model.Menu.Description;
 
+    var desc = Model.Menu.Description;
+    var companyName = Model.CompanyName != null ? Model.CompanyName.SettingValue.ToStr() : "";
+    var companyAddress = Model.CompanyAddress != null ? Model.CompanyAddress.SettingValue.ToStr() : "";
+    var companyPhone = Model.WebSiteCompanyPhoneAndLocation != null ? Model.WebSiteCompanyPhoneAndLocation.SettingValue.ToStr() : "";
+    var companyEmail = Model.WebSiteCompanyEmailAddress != null ? Model.WebSiteCompanyEmailAddress.SettingValue.ToStr() : "";
+    var googleMap = Model.GoogleMapScript != null ? Model.GoogleMapScript.SettingValue.ToStr() : "";
+    var phoneHref = new string((companyPhone ?? "").Where(c => char.IsDigit(c) || c == '+').ToArray());
+    var hasCompanyDetails = !string.IsNullOrWhiteSpace(companyName)
+        || !string.IsNullOrWhiteSpace(companyAddress)
+        || !string.IsNullOrWhiteSpace(companyPhone)
+        || !string.IsNullOrWhiteSpace(companyEmail);
 }
-<!-- Page Title-->
-<section class="page-title-wrapper" aria-label="Page title">
+
+<section class="page-title-wrapper crizal-page-t8__hero" aria-label="Page title">
     <div class="container">
         <nav class="crizal-breadcrumb" aria-label="breadcrumb">
             <ol class="crizal-breadcrumb__list breadcrumb">
                 @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
                 <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
-                    <span class="crizal-breadcrumb__current">@Model.Menu.Name</span>
+                    <span class="crizal-breadcrumb__current">@menu.Name</span>
                 </li>
             </ol>
         </nav>
-        <h1 class="page-title">@Model.Menu.Name</h1><span class="d-block mt-2 text-muted"></span>
-        <hr class="mt-4">
+        <h1 class="page-title">@menu.Name</h1>
     </div>
 </section>
-@Html.Raw(HttpUtility.HtmlDecode(desc))
-<!-- Split section: Map + Contact form-->
-<!-- Split section: Map + Contact form-->
-<div class="container-fluid" id="map" data-offset-top="30">
-    <div class="row no-gutters">
-        <div class="col-lg-6 iframe-full-height-wrap">
-            <!-- Google Map Script -->
-            @Html.Raw(Model.GoogleMapScript.SettingValue)
 
-            <!-- Company Info Section -->
-            <div class="company-info mt-3 text-muted">
-                <h4>@Model.CompanyName.SettingValue.ToStr()</h4>
-                <p>@Resource.CompanyAddress : @Model.CompanyAddress.SettingValue.ToStr()</p>
-                <p>@Resource.WebSiteCompanyPhoneAndLocation : @Model.WebSiteCompanyPhoneAndLocation.SettingValue.ToStr()</p>
-                <p>@Resource.WebSiteCompanyEmailAddress : @Model.WebSiteCompanyEmailAddress.SettingValue.ToStr()</p>
+@if (!string.IsNullOrWhiteSpace(desc))
+{
+    <section class="crizal-page-t8__intro" aria-label="@menu.Name">
+        <div class="container">
+            <div class="crizal-page-t8__prose">@Html.Raw(HttpUtility.HtmlDecode(desc))</div>
+        </div>
+    </section>
+}
+
+<section class="crizal-page-t8__contact" id="map">
+    <div class="container">
+        <div class="row crizal-page-t8__grid">
+            <div class="col-lg-6">
+                <div class="crizal-page-t8__aside">
+                    @if (!string.IsNullOrWhiteSpace(googleMap))
+                    {
+                        <div class="crizal-page-t8__map">
+                            @Html.Raw(googleMap)
+                        </div>
+                    }
+                    @if (hasCompanyDetails)
+                    {
+                        <div class="crizal-page-t8__company">
+                            @if (!string.IsNullOrWhiteSpace(companyName))
+                            {
+                                <h2 class="crizal-page-t8__company-name">@companyName</h2>
+                            }
+                            <ul class="crizal-page-t8__details">
+                                @if (!string.IsNullOrWhiteSpace(companyAddress))
+                                {
+                                    <li>
+                                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                        <span>@companyAddress</span>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(companyPhone))
+                                {
+                                    <li>
+                                        <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                                        @if (!string.IsNullOrWhiteSpace(phoneHref))
+                                        {
+                                            <a href="tel:@phoneHref">@companyPhone</a>
+                                        }
+                                        else
+                                        {
+                                            <span>@companyPhone</span>
+                                        }
+                                    </li>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(companyEmail))
+                                {
+                                    <li>
+                                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                                        <a href="mailto:@companyEmail">@companyEmail</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="crizal-page-t8__form">
+                    <h2 class="crizal-page-t8__form-title">@Resource.DropUsALine</h2>
+                    @Html.Partial("_ContactUsFormViewModel", Model.Contact)
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 px-4 px-xl-5 py-5 border-top">
-            <h2 class="h4 mb-4">@Resource.DropUsALine</h2>
-            @Html.Partial("_ContactUsFormViewModel", Model.Contact)
-        </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -778,6 +778,9 @@
   <data name="ContinueShopping" xml:space="preserve">
     <value>Alışverişe devam et</value>
   </data>
+  <data name="ContinueReading" xml:space="preserve">
+    <value>Devamı...</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>Ülke</value>
   </data>
@@ -1546,6 +1549,9 @@
   </data>
   <data name="ShowMoreProductInfo" xml:space="preserve">
     <value>Daha fazla ürün bilgisi göster</value>
+  </data>
+  <data name="ShowLess" xml:space="preserve">
+    <value>Daha az göster</value>
   </data>
   <data name="ThanksForSubscriptionTitle" xml:space="preserve">
     <value>Abonelik için teşekkürler</value>

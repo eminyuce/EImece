@@ -171,6 +171,7 @@
         initChatFabSafeArea();
         initProductTabs($);
         initProductPanels($);
+        initProductShortDescription($);
         initLeaveReviewModal($);
         initNavMenuBreakpoint($);
         initMobileSubmenuCleanup($);
@@ -317,6 +318,46 @@
             if (typeof $link.tab === 'function') {
                 $link.tab('show');
             }
+        });
+    }
+
+    function initProductShortDescription($) {
+        var $blocks = $('.crizal-product-shortdesc');
+        if (!$blocks.length) {
+            return;
+        }
+
+        $blocks.each(function () {
+            var $block = $(this);
+            var full = $block.find('.crizal-product-shortdesc__full')[0];
+            var $preview = $block.find('.crizal-product-shortdesc__preview');
+            var $btn = $block.find('.crizal-product-shortdesc__toggle');
+            if (!full || !$btn.length) {
+                return;
+            }
+
+            function syncToggle(isOpen) {
+                $block.toggleClass('is-expanded', isOpen);
+                $preview.toggleClass('d-none', isOpen);
+                $btn.toggleClass('is-open', isOpen);
+                $btn.attr('aria-expanded', isOpen ? 'true' : 'false');
+                var label = isOpen ? $btn.attr('data-less-text') : $btn.attr('data-continue-text');
+                $btn.find('.crizal-product-shortdesc__toggle-label').text(label);
+            }
+
+            full.addEventListener('shown.bs.collapse', function () { syncToggle(true); });
+            full.addEventListener('hidden.bs.collapse', function () { syncToggle(false); });
+
+            $btn.off('click.crizalShortDesc').on('click.crizalShortDesc', function (e) {
+                e.preventDefault();
+                if (window.bootstrap && window.bootstrap.Collapse) {
+                    window.bootstrap.Collapse.getOrCreateInstance(full).toggle();
+                    return;
+                }
+                var willOpen = !full.classList.contains('show');
+                full.classList.toggle('show', willOpen);
+                syncToggle(willOpen);
+            });
         });
     }
 

@@ -997,6 +997,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devamı....
+        /// </summary>
+        public static string ContinueReading {
+            get {
+                return ResourceManager.GetString("ContinueReading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ülke.
         /// </summary>
         public static string Country {
@@ -4662,6 +4671,15 @@ namespace Resources {
         public static string ShowMoreProductInfo {
             get {
                 return ResourceManager.GetString("ShowMoreProductInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daha az göster.
+        /// </summary>
+        public static string ShowLess {
+            get {
+                return ResourceManager.GetString("ShowLess", resourceCulture);
             }
         }
         

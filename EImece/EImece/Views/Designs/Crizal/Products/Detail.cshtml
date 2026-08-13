@@ -66,6 +66,22 @@
         }
 
     }
+
+    var shortDescriptionPreviewLength = AppConfig.ProductShortDescriptionPreviewLength;
+    var shortDescriptionPlain = GeneralHelper.StripHtml(product.ShortDescription).Trim();
+    var shortDescriptionNeedsContinue = !string.IsNullOrEmpty(shortDescriptionPlain)
+        && shortDescriptionPlain.Length > shortDescriptionPreviewLength;
+    var shortDescriptionPreview = shortDescriptionPlain;
+    if (shortDescriptionNeedsContinue)
+    {
+        var cut = shortDescriptionPreviewLength;
+        var lastSpace = shortDescriptionPlain.LastIndexOf(' ', cut);
+        if (lastSpace >= (int)(shortDescriptionPreviewLength * 0.7))
+        {
+            cut = lastSpace;
+        }
+        shortDescriptionPreview = shortDescriptionPlain.Substring(0, cut).Trim() + "…";
+    }
 }
 
 
@@ -100,9 +116,32 @@
         }
         @Html.Partial("_ProductBreadCrumb", Model)
         <h1 class="page-title">@product.ProductNameStr</h1>
-        @if (!string.IsNullOrEmpty(product.ShortDescription))
+        @if (!string.IsNullOrEmpty(shortDescriptionPlain))
         {
-            <p class="crizal-product-hero__lead">@Html.Raw(product.ShortDescription)</p>
+            <div class="crizal-product-shortdesc">
+                @if (shortDescriptionNeedsContinue)
+                {
+                    <div class="crizal-product-shortdesc__preview" id="productShortDescPreview">
+                        <p>@shortDescriptionPreview</p>
+                    </div>
+                    <div class="collapse crizal-product-shortdesc__full" id="productShortDescFull">
+                        <div class="crizal-product-shortdesc__body">@Html.Raw(product.ShortDescription)</div>
+                    </div>
+                    <button type="button"
+                            class="crizal-product-shortdesc__toggle"
+                            aria-expanded="false"
+                            aria-controls="productShortDescFull"
+                            data-continue-text="@Resource.ContinueReading"
+                            data-less-text="@Resource.ShowLess">
+                        <span class="crizal-product-shortdesc__toggle-label">@Resource.ContinueReading</span>
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                }
+                else
+                {
+                    <div class="crizal-product-shortdesc__body">@Html.Raw(product.ShortDescription)</div>
+                }
+            </div>
         }
         <ul class="crizal-product-hero__meta">
             @if (product.Brand != null && !string.IsNullOrEmpty(product.Brand.Name))
@@ -429,7 +468,6 @@
                             {
                                 <p class="product-code">@Resource.ProductCodeNo <strong>@product.ProductCode</strong></p>
                             }
-                            <div class="crizal-product-panels__text">@Html.Raw(product.ShortDescription)</div>
                         </div>
                     </div>
                 </div>

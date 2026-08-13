@@ -406,6 +406,15 @@ namespace EImece.Domain
         }
 
         /// <summary>
+        /// Product detail ShortDescription preview length in characters.
+        /// Longer copy is truncated and shown behind a Continue... control.
+        /// </summary>
+        public static int ProductShortDescriptionPreviewLength
+        {
+            get { return GetConfigInt("ProductShortDescriptionPreviewLength", 180); }
+        }
+
+        /// <summary>
         /// Active payment provider strategy key (e.g. "Iyzico"). Used by DI to select <c>IPaymentStrategy</c>.
         /// </summary>
         public static string PaymentProvider
