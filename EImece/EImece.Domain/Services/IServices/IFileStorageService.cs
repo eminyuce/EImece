@@ -43,5 +43,9 @@ namespace EImece.Domain.Services.IServices
         void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId);
 
         Task DeleteUploadImageByFileStorageAsync(int contentId, MediaModType? mod, int fileStorageId);
+
+        void DeleteGalleryImages(int contentId, MediaModType mod);
+
+        Task DeleteGalleryImagesAsync(int contentId, MediaModType mod);
     }
 }

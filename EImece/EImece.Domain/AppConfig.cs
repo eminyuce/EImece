@@ -395,6 +395,123 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// Max width of the stored full-size catalog image. 0 = no width cap. Images are never upscaled.
+        /// </summary>
+        public static int ImageUploadMaxWidth
+        {
+            get
+            {
+                int value = GetConfigInt("ImageUploadMaxWidth", 1920);
+                return value < 0 ? 1920 : value;
+            }
+        }
+
+        /// <summary>
+        /// Max height of the stored full-size catalog image. 0 = no height cap. Images are never upscaled.
+        /// </summary>
+        public static int ImageUploadMaxHeight
+        {
+            get
+            {
+                int value = GetConfigInt("ImageUploadMaxHeight", 1920);
+                return value < 0 ? 1920 : value;
+            }
+        }
+
+        /// <summary>
+        /// JPEG quality (40–95) for stored full-size images. Default 82 balances catalog quality vs disk.
+        /// Lower (75) saves more disk; higher (85–90) keeps more detail for zoom.
+        /// </summary>
+        public static int ImageUploadJpegQuality
+        {
+            get
+            {
+                return ImageUploadOptimizer.ClampQuality(GetConfigInt("ImageUploadJpegQuality", 82), 82);
+            }
+        }
+
+        /// <summary>
+        /// Max width of prebuilt thumbs under media/images/thumbs/. 0 = no extra cap beyond the caller size.
+        /// </summary>
+        public static int ImageUploadThumbMaxWidth
+        {
+            get
+            {
+                int value = GetConfigInt("ImageUploadThumbMaxWidth", 800);
+                return value < 0 ? 800 : value;
+            }
+        }
+
+        /// <summary>
+        /// Max height of prebuilt thumbs. 0 = no extra cap beyond the caller size.
+        /// </summary>
+        public static int ImageUploadThumbMaxHeight
+        {
+            get
+            {
+                int value = GetConfigInt("ImageUploadThumbMaxHeight", 800);
+                return value < 0 ? 800 : value;
+            }
+        }
+
+        /// <summary>
+        /// JPEG quality (40–95) for prebuilt thumbs. Default 75.
+        /// </summary>
+        public static int ImageUploadThumbJpegQuality
+        {
+            get
+            {
+                return ImageUploadOptimizer.ClampQuality(GetConfigInt("ImageUploadThumbJpegQuality", 75), 75);
+            }
+        }
+
+        /// <summary>
+        /// When true, store the primary file as WebP when that encoding is smaller. Default false so
+        /// existing JPEG/PNG URLs, thumbs, and consumers keep working. The /images resize proxy already serves WebP to capable browsers.
+        /// </summary>
+        public static bool ImageUploadPreferWebP
+        {
+            get
+            {
+                return GetConfigBool("ImageUploadPreferWebP", false);
+            }
+        }
+
+        /// <summary>
+        /// WebP quality (40–95) used when PreferWebP is true or a sidecar WebP is written. Default 82.
+        /// </summary>
+        public static int ImageUploadWebPQuality
+        {
+            get
+            {
+                return ImageUploadOptimizer.ClampQuality(GetConfigInt("ImageUploadWebPQuality", 82), 82);
+            }
+        }
+
+        /// <summary>
+        /// When true, also write a .webp next to the stored JPEG/PNG. Increases disk use; leave false unless you serve those files directly.
+        /// </summary>
+        public static bool ImageUploadSaveWebPSidecar
+        {
+            get
+            {
+                return GetConfigBool("ImageUploadSaveWebPSidecar", false);
+            }
+        }
+
+        /// <summary>
+        /// When true, keep the original bytes if re-encoding is not smaller and dimensions did not change.
+        /// BMP/TIFF are always converted.
+        /// </summary>
+        public static bool ImageUploadKeepOriginalIfSmaller
+        {
+            get
+            {
+                return GetConfigBool("ImageUploadKeepOriginalIfSmaller", true);
+            }
+        }
+
         public static int ProductDefaultRecordPerPage
         {
             get { return 24; }

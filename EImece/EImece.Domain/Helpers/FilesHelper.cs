@@ -150,37 +150,15 @@ namespace EImece.Domain.Helpers
                 return "Ok";
             }
 
+            EnsureStorageInitialized();
             string safeFileName = Path.GetFileName(file);
-            if (string.IsNullOrEmpty(safeFileName))
+            if (string.IsNullOrEmpty(safeFileName) || safeFileName.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
             {
                 return "Ok";
             }
 
-            string partThumb1 = Path.Combine(StorageRoot, THUMBS);
-            string partThumb2 = Path.Combine(partThumb1, THB + safeFileName);
-            string successMessage = "Error Delete";
-
-            try
-            {
-                if (File.Exists(partThumb2))
-                {
-                    File.Delete(partThumb2);
-                    successMessage = "Ok";
-                }
-            }
-            catch (IOException ex)
-            {
-                // Log the error for debugging purposes
-                Logger.Error($"Failed to delete thumbnail file {partThumb2}: {ex.Message}");
-                successMessage = "Error Delete:" + ex.Message;
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                Logger.Error($"Access denied when deleting {partThumb2}: {ex.Message}");
-                successMessage = $"Error Delete: Access Denied";
-            }
-
-            return successMessage;
+            TryDeletePhysicalFile(GetThumbnailPhysicalPath(safeFileName));
+            return "Ok";
         }
 
         public bool NormalFileExists(String file)
@@ -190,39 +168,139 @@ namespace EImece.Domain.Helpers
                 return false;
             }
 
+            EnsureStorageInitialized();
             String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, file);
             return File.Exists(fullPath);
         }
 
         public String DeleteNormalFile(String file)
         {
-            if (string.IsNullOrWhiteSpace(file))
+            if (string.IsNullOrWhiteSpace(file) || file.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
             {
                 return "Ok";
             }
 
-            String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, file);
-            if (File.Exists(fullPath))
+            EnsureStorageInitialized();
+            TryDeleteSidecarWebP(file);
+            string fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, file);
+            TryDeletePhysicalFile(fullPath);
+            return "Ok";
+        }
+
+        private void TryDeleteSidecarWebP(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file))
             {
-                using (var fs = new FileStream(fullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.Delete))
-                {
-                    fs.Close(); // Ensure file handle is released
-                }
-                File.Delete(fullPath);
-                return "Ok";
+                return;
             }
-            return "Error Delete for file:" + file;
+
+            string ext = Path.GetExtension(file);
+            if (string.Equals(ext, ".webp", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            try
+            {
+                string webpName = Path.GetFileName(Path.ChangeExtension(file, ".webp"));
+                if (string.IsNullOrEmpty(webpName))
+                {
+                    return;
+                }
+
+                string webpPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, webpName);
+                TryDeletePhysicalFile(webpPath);
+                TryDeletePhysicalFile(GetThumbnailPhysicalPath(webpName));
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "Could not delete WebP sidecar for {0}", file);
+            }
         }
 
         public String DeleteFile(String file)
         {
-            if (string.IsNullOrWhiteSpace(file))
+            if (string.IsNullOrWhiteSpace(file) || file.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
             {
                 return "Ok";
             }
 
-            DeleteThumbFile(file);
-            return DeleteNormalFile(file);
+            EnsureStorageInitialized();
+            DeleteStoredImageFiles(StorageRoot, file);
+            return "Ok";
+        }
+
+        /// <summary>
+        /// Removes the stored image, its thumb, and optional WebP sidecars. Missing files are treated as success.
+        /// </summary>
+        public static void DeleteStoredImageFiles(string storageRoot, string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(storageRoot) || string.IsNullOrWhiteSpace(fileName)
+                || fileName.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            string safeName = Path.GetFileName(fileName);
+            if (string.IsNullOrEmpty(safeName))
+            {
+                return;
+            }
+
+            TryDeletePhysicalFile(Path.Combine(storageRoot, safeName));
+            TryDeletePhysicalFile(Path.Combine(storageRoot, THUMBS, THB + safeName));
+
+            string ext = Path.GetExtension(safeName);
+            if (!string.Equals(ext, ".webp", StringComparison.OrdinalIgnoreCase))
+            {
+                string webpName = Path.ChangeExtension(safeName, ".webp");
+                TryDeletePhysicalFile(Path.Combine(storageRoot, webpName));
+                TryDeletePhysicalFile(Path.Combine(storageRoot, THUMBS, THB + webpName));
+            }
+        }
+
+        private void EnsureStorageInitialized()
+        {
+            if (string.IsNullOrWhiteSpace(StorageRoot))
+            {
+                InitFilesMediaFolder();
+            }
+        }
+
+        private static bool TryDeletePhysicalFile(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+            {
+                return true;
+            }
+
+            try
+            {
+                File.SetAttributes(path, FileAttributes.Normal);
+                File.Delete(path);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    string pending = path + ".deleted";
+                    if (File.Exists(pending))
+                    {
+                        File.SetAttributes(pending, FileAttributes.Normal);
+                        File.Delete(pending);
+                    }
+
+                    File.Move(path, pending);
+                    File.Delete(pending);
+                    return true;
+                }
+                catch (Exception retryEx)
+                {
+                    Logger.Error(retryEx, "Failed to delete image file {0} (first error: {1})", path, ex.Message);
+                    return false;
+                }
+            }
         }
 
         public JsonFiles GetFileList(HttpContextBase ContentBase)
@@ -277,51 +355,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        private SavedImage GetFileImageSize(int width, int height, byte[] fileByte)
-        {
-            if (fileByte == null || fileByte.Length == 0)
-            {
-                throw new ArgumentException("File byte array cannot be null or empty.", nameof(fileByte));
-            }
-
-            try
-            {
-                using (Bitmap img = ByteArrayToBitmap(fileByte))
-                {
-                    return GetFileImageSize(width, height, img);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"Failed to process image size from byte array: {ex.Message}");
-                throw; // Or return a default SavedImage, depending on requirements
-            }
-        }
-
-        private SavedImage GetFileImageSize(int width, int height, Bitmap img)
-        {
-            int originalImageWidth = img.Width;
-            int originalImageHeight = img.Height;
-            double ratio = originalImageWidth.ToDouble() / originalImageHeight.ToDouble();
-            img.Dispose();
-            if (width == 0 && height > 0)
-            {
-                width = (int)(ratio * height);
-            }
-            else if (width > 0 && height == 0)
-            {
-                height = (int)((width * (1 / ratio)));
-            }
-            else if (width == 0 && height == 0)
-            {
-                //Create image from Bytes array
-                height = height == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(originalImageHeight) * .7) : height;
-                width = width == 0 ? System.Convert.ToInt32(System.Convert.ToDouble(originalImageWidth) * .7) : width;
-            }
-
-            return new SavedImage(width, height, originalImageWidth, originalImageHeight);
-        }
-
         private void UploadWholeFile(HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
         {
             var request = requestContext.Request;
@@ -336,7 +369,7 @@ namespace EImece.Domain.Helpers
                 {
                     var result = SaveImageByte(width, height, file);
                     var newFileName = result.NewFileName;
-                    var k = UploadResult(newFileName, file.ContentLength, newFileName, requestContext);
+                    var k = UploadResult(newFileName, result.ImageSize, newFileName, requestContext);
                     k.imageHash = result.FileHash;
                     statuses.Add(k);
                 }
@@ -351,17 +384,35 @@ namespace EImece.Domain.Helpers
             var mod = EnumHelper.Parse<MediaModType>(request.Form["mod"].ToStr());
 
             String getType = MimeMapping.GetMimeMapping(FileFullPath);
+            if (string.Equals(Path.GetExtension(FileName), ".webp", StringComparison.OrdinalIgnoreCase))
+            {
+                getType = ImageUploadOptimizer.MimeWebP;
+            }
+
             String patchOnServer = Path.Combine(StorageRoot);
             var fullName = Path.Combine(patchOnServer, Path.GetFileName(FileName));
-            Bitmap img = LoadImage(fullName);
+            int storedWidth = 0;
+            int storedHeight = 0;
+            try
+            {
+                using (Bitmap img = LoadImage(fullName))
+                {
+                    storedWidth = img.Width;
+                    storedHeight = img.Height;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "Could not read stored image dimensions for upload JSON: {0}", fullName);
+            }
 
             var result = new ViewDataUploadFilesResult()
             {
                 name = FileName,
                 size = fileSize,
                 type = getType,
-                width = img.Width,
-                height = img.Height,
+                width = storedWidth,
+                height = storedHeight,
                 mimeType = getType,
                 url = UrlBase + FileName,
                 deleteUrl = String.Format(DeleteURL, FileName, contentId, mod, imageType),
@@ -377,7 +428,7 @@ namespace EImece.Domain.Helpers
             if (splited.Length == 2)
             {
                 string extansion = splited[1];
-                if (extansion.Equals("jpeg") || extansion.Equals("jpg") || extansion.Equals("png") || extansion.Equals("gif"))
+                if (extansion.Equals("jpeg") || extansion.Equals("jpg") || extansion.Equals("png") || extansion.Equals("gif") || extansion.Equals("webp"))
                 {
                     //   String thumbnailUrl = UrlBase + "/thumbs/" + FileName + ".80x80.jpg";
                     String thumbnailUrl = UrlBase + "/thumbs/thb" + FileName;
@@ -480,24 +531,35 @@ namespace EImece.Domain.Helpers
                     {
                         String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
                         String candidatePathThb = Path.Combine(Path.Combine(StorageRoot, THUMBS), THB + mainImage.FileName);
-                        var fileByte = File.ReadAllBytes(fullPath);
-                        var imageResize = GetFileImageSize(width, height, fileByte);
-                        width = imageResize.Width;
-                        height = imageResize.Height;
-                        ImageFormat format = GetImageFormat(Path.GetExtension(mainImage.FileName));
-                        var byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, format);
-
-                        DeleteThumbFile(mainImage.FileName);
-
-                        using (Image thumbnail = ByteArrayToImage(byteArrayIn))
+                        try
                         {
-                            using (MemoryStream ms = new MemoryStream())
+                            var fileByte = File.ReadAllBytes(fullPath);
+                            int origW = imageSize.OriginalWidth;
+                            int origH = imageSize.OriginalHeight;
+                            if (origW <= 0 || origH <= 0)
                             {
-                                thumbnail.Save(ms, format);
-                                thumbnail.Save(candidatePathThb, format);
+                                using (Bitmap src = ByteArrayToBitmap(fileByte))
+                                {
+                                    origW = src.Width;
+                                    origH = src.Height;
+                                }
                             }
+
+                            Size thumbSize = ResolveThumbnailTargetSize(width, height, origW, origH);
+                            string forceExt = Path.GetExtension(mainImage.FileName);
+                            var thumbOpt = ImageUploadOptimizer.Optimize(fileByte, ImageUploadOptimizeOptions.ForThumbnail(
+                                mainImage.FileName, mainImage.MimeType, thumbSize.Width, thumbSize.Height, forceExt));
+
+                            DeleteThumbFile(mainImage.FileName);
+                            SaveBytesToFilePath(thumbOpt.Bytes, candidatePathThb);
+                            baseContent.ImageState = true;
+                            Logger.Info("Regenerated compressed thumb for {0}: {1} bytes ({2}x{3})",
+                                mainImage.FileName, thumbOpt.Bytes.Length, thumbOpt.Width, thumbOpt.Height);
                         }
-                        baseContent.ImageState = true;
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, "Thumb regeneration failed for {0}", mainImage.FileName);
+                        }
                     }
                 }
             }
@@ -587,46 +649,62 @@ namespace EImece.Domain.Helpers
 
             fileName = Path.GetFileName(fileName);
             var ext = Path.GetExtension(fileName).ToLower();
-            ImageFormat imgFormat = GetImageFormat(ext) ?? ImageFormat.Png; // Ensure valid format
 
             if (IsImage(ext))
             {
-                var fileNames = GetFileNames(fileName);
+                if (fileByte == null || fileByte.Length == 0)
+                {
+                    throw new ArgumentException("File byte array cannot be null or empty.", nameof(fileByte));
+                }
+
+                ImageOptimizationResult fullOpt = OptimizeAndSaveImage(fileByte, fileName, contentType);
+                string storedName = Path.ChangeExtension(fileName, fullOpt.Extension);
+                var fileNames = GetFileNames(storedName);
                 fullPath = fileNames.Item1;
                 candidatePathThb = fileNames.Item2;
                 newFileName = fileNames.Item3;
 
-                var imageResize = GetFileImageSize(width, height, fileByte);
-                width = imageResize.Width;
-                height = imageResize.Height;
-                int originalImageWidth = imageResize.OriginalWidth;
-                int originalImageHeight = imageResize.OriginalHeight;
+                SaveBytesToFilePath(fullOpt.Bytes, fullPath);
 
-                fileHash = HashHelpers.GetSha256Hash(fileByte);
+                Size thumbTarget = ResolveThumbnailTargetSize(width, height, fullOpt.OriginalWidth, fullOpt.OriginalHeight);
+                thumbTarget = ImageUploadOptimizer.FitWithin(thumbTarget.Width, thumbTarget.Height, fullOpt.Width, fullOpt.Height);
+                var thumbOpt = ImageUploadOptimizer.Optimize(
+                    fileByte,
+                    ImageUploadOptimizeOptions.ForThumbnail(fileName, contentType, thumbTarget.Width, thumbTarget.Height, fullOpt.Extension));
+                SaveBytesToFilePath(thumbOpt.Bytes, candidatePathThb);
 
-                byte[] fileByteCropped = CreateThumbnail(fileByte, 90000, originalImageHeight, originalImageWidth, imgFormat);
-                if (fileByteCropped == null || fileByteCropped.Length == 0)
+                if (AppConfig.ImageUploadSaveWebPSidecar && !fullOpt.IsWebP)
                 {
-                    throw new Exception("Thumbnail creation failed!");
+                    try
+                    {
+                        saveWebPformat(fullPath, fullOpt.Bytes);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Warn(ex, "WebP sidecar save failed for {0}", fullPath);
+                    }
                 }
 
-                imageSize = fileByteCropped.Length;
+                width = fullOpt.Width;
+                height = fullOpt.Height;
+                imageSize = fullOpt.Bytes.Length;
+                contentType = fullOpt.MimeType;
+                fileHash = HashHelpers.GetSha256Hash(fullOpt.Bytes);
 
-                using (Image thumbnail = ByteArrayToImage(fileByteCropped))
-                {
-                    SaveImageToFilePath(thumbnail, fullPath, imgFormat);
-                }
-
-                byte[] byteArrayIn = CreateThumbnail(fileByte, 90000, height, width, imgFormat);
-                if (byteArrayIn == null || byteArrayIn.Length == 0)
-                {
-                    throw new Exception("Thumbnail creation failed for resized image!");
-                }
-
-                using (Image thumbnail = (Image)ByteArrayToImage(byteArrayIn).Clone())
-                {
-                    SaveImageToFilePath(thumbnail, candidatePathThb, imgFormat);
-                }
+                Logger.Info(
+                    "Image upload optimized. file={0} originalBytes={1} originalSize={2}x{3} storedBytes={4} storedSize={5}x{6} mime={7} keptOriginal={8} thumbBytes={9} thumbSize={10}x{11}",
+                    newFileName,
+                    fullOpt.OriginalSize,
+                    fullOpt.OriginalWidth,
+                    fullOpt.OriginalHeight,
+                    fullOpt.Bytes.Length,
+                    fullOpt.Width,
+                    fullOpt.Height,
+                    fullOpt.MimeType,
+                    fullOpt.KeptOriginal,
+                    thumbOpt.Bytes.Length,
+                    thumbOpt.Width,
+                    thumbOpt.Height);
             }
             else
             {
@@ -637,14 +715,90 @@ namespace EImece.Domain.Helpers
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
         }
 
+        /// <summary>
+        /// Resize/compress source bytes for primary storage. Public signatures of SaveImageByte are unchanged.
+        /// </summary>
+        internal ImageOptimizationResult OptimizeAndSaveImage(byte[] source, string fileName, string contentType)
+        {
+            try
+            {
+                return ImageUploadOptimizer.Optimize(source, ImageUploadOptimizeOptions.ForFullImage(fileName, contentType));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Image optimization failed for {0}; storing a best-effort re-encode.", fileName);
+                var fallback = new ImageUploadOptimizeOptions
+                {
+                    MaxWidth = AppConfig.ImageUploadMaxWidth,
+                    MaxHeight = AppConfig.ImageUploadMaxHeight,
+                    JpegQuality = AppConfig.ImageUploadJpegQuality,
+                    WebPQuality = AppConfig.ImageUploadWebPQuality,
+                    PreferWebP = false,
+                    KeepOriginalIfSmaller = true,
+                    SourceExtension = Path.GetExtension(fileName),
+                    SourceMimeType = contentType
+                };
+                return ImageUploadOptimizer.Optimize(source, fallback);
+            }
+        }
+
+        private static Size ResolveThumbnailTargetSize(int requestedWidth, int requestedHeight, int originalWidth, int originalHeight)
+        {
+            Size fromRequest;
+            if (requestedWidth > 0 || requestedHeight > 0)
+            {
+                int maxW = requestedWidth > 0 ? requestedWidth : int.MaxValue;
+                int maxH = requestedHeight > 0 ? requestedHeight : int.MaxValue;
+                fromRequest = ImageUploadOptimizer.FitWithin(originalWidth, originalHeight, maxW, maxH);
+            }
+            else
+            {
+                fromRequest = ImageUploadOptimizer.FitWithin(
+                    originalWidth,
+                    originalHeight,
+                    AppConfig.ImageUploadThumbMaxWidth,
+                    AppConfig.ImageUploadThumbMaxHeight);
+            }
+
+            return ImageUploadOptimizer.FitWithin(
+                fromRequest.Width,
+                fromRequest.Height,
+                AppConfig.ImageUploadThumbMaxWidth,
+                AppConfig.ImageUploadThumbMaxHeight);
+        }
+
+        private static void SaveBytesToFilePath(byte[] bytes, string filePath)
+        {
+            if (bytes == null || bytes.Length == 0)
+            {
+                throw new InvalidOperationException("Cannot save empty image bytes to " + filePath);
+            }
+
+            EnsureDirectoryExists(filePath);
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    File.Delete(filePath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug(ex, "Could not delete existing file before save: {0}", filePath);
+                }
+            }
+
+            File.WriteAllBytes(filePath, bytes);
+        }
+
         private void saveWebPformat(string fullPath, byte[] byteArrayIn)
         {
             string webPFileName = Path.GetFileNameWithoutExtension(fullPath) + ".webp";
             string webPImagePath = Path.Combine(StorageRoot, webPFileName);
-            // Then save in WebP format
+            EnsureDirectoryExists(webPImagePath);
             using (FileStream webPFileStream = new FileStream(webPImagePath, FileMode.Create))
             {
-                ISupportedImageFormat lg_format = new WebPFormat { Quality = 100 };
+                ISupportedImageFormat lg_format = new WebPFormat { Quality = AppConfig.ImageUploadWebPQuality };
                 using (ImageFactory imageFactory = new ImageFactory(preserveExifData: false))
                 {
                     imageFactory.Load(byteArrayIn)
@@ -1118,7 +1272,7 @@ namespace EImece.Domain.Helpers
         public static bool IsImage(string ext)
         {
             ext = ext.ToLower();
-            return ext == ".gif" || ext == ".jpg" || ext == ".png" || ext == ".bmp" || ext == ".tiff" || ext == ".jpe" || ext == ".jpeg";
+            return ext == ".gif" || ext == ".jpg" || ext == ".png" || ext == ".bmp" || ext == ".tiff" || ext == ".jpe" || ext == ".jpeg" || ext == ".webp";
         }
 
         /// <summary>

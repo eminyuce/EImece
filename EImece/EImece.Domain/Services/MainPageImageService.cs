@@ -35,6 +35,11 @@ namespace EImece.Domain.Services
         public void DeleteMainPageImage(int id)
         {
             var item = MainPageImageRepository.GetSingle(id);
+            if (item == null)
+            {
+                return;
+            }
+
             if (item.MainImageId.HasValue)
             {
                 FileStorageService.DeleteFileStorage(item.MainImageId.Value);
@@ -45,6 +50,11 @@ namespace EImece.Domain.Services
         public async Task DeleteMainPageImageAsync(int id)
         {
             var item = await MainPageImageRepository.GetSingleAsync(id).ConfigureAwait(false);
+            if (item == null)
+            {
+                return;
+            }
+
             if (item.MainImageId.HasValue)
             {
                 await FileStorageService.DeleteFileStorageAsync(item.MainImageId.Value).ConfigureAwait(false);

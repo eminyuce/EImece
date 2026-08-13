@@ -291,48 +291,79 @@ namespace EImece.Domain.Services
         public void DeleteUploadImage(String fileName, int contentId, EImeceImageType? imageType, MediaModType? mod)
         {
             FileStorage f = FileStorageRepository.GetFileStoragebyFileName(fileName);
+            if (f == null)
+            {
+                FilesHelper.DeleteFile(fileName);
+                Logger.Info("Deleted orphan media file {0} (no FileStorage row) contentId={1}", fileName, contentId);
+                return;
+            }
+
             DeleteUploadImageByFileStorage(contentId, mod, f.Id);
         }
 
         public void DeleteUploadImage(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod)
         {
             FileStorage f = FileStorageRepository.GetSingle(fileStorageId);
+            if (f == null)
+            {
+                Logger.Warn("DeleteUploadImage skipped missing FileStorageId={0}", fileStorageId);
+                return;
+            }
+
             DeleteUploadImageByFileStorage(contentId, mod, f.Id);
         }
 
         public async Task DeleteUploadImageAsync(int fileStorageId, int contentId, EImeceImageType? imageType, MediaModType? mod)
         {
             FileStorage f = await FileStorageRepository.GetSingleAsync(fileStorageId).ConfigureAwait(false);
+            if (f == null)
+            {
+                Logger.Warn("DeleteUploadImageAsync skipped missing FileStorageId={0}", fileStorageId);
+                return;
+            }
+
             await DeleteUploadImageByFileStorageAsync(contentId, mod, f.Id).ConfigureAwait(false);
         }
 
         public void DeleteUploadImageByFileStorage(int contentId, MediaModType? mod, int fileStorageId)
         {
-            bool isResult = false;
+            if (!mod.HasValue)
+            {
+                DeleteFileStorage(fileStorageId);
+                return;
+            }
+
             switch (mod.Value)
             {
                 case MediaModType.Stories:
-                    isResult = StoryFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.StoryId == contentId);
+                    StoryFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.StoryId == contentId);
                     this.DeleteFileStorage(fileStorageId);
                     break;
 
                 case MediaModType.Products:
-                    isResult = ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.ProductId == contentId);
+                    ProductFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.ProductId == contentId);
                     this.DeleteFileStorage(fileStorageId);
                     break;
 
                 case MediaModType.Menus:
-                    isResult = MenuFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.MenuId == contentId);
+                    MenuFileRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorageId && r.MenuId == contentId);
                     this.DeleteFileStorage(fileStorageId);
                     break;
 
                 default:
+                    this.DeleteFileStorage(fileStorageId);
                     break;
             }
         }
 
         public async Task DeleteUploadImageByFileStorageAsync(int contentId, MediaModType? mod, int fileStorageId)
         {
+            if (!mod.HasValue)
+            {
+                await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
+                return;
+            }
+
             switch (mod.Value)
             {
                 case MediaModType.Stories:
@@ -351,7 +382,62 @@ namespace EImece.Domain.Services
                     break;
 
                 default:
+                    await this.DeleteFileStorageAsync(fileStorageId).ConfigureAwait(false);
                     break;
+            }
+        }
+
+        public void DeleteGalleryImages(int contentId, MediaModType mod)
+        {
+            List<int> fileStorageIds = GetGalleryFileStorageIds(contentId, mod);
+            foreach (int fileStorageId in fileStorageIds)
+            {
+                DeleteUploadImageByFileStorage(contentId, mod, fileStorageId);
+            }
+        }
+
+        public async Task DeleteGalleryImagesAsync(int contentId, MediaModType mod)
+        {
+            List<int> fileStorageIds = await GetGalleryFileStorageIdsAsync(contentId, mod).ConfigureAwait(false);
+            foreach (int fileStorageId in fileStorageIds)
+            {
+                await DeleteUploadImageByFileStorageAsync(contentId, mod, fileStorageId).ConfigureAwait(false);
+            }
+        }
+
+        private List<int> GetGalleryFileStorageIds(int contentId, MediaModType mod)
+        {
+            switch (mod)
+            {
+                case MediaModType.Products:
+                    return ProductFileRepository.FindBy(r => r.ProductId == contentId).Select(r => r.FileStorageId).Distinct().ToList();
+
+                case MediaModType.Stories:
+                    return StoryFileRepository.FindBy(r => r.StoryId == contentId).Select(r => r.FileStorageId).Distinct().ToList();
+
+                case MediaModType.Menus:
+                    return MenuFileRepository.FindBy(r => r.MenuId == contentId).Select(r => r.FileStorageId).Distinct().ToList();
+
+                default:
+                    return new List<int>();
+            }
+        }
+
+        private async Task<List<int>> GetGalleryFileStorageIdsAsync(int contentId, MediaModType mod)
+        {
+            switch (mod)
+            {
+                case MediaModType.Products:
+                    return await ProductFileRepository.FindBy(r => r.ProductId == contentId).Select(r => r.FileStorageId).Distinct().ToListAsync().ConfigureAwait(false);
+
+                case MediaModType.Stories:
+                    return await StoryFileRepository.FindBy(r => r.StoryId == contentId).Select(r => r.FileStorageId).Distinct().ToListAsync().ConfigureAwait(false);
+
+                case MediaModType.Menus:
+                    return await MenuFileRepository.FindBy(r => r.MenuId == contentId).Select(r => r.FileStorageId).Distinct().ToListAsync().ConfigureAwait(false);
+
+                default:
+                    return new List<int>();
             }
         }
 
@@ -527,14 +613,19 @@ namespace EImece.Domain.Services
                 {
                     FileStorageTagRepository.DeleteByWhereCondition(r => r.FileStorageId == fileStorage.Id);
 
-                    var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
+                    string fileName = fileStorage.FileName;
+                    if (!FilesHelper.IsSeedPlaceholderMedia(fileStorage)
+                        && !string.Equals(fileName, FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
+                    {
+                        FilesHelper.DeleteFile(fileName);
+                    }
+
                     DeleteEntity(fileStorage);
-                    return deletedResult;
+                    Logger.Info("Deleted FileStorage Id={0} FileName={1}", id, fileName);
+                    return "Ok";
                 }
-                else
-                {
-                    return Constants.ErrorResult;
-                }
+
+                return Constants.ErrorResult;
             }
             catch (Exception exception)
             {
@@ -553,14 +644,19 @@ namespace EImece.Domain.Services
                 {
                     await FileStorageTagRepository.DeleteByWhereConditionAsync(r => r.FileStorageId == fileStorage.Id).ConfigureAwait(false);
 
-                    var deletedResult = FilesHelper.DeleteFile(fileStorage.FileName);
+                    string fileName = fileStorage.FileName;
+                    if (!FilesHelper.IsSeedPlaceholderMedia(fileStorage)
+                        && !string.Equals(fileName, FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
+                    {
+                        FilesHelper.DeleteFile(fileName);
+                    }
+
                     await DeleteEntityAsync(fileStorage).ConfigureAwait(false);
-                    return deletedResult;
+                    Logger.Info("Deleted FileStorage Id={0} FileName={1}", id, fileName);
+                    return "Ok";
                 }
-                else
-                {
-                    return Constants.ErrorResult;
-                }
+
+                return Constants.ErrorResult;
             }
             catch (Exception exception)
             {
