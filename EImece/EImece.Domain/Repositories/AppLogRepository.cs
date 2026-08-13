@@ -254,7 +254,7 @@ namespace EImece.Domain.Repositories
             return list;
         }
 
-        private string BuildAppLogsCommandText(string search, string eventLevel, List<SqlParameter> parameterList)
+        private static string BuildAppLogsCommandText(string search, string eventLevel, List<SqlParameter> parameterList)
         {
             var whereClauses = new List<string>();
 
@@ -275,7 +275,7 @@ namespace EImece.Domain.Repositories
                 : @"SELECT TOP 10000 * FROM dbo.AppLogs WHERE " + string.Join(" AND ", whereClauses) + " ORDER BY Id DESC";
         }
 
-        private async Task ExecuteNonQueryAsync(SqlConnection connection, string commandText, CommandType commandType, SqlParameter[] parameters, CancellationToken cancellationToken = default(CancellationToken))
+        private static async Task ExecuteNonQueryAsync(SqlConnection connection, string commandText, CommandType commandType, SqlParameter[] parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
             using (var command = new SqlCommand(commandText, connection))
@@ -289,7 +289,7 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        private AppLog GetAppLogFromDataRow(DataRow dr)
+        private static AppLog GetAppLogFromDataRow(DataRow dr)
         {
             var item = new AppLog();
 

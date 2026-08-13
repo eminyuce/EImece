@@ -1070,7 +1070,7 @@ namespace EImece.Controllers
                 }
                 catch (Exception e)
                 {
-                    PaymentLogger.Error($"Failed to queue order confirmation email. order.Id:{order.Id}: {e.Message}", e);
+                    PaymentLogger.Error(e, $"Failed to queue order confirmation email. order.Id:{order.Id}: {e.Message}");
                 }
             }
 
@@ -1083,7 +1083,7 @@ namespace EImece.Controllers
                 }
                 catch (Exception e)
                 {
-                    PaymentLogger.Error($"Failed to queue company new order email. order.Id:{order.Id}: {e.Message}", e);
+                    PaymentLogger.Error(e, $"Failed to queue company new order email. order.Id:{order.Id}: {e.Message}");
                 }
             }
         }
@@ -1103,7 +1103,7 @@ namespace EImece.Controllers
             }
             catch (Exception e)
             {
-                PaymentLogger.Error($"Failed to render order confirmation email: {e.Message}", e);
+                PaymentLogger.Error(e, $"Failed to render order confirmation email: {e.Message}");
                 return null;
             }
         }
@@ -1123,7 +1123,7 @@ namespace EImece.Controllers
             }
             catch (Exception e)
             {
-                PaymentLogger.Error($"Failed to render company new order email: {e.Message}", e);
+                PaymentLogger.Error(e, $"Failed to render company new order email: {e.Message}");
                 return null;
             }
         }

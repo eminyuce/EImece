@@ -82,17 +82,12 @@ namespace EImece.App_Start
             _ambientScope = scope;
         }
 
-        private static void ReleaseAmbientScope()
-        {
-            _ambientScope?.Dispose();
-            _ambientScope = null;
-        }
-
         private sealed class AmbientScopeReleaser : IDisposable
         {
             public void Dispose()
             {
-                ReleaseAmbientScope();
+                _ambientScope?.Dispose();
+                _ambientScope = null;
             }
         }
 

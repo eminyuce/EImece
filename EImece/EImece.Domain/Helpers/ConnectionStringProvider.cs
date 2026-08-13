@@ -110,8 +110,9 @@ namespace EImece.Domain.Helpers
                     "Set '" + EnvironmentVariableName + "' or provide a real connection string in configuration.");
             }
 
-            foreach (var marker in PlaceholderMarkers.Where(m =>
-                connectionString.IndexOf(m, StringComparison.OrdinalIgnoreCase) >= 0))
+            var marker = PlaceholderMarkers.FirstOrDefault(m =>
+                connectionString.IndexOf(m, StringComparison.OrdinalIgnoreCase) >= 0);
+            if (marker != null)
             {
                 throw new ConfigurationErrorsException(
                     "Database connection string '" + connectionName + "' still contains placeholder value '" + marker + "'. " +

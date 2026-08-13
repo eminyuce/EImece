@@ -109,9 +109,10 @@ namespace EImece.Domain.DependencyInjection
             }
 
             // Interface / base-type [Inject] properties map to the concrete being built.
-            foreach (var kvp in tracker.Where(pair => serviceType.IsAssignableFrom(pair.Key)))
+            var match = tracker.FirstOrDefault(pair => serviceType.IsAssignableFrom(pair.Key));
+            if (!match.Equals(default(KeyValuePair<Type, object>)))
             {
-                return kvp.Value;
+                return match.Value;
             }
 
             return null;

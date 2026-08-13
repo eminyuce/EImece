@@ -127,34 +127,7 @@ namespace EImece.Domain.Services
                 {
                     try
                     {
-                        if (String.IsNullOrEmpty(checkbox))
-                        {
-                            baseContent.Position = item.Position;
-                        }
-                        else if (checkbox.Equals(STATE, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            baseContent.IsActive = item.IsActive;
-                        }
-                        else if (checkbox.Equals(MAIN_PAGE, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            ApplyMainPageFlag(baseContent, item.IsActive);
-                        }
-                        else if (checkbox.Equals(IMAGE_STATE, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            if (baseContent is BaseContent)
-                            {
-                                var product = baseContent as BaseContent;
-                                product.ImageState = item.IsActive;
-                            }
-                        }
-                        else if (checkbox.Equals(IS_CAMPAIGN, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            if (baseContent is Product)
-                            {
-                                var product = baseContent as Product;
-                                product.IsCampaign = item.IsActive;
-                            }
-                        }
+                        ApplyCheckboxOrPosition(baseContent, item, checkbox);
                         baseEntityRepository.Edit(t);
                         isEdit = true;
                     }
@@ -185,34 +158,7 @@ namespace EImece.Domain.Services
                 {
                     try
                     {
-                        if (String.IsNullOrEmpty(checkbox))
-                        {
-                            baseContent.Position = item.Position;
-                        }
-                        else if (checkbox.Equals(STATE, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            baseContent.IsActive = item.IsActive;
-                        }
-                        else if (checkbox.Equals(MAIN_PAGE, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            ApplyMainPageFlag(baseContent, item.IsActive);
-                        }
-                        else if (checkbox.Equals(IMAGE_STATE, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            if (baseContent is BaseContent)
-                            {
-                                var product = baseContent as BaseContent;
-                                product.ImageState = item.IsActive;
-                            }
-                        }
-                        else if (checkbox.Equals(IS_CAMPAIGN, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            if (baseContent is Product)
-                            {
-                                var product = baseContent as Product;
-                                product.IsCampaign = item.IsActive;
-                            }
-                        }
+                        ApplyCheckboxOrPosition(baseContent, item, checkbox);
                         baseEntityRepository.Edit(t);
                         isEdit = true;
                     }
@@ -225,6 +171,38 @@ namespace EImece.Domain.Services
             if (isEdit)
             {
                 await baseEntityRepository.SaveAsync().ConfigureAwait(false);
+            }
+        }
+
+        private static void ApplyCheckboxOrPosition(BaseEntity baseContent, OrderingItem item, string checkbox)
+        {
+            if (string.IsNullOrEmpty(checkbox))
+            {
+                baseContent.Position = item.Position;
+                return;
+            }
+
+            if (checkbox.Equals(STATE, StringComparison.InvariantCultureIgnoreCase))
+            {
+                baseContent.IsActive = item.IsActive;
+                return;
+            }
+
+            if (checkbox.Equals(MAIN_PAGE, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ApplyMainPageFlag(baseContent, item.IsActive);
+                return;
+            }
+
+            if (checkbox.Equals(IMAGE_STATE, StringComparison.InvariantCultureIgnoreCase) && baseContent is BaseContent imageContent)
+            {
+                imageContent.ImageState = item.IsActive;
+                return;
+            }
+
+            if (checkbox.Equals(IS_CAMPAIGN, StringComparison.InvariantCultureIgnoreCase) && baseContent is Product product)
+            {
+                product.IsCampaign = item.IsActive;
             }
         }
 

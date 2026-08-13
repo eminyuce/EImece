@@ -11,6 +11,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
@@ -125,16 +126,7 @@ namespace EImece.Domain.Repositories
             }
             catch (DbEntityValidationException ex)
             {
-                string errorMessage = ex.Message;
-                foreach (var errors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in errors.ValidationErrors)
-                    {
-                        // get the error message
-                        errorMessage += " " + validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
-                    }
-                }
-                BaseLogger.Error(errorMessage);
+                BaseLogger.Error(ex, BuildEntityValidationErrorMessage(ex));
                 throw;
             }
         }
@@ -157,16 +149,7 @@ namespace EImece.Domain.Repositories
             }
             catch (DbEntityValidationException ex)
             {
-                string errorMessage = ex.Message;
-                foreach (var errors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in errors.ValidationErrors)
-                    {
-                        // get the error message
-                        errorMessage += " " + validationError.PropertyName + " " + validationError.ErrorMessage + "  ";
-                    }
-                }
-                BaseLogger.Error(errorMessage);
+                BaseLogger.Error(ex, BuildEntityValidationErrorMessage(ex));
                 throw;
             }
         }
@@ -279,6 +262,23 @@ namespace EImece.Domain.Repositories
         public List<Expression<Func<T, bool>>> GetWherePropertyExpressionList()
         {
             return new List<Expression<Func<T, bool>>>();
+        }
+
+        private static string BuildEntityValidationErrorMessage(DbEntityValidationException ex)
+        {
+            var errorMessage = new StringBuilder(ex.Message);
+            foreach (var errors in ex.EntityValidationErrors)
+            {
+                foreach (var validationError in errors.ValidationErrors)
+                {
+                    errorMessage.Append(" ")
+                        .Append(validationError.PropertyName)
+                        .Append(" ")
+                        .Append(validationError.ErrorMessage)
+                        .Append("  ");
+                }
+            }
+            return errorMessage.ToString();
         }
     }
 }

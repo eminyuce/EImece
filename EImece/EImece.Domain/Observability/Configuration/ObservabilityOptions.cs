@@ -143,12 +143,8 @@ namespace EImece.Domain.Observability.Configuration
                 return null;
             }
 
-            foreach (var value in values.Where(v => !string.IsNullOrWhiteSpace(v)))
-            {
-                return value.Trim();
-            }
-
-            return null;
+            var value = values.FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
+            return value == null ? null : value.Trim();
         }
 
         private static double GetConfigDouble(string configName, double defaultValue)

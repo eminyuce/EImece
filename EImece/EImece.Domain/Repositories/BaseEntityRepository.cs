@@ -64,8 +64,8 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                BaseEntityLogger.Error(exception);
-                throw;
+                BaseEntityLogger.Error(exception, "GetActiveBaseEntitiesAsync failed.");
+                throw new InvalidOperationException("GetActiveBaseEntitiesAsync failed.", exception);
             }
         }
 

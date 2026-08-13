@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,11 +27,9 @@ namespace EImece.Domain.Observability.Http
         private readonly IApplicationMetrics _metrics;
         private readonly ObservabilityOptions _options;
 
-        // System.Random is not thread-safe; a single instance shared across concurrent retries can
-        // corrupt its state and start returning 0, defeating the anti-thundering-herd jitter.
-        // ThreadLocal gives each thread its own generator (4.7.2 has no RandomNumberGenerator.GetInt32).
-        private static readonly ThreadLocal<Random> Jitter =
-            new ThreadLocal<Random>(() => new Random(Guid.NewGuid().GetHashCode()));
+        // Cryptographically strong jitter for retry backoff. RandomNumberGenerator is thread-safe
+        // for GetBytes (4.7.2 has no RandomNumberGenerator.GetInt32).
+        private static readonly RandomNumberGenerator JitterRng = RandomNumberGenerator.Create();
 
         public ResilientHttpClient(ILogger<ResilientHttpClient> logger, IApplicationMetrics metrics, ObservabilityOptions options)
         {
@@ -286,7 +285,7 @@ namespace EImece.Domain.Observability.Http
                     retryAttempt =>
                     {
                         var exponential = Math.Pow(2, retryAttempt);
-                        var jitterMs = Jitter.Value.Next(0, 250);
+                        var jitterMs = NextJitterMilliseconds(250);
                         return TimeSpan.FromSeconds(exponential) + TimeSpan.FromMilliseconds(jitterMs);
                     },
                     (outcome, delay, retryAttempt, context) =>
@@ -329,6 +328,13 @@ namespace EImece.Domain.Observability.Http
         private AsyncTimeoutPolicy<HttpResponseMessage> BuildTimeoutPolicy()
         {
             return Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(_options.HttpTimeoutSeconds));
+        }
+
+        private static int NextJitterMilliseconds(int maxExclusive)
+        {
+            var bytes = new byte[4];
+            JitterRng.GetBytes(bytes);
+            return (int)(BitConverter.ToUInt32(bytes, 0) % (uint)maxExclusive);
         }
 
         private static bool ShouldRetry(HttpResponseMessage response)

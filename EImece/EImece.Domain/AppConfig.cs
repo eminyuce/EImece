@@ -93,6 +93,17 @@ namespace EImece.Domain
         }
 
         /// <summary>
+        /// Google reCAPTCHA v2 siteverify endpoint. Override via Web.config RecaptchaSiteVerifyUrl.
+        /// </summary>
+        public static string RecaptchaSiteVerifyUrl
+        {
+            get
+            {
+                return GetConfigString("RecaptchaSiteVerifyUrl", "https://" + "www.google.com" + "/recaptcha/api/siteverify");
+            }
+        }
+
+        /// <summary>
         /// True when CaptchaProvider is Recaptcha. Kept for callers that previously checked RecaptchaEnabled.
         /// Prefer <see cref="CaptchaProvider"/>.
         /// </summary>

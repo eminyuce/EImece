@@ -315,7 +315,17 @@ namespace EImece.Domain.Models.FrontModels
                     continue;
                 }
 
-                result.Add(CreateSpecModel(field, name, unit, values, display, rawValue, isCheckbox, groupName));
+                result.Add(CreateSpecModel(new SpecModelArgs
+                {
+                    Field = field,
+                    Name = name,
+                    Unit = unit,
+                    Values = values,
+                    Display = display,
+                    RawValue = rawValue,
+                    IsCheckbox = isCheckbox,
+                    GroupName = groupName
+                }));
             }
         }
 
@@ -325,25 +335,29 @@ namespace EImece.Domain.Models.FrontModels
             return !isCheckbox && string.IsNullOrEmpty(rawValue);
         }
 
-        private static ProductSpecsModel CreateSpecModel(
-            XElement field,
-            XAttribute name,
-            XAttribute unit,
-            XAttribute values,
-            XAttribute display,
-            string rawValue,
-            bool isCheckbox,
-            string groupName)
+        private static ProductSpecsModel CreateSpecModel(SpecModelArgs args)
         {
-            string specsName = display != null ? display.Value : name.Value;
-            string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(field, rawValue);
-            string displayUnit = ResolveSpecDisplayUnit(isCheckbox, unit);
+            string specsName = args.Display != null ? args.Display.Value : args.Name.Value;
+            string displayValue = ProductSpecificationValueHelper.FormatSpecDisplayValue(args.Field, args.RawValue);
+            string displayUnit = ResolveSpecDisplayUnit(args.IsCheckbox, args.Unit);
             return new ProductSpecsModel(
                 specsName.ToStr().Trim(),
                 displayValue,
                 displayUnit,
-                values == null ? "" : values.Value.ToStr(),
-                groupName);
+                args.Values == null ? "" : args.Values.Value.ToStr(),
+                args.GroupName);
+        }
+
+        private sealed class SpecModelArgs
+        {
+            public XElement Field { get; set; }
+            public XAttribute Name { get; set; }
+            public XAttribute Unit { get; set; }
+            public XAttribute Values { get; set; }
+            public XAttribute Display { get; set; }
+            public string RawValue { get; set; }
+            public bool IsCheckbox { get; set; }
+            public string GroupName { get; set; }
         }
 
         private static string ResolveSpecDisplayUnit(bool isCheckbox, XAttribute unit)

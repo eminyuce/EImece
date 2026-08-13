@@ -215,7 +215,6 @@ namespace EImece.Domain.Services
             int billingAddressId = shoppingCart.BillingAddress.Id;
             if (shippingAddressId == 0)
             {
-                Logger.Debug("Creating new shipping address");
                 shoppingCart.ShippingAddress.Name = Resource.ShippingAddress;
                 shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 shoppingCart.ShippingAddress.Description = shoppingCart.Customer.RegistrationAddress;
@@ -224,11 +223,9 @@ namespace EImece.Domain.Services
                 shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
                 var shippingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.ShippingAddress).ConfigureAwait(false);
                 shippingAddressId = shippingAddress.Id;
-                Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
             }
             if (billingAddressId == 0)
             {
-                Logger.Debug("Creating new billing address");
                 shoppingCart.BillingAddress.Name = Resource.BillingAdress;
                 shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
                 shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
@@ -237,17 +234,14 @@ namespace EImece.Domain.Services
                 shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
                 var billingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.BillingAddress).ConfigureAwait(false);
                 billingAddressId = billingAddress.Id;
-                Logger.Debug($"New billing address created with Id: {billingAddressId}");
             }
 
-            Logger.Debug($"Saving customer type to normal for userId: {userId}");
             await CustomerService.SaveCustomerTypeToNormalAsync(userId).ConfigureAwait(false);
 
             Logger.Debug($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
             Order savedOrder = await SaveOrderAsync(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId).ConfigureAwait(false);
             Logger.Debug($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
-            Logger.Debug($"Saving order products for OrderId: {savedOrder.Id}");
             await SaveOrderProductAsync(shoppingCart, savedOrder).ConfigureAwait(false);
             Logger.Debug($"Order products saved successfully for OrderId: {savedOrder.Id}");
 
@@ -816,16 +810,13 @@ namespace EImece.Domain.Services
             customer.CreatedDate = DateTime.Now;
             customer.UpdatedDate = DateTime.Now;
             customer = await CustomerService.SaveOrEditEntityAsync(customer).ConfigureAwait(false);
-            Logger.Debug($"Customer saved with Id: {customer.Id}");
 
             buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
-            Logger.Debug($"Generated UserId for BuyNow customer: {buyNowSession.Customer.UserId}");
 
             Entities.Address shippingAddress = buyNowSession.ShippingAddress;
             int shippingAddressId = shippingAddress.Id;
             if (shippingAddressId == 0)
             {
-                Logger.Debug("Creating new shipping address for BuyNow order");
                 shippingAddress.Name = Resource.ShippingAddress;
                 shippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 shippingAddress.Description = customer.RegistrationAddress;
@@ -834,14 +825,12 @@ namespace EImece.Domain.Services
                 shippingAddress.ZipCode = customer.ZipCode;
                 shippingAddress = await AddressService.SaveOrEditEntityAsync(buyNowSession.ShippingAddress).ConfigureAwait(false);
                 shippingAddressId = shippingAddress.Id;
-                Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
             }
 
             Logger.Debug($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
             Order savedOrder = await SaveOrderAsync(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId).ConfigureAwait(false);
             Logger.Debug($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
-            Logger.Debug($"Saving order product for BuyNow OrderId: {savedOrder.Id}");
             await SaveOrderProductAsync(buyNowSession, savedOrder).ConfigureAwait(false);
             Logger.Debug($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
 

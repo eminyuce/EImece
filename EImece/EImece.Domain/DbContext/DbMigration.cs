@@ -74,7 +74,7 @@ namespace EImece.Domain.DbContext
             return ConnectionStringProvider.GetConnectionString();
         }
 
-        public void updateProductDescription()
+        public static void updateProductDescription()
         {
             Dictionary<int, Tuple<string, string>> devProducts = GetProducts(devConnectionString);
             foreach (var kvp in devProducts)

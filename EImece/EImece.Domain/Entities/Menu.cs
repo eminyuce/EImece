@@ -218,7 +218,7 @@ namespace EImece.Domain.Entities
             return true;
         }
 
-        private bool TryMatchStories(
+        private static bool TryMatchStories(
             string pageController,
             string pageAction,
             string controller,
