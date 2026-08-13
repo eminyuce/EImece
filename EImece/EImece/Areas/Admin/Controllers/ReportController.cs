@@ -619,6 +619,14 @@ namespace EImece.Areas.Admin.Controllers
 
                 reportKey = filter.ReportKey;
                 format = filter.Format;
+                if (!filter.StartDate.HasValue)
+                {
+                    filter.StartDate = GeneralHelper.TryParseFlexibleDate(Request["startDate"]);
+                }
+                if (!filter.EndDate.HasValue)
+                {
+                    filter.EndDate = GeneralHelper.TryParseFlexibleDate(Request["endDate"]);
+                }
                 var isCsv = string.Equals(format, "csv", StringComparison.OrdinalIgnoreCase);
                 var isExcel = string.IsNullOrWhiteSpace(format)
                     || string.Equals(format, "excel", StringComparison.OrdinalIgnoreCase)

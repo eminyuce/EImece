@@ -488,6 +488,8 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0, bool isFullPathImageUrl = false, bool isThump=false)
         {
+            NormalizeImageDimensions(ref width, ref height);
+
             if (entity == null || fileStorageId <= 0)
             {
                 return AppConfig.GetDefaultImage(width, height);
@@ -517,6 +519,30 @@ namespace EImece.Domain.Helpers.Extensions
             }
 
             return BuildResizeProxyImageUrl(entity, fileStorageId, width, height, isFullPathImageUrl);
+        }
+
+        /// <summary>
+        /// Coerce a zero dimension when the other side is set (avoids /images/w0h500 and /images/w610h0).
+        /// Leaves 0×0 unchanged so callers can still request the uncropped original.
+        /// </summary>
+        internal static void NormalizeImageDimensions(ref int width, ref int height)
+        {
+            if (width < 0)
+            {
+                width = 0;
+            }
+            if (height < 0)
+            {
+                height = 0;
+            }
+            if (width == 0 && height > 0)
+            {
+                width = height;
+            }
+            else if (height == 0 && width > 0)
+            {
+                height = width;
+            }
         }
 
         private static string BuildResizeProxyImageUrl(BaseEntity entity, int fileStorageId, int width, int height, bool isFullPathImageUrl)
@@ -839,11 +865,35 @@ namespace EImece.Domain.Helpers.Extensions
                 return $"/{Constants.ProductsControllerRoutingPrefix}/{categorySeo}/{seoId}";
             }
 
+            if (string.Equals(controller, "ProductCategories", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Category", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.ProductsCategoriesControllerRoutingPrefix}/pc/{seoId}";
+            }
+
             if (string.Equals(controller, "Stories", StringComparison.OrdinalIgnoreCase)
                 && string.Equals(action, Constants.DetailAction, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrEmpty(categorySeo))
             {
                 return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/{categorySeo}/{seoId}";
+            }
+
+            if (string.Equals(controller, "Stories", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Categories", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/sc/{seoId}";
+            }
+
+            if (string.Equals(controller, "Products", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Tag", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.ProductsControllerRoutingPrefix}/t/{seoId}";
+            }
+
+            if (string.Equals(controller, "Stories", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Tag", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/t/{seoId}";
             }
 
             if (string.Equals(controller, "Pages", StringComparison.OrdinalIgnoreCase)

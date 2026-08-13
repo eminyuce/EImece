@@ -2682,8 +2682,16 @@ namespace EImece.Domain.DbContext
         {
             var t = new SqlParameter();
             t.SqlDbType = sqlDbType;
-            t.ParameterName = parameterName;
-            t.Value = value;
+            t.IsNullable = true;
+            if (!string.IsNullOrEmpty(parameterName) && parameterName[0] != '@')
+            {
+                t.ParameterName = "@" + parameterName;
+            }
+            else
+            {
+                t.ParameterName = parameterName;
+            }
+            t.Value = value ?? DBNull.Value;
 
             return t;
         }

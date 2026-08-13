@@ -58,7 +58,9 @@
             else
             {
                 <div class="alert alert-warning mb-0" role="alert">
-                    Ödeme formu şu anda başlatılamadı. Lütfen daha sonra tekrar deneyin veya destek ile iletişime geçin.
+                    @(string.IsNullOrEmpty(checkoutFormInitialize != null ? checkoutFormInitialize.ErrorMessage : null)
+                        ? "Ödeme formu şu anda başlatılamadı. Lütfen daha sonra tekrar deneyin veya destek ile iletişime geçin."
+                        : checkoutFormInitialize.ErrorMessage)
                 </div>
             }
         </div>

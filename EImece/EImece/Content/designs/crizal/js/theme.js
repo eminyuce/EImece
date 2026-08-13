@@ -245,7 +245,9 @@
     }
 
     function syncCrizalNavOpenClass($) {
-        $('body').toggleClass('crizal-nav-open', $('#nav').hasClass('open'));
+        var open = $('#nav').hasClass('open');
+        $('body').toggleClass('crizal-nav-open', open);
+        $('.navbar-toggler').attr('aria-expanded', open ? 'true' : 'false');
     }
 
     function initMobileNavOpenClass($) {

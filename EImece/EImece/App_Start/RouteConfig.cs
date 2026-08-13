@@ -144,6 +144,22 @@ namespace EImece
                namespaces: new[] { Constants.ControllersNamespace }
            );
 
+            // SEO: conventional MVC category URLs 301 → canonical /c/pc/{id}
+            routes.MapRoute(
+                name: "ProductCategoriesLegacyMvc",
+                url: "productcategories/category/{id}",
+                defaults: new { controller = "ProductCategories", action = "CategoryLegacyMvc", id = UrlParameter.Optional },
+                namespaces: new[] { Constants.ControllersNamespace }
+            );
+
+            // SEO: conventional /stories/categories/{id} 301 → /s/sc/{id}
+            routes.MapRoute(
+                name: "StoryCategoriesLegacyMvc",
+                url: "stories/categories/{id}",
+                defaults: new { controller = Constants.StoriesRoute, action = "CategoriesLegacy", id = UrlParameter.Optional },
+                namespaces: new[] { Constants.ControllersNamespace }
+            );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

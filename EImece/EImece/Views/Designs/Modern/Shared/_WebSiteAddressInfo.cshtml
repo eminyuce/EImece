@@ -1,16 +1,17 @@
 ﻿@model SettingLayoutViewModel
+@using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
 @{
     var webSiteCompanyPhoneAndLocation = Model.WebSiteCompanyPhoneAndLocation.SettingValue;
     var webSiteCompanyEmailAddress = Model.WebSiteCompanyEmailAddress.SettingValue;
     var isPhone = !String.IsNullOrEmpty(webSiteCompanyPhoneAndLocation);
     var isEnvelope = !String.IsNullOrEmpty(webSiteCompanyEmailAddress);
-
+    var telHref = GeneralHelper.ToTelHref(webSiteCompanyPhoneAndLocation);
 }
 @if (Model.isMobilePage)
 {
 
-<a class="dropdown-item" href="tel:@webSiteCompanyPhoneAndLocation">
+<a class="dropdown-item" href="@telHref">
     <i class="mr-1" data-feather="phone" style="width: 13px; height: 13px;">
     </i>@webSiteCompanyPhoneAndLocation
 </a>
@@ -27,7 +28,7 @@ else if (isPhone || isEnvelope)
         {
     <li class="list-inline-item mr-1">
         <i class="text-light mr-2" data-feather="phone" style="width: 13px; height: 13px;" aria-hidden="true"></i>
-        <a class="text-light font-size-sm py-1 pl-0 pr-2" href="@string.Format("tel:{0}",webSiteCompanyPhoneAndLocation)">@Html.Raw(webSiteCompanyPhoneAndLocation)</a>
+        <a class="text-light font-size-sm py-1 pl-0 pr-2" href="@telHref">@Html.Raw(webSiteCompanyPhoneAndLocation)</a>
     </li>
         }
     @if (isEnvelope)

@@ -150,6 +150,20 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// True when IIS/appSettings actually contain Iyzico keys (empty values are not configured).
+        /// Defaults in <see cref="IyzicoApiKey"/> are only used as last-resort sandbox placeholders.
+        /// </summary>
+        public static bool HasConfiguredIyzicoCredentials
+        {
+            get
+            {
+                var api = ConfigurationManager.AppSettings["IyzicoApiKey"];
+                var secret = ConfigurationManager.AppSettings["IyzicoSecretKey"];
+                return !string.IsNullOrWhiteSpace(api) && !string.IsNullOrWhiteSpace(secret);
+            }
+        }
+
         public static bool IsSmtpClientEnabled
         {
             get
