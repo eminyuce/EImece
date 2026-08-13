@@ -425,23 +425,11 @@
         if (!el) {
             return;
         }
-        var text = el.value || '';
-        var lines = text.split(/\r?\n/);
-        var maxLen = 0;
-        for (var i = 0; i < lines.length; i++) {
-            if (lines[i].length > maxLen) {
-                maxLen = lines[i].length;
-            }
-        }
-        var cap = 56;
-        if (el.classList.contains('is-short')) {
-            cap = 28;
-        } else if (el.classList.contains('is-medium')) {
-            cap = 40;
-        }
-        el.style.width = Math.max(6, Math.min(maxLen + 1, cap)) + 'ch';
+        el.style.width = '';
         el.style.height = 'auto';
-        el.style.height = Math.min(el.scrollHeight, 220) + 'px';
+        var minH = parseFloat(window.getComputedStyle(el).minHeight) || 0;
+        var next = Math.max(el.scrollHeight, minH);
+        el.style.height = Math.min(next, 220) + 'px';
     }
 
     function sizeReviewNotes(context) {

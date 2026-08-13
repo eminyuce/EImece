@@ -225,8 +225,8 @@
     var text = (comment.Review ?? "").Trim();
     var len = text.Length;
     var sizeClass = len == 0 ? "is-empty" : (len <= 48 ? "is-short" : (len <= 140 ? "is-medium" : "is-long"));
-    var lineCount = string.IsNullOrEmpty(text) ? 1 : text.Split(new[] { '\n' }, StringSplitOptions.None).Length;
-    var rows = Math.Max(1, Math.Min(lineCount, 8));
+    var lineCount = string.IsNullOrEmpty(text) ? 2 : text.Split(new[] { '\n' }, StringSplitOptions.None).Length;
+    var rows = Math.Max(2, Math.Min(lineCount, 8));
     <label class="sr-only" for="pcomment-@comment.Id">Yorum</label>
     if (len == 0)
     {
