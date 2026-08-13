@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.IO;
 using EImece.Domain.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -53,6 +54,35 @@ namespace EImece.Tests.Helpers
         {
             Assert.AreEqual("EIMECE_DB_CONNECTION_STRING", ConnectionStringProvider.EnvironmentVariableName);
             Assert.AreEqual("EIMECE_DB_CONNECTION_STRING", Domain.Constants.DbConnectionEnvironmentVariable);
+        }
+
+        [TestMethod]
+        public void TryReadNamedConnectionStringFromFile_ReadsConfigSourceStyleFile()
+        {
+            var path = Path.Combine(Path.GetTempPath(), "EImece-cs-" + Guid.NewGuid().ToString("N") + ".config");
+            File.WriteAllText(path,
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                "<connectionStrings>" +
+                "  <add name=\"EImeceDbConnection\" connectionString=\"Data Source=parent-sql;Initial Catalog=EImece;Integrated Security=True;Encrypt=True;TrustServerCertificate=False;\" providerName=\"System.Data.SqlClient\" />" +
+                "</connectionStrings>");
+            try
+            {
+                var value = ConnectionStringProvider.TryReadNamedConnectionStringFromFile(path, "EImeceDbConnection");
+                StringAssert.Contains(value, "parent-sql");
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+        }
+
+        [TestMethod]
+        public void TryReadNamedConnectionStringFromFile_ReturnsNullWhenMissing()
+        {
+            var value = ConnectionStringProvider.TryReadNamedConnectionStringFromFile(
+                Path.Combine(Path.GetTempPath(), "does-not-exist-" + Guid.NewGuid().ToString("N") + ".config"),
+                "EImeceDbConnection");
+            Assert.IsNull(value);
         }
     }
 }

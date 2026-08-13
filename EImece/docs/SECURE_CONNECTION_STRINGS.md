@@ -5,7 +5,8 @@ This project no longer stores real SQL credentials in source control (CWE-798 / 
 ## Resolution order
 
 1. Environment variable **`EIMECE_DB_CONNECTION_STRING`** (full connection string) — preferred for CI, IIS, and Azure
-2. `connectionStrings` entry `EImeceDbConnection` in `Web.config` / `App.config` (or an external file via `configSource`)
+2. `ConnectionStrings.config` **one folder above the site** (for local IIS: `C:\inetpub\wwwroot\ConnectionStrings.config`) — outside the publish folder
+3. `connectionStrings` entry `EImeceDbConnection` in `Web.config` / `App.config` (or an in-site file via `configSource`)
 
 If the value is missing or still contains placeholders (`YOUR_SERVER`, `YOUR_DATABASE`, `YOUR_USER`, `YOUR_PASSWORD`, `CHANGEME`, `REPLACE_ME`), startup fails with a clear `ConfigurationErrorsException`. There is no hard-coded credential fallback.
 
@@ -45,7 +46,26 @@ For a persistent user-level variable (new terminals):
   "User")
 ```
 
-### Option B — Gitignored `ConnectionStrings.config`
+### Option B — `ConnectionStrings.config` one folder above the site (IIS)
+
+ASP.NET `configSource` cannot use `..` or a path outside the application folder. Publish also deletes an in-site `ConnectionStrings.config` when `DeleteExistingFiles` is true.
+
+Put the file **above** the published site so IIS publish cannot touch it:
+
+```text
+C:\inetpub\wwwroot\ConnectionStrings.config      ← keep this
+C:\inetpub\wwwroot\Eimece\Web.config             ← publish target (placeholders only)
+```
+
+Copy `EImece/ConnectionStrings.config.example` to `C:\inetpub\wwwroot\ConnectionStrings.config` and put the real connection string in it. Grant the app pool read access. Recycle the pool after editing the file.
+
+`ConnectionStringProvider` loads that parent file at startup (after the environment variable, before `Web.config`). Do not use `configSource` in `Web.Release.config` for this layout.
+
+`ConnectionStrings.config` is listed in `.gitignore` and must never be committed.
+
+### Option C — Gitignored `configSource` next to Web.config
+
+Only if you also exclude the file from publish (`DeleteExistingFiles=false` and do not deploy a placeholder over it):
 
 1. Copy `EImece/ConnectionStrings.config.example` to `EImece/ConnectionStrings.config`
 2. Put your real connection string in that file
@@ -55,9 +75,7 @@ For a persistent user-level variable (new terminals):
 <connectionStrings configSource="ConnectionStrings.config" />
 ```
 
-`ConnectionStrings.config` is listed in `.gitignore` and must never be committed.
-
-### Option C — Integrated Security in a local-only edit
+### Option D — Integrated Security in a local-only edit
 
 You may replace the placeholder in `Web.config` with Integrated Security for your machine. Do not put SQL passwords in `Web.config`, and do not commit machine-specific secrets.
 
@@ -78,7 +96,7 @@ Same rules apply to `EImece.Tests/App.config`. Prefer `EIMECE_DB_CONNECTION_STRI
 ### IIS (Windows Server)
 
 1. Set a machine or app-pool environment variable `EIMECE_DB_CONNECTION_STRING`, **or**
-2. Deploy a server-only `ConnectionStrings.config` next to `Web.config` (not from git) and use `configSource`, **or**
+2. Place a server-only `ConnectionStrings.config` **one folder above the site** (for this repo: `C:\inetpub\wwwroot\ConnectionStrings.config`) — publish cannot delete it, **or**
 3. Set the connection string in IIS Manager → site → Connection Strings (overrides `Web.config` at runtime)
 
 Prefer the app-pool identity with SQL **Integrated Security** when possible so no SQL password is stored.

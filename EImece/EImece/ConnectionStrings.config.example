@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copy this file to ConnectionStrings.config (gitignored) next to Web.config, then either:
-  1) Prefer setting environment variable EIMECE_DB_CONNECTION_STRING (no file edit needed), or
-  2) In Web.config replace the <connectionStrings>...</connectionStrings> block with:
-       <connectionStrings configSource="ConnectionStrings.config" />
+  Copy this file to ConnectionStrings.config (gitignored). For local IIS, put it one
+  folder above the site so publish cannot delete it:
+
+    C:\inetpub\wwwroot\ConnectionStrings.config
+    C:\inetpub\wwwroot\Eimece\          (published site)
+
+  Do not use configSource=".." — ASP.NET forbids paths outside the application folder.
+  ConnectionStringProvider reads the parent file at startup.
 
   Never commit ConnectionStrings.config with real credentials.
   See docs/SECURE_CONNECTION_STRINGS.md.
