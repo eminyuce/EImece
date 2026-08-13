@@ -1,74 +1,61 @@
-﻿@model BaseContent
+@model BaseContent
 @using EImece.Domain.Entities
 
 @Html.HiddenFor(model => model.ImageHeight)
 @Html.HiddenFor(model => model.ImageWidth)
 
-<div class="form-group admin-image-upload-help">
-    <div class="col-md-offset-2 col-md-10">
-        <p class="help-block" style="margin-top:0; margin-bottom:8px;">
-            Yüklediğiniz orijinal fotoğraf büyük olabilir. Sistem sitede kullanmak için daha küçük bir kopya üretir
-            (daha hızlı sayfa, daha az depolama). Aşağıdaki boyut o kopyanın piksel ölçüsüdür; mevcut görselleri otomatik değiştirmez.
-        </p>
-        <div class="admin-image-size-override"
-             data-admin-image-size
-             data-default-w="@Model.ImageWidth"
-             data-default-h="@Model.ImageHeight">
-            <button type="button" class="admin-image-size-override__toggle collapsed"
-               data-toggle="collapse"
-               data-target="#adminImageSizeOverride"
-               aria-expanded="false"
-               aria-controls="adminImageSizeOverride">
-                <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
-                Görsel boyutunu bu yükleme için özelleştir
-                <span class="admin-image-size-override__summary text-muted"
-                      data-image-size-summary>@Model.ImageWidth × @Model.ImageHeight px</span>
-            </button>
-            <div id="adminImageSizeOverride" class="collapse admin-image-size-override__panel">
-                <p class="help-block" style="margin-top:10px; margin-bottom:12px;">
-                    Varsayılan değerler sistem ayarlarından gelir (ör. 1200×900).
-                    Burada yazdığınız genişlik ve yükseklik yalnızca bu kayıt/yükleme için kullanılır.
-                    Daha büyük değer = daha net ama daha yavaş sayfa; daha küçük = daha hızlı ama daha az detay.
-                </p>
-                <div class="admin-image-size-override__presets" data-image-size-presets>
-                    <button type="button" class="btn btn-default btn-sm" data-image-preset="default">Varsayılan</button>
-                    <button type="button" class="btn btn-default btn-sm" data-image-preset="800" data-w="800" data-h="600">Küçük (800×600)</button>
-                    <button type="button" class="btn btn-default btn-sm" data-image-preset="1200" data-w="1200" data-h="900">Orta (1200×900)</button>
-                    <button type="button" class="btn btn-default btn-sm" data-image-preset="1600" data-w="1600" data-h="1200">Büyük (1600×1200)</button>
+<div class="admin-image-upload-help">
+    <div class="admin-image-size-override"
+         data-admin-image-size
+         data-default-w="@Model.ImageWidth"
+         data-default-h="@Model.ImageHeight">
+        <div class="admin-image-upload-help__header">
+            <span class="admin-image-upload-help__badge"
+                  data-image-size-summary>@Model.ImageWidth × @Model.ImageHeight px</span>
+            <p class="admin-image-upload-help__text">
+                Yeni yüklemeler sitede bu boyutta kaydedilir. Orijinal fotoğrafınız durur; daha önce yüklenen görseller değişmez.
+            </p>
+        </div>
+        <button type="button" class="admin-image-size-override__toggle collapsed"
+                data-toggle="collapse"
+                data-target="#adminImageSizeOverride"
+                aria-expanded="false"
+                aria-controls="adminImageSizeOverride">
+            <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+            Bu yükleme için boyutu değiştir
+        </button>
+        <div id="adminImageSizeOverride" class="collapse admin-image-size-override__panel">
+            <p class="help-block admin-image-size-override__hint">
+                Varsayılan değerler sistem ayarlarından gelir. Buradaki genişlik ve yükseklik yalnızca bu yükleme için kullanılır.
+            </p>
+            <div class="admin-image-size-override__presets" data-image-size-presets>
+                <button type="button" class="btn btn-default btn-sm" data-image-preset="default">Varsayılan</button>
+                <button type="button" class="btn btn-default btn-sm" data-image-preset="800" data-w="800" data-h="600">Küçük (800×600)</button>
+                <button type="button" class="btn btn-default btn-sm" data-image-preset="1200" data-w="1200" data-h="900">Orta (1200×900)</button>
+                <button type="button" class="btn btn-default btn-sm" data-image-preset="1600" data-w="1600" data-h="1200">Büyük (1600×1200)</button>
+            </div>
+            <div class="admin-image-size-override__fields">
+                <div class="admin-image-size-override__field">
+                    <label for="imageWidthTxt">Genişlik (px)</label>
+                    <input type="number"
+                           class="form-control"
+                           id="imageWidthTxt"
+                           min="0"
+                           max="2000"
+                           step="10"
+                           value="@Model.ImageWidth"
+                           autocomplete="off" />
                 </div>
-                <div class="form-horizontal" style="margin-top:14px;">
-                    <div class="form-group" style="margin-left:0; margin-right:0;">
-                        <label class="control-label col-sm-3" for="imageWidthTxt">Genişlik (px)</label>
-                        <div class="col-sm-4">
-                            <input type="number"
-                                   class="form-control"
-                                   id="imageWidthTxt"
-                                   min="0"
-                                   max="2000"
-                                   step="10"
-                                   value="@Model.ImageWidth"
-                                   autocomplete="off" />
-                        </div>
-                        <div class="col-sm-5">
-                            <p class="help-block" style="margin:7px 0 0;">Sitede gösterilecek kopyanın yatay boyutu.</p>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-left:0; margin-right:0;">
-                        <label class="control-label col-sm-3" for="imageHeightTxt">Yükseklik (px)</label>
-                        <div class="col-sm-4">
-                            <input type="number"
-                                   class="form-control"
-                                   id="imageHeightTxt"
-                                   min="0"
-                                   max="2000"
-                                   step="10"
-                                   value="@Model.ImageHeight"
-                                   autocomplete="off" />
-                        </div>
-                        <div class="col-sm-5">
-                            <p class="help-block" style="margin:7px 0 0;">Sitede gösterilecek kopyanın dikey boyutu.</p>
-                        </div>
-                    </div>
+                <div class="admin-image-size-override__field">
+                    <label for="imageHeightTxt">Yükseklik (px)</label>
+                    <input type="number"
+                           class="form-control"
+                           id="imageHeightTxt"
+                           min="0"
+                           max="2000"
+                           step="10"
+                           value="@Model.ImageHeight"
+                           autocomplete="off" />
                 </div>
             </div>
         </div>

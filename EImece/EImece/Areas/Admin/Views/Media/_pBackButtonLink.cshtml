@@ -45,35 +45,30 @@
         ? Url.Action("Index", controllerName)
         : Url.Action("Index", "Dashboard");
 }
-<h2>
-    @AdminResource.FileUploadingPage
-</h2>
-<hr class="adminLine" />
-<div class="row">
-    <div class="col-md-8">
-        <h3>
+<div class="admin-media-heading">
+    <div class="admin-media-heading__title">
+        <h1>@AdminResource.FileUploadingPage</h1>
+        <div class="admin-media-heading__meta">
             @if (baseContent != null)
             {
-                @Html.DisplayFor(model => baseContent.Name)
+                <strong>@Html.DisplayFor(model => baseContent.Name)</strong>
             }
-        </h3>
-        @if (!string.IsNullOrEmpty(itemTypeName))
-        {
-            <p>@itemTypeName</p>
-        }
-    </div>
-    <div class="col-md-4">
-        <div class="admin-edit-toolbar-actions admin-media-toolbar-actions">
-            @if (!string.IsNullOrEmpty(editorUrl))
+            @if (!string.IsNullOrEmpty(itemTypeName))
             {
-                <a href="@editorUrl" class="btn btn-sm admin-edit-back-to-editor-btn" title="@AdminResource.BackToEditor">
-                    <span class="admin-edit-back-to-list-icon" aria-hidden="true">←</span>
-                    <span>@AdminResource.BackToEditor</span>
-                </a>
+                <span class="admin-media-heading__type">@itemTypeName</span>
             }
-            <a href="@listUrl" class="btn btn-sm admin-edit-back-to-list-btn" title="@AdminResource.BackToList">
-                <span>@AdminResource.BackToList</span>
-            </a>
         </div>
+    </div>
+    <div class="admin-edit-toolbar-actions admin-media-toolbar-actions">
+        @if (!string.IsNullOrEmpty(editorUrl))
+        {
+            <a href="@editorUrl" class="btn btn-sm admin-edit-back-to-editor-btn" title="@AdminResource.BackToEditor">
+                <span class="admin-edit-back-to-list-icon" aria-hidden="true">←</span>
+                <span>@AdminResource.BackToEditor</span>
+            </a>
+        }
+        <a href="@listUrl" class="btn btn-sm admin-edit-back-to-list-btn" title="@AdminResource.BackToList">
+            <span>@AdminResource.BackToList</span>
+        </a>
     </div>
 </div>

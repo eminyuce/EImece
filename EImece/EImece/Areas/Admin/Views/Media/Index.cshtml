@@ -32,63 +32,65 @@
     filesHelper.InitFilesMediaFolder();
 
 }
-<style>
-    .myslider {
-        width: 3em;
-        height: 1.6em;
-        top: 50%;
-        margin-top: -.8em;
-        text-align: center;
-        line-height: 1.6em;
-    }
-</style>
-
-<div class="form-horizontal">
-
+<div class="admin-media-page">
     @Html.Partial("_pBackButtonLink", Model)
-</div>
 
-@Html.HiddenFor(r => Model.Id)
-@Html.HiddenFor(r => Model.ImageType)
-@Html.HiddenFor(r => Model.MediaMod)
-@Html.HiddenFor(r => Model.Lang)
-<!-- Warning Alert -->
-<div class="alert alert-info">
-    <strong>@AdminResource.WarningForDesign</strong>
-</div>
-<!-- blueimp File Upload & Gallery styles -->
-@Styles.Render("~/Content/jQuery-File-Upload")
+    @Html.HiddenFor(r => Model.Id)
+    @Html.HiddenFor(r => Model.ImageType)
+    @Html.HiddenFor(r => Model.MediaMod)
+    @Html.HiddenFor(r => Model.Lang)
 
-<script>
-    var $form = null;
+    <p class="admin-media-design-hint">@AdminResource.WarningForDesign</p>
 
-    $('#fileupload').addClass('fileupload-processing');
-    $(function () {
+    <!-- blueimp File Upload & Gallery styles -->
+    @Styles.Render("~/Content/jQuery-File-Upload")
 
-        $form = $('#fileupload').fileupload({
-            dataType: 'json',
-            messages: {
-                maxNumberOfFiles: '@AdminResource.FileUploadMaxNumberOfFiles',
-                acceptFileTypes: '@AdminResource.FileUploadAcceptFileTypes',
-                maxFileSize: '@AdminResource.FileUploadMaxFileSize',
-                minFileSize: '@AdminResource.FileUploadMinFileSize'
+    <script>
+        var $form = null;
+
+        $('#fileupload').addClass('fileupload-processing');
+        $(function () {
+
+            $form = $('#fileupload').fileupload({
+                dataType: 'json',
+                messages: {
+                    maxNumberOfFiles: '@AdminResource.FileUploadMaxNumberOfFiles',
+                    acceptFileTypes: '@AdminResource.FileUploadAcceptFileTypes',
+                    maxFileSize: '@AdminResource.FileUploadMaxFileSize',
+                    minFileSize: '@AdminResource.FileUploadMinFileSize'
+                }
+            });
+            $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+                data.formData = {
+                    contentId: $("#Id").val(),
+                    imageType: $("#ImageType").val(),
+                    mod: $("#MediaMod").val(),
+                    imageHeight: $("#ImageHeight").val(),
+                    imageWidth: $("#ImageWidth").val(),
+                    selectedTags: ""
+                }
+            });
+
+            var $upload = $('#fileupload');
+            var dropTimer;
+            $upload.on('dragover', function () {
+                $upload.addClass('is-dragover');
+                clearTimeout(dropTimer);
+            });
+            $upload.on('dragleave drop', function () {
+                dropTimer = setTimeout(function () {
+                    $upload.removeClass('is-dragover');
+                }, 80);
+            });
+            function syncQueueState() {
+                $upload.toggleClass('has-files', $upload.find('.files tr').length > 0);
             }
-        });
-        $('#fileupload').bind('fileuploadsubmit', function (e, data) {
-            data.formData = {
-                contentId: $("#Id").val(),
-                imageType: $("#ImageType").val(),
-                mod: $("#MediaMod").val(),
-                imageHeight: $("#ImageHeight").val(),
-                imageWidth: $("#ImageWidth").val(),
-                selectedTags: ""
-            }
-        });
+            $upload.on('fileuploadadd fileuploadfinished fileuploaddestroyed fileuploadfail fileuploadalways', syncQueueState);
 
-    });
-</script>
+        });
+    </script>
 
-<div class="panel with-nav-tabs panel-default">
+    <div class="panel with-nav-tabs panel-default admin-media-tabs">
     <div class="panel-heading">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.FileUploadingSection</a></li>
@@ -98,9 +100,7 @@
     <div class="panel-body">
         <div class="tab-content">
             <div class="tab-pane fade in active" id="tab1default">
-                <div>
-                    @Html.Partial("pSliderResizing", baseContent)
-                </div>
+                @Html.Partial("pSliderResizing", baseContent)
                 @Html.Partial("_Files")
             </div>
             <div class="tab-pane fade" id="tab2default">
@@ -193,6 +193,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 
