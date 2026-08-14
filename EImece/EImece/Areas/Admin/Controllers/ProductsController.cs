@@ -77,13 +77,12 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var productDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(id, cancellationToken);
-            Product content = productDetailViewModel.Product;
-            ViewBag.Template = await TemplateService.GetTemplateAsync(content.ProductCategory.TemplateId.Value, cancellationToken);
+            Product content = await ProductService.GetProductByIdAsync(id, cancellationToken);
             if (content == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.Template = await TemplateService.GetTemplateAsync(content.ProductCategory.TemplateId.Value, cancellationToken);
             return View(content);
         }
 
@@ -100,8 +99,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-            var productDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(id, cancellationToken);
-            Product content = productDetailViewModel.Product;
+            Product content = await ProductService.GetProductByIdAsync(id, cancellationToken);
             ViewBag.Template = await TemplateService.GetTemplateAsync(content.ProductCategory.TemplateId.Value, cancellationToken);
             RemoveModelState();
             return View(content);

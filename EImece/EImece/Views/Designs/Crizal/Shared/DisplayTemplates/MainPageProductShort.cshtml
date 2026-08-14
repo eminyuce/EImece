@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Entities.Product
+﻿@model EImece.Domain.Models.DTOs.Storefront.StorefrontProductCardDto
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
@@ -7,8 +7,7 @@
     var product = Model;
     int Width = ViewData["Width"].ToInt(80);
     int Height = ViewData["Height"].ToInt(80);
-    var imageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
-    var imageUrl = product.GetCroppedImageUrl(imageId, Width, Height);
+    var imageUrl = product.GetCroppedImageUrl(null, Width, Height);
     var productLink = product.DetailPageRelativeUrl;
     var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
     var rating = product.Rating > 5 ? 5 : (product.Rating < 0 ? 0 : product.Rating);

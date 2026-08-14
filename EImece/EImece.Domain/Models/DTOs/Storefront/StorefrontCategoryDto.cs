@@ -64,6 +64,11 @@ namespace EImece.Domain.Models.DTOs.Storefront
             get { return string.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(Name), ModifiedId); }
         }
 
+        public string GetSeoUrl()
+        {
+            return SeoUrl;
+        }
+
         public string DetailPageUrl
         {
             get

@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
@@ -13,7 +14,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<Story> FeaturedStories { get; set; }
 
-        public List<Product> RelatedProducts { get; set; }
+        public List<StorefrontProductCardDto> RelatedProducts { get; set; }
 
         public Menu BlogMenu { get; set; }
 
@@ -25,5 +26,11 @@ namespace EImece.Domain.Models.FrontModels
         public Story NextStory { get; set; }
 
         public Dictionary<string, string> SocialMediaLinks { get; set; }
+
+        public StorefrontStoryDetailDto StorefrontStory { get; set; }
+        public List<StorefrontStoryCardDto> StorefrontRelatedStories { get; set; }
+        public List<StorefrontStoryCardDto> StorefrontFeaturedStories { get; set; }
+        public StorefrontStoryCardDto StorefrontPreviousStory { get; set; }
+        public StorefrontStoryCardDto StorefrontNextStory { get; set; }
     }
 }

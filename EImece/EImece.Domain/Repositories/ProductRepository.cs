@@ -496,6 +496,33 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
+        public List<Product> GetActiveProductsForRss(int language, int take)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.Brand);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            return GetAllIncludingReadOnly(includeProperties.ToArray())
+                .Where(match)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<List<Product>> GetActiveProductsForRssAsync(int language, int take, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.Brand);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            return await GetAllIncludingReadOnly(includeProperties.ToArray())
+                .Where(match)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         public static ItemType ProductsItem
         {
             get
@@ -734,7 +761,7 @@ namespace EImece.Domain.Repositories
                     Discount = p.Discount,
                     ProductCode = p.ProductCode,
                     Rating = p.Rating,
-                    SoldCount = p.SoldCount,
+                    SoldCount = 0,
                     MainImageId = p.MainImageId,
                     ProductCategoryId = p.ProductCategoryId,
                     ProductCategoryName = p.ProductCategory != null ? p.ProductCategory.Name : string.Empty,
@@ -785,7 +812,7 @@ namespace EImece.Domain.Repositories
                     Discount = p.Discount,
                     ProductCode = p.ProductCode,
                     Rating = p.Rating,
-                    SoldCount = p.SoldCount,
+                    SoldCount = 0,
                     MainImageId = p.MainImageId,
                     ProductCategoryId = p.ProductCategoryId,
                     ProductCategoryName = p.ProductCategory != null ? p.ProductCategory.Name : string.Empty,
@@ -879,7 +906,7 @@ namespace EImece.Domain.Repositories
                     Discount = p.Discount,
                     ProductCode = p.ProductCode,
                     Rating = p.Rating,
-                    SoldCount = p.SoldCount,
+                    SoldCount = 0,
                     MainImageId = p.MainImageId,
                     ProductCategoryId = p.ProductCategoryId,
                     ProductCategoryName = p.ProductCategory != null ? p.ProductCategory.Name : string.Empty,
@@ -1327,7 +1354,7 @@ namespace EImece.Domain.Repositories
                     Discount = pt.Product.Discount,
                     ProductCode = pt.Product.ProductCode,
                     Rating = pt.Product.Rating,
-                    SoldCount = pt.Product.SoldCount,
+                    SoldCount = 0,
                     MainImageId = pt.Product.MainImageId,
                     ProductCategoryId = pt.Product.ProductCategoryId,
                     ProductCategoryName = pt.Product.ProductCategory != null ? pt.Product.ProductCategory.Name : string.Empty,
@@ -1383,7 +1410,7 @@ namespace EImece.Domain.Repositories
                     Discount = pt.Product.Discount,
                     ProductCode = pt.Product.ProductCode,
                     Rating = pt.Product.Rating,
-                    SoldCount = pt.Product.SoldCount,
+                    SoldCount = 0,
                     MainImageId = pt.Product.MainImageId,
                     ProductCategoryId = pt.Product.ProductCategoryId,
                     ProductCategoryName = pt.Product.ProductCategory != null ? pt.Product.ProductCategory.Name : string.Empty,

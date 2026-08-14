@@ -332,7 +332,8 @@ namespace EImece.Domain.Repositories
                     MainPage = s.MainPage,
                     IsFeaturedStory = s.IsFeaturedStory,
                     CreatedDate = s.CreatedDate,
-                    UpdatedDate = s.UpdatedDate
+                    UpdatedDate = s.UpdatedDate,
+                    AuthorName = s.AuthorName
                 };
             }
         }

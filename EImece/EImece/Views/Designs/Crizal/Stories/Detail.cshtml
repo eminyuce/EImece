@@ -1,35 +1,33 @@
 @model EImece.Domain.Models.FrontModels.StoryDetailViewModel
 @using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
 @{
-    var story = Model.Story;
-    ViewBag.Title = story.GetSeoTitle();
-    ViewBag.Description = story.GetSeoDescription();
-    ViewBag.Keywords = story.GetSeoKeywords();
-    var storyFiles = (story.StoryFiles ?? Enumerable.Empty<StoryFile>())
-        .Where(f => f != null && (f.FileStorage == null || f.FileStorage.IsActive))
-        .OrderBy(f => f.FileStorage != null ? f.FileStorage.Position : f.Position)
-        .ThenBy(f => f.Position)
+    var storyDetail = Model.StorefrontStory;
+    ViewBag.Title = GeneralHelper.GetDescriptionWithBody(storyDetail.Name, 70);
+    ViewBag.Description = storyDetail.GetSeoDescription(160);
+    ViewBag.Keywords = storyDetail.MetaKeywords;
+    var storyFiles = (storyDetail.StoryFiles ?? new System.Collections.Generic.List<StorefrontProductFileDto>())
+        .Where(f => f != null && f.IsActive)
+        .OrderBy(f => f.Position)
         .ToList();
     var lightboxId = "storyGalleryLightbox";
     var lightboxCarouselId = lightboxId + "Carousel";
-    var storyTags = (story.StoryTags ?? Enumerable.Empty<StoryTag>())
-        .Where(r => r.Tag != null)
-        .Select(r => r.Tag)
+    var storyTags = (storyDetail.StoryTags ?? new System.Collections.Generic.List<StorefrontTagDto>())
+        .Where(r => r != null)
         .ToList();
-    var storyCategory = story.StoryCategory;
-    var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
-    var relatedProducts = Model.RelatedProducts.OrderByStorefrontDefault().Take(4).ToList();
-    var cloudTags = Model.Tags != null ? Model.Tags.OrderByDescending(t => t.ItemCount).ThenBy(t => t.Name).Take(16).ToList() : new List<Tag>();
-    var tagCounts = (Model.Tags ?? new List<Tag>())
+    var relatedStories = (Model.StorefrontRelatedStories ?? new System.Collections.Generic.List<StorefrontStoryCardDto>()).OrderBy(x => Guid.NewGuid()).Take(3).ToList();
+    var relatedProducts = (Model.RelatedProducts ?? new System.Collections.Generic.List<Product>()).OrderByStorefrontDefault().Take(4).ToList();
+    var cloudTags = Model.Tags != null ? Model.Tags.OrderByDescending(t => t.ItemCount).ThenBy(t => t.Name).Take(16).ToList() : new System.Collections.Generic.List<Tag>();
+    var tagCounts = (Model.Tags ?? new System.Collections.Generic.List<Tag>())
         .GroupBy(t => t.Id)
         .ToDictionary(g => g.Key, g => g.First().ItemCount);
-    var heroImageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
-    var heroUrl = heroImageId > 0 ? story.GetCroppedImageUrl(heroImageId, 1200, 675) : null;
+    var heroImageId = storyDetail.MainImageId.HasValue ? storyDetail.MainImageId.Value : 0;
+    var heroUrl = heroImageId > 0 ? storyDetail.GetCroppedImageUrl(heroImageId, 1200, 675) : null;
 }
 
 <section class="crizal-story-detail">
@@ -40,14 +38,14 @@
                 <li class="crizal-breadcrumb__item breadcrumb-item">
                     <a href="@Url.Action("Index", "Stories")" class="crizal-breadcrumb__link">@Resource.Stories</a>
                 </li>
-                @if (storyCategory != null)
+                @if (!string.IsNullOrEmpty(storyDetail.StoryCategoryName))
                 {
                     <li class="crizal-breadcrumb__item breadcrumb-item">
-                        <a href="@storyCategory.DetailPageRelativeUrl" class="crizal-breadcrumb__link">@storyCategory.Name</a>
+                        <a href="@storyDetail.StoryCategoryDetailPageUrl" class="crizal-breadcrumb__link">@storyDetail.StoryCategoryName</a>
                     </li>
                 }
                 <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
-                    <span class="crizal-breadcrumb__current" title="@story.Name">@story.Name</span>
+                    <span class="crizal-breadcrumb__current" title="@storyDetail.Name">@storyDetail.Name</span>
                 </li>
             </ol>
         </nav>
@@ -62,7 +60,7 @@
                             <ul class="crizal-story-widget__list">
                                 @foreach (var allStoryCategory in Model.StoryCategories)
                                 {
-                                    var isCurrent = storyCategory != null && allStoryCategory.Id == storyCategory.Id;
+                                    var isCurrent = storyDetail.StoryCategoryId > 0 && allStoryCategory.Id == storyDetail.StoryCategoryId;
                                     <li>
                                         @if (isCurrent)
                                         {
@@ -80,12 +78,12 @@
                         </div>
                     }
 
-                    @if (Model.FeaturedStories.IsNotEmpty())
+                    @if (Model.StorefrontFeaturedStories.IsNotEmpty())
                     {
                         <div class="crizal-story-widget">
                             <h2 class="crizal-story-widget__title">@Resource.IsFeaturedStory</h2>
                             <div class="crizal-story-featured">
-                                @foreach (var featuredStory in Model.FeaturedStories.Take(4))
+                                @foreach (var featuredStory in Model.StorefrontFeaturedStories.Take(4))
                                 {
                                     var imgTag = featuredStory.GetCroppedImageUrl(featuredStory.MainImageId, 72, 72);
                                     <a class="crizal-story-featured__item" href="@featuredStory.DetailPageUrl">
@@ -95,10 +93,6 @@
                                         }
                                         <span>
                                             <strong>@featuredStory.Name</strong>
-                                            @if (!string.IsNullOrEmpty(featuredStory.AuthorName))
-                                            {
-                                                <small>@featuredStory.AuthorName</small>
-                                            }
                                         </span>
                                     </a>
                                 }
@@ -128,13 +122,8 @@
                             <div class="crizal-tags">
                                 @foreach (var tag in storyTags)
                                 {
-                                    var count = tagCounts.ContainsKey(tag.Id) ? tagCounts[tag.Id] : 0;
-                                    <a class="crizal-tag" href="@tag.DetailPageRelativeUrlForStories">
+                                    <a class="crizal-tag" href="@tag.StoryTagDetailPageUrl">
                                         <span class="crizal-tag__name">@tag.Name</span>
-                                        @if (count > 0)
-                                        {
-                                            <span class="crizal-tag__count">@count</span>
-                                        }
                                     </a>
                                 }
                             </div>
@@ -145,17 +134,13 @@
 
             <article class="col-lg-9 order-lg-2">
                 <header class="crizal-story-detail__header">
-                    <h1 class="crizal-story-detail__title">@story.Name</h1>
+                    <h1 class="crizal-story-detail__title">@storyDetail.Name</h1>
                     <div class="crizal-story-detail__meta">
-                        @if (!string.IsNullOrEmpty(story.AuthorName))
+                        @if (!string.IsNullOrEmpty(storyDetail.StoryCategoryName))
                         {
-                            <span>@story.AuthorName</span>
+                            <a href="@storyDetail.StoryCategoryDetailPageUrl">@storyDetail.StoryCategoryName</a>
                         }
-                        @if (storyCategory != null)
-                        {
-                            <a href="@storyCategory.DetailPageRelativeUrl">@storyCategory.Name</a>
-                        }
-                        <time datetime="@story.CreatedDate.ToString("yyyy-MM-dd")">@story.CreatedDate.ToString("dd MMM yyyy")</time>
+                        <time datetime="@storyDetail.CreatedDate.ToString("yyyy-MM-dd")">@storyDetail.CreatedDate.ToString("dd MMM yyyy")</time>
                     </div>
                 </header>
 
@@ -163,7 +148,7 @@
                     var galleryFiles = storyFiles;
                     if (!string.IsNullOrEmpty(heroUrl))
                     {
-                        var heroLarge = story.GetCroppedImageUrl(heroImageId, 0, 0);
+                        var heroLarge = storyDetail.GetCroppedImageUrl(heroImageId, 0, 0);
                         if (string.IsNullOrEmpty(heroLarge))
                         {
                             heroLarge = heroUrl;
@@ -171,7 +156,7 @@
                         <figure class="crizal-story-detail__hero">
                             <a href="@heroLarge" class="pt-hero__zoom" data-pt-lightbox-single>
                                 <img src="@heroUrl"
-                                     alt="@story.Name"
+                                     alt="@storyDetail.Name"
                                      width="1200"
                                      height="675"
                                      loading="eager"
@@ -191,7 +176,7 @@
                         }
                         <figure class="crizal-story-detail__hero">
                             <a href="@firstLarge" class="pt-hero__zoom" data-pt-lightbox-single>
-                                <img src="@firstUrl" alt="@first.Name" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async" />
+                                <img src="@firstUrl" alt="@first.Title" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async" />
                             </a>
                         </figure>
                         galleryFiles = storyFiles.Skip(1).ToList();
@@ -199,7 +184,7 @@
                 }
 
                 <div class="crizal-story-detail__content post-content">
-                    @Html.Raw(story.Description)
+                    @Html.Raw(storyDetail.Description)
                 </div>
 
                 @if (galleryFiles.IsNotEmpty())
@@ -214,7 +199,7 @@
                             {
                                 largeSrc = file.GetCroppedImageUrl(file.FileStorageId, 800, 600);
                             }
-                            var alt = !string.IsNullOrEmpty(file.Name) ? file.Name : story.Name;
+                            var alt = !string.IsNullOrEmpty(file.Title) ? file.Title : storyDetail.Name;
                             <div class="col-6 col-md-3">
                                 <a href="@largeSrc" class="pt-gallery__item" data-pt-slide="@i">
                                     <img src="@thumbSrc" class="img-thumbnail rounded" alt="@alt" loading="lazy" decoding="async" />
@@ -237,7 +222,7 @@
                                                 {
                                                     largeSrc = file.GetCroppedImageUrl(file.FileStorageId, 800, 600);
                                                 }
-                                                var alt = !string.IsNullOrEmpty(file.Name) ? file.Name : story.Name;
+                                                var alt = !string.IsNullOrEmpty(file.Title) ? file.Title : storyDetail.Name;
                                                 <div class="carousel-item@(i == 0 ? " active" : "")">
                                                     <img src="@largeSrc" class="pt-lightbox__img" alt="@alt" />
                                                 </div>
@@ -270,13 +255,8 @@
                         <div class="crizal-tags">
                             @foreach (var t in storyTags)
                             {
-                                var count = tagCounts.ContainsKey(t.Id) ? tagCounts[t.Id] : 0;
-                                <a class="crizal-tag" href="@t.DetailPageRelativeUrlForStories">
+                                <a class="crizal-tag" href="@t.StoryTagDetailPageUrl">
                                     <span class="crizal-tag__name">@t.Name</span>
-                                    @if (count > 0)
-                                    {
-                                        <span class="crizal-tag__count">@count</span>
-                                    }
                                 </a>
                             }
                         </div>
@@ -288,15 +268,15 @@
                     }
                 </div>
 
-                <nav class="crizal-story-nav@(Model.PreviousStory == null && Model.NextStory != null ? " crizal-story-nav--end" : (Model.PreviousStory != null && Model.NextStory == null ? " crizal-story-nav--start" : ""))" aria-label="@Resource.PostNavigation">
+                <nav class="crizal-story-nav@(Model.StorefrontPreviousStory == null && Model.StorefrontNextStory != null ? " crizal-story-nav--end" : (Model.StorefrontPreviousStory != null && Model.StorefrontNextStory == null ? " crizal-story-nav--start" : ""))" aria-label="@Resource.PostNavigation">
                     <div class="crizal-story-nav__row">
-                        @if (Model.PreviousStory != null)
+                        @if (Model.StorefrontPreviousStory != null)
                         {
-                            <a class="crizal-story-nav__link crizal-story-nav__link--prev" href="@Model.PreviousStory.DetailPageRelativeUrl">
+                            <a class="crizal-story-nav__link crizal-story-nav__link--prev" href="@Model.StorefrontPreviousStory.DetailPageUrl">
                                 <span class="crizal-story-nav__icon" aria-hidden="true"><i class="fas fa-arrow-left"></i></span>
                                 <span class="crizal-story-nav__copy">
                                     <span class="crizal-story-nav__dir">@Resource.PrevPost</span>
-                                    <strong class="crizal-story-nav__title">@Model.PreviousStory.Name</strong>
+                                    <strong class="crizal-story-nav__title">@Model.StorefrontPreviousStory.Name</strong>
                                 </span>
                             </a>
                         }
@@ -304,12 +284,12 @@
                         {
                             <span class="crizal-story-nav__spacer" aria-hidden="true"></span>
                         }
-                        @if (Model.NextStory != null)
+                        @if (Model.StorefrontNextStory != null)
                         {
-                            <a class="crizal-story-nav__link crizal-story-nav__link--next" href="@Model.NextStory.DetailPageRelativeUrl">
+                            <a class="crizal-story-nav__link crizal-story-nav__link--next" href="@Model.StorefrontNextStory.DetailPageUrl">
                                 <span class="crizal-story-nav__copy">
                                     <span class="crizal-story-nav__dir">@Resource.NextPost</span>
-                                    <strong class="crizal-story-nav__title">@Model.NextStory.Name</strong>
+                                    <strong class="crizal-story-nav__title">@Model.StorefrontNextStory.Name</strong>
                                 </span>
                                 <span class="crizal-story-nav__icon" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
                             </a>
@@ -340,10 +320,6 @@
                                             <img src="@imgTag" alt="@relatedStory.Name" loading="lazy" decoding="async" />
                                         }
                                         <span>
-                                            @if (!string.IsNullOrEmpty(relatedStory.AuthorName))
-                                            {
-                                                <small>@relatedStory.AuthorName</small>
-                                            }
                                             <strong>@relatedStory.Name</strong>
                                         </span>
                                     </a>
@@ -375,4 +351,3 @@
         </div>
     </div>
 </section>
-

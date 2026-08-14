@@ -341,6 +341,26 @@ namespace EImece.Domain.Repositories
             }
         }
 
+        private static Expression<Func<ProductCategory, StorefrontCategoryDto>> CategoryCardProjection
+        {
+            get
+            {
+                return c => new StorefrontCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.ParentId,
+                    ShortDescription = c.ShortDescription,
+                    MainImageId = c.MainImageId,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    MainPage = c.MainPage,
+                    ProductCount = c.Products.Count(p => p.IsActive)
+                };
+            }
+        }
+
         public async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.ProductCategories.AsNoTracking()
@@ -363,7 +383,7 @@ namespace EImece.Domain.Repositories
             return await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
                 .OrderBy(c => c.Position)
-                .Select(CategoryProjection)
+                .Select(CategoryCardProjection)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
@@ -373,7 +393,7 @@ namespace EImece.Domain.Repositories
             return EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
                 .OrderBy(c => c.Position)
-                .Select(CategoryProjection)
+                .Select(CategoryCardProjection)
                 .ToList();
         }
 
@@ -382,7 +402,7 @@ namespace EImece.Domain.Repositories
             return await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.ParentId == parentId && c.IsActive)
                 .OrderBy(c => c.Position)
-                .Select(CategoryProjection)
+                .Select(CategoryCardProjection)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
@@ -392,7 +412,7 @@ namespace EImece.Domain.Repositories
             return EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.ParentId == parentId && c.IsActive)
                 .OrderBy(c => c.Position)
-                .Select(CategoryProjection)
+                .Select(CategoryCardProjection)
                 .ToList();
         }
 
@@ -401,7 +421,7 @@ namespace EImece.Domain.Repositories
             var allCategories = await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.IsActive && c.Lang == language)
                 .OrderBy(c => c.Position)
-                .Select(CategoryProjection)
+                .Select(CategoryCardProjection)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
@@ -413,7 +433,7 @@ namespace EImece.Domain.Repositories
             var allCategories = EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.IsActive && c.Lang == language)
                 .OrderBy(c => c.Position)
-                .Select(CategoryProjection)
+                .Select(CategoryCardProjection)
                 .ToList();
 
             return AssembleCategoryTree(allCategories);

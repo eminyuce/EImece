@@ -1,12 +1,13 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
     public class ProductIndexViewModel : ItemListing
     {
-        public PaginatedList<Product> Products { get; set; }
+        public PaginatedList<StorefrontProductCardDto> Products { get; set; }
 
         public Setting CompanyName { get; set; }
 

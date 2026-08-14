@@ -1,58 +1,65 @@
-﻿@model EImece.Domain.Entities.Story
+﻿@model object
+@using EImece.Domain.Models.DTOs.Storefront
+@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Helpers
 @using EImece.Domain
 @using Resources
 @{
-    var story = Model;
+    var dto = Model as StorefrontStoryCardDto;
+    var story = Model as Story;
+
+    var name = dto != null ? dto.Name : (story != null ? story.Name : string.Empty);
+    var mainImageId = dto != null ? dto.MainImageId : (story != null ? story.MainImageId : null);
+    var detailUrl = dto != null ? dto.DetailPageUrl : (story != null ? story.DetailPageUrl : string.Empty);
+    var updatedDate = dto != null ? dto.UpdatedDate : (story != null ? story.UpdatedDate : DateTime.Now);
+    var isFeatured = dto != null ? dto.IsFeaturedStory : (story != null && story.IsFeaturedStory);
+    var shortDesc = dto != null ? dto.ShortDescription : (story != null ? story.ShortDescription : string.Empty);
+    var categoryName = dto != null ? dto.StoryCategoryName : (story != null && story.StoryCategory != null ? story.StoryCategory.Name : string.Empty);
+    var categoryUrl = dto != null ? dto.StoryCategoryDetailPageUrl : (story != null && story.StoryCategory != null ? story.StoryCategory.DetailPageRelativeUrl : string.Empty);
+
     int Width = ViewData["Width"].ToInt(278);
     int Height = ViewData["Height"].ToInt(200);
-    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
-    var imageTag = story.GetCroppedImageTag(imageId, Width, Height, lazy: true, sizes: "(max-width: 767px) 90vw, (max-width: 991px) 45vw, 300px");
-    var category = story.StoryCategory;
+    var imageId = mainImageId.HasValue ? mainImageId.Value : 0;
+    var imageTag = dto != null
+        ? dto.GetCroppedImageTag(imageId, Width, Height, lazy: true, sizes: "(max-width: 767px) 90vw, (max-width: 991px) 45vw, 300px")
+        : (story != null ? story.GetCroppedImageTag(imageId, Width, Height, lazy: true, sizes: "(max-width: 767px) 90vw, (max-width: 991px) 45vw, 300px") : string.Empty);
 }
 
 <article class="card story-short-card h-100 border-0 shadow-sm">
-    <a href="@story.DetailPageUrl" class="story-short-thumb" aria-label="@story.Name">
+    <a href="@detailUrl" class="story-short-thumb" aria-label="@name">
         @Html.Raw(imageTag)
     </a>
     <div class="card-body d-flex flex-column">
         <h3 class="card-title h6 mb-2">
-            <a href="@story.DetailPageUrl" class="text-dark">@story.Name</a>
+            <a href="@detailUrl" class="text-dark">@name</a>
         </h3>
 
-        @if (category != null)
+        @if (!string.IsNullOrWhiteSpace(categoryName))
         {
             <p class="mb-1 text-muted small">
                 <strong>@Resource.StoryCategory:</strong>
-                <a href="@category.DetailPageRelativeUrl" class="text-dark">@category.Name</a>
-            </p>
-        }
-
-        @if (!string.IsNullOrWhiteSpace(story.AuthorName))
-        {
-            <p class="mb-1 text-muted small">
-                <strong>@Resource.AuthorName:</strong> @story.AuthorName
+                <a href="@categoryUrl" class="text-dark">@categoryName</a>
             </p>
         }
 
         <p class="mb-2 text-muted small">
-            <time datetime="@story.UpdatedDate.ToString("yyyy-MM-dd")">@story.UpdatedDate.ToShortDateString()</time>
-            @if (story.IsFeaturedStory)
+            <time datetime="@updatedDate.ToString("yyyy-MM-dd")">@updatedDate.ToShortDateString()</time>
+            @if (isFeatured)
             {
                 <span class="badge badge-success ml-1">Featured</span>
             }
         </p>
 
-        @if (!string.IsNullOrWhiteSpace(story.ShortDescription))
+        @if (!string.IsNullOrWhiteSpace(shortDesc))
         {
-            <p class="card-text small text-muted mb-3 flex-grow-1">@Html.Raw(story.ShortDescription)</p>
+            <p class="card-text small text-muted mb-3 flex-grow-1">@Html.Raw(shortDesc)</p>
         }
         else
         {
             <div class="flex-grow-1"></div>
         }
 
-        <a href="@story.DetailPageUrl" class="btn btn-sm btn-outline-secondary align-self-start">@Resource.ReadMore</a>
+        <a href="@detailUrl" class="btn btn-sm btn-outline-secondary align-self-start">@Resource.ReadMore</a>
     </div>
 </article>

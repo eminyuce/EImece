@@ -207,66 +207,79 @@ namespace EImece.Domain.Services
         public StoryDetailViewModel GetStoryDetailViewModel(int storyId)
         {
             var result = new StoryDetailViewModel();
-            result.Story = GetStoryById(storyId);
-            int language = result.Story.Lang;
-            result.RelatedStories = new List<Story>();
-            if (result.Story != null && result.Story.StoryTags.Any())
+            var storyDetail = StoryRepository.GetStorefrontStoryDetailById(storyId);
+            if (storyDetail == null)
             {
-                var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
-                result.RelatedStories = StoryRepository.GetRelatedStories(tagIdList, 10, language, storyId);
+                return result;
             }
-            result.FeaturedStories = StoryRepository.GetFeaturedStories(10, language, storyId);
-            result.NextStory = StoryRepository.GetNextStory(storyId, language);
-            result.PreviousStory = StoryRepository.GetPreviousStory(storyId, language);
-            result.RelatedProducts = new List<Product>();
-            if (result.Story != null && result.Story.StoryTags.Any())
+            result.StorefrontStory = storyDetail;
+            int language = storyDetail.Lang;
+
+            var tagIdList = storyDetail.StoryTags != null && storyDetail.StoryTags.Any()
+                ? storyDetail.StoryTags.Select(t => t.Id).ToArray()
+                : new int[0];
+
+            result.StorefrontRelatedStories = tagIdList.Length > 0
+                ? StoryRepository.GetStorefrontRelatedStories(tagIdList, 10, language, storyId)
+                : new List<Models.DTOs.Storefront.StorefrontStoryCardDto>();
+
+            result.StorefrontFeaturedStories = StoryRepository.GetStorefrontFeaturedStories(10, language, storyId);
+            result.StorefrontNextStory = StoryRepository.GetStorefrontNextStory(storyId, language);
+            result.StorefrontPreviousStory = StoryRepository.GetStorefrontPreviousStory(storyId, language);
+            result.RelatedProducts = new List<Models.DTOs.Storefront.StorefrontProductCardDto>();
+            if (tagIdList.Length > 0)
             {
-                var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
-                result.RelatedProducts = ProductRepository.GetRelatedProducts(tagIdList, 10, result.Story.Lang, 0);
+                result.RelatedProducts = ProductRepository.GetStorefrontRelatedProducts(tagIdList, 10, language, 0);
             }
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            string menuLink = "stories-categories_" + result.Story.GetSeoUrl();
+            string menuLink = "stories-categories_" + storyDetail.SeoUrl;
             result.BlogMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
-            // Sidebar/footer tag cloud needs story ItemCount (same source as category pages).
             result.Tags = TagService.GetTagsWithStoryCounts(language, minStoryCount: 1)
                 .OrderByDescending(t => t.ItemCount)
                 .ThenBy(t => t.Name)
                 .ToList();
             result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
-            result.SocialMediaLinks = CreateStoryShareLinks(result.Story);
+            result.SocialMediaLinks = CreateStoryDetailShareLinks(storyDetail);
             return result;
         }
 
         public async Task<StoryDetailViewModel> GetStoryDetailViewModelAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new StoryDetailViewModel();
-            result.Story = await GetStoryByIdAsync(storyId, cancellationToken).ConfigureAwait(false);
-            int language = result.Story.Lang;
-            result.RelatedStories = new List<Story>();
-            if (result.Story != null && result.Story.StoryTags.Any())
+            var storyDetail = await StoryRepository.GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken).ConfigureAwait(false);
+            if (storyDetail == null)
             {
-                var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
-                result.RelatedStories = await StoryRepository.GetRelatedStoriesAsync(tagIdList, 10, language, storyId, cancellationToken).ConfigureAwait(false);
+                return result;
             }
-            result.FeaturedStories = await StoryRepository.GetFeaturedStoriesAsync(10, language, storyId, cancellationToken).ConfigureAwait(false);
-            result.NextStory = await StoryRepository.GetNextStoryAsync(storyId, language, cancellationToken).ConfigureAwait(false);
-            result.PreviousStory = await StoryRepository.GetPreviousStoryAsync(storyId, language, cancellationToken).ConfigureAwait(false);
-            result.RelatedProducts = new List<Product>();
-            if (result.Story != null && result.Story.StoryTags.Any())
+            result.StorefrontStory = storyDetail;
+            int language = storyDetail.Lang;
+
+            var tagIdList = storyDetail.StoryTags != null && storyDetail.StoryTags.Any()
+                ? storyDetail.StoryTags.Select(t => t.Id).ToArray()
+                : new int[0];
+
+            result.StorefrontRelatedStories = tagIdList.Length > 0
+                ? await StoryRepository.GetStorefrontRelatedStoriesAsync(tagIdList, 10, language, storyId, cancellationToken).ConfigureAwait(false)
+                : new List<Models.DTOs.Storefront.StorefrontStoryCardDto>();
+
+            result.StorefrontFeaturedStories = await StoryRepository.GetStorefrontFeaturedStoriesAsync(10, language, storyId, cancellationToken).ConfigureAwait(false);
+            result.StorefrontNextStory = await StoryRepository.GetStorefrontNextStoryAsync(storyId, language, cancellationToken).ConfigureAwait(false);
+            result.StorefrontPreviousStory = await StoryRepository.GetStorefrontPreviousStoryAsync(storyId, language, cancellationToken).ConfigureAwait(false);
+            result.RelatedProducts = new List<Models.DTOs.Storefront.StorefrontProductCardDto>();
+            if (tagIdList.Length > 0)
             {
-                var tagIdList = result.Story.StoryTags.Select(t => t.TagId).ToArray();
-                result.RelatedProducts = await ProductRepository.GetRelatedProductsAsync(tagIdList, 10, result.Story.Lang, 0, cancellationToken).ConfigureAwait(false);
+                result.RelatedProducts = await ProductRepository.GetStorefrontRelatedProductsAsync(tagIdList, 10, language, 0, cancellationToken).ConfigureAwait(false);
             }
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
             result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            string menuLink = "stories-categories_" + result.Story.GetSeoUrl();
+            string menuLink = "stories-categories_" + storyDetail.SeoUrl;
             result.BlogMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
             result.Tags = (await TagService.GetTagsWithStoryCountsAsync(language, minStoryCount: 1, cancellationToken).ConfigureAwait(false))
                 .OrderByDescending(t => t.ItemCount)
                 .ThenBy(t => t.Name)
                 .ToList();
             result.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
-            result.SocialMediaLinks = CreateStoryShareLinks(result.Story);
+            result.SocialMediaLinks = CreateStoryDetailShareLinks(storyDetail);
             return result;
         }
 
@@ -286,6 +299,22 @@ namespace EImece.Domain.Services
             return SettingService.CreateShareableSocialMediaLinks(story.DetailPageUrl, story.Name, imageUrl);
         }
 
+        private Dictionary<string, string> CreateStoryDetailShareLinks(Models.DTOs.Storefront.StorefrontStoryDetailDto storyDetail)
+        {
+            if (storyDetail == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            var imageUrl = string.Empty;
+            if (storyDetail.MainImageId.HasValue)
+            {
+                imageUrl = storyDetail.GetCroppedImageUrl(storyDetail.MainImageId, 1000, 0, true) ?? string.Empty;
+            }
+
+            return SettingService.CreateShareableSocialMediaLinks(storyDetail.DetailPageUrl, storyDetail.Name, imageUrl);
+        }
+
         public async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, currentLanguage) + AsyncCacheKeySuffix;
@@ -294,7 +323,7 @@ namespace EImece.Domain.Services
             {
                 var vm = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
-                vm.Stories = await StoryRepository.GetMainPageStoriesAsync(page, pageSize, currentLanguage, CancellationToken.None).ConfigureAwait(false);
+                vm.StorefrontStories = await StoryRepository.GetStorefrontMainPageStoriesAsync(page, pageSize, currentLanguage, CancellationToken.None).ConfigureAwait(false);
                 vm.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(currentLanguage, CancellationToken.None).ConfigureAwait(false);
                 return vm;
             }, AppConfig.CacheMediumSeconds).ConfigureAwait(false);
@@ -308,7 +337,7 @@ namespace EImece.Domain.Services
             {
                 var vm = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
-                vm.Stories = StoryRepository.GetMainPageStories(page, pageSize, language);
+                vm.StorefrontStories = StoryRepository.GetStorefrontMainPageStories(page, pageSize, language);
                 vm.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
                 return vm;
             }, AppConfig.CacheMediumSeconds);
@@ -371,12 +400,11 @@ namespace EImece.Domain.Services
             }
             int lang = result.StoryCategory.Lang;
             result.StoryCategories = StoryCategoryService.GetActiveBaseContents(true, result.StoryCategory.Lang);
-            // Story category sidebar links to /s/t/{tag}. Only show tags that have at least one active story.
             result.Tags = TagService.GetTagsWithStoryCounts(lang, minStoryCount: 1)
                 .OrderByDescending(t => t.ItemCount)
                 .ThenBy(t => t.Name)
                 .ToList();
-            result.Stories = StoryRepository.GetStoriesByStoryCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
+            result.StorefrontStories = StoryRepository.GetStorefrontStoriesByCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
             return result;
@@ -398,7 +426,7 @@ namespace EImece.Domain.Services
                 .OrderByDescending(t => t.ItemCount)
                 .ThenBy(t => t.Name)
                 .ToList();
-            result.Stories = await StoryRepository.GetStoriesByStoryCategoryIdAsync(storyCategoryId, result.StoryCategory.Lang, page, pageSize, cancellationToken).ConfigureAwait(false);
+            result.StorefrontStories = await StoryRepository.GetStorefrontStoriesByCategoryIdAsync(storyCategoryId, lang, page, pageSize, cancellationToken).ConfigureAwait(false);
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
             result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
@@ -434,9 +462,8 @@ namespace EImece.Domain.Services
         public Rss20FeedFormatter GetStoryCategoriesRss(RssParams rssParams)
         {
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
-            var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
+            var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take).ToList();
 
-            // FIX: injected abstraction instead of static HttpContext.Current.
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
@@ -447,8 +474,6 @@ namespace EImece.Domain.Services
                 Language = lang
             };
 
-            //feed.AddNamespace("StoryCategories", url + "/stories/categories/"+rssParams.CategoryId);
-
             feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name, url, rssParams));
 
             return new Rss20FeedFormatter(feed);
@@ -457,8 +482,8 @@ namespace EImece.Domain.Services
         public async Task<Rss20FeedFormatter> GetStoryCategoriesRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
             var storyCategory = await StoryCategoryService.GetSingleAsync(rssParams.CategoryId).ConfigureAwait(false);
-            var paginated = await StoryRepository.GetStoriesByStoryCategoryIdAsync(rssParams.CategoryId, rssParams.Language, 1, 9999, cancellationToken).ConfigureAwait(false);
-            var items = paginated.Take(rssParams.Take).ToList();
+            var paginated = await StoryRepository.GetStoriesByStoryCategoryIdAsync(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take, cancellationToken).ConfigureAwait(false);
+            var items = paginated.ToList();
 
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
@@ -477,13 +502,12 @@ namespace EImece.Domain.Services
 
         public Rss20FeedFormatter GetStoryCategoriesRssFull(RssParams rssParams)
         {
-            var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, 9999).Take(rssParams.Take).ToList();
+            var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take).ToList();
             if (items.IsEmpty())
             {
                 return null;
             }
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
-            // FIX: injected abstraction instead of static HttpContext.Current.
             var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
@@ -513,8 +537,8 @@ namespace EImece.Domain.Services
 
         public async Task<Rss20FeedFormatter> GetStoryCategoriesRssFullAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var paginated = await StoryRepository.GetStoriesByStoryCategoryIdAsync(rssParams.CategoryId, rssParams.Language, 1, 9999, cancellationToken).ConfigureAwait(false);
-            var items = paginated.Take(rssParams.Take).ToList();
+            var paginated = await StoryRepository.GetStoriesByStoryCategoryIdAsync(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take, cancellationToken).ConfigureAwait(false);
+            var items = paginated.ToList();
             if (items.IsEmpty())
             {
                 return null;

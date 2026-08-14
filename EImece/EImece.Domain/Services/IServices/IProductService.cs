@@ -31,6 +31,12 @@ namespace EImece.Domain.Services.IServices
         List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIds, int take, int language, int excludedProductId);
         Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken));
         List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language);
+        Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken));
+        List<StorefrontProductCardDto> GetStorefrontMainPageProducts(int take, int language);
+        Task<List<StorefrontProductCardDto>> GetStorefrontLatestProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken));
+        List<StorefrontProductCardDto> GetStorefrontLatestProducts(int take, int language);
+        Task<List<StorefrontProductCardDto>> GetStorefrontCampaignProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken));
+        List<StorefrontProductCardDto> GetStorefrontCampaignProducts(int take, int language);
 
         #endregion
 

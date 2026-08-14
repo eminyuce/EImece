@@ -101,23 +101,23 @@ namespace EImece.Controllers
                 var product = await ProductService.GetProductDetailViewModelByIdAsync(productId, cancellationToken);
                 string fullPath = Request.Path;
 
-                Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.Product?.Name}, IsActive: {product?.Product?.IsActive}");
+                Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.ProductDto?.Name}, IsActive: {product?.ProductDto?.IsActive}");
 
-                if (product == null || product.Product == null || !product.Product.IsActive)
+                if (product == null || product.ProductDto == null || !product.ProductDto.IsActive)
                 {
                     Logger.Info($"Product with ID: {productId} is null or inactive. Redirecting to NotFound error page.");
                     return RedirectToAction("NotFound", ErrorKey);
                 }
-                if (product.Product.ProductCategory == null || !product.Product.ProductCategory.IsActive)
+                if (product.ProductDto.ProductCategoryId <= 0)
                 {
-                    Logger.Info($"ProductCategory for product ID: {productId} is null or inactive. Redirecting to NotFound error page.");
+                    Logger.Info($"ProductCategory for product ID: {productId} is invalid. Redirecting to NotFound error page.");
                     return RedirectToAction("NotFound", ErrorKey);
                 }
-                ViewBag.SeoId = product.Product.GetSeoUrl();
+                ViewBag.SeoId = product.ProductDto.SeoUrl;
                 product.Page = page;
                 product.RecordPerPage = AppConfig.ProductCommentsRecordPerPage;
-                product.SeoId = product.Product.GetSeoUrl();
-                SetCurrentCulture(product.Product);
+                product.SeoId = product.ProductDto.SeoUrl;
+                SetCurrentCulture(product.ProductDto.Lang);
 
                 Logger.Info($"Set culture and SEO ID: {ViewBag.SeoId} for product ID: {productId}");
                 Logger.Info("Returning Detail view.");

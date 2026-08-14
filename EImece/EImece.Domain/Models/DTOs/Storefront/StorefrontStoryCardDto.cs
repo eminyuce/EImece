@@ -25,6 +25,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public int ReadCount { get; set; }
+        public string AuthorName { get; set; }
 
         public List<StorefrontTagDto> Tags { get; set; }
 

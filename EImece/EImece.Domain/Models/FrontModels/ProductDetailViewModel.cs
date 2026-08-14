@@ -1,6 +1,8 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs.Storefront;
+using EImece.Domain.Models.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class ProductDetailViewModel : ItemListing
     {
-        public Product Product { get; set; }
+        public StorefrontProductDetailDto ProductDto { get; set; }
 
         public ProductComment ProductComment { get; set; }
 
@@ -26,7 +28,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<Story> RelatedStories { get; set; }
 
-        public List<Product> RelatedProducts { get; set; }
+        public List<StorefrontProductCardDto> RelatedProducts { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
 
@@ -48,12 +50,14 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(Product.ShortDescription)) ?? "No description available";
-                var productComments = Product.ProductComments.IsNotEmpty() ? Product.ProductComments : new List<ProductComment>();
-                var productTags = Product.ProductTags.Select(r => r.Tag).ToList();
-                var productFiles = Product.ProductFiles.ToList();
+                if (ProductDto == null) return "{}";
+
+                string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(ProductDto.ShortDescription)) ?? "No description available";
+                var productComments = ProductDto.ProductComments.IsNotEmpty() ? ProductDto.ProductComments : new List<StorefrontProductCommentDto>();
+                var productTags = ProductDto.ProductTags;
+                var productFiles = ProductDto.ProductFiles;
                 List<string> images = new List<string>();
-                images.Add(Product.ImageFullPath(200, 200));
+                images.Add(ProductDto.ImageFullPath(200, 200));
 
                 if (productFiles.IsNotEmpty())
                 {
@@ -64,26 +68,31 @@ namespace EImece.Domain.Models.FrontModels
                     }
                 }
 
+                string productNameStr = !string.IsNullOrEmpty(ProductDto.NameShort) ? ProductDto.NameShort
+                    : (!string.IsNullOrEmpty(ProductDto.NameLong) ? ProductDto.NameLong : ProductDto.Name);
+
+                ProductState stateEnum;
+                Enum.TryParse(ProductDto.State, out stateEnum);
+
                 var schema = new GoogleProductSchema
                 {
-                    Name = Product.ProductNameStr,
-                    Category = Product.ProductCategory.Name,
-                    Keywords = productTags.IsNotEmpty() ? string.Join(", ", productTags.Select(r => r.Name)) : null, // fixed line
-                    //Image = new string[] { Product.ImageFullPath(200, 200) },
+                    Name = productNameStr,
+                    Category = ProductDto.ProductCategoryName,
+                    Keywords = productTags.IsNotEmpty() ? string.Join(", ", productTags.Select(r => r.Name)) : null,
                     Image = images.ToArray(),
                     Description = plainDescription,
                     Brand = new GoogleBrand
                     {
-                        Name = Product.Brand.Name
+                        Name = ProductDto.BrandName ?? string.Empty
                     },
-                    Sku = Product.ProductCode,
+                    Sku = ProductDto.ProductCode,
                     Offers = new GoogleOffer
                     {
-                        Url = Product.DetailPageAbsoluteUrl,
+                        Url = ProductDto.DetailPageAbsoluteUrl,
                         PriceCurrency = Constants.CURRENCY_TURKISH,
-                        Price = Product.PriceWithDiscount.GoogleProductSchema(),
-                        PriceValidUntil = Product.UpdatedDate.AddMonths(3).ToString("yyyy-MM-dd"),
-                        Availability = GeneralHelper.GetSchemaAvailability(Product.StateEnum),
+                        Price = ProductDto.PriceWithDiscount.GoogleProductSchema(),
+                        PriceValidUntil = ProductDto.UpdatedDate.AddMonths(3).ToString("yyyy-MM-dd"),
+                        Availability = GeneralHelper.GetSchemaAvailability(stateEnum),
                         ItemCondition = "https://schema.org/NewCondition",
                         Seller = new GoogleSeller
                         {
@@ -109,21 +118,21 @@ namespace EImece.Domain.Models.FrontModels
                 {
                     schema.AggregateRating = new GoogleAggregateRating
                     {
-                        RatingValue = Product.Rating.ToStr("0.0"), // Example: Replace with actual rating logic
-                        ReviewCount = productComments.Count.ToStr("0") // Example: Replace with actual review count logic
+                        RatingValue = ProductDto.Rating.ToStr("0.0"),
+                        ReviewCount = productComments.Count.ToStr("0")
                     };
                     schema.Review = productComments.Select(r => new GoogleReview
                     {
                         Author = new GoogleAuthor
                         {
-                            Name = r.Name // Example: Replace with actual review author
+                            Name = r.Name
                         },
-                        DatePublished = r.UpdatedDate.ToString("yyyy-MM-dd"), // Example: Replace with actual review date
-                        ReviewBody = r.Review, // Example: Replace with actual review body
-                        Name = r.Subject, // Example: Replace with actual review title
+                        DatePublished = r.CreatedDate.ToString("yyyy-MM-dd"),
+                        ReviewBody = r.Comment,
+                        Name = r.Name,
                         ReviewRating = new GoogleReviewRating
                         {
-                            RatingValue = r.Rating.ToString(System.Globalization.CultureInfo.InvariantCulture), // Example: Replace with actual rating
+                            RatingValue = r.Rating.ToString(System.Globalization.CultureInfo.InvariantCulture),
                             BestRating = "5",
                             WorstRating = "1"
                         }
@@ -143,38 +152,31 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                // Null kontrolü: Eğer temel verilerden biri null ise boş string dön
-                if (WhatsAppCommunicationLink == null || WhatsAppCommunicationLink.SettingValue == null || Product == null)
+                if (WhatsAppCommunicationLink == null || WhatsAppCommunicationLink.SettingValue == null || ProductDto == null)
                 {
-                    return string.Empty; // ""
+                    return string.Empty;
                 }
 
-                // Şablon
                 string whatsAppLinkTemplate = WhatsAppCommunicationLink.SettingValue.ToStr();
                 if (string.IsNullOrEmpty(whatsAppLinkTemplate))
                 {
-                    return string.Empty; // ""
+                    return string.Empty;
                 }
-                // Ürün adı (null kontrolü zaten Product için yapıldı, burada sadece ProductNameStr için)
-                string detailPageAbsoluteUrl = Product.DetailPageAbsoluteUrl;
+                string detailPageAbsoluteUrl = ProductDto.DetailPageAbsoluteUrl;
 
-                // {product.Name} ile değiştir
                 string linkWithProduct = whatsAppLinkTemplate.Replace("{Product.DetailPageAbsoluteUrl}", detailPageAbsoluteUrl);
 
-                // text= kısmını ayır ve escape et
                 int textIndex = linkWithProduct.IndexOf("?text=");
                 if (textIndex == -1)
                 {
-                    // Eğer ?text= yoksa, varsayılan bir mesajla devam et
                     string defaultMessage = Uri.EscapeDataString($"Merhaba {detailPageAbsoluteUrl} ile ilgili bilgi almak istiyorum");
                     return $"https://wa.me/905322739101?text={defaultMessage}";
                 }
 
-                textIndex += 6; // "?text=" sonrasını al
+                textIndex += 6;
                 string message = linkWithProduct.Substring(textIndex);
                 string escapedMessage = Uri.EscapeDataString(message);
 
-                // Nihai linki oluştur
                 string finalLink = linkWithProduct.Substring(0, textIndex) + escapedMessage;
 
                 return finalLink;
@@ -205,11 +207,11 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 var totalRating = new Dictionary<int, TotalRating>();
-                if (Product.ProductComments.IsEmpty())
+                if (ProductDto == null || ProductDto.ProductComments.IsEmpty())
                 {
                     return totalRating;
                 }
-                var grouped = Product.ProductComments.GroupBy(r => r.Rating)
+                var grouped = ProductDto.ProductComments.GroupBy(r => r.Rating)
                      .OrderByDescending(grp => grp.Key)
                 .Select((grp, i) => new
                 {
@@ -228,13 +230,12 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 var result = new List<ProductSpecsModel>();
-                var product = Product;
-                if (product?.ProductSpecifications == null)
+                if (ProductDto?.ProductSpecifications == null)
                 {
                     return result;
                 }
 
-                var productSpecs = product.ProductSpecifications.OrderBy(r => r.Position).ToList();
+                var productSpecs = ProductDto.ProductSpecifications.OrderBy(r => r.Order).ToList();
                 var template = Template;
                 if (!productSpecs.Any() || template == null || string.IsNullOrEmpty(template.TemplateXml))
                 {
@@ -257,7 +258,6 @@ namespace EImece.Domain.Models.FrontModels
                 }
                 else
                 {
-                    // Legacy: named fields without <group>
                     var fields = xdoc.Descendants().Where(e =>
                         e.Attribute("name") != null
                         && !e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase)
@@ -285,7 +285,7 @@ namespace EImece.Domain.Models.FrontModels
 
         private static void AppendSpecFields(
             List<ProductSpecsModel> result,
-            List<ProductSpecification> productSpecs,
+            List<StorefrontProductSpecificationDto> productSpecs,
             IEnumerable<XElement> fields,
             string groupName)
         {
@@ -331,7 +331,6 @@ namespace EImece.Domain.Models.FrontModels
 
         private static bool ShouldOmitEmptyNonCheckboxSpec(bool isCheckbox, string rawValue)
         {
-            // Non-checkbox empty values stay hidden; checkbox always shows Evet/Hayır.
             return !isCheckbox && string.IsNullOrEmpty(rawValue);
         }
 

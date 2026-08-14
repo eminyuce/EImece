@@ -56,13 +56,13 @@ namespace EImece.Controllers
                 Logger.Debug($"Parsed story ID: {storyId}");
 
                 var story = await StoryService.GetStoryDetailViewModelAsync(storyId, cancellationToken);
-                if (story == null || story.Story == null)
+                if (story == null || story.StorefrontStory == null)
                 {
                     return HttpNotFound();
                 }
-                Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story.Story.Name}");
+                Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story.StorefrontStory.Name}");
 
-                ViewBag.SeoId = story.Story.GetSeoUrl();
+                ViewBag.SeoId = story.StorefrontStory.SeoUrl;
                 Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");
 
                 Logger.Debug("Returning Detail view.");

@@ -207,32 +207,7 @@ namespace EImece.Domain.Services
             result.MinPrice = minPrice;
             result.MaxPrice = maxPrice;
 
-            result.AllProducts = pagedList.Select(d => new Product
-            {
-                Id = d.Id,
-                Name = d.Name,
-                NameShort = d.NameShort,
-                NameLong = d.NameLong,
-                ShortDescription = d.ShortDescription,
-                Price = d.Price,
-                Discount = d.Discount,
-                ProductCode = d.ProductCode,
-                Rating = d.Rating,
-                SoldCount = d.SoldCount,
-                MainImageId = d.MainImageId,
-                ProductCategoryId = d.ProductCategoryId,
-                BrandId = d.BrandId,
-                IsActive = d.IsActive,
-                MainPage = d.MainPage,
-                IsCampaign = d.IsCampaign,
-                State = d.State,
-                Lang = d.Lang,
-                Position = d.Position,
-                CreatedDate = d.CreatedDate,
-                UpdatedDate = d.UpdatedDate,
-                ProductCategory = new ProductCategory { Id = d.ProductCategoryId, Name = d.ProductCategoryName }
-            }).ToList();
-
+            result.AllProducts = new List<Product>();
             result.CategoryChildrenProducts = new List<Product>();
 
             List<Menu> lists = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);

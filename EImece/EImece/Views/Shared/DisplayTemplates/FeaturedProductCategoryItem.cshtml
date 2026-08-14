@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Entities.ProductCategory
+﻿@model EImece.Domain.Models.DTOs.Storefront.StorefrontCategoryDto
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
@@ -6,10 +6,9 @@
 @{
     var product = Model;
     var productLink = product.DetailPageUrl;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
-    var mainImageImgSrcUrl = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
+    var mainImageImgSrcUrl = product.GetCroppedImageUrl(null, Width, Height);
     var srcset = product.MainImageId.HasValue
         ? product.GetResponsiveImageSrcSet(product.MainImageId.Value, Width, Height)
         : string.Empty;

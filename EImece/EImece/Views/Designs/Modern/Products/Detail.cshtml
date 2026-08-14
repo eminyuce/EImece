@@ -5,42 +5,37 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@using EImece.Domain.Entities
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Helpers;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Models.FrontModels;
-@using Resources;
-@using EImece.Domain;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Models.Enums;
 @using System.Collections.Immutable;
 @using System.Text.RegularExpressions;
 
 @{
-    var product = Model.Product;
-    ProductState productState = product.StateEnum;
+    var product = Model.ProductDto;
+    ProductState productState;
+    Enum.TryParse(product.State, out productState);
     var ProductSizeOptions = Regex.Split(product.ProductSizeOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
     var ProductColorOptions = Regex.Split(product.ProductColorOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
 
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    ViewBag.Title = product.GetProductSeoTitle();
-    ViewBag.Description = product.GetSeoDescription();
-    ViewBag.Keywords = product.GetSeoKeywords();
-    var productFiles = product.ProductFiles.ToList();
-    var productTags = product.ProductTags.Select(r => r.Tag).Where(r=>r.TagCategory.IsActive).ToList();
-    var productCategory = product.ProductCategory;
-    var productSpecs = product.ProductSpecifications;
+    string seoTitle = !string.IsNullOrEmpty(product.NameLong) ? product.NameLong : product.Name;
+    ViewBag.Title = GeneralHelper.TruncateAtWord(seoTitle, 50);
+    ViewBag.Description = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 150);
+    ViewBag.Keywords = !string.IsNullOrEmpty(product.MetaKeywords) ? product.MetaKeywords : product.Name;
+    var productFiles = product.ProductFiles;
+    var productTags = product.ProductTags;
     var relatedStories = Model.RelatedStories.OrderBy(x => Guid.NewGuid()).Take(1).ToList();
-    var relatedProducts = Model.RelatedProducts.ToList();
+    var relatedProducts = Model.RelatedProducts;
     var productMainImageId = product.MainImageId.HasValue ? product.MainImageId.Value : 0;
 
     Model.ProductComment.ProductId = product.Id;
-    Model.ProductComment.SeoUrl = product.GetSeoUrl();
-    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
-    var productCommentsPaging = new PaginatedModelList<ProductComment>(productComments, Model.Page, Model.RecordPerPage, productComments.Count);
+    Model.ProductComment.SeoUrl = product.SeoUrl;
+    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<StorefrontProductCommentDto>();
+    var productCommentsPaging = new PaginatedModelList<StorefrontProductCommentDto>(productComments, Model.Page, Model.RecordPerPage, productComments.Count);
     productCommentsPaging.RouteId = Model.SeoId;
 
-    var mainImageImgSrc = product.MainImageSrc != null ? product.MainImageSrc.Item1 : "";
     var mainImageImgSrcUrl = product.GetCroppedImageUrl(productMainImageId, 610, 0);
     var mainImageThbImgSrc = product.GetCroppedImageUrl(productMainImageId, 95, 105);
     var productSpecsExists = Model.ProdSpecs.IsNotEmpty();
@@ -52,20 +47,8 @@
 
     int imageWidth = 800;
     int imageHeight = 600;
-
-    if (product.MainImage != null)
-    {
-        if (product.MainImage.Width > 0)
-                {
-                    imageWidth = product.MainImage.Width;
-                }
-
-        if (product.MainImage.Height > 0)
-        {
-            imageHeight = product.MainImage.Height;
-        }
-
-    }
+    string productNameStr = !string.IsNullOrEmpty(product.NameShort) ? product.NameShort
+        : (!string.IsNullOrEmpty(product.NameLong) ? product.NameLong : product.Name);
 }
 
 
@@ -83,7 +66,7 @@
     <meta property="og:image" content="@product.ImageFullPath(imageWidth,imageHeight)" />
     <meta property="og:image:width" content="@imageWidth" />
     <meta property="og:image:height" content="@imageHeight" />
-    <meta property="og:title" content="@product.GetProductSeoTitle()" />
+    <meta property="og:title" content="@ViewBag.Title" />
     <meta property="og:description" content="@HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(product.ShortDescription))" />
     <meta property="og:url" content="@product.DetailPageAbsoluteUrl" />
     <meta property="product:price:amount" content="@product.PriceWithDiscount" />
@@ -104,21 +87,13 @@
         <div class="alert alert-secondary" role="alert">
             @Html.Partial("_ProductBreadCrumb", Model)
         </div>
-        <h1 class="page-title">@product.ProductNameStr</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@productNameStr</h1><span class="d-block mt-2 text-muted"></span>
         <hr class="mt-4">
-        @if (product.Brand != null && !string.IsNullOrEmpty(product.Brand.Name))
+        @if (!string.IsNullOrEmpty(product.BrandName))
         {
-            var brandUrl = product.Brand.GetProductsUrl(product.ProductCategory);
             <span class="d-block mt-1 text-muted">
                 @Resource.ProductBrand :
-                @if (!string.IsNullOrEmpty(brandUrl))
-                {
-                    <a href="@brandUrl" title="@product.Brand.Name"><strong>@product.Brand.Name</strong></a>
-                }
-                else
-                {
-                    <strong>@product.Brand.Name</strong>
-                }
+                <strong>@product.BrandName</strong>
             </span>
         }
         <span class="d-block mt-1 text-muted">@Resource.ProductCode : <strong>@product.ProductCode</strong></span>
@@ -145,7 +120,7 @@
             <!-- Product gallery-->
             <div class="product-gallery">
                 <ul class="product-thumbnails">
-                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageThbImgSrc))
+                    @if (product.MainImageId.HasValue && !string.IsNullOrEmpty(mainImageThbImgSrc))
                     {
                         <li class="active">
                             <a href="#one">
@@ -156,19 +131,19 @@
                     @for (int i = 0; i < productFiles.Count; i++)
                     {
                         var f = productFiles[i];
-                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 95, 105);
+                        var imgTag = f.GetCroppedImageUrl(95, 105);
                         <li class="">
                             <a href="@string.Format("#{0}",Constants.NumbersArr.ElementAt(i))">
-                                <img alt="@f.Name" src="@imgTag" />
+                                <img alt="@f.FileName" src="@imgTag" />
                             </a>
                         </li>
                     }
                 </ul>
                 <div class="product-carousel owl-carousel">
-                    @if (product.ImageState && !string.IsNullOrEmpty(mainImageImgSrc))
+                    @if (product.MainImageId.HasValue && !string.IsNullOrEmpty(mainImageImgSrcUrl))
                     {
                         <a href="@mainImageImgSrcUrl" data-fancybox="prod-gallery" data-hash="one">
-                            <img src="@mainImageImgSrc" width="610" height="610" alt="@product.Name">
+                            <img src="@mainImageImgSrcUrl" width="610" height="610" alt="@product.Name">
                         </a>
                     }
                     else
@@ -180,11 +155,11 @@
                     @for (int i = 0; i < productFiles.Count; i++)
                     {
                         var f = productFiles[i];
-                        var imgTag = f.GetCroppedImageUrl(f.FileStorageId, 1000, 0);
+                        var imgTag = f.GetCroppedImageUrl(1000, 0);
                         if (!string.IsNullOrEmpty(imgTag))
                         {
                             <a href="@imgTag" data-fancybox="prod-gallery" data-hash="@string.Format("{0}",Constants.NumbersArr.ElementAt(i))">
-                                <img src="@imgTag" alt="@f.Name">
+                                <img src="@imgTag" alt="@f.FileName">
                             </a>
                         }
                     }
@@ -194,16 +169,16 @@
         <!-- Product details -->
         <div class="col-lg-5 pt-4 pt-lg-0">
             <div class="pb-4">
-                @if (productReviewEnable && product.ProductComments.IsNotEmpty())
+                @if (productReviewEnable && productComments.IsNotEmpty())
                 {
-                    var summaryRating = product.Rating > 5 ? 5 : (product.Rating < 0 ? 0 : product.Rating);
+                    var summaryRating = product.Rating > 5 ? 5 : (product.Rating < 0 ? 0 : (int)product.Rating);
                     <a class="d-inline-block scroll-to" href="#reviews">
                         <span class="product-stars" aria-hidden="true">
                             @for (int i = 1; i <= 5; i++)
                             {
                                 <span class="product-stars__star@(i <= summaryRating ? " is-on" : "")" aria-hidden="true">★</span>
                             }
-                        </span><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@product.ProductComments.Count @Resource.Review</span>
+                        </span><span class="d-inline-block align-middle font-size-sm mt-1 ml-1 text-body">@productComments.Count @Resource.Review</span>
                     </a>
                 }
                 @if (productPriceEnabled)
@@ -389,20 +364,11 @@
                     </div>
                     <div class="collapse show" id="productInfo" data-parent="#productPanels">
                         <div class="card-body">
-                            @if (product.Brand != null && !String.IsNullOrEmpty(product.Brand.Name))
+                            @if (!String.IsNullOrEmpty(product.BrandName))
                             {
-                                var brandUrl = product.Brand.GetProductsUrl(product.ProductCategory);
                                 <span class="product-code">
                                     <i>
-                                        @Resource.ProductBrand :
-                                        @if (!string.IsNullOrEmpty(brandUrl))
-                                        {
-                                            <a href="@brandUrl" title="@product.Brand.Name">@product.Brand.Name</a>
-                                        }
-                                        else
-                                        {
-                                            @product.Brand.Name
-                                        }
+                                        @Resource.ProductBrand : @product.BrandName
                                     </i>
                                 </span>
                                 <br />
@@ -459,7 +425,7 @@
                             <div class="card-body">
                                 @foreach (var t in productTags)
                                 {
-                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageRelativeUrlForProducts">@String.Format("#{0}", t.Name)</a>
+                                    <a class="tag-link mr-2 mb-2" href="@t.DetailPageUrl">@String.Format("#{0}", t.Name)</a>
                                 }
                             </div>
                         </div>
@@ -561,9 +527,9 @@
 
 @helper ProductDescriptionHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
 {
-    var product = Model.Product;
+    var p = model.ProductDto;
     <div class="container pt-sm-3 pb-sm-3">
-        <div class="product-desc__body">@Html.Raw(product.Description)</div>
+        <div class="product-desc__body">@Html.Raw(p.Description)</div>
     </div>
 }
 
@@ -599,8 +565,7 @@
 
 @helper ProductVideoHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
 {
-    var product = model.Product;
-    var videoUrl = product.VideoUrl;
+    var videoUrl = model.ProductDto.VideoUrl;
 
     var videoUrls = SplitByCommaOrSemicolonOrNewline(videoUrl);
 
@@ -678,9 +643,9 @@
 
 @helper ProductCommentsHelper(EImece.Domain.Models.FrontModels.ProductDetailViewModel model)
 {
-    var product = model.Product;
-    var productComments = product.ProductComments.IsNotEmpty() ? product.ProductComments : new List<ProductComment>();
-    var productCommentsPaging = new PaginatedModelList<ProductComment>(productComments, Model.Page, Model.RecordPerPage, productComments.Count);
+    var dto = model.ProductDto;
+    var dtoComments = dto.ProductComments.IsNotEmpty() ? dto.ProductComments : new List<StorefrontProductCommentDto>();
+    var productCommentsPaging = new PaginatedModelList<StorefrontProductCommentDto>(dtoComments, Model.Page, Model.RecordPerPage, dtoComments.Count);
     productCommentsPaging.RouteId = Model.SeoId;
     var productReviewEnable = model.IsProductReviewEnable.SettingValue.ToBool(true);
 
@@ -689,7 +654,7 @@
         <div class="col-md-4 pb-5">
             <div class="card">
                 <div class="card-body">
-                    @if (productComments.IsNotEmpty())
+                    @if (dtoComments.IsNotEmpty())
                     {
                         <div class="d-flex justify-content-center align-items-end pt-2 pb-4">
                             <div class="display-4 mr-2">@Model.AverageRating</div>
@@ -698,7 +663,7 @@
                                 <div class="star-rating">
                                     @for (int i = 0; i < 5; i++)
                                     {
-                                        if (i < product.Rating)
+                                        if (i < dto.Rating)
                                         {
                                             <i class="sr-star active" data-feather="star"></i>
                                         }
@@ -835,7 +800,7 @@
     }
 }
 
-@helper RelatedProductItem(Product product)
+@helper RelatedProductItem(StorefrontProductCardDto product)
 {
     var relatedProductImgTag = product.GetCroppedImageUrl(product.MainImageId, 300, 300);
     var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription, 100);
@@ -883,10 +848,10 @@
 
 @if (productReviewEnable)
 {
-    @Html.EditorFor(model => model.ProductComment, "ProductComment", new { ProductId = product.Id })
+    @Html.EditorFor(model => model.ProductComment, "ProductComment", new { ProductId = Model.ProductDto.Id })
 }
 
-@helper createReviewItem(ProductComment productComment)
+@helper createReviewItem(StorefrontProductCommentDto productComment)
 {
     <div class="blockquote comment border-top-0 border-left-0 border-right-0 px-0 pt-0">
         <div class="d-flex justify-content-between align-items-center pb-2">
@@ -902,7 +867,7 @@
                 }
             </div>
         </div>
-        <p class="mb-0">@productComment.Review</p>
+        <p class="mb-0">@productComment.Comment</p>
     </div>
 }
 

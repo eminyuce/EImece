@@ -32,6 +32,12 @@ namespace EImece.Domain.Models.DTOs.Storefront
             return dummy.GetCroppedImageUrl(FileStorageId, width, height, isFullPath, isThumb);
         }
 
+        public string GetCroppedImageUrl(int fileStorageId, int width, int height)
+        {
+            var dummy = new FileStorage { Id = fileStorageId, FileName = FileName, Name = FileName };
+            return dummy.GetCroppedImageUrl(fileStorageId, width, height, false, false);
+        }
+
         public string GetResponsiveImageSrcSet(int width = 0, int height = 0)
         {
             var dummy = new FileStorage { Id = FileStorageId, FileName = FileName, Name = FileName };
