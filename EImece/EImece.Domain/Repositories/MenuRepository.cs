@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs.Storefront;
@@ -214,7 +214,7 @@ namespace EImece.Domain.Repositories
         public Menu GetMenuById(int menuId)
         {
             var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage.FileStorageTags.Select(y => y.Tag)));
+            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage));
             includeProperties.Add(r => r.MainImage);
             var item = GetSingleIncluding(menuId, includeProperties.ToArray());
 
@@ -261,7 +261,7 @@ namespace EImece.Domain.Repositories
         public async Task<Menu> GetMenuByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage.FileStorageTags.Select(y => y.Tag)));
+            includeProperties.Add(r => r.MenuFiles.Select(t => t.FileStorage));
             includeProperties.Add(r => r.MainImage);
             return await GetSingleIncludingAsync(menuId, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
         }

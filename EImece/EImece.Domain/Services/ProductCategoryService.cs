@@ -538,16 +538,12 @@ namespace EImece.Domain.Services
         }
         public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
         {
-            var ProductCategory = GetProductCategory(productCategoryId);
-            var result = Mapper.Map<ProductCategoryDto>(ProductCategory);
-            return result;
+            return ProductCategoryRepository.GetProductCategoryDto(productCategoryId);
         }
 
         public async Task<ProductCategoryDto> GetProductCategoryDtoAsync(int productCategoryId)
         {
-            var productCategory = await GetProductCategoryAsync(productCategoryId).ConfigureAwait(false);
-            var result = Mapper.Map<ProductCategoryDto>(productCategory);
-            return result;
+            return await ProductCategoryRepository.GetProductCategoryDtoAsync(productCategoryId).ConfigureAwait(false);
         }
     }
 }

@@ -2,6 +2,7 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -368,6 +369,57 @@ namespace EImece.Domain.Repositories
                 .Where(c => c.Id == categoryId && c.IsActive)
                 .Select(CategoryProjection)
                 .FirstOrDefault();
+        }
+
+        public ProductCategoryDto GetProductCategoryDto(int categoryId)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(c => new ProductCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ShortDescription = c.ShortDescription,
+                    ParentId = c.ParentId,
+                    MainPage = c.MainPage,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    CreatedDate = c.CreatedDate,
+                    UpdatedDate = c.UpdatedDate,
+                    MetaKeywords = c.MetaKeywords,
+                    MainImageId = c.MainImageId,
+                    TemplateId = c.TemplateId,
+                    DiscountPercentage = c.DiscountPercantage
+                })
+                .FirstOrDefault();
+        }
+
+        public async Task<ProductCategoryDto> GetProductCategoryDtoAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(c => new ProductCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ShortDescription = c.ShortDescription,
+                    ParentId = c.ParentId,
+                    MainPage = c.MainPage,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    CreatedDate = c.CreatedDate,
+                    UpdatedDate = c.UpdatedDate,
+                    MetaKeywords = c.MetaKeywords,
+                    MainImageId = c.MainImageId,
+                    TemplateId = c.TemplateId,
+                    DiscountPercentage = c.DiscountPercantage
+                })
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
         }
 
         public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))

@@ -155,19 +155,14 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var products = await ProductService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+                var products = await ProductService.GetStorefrontActiveProductsAsync(language, cancellationToken).ConfigureAwait(false);
                 cancellationToken.ThrowIfCancellationRequested();
                 foreach (var product in products)
                 {
-                    var productCategory = productCategories.FirstOrDefault(r => r.Id == product.ProductCategoryId);
-                    if (productCategory == null || !productCategory.IsActive)
-                    {
-                        continue;
-                    }
-                    string productCategoryName = productCategory.Name;
-
+                    string productCategoryName = !string.IsNullOrEmpty(product.ProductCategoryName) ? product.ProductCategoryName : "no_category";
                     DateTime? lastModified = product.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
+                    var dummy = new Product { Id = product.Id, Name = product.Name, NameLong = product.NameLong };
+                    SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
@@ -406,18 +401,13 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var products = ProductService.GetActiveBaseEntitiesFromCache(true, language);
+                var products = ProductService.GetStorefrontActiveProducts(language);
                 foreach (var product in products)
                 {
-                    var productCategory = productCategories.FirstOrDefault(r => r.Id == product.ProductCategoryId);
-                    if (productCategory == null || !productCategory.IsActive)
-                    {
-                        continue;
-                    }
-                    string productCategoryName = productCategory.Name;
-
+                    string productCategoryName = !string.IsNullOrEmpty(product.ProductCategoryName) ? product.ProductCategoryName : "no_category";
                     DateTime? lastModified = product.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
+                    var dummy = new Product { Id = product.Id, Name = product.Name, NameLong = product.NameLong };
+                    SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
