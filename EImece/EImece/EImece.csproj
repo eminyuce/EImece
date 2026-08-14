@@ -461,6 +461,7 @@
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManifestController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -1437,7 +1438,6 @@
     <Content Include="Areas\Admin\Views\Shared\pGridCheckbox.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSettings\Index.cshtml" />
     <Content Include="Content\Web.config" />
-    <Content Include="manifest.json" />
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\RazorError.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pDeleteModal.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_StatusMessage.cshtml" />

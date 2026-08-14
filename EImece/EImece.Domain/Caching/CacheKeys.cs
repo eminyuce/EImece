@@ -20,6 +20,15 @@ namespace EImece.Domain.Caching
         public const string SettingArea = "setting";
 
         /// <summary>
+        /// Generated PWA manifest JSON. Cleared with settings via <c>SettingService.ClearCache</c>
+        /// and by Admin Refresh (<c>Dashboard/ClearCache</c>).
+        /// </summary>
+        public static string WebAppManifest
+        {
+            get { return SettingArea + ":webappmanifest"; }
+        }
+
+        /// <summary>
         /// Prefix shared by every product-list entry (sync + async). Used for bulk invalidation
         /// after admin create/update/delete.
         /// </summary>

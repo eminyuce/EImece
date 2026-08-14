@@ -203,6 +203,38 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// Browser / PWA chrome color. Web.config ThemeColor wins when set;
+        /// otherwise the active design default (Crizal=#067a36, Modern=#ffffff), else #1789F9.
+        /// </summary>
+        public static string ThemeColor
+        {
+            get
+            {
+                var configured = ConfigurationManager.AppSettings["ThemeColor"];
+                if (!string.IsNullOrWhiteSpace(configured))
+                {
+                    return configured.Trim();
+                }
+
+                var design = ConfigurationManager.AppSettings["ActiveDesign"];
+                if (!string.IsNullOrWhiteSpace(design))
+                {
+                    if (design.Trim().Equals("Crizal", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "#067a36";
+                    }
+
+                    if (design.Trim().Equals("Modern", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "#ffffff";
+                    }
+                }
+
+                return WebAppManifestHelper.DefaultThemeColor;
+            }
+        }
+
         public static int GridPageSizeNumber
         {
             get

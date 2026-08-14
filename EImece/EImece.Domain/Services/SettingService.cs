@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+﻿using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
@@ -41,6 +42,7 @@ namespace EImece.Domain.Services
         {
             DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY);
             DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix);
+            DataCachingProvider.Clear(CacheKeys.WebAppManifest);
         }
 
         private List<Setting> GetAllSettings()

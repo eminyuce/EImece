@@ -63,6 +63,8 @@ namespace EImece.Domain
         public const string DeliveryInfo = "DeliveryInfo";
         public const string WebSiteLogo = "WebSiteLogo";
         public const string CompanyName = "CompanyName";
+        public const string ThemeColor = "ThemeColor";
+        public const string WebAppManifestContentType = "application/manifest+json";
         public const string CompanyAddress = "CompanyAddress";
         public const string CompanyGotNewOrderEmailMailTemplate = "CompanyGotNewOrderEmail";
         public const string OrderConfirmationEmailMailTemplate = "OrderConfirmationEmail";

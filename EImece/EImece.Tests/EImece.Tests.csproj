@@ -316,6 +316,7 @@
     <Compile Include="Helpers\ApplicationCacheClearerTests.cs" />
     <Compile Include="Helpers\ApplicationMetricsTests.cs" />
     <Compile Include="Helpers\CacheKeysTests.cs" />
+    <Compile Include="Helpers\WebAppManifestHelperTests.cs" />
     <Compile Include="Helpers\CorrelationIdContextTests.cs" />
     <Compile Include="Helpers\EfSqlLoggerTests.cs" />
     <Compile Include="Helpers\ImageUtilitiesTests.cs" />

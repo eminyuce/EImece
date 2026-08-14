@@ -16,6 +16,13 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
+        public void WebAppManifest_LivesUnderSettingArea()
+        {
+            Assert.AreEqual("setting:webappmanifest", CacheKeys.WebAppManifest);
+            StringAssert.StartsWith(CacheKeys.WebAppManifest, CacheKeys.SettingArea);
+        }
+
+        [TestMethod]
         public void ActiveProductsAsync_UsesDistinctSuffix()
         {
             var sync = CacheKeys.ActiveProducts(1);

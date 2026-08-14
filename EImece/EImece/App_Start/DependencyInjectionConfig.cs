@@ -266,6 +266,7 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IProductCategoryService, ProductCategoryService>();
             services.AddScopedWithProps<IProductService, ProductService>();
             services.AddScopedWithProps<ISettingService, SettingService>();
+            services.AddScopedWithProps<IWebAppManifestService, WebAppManifestService>();
             services.AddScopedWithProps<IStoryCategoryService, StoryCategoryService>();
             services.AddScopedWithProps<IStoryService, StoryService>();
             services.AddScopedWithProps<ISubscriberService, SubscriberService>();

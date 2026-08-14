@@ -459,6 +459,7 @@
     <Compile Include="Helpers\ImageCompressor.cs" />
     <Compile Include="Helpers\ImageUploadOptimizer.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Helpers\WebAppManifestHelper.cs" />
     <Compile Include="Helpers\OfflineHelper.cs" />
     <Compile Include="Helpers\ProductSpecificationValueHelper.cs" />
     <Compile Include="Helpers\ProductSpecificationFieldHelper.cs" />
@@ -700,6 +701,7 @@
     <Compile Include="Models\FrontModels\SendMessageToSellerViewModel.cs" />
     <Compile Include="Models\FrontModels\ShareLinksViewModel.cs" />
     <Compile Include="Models\FrontModels\SettingLayoutViewModel.cs" />
+    <Compile Include="Models\FrontModels\WebAppManifest.cs" />
     <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartProduct.cs" />
     <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartSession.cs" />
     <Compile Include="Models\FrontModels\ShoppingCart\ShoppingCartItem.cs" />
@@ -839,6 +841,7 @@
     <Compile Include="Services\IServices\IProductCategoryService.cs" />
     <Compile Include="Services\IServices\IProductService.cs" />
     <Compile Include="Services\IServices\ISettingService.cs" />
+    <Compile Include="Services\IServices\IWebAppManifestService.cs" />
     <Compile Include="Services\IServices\IStoryCategoryService.cs" />
     <Compile Include="Services\IServices\IStoryService.cs" />
     <Compile Include="Services\IServices\ISubsciberService.cs" />
@@ -862,6 +865,7 @@
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Services\SiteMapService.cs" />
+    <Compile Include="Services\WebAppManifestService.cs" />
     <Compile Include="Services\SmsService.cs" />
     <Compile Include="Services\StoryCategoryService.cs" />
     <Compile Include="Services\StoryService.cs" />

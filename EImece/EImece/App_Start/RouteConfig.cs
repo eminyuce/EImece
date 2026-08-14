@@ -27,6 +27,17 @@ namespace EImece
                );
 
             routes.MapRoute(
+                  name: "webappmanifest",
+                  url: "manifest.json",
+                  defaults: new
+                  {
+                      controller = "Manifest",
+                      action = "Index"
+                  },
+                    namespaces: new[] { Constants.ControllersNamespace }
+               );
+
+            routes.MapRoute(
                name: "UnderConstruction",
                url: "UnderConstruction",
                        defaults: new { controller = "UnderConstruction", action = "Index" },
