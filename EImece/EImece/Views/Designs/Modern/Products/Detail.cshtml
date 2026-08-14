@@ -91,9 +91,17 @@
         <hr class="mt-4">
         @if (!string.IsNullOrEmpty(product.BrandName))
         {
+            var brandUrl = product.BrandProductsUrl;
             <span class="d-block mt-1 text-muted">
                 @Resource.ProductBrand :
-                <strong>@product.BrandName</strong>
+                @if (!string.IsNullOrEmpty(brandUrl))
+                {
+                    <a href="@brandUrl" title="@product.BrandName"><strong>@product.BrandName</strong></a>
+                }
+                else
+                {
+                    <strong>@product.BrandName</strong>
+                }
             </span>
         }
         <span class="d-block mt-1 text-muted">@Resource.ProductCode : <strong>@product.ProductCode</strong></span>
@@ -366,9 +374,18 @@
                         <div class="card-body">
                             @if (!String.IsNullOrEmpty(product.BrandName))
                             {
+                                var brandUrl = product.BrandProductsUrl;
                                 <span class="product-code">
                                     <i>
-                                        @Resource.ProductBrand : @product.BrandName
+                                        @Resource.ProductBrand : 
+                                        @if (!string.IsNullOrEmpty(brandUrl))
+                                        {
+                                            <a href="@brandUrl" title="@product.BrandName">@product.BrandName</a>
+                                        }
+                                        else
+                                        {
+                                            @product.BrandName
+                                        }
                                     </i>
                                 </span>
                                 <br />

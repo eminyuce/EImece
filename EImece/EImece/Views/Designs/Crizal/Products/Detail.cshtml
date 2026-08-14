@@ -125,7 +125,7 @@
         <ul class="crizal-product-hero__meta">
             @if (!string.IsNullOrEmpty(product.BrandName))
             {
-                var brandUrl = "";
+                var brandUrl = product.BrandProductsUrl;
                 <li>
                     <span>@Resource.ProductBrand</span>
                     @if (!string.IsNullOrEmpty(brandUrl))
@@ -487,7 +487,7 @@
                         <div class="card-body">
                             @if (!String.IsNullOrEmpty(product.BrandName))
                             {
-                                var brandUrl = "";
+                                var brandUrl = product.BrandProductsUrl;
                                 <p class="product-code">
                                     @Resource.ProductBrand:
                                     @if (!string.IsNullOrEmpty(brandUrl))

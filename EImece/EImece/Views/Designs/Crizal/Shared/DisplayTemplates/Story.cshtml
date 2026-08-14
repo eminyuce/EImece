@@ -12,35 +12,68 @@
     var mainImageId = dto != null ? dto.MainImageId : (story != null ? story.MainImageId : null);
     var detailUrl = dto != null ? dto.DetailPageUrl : (story != null ? story.DetailPageUrl : string.Empty);
     var createdDate = dto != null ? dto.CreatedDate : (story != null ? story.CreatedDate : DateTime.Now);
-    var description = dto != null ? dto.GetSeoDescription(300) : (story != null ? story.GetSeoDescription(300) : string.Empty);
+    var excerpt = dto != null
+        ? (!string.IsNullOrWhiteSpace(dto.ShortDescription) ? dto.ShortDescription : dto.GetSeoDescription(180))
+        : (story != null ? (!string.IsNullOrWhiteSpace(story.ShortDescription) ? story.ShortDescription : story.GetSeoDescription(180)) : string.Empty);
 
     int Width = ViewData["Width"].ToInt(480);
     int Height = ViewData["Height"].ToInt(320);
     var imageId = mainImageId.HasValue ? mainImageId.Value : 0;
-    var storyImageTag = dto != null
-        ? dto.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 767px) 100vw, 360px")
-        : (story != null ? story.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 767px) 100vw, 360px") : string.Empty);
+    var imageUrl = dto != null ? dto.GetCroppedImageUrl(mainImageId, Width, Height) : (story != null ? story.GetCroppedImageUrl(mainImageId, Width, Height) : string.Empty);
+    var srcset = mainImageId.HasValue
+        ? (dto != null ? dto.GetResponsiveImageSrcSet(mainImageId.Value, Width, Height) : (story != null ? story.GetResponsiveImageSrcSet(mainImageId.Value, Width, Height) : string.Empty))
+        : string.Empty;
+
+    var tagItems = new List<Tuple<string, string>>();
+    if (dto != null && dto.Tags != null)
+    {
+        tagItems = dto.Tags.Select(t => Tuple.Create(t.Name, t.StoryTagDetailPageUrl)).ToList();
+    }
+    else if (story != null && story.StoryTags != null)
+    {
+        tagItems = story.StoryTags
+            .Where(r1 => r1.Tag != null)
+            .Select(r1 => Tuple.Create(r1.Tag.Name, r1.Tag.DetailPageRelativeUrlForStories ?? "#"))
+            .Distinct()
+            .ToList();
+    }
 }
 
-<article class="card story-list-card mb-4 shadow-sm border-0 overflow-hidden">
-    <div class="row no-gutters align-items-stretch">
-        <div class="col-md-4 position-relative">
-            <a href="@detailUrl" class="story-list-thumb" aria-label="@name">
-                @Html.Raw(storyImageTag)
-            </a>
-            <div class="story-list-date text-center bg-dark text-white rounded px-2 py-1">
-                <div class="h5 mb-0">@createdDate.Day</div>
-                <small class="text-uppercase">@createdDate.ToString("MMM")</small>
+<article class="crizal-story-card">
+    <a class="crizal-story-card__media" href="@detailUrl" aria-label="@name">
+        <img src="@imageUrl"
+             srcset="@srcset"
+             sizes="(max-width: 767px) 100vw, 360px"
+             width="@Width"
+             height="@Height"
+             alt="@name"
+             loading="lazy"
+             decoding="async" />
+        <time class="crizal-story-card__date" datetime="@createdDate.ToString("yyyy-MM-dd")">
+            <span class="crizal-story-card__day">@createdDate.Day</span>
+            <span class="crizal-story-card__month">@createdDate.ToString("MMM")</span>
+        </time>
+    </a>
+    <div class="crizal-story-card__body">
+        <h2 class="crizal-story-card__title">
+            <a href="@detailUrl">@name</a>
+        </h2>
+
+        @if (tagItems.Any())
+        {
+            <div class="crizal-tags crizal-tags--sm">
+                @foreach (var tag in tagItems.Take(4))
+                {
+                    <a class="crizal-tag" href="@tag.Item2">@tag.Item1</a>
+                }
             </div>
-        </div>
-        <div class="col-md-8">
-            <div class="card-body d-flex flex-column h-100">
-                <h2 class="card-title h5 mb-2">
-                    <a href="@detailUrl" class="text-dark">@name</a>
-                </h2>
-                <p class="card-text text-muted mb-3 flex-grow-1">@description</p>
-                <a href="@detailUrl" class="btn btn-outline-secondary btn-sm align-self-start">@Resource.ReadMore</a>
-            </div>
-        </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(excerpt))
+        {
+            <p class="crizal-story-card__excerpt">@Html.Raw(excerpt)</p>
+        }
+
+        <a href="@detailUrl" class="butn-style8 small crizal-story-card__more"><span>@Resource.ReadMore</span></a>
     </div>
 </article>

@@ -20,6 +20,20 @@
     var storyImageTag = dto != null
         ? dto.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 767px) 100vw, 360px")
         : (story != null ? story.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 767px) 100vw, 360px") : string.Empty);
+
+    var tagItems = new List<Tuple<string, string>>();
+    if (dto != null && dto.Tags != null)
+    {
+        tagItems = dto.Tags.Select(t => Tuple.Create(t.Name, t.StoryTagDetailPageUrl)).ToList();
+    }
+    else if (story != null && story.StoryTags != null)
+    {
+        tagItems = story.StoryTags
+            .Where(r1 => r1.Tag != null)
+            .Select(r1 => Tuple.Create(r1.Tag.Name, r1.Tag.DetailPageRelativeUrlForStories ?? "#"))
+            .Distinct()
+            .ToList();
+    }
 }
 
 <article class="card story-list-card mb-4 shadow-sm border-0 overflow-hidden">
@@ -38,6 +52,17 @@
                 <h2 class="card-title h5 mb-2">
                     <a href="@detailUrl" class="text-dark">@name</a>
                 </h2>
+
+                @if (tagItems.Any())
+                {
+                    <p class="mb-2">
+                        @foreach (var tag in tagItems)
+                        {
+                            <a href="@tag.Item2" class="badge badge-secondary mr-1 mb-1">@tag.Item1</a>
+                        }
+                    </p>
+                }
+
                 <p class="card-text text-muted mb-3 flex-grow-1">@description</p>
                 <a href="@detailUrl" class="btn btn-outline-secondary btn-sm align-self-start">@Resource.ReadMore</a>
             </div>

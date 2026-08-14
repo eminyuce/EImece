@@ -127,6 +127,27 @@ namespace EImece.Domain.Models.DTOs.Storefront
             }
         }
 
+        public string BrandProductsUrl
+        {
+            get
+            {
+                if (!BrandId.HasValue || BrandId.Value <= 0 || string.IsNullOrWhiteSpace(BrandName))
+                {
+                    return string.Empty;
+                }
+
+                if (ProductCategoryId > 0)
+                {
+                    var catSeo = !string.IsNullOrEmpty(ProductCategorySeoUrl)
+                        ? ProductCategorySeoUrl
+                        : string.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(ProductCategoryName ?? "kategori"), GeneralHelper.ModifyId(ProductCategoryId));
+                    return $"/{Constants.ProductsCategoriesControllerRoutingPrefix}/pc/{catSeo}?filtreler=b{BrandId.Value}";
+                }
+
+                return $"/products/searchproducts?search={Uri.EscapeDataString(BrandName)}";
+            }
+        }
+
         public string GetCroppedImageUrl(int? fileStorageId, int width = 0, int height = 0, bool isFullPath = false, bool isThumb = false)
         {
             int imageId = fileStorageId.HasValue ? fileStorageId.Value : (MainImageId.HasValue ? MainImageId.Value : 0);

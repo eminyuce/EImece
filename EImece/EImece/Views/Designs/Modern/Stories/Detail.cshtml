@@ -117,6 +117,10 @@
         <div class="col-lg-9">
             <!-- Post meta-->
             <div class="post-meta d-flex flex-wrap justify-content-between pb-3">
+                @if (!string.IsNullOrEmpty(storyDetail.AuthorName))
+                {
+                    <div class="mr-2">by&nbsp;<a href="#">@storyDetail.AuthorName</a></div>
+                }
                 @if (!string.IsNullOrEmpty(storyDetail.StoryCategoryName))
                 {
                     <span class="meta-divider"></span>
