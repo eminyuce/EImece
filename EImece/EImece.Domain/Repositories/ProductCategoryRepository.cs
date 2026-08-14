@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
@@ -335,6 +335,7 @@ namespace EImece.Domain.Repositories
                     IsActive = c.IsActive,
                     MainPage = c.MainPage,
                     TemplateId = c.TemplateId,
+                    MetaKeywords = c.MetaKeywords,
                     ProductCount = c.Products.Count(p => p.IsActive)
                 };
             }

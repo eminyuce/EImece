@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
@@ -20,6 +20,7 @@ namespace EImece.Domain.Services.IServices
         List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentCategoryId);
         Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
         List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language);
+        Task<ProductCategoryViewModel> GetStorefrontCategoryPageViewModelAsync(int categoryId, int page, EImece.Domain.Models.Enums.SortingType sorting, string filter, int? minPrice, int? maxPrice, int recordPerPage, int language, CancellationToken cancellationToken = default(CancellationToken));
 
         #endregion
 

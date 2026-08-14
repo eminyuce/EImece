@@ -1,6 +1,8 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.DTOs.Storefront
@@ -25,11 +27,31 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public int ProductCount { get; set; }
         public int TreeLevel { get; set; }
 
+        public string MetaTitle { get; set; }
+        public string MetaDescription { get; set; }
+        public string MetaKeywords { get; set; }
+        public StorefrontCategoryDto Parent { get; set; }
+
         public List<StorefrontCategoryDto> Children { get; set; }
 
         public StorefrontCategoryDto()
         {
             Children = new List<StorefrontCategoryDto>();
+        }
+
+        public string GetSeoTitle()
+        {
+            return !string.IsNullOrWhiteSpace(MetaTitle) ? MetaTitle : Name;
+        }
+
+        public string GetSeoDescription()
+        {
+            return !string.IsNullOrWhiteSpace(MetaDescription) ? MetaDescription : ShortDescription;
+        }
+
+        public string GetSeoKeywords()
+        {
+            return !string.IsNullOrWhiteSpace(MetaKeywords) ? MetaKeywords : Name;
         }
 
         public string ModifiedId
@@ -49,6 +71,12 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 var dummy = new ProductCategory { Id = Id, Name = Name };
                 return dummy.GetDetailPageUrl("Category", "ProductCategories");
             }
+        }
+
+        public string ProductCategoryListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
+        {
+            var dummy = new ProductCategory { Id = Id, Name = Name };
+            return dummy.ProductCategoryListPageUrl(sorting, paginatedModelList);
         }
 
         public string GetCroppedImageUrl(int? fileStorageId = null, int width = 0, int height = 0, bool isFullPath = false, bool isThumb = false)

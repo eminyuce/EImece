@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,11 +52,16 @@ namespace EImece.Domain.Models.FrontModels
 
         public IEnumerable<T> GetPagingResult()
         {
-            if (PageIndex == 0)
+            if (this.Count <= PageSize && TotalCount >= this.Count)
             {
-                PageIndex = 1;
+                return this;
             }
-            return this.Skip((PageIndex - 1) * PageSize).Take(PageSize);
+            if (PageIndex <= 1)
+            {
+                return this.Take(PageSize);
+            }
+            var skipped = this.Skip((PageIndex - 1) * PageSize).ToList();
+            return skipped.Any() ? skipped.Take(PageSize) : this;
         }
     }
 }

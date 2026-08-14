@@ -75,9 +75,21 @@ namespace EImece.Domain.Models.DTOs.Storefront
             return dummy.GetResponsiveImageSrcSet(fileStorageId, width, height);
         }
 
+        public string GetCroppedImageTag(int imageId = 0, int width = 0, int height = 0, bool lazy = true, string fetchPriority = null, string sizes = null)
+        {
+            int idToUse = imageId > 0 ? imageId : (MainImageId.HasValue ? MainImageId.Value : 0);
+            var dummy = new Story { Id = Id, Name = Name };
+            return dummy.GetCroppedImageTag(idToUse, width, height, lazy: lazy, fetchPriority: fetchPriority, sizes: sizes);
+        }
+
         public string GetSeoDescription()
         {
             return GeneralHelper.GetDescriptionWithBody(ShortDescription, 100);
+        }
+
+        public string GetSeoDescription(int maxLen)
+        {
+            return GeneralHelper.GetDescriptionWithBody(ShortDescription, maxLen);
         }
     }
 }

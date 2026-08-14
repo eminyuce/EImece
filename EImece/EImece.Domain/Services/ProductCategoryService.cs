@@ -30,6 +30,9 @@ namespace EImece.Domain.Services
         [Inject]
         public TemplateService TemplateService { get; set; }
 
+        [Inject]
+        public IProductRepository ProductRepository { get; set; }
+
         private IProductCategoryRepository ProductCategoryRepository { get; set; }
 
         public ProductCategoryService(IProductCategoryRepository repository) : base(repository)
@@ -98,6 +101,150 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => ProductCategoryRepository.BuildStorefrontNavigationTree(language),
                 AppConfig.CacheMediumSeconds);
+        }
+
+        public async Task<ProductCategoryViewModel> GetStorefrontCategoryPageViewModelAsync(
+            int categoryId,
+            int page,
+            EImece.Domain.Models.Enums.SortingType sorting,
+            string filter,
+            int? minPrice,
+            int? maxPrice,
+            int recordPerPage,
+            int language,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var categoryDto = await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId, cancellationToken).ConfigureAwait(false);
+            if (categoryDto == null)
+            {
+                return null;
+            }
+
+            if (categoryDto.ParentId > 0)
+            {
+                categoryDto.Parent = await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryDto.ParentId, cancellationToken).ConfigureAwait(false);
+                if (categoryDto.Parent != null && categoryDto.Parent.ParentId > 0)
+                {
+                    categoryDto.Parent.Parent = await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryDto.Parent.ParentId, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            var childCategories = await ProductCategoryRepository.GetStorefrontChildrenCategoriesAsync(categoryId, cancellationToken).ConfigureAwait(false);
+            var childCategoryIds = childCategories.Select(c => c.Id).ToList();
+
+            var result = new ProductCategoryViewModel();
+            result.CategoryDto = categoryDto;
+            result.ProductCategory = new ProductCategory
+            {
+                Id = categoryDto.Id,
+                Name = categoryDto.Name,
+                ParentId = categoryDto.ParentId,
+                ShortDescription = categoryDto.ShortDescription,
+                Description = categoryDto.Description,
+                MetaKeywords = categoryDto.MetaKeywords,
+                IsActive = categoryDto.IsActive,
+                Position = categoryDto.Position,
+                Lang = categoryDto.Lang,
+                MainImageId = categoryDto.MainImageId,
+                Parent = categoryDto.Parent != null ? new ProductCategory
+                {
+                    Id = categoryDto.Parent.Id,
+                    Name = categoryDto.Parent.Name,
+                    ParentId = categoryDto.Parent.ParentId,
+                    Parent = categoryDto.Parent.Parent != null ? new ProductCategory
+                    {
+                        Id = categoryDto.Parent.Parent.Id,
+                        Name = categoryDto.Parent.Parent.Name,
+                        ParentId = categoryDto.Parent.Parent.ParentId
+                    } : null
+                } : null
+            };
+
+            result.ChildrenProductCategories = childCategories.Select(c => new ProductCategory
+            {
+                Id = c.Id,
+                Name = c.Name,
+                ParentId = c.ParentId,
+                Position = c.Position,
+                Lang = c.Lang,
+                IsActive = c.IsActive,
+                MainImageId = c.MainImageId
+            }).ToList();
+
+            List<int> brandIds = null;
+            List<int> ratings = null;
+            if (!string.IsNullOrEmpty(filter))
+            {
+                var selectedFilters = FilterHelper.ParseFiltersFromString(filter);
+                if (selectedFilters != null && selectedFilters.Any())
+                {
+                    brandIds = selectedFilters.Where(f => f.FieldName.Equals("BrandId", StringComparison.OrdinalIgnoreCase)).Select(f => f.ValueFirst.ToInt()).ToList();
+                    ratings = selectedFilters.Where(f => f.FieldName.Equals("Rating", StringComparison.OrdinalIgnoreCase)).Select(f => f.ValueFirst.ToInt()).ToList();
+                }
+            }
+
+            decimal? minP = (minPrice.HasValue && minPrice.Value > 0) ? (decimal?)minPrice.Value : null;
+            decimal? maxP = (maxPrice.HasValue && maxPrice.Value > 0) ? (decimal?)maxPrice.Value : null;
+
+            var pagedList = await ProductRepository.GetStorefrontProductsByCategoryIdAsync(
+                categoryId,
+                childCategoryIds,
+                language,
+                page > 0 ? page : 1,
+                recordPerPage,
+                sorting,
+                minP,
+                maxP,
+                brandIds,
+                ratings,
+                cancellationToken).ConfigureAwait(false);
+
+            result.PagedProductDtos = pagedList;
+            result.Page = page > 0 ? page : 1;
+            result.RecordPerPage = recordPerPage;
+            result.Filter = filter;
+            result.Sorting = sorting;
+            result.MinPrice = minPrice;
+            result.MaxPrice = maxPrice;
+
+            result.AllProducts = pagedList.Select(d => new Product
+            {
+                Id = d.Id,
+                Name = d.Name,
+                NameShort = d.NameShort,
+                NameLong = d.NameLong,
+                ShortDescription = d.ShortDescription,
+                Price = d.Price,
+                Discount = d.Discount,
+                ProductCode = d.ProductCode,
+                Rating = d.Rating,
+                SoldCount = d.SoldCount,
+                MainImageId = d.MainImageId,
+                ProductCategoryId = d.ProductCategoryId,
+                BrandId = d.BrandId,
+                IsActive = d.IsActive,
+                MainPage = d.MainPage,
+                IsCampaign = d.IsCampaign,
+                State = d.State,
+                Lang = d.Lang,
+                Position = d.Position,
+                CreatedDate = d.CreatedDate,
+                UpdatedDate = d.UpdatedDate,
+                ProductCategory = new ProductCategory { Id = d.ProductCategoryId, Name = d.ProductCategoryName }
+            }).ToList();
+
+            result.CategoryChildrenProducts = new List<Product>();
+
+            List<Menu> lists = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
+            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.Brands = await BrandService.GetBrandsIfAnyProductExistsAsync(language).ConfigureAwait(false);
+            result.ProductCategoryTree = await BuildTreeAsync(true, language).ConfigureAwait(false);
+            result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
+            result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
+            result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
+
+            return result;
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using System;
 using System.Collections.Generic;
@@ -6,10 +6,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Routing;
 
+using EImece.Domain.GenericRepository;
+using EImece.Domain.Models.DTOs.Storefront;
+
 namespace EImece.Domain.Models.FrontModels
 {
     public class ProductCategoryViewModel : ItemListing
     {
+        public StorefrontCategoryDto CategoryDto { get; set; }
+        public PaginatedList<StorefrontProductCardDto> PagedProductDtos { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public List<Product> CategoryChildrenProducts { get; set; }
         public Menu ProductMenu { get; set; }

@@ -1,4 +1,4 @@
-﻿using LazyCache;
+using LazyCache;
 using Microsoft.Extensions.Caching.Memory;
 using NLog;
 using System;
@@ -129,20 +129,17 @@ namespace EImece.Domain.Caching
             if (AppConfig.IsCacheActive)
             {
                 var keyNew = ToPhysicalKey(key);
-                T t = _lazyCache.Get<T>(keyNew);
-                if (t == null)
+                if (_lazyCache.CacheProvider.TryGetValue<object>(keyNew, out var raw) && raw != null)
                 {
-                    value = default(T);
-                    return false;
+                    if (raw is T typedValue)
+                    {
+                        value = typedValue;
+                        return true;
+                    }
                 }
-                value = t;
-                return true;
             }
-            else
-            {
-                value = default(T);
-                return false;
-            }
+            value = default(T);
+            return false;
         }
 
         public void Set<T>(string key, T value, int duration)
