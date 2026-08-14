@@ -1,11 +1,13 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +33,20 @@ namespace EImece.Domain.Services
         {
             MainPageImageRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<List<StorefrontBannerDto>> GetStorefrontMainPageBannersAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await MainPageImageRepository.GetStorefrontMainPageBannersAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontBannerDto> GetStorefrontMainPageBanners(int language)
+        {
+            return MainPageImageRepository.GetStorefrontMainPageBanners(language);
+        }
+
+        #endregion
 
         public void DeleteMainPageImage(int id)
         {
@@ -72,8 +88,7 @@ namespace EImece.Domain.Services
             result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0 && r.IsBuyableState).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
 
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
-            result.LatestStories = StoryService.GetFeaturedStories(10, language,0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageFeatureStoryCountLimit).ToList();
+            result.LatestStories = StoryService.GetFeaturedStories(AppConfig.HomePageFeatureStoryCountLimit, language, 0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
             result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
 
@@ -91,8 +106,8 @@ namespace EImece.Domain.Services
 
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
             result.MainPageMenu = menus.FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            var featuredStories = await StoryService.GetFeaturedStoriesAsync(10, language, 0, cancellationToken).ConfigureAwait(false);
-            result.LatestStories = featuredStories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageFeatureStoryCountLimit).ToList();
+            var featuredStories = await StoryService.GetFeaturedStoriesAsync(AppConfig.HomePageFeatureStoryCountLimit, language, 0, cancellationToken).ConfigureAwait(false);
+            result.LatestStories = featuredStories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
             result.MainPageImages = await GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
             result.MainPageProductCategories = await ProductCategoryService.GetMainPageProductCategoriesAsync(language).ConfigureAwait(false);
 

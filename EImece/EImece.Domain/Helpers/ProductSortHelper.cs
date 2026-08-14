@@ -1,4 +1,5 @@
 using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,24 @@ namespace EImece.Domain.Helpers
                 .ThenByDescending(r => r.UpdatedDate);
         }
 
+        public static IOrderedQueryable<StorefrontProductCardDto> OrderByStorefrontDefault(this IQueryable<StorefrontProductCardDto> products)
+        {
+            return products
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.MainPage)
+                .ThenByDescending(r => r.IsCampaign)
+                .ThenByDescending(r => r.UpdatedDate);
+        }
+
+        public static IOrderedEnumerable<StorefrontProductCardDto> OrderByStorefrontDefault(this IEnumerable<StorefrontProductCardDto> products)
+        {
+            return products
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.MainPage)
+                .ThenByDescending(r => r.IsCampaign)
+                .ThenByDescending(r => r.UpdatedDate);
+        }
+
         public static IOrderedQueryable<ProductTag> OrderByProductStorefrontDefault(this IQueryable<ProductTag> productTags)
         {
             return productTags
@@ -38,6 +57,15 @@ namespace EImece.Domain.Helpers
         }
 
         public static IOrderedEnumerable<Product> ThenByStorefrontDefault(this IOrderedEnumerable<Product> products)
+        {
+            return products
+                .ThenBy(r => r.Position)
+                .ThenByDescending(r => r.MainPage)
+                .ThenByDescending(r => r.IsCampaign)
+                .ThenByDescending(r => r.UpdatedDate);
+        }
+
+        public static IOrderedEnumerable<StorefrontProductCardDto> ThenByStorefrontDefault(this IOrderedEnumerable<StorefrontProductCardDto> products)
         {
             return products
                 .ThenBy(r => r.Position)

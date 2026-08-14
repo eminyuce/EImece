@@ -1,6 +1,8 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -43,6 +45,90 @@ namespace EImece.Domain.Services
         {
             StoryRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
+        {
+            return StoryRepository.GetStorefrontStoryDetailById(storyId);
+        }
+
+        public async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontFeaturedStoriesAsync(take, language, excludedStoryId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
+        {
+            return StoryRepository.GetStorefrontFeaturedStories(take, language, excludedStoryId);
+        }
+
+        public async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontLatestStoriesAsync(take, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
+        {
+            return StoryRepository.GetStorefrontLatestStories(take, language);
+        }
+
+        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontMainPageStoriesAsync(pageIndex, pageSize, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
+        {
+            return StoryRepository.GetStorefrontMainPageStories(pageIndex, pageSize, language);
+        }
+
+        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontStoriesByCategoryIdAsync(storyCategoryId, pageIndex, pageSize, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int pageIndex, int pageSize, int language)
+        {
+            return StoryRepository.GetStorefrontStoriesByCategoryId(storyCategoryId, pageIndex, pageSize, language);
+        }
+
+        public async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIds, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontRelatedStoriesAsync(tagIds, take, language, excludedStoryId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontStoryCardDto> GetStorefrontRelatedStories(int[] tagIds, int take, int language, int excludedStoryId)
+        {
+            return StoryRepository.GetStorefrontRelatedStories(tagIds, take, language, excludedStoryId);
+        }
+
+        public async Task<StorefrontStoryCardDto> GetStorefrontNextStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontNextStoryAsync(currentStoryId, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontStoryCardDto GetStorefrontNextStory(int currentStoryId, int language)
+        {
+            return StoryRepository.GetStorefrontNextStory(currentStoryId, language);
+        }
+
+        public async Task<StorefrontStoryCardDto> GetStorefrontPreviousStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryRepository.GetStorefrontPreviousStoryAsync(currentStoryId, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontStoryCardDto GetStorefrontPreviousStory(int currentStoryId, int language)
+        {
+            return StoryRepository.GetStorefrontPreviousStory(currentStoryId, language);
+        }
+
+        #endregion
 
         public List<Story> GetAdminPageList(int categoryId, string search, int lang)
         {

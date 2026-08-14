@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -19,6 +20,192 @@ namespace EImece.Domain.Repositories
         public TagRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<List<StorefrontTagDto>> GetStorefrontProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Tags.AsNoTracking()
+                .Where(r => r.Lang == language && r.IsActive && r.TagCategory != null && r.TagCategory.IsActive)
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.Id)
+                .Select(t => new StorefrontTagDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    TagCategoryId = t.TagCategoryId,
+                    TagCategoryName = t.TagCategory != null ? t.TagCategory.Name : string.Empty,
+                    Position = t.Position,
+                    Lang = t.Lang,
+                    IsActive = t.IsActive
+                })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontTagDto> GetStorefrontProductTags(int language)
+        {
+            return EImeceDbContext.Tags.AsNoTracking()
+                .Where(r => r.Lang == language && r.IsActive && r.TagCategory != null && r.TagCategory.IsActive)
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.Id)
+                .Select(t => new StorefrontTagDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    TagCategoryId = t.TagCategoryId,
+                    TagCategoryName = t.TagCategory != null ? t.TagCategory.Name : string.Empty,
+                    Position = t.Position,
+                    Lang = t.Lang,
+                    IsActive = t.IsActive
+                })
+                .ToList();
+        }
+
+        public async Task<List<StorefrontTagDto>> GetStorefrontTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Tags.AsNoTracking()
+                .Where(t => t.IsActive && t.Lang == language)
+                .Select(t => new
+                {
+                    Tag = t,
+                    StoryCount = t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
+                })
+                .Where(x => x.StoryCount >= minStoryCount)
+                .OrderByDescending(x => x.StoryCount)
+                .ThenBy(x => x.Tag.Name)
+                .Select(x => new StorefrontTagDto
+                {
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name,
+                    TagCategoryId = x.Tag.TagCategoryId,
+                    TagCategoryName = x.Tag.TagCategory != null ? x.Tag.TagCategory.Name : string.Empty,
+                    Position = x.Tag.Position,
+                    Lang = x.Tag.Lang,
+                    IsActive = x.Tag.IsActive,
+                    ItemCount = x.StoryCount
+                })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontTagDto> GetStorefrontTagsWithStoryCounts(int language, int minStoryCount = 1)
+        {
+            return EImeceDbContext.Tags.AsNoTracking()
+                .Where(t => t.IsActive && t.Lang == language)
+                .Select(t => new
+                {
+                    Tag = t,
+                    StoryCount = t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
+                })
+                .Where(x => x.StoryCount >= minStoryCount)
+                .OrderByDescending(x => x.StoryCount)
+                .ThenBy(x => x.Tag.Name)
+                .Select(x => new StorefrontTagDto
+                {
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name,
+                    TagCategoryId = x.Tag.TagCategoryId,
+                    TagCategoryName = x.Tag.TagCategory != null ? x.Tag.TagCategory.Name : string.Empty,
+                    Position = x.Tag.Position,
+                    Lang = x.Tag.Lang,
+                    IsActive = x.Tag.IsActive,
+                    ItemCount = x.StoryCount
+                })
+                .ToList();
+        }
+
+        public async Task<List<StorefrontTagDto>> GetStorefrontTagsWithEntityCountsAsync(int language, int minEntityCount = 1, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Tags.AsNoTracking()
+                .Where(t => t.IsActive && t.Lang == language)
+                .Select(t => new
+                {
+                    Tag = t,
+                    EntityCount = t.ProductTags.Count(pt => pt.Product != null && pt.Product.IsActive)
+                                + t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
+                })
+                .Where(x => x.EntityCount >= minEntityCount)
+                .OrderBy(x => x.Tag.Position)
+                .ThenByDescending(x => x.Tag.Id)
+                .Select(x => new StorefrontTagDto
+                {
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name,
+                    TagCategoryId = x.Tag.TagCategoryId,
+                    TagCategoryName = x.Tag.TagCategory != null ? x.Tag.TagCategory.Name : string.Empty,
+                    Position = x.Tag.Position,
+                    Lang = x.Tag.Lang,
+                    IsActive = x.Tag.IsActive,
+                    ItemCount = x.EntityCount
+                })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontTagDto> GetStorefrontTagsWithEntityCounts(int language, int minEntityCount = 1)
+        {
+            return EImeceDbContext.Tags.AsNoTracking()
+                .Where(t => t.IsActive && t.Lang == language)
+                .Select(t => new
+                {
+                    Tag = t,
+                    EntityCount = t.ProductTags.Count(pt => pt.Product != null && pt.Product.IsActive)
+                                + t.StoryTags.Count(st => st.Story != null && st.Story.IsActive)
+                })
+                .Where(x => x.EntityCount >= minEntityCount)
+                .OrderBy(x => x.Tag.Position)
+                .ThenByDescending(x => x.Tag.Id)
+                .Select(x => new StorefrontTagDto
+                {
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name,
+                    TagCategoryId = x.Tag.TagCategoryId,
+                    TagCategoryName = x.Tag.TagCategory != null ? x.Tag.TagCategory.Name : string.Empty,
+                    Position = x.Tag.Position,
+                    Lang = x.Tag.Lang,
+                    IsActive = x.Tag.IsActive,
+                    ItemCount = x.EntityCount
+                })
+                .ToList();
+        }
+
+        public async Task<StorefrontTagDto> GetStorefrontTagByIdAsync(int tagId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Tags.AsNoTracking()
+                .Where(t => t.Id == tagId && t.IsActive)
+                .Select(t => new StorefrontTagDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    TagCategoryId = t.TagCategoryId,
+                    TagCategoryName = t.TagCategory != null ? t.TagCategory.Name : string.Empty,
+                    Position = t.Position,
+                    Lang = t.Lang,
+                    IsActive = t.IsActive
+                })
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontTagDto GetStorefrontTagById(int tagId)
+        {
+            return EImeceDbContext.Tags.AsNoTracking()
+                .Where(t => t.Id == tagId && t.IsActive)
+                .Select(t => new StorefrontTagDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    TagCategoryId = t.TagCategoryId,
+                    TagCategoryName = t.TagCategory != null ? t.TagCategory.Name : string.Empty,
+                    Position = t.Position,
+                    Lang = t.Lang,
+                    IsActive = t.IsActive
+                })
+                .FirstOrDefault();
+        }
+
+        #endregion
 
         public List<Tag> GetAdminPageList(string search, int language)
         {

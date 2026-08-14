@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -29,6 +30,50 @@ namespace EImece.Domain.Services
         {
             MenuRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<StorefrontPageDto> GetStorefrontPageByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await MenuRepository.GetStorefrontPageByIdAsync(menuId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontPageDto GetStorefrontPageById(int menuId)
+        {
+            return MenuRepository.GetStorefrontPageById(menuId);
+        }
+
+        public async Task<StorefrontPageDto> GetStorefrontPageByMenuLinkAsync(string menuLink, int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await MenuRepository.GetStorefrontPageByMenuLinkAsync(menuLink, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontPageDto GetStorefrontPageByMenuLink(string menuLink, int? language)
+        {
+            return MenuRepository.GetStorefrontPageByMenuLink(menuLink, language);
+        }
+
+        public async Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await MenuRepository.GetStorefrontActiveMenusAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontMenuDto> GetStorefrontActiveMenus(int language)
+        {
+            return MenuRepository.GetStorefrontActiveMenus(language);
+        }
+
+        public async Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await MenuRepository.BuildStorefrontMenuTreeAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontMenuDto> BuildStorefrontMenuTree(int language)
+        {
+            return MenuRepository.BuildStorefrontMenuTree(language);
+        }
+
+        #endregion
 
         public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {

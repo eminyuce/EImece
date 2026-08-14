@@ -2,6 +2,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -40,6 +41,66 @@ namespace EImece.Domain.Services
         {
             this.IsCachingActivated = IsCachingActivated;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
+        {
+            return ProductCategoryRepository.GetStorefrontCategoryById(categoryId);
+        }
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var cacheKey = $"StorefrontMainPageCategories-{language}" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => ProductCategoryRepository.GetStorefrontMainPageCategoriesAsync(language, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
+        {
+            var cacheKey = $"StorefrontMainPageCategories-{language}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => ProductCategoryRepository.GetStorefrontMainPageCategories(language),
+                AppConfig.CacheLongSeconds);
+        }
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentCategoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductCategoryRepository.GetStorefrontChildrenCategoriesAsync(parentCategoryId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentCategoryId)
+        {
+            return ProductCategoryRepository.GetStorefrontChildrenCategories(parentCategoryId);
+        }
+
+        public async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var cacheKey = $"StorefrontNavigationTree-{language}" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => ProductCategoryRepository.BuildStorefrontNavigationTreeAsync(language, cancellationToken),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
+        {
+            var cacheKey = $"StorefrontNavigationTree-{language}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => ProductCategoryRepository.BuildStorefrontNavigationTree(language),
+                AppConfig.CacheMediumSeconds);
+        }
+
+        #endregion
 
         public List<ProductCategoryTreeModel> BuildNavigation(bool isActive, int language = 1)
         {

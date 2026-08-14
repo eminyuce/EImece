@@ -2,6 +2,7 @@
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -313,5 +314,134 @@ namespace EImece.Domain.Repositories
                 includeProperties.ToArray());
             return await items.ToListAsync(CancellationToken.None).ConfigureAwait(false);
         }
+
+        #region Storefront Read Implementations (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        private static Expression<Func<ProductCategory, StorefrontCategoryDto>> CategoryProjection
+        {
+            get
+            {
+                return c => new StorefrontCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.ParentId,
+                    ShortDescription = c.ShortDescription,
+                    Description = c.Description,
+                    MainImageId = c.MainImageId,
+                    DiscountPercentage = c.DiscountPercantage.HasValue ? (int?)c.DiscountPercantage.Value : null,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    MainPage = c.MainPage,
+                    TemplateId = c.TemplateId,
+                    ProductCount = c.Products.Count(p => p.IsActive)
+                };
+            }
+        }
+
+        public async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(CategoryProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(CategoryProjection)
+                .FirstOrDefault();
+        }
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
+                .OrderBy(c => c.Position)
+                .Select(CategoryProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
+                .OrderBy(c => c.Position)
+                .Select(CategoryProjection)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.ParentId == parentId && c.IsActive)
+                .OrderBy(c => c.Position)
+                .Select(CategoryProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentId)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.ParentId == parentId && c.IsActive)
+                .OrderBy(c => c.Position)
+                .Select(CategoryProjection)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var allCategories = await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.IsActive && c.Lang == language)
+                .OrderBy(c => c.Position)
+                .Select(CategoryProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return AssembleCategoryTree(allCategories);
+        }
+
+        public List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
+        {
+            var allCategories = EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.IsActive && c.Lang == language)
+                .OrderBy(c => c.Position)
+                .Select(CategoryProjection)
+                .ToList();
+
+            return AssembleCategoryTree(allCategories);
+        }
+
+        private static List<StorefrontCategoryDto> AssembleCategoryTree(List<StorefrontCategoryDto> allCategories)
+        {
+            var lookup = allCategories.ToLookup(c => c.ParentId);
+            var roots = lookup[0].OrderBy(c => c.Position).ToList();
+
+            void AttachChildren(StorefrontCategoryDto parent, int level)
+            {
+                parent.TreeLevel = level;
+                parent.Children = lookup[parent.Id].OrderBy(c => c.Position).ToList();
+                foreach (var child in parent.Children)
+                {
+                    AttachChildren(child, level + 1);
+                    parent.ProductCount += child.ProductCount;
+                }
+            }
+
+            foreach (var root in roots)
+            {
+                AttachChildren(root, 1);
+            }
+
+            return roots;
+        }
+
+        #endregion
     }
 }

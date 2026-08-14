@@ -1,4 +1,5 @@
 ﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 using System.Threading;
@@ -23,5 +24,25 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Menu> GetMenus();
 
         Task<List<Menu>> GetMenusAsync();
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        Task<StorefrontPageDto> GetStorefrontPageByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken));
+
+        StorefrontPageDto GetStorefrontPageById(int menuId);
+
+        Task<StorefrontPageDto> GetStorefrontPageByMenuLinkAsync(string menuLink, int? language, CancellationToken cancellationToken = default(CancellationToken));
+
+        StorefrontPageDto GetStorefrontPageByMenuLink(string menuLink, int? language);
+
+        Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontMenuDto> GetStorefrontActiveMenus(int language);
+
+        Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontMenuDto> BuildStorefrontMenuTree(int language);
+
+        #endregion
     }
 }

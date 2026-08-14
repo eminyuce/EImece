@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using System;
@@ -70,5 +71,59 @@ namespace EImece.Domain.Repositories.IRepositories
         List<Product> GetRandomProductsByCategoryId(int productCategoryId, int take, int lang, int excludedProductId);
 
         Task<List<Product>> GetRandomProductsByCategoryIdAsync(int productCategoryId, int take, int lang, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Minimal Columns)
+
+        Task<StorefrontProductCardDto> GetStorefrontProductCardByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
+        StorefrontProductCardDto GetStorefrontProductCardById(int id);
+
+        Task<StorefrontProductDetailDto> GetStorefrontProductDetailByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
+        StorefrontProductDetailDto GetStorefrontProductDetailById(int id);
+
+        Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontProductCardDto> GetStorefrontMainPageProducts(int take, int language);
+
+        Task<List<StorefrontProductCardDto>> GetStorefrontLatestProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontProductCardDto> GetStorefrontLatestProducts(int take, int language);
+
+        Task<List<StorefrontProductCardDto>> GetStorefrontCampaignProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontProductCardDto> GetStorefrontCampaignProducts(int take, int language);
+
+        Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language);
+
+        Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontActiveProductsPagedAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        PaginatedList<StorefrontProductCardDto> GetStorefrontActiveProductsPaged(int pageIndex, int pageSize, int language);
+
+        Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language);
+
+        Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByCategoryIdAsync(int categoryId, List<int> childCategoryIds, int language, int pageIndex, int pageSize, SortingType sorting, decimal? minPrice, decimal? maxPrice, List<int> brandIds, List<int> ratings, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIdList, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIdList, int take, int language, int excludedProductId);
+
+        Task<List<StorefrontProductCardDto>> GetStorefrontRandomProductsByCategoryIdAsync(int productCategoryId, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontProductCardDto> GetStorefrontRandomProductsByCategoryId(int productCategoryId, int take, int language, int excludedProductId);
+
+        Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
+
+        PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int language, SortingType sorting);
+
+        Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken));
+
+        PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int language, SortingType sorting);
+
+        #endregion
     }
 }

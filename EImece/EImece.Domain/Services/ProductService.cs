@@ -5,6 +5,7 @@ using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -59,6 +60,80 @@ namespace EImece.Domain.Services
         {
             ProductRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<StorefrontProductDetailDto> GetStorefrontProductDetailAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontProductDetailByIdAsync(id, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontProductDetailDto GetStorefrontProductDetail(int id)
+        {
+            return ProductRepository.GetStorefrontProductDetailById(id);
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontActiveProductsAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
+        {
+            return ProductRepository.GetStorefrontActiveProducts(language);
+        }
+
+        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontMainPageProductsPagedAsync(int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontActiveProductsPagedAsync(pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
+        }
+
+        public PaginatedList<StorefrontProductCardDto> GetStorefrontMainPageProductsPaged(int pageIndex, int pageSize, int lang)
+        {
+            return ProductRepository.GetStorefrontActiveProductsPaged(pageIndex, pageSize, lang);
+        }
+
+        public async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.SearchStorefrontProductsAsync(pageIndex, pageSize, search, lang, sorting, cancellationToken).ConfigureAwait(false);
+        }
+
+        public PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
+        {
+            return ProductRepository.SearchStorefrontProducts(pageIndex, pageSize, search, lang, sorting);
+        }
+
+        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, sorting, cancellationToken).ConfigureAwait(false);
+        }
+
+        public PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
+        {
+            return ProductRepository.GetStorefrontProductsByTagId(tagId, pageIndex, pageSize, lang, sorting);
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIds, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontRelatedProductsAsync(tagIds, take, language, excludedProductId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIds, int take, int language, int excludedProductId)
+        {
+            return ProductRepository.GetStorefrontRelatedProducts(tagIds, take, language, excludedProductId);
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontCategoryProductsAsync(categoryId, language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language)
+        {
+            return ProductRepository.GetStorefrontCategoryProducts(categoryId, language);
+        }
+
+        #endregion
 
         public List<Product> GetAdminPageList(int id, string search, int lang)
         {

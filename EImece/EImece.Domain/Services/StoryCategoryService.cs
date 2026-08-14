@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -26,6 +27,30 @@ namespace EImece.Domain.Services
         {
             StoryCategoryRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontActiveStoryCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryCategoryRepository.GetStorefrontActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontActiveStoryCategories(int language)
+        {
+            return StoryCategoryRepository.GetStorefrontActiveStoryCategories(language);
+        }
+
+        public async Task<StorefrontCategoryDto> GetStorefrontStoryCategoryByIdAsync(int storyCategoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await StoryCategoryRepository.GetStorefrontStoryCategoryByIdAsync(storyCategoryId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontCategoryDto GetStorefrontStoryCategoryById(int storyCategoryId)
+        {
+            return StoryCategoryRepository.GetStorefrontStoryCategoryById(storyCategoryId);
+        }
+
+        #endregion
 
         public StoryCategory GetStoryCategoryById(int storyCategoryId)
         {
