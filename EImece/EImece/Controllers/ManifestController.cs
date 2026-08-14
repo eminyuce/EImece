@@ -22,7 +22,7 @@ namespace EImece.Controllers
 
         [HttpGet]
         [Route("manifest.json")]
-        [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
+        [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public async Task<ActionResult> Index()
         {
             var json = await _webAppManifestService.GetManifestJsonAsync().ConfigureAwait(false);

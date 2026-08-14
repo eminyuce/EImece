@@ -205,7 +205,7 @@ namespace EImece.Domain
 
         /// <summary>
         /// Browser / PWA chrome color. Web.config ThemeColor wins when set;
-        /// otherwise the active design default (Crizal=#067a36, Modern=#ffffff), else #1789F9.
+        /// otherwise the active design default (Crizal=#067a36, Modern=#ffffff), else ManifestDefaultThemeColor.
         /// </summary>
         public static string ThemeColor
         {
@@ -231,7 +231,46 @@ namespace EImece.Domain
                     }
                 }
 
-                return WebAppManifestHelper.DefaultThemeColor;
+                return ManifestDefaultThemeColor;
+            }
+        }
+
+        public static string ManifestDefaultThemeColor
+        {
+            get { return GetConfigString("ManifestDefaultThemeColor", "#1789F9"); }
+        }
+
+        public static string ManifestBackgroundColor
+        {
+            get { return GetConfigString("ManifestBackgroundColor", "#ffffff"); }
+        }
+
+        public static string ManifestDisplay
+        {
+            get { return GetConfigString("ManifestDisplay", "standalone"); }
+        }
+
+        public static string ManifestOrientation
+        {
+            get { return GetConfigString("ManifestOrientation", "portrait"); }
+        }
+
+        public static string ManifestStartUrl
+        {
+            get { return GetConfigString("ManifestStartUrl", "/"); }
+        }
+
+        public static string ManifestFallbackName
+        {
+            get { return GetConfigString("ManifestFallbackName", "Web App"); }
+        }
+
+        public static int ManifestShortNameMaxLength
+        {
+            get
+            {
+                var length = GetConfigInt("ManifestShortNameMaxLength", 12);
+                return length < 1 ? 12 : length;
             }
         }
 

@@ -1,3 +1,4 @@
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -23,11 +24,11 @@ namespace EImece.Tests.Helpers
             Assert.AreEqual("Acme Shop", (string)obj["name"]);
             Assert.AreEqual("Acme Shop", (string)obj["short_name"]);
             Assert.AreEqual("Quality products for everyone", (string)obj["description"]);
-            Assert.AreEqual("/", (string)obj["start_url"]);
-            Assert.AreEqual("standalone", (string)obj["display"]);
-            Assert.AreEqual("portrait", (string)obj["orientation"]);
+            Assert.AreEqual(AppConfig.ManifestStartUrl, (string)obj["start_url"]);
+            Assert.AreEqual(AppConfig.ManifestDisplay, (string)obj["display"]);
+            Assert.AreEqual(AppConfig.ManifestOrientation, (string)obj["orientation"]);
             Assert.AreEqual("#1789F9", (string)obj["theme_color"]);
-            Assert.AreEqual("#ffffff", (string)obj["background_color"]);
+            Assert.AreEqual(AppConfig.ManifestBackgroundColor, (string)obj["background_color"]);
         }
 
         [TestMethod]
@@ -45,7 +46,7 @@ namespace EImece.Tests.Helpers
             Assert.AreEqual("localhost", (string)obj["name"]);
             Assert.AreEqual("localhost", (string)obj["short_name"]);
             Assert.AreEqual("localhost", (string)obj["description"]);
-            Assert.AreEqual(WebAppManifestHelper.DefaultThemeColor, (string)obj["theme_color"]);
+            Assert.AreEqual(AppConfig.ManifestDefaultThemeColor, (string)obj["theme_color"]);
         }
 
         [TestMethod]
@@ -83,7 +84,7 @@ namespace EImece.Tests.Helpers
         {
             Assert.AreEqual("Acme", WebAppManifestHelper.ToShortName("Acme Trading Co"));
             Assert.AreEqual("Short", WebAppManifestHelper.ToShortName("Short"));
-            Assert.AreEqual(WebAppManifestHelper.FallbackName, WebAppManifestHelper.ToShortName("  "));
+            Assert.AreEqual(AppConfig.ManifestFallbackName, WebAppManifestHelper.ToShortName("  "));
         }
 
         [TestMethod]

@@ -7,18 +7,10 @@ namespace EImece.Domain.Helpers
 {
     /// <summary>
     /// Builds a W3C Web App Manifest JSON document from storefront branding values.
-    /// Pure helper: no I/O, so it is safe to unit-test without DI.
+    /// Structural defaults come from <see cref="AppConfig"/> / Web.config (Manifest* keys).
     /// </summary>
     public static class WebAppManifestHelper
     {
-        public const string DefaultThemeColor = "#1789F9";
-        public const string DefaultBackgroundColor = "#ffffff";
-        public const string DefaultDisplay = "standalone";
-        public const string DefaultOrientation = "portrait";
-        public const string DefaultStartUrl = "/";
-        public const string FallbackName = "Web App";
-        public const int ShortNameMaxLength = 12;
-
         private static readonly int[] IconSizes = { 36, 48, 72, 96, 144, 192, 256, 384, 512 };
         private static readonly Regex HexColorRegex = new Regex(
             "^#(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
@@ -51,7 +43,7 @@ namespace EImece.Domain.Helpers
             string themeColorFallback,
             string domainFallback)
         {
-            var name = FirstNonEmpty(companyName, siteIndexMetaTitle, HostFromDomain(domainFallback), FallbackName);
+            var name = FirstNonEmpty(companyName, siteIndexMetaTitle, HostFromDomain(domainFallback), AppConfig.ManifestFallbackName);
             var shortName = ToShortName(name);
             var description = FirstNonEmpty(siteIndexMetaDescription, name);
 
@@ -60,11 +52,11 @@ namespace EImece.Domain.Helpers
                 Name = name,
                 ShortName = shortName,
                 Description = description,
-                StartUrl = DefaultStartUrl,
-                Display = DefaultDisplay,
-                Orientation = DefaultOrientation,
+                StartUrl = AppConfig.ManifestStartUrl,
+                Display = AppConfig.ManifestDisplay,
+                Orientation = AppConfig.ManifestOrientation,
                 ThemeColor = ResolveThemeColor(themeColorFromSettings, themeColorFallback),
-                BackgroundColor = DefaultBackgroundColor,
+                BackgroundColor = AppConfig.ManifestBackgroundColor,
                 Icons = CreateIcons()
             };
         }
@@ -81,7 +73,7 @@ namespace EImece.Domain.Helpers
                 return fromAppConfig.Trim();
             }
 
-            return DefaultThemeColor;
+            return AppConfig.ManifestDefaultThemeColor;
         }
 
         public static bool IsValidHexColor(string value)
@@ -93,16 +85,17 @@ namespace EImece.Domain.Helpers
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return FallbackName;
+                return AppConfig.ManifestFallbackName;
             }
 
             var trimmed = name.Trim();
-            if (trimmed.Length <= ShortNameMaxLength)
+            var maxLength = AppConfig.ManifestShortNameMaxLength;
+            if (trimmed.Length <= maxLength)
             {
                 return trimmed;
             }
 
-            var slice = trimmed.Substring(0, ShortNameMaxLength).TrimEnd();
+            var slice = trimmed.Substring(0, maxLength).TrimEnd();
             var lastSpace = slice.LastIndexOf(' ');
             if (lastSpace >= 4)
             {
