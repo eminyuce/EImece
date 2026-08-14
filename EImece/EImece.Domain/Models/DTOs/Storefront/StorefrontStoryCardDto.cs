@@ -27,11 +27,18 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public int ReadCount { get; set; }
         public string AuthorName { get; set; }
 
+        public bool ImageState
+        {
+            get { return MainImageId.HasValue && MainImageId.Value > 0; }
+        }
+
         public List<StorefrontTagDto> Tags { get; set; }
 
         public StorefrontStoryCardDto()
         {
             Tags = new List<StorefrontTagDto>();
+            CreatedDate = DateTime.UtcNow;
+            UpdatedDate = DateTime.UtcNow;
         }
 
         public string ModifiedId
@@ -44,6 +51,11 @@ namespace EImece.Domain.Models.DTOs.Storefront
             get { return string.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(Name), ModifiedId); }
         }
 
+        public string GetSeoUrl()
+        {
+            return SeoUrl;
+        }
+
         public string DetailPageUrl
         {
             get
@@ -51,6 +63,16 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 var dummy = new Story { Id = Id, Name = Name };
                 return dummy.GetDetailPageUrl("Detail", "Stories", StoryCategoryName ?? "no_category");
             }
+        }
+
+        public string DetailPageRelativeUrl
+        {
+            get { return DetailPageUrl; }
+        }
+
+        public string DetailPageAbsoluteUrl
+        {
+            get { return DetailPageUrl; }
         }
 
         public string StoryCategoryDetailPageUrl
@@ -81,6 +103,16 @@ namespace EImece.Domain.Models.DTOs.Storefront
             int idToUse = imageId > 0 ? imageId : (MainImageId.HasValue ? MainImageId.Value : 0);
             var dummy = new Story { Id = Id, Name = Name };
             return dummy.GetCroppedImageTag(idToUse, width, height, lazy: lazy, fetchPriority: fetchPriority, sizes: sizes);
+        }
+
+        public string GetSeoTitle(int lang = 1)
+        {
+            return Name;
+        }
+
+        public string GetSeoKeywords(int lang = 1)
+        {
+            return Name;
         }
 
         public string GetSeoDescription()

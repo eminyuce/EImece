@@ -1,6 +1,8 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
+using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -9,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -29,6 +32,52 @@ namespace EImece.Domain.Services
             OrderProductService = orderProductService;
             this.CustomerService = customerService;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking)
+
+        public async Task<OrderDto> GetStorefrontOrderByIdAsync(int orderId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await OrderRepository.GetStorefrontOrderByIdAsync(orderId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public OrderDto GetStorefrontOrderById(int orderId)
+        {
+            return OrderRepository.GetStorefrontOrderById(orderId);
+        }
+
+        public async Task<OrderDto> GetStorefrontOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await OrderRepository.GetStorefrontOrderByOrderNumberAsync(orderNumber, cancellationToken).ConfigureAwait(false);
+        }
+
+        public OrderDto GetStorefrontOrderByOrderNumber(string orderNumber)
+        {
+            return OrderRepository.GetStorefrontOrderByOrderNumber(orderNumber);
+        }
+
+        public async Task<OrderDto> GetStorefrontOrderByGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await OrderRepository.GetStorefrontOrderByGuidAsync(orderGuid, cancellationToken).ConfigureAwait(false);
+        }
+
+        public OrderDto GetStorefrontOrderByGuid(string orderGuid)
+        {
+            return OrderRepository.GetStorefrontOrderByGuid(orderGuid);
+        }
+
+        public async Task<List<OrderDto>> GetStorefrontOrdersByUserIdAsync(string userId, string search = "", CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await OrderRepository.GetStorefrontOrdersByUserIdAsync(userId, search, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<OrderDto> GetStorefrontOrdersByUserId(string userId, string search = "")
+        {
+            return OrderRepository.GetStorefrontOrdersByUserId(userId, search);
+        }
+
+        #endregion
+
+        #region Admin / Change-Tracking Methods (Full Entities)
 
         public void DeleteOrderById(int id)
         {
@@ -221,5 +270,7 @@ namespace EImece.Domain.Services
         {
             return await OrderRepository.GetOrdersUserIdAsync(userId, search).ConfigureAwait(false);
         }
+
+        #endregion
     }
 }

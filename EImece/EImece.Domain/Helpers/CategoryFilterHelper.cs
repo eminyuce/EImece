@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using Newtonsoft.Json;
@@ -112,6 +112,32 @@ namespace EImece.Domain.Helpers
         public void AddBrandFilter(List<CategoryFilterType> categoryFilterTypes, List<Brand> brands)
         {
             if (brands.IsEmpty()) return;
+
+            var item = new CategoryFilterType
+            {
+                Position = 0,
+                FilterTypeName = new FilterTypeName
+                {
+                    FilterType = FilterType.Brand,
+                    Text = Resource.Brands
+                }
+            };
+
+            item.CategoryFilters = brands
+                .Select(brand => new CategoryFilter
+                {
+                    CategoryFilterId = $"b{brand.Id}",
+                    name = brand.Name
+                })
+                .ToList();
+
+            item.CategoryFilters.ForEach(f => f.Parent = item);
+            categoryFilterTypes.Add(item);
+        }
+
+        public void AddBrandFilter(List<CategoryFilterType> categoryFilterTypes, IEnumerable<Models.DTOs.Storefront.StorefrontBrandDto> brands)
+        {
+            if (brands == null || !brands.Any()) return;
 
             var item = new CategoryFilterType
             {

@@ -1,3 +1,4 @@
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.DTOs
@@ -17,6 +18,8 @@ namespace EImece.Domain.Models.DTOs
         public decimal Price { get; set; }
         public List<ProductSpecItem> ProductSpecObjItems { get; set; }
         public ProductSpecItem ProductSpecColorItem { get; set; }
+
+        public StorefrontProductCardDto Product { get; set; }
     }
 
     public class ProductSpecItem
@@ -25,5 +28,17 @@ namespace EImece.Domain.Models.DTOs
         public string Name { get; set; }
         public string Value { get; set; }
         public string ImageUrl { get; set; }
+
+        public string SpecsName
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public string SpecsValue
+        {
+            get { return Value; }
+            set { Value = value; }
+        }
     }
 }

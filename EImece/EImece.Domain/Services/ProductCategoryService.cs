@@ -134,42 +134,7 @@ namespace EImece.Domain.Services
 
             var result = new ProductCategoryViewModel();
             result.CategoryDto = categoryDto;
-            result.ProductCategory = new ProductCategory
-            {
-                Id = categoryDto.Id,
-                Name = categoryDto.Name,
-                ParentId = categoryDto.ParentId,
-                ShortDescription = categoryDto.ShortDescription,
-                Description = categoryDto.Description,
-                MetaKeywords = categoryDto.MetaKeywords,
-                IsActive = categoryDto.IsActive,
-                Position = categoryDto.Position,
-                Lang = categoryDto.Lang,
-                MainImageId = categoryDto.MainImageId,
-                Parent = categoryDto.Parent != null ? new ProductCategory
-                {
-                    Id = categoryDto.Parent.Id,
-                    Name = categoryDto.Parent.Name,
-                    ParentId = categoryDto.Parent.ParentId,
-                    Parent = categoryDto.Parent.Parent != null ? new ProductCategory
-                    {
-                        Id = categoryDto.Parent.Parent.Id,
-                        Name = categoryDto.Parent.Parent.Name,
-                        ParentId = categoryDto.Parent.Parent.ParentId
-                    } : null
-                } : null
-            };
-
-            result.ChildrenProductCategories = childCategories.Select(c => new ProductCategory
-            {
-                Id = c.Id,
-                Name = c.Name,
-                ParentId = c.ParentId,
-                Position = c.Position,
-                Lang = c.Lang,
-                IsActive = c.IsActive,
-                MainImageId = c.MainImageId
-            }).ToList();
+            result.ChildrenProductCategories = childCategories;
 
             List<int> brandIds = null;
             List<int> ratings = null;
@@ -207,13 +172,21 @@ namespace EImece.Domain.Services
             result.MinPrice = minPrice;
             result.MaxPrice = maxPrice;
 
-            result.AllProducts = new List<Product>();
-            result.CategoryChildrenProducts = new List<Product>();
+            result.AllProducts = new List<StorefrontProductCardDto>();
+            result.CategoryChildrenProducts = new List<StorefrontProductCardDto>();
 
-            List<Menu> lists = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
-            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.Brands = await BrandService.GetBrandsIfAnyProductExistsAsync(language).ConfigureAwait(false);
+            var mainPageDto = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.HomeIndexMenuLink, language, cancellationToken).ConfigureAwait(false);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
+            var productMenuDto = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.ProductsIndexMenuLink, language, cancellationToken).ConfigureAwait(false);
+            if (productMenuDto != null)
+            {
+                result.ProductMenu = new StorefrontMenuDto { Id = productMenuDto.Id, Name = productMenuDto.Name, MenuLink = productMenuDto.MenuLink };
+            }
+
+            result.StorefrontBrands = await BrandService.GetStorefrontBrandsAsync(language, categoryId, cancellationToken).ConfigureAwait(false);
             result.ProductCategoryTree = await BuildTreeAsync(true, language).ConfigureAwait(false);
             result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
             result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
@@ -507,62 +480,16 @@ namespace EImece.Domain.Services
 
         public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
         {
-            var result = new ProductCategoryViewModel();
-            result.ProductCategory = GetProductCategory(categoryId);
-            if (result.ProductCategory == null)
-            {
-                return null;
-            }
-            if (result.ProductCategory.ParentId > 0)
-            {
-                result.ProductCategory.Parent = GetProductCategory(result.ProductCategory.ParentId);
-                if (result.ProductCategory.Parent != null && result.ProductCategory.Parent.ParentId > 0)
-                {
-                    result.ProductCategory.Parent.Parent = GetProductCategory(result.ProductCategory.Parent.ParentId);
-                }
-            }
-            int lang = result.ProductCategory.Lang;
-            List<Menu> lists = MenuService.GetActiveBaseContentsFromCache(true, lang);
-            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.Brands = BrandService.GetBrandsIfAnyProductExists(lang);
-            result.ProductCategoryTree = BuildTree(true, lang);
-            result.PriceFilterSetting = SettingService.GetSettingObjectByKey(Constants.ProductPriceFilterSetting);
-            result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
-            result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable);
-            result.ChildrenProductCategories = ProductCategoryRepository.GetProductCategoriesByParentId(categoryId);
-            result.CategoryChildrenProducts = ProductService.GetChildrenProducts(result.ProductCategory, result.ChildrenProductCategories);
-            return result;
+            var categoryDto = ProductCategoryRepository.GetStorefrontCategoryById(categoryId);
+            if (categoryDto == null) return null;
+            return GetStorefrontCategoryPageViewModelAsync(categoryId, 1, Models.Enums.SortingType.Default, null, null, null, 20, categoryDto.Lang).GetAwaiter().GetResult();
         }
 
         public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int categoryId)
         {
-            var result = new ProductCategoryViewModel();
-            result.ProductCategory = await GetProductCategoryAsync(categoryId).ConfigureAwait(false);
-            if (result.ProductCategory == null)
-            {
-                return null;
-            }
-            if (result.ProductCategory.ParentId > 0)
-            {
-                result.ProductCategory.Parent = await GetProductCategoryAsync(result.ProductCategory.ParentId).ConfigureAwait(false);
-                if (result.ProductCategory.Parent != null && result.ProductCategory.Parent.ParentId > 0)
-                {
-                    result.ProductCategory.Parent.Parent = await GetProductCategoryAsync(result.ProductCategory.Parent.ParentId).ConfigureAwait(false);
-                }
-            }
-            int lang = result.ProductCategory.Lang;
-            List<Menu> lists = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            result.MainPageMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = lists.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.Brands = await BrandService.GetBrandsIfAnyProductExistsAsync(lang).ConfigureAwait(false);
-            result.ProductCategoryTree = await BuildTreeAsync(true, lang).ConfigureAwait(false);
-            result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
-            result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
-            result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
-            result.ChildrenProductCategories = await ProductCategoryRepository.GetProductCategoriesByParentIdAsync(categoryId).ConfigureAwait(false);
-            result.CategoryChildrenProducts = await ProductService.GetChildrenProductsAsync(result.ProductCategory, result.ChildrenProductCategories).ConfigureAwait(false);
-            return result;
+            var categoryDto = await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId).ConfigureAwait(false);
+            if (categoryDto == null) return null;
+            return await GetStorefrontCategoryPageViewModelAsync(categoryId, 1, Models.Enums.SortingType.Default, null, null, null, 20, categoryDto.Lang).ConfigureAwait(false);
         }
         public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
         {

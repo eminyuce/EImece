@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
@@ -128,8 +128,16 @@ namespace EImece.Domain.Services
         private void CreateMapProductSpecification() => CreateMap<ProductSpecification, ProductSpecificationDto>();
         private void CreateMapProductFile() => CreateMap<ProductFile, ProductFileDto>();
         private void CreateMapProductComment() => CreateMap<ProductComment, ProductCommentDto>();
-        private void CreateMapOrderProduct() =>  CreateMap<OrderProduct, OrderProductDto>();
-        private void CreateMapOrder() => CreateMap<Order, OrderDto>();
+        private void CreateMapOrderProduct() => CreateMap<OrderProduct, OrderProductDto>()
+            .ForMember(d => d.Product, o => o.Ignore())
+            .ForMember(d => d.ProductSpecObjItems, o => o.Ignore())
+            .ForMember(d => d.ProductSpecColorItem, o => o.Ignore());
+
+        private void CreateMapOrder() => CreateMap<Order, OrderDto>()
+            .ForMember(d => d.OrderProducts, o => o.Ignore())
+            .ForMember(d => d.ShippingAddress, o => o.Ignore())
+            .ForMember(d => d.BillingAddress, o => o.Ignore())
+            .ForMember(d => d.Customer, o => o.Ignore());
         private void CreateMapMenuFile() => CreateMap<MenuFile, MenuFileDto>();
         private void CreateMapMenu() => CreateMap<Menu, MenuDto>().ForMember(d => d.Childrens, o => o.Ignore());
         private void CreateMapMainPageImage() => CreateMap<MainPageImage, MainPageImageDto>();

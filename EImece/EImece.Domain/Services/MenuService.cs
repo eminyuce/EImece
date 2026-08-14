@@ -1,6 +1,8 @@
+using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
@@ -35,12 +37,20 @@ namespace EImece.Domain.Services
 
         public async Task<StorefrontPageDto> GetStorefrontPageByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await MenuRepository.GetStorefrontPageByIdAsync(menuId, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.MenuDetailAsync(menuId);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => MenuRepository.GetStorefrontPageByIdAsync(menuId, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public StorefrontPageDto GetStorefrontPageById(int menuId)
         {
-            return MenuRepository.GetStorefrontPageById(menuId);
+            var cacheKey = CacheKeys.MenuDetail(menuId);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => MenuRepository.GetStorefrontPageById(menuId),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<StorefrontPageDto> GetStorefrontPageByMenuLinkAsync(string menuLink, int? language, CancellationToken cancellationToken = default(CancellationToken))
@@ -65,15 +75,178 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await MenuRepository.BuildStorefrontMenuTreeAsync(language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.MenuTreeAsync(language);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => MenuRepository.BuildStorefrontMenuTreeAsync(language, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontMenuDto> BuildStorefrontMenuTree(int language)
         {
-            return MenuRepository.BuildStorefrontMenuTree(language);
+            var cacheKey = CacheKeys.MenuTree(language);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => MenuRepository.BuildStorefrontMenuTree(language),
+                AppConfig.CacheLongSeconds);
+        }
+
+        private void InvalidateMenuCaches()
+        {
+            DataCachingProvider.ClearByPrefix(CacheKeys.MenuPrefix);
+            DataCachingProvider.Clear("GetMenus" + AsyncCacheKeySuffix);
+            DataCachingProvider.Clear("GetMenus");
         }
 
         #endregion
+
+        #region Mutation & Invalidation
+
+        public override Menu SaveOrEditEntity(Menu entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateMenuCaches();
+            return saved;
+        }
+
+        public override async Task<Menu> SaveOrEditEntityAsync(Menu entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateMenuCaches();
+            return saved;
+        }
+
+        #endregion
+
+        #region Storefront Page ViewModels
+
+        public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
+        {
+            var pageDto = MenuRepository.GetStorefrontPageByMenuLink(menuLink, language);
+            if (pageDto == null)
+            {
+                return null;
+            }
+            return GetPageById(pageDto.Id);
+        }
+
+        public async Task<MenuPageViewModel> GetPageByMenuLinkAsync(string menuLink, int? language)
+        {
+            var pageDto = await MenuRepository.GetStorefrontPageByMenuLinkAsync(menuLink, language).ConfigureAwait(false);
+            if (pageDto == null)
+            {
+                return null;
+            }
+            return await GetPageByIdAsync(pageDto.Id).ConfigureAwait(false);
+        }
+
+        public MenuPageViewModel GetPageById(int pageId)
+        {
+            var pageDto = GetStorefrontPageById(pageId);
+            if (pageDto == null) return null;
+
+            var result = new MenuPageViewModel();
+            result.Menu = new StorefrontMenuDto
+            {
+                Id = pageDto.Id,
+                Name = pageDto.Name,
+                MenuLink = pageDto.MenuLink,
+                Description = pageDto.Description,
+                ShortDescription = pageDto.ShortDescription,
+                MainImageId = pageDto.MainImageId,
+                Position = pageDto.Position,
+                Lang = pageDto.Lang,
+                IsActive = pageDto.IsActive
+            };
+
+            var mainPageDto = MenuRepository.GetStorefrontPageByMenuLink("home-index", pageDto.Lang);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
+
+            var settings = SettingService.GetActiveBaseEntitiesFromCache(true, pageDto.Lang);
+            result.ApplicationSettings = settings.Select(s => new SettingDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                SettingKey = s.SettingKey,
+                SettingValue = s.SettingValue,
+                Description = s.Description,
+                Lang = s.Lang,
+                IsActive = s.IsActive
+            }).ToList();
+
+            var allMenus = GetStorefrontActiveMenus(pageDto.Lang);
+            result.SideMenus = allMenus.Where(m => m.ParentId == pageDto.Id || m.Id == pageDto.Id).ToList();
+
+            var socialList = new Dictionary<string, string>();
+            socialList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingByKey(Constants.InstagramWebSiteLink));
+            socialList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingByKey(Constants.LinkedinWebSiteLink));
+            socialList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingByKey(Constants.YotubeWebSiteLink));
+            socialList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingByKey(Constants.FacebookWebSiteLink));
+            socialList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingByKey(Constants.TwitterWebSiteLink));
+            socialList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingByKey(Constants.PinterestWebSiteLink));
+            result.SocialMediaLinks = socialList;
+
+            return result;
+        }
+
+        public async Task<MenuPageViewModel> GetPageByIdAsync(int pageId)
+        {
+            var pageDto = await GetStorefrontPageByIdAsync(pageId).ConfigureAwait(false);
+            if (pageDto == null) return null;
+
+            var result = new MenuPageViewModel();
+            result.Menu = new StorefrontMenuDto
+            {
+                Id = pageDto.Id,
+                Name = pageDto.Name,
+                MenuLink = pageDto.MenuLink,
+                Description = pageDto.Description,
+                ShortDescription = pageDto.ShortDescription,
+                MainImageId = pageDto.MainImageId,
+                Position = pageDto.Position,
+                Lang = pageDto.Lang,
+                IsActive = pageDto.IsActive
+            };
+
+            var mainPageDto = await MenuRepository.GetStorefrontPageByMenuLinkAsync("home-index", pageDto.Lang).ConfigureAwait(false);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
+
+            var settings = await SettingService.GetActiveBaseEntitiesFromCacheAsync(true, pageDto.Lang).ConfigureAwait(false);
+            result.ApplicationSettings = settings.Select(s => new SettingDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                SettingKey = s.SettingKey,
+                SettingValue = s.SettingValue,
+                Description = s.Description,
+                Lang = s.Lang,
+                IsActive = s.IsActive
+            }).ToList();
+
+            var allMenus = await GetStorefrontActiveMenusAsync(pageDto.Lang).ConfigureAwait(false);
+            result.SideMenus = allMenus.Where(m => m.ParentId == pageDto.Id || m.Id == pageDto.Id).ToList();
+
+            var socialList = new Dictionary<string, string>();
+            socialList.Add(Constants.InstagramWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.InstagramWebSiteLink));
+            socialList.Add(Constants.LinkedinWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.LinkedinWebSiteLink));
+            socialList.Add(Constants.YotubeWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.YotubeWebSiteLink));
+            socialList.Add(Constants.FacebookWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.FacebookWebSiteLink));
+            socialList.Add(Constants.TwitterWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.TwitterWebSiteLink));
+            socialList.Add(Constants.PinterestWebSiteLink, await SettingService.GetSettingByKeyAsync(Constants.PinterestWebSiteLink));
+            result.SocialMediaLinks = socialList;
+
+            return result;
+        }
+
+        #endregion
+
+        #region Admin Methods (Full Entities)
 
         public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {
@@ -101,26 +274,6 @@ namespace EImece.Domain.Services
                 cacheKey,
                 () => MenuRepository.BuildTreeAsync(isActive, language, CancellationToken.None),
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
-        }
-
-        public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
-        {
-            var pageDto = MenuRepository.GetStorefrontPageByMenuLink(menuLink, language);
-            if (pageDto == null)
-            {
-                return null;
-            }
-            return GetPageById(pageDto.Id);
-        }
-
-        public async Task<MenuPageViewModel> GetPageByMenuLinkAsync(string menuLink, int? language)
-        {
-            var pageDto = await MenuRepository.GetStorefrontPageByMenuLinkAsync(menuLink, language).ConfigureAwait(false);
-            if (pageDto == null)
-            {
-                return null;
-            }
-            return await GetPageByIdAsync(pageDto.Id).ConfigureAwait(false);
         }
 
         public List<Menu> GetMenus()
@@ -151,87 +304,6 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public MenuPageViewModel GetPageById(int menuId)
-        {
-            var menu = MenuRepository.GetMenuById(menuId);
-            if (menu == null || !menu.IsActive)
-            {
-                Logger.Warn("GetPageById: menu id {0} was not found or is inactive.", menuId);
-                return null;
-            }
-
-            var activeMenus = MenuService.GetActiveBaseContentsFromCache(true, menu.Lang);
-
-            var result = new MenuPageViewModel();
-            result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-            result.Menu = menu;
-            result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ApplicationSettings = SettingService.GetAllActiveSettings();
-            result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
-            result.SideMenus = ResolveSideMenus(menu, activeMenus);
-            return result;
-        }
-
-        public async Task<MenuPageViewModel> GetPageByIdAsync(int menuId)
-        {
-            var menu = await MenuRepository.GetMenuByIdAsync(menuId).ConfigureAwait(false);
-            if (menu == null || !menu.IsActive)
-            {
-                Logger.Warn("GetPageByIdAsync: menu id {0} was not found or is inactive.", menuId);
-                return null;
-            }
-
-            var activeMenus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, menu.Lang).ConfigureAwait(false);
-
-            var result = new MenuPageViewModel();
-            result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
-            result.Menu = menu;
-            result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ApplicationSettings = await SettingService.GetAllActiveSettingsAsync().ConfigureAwait(false);
-            result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
-            result.SideMenus = ResolveSideMenus(menu, activeMenus);
-            return result;
-        }
-
-        private static List<Menu> ResolveSideMenus(Menu menu, IEnumerable<Menu> allMenus)
-        {
-            if (menu == null || allMenus == null)
-            {
-                return new List<Menu>();
-            }
-
-            var active = allMenus.Where(m => m != null && m.IsActive && m.Lang == menu.Lang);
-            if (menu.ParentId > 0)
-            {
-                return active.Where(m => m.ParentId == menu.ParentId)
-                    .OrderBy(m => m.Position)
-                    .ThenBy(m => m.Name)
-                    .ToList();
-            }
-
-            return active.Where(m => m.ParentId == menu.Id)
-                .OrderBy(m => m.Position)
-                .ThenBy(m => m.Name)
-                .ToList();
-        }
-
-        private Dictionary<string, string> CreateMenuShareLinks(Menu menu)
-        {
-            if (menu == null)
-            {
-                return new Dictionary<string, string>();
-            }
-
-            var shareUrl = menu.GetDetailPageUrl("Detail", "Pages");
-            var imageUrl = string.Empty;
-            if (menu.MainImageId.HasValue)
-            {
-                imageUrl = menu.GetCroppedImageUrl(menu.MainImageId, 1000, 0, true) ?? string.Empty;
-            }
-
-            return SettingService.CreateShareableSocialMediaLinks(shareUrl, menu.Name, imageUrl);
-        }
-
         public List<Menu> GetMenuLeaves(bool? isActive, int language)
         {
             return MenuRepository.GetMenuLeaves(isActive, language);
@@ -255,6 +327,7 @@ namespace EImece.Domain.Services
                 }
                 FileStorageService.DeleteGalleryImages(menuId, MediaModType.Menus);
                 DeleteEntity(menu);
+                InvalidateMenuCaches();
 
                 return true;
             }
@@ -274,6 +347,7 @@ namespace EImece.Domain.Services
                 }
                 await FileStorageService.DeleteGalleryImagesAsync(menuId, MediaModType.Menus).ConfigureAwait(false);
                 await DeleteEntityAsync(menu).ConfigureAwait(false);
+                InvalidateMenuCaches();
 
                 return true;
             }
@@ -353,5 +427,7 @@ namespace EImece.Domain.Services
                 }
             }
         }
+
+        #endregion
     }
 }

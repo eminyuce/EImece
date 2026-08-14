@@ -1,5 +1,6 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs.Storefront;
 using System;
 using System.Collections.Generic;
 using System.Web;
@@ -43,20 +44,42 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
             ProductSpecItems = new List<ProductSpecItem>();
         }
 
-        public ShoppingCartProduct(Product product, List<ProductSpecItem> ProductSpecItems) : this()
+        public ShoppingCartProduct(Product product, List<ProductSpecItem> productSpecItems) : this()
         {
             this.Id = product.Id;
             this.Name = product.NameLong;
             this.Price = product.PriceWithDiscount;
             this.ProductCode = product.ProductCode;
-            this.CategoryName = product.ProductCategory.Name;
+            this.CategoryName = product.ProductCategory != null ? product.ProductCategory.Name : "";
             this.BrandName = product.Brand == null ? "" : product.Brand.Name;
             this.DetailPageUrl = product.DetailPageRelativeUrl;
             if (product.MainImageId.HasValue && product.ImageState)
             {
                 this.CroppedImageUrl = product.GetCroppedImageUrl(product.MainImageId.Value, 200, 0);
             }
-            this.ProductSpecItems.AddRange(ProductSpecItems);
+            if (productSpecItems != null)
+            {
+                this.ProductSpecItems.AddRange(productSpecItems);
+            }
+        }
+
+        public ShoppingCartProduct(StorefrontProductDetailDto product, List<ProductSpecItem> productSpecItems) : this()
+        {
+            this.Id = product.Id;
+            this.Name = product.NameLong;
+            this.Price = product.PriceWithDiscount;
+            this.ProductCode = product.ProductCode;
+            this.CategoryName = product.ProductCategoryName ?? "";
+            this.BrandName = product.BrandName ?? "";
+            this.DetailPageUrl = product.DetailPageRelativeUrl;
+            if (product.MainImageId.HasValue)
+            {
+                this.CroppedImageUrl = product.GetCroppedImageUrl(product.MainImageId.Value, 200, 0);
+            }
+            if (productSpecItems != null)
+            {
+                this.ProductSpecItems.AddRange(productSpecItems);
+            }
         }
     }
 }

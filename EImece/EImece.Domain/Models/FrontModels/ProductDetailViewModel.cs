@@ -1,6 +1,7 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using Newtonsoft.Json;
@@ -18,15 +19,15 @@ namespace EImece.Domain.Models.FrontModels
 
         public ProductComment ProductComment { get; set; }
 
-        public Menu ProductMenu { get; set; }
+        public StorefrontMenuDto ProductMenu { get; set; }
 
-        public Menu MainPageMenu { get; set; }
+        public StorefrontMenuDto MainPageMenu { get; set; }
 
         public List<ProductCategoryTreeModel> BreadCrumb { get; set; }
 
-        public Template Template { get; set; }
+        public TemplateDto Template { get; set; }
 
-        public List<Story> RelatedStories { get; set; }
+        public List<StorefrontStoryCardDto> RelatedStories { get; set; }
 
         public List<StorefrontProductCardDto> RelatedProducts { get; set; }
 
@@ -44,6 +45,8 @@ namespace EImece.Domain.Models.FrontModels
         public ProductDetailViewModel()
         {
             ProductComment = new ProductComment();
+            RelatedStories = new List<StorefrontStoryCardDto>();
+            RelatedProducts = new List<StorefrontProductCardDto>();
         }
 
         public string GoogleProductSchemaJson

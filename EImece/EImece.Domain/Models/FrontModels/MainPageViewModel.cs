@@ -1,4 +1,3 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 
@@ -14,7 +13,7 @@ namespace EImece.Domain.Models.FrontModels
         public List<StorefrontProductCardDto> LatestProducts { get; set; }
         public List<StorefrontProductCardDto> CampaignProducts { get; set; }
 
-        public Menu MainPageMenu { get; set; }
+        public StorefrontMenuDto MainPageMenu { get; set; }
 
         public List<StorefrontStoryCardDto> LatestStories { get; set; }
         public int CurrentLanguage { get; set; }

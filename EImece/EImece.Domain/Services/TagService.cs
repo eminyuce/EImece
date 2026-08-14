@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
@@ -27,32 +28,56 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontTagDto>> GetStorefrontProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await TagRepository.GetStorefrontProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.ProductTagsAsync(language);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => TagRepository.GetStorefrontProductTagsAsync(language, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontTagDto> GetStorefrontProductTags(int language)
         {
-            return TagRepository.GetStorefrontProductTags(language);
+            var cacheKey = CacheKeys.ProductTags(language);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => TagRepository.GetStorefrontProductTags(language),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<List<StorefrontTagDto>> GetStorefrontTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await TagRepository.GetStorefrontTagsWithStoryCountsAsync(language, minStoryCount, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.StoryTagsAsync(language) + $":min{minStoryCount}";
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => TagRepository.GetStorefrontTagsWithStoryCountsAsync(language, minStoryCount, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontTagDto> GetStorefrontTagsWithStoryCounts(int language, int minStoryCount = 1)
         {
-            return TagRepository.GetStorefrontTagsWithStoryCounts(language, minStoryCount);
+            var cacheKey = CacheKeys.StoryTags(language) + $":min{minStoryCount}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => TagRepository.GetStorefrontTagsWithStoryCounts(language, minStoryCount),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<List<StorefrontTagDto>> GetStorefrontTagsWithEntityCountsAsync(int language, int minEntityCount = 1, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await TagRepository.GetStorefrontTagsWithEntityCountsAsync(language, minEntityCount, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.TagPrefix + $"entity_counts:lang{language}:min{minEntityCount}:async";
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => TagRepository.GetStorefrontTagsWithEntityCountsAsync(language, minEntityCount, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontTagDto> GetStorefrontTagsWithEntityCounts(int language, int minEntityCount = 1)
         {
-            return TagRepository.GetStorefrontTagsWithEntityCounts(language, minEntityCount);
+            var cacheKey = CacheKeys.TagPrefix + $"entity_counts:lang{language}:min{minEntityCount}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => TagRepository.GetStorefrontTagsWithEntityCounts(language, minEntityCount),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<StorefrontTagDto> GetStorefrontTagByIdAsync(int tagId, CancellationToken cancellationToken = default(CancellationToken))
@@ -65,7 +90,34 @@ namespace EImece.Domain.Services
             return TagRepository.GetStorefrontTagById(tagId);
         }
 
+        private void InvalidateTagCaches()
+        {
+            DataCachingProvider.ClearByPrefix(CacheKeys.TagPrefix);
+            DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
+            DataCachingProvider.ClearByPrefix(CacheKeys.StoryPrefix);
+        }
+
         #endregion
+
+        #region Mutation & Invalidation
+
+        public override Tag SaveOrEditEntity(Tag entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateTagCaches();
+            return saved;
+        }
+
+        public override async Task<Tag> SaveOrEditEntityAsync(Tag entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateTagCaches();
+            return saved;
+        }
+
+        #endregion
+
+        #region Admin Methods (Full Entities)
 
         public List<Tag> GetAdminPageList(String search, int language)
         {
@@ -83,6 +135,7 @@ namespace EImece.Domain.Services
             ProductTagRepository.DeleteByWhereCondition(r => r.TagId == tagId);
             StoryTagRepository.DeleteByWhereCondition(r => r.TagId == tagId);
             DeleteEntity(tag);
+            InvalidateTagCaches();
         }
 
         public async Task DeleteTagByIdAsync(int tagId)
@@ -91,6 +144,7 @@ namespace EImece.Domain.Services
             await ProductTagRepository.DeleteByWhereConditionAsync(r => r.TagId == tagId).ConfigureAwait(false);
             await StoryTagRepository.DeleteByWhereConditionAsync(r => r.TagId == tagId).ConfigureAwait(false);
             await DeleteEntityAsync(tag).ConfigureAwait(false);
+            InvalidateTagCaches();
         }
 
         public Tag GetTagById(int tagId)
@@ -175,7 +229,6 @@ namespace EImece.Domain.Services
 
         public List<Tag> GetTagsWithStoryCounts(int language, int minStoryCount = 1)
         {
-            // v2: ordered by story count descending (cache key bumped to drop old position-ordered entries)
             String cacheKey = String.Format(
                 this.GetType().FullName + "-GetTagsWithStoryCounts-v2-{0}-{1}",
                 language,
@@ -189,7 +242,6 @@ namespace EImece.Domain.Services
 
         public async Task<List<Tag>> GetTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // v2: ordered by story count descending (cache key bumped to drop old position-ordered entries)
             String cacheKey = String.Format(
                 this.GetType().FullName + "-GetTagsWithStoryCounts-v2-{0}-{1}",
                 language,
@@ -200,5 +252,7 @@ namespace EImece.Domain.Services
                 () => TagRepository.GetTagsWithStoryCountsAsync(language, minStoryCount, CancellationToken.None),
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
+
+        #endregion
     }
 }

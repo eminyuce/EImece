@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
@@ -25,25 +26,77 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontBrandDto>> GetStorefrontBrandsAsync(int lang, int categoryId = 0, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await BrandRepository.GetStorefrontBrandsAsync(lang, categoryId, cancellationToken).ConfigureAwait(false);
+            if (categoryId > 0)
+            {
+                return await BrandRepository.GetStorefrontBrandsAsync(lang, categoryId, cancellationToken).ConfigureAwait(false);
+            }
+
+            var cacheKey = CacheKeys.BrandListAsync(lang);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => BrandRepository.GetStorefrontBrandsAsync(lang, 0, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontBrandDto> GetStorefrontBrands(int lang, int categoryId = 0)
         {
-            return BrandRepository.GetStorefrontBrands(lang, categoryId);
+            if (categoryId > 0)
+            {
+                return BrandRepository.GetStorefrontBrands(lang, categoryId);
+            }
+
+            var cacheKey = CacheKeys.BrandList(lang);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => BrandRepository.GetStorefrontBrands(lang, 0),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<StorefrontBrandDto> GetStorefrontBrandByIdAsync(int brandId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await BrandRepository.GetStorefrontBrandByIdAsync(brandId, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.BrandDetailAsync(brandId);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => BrandRepository.GetStorefrontBrandByIdAsync(brandId, cancellationToken),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public StorefrontBrandDto GetStorefrontBrandById(int brandId)
         {
-            return BrandRepository.GetStorefrontBrandById(brandId);
+            var cacheKey = CacheKeys.BrandDetail(brandId);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => BrandRepository.GetStorefrontBrandById(brandId),
+                AppConfig.CacheMediumSeconds);
+        }
+
+        private void InvalidateBrandCaches()
+        {
+            DataCachingProvider.ClearByPrefix(CacheKeys.BrandPrefix);
+            DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
         }
 
         #endregion
+
+        #region Mutation & Invalidation
+
+        public override Brand SaveOrEditEntity(Brand entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateBrandCaches();
+            return saved;
+        }
+
+        public override async Task<Brand> SaveOrEditEntityAsync(Brand entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateBrandCaches();
+            return saved;
+        }
+
+        #endregion
+
+        #region Admin Methods (Full Entities)
 
         public List<Brand> GetAdminPageList(string search, int lang)
         {
@@ -68,7 +121,12 @@ namespace EImece.Domain.Services
                 FileStorageService.DeleteFileStorage(brand.MainImageId.Value);
             }
 
-            return BrandRepository.DeleteByWhereCondition(r => r.Id == brandId);
+            var deleted = BrandRepository.DeleteByWhereCondition(r => r.Id == brandId);
+            if (deleted)
+            {
+                InvalidateBrandCaches();
+            }
+            return deleted;
         }
 
         public async Task<bool> DeleteBrandByIdAsync(int brandId)
@@ -84,7 +142,12 @@ namespace EImece.Domain.Services
                 await FileStorageService.DeleteFileStorageAsync(brand.MainImageId.Value).ConfigureAwait(false);
             }
 
-            return await BrandRepository.DeleteByWhereConditionAsync(r => r.Id == brandId).ConfigureAwait(false);
+            var deleted = await BrandRepository.DeleteByWhereConditionAsync(r => r.Id == brandId).ConfigureAwait(false);
+            if (deleted)
+            {
+                InvalidateBrandCaches();
+            }
+            return deleted;
         }
 
         public virtual new void DeleteBaseEntity(List<string> values)
@@ -127,5 +190,7 @@ namespace EImece.Domain.Services
         {
             return await BrandRepository.GetBrandsIfAnyProductExistsAsync(lang, categoryId).ConfigureAwait(false);
         }
+
+        #endregion
     }
 }

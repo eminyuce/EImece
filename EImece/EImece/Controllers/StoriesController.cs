@@ -31,7 +31,7 @@ namespace EImece.Controllers
             try
             {
                 var stories = await StoryService.GetMainPageStoriesAsync(page, CurrentLanguage, cancellationToken);
-                Logger.Info($"Retrieved {stories?.Stories?.Count ?? 0} stories for page: {page}, language: {CurrentLanguage}");
+                Logger.Info($"Retrieved {stories?.StorefrontStories?.Count ?? 0} stories for page: {page}, language: {CurrentLanguage}");
                 Logger.Info("Returning Index view.");
                 return View(stories);
             }
@@ -98,7 +98,7 @@ namespace EImece.Controllers
                 {
                     return HttpNotFound();
                 }
-                Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory.StoryCategory.Name}, Stories Count: {storyCategory.Stories?.Count ?? 0}");
+                Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory.StoryCategory.Name}, Stories Count: {storyCategory.StorefrontStories?.Count ?? 0}");
 
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
                 Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.DTOs.Storefront;
@@ -38,6 +38,7 @@ namespace EImece.Domain.Repositories
                     Position = sc.Position,
                     Lang = sc.Lang,
                     IsActive = sc.IsActive,
+                    IsStoryCategory = true,
                     ProductCount = sc.Stories.Count(s => s.IsActive)
                 };
             }

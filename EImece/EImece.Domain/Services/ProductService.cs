@@ -373,16 +373,27 @@ namespace EImece.Domain.Services
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, productDto.Lang);
             result.CargoPrice = SettingService.GetSettingObjectByKey(Constants.CargoPrice, productDto.Lang);
-            List<Menu> menuList = MenuService.GetActiveBaseContentsFromCache(true, productDto.Lang);
-            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var mainPageDto = MenuService.GetStorefrontPageByMenuLink(Constants.HomeIndexMenuLink, productDto.Lang);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
+            var productMenuDto = MenuService.GetStorefrontPageByMenuLink(Constants.ProductsIndexMenuLink, productDto.Lang);
+            if (productMenuDto != null)
+            {
+                result.ProductMenu = new StorefrontMenuDto { Id = productMenuDto.Id, Name = productMenuDto.Name, MenuLink = productMenuDto.MenuLink };
+            }
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(productDto.DetailPageAbsoluteUrl, productDto.NameLong, productDto.ImageFullPath(1000, 0));
             if (productDto.ProductCategoryTemplateId.HasValue)
             {
-                result.Template = TemplateService.GetTemplate(productDto.ProductCategoryTemplateId.Value);
+                var tmpl = TemplateService.GetTemplate(productDto.ProductCategoryTemplateId.Value);
+                if (tmpl != null)
+                {
+                    result.Template = new Models.DTOs.TemplateDto { Id = tmpl.Id, Name = tmpl.Name, TemplateXml = tmpl.TemplateXml };
+                }
             }
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(productDto.ProductCategoryId, productDto.Lang);
-            result.RelatedStories = new List<Story>();
+            result.RelatedStories = new List<StorefrontStoryCardDto>();
             int relatedProductTake = 20;
             result.RelatedProducts = new List<StorefrontProductCardDto>();
             if (productDto.ProductTags != null && productDto.ProductTags.Any())
@@ -426,16 +437,27 @@ namespace EImece.Domain.Services
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
             result.CargoDescription = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoDescription, productDto.Lang).ConfigureAwait(false);
             result.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoPrice, productDto.Lang).ConfigureAwait(false);
-            List<Menu> menuList = await MenuService.GetActiveBaseContentsFromCacheAsync(true, productDto.Lang).ConfigureAwait(false);
-            result.MainPageMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menuList.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var mainPageDtoAsync = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.HomeIndexMenuLink, productDto.Lang, cancellationToken).ConfigureAwait(false);
+            if (mainPageDtoAsync != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDtoAsync.Id, Name = mainPageDtoAsync.Name, MenuLink = mainPageDtoAsync.MenuLink };
+            }
+            var productMenuDtoAsync = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.ProductsIndexMenuLink, productDto.Lang, cancellationToken).ConfigureAwait(false);
+            if (productMenuDtoAsync != null)
+            {
+                result.ProductMenu = new StorefrontMenuDto { Id = productMenuDtoAsync.Id, Name = productMenuDtoAsync.Name, MenuLink = productMenuDtoAsync.MenuLink };
+            }
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(productDto.DetailPageAbsoluteUrl, productDto.NameLong, productDto.ImageFullPath(1000, 0));
             if (productDto.ProductCategoryTemplateId.HasValue)
             {
-                result.Template = await TemplateService.GetTemplateAsync(productDto.ProductCategoryTemplateId.Value, cancellationToken).ConfigureAwait(false);
+                var tmpl = await TemplateService.GetTemplateAsync(productDto.ProductCategoryTemplateId.Value, cancellationToken).ConfigureAwait(false);
+                if (tmpl != null)
+                {
+                    result.Template = new Models.DTOs.TemplateDto { Id = tmpl.Id, Name = tmpl.Name, TemplateXml = tmpl.TemplateXml };
+                }
             }
             result.BreadCrumb = await ProductCategoryService.GetBreadCrumbAsync(productDto.ProductCategoryId, productDto.Lang).ConfigureAwait(false);
-            result.RelatedStories = new List<Story>();
+            result.RelatedStories = new List<StorefrontStoryCardDto>();
             int relatedProductTake = 20;
             result.RelatedProducts = new List<StorefrontProductCardDto>();
             if (productDto.ProductTags != null && productDto.ProductTags.Any())

@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -50,52 +51,92 @@ namespace EImece.Domain.Services
 
         public async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryRepository.GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.StoryDetailAsync(storyId);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => StoryRepository.GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
         {
-            return StoryRepository.GetStorefrontStoryDetailById(storyId);
+            var cacheKey = CacheKeys.StoryDetail(storyId);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => StoryRepository.GetStorefrontStoryDetailById(storyId),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryRepository.GetStorefrontFeaturedStoriesAsync(take, language, excludedStoryId, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.StoryPrefix + $"featured:t{take}:lang{language}:ex{excludedStoryId}:async";
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => StoryRepository.GetStorefrontFeaturedStoriesAsync(take, language, excludedStoryId, cancellationToken),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
         {
-            return StoryRepository.GetStorefrontFeaturedStories(take, language, excludedStoryId);
+            var cacheKey = CacheKeys.StoryPrefix + $"featured:t{take}:lang{language}:ex{excludedStoryId}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => StoryRepository.GetStorefrontFeaturedStories(take, language, excludedStoryId),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryRepository.GetStorefrontLatestStoriesAsync(take, language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.StoryPrefix + $"latest:t{take}:lang{language}:async";
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => StoryRepository.GetStorefrontLatestStoriesAsync(take, language, cancellationToken),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
         {
-            return StoryRepository.GetStorefrontLatestStories(take, language);
+            var cacheKey = CacheKeys.StoryPrefix + $"latest:t{take}:lang{language}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => StoryRepository.GetStorefrontLatestStories(take, language),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryRepository.GetStorefrontMainPageStoriesAsync(pageIndex, pageSize, language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.MainPageStoriesAsync(language) + $":p{pageIndex}:ps{pageSize}";
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => StoryRepository.GetStorefrontMainPageStoriesAsync(pageIndex, pageSize, language, cancellationToken),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
         {
-            return StoryRepository.GetStorefrontMainPageStories(pageIndex, pageSize, language);
+            var cacheKey = CacheKeys.MainPageStories(language) + $":p{pageIndex}:ps{pageSize}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => StoryRepository.GetStorefrontMainPageStories(pageIndex, pageSize, language),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryRepository.GetStorefrontStoriesByCategoryIdAsync(storyCategoryId, pageIndex, pageSize, language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.StoriesByCategoryAsync(storyCategoryId, pageIndex, pageSize, language);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => StoryRepository.GetStorefrontStoriesByCategoryIdAsync(storyCategoryId, language, pageIndex, pageSize, cancellationToken),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int pageIndex, int pageSize, int language)
         {
-            return StoryRepository.GetStorefrontStoriesByCategoryId(storyCategoryId, pageIndex, pageSize, language);
+            var cacheKey = CacheKeys.StoriesByCategory(storyCategoryId, pageIndex, pageSize, language);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => StoryRepository.GetStorefrontStoriesByCategoryId(storyCategoryId, language, pageIndex, pageSize),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIds, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
@@ -128,7 +169,32 @@ namespace EImece.Domain.Services
             return StoryRepository.GetStorefrontPreviousStory(currentStoryId, language);
         }
 
+        private void InvalidateStoryCaches()
+        {
+            DataCachingProvider.ClearByPrefix(CacheKeys.StoryPrefix);
+        }
+
         #endregion
+
+        #region Mutation & Invalidation
+
+        public override Story SaveOrEditEntity(Story entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateStoryCaches();
+            return saved;
+        }
+
+        public override async Task<Story> SaveOrEditEntityAsync(Story entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateStoryCaches();
+            return saved;
+        }
+
+        #endregion
+
+        #region Admin Methods (Full Entities)
 
         public List<Story> GetAdminPageList(int categoryId, string search, int lang)
         {
@@ -152,11 +218,8 @@ namespace EImece.Domain.Services
 
         public void DeleteStoryById(int storyId)
         {
-            var story = GetStoryById(storyId);
-            if (story == null)
-            {
-                return;
-            }
+            var story = StoryRepository.GetSingle(storyId);
+            if (story == null) return;
 
             StoryTagRepository.DeleteByWhereCondition(r => r.StoryId == storyId);
             FileStorageService.DeleteGalleryImages(storyId, MediaModType.Stories);
@@ -165,15 +228,13 @@ namespace EImece.Domain.Services
                 FileStorageService.DeleteFileStorage(story.MainImageId.Value);
             }
             DeleteEntity(story);
+            InvalidateStoryCaches();
         }
 
         public async Task DeleteStoryByIdAsync(int storyId)
         {
-            var story = await GetStoryByIdAsync(storyId).ConfigureAwait(false);
-            if (story == null)
-            {
-                return;
-            }
+            var story = await StoryRepository.GetSingleAsync(storyId).ConfigureAwait(false);
+            if (story == null) return;
 
             await StoryTagRepository.DeleteByWhereConditionAsync(r => r.StoryId == storyId).ConfigureAwait(false);
             await FileStorageService.DeleteGalleryImagesAsync(storyId, MediaModType.Stories).ConfigureAwait(false);
@@ -182,6 +243,7 @@ namespace EImece.Domain.Services
                 await FileStorageService.DeleteFileStorageAsync(story.MainImageId.Value).ConfigureAwait(false);
             }
             await DeleteEntityAsync(story).ConfigureAwait(false);
+            InvalidateStoryCaches();
         }
 
         public Story GetStoryById(int storyId)
@@ -204,10 +266,14 @@ namespace EImece.Domain.Services
             await StoryTagRepository.SaveStoryTagsAsync(storyId, tags).ConfigureAwait(false);
         }
 
+        #endregion
+
+        #region Storefront ViewModels
+
         public StoryDetailViewModel GetStoryDetailViewModel(int storyId)
         {
             var result = new StoryDetailViewModel();
-            var storyDetail = StoryRepository.GetStorefrontStoryDetailById(storyId);
+            var storyDetail = GetStorefrontStoryDetailById(storyId);
             if (storyDetail == null)
             {
                 return result;
@@ -231,14 +297,19 @@ namespace EImece.Domain.Services
             {
                 result.RelatedProducts = ProductRepository.GetStorefrontRelatedProducts(tagIdList, 10, language, 0);
             }
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var mainPageDto = MenuService.GetStorefrontPageByMenuLink(Constants.HomeIndexMenuLink, language);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
             string menuLink = "stories-categories_" + storyDetail.SeoUrl;
-            result.BlogMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.Tags = TagService.GetTagsWithStoryCounts(language, minStoryCount: 1)
-                .OrderByDescending(t => t.ItemCount)
-                .ThenBy(t => t.Name)
-                .ToList();
-            result.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
+            var blogPageDto = MenuService.GetStorefrontPageByMenuLink(menuLink, language);
+            if (blogPageDto != null)
+            {
+                result.BlogMenu = new StorefrontMenuDto { Id = blogPageDto.Id, Name = blogPageDto.Name, MenuLink = blogPageDto.MenuLink };
+            }
+            result.Tags = TagService.GetStorefrontTagsWithStoryCounts(language, minStoryCount: 1);
+            result.StoryCategories = StoryCategoryService.GetStorefrontActiveStoryCategories(language);
             result.SocialMediaLinks = CreateStoryDetailShareLinks(storyDetail);
             return result;
         }
@@ -246,7 +317,7 @@ namespace EImece.Domain.Services
         public async Task<StoryDetailViewModel> GetStoryDetailViewModelAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new StoryDetailViewModel();
-            var storyDetail = await StoryRepository.GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken).ConfigureAwait(false);
+            var storyDetail = await GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken).ConfigureAwait(false);
             if (storyDetail == null)
             {
                 return result;
@@ -270,15 +341,19 @@ namespace EImece.Domain.Services
             {
                 result.RelatedProducts = await ProductRepository.GetStorefrontRelatedProductsAsync(tagIdList, 10, language, 0, cancellationToken).ConfigureAwait(false);
             }
-            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
-            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var mainPageDto = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.HomeIndexMenuLink, language, cancellationToken).ConfigureAwait(false);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
             string menuLink = "stories-categories_" + storyDetail.SeoUrl;
-            result.BlogMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.Tags = (await TagService.GetTagsWithStoryCountsAsync(language, minStoryCount: 1, cancellationToken).ConfigureAwait(false))
-                .OrderByDescending(t => t.ItemCount)
-                .ThenBy(t => t.Name)
-                .ToList();
-            result.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
+            var blogPageDto = await MenuService.GetStorefrontPageByMenuLinkAsync(menuLink, language, cancellationToken).ConfigureAwait(false);
+            if (blogPageDto != null)
+            {
+                result.BlogMenu = new StorefrontMenuDto { Id = blogPageDto.Id, Name = blogPageDto.Name, MenuLink = blogPageDto.MenuLink };
+            }
+            result.Tags = await TagService.GetStorefrontTagsWithStoryCountsAsync(language, minStoryCount: 1, cancellationToken).ConfigureAwait(false);
+            result.StoryCategories = await StoryCategoryService.GetStorefrontActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
             result.SocialMediaLinks = CreateStoryDetailShareLinks(storyDetail);
             return result;
         }
@@ -323,8 +398,8 @@ namespace EImece.Domain.Services
             {
                 var vm = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
-                vm.StorefrontStories = await StoryRepository.GetStorefrontMainPageStoriesAsync(page, pageSize, currentLanguage, CancellationToken.None).ConfigureAwait(false);
-                vm.StoryCategories = await StoryCategoryService.GetActiveStoryCategoriesAsync(currentLanguage, CancellationToken.None).ConfigureAwait(false);
+                vm.StorefrontStories = await GetStorefrontMainPageStoriesAsync(page, pageSize, currentLanguage, CancellationToken.None).ConfigureAwait(false);
+                vm.StoryCategories = await StoryCategoryService.GetStorefrontActiveStoryCategoriesAsync(currentLanguage, CancellationToken.None).ConfigureAwait(false);
                 return vm;
             }, AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
@@ -337,8 +412,8 @@ namespace EImece.Domain.Services
             {
                 var vm = new StoryIndexViewModel();
                 int pageSize = AppConfig.RecordPerPage;
-                vm.StorefrontStories = StoryRepository.GetStorefrontMainPageStories(page, pageSize, language);
-                vm.StoryCategories = StoryCategoryService.GetActiveStoryCategories(language);
+                vm.StorefrontStories = GetStorefrontMainPageStories(page, pageSize, language);
+                vm.StoryCategories = StoryCategoryService.GetStorefrontActiveStoryCategories(language);
                 return vm;
             }, AppConfig.CacheMediumSeconds);
             return result;
@@ -388,24 +463,23 @@ namespace EImece.Domain.Services
 
         public StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page)
         {
-            StoryCategoryViewModel result = null;
-
-            result = new StoryCategoryViewModel();
+            var result = new StoryCategoryViewModel();
             int pageSize = AppConfig.RecordPerPage;
 
-            result.StoryCategory = StoryCategoryService.GetSingle(storyCategoryId);
+            result.StoryCategory = StoryCategoryService.GetStorefrontStoryCategoryById(storyCategoryId);
             if (result.StoryCategory == null)
             {
                 return null;
             }
             int lang = result.StoryCategory.Lang;
-            result.StoryCategories = StoryCategoryService.GetActiveBaseContents(true, result.StoryCategory.Lang);
-            result.Tags = TagService.GetTagsWithStoryCounts(lang, minStoryCount: 1)
-                .OrderByDescending(t => t.ItemCount)
-                .ThenBy(t => t.Name)
-                .ToList();
-            result.StorefrontStories = StoryRepository.GetStorefrontStoriesByCategoryId(storyCategoryId, result.StoryCategory.Lang, page, pageSize);
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.StoryCategories = StoryCategoryService.GetStorefrontActiveStoryCategories(lang);
+            result.Tags = TagService.GetStorefrontTagsWithStoryCounts(lang, minStoryCount: 1);
+            result.StorefrontStories = GetStorefrontStoriesByCategoryId(storyCategoryId, page, pageSize, lang);
+            var mainPageDto = MenuService.GetStorefrontPageByMenuLink(Constants.HomeIndexMenuLink, lang);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
 
             return result;
         }
@@ -415,23 +489,25 @@ namespace EImece.Domain.Services
             var result = new StoryCategoryViewModel();
             int pageSize = AppConfig.RecordPerPage;
 
-            result.StoryCategory = await StoryCategoryService.GetSingleAsync(storyCategoryId).ConfigureAwait(false);
+            result.StoryCategory = await StoryCategoryService.GetStorefrontStoryCategoryByIdAsync(storyCategoryId, cancellationToken).ConfigureAwait(false);
             if (result.StoryCategory == null)
             {
                 return null;
             }
             int lang = result.StoryCategory.Lang;
-            result.StoryCategories = await StoryCategoryService.GetActiveBaseContentsAsync(true, result.StoryCategory.Lang, cancellationToken).ConfigureAwait(false);
-            result.Tags = (await TagService.GetTagsWithStoryCountsAsync(lang, minStoryCount: 1, cancellationToken).ConfigureAwait(false))
-                .OrderByDescending(t => t.ItemCount)
-                .ThenBy(t => t.Name)
-                .ToList();
-            result.StorefrontStories = await StoryRepository.GetStorefrontStoriesByCategoryIdAsync(storyCategoryId, lang, page, pageSize, cancellationToken).ConfigureAwait(false);
-            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.StoryCategories = await StoryCategoryService.GetStorefrontActiveStoryCategoriesAsync(lang, cancellationToken).ConfigureAwait(false);
+            result.Tags = await TagService.GetStorefrontTagsWithStoryCountsAsync(lang, minStoryCount: 1, cancellationToken).ConfigureAwait(false);
+            result.StorefrontStories = await GetStorefrontStoriesByCategoryIdAsync(storyCategoryId, page, pageSize, lang, cancellationToken).ConfigureAwait(false);
+            var mainPageDto = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.HomeIndexMenuLink, lang, cancellationToken).ConfigureAwait(false);
+            if (mainPageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
+            }
 
             return result;
         }
+
+        #endregion
 
         public List<Story> GetLatestStories(int language, int take)
         {

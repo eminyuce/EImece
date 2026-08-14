@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -250,7 +250,7 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.CustomerDetail;
             var customer = await GetCustomerAsync();
             var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-            var orders = (await OrderService.GetOrdersUserIdAsync(user.Id, search)).OrderByDescending(r=>r.UpdatedDate).ToList();
+            var orders = (await OrderService.GetStorefrontOrdersByUserIdAsync(user.Id, search)).OrderByDescending(r=>r.CreatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 
@@ -258,7 +258,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             ViewBag.Title = Resource.CustomerDetail;
             var customer = await GetCustomerAsync();
-            var order = await OrderService.GetOrderByIdAsync(id);
+            var order = await OrderService.GetStorefrontOrderByIdAsync(id);
             return View(new CustomerOrderDetailViewModel() { Customer = customer, Order = order });
         }
 

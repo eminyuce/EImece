@@ -138,18 +138,18 @@ namespace EImece.Controllers
                     AppConfig.ProductDefaultRecordPerPage,
                     CurrentLanguage);
 
-                Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.ProductCategory?.Name}");
+                Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.CategoryDto?.Name}");
 
-                if (productCategory == null || productCategory.ProductCategory == null || !productCategory.ProductCategory.IsActive)
+                if (productCategory == null || productCategory.CategoryDto == null || !productCategory.CategoryDto.IsActive)
                 {
                     Logger.Info($"ProductCategory with ID: {categoryId} is null or inactive. Redirecting to NotFound error page.");
                     return RedirectToAction("NotFound", "Error");
                 }
 
                 productCategory.SeoId = id;
-                ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
+                ViewBag.SeoId = productCategory.CategoryDto.GetSeoUrl();
 
-                SetCurrentCulture(productCategory.ProductCategory);
+                SetCurrentCulture(productCategory.CategoryDto.Lang);
                 Logger.Info("Set current culture based on product category.");
 
                 Logger.Info("Returning Category view.");

@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
@@ -32,25 +33,67 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontCategoryDto>> GetStorefrontActiveStoryCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryCategoryRepository.GetStorefrontActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.StoryCategoriesAsync(language);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => StoryCategoryRepository.GetStorefrontActiveStoryCategoriesAsync(language, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontCategoryDto> GetStorefrontActiveStoryCategories(int language)
         {
-            return StoryCategoryRepository.GetStorefrontActiveStoryCategories(language);
+            var cacheKey = CacheKeys.StoryCategories(language);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => StoryCategoryRepository.GetStorefrontActiveStoryCategories(language),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<StorefrontCategoryDto> GetStorefrontStoryCategoryByIdAsync(int storyCategoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await StoryCategoryRepository.GetStorefrontStoryCategoryByIdAsync(storyCategoryId, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.StoryPrefix + $"cat:{storyCategoryId}:async";
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => StoryCategoryRepository.GetStorefrontStoryCategoryByIdAsync(storyCategoryId, cancellationToken),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public StorefrontCategoryDto GetStorefrontStoryCategoryById(int storyCategoryId)
         {
-            return StoryCategoryRepository.GetStorefrontStoryCategoryById(storyCategoryId);
+            var cacheKey = CacheKeys.StoryPrefix + $"cat:{storyCategoryId}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => StoryCategoryRepository.GetStorefrontStoryCategoryById(storyCategoryId),
+                AppConfig.CacheMediumSeconds);
+        }
+
+        private void InvalidateStoryCategoryCaches()
+        {
+            DataCachingProvider.ClearByPrefix(CacheKeys.StoryPrefix);
+            DataCachingProvider.ClearByPrefix(CacheKeys.MenuPrefix);
         }
 
         #endregion
+
+        #region Mutation & Invalidation
+
+        public override StoryCategory SaveOrEditEntity(StoryCategory entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateStoryCategoryCaches();
+            return saved;
+        }
+
+        public override async Task<StoryCategory> SaveOrEditEntityAsync(StoryCategory entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateStoryCategoryCaches();
+            return saved;
+        }
+
+        #endregion
+
+        #region Admin Methods (Full Entities)
 
         public StoryCategory GetStoryCategoryById(int storyCategoryId)
         {
@@ -60,31 +103,37 @@ namespace EImece.Domain.Services
         public void DeleteStoryCategoryById(int storyCategoryId)
         {
             var storyCategory = GetStoryCategoryById(storyCategoryId);
+            if (storyCategory == null) return;
+
             if (storyCategory.MainImageId.HasValue)
             {
                 FileStorageService.DeleteFileStorage(storyCategory.MainImageId.Value);
             }
-            var storyIdList = storyCategory.Stories.Select(r => r.Id).ToList();
+            var storyIdList = storyCategory.Stories != null ? storyCategory.Stories.Select(r => r.Id).ToList() : new List<int>();
             foreach (var id in storyIdList)
             {
                 StoryService.DeleteStoryById(id);
             }
             DeleteEntity(storyCategory);
+            InvalidateStoryCategoryCaches();
         }
 
         public async Task DeleteStoryCategoryByIdAsync(int storyCategoryId)
         {
-            var storyCategory = GetStoryCategoryById(storyCategoryId);
+            var storyCategory = await StoryCategoryRepository.GetSingleAsync(storyCategoryId).ConfigureAwait(false);
+            if (storyCategory == null) return;
+
             if (storyCategory.MainImageId.HasValue)
             {
                 await FileStorageService.DeleteFileStorageAsync(storyCategory.MainImageId.Value).ConfigureAwait(false);
             }
-            var storyIdList = storyCategory.Stories.Select(r => r.Id).ToList();
+            var storyIdList = storyCategory.Stories != null ? storyCategory.Stories.Select(r => r.Id).ToList() : new List<int>();
             foreach (var id in storyIdList)
             {
                 await StoryService.DeleteStoryByIdAsync(id).ConfigureAwait(false);
             }
             await DeleteEntityAsync(storyCategory).ConfigureAwait(false);
+            InvalidateStoryCategoryCaches();
         }
 
         public virtual new void DeleteBaseEntity(List<string> values)
@@ -138,5 +187,7 @@ namespace EImece.Domain.Services
         {
             return await StoryCategoryRepository.GetActiveStoryCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
         }
+
+        #endregion
     }
 }

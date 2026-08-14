@@ -16,23 +16,22 @@ namespace EImece.Tests.Helpers
         private static ProductCategoryViewModel CreateViewModel(SortingType sorting, IEnumerable<StorefrontProductCardDto> dtos)
         {
             var dtoList = dtos.ToList();
-            var category = new ProductCategory
+            var category = new StorefrontCategoryDto
             {
                 Id = 1,
-                Name = "Test",
-                DiscountPercantage = null
+                Name = "Test"
             };
 
             var pagedList = new PaginatedList<StorefrontProductCardDto>(dtoList, 1, 20, dtoList.Count);
 
             return new ProductCategoryViewModel
             {
-                ProductCategory = category,
+                CategoryDto = category,
                 PagedProductDtos = pagedList,
-                AllProducts = new List<Product>(),
-                Brands = new List<Brand>(),
-                ChildrenProductCategories = new List<ProductCategory>(),
-                CategoryChildrenProducts = new List<Product>(),
+                AllProducts = new List<StorefrontProductCardDto>(),
+                StorefrontBrands = new List<StorefrontBrandDto>(),
+                ChildrenProductCategories = new List<StorefrontCategoryDto>(),
+                CategoryChildrenProducts = new List<StorefrontProductCardDto>(),
                 Sorting = sorting,
                 Filter = string.Empty,
                 IsProductPriceEnable = new Setting { SettingValue = "true" },

@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using System;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.DTOs.Storefront
@@ -25,7 +26,12 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public bool MainPage { get; set; }
         public int? TemplateId { get; set; }
         public int ProductCount { get; set; }
+        public int ItemCount { get { return ProductCount; } set { ProductCount = value; } }
+        public int StoryCount { get { return ProductCount; } set { ProductCount = value; } }
         public int TreeLevel { get; set; }
+        public string PageTheme { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
         public string MetaTitle { get; set; }
         public string MetaDescription { get; set; }
@@ -33,23 +39,27 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public StorefrontCategoryDto Parent { get; set; }
 
         public List<StorefrontCategoryDto> Children { get; set; }
+        public List<StorefrontStoryCardDto> Stories { get; set; }
 
         public StorefrontCategoryDto()
         {
             Children = new List<StorefrontCategoryDto>();
+            Stories = new List<StorefrontStoryCardDto>();
+            CreatedDate = DateTime.UtcNow;
+            UpdatedDate = DateTime.UtcNow;
         }
 
-        public string GetSeoTitle()
+        public string GetSeoTitle(int lang = 1)
         {
             return !string.IsNullOrWhiteSpace(MetaTitle) ? MetaTitle : Name;
         }
 
-        public string GetSeoDescription()
+        public string GetSeoDescription(int lang = 1)
         {
-            return !string.IsNullOrWhiteSpace(MetaDescription) ? MetaDescription : ShortDescription;
+            return !string.IsNullOrWhiteSpace(MetaDescription) ? MetaDescription : (!string.IsNullOrWhiteSpace(ShortDescription) ? ShortDescription : Description);
         }
 
-        public string GetSeoKeywords()
+        public string GetSeoKeywords(int lang = 1)
         {
             return !string.IsNullOrWhiteSpace(MetaKeywords) ? MetaKeywords : Name;
         }
@@ -69,12 +79,41 @@ namespace EImece.Domain.Models.DTOs.Storefront
             return SeoUrl;
         }
 
+        public bool IsStoryCategory { get; set; }
+
         public string DetailPageUrl
         {
             get
             {
-                var dummy = new ProductCategory { Id = Id, Name = Name };
-                return dummy.GetDetailPageUrl("Category", "ProductCategories");
+                if (IsStoryCategory)
+                {
+                    var dummy = new StoryCategory { Id = Id, Name = Name };
+                    return dummy.GetDetailPageUrl("Categories", "Stories");
+                }
+                else
+                {
+                    var dummy = new ProductCategory { Id = Id, Name = Name };
+                    return dummy.GetDetailPageUrl("Category", "ProductCategories");
+                }
+            }
+        }
+
+        public string DetailPageRelativeUrl
+        {
+            get { return DetailPageUrl; }
+        }
+
+        public string DetailPageAbsoluteUrl
+        {
+            get { return DetailPageUrl; }
+        }
+
+        public string StoryCategoryDetailPageUrl
+        {
+            get
+            {
+                var dummy = new StoryCategory { Id = Id, Name = Name };
+                return dummy.GetDetailPageUrl("Categories", "Stories");
             }
         }
 

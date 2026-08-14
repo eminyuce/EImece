@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
@@ -38,15 +39,44 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontBannerDto>> GetStorefrontMainPageBannersAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await MainPageImageRepository.GetStorefrontMainPageBannersAsync(language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.MainPageBannersAsync(language);
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => MainPageImageRepository.GetStorefrontMainPageBannersAsync(language, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontBannerDto> GetStorefrontMainPageBanners(int language)
         {
-            return MainPageImageRepository.GetStorefrontMainPageBanners(language);
+            var cacheKey = CacheKeys.MainPageBanners(language);
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => MainPageImageRepository.GetStorefrontMainPageBanners(language),
+                AppConfig.CacheLongSeconds);
+        }
+
+        private void InvalidateBannerCaches()
+        {
+            DataCachingProvider.ClearByPrefix(CacheKeys.BannerPrefix);
         }
 
         #endregion
+
+        #region Mutation & Invalidation
+
+        public override MainPageImage SaveOrEditEntity(MainPageImage entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateBannerCaches();
+            return saved;
+        }
+
+        public override async Task<MainPageImage> SaveOrEditEntityAsync(MainPageImage entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateBannerCaches();
+            return saved;
+        }
 
         public void DeleteMainPageImage(int id)
         {
@@ -61,6 +91,7 @@ namespace EImece.Domain.Services
                 FileStorageService.DeleteFileStorage(item.MainImageId.Value);
             }
             DeleteEntity(item);
+            InvalidateBannerCaches();
         }
 
         public async Task DeleteMainPageImageAsync(int id)
@@ -76,7 +107,12 @@ namespace EImece.Domain.Services
                 await FileStorageService.DeleteFileStorageAsync(item.MainImageId.Value).ConfigureAwait(false);
             }
             await DeleteEntityAsync(item).ConfigureAwait(false);
+            InvalidateBannerCaches();
         }
+
+        #endregion
+
+        #region ViewModels
 
         public MainPageViewModel GetMainPageViewModel(int language)
         {
@@ -87,7 +123,23 @@ namespace EImece.Domain.Services
             result.LatestProducts = ProductService.GetStorefrontLatestProducts(limit, language);
             result.CampaignProducts = ProductService.GetStorefrontCampaignProducts(limit, language);
 
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            var pageDto = MenuService.GetStorefrontPageByMenuLink("home-index", language);
+            if (pageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto
+                {
+                    Id = pageDto.Id,
+                    Name = pageDto.Name,
+                    MenuLink = pageDto.MenuLink,
+                    Description = pageDto.Description,
+                    ShortDescription = pageDto.ShortDescription,
+                    MainImageId = pageDto.MainImageId,
+                    Position = pageDto.Position,
+                    Lang = pageDto.Lang,
+                    IsActive = pageDto.IsActive
+                };
+            }
+
             result.LatestStories = StoryService.GetStorefrontFeaturedStories(AppConfig.HomePageFeatureStoryCountLimit, language, 0);
             result.MainPageImages = GetStorefrontMainPageBanners(language);
             result.MainPageProductCategories = ProductCategoryService.GetStorefrontMainPageCategories(language);
@@ -104,8 +156,22 @@ namespace EImece.Domain.Services
             result.LatestProducts = await ProductService.GetStorefrontLatestProductsAsync(limit, language, cancellationToken).ConfigureAwait(false);
             result.CampaignProducts = await ProductService.GetStorefrontCampaignProductsAsync(limit, language, cancellationToken).ConfigureAwait(false);
 
-            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
-            result.MainPageMenu = menus.FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            var pageDto = await MenuService.GetStorefrontPageByMenuLinkAsync("home-index", language, cancellationToken).ConfigureAwait(false);
+            if (pageDto != null)
+            {
+                result.MainPageMenu = new StorefrontMenuDto
+                {
+                    Id = pageDto.Id,
+                    Name = pageDto.Name,
+                    MenuLink = pageDto.MenuLink,
+                    Description = pageDto.Description,
+                    ShortDescription = pageDto.ShortDescription,
+                    MainImageId = pageDto.MainImageId,
+                    Position = pageDto.Position,
+                    Lang = pageDto.Lang,
+                    IsActive = pageDto.IsActive
+                };
+            }
 
             result.LatestStories = await StoryService.GetStorefrontFeaturedStoriesAsync(AppConfig.HomePageFeatureStoryCountLimit, language, 0, cancellationToken).ConfigureAwait(false);
             result.MainPageImages = await GetStorefrontMainPageBannersAsync(language, cancellationToken).ConfigureAwait(false);
@@ -128,5 +194,7 @@ namespace EImece.Domain.Services
 
             return result;
         }
+
+        #endregion
     }
 }

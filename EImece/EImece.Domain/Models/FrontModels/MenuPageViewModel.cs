@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class MenuPageViewModel
     {
-        public Menu Menu { get; set; }
+        public StorefrontMenuDto Menu { get; set; }
 
-        public Setting CompanyName
+        public SettingDto CompanyName
         {
             get
             {
@@ -17,7 +18,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Setting CompanyAddress
+        public SettingDto CompanyAddress
         {
             get
             {
@@ -25,7 +26,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Setting WebSiteCompanyPhoneAndLocation
+        public SettingDto WebSiteCompanyPhoneAndLocation
         {
             get
             {
@@ -33,7 +34,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Setting WebSiteCompanyEmailAddress
+        public SettingDto WebSiteCompanyEmailAddress
         {
             get
             {
@@ -41,47 +42,42 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        private Setting GetSetting(string key)
+        private SettingDto GetSetting(string key)
         {
-            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            if (ApplicationSettings == null) return new SettingDto();
+            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase)) ?? new SettingDto();
         }
 
-        private String GetSettingValue(string key)
-        {
-            var item = ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase));
-            if (item != null)
-            {
-                return item.SettingValue;
-            }
-            else
-            {
-                return String.Empty;
-            }
-        }
-
-        public Menu MainPageMenu { get; set; }
+        public StorefrontMenuDto MainPageMenu { get; set; }
 
         /// <summary>
         /// Sibling (or child) pages used by themes T5/T6 left navigation.
         /// </summary>
-        public List<Menu> SideMenus { get; set; }
+        public List<StorefrontMenuDto> SideMenus { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
-        public List<Setting> ApplicationSettings { get; set; }
+        public List<SettingDto> ApplicationSettings { get; set; }
 
         public Dictionary<string, string> SocialMediaLinks { get; set; }
 
-        public Setting GoogleMapScript
+        public SettingDto GoogleMapScript
         {
             get
             {
                 var result = GetSetting(Constants.GoogleMapScript);
                 if (result == null)
                 {
-                    result = new Setting();
+                    result = new SettingDto();
                 }
                 return result;
             }
+        }
+
+        public MenuPageViewModel()
+        {
+            SideMenus = new List<StorefrontMenuDto>();
+            ApplicationSettings = new List<SettingDto>();
+            SocialMediaLinks = new Dictionary<string, string>();
         }
     }
 }

@@ -28,6 +28,11 @@ namespace EImece.Domain.Models.DTOs.Storefront
             get { return string.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(Name), ModifiedId); }
         }
 
+        public string GetSeoUrl()
+        {
+            return SeoUrl;
+        }
+
         public string DetailPageUrl
         {
             get
@@ -37,6 +42,16 @@ namespace EImece.Domain.Models.DTOs.Storefront
             }
         }
 
+        public string DetailPageRelativeUrl
+        {
+            get { return DetailPageUrl; }
+        }
+
+        public string DetailPageAbsoluteUrl
+        {
+            get { return DetailPageUrl; }
+        }
+
         public string StoryTagDetailPageUrl
         {
             get
@@ -44,6 +59,26 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 var dummy = new Tag { Id = Id, Name = Name };
                 return dummy.GetDetailPageUrl("Tag", "Stories");
             }
+        }
+
+        public string DetailPageRelativeUrlForStories
+        {
+            get { return StoryTagDetailPageUrl; }
+        }
+
+        public string GetSeoTitle(int lang = 1)
+        {
+            return Name;
+        }
+
+        public string GetSeoDescription(int lang = 1)
+        {
+            return Name;
+        }
+
+        public string GetSeoKeywords(int lang = 1)
+        {
+            return Name;
         }
     }
 }

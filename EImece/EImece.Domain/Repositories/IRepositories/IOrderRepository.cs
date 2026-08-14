@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,5 +19,21 @@ namespace EImece.Domain.Repositories.IRepositories
         Order GetByOrderNumber(string orderNumber);
 
         Task<Order> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking)
+
+        Task<OrderDto> GetStorefrontOrderByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+        OrderDto GetStorefrontOrderById(int id);
+
+        Task<OrderDto> GetStorefrontOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default(CancellationToken));
+        OrderDto GetStorefrontOrderByOrderNumber(string orderNumber);
+
+        Task<OrderDto> GetStorefrontOrderByGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken));
+        OrderDto GetStorefrontOrderByGuid(string orderGuid);
+
+        Task<List<OrderDto>> GetStorefrontOrdersByUserIdAsync(string userId, string search, CancellationToken cancellationToken = default(CancellationToken));
+        List<OrderDto> GetStorefrontOrdersByUserId(string userId, string search);
+
+        #endregion
     }
 }
