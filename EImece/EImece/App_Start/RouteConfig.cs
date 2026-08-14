@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -171,12 +171,31 @@ namespace EImece
                 namespaces: new[] { Constants.ControllersNamespace }
             );
 
+            // SEO: canonical Stories root /s/ mapped to StoriesController.Index
             routes.MapRoute(
+                name: "StoriesRoot",
+                url: Constants.StoriesCategoriesControllerRoutingPrefix,
+                defaults: new { controller = Constants.StoriesRoute, action = "Index" },
+                namespaces: new[] { Constants.ControllersNamespace }
+            );
+
+            // Metrics route redirect to Admin area to prevent MissingDesignViewException
+            var metricsRoute = routes.MapRoute(
+                name: "MetricsRedirect",
+                url: "metrics",
+                defaults: new { controller = "Metrics", action = "Index" },
+                namespaces: new[] { "EImece.Areas.Admin.Controllers" }
+            );
+            metricsRoute.DataTokens["area"] = "Admin";
+            metricsRoute.DataTokens["UseNamespaceFallback"] = false;
+
+            var defaultRoute = routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 namespaces: new[] { Constants.ControllersNamespace }
             );
+            defaultRoute.DataTokens["UseNamespaceFallback"] = false;
         }
     }
 }

@@ -222,10 +222,8 @@ namespace EImece
 
         private static bool ShouldUseCustomErrorPage()
         {
-            // When detailed errors are enabled (appSetting or compilation debug), leave the exception
-            // for ASP.NET's yellow screen / MVC detailed error output.
-            return !AppConfig.ExposeDetailedErrors
-                && (HttpContext.Current == null || !HttpContext.Current.IsDebuggingEnabled);
+            // When detailed errors are explicitly configured, leave the exception for ASP.NET / detailed output.
+            return !AppConfig.ExposeDetailedErrors;
         }
 
         private static void TryGetRouteControllerAndAction(HttpContext httpContext, out string currentController, out string currentAction)
@@ -297,11 +295,35 @@ namespace EImece
         {
             var controller = new ErrorController();
             var routeData = new RouteData();
+            var statusCode = GetErrorHttpStatusCode(exception);
             var action = "Index";
+
+            switch (statusCode)
+            {
+                case 404:
+                    action = "NotFound";
+                    break;
+                case 400:
+                    action = "BadRequest";
+                    break;
+                case 401:
+                    action = "Unauthorized";
+                    break;
+                case 403:
+                    action = "Forbidden";
+                    break;
+                case 405:
+                    action = "MethodNotAllowed";
+                    break;
+                case 500:
+                default:
+                    action = "InternalServerError";
+                    break;
+            }
 
             httpContext.ClearError();
             httpContext.Response.Clear();
-            httpContext.Response.StatusCode = GetErrorHttpStatusCode(exception);
+            httpContext.Response.StatusCode = statusCode;
             httpContext.Response.TrySkipIisCustomErrors = true;
 
             routeData.Values["controller"] = "Error";

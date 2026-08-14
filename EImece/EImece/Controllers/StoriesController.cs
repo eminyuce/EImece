@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
@@ -22,6 +22,8 @@ namespace EImece.Controllers
         [Inject]
         public IStoryService StoryService { get; set; }
 
+        [Route("")]
+        [Route("~/stories")]
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int page = 1)
         {

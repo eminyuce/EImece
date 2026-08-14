@@ -170,12 +170,7 @@ namespace EImece.Controllers
         public async Task<ActionResult> SearchProducts(String search, CancellationToken cancellationToken, int page = 1, int sorting = 0)
         {
             Logger.Info($"Entering SearchProducts with search: '{search}', page: {page}, sorting: {sorting}");
-            if (String.IsNullOrEmpty(search))
-            {
-                Logger.Error("Search term is null or empty.");
-                Logger.Info("Returning BadRequest status.");
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            search = search?.Trim() ?? string.Empty;
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
             Logger.Info($"Using page size: {pageSize}");
 

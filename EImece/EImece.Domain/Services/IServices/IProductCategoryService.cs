@@ -65,5 +65,7 @@ namespace EImece.Domain.Services.IServices
         ProductCategoryDto GetProductCategoryDto(int productCategoryId);
 
         Task<ProductCategoryDto> GetProductCategoryDtoAsync(int productCategoryId);
+
+        void InvalidateCategoryCaches();
     }
 }

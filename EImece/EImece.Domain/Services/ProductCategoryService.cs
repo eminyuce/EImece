@@ -340,46 +340,74 @@ namespace EImece.Domain.Services
             }
         }
 
+        public void InvalidateCategoryCaches()
+        {
+            DataCachingProvider.ClearByPrefix("StorefrontMainPageCategories-");
+            DataCachingProvider.ClearByPrefix("StorefrontNavigationTree-");
+            DataCachingProvider.ClearByPrefix("ProductCategoryTree-");
+            DataCachingProvider.ClearByPrefix("GetMainPageProductCategories-");
+            DataCachingProvider.ClearByPrefix("Navigation-");
+            ProductService?.InvalidateProductListCaches();
+        }
+
+        public override ProductCategory SaveOrEditEntity(ProductCategory entity)
+        {
+            var saved = base.SaveOrEditEntity(entity);
+            InvalidateCategoryCaches();
+            return saved;
+        }
+
+        public override async Task<ProductCategory> SaveOrEditEntityAsync(ProductCategory entity)
+        {
+            var saved = await base.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+            InvalidateCategoryCaches();
+            return saved;
+        }
+
         public void DeleteProductCategory(int productCategoryId)
         {
             var productCategory = ProductCategoryRepository.GetProductCategory(productCategoryId, false);
-            var leaves = GetProductCategoryLeaves(null, productCategory.Lang);
-            if (leaves.Any(r => r.Id == productCategoryId))
+            if (productCategory == null)
             {
-                if (productCategory.MainImageId.HasValue)
-                {
-                    FileStorageService.DeleteFileStorage(productCategory.MainImageId.Value);
-                }
-
-                var productIdList = productCategory.Products.Select(r => r.Id).ToList();
-                foreach (var id in productIdList)
-                {
-                    ProductService.DeleteProductById(id);
-                }
-
-                DeleteEntity(productCategory);
+                return;
             }
+
+            if (productCategory.MainImageId.HasValue)
+            {
+                FileStorageService.DeleteFileStorage(productCategory.MainImageId.Value);
+            }
+
+            var productIdList = productCategory.Products?.Select(r => r.Id).ToList() ?? new List<int>();
+            foreach (var id in productIdList)
+            {
+                ProductService.DeleteProductById(id);
+            }
+
+            DeleteEntity(productCategory);
+            InvalidateCategoryCaches();
         }
 
         public async Task DeleteProductCategoryAsync(int productCategoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var productCategory = await ProductCategoryRepository.GetProductCategoryAsync(productCategoryId, false).ConfigureAwait(false);
-            var leaves = await GetProductCategoryLeavesAsync(null, productCategory.Lang, cancellationToken).ConfigureAwait(false);
-            if (leaves.Any(r => r.Id == productCategoryId))
+            if (productCategory == null)
             {
-                if (productCategory.MainImageId.HasValue)
-                {
-                    await FileStorageService.DeleteFileStorageAsync(productCategory.MainImageId.Value).ConfigureAwait(false);
-                }
-
-                var productIdList = productCategory.Products.Select(r => r.Id).ToList();
-                foreach (var id in productIdList)
-                {
-                    await ProductService.DeleteProductByIdAsync(id, cancellationToken).ConfigureAwait(false);
-                }
-
-                await DeleteEntityAsync(productCategory).ConfigureAwait(false);
+                return;
             }
+
+            if (productCategory.MainImageId.HasValue)
+            {
+                await FileStorageService.DeleteFileStorageAsync(productCategory.MainImageId.Value).ConfigureAwait(false);
+            }
+
+            var productIdList = productCategory.Products?.Select(r => r.Id).ToList() ?? new List<int>();
+            foreach (var id in productIdList)
+            {
+                await ProductService.DeleteProductByIdAsync(id, cancellationToken).ConfigureAwait(false);
+            }
+
+            await DeleteEntityAsync(productCategory).ConfigureAwait(false);
+            InvalidateCategoryCaches();
         }
 
         public List<ProductCategory> GetMainPageProductCategories(int language)
