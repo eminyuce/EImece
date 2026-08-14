@@ -1,5 +1,6 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,6 +10,20 @@ namespace EImece.Domain.Services.IServices
 {
     public interface IProductCategoryService : IBaseContentService<ProductCategory>
     {
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken));
+        StorefrontCategoryDto GetStorefrontCategoryById(int categoryId);
+        Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+        List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language);
+        Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentCategoryId, CancellationToken cancellationToken = default(CancellationToken));
+        List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentCategoryId);
+        Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+        List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language);
+        Task<ProductCategoryViewModel> GetStorefrontCategoryPageViewModelAsync(int categoryId, int page, EImece.Domain.Models.Enums.SortingType sorting, string filter, int? minPrice, int? maxPrice, int recordPerPage, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        #endregion
+
         List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1);
 
         Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1);
@@ -50,5 +65,7 @@ namespace EImece.Domain.Services.IServices
         ProductCategoryDto GetProductCategoryDto(int productCategoryId);
 
         Task<ProductCategoryDto> GetProductCategoryDtoAsync(int productCategoryId);
+
+        void InvalidateCategoryCaches();
     }
 }

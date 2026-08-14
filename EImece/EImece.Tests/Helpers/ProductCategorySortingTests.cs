@@ -1,4 +1,6 @@
 using EImece.Domain.Entities;
+using EImece.Domain.GenericRepository;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,25 +13,23 @@ namespace EImece.Tests.Helpers
     [TestClass]
     public class ProductCategorySortingTests
     {
-        private static ProductCategoryViewModel CreateViewModel(SortingType sorting, IEnumerable<Product> products)
+        private static ProductCategoryViewModel CreateViewModel(SortingType sorting, IEnumerable<StorefrontProductCardDto> dtos)
         {
-            var productList = products.ToList();
+            var dtoList = dtos.ToList();
             var category = new ProductCategory
             {
                 Id = 1,
                 Name = "Test",
-                DiscountPercantage = null,
-                Products = productList
+                DiscountPercantage = null
             };
-            foreach (var product in productList)
-            {
-                product.ProductCategory = category;
-            }
+
+            var pagedList = new PaginatedList<StorefrontProductCardDto>(dtoList, 1, 20, dtoList.Count);
 
             return new ProductCategoryViewModel
             {
                 ProductCategory = category,
-                AllProducts = productList,
+                PagedProductDtos = pagedList,
+                AllProducts = new List<Product>(),
                 Brands = new List<Brand>(),
                 ChildrenProductCategories = new List<ProductCategory>(),
                 CategoryChildrenProducts = new List<Product>(),
@@ -42,77 +42,82 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
-        public void Products_Newest_OrdersByUpdatedDateDescending()
+        public void PagedProductDtos_Newest_PreservesOrder()
         {
             var older = new DateTime(2024, 1, 1);
             var newer = new DateTime(2024, 6, 1);
-            var products = new List<Product>
+            var dtos = new List<StorefrontProductCardDto>
             {
-                new Product { Id = 1, Price = 10, UpdatedDate = older, Position = 1 },
-                new Product { Id = 2, Price = 20, UpdatedDate = newer, Position = 2 },
+                new StorefrontProductCardDto { Id = 2, Price = 20, UpdatedDate = newer, Position = 2 },
+                new StorefrontProductCardDto { Id = 1, Price = 10, UpdatedDate = older, Position = 1 },
             };
 
-            var orderedIds = CreateViewModel(SortingType.Newest, products).Products.Select(p => p.Id).ToList();
+            var vm = CreateViewModel(SortingType.Newest, dtos);
+            var orderedIds = vm.PagedProductDtos.Select(p => p.Id).ToList();
 
             CollectionAssert.AreEqual(new List<int> { 2, 1 }, orderedIds);
         }
 
         [TestMethod]
-        public void Products_LowHighPrice_OrdersByDiscountedPriceAscending()
+        public void PagedProductDtos_LowHighPrice_PreservesOrder()
         {
-            var products = new List<Product>
+            var dtos = new List<StorefrontProductCardDto>
             {
-                new Product { Id = 1, Price = 30, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
-                new Product { Id = 2, Price = 10, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 2 },
-                new Product { Id = 3, Price = 20, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 2, Price = 10, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 2 },
+                new StorefrontProductCardDto { Id = 3, Price = 20, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 1, Price = 30, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
             };
 
-            var orderedIds = CreateViewModel(SortingType.LowHighPrice, products).Products.Select(p => p.Id).ToList();
+            var vm = CreateViewModel(SortingType.LowHighPrice, dtos);
+            var orderedIds = vm.PagedProductDtos.Select(p => p.Id).ToList();
 
             CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
         }
 
         [TestMethod]
-        public void Products_HighLowPrice_OrdersByDiscountedPriceDescending()
+        public void PagedProductDtos_HighLowPrice_PreservesOrder()
         {
-            var products = new List<Product>
+            var dtos = new List<StorefrontProductCardDto>
             {
-                new Product { Id = 1, Price = 30, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
-                new Product { Id = 2, Price = 10, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 2 },
-                new Product { Id = 3, Price = 20, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 1, Price = 30, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
+                new StorefrontProductCardDto { Id = 3, Price = 20, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 2, Price = 10, Discount = 0, UpdatedDate = DateTime.UtcNow, Position = 2 },
             };
 
-            var orderedIds = CreateViewModel(SortingType.HighLowPrice, products).Products.Select(p => p.Id).ToList();
+            var vm = CreateViewModel(SortingType.HighLowPrice, dtos);
+            var orderedIds = vm.PagedProductDtos.Select(p => p.Id).ToList();
 
             CollectionAssert.AreEqual(new List<int> { 1, 3, 2 }, orderedIds);
         }
 
         [TestMethod]
-        public void Products_Popularity_OrdersBySoldCountDescending()
+        public void PagedProductDtos_Popularity_PreservesOrder()
         {
-            var products = new List<Product>
+            var dtos = new List<StorefrontProductCardDto>
             {
-                new Product { Id = 1, Price = 10, SoldCount = 2, UpdatedDate = DateTime.UtcNow, Position = 1 },
-                new Product { Id = 2, Price = 10, SoldCount = 9, UpdatedDate = DateTime.UtcNow, Position = 2 },
-                new Product { Id = 3, Price = 10, SoldCount = 5, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 2, Price = 10, SoldCount = 9, UpdatedDate = DateTime.UtcNow, Position = 2 },
+                new StorefrontProductCardDto { Id = 3, Price = 10, SoldCount = 5, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 1, Price = 10, SoldCount = 2, UpdatedDate = DateTime.UtcNow, Position = 1 },
             };
 
-            var orderedIds = CreateViewModel(SortingType.Popularity, products).Products.Select(p => p.Id).ToList();
+            var vm = CreateViewModel(SortingType.Popularity, dtos);
+            var orderedIds = vm.PagedProductDtos.Select(p => p.Id).ToList();
 
             CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
         }
 
         [TestMethod]
-        public void Products_AverageRating_OrdersByRatingDescending_WhenReviewsEnabled()
+        public void PagedProductDtos_AverageRating_PreservesOrder()
         {
-            var products = new List<Product>
+            var dtos = new List<StorefrontProductCardDto>
             {
-                new Product { Id = 1, Price = 10, Rating = 3.2, UpdatedDate = DateTime.UtcNow, Position = 1 },
-                new Product { Id = 2, Price = 10, Rating = 4.8, UpdatedDate = DateTime.UtcNow, Position = 2 },
-                new Product { Id = 3, Price = 10, Rating = 4.1, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 2, Price = 10, Rating = 4.8, UpdatedDate = DateTime.UtcNow, Position = 2 },
+                new StorefrontProductCardDto { Id = 3, Price = 10, Rating = 4.1, UpdatedDate = DateTime.UtcNow, Position = 3 },
+                new StorefrontProductCardDto { Id = 1, Price = 10, Rating = 3.2, UpdatedDate = DateTime.UtcNow, Position = 1 },
             };
 
-            var orderedIds = CreateViewModel(SortingType.AverageRating, products).Products.Select(p => p.Id).ToList();
+            var vm = CreateViewModel(SortingType.AverageRating, dtos);
+            var orderedIds = vm.PagedProductDtos.Select(p => p.Id).ToList();
 
             CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
         }
@@ -120,25 +125,25 @@ namespace EImece.Tests.Helpers
         [TestMethod]
         public void HasAnySoldProducts_IsFalse_WhenNoProductHasSales()
         {
-            var products = new List<Product>
+            var dtos = new List<StorefrontProductCardDto>
             {
-                new Product { Id = 1, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
-                new Product { Id = 2, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 2 },
+                new StorefrontProductCardDto { Id = 1, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
+                new StorefrontProductCardDto { Id = 2, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 2 },
             };
 
-            Assert.IsFalse(CreateViewModel(SortingType.Default, products).HasAnySoldProducts);
+            Assert.IsFalse(CreateViewModel(SortingType.Default, dtos).HasAnySoldProducts);
         }
 
         [TestMethod]
         public void HasAnySoldProducts_IsTrue_WhenAnyProductHasSales()
         {
-            var products = new List<Product>
+            var dtos = new List<StorefrontProductCardDto>
             {
-                new Product { Id = 1, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
-                new Product { Id = 2, Price = 10, SoldCount = 3, UpdatedDate = DateTime.UtcNow, Position = 2 },
+                new StorefrontProductCardDto { Id = 1, Price = 10, SoldCount = 0, UpdatedDate = DateTime.UtcNow, Position = 1 },
+                new StorefrontProductCardDto { Id = 2, Price = 10, SoldCount = 3, UpdatedDate = DateTime.UtcNow, Position = 2 },
             };
 
-            Assert.IsTrue(CreateViewModel(SortingType.Default, products).HasAnySoldProducts);
+            Assert.IsTrue(CreateViewModel(SortingType.Default, dtos).HasAnySoldProducts);
         }
     }
 }

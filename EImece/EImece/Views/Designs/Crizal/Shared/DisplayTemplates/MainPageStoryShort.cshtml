@@ -1,4 +1,4 @@
-@model EImece.Domain.Entities.Story
+@model EImece.Domain.Models.DTOs.Storefront.StorefrontStoryCardDto
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Helpers
 @using Resources
@@ -6,12 +6,10 @@
     var story = Model;
     int Width = ViewData["Width"].ToInt(420);
     int Height = ViewData["Height"].ToInt(280);
-    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
-    var imageUrl = story.GetCroppedImageUrl(imageId, Width, Height);
+    var imageUrl = story.GetCroppedImageUrl(null, Width, Height);
     var srcset = story.MainImageId.HasValue
         ? story.GetResponsiveImageSrcSet(story.MainImageId.Value, Width, Height)
         : string.Empty;
-    var category = story.StoryCategory;
     var excerpt = !string.IsNullOrWhiteSpace(story.ShortDescription)
         ? story.ShortDescription
         : story.GetSeoDescription(120);
@@ -30,9 +28,9 @@
     </a>
     <div class="crizal-home-story-card__body">
         <p class="crizal-home-story-card__meta">
-            @if (category != null)
+            @if (!string.IsNullOrEmpty(story.StoryCategoryName))
             {
-                <a href="@category.DetailPageRelativeUrl">@category.Name</a>
+                <a href="@story.StoryCategoryDetailPageUrl">@story.StoryCategoryName</a>
                 <span aria-hidden="true"> · </span>
             }
             <time datetime="@story.UpdatedDate.ToString("yyyy-MM-dd")">@story.UpdatedDate.ToShortDateString()</time>

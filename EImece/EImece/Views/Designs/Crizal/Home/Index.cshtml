@@ -1,4 +1,5 @@
 ﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
@@ -15,7 +16,7 @@
     var companyName = Html.Action("GetCompanyName", "Home");
 
     var firstHero = mainPageImages != null && mainPageImages.Count > 0 ? mainPageImages[0] : null;
-    var firstHeroUrl = firstHero != null ? firstHero.GetCroppedImageUrl(firstHero.MainImageId, 1600, 900) : null;
+    var firstHeroUrl = firstHero != null ? firstHero.GetCroppedImageUrl(1600, 900) : null;
 }
 
 @section HeadExtra {
@@ -90,23 +91,13 @@
     </section>
 }
 
-@helper CreateMainPageImage(MainPageImage mainPageImage, bool isLcp, string brandName)
+@helper CreateMainPageImage(StorefrontBannerDto mainPageImage, bool isLcp, string brandName)
 {
-    var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 1600, 900);
+    var imgLink = mainPageImage.GetCroppedImageUrl(1600, 900);
     var hasImage = !string.IsNullOrWhiteSpace(imgLink);
-    // Direct /media/images fallback only for real uploads — never seed demo JPEGs
-    // (those historically burned "EImece Media {filename}" into the pixels).
     var staticMediaUrl = "";
-    if (mainPageImage.MainImage != null
-        && !EImece.Domain.Helpers.FilesHelper.IsSeedPlaceholderMedia(mainPageImage.MainImage)
-        && !string.IsNullOrWhiteSpace(mainPageImage.MainImage.FileName)
-        && !mainPageImage.MainImage.FileName.Equals(EImece.Domain.Helpers.FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
-    {
-        staticMediaUrl = EImece.Domain.Constants.UrlBase + System.IO.Path.GetFileName(mainPageImage.MainImage.FileName);
-    }
     var lead = GeneralHelper.GetDescriptionWithBody(mainPageImage.Description, 110);
     var slideClass = hasImage ? "item crizal-home-hero__slide" : "item crizal-home-hero__slide crizal-home-hero__slide--placeholder";
-    // CSS url() must stay quoted so spaces in media filenames cannot break the background.
     var bgStyle = hasImage ? ("background-image: url('" + imgLink.Replace("'", "%27") + "');") : null;
     <div class="@slideClass"
          @if (hasImage) { <text>data-background="@imgLink" data-hero-fallback="@staticMediaUrl" style="@bgStyle"</text> }>
@@ -121,13 +112,13 @@
                 {
                     <p class="crizal-home-hero__lead">@lead</p>
                 }
-                <a href="@mainPageImage.Link" class="butn-style8 crizal-home-hero__btn"><span>@Resource.ContinueShopping</span></a>
+                <a href="@mainPageImage.Url" class="butn-style8 crizal-home-hero__btn"><span>@Resource.ContinueShopping</span></a>
             </div>
         </div>
     </div>
 }
 
-@helper CreateProductCategorySection(String title, List<ProductCategory> mainPageProductCategories)
+@helper CreateProductCategorySection(String title, List<StorefrontCategoryDto> mainPageProductCategories)
 {
     if (mainPageProductCategories.IsNotEmpty())
     {
@@ -148,7 +139,7 @@
     }
 }
 
-@helper CreateStoryWidget(List<Story> latestStories)
+@helper CreateStoryWidget(List<StorefrontStoryCardDto> latestStories)
 {
     var count = latestStories.Count;
     var colClass = count == 1 ? "col-sm-10 col-md-6 col-xl-4" : (count == 2 ? "col-md-6 col-xl-5" : "col-md-6 col-xl-4");
@@ -160,7 +151,7 @@
     }
 }
 
-@helper CreateProductWidget(String title, List<Product> products)
+@helper CreateProductWidget(String title, List<StorefrontProductCardDto> products)
 {
     if (products.IsNotEmpty())
     {

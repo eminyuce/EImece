@@ -1,6 +1,6 @@
 @model EImece.Domain.Models.FrontModels.SimiliarProductTagsViewModel
 @using EImece.Domain.GenericRepository;
-@using EImece.Domain.Entities
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
@@ -10,14 +10,14 @@
 @using EImece.Domain.Models.Enums;
 @using Resources;
 @{
-    PaginatedList<ProductTag> productTags = Model.ProductTags;
-    var productsTagPaging = new PaginatedModelList<ProductTag>(productTags, Model.Page, Model.RecordPerPage, productTags.TotalCount);
+    PaginatedList<StorefrontProductCardDto> productsAll = Model.Products;
+    var productsTagPaging = new PaginatedModelList<StorefrontProductCardDto>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
     productsTagPaging.PageIndex = Model.Page;
     productsTagPaging.Sorting = (int)Model.Sorting;
     productsTagPaging.RouteId = Model.TagId;
     var tag = Model.Tag;
     ViewBag.Title = tag.GetSeoTitle();
-    ViewBag.Description = String.Join(",", productTags.Select(r => r.Product.Name)).ToStr(150);
+    ViewBag.Description = String.Join(",", productsAll.Select(r => r.Name)).ToStr(150);
 
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
 }
@@ -41,7 +41,7 @@
         <hr class="mt-4">
         <div class="d-flex flex-wrap justify-content-center justify-content-sm-between pb-1">
             <div class="d-flex flex-wrap">
-                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.TagResultTotalCountText, HttpUtility.HtmlEncode(tag.Name), productTags.TotalCount))</span>
+                <span class="d-block mt-2">@Html.Raw(String.Format(Resource.TagResultTotalCountText, HttpUtility.HtmlEncode(tag.Name), productsAll.TotalCount))</span>
             </div>
         </div>
     </div>
@@ -69,9 +69,9 @@
     </div>
     <!-- Products grid-->
     <div class="row no-gutters">
-        @foreach (var p in productTags)
+        @foreach (var p in productsTagPaging)
         {
-        @Html.DisplayFor(model => p.Product, "SearchProductItem", new { Width = 300, Height = 300 })
+        @Html.DisplayFor(model => p, "SearchProductItem", new { Width = 300, Height = 300 })
         }
     </div>
     <div class="d-flex justify-content-center py-4 pb-5">

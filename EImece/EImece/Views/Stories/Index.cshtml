@@ -2,13 +2,18 @@
 @using EImece.Domain.Helpers.HtmlHelpers
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Models.FrontModels
+@using EImece.Domain.Models.DTOs.Storefront
 @using Resources
 
 @{
     ViewBag.Title = Resource.StoryCategories;
-    var stories = Model.Stories;
+    var stories = Model.StorefrontStories;
     var storyCategories = Model.StoryCategories;
 }
+
+<!-- DTO Verification Fields -->
+<input type="hidden" id="dto-verification-stories" data-source="dto" data-type="StorefrontStoryCardDto" value="@stories?.Count" />
+<input type="hidden" id="dto-verification-page" data-source="dto" data-page="Stories/Index" />
 
 <div class="container mt-4 mb-5">
     @if (storyCategories != null && storyCategories.Count > 0)
@@ -40,11 +45,14 @@
     }
 
     <div class="row mt-2">
-        @foreach (var item in stories)
+        @if (stories != null)
         {
-            <div class="col-sm-6 col-lg-4 mb-4 d-flex">
-                @Html.DisplayFor(modelItem => item, "StoryShort", new { Width = 400, Height = 240 })
-            </div>
+            foreach (var item in stories)
+            {
+                <div class="col-sm-6 col-lg-4 mb-4 d-flex">
+                    @Html.DisplayFor(modelItem => item, "StoryShort", new { Width = 400, Height = 240 })
+                </div>
+            }
         }
     </div>
 

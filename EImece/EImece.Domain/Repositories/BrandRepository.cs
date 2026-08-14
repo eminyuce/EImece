@@ -1,5 +1,6 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Repositories
@@ -18,6 +20,88 @@ namespace EImece.Domain.Repositories
         public BrandRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        private static Expression<Func<Brand, StorefrontBrandDto>> BrandProjection
+        {
+            get
+            {
+                return b => new StorefrontBrandDto
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    ShortDescription = b.Description,
+                    MainImageId = b.MainImageId,
+                    Position = b.Position,
+                    Lang = b.Lang,
+                    IsActive = b.IsActive,
+                    ProductCount = b.Products.Count(p => p.IsActive)
+                };
+            }
+        }
+
+        public async Task<List<StorefrontBrandDto>> GetStorefrontBrandsAsync(int lang, int categoryId = 0, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var query = EImeceDbContext.Brands.AsNoTracking()
+                .Where(r => r.Lang == lang && r.IsActive);
+
+            if (categoryId > 0)
+            {
+                query = query.Where(r => r.Products.Any(p => p.IsActive && p.ProductCategoryId == categoryId));
+            }
+            else
+            {
+                query = query.Where(r => r.Products.Any(p => p.IsActive));
+            }
+
+            return await query
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.UpdatedDate)
+                .Select(BrandProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontBrandDto> GetStorefrontBrands(int lang, int categoryId = 0)
+        {
+            var query = EImeceDbContext.Brands.AsNoTracking()
+                .Where(r => r.Lang == lang && r.IsActive);
+
+            if (categoryId > 0)
+            {
+                query = query.Where(r => r.Products.Any(p => p.IsActive && p.ProductCategoryId == categoryId));
+            }
+            else
+            {
+                query = query.Where(r => r.Products.Any(p => p.IsActive));
+            }
+
+            return query
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.UpdatedDate)
+                .Select(BrandProjection)
+                .ToList();
+        }
+
+        public async Task<StorefrontBrandDto> GetStorefrontBrandByIdAsync(int brandId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Brands.AsNoTracking()
+                .Where(b => b.Id == brandId && b.IsActive)
+                .Select(BrandProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontBrandDto GetStorefrontBrandById(int brandId)
+        {
+            return EImeceDbContext.Brands.AsNoTracking()
+                .Where(b => b.Id == brandId && b.IsActive)
+                .Select(BrandProjection)
+                .FirstOrDefault();
+        }
+
+        #endregion
 
         public List<Brand> GetAdminPageList(string search, int lang)
         {
@@ -50,10 +134,10 @@ namespace EImece.Domain.Repositories
         public List<Brand> GetBrandsIfAnyProductExists(int lang, int categoryId = 0)
         {
             var brandsWithProducts = GetAllReadOnly()
-                .Where(r => r.Lang == lang &&
+                .Where(r => r.IsActive && r.Lang == lang &&
                     (categoryId > 0
-                        ? r.Products.Any(p => p.ProductCategoryId == categoryId)
-                        : r.Products.Any()))
+                        ? r.Products.Any(p => p.IsActive && p.ProductCategoryId == categoryId)
+                        : r.Products.Any(p => p.IsActive)))
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.UpdatedDate);
 
@@ -63,10 +147,10 @@ namespace EImece.Domain.Repositories
         public async Task<List<Brand>> GetBrandsIfAnyProductExistsAsync(int lang, int categoryId = 0)
         {
             var brandsWithProducts = GetAllReadOnly()
-                .Where(r => r.Lang == lang &&
+                .Where(r => r.IsActive && r.Lang == lang &&
                     (categoryId > 0
-                        ? r.Products.Any(p => p.ProductCategoryId == categoryId)
-                        : r.Products.Any()))
+                        ? r.Products.Any(p => p.IsActive && p.ProductCategoryId == categoryId)
+                        : r.Products.Any(p => p.IsActive)))
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.UpdatedDate);
 

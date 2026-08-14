@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using System.Web;
 using System.Web.Mvc;
@@ -9,7 +10,7 @@ namespace EImece.Domain.Models.FrontModels
     public class ProductsSearchViewModel : ItemListing
     {
         public string Search { get; set; }
-        public PaginatedList<Product> Products { get; set; }
+        public PaginatedList<StorefrontProductCardDto> Products { get; set; }
 
         public Menu ProductMenu { get; set; }
         public Menu MainPageMenu { get; set; }

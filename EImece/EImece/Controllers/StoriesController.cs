@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
@@ -22,6 +22,8 @@ namespace EImece.Controllers
         [Inject]
         public IStoryService StoryService { get; set; }
 
+        [Route("")]
+        [Route("~/stories")]
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int page = 1)
         {
@@ -56,13 +58,13 @@ namespace EImece.Controllers
                 Logger.Debug($"Parsed story ID: {storyId}");
 
                 var story = await StoryService.GetStoryDetailViewModelAsync(storyId, cancellationToken);
-                if (story == null || story.Story == null)
+                if (story == null || story.StorefrontStory == null)
                 {
                     return HttpNotFound();
                 }
-                Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story.Story.Name}");
+                Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story.StorefrontStory.Name}");
 
-                ViewBag.SeoId = story.Story.GetSeoUrl();
+                ViewBag.SeoId = story.StorefrontStory.SeoUrl;
                 Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");
 
                 Logger.Debug("Returning Detail view.");

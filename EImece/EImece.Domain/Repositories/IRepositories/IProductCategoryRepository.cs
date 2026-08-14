@@ -1,4 +1,6 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 using System.Threading;
@@ -33,5 +35,29 @@ namespace EImece.Domain.Repositories.IRepositories
         Task<List<ProductCategory>> GetProductCategoriesByParentIdAsync(int parentId);
 
         List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1);
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken));
+
+        StorefrontCategoryDto GetStorefrontCategoryById(int categoryId);
+
+        ProductCategoryDto GetProductCategoryDto(int categoryId);
+
+        Task<ProductCategoryDto> GetProductCategoryDtoAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language);
+
+        Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentId, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentId);
+
+        Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language);
+
+        #endregion
     }
 }

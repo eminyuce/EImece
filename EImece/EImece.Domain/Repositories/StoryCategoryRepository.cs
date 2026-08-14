@@ -1,6 +1,7 @@
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -20,6 +21,67 @@ namespace EImece.Domain.Repositories
         public StoryCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        private static Expression<Func<StoryCategory, StorefrontCategoryDto>> StoryCategoryProjection
+        {
+            get
+            {
+                return sc => new StorefrontCategoryDto
+                {
+                    Id = sc.Id,
+                    Name = sc.Name,
+                    ShortDescription = sc.Description,
+                    Description = sc.Description,
+                    MainImageId = sc.MainImageId,
+                    Position = sc.Position,
+                    Lang = sc.Lang,
+                    IsActive = sc.IsActive,
+                    ProductCount = sc.Stories.Count(s => s.IsActive)
+                };
+            }
+        }
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontActiveStoryCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.StoryCategories.AsNoTracking()
+                .Where(r => r.IsActive && r.Lang == language && r.Stories.Any(s => s.IsActive))
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.UpdatedDate)
+                .Select(StoryCategoryProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontActiveStoryCategories(int language)
+        {
+            return EImeceDbContext.StoryCategories.AsNoTracking()
+                .Where(r => r.IsActive && r.Lang == language && r.Stories.Any(s => s.IsActive))
+                .OrderBy(r => r.Position)
+                .ThenByDescending(r => r.UpdatedDate)
+                .Select(StoryCategoryProjection)
+                .ToList();
+        }
+
+        public async Task<StorefrontCategoryDto> GetStorefrontStoryCategoryByIdAsync(int storyCategoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.StoryCategories.AsNoTracking()
+                .Where(sc => sc.Id == storyCategoryId && sc.IsActive)
+                .Select(StoryCategoryProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontCategoryDto GetStorefrontStoryCategoryById(int storyCategoryId)
+        {
+            return EImeceDbContext.StoryCategories.AsNoTracking()
+                .Where(sc => sc.Id == storyCategoryId && sc.IsActive)
+                .Select(StoryCategoryProjection)
+                .FirstOrDefault();
+        }
+
+        #endregion
 
         public List<StoryCategory> GetActiveStoryCategories(int language)
         {

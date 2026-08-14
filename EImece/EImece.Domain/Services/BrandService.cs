@@ -1,9 +1,11 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -18,6 +20,30 @@ namespace EImece.Domain.Services
         {
             BrandRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<List<StorefrontBrandDto>> GetStorefrontBrandsAsync(int lang, int categoryId = 0, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await BrandRepository.GetStorefrontBrandsAsync(lang, categoryId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontBrandDto> GetStorefrontBrands(int lang, int categoryId = 0)
+        {
+            return BrandRepository.GetStorefrontBrands(lang, categoryId);
+        }
+
+        public async Task<StorefrontBrandDto> GetStorefrontBrandByIdAsync(int brandId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await BrandRepository.GetStorefrontBrandByIdAsync(brandId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontBrandDto GetStorefrontBrandById(int brandId)
+        {
+            return BrandRepository.GetStorefrontBrandById(brandId);
+        }
+
+        #endregion
 
         public List<Brand> GetAdminPageList(string search, int lang)
         {

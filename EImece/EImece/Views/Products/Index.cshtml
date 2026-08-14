@@ -1,6 +1,6 @@
 @model EImece.Domain.Models.FrontModels.ProductIndexViewModel
 @using EImece.Domain.GenericRepository;
-@using EImece.Domain.Entities
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
@@ -8,14 +8,18 @@
 @using EImece.Domain;
 @using EImece.Domain.Models;
 @{
-    PaginatedList<Product> productsAll = Model.Products;
-    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
+    PaginatedList<StorefrontProductCardDto> productsAll = Model.Products;
+    var products = new PaginatedModelList<StorefrontProductCardDto>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
     products.PageIndex = Model.Page;
 
     var pageTitle = Model.ProductMenu != null ? Model.ProductMenu.Name : Resource.Products;
     ViewBag.Title = pageTitle;
     ViewBag.Description = String.Join(",", productsAll.Select(r => r.Name)).ToStr(150);
 }
+
+<!-- DTO Verification Fields -->
+<input type="hidden" id="dto-verification-products" data-source="dto" data-type="StorefrontProductCardDto" value="@productsAll?.Count" />
+<input type="hidden" id="dto-verification-page" data-source="dto" data-page="Products/Index" />
 
 <section class="page-title-wrapper" aria-label="Page title">
     <div class="container">

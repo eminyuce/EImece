@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
@@ -209,7 +209,21 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static string GetImageSeoUrl(this BaseEntity entity, int fileStorageId)
         {
+            if (entity == null) return string.Empty;
             return string.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), GeneralHelper.ModifyId(fileStorageId));
+        }
+
+        public static string GetImageSeoUrl(this EImece.Domain.Models.DTOs.Storefront.StorefrontProductCardDto entity, int fileStorageId)
+        {
+            if (entity == null) return string.Empty;
+            return string.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(entity.Name)), GeneralHelper.ModifyId(fileStorageId));
+        }
+
+        public static string GetImageSeoUrl(this EImece.Domain.Models.DTOs.Storefront.StorefrontProductFileDto entity, int fileStorageId)
+        {
+            if (entity == null) return string.Empty;
+            string name = !string.IsNullOrEmpty(entity.Title) ? entity.Title : (!string.IsNullOrEmpty(entity.FileName) ? entity.FileName : "image");
+            return string.Format("{0}-{1}.jpg", GeneralHelper.GetUrlSeoString(RemoveFileExtension(name)), GeneralHelper.ModifyId(fileStorageId));
         }
 
         public static String GetSeoTitle(this BaseEntity entity, int length = 50)

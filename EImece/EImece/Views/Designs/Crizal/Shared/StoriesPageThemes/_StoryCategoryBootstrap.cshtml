@@ -1,11 +1,12 @@
 @model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
 @using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Models.DTOs.Storefront
 @using EImece.Domain
 @using Resources
 @using System.Linq
 @{
     var category = Model.StoryCategory;
-    var stories = Model.Stories;
+    var stories = Model.StorefrontStories;
 }
 
 <section class="crizal-story-page">

@@ -1,55 +1,70 @@
-﻿@model EImece.Domain.Entities.Story
+@model object
 @using System.Linq
+@using EImece.Domain.Models.DTOs.Storefront
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Helpers
 @using Resources
 @{
-    var story = Model;
-    var tags = (story.StoryTags ?? Enumerable.Empty<StoryTag>())
-        .Where(r1 => r1.Tag != null)
-        .Select(r1 => r1.Tag)
-        .Distinct()
-        .ToList();
+    var dto = Model as StorefrontStoryCardDto;
+    var story = Model as Story;
+    var name = dto != null ? dto.Name : (story != null ? story.Name : string.Empty);
+    var mainImageId = dto != null ? dto.MainImageId : (story != null ? story.MainImageId : null);
+    var detailUrl = dto != null ? dto.DetailPageUrl : (story != null ? story.DetailPageUrl : string.Empty);
+    var createdDate = dto != null ? dto.CreatedDate : (story != null ? story.CreatedDate : DateTime.Now);
+    var description = dto != null ? dto.GetSeoDescription(300) : (story != null ? story.GetSeoDescription(300) : string.Empty);
+
     int Width = ViewData["Width"].ToInt(480);
     int Height = ViewData["Height"].ToInt(320);
-    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
-    var storyImageTag = imageId > 0
-        ? story.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 767px) 100vw, 360px")
-        : story.GetCroppedImageTag(Width, Height);
+    var imageId = mainImageId.HasValue ? mainImageId.Value : 0;
+    var storyImageTag = dto != null
+        ? dto.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 767px) 100vw, 360px")
+        : (story != null ? story.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 767px) 100vw, 360px") : string.Empty);
+
+    var tagItems = new List<Tuple<string, string>>();
+    if (dto != null && dto.Tags != null)
+    {
+        tagItems = dto.Tags.Select(t => Tuple.Create(t.Name, t.StoryTagDetailPageUrl)).ToList();
+    }
+    else if (story != null && story.StoryTags != null)
+    {
+        tagItems = story.StoryTags
+            .Where(r1 => r1.Tag != null)
+            .Select(r1 => Tuple.Create(r1.Tag.Name, r1.Tag.DetailPageRelativeUrlForStories ?? "#"))
+            .Distinct()
+            .ToList();
+    }
 }
 
 <article class="card story-list-card mb-4 shadow-sm border-0 overflow-hidden">
     <div class="row no-gutters align-items-stretch">
         <div class="col-md-4 position-relative">
-            <a href="@story.DetailPageUrl" class="story-list-thumb" aria-label="@story.Name">
+            <a href="@detailUrl" class="story-list-thumb" aria-label="@name">
                 @Html.Raw(storyImageTag)
             </a>
             <div class="story-list-date text-center bg-dark text-white rounded px-2 py-1">
-                <div class="h5 mb-0">@story.CreatedDate.Day</div>
-                <small class="text-uppercase">@story.CreatedDate.ToString("MMM")</small>
+                <div class="h5 mb-0">@createdDate.Day</div>
+                <small class="text-uppercase">@createdDate.ToString("MMM")</small>
             </div>
         </div>
         <div class="col-md-8">
             <div class="card-body d-flex flex-column h-100">
                 <h2 class="card-title h5 mb-2">
-                    <a href="@story.DetailPageUrl" class="text-dark">@story.Name</a>
+                    <a href="@detailUrl" class="text-dark">@name</a>
                 </h2>
 
-                @if (tags.Any())
+                @if (tagItems.Any())
                 {
                     <p class="mb-2">
-                        @foreach (var tag in tags)
+                        @foreach (var tag in tagItems)
                         {
-                            <a href="@(tag.DetailPageRelativeUrlForStories ?? "#")"
-                               class="badge badge-secondary mr-1 mb-1">@tag.Name</a>
+                            <a href="@tag.Item2" class="badge badge-secondary mr-1 mb-1">@tag.Item1</a>
                         }
                     </p>
                 }
 
-                <p class="card-text text-muted mb-3 flex-grow-1">@story.GetSeoDescription(300)</p>
-
-                <a href="@story.DetailPageUrl" class="btn btn-outline-secondary btn-sm align-self-start">@Resource.ReadMore</a>
+                <p class="card-text text-muted mb-3 flex-grow-1">@description</p>
+                <a href="@detailUrl" class="btn btn-outline-secondary btn-sm align-self-start">@Resource.ReadMore</a>
             </div>
         </div>
     </div>

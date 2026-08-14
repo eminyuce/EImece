@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
@@ -59,10 +59,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.BillingAddress);
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
-            includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
-            Expression<Func<Order, bool>> match = r2 => r2.OrderNumber.Equals(orderNumber, StringComparison.InvariantCultureIgnoreCase);
+            Expression<Func<Order, bool>> match = r2 => r2.OrderNumber == orderNumber;
             Expression<Func<Order, int>> keySelector = t => t.Position;
-            var orders = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var orders = FindAllIncludingReadOnly(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
             return orders.FirstOrDefault();
         }
 
@@ -73,10 +72,9 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.BillingAddress);
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
-            includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
-            Expression<Func<Order, bool>> match = r2 => r2.OrderNumber.Equals(orderNumber, StringComparison.InvariantCultureIgnoreCase);
+            Expression<Func<Order, bool>> match = r2 => r2.OrderNumber == orderNumber;
             Expression<Func<Order, int>> keySelector = t => t.Position;
-            var orders = FindAllIncluding(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var orders = FindAllIncludingReadOnly(match, keySelector, OrderByType.Ascending, null, null, includeProperties.ToArray());
             return await orders.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         }
 
@@ -85,7 +83,6 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.OrderProducts);
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.MainImage));
-            includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
             includeProperties.Add(r => r.ShippingAddress);
             includeProperties.Add(r => r.BillingAddress);
 
@@ -103,7 +100,7 @@ namespace EImece.Domain.Repositories
             }
 
             Expression<Func<Order, DateTime>> keySelector = t => t.UpdatedDate;
-            var orders = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            var orders = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
             return orders.ToList();
         }
 
@@ -112,7 +109,6 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.OrderProducts);
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.MainImage));
-            includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
             includeProperties.Add(r => r.ShippingAddress);
             includeProperties.Add(r => r.BillingAddress);
 
@@ -132,7 +128,7 @@ namespace EImece.Domain.Repositories
             }
 
             Expression<Func<Order, DateTime>> keySelector = t => t.UpdatedDate;
-            var orders = FindAllIncluding(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
+            var orders = FindAllIncludingReadOnly(match, keySelector, OrderByType.Descending, null, null, includeProperties.ToArray());
             return await orders.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
     }

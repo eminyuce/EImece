@@ -1,7 +1,8 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -310,5 +311,355 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.StoryTags.Select(q => q.Tag));
             return await GetSingleIncludingAsync(storyId, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
         }
+
+        #region Storefront Read Implementations (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        private static Expression<Func<Story, StorefrontStoryCardDto>> StoryCardProjection
+        {
+            get
+            {
+                return s => new StorefrontStoryCardDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    ShortDescription = s.ShortDescription,
+                    StoryCategoryId = s.StoryCategoryId,
+                    StoryCategoryName = s.StoryCategory != null ? s.StoryCategory.Name : string.Empty,
+                    MainImageId = s.MainImageId,
+                    Position = s.Position,
+                    Lang = s.Lang,
+                    IsActive = s.IsActive,
+                    MainPage = s.MainPage,
+                    IsFeaturedStory = s.IsFeaturedStory,
+                    CreatedDate = s.CreatedDate,
+                    UpdatedDate = s.UpdatedDate,
+                    AuthorName = s.AuthorName
+                };
+            }
+        }
+
+        public async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.Id == storyId && s.IsActive)
+                .Select(s => new StorefrontStoryDetailDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    ShortDescription = s.ShortDescription,
+                    Description = s.Description,
+                    MetaKeywords = s.MetaKeywords,
+                    StoryCategoryId = s.StoryCategoryId,
+                    StoryCategoryName = s.StoryCategory != null ? s.StoryCategory.Name : string.Empty,
+                    MainImageId = s.MainImageId,
+                    Position = s.Position,
+                    Lang = s.Lang,
+                    IsActive = s.IsActive,
+                    MainPage = s.MainPage,
+                    IsFeaturedStory = s.IsFeaturedStory,
+                    CreatedDate = s.CreatedDate,
+                    UpdatedDate = s.UpdatedDate,
+                    StoryFiles = s.StoryFiles
+                        .Where(sf => sf.FileStorage != null && sf.FileStorage.IsActive)
+                        .OrderBy(sf => sf.Position)
+                        .Select(sf => new StorefrontProductFileDto
+                        {
+                            Id = sf.Id,
+                            ProductId = sf.StoryId,
+                            FileStorageId = sf.FileStorageId,
+                            FileName = sf.FileStorage.FileName,
+                            Title = sf.FileStorage.Name,
+                            Description = sf.FileStorage.FileName,
+                            Width = sf.FileStorage.Width,
+                            Height = sf.FileStorage.Height,
+                            Position = sf.Position,
+                            IsActive = sf.FileStorage.IsActive
+                        }).ToList(),
+                    StoryTags = s.StoryTags
+                        .Where(st => st.Tag != null && st.Tag.IsActive)
+                        .OrderBy(st => st.Tag.Position)
+                        .Select(st => new StorefrontTagDto
+                        {
+                            Id = st.Tag.Id,
+                            Name = st.Tag.Name,
+                            TagCategoryId = st.Tag.TagCategoryId,
+                            TagCategoryName = st.Tag.TagCategory != null ? st.Tag.TagCategory.Name : string.Empty,
+                            Position = st.Tag.Position,
+                            Lang = st.Tag.Lang,
+                            IsActive = st.Tag.IsActive
+                        }).ToList()
+                })
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
+        {
+            return EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.Id == storyId && s.IsActive)
+                .Select(s => new StorefrontStoryDetailDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    ShortDescription = s.ShortDescription,
+                    Description = s.Description,
+                    MetaKeywords = s.MetaKeywords,
+                    StoryCategoryId = s.StoryCategoryId,
+                    StoryCategoryName = s.StoryCategory != null ? s.StoryCategory.Name : string.Empty,
+                    MainImageId = s.MainImageId,
+                    Position = s.Position,
+                    Lang = s.Lang,
+                    IsActive = s.IsActive,
+                    MainPage = s.MainPage,
+                    IsFeaturedStory = s.IsFeaturedStory,
+                    CreatedDate = s.CreatedDate,
+                    UpdatedDate = s.UpdatedDate,
+                    StoryFiles = s.StoryFiles
+                        .Where(sf => sf.FileStorage != null && sf.FileStorage.IsActive)
+                        .OrderBy(sf => sf.Position)
+                        .Select(sf => new StorefrontProductFileDto
+                        {
+                            Id = sf.Id,
+                            ProductId = sf.StoryId,
+                            FileStorageId = sf.FileStorageId,
+                            FileName = sf.FileStorage.FileName,
+                            Title = sf.FileStorage.Name,
+                            Description = sf.FileStorage.FileName,
+                            Width = sf.FileStorage.Width,
+                            Height = sf.FileStorage.Height,
+                            Position = sf.Position,
+                            IsActive = sf.FileStorage.IsActive
+                        }).ToList(),
+                    StoryTags = s.StoryTags
+                        .Where(st => st.Tag != null && st.Tag.IsActive)
+                        .OrderBy(st => st.Tag.Position)
+                        .Select(st => new StorefrontTagDto
+                        {
+                            Id = st.Tag.Id,
+                            Name = st.Tag.Name,
+                            TagCategoryId = st.Tag.TagCategoryId,
+                            TagCategoryName = st.Tag.TagCategory != null ? st.Tag.TagCategory.Name : string.Empty,
+                            Position = st.Tag.Position,
+                            Lang = st.Tag.Lang,
+                            IsActive = st.Tag.IsActive
+                        }).ToList()
+                })
+                .FirstOrDefault();
+        }
+
+        public async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
+        {
+            return EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
+        {
+            return EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var query = EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection);
+
+            var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
+        {
+            var query = EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection);
+
+            var total = query.Count();
+            var items = query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int language, int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var query = EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection);
+
+            var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)
+        {
+            var query = EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection);
+
+            var total = query.Count();
+            var items = query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIdList, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (tagIdList == null || tagIdList.Length == 0) return new List<StorefrontStoryCardDto>();
+
+            return await EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.Lang == language && s.Id != excludedStoryId &&
+                            s.StoryTags.Any(st => st.Tag != null && st.Tag.IsActive && tagIdList.Contains(st.TagId)))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontStoryCardDto> GetStorefrontRelatedStories(int[] tagIdList, int take, int language, int excludedStoryId)
+        {
+            if (tagIdList == null || tagIdList.Length == 0) return new List<StorefrontStoryCardDto>();
+
+            return EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.Lang == language && s.Id != excludedStoryId &&
+                            s.StoryTags.Any(st => st.Tag != null && st.Tag.IsActive && tagIdList.Contains(st.TagId)))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<StorefrontStoryCardDto> GetStorefrontNextStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var currentStory = await EImeceDbContext.Stories.AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == currentStoryId && s.Lang == language, cancellationToken)
+                .ConfigureAwait(false);
+            if (currentStory == null) return null;
+
+            return await EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
+                            (s.Position > currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate < currentStory.UpdatedDate)))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontStoryCardDto GetStorefrontNextStory(int currentStoryId, int language)
+        {
+            var currentStory = EImeceDbContext.Stories.AsNoTracking()
+                .FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
+            if (currentStory == null) return null;
+
+            return EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
+                            (s.Position > currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate < currentStory.UpdatedDate)))
+                .OrderBy(s => s.Position)
+                .ThenByDescending(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .FirstOrDefault();
+        }
+
+        public async Task<StorefrontStoryCardDto> GetStorefrontPreviousStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var currentStory = await EImeceDbContext.Stories.AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == currentStoryId && s.Lang == language, cancellationToken)
+                .ConfigureAwait(false);
+            if (currentStory == null) return null;
+
+            return await EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
+                            (s.Position < currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate > currentStory.UpdatedDate)))
+                .OrderByDescending(s => s.Position)
+                .ThenBy(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontStoryCardDto GetStorefrontPreviousStory(int currentStoryId, int language)
+        {
+            var currentStory = EImeceDbContext.Stories.AsNoTracking()
+                .FirstOrDefault(s => s.Id == currentStoryId && s.Lang == language);
+            if (currentStory == null) return null;
+
+            return EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.Id != currentStoryId &&
+                            s.Lang == language &&
+                            s.IsActive &&
+                            s.StoryCategoryId == currentStory.StoryCategoryId &&
+                            (s.Position < currentStory.Position ||
+                            (s.Position == currentStory.Position && s.UpdatedDate > currentStory.UpdatedDate)))
+                .OrderByDescending(s => s.Position)
+                .ThenBy(s => s.UpdatedDate)
+                .Select(StoryCardProjection)
+                .FirstOrDefault();
+        }
+
+        #endregion
     }
 }

@@ -774,7 +774,7 @@ namespace EImece.Controllers
                 PaymentLogger.Info($"Converted product ID to: {productId}");
                 BuyNowModel buyNowModel = await CreateBuyNowModelAsync(productId);
                 PaymentLogger.Info("Created BuyNow model.");
-                ViewBag.SeoId = buyNowModel.ProductDetailViewModel.Product.GetSeoUrl();
+                ViewBag.SeoId = buyNowModel.ProductDetailViewModel.ProductDto.SeoUrl;
                 PaymentLogger.Info($"Set SeoId in ViewBag: {ViewBag.SeoId}");
                 PaymentLogger.Info("Returning BuyNow view.");
                 return View(buyNowModel);

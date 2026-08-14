@@ -1,52 +1,70 @@
-﻿@model EImece.Domain.Entities.Story
+@model object
 @using System.Linq
+@using EImece.Domain.Models.DTOs.Storefront
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Helpers
 @using Resources
 @{
-    var story = Model;
-    var tags = (story.StoryTags ?? Enumerable.Empty<StoryTag>())
-        .Where(r1 => r1.Tag != null)
-        .Select(r1 => r1.Tag)
-        .Distinct()
-        .ToList();
+    var dto = Model as StorefrontStoryCardDto;
+    var story = Model as Story;
+    var name = dto != null ? dto.Name : (story != null ? story.Name : string.Empty);
+    var mainImageId = dto != null ? dto.MainImageId : (story != null ? story.MainImageId : null);
+    var detailUrl = dto != null ? dto.DetailPageUrl : (story != null ? story.DetailPageUrl : string.Empty);
+    var createdDate = dto != null ? dto.CreatedDate : (story != null ? story.CreatedDate : DateTime.Now);
+    var excerpt = dto != null
+        ? (!string.IsNullOrWhiteSpace(dto.ShortDescription) ? dto.ShortDescription : dto.GetSeoDescription(180))
+        : (story != null ? (!string.IsNullOrWhiteSpace(story.ShortDescription) ? story.ShortDescription : story.GetSeoDescription(180)) : string.Empty);
+
     int Width = ViewData["Width"].ToInt(480);
     int Height = ViewData["Height"].ToInt(320);
-    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
-    var imageUrl = story.GetCroppedImageUrl(imageId, Width, Height);
-    var srcset = imageId > 0 ? story.GetResponsiveImageSrcSet(imageId, Width, Height) : string.Empty;
-    var excerpt = !string.IsNullOrWhiteSpace(story.ShortDescription)
-        ? story.ShortDescription
-        : story.GetSeoDescription(180);
+    var imageId = mainImageId.HasValue ? mainImageId.Value : 0;
+    var imageUrl = dto != null ? dto.GetCroppedImageUrl(mainImageId, Width, Height) : (story != null ? story.GetCroppedImageUrl(mainImageId, Width, Height) : string.Empty);
+    var srcset = mainImageId.HasValue
+        ? (dto != null ? dto.GetResponsiveImageSrcSet(mainImageId.Value, Width, Height) : (story != null ? story.GetResponsiveImageSrcSet(mainImageId.Value, Width, Height) : string.Empty))
+        : string.Empty;
+
+    var tagItems = new List<Tuple<string, string>>();
+    if (dto != null && dto.Tags != null)
+    {
+        tagItems = dto.Tags.Select(t => Tuple.Create(t.Name, t.StoryTagDetailPageUrl)).ToList();
+    }
+    else if (story != null && story.StoryTags != null)
+    {
+        tagItems = story.StoryTags
+            .Where(r1 => r1.Tag != null)
+            .Select(r1 => Tuple.Create(r1.Tag.Name, r1.Tag.DetailPageRelativeUrlForStories ?? "#"))
+            .Distinct()
+            .ToList();
+    }
 }
 
 <article class="crizal-story-card">
-    <a class="crizal-story-card__media" href="@story.DetailPageUrl" aria-label="@story.Name">
+    <a class="crizal-story-card__media" href="@detailUrl" aria-label="@name">
         <img src="@imageUrl"
              srcset="@srcset"
              sizes="(max-width: 767px) 100vw, 360px"
              width="@Width"
              height="@Height"
-             alt="@story.Name"
+             alt="@name"
              loading="lazy"
              decoding="async" />
-        <time class="crizal-story-card__date" datetime="@story.CreatedDate.ToString("yyyy-MM-dd")">
-            <span class="crizal-story-card__day">@story.CreatedDate.Day</span>
-            <span class="crizal-story-card__month">@story.CreatedDate.ToString("MMM")</span>
+        <time class="crizal-story-card__date" datetime="@createdDate.ToString("yyyy-MM-dd")">
+            <span class="crizal-story-card__day">@createdDate.Day</span>
+            <span class="crizal-story-card__month">@createdDate.ToString("MMM")</span>
         </time>
     </a>
     <div class="crizal-story-card__body">
         <h2 class="crizal-story-card__title">
-            <a href="@story.DetailPageUrl">@story.Name</a>
+            <a href="@detailUrl">@name</a>
         </h2>
 
-        @if (tags.Any())
+        @if (tagItems.Any())
         {
             <div class="crizal-tags crizal-tags--sm">
-                @foreach (var tag in tags.Take(4))
+                @foreach (var tag in tagItems.Take(4))
                 {
-                    <a class="crizal-tag" href="@(tag.DetailPageRelativeUrlForStories ?? "#")">@tag.Name</a>
+                    <a class="crizal-tag" href="@tag.Item2">@tag.Item1</a>
                 }
             </div>
         }
@@ -56,6 +74,6 @@
             <p class="crizal-story-card__excerpt">@Html.Raw(excerpt)</p>
         }
 
-        <a href="@story.DetailPageUrl" class="butn-style8 small crizal-story-card__more"><span>@Resource.ReadMore</span></a>
+        <a href="@detailUrl" class="butn-style8 small crizal-story-card__more"><span>@Resource.ReadMore</span></a>
     </div>
 </article>

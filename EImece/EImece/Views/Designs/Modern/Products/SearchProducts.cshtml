@@ -1,6 +1,6 @@
 @model EImece.Domain.Models.FrontModels.ProductsSearchViewModel
 @using EImece.Domain.GenericRepository;
-@using EImece.Domain.Entities
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
@@ -13,12 +13,11 @@
     String search = Model.Search;
     ViewBag.Title = String.Format(Resource.ProductSearchPageTitle, search);
     var productsAll = Model.Products;
-    var products = new PaginatedModelList<Product>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
+    var products = new PaginatedModelList<StorefrontProductCardDto>(productsAll, Model.Page, Model.RecordPerPage, productsAll.TotalCount);
     products.Search = search;
     products.PageIndex = Model.Page;
     products.Sorting = (int)Model.Sorting;
     ViewBag.Description = String.Join(",", Model.Products.Select(r => r.Name)).ToStr(150);
-    List<Tag> productTags = products.SelectMany(r => r.ProductTags.Select(r1 => r1.Tag)).Distinct().ToList();
 
 }
 

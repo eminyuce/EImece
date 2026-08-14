@@ -1,4 +1,5 @@
 ﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
@@ -13,7 +14,6 @@
     var rootMainPageProductCategories = Model.MainPageProductCategories.Where(r => r.ParentId == 0).ToList();
     var randomRootMainPageProductCategory = rootMainPageProductCategories.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
     var bannerLink = randomRootMainPageProductCategory == null ? "" : randomRootMainPageProductCategory.DetailPageUrl;
-    var mainPageStories = Model.StoryIndexViewModel == null ? new List<Story>() : Model.StoryIndexViewModel.Stories;
     var campaignProducts = Model.CampaignProducts;
     var latestProducts = Model.LatestProducts;
     var latestStories = Model.LatestStories;
@@ -22,7 +22,7 @@
 
     // Preload first hero image for LCP discovery
     var firstHero = mainPageImages != null && mainPageImages.Count > 0 ? mainPageImages[0] : null;
-    var firstHeroUrl = firstHero != null ? firstHero.GetCroppedImageUrl(firstHero.MainImageId, 459, 344) : null;
+    var firstHeroUrl = firstHero != null ? firstHero.GetCroppedImageUrl(459, 344) : null;
 }
 
 @section HeadExtra {
@@ -121,18 +121,18 @@
 }
 
 
-@helper  CreateMainPageImage(MainPageImage mainPageImage, bool isLcp)
+@helper  CreateMainPageImage(StorefrontBannerDto mainPageImage, bool isLcp)
 {
     var imageId = mainPageImage.MainImageId.HasValue ? mainPageImage.MainImageId.Value : 0;
-    var imgLink = mainPageImage.GetCroppedImageUrl(mainPageImage.MainImageId, 459, 344);
-    var imgSrcSet = mainPageImage.GetResponsiveImageSrcSet(imageId, 459, 344);
+    var imgLink = mainPageImage.GetCroppedImageUrl(459, 344);
+    var imgSrcSet = mainPageImage.GetResponsiveImageSrcSet(459, 344);
     var loadingAttr = isLcp ? "eager" : "lazy";
     var fetchPriorityAttr = isLcp ? "high" : "auto";
     <div class="row align-items-center py-5">
         <div class="col-md-5">
             <div class="pl-3 pr-3 pl-md-5 pr-md-0 pt-4 pt-lg-5 pb-5 text-center text-md-left">
                 <h2 class="h3 mb-1">@mainPageImage.Name</h2>
-                <a class="btn btn-primary" href="@mainPageImage.Link">
+                <a class="btn btn-primary" href="@mainPageImage.Url">
                     @mainPageImage.Name
                     <i class="ml-1" data-feather="arrow-right" aria-hidden="true"></i>
                 </a>
@@ -153,7 +153,7 @@
     </div>
 }
 
-@helper  CreateProductCategorySection(String title, List<ProductCategory> mainPageProductCategories)
+@helper  CreateProductCategorySection(String title, List<StorefrontCategoryDto> mainPageProductCategories)
 {if (mainPageProductCategories.IsNotEmpty())
     {
         var featuredItem = mainPageProductCategories.First();<!-- Featured products grid-->
@@ -169,7 +169,7 @@
 }
 
 
-@helper  CreateStoryWidget(String title, List<Story> latestStories)
+@helper  CreateStoryWidget(String title, List<StorefrontStoryCardDto> latestStories)
 {
         <div class="col-12 mb-2 py-3">
             <div class="widget widget-featured-entries home-stories-widget">
@@ -185,7 +185,7 @@
 }
 
 
-@helper  CreateProductWidget(String title, List<Product> products)
+@helper  CreateProductWidget(String title, List<StorefrontProductCardDto> products)
 {if (products.IsNotEmpty())
     {
         <div class="col-md-4 col-sm-6 mb-2 py-3">
@@ -200,16 +200,19 @@
         </div>}
 }
 
-@helper CreateMainPageCategory(ProductCategory productCategory, List<ProductCategory> productCategories, bool isLast)
+@helper CreateMainPageCategory(StorefrontCategoryDto productCategory, List<StorefrontCategoryDto> productCategories, bool isLast)
 {var children = productCategories.Where(r => r.ParentId == productCategory.Id).ToList();
-    var productImgLink = productCategory.MainImage.GetCroppedImageUrl(productCategory.MainImageId, 300, 0);
-    var productCategoryLink = productCategory.ProductCategoryLink;
+    var productImgLink = productCategory.GetCroppedImageUrl(null, 300, 0);
+    var productCategoryLink = productCategory.DetailPageUrl;
+    var popoverContent = productCategory.MainImageId.HasValue
+        ? HttpUtility.HtmlEncode(string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{1}</div>", productImgLink, productCategory.Name))
+        : "";
 
     <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
         <a class="d-flex align-items-center nav-link-inline pb-3 pt-3"
            href="@productCategoryLink"
            data-toggle="popover" data-placement="right" data-trigger="hover"
-           data-html="true" data-content="@Html.Raw(productCategory.CreateChildDataContent)">
+           data-html="true" data-content="@Html.Raw(popoverContent)">
             <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;" aria-hidden="true"></i>
             <span>
                 <b>@productCategory.Name</b>

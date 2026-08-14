@@ -1,11 +1,13 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +33,20 @@ namespace EImece.Domain.Services
         {
             MainPageImageRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<List<StorefrontBannerDto>> GetStorefrontMainPageBannersAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await MainPageImageRepository.GetStorefrontMainPageBannersAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontBannerDto> GetStorefrontMainPageBanners(int language)
+        {
+            return MainPageImageRepository.GetStorefrontMainPageBanners(language);
+        }
+
+        #endregion
 
         public void DeleteMainPageImage(int id)
         {
@@ -65,17 +81,16 @@ namespace EImece.Domain.Services
         public MainPageViewModel GetMainPageViewModel(int language)
         {
             var result = new MainPageViewModel();
+            int limit = AppConfig.HomePageMainProductCountLimit;
 
-            var activeProducts = ProductService.GetActiveProducts(language);
-            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0 && r.IsBuyableState).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0 && r.IsBuyableState).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0 && r.IsBuyableState).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.MainPageProducts = ProductService.GetStorefrontMainPageProducts(limit, language);
+            result.LatestProducts = ProductService.GetStorefrontLatestProducts(limit, language);
+            result.CampaignProducts = ProductService.GetStorefrontCampaignProducts(limit, language);
 
             result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, language).FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            // result.StoryIndexViewModel = StoryService.GetMainPageStories(1, language);
-            result.LatestStories = StoryService.GetFeaturedStories(10, language,0).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageFeatureStoryCountLimit).ToList();
-            result.MainPageImages = GetActiveBaseContentsFromCache(true, language);
-            result.MainPageProductCategories = ProductCategoryService.GetMainPageProductCategories(language);
+            result.LatestStories = StoryService.GetStorefrontFeaturedStories(AppConfig.HomePageFeatureStoryCountLimit, language, 0);
+            result.MainPageImages = GetStorefrontMainPageBanners(language);
+            result.MainPageProductCategories = ProductCategoryService.GetStorefrontMainPageCategories(language);
 
             return result;
         }
@@ -83,18 +98,18 @@ namespace EImece.Domain.Services
         public async Task<MainPageViewModel> GetMainPageViewModelAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new MainPageViewModel();
+            int limit = AppConfig.HomePageMainProductCountLimit;
 
-            var activeProducts = await ProductService.GetActiveProductsAsync(language, cancellationToken).ConfigureAwait(false);
-            result.MainPageProducts = activeProducts.Where(r => r.IsActive && r.MainPage && r.MainImageId > 0 && r.IsBuyableState).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.LatestProducts = activeProducts.Where(r => r.IsActive && r.MainImageId > 0 && r.IsBuyableState).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
-            result.CampaignProducts = activeProducts.Where(r => r.IsActive && r.IsCampaign && r.MainImageId > 0 && r.IsBuyableState).OrderByStorefrontDefault().Take(AppConfig.HomePageMainProductCountLimit).ToList();
+            result.MainPageProducts = await ProductService.GetStorefrontMainPageProductsAsync(limit, language, cancellationToken).ConfigureAwait(false);
+            result.LatestProducts = await ProductService.GetStorefrontLatestProductsAsync(limit, language, cancellationToken).ConfigureAwait(false);
+            result.CampaignProducts = await ProductService.GetStorefrontCampaignProductsAsync(limit, language, cancellationToken).ConfigureAwait(false);
 
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
             result.MainPageMenu = menus.FirstOrDefault(r => r.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            var featuredStories = await StoryService.GetFeaturedStoriesAsync(10, language, 0, cancellationToken).ConfigureAwait(false);
-            result.LatestStories = featuredStories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).Take(AppConfig.HomePageFeatureStoryCountLimit).ToList();
-            result.MainPageImages = await GetActiveBaseContentsFromCacheAsync(true, language).ConfigureAwait(false);
-            result.MainPageProductCategories = await ProductCategoryService.GetMainPageProductCategoriesAsync(language).ConfigureAwait(false);
+
+            result.LatestStories = await StoryService.GetStorefrontFeaturedStoriesAsync(AppConfig.HomePageFeatureStoryCountLimit, language, 0, cancellationToken).ConfigureAwait(false);
+            result.MainPageImages = await GetStorefrontMainPageBannersAsync(language, cancellationToken).ConfigureAwait(false);
+            result.MainPageProductCategories = await ProductCategoryService.GetStorefrontMainPageCategoriesAsync(language, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -103,7 +118,7 @@ namespace EImece.Domain.Services
         {
             var result = new FooterViewModel();
             result.Menus = MenuService.GetActiveBaseContentsFromCache(true, language).ToList();
-            result.ProductCategories = ProductCategoryService.GetMainPageProductCategories(language).ToList();
+            result.ProductCategories = ProductCategoryService.GetStorefrontMainPageCategories(language);
             result.FooterLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
             result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
             result.CompanyAddress = SettingService.GetSettingObjectByKey(Constants.CompanyAddress);

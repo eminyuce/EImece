@@ -102,18 +102,18 @@ namespace EImece.App_Start
                     Measure("FooterViewModel", () => mainPageImageService.GetFooterViewModel(language));
                     Measure("ProductCategories", () =>
                     {
-                        var activeCategories = productCategoryService.GetActiveBaseContentsFromCache(true, language);
+                        var activeCategories = productCategoryService.GetStorefrontMainPageCategories(language);
                         if (activeCategories.IsNotEmpty())
                         {
                             foreach (var c in activeCategories.Take(10))
                             {
-                                productCategoryService.GetProductCategoryViewModel(c.Id);
+                                productCategoryService.GetStorefrontCategoryById(c.Id);
                             }
                         }
                     });
                     Measure("Menus", () =>
                     {
-                        menuService.GetMenus();
+                        menuService.GetStorefrontActiveMenus(language);
                         menuService.BuildTree(true, language);
                     });
                     Measure("ProductCategoryTrees", () =>
@@ -123,21 +123,19 @@ namespace EImece.App_Start
                     });
                     Measure("MenuContents", () => menuService.GetActiveBaseContentsFromCache(true, language));
 
-                    List<Product> products = null;
-                    Measure("Products", () => products = productService.GetActiveBaseContentsFromCache(true, language));
-                    // Prime the hierarchical product:list:* MemoryCache keys used by the storefront
-                    // (GetActiveProducts / GetMainPageProducts) after Admin Refresh cleared them.
-                    Measure("ActiveProductsList", () => productService.GetActiveProducts(language));
+                    Measure("Products", () => productService.GetStorefrontMainPageProducts(20, language));
+                    Measure("ActiveProductsList", () => productService.GetStorefrontActiveProductsPaged(1, 20, language));
                     Measure("MainPageProducts", () => productService.GetMainPageProducts(1, language));
-                    Measure("MainPageProductCategories", () => productCategoryService.GetMainPageProductCategories(language));
+                    Measure("MainPageProductCategories", () => productCategoryService.GetStorefrontMainPageCategories(language));
                     Measure("MailTemplates", () => mailTemplateService.GetAllMailTemplatesWithCache());
                     Measure("ProductDetails", () =>
                     {
-                        if (products.IsNotEmpty())
+                        var cards = productService.GetStorefrontMainPageProducts(10, language);
+                        if (cards.IsNotEmpty())
                         {
-                            foreach (var p in products.Take(10))
+                            foreach (var p in cards)
                             {
-                                productService.GetProductDetailViewModelById(p.Id);
+                                productService.GetStorefrontProductDetail(p.Id);
                             }
                         }
                     });

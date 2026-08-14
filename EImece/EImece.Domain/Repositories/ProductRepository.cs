@@ -1,8 +1,9 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
@@ -495,6 +496,33 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
+        public List<Product> GetActiveProductsForRss(int language, int take)
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.Brand);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            return GetAllIncludingReadOnly(includeProperties.ToArray())
+                .Where(match)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<List<Product>> GetActiveProductsForRssAsync(int language, int take, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var includeProperties = GetIncludePropertyExpressionList();
+            includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.Brand);
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            return await GetAllIncludingReadOnly(includeProperties.ToArray())
+                .Where(match)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         public static ItemType ProductsItem
         {
             get
@@ -715,5 +743,732 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
             return result.Distinct().ToList();
         }
+
+        #region Storefront Read Implementations (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        private static Expression<Func<Product, StorefrontProductCardDto>> ProductCardProjection
+        {
+            get
+            {
+                return p => new StorefrontProductCardDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    NameShort = p.NameShort,
+                    NameLong = p.NameLong,
+                    ShortDescription = p.ShortDescription,
+                    Price = p.Price,
+                    Discount = p.Discount,
+                    ProductCode = p.ProductCode,
+                    Rating = p.Rating,
+                    SoldCount = 0,
+                    MainImageId = p.MainImageId,
+                    ProductCategoryId = p.ProductCategoryId,
+                    ProductCategoryName = p.ProductCategory != null ? p.ProductCategory.Name : string.Empty,
+                    BrandId = p.BrandId,
+                    BrandName = p.Brand != null ? p.Brand.Name : string.Empty,
+                    IsActive = p.IsActive,
+                    MainPage = p.MainPage,
+                    IsCampaign = p.IsCampaign,
+                    State = p.State,
+                    Lang = p.Lang,
+                    Position = p.Position,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate
+                };
+            }
+        }
+
+        public async Task<StorefrontProductCardDto> GetStorefrontProductCardByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.Id == id && p.IsActive)
+                .Select(ProductCardProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontProductCardDto GetStorefrontProductCardById(int id)
+        {
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.Id == id && p.IsActive)
+                .Select(ProductCardProjection)
+                .FirstOrDefault();
+        }
+
+        public async Task<StorefrontProductDetailDto> GetStorefrontProductDetailByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var dto = await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.Id == id && p.IsActive)
+                .Select(p => new StorefrontProductDetailDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    NameShort = p.NameShort,
+                    NameLong = p.NameLong,
+                    ShortDescription = p.ShortDescription,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Discount = p.Discount,
+                    ProductCode = p.ProductCode,
+                    Rating = p.Rating,
+                    SoldCount = 0,
+                    MainImageId = p.MainImageId,
+                    ProductCategoryId = p.ProductCategoryId,
+                    ProductCategoryName = p.ProductCategory != null ? p.ProductCategory.Name : string.Empty,
+                    ProductCategoryTemplateId = p.ProductCategory != null ? p.ProductCategory.TemplateId : null,
+                    BrandId = p.BrandId,
+                    BrandName = p.Brand != null ? p.Brand.Name : string.Empty,
+                    IsActive = p.IsActive,
+                    MainPage = p.MainPage,
+                    IsCampaign = p.IsCampaign,
+                    State = p.State,
+                    Lang = p.Lang,
+                    Position = p.Position,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate,
+                    VideoUrl = p.VideoUrl,
+                    ProductColorOptions = p.ProductColorOptions,
+                    ProductSizeOptions = p.ProductSizeOptions,
+                    MetaKeywords = p.MetaKeywords,
+                    ProductFiles = p.ProductFiles
+                        .Where(pf => pf.FileStorage != null && pf.FileStorage.IsActive)
+                        .OrderBy(pf => pf.Position)
+                        .Select(pf => new StorefrontProductFileDto
+                        {
+                            Id = pf.Id,
+                            ProductId = pf.ProductId,
+                            FileStorageId = pf.FileStorageId,
+                            FileName = pf.FileStorage.FileName,
+                            Title = pf.FileStorage.Name,
+                            Description = pf.FileStorage.FileName,
+                            Width = pf.FileStorage.Width,
+                            Height = pf.FileStorage.Height,
+                            Position = pf.Position,
+                            IsActive = pf.FileStorage.IsActive
+                        }).ToList(),
+                    ProductTags = p.ProductTags
+                        .Where(pt => pt.Tag != null && pt.Tag.IsActive)
+                        .OrderBy(pt => pt.Tag.Position)
+                        .Select(pt => new StorefrontTagDto
+                        {
+                            Id = pt.Tag.Id,
+                            Name = pt.Tag.Name,
+                            TagCategoryId = pt.Tag.TagCategoryId,
+                            TagCategoryName = pt.Tag.TagCategory != null ? pt.Tag.TagCategory.Name : string.Empty,
+                            Position = pt.Tag.Position,
+                            Lang = pt.Tag.Lang,
+                            IsActive = pt.Tag.IsActive
+                        }).ToList(),
+                    ProductSpecifications = p.ProductSpecifications
+                        .OrderBy(ps => ps.Position)
+                        .Select(ps => new StorefrontProductSpecificationDto
+                        {
+                            Id = ps.Id,
+                            ProductId = ps.ProductId,
+                            Name = ps.Name,
+                            Value = ps.Value,
+                            Order = ps.Position
+                        }).ToList(),
+                    ProductComments = p.ProductComments
+                        .Where(pc => pc.IsActive)
+                        .OrderByDescending(pc => pc.CreatedDate)
+                        .Select(pc => new StorefrontProductCommentDto
+                        {
+                            Id = pc.Id,
+                            ProductId = pc.ProductId,
+                            Name = pc.Name,
+                            Comment = pc.Review,
+                            Rating = pc.Rating,
+                            CreatedDate = pc.CreatedDate,
+                            IsActive = pc.IsActive
+                        }).ToList()
+                })
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return dto;
+        }
+
+        public StorefrontProductDetailDto GetStorefrontProductDetailById(int id)
+        {
+            var dto = EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.Id == id && p.IsActive)
+                .Select(p => new StorefrontProductDetailDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    NameShort = p.NameShort,
+                    NameLong = p.NameLong,
+                    ShortDescription = p.ShortDescription,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Discount = p.Discount,
+                    ProductCode = p.ProductCode,
+                    Rating = p.Rating,
+                    SoldCount = 0,
+                    MainImageId = p.MainImageId,
+                    ProductCategoryId = p.ProductCategoryId,
+                    ProductCategoryName = p.ProductCategory != null ? p.ProductCategory.Name : string.Empty,
+                    ProductCategoryTemplateId = p.ProductCategory != null ? p.ProductCategory.TemplateId : null,
+                    BrandId = p.BrandId,
+                    BrandName = p.Brand != null ? p.Brand.Name : string.Empty,
+                    IsActive = p.IsActive,
+                    MainPage = p.MainPage,
+                    IsCampaign = p.IsCampaign,
+                    State = p.State,
+                    Lang = p.Lang,
+                    Position = p.Position,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate,
+                    VideoUrl = p.VideoUrl,
+                    ProductColorOptions = p.ProductColorOptions,
+                    ProductSizeOptions = p.ProductSizeOptions,
+                    MetaKeywords = p.MetaKeywords,
+                    ProductFiles = p.ProductFiles
+                        .Where(pf => pf.FileStorage != null && pf.FileStorage.IsActive)
+                        .OrderBy(pf => pf.Position)
+                        .Select(pf => new StorefrontProductFileDto
+                        {
+                            Id = pf.Id,
+                            ProductId = pf.ProductId,
+                            FileStorageId = pf.FileStorageId,
+                            FileName = pf.FileStorage.FileName,
+                            Title = pf.FileStorage.Name,
+                            Description = pf.FileStorage.FileName,
+                            Width = pf.FileStorage.Width,
+                            Height = pf.FileStorage.Height,
+                            Position = pf.Position,
+                            IsActive = pf.FileStorage.IsActive
+                        }).ToList(),
+                    ProductTags = p.ProductTags
+                        .Where(pt => pt.Tag != null && pt.Tag.IsActive)
+                        .OrderBy(pt => pt.Tag.Position)
+                        .Select(pt => new StorefrontTagDto
+                        {
+                            Id = pt.Tag.Id,
+                            Name = pt.Tag.Name,
+                            TagCategoryId = pt.Tag.TagCategoryId,
+                            TagCategoryName = pt.Tag.TagCategory != null ? pt.Tag.TagCategory.Name : string.Empty,
+                            Position = pt.Tag.Position,
+                            Lang = pt.Tag.Lang,
+                            IsActive = pt.Tag.IsActive
+                        }).ToList(),
+                    ProductSpecifications = p.ProductSpecifications
+                        .OrderBy(ps => ps.Position)
+                        .Select(ps => new StorefrontProductSpecificationDto
+                        {
+                            Id = ps.Id,
+                            ProductId = ps.ProductId,
+                            Name = ps.Name,
+                            Value = ps.Value,
+                            Order = ps.Position
+                        }).ToList(),
+                    ProductComments = p.ProductComments
+                        .Where(pc => pc.IsActive)
+                        .OrderByDescending(pc => pc.CreatedDate)
+                        .Select(pc => new StorefrontProductCommentDto
+                        {
+                            Id = pc.Id,
+                            ProductId = pc.ProductId,
+                            Name = pc.Name,
+                            Comment = pc.Review,
+                            Rating = pc.Rating,
+                            CreatedDate = pc.CreatedDate,
+                            IsActive = pc.IsActive
+                        }).ToList()
+                })
+                .FirstOrDefault();
+
+            return dto;
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.MainPage && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontMainPageProducts(int take, int language)
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.MainPage && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontLatestProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontLatestProducts(int take, int language)
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontCampaignProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.IsCampaign && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontCampaignProducts(int take, int language)
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.IsCampaign && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && (!language.HasValue || p.Lang == language.Value) && (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
+        {
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && (!language.HasValue || p.Lang == language.Value) && (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .ToList();
+        }
+
+        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontActiveProductsPagedAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            var query = EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault();
+
+            var totalCount = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, totalCount);
+        }
+
+        public PaginatedList<StorefrontProductCardDto> GetStorefrontActiveProductsPaged(int pageIndex, int pageSize, int language)
+        {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
+            var query = EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault();
+
+            var totalCount = query.Count();
+            var items = query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, totalCount);
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language)
+        {
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .ToList();
+        }
+
+        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByCategoryIdAsync(
+            int categoryId,
+            List<int> childCategoryIds,
+            int language,
+            int pageIndex,
+            int pageSize,
+            SortingType sorting,
+            decimal? minPrice,
+            decimal? maxPrice,
+            List<int> brandIds,
+            List<int> ratings,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var categoryIds = new List<int> { categoryId };
+            if (childCategoryIds != null && childCategoryIds.Count > 0)
+            {
+                categoryIds.AddRange(childCategoryIds);
+            }
+
+            var query = EImeceDbContext.Products.AsNoTracking()
+                .Where(p => categoryIds.Contains(p.ProductCategoryId) && p.IsActive && p.Lang == language);
+
+            // SQL Price filtering on computed discount price (Price - Discount or Price)
+            if (minPrice.HasValue && minPrice.Value > 0)
+            {
+                var min = minPrice.Value;
+                query = query.Where(p => (p.Discount.HasValue && p.Discount.Value > 0 ? (p.Price - p.Discount.Value) : p.Price) >= min);
+            }
+            if (maxPrice.HasValue && maxPrice.Value > 0)
+            {
+                var max = maxPrice.Value;
+                query = query.Where(p => (p.Discount.HasValue && p.Discount.Value > 0 ? (p.Price - p.Discount.Value) : p.Price) <= max);
+            }
+
+            // SQL Brand filtering
+            if (brandIds != null && brandIds.Count > 0)
+            {
+                query = query.Where(p => p.BrandId.HasValue && brandIds.Contains(p.BrandId.Value));
+            }
+
+            // SQL Rating filtering
+            if (ratings != null && ratings.Count > 0)
+            {
+                query = query.Where(p => ratings.Contains((int)Math.Floor(p.Rating)));
+            }
+
+            var projected = query.Select(ProductCardProjection);
+
+            // SQL Sorting
+            IOrderedQueryable<StorefrontProductCardDto> ordered;
+            switch (sorting)
+            {
+                case SortingType.LowHighPrice:
+                    ordered = projected.OrderBy(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                        .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+                    break;
+                case SortingType.HighLowPrice:
+                    ordered = projected.OrderByDescending(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                        .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+                    break;
+                case SortingType.Newest:
+                    ordered = projected.OrderByDescending(t => t.UpdatedDate)
+                        .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign);
+                    break;
+                case SortingType.Popularity:
+                    ordered = projected.OrderByDescending(t => t.SoldCount)
+                        .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+                    break;
+                case SortingType.AverageRating:
+                    ordered = projected.OrderByDescending(t => t.Rating)
+                        .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+                    break;
+                default:
+                    ordered = projected.OrderByStorefrontDefault();
+                    break;
+            }
+
+            var total = await ordered.CountAsync(cancellationToken).ConfigureAwait(false);
+            var items = await ordered.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIdList, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (tagIdList == null || tagIdList.Length == 0)
+            {
+                return new List<StorefrontProductCardDto>();
+            }
+
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.Id != excludedProductId &&
+                            p.ProductTags.Any(pt => pt.Tag != null && pt.Tag.IsActive && tagIdList.Contains(pt.TagId)))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIdList, int take, int language, int excludedProductId)
+        {
+            if (tagIdList == null || tagIdList.Length == 0)
+            {
+                return new List<StorefrontProductCardDto>();
+            }
+
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.Id != excludedProductId &&
+                            p.ProductTags.Any(pt => pt.Tag != null && pt.Tag.IsActive && tagIdList.Contains(pt.TagId)))
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontProductCardDto>> GetStorefrontRandomProductsByCategoryIdAsync(int productCategoryId, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.ProductCategoryId == productCategoryId && p.Id != excludedProductId)
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontProductCardDto> GetStorefrontRandomProductsByCategoryId(int productCategoryId, int take, int language, int excludedProductId)
+        {
+            return EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language && p.ProductCategoryId == productCategoryId && p.Id != excludedProductId)
+                .Select(ProductCardProjection)
+                .OrderByStorefrontDefault()
+                .Take(take)
+                .ToList();
+        }
+
+        public async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var term = (search ?? string.Empty).Trim();
+            var query = EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive) &&
+                            (p.Name.Contains(term) || p.NameLong.Contains(term) || p.NameShort.Contains(term) || p.ProductCode.Contains(term)))
+                .Select(ProductCardProjection);
+
+            IOrderedQueryable<StorefrontProductCardDto> ordered;
+            if (sorting == SortingType.LowHighPrice)
+            {
+                ordered = query.OrderBy(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.HighLowPrice)
+            {
+                ordered = query.OrderByDescending(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.Newest)
+            {
+                ordered = query.OrderByDescending(t => t.UpdatedDate).ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign);
+            }
+            else
+            {
+                ordered = query.OrderByStorefrontDefault();
+            }
+
+            var total = await ordered.CountAsync(cancellationToken).ConfigureAwait(false);
+            var items = await ordered.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int language, SortingType sorting)
+        {
+            var term = (search ?? string.Empty).Trim();
+            var query = EImeceDbContext.Products.AsNoTracking()
+                .Where(p => p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive) &&
+                            (p.Name.Contains(term) || p.NameLong.Contains(term) || p.NameShort.Contains(term) || p.ProductCode.Contains(term)))
+                .Select(ProductCardProjection);
+
+            IOrderedQueryable<StorefrontProductCardDto> ordered;
+            if (sorting == SortingType.LowHighPrice)
+            {
+                ordered = query.OrderBy(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.HighLowPrice)
+            {
+                ordered = query.OrderByDescending(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.Newest)
+            {
+                ordered = query.OrderByDescending(t => t.UpdatedDate).ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign);
+            }
+            else
+            {
+                ordered = query.OrderByStorefrontDefault();
+            }
+
+            var total = ordered.Count();
+            var items = ordered.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // Main Entity Activation: Product.IsActive, Tag.IsActive and ProductCategory.IsActive
+            var query = EImeceDbContext.ProductTags.AsNoTracking()
+                .Where(pt => pt.TagId == tagId && pt.Tag.IsActive && pt.Tag.Lang == language && pt.Product != null && pt.Product.IsActive &&
+                            (pt.Product.ProductCategory == null || pt.Product.ProductCategory.IsActive))
+                .Select(pt => new StorefrontProductCardDto
+                {
+                    Id = pt.Product.Id,
+                    Name = pt.Product.Name,
+                    NameShort = pt.Product.NameShort,
+                    NameLong = pt.Product.NameLong,
+                    ShortDescription = pt.Product.ShortDescription,
+                    Price = pt.Product.Price,
+                    Discount = pt.Product.Discount,
+                    ProductCode = pt.Product.ProductCode,
+                    Rating = pt.Product.Rating,
+                    SoldCount = 0,
+                    MainImageId = pt.Product.MainImageId,
+                    ProductCategoryId = pt.Product.ProductCategoryId,
+                    ProductCategoryName = pt.Product.ProductCategory != null ? pt.Product.ProductCategory.Name : string.Empty,
+                    BrandId = pt.Product.BrandId,
+                    BrandName = pt.Product.Brand != null ? pt.Product.Brand.Name : string.Empty,
+                    IsActive = pt.Product.IsActive,
+                    MainPage = pt.Product.MainPage,
+                    IsCampaign = pt.Product.IsCampaign,
+                    State = pt.Product.State,
+                    Lang = pt.Product.Lang,
+                    Position = pt.Product.Position,
+                    CreatedDate = pt.Product.CreatedDate,
+                    UpdatedDate = pt.Product.UpdatedDate
+                });
+
+            IOrderedQueryable<StorefrontProductCardDto> ordered;
+            if (sorting == SortingType.LowHighPrice)
+            {
+                ordered = query.OrderBy(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.HighLowPrice)
+            {
+                ordered = query.OrderByDescending(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.Newest)
+            {
+                ordered = query.OrderByDescending(t => t.UpdatedDate).ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign);
+            }
+            else
+            {
+                ordered = query.OrderByStorefrontDefault();
+            }
+
+            var total = await ordered.CountAsync(cancellationToken).ConfigureAwait(false);
+            var items = await ordered.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int language, SortingType sorting)
+        {
+            var query = EImeceDbContext.ProductTags.AsNoTracking()
+                .Where(pt => pt.TagId == tagId && pt.Tag.IsActive && pt.Tag.Lang == language && pt.Product != null && pt.Product.IsActive &&
+                            (pt.Product.ProductCategory == null || pt.Product.ProductCategory.IsActive))
+                .Select(pt => new StorefrontProductCardDto
+                {
+                    Id = pt.Product.Id,
+                    Name = pt.Product.Name,
+                    NameShort = pt.Product.NameShort,
+                    NameLong = pt.Product.NameLong,
+                    ShortDescription = pt.Product.ShortDescription,
+                    Price = pt.Product.Price,
+                    Discount = pt.Product.Discount,
+                    ProductCode = pt.Product.ProductCode,
+                    Rating = pt.Product.Rating,
+                    SoldCount = 0,
+                    MainImageId = pt.Product.MainImageId,
+                    ProductCategoryId = pt.Product.ProductCategoryId,
+                    ProductCategoryName = pt.Product.ProductCategory != null ? pt.Product.ProductCategory.Name : string.Empty,
+                    BrandId = pt.Product.BrandId,
+                    BrandName = pt.Product.Brand != null ? pt.Product.Brand.Name : string.Empty,
+                    IsActive = pt.Product.IsActive,
+                    MainPage = pt.Product.MainPage,
+                    IsCampaign = pt.Product.IsCampaign,
+                    State = pt.Product.State,
+                    Lang = pt.Product.Lang,
+                    Position = pt.Product.Position,
+                    CreatedDate = pt.Product.CreatedDate,
+                    UpdatedDate = pt.Product.UpdatedDate
+                });
+
+            IOrderedQueryable<StorefrontProductCardDto> ordered;
+            if (sorting == SortingType.LowHighPrice)
+            {
+                ordered = query.OrderBy(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.HighLowPrice)
+            {
+                ordered = query.OrderByDescending(t => t.Discount.HasValue && t.Discount.Value > 0 ? (t.Price - t.Discount.Value) : t.Price)
+                    .ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign).ThenByDescending(t => t.UpdatedDate);
+            }
+            else if (sorting == SortingType.Newest)
+            {
+                ordered = query.OrderByDescending(t => t.UpdatedDate).ThenBy(t => t.Position).ThenByDescending(t => t.MainPage).ThenByDescending(t => t.IsCampaign);
+            }
+            else
+            {
+                ordered = query.OrderByStorefrontDefault();
+            }
+
+            var total = ordered.Count();
+            var items = ordered.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        #endregion
     }
 }

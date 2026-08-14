@@ -128,7 +128,16 @@ namespace EImece.Controllers
                 var categoryId = id.GetId();
                 Logger.Info($"Parsed category ID: {categoryId}");
 
-                var productCategory = await ProductCategoryService.GetProductCategoryViewModelAsync(categoryId);
+                var productCategory = await ProductCategoryService.GetStorefrontCategoryPageViewModelAsync(
+                    categoryId,
+                    page > 0 ? page : 1,
+                    (SortingType)sorting,
+                    filtreler,
+                    minPrice > 0 ? (int?)minPrice : null,
+                    maxPrice > 0 ? (int?)maxPrice : null,
+                    AppConfig.ProductDefaultRecordPerPage,
+                    CurrentLanguage);
+
                 Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.ProductCategory?.Name}");
 
                 if (productCategory == null || productCategory.ProductCategory == null || !productCategory.ProductCategory.IsActive)
@@ -138,45 +147,7 @@ namespace EImece.Controllers
                 }
 
                 productCategory.SeoId = id;
-                productCategory.Page = page;
-                productCategory.Filter = filtreler;
-                productCategory.Sorting = (SortingType)sorting;
-                Logger.Info($"Set initial properties: SeoId={id}, Page={page}, Filter='{filtreler}', Sorting={(SortingType)sorting}");
-
-                if (minPrice > 0)
-                {
-                    productCategory.MinPrice = minPrice;
-                    Logger.Info($"Set MinPrice: {minPrice}");
-                }
-                else
-                {
-                    productCategory.MinPrice = null;
-                    Logger.Info("MinPrice set to null (minPrice <= 0).");
-                }
-                if (maxPrice > 0)
-                {
-                    productCategory.MaxPrice = maxPrice;
-                    Logger.Info($"Set MaxPrice: {maxPrice}");
-                }
-                else
-                {
-                    productCategory.MaxPrice = null;
-                    Logger.Info("MaxPrice set to null (maxPrice <= 0).");
-                }
-                productCategory.RecordPerPage = AppConfig.ProductDefaultRecordPerPage;
-                Logger.Info($"Set RecordPerPage: {AppConfig.ProductDefaultRecordPerPage}");
-
                 ViewBag.SeoId = productCategory.ProductCategory.GetSeoUrl();
-                Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");
-
-                List<Product> productsList = productCategory.ProductCategory.Products.ToList();
-                Logger.Info($"Retrieved {productsList.Count} products directly in category ID: {categoryId}");
-                productsList.AddRange(productCategory.CategoryChildrenProducts);
-                Logger.Info($"Added {productCategory.CategoryChildrenProducts.Count()} child category products. Total products: {productsList.Count}");
-                // Always load sold counts so we can hide "En Çok Satan" when nothing sold,
-                // and so popularity sorting works when that option is selected.
-                ProductService.ApplySoldCounts(productsList);
-                productCategory.AllProducts = productsList;
 
                 SetCurrentCulture(productCategory.ProductCategory);
                 Logger.Info("Set current culture based on product category.");

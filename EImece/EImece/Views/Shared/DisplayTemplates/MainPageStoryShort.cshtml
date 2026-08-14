@@ -1,4 +1,4 @@
-@model EImece.Domain.Entities.Story
+@model EImece.Domain.Models.DTOs.Storefront.StorefrontStoryCardDto
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Helpers
 @using Resources
@@ -6,9 +6,7 @@
     var story = Model;
     int Width = ViewData["Width"].ToInt(220);
     int Height = ViewData["Height"].ToInt(150);
-    var imageId = story.MainImageId.HasValue ? story.MainImageId.Value : 0;
-    var imageTag = story.GetCroppedImageTag(imageId, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 575px) 100vw, 220px");
-    var category = story.StoryCategory;
+    var imageTag = story.GetCroppedImageTag(0, Width, Height, lazy: true, fetchPriority: null, sizes: "(max-width: 575px) 100vw, 220px");
     var excerpt = !string.IsNullOrWhiteSpace(story.ShortDescription)
         ? story.ShortDescription
         : story.GetSeoDescription(160);
@@ -23,9 +21,9 @@
             <a href="@story.DetailPageUrl" class="text-dark">@story.Name</a>
         </h3>
         <p class="home-story-meta text-muted small mb-2">
-            @if (category != null)
+            @if (!string.IsNullOrEmpty(story.StoryCategoryName))
             {
-                <a href="@category.DetailPageRelativeUrl" class="text-muted">@category.Name</a>
+                <a href="@story.StoryCategoryDetailPageUrl" class="text-muted">@story.StoryCategoryName</a>
                 <span> · </span>
             }
             <time datetime="@story.UpdatedDate.ToString("yyyy-MM-dd")">@story.UpdatedDate.ToShortDateString()</time>

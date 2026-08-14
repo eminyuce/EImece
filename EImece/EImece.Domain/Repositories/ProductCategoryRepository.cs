@@ -1,7 +1,9 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
@@ -167,14 +169,10 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.Products);
-            includeProperties.Add(r => r.Products.Select(t => t.MainImage));
-            includeProperties.Add(r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage)));
-            includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));
             if (isOnlyActive)
             {
                 var result = GetSingleIncluding(categoryId, includeProperties.ToArray());
-                if (result.IsActive)
+                if (result != null && result.IsActive)
                 {
                     return result;
                 }
@@ -193,10 +191,6 @@ namespace EImece.Domain.Repositories
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
-            includeProperties.Add(r => r.Products);
-            includeProperties.Add(r => r.Products.Select(t => t.MainImage));
-            includeProperties.Add(r => r.Products.Select(t => t.ProductFiles.Select(q => q.FileStorage)));
-            includeProperties.Add(r => r.Products.Select(t => t.ProductTags.Select(q => q.Tag)));
             if (isOnlyActive)
             {
                 var result = await GetSingleIncludingAsync(categoryId, CancellationToken.None, includeProperties.ToArray()).ConfigureAwait(false);
@@ -313,5 +307,206 @@ namespace EImece.Domain.Repositories
                 includeProperties.ToArray());
             return await items.ToListAsync(CancellationToken.None).ConfigureAwait(false);
         }
+
+        #region Storefront Read Implementations (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        private static Expression<Func<ProductCategory, StorefrontCategoryDto>> CategoryProjection
+        {
+            get
+            {
+                return c => new StorefrontCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.ParentId,
+                    ShortDescription = c.ShortDescription,
+                    Description = c.Description,
+                    MainImageId = c.MainImageId,
+                    DiscountPercentage = c.DiscountPercantage.HasValue ? (int?)c.DiscountPercantage.Value : null,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    MainPage = c.MainPage,
+                    TemplateId = c.TemplateId,
+                    MetaKeywords = c.MetaKeywords,
+                    ProductCount = c.Products.Count(p => p.IsActive)
+                };
+            }
+        }
+
+        private static Expression<Func<ProductCategory, StorefrontCategoryDto>> CategoryCardProjection
+        {
+            get
+            {
+                return c => new StorefrontCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.ParentId,
+                    ShortDescription = c.ShortDescription,
+                    MainImageId = c.MainImageId,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    MainPage = c.MainPage,
+                    ProductCount = c.Products.Count(p => p.IsActive)
+                };
+            }
+        }
+
+        public async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(CategoryProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(CategoryProjection)
+                .FirstOrDefault();
+        }
+
+        public ProductCategoryDto GetProductCategoryDto(int categoryId)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(c => new ProductCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ShortDescription = c.ShortDescription,
+                    ParentId = c.ParentId,
+                    MainPage = c.MainPage,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    CreatedDate = c.CreatedDate,
+                    UpdatedDate = c.UpdatedDate,
+                    MetaKeywords = c.MetaKeywords,
+                    MainImageId = c.MainImageId,
+                    TemplateId = c.TemplateId,
+                    DiscountPercentage = c.DiscountPercantage
+                })
+                .FirstOrDefault();
+        }
+
+        public async Task<ProductCategoryDto> GetProductCategoryDtoAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.Id == categoryId && c.IsActive)
+                .Select(c => new ProductCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ShortDescription = c.ShortDescription,
+                    ParentId = c.ParentId,
+                    MainPage = c.MainPage,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    CreatedDate = c.CreatedDate,
+                    UpdatedDate = c.UpdatedDate,
+                    MetaKeywords = c.MetaKeywords,
+                    MainImageId = c.MainImageId,
+                    TemplateId = c.TemplateId,
+                    DiscountPercentage = c.DiscountPercantage
+                })
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
+                .OrderBy(c => c.Position)
+                .Select(CategoryCardProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
+                .OrderBy(c => c.Position)
+                .Select(CategoryCardProjection)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.ParentId == parentId && c.IsActive)
+                .OrderBy(c => c.Position)
+                .Select(CategoryCardProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentId)
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.ParentId == parentId && c.IsActive)
+                .OrderBy(c => c.Position)
+                .Select(CategoryCardProjection)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var allCategories = await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.IsActive && c.Lang == language)
+                .OrderBy(c => c.Position)
+                .Select(CategoryCardProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return AssembleCategoryTree(allCategories);
+        }
+
+        public List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
+        {
+            var allCategories = EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.IsActive && c.Lang == language)
+                .OrderBy(c => c.Position)
+                .Select(CategoryCardProjection)
+                .ToList();
+
+            return AssembleCategoryTree(allCategories);
+        }
+
+        private static List<StorefrontCategoryDto> AssembleCategoryTree(List<StorefrontCategoryDto> allCategories)
+        {
+            var lookup = allCategories.ToLookup(c => c.ParentId);
+            var roots = lookup[0].OrderBy(c => c.Position).ToList();
+
+            void AttachChildren(StorefrontCategoryDto parent, int level)
+            {
+                parent.TreeLevel = level;
+                parent.Children = lookup[parent.Id].OrderBy(c => c.Position).ToList();
+                foreach (var child in parent.Children)
+                {
+                    AttachChildren(child, level + 1);
+                    parent.ProductCount += child.ProductCount;
+                }
+            }
+
+            foreach (var root in roots)
+            {
+                AttachChildren(root, 1);
+            }
+
+            return roots;
+        }
+
+        #endregion
     }
 }

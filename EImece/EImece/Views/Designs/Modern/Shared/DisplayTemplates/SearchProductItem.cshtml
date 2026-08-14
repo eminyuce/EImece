@@ -1,30 +1,38 @@
-﻿@model EImece.Domain.Entities.Product
+@model object
+@using EImece.Domain.Models.DTOs.Storefront;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
 @{
-    var productFiles = Model.ProductFiles;
-    var product = Model;
-    var categoryName = product.ProductCategory.Name;
-    var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
+    var dto = Model as StorefrontProductCardDto;
+    var product = Model as Product;
+    var name = dto != null ? dto.Name : (product != null ? product.Name : string.Empty);
+    var categoryName = dto != null ? dto.ProductCategoryName : (product != null && product.ProductCategory != null ? product.ProductCategory.Name : string.Empty);
+    var categoryUrl = dto != null ? dto.ProductCategoryDetailPageUrl : (product != null && product.ProductCategory != null ? product.ProductCategory.DetailPageUrl : string.Empty);
+    var mainImageId = dto != null ? dto.MainImageId : (product != null ? product.MainImageId : null);
+    var detailUrl = dto != null ? dto.DetailPageAbsoluteUrl : (product != null ? product.DetailPageAbsoluteUrl : string.Empty);
+    var rating = dto != null ? dto.Rating : (product != null ? product.Rating : 0);
+    var priceWithDiscount = dto != null ? dto.PriceWithDiscount : (product != null ? product.PriceWithDiscount : 0);
+    var isBuyable = dto != null ? dto.IsBuyableState : (product != null ? product.IsBuyableState : false);
+    var modifiedId = dto != null ? dto.ModifiedId : (product != null ? product.ModifiedId : string.Empty);
+
     int Width = ViewData["Width"].ToInt(0);
     int Height = ViewData["Height"].ToInt(0);
-    var mainImageThbImgSrc = product.GetCroppedImageUrl(product.MainImageId, Width, Height);
-    var srcset = product.MainImageId.HasValue
-        ? product.GetResponsiveImageSrcSet(product.MainImageId.Value, Width, Height)
+    var mainImageThbImgSrc = dto != null ? dto.GetCroppedImageUrl(mainImageId, Width, Height) : (product != null ? product.GetCroppedImageUrl(mainImageId, Width, Height) : string.Empty);
+    var srcset = mainImageId.HasValue
+        ? (dto != null ? dto.GetResponsiveImageSrcSet(mainImageId.Value, Width, Height) : (product != null ? product.GetResponsiveImageSrcSet(mainImageId.Value, Width, Height) : string.Empty))
         : string.Empty;
-    var productLink = product.DetailPageAbsoluteUrl;
-    var shortDesc = GeneralHelper.GetDescriptionWithBody(product.ShortDescription,100);
+    var productLink = detailUrl;
     var productPriceEnabled = ViewBag.IsProductPriceEnable == null || (bool)ViewBag.IsProductPriceEnable;
 }
 
-<!-- Product-->
 <div class="col-lg-3 col-sm-4 col-6 border border-collapse">
     <div class="product-card">
         <div class="product-thumb">
-            <a class="product-thumb-link" href="@productLink" aria-label="@product.Name">
-                <img alt="@product.Name"
+            <a class="product-thumb-link" href="@productLink" aria-label="@name">
+                <img alt="@name"
                      src="@mainImageThbImgSrc"
                      srcset="@srcset"
                      sizes="(max-width: 575px) 45vw, (max-width: 991px) 33vw, 278px"
@@ -36,33 +44,33 @@
         </div>
         <div class="product-card-body">
             <div class="d-flex flex-wrap justify-content-between pb-1">
-                <a class="product-meta" href="@product.ProductCategory.DetailPageUrl">@product.ProductCategory.Name</a>
-                @if (product.Rating > 0)
+                <a class="product-meta" href="@categoryUrl">@categoryName</a>
+                @if (rating > 0)
                 {
-                <div class="star-rating" aria-label="@product.Rating stars">
-                    @for (int i = 0; i < product.Rating; i++)
+                    <div class="star-rating" aria-label="@rating stars">
+                        @for (int i = 0; i < rating; i++)
                         {
-                    <i class="sr-star active" data-feather="star" aria-hidden="true"></i>
+                            <i class="sr-star active" data-feather="star" aria-hidden="true"></i>
                         }
-                </div>
+                    </div>
                 }
             </div>
-            <h3 class="product-card-title"><a href="@productLink">@product.Name</a></h3>
+            <h3 class="product-card-title"><a href="@productLink">@name</a></h3>
             @if (productPriceEnabled)
             {
-                <span class="text-primary">@product.PriceWithDiscount.CurrencySign()</span>
+                <span class="text-primary">@priceWithDiscount.CurrencySign()</span>
             }
         </div>
         <div class="product-card-body body-hidden pt-2">
-            @if (productPriceEnabled && product.IsBuyableState)
+            @if (productPriceEnabled && isBuyable)
             {
-                <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@Model.ModifiedId" type="button"
+                <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@modifiedId" type="button"
                         data-toggle="toast" data-target="#cart-toast">
                     @Resource.AddToCart
                 </button>
             }
             <ul class="font-size-sm opacity-80 pl-4 pt-2 mb-2">
-                <li>@product.ProductCategory.Name</li>
+                <li>@categoryName</li>
             </ul>
         </div>
     </div>

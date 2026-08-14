@@ -1,5 +1,6 @@
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -21,6 +22,50 @@ namespace EImece.Domain.Services
         {
             TagRepository = repository;
         }
+
+        #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
+
+        public async Task<List<StorefrontTagDto>> GetStorefrontProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await TagRepository.GetStorefrontProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontTagDto> GetStorefrontProductTags(int language)
+        {
+            return TagRepository.GetStorefrontProductTags(language);
+        }
+
+        public async Task<List<StorefrontTagDto>> GetStorefrontTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await TagRepository.GetStorefrontTagsWithStoryCountsAsync(language, minStoryCount, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontTagDto> GetStorefrontTagsWithStoryCounts(int language, int minStoryCount = 1)
+        {
+            return TagRepository.GetStorefrontTagsWithStoryCounts(language, minStoryCount);
+        }
+
+        public async Task<List<StorefrontTagDto>> GetStorefrontTagsWithEntityCountsAsync(int language, int minEntityCount = 1, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await TagRepository.GetStorefrontTagsWithEntityCountsAsync(language, minEntityCount, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<StorefrontTagDto> GetStorefrontTagsWithEntityCounts(int language, int minEntityCount = 1)
+        {
+            return TagRepository.GetStorefrontTagsWithEntityCounts(language, minEntityCount);
+        }
+
+        public async Task<StorefrontTagDto> GetStorefrontTagByIdAsync(int tagId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await TagRepository.GetStorefrontTagByIdAsync(tagId, cancellationToken).ConfigureAwait(false);
+        }
+
+        public StorefrontTagDto GetStorefrontTagById(int tagId)
+        {
+            return TagRepository.GetStorefrontTagById(tagId);
+        }
+
+        #endregion
 
         public List<Tag> GetAdminPageList(String search, int language)
         {

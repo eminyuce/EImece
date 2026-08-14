@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
@@ -20,16 +20,12 @@ namespace EImece.Domain.Repositories
 
         public Customer GetUserId(string userId)
         {
-            var item = FindBy(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-
-            return item;
+            return EImeceDbContext.Customers.AsNoTracking().FirstOrDefault(r => r.UserId == userId);
         }
 
         public async Task<Customer> GetUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var item = await FindBy(r => r.UserId.Equals(userId, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-
-            return item;
+            return await EImeceDbContext.Customers.AsNoTracking().FirstOrDefaultAsync(r => r.UserId == userId, cancellationToken).ConfigureAwait(false);
         }
     }
 }

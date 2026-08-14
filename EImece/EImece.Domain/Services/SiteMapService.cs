@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers.SiteMap;
@@ -155,19 +155,14 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var products = await ProductService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
+                var products = await ProductService.GetStorefrontActiveProductsAsync(language, cancellationToken).ConfigureAwait(false);
                 cancellationToken.ThrowIfCancellationRequested();
                 foreach (var product in products)
                 {
-                    var productCategory = productCategories.FirstOrDefault(r => r.Id == product.ProductCategoryId);
-                    if (productCategory == null || !productCategory.IsActive)
-                    {
-                        continue;
-                    }
-                    string productCategoryName = productCategory.Name;
-
+                    string productCategoryName = !string.IsNullOrEmpty(product.ProductCategoryName) ? product.ProductCategoryName : "no_category";
                     DateTime? lastModified = product.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
+                    var dummy = new Product { Id = product.Id, Name = product.Name, NameLong = product.NameLong };
+                    SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,
@@ -244,8 +239,37 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var tags = TagService.GetProductTags(language);
-                AddTagSitemapItems(sitemapItems, tags);
+                var productTags = TagService.GetProductTags(language);
+                if (productTags != null)
+                {
+                    foreach (var item in productTags)
+                    {
+                        DateTime? lastModified = item.UpdatedDate;
+                        SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
+                          AppConfig.HttpProtocol),
+                                lastModified,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
+
+                var storyTags = TagService.GetStorefrontTagsWithStoryCounts(language, 1);
+                if (storyTags != null)
+                {
+                    foreach (var item in storyTags)
+                    {
+                        var dummy = new Tag { Id = item.Id, Name = item.Name };
+                        SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl("Tag", Constants.StoriesAction, null,
+                          AppConfig.HttpProtocol),
+                                null,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -257,8 +281,37 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var tags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
-                AddTagSitemapItems(sitemapItems, tags);
+                var productTags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
+                if (productTags != null)
+                {
+                    foreach (var item in productTags)
+                    {
+                        DateTime? lastModified = item.UpdatedDate;
+                        SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
+                          AppConfig.HttpProtocol),
+                                lastModified,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
+
+                var storyTags = await TagService.GetStorefrontTagsWithStoryCountsAsync(language, 1, cancellationToken).ConfigureAwait(false);
+                if (storyTags != null)
+                {
+                    foreach (var item in storyTags)
+                    {
+                        var dummy = new Tag { Id = item.Id, Name = item.Name };
+                        SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl("Tag", Constants.StoriesAction, null,
+                          AppConfig.HttpProtocol),
+                                null,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -348,18 +401,13 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var products = ProductService.GetActiveBaseEntitiesFromCache(true, language);
+                var products = ProductService.GetStorefrontActiveProducts(language);
                 foreach (var product in products)
                 {
-                    var productCategory = productCategories.FirstOrDefault(r => r.Id == product.ProductCategoryId);
-                    if (productCategory == null || !productCategory.IsActive)
-                    {
-                        continue;
-                    }
-                    string productCategoryName = productCategory.Name;
-
+                    string productCategoryName = !string.IsNullOrEmpty(product.ProductCategoryName) ? product.ProductCategoryName : "no_category";
                     DateTime? lastModified = product.UpdatedDate;
-                    SitemapItem sm = new SitemapItem(product.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
+                    var dummy = new Product { Id = product.Id, Name = product.Name, NameLong = product.NameLong };
+                    SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl(Constants.DetailAction, "Products", productCategoryName,
                              AppConfig.HttpProtocol),
                                    lastModified,
                                    SitemapChangeFrequency.Daily,

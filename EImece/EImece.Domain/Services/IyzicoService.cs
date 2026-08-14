@@ -275,12 +275,12 @@ namespace EImece.Domain.Services
             List<BasketItem> basketItems = new List<BasketItem>();
             decimal totalPrice = 0;
 
-            var item = buyNowModel.ProductDetailViewModel.Product;
+            var item = buyNowModel.ProductDetailViewModel.ProductDto;
             BasketItem firstBasketItem = new BasketItem
             {
                 Id = item.ProductCode,
                 Name = item.NameLong,
-                Category1 = item.ProductCategory.Name,
+                Category1 = item.ProductCategoryName,
                 Category2 = AppConfig.ShoppingCartItemCategory2,
                 ItemType = BasketItemType.PHYSICAL.ToString(),
                 Price = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".")
