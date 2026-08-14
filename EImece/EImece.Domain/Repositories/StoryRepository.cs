@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
@@ -450,7 +450,8 @@ namespace EImece.Domain.Repositories
         public async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId)
+                .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderBy(s => s.Position)
                 .ThenByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection)
@@ -462,7 +463,8 @@ namespace EImece.Domain.Repositories
         public List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
         {
             return EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId)
+                .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderBy(s => s.Position)
                 .ThenByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection)
@@ -473,7 +475,8 @@ namespace EImece.Domain.Repositories
         public async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.MainPage && s.Lang == language)
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection)
                 .Take(take)
@@ -484,7 +487,8 @@ namespace EImece.Domain.Repositories
         public List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
         {
             return EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.MainPage && s.Lang == language)
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection)
                 .Take(take)
@@ -494,7 +498,8 @@ namespace EImece.Domain.Repositories
         public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.MainPage && s.Lang == language)
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderBy(s => s.Position)
                 .ThenByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection);
@@ -507,7 +512,8 @@ namespace EImece.Domain.Repositories
         public PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.MainPage && s.Lang == language)
+                .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderBy(s => s.Position)
                 .ThenByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection);
@@ -520,7 +526,8 @@ namespace EImece.Domain.Repositories
         public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int language, int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.MainPage && s.Lang == language)
+                .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderBy(s => s.Position)
                 .ThenByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection);
@@ -533,7 +540,8 @@ namespace EImece.Domain.Repositories
         public PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
-                .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.MainPage && s.Lang == language)
+                .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.Lang == language &&
+                            (s.StoryCategory == null || s.StoryCategory.IsActive))
                 .OrderBy(s => s.Position)
                 .ThenByDescending(s => s.UpdatedDate)
                 .Select(StoryCardProjection);

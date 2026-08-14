@@ -891,6 +891,32 @@
 }
 
 @functions {
+    public static string FitProductImageUrl(StorefrontProductDetailDto entity, int fileStorageId, int width)
+    {
+        if (entity == null || fileStorageId <= 0)
+        {
+            return AppConfig.GetDefaultImage(Math.Max(width, 1), Math.Max(width, 1));
+        }
+        if (width <= 0)
+        {
+            return entity.GetCroppedImageUrl(fileStorageId, 0, 0);
+        }
+        return string.Format("/images/w{0}h0/{1}/", width, entity.GetImageSeoUrl(fileStorageId));
+    }
+
+    public static string FitProductImageUrl(StorefrontProductFileDto entity, int fileStorageId, int width)
+    {
+        if (entity == null || fileStorageId <= 0)
+        {
+            return AppConfig.GetDefaultImage(Math.Max(width, 1), Math.Max(width, 1));
+        }
+        if (width <= 0)
+        {
+            return entity.GetCroppedImageUrl(fileStorageId, 0, 0);
+        }
+        return string.Format("/images/w{0}h0/{1}/", width, entity.GetImageSeoUrl(fileStorageId));
+    }
+
     public static string FitProductImageUrl(BaseEntity entity, int fileStorageId, int width)
     {
         if (entity == null || fileStorageId <= 0)

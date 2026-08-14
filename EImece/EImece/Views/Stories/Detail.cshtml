@@ -72,7 +72,7 @@
                                         <li>
                                             <a href="@allStoryCategory.DetailPageRelativeUrl">
                                                 <i class="widget-categories-indicator" data-feather="chevron-right"></i>@allStoryCategory.Name
-                                                <span class="badge text-muted ml-1">(@allStoryCategory.Stories.Count)</span>
+                                                <span class="badge text-muted ml-1">(@(allStoryCategory.Stories != null ? allStoryCategory.Stories.Count : 0))</span>
                                             </a>
                                         </li>
                                     }

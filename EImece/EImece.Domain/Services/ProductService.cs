@@ -83,6 +83,16 @@ namespace EImece.Domain.Services
             return ProductRepository.GetStorefrontActiveProducts(language);
         }
 
+        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontActiveProductsPagedAsync(int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontActiveProductsPagedAsync(pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
+        }
+
+        public PaginatedList<StorefrontProductCardDto> GetStorefrontActiveProductsPaged(int pageIndex, int pageSize, int lang)
+        {
+            return ProductRepository.GetStorefrontActiveProductsPaged(pageIndex, pageSize, lang);
+        }
+
         public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontMainPageProductsPagedAsync(int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontActiveProductsPagedAsync(pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
@@ -1045,7 +1055,7 @@ namespace EImece.Domain.Services
             var r = new SimiliarProductTagsViewModel();
             r.Tag = TagService.GetSingle(tagId);
             r.Products = ProductRepository.GetStorefrontProductsByTagId(tagId, pageIndex, pageSize, lang, SortingType.Newest);
-            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, lang);
+            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
             return r;
         }
 
@@ -1054,7 +1064,7 @@ namespace EImece.Domain.Services
             var r = new SimiliarProductTagsViewModel();
             r.Tag = TagService.GetSingle(tagId);
             r.Products = ProductRepository.GetStorefrontProductsByTagId(tagId, page, pageSize, currentLanguage, sorting);
-            r.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, 1, 10, currentLanguage);
+            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
             return r;
         }
 
@@ -1063,7 +1073,7 @@ namespace EImece.Domain.Services
             var r = new SimiliarProductTagsViewModel();
             r.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
             r.Products = await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, SortingType.Newest, cancellationToken).ConfigureAwait(false);
-            r.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, 1, 10, lang, cancellationToken).ConfigureAwait(false);
+            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
             return r;
         }
 
@@ -1072,7 +1082,7 @@ namespace EImece.Domain.Services
             var r = new SimiliarProductTagsViewModel();
             r.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
             r.Products = await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, page, pageSize, currentLanguage, sorting, cancellationToken).ConfigureAwait(false);
-            r.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, 1, 10, currentLanguage, cancellationToken).ConfigureAwait(false);
+            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
             return r;
         }
 

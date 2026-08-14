@@ -271,11 +271,18 @@ namespace EImece.Domain.Helpers
             var settings = ConfigurationManager.ConnectionStrings[name];
             if (settings == null)
             {
-                throw new ConfigurationErrorsException(
-                    "Connection string entry '" + name + "' was not found in configuration. " +
-                    "Ensure Web.config / App.config declares <add name=\"" + name + "\" ... /> " +
-                    "(placeholder value is fine; the environment variable or parent " +
-                    ParentConfigFileName + " supplies the real secret).");
+                var collReadOnly = typeof(ConfigurationElementCollection).GetField(
+                    "bReadOnly",
+                    BindingFlags.Instance | BindingFlags.NonPublic) ??
+                    typeof(ConfigurationElementCollection).GetField(
+                    "_bReadOnly",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                if (collReadOnly != null)
+                {
+                    collReadOnly.SetValue(ConfigurationManager.ConnectionStrings, false);
+                }
+                ConfigurationManager.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, "System.Data.SqlClient"));
+                return;
             }
 
             // NonPublic is required: ConfigurationElement._bReadOnly is a private field that must be cleared after config load.

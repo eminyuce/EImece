@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs.Storefront;
@@ -105,24 +105,22 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
         {
-            List<Menu> lists = GetMenus();
-            var menu = lists.FirstOrDefault(r => (!language.HasValue || r.Lang == language.Value) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
-            if (menu == null)
+            var pageDto = MenuRepository.GetStorefrontPageByMenuLink(menuLink, language);
+            if (pageDto == null)
             {
                 return null;
             }
-            return GetPageById(menu.Id);
+            return GetPageById(pageDto.Id);
         }
 
         public async Task<MenuPageViewModel> GetPageByMenuLinkAsync(string menuLink, int? language)
         {
-            List<Menu> lists = await GetMenusAsync().ConfigureAwait(false);
-            var menu = lists.FirstOrDefault(r => (!language.HasValue || r.Lang == language.Value) && r.MenuLink.Equals(menuLink, StringComparison.InvariantCultureIgnoreCase));
-            if (menu == null)
+            var pageDto = await MenuRepository.GetStorefrontPageByMenuLinkAsync(menuLink, language).ConfigureAwait(false);
+            if (pageDto == null)
             {
                 return null;
             }
-            return await GetPageByIdAsync(menu.Id).ConfigureAwait(false);
+            return await GetPageByIdAsync(pageDto.Id).ConfigureAwait(false);
         }
 
         public List<Menu> GetMenus()
@@ -155,42 +153,43 @@ namespace EImece.Domain.Services
 
         public MenuPageViewModel GetPageById(int menuId)
         {
-            var menus = GetMenus();
-            var menu = menus.FirstOrDefault(r => r.Id.Equals(menuId));
-            if (menu == null)
+            var menu = MenuRepository.GetMenuById(menuId);
+            if (menu == null || !menu.IsActive)
             {
-                Logger.Warn("GetPageById: menu id {0} was not found.", menuId);
+                Logger.Warn("GetPageById: menu id {0} was not found or is inactive.", menuId);
                 return null;
             }
+
+            var activeMenus = MenuService.GetActiveBaseContentsFromCache(true, menu.Lang);
 
             var result = new MenuPageViewModel();
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
             result.Menu = menu;
-            result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, menu.Lang).FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
-            result.ApplicationSettings = SettingService.GetAllActiveSettings();  // SettingService.GetSettingObjectByKey(Settings.CompanyName);
+            result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
+            result.ApplicationSettings = SettingService.GetAllActiveSettings();
             result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
-            result.SideMenus = ResolveSideMenus(menu, menus);
+            result.SideMenus = ResolveSideMenus(menu, activeMenus);
             return result;
         }
 
         public async Task<MenuPageViewModel> GetPageByIdAsync(int menuId)
         {
-            var menus = await GetMenusAsync().ConfigureAwait(false);
-            var menu = menus.FirstOrDefault(r => r.Id.Equals(menuId));
-            if (menu == null)
+            var menu = await MenuRepository.GetMenuByIdAsync(menuId).ConfigureAwait(false);
+            if (menu == null || !menu.IsActive)
             {
-                Logger.Warn("GetPageByIdAsync: menu id {0} was not found.", menuId);
+                Logger.Warn("GetPageByIdAsync: menu id {0} was not found or is inactive.", menuId);
                 return null;
             }
+
+            var activeMenus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, menu.Lang).ConfigureAwait(false);
 
             var result = new MenuPageViewModel();
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("PageDetail", menuId, EImeceItemType.Menu);
             result.Menu = menu;
-            var activeMenus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, menu.Lang).ConfigureAwait(false);
             result.MainPageMenu = activeMenus.FirstOrDefault(r1 => r1.MenuLink.Equals("home-index", StringComparison.InvariantCultureIgnoreCase));
             result.ApplicationSettings = await SettingService.GetAllActiveSettingsAsync().ConfigureAwait(false);
             result.SocialMediaLinks = CreateMenuShareLinks(result.Menu);
-            result.SideMenus = ResolveSideMenus(menu, menus);
+            result.SideMenus = ResolveSideMenus(menu, activeMenus);
             return result;
         }
 

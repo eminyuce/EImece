@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
@@ -134,10 +134,10 @@ namespace EImece.Domain.Repositories
         public List<Brand> GetBrandsIfAnyProductExists(int lang, int categoryId = 0)
         {
             var brandsWithProducts = GetAllReadOnly()
-                .Where(r => r.Lang == lang &&
+                .Where(r => r.IsActive && r.Lang == lang &&
                     (categoryId > 0
-                        ? r.Products.Any(p => p.ProductCategoryId == categoryId)
-                        : r.Products.Any()))
+                        ? r.Products.Any(p => p.IsActive && p.ProductCategoryId == categoryId)
+                        : r.Products.Any(p => p.IsActive)))
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.UpdatedDate);
 
@@ -147,10 +147,10 @@ namespace EImece.Domain.Repositories
         public async Task<List<Brand>> GetBrandsIfAnyProductExistsAsync(int lang, int categoryId = 0)
         {
             var brandsWithProducts = GetAllReadOnly()
-                .Where(r => r.Lang == lang &&
+                .Where(r => r.IsActive && r.Lang == lang &&
                     (categoryId > 0
-                        ? r.Products.Any(p => p.ProductCategoryId == categoryId)
-                        : r.Products.Any()))
+                        ? r.Products.Any(p => p.IsActive && p.ProductCategoryId == categoryId)
+                        : r.Products.Any(p => p.IsActive)))
                 .OrderBy(r => r.Position)
                 .ThenByDescending(r => r.UpdatedDate);
 

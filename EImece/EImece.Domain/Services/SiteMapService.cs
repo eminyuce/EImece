@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers.SiteMap;
@@ -244,8 +244,37 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var tags = TagService.GetProductTags(language);
-                AddTagSitemapItems(sitemapItems, tags);
+                var productTags = TagService.GetProductTags(language);
+                if (productTags != null)
+                {
+                    foreach (var item in productTags)
+                    {
+                        DateTime? lastModified = item.UpdatedDate;
+                        SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
+                          AppConfig.HttpProtocol),
+                                lastModified,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
+
+                var storyTags = TagService.GetStorefrontTagsWithStoryCounts(language, 1);
+                if (storyTags != null)
+                {
+                    foreach (var item in storyTags)
+                    {
+                        var dummy = new Tag { Id = item.Id, Name = item.Name };
+                        SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl("Tag", Constants.StoriesAction, null,
+                          AppConfig.HttpProtocol),
+                                null,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -257,8 +286,37 @@ namespace EImece.Domain.Services
         {
             try
             {
-                var tags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
-                AddTagSitemapItems(sitemapItems, tags);
+                var productTags = await TagService.GetProductTagsAsync(language, cancellationToken).ConfigureAwait(false);
+                if (productTags != null)
+                {
+                    foreach (var item in productTags)
+                    {
+                        DateTime? lastModified = item.UpdatedDate;
+                        SitemapItem sm = new SitemapItem(item.GetDetailPageUrl("Tag", "Products", null,
+                          AppConfig.HttpProtocol),
+                                lastModified,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
+
+                var storyTags = await TagService.GetStorefrontTagsWithStoryCountsAsync(language, 1, cancellationToken).ConfigureAwait(false);
+                if (storyTags != null)
+                {
+                    foreach (var item in storyTags)
+                    {
+                        var dummy = new Tag { Id = item.Id, Name = item.Name };
+                        SitemapItem sm = new SitemapItem(dummy.GetDetailPageUrl("Tag", Constants.StoriesAction, null,
+                          AppConfig.HttpProtocol),
+                                null,
+                                SitemapChangeFrequency.Daily,
+                                priority: 1.0);
+
+                        sitemapItems.Add(sm);
+                    }
+                }
             }
             catch (Exception ex)
             {

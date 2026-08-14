@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
@@ -990,7 +990,8 @@ namespace EImece.Domain.Repositories
 
             return await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.MainPage && p.Lang == language && p.MainImageId > 0 &&
-                            (p.State == inStock || p.State == limitedStock))
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .Take(take)
@@ -1005,7 +1006,8 @@ namespace EImece.Domain.Repositories
 
             return EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.MainPage && p.Lang == language && p.MainImageId > 0 &&
-                            (p.State == inStock || p.State == limitedStock))
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .Take(take)
@@ -1019,7 +1021,8 @@ namespace EImece.Domain.Repositories
 
             return await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
-                            (p.State == inStock || p.State == limitedStock))
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .Take(take)
@@ -1034,7 +1037,8 @@ namespace EImece.Domain.Repositories
 
             return EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
-                            (p.State == inStock || p.State == limitedStock))
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .Take(take)
@@ -1048,7 +1052,8 @@ namespace EImece.Domain.Repositories
 
             return await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.IsCampaign && p.Lang == language && p.MainImageId > 0 &&
-                            (p.State == inStock || p.State == limitedStock))
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .Take(take)
@@ -1063,7 +1068,8 @@ namespace EImece.Domain.Repositories
 
             return EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.IsCampaign && p.Lang == language && p.MainImageId > 0 &&
-                            (p.State == inStock || p.State == limitedStock))
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .Take(take)
@@ -1091,8 +1097,13 @@ namespace EImece.Domain.Repositories
 
         public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontActiveProductsPagedAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var inStock = ProductState.ProductInStock.ToString();
+            var limitedStock = ProductState.LimitedStock.ToString();
+
             var query = EImeceDbContext.Products.AsNoTracking()
-                .Where(p => p.IsActive && p.Lang == language)
+                .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault();
 
@@ -1108,7 +1119,8 @@ namespace EImece.Domain.Repositories
 
             var query = EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.Lang == language && p.MainImageId > 0 &&
-                            (p.State == inStock || p.State == limitedStock))
+                            (p.State == inStock || p.State == limitedStock) &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault();
 
@@ -1120,7 +1132,8 @@ namespace EImece.Domain.Repositories
         public async Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Products.AsNoTracking()
-                .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language)
+                .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .ToListAsync(cancellationToken)
@@ -1130,7 +1143,8 @@ namespace EImece.Domain.Repositories
         public List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language)
         {
             return EImeceDbContext.Products.AsNoTracking()
-                .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language)
+                .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive))
                 .Select(ProductCardProjection)
                 .OrderByStorefrontDefault()
                 .ToList();
@@ -1277,6 +1291,7 @@ namespace EImece.Domain.Repositories
             var term = (search ?? string.Empty).Trim();
             var query = EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive) &&
                             (p.Name.Contains(term) || p.NameLong.Contains(term) || p.NameShort.Contains(term) || p.ProductCode.Contains(term)))
                 .Select(ProductCardProjection);
 
@@ -1310,6 +1325,7 @@ namespace EImece.Domain.Repositories
             var term = (search ?? string.Empty).Trim();
             var query = EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && p.Lang == language &&
+                            (p.ProductCategory == null || p.ProductCategory.IsActive) &&
                             (p.Name.Contains(term) || p.NameLong.Contains(term) || p.NameShort.Contains(term) || p.ProductCode.Contains(term)))
                 .Select(ProductCardProjection);
 
@@ -1340,9 +1356,10 @@ namespace EImece.Domain.Repositories
 
         public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // Main Entity Activation: Product.IsActive and Tag.IsActive (Tag is checked via TagId / Tag.IsActive)
+            // Main Entity Activation: Product.IsActive, Tag.IsActive and ProductCategory.IsActive
             var query = EImeceDbContext.ProductTags.AsNoTracking()
-                .Where(pt => pt.TagId == tagId && pt.Tag.IsActive && pt.Tag.Lang == language && pt.Product != null && pt.Product.IsActive)
+                .Where(pt => pt.TagId == tagId && pt.Tag.IsActive && pt.Tag.Lang == language && pt.Product != null && pt.Product.IsActive &&
+                            (pt.Product.ProductCategory == null || pt.Product.ProductCategory.IsActive))
                 .Select(pt => new StorefrontProductCardDto
                 {
                     Id = pt.Product.Id,
@@ -1398,7 +1415,8 @@ namespace EImece.Domain.Repositories
         public PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int language, SortingType sorting)
         {
             var query = EImeceDbContext.ProductTags.AsNoTracking()
-                .Where(pt => pt.TagId == tagId && pt.Tag.IsActive && pt.Tag.Lang == language && pt.Product != null && pt.Product.IsActive)
+                .Where(pt => pt.TagId == tagId && pt.Tag.IsActive && pt.Tag.Lang == language && pt.Product != null && pt.Product.IsActive &&
+                            (pt.Product.ProductCategory == null || pt.Product.ProductCategory.IsActive))
                 .Select(pt => new StorefrontProductCardDto
                 {
                     Id = pt.Product.Id,

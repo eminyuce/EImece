@@ -21,7 +21,7 @@
         .Where(r => r != null)
         .ToList();
     var relatedStories = (Model.StorefrontRelatedStories ?? new System.Collections.Generic.List<StorefrontStoryCardDto>()).OrderBy(x => Guid.NewGuid()).Take(3).ToList();
-    var relatedProducts = (Model.RelatedProducts ?? new System.Collections.Generic.List<Product>()).OrderByStorefrontDefault().Take(4).ToList();
+    var relatedProducts = (Model.RelatedProducts ?? new System.Collections.Generic.List<StorefrontProductCardDto>()).OrderByStorefrontDefault().Take(4).ToList();
     var cloudTags = Model.Tags != null ? Model.Tags.OrderByDescending(t => t.ItemCount).ThenBy(t => t.Name).Take(16).ToList() : new System.Collections.Generic.List<Tag>();
     var tagCounts = (Model.Tags ?? new System.Collections.Generic.List<Tag>())
         .GroupBy(t => t.Id)
@@ -61,15 +61,16 @@
                                 @foreach (var allStoryCategory in Model.StoryCategories)
                                 {
                                     var isCurrent = storyDetail.StoryCategoryId > 0 && allStoryCategory.Id == storyDetail.StoryCategoryId;
+                                    var storyCategoryCount = allStoryCategory.Stories != null ? allStoryCategory.Stories.Count : 0;
                                     <li>
                                         @if (isCurrent)
                                         {
-                                            <span class="is-current">@allStoryCategory.Name <em>(@allStoryCategory.Stories.Count)</em></span>
+                                            <span class="is-current">@allStoryCategory.Name <em>(@storyCategoryCount)</em></span>
                                         }
                                         else
                                         {
                                             <a href="@allStoryCategory.DetailPageRelativeUrl">
-                                                @allStoryCategory.Name <em>(@allStoryCategory.Stories.Count)</em>
+                                                @allStoryCategory.Name <em>(@storyCategoryCount)</em>
                                             </a>
                                         }
                                     </li>
