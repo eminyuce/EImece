@@ -519,6 +519,7 @@
     <Compile Include="Models\DTOs\Storefront\StorefrontStoryDetailDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontBannerDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontPageDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\StorefrontMenuFileDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontFilterDto.cs" />
     <Compile Include="Models\Enums\EImeceCustomerType.cs" />
     <Compile Include="Models\Enums\EImeceOrderStatus.cs" />

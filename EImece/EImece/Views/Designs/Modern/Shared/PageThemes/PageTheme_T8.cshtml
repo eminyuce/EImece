@@ -1,6 +1,5 @@
-﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@model EImece.Domain.Models.FrontModels.MenuPageViewModel
 @using EImece.Domain.Models.FrontModels;
-@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
 @using Resources;
@@ -8,13 +7,11 @@
 @{
 
     var menu = Model.Menu;
-    var files = Model.Menu.MenuFiles.ToList().OrderBy(r => r.FileStorage != null ? r.FileStorage.Position : 0).ToList();
 
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     ViewBag.Keywords = menu.GetSeoKeywords();
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    var menuTags = menu.MenuFiles.SelectMany(r => r.FileStorage.FileStorageTags.Select(t => t.Tag)).Distinct();
     int Width = ViewData["Width"].ToInt(300);
     int Height = ViewData["Height"].ToInt(214);
     var desc = Model.Menu.Description;

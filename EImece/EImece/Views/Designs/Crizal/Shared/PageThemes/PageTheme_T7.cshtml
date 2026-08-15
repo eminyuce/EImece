@@ -7,7 +7,7 @@
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     ViewBag.Keywords = menu.GetSeoKeywords();
-    var files = menu.MenuFiles ?? Enumerable.Empty<EImece.Domain.Entities.MenuFile>();
+    var files = menu.MenuFiles ?? Enumerable.Empty<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuFileDto>();
     var galleryVd = new ViewDataDictionary { { "ColClass", "col-6 col-md-3" }, { "MinCount", 12 }, { "Width", 400 }, { "Height", 400 } };
 }
 <section class="page-title-wrapper" aria-label="Page title">

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
@@ -42,6 +42,10 @@ namespace EImece.Domain.Repositories.IRepositories
         Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
 
         List<StorefrontMenuDto> BuildStorefrontMenuTree(int language);
+
+        Task<List<StorefrontMenuFileDto>> GetStorefrontMenuFilesAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontMenuFileDto> GetStorefrontMenuFiles(int menuId);
 
         #endregion
     }

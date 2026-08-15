@@ -156,7 +156,9 @@ namespace EImece.Domain.Services
                 MainImageId = pageDto.MainImageId,
                 Position = pageDto.Position,
                 Lang = pageDto.Lang,
-                IsActive = pageDto.IsActive
+                PageTheme = pageDto.PageTheme,
+                IsActive = pageDto.IsActive,
+                MenuFiles = MenuRepository.GetStorefrontMenuFiles(pageId)
             };
 
             var mainPageDto = MenuRepository.GetStorefrontPageByMenuLink("home-index", pageDto.Lang);
@@ -197,7 +199,10 @@ namespace EImece.Domain.Services
             var pageDto = await GetStorefrontPageByIdAsync(pageId).ConfigureAwait(false);
             if (pageDto == null) return null;
 
+            var menuFiles = await MenuRepository.GetStorefrontMenuFilesAsync(pageId).ConfigureAwait(false);
+
             var result = new MenuPageViewModel();
+            result.Contact = new ContactUsFormViewModel();
             result.Menu = new StorefrontMenuDto
             {
                 Id = pageDto.Id,
@@ -208,7 +213,9 @@ namespace EImece.Domain.Services
                 MainImageId = pageDto.MainImageId,
                 Position = pageDto.Position,
                 Lang = pageDto.Lang,
-                IsActive = pageDto.IsActive
+                PageTheme = pageDto.PageTheme,
+                IsActive = pageDto.IsActive,
+                MenuFiles = menuFiles
             };
 
             var mainPageDto = await MenuRepository.GetStorefrontPageByMenuLinkAsync("home-index", pageDto.Lang).ConfigureAwait(false);

@@ -1,5 +1,4 @@
 @model EImece.Domain.Models.FrontModels.MenuPageViewModel
-@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
 @using EImece.Domain.Helpers;
@@ -7,7 +6,7 @@
 @using Resources;
 @{
     var menu = Model.Menu;
-    var files = Model.Menu.MenuFiles.ToList().OrderBy(r => r.FileStorage != null ? r.FileStorage.Position : 0).ToList();
+    var files = Model.Menu.MenuFiles != null ? Model.Menu.MenuFiles.OrderBy(r => r.Position).ToList() : new List<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuFileDto>();
 
     ViewBag.Title = string.Format("{0} {1}", Model.CompanyName.SettingValue, menu.GetSeoTitle());
     ViewBag.Description = menu.GetSeoDescription();
@@ -62,9 +61,10 @@ else
                         <!-- Row-->
                         for (int i = 0; i < files.Count; i++)
                         {
-                            var f = files[i].FileStorage;
+                            var f = files[i];
+                            var thumbSrc = f.GetCroppedImageUrl(f.FileStorageId, 300, 300);
             <div class="col-md-4">
-                @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+                <img src="@thumbSrc" alt="@f.FileName" class="img-thumbnail" />
             </div>
                         }
                     }
@@ -90,9 +90,10 @@ else
                         <!-- Row-->
                         for (int i = 0; i < files.Count; i++)
                         {
-                            var f = files[i].FileStorage;
+                            var f = files[i];
+                            var thumbSrc = f.GetCroppedImageUrl(f.FileStorageId, 300, 300);
             <div class="col-md-4" data-file-position="@f.Position">
-                @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 300, Height = 300 })
+                <img src="@thumbSrc" alt="@f.FileName" class="img-thumbnail" />
             </div>
                         }
                     }

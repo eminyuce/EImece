@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@model EImece.Domain.Models.FrontModels.MenuPageViewModel
 @using EImece.Domain.Helpers.Extensions
 @using Resources
 @using System.Linq
@@ -8,7 +8,7 @@
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     ViewBag.Keywords = menu.GetSeoKeywords();
-    var files = menu.MenuFiles ?? Enumerable.Empty<EImece.Domain.Entities.MenuFile>();
+    var files = menu.MenuFiles ?? Enumerable.Empty<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuFileDto>();
     var imgMenuUrl = menu.ImageState ? (menu.GetCroppedImageUrl(menu.MainImageId, 400, 400) ?? "") : "";
     var heroVd = new ViewDataDictionary { { "Alt", menu.Name }, { "Class", "" }, { "PlaceholderClass", "pt-ph pt-ph--square" } };
     var galleryVd = new ViewDataDictionary { { "ColClass", "col-6 col-sm-4 col-md-2" }, { "MinCount", 6 } };

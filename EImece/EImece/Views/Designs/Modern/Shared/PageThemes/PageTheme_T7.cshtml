@@ -1,19 +1,15 @@
-﻿@model EImece.Domain.Models.FrontModels.MenuPageViewModel
-@using EImece.Domain.Helpers
+@model EImece.Domain.Models.FrontModels.MenuPageViewModel
 @using EImece.Domain.Helpers.Extensions
 @using Resources
 @using System.Linq
+@using System.Web.Mvc
 @{
     var menu = Model.Menu;
     ViewBag.Title = menu.GetSeoTitle();
     ViewBag.Description = menu.GetSeoDescription();
     ViewBag.Keywords = menu.GetSeoKeywords();
-    var files = (menu.MenuFiles ?? Enumerable.Empty<EImece.Domain.Entities.MenuFile>())
-        .Where(f => f != null && f.FileStorage != null)
-        .OrderBy(f => f.FileStorage.Position)
-        .Select(f => f.FileStorage)
-        .ToList();
-    const int minCount = 12;
+    var files = menu.MenuFiles ?? Enumerable.Empty<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuFileDto>();
+    var galleryVd = new ViewDataDictionary { { "ColClass", "col-6 col-md-3" }, { "MinCount", 12 }, { "Width", 400 }, { "Height", 400 } };
 }
 <div class="page-title-wrapper" role="region" aria-label="Page title">
     <div class="container">
@@ -33,19 +29,5 @@
     </div>
 </div>
 <div class="container pt-page pt-t7">
-    <div class="row pt-grid-4">
-        @for (int i = 0; i < files.Count; i++)
-        {
-            var f = files[i];
-            <div class="col-6 col-md-3">
-                @Html.DisplayFor(modelItem => f, "FileStorageThumbnails", new { Width = 400, Height = 400 })
-            </div>
-        }
-        @for (int i = files.Count; i < minCount; i++)
-        {
-            <div class="col-6 col-md-3">
-                <div class="pt-ph pt-ph--grid" aria-hidden="true"></div>
-            </div>
-        }
-    </div>
+    @Html.Partial("~/Views/Shared/PageThemes/_PageThemeGallery.cshtml", files, galleryVd)
 </div>

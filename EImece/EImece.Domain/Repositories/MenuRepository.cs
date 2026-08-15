@@ -38,6 +38,7 @@ namespace EImece.Domain.Repositories
                     Position = m.Position,
                     Lang = m.Lang,
                     IsActive = m.IsActive,
+                    PageTheme = m.PageTheme,
                     UpdatedDate = m.UpdatedDate
                 };
             }
@@ -60,6 +61,7 @@ namespace EImece.Domain.Repositories
                     MainImageId = m.MainImageId,
                     Position = m.Position,
                     Lang = m.Lang,
+                    PageTheme = m.PageTheme,
                     IsActive = m.IsActive
                 };
             }
@@ -168,6 +170,43 @@ namespace EImece.Domain.Repositories
                 child.TreeLevel = childLevel;
                 PopulateMenuChildren(allMenus, child, childLevel);
             }
+        }
+
+        public async Task<List<StorefrontMenuFileDto>> GetStorefrontMenuFilesAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.MenuFiles.AsNoTracking()
+                .Where(f => f.MenuId == menuId && f.FileStorage != null && f.FileStorage.IsActive)
+                .OrderBy(f => f.FileStorage.Position)
+                .Select(f => new StorefrontMenuFileDto
+                {
+                    Id = f.Id,
+                    MenuId = f.MenuId,
+                    FileStorageId = f.FileStorageId,
+                    FileName = f.FileStorage.FileName,
+                    Name = f.FileStorage.Name,
+                    Position = f.FileStorage.Position,
+                    IsActive = f.FileStorage.IsActive
+                })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontMenuFileDto> GetStorefrontMenuFiles(int menuId)
+        {
+            return EImeceDbContext.MenuFiles.AsNoTracking()
+                .Where(f => f.MenuId == menuId && f.FileStorage != null && f.FileStorage.IsActive)
+                .OrderBy(f => f.FileStorage.Position)
+                .Select(f => new StorefrontMenuFileDto
+                {
+                    Id = f.Id,
+                    MenuId = f.MenuId,
+                    FileStorageId = f.FileStorageId,
+                    FileName = f.FileStorage.FileName,
+                    Name = f.FileStorage.Name,
+                    Position = f.FileStorage.Position,
+                    IsActive = f.FileStorage.IsActive
+                })
+                .ToList();
         }
 
         #endregion

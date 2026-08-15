@@ -20,6 +20,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public int Position { get; set; }
         public int Lang { get; set; }
         public bool IsActive { get; set; }
+        public string PageTheme { get; set; }
         public DateTime UpdatedDate { get; set; }
 
         public string ModifiedId

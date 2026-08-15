@@ -6,7 +6,7 @@
     var currentId = Model != null && Model.Menu != null ? Model.Menu.Id : 0;
     var items = Model != null && Model.SideMenus != null
         ? Model.SideMenus.Where(m => m != null).ToList()
-        : new List<EImece.Domain.Entities.Menu>();
+        : new List<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuDto>();
 }
 <nav class="pt-sidenav" aria-label="Sayfa menüsü">
     <div class="pt-sidenav__title">Sol menü navigasyon</div>

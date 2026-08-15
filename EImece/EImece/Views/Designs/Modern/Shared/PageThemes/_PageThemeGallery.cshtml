@@ -1,4 +1,4 @@
-@model IEnumerable<EImece.Domain.Entities.MenuFile>
+@model IEnumerable<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuFileDto>
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
 @using System.Linq
@@ -9,10 +9,9 @@
     var height = ViewData["Height"].ToInt(300);
     var lightboxId = (ViewData["LightboxId"] as string) ?? "ptGalleryLightbox";
     var carouselId = lightboxId + "Carousel";
-    var files = (Model ?? Enumerable.Empty<EImece.Domain.Entities.MenuFile>())
-        .Where(f => f != null && f.FileStorage != null && f.FileStorage.IsActive)
-        .OrderBy(f => f.FileStorage.Position)
-        .Select(f => f.FileStorage)
+    var files = (Model ?? Enumerable.Empty<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuFileDto>())
+        .Where(f => f != null && f.IsActive)
+        .OrderBy(f => f.Position)
         .ToList();
     var labels = new[] { "FOTO", "ALBÜM" };
 }

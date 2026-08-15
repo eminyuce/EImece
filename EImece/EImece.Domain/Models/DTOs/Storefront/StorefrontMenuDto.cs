@@ -35,13 +35,13 @@ namespace EImece.Domain.Models.DTOs.Storefront
 
         public List<StorefrontMenuDto> Children { get; set; }
         public List<StorefrontMenuDto> SideMenus { get; set; }
-        public List<MenuFile> MenuFiles { get; set; }
+        public List<StorefrontMenuFileDto> MenuFiles { get; set; }
 
         public StorefrontMenuDto()
         {
             Children = new List<StorefrontMenuDto>();
             SideMenus = new List<StorefrontMenuDto>();
-            MenuFiles = new List<MenuFile>();
+            MenuFiles = new List<StorefrontMenuFileDto>();
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;
         }
