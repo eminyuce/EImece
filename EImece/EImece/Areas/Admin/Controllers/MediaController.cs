@@ -256,11 +256,11 @@ namespace EImece.Areas.Admin.Controllers
                 int deletedCount = await FileStorageService.DeleteMissingFilesAsync(id, enumMod.Value, enumImageType.Value, cancellationToken).ConfigureAwait(false);
                 if (deletedCount > 0)
                 {
-                    SetSuccessMessage(string.Format("Diskte bulunmayan {0} adet resim kaydı veritabanından temizlendi.", deletedCount));
+                    SetSuccessMessage(string.Format(AdminResource.DeleteMissingFilesSuccessFormat, deletedCount));
                 }
                 else
                 {
-                    SetStatusMessage("Eksik dosya kaydı bulunamadı. Tüm resim kayıtlarının diskte fiziksel dosyası mevcut.", "info");
+                    SetStatusMessage(AdminResource.DeleteMissingFilesNoneFound, "info");
                 }
             }
             catch (Exception ex)

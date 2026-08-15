@@ -3668,5 +3668,86 @@ namespace Resources {
                 return ResourceManager.GetString("StartDateMustBeBeforeEndDate", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eksik Dosyaları Temizle (Diskte Olmayan Kayıtları Sil).
+        /// </summary>
+        public static string DeleteMissingFilesButtonText {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diskte fiziksel dosyası bulunmayan tüm veritabanı kayıtları silinecektir. Devam etmek istiyor musunuz?.
+        /// </summary>
+        public static string DeleteMissingFilesConfirmMessage {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diskte fiziksel dosyası olmayan veritabanı kayıtlarını temizler.
+        /// </summary>
+        public static string DeleteMissingFilesTooltip {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diskte bulunmayan {0} adet resim kaydı veritabanından temizlendi..
+        /// </summary>
+        public static string DeleteMissingFilesSuccessFormat {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesSuccessFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eksik dosya kaydı bulunamadı. Tüm resim kayıtlarının diskte fiziksel dosyası mevcut..
+        /// </summary>
+        public static string DeleteMissingFilesNoneFound {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesNoneFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dosya Yok.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Diskte bulunamadı).
+        /// </summary>
+        public static string MissingFileNotFoundOnDisk {
+            get {
+                return ResourceManager.GetString("MissingFileNotFoundOnDisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eksik Dosya.
+        /// </summary>
+        public static string MissingFile {
+            get {
+                return ResourceManager.GetString("MissingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Veritabanında kayıt var fakat fiziksel resim dosyası diskte yok.
+        /// </summary>
+        public static string MissingFileTooltip {
+            get {
+                return ResourceManager.GetString("MissingFileTooltip", resourceCulture);
+            }
+        }
     }
 }

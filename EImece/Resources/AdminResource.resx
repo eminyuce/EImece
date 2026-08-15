@@ -1320,4 +1320,31 @@
   <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
     <value>Başlangıç tarihi bitiş tarihinden önce olmalıdır.</value>
   </data>
+  <data name="DeleteMissingFilesButtonText" xml:space="preserve">
+    <value>Eksik Dosyaları Temizle (Diskte Olmayan Kayıtları Sil)</value>
+  </data>
+  <data name="DeleteMissingFilesConfirmMessage" xml:space="preserve">
+    <value>Diskte fiziksel dosyası bulunmayan tüm veritabanı kayıtları silinecektir. Devam etmek istiyor musunuz?</value>
+  </data>
+  <data name="DeleteMissingFilesTooltip" xml:space="preserve">
+    <value>Diskte fiziksel dosyası olmayan veritabanı kayıtlarını temizler</value>
+  </data>
+  <data name="DeleteMissingFilesSuccessFormat" xml:space="preserve">
+    <value>Diskte bulunmayan {0} adet resim kaydı veritabanından temizlendi.</value>
+  </data>
+  <data name="DeleteMissingFilesNoneFound" xml:space="preserve">
+    <value>Eksik dosya kaydı bulunamadı. Tüm resim kayıtlarının diskte fiziksel dosyası mevcut.</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>Dosya Yok</value>
+  </data>
+  <data name="MissingFileNotFoundOnDisk" xml:space="preserve">
+    <value>(Diskte bulunamadı)</value>
+  </data>
+  <data name="MissingFile" xml:space="preserve">
+    <value>Eksik Dosya</value>
+  </data>
+  <data name="MissingFileTooltip" xml:space="preserve">
+    <value>Veritabanında kayıt var fakat fiziksel resim dosyası diskte yok</value>
+  </data>
 </root>

@@ -144,13 +144,13 @@
            ,{"SetStateOnOrOff",true}})
 
                 <div class="media-clean-actions" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px;">
-                    <form method="post" action="@Url.Action("DeleteMissingFiles", "Media")" onsubmit="return confirm('Diskte fiziksel dosyası bulunmayan tüm veritabanı kayıtları silinecektir. Devam etmek istiyor musunuz?');">
+                    <form method="post" action="@Url.Action("DeleteMissingFiles", "Media")" onsubmit="return confirm('@AdminResource.DeleteMissingFilesConfirmMessage');">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="contentId" value="@Model.Id" />
                         <input type="hidden" name="mod" value="@Model.MediaMod" />
                         <input type="hidden" name="imageType" value="@Model.ImageType" />
-                        <button type="submit" class="btn btn-danger btn-sm" id="btnDeleteMissingFiles" title="Diskte fiziksel dosyası olmayan veritabanı kayıtlarını temizler">
-                            <i class="glyphicon glyphicon-trash"></i> Eksik Dosyaları Temizle (Diskte Olmayan Kayıtları Sil)
+                        <button type="submit" class="btn btn-danger btn-sm" id="btnDeleteMissingFiles" title="@AdminResource.DeleteMissingFilesTooltip">
+                            <i class="glyphicon glyphicon-trash"></i> @AdminResource.DeleteMissingFilesButtonText
                         </button>
                     </form>
                 </div>
@@ -257,8 +257,8 @@
         {
             <div class="alert alert-danger" style="padding:6px;margin-bottom:4px;font-size:11px;line-height:1.2;text-align:center;">
                 <i class="glyphicon glyphicon-exclamation-sign"></i><br />
-                <strong>Dosya Yok</strong><br />
-                <span style="font-size:10px;">(Diskte bulunamadı)</span>
+                <strong>@AdminResource.FileNotFound</strong><br />
+                <span style="font-size:10px;">@AdminResource.MissingFileNotFoundOnDisk</span>
             </div>
         }
         <div class="media-file-preview-name">@fileStorage.FileName</div>
@@ -278,8 +278,8 @@
         else
         {
             <div>
-                <span class="label label-danger" title="Veritabanında kayıt var fakat fiziksel resim dosyası diskte yok">
-                    <i class="glyphicon glyphicon-remove"></i> Eksik Dosya
+                <span class="label label-danger" title="@AdminResource.MissingFileTooltip">
+                    <i class="glyphicon glyphicon-remove"></i> @AdminResource.MissingFile
                 </span>
             </div>
         }
