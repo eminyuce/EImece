@@ -20,7 +20,8 @@
     {
         var f = files[i];
         var thumbSrc = f.GetCroppedImageUrl(f.Id, width, height);
-        var largeSrc = f.GetCroppedImageUrl(f.Id, 0, 0);
+        //var largeSrc = f.GetCroppedImageUrl(f.Id, 0, 0);
+        var largeSrc = thumbSrc.Replace("/thumbs/thb", "/")    .Replace("/thumbs/", "/");
         var alt = !string.IsNullOrEmpty(f.FileName) ? f.FileName : (!string.IsNullOrEmpty(f.Name) ? f.Name : "Gallery");
         <div class="@colClass">
             <a href="@largeSrc" class="pt-gallery__item" data-pt-slide="@i">
@@ -48,7 +49,9 @@
                             @for (int i = 0; i < files.Count; i++)
                             {
                                 var f = files[i];
-                                var largeSrc = f.GetCroppedImageUrl(f.Id, 0, 0);
+                                var thumbSrc = f.GetCroppedImageUrl(f.Id, width, height);
+                                //var largeSrc = f.GetCroppedImageUrl(f.Id, 0, 0);
+                                var largeSrc = thumbSrc.Replace("/thumbs/thb", "/").Replace("/thumbs/", "/");
                                 var alt = !string.IsNullOrEmpty(f.FileName) ? f.FileName : (!string.IsNullOrEmpty(f.Name) ? f.Name : "Gallery");
                                 <div class="carousel-item@(i == 0 ? " active" : "")">
                                     <img src="@largeSrc" class="pt-lightbox__img" alt="@alt" />
