@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
@@ -403,6 +403,64 @@ namespace EImece.Domain.Services
             {
                 await DeleteUploadImageByFileStorageAsync(contentId, mod, fileStorageId).ConfigureAwait(false);
             }
+        }
+
+        public int DeleteMissingFiles(int contentId, MediaModType mod, EImeceImageType imageType)
+        {
+            var images = GetUploadImages(contentId, mod, imageType);
+            if (images == null || images.Count == 0)
+            {
+                return 0;
+            }
+
+            int deletedCount = 0;
+            foreach (var fileStorage in images)
+            {
+                if (fileStorage == null) continue;
+
+                bool exists = FilesHelper != null
+                    ? FilesHelper.NormalFileExists(fileStorage.FileName)
+                    : !string.IsNullOrWhiteSpace(fileStorage.FileName) && System.IO.File.Exists(SecurityHelper.GetSafeStorageFilePath(AppConfig.StorageRoot, fileStorage.FileName));
+
+                if (!exists)
+                {
+                    DeleteUploadImageByFileStorage(contentId, mod, fileStorage.Id);
+                    deletedCount++;
+                    Logger.Warn("Deleted orphan FileStorage record Id={0} FileName={1} (physical file missing on disk) for contentId={2}, mod={3}, imageType={4}",
+                        fileStorage.Id, fileStorage.FileName, contentId, mod, imageType);
+                }
+            }
+
+            return deletedCount;
+        }
+
+        public async Task<int> DeleteMissingFilesAsync(int contentId, MediaModType mod, EImeceImageType imageType, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var images = await GetUploadImagesAsync(contentId, mod, imageType, cancellationToken).ConfigureAwait(false);
+            if (images == null || images.Count == 0)
+            {
+                return 0;
+            }
+
+            int deletedCount = 0;
+            foreach (var fileStorage in images)
+            {
+                if (fileStorage == null) continue;
+
+                bool exists = FilesHelper != null
+                    ? FilesHelper.NormalFileExists(fileStorage.FileName)
+                    : !string.IsNullOrWhiteSpace(fileStorage.FileName) && System.IO.File.Exists(SecurityHelper.GetSafeStorageFilePath(AppConfig.StorageRoot, fileStorage.FileName));
+
+                if (!exists)
+                {
+                    await DeleteUploadImageByFileStorageAsync(contentId, mod, fileStorage.Id).ConfigureAwait(false);
+                    deletedCount++;
+                    Logger.Warn("Deleted orphan FileStorage record Id={0} FileName={1} (physical file missing on disk) for contentId={2}, mod={3}, imageType={4}",
+                        fileStorage.Id, fileStorage.FileName, contentId, mod, imageType);
+                }
+            }
+
+            return deletedCount;
         }
 
         private List<int> GetGalleryFileStorageIds(int contentId, MediaModType mod)

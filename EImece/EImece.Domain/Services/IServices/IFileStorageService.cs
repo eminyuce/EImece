@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using System;
@@ -47,5 +47,9 @@ namespace EImece.Domain.Services.IServices
         void DeleteGalleryImages(int contentId, MediaModType mod);
 
         Task DeleteGalleryImagesAsync(int contentId, MediaModType mod);
+
+        int DeleteMissingFiles(int contentId, MediaModType mod, EImeceImageType imageType);
+
+        Task<int> DeleteMissingFilesAsync(int contentId, MediaModType mod, EImeceImageType imageType, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

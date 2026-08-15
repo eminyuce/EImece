@@ -58,6 +58,28 @@ namespace EImece.Tests.Helpers
             Directory.Delete(root, true);
         }
 
+        [TestMethod]
+        public void NormalFileExists_DetectsMissingAndExistingFiles()
+        {
+            string root = Path.Combine(Path.GetTempPath(), "eimece-media-exists-" + Path.GetRandomFileName());
+            Directory.CreateDirectory(root);
+
+            var filesHelper = new FilesHelper
+            {
+                StorageRoot = root
+            };
+
+            string existingFile = "photo.jpg";
+            WriteDummy(Path.Combine(root, existingFile));
+
+            Assert.IsTrue(filesHelper.NormalFileExists(existingFile), "Existing file should return true.");
+            Assert.IsFalse(filesHelper.NormalFileExists("non-existent.jpg"), "Missing file should return false.");
+            Assert.IsFalse(filesHelper.NormalFileExists(null), "Null filename should return false.");
+            Assert.IsFalse(filesHelper.NormalFileExists(""), "Empty filename should return false.");
+
+            Directory.Delete(root, true);
+        }
+
         private static void WriteDummy(string path)
         {
             File.WriteAllText(path, "x", Encoding.ASCII);

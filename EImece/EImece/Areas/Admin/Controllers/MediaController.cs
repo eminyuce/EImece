@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
@@ -224,6 +224,52 @@ namespace EImece.Areas.Admin.Controllers
                     }
                 );
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DeleteAuthorize]
+        public async Task<ActionResult> DeleteMissingFiles(CancellationToken cancellationToken, int? contentId, string mod = null, string imageType = null)
+        {
+            int id = contentId.HasValue && contentId.Value > 0
+                ? contentId.Value
+                : (CurrentSelectedModul.ContainsKey(ContentIdKey) ? CurrentSelectedModul[ContentIdKey].ToInt() : 0);
+
+            string modStr = !string.IsNullOrWhiteSpace(mod)
+                ? mod
+                : (CurrentSelectedModul.ContainsKey("mod") ? CurrentSelectedModul["mod"] : null);
+
+            string imageTypeStr = !string.IsNullOrWhiteSpace(imageType)
+                ? imageType
+                : (CurrentSelectedModul.ContainsKey(ImageTypeKey) ? CurrentSelectedModul[ImageTypeKey] : null);
+
+            MediaModType? enumMod = EnumHelper.Parse<MediaModType>(modStr);
+            EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(imageTypeStr);
+
+            if (id <= 0 || !enumMod.HasValue || !enumImageType.HasValue)
+            {
+                return RedirectToAction(IndexAction, new { contentId = id, mod = modStr, imageType = imageTypeStr });
+            }
+
+            try
+            {
+                int deletedCount = await FileStorageService.DeleteMissingFilesAsync(id, enumMod.Value, enumImageType.Value, cancellationToken).ConfigureAwait(false);
+                if (deletedCount > 0)
+                {
+                    SetSuccessMessage(string.Format("Diskte bulunmayan {0} adet resim kaydı veritabanından temizlendi.", deletedCount));
+                }
+                else
+                {
+                    SetStatusMessage("Eksik dosya kaydı bulunamadı. Tüm resim kayıtlarının diskte fiziksel dosyası mevcut.", "info");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error deleting missing files for contentId={0}, mod={1}, imageType={2}", id, modStr, imageTypeStr);
+                SetErrorMessage();
+            }
+
+            return RedirectToAction(IndexAction, new { contentId = id, mod = modStr, imageType = imageTypeStr });
         }
     }
 }

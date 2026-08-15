@@ -143,6 +143,18 @@
            ,{"ProductState",false}
             ,{"SetStateOnOrOff",true}})
 
+                <div class="media-clean-actions" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px;">
+                    <form method="post" action="@Url.Action("DeleteMissingFiles", "Media")" onsubmit="return confirm('Diskte fiziksel dosyası bulunmayan tüm veritabanı kayıtları silinecektir. Devam etmek istiyor musunuz?');">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="contentId" value="@Model.Id" />
+                        <input type="hidden" name="mod" value="@Model.MediaMod" />
+                        <input type="hidden" name="imageType" value="@Model.ImageType" />
+                        <button type="submit" class="btn btn-danger btn-sm" id="btnDeleteMissingFiles" title="Diskte fiziksel dosyası olmayan veritabanı kayıtlarını temizler">
+                            <i class="glyphicon glyphicon-trash"></i> Eksik Dosyaları Temizle (Diskte Olmayan Kayıtları Sil)
+                        </button>
+                    </form>
+                </div>
+
                 @Html.Partial("Grid/_GridChrome")
 
                 <div class="panel panel-primary eg-grid-shell">
@@ -228,26 +240,49 @@
 
 @helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
 {
+    bool fileExists = fileHelper != null && fileHelper.NormalFileExists(fileStorage.FileName);
     var imageSizes = fileHelper.GetThumbnailImageSize(fileStorage);
     var fullImageUrl = String.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase);
     var thumbImageUrl = String.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase);
     var downloadUrl = String.Format("/media/images/{0}", fileStorage.FileName);
 <div class="media-file-preview">
     <div class="media-file-preview-thumb">
-        <a href="@downloadUrl" title="@fileStorage.FileName" download="@fileStorage.FileName" data-gallery="">
-            <img src="@fileStorage.GetAdminCroppedImageUrl(150,0)" alt="@fileStorage.FileName" />
-        </a>
+        @if (fileExists)
+        {
+            <a href="@downloadUrl" title="@fileStorage.FileName" download="@fileStorage.FileName" data-gallery="">
+                <img src="@fileStorage.GetAdminCroppedImageUrl(150,0)" alt="@fileStorage.FileName" />
+            </a>
+        }
+        else
+        {
+            <div class="alert alert-danger" style="padding:6px;margin-bottom:4px;font-size:11px;line-height:1.2;text-align:center;">
+                <i class="glyphicon glyphicon-exclamation-sign"></i><br />
+                <strong>Dosya Yok</strong><br />
+                <span style="font-size:10px;">(Diskte bulunamadı)</span>
+            </div>
+        }
         <div class="media-file-preview-name">@fileStorage.FileName</div>
     </div>
     <div class="media-file-preview-meta">
-        <div>
-            @String.Format(AdminResource.OriginalWidthHeightFormat, imageSizes.OriginalWidth, imageSizes.OriginalHeight)
-            <a href="@fullImageUrl" target="_blank">@AdminResource.FullImage</a>
-        </div>
-        <div>
-            @String.Format(AdminResource.ThumbsWidthHeightFormat, imageSizes.Width, imageSizes.Height)
-            <a href="@thumbImageUrl" target="_blank">@AdminResource.ThumbsImage</a>
-        </div>
+        @if (fileExists)
+        {
+            <div>
+                @String.Format(AdminResource.OriginalWidthHeightFormat, imageSizes.OriginalWidth, imageSizes.OriginalHeight)
+                <a href="@fullImageUrl" target="_blank">@AdminResource.FullImage</a>
+            </div>
+            <div>
+                @String.Format(AdminResource.ThumbsWidthHeightFormat, imageSizes.Width, imageSizes.Height)
+                <a href="@thumbImageUrl" target="_blank">@AdminResource.ThumbsImage</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <span class="label label-danger" title="Veritabanında kayıt var fakat fiziksel resim dosyası diskte yok">
+                    <i class="glyphicon glyphicon-remove"></i> Eksik Dosya
+                </span>
+            </div>
+        }
     </div>
 </div>
 }
