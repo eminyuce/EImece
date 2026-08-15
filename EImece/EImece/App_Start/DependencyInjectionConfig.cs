@@ -28,6 +28,7 @@ using Microsoft.Owin.Security;
 using NLog.Extensions.Logging;
 using Quartz;
 using Quartz.Impl;
+using EImece.Domain.Scheduler;
 using System;
 using System.Web;
 using System.Web.Http;
@@ -57,6 +58,7 @@ namespace EImece.App_Start
             var services = new ServiceCollection();
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider(validateScopes: true);
+            DomainServiceProvider.Instance = ServiceProvider;
 
             DependencyResolver.SetResolver(new MsDiDependencyResolver(ServiceProvider));
             GlobalConfiguration.Configuration.DependencyResolver =
@@ -163,6 +165,7 @@ namespace EImece.App_Start
             // Multiple IHealthCheck implementations — GetServices / IEnumerable<IHealthCheck> returns all.
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<SqlServerHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<FileStorageHealthCheck>(sp));
+            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<BackgroundServiceHealthCheck>(sp));
             services.AddSingletonWithProps<IHealthCheckService, HealthCheckService>();
 
             // OpenTelemetry providers are initialized once from ObservabilityBootstrap.Configure().
@@ -374,6 +377,9 @@ namespace EImece.App_Start
             // Resolve once at startup via GetAwaiter().GetResult() — same as Ninject singleton binding.
             services.AddSingleton<IScheduler>(_ =>
                 new StdSchedulerFactory().GetScheduler().GetAwaiter().GetResult());
+            services.AddSingletonWithProps<AdminQuartzService>();
+            services.AddSingletonWithProps<UserQuartzService>();
+            services.AddSingletonWithProps<QuartzService>();
         }
 
     }
@@ -386,6 +392,12 @@ namespace EImece.App_Start
         {
             services.AddSingleton<TImplementation>(sp => PropertyInjector.Create<TImplementation>(sp));
             services.AddSingleton<TService>(ResolveImplementationOrUnderConstruction<TService, TImplementation>);
+        }
+
+        public static void AddSingletonWithProps<TImplementation>(this IServiceCollection services)
+            where TImplementation : class
+        {
+            services.AddSingleton(sp => PropertyInjector.Create<TImplementation>(sp));
         }
 
         public static void AddScopedWithProps<TService, TImplementation>(this IServiceCollection services)

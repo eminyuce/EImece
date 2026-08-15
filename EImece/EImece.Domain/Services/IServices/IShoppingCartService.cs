@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.Payment;
 using System.Collections.Generic;
@@ -35,5 +35,9 @@ namespace EImece.Domain.Services.IServices
         List<ShoppingCart> GetAdminPageList(string search, int currentLanguage);
 
         Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken));
+
+        int ClearExpiredShoppingCarts(int olderThanDays = 30);
+
+        Task<int> ClearExpiredShoppingCartsAsync(int olderThanDays = 30, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -446,6 +446,7 @@
     <Compile Include="GenericRepository\PaginatedList.cs" />
     <Compile Include="GenericRepository\QueryableExtensions.cs" />
     <Compile Include="DependencyInjection\InjectAttribute.cs" />
+    <Compile Include="DependencyInjection\DomainServiceProvider.cs" />
     <Compile Include="DependencyInjection\PropertyInjector.cs" />
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
@@ -811,6 +812,11 @@
     <Compile Include="Repositories\TagRepository.cs" />
     <Compile Include="Repositories\TemplateRepository.cs" />
     <Compile Include="Scheduler\Jobs\HelloJob.cs" />
+    <Compile Include="Scheduler\Jobs\ClearExpiredShoppingCartsJob.cs" />
+    <Compile Include="Scheduler\Jobs\ClearLogsFromDbJob.cs" />
+    <Compile Include="Scheduler\BaseQuartzService.cs" />
+    <Compile Include="Scheduler\AdminQuartzService.cs" />
+    <Compile Include="Scheduler\UserQuartzService.cs" />
     <Compile Include="Scheduler\QuartzService.cs" />
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />

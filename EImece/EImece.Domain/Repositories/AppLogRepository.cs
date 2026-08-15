@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using NLog;
@@ -287,6 +287,62 @@ namespace EImece.Domain.Repositories
                 }
                 await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
             }
+        }
+
+        public int DeleteOldLogs(DateTime cutoffDate, int batchSize = 1000)
+        {
+            string connectionString = ConnectionStringProvider.GetConnectionString();
+            int totalDeleted = 0;
+            string commandText = @"DELETE TOP (@BatchSize) FROM dbo.AppLogs WHERE CreatedDate < @CutoffDate";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                while (true)
+                {
+                    using (var command = new SqlCommand(commandText, connection))
+                    {
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(DatabaseUtility.GetSqlParameter("BatchSize", batchSize, SqlDbType.Int));
+                        command.Parameters.Add(DatabaseUtility.GetSqlParameter("CutoffDate", cutoffDate, SqlDbType.DateTime));
+                        int rows = command.ExecuteNonQuery();
+                        totalDeleted += rows;
+                        if (rows < batchSize)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return totalDeleted;
+        }
+
+        public async Task<int> DeleteOldLogsAsync(DateTime cutoffDate, int batchSize = 1000, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            string connectionString = ConnectionStringProvider.GetConnectionString();
+            int totalDeleted = 0;
+            string commandText = @"DELETE TOP (@BatchSize) FROM dbo.AppLogs WHERE CreatedDate < @CutoffDate";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    using (var command = new SqlCommand(commandText, connection))
+                    {
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(DatabaseUtility.GetSqlParameter("BatchSize", batchSize, SqlDbType.Int));
+                        command.Parameters.Add(DatabaseUtility.GetSqlParameter("CutoffDate", cutoffDate, SqlDbType.DateTime));
+                        int rows = await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
+                        totalDeleted += rows;
+                        if (rows < batchSize)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return totalDeleted;
         }
 
         private static AppLog GetAppLogFromDataRow(DataRow dr)

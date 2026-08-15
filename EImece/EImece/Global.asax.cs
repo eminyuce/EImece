@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Web;
 using System.Web.Helpers;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -69,6 +70,26 @@ namespace EImece
             GlobalConfiguration.Configure(WebApiConfig.Register);
             GlobalConfiguration.Configuration.DependencyResolver =
                 new MsDiWebApiDependencyResolver(DependencyInjectionConfig.ServiceProvider);
+
+            // Start Quartz background scheduler services if enabled
+            try
+            {
+                var adminQuartzService = DependencyResolver.Current.GetService<EImece.Domain.Scheduler.AdminQuartzService>();
+                if (adminQuartzService != null)
+                {
+                    HostingEnvironment.QueueBackgroundWorkItem(async _ => await adminQuartzService.StartSchedulerServiceAsync().ConfigureAwait(false));
+                }
+
+                var userQuartzService = DependencyResolver.Current.GetService<EImece.Domain.Scheduler.UserQuartzService>();
+                if (userQuartzService != null)
+                {
+                    HostingEnvironment.QueueBackgroundWorkItem(async _ => await userQuartzService.StartSchedulerServiceAsync().ConfigureAwait(false));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to start Quartz scheduler services.");
+            }
         }
 
         public override string GetVaryByCustomString(HttpContext context, string custom)

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,5 +14,9 @@ namespace EImece.Domain.Repositories.IRepositories
         ShoppingCart GetShoppingCartByOrderGuid(string orderGuid);
 
         Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken));
+
+        int DeleteExpiredShoppingCarts(System.DateTime cutoffDate, int batchSize = 500);
+
+        Task<int> DeleteExpiredShoppingCartsAsync(System.DateTime cutoffDate, int batchSize = 500, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

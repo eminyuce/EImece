@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
@@ -956,6 +956,34 @@ namespace EImece.Domain.Services
         public async Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ShoppingCartRepository.GetAdminPageListAsync(search, currentLanguage, cancellationToken).ConfigureAwait(false);
+        }
+
+        public int ClearExpiredShoppingCarts(int olderThanDays = 30)
+        {
+            if (olderThanDays < 1)
+            {
+                olderThanDays = 30;
+            }
+
+            var cutoffDate = DateTime.Now.AddDays(-olderThanDays);
+            Logger.Info($"ClearExpiredShoppingCarts starting. CutoffDate: {cutoffDate:yyyy-MM-dd HH:mm:ss} (older than {olderThanDays} days)");
+            int count = ShoppingCartRepository.DeleteExpiredShoppingCarts(cutoffDate);
+            Logger.Info($"ClearExpiredShoppingCarts completed. Deleted {count} expired carts.");
+            return count;
+        }
+
+        public async Task<int> ClearExpiredShoppingCartsAsync(int olderThanDays = 30, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (olderThanDays < 1)
+            {
+                olderThanDays = 30;
+            }
+
+            var cutoffDate = DateTime.Now.AddDays(-olderThanDays);
+            Logger.Info($"ClearExpiredShoppingCartsAsync starting. CutoffDate: {cutoffDate:yyyy-MM-dd HH:mm:ss} (older than {olderThanDays} days)");
+            int count = await ShoppingCartRepository.DeleteExpiredShoppingCartsAsync(cutoffDate, 500, cancellationToken).ConfigureAwait(false);
+            Logger.Info($"ClearExpiredShoppingCartsAsync completed. Deleted {count} expired carts.");
+            return count;
         }
     }
 }
