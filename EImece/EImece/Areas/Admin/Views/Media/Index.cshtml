@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Models.AdminModels;
 @using EImece.Domain.Helpers;
 @using GridMvc.Html
@@ -73,6 +73,26 @@
 
             var $upload = $('#fileupload');
             var dropTimer;
+            var hasUploadedFiles = false;
+
+            $upload.on('fileuploaddone', function (e, data) {
+                if (data && data.result && data.result.files && data.result.files.length > 0) {
+                    hasUploadedFiles = true;
+                }
+            });
+
+            $upload.on('fileuploadstop', function () {
+                if (hasUploadedFiles) {
+                    hasUploadedFiles = false;
+                    // Persist uploaded tab so Grid.Mvc displays the newly uploaded files immediately
+                    sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
+                    setTimeout(function () {
+                        window.location.href = window.location.pathname + window.location.search + '#tab2default';
+                        window.location.reload(true);
+                    }, 500);
+                }
+            });
+
             $upload.on('dragover', function () {
                 $upload.addClass('is-dragover');
                 clearTimeout(dropTimer);
@@ -86,6 +106,13 @@
                 $upload.toggleClass('has-files', $upload.find('.files tr').length > 0);
             }
             $upload.on('fileuploadadd fileuploadfinished fileuploaddestroyed fileuploadfail fileuploadalways', syncQueueState);
+
+            // Restore active tab after reload if specified in sessionStorage or URL hash
+            var savedTab = sessionStorage.getItem('adminMediaActiveTab') || window.location.hash;
+            if (savedTab && $('.admin-media-tabs a[href="' + savedTab + '"]').length) {
+                $('.admin-media-tabs a[href="' + savedTab + '"]').tab('show');
+                sessionStorage.removeItem('adminMediaActiveTab');
+            }
 
         });
     </script>
