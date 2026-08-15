@@ -391,58 +391,58 @@
 
                                 <div class="col-md-6">
                                     <div class="well well-sm text-center">
-                                        <h4><i class="fa fa-cogs text-warning" style="font-size:24px;"></i><br/>@AdminResource.AppLogs & Bakım</h4>
+                                        <h4><i class="fa fa-cogs text-warning" style="font-size:24px;"></i><br />@AdminResource.AppLogs & Bakım</h4>
                                         <p class="text-muted">Uygulama kayıtlarını görüntüleyin ve bakım yapın.</p>
                                         @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn btn-block btn-warning" })
-                                        @Html.ActionLink("Upload and Compress Images", "compressimages", "images", null, new { @class = "btn btn-block btn-warning" })
-                                        @Html.ActionLink("BackUp DB", "BackUpDb", "AdminSettings", null, new { @class = "btn btn-block btn-danger" })
+                                        <!--         Html.ActionLink("Upload and Compress Images", "compressimages", "images", null, new { @class = "btn btn-block btn-warning" })   -->
+                                        <!--             Html.ActionLink("BackUp DB", "BackUpDb", "AdminSettings", null, new { @class = "btn btn-block btn-danger" })   -->
+                                    </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
 
-<style>
-    /* Styling for the nav pills */
-    #settingsTabs > li > a {
-        border-radius: 4px;
-        margin-bottom: 2px;
-        color: #555;
-    }
-    #settingsTabs > li.active > a,
-    #settingsTabs > li.active > a:hover,
-    #settingsTabs > li.active > a:focus {
-        background-color: #337ab7;
-        color: #fff;
-    }
-    .tab-content {
-        padding-left: 15px;
-    }
-    .tab-pane .panel-heading {
-        background-color: #f5f5f5;
-        font-weight: bold;
-    }
-</style>
-
-<script>
-    // Tab persist via hash in URL
-    $(function(){
-        var hash = window.location.hash;
-        if (hash) {
-            $(".nav-pills a[href='" + hash + "']").tab('show');
+    <style>
+        /* Styling for the nav pills */
+        #settingsTabs > li > a {
+            border-radius: 4px;
+            margin-bottom: 2px;
+            color: #555;
         }
-        $('.nav-pills a').click(function (e) {
-            $(this).tab('show');
-            var scrollmem = $('body').scrollTop() || $('html').scrollTop();
-            window.location.hash = this.hash;
-            $('html,body').scrollTop(scrollmem);
+        #settingsTabs > li.active > a,
+        #settingsTabs > li.active > a:hover,
+        #settingsTabs > li.active > a:focus {
+            background-color: #337ab7;
+            color: #fff;
+        }
+        .tab-content {
+            padding-left: 15px;
+        }
+        .tab-pane .panel-heading {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        // Tab persist via hash in URL
+        $(function(){
+            var hash = window.location.hash;
+            if (hash) {
+                $(".nav-pills a[href='" + hash + "']").tab('show');
+            }
+            $('.nav-pills a').click(function (e) {
+                $(this).tab('show');
+                var scrollmem = $('body').scrollTop() || $('html').scrollTop();
+                window.location.hash = this.hash;
+                $('html,body').scrollTop(scrollmem);
+            });
         });
-    });
-</script>
+    </script>
