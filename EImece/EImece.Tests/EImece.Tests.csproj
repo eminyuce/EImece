@@ -330,6 +330,8 @@
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
     <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />
     <Compile Include="Helpers\MailTemplateModelInspectorTests.cs" />
+    <Compile Include="Helpers\InMemoryRateLimiterTests.cs" />
+    <Compile Include="Helpers\StorefrontSeoAndEmptyStateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>

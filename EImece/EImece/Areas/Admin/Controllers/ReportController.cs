@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services;
 using EImece.Domain.DependencyInjection;
@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Resources;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -456,7 +457,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (minPrice.HasValue && maxPrice.HasValue && minPrice > maxPrice)
                 {
-                    ModelState.AddModelError("", "Minimum price cannot be greater than maximum price");
+                    ModelState.AddModelError("", AdminResource.MinPriceCannotBeGreaterThanMaxPrice);
                     return View(new DataSetReportViewModel
                     {
                         ReportData = new DataSet(),
@@ -578,7 +579,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (startDate > endDate)
                 {
-                    ModelState.AddModelError("StartDate", "Start date must be before end date.");
+                    ModelState.AddModelError("StartDate", AdminResource.StartDateMustBeBeforeEndDate);
                     model.ReportActionName = ProductStatsByDateRangeKey;
                     model.ReportTitle = "Product Stats By DateRange";
                     return View(model);

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1289,5 +1289,35 @@
   </data>
   <data name="MenuCannotDeleteHasChildren" xml:space="preserve">
     <value>Alt menüsü olduğu için silinemez</value>
+  </data>
+  <data name="InvalidVerificationCode" xml:space="preserve">
+    <value>Geçersiz doğrulama kodu.</value>
+  </data>
+  <data name="SessionTimedOutPleaseLoginAgain" xml:space="preserve">
+    <value>Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın.</value>
+  </data>
+  <data name="AuthenticatorKeyNotFound" xml:space="preserve">
+    <value>Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin.</value>
+  </data>
+  <data name="TwoFactorEnabledSuccess" xml:space="preserve">
+    <value>İki faktörlü doğrulama başarıyla etkinleştirildi.</value>
+  </data>
+  <data name="ExcelFileRequired" xml:space="preserve">
+    <value>Excel dosyası zorunludur.</value>
+  </data>
+  <data name="ExcelFileAllowedOnly" xml:space="preserve">
+    <value>Sadece .xls veya .xlsx uzantılı dosyalar geçerlidir.</value>
+  </data>
+  <data name="MenuLinkSelectRequired" xml:space="preserve">
+    <value>Menü linki seçimi yapınız.</value>
+  </data>
+  <data name="PageThemeSelectRequired" xml:space="preserve">
+    <value>Sayfa teması seçimi yapınız.</value>
+  </data>
+  <data name="MinPriceCannotBeGreaterThanMaxPrice" xml:space="preserve">
+    <value>Minimum fiyat maksimum fiyattan büyük olamaz.</value>
+  </data>
+  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+    <value>Başlangıç tarihi bitiş tarihinden önce olmalıdır.</value>
   </data>
 </root>

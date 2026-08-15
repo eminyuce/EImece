@@ -1,0 +1,136 @@
+@using EImece.Domain
+@using Resources
+@{
+    var isAdmin = User != null && User.Identity.IsAuthenticated && (User.IsInRole(Constants.AdministratorRole) || AppConfig.BypassAdminAuth);
+    if (!isAdmin)
+    {
+        return;
+    }
+}
+
+<li class="admin-topbar-health admin-topbar-action--essential" id="adminSystemHealthContainer">
+    <a href="@Url.Action("SystemHealth", "Dashboard", new { area = "admin" })" id="systemHealthBadgeBtn" title="Sistem durumu kontrol ediliyor..." class="admin-health-badge-link">
+        <span class="health-status-dot health-status-dot--pending" id="healthStatusDot" aria-hidden="true"></span>
+        <span class="admin-topbar-label" id="healthStatusLabel">Sistem Kontrol...</span>
+    </a>
+</li>
+
+<style>
+    .health-status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: middle;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .health-status-dot--ok {
+        background-color: #27ab83;
+        box-shadow: 0 0 0 3px rgba(39, 171, 131, 0.25);
+    }
+    .health-status-dot--issue {
+        background-color: #e12d39;
+        box-shadow: 0 0 0 3px rgba(225, 45, 57, 0.25);
+        animation: healthPulse 2s infinite;
+    }
+    .health-status-dot--pending {
+        background-color: #f0b429;
+        box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.25);
+    }
+    @@keyframes healthPulse {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 45, 57, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(225, 45, 57, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 45, 57, 0); }
+    }
+    .admin-health-badge-link {
+        cursor: pointer;
+        display: inline-flex !important;
+        align-items: center;
+        text-decoration: none !important;
+    }
+</style>
+
+<script>
+    /*
+     * Lightweight System Health Status Poller for Topbar & Dashboard widgets
+     * Polling Interval: 60 seconds
+     */
+    (function ($) {
+        if (!$) return;
+
+        var lastCheckTimestamp = null;
+        var pollingIntervalMs = 60000;
+        var healthEndpoint = '/health';
+
+        function updateRelativeTime() {
+            if (!lastCheckTimestamp) return;
+            var elapsedSec = Math.max(0, Math.round((new Date().getTime() - lastCheckTimestamp.getTime()) / 1000));
+            var timeText = "Son kontrol: " + elapsedSec + " saniye önce (Ayrıntılar için tıklayın)";
+            $('#systemHealthBadgeBtn').attr('title', timeText);
+        }
+
+        function renderHealthState(data, isError) {
+            lastCheckTimestamp = new Date();
+            var isHealthy = !isError && data && (data.Status === "UP" || data.status === "UP");
+            var dot = $('#healthStatusDot');
+            var label = $('#healthStatusLabel');
+
+            dot.removeClass('health-status-dot--pending health-status-dot--ok health-status-dot--issue');
+
+            if (isHealthy) {
+                dot.addClass('health-status-dot--ok');
+                label.text("System OK");
+            } else {
+                dot.addClass('health-status-dot--issue');
+                label.text("System issue");
+            }
+
+            // Update Dashboard widget if present
+            var dashBadge = $('#dashboardHealthBadge');
+            var dashDot = $('#dashboardHealthDot');
+            var dashText = $('#dashboardHealthText');
+            if (dashBadge.length) {
+                dashDot.removeClass('health-status-dot--pending health-status-dot--ok health-status-dot--issue');
+                if (isHealthy) {
+                    dashDot.addClass('health-status-dot--ok');
+                    dashText.text("Sistem Durumu: Sağlıklı (System OK)");
+                    dashBadge.removeClass('label-danger label-default').addClass('label-success').text("UP");
+                } else {
+                    dashDot.addClass('health-status-dot--issue');
+                    dashText.text("Sistem Durumu: Sorun Tespit Edildi (System Issue)");
+                    dashBadge.removeClass('label-success label-default').addClass('label-danger').text("DOWN");
+                }
+            }
+
+            updateRelativeTime();
+        }
+
+        function checkHealth() {
+            $.ajax({
+                url: healthEndpoint,
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                timeout: 10000
+            }).done(function (data) {
+                renderHealthState(data, false);
+            }).fail(function (xhr) {
+                var responseData = null;
+                try {
+                    if (xhr.responseText) {
+                        responseData = JSON.parse(xhr.responseText);
+                    }
+                } catch (e) { }
+                renderHealthState(responseData, true);
+            });
+        }
+
+        $(document).ready(function () {
+            checkHealth();
+            setInterval(checkHealth, pollingIntervalMs);
+            setInterval(updateRelativeTime, 5000);
+            window.refreshSystemHealth = checkHealth;
+        });
+    })(window.jQuery);
+</script>

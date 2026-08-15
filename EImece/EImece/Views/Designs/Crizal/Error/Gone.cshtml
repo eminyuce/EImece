@@ -1,0 +1,26 @@
+@model EImece.Domain.Models.HelperModels.ErrorModel
+@using Resources;
+@{
+    ViewBag.Title = Resource.PageNotFoundText;
+    ViewBag.Description = !string.IsNullOrWhiteSpace(ViewBag.Description as string) 
+        ? ViewBag.Description 
+        : Resource.NotFoundText;
+}
+
+<div class="jumbotron text-center" style="background: transparent; padding: 4rem 1rem;">
+    <div class="card border-0 shadow-sm mx-auto p-4 p-md-5" style="max-width: 580px; border-radius: 12px; background: #fff;">
+        <header class="mb-3">
+            <h1 class="h3 font-weight-bold text-dark">
+                <span aria-hidden="true" class="fa fa-ban text-warning mr-2"></span>@ViewBag.Title
+            </h1>
+        </header>
+        <p class="lead text-muted mb-4" style="font-size: 1.05rem;">
+            @ViewBag.Description
+        </p>
+        <div>
+            <a class="btn btn-primary btn-pill btn-lg px-4" href="@Url.Action("Index", "Home")">
+                <span aria-hidden="true" class="fa fa-home mr-1"></span> @Resource.ContinueShopping
+            </a>
+        </div>
+    </div>
+</div>

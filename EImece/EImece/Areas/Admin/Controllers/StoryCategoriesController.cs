@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
@@ -55,7 +55,7 @@ namespace EImece.Areas.Admin.Controllers
 
                 if (storyCategory != null && string.IsNullOrEmpty(storyCategory.PageTheme))
                 {
-                    ModelState.AddModelError("PageTheme", "Sayfa Teması secimi yapiniz");
+                    ModelState.AddModelError("PageTheme", AdminResource.PageThemeSelectRequired);
                     return View(storyCategory);
                 }
 

@@ -162,9 +162,7 @@ namespace EImece.App_Start
 
             // Multiple IHealthCheck implementations — GetServices / IEnumerable<IHealthCheck> returns all.
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<SqlServerHealthCheck>(sp));
-            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<ExternalApiHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<FileStorageHealthCheck>(sp));
-            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<BackgroundServiceHealthCheck>(sp));
             services.AddSingletonWithProps<IHealthCheckService, HealthCheckService>();
 
             // OpenTelemetry providers are initialized once from ObservabilityBootstrap.Configure().

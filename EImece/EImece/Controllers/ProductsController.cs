@@ -9,6 +9,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Filters;
 using NLog;
 using System;
 using System.Data.Entity;
@@ -75,6 +76,7 @@ namespace EImece.Controllers
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        [RateLimit("search", DefaultLimit = 30, DefaultWindowMinutes = 1)]
         public async Task<ActionResult> AdvancedSearchProducts(CancellationToken cancellationToken, String search = "", string filters = "", String page = "")
         {
             Logger.Info($"Entering AdvancedSearchProducts with search: '{search}', filters: '{filters}', page: '{page}'");
@@ -103,15 +105,20 @@ namespace EImece.Controllers
 
                 Logger.Info($"Retrieved product details for ID: {productId}, Name: {product?.ProductDto?.Name}, IsActive: {product?.ProductDto?.IsActive}");
 
-                if (product == null || product.ProductDto == null || !product.ProductDto.IsActive)
+                if (product == null || product.ProductDto == null)
                 {
-                    Logger.Info($"Product with ID: {productId} is null or inactive. Redirecting to NotFound error page.");
-                    return RedirectToAction("NotFound", ErrorKey);
+                    Logger.Info($"Product with ID: {productId} was not found in database. Returning 404 NotFound.");
+                    return HttpNotFoundView();
+                }
+                if (!product.ProductDto.IsActive)
+                {
+                    Logger.Info($"Product with ID: {productId} is inactive. Returning 410 Gone.");
+                    return HttpGoneView(Resources.Resource.NotFoundText);
                 }
                 if (product.ProductDto.ProductCategoryId <= 0)
                 {
-                    Logger.Info($"ProductCategory for product ID: {productId} is invalid. Redirecting to NotFound error page.");
-                    return RedirectToAction("NotFound", ErrorKey);
+                    Logger.Info($"ProductCategory for product ID: {productId} is invalid. Returning 404 NotFound.");
+                    return HttpNotFoundView();
                 }
                 ViewBag.SeoId = product.ProductDto.SeoUrl;
                 product.Page = page;
@@ -125,8 +132,8 @@ namespace EImece.Controllers
             }
             catch (ArgumentNullException ex)
             {
-                Logger.Info(ex, "Product not found for id '{0}'. Redirecting to NotFound.", id);
-                return RedirectToAction("NotFound", ErrorKey);
+                Logger.Info(ex, "Product not found for id '{0}'. Returning 404 NotFound.", id);
+                return HttpNotFoundView();
             }
             catch (Exception e)
             {
@@ -167,6 +174,7 @@ namespace EImece.Controllers
         }
 
         [Route(Constants.SearchProductPrefix)]
+        [RateLimit("search", DefaultLimit = 30, DefaultWindowMinutes = 1)]
         public async Task<ActionResult> SearchProducts(String search, CancellationToken cancellationToken, int page = 1, int sorting = 0)
         {
             Logger.Info($"Entering SearchProducts with search: '{search}', page: {page}, sorting: {sorting}");

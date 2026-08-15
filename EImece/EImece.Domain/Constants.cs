@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 
 namespace EImece.Domain
 {
@@ -184,5 +184,6 @@ namespace EImece.Domain
         public const string ValueLastColumn = "ValueLast";
         public const string StatusMessageKey = "StatusMessage";
         public const string ActiveCssClass = "active";
+        public const string TextHtmlUtf8ContentType = "text/html; charset=utf-8";
     }
 }

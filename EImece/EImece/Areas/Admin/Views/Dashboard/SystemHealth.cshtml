@@ -1,0 +1,212 @@
+@using EImece.Domain
+@using Resources
+@{
+    ViewBag.Title = "Sistem Sağlık Durumu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="admin-health-page" style="padding: 20px 24px;">
+    <!-- Breadcrumb & Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div>
+            <ol class="breadcrumb" style="background: transparent; padding: 0; margin-bottom: 6px; font-size: 13px;">
+                <li><a href="@Url.Action("Index", "Dashboard", new { area = "admin" })"><i class="fa fa-home"></i> @AdminResource.AdminHome</a></li>
+                <li><a href="#">@AdminResource.System</a></li>
+                <li class="active" style="color: #627d98;">Sistem Sağlığı</li>
+            </ol>
+            <h1 style="font-size: 24px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 10px;">
+                <i class="fa fa-heartbeat text-danger" aria-hidden="true"></i> Sistem Sağlık Durumu
+            </h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="/health" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-sm" title="Ham JSON Çıktısı">
+                <i class="fa fa-code"></i> JSON (/health)
+            </a>
+            <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-default btn-sm" title="Metrikler">
+                <i class="fa fa-line-chart"></i> Metrikler
+            </a>
+            <button type="button" class="btn btn-primary btn-sm" id="btnPageRefreshHealth" style="font-weight: 600;">
+                <i class="fa fa-refresh" id="pageRefreshIcon"></i> Şimdi Yenile
+            </button>
+        </div>
+    </div>
+
+    <!-- Overall Summary Banner -->
+    <div class="panel panel-default" style="border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 2px 6px rgba(16,42,67,0.06); margin-bottom: 24px;">
+        <div class="panel-body" style="padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div id="pageOverallStatusIconContainer" style="width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #f0f4f8; font-size: 24px;">
+                    <i class="fa fa-circle-o-notch fa-spin text-muted" id="pageOverallStatusIcon"></i>
+                </div>
+                <div>
+                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #829ab1;">Genel Sistem Durumu</div>
+                    <div id="pageOverallStatusTitle" style="font-size: 20px; font-weight: 700; color: #102a43;">Kontrol ediliyor...</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+                <div>
+                    <div style="font-size: 11px; color: #829ab1; text-transform: uppercase; font-weight: 600;">Bileşen Sayısı</div>
+                    <div id="pageTotalComponentsCount" style="font-size: 18px; font-weight: 700; color: #334e68;">-</div>
+                </div>
+                <div>
+                    <div style="font-size: 11px; color: #829ab1; text-transform: uppercase; font-weight: 600;">Son Kontrol</div>
+                    <div id="pageLastCheckedRelative" style="font-size: 14px; font-weight: 600; color: #334e68;">Henüz yapılmadı</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Component Details Table -->
+    <div class="panel panel-default" style="border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 2px 6px rgba(16,42,67,0.06);">
+        <div class="panel-heading" style="background: #f8fafc; border-bottom: 1px solid #d9e2ec; padding: 14px 20px; font-weight: 700; font-size: 14px; color: #334e68;">
+            <i class="fa fa-server" aria-hidden="true"></i> Sistem Bileşenleri & Sağlık Kontrolleri
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped" style="margin-bottom: 0;">
+                <thead>
+                    <tr style="background: #f0f4f8; color: #486581; font-size: 12px; text-transform: uppercase;">
+                        <th style="padding: 12px 20px;">Bileşen</th>
+                        <th style="padding: 12px 20px;">Durum</th>
+                        <th style="padding: 12px 20px;">Yanıt Süresi</th>
+                        <th style="padding: 12px 20px;">Açıklama / Teşhis</th>
+                    </tr>
+                </thead>
+                <tbody id="pageHealthComponentsTableBody" style="font-size: 13px;">
+                    <tr>
+                        <td colspan="4" class="text-center text-muted" style="padding: 24px;">
+                            <i class="fa fa-spinner fa-spin"></i> Sistem sağlık kontrolleri sorgulanıyor...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .health-status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 6px;
+        vertical-align: middle;
+    }
+    .health-status-dot--ok {
+        background-color: #27ab83;
+        box-shadow: 0 0 0 3px rgba(39, 171, 131, 0.25);
+    }
+    .health-status-dot--issue {
+        background-color: #e12d39;
+        box-shadow: 0 0 0 3px rgba(225, 45, 57, 0.25);
+    }
+    .health-status-dot--pending {
+        background-color: #f0b429;
+        box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.25);
+    }
+</style>
+
+@section scripts {
+<script>
+    (function ($) {
+        if (!$) return;
+
+        var lastCheckTimestamp = null;
+        var healthEndpoint = '/health';
+
+        function updateRelativeTime() {
+            if (!lastCheckTimestamp) return;
+            var elapsedSec = Math.max(0, Math.round((new Date().getTime() - lastCheckTimestamp.getTime()) / 1000));
+            var timeText = elapsedSec === 0 ? "Az önce" : elapsedSec + " saniye önce";
+            $('#pageLastCheckedRelative').text(timeText);
+        }
+
+        function renderHealthState(data, isError) {
+            lastCheckTimestamp = new Date();
+            var isHealthy = !isError && data && (data.Status === "UP" || data.status === "UP");
+            var iconContainer = $('#pageOverallStatusIconContainer');
+            var statusIcon = $('#pageOverallStatusIcon');
+            var statusTitle = $('#pageOverallStatusTitle');
+
+            statusIcon.removeClass('fa-spin fa-circle-o-notch fa-check fa-exclamation-triangle text-muted text-success text-danger');
+
+            if (isHealthy) {
+                iconContainer.css('background', '#e3f9e5');
+                statusIcon.addClass('fa-check').css('color', '#27ab83');
+                statusTitle.text("UP (Tüm Sistemler Sağlıklı ve Çalışır Durumda)").css('color', '#27ab83');
+            } else {
+                iconContainer.css('background', '#ffe3e3');
+                statusIcon.addClass('fa-exclamation-triangle').css('color', '#e12d39');
+                statusTitle.text("DOWN (Sistem Sorunu Tespit Edildi)").css('color', '#e12d39');
+            }
+
+            var tbody = $('#pageHealthComponentsTableBody');
+            tbody.empty();
+
+            var components = (data && data.Components) ? data.Components : null;
+            if (components && Object.keys(components).length > 0) {
+                var compCount = Object.keys(components).length;
+                $('#pageTotalComponentsCount').text(compCount);
+
+                $.each(components, function (key, comp) {
+                    var compUp = comp.Status === "UP";
+                    var compBadge = compUp
+                        ? '<span class="label label-success" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa fa-check"></i> UP</span>'
+                        : '<span class="label label-danger" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa fa-times"></i> DOWN</span>';
+                    var duration = (typeof comp.DurationMs === 'number') ? comp.DurationMs.toFixed(1) + ' ms' : '-';
+                    var desc = comp.Description || (compUp ? 'Bileşen normal çalışıyor' : 'Bağlantı veya yanıt hatası');
+
+                    var row = $('<tr></tr>');
+                    row.append('<td style="padding: 14px 20px;"><strong><i class="fa fa-cube text-primary" style="margin-right: 6px;"></i> ' + $('<div>').text(key).html() + '</strong></td>');
+                    row.append('<td style="padding: 14px 20px;">' + compBadge + '</td>');
+                    row.append('<td style="padding: 14px 20px;"><span class="badge" style="background: #e2e8f0; color: #334e68; font-size: 12px;">' + duration + '</span></td>');
+                    row.append('<td style="padding: 14px 20px;"><span style="color: ' + (compUp ? '#486581' : '#e12d39') + ';">' + $('<div>').text(desc).html() + '</span></td>');
+                    tbody.append(row);
+                });
+            } else if (isError) {
+                $('#pageTotalComponentsCount').text('0');
+                tbody.append('<tr><td colspan="4" class="text-danger text-center" style="padding: 24px;"><i class="fa fa-exclamation-triangle"></i> Sağlık kontrol servisine ulaşılamadı. Lütfen sunucu bağlantısını kontrol edin.</td></tr>');
+            } else {
+                $('#pageTotalComponentsCount').text('1');
+                tbody.append('<tr><td style="padding: 14px 20px;"><strong>Genel Durum</strong></td><td><span class="label label-success">UP</span></td><td>-</td><td>Uygulama çalışıyor.</td></tr>');
+            }
+
+            updateRelativeTime();
+        }
+
+        function checkHealth() {
+            var icon = $('#pageRefreshIcon');
+            icon.addClass('fa-spin');
+
+            $.ajax({
+                url: healthEndpoint,
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                timeout: 10000
+            }).done(function (data) {
+                renderHealthState(data, false);
+            }).fail(function (xhr) {
+                var responseData = null;
+                try {
+                    if (xhr.responseText) responseData = JSON.parse(xhr.responseText);
+                } catch (e) { }
+                renderHealthState(responseData, true);
+            }).always(function () {
+                icon.removeClass('fa-spin');
+            });
+        }
+
+        $(document).ready(function () {
+            checkHealth();
+            setInterval(checkHealth, 60000);
+            setInterval(updateRelativeTime, 5000);
+
+            $('#btnPageRefreshHealth').on('click', function (e) {
+                e.preventDefault();
+                checkHealth();
+            });
+        });
+    })(window.jQuery);
+</script>
+}

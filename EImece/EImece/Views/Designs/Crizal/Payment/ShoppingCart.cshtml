@@ -60,11 +60,13 @@
                     }
                     else
                     {
-                        <output class="alert alert-secondary crizal-cart-empty d-block">
-                            <div class="crizal-cart-empty__inner text-center">
-                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))))
-                            </div>
-                        </output>
+                        @Html.Partial("_EmptyState", new EmptyStateViewModel(
+                            Resource.MyBasket,
+                            String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))),
+                            Url.Action("Index", "Home"),
+                            Resource.ContinueShopping,
+                            "fa fa-shopping-cart"
+                        ))
                     }
                 </div>
 

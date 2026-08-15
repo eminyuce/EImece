@@ -26,7 +26,8 @@
     var catalogOpen = groupOpen(catalogControllers);
     var salesOpen = productPriceEnabled && groupOpen(new[] { "orders", "customers", "shoppingcarts", "report" });
     var contentOpen = groupOpen(new[] { "menus", "mainpageimages", "stories", "storycategories", "tags", "tagcategories", "faq", "subscribers" });
-    var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "users" });
+    var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "users" })
+        || (string.Equals(currentController, "dashboard", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "systemhealth", StringComparison.OrdinalIgnoreCase));
 }
 <aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="@AdminResource.AdminNavigation" data-collapsed="false">
     <div class="admin-sidebar-brand">
@@ -257,6 +258,12 @@
                        title="Authenticator 2FA">
                         <i class="fa fa-shield" aria-hidden="true"></i>
                         <span class="admin-nav-label">Authenticator 2FA</span>
+                    </a>
+                    <a class="admin-nav-item @actionActive("dashboard", "systemhealth")"
+                       href="@Url.Action("SystemHealth", "Dashboard", new { area = "admin" })"
+                       title="Sistem Sağlığı">
+                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                        <span class="admin-nav-label">Sistem Sağlığı</span>
                     </a>
                 </div>
             </div>

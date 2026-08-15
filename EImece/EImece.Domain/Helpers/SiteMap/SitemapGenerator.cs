@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,7 +17,11 @@ namespace EImece.Domain.Helpers.SiteMap
 
         public XDocument GenerateSiteMap(IEnumerable<ISitemapItem> items)
         {
-            //   Ensure.Argument.NotNull(items, "items");
+            var validItems = (items ?? Enumerable.Empty<ISitemapItem>())
+                .Where(item => item != null && !string.IsNullOrWhiteSpace(item.Url))
+                .GroupBy(item => item.Url.Trim().ToLowerInvariant())
+                .Select(group => group.OrderByDescending(x => x.LastModified ?? DateTime.MinValue).First())
+                .ToList();
 
             var sitemap = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
@@ -25,7 +29,7 @@ namespace EImece.Domain.Helpers.SiteMap
                       new XAttribute("xmlns", xmlns),
                       new XAttribute(XNamespace.Xmlns + "xsi", xsi),
                       new XAttribute(xsi + "schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"),
-                      from item in items
+                      from item in validItems
                       select CreateItemElement(item)
                       )
                  );
@@ -35,12 +39,18 @@ namespace EImece.Domain.Helpers.SiteMap
 
         public virtual XDocument GenerateNewsSiteMap(IEnumerable<ISitemapItem> items)
         {
+            var validItems = (items ?? Enumerable.Empty<ISitemapItem>())
+                .Where(item => item != null && !string.IsNullOrWhiteSpace(item.Url))
+                .GroupBy(item => item.Url.Trim().ToLowerInvariant())
+                .Select(group => group.OrderByDescending(x => x.LastModified ?? DateTime.MinValue).First())
+                .ToList();
+
             var sitemap = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
                     new XElement(xmlns + "urlset",
                       new XAttribute("xmlns", xmlns),
                       new XAttribute(XNamespace.Xmlns + "news", newsXsi),
-                      from item in items
+                      from item in validItems
                       select CreateNewsItemElement(item)
                       )
                  );
@@ -50,7 +60,7 @@ namespace EImece.Domain.Helpers.SiteMap
 
         private XElement CreateItemElement(ISitemapItem item)
         {
-            var itemElement = new XElement(xmlns + "url", new XElement(xmlns + "loc", item.Url.ToLowerInvariant()));
+            var itemElement = new XElement(xmlns + "url", new XElement(xmlns + "loc", item.Url.Trim().ToLowerInvariant()));
 
             // all other elements are optional
 

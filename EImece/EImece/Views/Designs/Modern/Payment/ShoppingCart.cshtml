@@ -65,11 +65,13 @@
                     }
                     else
                     {
-                        <div class="alert alert-secondary">
-                            <div class="pt-3 pb-2 text-center ">
-                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))))
-                            </div>
-                        </div>
+                        @Html.Partial("_EmptyState", new EmptyStateViewModel(
+                            Resource.MyBasket,
+                            String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))),
+                            Url.Action("Index", "Home"),
+                            Resource.ContinueShopping,
+                            "fa fa-shopping-cart"
+                        ))
                     }
                 </div>
 

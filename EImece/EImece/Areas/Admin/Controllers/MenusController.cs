@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
@@ -132,7 +132,7 @@ namespace EImece.Areas.Admin.Controllers
                     ViewBag.MenuTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
                     ViewBag.MenuLinks = await GetMenuPagesAsync(cancellationToken);
                     ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
-                    ModelState.AddModelError("MenuLink", "Menu Link secimi yapiniz  ");
+                    ModelState.AddModelError("MenuLink", AdminResource.MenuLinkSelectRequired);
                     return View(menu);
                 }
 

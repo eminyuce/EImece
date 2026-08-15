@@ -140,10 +140,15 @@ namespace EImece.Controllers
 
                 Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.CategoryDto?.Name}");
 
-                if (productCategory == null || productCategory.CategoryDto == null || !productCategory.CategoryDto.IsActive)
+                if (productCategory == null || productCategory.CategoryDto == null)
                 {
-                    Logger.Info($"ProductCategory with ID: {categoryId} is null or inactive. Redirecting to NotFound error page.");
-                    return RedirectToAction("NotFound", "Error");
+                    Logger.Info($"ProductCategory with ID: {categoryId} was not found. Returning 404 NotFound.");
+                    return HttpNotFoundView();
+                }
+                if (!productCategory.CategoryDto.IsActive)
+                {
+                    Logger.Info($"ProductCategory with ID: {categoryId} is inactive. Returning 410 Gone.");
+                    return HttpGoneView(Resources.Resource.NotFoundText);
                 }
 
                 productCategory.SeoId = id;

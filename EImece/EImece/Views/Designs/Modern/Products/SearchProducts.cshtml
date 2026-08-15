@@ -93,12 +93,13 @@ else
         }
         else
         {
-
-    <div class="alert alert-secondary alert-with-icon" role="alert">
-        <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
-        @Resource.NOSearchResult
-    </div>
-
+            @Html.Partial("_EmptyState", new EmptyStateViewModel(
+                Resource.NOSearchResult,
+                Resource.NoSearchResultsText,
+                Url.Action("Index", "Home"),
+                Resource.ContinueShopping,
+                "fa fa-search"
+            ))
         }
 </div>
 }

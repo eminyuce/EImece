@@ -1,12 +1,66 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
+@using EImece.Domain;
 @model EImece.Domain.Models.FrontModels.ProductDetailViewModel
 @using Resources;
+@using Newtonsoft.Json;
 @{
-    var categories = Model.BreadCrumb;
+    var categories = Model.BreadCrumb ?? new List<CategoryTreeModel>();
+    string baseUrl = string.Format("{0}://{1}", AppConfig.HttpProtocol, AppConfig.Domain);
 
+    var breadcrumbList = new List<Dictionary<string, object>>();
+    int position = 1;
+
+    breadcrumbList.Add(new Dictionary<string, object>
+    {
+        { "@type", "ListItem" },
+        { "position", position++ },
+        { "name", Resource.HomePage },
+        { "item", baseUrl + "/" }
+    });
+
+    for (int i = categories.Count() - 1; i >= 0; i--)
+    {
+        var cat = categories[i]?.ProductCategory;
+        if (cat != null && !string.IsNullOrWhiteSpace(cat.Name))
+        {
+            string catUrl = cat.DetailPageUrl;
+            if (!string.IsNullOrWhiteSpace(catUrl) && !catUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                catUrl = baseUrl + catUrl;
+            }
+            breadcrumbList.Add(new Dictionary<string, object>
+            {
+                { "@type", "ListItem" },
+                { "position", position++ },
+                { "name", cat.Name },
+                { "item", catUrl }
+            });
+        }
+    }
+
+    if (Model.ProductDto != null && !string.IsNullOrWhiteSpace(Model.ProductDto.Name))
+    {
+        string prodUrl = Model.ProductDto.DetailPageAbsoluteUrl;
+        breadcrumbList.Add(new Dictionary<string, object>
+        {
+            { "@type", "ListItem" },
+            { "position", position++ },
+            { "name", Model.ProductDto.Name },
+            { "item", prodUrl }
+        });
+    }
+
+    var breadcrumbSchema = new Dictionary<string, object>
+    {
+        { "@context", "https://schema.org" },
+        { "@type", "BreadcrumbList" },
+        { "itemListElement", breadcrumbList }
+    };
+
+    string breadcrumbJson = JsonConvert.SerializeObject(breadcrumbSchema, Formatting.Indented);
 }
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -17,12 +71,19 @@
         @for (int i = categories.Count() - 1; i >= 0; i--)
         {
             var category = categories[i];
-        <li class="breadcrumb-item">
-            <a href="@category.ProductCategory.DetailPageUrl">@category.ProductCategory.Name</a>
-        </li>
+            if (category?.ProductCategory != null)
+            {
+                <li class="breadcrumb-item">
+                    <a href="@category.ProductCategory.DetailPageUrl">@category.ProductCategory.Name</a>
+                </li>
+            }
         }
         <li class="breadcrumb-item active">
             @Model.ProductDto.Name
         </li>
     </ol>
 </nav>
+
+<script type="application/ld+json">
+@Html.Raw(breadcrumbJson)
+</script>

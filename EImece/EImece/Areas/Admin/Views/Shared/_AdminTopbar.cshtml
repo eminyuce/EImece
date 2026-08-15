@@ -1,4 +1,4 @@
-﻿@using Resources;
+@using Resources;
 @using Microsoft.AspNet.Identity;
 @using EImece.Domain;
 @{
@@ -92,6 +92,7 @@
                     <span class="admin-topbar-label">@AdminResource.WebSite</span>
                 </a>
             </li>
+            @Html.Partial("_SystemHealthBadge")
             <li class="admin-topbar-user admin-topbar-action--essential">
                 <a href="@Url.Action("changepassword", "Users", new { area = "admin" })" title="Manage">
                     <i class="fa fa-user" aria-hidden="true"></i>

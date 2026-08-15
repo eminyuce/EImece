@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -36,6 +36,14 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Title = "Gösterge Paneli";
             ViewBag.IyzicoCredentialsMissing = string.Equals(AppConfig.PaymentProvider, "Iyzico", StringComparison.OrdinalIgnoreCase)
                 && !AppConfig.HasConfiguredIyzicoCredentials;
+            return View();
+        }
+
+        // GET: Admin/Dashboard/SystemHealth
+        [HttpGet]
+        public ActionResult SystemHealth()
+        {
+            ViewBag.Title = "Sistem Sağlık Durumu";
             return View();
         }
 

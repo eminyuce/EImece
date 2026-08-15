@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Services;
@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EImece.Domain.DependencyInjection;
+using EImece.Filters;
 using NLog;
 using Resources;
 using System;
@@ -96,6 +97,7 @@ namespace EImece.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [ValidateCaptcha(Prefix = "AdminLogin")]
+        [RateLimit("login", DefaultLimit = 5, DefaultWindowMinutes = 15)]
         public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl = "")
         {
             Logger.Info($"Entering AdminLogin POST with email: {model?.Email}, returnUrl: {returnUrl}");
@@ -193,7 +195,7 @@ namespace EImece.Controllers
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
-                    ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
+                    ModelState.AddModelError("", string.Format(Resource.AccountRequiresVerification, model.Email));
                     Logger.Debug("Redirecting to SendCode.");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
@@ -259,6 +261,7 @@ namespace EImece.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [ValidateCaptcha(Prefix = "CustomerLogin")]
+        [RateLimit("login", DefaultLimit = 5, DefaultWindowMinutes = 15)]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "")
         {
             Logger.Info($"Entering Login POST with email: {model?.Email}, returnUrl: {returnUrl}");
@@ -281,7 +284,7 @@ namespace EImece.Controllers
             }
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Model is not correct.");
+                ModelState.AddModelError("", Resource.ModelIsNotCorrect);
                 return View(model);
             }
 
@@ -315,13 +318,13 @@ namespace EImece.Controllers
 
                 case SignInStatus.LockedOut:
                     Logger.Debug($"Account locked out for email: {model.Email}");
-                    ModelState.AddModelError("", $"The account {model.Email} LockedOut");
+                    ModelState.AddModelError("", string.Format(Resource.AccountLockedOut, model.Email));
                     Logger.Debug("Returning Lockout view.");
                     return View(LockoutAction);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
-                    ModelState.AddModelError("", $"The account {model.Email} RequiresVerification");
+                    ModelState.AddModelError("", string.Format(Resource.AccountRequiresVerification, model.Email));
                     Logger.Debug("Redirecting to SendCode.");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
@@ -337,7 +340,7 @@ namespace EImece.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError("", Resource.InvalidLoginAttempt + result.ToString());
+                            ModelState.AddModelError("", Resource.InvalidLoginAttempt);
                         }
                     }
                     else
@@ -399,7 +402,7 @@ namespace EImece.Controllers
                 case SignInStatus.Failure:
                 default:
                     Logger.Info("Two-factor sign-in failed. Adding error.");
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", Resource.InvalidCode);
                     Logger.Info("Returning VerifyCode view with error.");
                     return View(model);
             }
@@ -444,7 +447,7 @@ namespace EImece.Controllers
             string userId = await TwoFactorTokenService.ValidateAndConsumeTokenAsync(model.Token);
             if (userId == null)
             {
-                ModelState.AddModelError("", "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın.");
+                ModelState.AddModelError("", AdminResource.SessionTimedOutPleaseLoginAgain);
                 return RedirectToAction(AdminLoginAction);
             }
 
@@ -476,7 +479,7 @@ namespace EImece.Controllers
 
             await UserManager.AccessFailedAsync(user.Id);
             string newToken = await TwoFactorTokenService.CreateTokenAsync(user.Id);
-            ModelState.AddModelError("", "Geçersiz doğrulama kodu.");
+            ModelState.AddModelError("", AdminResource.InvalidVerificationCode);
             model.Token = newToken;
             model.Code = null;
             return View(model);
@@ -554,16 +557,16 @@ namespace EImece.Controllers
             else
             {
                 if (!model.Password.Any(char.IsLower))
-                    ModelState.AddModelError("Password", "Şifre en az bir küçük harf içermelidir.");
+                    ModelState.AddModelError("Password", Resource.PasswordMustContainLowerCase);
                 if (!model.Password.Any(char.IsUpper))
-                    ModelState.AddModelError("Password", "Şifre en az bir büyük harf içermelidir.");
+                    ModelState.AddModelError("Password", Resource.PasswordMustContainUpperCase);
                 if (!model.Password.Any(char.IsDigit))
-                    ModelState.AddModelError("Password", "Şifre en az bir sayı içermelidir.");
+                    ModelState.AddModelError("Password", Resource.PasswordMustContainDigit);
                 if (model.Password.Length < 6)
-                    ModelState.AddModelError("Password", "Şifre en az 6 karakter olmalıdır.");
+                    ModelState.AddModelError("Password", Resource.PasswordMinLength);
 
                 Logger.Info("Model state is invalid. Adding error.");
-                ModelState.AddModelError("", AdminResource.RequestIsNotValid);
+                ModelState.AddModelError("", Resource.RequestIsNotValid);
             }
             Logger.Info("Returning Register view with errors.");
             return View(model);

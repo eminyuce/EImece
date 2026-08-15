@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
@@ -19,48 +19,47 @@ namespace EImece.Controllers
         {
             Logger.Info("Entering RobotsText action.");
 
-            string content;
+            var sb = new StringBuilder(512);
 
             if (!SeoSettings.AllowIndexing)
             {
                 Logger.Info("Search engine indexing is disabled. Setting robots.txt to disallow all.");
-                content = Constants.RobotsUserAgentAll + Environment.NewLine
-                        + "Disallow: /" + Environment.NewLine;
+                sb.AppendLine(Constants.RobotsUserAgentAll)
+                  .AppendLine("Disallow: /");
             }
             else if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
             {
                 Logger.Info("Site is under construction or development. Setting robots.txt to disallow all.");
-                content = Constants.RobotsUserAgentAll + Environment.NewLine
-                        + "Disallow: /" + Environment.NewLine
-                        + "# Disallow Robots (Debug)" + Environment.NewLine;
+                sb.AppendLine(Constants.RobotsUserAgentAll)
+                  .AppendLine("Disallow: /")
+                  .AppendLine("# Disallow Robots (Debug)");
             }
             else if (AppConfig.IsSiteLive)
             {
-                Logger.Info("Site is live. Configuring robots.txt with sitemap and specific disallows.");
-                var builder = new UriBuilder(AppConfig.HttpProtocol, Request.Url.Host, Request.Url.Port);
-                builder.Path += "sitemap.xml";
-                var fLink = builder.Uri;
-                Logger.Info($"Generated sitemap URL: {fLink}");
+                string host = !string.IsNullOrWhiteSpace(AppConfig.Domain) ? AppConfig.Domain : (Request?.Url != null ? Request.Url.Authority : "localhost");
+                string protocol = !string.IsNullOrWhiteSpace(AppConfig.HttpProtocol) ? AppConfig.HttpProtocol : "https";
+                string sitemapUrl = $"{protocol}://{host}/sitemap.xml";
+                Logger.Info($"Generated sitemap URL: {sitemapUrl}");
 
-                content = Constants.RobotsUserAgentAll + Environment.NewLine
-                        + "Allow: /" + Environment.NewLine
-                        + "Sitemap: " + fLink + Environment.NewLine
-                        + "Disallow: /Ajax/ " + Environment.NewLine
-                        + "Disallow: /Error/ " + Environment.NewLine
-                        + "Disallow: /Manage/ " + Environment.NewLine
-                        + "Disallow: /Account/ " + Environment.NewLine
-                        + "Disallow: /Admin/ " + Environment.NewLine
-                        + "Disallow: /Customer/ " + Environment.NewLine
-                        + "# Allow Robots (Release)" + Environment.NewLine;
+                sb.AppendLine(Constants.RobotsUserAgentAll)
+                  .AppendLine("Allow: /")
+                  .Append("Sitemap: ").AppendLine(sitemapUrl)
+                  .AppendLine("Disallow: /Ajax/ ")
+                  .AppendLine("Disallow: /Error/ ")
+                  .AppendLine("Disallow: /Manage/ ")
+                  .AppendLine("Disallow: /Account/ ")
+                  .AppendLine("Disallow: /Admin/ ")
+                  .AppendLine("Disallow: /Customer/ ")
+                  .AppendLine("# Allow Robots (Release)");
             }
             else
             {
                 Logger.Info("No specific site status matched. Returning allow-all robots.txt.");
-                content = Constants.RobotsUserAgentAll + Environment.NewLine
-                        + "Allow: /" + Environment.NewLine;
+                sb.AppendLine(Constants.RobotsUserAgentAll)
+                  .AppendLine("Allow: /");
             }
 
-            return File(Encoding.UTF8.GetBytes(content), TextPlain);
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), TextPlain);
         }
     }
 }

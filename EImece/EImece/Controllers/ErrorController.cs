@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.HelperModels;
 using NLog; // Added for logging
@@ -103,6 +103,19 @@ namespace EImece.Controllers
             Logger.Info("Entering Unauthorized action.");
             var result = this.GetErrorView(HttpStatusCode.Unauthorized, "unauthorized");
             Logger.Info("Returning Unauthorized view or partial view.");
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a HTTP 410 Gone error view for deleted or deactivated entities. Returns a partial view if the request is an AJAX call.
+        /// </summary>
+        /// <returns>The partial or full gone view.</returns>
+        [CustomOutputCache(CacheProfile = "NotFound")]
+        public ActionResult Gone()
+        {
+            Logger.Info("Entering Gone action.");
+            var result = this.GetErrorView((HttpStatusCode)410, "gone");
+            Logger.Info("Returning Gone view or partial view.");
             return result;
         }
 

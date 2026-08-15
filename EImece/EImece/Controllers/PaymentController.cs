@@ -17,6 +17,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using EImece.Domain.DependencyInjection;
+using EImece.Filters;
 using NLog;
 using Resources;
 using System;
@@ -588,6 +589,7 @@ namespace EImece.Controllers
             }
         }
 
+        [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
         public async Task<ActionResult> PlaceOrder()
         {
             PaymentLogger.Info("Entering PlaceOrder action.");
@@ -618,10 +620,10 @@ namespace EImece.Controllers
                             PaymentLogger.Warn("Iyzico API keys are empty; skipping checkout form initialize.");
                             ViewBag.CheckoutFormInitialize = new PaymentInitializeResult
                             {
-                                ErrorMessage = "IyzicoApiKey / IyzicoSecretKey tanımlı değil. Ödeme ayarlarını kontrol edin.",
+                                ErrorMessage = Resource.PaymentFormCouldNotBeInitializedConfig,
                                 ProviderName = PaymentContext.ProviderName
                             };
-                            ModelState.AddModelError("", "Ödeme formu başlatılamadı. Iyzico API anahtarlarını yapılandırın.");
+                            ModelState.AddModelError("", Resource.PaymentFormCouldNotBeInitializedConfig);
                         }
                         else
                         {
@@ -632,7 +634,7 @@ namespace EImece.Controllers
                     {
                         PaymentLogger.Error(ex, "Failed to initialize payment checkout form via {0}.", PaymentContext.ProviderName);
                         ViewBag.CheckoutFormInitialize = null;
-                        ModelState.AddModelError("", "Ödeme formu başlatılamadı. Ödeme ayarlarını kontrol edin.");
+                        ModelState.AddModelError("", Resource.PaymentFormCouldNotBeInitializedSettings);
                     }
                     PaymentLogger.Info("Returning PlaceOrder view.");
                     return View(shoppingCart);
@@ -787,6 +789,7 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
         public async Task<ActionResult> BuyNow(String productId, Customer customer)
         {
             PaymentLogger.Info($"Entering BuyNow POST with productId: {productId}");
@@ -1155,6 +1158,7 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
         public async Task<ActionResult> ShoppingWithoutAccount(Customer customer)
         {
             PaymentLogger.Info("Entering ContinueShoppingWithoutAccount POST action.");

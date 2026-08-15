@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Services;
 using EImece.Models;
 using Microsoft.AspNet.Identity;
@@ -7,6 +7,7 @@ using NLog; // Include the NLog namespace
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Resources;
 
 namespace EImece.Controllers
 {
@@ -141,20 +142,20 @@ namespace EImece.Controllers
 
             if (string.IsNullOrEmpty(user.AuthenticatorKey))
             {
-                ModelState.AddModelError("", "Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin.");
+                ModelState.AddModelError("", Resource.AuthenticatorKeyNotFound);
                 return View(await BuildEnableAuthenticatorViewModelAsync(user));
             }
 
             if (!ModelState.IsValid || !AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model?.Code))
             {
-                ModelState.AddModelError("", "Geçersiz doğrulama kodu.");
+                ModelState.AddModelError("", Resource.InvalidVerificationCode);
                 return View(await BuildEnableAuthenticatorViewModelAsync(user));
             }
 
             user.TwoFactorAuthenticatorEnabled = true;
             await UserManager.UpdateAsync(user);
 
-            TempData["StatusMessage"] = "İki faktörlü doğrulama başarıyla etkinleştirildi.";
+            TempData["StatusMessage"] = Resource.TwoFactorEnabledSuccess;
             return RedirectToAction(IndexAction, new { Message = ManageMessageId.SetTwoFactorSuccess });
         }
 

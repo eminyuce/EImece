@@ -1,0 +1,45 @@
+@using EImece.Domain;
+@using EImece.Domain.Services.IServices;
+@using System.Web.Mvc;
+@using Newtonsoft.Json;
+
+@{
+    var settingService = DependencyResolver.Current.GetService<ISettingService>();
+    string companyName = settingService != null ? settingService.GetSettingByKey(Constants.CompanyName) : "EImece";
+    if (string.IsNullOrWhiteSpace(companyName)) { companyName = "EImece"; }
+
+    string domain = !string.IsNullOrWhiteSpace(AppConfig.Domain) ? AppConfig.Domain : "localhost:81";
+    string baseUrl = string.Format("{0}://{1}", AppConfig.HttpProtocol, domain);
+    string logoSetting = settingService != null ? settingService.GetSettingByKey(Constants.WebSiteLogo) : null;
+    string logoUrl = !string.IsNullOrWhiteSpace(logoSetting) ? string.Format("{0}{1}", baseUrl, logoSetting) : string.Format("{0}/images/logo.jpg", baseUrl);
+    string phone = settingService != null ? settingService.GetSettingByKey(Constants.WebSiteCompanyPhoneAndLocation) : null;
+    string email = settingService != null ? settingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress) : null;
+
+    var orgSchema = new Dictionary<string, object>
+    {
+        { "@context", "https://schema.org" },
+        { "@type", "Organization" },
+        { "name", companyName },
+        { "url", baseUrl },
+        { "logo", logoUrl }
+    };
+
+    if (!string.IsNullOrWhiteSpace(phone) || !string.IsNullOrWhiteSpace(email))
+    {
+        var contactPoint = new Dictionary<string, object>
+        {
+            { "@type", "ContactPoint" },
+            { "contactType", "customer service" },
+            { "areaServed", "TR" }
+        };
+        if (!string.IsNullOrWhiteSpace(phone)) { contactPoint["telephone"] = phone; }
+        if (!string.IsNullOrWhiteSpace(email)) { contactPoint["email"] = email; }
+        orgSchema["contactPoint"] = contactPoint;
+    }
+
+    string jsonLd = JsonConvert.SerializeObject(orgSchema, Formatting.Indented);
+}
+
+<script type="application/ld+json">
+@Html.Raw(jsonLd)
+</script>

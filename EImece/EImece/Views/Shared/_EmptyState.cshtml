@@ -1,0 +1,40 @@
+@model EImece.Domain.Models.FrontModels.EmptyStateViewModel
+@using Resources;
+
+@{
+    var title = !string.IsNullOrWhiteSpace(Model?.Title) ? Model.Title : Resource.NoProductsFoundForSelectedFilters;
+    var message = Model?.Message;
+    var actionUrl = Model?.ActionUrl;
+    var actionText = !string.IsNullOrWhiteSpace(Model?.ActionText) ? Model.ActionText : Resource.ContinueShopping;
+    var iconClass = !string.IsNullOrWhiteSpace(Model?.IconClass) ? Model.IconClass : "fa fa-search";
+}
+
+<div class="empty-state-wrapper text-center py-5 my-4 px-3 w-100" role="region" aria-label="@title">
+    <div class="empty-state-card card border-0 shadow-sm mx-auto" style="max-width: 520px; border-radius: 12px; background: #fff;">
+        <div class="card-body p-4 p-md-5">
+            <div class="empty-state-icon mb-3 text-muted" style="font-size: 2.75rem; line-height: 1;">
+                <i class="@iconClass" aria-hidden="true"></i>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(title))
+            {
+                <h4 class="empty-state-title font-weight-bold mb-2 text-dark" style="font-size: 1.25rem;">
+                    @title
+                </h4>
+            }
+            @if (!string.IsNullOrWhiteSpace(message))
+            {
+                <div class="empty-state-message text-muted mb-4" style="font-size: 0.95rem; line-height: 1.5;">
+                    @Html.Raw(message)
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(actionUrl))
+            {
+                <div class="empty-state-action mt-3">
+                    <a href="@actionUrl" class="btn btn-primary btn-pill px-4 py-2 font-weight-semibold">
+                        @actionText
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

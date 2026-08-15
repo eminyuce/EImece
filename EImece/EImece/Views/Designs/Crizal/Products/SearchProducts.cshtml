@@ -76,9 +76,13 @@ else
     }
     else
     {
-        <div class="crizal-empty-state" role="alert">
-            <h2>@Resource.NOSearchResult</h2>
-        </div>
+        @Html.Partial("_EmptyState", new EmptyStateViewModel(
+            Resource.NOSearchResult,
+            Resource.NoSearchResultsText,
+            Url.Action("Index", "Home"),
+            Resource.ContinueShopping,
+            "fa fa-search"
+        ))
     }
 </div>
 }

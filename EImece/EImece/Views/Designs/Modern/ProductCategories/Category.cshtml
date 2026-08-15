@@ -1,4 +1,4 @@
-﻿@model ProductCategoryViewModel
+@model ProductCategoryViewModel
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
@@ -61,6 +61,61 @@
                 </ol>
             </nav>
         </div>
+        @{
+            string baseUrl = string.Format("{0}://{1}", AppConfig.HttpProtocol, AppConfig.Domain);
+            var categoryBreadcrumbList = new List<Dictionary<string, object>>();
+            int catPos = 1;
+            categoryBreadcrumbList.Add(new Dictionary<string, object>
+            {
+                { "@type", "ListItem" },
+                { "position", catPos++ },
+                { "name", Resource.HomePage },
+                { "item", baseUrl + "/" }
+            });
+            if (category.Parent != null && category.Parent.Parent != null)
+            {
+                string p2Url = category.Parent.Parent.DetailPageUrl;
+                if (!string.IsNullOrWhiteSpace(p2Url) && !p2Url.StartsWith("http", StringComparison.OrdinalIgnoreCase)) { p2Url = baseUrl + p2Url; }
+                categoryBreadcrumbList.Add(new Dictionary<string, object>
+                {
+                    { "@type", "ListItem" },
+                    { "position", catPos++ },
+                    { "name", category.Parent.Parent.Name },
+                    { "item", p2Url }
+                });
+            }
+            if (category.Parent != null)
+            {
+                string pUrl = category.Parent.DetailPageUrl;
+                if (!string.IsNullOrWhiteSpace(pUrl) && !pUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase)) { pUrl = baseUrl + pUrl; }
+                categoryBreadcrumbList.Add(new Dictionary<string, object>
+                {
+                    { "@type", "ListItem" },
+                    { "position", catPos++ },
+                    { "name", category.Parent.Name },
+                    { "item", pUrl }
+                });
+            }
+            string currentCatUrl = category.DetailPageUrl;
+            if (!string.IsNullOrWhiteSpace(currentCatUrl) && !currentCatUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase)) { currentCatUrl = baseUrl + currentCatUrl; }
+            categoryBreadcrumbList.Add(new Dictionary<string, object>
+            {
+                { "@type", "ListItem" },
+                { "position", catPos++ },
+                { "name", category.Name },
+                { "item", currentCatUrl }
+            });
+            var catBreadcrumbSchema = new Dictionary<string, object>
+            {
+                { "@context", "https://schema.org" },
+                { "@type", "BreadcrumbList" },
+                { "itemListElement", categoryBreadcrumbList }
+            };
+            string catBreadcrumbJson = Newtonsoft.Json.JsonConvert.SerializeObject(catBreadcrumbSchema, Newtonsoft.Json.Formatting.Indented);
+        }
+        <script type="application/ld+json">
+            @Html.Raw(catBreadcrumbJson)
+        </script>
         <h1 class="page-title">@category.Name</h1><span class="d-block mt-2 text-muted"></span>
         @if (!string.IsNullOrEmpty(shortDescriptionPlain))
         {
@@ -190,17 +245,16 @@
                 }
                 else
                 {
-                <div class="alert alert-secondary alert-with-icon" role="alert">
-                    <div class="alert-icon-box"><i class="alert-icon" data-feather="alert-triangle"></i></div>
-                    @if (Model.SelectedFilterTypes.IsNotEmpty())
-                        {
-                    @Html.Raw(@Resource.NoProductsFoundForSelectedFilters)
-                        }
-                        else
-                        {
-                    @Html.Raw(@Resource.NoProductsFoundForCategory)
-                        }
-                </div>
+                    var emptyMsg = Model.SelectedFilterTypes.IsNotEmpty() ? Resource.NoProductsFoundForSelectedFilters : Resource.NoProductsFoundForCategory;
+                    var clearFilterUrl = Model.SelectedFilterTypes.IsNotEmpty() ? Url.Action("Category", "ProductCategories", new { filtreler = "" }) : Url.Action("Index", "Home");
+                    var clearFilterText = Model.SelectedFilterTypes.IsNotEmpty() ? Resource.RemoveAllFilter : Resource.ContinueShopping;
+                    @Html.Partial("_EmptyState", new EmptyStateViewModel(
+                        Resource.NoProductsFoundForCategory,
+                        emptyMsg,
+                        clearFilterUrl,
+                        clearFilterText,
+                        "fa fa-folder-open-o"
+                    ))
                 }
             </div>
             <div class="d-flex justify-content-center py-4 pb-5">

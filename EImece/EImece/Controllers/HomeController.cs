@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -10,6 +10,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Filters;
 using NLog;
 using Resources;
 using System;
@@ -73,6 +74,7 @@ namespace EImece.Controllers
         }
 
         [HttpPost]
+        [RateLimit("contact", DefaultLimit = 3, DefaultWindowMinutes = 10)]
         public async Task<ActionResult> AddSubscriber(Subscriber subscriber)
         {
             var emailChecker = new EmailAddressAttribute();
@@ -224,6 +226,7 @@ namespace EImece.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateCaptcha(Prefix = "ContactUsLogin")]
+        [RateLimit("contact", DefaultLimit = 3, DefaultWindowMinutes = 10)]
         public async Task<ActionResult> SendContactUs(ContactUsFormViewModel contact)
         {
             HomeLogger.Info("Entering SendContactUs POST action.");

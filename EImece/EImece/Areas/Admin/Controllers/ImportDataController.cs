@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Resources;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -34,7 +35,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (excelFile == null || excelFile.ContentLength <= 0)
             {
-                ModelState.AddModelError("", "Excel file is required.");
+                ModelState.AddModelError("", AdminResource.ExcelFileRequired);
                 return View("ExcelUpload");
             }
 
@@ -43,7 +44,7 @@ namespace EImece.Areas.Admin.Controllers
             string originalName = Path.GetFileName(excelFile.FileName);
             if (string.IsNullOrWhiteSpace(originalName) || !IsAllowedExcelExtension(originalName))
             {
-                ModelState.AddModelError("", "Only .xls or .xlsx files are allowed.");
+                ModelState.AddModelError("", AdminResource.ExcelFileAllowedOnly);
                 return View("ExcelUpload");
             }
 
