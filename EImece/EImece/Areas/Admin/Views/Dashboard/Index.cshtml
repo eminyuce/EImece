@@ -154,18 +154,6 @@
     <section class="admin-home__section" aria-labelledby="admin-home-system">
         <h2 id="admin-home-system" class="admin-home__section-title">Sistem</h2>
         <div class="admin-home__grid">
-            <a class="admin-home__tile" href="@Url.Action("SystemHealth", "Dashboard", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-heartbeat text-danger"></i></span>
-                <span class="admin-home__tile-body">
-                    <span class="admin-home__tile-title" style="display: flex; align-items: center; gap: 6px;">
-                        <span class="health-status-dot health-status-dot--pending" id="dashboardHealthDot" aria-hidden="true"></span>
-                        <span id="dashboardHealthText">Sistem Sağlık Durumu</span>
-                        <span class="label label-default" id="dashboardHealthBadge" style="font-size: 11px; margin-left: auto;">Kontrol...</span>
-                    </span>
-                    <span class="admin-home__tile-desc">Veritabanı, arka plan servisleri ve sağlık kontrolleri</span>
-                </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
-            </a>
             <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
                 <span class="admin-home__tile-body">
