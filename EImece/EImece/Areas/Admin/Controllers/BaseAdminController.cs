@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
@@ -19,12 +19,16 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DomainConstants = EImece.Domain.Constants;
+using NLog;
+using EImece.Domain.Observability.Logging;
 
 namespace EImece.Areas.Admin.Controllers
 {
     [AuthorizeRoles(DomainConstants.AdministratorRole, DomainConstants.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         [Inject]
         public IEntityFactory EntityFactory { get; set; }
 
@@ -108,42 +112,51 @@ namespace EImece.Areas.Admin.Controllers
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            if (filterContext != null && filterContext.Exception != null)
+            if (filterContext == null || filterContext.Exception == null)
             {
-                // Logged via NLog elsewhere; surface stack when debugging.
+                base.OnException(filterContext);
+                return;
             }
 
-            if (filterContext != null
-                && !filterContext.ExceptionHandled
-                && AppConfig.ExposeDetailedErrors
-                && filterContext.Exception != null)
+            var ex = filterContext.Exception;
+            var controller = filterContext.RouteData?.Values["controller"]?.ToString() ?? "";
+            var action = filterContext.RouteData?.Values["action"]?.ToString() ?? "";
+            var correlationId = CorrelationIdContext.Current ?? CorrelationIdContext.Ensure();
+
+            Logger.Error(ex, "Admin exception in {0}/{1} (CorrelationId: {2}): {3}", controller, action, correlationId, ex.Message);
+
+            if (!filterContext.ExceptionHandled)
             {
                 filterContext.ExceptionHandled = true;
                 filterContext.HttpContext.Response.Clear();
                 filterContext.HttpContext.Response.StatusCode = 500;
                 filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
-                var ex = filterContext.Exception;
-                var controller = filterContext.RouteData.Values["controller"];
-                var action = filterContext.RouteData.Values["action"];
-                var url = filterContext.HttpContext.Request.Url;
-                filterContext.Result = new ContentResult
+
+                bool isAjax = filterContext.HttpContext.Request.IsAjaxRequest() ||
+                              (filterContext.HttpContext.Request.AcceptTypes != null &&
+                               filterContext.HttpContext.Request.AcceptTypes.Any(t => t.IndexOf("application/json", StringComparison.OrdinalIgnoreCase) >= 0));
+
+                if (isAjax)
                 {
-                    ContentType = "text/html; charset=utf-8",
-                    Content =
-                        "<!DOCTYPE html><html><head><title>Admin Error</title>" +
-                        "<style>body{font-family:Consolas,monospace;padding:24px;background:#111;color:#f5f5f5}" +
-                        "h1{color:#ff6b6b}pre{white-space:pre-wrap;background:#1e1e1e;padding:16px;border-radius:8px}</style>" +
-                        "</head><body>" +
-                        "<h1>Unhandled admin exception</h1>" +
-                        "<p><b>URL:</b> " + HttpUtility.HtmlEncode(url != null ? url.ToString() : "") + "</p>" +
-                        "<p><b>Controller:</b> " + HttpUtility.HtmlEncode(System.Convert.ToString(controller)) +
-                        " &nbsp; <b>Action:</b> " + HttpUtility.HtmlEncode(System.Convert.ToString(action)) + "</p>" +
-                        "<p><b>Type:</b> " + HttpUtility.HtmlEncode(ex.GetType().FullName) + "</p>" +
-                        "<p><b>Message:</b> " + HttpUtility.HtmlEncode(ex.Message) + "</p>" +
-                        "<h2>Stack trace</h2><pre>" + HttpUtility.HtmlEncode(ex.ToString()) + "</pre>" +
-                        "</body></html>"
-                };
-                return;
+                    filterContext.Result = new JsonResult
+                    {
+                        Data = new
+                        {
+                            success = false,
+                            message = "An error occurred while processing the admin request.",
+                            correlationId = correlationId
+                        },
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else
+                {
+                    filterContext.Result = new ContentResult
+                    {
+                        ContentType = "text/html; charset=utf-8",
+                        Content = $"<!DOCTYPE html><html><head><title>Admin Error</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:32px;background:#f8f9fa;color:#212529}}h1{{color:#dc3545;font-size:22px;margin-top:0}}.card{{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:24px;max-width:600px;margin:20px 0;box-shadow:0 2px 4px rgba(0,0,0,0.05)}}.ref{{font-family:monospace;color:#6c757d;font-size:13px;margin-top:12px}}</style></head><body><div class=\"card\"><h1>Admin Error</h1><p>An unexpected error occurred in the administration panel.</p><p class=\"ref\">Correlation ID: {HttpUtility.HtmlEncode(correlationId)}</p><a href=\"/admin\" style=\"display:inline-block;margin-top:16px;color:#0d6efd;text-decoration:none\">&larr; Return to Admin Dashboard</a></div></body></html>"
+                    };
+                }
             }
 
             base.OnException(filterContext);

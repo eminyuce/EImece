@@ -55,6 +55,10 @@ namespace EImece.Infrastructure
             CorrelationIdContext.Current = correlationId;
             application.Context.Items["RequestId"] = Guid.NewGuid().ToString("N");
 
+            // Bind CorrelationId to NLog Mapped Diagnostics Logical Context & ScopeContext
+            NLog.MappedDiagnosticsLogicalContext.Set(CorrelationIdContext.HttpContextItemKey, correlationId);
+            NLog.ScopeContext.PushProperty(CorrelationIdContext.HttpContextItemKey, correlationId);
+
             try
             {
                 application.Response.Headers[CorrelationIdContext.HeaderName] = correlationId;

@@ -71,24 +71,44 @@ namespace EImece
             GlobalConfiguration.Configuration.DependencyResolver =
                 new MsDiWebApiDependencyResolver(DependencyInjectionConfig.ServiceProvider);
 
-            // Start Quartz background scheduler services if enabled
+            // Start Quartz background scheduler services if enabled with resilient AppDomain protection
             try
             {
                 var adminQuartzService = DependencyResolver.Current.GetService<EImece.Domain.Scheduler.AdminQuartzService>();
                 if (adminQuartzService != null)
                 {
-                    HostingEnvironment.QueueBackgroundWorkItem(async _ => await adminQuartzService.StartSchedulerServiceAsync().ConfigureAwait(false));
+                    HostingEnvironment.QueueBackgroundWorkItem(async ct =>
+                    {
+                        try
+                        {
+                            await adminQuartzService.StartSchedulerServiceAsync().ConfigureAwait(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, "Unhandled exception during AdminQuartzService background execution.");
+                        }
+                    });
                 }
 
                 var userQuartzService = DependencyResolver.Current.GetService<EImece.Domain.Scheduler.UserQuartzService>();
                 if (userQuartzService != null)
                 {
-                    HostingEnvironment.QueueBackgroundWorkItem(async _ => await userQuartzService.StartSchedulerServiceAsync().ConfigureAwait(false));
+                    HostingEnvironment.QueueBackgroundWorkItem(async ct =>
+                    {
+                        try
+                        {
+                            await userQuartzService.StartSchedulerServiceAsync().ConfigureAwait(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, "Unhandled exception during UserQuartzService background execution.");
+                        }
+                    });
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Failed to start Quartz scheduler services.");
+                Logger.Error(ex, "Failed to initialize Quartz scheduler services.");
             }
         }
 
@@ -354,55 +374,48 @@ namespace EImece
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
         }
 
-        //This method checks if we have an AJAX request or not
+        // Checks whether the request is an AJAX or JSON-expecting request without expensive runtime reflection
         private bool IsAjaxRequest()
         {
-            //The easy way
-            bool isAjaxRequest = (Request["X-Requested-With"] == "XMLHttpRequest")
-            || ((Request.Headers != null)
-            && (Request.Headers["X-Requested-With"] == "XMLHttpRequest"));
-
-            //If we are not sure that we have an AJAX request or that we have to return JSON
-            //we fall back to Reflection
-            if (!isAjaxRequest)
+            if (Request == null)
             {
-                try
+                return false;
+            }
+
+            // 1. Standard ASP.NET MVC AJAX check (X-Requested-With: XMLHttpRequest)
+            if (new HttpRequestWrapper(Request).IsAjaxRequest())
+            {
+                return true;
+            }
+
+            // 2. Direct Header Check
+            if (string.Equals(Request.Headers?["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            // 3. JSON Content-Type
+            if (!string.IsNullOrEmpty(Request.ContentType) &&
+                Request.ContentType.IndexOf("application/json", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return true;
+            }
+
+            // 4. JSON Accept Header
+            var acceptTypes = Request.AcceptTypes;
+            if (acceptTypes != null)
+            {
+                for (int i = 0; i < acceptTypes.Length; i++)
                 {
-                    //The controller and action
-                    string controllerName = Request.RequestContext.
-                                            RouteData.Values["controller"].ToString();
-                    string actionName = Request.RequestContext.
-                                        RouteData.Values["action"].ToString();
-
-                    //We create a controller instance
-                    DefaultControllerFactory controllerFactory = new DefaultControllerFactory();
-                    Controller controller = controllerFactory.CreateController(
-                    Request.RequestContext, controllerName) as Controller;
-
-                    //We get the controller actions
-                    ReflectedControllerDescriptor controllerDescriptor =
-                    new ReflectedControllerDescriptor(controller.GetType());
-                    ActionDescriptor[] controllerActions =
-                    controllerDescriptor.GetCanonicalActions();
-
-                    //We search for our action
-                    foreach (ReflectedActionDescriptor actionDescriptor in controllerActions)
+                    if (acceptTypes[i] != null &&
+                        acceptTypes[i].IndexOf("application/json", StringComparison.OrdinalIgnoreCase) >= 0)
                     {
-                        if (actionDescriptor.ActionName.ToUpper().Equals(actionName.ToUpper()))
-                        {
-                            //If the action returns JsonResult then we have an AJAX request
-                            if (actionDescriptor.MethodInfo.ReturnType == typeof(JsonResult))
-                                return true;
-                        }
+                        return true;
                     }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "IsAjaxRequest reflection check failed");
                 }
             }
 
-            return isAjaxRequest;
+            return false;
         }
     }
 }

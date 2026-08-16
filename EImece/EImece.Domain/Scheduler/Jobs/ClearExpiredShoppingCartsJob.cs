@@ -19,46 +19,52 @@ namespace EImece.Domain.Scheduler.Jobs
         {
             var sw = Stopwatch.StartNew();
             var jobKey = context?.JobDetail?.Key;
-            Logger.Info("ClearExpiredShoppingCartsJob started. JobKey: {0}", jobKey);
+            var correlationId = $"job-cart-cleanup-{Guid.NewGuid():N}";
+            MappedDiagnosticsLogicalContext.Set("CorrelationId", correlationId);
 
-            try
+            using (ScopeContext.PushProperty("CorrelationId", correlationId))
             {
-                var provider = DomainServiceProvider.Instance;
-                if (provider == null)
-                {
-                    Logger.Warn("ClearExpiredShoppingCartsJob skipped: DI ServiceProvider is null.");
-                    return;
-                }
+                Logger.Info("ClearExpiredShoppingCartsJob started. JobKey: {0} (CorrelationId: {1})", jobKey, correlationId);
 
-                var expirationDays = AppConfig.GetConfigInt("ShoppingCart_Expiration_Days", 30);
-                if (expirationDays <= 0)
+                try
                 {
-                    expirationDays = 30;
-                }
-
-                int deletedCount = 0;
-                using (var scope = provider.CreateScope())
-                {
-                    var cartService = scope.ServiceProvider.GetService<IShoppingCartService>();
-                    if (cartService == null)
+                    var provider = DomainServiceProvider.Instance;
+                    if (provider == null)
                     {
-                        Logger.Error("ClearExpiredShoppingCartsJob: IShoppingCartService could not be resolved from scope.");
+                        Logger.Warn("ClearExpiredShoppingCartsJob skipped: DI ServiceProvider is null.");
                         return;
                     }
 
-                    var ct = context != null ? context.CancellationToken : CancellationToken.None;
-                    deletedCount = await cartService.ClearExpiredShoppingCartsAsync(expirationDays, ct).ConfigureAwait(false);
-                }
+                    var expirationDays = AppConfig.GetConfigInt("ShoppingCart_Expiration_Days", 30);
+                    if (expirationDays <= 0)
+                    {
+                        expirationDays = 30;
+                    }
 
-                sw.Stop();
-                Logger.Info("ClearExpiredShoppingCartsJob finished successfully in {0} ms. Total expired carts cleaned: {1}",
-                    sw.ElapsedMilliseconds, deletedCount);
-            }
-            catch (Exception ex)
-            {
-                sw.Stop();
-                Logger.Error(ex, "ClearExpiredShoppingCartsJob encountered an error after {0} ms: {1}",
-                    sw.ElapsedMilliseconds, ex.Message);
+                    int deletedCount = 0;
+                    using (var scope = provider.CreateScope())
+                    {
+                        var cartService = scope.ServiceProvider.GetService<IShoppingCartService>();
+                        if (cartService == null)
+                        {
+                            Logger.Error("ClearExpiredShoppingCartsJob: IShoppingCartService could not be resolved from scope.");
+                            return;
+                        }
+
+                        var ct = context != null ? context.CancellationToken : CancellationToken.None;
+                        deletedCount = await cartService.ClearExpiredShoppingCartsAsync(expirationDays, ct).ConfigureAwait(false);
+                    }
+
+                    sw.Stop();
+                    Logger.Info("ClearExpiredShoppingCartsJob finished successfully in {0} ms. Total expired carts cleaned: {1}",
+                        sw.ElapsedMilliseconds, deletedCount);
+                }
+                catch (Exception ex)
+                {
+                    sw.Stop();
+                    Logger.Error(ex, "ClearExpiredShoppingCartsJob encountered an error after {0} ms: {1}",
+                        sw.ElapsedMilliseconds, ex.Message);
+                }
             }
         }
     }
