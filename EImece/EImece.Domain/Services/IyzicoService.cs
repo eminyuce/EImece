@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability;
@@ -68,13 +68,7 @@ namespace EImece.Domain.Services
             }
 
             // Configure iyzico options
-            Logger.Debug("Fetching Iyzico API options...");
-            Options options = new Options
-            {
-                ApiKey = AppConfig.IyzicoApiKey,
-                SecretKey = AppConfig.IyzicoSecretKey,
-                BaseUrl = AppConfig.IyzicoBaseUrl
-            };
+            Options options = GetOptions();
 
             // Build callback URL
             Logger.Debug("Building callback URL for Payment Result...");
@@ -321,10 +315,20 @@ namespace EImece.Domain.Services
         private Options GetOptions()
         {
             Logger.Debug("Fetching Iyzico API options...");
+            var apiKey = AppConfig.IyzicoApiKey;
+            var secretKey = AppConfig.IyzicoSecretKey;
+
+            if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(secretKey))
+            {
+                Logger.Error("Iyzico API credentials are not configured. Set IyzicoApiKey and IyzicoSecretKey via environment variables or AppSettings.");
+                throw new InvalidOperationException(
+                    "Iyzico payment gateway is not configured. Both IyzicoApiKey and IyzicoSecretKey must be set in secure configuration.");
+            }
+
             Options options = new Options
             {
-                ApiKey = AppConfig.IyzicoApiKey,
-                SecretKey = AppConfig.IyzicoSecretKey,
+                ApiKey = apiKey,
+                SecretKey = secretKey,
                 BaseUrl = AppConfig.IyzicoBaseUrl
             };
             Logger.Debug("Iyzico API options fetched successfully.");

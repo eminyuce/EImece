@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using NLog;
 using System;
@@ -134,33 +134,67 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// Iyzico secret key. Read from environment variable EIMECE_IYZICO_SECRET_KEY, then Web.config / AppSettings.
+        /// </summary>
         public static string IyzicoSecretKey
         {
             get
             {
-                return GetConfigString("IyzicoSecretKey", "lvpx3JoZMoUF9f0RNDoEsxDSMQUUlpWH");
-            }
-        }
+                var fromEnv = Environment.GetEnvironmentVariable("EIMECE_IYZICO_SECRET_KEY");
+                if (!string.IsNullOrWhiteSpace(fromEnv))
+                {
+                    return fromEnv.Trim();
+                }
 
-        public static string IyzicoApiKey
-        {
-            get
-            {
-                return GetConfigString("IyzicoApiKey", "sandbox-v0nW7JMLDP8x5ZjVN2MQpKkcmKlUqKZB");
+                return GetConfigString("IyzicoSecretKey", string.Empty);
             }
         }
 
         /// <summary>
-        /// True when IIS/appSettings actually contain Iyzico keys (empty values are not configured).
-        /// Defaults in <see cref="IyzicoApiKey"/> are only used as last-resort sandbox placeholders.
+        /// Iyzico API key. Read from environment variable EIMECE_IYZICO_API_KEY, then Web.config / AppSettings.
+        /// </summary>
+        public static string IyzicoApiKey
+        {
+            get
+            {
+                var fromEnv = Environment.GetEnvironmentVariable("EIMECE_IYZICO_API_KEY");
+                if (!string.IsNullOrWhiteSpace(fromEnv))
+                {
+                    return fromEnv.Trim();
+                }
+
+                return GetConfigString("IyzicoApiKey", string.Empty);
+            }
+        }
+
+        /// <summary>
+        /// True when environment variables or AppSettings contain non-empty Iyzico credentials.
         /// </summary>
         public static bool HasConfiguredIyzicoCredentials
         {
             get
             {
-                var api = ConfigurationManager.AppSettings["IyzicoApiKey"];
-                var secret = ConfigurationManager.AppSettings["IyzicoSecretKey"];
-                return !string.IsNullOrWhiteSpace(api) && !string.IsNullOrWhiteSpace(secret);
+                return !string.IsNullOrWhiteSpace(IyzicoApiKey) && !string.IsNullOrWhiteSpace(IyzicoSecretKey);
+            }
+        }
+
+        /// <summary>
+        /// Validates that payment credentials are configured when required.
+        /// Fails closed with ConfigurationErrorsException if Iyzico is the active provider but keys are missing.
+        /// </summary>
+        public static void ValidatePaymentGatewayCredentials()
+        {
+            var provider = PaymentProvider;
+            if (string.IsNullOrWhiteSpace(provider) || string.Equals(provider, "Iyzico", StringComparison.OrdinalIgnoreCase))
+            {
+                if (string.IsNullOrWhiteSpace(IyzicoApiKey) || string.IsNullOrWhiteSpace(IyzicoSecretKey))
+                {
+                    throw new ConfigurationErrorsException(
+                        "Payment gateway credentials are missing. " +
+                        "Set environment variables 'EIMECE_IYZICO_API_KEY' and 'EIMECE_IYZICO_SECRET_KEY', " +
+                        "or configure 'IyzicoApiKey' and 'IyzicoSecretKey' in AppSettings.");
+                }
             }
         }
 
