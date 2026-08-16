@@ -1,4 +1,4 @@
-﻿@using EImece.Models;
+@using EImece.Models;
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain.Helpers;
@@ -31,8 +31,8 @@
     {"IsNewRecordButtonEnabled", false},
     {"IsSearchFormEnabled", true},
     {"IsExcelButtonEnabled", true},
-    {"selectAll", false},
-    {"deleteAll", false},
+    {"selectAll", true},
+    {"deleteAll", true},
     {"SetStateOnOrOff", false},
     {"orderingButton", false},
     {"ProductState", false}
@@ -49,6 +49,15 @@
         .Sanitized(false)
         .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
         .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
+
+    columns.Add()
+        .Titled("")
+        .Encoded(false)
+        .Sanitized(false)
+        .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
+        .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
+            {"ItemId", d.UserId}
+        }));
 
     columns.Add(o => o.Name)
         .Encoded(false)

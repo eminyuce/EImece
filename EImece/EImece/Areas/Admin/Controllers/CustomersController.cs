@@ -1,9 +1,11 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,9 +80,7 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, string id)
         {
-            await UsersService.DeleteUserAsync(id);
-            await CustomerService.DeleteByUserIdAsync(id);
-            await OrderService.DeleteByUserIdAsync(id);
+            await CustomerService.DeleteCustomersAsync(new List<string> { id }, User?.Identity?.GetUserId());
             SetSuccessMessage();
             return RedirectToAction("Index");
         }

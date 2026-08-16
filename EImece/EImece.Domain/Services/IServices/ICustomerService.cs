@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,5 +30,7 @@ namespace EImece.Domain.Services.IServices
         void GetUserFields(Customer item);
 
         Task GetUserFieldsAsync(Customer item);
+
+        Task<List<string>> DeleteCustomersAsync(List<string> userIds, string currentUserId = null);
     }
 }

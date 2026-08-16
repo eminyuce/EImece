@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -161,6 +161,54 @@ namespace EImece.Domain.Services
                 ApplicationDbContext.Users.Remove(user);
                 await ApplicationDbContext.SaveChangesAsync().ConfigureAwait(false);
             }
+        }
+
+        public async Task<List<string>> DeleteUsersAsync(List<string> userIds, string currentUserId = null)
+        {
+            var deleted = new List<string>();
+            if (userIds == null || userIds.Count == 0)
+            {
+                return deleted;
+            }
+
+            Logger.Info($"DeleteUsersAsync called for {userIds.Count} userIds");
+            foreach (var userId in userIds.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                if (!string.IsNullOrEmpty(currentUserId)
+                    && string.Equals(currentUserId, userId, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
+                if (user == null)
+                {
+                    continue;
+                }
+
+                var roles = await UserManager.GetRolesAsync(userId).ConfigureAwait(false);
+                var isCustomer = roles != null
+                    && roles.Any(r => r.Equals(Constants.CustomerRole, StringComparison.OrdinalIgnoreCase));
+                if (!isCustomer)
+                {
+                    // Safety: customer grid must not bulk-delete staff accounts.
+                    continue;
+                }
+
+                if (CustomerService != null)
+                {
+                    await CustomerService.DeleteByUserIdAsync(userId).ConfigureAwait(false);
+                }
+                if (OrderService != null)
+                {
+                    await OrderService.DeleteByUserIdAsync(userId).ConfigureAwait(false);
+                }
+                await DeleteUserAsync(userId).ConfigureAwait(false);
+                deleted.Add(userId);
+            }
+
+            Logger.Info($"DeleteUsersAsync finished. Total deleted: {deleted.Count}");
+            return deleted;
         }
     }
 }

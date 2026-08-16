@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -493,43 +493,29 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteUsersGridItem(List<String> values)
         {
-            var deleted = new List<string>();
-            if (values == null || values.Count == 0)
-            {
-                return Json(deleted, JsonRequestBehavior.AllowGet);
-            }
-
             var currentUserId = User?.Identity?.GetUserId();
-            foreach (var userId in values.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct(StringComparer.OrdinalIgnoreCase))
-            {
-                if (!string.IsNullOrEmpty(currentUserId)
-                    && string.Equals(currentUserId, userId, StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                if (user == null)
-                {
-                    continue;
-                }
-
-                var roles = await UserManager.GetRolesAsync(userId);
-                var isCustomer = roles != null
-                    && roles.Any(r => r.Equals(Domain.Constants.CustomerRole, StringComparison.OrdinalIgnoreCase));
-                if (!isCustomer)
-                {
-                    // Safety: customer grid must not bulk-delete staff accounts.
-                    continue;
-                }
-
-                await CustomerService.DeleteByUserIdAsync(userId);
-                await OrderService.DeleteByUserIdAsync(userId);
-                await UsersService.DeleteUserAsync(userId);
-                deleted.Add(userId);
-            }
-
+            var deleted = await UsersService.DeleteUsersAsync(values, currentUserId);
             return Json(deleted, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Bulk-delete customers selected on Customers grid (grid name: CustomersGrid).
+        /// Only Customer-role accounts (or unlinked guest customer records) are removed; related customer/order rows are cleaned up.
+        /// </summary>
+        [HttpPost]
+        [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteCustomersGridItem(List<String> values)
+        {
+            var currentUserId = User?.Identity?.GetUserId();
+            var deleted = await CustomerService.DeleteCustomersAsync(values, currentUserId);
+            return Json(deleted, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteCustomerGridItem(List<String> values)
+        {
+            return await DeleteCustomersGridItem(values);
         }
 
         [HttpPost]
