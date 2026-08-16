@@ -2059,4 +2059,58 @@
   <data name="PaymentFormCouldNotBeInitializedSettings" xml:space="preserve">
     <value>Ödeme formu başlatılamadı. Ödeme ayarlarını kontrol edin.</value>
   </data>
+  <data name="GoogleAnalyticsTrackingScriptTooltip" xml:space="preserve">
+    <value>Google Analytics veya Google Tag Manager izleme kodunu (&lt;script&gt;...&lt;/script&gt;) buraya ekleyin. Bu kod, site genelinde ziyaretçi trafiğini ve sayfa analizlerini takip etmek için tüm sayfalara otomatik olarak eklenir.</value>
+  </data>
+  <data name="WhatsAppCommunicationLinkTooltip" xml:space="preserve">
+    <value>Müşterilerinizin doğrudan WhatsApp üzerinden mesaj gönderebilmesi için kullanılacak bağlantıdır (ör. https://wa.me/905551234567). Sitedeki WhatsApp butonlarında ve doğrudan iletişim linklerinde kullanılır.</value>
+  </data>
+  <data name="WhatsAppCommunicationScriptTooltip" xml:space="preserve">
+    <value>Web sitenizde yüzen (floating) WhatsApp canlı destek veya sohbet eklentisi (widget) çalıştırmak için kullanılan JavaScript kodudur. Eklenti sağlayıcınızdan aldığınız script kodunu buraya yapıştırın.</value>
+  </data>
+  <data name="GoogleMapScriptTooltip" xml:space="preserve">
+    <value>İletişim ve hakkımızda sayfalarında şirketinizin veya mağazanızın konumunu harita üzerinde göstermek için Google Haritalar'dan alınan &lt;iframe&gt;...&lt;/iframe&gt; gömme (embed) kodudur.</value>
+  </data>
+  <data name="AdminEmailTooltip" xml:space="preserve">
+    <value>Sistem tarafından gönderilen e-postaların (sipariş onayları, şifre sıfırlama, bildirimler) gönderen kısmında (From) görünecek e-posta adresidir.</value>
+  </data>
+  <data name="AdminEmailHostTooltip" xml:space="preserve">
+    <value>E-postaların iletileceği SMTP sunucusunun adresi veya alan adıdır (ör. smtp.gmail.com, mail.siteniz.com veya smtp.office365.com).</value>
+  </data>
+  <data name="AdminEmailPortTooltip" xml:space="preserve">
+    <value>SMTP sunucusunun e-posta gönderimi için dinlediği port numarasıdır. Genellikle SSL için 465, TLS/STARTTLS için 587, şifresiz için 25 kullanılır.</value>
+  </data>
+  <data name="AdminEmailDisplayNameTooltip" xml:space="preserve">
+    <value>Giden e-postalarda alıcının göreceği gönderen adıdır (ör. Mağaza Adı veya Müşteri Hizmetleri).</value>
+  </data>
+  <data name="AdminUserNameTooltip" xml:space="preserve">
+    <value>SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak kullanıcı adı veya tam e-posta adresidir.</value>
+  </data>
+  <data name="AdminEmailPasswordTooltip" xml:space="preserve">
+    <value>SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak e-posta şifresi veya uygulama özel şifresidir (App Password).</value>
+  </data>
+  <data name="AdminEmailEnableSslTooltip" xml:space="preserve">
+    <value>SMTP sunucusu ile web uygulaması arasındaki e-posta iletişiminin SSL/TLS ile şifrelenmesini sağlar. Güvenli e-posta gönderimi için genellikle açık tutulmalıdır.</value>
+  </data>
+  <data name="AdminEmailUseDefaultCredentialsTooltip" xml:space="preserve">
+    <value>SMTP kimlik doğrulaması için sunucunun varsayılan Windows/IIS kimlik bilgilerinin kullanılıp kullanılmayacağını belirler. Özel kullanıcı adı ve şifre girildiğinde kapalı (false) olmalıdır.</value>
+  </data>
+  <data name="SiteIndexMetaTitleTooltip" xml:space="preserve">
+    <value>Ana sayfanın başlık (title) etiketidir. Arama motoru sonuç sayfalarında ve tarayıcı sekmesinde görünen ana başlıktır. Markanızı ve ana faaliyet alanınızı içerecek şekilde 50-60 karakter önerilir.</value>
+  </data>
+  <data name="SiteIndexMetaKeywordsTooltip" xml:space="preserve">
+    <value>Ana sayfanın meta anahtar kelimeleridir. Sitenizin içeriğini ve sunduğunuz ürün veya hizmetleri tanımlayan virgülle ayrılmış anahtar sözcüklerdir (ör. e-ticaret, led aydınlatma, toptan satış).</value>
+  </data>
+  <data name="SiteIndexMetaDescriptionTooltip" xml:space="preserve">
+    <value>Ana sayfanın meta açıklama (description) etiketidir. Google ve diğer arama motorlarında arama sonuçlarının altında özet olarak gösterilen tanıtım metnidir (120-160 karakter önerilir).</value>
+  </data>
+  <data name="FooterDescriptionTooltip" xml:space="preserve">
+    <value>Web sitesinin alt bilgi (footer) alanında veya e-bülten kutusunun altında gösterilen kısa bilgilendirme ve slogan metnidir.</value>
+  </data>
+  <data name="FooterEmailListDescriptionTooltip" xml:space="preserve">
+    <value>Footer alanındaki e-bülten (abone ol) formunun üzerinde yer alan teşvik edici davet metnidir.</value>
+  </data>
+  <data name="FooterHtmlDescriptionTooltip" xml:space="preserve">
+    <value>Sitenin en alt (footer) kısmında gösterilecek özel HTML içeriğidir (ör. telif hakkı / copyright bilgisi, güvenli ödeme logoları, sertifikalar veya ek bağlantılar).</value>
+  </data>
 </root>

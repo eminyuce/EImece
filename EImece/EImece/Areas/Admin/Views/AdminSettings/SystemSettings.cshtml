@@ -196,66 +196,97 @@
                         <div class="panel-heading"><h3 class="panel-title">@AdminResource.SmtpEmailSettings</h3></div>
                         <div class="panel-body">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminEmail, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminEmail">
+                                    @Html.DisplayNameFor(model => model.AdminEmail)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.AdminEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "gonderen@ornek.com" } })
+                                    @Html.EditorFor(model => model.AdminEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "gonderen@ornek.com", title = AdminResource.AdminEmailTooltip } })
                                     @Html.ValidationMessageFor(model => model.AdminEmail, "", new { @class = "text-danger" })
-                                    <span class="help-block">Gönderen e-posta (From) adresi</span>
+                                    <p class="help-block">@AdminResource.AdminEmailTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminEmailHost, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminEmailHost">
+                                    @Html.DisplayNameFor(model => model.AdminEmailHost)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailHostTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.AdminEmailHost, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.AdminEmailHost, new { htmlAttributes = new { @class = "form-control", placeholder = "smtp.example.com", title = AdminResource.AdminEmailHostTooltip } })
                                     @Html.ValidationMessageFor(model => model.AdminEmailHost, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.AdminEmailHostTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminEmailPort, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminEmailPort">
+                                    @Html.DisplayNameFor(model => model.AdminEmailPort)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailPortTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.AdminEmailPort, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.AdminEmailPort, new { htmlAttributes = new { @class = "form-control", placeholder = "587", title = AdminResource.AdminEmailPortTooltip } })
                                     @Html.ValidationMessageFor(model => model.AdminEmailPort, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.AdminEmailPortTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminEmailDisplayName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminEmailDisplayName">
+                                    @Html.DisplayNameFor(model => model.AdminEmailDisplayName)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailDisplayNameTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.AdminEmailDisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.AdminEmailDisplayName, new { htmlAttributes = new { @class = "form-control", placeholder = "Firma / Mağaza Adı", title = AdminResource.AdminEmailDisplayNameTooltip } })
                                     @Html.ValidationMessageFor(model => model.AdminEmailDisplayName, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.AdminEmailDisplayNameTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminUserName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminUserName">
+                                    @Html.DisplayNameFor(model => model.AdminUserName)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminUserNameTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.AdminUserName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.AdminUserName, new { htmlAttributes = new { @class = "form-control", placeholder = "kullanici@ornek.com", title = AdminResource.AdminUserNameTooltip } })
                                     @Html.ValidationMessageFor(model => model.AdminUserName, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.AdminUserNameTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminEmailPassword, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminEmailPassword">
+                                    @Html.DisplayNameFor(model => model.AdminEmailPassword)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailPasswordTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.AdminEmailPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.AdminEmailPassword, new { htmlAttributes = new { @class = "form-control", type = "password", title = AdminResource.AdminEmailPasswordTooltip } })
                                     @Html.ValidationMessageFor(model => model.AdminEmailPassword, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.AdminEmailPasswordTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminEmailEnableSsl, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminEmailEnableSsl">
+                                    @Html.DisplayNameFor(model => model.AdminEmailEnableSsl)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailEnableSslTooltip } })
+                                </label>
                                 <div class="col-md-9">
                                     <div class="checkbox admin-bool-field">
                                         @Html.CheckBoxFor(model => model.AdminEmailEnableSsl)
-                                        <label for="AdminEmailEnableSsl">SMTP bağlantısında SSL kullanılsın</label>
+                                        <label for="AdminEmailEnableSsl">SMTP bağlantısında SSL/TLS kullanılsın</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminEmailEnableSsl, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.AdminEmailEnableSslTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AdminEmailUseDefaultCredentials, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="AdminEmailUseDefaultCredentials">
+                                    @Html.DisplayNameFor(model => model.AdminEmailUseDefaultCredentials)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailUseDefaultCredentialsTooltip } })
+                                </label>
                                 <div class="col-md-9">
                                     <div class="checkbox admin-bool-field">
                                         @Html.CheckBoxFor(model => model.AdminEmailUseDefaultCredentials)
                                         <label for="AdminEmailUseDefaultCredentials">SMTP için varsayılan kimlik bilgileri kullanılsın</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminEmailUseDefaultCredentials, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.AdminEmailUseDefaultCredentialsTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -335,33 +366,49 @@
                         <div class="panel-heading"><h3 class="panel-title">Dış Bağlantılar & Scriptler</h3></div>
                         <div class="panel-body">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.GoogleAnalyticsTrackingScript, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="GoogleAnalyticsTrackingScript">
+                                    @Html.DisplayNameFor(model => model.GoogleAnalyticsTrackingScript)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.GoogleAnalyticsTrackingScriptTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.GoogleAnalyticsTrackingScript, 10, 50, new { @class = "form-control", placeholder = "<script>...</script>" })
+                                    @Html.TextAreaFor(model => model.GoogleAnalyticsTrackingScript, 10, 50, new { @class = "form-control", placeholder = "<script>...</script>", title = AdminResource.GoogleAnalyticsTrackingScriptTooltip })
                                     @Html.ValidationMessageFor(model => model.GoogleAnalyticsTrackingScript, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.GoogleAnalyticsTrackingScriptTooltip</p>
                                 </div>
                             </div>
                             <hr />
                             <div class="form-group">
-                                @Html.LabelFor(model => model.WhatsAppCommunicationLink, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="WhatsAppCommunicationLink">
+                                    @Html.DisplayNameFor(model => model.WhatsAppCommunicationLink)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.WhatsAppCommunicationLinkTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.WhatsAppCommunicationLink, new { htmlAttributes = new { @class = "form-control", placeholder = "https://wa.me/90555..." } })
+                                    @Html.EditorFor(model => model.WhatsAppCommunicationLink, new { htmlAttributes = new { @class = "form-control", placeholder = "https://wa.me/90555...", title = AdminResource.WhatsAppCommunicationLinkTooltip } })
                                     @Html.ValidationMessageFor(model => model.WhatsAppCommunicationLink, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.WhatsAppCommunicationLinkTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.WhatsAppCommunicationScript, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="WhatsAppCommunicationScript">
+                                    @Html.DisplayNameFor(model => model.WhatsAppCommunicationScript)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.WhatsAppCommunicationScriptTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.WhatsAppCommunicationScript, 10, 50, new { @class = "form-control", placeholder = "WhatsApp Eklenti Scripti" })
+                                    @Html.TextAreaFor(model => model.WhatsAppCommunicationScript, 10, 50, new { @class = "form-control", placeholder = "WhatsApp Eklenti Scripti", title = AdminResource.WhatsAppCommunicationScriptTooltip })
                                     @Html.ValidationMessageFor(model => model.WhatsAppCommunicationScript, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.WhatsAppCommunicationScriptTooltip</p>
                                 </div>
                             </div>
                             <hr />
                             <div class="form-group">
-                                @Html.LabelFor(model => model.GoogleMapScript, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="GoogleMapScript">
+                                    @Html.DisplayNameFor(model => model.GoogleMapScript)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.GoogleMapScriptTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.GoogleMapScript, 10, 50, new { @class = "form-control", placeholder = "<iframe src='...'></iframe>" })
+                                    @Html.TextAreaFor(model => model.GoogleMapScript, 10, 50, new { @class = "form-control", placeholder = "<iframe src='...'></iframe>", title = AdminResource.GoogleMapScriptTooltip })
                                     @Html.ValidationMessageFor(model => model.GoogleMapScript, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.GoogleMapScriptTooltip</p>
                                 </div>
                             </div>
                         </div>
@@ -446,3 +493,5 @@
             });
         });
     </script>
+
+    @Html.Partial("_AdminInitTooltips")

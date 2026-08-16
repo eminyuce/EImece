@@ -114,24 +114,36 @@
                         <div class="panel-heading"><h3 class="panel-title">@AdminResource.SeoSettings</h3></div>
                         <div class="panel-body">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.SiteIndexMetaTitle, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="SiteIndexMetaTitle">
+                                    @Html.DisplayNameFor(model => model.SiteIndexMetaTitle)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SiteIndexMetaTitleTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.SiteIndexMetaTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.SiteIndexMetaTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Firma Adı - Slogan / Ana Hizmetler", title = AdminResource.SiteIndexMetaTitleTooltip } })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaTitle, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.SiteIndexMetaTitleTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.SiteIndexMetaKeywords, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="SiteIndexMetaKeywords">
+                                    @Html.DisplayNameFor(model => model.SiteIndexMetaKeywords)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SiteIndexMetaKeywordsTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.SiteIndexMetaKeywords, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.SiteIndexMetaKeywords, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: e-ticaret, led ampul, aydınlatma, toptan", title = AdminResource.SiteIndexMetaKeywordsTooltip } })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaKeywords, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.SiteIndexMetaKeywordsTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.SiteIndexMetaDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="SiteIndexMetaDescription">
+                                    @Html.DisplayNameFor(model => model.SiteIndexMetaDescription)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SiteIndexMetaDescriptionTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.SiteIndexMetaDescription, 3, 50, new { @class = "form-control" })
+                                    @Html.TextAreaFor(model => model.SiteIndexMetaDescription, 3, 50, new { @class = "form-control", placeholder = "Sitenizi tanıtan kısa ve etkili bir açıklama girin...", title = AdminResource.SiteIndexMetaDescriptionTooltip })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaDescription, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.SiteIndexMetaDescriptionTooltip</p>
                                 </div>
                             </div>
                         </div>
@@ -144,23 +156,36 @@
                         <div class="panel-heading"><h3 class="panel-title">@AdminResource.FooterSettings</h3></div>
                         <div class="panel-body">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.FooterDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="FooterDescription">
+                                    @Html.DisplayNameFor(model => model.FooterDescription)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.FooterDescriptionTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.FooterDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.FooterDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Firma — Seçili markalar, özenli teslimat.", title = AdminResource.FooterDescriptionTooltip } })
                                     @Html.ValidationMessageFor(model => model.FooterDescription, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.FooterDescriptionTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.FooterEmailListDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="FooterEmailListDescription">
+                                    @Html.DisplayNameFor(model => model.FooterEmailListDescription)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.FooterEmailListDescriptionTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.FooterEmailListDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.FooterEmailListDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Kampanya ve yeniliklerden haberdar olmak için abone olun.", title = AdminResource.FooterEmailListDescriptionTooltip } })
                                     @Html.ValidationMessageFor(model => model.FooterEmailListDescription, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.FooterEmailListDescriptionTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.FooterHtmlDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <label class="control-label col-md-3" for="FooterHtmlDescription">
+                                    @Html.DisplayNameFor(model => model.FooterHtmlDescription)
+                                    @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.FooterHtmlDescriptionTooltip } })
+                                </label>
                                 <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.FooterHtmlDescription, 10, 50, new { @class = "form-control" })
+                                    @Html.TextAreaFor(model => model.FooterHtmlDescription, 10, 50, new { @class = "form-control", placeholder = "<p>© Firma Adı. Tüm hakları saklıdır.</p>", title = AdminResource.FooterHtmlDescriptionTooltip })
+                                    @Html.ValidationMessageFor(model => model.FooterHtmlDescription, "", new { @class = "text-danger" })
+                                    <p class="help-block">@AdminResource.FooterHtmlDescriptionTooltip</p>
                                 </div>
                             </div>
                         </div>
@@ -209,3 +234,5 @@
         });
     });
 </script>
+
+@Html.Partial("_AdminInitTooltips")

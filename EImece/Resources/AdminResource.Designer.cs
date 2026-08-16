@@ -3749,5 +3749,167 @@ namespace Resources {
                 return ResourceManager.GetString("MissingFileTooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google Analytics veya Google Tag Manager izleme kodunu (&lt;script&gt;...&lt;/script&gt;) buraya ekleyin. Bu kod, site genelinde ziyaretçi trafiğini ve sayfa analizlerini takip etmek için tüm sayfalara otomatik olarak eklenir..
+        /// </summary>
+        public static string GoogleAnalyticsTrackingScriptTooltip {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTrackingScriptTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşterilerinizin doğrudan WhatsApp üzerinden mesaj gönderebilmesi için kullanılacak bağlantıdır (ör. https://wa.me/905551234567). Sitedeki WhatsApp butonlarında ve doğrudan iletişim linklerinde kullanılır..
+        /// </summary>
+        public static string WhatsAppCommunicationLinkTooltip {
+            get {
+                return ResourceManager.GetString("WhatsAppCommunicationLinkTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web sitenizde yüzen (floating) WhatsApp canlı destek veya sohbet eklentisi (widget) çalıştırmak için kullanılan JavaScript kodudur. Eklenti sağlayıcınızdan aldığınız script kodunu buraya yapıştırın..
+        /// </summary>
+        public static string WhatsAppCommunicationScriptTooltip {
+            get {
+                return ResourceManager.GetString("WhatsAppCommunicationScriptTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İletişim ve hakkımızda sayfalarında şirketinizin veya mağazanızın konumunu harita üzerinde göstermek için Google Haritalar'dan alınan &lt;iframe&gt;...&lt;/iframe&gt; gömme (embed) kodudur..
+        /// </summary>
+        public static string GoogleMapScriptTooltip {
+            get {
+                return ResourceManager.GetString("GoogleMapScriptTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sistem tarafından gönderilen e-postaların (sipariş onayları, şifre sıfırlama, bildirimler) gönderen kısmında (From) görünecek e-posta adresidir..
+        /// </summary>
+        public static string AdminEmailTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-postaların iletileceği SMTP sunucusunun adresi veya alan adıdır (ör. smtp.gmail.com, mail.siteniz.com veya smtp.office365.com)..
+        /// </summary>
+        public static string AdminEmailHostTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusunun e-posta gönderimi için dinlediği port numarasıdır. Genellikle SSL için 465, TLS/STARTTLS için 587, şifresiz için 25 kullanılır..
+        /// </summary>
+        public static string AdminEmailPortTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giden e-postalarda alıcının göreceği gönderen adıdır (ör. Mağaza Adı veya Müşteri Hizmetleri)..
+        /// </summary>
+        public static string AdminEmailDisplayNameTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailDisplayNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak kullanıcı adı veya tam e-posta adresidir..
+        /// </summary>
+        public static string AdminUserNameTooltip {
+            get {
+                return ResourceManager.GetString("AdminUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak e-posta şifresi veya uygulama özel şifresidir (App Password)..
+        /// </summary>
+        public static string AdminEmailPasswordTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusu ile web uygulaması arasındaki e-posta iletişiminin SSL/TLS ile şifrelenmesini sağlar. Güvenli e-posta gönderimi için genellikle açık tutulmalıdır..
+        /// </summary>
+        public static string AdminEmailEnableSslTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailEnableSslTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP kimlik doğrulaması için sunucunun varsayılan Windows/IIS kimlik bilgilerinin kullanılıp kullanılmayacağını belirler. Özel kullanıcı adı ve şifre girildiğinde kapalı (false) olmalıdır..
+        /// </summary>
+        public static string AdminEmailUseDefaultCredentialsTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailUseDefaultCredentialsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ana sayfanın başlık (title) etiketidir. Arama motoru sonuç sayfalarında ve tarayıcı sekmesinde görünen ana başlıktır. Markanızı ve ana faaliyet alanınızı içerecek şekilde 50-60 karakter önerilir..
+        /// </summary>
+        public static string SiteIndexMetaTitleTooltip {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaTitleTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ana sayfanın meta anahtar kelimeleridir. Sitenizin içeriğini ve sunduğunuz ürün veya hizmetleri tanımlayan virgülle ayrılmış anahtar sözcüklerdir (ör. e-ticaret, led aydınlatma, toptan satış)..
+        /// </summary>
+        public static string SiteIndexMetaKeywordsTooltip {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaKeywordsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ana sayfanın meta açıklama (description) etiketidir. Google ve diğer arama motorlarında arama sonuçlarının altında özet olarak gösterilen tanıtım metnidir (120-160 karakter önerilir)..
+        /// </summary>
+        public static string SiteIndexMetaDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaDescriptionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web sitesinin alt bilgi (footer) alanında veya e-bülten kutusunun altında gösterilen kısa bilgilendirme ve slogan metnidir..
+        /// </summary>
+        public static string FooterDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("FooterDescriptionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Footer alanındaki e-bülten (abone ol) formunun üzerinde yer alan teşvik edici davet metnidir..
+        /// </summary>
+        public static string FooterEmailListDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("FooterEmailListDescriptionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sitenin en alt (footer) kısmında gösterilecek özel HTML içeriğidir (ör. telif hakkı / copyright bilgisi, güvenli ödeme logoları, sertifikalar veya ek bağlantılar)..
+        /// </summary>
+        public static string FooterHtmlDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("FooterHtmlDescriptionTooltip", resourceCulture);
+            }
+        }
     }
 }
