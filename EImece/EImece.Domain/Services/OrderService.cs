@@ -1,3 +1,4 @@
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
@@ -26,11 +27,22 @@ namespace EImece.Domain.Services
 
         private ICustomerService CustomerService;
 
+        [Inject]
+        public IAddressService AddressService { get; set; }
+
         public OrderService(IOrderRepository repository, ICustomerService customerService, IOrderProductService orderProductService) : base(repository)
         {
             OrderRepository = repository;
             OrderProductService = orderProductService;
             this.CustomerService = customerService;
+        }
+
+        public OrderService(IOrderRepository repository, ICustomerService customerService, IOrderProductService orderProductService, IAddressService addressService) : base(repository)
+        {
+            OrderRepository = repository;
+            OrderProductService = orderProductService;
+            this.CustomerService = customerService;
+            this.AddressService = addressService;
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking)
@@ -81,14 +93,48 @@ namespace EImece.Domain.Services
 
         public void DeleteOrderById(int id)
         {
+            var order = GetSingle(id);
+            int shippingAddressId = order?.ShippingAddressId ?? 0;
+            int billingAddressId = order?.BillingAddressId ?? 0;
+
             OrderProductService.DeleteOrderProductsByOrderId(id);
             DeleteById(id);
+
+            if (AddressService != null)
+            {
+                if (shippingAddressId > 0 && !OrderRepository.FindBy(o => o.ShippingAddressId == shippingAddressId || o.BillingAddressId == shippingAddressId).Any())
+                {
+                    AddressService.DeleteById(shippingAddressId);
+                }
+
+                if (billingAddressId > 0 && billingAddressId != shippingAddressId && !OrderRepository.FindBy(o => o.ShippingAddressId == billingAddressId || o.BillingAddressId == billingAddressId).Any())
+                {
+                    AddressService.DeleteById(billingAddressId);
+                }
+            }
         }
 
         public async Task DeleteOrderByIdAsync(int id)
         {
+            var order = await GetSingleAsync(id).ConfigureAwait(false);
+            int shippingAddressId = order?.ShippingAddressId ?? 0;
+            int billingAddressId = order?.BillingAddressId ?? 0;
+
             await OrderProductService.DeleteOrderProductsByOrderIdAsync(id).ConfigureAwait(false);
             await DeleteByIdAsync(id).ConfigureAwait(false);
+
+            if (AddressService != null)
+            {
+                if (shippingAddressId > 0 && !(await OrderRepository.FindBy(o => o.ShippingAddressId == shippingAddressId || o.BillingAddressId == shippingAddressId).AnyAsync().ConfigureAwait(false)))
+                {
+                    await AddressService.DeleteByIdAsync(shippingAddressId).ConfigureAwait(false);
+                }
+
+                if (billingAddressId > 0 && billingAddressId != shippingAddressId && !(await OrderRepository.FindBy(o => o.ShippingAddressId == billingAddressId || o.BillingAddressId == billingAddressId).AnyAsync().ConfigureAwait(false)))
+                {
+                    await AddressService.DeleteByIdAsync(billingAddressId).ConfigureAwait(false);
+                }
+            }
         }
 
         public override void DeleteBaseEntity(List<string> values)
