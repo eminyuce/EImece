@@ -17,7 +17,7 @@
     <li><strong>SMTP E-Posta Ayarları:</strong> Sistemin e-posta gönderebilmesi için gereken sunucu bilgilerini (Host, Port, Kullanıcı vb.) ayarlayıp test edebilirsiniz.</li>
     <li><strong>Sosyal Medya Ayarları:</strong> Sitenizdeki sosyal medya (Facebook, Instagram vb.) ve canlı destek (Zopim) bağlantılarını tanımlayabilirsiniz.</li>
     <li><strong>Dışa Bağlantı ve Script Ayarları:</strong> Google Analytics, WhatsApp iletişim ve Google Haritalar script/link ayarlarınızı buradan yapabilirsiniz.</li>
-    <li><strong>Sistem İzleme & Log:</strong> Uygulama metriklerini, logları görebilir ve veritabanı yedeği alabilirsiniz.</li>
+    <li><strong>Sistem İzleme & Log:</strong> Uygulama metriklerini ve logları inceleyebilirsiniz.</li>
 </ul>
 <p style="margin-top: 12px; margin-bottom: 0;"><strong>Önemli:</strong> Yaptığınız değişikliklerin geçerli olması için kaydet butonuna tıklamayı unutmayın.</p>
 @Html.Partial("_AdminHelpAccordionEnd")
@@ -441,8 +441,6 @@
                                         <h4><i class="fa fa-cogs text-warning" style="font-size:24px;"></i><br />@AdminResource.AppLogs & Bakım</h4>
                                         <p class="text-muted">Uygulama kayıtlarını görüntüleyin ve bakım yapın.</p>
                                         @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn btn-block btn-warning" })
-                                        <!--         Html.ActionLink("Upload and Compress Images", "compressimages", "images", null, new { class = "btn btn-block btn-warning" })   -->
-                                        <!--             Html.ActionLink("BackUp DB", "BackUpDb", "AdminSettings", null, new { class = "btn btn-block btn-danger" })   -->
                                     </div>
                                     </div>
                                 </div>

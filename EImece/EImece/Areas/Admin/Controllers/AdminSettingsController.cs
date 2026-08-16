@@ -67,13 +67,6 @@ namespace EImece.Areas.Admin.Controllers
             return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));
         }
 
-        public ActionResult BackUpDb()
-        {
-            BackupService backupService = new BackupService("");
-            backupService.BackupSystemDatabase();
-
-            return Content(@"SUCCESSFULLY BACK UP DB: C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\Backup\");
-        }
 
         public async Task<ActionResult> SendSampleEmail(CancellationToken cancellationToken)
         {
