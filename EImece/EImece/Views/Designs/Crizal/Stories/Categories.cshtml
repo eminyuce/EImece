@@ -13,17 +13,24 @@
     ViewBag.Description = category.GetSeoDescription();
 
     category.PageTheme = String.IsNullOrEmpty(category.PageTheme) ? "T1" : category.PageTheme;
-    var selectedPagePath = "StoriesPageThemes/PageTheme_" + category.PageTheme;
+    var themeName = "PageTheme_" + category.PageTheme;
     
     string activeDesign = new EImece.Infrastructure.Designs.ConfigDesignProvider().GetActiveDesign();
-    string designRelative = string.IsNullOrEmpty(activeDesign) 
-        ? "~/Views/Shared/" + selectedPagePath + ".cshtml"
-        : "~/Views/Designs/" + activeDesign + "/Shared/" + selectedPagePath + ".cshtml";
+    string selectedPagePath = string.IsNullOrEmpty(activeDesign) 
+        ? "~/Views/Shared/StoriesPageThemes/" + themeName + ".cshtml"
+        : "~/Views/Designs/" + activeDesign + "/Shared/StoriesPageThemes/" + themeName + ".cshtml";
 
-    var themePhysicalPath = HostingEnvironment.MapPath(designRelative);
+    var themePhysicalPath = HostingEnvironment.MapPath(selectedPagePath);
     if (string.IsNullOrEmpty(themePhysicalPath) || !System.IO.File.Exists(themePhysicalPath))
     {
-        selectedPagePath = "StoriesPageThemes/PageTheme_T1";
+        selectedPagePath = string.IsNullOrEmpty(activeDesign)
+            ? "~/Views/Shared/StoriesPageThemes/PageTheme_T1.cshtml"
+            : "~/Views/Designs/" + activeDesign + "/Shared/StoriesPageThemes/PageTheme_T1.cshtml";
+            
+        if (!System.IO.File.Exists(HostingEnvironment.MapPath(selectedPagePath)))
+        {
+            selectedPagePath = "~/Views/Shared/StoriesPageThemes/PageTheme_T1.cshtml";
+        }
     }
 }
 @Html.Partial(selectedPagePath, Model)

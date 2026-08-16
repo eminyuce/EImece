@@ -39,6 +39,7 @@ namespace EImece.Domain.Repositories
                     Lang = sc.Lang,
                     IsActive = sc.IsActive,
                     IsStoryCategory = true,
+                    PageTheme = sc.PageTheme,
                     ProductCount = sc.Stories.Count(s => s.IsActive)
                 };
             }
