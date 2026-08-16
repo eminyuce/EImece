@@ -1,8 +1,11 @@
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.GenericRepository.EntityFramework;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.Payment;
+using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
@@ -21,6 +24,8 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private readonly IEImeceContext _dbContext;
+
         private IOrderService OrderService;
 
         private ICustomerService CustomerService;
@@ -33,7 +38,9 @@ namespace EImece.Domain.Services
 
         public ApplicationUserManager UserManager { get; set; }
 
-        public ShoppingCartService(ApplicationUserManager userManager,
+        public ShoppingCartService(
+            IEImeceContext dbContext,
+            ApplicationUserManager userManager,
             IShoppingCartRepository repository,
             IOrderService orderService,
             ICustomerService customerService,
@@ -41,12 +48,39 @@ namespace EImece.Domain.Services
             IOrderProductService orderProductService) : base(repository)
         {
             Logger.Info("ShoppingCartService initialized");
+            this._dbContext = dbContext;
             this.ShoppingCartRepository = repository;
             this.UserManager = userManager;
             this.OrderService = orderService;
             this.CustomerService = customerService;
             this.AddressService = addressService;
             this.OrderProductService = orderProductService;
+        }
+
+        public ShoppingCartService(
+            ApplicationUserManager userManager,
+            IShoppingCartRepository repository,
+            IOrderService orderService,
+            ICustomerService customerService,
+            IAddressService addressService,
+            IOrderProductService orderProductService)
+            : this(null, userManager, repository, orderService, customerService, addressService, orderProductService)
+        {
+        }
+
+        private EntitiesContext GetEntitiesContext()
+        {
+            if (_dbContext is EntitiesContext entitiesContext)
+            {
+                return entitiesContext;
+            }
+
+            if (ShoppingCartRepository is BaseRepository<ShoppingCart> baseRepo)
+            {
+                return baseRepo.GetDbContext();
+            }
+
+            throw new InvalidOperationException("DbContext is not available for transaction management in ShoppingCartService.");
         }
 
         public void SaveOrEditShoppingCart(ShoppingCart item)
@@ -130,63 +164,78 @@ namespace EImece.Domain.Services
             if (shoppingCart == null)
             {
                 Logger.Error("SaveShoppingCart failed: ShoppingCartSession is null");
-                throw new ArgumentNullException("ShoppingCartSession", "ShoppingCartSession is null");
+                throw new ArgumentNullException(nameof(shoppingCart), "ShoppingCartSession is null");
             }
             if (paymentResult == null)
             {
                 Logger.Error("SaveShoppingCart failed: PaymentResult is null");
-                throw new ArgumentNullException("paymentResult", "PaymentResult is null");
+                throw new ArgumentNullException(nameof(paymentResult), "PaymentResult is null");
             }
             if (string.IsNullOrEmpty(userId))
             {
                 Logger.Error("SaveShoppingCart failed: userId is null or empty");
-                throw new ArgumentNullException("userId", "userId is null");
+                throw new ArgumentNullException(nameof(userId), "userId is null");
             }
 
-            Logger.Info($"Processing addresses - Initial ShippingAddressId: {shoppingCart.ShippingAddress.Id}, BillingAddressId: {shoppingCart.BillingAddress.Id}");
-
-            int shippingAddressId = shoppingCart.ShippingAddress.Id;
-            int billingAddressId = shoppingCart.BillingAddress.Id;
-            if (shippingAddressId == 0)
+            var dbContext = GetEntitiesContext();
+            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
-                Logger.Info("Creating new shipping address");
-                shoppingCart.ShippingAddress.Name = Resource.ShippingAddress;
-                shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
-                shoppingCart.ShippingAddress.Description = shoppingCart.Customer.RegistrationAddress;
-                shoppingCart.ShippingAddress.City = shoppingCart.Customer.City.ToStr();
-                shoppingCart.ShippingAddress.Country = shoppingCart.Customer.Country.ToStr();
-                shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress);
-                shippingAddressId = shippingAddress.Id;
-                Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                try
+                {
+                    Logger.Info($"Processing addresses - Initial ShippingAddressId: {shoppingCart.ShippingAddress.Id}, BillingAddressId: {shoppingCart.BillingAddress.Id}");
+
+                    int shippingAddressId = shoppingCart.ShippingAddress.Id;
+                    int billingAddressId = shoppingCart.BillingAddress.Id;
+                    if (shippingAddressId == 0)
+                    {
+                        Logger.Info("Creating new shipping address");
+                        shoppingCart.ShippingAddress.Name = Resource.ShippingAddress;
+                        shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                        shoppingCart.ShippingAddress.Description = shoppingCart.Customer.RegistrationAddress;
+                        shoppingCart.ShippingAddress.City = shoppingCart.Customer.City.ToStr();
+                        shoppingCart.ShippingAddress.Country = shoppingCart.Customer.Country.ToStr();
+                        shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
+                        var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress);
+                        shippingAddressId = shippingAddress.Id;
+                        Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                    }
+                    if (billingAddressId == 0)
+                    {
+                        Logger.Info("Creating new billing address");
+                        shoppingCart.BillingAddress.Name = Resource.BillingAdress;
+                        shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
+                        shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
+                        shoppingCart.BillingAddress.City = shoppingCart.Customer.City.ToStr();
+                        shoppingCart.BillingAddress.Country = shoppingCart.Customer.Country.ToStr();
+                        shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
+                        var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
+                        billingAddressId = billingAddress.Id;
+                        Logger.Info($"New billing address created with Id: {billingAddressId}");
+                    }
+
+                    Logger.Info($"Saving customer type to normal for userId: {userId}");
+                    CustomerService.SaveCustomerTypeToNormal(userId);
+
+                    Logger.Info($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
+                    Order savedOrder = SaveOrder(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId);
+                    Logger.Info($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+                    Logger.Info($"Saving order products for OrderId: {savedOrder.Id}");
+                    SaveOrderProduct(shoppingCart, savedOrder);
+                    Logger.Info($"Order products saved successfully for OrderId: {savedOrder.Id}");
+
+                    transaction.Commit();
+
+                    Logger.Info($"SaveShoppingCart completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    return savedOrder;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Logger.Error(ex, $"SaveShoppingCart failed and rolled back for OrderGuid: {shoppingCart.OrderGuid}");
+                    throw;
+                }
             }
-            if (billingAddressId == 0)
-            {
-                Logger.Info("Creating new billing address");
-                shoppingCart.BillingAddress.Name = Resource.BillingAdress;
-                shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
-                shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
-                shoppingCart.BillingAddress.City = shoppingCart.Customer.City.ToStr();
-                shoppingCart.BillingAddress.Country = shoppingCart.Customer.Country.ToStr();
-                shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
-                billingAddressId = billingAddress.Id;
-                Logger.Info($"New billing address created with Id: {billingAddressId}");
-            }
-
-            Logger.Info($"Saving customer type to normal for userId: {userId}");
-            CustomerService.SaveCustomerTypeToNormal(userId);
-
-            Logger.Info($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
-            Order savedOrder = SaveOrder(orderNumber,userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId);
-            Logger.Info($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
-
-            Logger.Info($"Saving order products for OrderId: {savedOrder.Id}");
-            SaveOrderProduct(shoppingCart, savedOrder);
-            Logger.Info($"Order products saved successfully for OrderId: {savedOrder.Id}");
-
-            Logger.Info($"SaveShoppingCart completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
-            return savedOrder;
         }
 
         public async Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
@@ -201,52 +250,67 @@ namespace EImece.Domain.Services
             if (paymentResult == null)
             {
                 Logger.Error("SaveShoppingCartAsync failed: PaymentResult is null");
-                throw new ArgumentNullException("paymentResult", "PaymentResult is null");
+                throw new ArgumentNullException(nameof(paymentResult), "PaymentResult is null");
             }
             if (string.IsNullOrEmpty(userId))
             {
                 Logger.Error("SaveShoppingCartAsync failed: userId is null or empty");
-                throw new ArgumentNullException("userId", "userId is null");
+                throw new ArgumentNullException(nameof(userId), "userId is null");
             }
 
-            Logger.Debug($"Processing addresses - Initial ShippingAddressId: {shoppingCart.ShippingAddress.Id}, BillingAddressId: {shoppingCart.BillingAddress.Id}");
-
-            int shippingAddressId = shoppingCart.ShippingAddress.Id;
-            int billingAddressId = shoppingCart.BillingAddress.Id;
-            if (shippingAddressId == 0)
+            var dbContext = GetEntitiesContext();
+            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
-                shoppingCart.ShippingAddress.Name = Resource.ShippingAddress;
-                shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
-                shoppingCart.ShippingAddress.Description = shoppingCart.Customer.RegistrationAddress;
-                shoppingCart.ShippingAddress.City = shoppingCart.Customer.City.ToStr();
-                shoppingCart.ShippingAddress.Country = shoppingCart.Customer.Country.ToStr();
-                shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                var shippingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.ShippingAddress).ConfigureAwait(false);
-                shippingAddressId = shippingAddress.Id;
+                try
+                {
+                    Logger.Debug($"Processing addresses - Initial ShippingAddressId: {shoppingCart.ShippingAddress.Id}, BillingAddressId: {shoppingCart.BillingAddress.Id}");
+
+                    int shippingAddressId = shoppingCart.ShippingAddress.Id;
+                    int billingAddressId = shoppingCart.BillingAddress.Id;
+                    if (shippingAddressId == 0)
+                    {
+                        shoppingCart.ShippingAddress.Name = Resource.ShippingAddress;
+                        shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                        shoppingCart.ShippingAddress.Description = shoppingCart.Customer.RegistrationAddress;
+                        shoppingCart.ShippingAddress.City = shoppingCart.Customer.City.ToStr();
+                        shoppingCart.ShippingAddress.Country = shoppingCart.Customer.Country.ToStr();
+                        shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
+                        var shippingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.ShippingAddress).ConfigureAwait(false);
+                        shippingAddressId = shippingAddress.Id;
+                    }
+                    if (billingAddressId == 0)
+                    {
+                        shoppingCart.BillingAddress.Name = Resource.BillingAdress;
+                        shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
+                        shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
+                        shoppingCart.BillingAddress.City = shoppingCart.Customer.City.ToStr();
+                        shoppingCart.BillingAddress.Country = shoppingCart.Customer.Country.ToStr();
+                        shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
+                        var billingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.BillingAddress).ConfigureAwait(false);
+                        billingAddressId = billingAddress.Id;
+                    }
+
+                    await CustomerService.SaveCustomerTypeToNormalAsync(userId).ConfigureAwait(false);
+
+                    Logger.Debug($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
+                    Order savedOrder = await SaveOrderAsync(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId).ConfigureAwait(false);
+                    Logger.Debug($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+                    await SaveOrderProductAsync(shoppingCart, savedOrder).ConfigureAwait(false);
+                    Logger.Debug($"Order products saved successfully for OrderId: {savedOrder.Id}");
+
+                    transaction.Commit();
+
+                    Logger.Info($"SaveShoppingCartAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    return savedOrder;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Logger.Error(ex, $"SaveShoppingCartAsync failed and rolled back for OrderGuid: {shoppingCart.OrderGuid}");
+                    throw;
+                }
             }
-            if (billingAddressId == 0)
-            {
-                shoppingCart.BillingAddress.Name = Resource.BillingAdress;
-                shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
-                shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
-                shoppingCart.BillingAddress.City = shoppingCart.Customer.City.ToStr();
-                shoppingCart.BillingAddress.Country = shoppingCart.Customer.Country.ToStr();
-                shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                var billingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.BillingAddress).ConfigureAwait(false);
-                billingAddressId = billingAddress.Id;
-            }
-
-            await CustomerService.SaveCustomerTypeToNormalAsync(userId).ConfigureAwait(false);
-
-            Logger.Debug($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
-            Order savedOrder = await SaveOrderAsync(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId).ConfigureAwait(false);
-            Logger.Debug($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
-
-            await SaveOrderProductAsync(shoppingCart, savedOrder).ConfigureAwait(false);
-            Logger.Debug($"Order products saved successfully for OrderId: {savedOrder.Id}");
-
-            Logger.Info($"SaveShoppingCartAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
-            return savedOrder;
         }
 
         private Order SaveOrder(string orderNumber, String userId, ShoppingCartSession shoppingCart, PaymentResult paymentResult,
@@ -654,41 +718,56 @@ namespace EImece.Domain.Services
             if (buyWithNoAccountCreation == null)
             {
                 Logger.Error("buyWithNoAccountCreation failed: buyWithNoAccountCreation is null");
-                throw new ArgumentNullException("buyWithNoAccountCreation", "buyWithNoAccountCreation is null");
+                throw new ArgumentNullException(nameof(buyWithNoAccountCreation), "buyWithNoAccountCreation is null");
             }
             if (paymentResult == null)
             {
-                Logger.Error("SaveBuyNow failed: " + Constants.PaymentResultIsNullMessage);
-                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
+                Logger.Error("SaveBuyWithNoAccountCreation failed: " + Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
 
-            Customer customer = buyWithNoAccountCreation.Customer;
-            Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
-            int shippingAddressId = shippingAddress.Id;
-            if (shippingAddressId == 0)
+            var dbContext = GetEntitiesContext();
+            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
-                Logger.Info("Creating new shipping address for BuyNow order");
-                shippingAddress.Name = Resource.ShippingAddress;
-                shippingAddress.AddressType = (int)AddressType.ShippingAddress;
-                shippingAddress.Description = customer.RegistrationAddress;
-                shippingAddress.City = customer.City;
-                shippingAddress.Country = customer.Country;
-                shippingAddress.ZipCode = customer.ZipCode;
-                shippingAddress = AddressService.SaveOrEditEntity(buyWithNoAccountCreation.ShippingAddress);
-                shippingAddressId = shippingAddress.Id;
-                Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                try
+                {
+                    Customer customer = buyWithNoAccountCreation.Customer;
+                    Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
+                    int shippingAddressId = shippingAddress.Id;
+                    if (shippingAddressId == 0)
+                    {
+                        Logger.Info("Creating new shipping address for BuyWithNoAccountCreation order");
+                        shippingAddress.Name = Resource.ShippingAddress;
+                        shippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                        shippingAddress.Description = customer.RegistrationAddress;
+                        shippingAddress.City = customer.City;
+                        shippingAddress.Country = customer.Country;
+                        shippingAddress.ZipCode = customer.ZipCode;
+                        shippingAddress = AddressService.SaveOrEditEntity(buyWithNoAccountCreation.ShippingAddress);
+                        shippingAddressId = shippingAddress.Id;
+                        Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                    }
+
+                    Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+                    Order savedOrder = SaveOrder(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId);
+                    Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+                    Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+                    SaveOrderProduct(buyWithNoAccountCreation.ShoppingCartItems, savedOrder);
+                    Logger.Info($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+
+                    transaction.Commit();
+
+                    Logger.Info($"SaveBuyWithNoAccountCreation completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    return savedOrder;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Logger.Error(ex, $"SaveBuyWithNoAccountCreation failed and rolled back for OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
+                    throw;
+                }
             }
-
-            Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = SaveOrder(orderNumber,buyWithNoAccountCreation, paymentResult, shippingAddressId);
-            Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
-
-            Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
-            SaveOrderProduct(buyWithNoAccountCreation.ShoppingCartItems, savedOrder);
-            Logger.Info($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
-
-            Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
-            return savedOrder;
         }
 
         public Order SaveBuyNow(BuyNowModel buyNowSession, PaymentResult paymentResult)
@@ -698,51 +777,66 @@ namespace EImece.Domain.Services
             if (buyNowSession == null)
             {
                 Logger.Error("SaveBuyNow failed: buyNowSession is null");
-                throw new ArgumentNullException("buyNowSession", "buyNowSession is null");
+                throw new ArgumentNullException(nameof(buyNowSession), "buyNowSession is null");
             }
             if (paymentResult == null)
             {
                 Logger.Error("SaveBuyNow failed: " + Constants.PaymentResultIsNullMessage);
-                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
 
-            Logger.Info("Saving customer information");
-            Customer customer = buyNowSession.Customer;
-            customer.CustomerType = (int)EImeceCustomerType.BuyNow;
-            customer.CreatedDate = DateTime.Now;
-            customer.UpdatedDate = DateTime.Now;
-            customer = CustomerService.SaveOrEditEntity(customer);
-            Logger.Info($"Customer saved with Id: {customer.Id}");
-
-            buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
-            Logger.Info($"Generated UserId for BuyNow customer: {buyNowSession.Customer.UserId}");
-
-            Entities.Address shippingAddress = buyNowSession.ShippingAddress;
-            int shippingAddressId = shippingAddress.Id;
-            if (shippingAddressId == 0)
+            var dbContext = GetEntitiesContext();
+            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
-                Logger.Info("Creating new shipping address for BuyNow order");
-                shippingAddress.Name = Resource.ShippingAddress;
-                shippingAddress.AddressType = (int)AddressType.ShippingAddress;
-                shippingAddress.Description = customer.RegistrationAddress;
-                shippingAddress.City = customer.City;
-                shippingAddress.Country = customer.Country;
-                shippingAddress.ZipCode = customer.ZipCode;
-                shippingAddress = AddressService.SaveOrEditEntity(buyNowSession.ShippingAddress);
-                shippingAddressId = shippingAddress.Id;
-                Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                try
+                {
+                    Logger.Info("Saving customer information");
+                    Customer customer = buyNowSession.Customer;
+                    customer.CustomerType = (int)EImeceCustomerType.BuyNow;
+                    customer.CreatedDate = DateTime.Now;
+                    customer.UpdatedDate = DateTime.Now;
+                    customer = CustomerService.SaveOrEditEntity(customer);
+                    Logger.Info($"Customer saved with Id: {customer.Id}");
+
+                    buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
+                    Logger.Info($"Generated UserId for BuyNow customer: {buyNowSession.Customer.UserId}");
+
+                    Entities.Address shippingAddress = buyNowSession.ShippingAddress;
+                    int shippingAddressId = shippingAddress.Id;
+                    if (shippingAddressId == 0)
+                    {
+                        Logger.Info("Creating new shipping address for BuyNow order");
+                        shippingAddress.Name = Resource.ShippingAddress;
+                        shippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                        shippingAddress.Description = customer.RegistrationAddress;
+                        shippingAddress.City = customer.City;
+                        shippingAddress.Country = customer.Country;
+                        shippingAddress.ZipCode = customer.ZipCode;
+                        shippingAddress = AddressService.SaveOrEditEntity(buyNowSession.ShippingAddress);
+                        shippingAddressId = shippingAddress.Id;
+                        Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                    }
+
+                    Logger.Info($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+                    Order savedOrder = SaveOrder(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId);
+                    Logger.Info($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+                    Logger.Info($"Saving order product for BuyNow OrderId: {savedOrder.Id}");
+                    SaveOrderProduct(buyNowSession, savedOrder);
+                    Logger.Info($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
+
+                    transaction.Commit();
+
+                    Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    return savedOrder;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Logger.Error(ex, $"SaveBuyNow failed and rolled back for OrderGuid: {buyNowSession.OrderGuid}");
+                    throw;
+                }
             }
-
-            Logger.Info($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = SaveOrder(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId);
-            Logger.Info($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
-
-            Logger.Info($"Saving order product for BuyNow OrderId: {savedOrder.Id}");
-            SaveOrderProduct(buyNowSession, savedOrder);
-            Logger.Info($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
-
-            Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
-            return savedOrder;
         }
 
         public async Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
@@ -752,41 +846,56 @@ namespace EImece.Domain.Services
             if (buyWithNoAccountCreation == null)
             {
                 Logger.Error("buyWithNoAccountCreation failed: buyWithNoAccountCreation is null");
-                throw new ArgumentNullException("buyWithNoAccountCreation", "buyWithNoAccountCreation is null");
+                throw new ArgumentNullException(nameof(buyWithNoAccountCreation), "buyWithNoAccountCreation is null");
             }
             if (paymentResult == null)
             {
                 Logger.Error("SaveBuyWithNoAccountCreationAsync failed: " + Constants.PaymentResultIsNullMessage);
-                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
 
-            Customer customer = buyWithNoAccountCreation.Customer;
-            Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
-            int shippingAddressId = shippingAddress.Id;
-            if (shippingAddressId == 0)
+            var dbContext = GetEntitiesContext();
+            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
-                Logger.Debug("Creating new shipping address for BuyWithNoAccountCreation order");
-                shippingAddress.Name = Resource.ShippingAddress;
-                shippingAddress.AddressType = (int)AddressType.ShippingAddress;
-                shippingAddress.Description = customer.RegistrationAddress;
-                shippingAddress.City = customer.City;
-                shippingAddress.Country = customer.Country;
-                shippingAddress.ZipCode = customer.ZipCode;
-                shippingAddress = await AddressService.SaveOrEditEntityAsync(buyWithNoAccountCreation.ShippingAddress).ConfigureAwait(false);
-                shippingAddressId = shippingAddress.Id;
-                Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
+                try
+                {
+                    Customer customer = buyWithNoAccountCreation.Customer;
+                    Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
+                    int shippingAddressId = shippingAddress.Id;
+                    if (shippingAddressId == 0)
+                    {
+                        Logger.Debug("Creating new shipping address for BuyWithNoAccountCreation order");
+                        shippingAddress.Name = Resource.ShippingAddress;
+                        shippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                        shippingAddress.Description = customer.RegistrationAddress;
+                        shippingAddress.City = customer.City;
+                        shippingAddress.Country = customer.Country;
+                        shippingAddress.ZipCode = customer.ZipCode;
+                        shippingAddress = await AddressService.SaveOrEditEntityAsync(buyWithNoAccountCreation.ShippingAddress).ConfigureAwait(false);
+                        shippingAddressId = shippingAddress.Id;
+                        Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
+                    }
+
+                    Logger.Debug($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+                    Order savedOrder = await SaveOrderAsync(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId).ConfigureAwait(false);
+                    Logger.Debug($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+                    Logger.Debug($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+                    await SaveOrderProductAsync(buyWithNoAccountCreation.ShoppingCartItems, savedOrder).ConfigureAwait(false);
+                    Logger.Debug($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+
+                    transaction.Commit();
+
+                    Logger.Info($"SaveBuyWithNoAccountCreationAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    return savedOrder;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Logger.Error(ex, $"SaveBuyWithNoAccountCreationAsync failed and rolled back for OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
+                    throw;
+                }
             }
-
-            Logger.Debug($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = await SaveOrderAsync(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId).ConfigureAwait(false);
-            Logger.Debug($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
-
-            Logger.Debug($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
-            await SaveOrderProductAsync(buyWithNoAccountCreation.ShoppingCartItems, savedOrder).ConfigureAwait(false);
-            Logger.Debug($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
-
-            Logger.Info($"SaveBuyWithNoAccountCreationAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
-            return savedOrder;
         }
 
         public async Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, PaymentResult paymentResult)
@@ -796,46 +905,61 @@ namespace EImece.Domain.Services
             if (buyNowSession == null)
             {
                 Logger.Error("SaveBuyNowAsync failed: buyNowSession is null");
-                throw new ArgumentNullException("buyNowSession", "buyNowSession is null");
+                throw new ArgumentNullException(nameof(buyNowSession), "buyNowSession is null");
             }
             if (paymentResult == null)
             {
                 Logger.Error("SaveBuyNowAsync failed: " + Constants.PaymentResultIsNullMessage);
-                throw new ArgumentNullException("paymentResult", Constants.PaymentResultIsNullMessage);
+                throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
 
-            Logger.Debug("Saving customer information");
-            Customer customer = buyNowSession.Customer;
-            customer.CustomerType = (int)EImeceCustomerType.BuyNow;
-            customer.CreatedDate = DateTime.Now;
-            customer.UpdatedDate = DateTime.Now;
-            customer = await CustomerService.SaveOrEditEntityAsync(customer).ConfigureAwait(false);
-
-            buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
-
-            Entities.Address shippingAddress = buyNowSession.ShippingAddress;
-            int shippingAddressId = shippingAddress.Id;
-            if (shippingAddressId == 0)
+            var dbContext = GetEntitiesContext();
+            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
-                shippingAddress.Name = Resource.ShippingAddress;
-                shippingAddress.AddressType = (int)AddressType.ShippingAddress;
-                shippingAddress.Description = customer.RegistrationAddress;
-                shippingAddress.City = customer.City;
-                shippingAddress.Country = customer.Country;
-                shippingAddress.ZipCode = customer.ZipCode;
-                shippingAddress = await AddressService.SaveOrEditEntityAsync(buyNowSession.ShippingAddress).ConfigureAwait(false);
-                shippingAddressId = shippingAddress.Id;
+                try
+                {
+                    Logger.Debug("Saving customer information");
+                    Customer customer = buyNowSession.Customer;
+                    customer.CustomerType = (int)EImeceCustomerType.BuyNow;
+                    customer.CreatedDate = DateTime.Now;
+                    customer.UpdatedDate = DateTime.Now;
+                    customer = await CustomerService.SaveOrEditEntityAsync(customer).ConfigureAwait(false);
+
+                    buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
+
+                    Entities.Address shippingAddress = buyNowSession.ShippingAddress;
+                    int shippingAddressId = shippingAddress.Id;
+                    if (shippingAddressId == 0)
+                    {
+                        shippingAddress.Name = Resource.ShippingAddress;
+                        shippingAddress.AddressType = (int)AddressType.ShippingAddress;
+                        shippingAddress.Description = customer.RegistrationAddress;
+                        shippingAddress.City = customer.City;
+                        shippingAddress.Country = customer.Country;
+                        shippingAddress.ZipCode = customer.ZipCode;
+                        shippingAddress = await AddressService.SaveOrEditEntityAsync(buyNowSession.ShippingAddress).ConfigureAwait(false);
+                        shippingAddressId = shippingAddress.Id;
+                    }
+
+                    Logger.Debug($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+                    Order savedOrder = await SaveOrderAsync(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId).ConfigureAwait(false);
+                    Logger.Debug($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+
+                    await SaveOrderProductAsync(buyNowSession, savedOrder).ConfigureAwait(false);
+                    Logger.Debug($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
+
+                    transaction.Commit();
+
+                    Logger.Info($"SaveBuyNowAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    return savedOrder;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Logger.Error(ex, $"SaveBuyNowAsync failed and rolled back for OrderGuid: {buyNowSession.OrderGuid}");
+                    throw;
+                }
             }
-
-            Logger.Debug($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-            Order savedOrder = await SaveOrderAsync(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId).ConfigureAwait(false);
-            Logger.Debug($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
-
-            await SaveOrderProductAsync(buyNowSession, savedOrder).ConfigureAwait(false);
-            Logger.Debug($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
-
-            Logger.Info($"SaveBuyNowAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
-            return savedOrder;
         }
 
         private void SaveOrderProduct(ShoppingCartSession shoppingCart, Order savedOrder)
