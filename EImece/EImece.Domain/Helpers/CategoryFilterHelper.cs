@@ -205,30 +205,121 @@ namespace EImece.Domain.Helpers
         // ]
         //}
 
-        private PriceFilterConfig ReadPriceFilterFromSetting()
+        public static PriceFilterConfig GetPriceFilterConfig(Setting priceFilterSetting)
         {
-            if (priceFilterSetting.IsEmpty())
+            if (priceFilterSetting == null || priceFilterSetting.IsEmpty() || string.IsNullOrWhiteSpace(priceFilterSetting.SettingValue))
             {
-                // Return default hardcoded price ranges
                 return new PriceFilterConfig
                 {
                     PriceRanges = new List<PriceRange>
-                        {
-                            new PriceRange { Min = 0, Max = 49, IsLast = false },
-                            new PriceRange { Min = 49, Max = 99, IsLast = false },
-                            new PriceRange { Min = 99, Max = 499, IsLast = false },
-                            new PriceRange { Min = 499, Max = 999, IsLast = false },
-                            new PriceRange { Min = 999, Max = 4999, IsLast = false },
-                            new PriceRange { Min = 4999, Max = 9999999, IsLast = true }
-                                }
+                    {
+                        new PriceRange { Min = 0, Max = 49, IsLast = false },
+                        new PriceRange { Min = 49, Max = 99, IsLast = false },
+                        new PriceRange { Min = 99, Max = 499, IsLast = false },
+                        new PriceRange { Min = 499, Max = 999, IsLast = false },
+                        new PriceRange { Min = 999, Max = 4999, IsLast = false },
+                        new PriceRange { Min = 4999, Max = 9999999, IsLast = true }
+                    }
                 };
             }
             else
             {
-                var json = priceFilterSetting.SettingValue.ToStr();
-                var result = JsonConvert.DeserializeObject<PriceFilterConfig>(json);
-                return result;
+                try
+                {
+                    var json = priceFilterSetting.SettingValue.ToStr();
+                    var result = JsonConvert.DeserializeObject<PriceFilterConfig>(json);
+                    if (result != null && result.PriceRanges != null && result.PriceRanges.Count > 0)
+                    {
+                        return result;
+                    }
+                }
+                catch
+                {
+                    // fallback to default
+                }
+                return new PriceFilterConfig
+                {
+                    PriceRanges = new List<PriceRange>
+                    {
+                        new PriceRange { Min = 0, Max = 49, IsLast = false },
+                        new PriceRange { Min = 49, Max = 99, IsLast = false },
+                        new PriceRange { Min = 99, Max = 499, IsLast = false },
+                        new PriceRange { Min = 499, Max = 999, IsLast = false },
+                        new PriceRange { Min = 999, Max = 4999, IsLast = false },
+                        new PriceRange { Min = 4999, Max = 9999999, IsLast = true }
+                    }
+                };
             }
+        }
+
+        public static void ParseCategoryFilter(
+            string filter,
+            Setting priceFilterSetting,
+            out List<int> brandIds,
+            out List<int> ratings,
+            out List<PriceRange> priceRanges)
+        {
+            brandIds = new List<int>();
+            ratings = new List<int>();
+            priceRanges = new List<PriceRange>();
+
+            if (string.IsNullOrWhiteSpace(filter))
+            {
+                return;
+            }
+
+            var tokens = filter.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries)
+                               .Select(t => t.Trim())
+                               .Where(t => !string.IsNullOrEmpty(t))
+                               .ToList();
+
+            var priceFilterConfig = GetPriceFilterConfig(priceFilterSetting);
+
+            foreach (var token in tokens)
+            {
+                if (token.Length < 2)
+                {
+                    continue;
+                }
+
+                char prefix = char.ToLowerInvariant(token[0]);
+                string valueStr = token.Substring(1);
+
+                if (prefix == 'b')
+                {
+                    if (int.TryParse(valueStr, out int bId) && bId > 0 && !brandIds.Contains(bId))
+                    {
+                        brandIds.Add(bId);
+                    }
+                }
+                else if (prefix == 'r')
+                {
+                    if (int.TryParse(valueStr, out int rVal) && rVal > 0 && !ratings.Contains(rVal))
+                    {
+                        ratings.Add(rVal);
+                    }
+                }
+                else if (prefix == 'p')
+                {
+                    if (int.TryParse(valueStr, out int pVal))
+                    {
+                        int index = pVal - 100;
+                        if (priceFilterConfig.PriceRanges != null && index >= 0 && index < priceFilterConfig.PriceRanges.Count)
+                        {
+                            var pr = priceFilterConfig.PriceRanges[index];
+                            if (!priceRanges.Contains(pr))
+                            {
+                                priceRanges.Add(pr);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private PriceFilterConfig ReadPriceFilterFromSetting()
+        {
+            return GetPriceFilterConfig(this.priceFilterSetting);
         }
 
         public void AddRatingFilter(List<CategoryFilterType> categoryFilterTypes)

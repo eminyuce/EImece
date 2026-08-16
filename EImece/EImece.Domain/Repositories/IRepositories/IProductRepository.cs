@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.DTOs.Storefront;
@@ -110,7 +110,7 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language);
 
-        Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByCategoryIdAsync(int categoryId, List<int> childCategoryIds, int language, int pageIndex, int pageSize, SortingType sorting, decimal? minPrice, decimal? maxPrice, List<int> brandIds, List<int> ratings, CancellationToken cancellationToken = default(CancellationToken));
+        Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByCategoryIdAsync(int categoryId, List<int> childCategoryIds, int language, int pageIndex, int pageSize, SortingType sorting, decimal? minPrice, decimal? maxPrice, List<int> brandIds, List<int> ratings, List<EImece.Domain.Helpers.PriceRange> priceRanges = null, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIdList, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
 

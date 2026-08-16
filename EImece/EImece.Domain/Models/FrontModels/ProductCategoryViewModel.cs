@@ -84,7 +84,22 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
-        public List<CategoryFilter> SelectedFilterTypes { get; set; }
+        private List<CategoryFilter> _selectedFilterTypes;
+        public List<CategoryFilter> SelectedFilterTypes
+        {
+            get
+            {
+                if (_selectedFilterTypes == null || !_selectedFilterTypes.Any())
+                {
+                    _selectedFilterTypes = CreateSelectedFilterList(CategoryFilterTypes);
+                }
+                return _selectedFilterTypes;
+            }
+            set
+            {
+                _selectedFilterTypes = value;
+            }
+        }
         public Setting PriceFilterSetting { get; set; }
         public Setting IsProductPriceEnable { get; set; }
         public Setting IsProductReviewEnable { get; set; }
@@ -96,7 +111,6 @@ namespace EImece.Domain.Models.FrontModels
             ChildrenProductCategories = new List<StorefrontCategoryDto>();
             StorefrontBrands = new List<StorefrontBrandDto>();
             AllProducts = new List<StorefrontProductCardDto>();
-            SelectedFilterTypes = new List<CategoryFilter>();
         }
 
         public bool IsProductPriceEnabled

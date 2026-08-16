@@ -136,16 +136,23 @@ namespace EImece.Domain.Services
             result.CategoryDto = categoryDto;
             result.ChildrenProductCategories = childCategories;
 
+            var priceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
+
             List<int> brandIds = null;
             List<int> ratings = null;
+            List<PriceRange> priceRanges = null;
             if (!string.IsNullOrEmpty(filter))
             {
-                var selectedFilters = FilterHelper.ParseFiltersFromString(filter);
-                if (selectedFilters != null && selectedFilters.Any())
-                {
-                    brandIds = selectedFilters.Where(f => f.FieldName.Equals("BrandId", StringComparison.OrdinalIgnoreCase)).Select(f => f.ValueFirst.ToInt()).ToList();
-                    ratings = selectedFilters.Where(f => f.FieldName.Equals("Rating", StringComparison.OrdinalIgnoreCase)).Select(f => f.ValueFirst.ToInt()).ToList();
-                }
+                CategoryFilterHelper.ParseCategoryFilter(
+                    filter,
+                    priceFilterSetting,
+                    out var bIds,
+                    out var rList,
+                    out var pRanges);
+
+                if (bIds != null && bIds.Any()) brandIds = bIds;
+                if (rList != null && rList.Any()) ratings = rList;
+                if (pRanges != null && pRanges.Any()) priceRanges = pRanges;
             }
 
             decimal? minP = (minPrice.HasValue && minPrice.Value > 0) ? (decimal?)minPrice.Value : null;
@@ -162,6 +169,7 @@ namespace EImece.Domain.Services
                 maxP,
                 brandIds,
                 ratings,
+                priceRanges,
                 cancellationToken).ConfigureAwait(false);
 
             result.PagedProductDtos = pagedList;
@@ -188,7 +196,7 @@ namespace EImece.Domain.Services
 
             result.StorefrontBrands = await BrandService.GetStorefrontBrandsAsync(language, categoryId, cancellationToken).ConfigureAwait(false);
             result.ProductCategoryTree = await BuildTreeAsync(true, language).ConfigureAwait(false);
-            result.PriceFilterSetting = await SettingService.GetSettingObjectByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
+            result.PriceFilterSetting = priceFilterSetting;
             result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
             result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
 

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using System;
 using System.Collections.Generic;
@@ -30,11 +30,19 @@ namespace EImece.Domain.Models.FrontModels
             var filters = SelectedFilterTypes.Where(r => !r.CategoryFilterId.Equals(this.CategoryFilterId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
             var routeValues = ProductCategoryViewModel.GetRouteValueDictionary(paginatedModelList);
-            var requestContext = HttpContext.Current.Request.RequestContext;
             routeValues.Remove("filtreler");
-            routeValues.Add("filtreler", string.Join("-", filters.Select(r => r.CategoryFilterId)));
-            var urlHelp = new UrlHelper(requestContext);
-            return urlHelp.Action("Category", "ProductCategories", routeValues);
+            var remaining = string.Join("-", filters.Select(r => r.CategoryFilterId));
+            if (!string.IsNullOrEmpty(remaining))
+            {
+                routeValues.Add("filtreler", remaining);
+            }
+            if (HttpContext.Current != null && HttpContext.Current.Request != null)
+            {
+                var requestContext = HttpContext.Current.Request.RequestContext;
+                var urlHelp = new UrlHelper(requestContext);
+                return urlHelp.Action("Category", "ProductCategories", routeValues);
+            }
+            return "";
         }
 
         public override bool Equals(object obj)

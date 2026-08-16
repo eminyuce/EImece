@@ -1161,6 +1161,7 @@ namespace EImece.Domain.Repositories
             decimal? maxPrice,
             List<int> brandIds,
             List<int> ratings,
+            List<EImece.Domain.Helpers.PriceRange> priceRanges = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var categoryIds = new List<int> { categoryId };
@@ -1182,6 +1183,36 @@ namespace EImece.Domain.Repositories
             {
                 var max = maxPrice.Value;
                 query = query.Where(p => (p.Discount.HasValue && p.Discount.Value > 0 ? (p.Price - p.Discount.Value) : p.Price) <= max);
+            }
+
+            // SQL Price Range filtering (e.g. p102 -> 99 to 499)
+            if (priceRanges != null && priceRanges.Count > 0)
+            {
+                System.Linq.Expressions.Expression<Func<Product, bool>> pricePredicate = null;
+                foreach (var range in priceRanges)
+                {
+                    decimal rMin = range.Min;
+                    decimal rMax = range.Max;
+                    bool isLast = range.IsLast || range.Max >= 9999999;
+
+                    System.Linq.Expressions.Expression<Func<Product, bool>> clause;
+                    if (isLast)
+                    {
+                        clause = p => (p.Discount.HasValue && p.Discount.Value > 0 ? (p.Price - p.Discount.Value) : p.Price) >= rMin;
+                    }
+                    else
+                    {
+                        clause = p => (p.Discount.HasValue && p.Discount.Value > 0 ? (p.Price - p.Discount.Value) : p.Price) >= rMin
+                                   && (p.Discount.HasValue && p.Discount.Value > 0 ? (p.Price - p.Discount.Value) : p.Price) < rMax;
+                    }
+
+                    pricePredicate = pricePredicate == null ? clause : pricePredicate.Or(clause);
+                }
+
+                if (pricePredicate != null)
+                {
+                    query = query.Where(pricePredicate);
+                }
             }
 
             // SQL Brand filtering
