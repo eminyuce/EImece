@@ -20,8 +20,6 @@ namespace EImece.Domain.Scheduler.Jobs
             var sw = Stopwatch.StartNew();
             var jobKey = context?.JobDetail?.Key;
             var correlationId = $"job-log-cleanup-{Guid.NewGuid():N}";
-            MappedDiagnosticsLogicalContext.Set("CorrelationId", correlationId);
-
             using (ScopeContext.PushProperty("CorrelationId", correlationId))
             {
                 Logger.Info("ClearLogsFromDbJob started. JobKey: {0} (CorrelationId: {1})", jobKey, correlationId);

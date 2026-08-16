@@ -55,8 +55,7 @@ namespace EImece.Infrastructure
             CorrelationIdContext.Current = correlationId;
             application.Context.Items["RequestId"] = Guid.NewGuid().ToString("N");
 
-            // Bind CorrelationId to NLog Mapped Diagnostics Logical Context & ScopeContext
-            NLog.MappedDiagnosticsLogicalContext.Set(CorrelationIdContext.HttpContextItemKey, correlationId);
+            // Bind CorrelationId to NLog ScopeContext (NLog 5+ standard)
             NLog.ScopeContext.PushProperty(CorrelationIdContext.HttpContextItemKey, correlationId);
 
             try

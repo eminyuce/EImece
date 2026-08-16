@@ -84,7 +84,6 @@ namespace EImece.Domain.Observability.Logging
             }
 
             // NLog scope properties for layouts that read ${scopeproperty:item=...}
-            MappedDiagnosticsLogicalContext.Set(CorrelationIdProperty, correlationId);
             ScopeContext.PushProperty(CorrelationIdProperty, correlationId);
             if (!string.IsNullOrEmpty(traceId))
             {
@@ -107,7 +106,6 @@ namespace EImece.Domain.Observability.Logging
             activity = activity ?? Activity.Current;
             var correlationId = CorrelationIdContext.Ensure();
             LogContext.PushProperty(CorrelationIdProperty, correlationId);
-            MappedDiagnosticsLogicalContext.Set(CorrelationIdProperty, correlationId);
             ScopeContext.PushProperty(CorrelationIdProperty, correlationId);
 
             if (activity == null)
