@@ -8,22 +8,13 @@
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.DTOs;
 @using System.Resources;
 @model CustomerOrdersViewModel
 
 @{
-    var controllerName = "Home";
-    var gridName = "OrderGrid";
     var myOrders = Model.Orders;
-    var paginatedOrders = new PaginatedModelList<Order>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
-    var baseList = myOrders.DownCasting<Order>();
-
-    var gridImagesText = AdminResource.GridImagesText;
-    var gridEditText = AdminResource.GridEditText;
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var gridDetailText = AdminResource.GridDetailText;
-    var gridMainPageImageText = AdminResource.GridMainPageImageText;
-
+    var paginatedOrders = new PaginatedModelList<OrderDto>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
 }
 
 <!-- Page Content-->
@@ -101,7 +92,7 @@
     </div>
 </div>
 
-@helper createOrderStatus(Order o)
+@helper createOrderStatus(OrderDto o)
 {
 
     var os = (EImeceOrderStatus)o.OrderStatus;

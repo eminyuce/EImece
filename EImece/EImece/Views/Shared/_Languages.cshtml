@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
@@ -6,7 +6,5 @@
 @model  List<SelectListItem>
 @{
     var listItems = Model;
-    var normalClass = "text-light font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light";
-    var selectedClass = "text-info font-size-sm opacity-75 py-1 pl-0 pr-2 border-right border-light";
     var currentLanguage = Thread.CurrentThread.CurrentCulture.ToString();
 }

@@ -1,4 +1,4 @@
-﻿@model List<Subscriber>
+@model List<Subscriber>
 @using EImece.Domain.Helpers;
 @using GridMvc.Html
 @using GridMvc.Sorting;
@@ -16,7 +16,6 @@
     var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
 
     var controllerName = "Subscribers";
-    var title = "Subscribers";
     var gridName = "SubscriberGrid";
     var contents = Model;
     var baseList = contents.DownCasting();

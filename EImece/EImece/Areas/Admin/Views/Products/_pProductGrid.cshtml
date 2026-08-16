@@ -1,4 +1,4 @@
-﻿@model List<Product>
+@model List<Product>
 @using EImece.Domain.Helpers;
 
 @using GridMvc.Html
@@ -13,7 +13,6 @@
     int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
     pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
     var controllerName = "Products";
-    var title = "Products";
     var gridName = "productGrid";
     var contents = Model;
     var baseList = contents.DownCasting<Product>();

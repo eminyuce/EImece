@@ -96,6 +96,11 @@ namespace EImece.Domain.Models.DTOs.Storefront
             get { return DetailPageUrl; }
         }
 
+        public string DetailPageLink
+        {
+            get { return DetailPageUrl; }
+        }
+
         public string GetCroppedImageUrl(int? fileStorageId = null, int width = 0, int height = 0, bool isFullPath = false, bool isThumb = false)
         {
             int imageId = fileStorageId.HasValue ? fileStorageId.Value : (MainImageId.HasValue ? MainImageId.Value : 0);

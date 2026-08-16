@@ -1,11 +1,11 @@
-﻿@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@model EImece.Domain.Models.FrontModels.ProductDetailViewModel
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 
 @{
-    var product = Model.Product;
+    var product = Model?.ProductDto;
 }
 
 <h2>pProductDetailToolTip</h2>
@@ -13,157 +13,136 @@
 <div>
     <h4>Product</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => product.Name)
-        </dt>
+    @if (product != null)
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.Name)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.CreatedDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.CreatedDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.CreatedDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.CreatedDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.UpdatedDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.UpdatedDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.UpdatedDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.UpdatedDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.IsActive)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.IsActive)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.IsActive)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.IsActive)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.Position)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.Position)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.Position)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.Position)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.Lang)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.Lang)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.Lang)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.Lang)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.Description)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.Description)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.Description)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.Description)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.ImageState)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.MetaKeywords)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.ImageState)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.MetaKeywords)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.MetaKeywords)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.MainImageId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.MetaKeywords)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.MainImageId)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.MainImageId)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.NameShort)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.MainImageId)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.NameShort)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.ImageHeight)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.ProductCategoryId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.ImageHeight)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.ProductCategoryId)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.ImageWidth)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.MainPage)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.ImageWidth)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.MainPage)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.NameShort)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.Price)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.NameShort)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.Price)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.ProductCategoryId)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.Discount)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.ProductCategoryId)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.Discount)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.MainPage)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.ProductCode)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.MainPage)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.ProductCode)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => product.Price)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDto.VideoUrl)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => product.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => product.Discount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => product.Discount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => product.ProductCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => product.ProductCode)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => product.VideoUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => product.VideoUrl)
-        </dd>
-    </dl>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDto.VideoUrl)
+            </dd>
+        </dl>
+    }
 </div>

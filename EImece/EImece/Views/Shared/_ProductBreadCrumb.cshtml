@@ -4,10 +4,11 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @model EImece.Domain.Models.FrontModels.ProductDetailViewModel
+@using EImece.Domain.Models.FrontModels;
 @using Resources;
 @using Newtonsoft.Json;
 @{
-    var categories = Model.BreadCrumb ?? new List<CategoryTreeModel>();
+    var categories = Model.BreadCrumb ?? new List<ProductCategoryTreeModel>();
     string baseUrl = string.Format("{0}://{1}", AppConfig.HttpProtocol, AppConfig.Domain);
 
     var breadcrumbList = new List<Dictionary<string, object>>();

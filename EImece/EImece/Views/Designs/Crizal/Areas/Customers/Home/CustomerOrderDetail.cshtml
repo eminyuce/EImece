@@ -8,11 +8,11 @@
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.DTOs;
 @using System.Resources;
 @model CustomerOrderDetailViewModel
 
 @{
-    var controllerName = "Home";
     var order = Model.Order;
     var os = (EImeceOrderStatus)order.OrderStatus;
     var rm = new ResourceManager(typeof(Resource));
@@ -55,7 +55,7 @@
                     }
                     @foreach (var orderProduct in order.OrderProducts)
                     {
-                        var ProductSpecItems = JsonConvert.DeserializeObject<List<ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
+                        var ProductSpecItems = JsonConvert.DeserializeObject<List<EImece.Domain.Models.DTOs.ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
                         var product = orderProduct.Product;
                         var imgTag = product.GetCroppedImageUrl(product.MainImageId, 160, 0);
                         <!-- Item-->
@@ -65,7 +65,7 @@
                                 <div class="media-body pt-3">
                                     <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a target="_blank" href="@product.DetailPageAbsoluteUrl">@product.Name</a></h3>
                                     <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.ProductCategory.Name</div>
+                                    <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.ProductCategoryName</div>
                                     @if (ProductSpecItems.IsNotEmpty())
                                     {
                                         foreach (var psi in ProductSpecItems)
@@ -151,7 +151,7 @@
     </div>
 </div>
 
-@helper createOrderStatus(Order o)
+@helper createOrderStatus(OrderDto o)
 {
     var os = (EImeceOrderStatus)o.OrderStatus;
     var rm = new ResourceManager(typeof(Resource));
