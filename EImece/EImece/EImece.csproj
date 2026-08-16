@@ -1765,6 +1765,8 @@
     <Content Include="Views\Designs\Crizal\Shared\_CrizalBreadcrumbHomeIcon.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_JsonLdOrganization.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_JsonLdOrganization.cshtml" />
+    <Content Include="Views\Designs\Modern\Shared\_EmptyState.cshtml" />
+    <Content Include="Views\Designs\Crizal\Shared\_EmptyState.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customers\Data\" />
