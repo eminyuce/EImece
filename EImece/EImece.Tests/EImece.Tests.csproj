@@ -310,6 +310,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\DesignSystemTests.cs" />
+    <Compile Include="Infrastructure\ResilientHttpClientLifetimeTests.cs" />
     <Compile Include="Controllers\ParallelPocessingTest.cs" />
     <Compile Include="Helpers\DatabaseUtilityTests.cs" />
     <Compile Include="Helpers\GeneralHelperQaFixTests.cs" />
