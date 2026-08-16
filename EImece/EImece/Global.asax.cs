@@ -334,8 +334,6 @@ namespace EImece
 
         private static void ExecuteErrorController(HttpContext httpContext, Exception exception, string currentController, string currentAction)
         {
-            var controller = new ErrorController();
-            var routeData = new RouteData();
             var statusCode = GetErrorHttpStatusCode(exception);
             var action = "Index";
 
@@ -362,16 +360,47 @@ namespace EImece
                     break;
             }
 
-            httpContext.ClearError();
-            httpContext.Response.Clear();
-            httpContext.Response.StatusCode = statusCode;
-            httpContext.Response.TrySkipIisCustomErrors = true;
+            try
+            {
+                httpContext.ClearError();
+                httpContext.Response.Clear();
+                httpContext.Response.StatusCode = statusCode;
+                httpContext.Response.TrySkipIisCustomErrors = true;
 
-            routeData.Values["controller"] = "Error";
-            routeData.Values["action"] = action;
+                var controller = new ErrorController();
+                var routeData = new RouteData();
+                routeData.Values["controller"] = "Error";
+                routeData.Values["action"] = action;
 
-            controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
-            ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+                controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
+                ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "ExecuteErrorController execution failed. Rendering static fallback error page.");
+                try
+                {
+                    httpContext.ClearError();
+                    httpContext.Response.Clear();
+                    httpContext.Response.StatusCode = statusCode;
+                    httpContext.Response.TrySkipIisCustomErrors = true;
+                    httpContext.Response.ContentType = "text/html; charset=utf-8";
+
+                    var title = statusCode == 404 ? "Sayfa Bulunamadı" : "Bir Hata Oluştu";
+                    var message = statusCode == 404
+                        ? "Aradığınız sayfa bulunamadı veya taşınmış olabilir."
+                        : "Üzgünüz, işleminiz sırasında beklenmeyen bir hata meydana geldi.";
+
+                    httpContext.Response.Write(
+                        "<!DOCTYPE html><html lang=\"tr\"><head><meta charset=\"utf-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /><title>" +
+                        title + "</title><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1e293b;margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;box-sizing:border-box}.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:40px;max-width:540px;width:100%;text-align:center;box-shadow:0 10px 25px -5px rgba(0,0,0,0.05)}.code{font-size:56px;font-weight:800;color:#e11d48;line-height:1;margin-bottom:12px}h1{font-size:22px;font-weight:700;color:#0f172a;margin:0 0 12px}p{color:#64748b;font-size:15px;line-height:1.6;margin:0 0 24px}.btn{display:inline-block;padding:12px 28px;background:#067a36;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:15px}</style></head><body><div class=\"card\"><div class=\"code\">" +
+                        statusCode + "</div><h1>" + title + "</h1><p>" + message + "</p><a href=\"/\" class=\"btn\">Ana Sayfaya Dön</a></div></body></html>");
+                }
+                catch
+                {
+                    // Ignore secondary output failures
+                }
+            }
         }
 
         // Checks whether the request is an AJAX or JSON-expecting request without expensive runtime reflection

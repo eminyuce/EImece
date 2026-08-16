@@ -20,10 +20,19 @@ namespace EImece.Filters
                 return;
             }
 
+            if (filterContext.IsChildAction)
+            {
+                return;
+            }
+
             if (!SeoSettings.AllowIndexing)
             {
-                // AppendHeader works in classic and integrated pipeline modes.
-                filterContext.HttpContext.Response.AppendHeader(XRobotsTagHeader, NoIndexDirectives);
+                var response = filterContext.HttpContext.Response;
+                if (response.Headers != null && response.Headers[XRobotsTagHeader] != null)
+                {
+                    return;
+                }
+                response.AppendHeader(XRobotsTagHeader, NoIndexDirectives);
             }
 
             base.OnResultExecuting(filterContext);

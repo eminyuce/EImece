@@ -79,8 +79,20 @@ namespace EImece.Controllers
                 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(exception).Throw();
             }
 
-            TempData["LastException"] = exception;
-            return RedirectToAction("InternalServerError", "Error");
+            Response.StatusCode = 500;
+            Response.TrySkipIisCustomErrors = true;
+
+            var model = new EImece.Domain.Models.HelperModels.ErrorModel
+            {
+                RequestedUrl = Request?.Url != null ? Request.Url.ToString() : string.Empty,
+                ReferrerUrl = Request?.UrlReferrer != null ? Request.UrlReferrer.ToString() : null
+            };
+
+            ViewBag.Title = Resources.Resource.UnexpectedErrorText;
+            ViewBag.Description = Resources.Resource.InternalServererrorText;
+            ViewBag.ExceptionDetail = exception;
+
+            return View("~/Views/Error/InternalServerError.cshtml", model);
         }
 
         /// <summary>

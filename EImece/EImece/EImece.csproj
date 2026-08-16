@@ -1825,8 +1825,12 @@
     <Content Include="Content\img\iyzico-ile-Ode_Alt@1X.png" />
     <Content Include="Content\mstore\img\gallery-cursor@2x.png" />
     <Content Include="Views\Designs\Crizal\Error\Gone.cshtml" />
+    <Content Include="Views\Designs\Crizal\Error\_ViewStart.cshtml" />
     <Content Include="Views\Designs\Modern\Error\Gone.cshtml" />
+    <Content Include="Views\Designs\Modern\Error\_ViewStart.cshtml" />
     <Content Include="Views\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Error\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_ErrorLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customers\Data\" />
