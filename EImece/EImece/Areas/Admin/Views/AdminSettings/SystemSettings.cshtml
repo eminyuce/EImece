@@ -139,7 +139,7 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.ProductPriceFilterSetting, htmlAttributes: new { @class = "control-label col-md-3" })
                                 <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.ProductPriceFilterSetting, 5, 50, new { @class = "form-control", placeholder = "Örn: 0-100, 100-500, 500-1000" })
+                                    @Html.Partial("_ProductPriceFilterEditor", Model.ProductPriceFilterSetting)
                                     @Html.ValidationMessageFor(model => model.ProductPriceFilterSetting, "", new { @class = "text-danger" })
                                 </div>
                             </div>

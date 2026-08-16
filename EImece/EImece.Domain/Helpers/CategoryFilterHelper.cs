@@ -359,6 +359,44 @@ namespace EImece.Domain.Helpers
 
     public class PriceFilterConfig
     {
-        public List<PriceRange> PriceRanges { get; set; }
+        public List<PriceRange> PriceRanges { get; set; } = new List<PriceRange>();
+
+        public bool IsValid(out string errorMessage)
+        {
+            errorMessage = null;
+            if (PriceRanges == null || PriceRanges.Count == 0)
+            {
+                errorMessage = "En az bir fiyat aralığı tanımlanmalıdır.";
+                return false;
+            }
+
+            int lastCount = 0;
+            for (int i = 0; i < PriceRanges.Count; i++)
+            {
+                var r = PriceRanges[i];
+                if (r.Min < 0)
+                {
+                    errorMessage = $"{i + 1}. satır: Min fiyat 0'dan küçük olamaz.";
+                    return false;
+                }
+
+                if (r.IsLast)
+                {
+                    lastCount++;
+                    if (lastCount > 1)
+                    {
+                        errorMessage = "Sadece tek bir aralık 'Son Aralık' (Is Last) olarak işaretlenebilir.";
+                        return false;
+                    }
+                }
+                else if (r.Max <= r.Min)
+                {
+                    errorMessage = $"{i + 1}. satır: Max fiyat ({r.Max}), Min fiyattan ({r.Min}) büyük olmalıdır.";
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

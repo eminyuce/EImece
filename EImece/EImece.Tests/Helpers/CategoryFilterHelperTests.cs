@@ -202,5 +202,78 @@ namespace EImece.Tests.Helpers
             Assert.IsTrue(selected.Any(f => f.CategoryFilterId == "b5"));
             Assert.IsTrue(selected.Any(f => f.CategoryFilterId == "r4"));
         }
+
+        [TestMethod]
+        public void PriceFilterConfig_IsValid_ReturnsTrue_ForValidRanges()
+        {
+            var config = new PriceFilterConfig
+            {
+                PriceRanges = new List<PriceRange>
+                {
+                    new PriceRange { Min = 0, Max = 50, IsLast = false },
+                    new PriceRange { Min = 50, Max = 100, IsLast = false },
+                    new PriceRange { Min = 100, Max = 500, IsLast = true }
+                }
+            };
+
+            bool isValid = config.IsValid(out string error);
+            Assert.IsTrue(isValid);
+            Assert.IsNull(error);
+        }
+
+        [TestMethod]
+        public void PriceFilterConfig_IsValid_ReturnsFalse_WhenEmpty()
+        {
+            var config = new PriceFilterConfig { PriceRanges = new List<PriceRange>() };
+            bool isValid = config.IsValid(out string error);
+            Assert.IsFalse(isValid);
+            Assert.IsNotNull(error);
+        }
+
+        [TestMethod]
+        public void PriceFilterConfig_IsValid_ReturnsFalse_WhenMinNegative()
+        {
+            var config = new PriceFilterConfig
+            {
+                PriceRanges = new List<PriceRange>
+                {
+                    new PriceRange { Min = -10, Max = 50, IsLast = false }
+                }
+            };
+            bool isValid = config.IsValid(out string error);
+            Assert.IsFalse(isValid);
+            Assert.IsNotNull(error);
+        }
+
+        [TestMethod]
+        public void PriceFilterConfig_IsValid_ReturnsFalse_WhenMaxLessOrEqualMin()
+        {
+            var config = new PriceFilterConfig
+            {
+                PriceRanges = new List<PriceRange>
+                {
+                    new PriceRange { Min = 100, Max = 50, IsLast = false }
+                }
+            };
+            bool isValid = config.IsValid(out string error);
+            Assert.IsFalse(isValid);
+            Assert.IsNotNull(error);
+        }
+
+        [TestMethod]
+        public void PriceFilterConfig_IsValid_ReturnsFalse_WhenMultipleIsLast()
+        {
+            var config = new PriceFilterConfig
+            {
+                PriceRanges = new List<PriceRange>
+                {
+                    new PriceRange { Min = 0, Max = 100, IsLast = true },
+                    new PriceRange { Min = 100, Max = 500, IsLast = true }
+                }
+            };
+            bool isValid = config.IsValid(out string error);
+            Assert.IsFalse(isValid);
+            Assert.IsNotNull(error);
+        }
     }
 }

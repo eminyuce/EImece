@@ -1476,6 +1476,7 @@
     <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\CustomerOrderDetail.cshtml" />
     <Content Include="Areas\Customers\Views\Home\Faq.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSettings\SystemSettings.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminSettings\_ProductPriceFilterEditor.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategories\MoveProductCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Menus\MoveMenuCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\BaseContentSearchItem\ProductSearchItem.cshtml" />

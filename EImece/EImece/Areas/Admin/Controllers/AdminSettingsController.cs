@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using NLog;
@@ -40,6 +40,28 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SystemSettings(CancellationToken cancellationToken, SystemSettingModel settingModel)
         {
+            if (!string.IsNullOrWhiteSpace(settingModel.ProductPriceFilterSetting))
+            {
+                try
+                {
+                    var config = Newtonsoft.Json.JsonConvert.DeserializeObject<PriceFilterConfig>(settingModel.ProductPriceFilterSetting);
+                    string error = null;
+                    if (config == null || !config.IsValid(out error))
+                    {
+                        ModelState.AddModelError(nameof(settingModel.ProductPriceFilterSetting), error ?? "Geçersiz fiyat aralığı ayarı.");
+                    }
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(nameof(settingModel.ProductPriceFilterSetting), "Fiyat aralığı JSON formatı geçersiz.");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));
+            }
+
             await SettingService.SaveSystemSettingModelAsync(settingModel);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));

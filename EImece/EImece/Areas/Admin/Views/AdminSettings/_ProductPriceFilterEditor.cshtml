@@ -1,0 +1,349 @@
+@model string
+@{
+    var initialJson = string.IsNullOrWhiteSpace(Model) 
+        ? "{\"PriceRanges\":[{\"Min\":0,\"Max\":50,\"IsLast\":false},{\"Min\":50,\"Max\":100,\"IsLast\":false},{\"Min\":100,\"Max\":500,\"IsLast\":false},{\"Min\":500,\"Max\":1000,\"IsLast\":false},{\"Min\":1000,\"Max\":5000,\"IsLast\":false},{\"Min\":5000,\"Max\":10000,\"IsLast\":false},{\"Min\":10000,\"Max\":30000,\"IsLast\":true}]}" 
+        : Model;
+}
+
+<div class="price-filter-builder-wrapper" id="priceFilterBuilder">
+    <!-- Hidden input bound to SystemSettingModel.ProductPriceFilterSetting -->
+    <input type="hidden" id="ProductPriceFilterSetting" name="ProductPriceFilterSetting" value="@initialJson" />
+
+    <div class="panel panel-default" style="border: 1px solid #dcdfe6; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 5px;">
+        <div class="panel-heading" style="background-color: #f8f9fc; border-bottom: 1px solid #e3e6f0; display:flex; justify-content:space-between; align-items:center; padding: 10px 15px;">
+            <strong style="color: #337ab7; font-size: 13px;">
+                <i class="fa fa-sliders" style="margin-right: 5px;"></i> Fiyat Filtresi Aralıkları
+            </strong>
+            <div>
+                <button type="button" class="btn btn-xs btn-default" id="btnResetDefaultRanges" title="Varsayılan e-ticaret aralıklarını yükle">
+                    <i class="fa fa-refresh"></i> Varsayılanları Yükle
+                </button>
+                <button type="button" class="btn btn-xs btn-primary" id="btnAddPriceRange" style="margin-left: 5px;">
+                    <i class="fa fa-plus-circle"></i> Yeni Aralık Ekle
+                </button>
+            </div>
+        </div>
+
+        <div class="panel-body" style="padding: 15px;">
+            <!-- Alert / Validation Message Area -->
+            <div id="priceRangeValidationAlert" class="alert alert-danger" style="display:none; margin-bottom: 15px; padding: 8px 15px; font-size: 13px;">
+                <i class="fa fa-exclamation-triangle"></i> <span class="msg"></span>
+            </div>
+
+            <!-- Table of Ranges -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-condensed" id="tblPriceRanges" style="margin-bottom: 10px;">
+                    <thead>
+                        <tr style="background-color: #f5f7fa; font-size: 12px;">
+                            <th style="width: 40px; text-align:center;">#</th>
+                            <th style="width: 170px;">Min Fiyat (₺)</th>
+                            <th style="width: 170px;">Max Fiyat (₺)</th>
+                            <th style="width: 130px; text-align:center;">Son Aralık mı?</th>
+                            <th style="width: 90px; text-align:center;">Sırala</th>
+                            <th style="width: 70px; text-align:center;">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="priceRangeList">
+                        <!-- Dynamic rows populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Live Storefront Preview -->
+            <div class="storefront-preview-box" style="margin-top: 12px; padding: 10px 14px; background-color: #f8fafc; border-radius: 4px; border: 1px dashed #cbd5e1;">
+                <div style="font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                    <i class="fa fa-eye"></i> Mağaza Kategori Filtresi Önizlemesi
+                </div>
+                <div id="priceRangePills" style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+                    <!-- Real-time badges rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #tblPriceRanges input[type="number"] {
+        height: 30px;
+        font-size: 12px;
+        border-radius: 3px;
+    }
+    .preview-pill {
+        display: inline-flex;
+        align-items: center;
+        background: #e0f2fe;
+        color: #0369a1;
+        font-weight: 600;
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 12px;
+        border: 1px solid #bae6fd;
+    }
+    .preview-pill i {
+        margin-right: 4px;
+        color: #0284c7;
+    }
+</style>
+
+<script>
+    (function () {
+        function initPriceFilterEditor() {
+            var $hiddenInput = $('#ProductPriceFilterSetting');
+            var $tbody = $('#priceRangeList');
+            var $pills = $('#priceRangePills');
+            var $alert = $('#priceRangeValidationAlert');
+
+            if (!$hiddenInput.length || !$tbody.length) {
+                return;
+            }
+
+            var defaultPreset = [
+                { Min: 0, Max: 50, IsLast: false },
+                { Min: 50, Max: 100, IsLast: false },
+                { Min: 100, Max: 500, IsLast: false },
+                { Min: 500, Max: 1000, IsLast: false },
+                { Min: 1000, Max: 5000, IsLast: false },
+                { Min: 5000, Max: 10000, IsLast: false },
+                { Min: 10000, Max: 30000, IsLast: true }
+            ];
+
+            function parseData() {
+                var raw = $hiddenInput.val();
+                if (!raw || raw.trim() === '') {
+                    return defaultPreset;
+                }
+                try {
+                    var parsed = JSON.parse(raw);
+                    if (parsed && Array.isArray(parsed.PriceRanges) && parsed.PriceRanges.length > 0) {
+                        return parsed.PriceRanges;
+                    }
+                } catch (e) {
+                    console.warn("Could not parse JSON for price filter settings, using default presets.", e);
+                }
+                return defaultPreset;
+            }
+
+            function renderRow(range, index) {
+                var isLast = !!range.IsLast;
+                var min = parseInt(range.Min, 10) || 0;
+                var max = parseInt(range.Max, 10) || 0;
+
+                return '<tr class="price-range-row" data-index="' + index + '">' +
+                    '<td class="row-num text-center" style="vertical-align:middle; font-weight:bold; color:#64748b; font-size:12px;">' + (index + 1) + '</td>' +
+                    '<td>' +
+                        '<div class="input-group input-group-sm">' +
+                            '<span class="input-group-addon">₺</span>' +
+                            '<input type="number" min="0" step="1" class="form-control txt-min" value="' + min + '" required />' +
+                        '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div class="input-group input-group-sm">' +
+                            '<span class="input-group-addon">₺</span>' +
+                            '<input type="number" min="0" step="1" class="form-control txt-max" value="' + max + '" ' + (isLast ? 'disabled placeholder="Üst Limit Yok"' : '') + ' required />' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="text-center" style="vertical-align:middle;">' +
+                        '<label style="cursor:pointer; font-weight:normal; margin:0; font-size:11px;">' +
+                            '<input type="checkbox" class="chk-is-last" ' + (isLast ? 'checked' : '') + ' /> Son' +
+                        '</label>' +
+                    '</td>' +
+                    '<td class="text-center" style="vertical-align:middle;">' +
+                        '<div class="btn-group btn-group-xs">' +
+                            '<button type="button" class="btn btn-default btn-move-up" title="Yukarı Taşı"><i class="fa fa-chevron-up"></i></button>' +
+                            '<button type="button" class="btn btn-default btn-move-down" title="Aşağı Taşı"><i class="fa fa-chevron-down"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="text-center" style="vertical-align:middle;">' +
+                        '<button type="button" class="btn btn-danger btn-xs btn-remove-range" title="Sil"><i class="fa fa-trash"></i></button>' +
+                    '</td>' +
+                '</tr>';
+            }
+
+            function renderTable(ranges) {
+                $tbody.empty();
+                ranges.forEach(function (range, idx) {
+                    $tbody.append(renderRow(range, idx));
+                });
+                refreshState();
+            }
+
+            function extractRangesFromDOM() {
+                var ranges = [];
+                $tbody.find('tr.price-range-row').each(function () {
+                    var $row = $(this);
+                    var min = parseInt($row.find('.txt-min').val(), 10) || 0;
+                    var isLast = $row.find('.chk-is-last').is(':checked');
+                    var max = isLast ? 9999999 : (parseInt($row.find('.txt-max').val(), 10) || 0);
+
+                    ranges.push({
+                        Min: min,
+                        Max: max,
+                        IsLast: isLast
+                    });
+                });
+                return ranges;
+            }
+
+            function validateRanges(ranges) {
+                if (!ranges || ranges.length === 0) {
+                    return "En az bir fiyat aralığı tanımlanmalıdır.";
+                }
+
+                var isLastCount = 0;
+                for (var i = 0; i < ranges.length; i++) {
+                    var r = ranges[i];
+                    if (r.Min < 0) {
+                        return (i + 1) + ". satır: Min fiyat 0'dan küçük olamaz.";
+                    }
+                    if (r.IsLast) {
+                        isLastCount++;
+                        if (isLastCount > 1) {
+                            return "Sadece tek bir aralık 'Son Aralık' (Is Last) olarak işaretlenebilir.";
+                        }
+                    } else {
+                        if (r.Max <= r.Min) {
+                            return (i + 1) + ". satır: Max fiyat (" + r.Max + " ₺), Min fiyattan (" + r.Min + " ₺) büyük olmalıdır.";
+                        }
+                    }
+                }
+                return null;
+            }
+
+            function renderStorefrontPreview(ranges) {
+                $pills.empty();
+                if (!ranges || ranges.length === 0) {
+                    $pills.html('<span class="text-muted" style="font-size:11px;">Aralık bulunamadı.</span>');
+                    return;
+                }
+
+                ranges.forEach(function (r, i) {
+                    var text = "";
+                    if (r.IsLast) {
+                        text = r.Min.toLocaleString('tr-TR') + " ₺ ve Üzeri";
+                    } else if (i === 0 && r.Min === 0) {
+                        text = r.Max.toLocaleString('tr-TR') + " ₺ ve Altı";
+                    } else {
+                        text = r.Min.toLocaleString('tr-TR') + " ₺ - " + r.Max.toLocaleString('tr-TR') + " ₺";
+                    }
+
+                    $pills.append(
+                        '<span class="preview-pill">' +
+                            '<i class="fa fa-tag"></i> ' + text +
+                        '</span>'
+                    );
+                });
+            }
+
+            function refreshState() {
+                var $rows = $tbody.find('tr.price-range-row');
+                $rows.each(function (i) {
+                    $(this).find('.row-num').text(i + 1);
+                    $(this).find('.btn-move-up').prop('disabled', i === 0);
+                    $(this).find('.btn-move-down').prop('disabled', i === $rows.length - 1);
+                });
+
+                var ranges = extractRangesFromDOM();
+                var errorMsg = validateRanges(ranges);
+
+                if (errorMsg) {
+                    $alert.find('.msg').text(errorMsg);
+                    $alert.slideDown(150);
+                } else {
+                    $alert.slideUp(150);
+                }
+
+                var jsonObj = { PriceRanges: ranges };
+                $hiddenInput.val(JSON.stringify(jsonObj));
+                renderStorefrontPreview(ranges);
+            }
+
+            // --- Event Bindings ---
+
+            $tbody.off('input change', '.txt-min, .txt-max').on('input change', '.txt-min, .txt-max', function () {
+                refreshState();
+            });
+
+            $tbody.off('change', '.chk-is-last').on('change', '.chk-is-last', function () {
+                var isChecked = $(this).is(':checked');
+                if (isChecked) {
+                    $tbody.find('.chk-is-last').not(this).prop('checked', false).each(function () {
+                        $(this).closest('tr').find('.txt-max').prop('disabled', false).attr('placeholder', '');
+                    });
+                    $(this).closest('tr').find('.txt-max').prop('disabled', true).attr('placeholder', 'Üst Limit Yok');
+                } else {
+                    $(this).closest('tr').find('.txt-max').prop('disabled', false).attr('placeholder', '');
+                }
+                refreshState();
+            });
+
+            $('#btnAddPriceRange').off('click').on('click', function () {
+                var ranges = extractRangesFromDOM();
+                var lastRange = ranges.length > 0 ? ranges[ranges.length - 1] : null;
+                var nextMin = lastRange ? (lastRange.IsLast ? lastRange.Min + 5000 : lastRange.Max) : 0;
+                var nextMax = nextMin + 500;
+
+                var newRange = { Min: nextMin, Max: nextMax, IsLast: false };
+                ranges.push(newRange);
+                renderTable(ranges);
+            });
+
+            $('#btnResetDefaultRanges').off('click').on('click', function () {
+                if (confirm("Fiyat aralıkları varsayılan ayarlara sıfırlansın mı?")) {
+                    renderTable(defaultPreset);
+                }
+            });
+
+            $tbody.off('click', '.btn-remove-range').on('click', '.btn-remove-range', function () {
+                var $rows = $tbody.find('tr.price-range-row');
+                if ($rows.length <= 1) {
+                    alert("En az bir fiyat aralığı kalmalıdır.");
+                    return;
+                }
+                $(this).closest('tr').fadeOut(180, function () {
+                    $(this).remove();
+                    refreshState();
+                });
+            });
+
+            $tbody.off('click', '.btn-move-up').on('click', '.btn-move-up', function () {
+                var $row = $(this).closest('tr');
+                var $prev = $row.prev('tr');
+                if ($prev.length) {
+                    $row.insertBefore($prev);
+                    refreshState();
+                }
+            });
+
+            $tbody.off('click', '.btn-move-down').on('click', '.btn-move-down', function () {
+                var $row = $(this).closest('tr');
+                var $next = $row.next('tr');
+                if ($next.length) {
+                    $row.insertAfter($next);
+                    refreshState();
+                }
+            });
+
+            // Prevent form submit if invalid
+            $hiddenInput.closest('form').on('submit', function (e) {
+                refreshState();
+                var ranges = extractRangesFromDOM();
+                var errorMsg = validateRanges(ranges);
+                if (errorMsg) {
+                    e.preventDefault();
+                    $('a[href="#tab-general"]').tab('show');
+                    $('html, body').animate({ scrollTop: $('#priceFilterBuilder').offset().top - 100 }, 200);
+                    return false;
+                }
+            });
+
+            // Initial render
+            renderTable(parseData());
+        }
+
+        if (window.jQuery) {
+            $(document).ready(initPriceFilterEditor);
+        } else {
+            document.addEventListener('DOMContentLoaded', initPriceFilterEditor);
+        }
+    })();
+</script>
