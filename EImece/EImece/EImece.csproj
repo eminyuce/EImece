@@ -495,6 +495,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1782,6 +1783,50 @@
     <Content Include="Views\Designs\Crizal\Shared\_JsonLdOrganization.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_EmptyState.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_EmptyState.cshtml" />
+    <Content Include="Content\designs\crizal\fonts\lg.svg" />
+    <Content Include="Content\designs\crizal\fonts\themify.svg" />
+    <Content Include="Content\designs\crizal\fonts\revicons\revicons.svg" />
+    <Content Include="Content\designs\crizal\search\search.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins.css" />
+    <Content Include="Content\designs\crizal\vendor\css\styles.css" />
+    <Content Include="Content\designs\crizal\vendor\css\template-custom.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\animate.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\animated-headline.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\bootstrap.min.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\default.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\et-line.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\fontawesome-all.min.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\lightgallery.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\magnific-popup.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\nav-menu.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\odometer-theme-default.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\owl.carousel.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\owl.theme.default.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\prism.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\themify-icons.css" />
+    <Content Include="Content\designs\crizal\vendor\css\plugins\xzoom.css" />
+    <Content Include="Content\designs\crizal\vendor\fonts\lg.svg" />
+    <Content Include="Content\designs\crizal\vendor\fonts\themify.svg" />
+    <Content Include="Content\designs\crizal\vendor\fonts\revicons\revicons.svg" />
+    <Content Include="Content\designs\crizal\vendor\js\bootstrap.min.js" />
+    <Content Include="Content\designs\crizal\vendor\js\jarallax.min.js" />
+    <Content Include="Content\designs\crizal\vendor\js\jquery.magnific-popup.min.js" />
+    <Content Include="Content\designs\crizal\vendor\js\main.js" />
+    <Content Include="Content\designs\crizal\vendor\js\nav-menu.js" />
+    <Content Include="Content\designs\crizal\vendor\js\odometer.min.js" />
+    <Content Include="Content\designs\crizal\vendor\js\owl.carousel.js" />
+    <Content Include="Content\designs\crizal\vendor\js\popper.min.js" />
+    <Content Include="Content\designs\crizal\vendor\js\wow.js" />
+    <Content Include="Content\designs\modern\css\components.css" />
+    <Content Include="Content\designs\modern\css\responsive.css" />
+    <Content Include="Content\designs\modern\css\theme.css" />
+    <Content Include="Content\designs\modern\js\theme.js" />
+    <Content Include="Content\img\iyzico-ile-Ode@1X.png" />
+    <Content Include="Content\img\iyzico-ile-Ode_Alt@1X.png" />
+    <Content Include="Content\mstore\img\gallery-cursor@2x.png" />
+    <Content Include="Views\Designs\Crizal\Error\Gone.cshtml" />
+    <Content Include="Views\Designs\Modern\Error\Gone.cshtml" />
+    <Content Include="Views\Error\InternalServerError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customers\Data\" />
