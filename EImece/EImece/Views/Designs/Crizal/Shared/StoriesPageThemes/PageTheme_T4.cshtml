@@ -1,2 +1,63 @@
-﻿@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
-@Html.Partial("~/Views/Designs/Crizal/Shared/StoriesPageThemes/_StoryCategoryBootstrap.cshtml", Model)
+@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using EImece.Domain.Helpers.Extensions
+@using Resources
+@using System.Linq
+@{
+    var category = Model.StoryCategory;
+    var stories = Model.StorefrontStories;
+}
+
+<section class="crizal-story-page crizal-story-page--t4">
+    <div class="container">
+        <nav class="crizal-breadcrumb" aria-label="breadcrumb">
+            <ol class="crizal-breadcrumb__list breadcrumb">
+                @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
+                <li class="crizal-breadcrumb__item breadcrumb-item">
+                    <a href="@Url.Action("Index", "Stories")" class="crizal-breadcrumb__link">@Resource.StoryCategories</a>
+                </li>
+                <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+                    <span class="crizal-breadcrumb__current">@category.Name</span>
+                </li>
+            </ol>
+        </nav>
+
+        <header class="crizal-story-page__header text-center">
+            <h1 class="crizal-story-page__title">@category.Name</h1>
+            @if (!string.IsNullOrWhiteSpace(category.Description))
+            {
+                <div class="crizal-story-page__lead mx-auto" style="max-width: 720px;">@Html.Raw(category.Description)</div>
+            }
+
+            @if (Model.StoryCategories != null && Model.StoryCategories.Count > 1)
+            {
+                <div class="crizal-story-filter-bar mt-4 mb-2">
+                    @foreach (var cstory in Model.StoryCategories)
+                    {
+                        var isCurrent = category != null && cstory.Id == category.Id;
+                        <a href="@cstory.DetailPageRelativeUrl" class="crizal-story-filter-pill@(isCurrent ? " is-active" : "")">
+                            @cstory.Name
+                        </a>
+                    }
+                </div>
+            }
+        </header>
+
+        <div class="mt-4">
+            @if (stories != null && stories.Count > 0)
+            {
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 crizal-story-grid crizal-story-grid--wide">
+                    @foreach (var story in stories)
+                    {
+                        <div class="col">
+                            @Html.DisplayFor(modelItem => story, "Story", new { Width = 420, Height = 280 })
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <output class="crizal-story-empty d-block">@Resource.NOSearchResult</output>
+            }
+        </div>
+    </div>
+</section>

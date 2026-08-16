@@ -3186,6 +3186,104 @@ body[data-design="crizal"] .crizal-story-empty {
     color: var(--crizal-muted);
 }
 
+/* Story Themes Grids & Layout Enhancements */
+body[data-design="crizal"] .crizal-story-grid .crizal-story-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 0;
+}
+
+body[data-design="crizal"] .crizal-story-grid .crizal-story-card .crizal-story-card__media {
+    min-height: 200px;
+    max-height: 220px;
+}
+
+body[data-design="crizal"] .crizal-story-grid .crizal-story-card .crizal-story-card__media img {
+    min-height: 200px;
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+}
+
+body[data-design="crizal"] .crizal-story-grid .crizal-story-card .crizal-story-card__body {
+    flex: 1 1 auto;
+    padding: 1.15rem 1.25rem;
+}
+
+body[data-design="crizal"] .crizal-story-grid .crizal-story-card .crizal-story-card__title {
+    font-size: 1.1rem;
+}
+
+body[data-design="crizal"] .crizal-story-card--hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    background: var(--crizal-surface);
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+body[data-design="crizal"] .crizal-story-card--hero .crizal-story-card__media {
+    min-height: 280px;
+}
+
+body[data-design="crizal"] .crizal-story-card--hero .crizal-story-card__media img {
+    min-height: 280px;
+    height: 100%;
+}
+
+body[data-design="crizal"] .crizal-story-card--hero .crizal-story-card__body {
+    padding: 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.85rem;
+}
+
+body[data-design="crizal"] .crizal-story-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+body[data-design="crizal"] .crizal-story-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 1.1rem;
+    border-radius: 20px;
+    background: var(--crizal-surface-alt, #f1f5f9);
+    color: var(--crizal-heading, #1e293b);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid var(--crizal-border, #e2e8f0);
+}
+
+body[data-design="crizal"] .crizal-story-filter-pill:hover {
+    background: #e0f2fe;
+    color: #0284c7;
+    border-color: #bae6fd;
+}
+
+body[data-design="crizal"] .crizal-story-filter-pill.is-active {
+    background: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+}
+
+@media (max-width: 991px) {
+    body[data-design="crizal"] .crizal-story-card,
+    body[data-design="crizal"] .crizal-story-card--hero {
+        grid-template-columns: 1fr;
+    }
+}
+
 body[data-design="crizal"] .crizal-story-detail__header {
     margin-bottom: 1.35rem;
 }

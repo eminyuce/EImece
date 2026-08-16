@@ -1,35 +1,56 @@
-﻿@model EImece.Domain.Entities.StoryCategory
+@model EImece.Domain.Entities.StoryCategory
+@using EImece.Domain;
 @using EImece.Domain.Helpers;
+@using Resources;
 @{
-    var selectedTheme = Model.PageTheme.ToStr();
-
+    var selectedTheme = string.IsNullOrWhiteSpace(Model.PageTheme) ? Constants.PageThemeT1 : Model.PageTheme.ToStr();
+    var themes = new[]
+    {
+        new { Value = Constants.PageThemeT1, File = "story-tema-01.svg", Title = "Tema 1 (Standart Liste)", Hint = "Solda dikey hikâye listesi, sağda kategori ve etiket çubuğu" },
+        new { Value = Constants.PageThemeT2, File = "story-tema-02.svg", Title = "Tema 2 (Sol Kenar Çubuğu)", Hint = "Solda kategori ve etiketler, sağda dikey hikâye listesi" },
+        new { Value = Constants.PageThemeT3, File = "story-tema-03.svg", Title = "Tema 3 (2 Kolon Izgara)", Hint = "Solda 2 sütunlu hikâye kartları ızgarası, sağda kenar çubuğu" },
+        new { Value = Constants.PageThemeT4, File = "story-tema-04.svg", Title = "Tema 4 (3 Kolon Tam Genişlik)", Hint = "Geniş alanda 3 sütunlu modern hikâye kartları ızgarası" },
+        new { Value = Constants.PageThemeT5, File = "story-tema-05.svg", Title = "Tema 5 (Manşet + Izgara)", Hint = "Üstte büyük manşet kartı, altta 2 kolonlu hikâye ızgarası" }
+    };
 }
-<div class="tab" id="SayfaDuzenleri">
-    <table class="TemaTable" style="width: 100%; text-align: center">
-        <tr>
-            <td>
-                <br />
-                <input id="T1"
-                       @String.Format("{0}",selectedTheme.Equals("T1") ? "checked='checked'" : "")
-                       type="radio" name="PageTheme" value="T1" /><label for="T1">Tema 1</label>
-            </td>
-            <td>
-                <br />
-                <input id="T2"
-                       @String.Format("{0}",selectedTheme.Equals("T2") ? "checked='checked'" : "")
-                       type="radio" name="PageTheme" value="T2" /><label for="T2">Tema 2</label>
-            </td>
-            <td>
-                <br />
-                <input id="T3" @String.Format("{0}",selectedTheme.Equals("T3") ? "checked='checked'" : "")
-                       type="radio" name="PageTheme" value="T3" /><label for="T3">Tema 3</label>
-            </td>
-            <td class="Hide">
-                <br />
-                <input id="T4"
-                       @String.Format("{0}",selectedTheme.Equals("T4") ? "checked='checked'" : "")
-                       type="radio" name="PageTheme" value="T4" /><label for="T4">Tema 4</label>
-            </td>
-        </tr>
-    </table>
+<div class="page-theme-picker" id="SayfaDuzenleri" role="radiogroup" aria-label="@AdminResource.PageTheme">
+    @foreach (var theme in themes)
+    {
+        var isSelected = selectedTheme.Equals(theme.Value, StringComparison.OrdinalIgnoreCase);
+        var previewUrl = Url.Content("~/Areas/Admin/Content/PageThemes/" + theme.File);
+        <label class="page-theme-card@(isSelected ? " is-selected" : "")">
+            <input class="page-theme-card__input"
+                   id="@theme.Value"
+                   type="radio"
+                   name="PageTheme"
+                   value="@theme.Value"
+                   @(isSelected ? "checked=\"checked\"" : null) />
+            <span class="page-theme-card__media">
+                <img src="@previewUrl" alt="@theme.Title yerleşim önizlemesi" />
+                <button type="button"
+                        class="page-theme-card__zoom"
+                        data-preview="@previewUrl"
+                        data-title="@theme.Title"
+                        title="Büyüt"
+                        aria-label="@theme.Title önizlemesini büyüt">
+                    <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+                </button>
+                <span class="page-theme-card__badge">Seçili</span>
+            </span>
+            <span class="page-theme-card__meta">
+                <span class="page-theme-card__name">@theme.Title</span>
+                <span class="page-theme-card__hint">@theme.Hint</span>
+            </span>
+        </label>
+    }
+</div>
+<div class="page-theme-lightbox" id="pageThemeLightbox" hidden>
+    <button type="button" class="page-theme-lightbox__backdrop" aria-label="Kapat"></button>
+    <div class="page-theme-lightbox__dialog" role="dialog" aria-modal="true" aria-labelledby="pageThemeLightboxTitle">
+        <div class="page-theme-lightbox__bar">
+            <strong id="pageThemeLightboxTitle"></strong>
+            <button type="button" class="page-theme-lightbox__close" aria-label="Kapat">&times;</button>
+        </div>
+        <img alt="" />
+    </div>
 </div>

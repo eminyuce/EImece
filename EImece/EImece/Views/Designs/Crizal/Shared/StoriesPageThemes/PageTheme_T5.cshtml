@@ -1,2 +1,99 @@
-﻿@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
-@Html.Partial("~/Views/Designs/Crizal/Shared/StoriesPageThemes/_StoryCategoryBootstrap.cshtml", Model)
+@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Models.DTOs.Storefront
+@using Resources
+@using System.Linq
+@{
+    var category = Model.StoryCategory;
+    var stories = Model.StorefrontStories ?? new System.Collections.Generic.List<StorefrontStoryCardDto>();
+    var featuredStory = stories.FirstOrDefault();
+    var remainingStories = stories.Skip(1).ToList();
+}
+
+<section class="crizal-story-page crizal-story-page--t5">
+    <div class="container">
+        <nav class="crizal-breadcrumb" aria-label="breadcrumb">
+            <ol class="crizal-breadcrumb__list breadcrumb">
+                @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
+                <li class="crizal-breadcrumb__item breadcrumb-item">
+                    <a href="@Url.Action("Index", "Stories")" class="crizal-breadcrumb__link">@Resource.StoryCategories</a>
+                </li>
+                <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+                    <span class="crizal-breadcrumb__current">@category.Name</span>
+                </li>
+            </ol>
+        </nav>
+
+        <header class="crizal-story-page__header">
+            <h1 class="crizal-story-page__title">@category.Name</h1>
+            @if (!string.IsNullOrWhiteSpace(category.Description))
+            {
+                <div class="crizal-story-page__lead">@Html.Raw(category.Description)</div>
+            }
+        </header>
+
+        @if (featuredStory != null)
+        {
+            var fName = featuredStory.Name;
+            var fImageId = featuredStory.MainImageId;
+            var fImageUrl = featuredStory.GetCroppedImageUrl(fImageId, 800, 450);
+            var fDetailUrl = featuredStory.DetailPageUrl;
+            var fExcerpt = !string.IsNullOrWhiteSpace(featuredStory.ShortDescription) ? featuredStory.ShortDescription : featuredStory.GetSeoDescription(220);
+            var fCreatedDate = featuredStory.CreatedDate;
+
+            <!-- Hero Featured Headline Story -->
+            <article class="crizal-story-card crizal-story-card--hero mb-4">
+                <a class="crizal-story-card__media" href="@fDetailUrl" aria-label="@fName">
+                    <img src="@fImageUrl"
+                         width="800"
+                         height="450"
+                         alt="@fName"
+                         loading="lazy"
+                         decoding="async" />
+                    <time class="crizal-story-card__date" datetime="@fCreatedDate.ToString("yyyy-MM-dd")">
+                        <span class="crizal-story-card__day">@fCreatedDate.Day</span>
+                        <span class="crizal-story-card__month">@fCreatedDate.ToString("MMM")</span>
+                    </time>
+                </a>
+                <div class="crizal-story-card__body">
+                    <span class="crizal-tag crizal-tag--featured mb-1" style="align-self: flex-start; background: #0284c7; color: #fff; font-weight: 700; font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 4px;">
+                        @Resource.IsFeaturedStory
+                    </span>
+                    <h2 class="crizal-story-card__title" style="font-size: 1.5rem;">
+                        <a href="@fDetailUrl">@fName</a>
+                    </h2>
+                    @if (!string.IsNullOrWhiteSpace(fExcerpt))
+                    {
+                        <p class="crizal-story-card__excerpt">@Html.Raw(fExcerpt)</p>
+                    }
+                    <a href="@fDetailUrl" class="butn-style8 small crizal-story-card__more"><span>@Resource.ReadMore</span></a>
+                </div>
+            </article>
+        }
+
+        <!-- Grid of Remaining Stories + Sidebar -->
+        <div class="row g-4">
+            <div class="col-lg-8">
+                @if (remainingStories.Count > 0)
+                {
+                    <div class="row row-cols-1 row-cols-md-2 g-4 crizal-story-grid">
+                        @foreach (var story in remainingStories)
+                        {
+                            <div class="col">
+                                @Html.DisplayFor(modelItem => story, "Story", new { Width = 400, Height = 260 })
+                            </div>
+                        }
+                    </div>
+                }
+                else if (featuredStory == null)
+                {
+                    <output class="crizal-story-empty d-block">@Resource.NOSearchResult</output>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                @Html.Partial("~/Views/Designs/Crizal/Shared/StoriesPageThemes/_StoryCategorySidebar.cshtml", Model)
+            </div>
+        </div>
+    </div>
+</section>

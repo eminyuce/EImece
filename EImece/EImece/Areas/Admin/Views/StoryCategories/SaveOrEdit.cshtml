@@ -134,4 +134,36 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            var $picker = $("#SayfaDuzenleri");
+            $picker.on("change", ".page-theme-card__input", function () {
+                $picker.find(".page-theme-card").removeClass("is-selected");
+                $(this).closest(".page-theme-card").addClass("is-selected");
+            });
+
+            var $lightbox = $("#pageThemeLightbox");
+            var $lightboxImg = $lightbox.find("img");
+            var $lightboxTitle = $("#pageThemeLightboxTitle");
+            function closeThemeLightbox() {
+                $lightbox.attr("hidden", "hidden");
+                $lightboxImg.attr("src", "");
+            }
+            $picker.on("click", ".page-theme-card__zoom", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $btn = $(this);
+                $lightboxTitle.text($btn.data("title") || "");
+                $lightboxImg.attr("src", $btn.data("preview"));
+                $lightboxImg.attr("alt", ($btn.data("title") || "") + " önizleme");
+                $lightbox.removeAttr("hidden");
+            });
+            $lightbox.on("click", ".page-theme-lightbox__backdrop, .page-theme-lightbox__close", closeThemeLightbox);
+            $(document).on("keydown.pageThemeLightbox", function (e) {
+                if (e.key === "Escape" && !$lightbox.is("[hidden]")) {
+                    closeThemeLightbox();
+                }
+            });
+        });
+    </script>
 }

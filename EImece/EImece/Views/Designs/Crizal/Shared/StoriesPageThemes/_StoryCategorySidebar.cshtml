@@ -1,0 +1,48 @@
+@model EImece.Domain.Models.FrontModels.StoryCategoryViewModel
+@using EImece.Domain.Helpers.Extensions
+@using Resources
+@using System.Linq
+@{
+    var category = Model.StoryCategory;
+}
+
+<aside class="crizal-story-sidebar">
+    @if (Model.StoryCategories != null && Model.StoryCategories.Count > 0)
+    {
+        <div class="crizal-story-widget">
+            <h2 class="crizal-story-widget__title">@Resource.StoryCategories</h2>
+            <ul class="crizal-story-widget__list">
+                @foreach (var cstory in Model.StoryCategories)
+                {
+                    var isCurrent = category != null && cstory.Id == category.Id;
+                    <li>
+                        @if (isCurrent)
+                        {
+                            <span class="is-current">@cstory.Name</span>
+                        }
+                        else
+                        {
+                            <a href="@cstory.DetailPageRelativeUrl">@cstory.Name</a>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.Tags != null && Model.Tags.Count > 0)
+    {
+        <div class="crizal-story-widget">
+            <h2 class="crizal-story-widget__title">@Resource.Tags</h2>
+            <div class="crizal-tags">
+                @foreach (var t in Model.Tags.OrderByDescending(x => x.ItemCount).ThenBy(x => x.Name))
+                {
+                    <a class="crizal-tag" href="@Url.Action("Tag", "Stories", new { id = t.GetSeoUrl() })">
+                        <span class="crizal-tag__name">@t.Name</span>
+                        <span class="crizal-tag__count">@t.ItemCount</span>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+</aside>
