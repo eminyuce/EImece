@@ -22,15 +22,18 @@
     <li class="@(isHome ? "active current" : null)">
         <a href="@homeHref">@Resource.HomePage</a>
     </li>
-    <li class="@(isProductArea ? "active current" : null)">
-        <a href="#!">@Resource.ProductCategories</a>
-        <ul>
-            @for (int i = 0; i < productCategories.Count; i++)
-            {
-                @CreateProductTree(productCategories[i])
-            }
-        </ul>
-    </li>
+    @if (productCategories.Count > 0)
+    {
+        <li class="@(isProductArea ? "active current" : null)">
+            <a href="#!">@Resource.ProductCategories</a>
+            <ul>
+                @for (int i = 0; i < productCategories.Count; i++)
+                {
+                    @CreateProductTree(productCategories[i])
+                }
+            </ul>
+        </li>
+    }
     @CreateMenuTree(Model, homeHref)
     @if (productPriceEnabled)
     {
