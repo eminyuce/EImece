@@ -406,6 +406,7 @@ Full guide: **[DEPLOYMENT.md](DEPLOYMENT.md)**
 | [ASYNC_AWAIT_GUIDE.md](EImece/docs/ASYNC_AWAIT_GUIDE.md) | Async EF6 / thread-pool guidance |
 | [DESIGN_REMOVAL_GUIDE.md](EImece/docs/DESIGN_REMOVAL_GUIDE.md) | Removing a storefront design from the `.csproj` safely |
 | [IIS_APP_POOL_PERMISSIONS.md](EImece/docs/IIS_APP_POOL_PERMISSIONS.md) | `media/` ACL for IIS |
+| [MEDIA_AND_SEED_IMAGES_GUIDE.md](EImece/docs/MEDIA_AND_SEED_IMAGES_GUIDE.md) | Media management, seed images, and Storefront vs Admin behavior |
 | [RECAPTCHA.md](EImece/RECAPTCHA.md) | Captcha providers and Web.config keys |
 
 ---
