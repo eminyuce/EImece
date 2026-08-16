@@ -27,6 +27,8 @@ namespace EImece.Controllers
          *   icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
          *
          * See docs/IIS_APP_POOL_PERMISSIONS.md
+         * 
+         * PS C:\Users\eminy\source\repos\EImece\EImece> & "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
          */
 
         [HttpGet]
