@@ -1,3 +1,4 @@
+@model object
 @using System
 @using EImece.Domain.Entities
 @using Resources
@@ -6,16 +7,53 @@
     var saveButtonAndCloseText = ViewBag.SaveButtonAndCloseText as string ?? AdminResource.SaveButtonAndCloseText;
     var backUrl = ViewBag.BackUrl as string ?? Url.Action("Index");
 
-    var entity = ViewData.Model as BaseEntity;
+    var entity = (ViewData.Model as BaseEntity)
+              ?? (ViewContext.ViewData.Model as BaseEntity)
+              ?? (ViewContext.Controller.ViewData.Model as BaseEntity);
     var recordId = entity != null ? entity.Id : 0;
+    if (recordId == 0)
+    {
+        var routeId = ViewContext.RouteData.Values["id"];
+        if (routeId != null)
+        {
+            int parsedId;
+            if (int.TryParse(Convert.ToString(routeId), out parsedId))
+            {
+                recordId = parsedId;
+            }
+        }
+        if (recordId == 0 && Request != null && !string.IsNullOrEmpty(Request.QueryString["id"]))
+        {
+            int queryId;
+            if (int.TryParse(Request.QueryString["id"], out queryId))
+            {
+                recordId = queryId;
+            }
+        }
+    }
+
     var currentController = Convert.ToString(ViewContext.RouteData.Values["controller"]) ?? "";
     var showImageGallery = recordId > 0
         && (currentController.Equals("Products", StringComparison.OrdinalIgnoreCase)
             || currentController.Equals("Stories", StringComparison.OrdinalIgnoreCase)
             || currentController.Equals("Menus", StringComparison.OrdinalIgnoreCase));
-    var galleryUrl = showImageGallery
-        ? Url.Action("Media", currentController, new { id = recordId })
-        : "";
+    
+    var galleryUrl = "";
+    if (showImageGallery)
+    {
+        if (currentController.Equals("Stories", StringComparison.OrdinalIgnoreCase))
+        {
+            galleryUrl = Url.Action("Index", "Media", new { contentId = recordId, mod = "Stories", imageType = "StoryGallery" });
+        }
+        else if (currentController.Equals("Menus", StringComparison.OrdinalIgnoreCase))
+        {
+            galleryUrl = Url.Action("Index", "Media", new { contentId = recordId, mod = "Menus", imageType = "MenuGallery" });
+        }
+        else
+        {
+            galleryUrl = Url.Action("Index", "Media", new { contentId = recordId, mod = "Products", imageType = "ProductGallery" });
+        }
+    }
 }
 <div class="admin-edit-toolbar-actions">
     <button type="submit" name="saveButton" value="@saveButtonText" class="btn btn-sm btn-success admin-edit-save-btn" title="@saveButtonText">

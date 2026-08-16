@@ -8,7 +8,7 @@
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
     ViewBag.Title = "SaveOrEdit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var categories = (List<StoryCategory>)ViewBag.Categories;
+    var categories = (List<StoryCategory>)ViewBag.Categories ?? new List<StoryCategory>();
     var categoriesDb = categories.Select(r => new SelectListItem() { Text = r.Name, Value = r.Id.ToString() }).ToList();
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
 
@@ -43,7 +43,7 @@
     @Html.HiddenFor(model => model.Lang)
 
     <div class="panel panel-default admin-edit-form">
-                @Html.Partial("_AdminEditFormToolbar")
+                @Html.Partial("_AdminEditFormToolbar", Model)
                 <div class="panel-body">
                     <div class="tab-content">
                         <div id="admin-edit-tab-fields" class="tab-pane fade in active" role="tabpanel">
@@ -132,7 +132,7 @@
                             @if (Model.MainImageId.HasValue)
                             {
                                 <b>@ExistingMainImageText :</b>
-                                @Html.Partial("pGridImageMainPage", (BaseContent)Model);
+                                @Html.Partial("pGridImageMainPage", (BaseContent)Model)
                             }
                         </div>
                     </div>

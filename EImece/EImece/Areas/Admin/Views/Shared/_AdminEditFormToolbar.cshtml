@@ -1,3 +1,4 @@
+@model object
 @using Resources
 @{
     var contentSectionTitle = ViewBag.ContentSectionTitle as string ?? AdminResource.EntityDescriptionPage;
@@ -27,5 +28,5 @@
             </a>
         </li>
     </ul>
-    @Html.Partial("_AdminEditToolbarActions")
+    @Html.Partial("_AdminEditToolbarActions", (object)Model)
 </div>
