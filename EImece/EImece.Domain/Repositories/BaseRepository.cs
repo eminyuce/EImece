@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework;
 using EImece.Domain.Helpers;
@@ -36,18 +36,13 @@ namespace EImece.Domain.Repositories
             DbContext = dbContext;
         }
 
-        protected void Dispose(Boolean disposing)
+        /// <summary>
+        /// Lifetime of DbContext is managed exclusively by the DI container (Scoped per request).
+        /// Repositories must not dispose the injected shared DbContext.
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
         {
-            // free unmanaged ressources here
-            if (disposing)
-            {
-                // This method is called from Dispose() so it is safe to
-                // free managed ressources here
-                if (DbContext != null)
-                {
-                    DbContext.Dispose();
-                }
-            }
+            // No-op: DbContext lifetime is owned and disposed by Microsoft.Extensions.DependencyInjection request scope.
         }
 
         public void Dispose()
