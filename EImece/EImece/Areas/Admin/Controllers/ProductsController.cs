@@ -25,8 +25,7 @@ namespace EImece.Areas.Admin.Controllers
         private const string IndexAction = "Index";
 
         [HttpGet]
-        public async Task<ActionResult> IndexGrid(
-            CancellationToken cancellationToken,
+        public ActionResult IndexGrid(
             int id = 0,
             AdminProductsIndexQuery query = null)
         {
@@ -35,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
                 query = new AdminProductsIndexQuery();
             }
 
-            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            var isProductPriceEnable = AsyncHelper.RunSync(() => SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable));
             bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
             var filter = new ProductAdminListFilter
@@ -49,7 +48,7 @@ namespace EImece.Areas.Admin.Controllers
                 ApplyPriceFilter = priceEnabled
             };
 
-            var products = await ProductService.GetAdminPageListAsync(id, query.BrandId, query.Search, CurrentLanguage, filter, cancellationToken);
+            var products = AsyncHelper.RunSync(() => ProductService.GetAdminPageListAsync(id, query.BrandId, query.Search, CurrentLanguage, filter, CancellationToken.None));
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             ViewBag.PriceEnabled = priceEnabled;
             return new QueryableResult<Product>(products.AsQueryable());
