@@ -15,6 +15,26 @@ namespace EImece
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                   "~/Scripts/jquery-ui-{version}.js"));
 
+            // Admin-only stack. Storefront keeps ~/bundles/jquery and ~/bundles/jqueryui until storefront cutover.
+            bundles.Add(new ScriptBundle("~/bundles/adminJquery").Include(
+                        "~/Scripts/admin-vendor/jquery-4.0.0.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/adminJqueryMigrate").Include(
+                        "~/Scripts/admin-vendor/jquery-migrate-4.0.2.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/adminJqueryUi").Include(
+                        "~/Scripts/admin-vendor/jquery-ui-1.14.2.js"));
+
+            bundles.Add(new StyleBundle("~/Content/adminJqueryUiCss").Include(
+                        "~/Content/admin-vendor/jquery-ui/jquery-ui.css"));
+
+            // Phase 1: Bootstrap 3.3.7 JS with jQuery 4 version-check patch. Phase 3 swaps this to bootstrap.bundle.js 5.3.8.
+            bundles.Add(new ScriptBundle("~/bundles/adminBootstrap").Include(
+                        "~/Scripts/admin-vendor/bootstrap-3.3.7.js"));
+
+            bundles.Add(new StyleBundle("~/Content/adminBootstrapCss").Include(
+                        "~/Content/admin-vendor/bootstrap/bootstrap.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 

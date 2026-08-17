@@ -333,7 +333,7 @@ $(document).ready(function () {
         return jsonRequest;
     }
     var YOUR_MESSAGE_STRING_CONST = $("#AdminMultiSelectDeleteConfirmMessage").text();
-    $("#DeleteAll").click(function () {
+    $("#DeleteAll").on("click", function () {
         var selectedCount = GetSelectedCheckBoxValuesArray().length;
         if (selectedCount === 0) {
             showAdminAjaxError($("#CheckboxesDataTableDoesNotSelected").val() || "Lütfen en az bir kayıt seçin.");
@@ -347,7 +347,7 @@ $(document).ready(function () {
             deleteButtonText: $deleteModal.attr("data-bulk-delete-text") || $(this).text().trim(),
             onConfirm: function (done) {
                 var postData = GetSelectedCheckBoxValues();
-                var parsedPostData = jQuery.parseJSON(postData);
+                var parsedPostData = JSON.parse(postData);
                 if (parsedPostData.values.length > 0) {
                     var tableName = $("[data-gridname]").attr("data-gridname");
                     ajaxMethodCall(postData, "/admin/Ajax/Delete" + tableName + "Item", function (data) {
@@ -385,7 +385,7 @@ $(document).ready(function () {
             onConfirm: onConfirm
         });
     }
-    $("#OrderingAll").click(function () {
+    $("#OrderingAll").on("click", function () {
         //  console.log("OrderingAll is clicked.");
         var postData = GetSelectedOrderingValues();
         //  console.log(postData);
@@ -414,14 +414,14 @@ $(document).ready(function () {
         return itemArray;
     }
 
-    $("#DeselectAll").click(function () {
+    $("#DeselectAll").on("click", function () {
         var i = 0;
         $("input[name=checkboxGrid]").each(function () {
             $(this).parents("tr:first").removeClass('gridChecked');
             var m = $(this).prop('checked', false);
         });
     });
-    $("#SelectAll").click(function () {
+    $("#SelectAll").on("click", function () {
         //  console.log("SelectAll is clicked.");
         var i = 0;
         $("input[name=checkboxGrid]").each(function () {
@@ -431,15 +431,15 @@ $(document).ready(function () {
         });
     });
 
-    $("#SetStateOffAll").click(function () {
+    $("#SetStateOffAll").on("click", function () {
         console.log("SetStateOffAll is clicked.");
         changeState(false);
     });
-    $("#SetStateOnAll").click(function () {
+    $("#SetStateOnAll").on("click", function () {
         //  console.log("SetStateOnAll is clicked.");
         changeState(true);
     });
-    $("#ProductStateChanged").click(function (e) {
+    $("#ProductStateChanged").on("click", function (e) {
         e.preventDefault();
 
         var ProductStateSelection = Number.parseInt($("#ProductStateSelection").val(), 10);
@@ -477,7 +477,7 @@ $(document).ready(function () {
             displayMessage("error", $("#CheckboxesDataTableDoesNotSelected").val());
         }
     }
-    $("#GridListItemSize").change(function (e) {
+    $("#GridListItemSize").on("change", function (e) {
         var originalURL = window.location.href;
         var q = getQueryStringParameter(originalURL, "GridPageSize");
         if (!isEmpty(q)) {
@@ -817,7 +817,7 @@ function searchAutoComplete() {
             }
         },
         select: function (event, ui) {
-            $("#SearchButton").click();
+            $("#SearchButton").trigger("click");
         }
     });
 }
