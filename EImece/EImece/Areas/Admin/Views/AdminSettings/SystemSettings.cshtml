@@ -456,16 +456,21 @@
 
     <style>
         /* Styling for the nav pills */
-        #settingsTabs > li > a {
+        #settingsTabs > li > a,
+        #settingsTabs .nav-link {
             border-radius: 4px;
             margin-bottom: 2px;
             color: #555;
         }
         #settingsTabs > li.active > a,
         #settingsTabs > li.active > a:hover,
-        #settingsTabs > li.active > a:focus {
-            background-color: #337ab7;
+        #settingsTabs > li.active > a:focus,
+        #settingsTabs .nav-link.active,
+        #settingsTabs .nav-link.active:hover,
+        #settingsTabs .nav-link.active:focus {
+            background-color: #2b6cb0;
             color: #fff;
+            font-weight: 700;
         }
         .tab-content {
             padding-left: 15px;

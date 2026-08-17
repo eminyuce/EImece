@@ -46,22 +46,22 @@
     <div class="row">
         <!-- Vertical Tabs Menu -->
         <div class="col-md-3">
-            <ul class="nav nav-pills flex-column" id="settingsTabs" style="border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9; padding: 10px 0;">
+            <ul class="nav nav-pills flex-column" id="settingsTabs" role="tablist" style="border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9; padding: 10px 0;">
                 @if (productPriceEnabled)
                 {
-                    <li class="@(activeTab == "cargo" ? "active" : "")">
-                        <a class="nav-link active" data-bs-toggle="pill" href="#tab-cargo">
+                    <li class="nav-item">
+                        <a class="nav-link @(activeTab == "cargo" ? "active" : "")" data-bs-toggle="pill" href="#tab-cargo" role="tab" aria-selected="@(activeTab == "cargo" ? "true" : "false")">
                             <i class="fa fa-paper-plane" style="margin-right:8px;"></i> @AdminResource.CargoSettings
                         </a>
                     </li>
                 }
-                <li class="@(activeTab == "seo" ? "active" : "")">
-                    <a class="nav-link" data-bs-toggle="pill" href="#tab-seo">
+                <li class="nav-item">
+                    <a class="nav-link @(activeTab == "seo" ? "active" : "")" data-bs-toggle="pill" href="#tab-seo" role="tab" aria-selected="@(activeTab == "seo" ? "true" : "false")">
                         <i class="fa fa-search" style="margin-right:8px;"></i> @AdminResource.SeoSettings
                     </a>
                 </li>
-                <li>
-                    <a class="nav-link" data-bs-toggle="pill" href="#tab-footer">
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#tab-footer" role="tab" aria-selected="false">
                         <i class="fa fa-list-alt" style="margin-right:8px;"></i> @AdminResource.FooterSettings
                     </a>
                 </li>
@@ -75,7 +75,7 @@
                 @if (productPriceEnabled)
                 {
                     <!-- Cargo Settings -->
-                    <div id="tab-cargo" class="tab-pane fade @(activeTab == "cargo" ? "in active" : "")">
+                    <div id="tab-cargo" class="tab-pane fade @(activeTab == "cargo" ? "show active" : "")" role="tabpanel">
                         <div class="card">
                             <div class="card-header"><h3 class="card-title">@AdminResource.CargoSettings</h3></div>
                             <div class="card-body">
@@ -109,7 +109,7 @@
                 }
 
                 <!-- SEO Settings -->
-                <div id="tab-seo" class="tab-pane fade @(activeTab == "seo" ? "in active" : "")">
+                <div id="tab-seo" class="tab-pane fade @(activeTab == "seo" ? "show active" : "")" role="tabpanel">
                     <div class="card">
                         <div class="card-header"><h3 class="card-title">@AdminResource.SeoSettings</h3></div>
                         <div class="card-body">
@@ -199,16 +199,21 @@
 
 <style>
     /* Styling for the nav pills */
-    #settingsTabs > li > a {
+    #settingsTabs > li > a,
+    #settingsTabs .nav-link {
         border-radius: 4px;
         margin-bottom: 2px;
         color: #555;
     }
     #settingsTabs > li.active > a,
     #settingsTabs > li.active > a:hover,
-    #settingsTabs > li.active > a:focus {
-        background-color: #337ab7;
+    #settingsTabs > li.active > a:focus,
+    #settingsTabs .nav-link.active,
+    #settingsTabs .nav-link.active:hover,
+    #settingsTabs .nav-link.active:focus {
+        background-color: #2b6cb0;
         color: #fff;
+        font-weight: 700;
     }
     .tab-content {
         padding-left: 15px;
