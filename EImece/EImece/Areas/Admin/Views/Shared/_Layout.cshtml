@@ -78,6 +78,16 @@
                     }
                 });
             }
+
+        $(function () {
+            $(".js-griddly-async").each(function () {
+                var $el = $(this);
+                var url = $el.attr("data-url");
+                if (url) {
+                    $el.load(url);
+                }
+            });
+        });
             if (window.jQuery) {
                 wireAjaxAntiForgery();
             } else {

@@ -222,7 +222,7 @@ else
             </span>
         </div>
         <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
-            @Html.Griddly("IndexGrid", new { search = Model.SearchTerm })
+            <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Model.SearchTerm })"></div>
         </div>
     </div>
 }

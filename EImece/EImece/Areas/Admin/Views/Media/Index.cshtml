@@ -326,7 +326,7 @@
                     </form>
                 </div>
 
-                @Html.Griddly("IndexGrid", new { contentId = Model.Id, mod = Model.MediaMod.ToString(), imageType = Model.ImageType.ToString() })
+                <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { contentId = Model.Id, mod = Model.MediaMod.ToString(), imageType = Model.ImageType.ToString() })"></div>
             </div>
         </div>
     </div>

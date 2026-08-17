@@ -72,7 +72,7 @@
 
         }
         @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-default btn-sm", style = "margin-bottom:10px;" })
-        @Html.Griddly("MoveProductsInTreesGrid", new { id = selectedCategory != null ? selectedCategory.Id : 0 })
+        <div class="js-griddly-async" data-url="@Url.Action("MoveProductsInTreesGrid", new { id = selectedCategory != null ? selectedCategory.Id : 0 })"></div>
     </div>
     <div class="col-md-3">
 

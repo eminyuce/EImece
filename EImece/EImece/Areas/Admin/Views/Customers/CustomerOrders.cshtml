@@ -19,4 +19,4 @@
 <br />
 <br />
 
-@Html.Griddly("CustomerOrdersGrid", new { id = customer.UserId, search = Request.QueryString["search"] })
+<div class="js-griddly-async" data-url="@Url.Action("CustomerOrdersGrid", new { id = customer.UserId, search = Request.QueryString["search"] })"></div>

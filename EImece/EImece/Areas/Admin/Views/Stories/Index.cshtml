@@ -21,4 +21,4 @@
     {"IsExcelButtonEnabled",true}
 })
 
-@Html.Griddly("IndexGrid", new { id = ViewContext.RouteData.Values["id"], search = Request.QueryString["search"] })
+<div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { id = ViewContext.RouteData.Values["id"], search = Request.QueryString["search"] })"></div>

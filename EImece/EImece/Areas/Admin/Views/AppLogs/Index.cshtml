@@ -143,7 +143,7 @@
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#logAccordion">
             <div class="accordion-body">
-                @Html.Griddly("IndexGrid", new { search = currentSearch, eventLevel = currentEventLevel })
+                <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = currentSearch, eventLevel = currentEventLevel })"></div>
             </div>
         </div>
     </div>

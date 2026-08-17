@@ -413,7 +413,7 @@
 
         @Html.Partial("Grid/_GridChrome")
 
-        @Html.Griddly("IndexGrid", new
+        <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new
         {
             id = categoryIdForFilter,
             brandId = selectedBrandId > 0 ? (int?)selectedBrandId : null,
@@ -424,7 +424,7 @@
             isCampaign = filterIsCampaign ? (bool?)true : null,
             minPrice = priceEnabled ? minPrice : null,
             maxPrice = priceEnabled ? maxPrice : null
-        })
+        })"></div>
     </div>
 </div>
 

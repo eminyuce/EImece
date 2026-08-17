@@ -83,7 +83,7 @@
         ,{"SetStateOnOrOff",true},
 { "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
 
-    @Html.Griddly("IndexGrid", new { id = product.Id, search = Request.QueryString["search"] })
+    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { id = product.Id, search = Request.QueryString["search"] })"></div>
 </div>
 
 @helper RatingCell(int rating)
