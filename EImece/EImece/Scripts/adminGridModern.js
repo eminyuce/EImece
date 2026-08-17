@@ -205,6 +205,28 @@
         window.changeStateSuccess.__egPatched = true;
     }
 
+
+    function fixGriddlyRecordRange() {
+        var walker = function (root) {
+            if (!root) { return; }
+            var nodes = root.querySelectorAll ? root.querySelectorAll('*') : [];
+            var list = [root];
+            for (var i = 0; i < nodes.length; i++) { list.push(nodes[i]); }
+            for (var n = 0; n < list.length; n++) {
+                var el = list[n];
+                for (var c = 0; c < el.childNodes.length; c++) {
+                    var node = el.childNodes[c];
+                    if (node.nodeType === 3 && node.nodeValue && node.nodeValue.indexOf('through-') !== -1) {
+                        node.nodeValue = node.nodeValue.replace(/through-\s*/g, '– ');
+                    }
+                }
+            }
+        };
+        $('.griddly, .eg-grid, .griddly-footer, .griddly-summary').each(function () {
+            walker(this);
+        });
+    }
+
     function markModernGrids() {
         $('.griddly, .eg-grid-shell, .grid-mvc').addClass('eg-grid');
         $('.admin-grid-ops').addClass('eg-bulk-bar');
@@ -226,6 +248,7 @@
         } catch (e) { /* ignore */ }
         applyDensity(saved);
         markSecondaryGridColumns();
+        fixGriddlyRecordRange();
     }
 
     /**
@@ -233,7 +256,7 @@
      * Keeps index / check / name / image / status / state / price / actions.
      */
     function markSecondaryGridColumns() {
-        var keep = /(^|\s)(eg-col-index|eg-col-check|eg-col-name|eg-col-image|eg-col-status|eg-col-state|eg-col-price|eg-col-actions|gridButtons)(\s|$)/;
+        var keep = /(^|\s)(eg-col-index|eg-col-check|eg-col-name|eg-col-image|eg-col-status|eg-col-state|eg-col-price|eg-col-actions|eg-col-isservice|eg-col-isvalues|gridButtons)(\s|$)/;
         $('.eg-grid table.grid-table, .eg-grid table.eg-grid-table, .griddly table').each(function () {
             var $table = $(this);
             var $ths = $table.find('thead > tr > th');

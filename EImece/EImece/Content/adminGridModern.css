@@ -1024,8 +1024,8 @@ body.admin-app .eg-grid .grid-filter-btn {
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
 .admin-grid-ops.eg-bulk-bar .eg-ops-new {
@@ -1051,8 +1051,9 @@ body.admin-app .eg-grid .grid-filter-btn {
 }
 
 .admin-grid-ops.eg-bulk-bar .eg-ops-search {
-    flex: 1 1 280px;
-    min-width: 220px;
+    flex: 1 1 220px;
+    min-width: 180px;
+    max-width: 520px;
 }
 
 .admin-grid-ops.eg-bulk-bar .eg-search-form {
@@ -1279,8 +1280,8 @@ body.admin-app .eg-grid .grid-filter-btn {
 }
 
 .admin-grid-ops.eg-bulk-bar .eg-ops-select-wide {
-    min-width: 160px;
-    max-width: 220px;
+    min-width: 120px;
+    max-width: 180px;
 }
 
 .admin-grid-ops.eg-bulk-bar .eg-ops-group-product {
@@ -1479,7 +1480,19 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
 
 .eg-shoppingcarts-grid .eg-col-guid,
 .eg-shoppingcarts-grid .eg-col-userid {
-    max-width: 180px;
+    max-width: 150px;
+}
+.eg-shoppingcarts-grid .eg-col-name {
+    max-width: 240px;
+}
+.eg-shoppingcarts-grid .eg-name-main {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 220px;
+}
+.eg-shoppingcarts-grid .eg-mono-chip {
+    max-width: 128px;
 }
 
 .eg-shoppingcarts-grid .eg-name-cell .eg-name-main {
@@ -3337,9 +3350,87 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
 .griddly table .eg-col-status { min-width: 170px; }
 .griddly table .eg-col-actions { min-width: 60px; width: 60px; text-align: center; }
 .griddly table .eg-col-isservice,
-.griddly table .eg-col-isvalues { min-width: 120px; text-align: center; }
+.griddly table .eg-col-isvalues { min-width: 120px; width: 140px; text-align: center; }
+
+.eg-lists-grid table.eg-grid-table,
+.eg-grid.eg-lists-grid table.eg-grid-table {
+    table-layout: fixed;
+}
+.eg-lists-grid .eg-col-name,
+.griddly.eg-lists-grid table .eg-col-name,
+.eg-grid.eg-lists-grid table .eg-col-name {
+    min-width: 0 !important;
+    width: auto;
+    max-width: none;
+}
+.eg-lists-grid .eg-col-isservice,
+.eg-lists-grid .eg-col-isvalues,
+.eg-grid.eg-lists-grid table .eg-col-isservice,
+.eg-grid.eg-lists-grid table .eg-col-isvalues {
+    min-width: 148px !important;
+    width: 148px !important;
+    max-width: 160px !important;
+    text-align: center;
+}
+
+.eg-flag-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+.eg-flag-cell .eg-status-icon,
+.eg-flag-cell .gridActiveIcon,
+.eg-flag-cell .gridNotActiveIcon {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+}
+.eg-flag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: 0 0 8px;
+}
+.eg-flag-cell.is-on {
+    background: #e8f7ef;
+    color: #1f7a45;
+    border: 1px solid #b7e4c7;
+}
+.eg-flag-cell.is-on .eg-flag-dot { background: #2f9e44; }
+.eg-flag-cell.is-off {
+    background: #fdecec;
+    color: #9b1c1c;
+    border: 1px solid #f5c2c7;
+}
+.eg-flag-cell.is-off .eg-flag-dot { background: #c92a2a; }
 
 /* Griddly Footer & Pagination */
+
+/* Griddly ships BS3 visibility helpers. BS5 does not hide .visible-xs-inline,
+   so the footer reads "Records 1 through- 8 of 8". Restore the desktop wording. */
+.griddly-summary .visible-xs-inline,
+.griddly .visible-xs-inline {
+    display: none !important;
+}
+@media (max-width: 767.98px) {
+    .griddly-summary .hidden-xs,
+    .griddly .hidden-xs {
+        display: none !important;
+    }
+    .griddly-summary .visible-xs-inline,
+    .griddly .visible-xs-inline {
+        display: inline !important;
+    }
+}
+
 .griddly .griddly-footer {
     display: flex;
     align-items: center;
@@ -3507,4 +3598,57 @@ body.admin-app .griddly table.table-striped > tbody > tr:not(:has(input[name="ch
 body.admin-app .griddly table.table-striped > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).table-success:nth-of-type(odd) > td {
     background: #fbfcfe !important;
     background-color: #fbfcfe !important;
+}
+
+/* lists-two-flag-cols */
+body.admin-app .eg-lists-grid,
+body.admin-app .eg-grid.eg-lists-grid,
+body.admin-app .griddly.eg-lists-grid {
+    max-width: 100%;
+}
+body.admin-app .eg-lists-grid table,
+body.admin-app .eg-grid.eg-lists-grid table,
+body.admin-app .griddly.eg-lists-grid table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+}
+body.admin-app .eg-lists-grid th.eg-col-isservice,
+body.admin-app .eg-lists-grid td.eg-col-isservice,
+body.admin-app .eg-lists-grid th.eg-col-isvalues,
+body.admin-app .eg-lists-grid td.eg-col-isvalues {
+    width: 140px !important;
+    min-width: 140px !important;
+    max-width: 140px !important;
+    box-sizing: border-box;
+}
+body.admin-app .eg-lists-grid th.eg-col-name,
+body.admin-app .eg-lists-grid td.eg-col-name {
+    min-width: 0 !important;
+    width: auto !important;
+}
+body.admin-app .eg-lists-grid th.eg-col-index,
+body.admin-app .eg-lists-grid td.eg-col-index,
+body.admin-app .eg-lists-grid th.eg-col-check,
+body.admin-app .eg-lists-grid td.eg-col-check {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 56px !important;
+}
+body.admin-app .eg-lists-grid th.eg-col-actions,
+body.admin-app .eg-lists-grid td.eg-col-actions {
+    width: 72px !important;
+    min-width: 72px !important;
+    max-width: 88px !important;
+}
+/* lists-scroll-fit */
+body.admin-app .eg-lists-grid .griddly-scrollable-container {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+body.admin-app .eg-lists-grid .griddly-scrollable-container > table,
+body.admin-app .eg-lists-grid table.eg-grid-table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
 }
