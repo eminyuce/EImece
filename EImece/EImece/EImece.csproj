@@ -65,6 +65,22 @@
       <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Griddly.Mvc, Version=3.8.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griddly.Core.3.8.9\lib\net461\Griddly.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Dynamic.Core, Version=1.6.0.1, Culture=neutral, PublicKeyToken=0f07ec44de6ac832, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.Core.1.6.0.1\lib\net46\System.Linq.Dynamic.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.4.5.3\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.90\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.27.1.1\lib\net47\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Iyzipay, Version=2.1.78.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Iyzipay.2.1.78\lib\net45\Iyzipay.dll</HintPath>
     </Reference>
@@ -687,6 +703,7 @@
     <Content Include="Content\codemirror\doc\docs.css" />
     <Content Include="Content\deleteStyle.css" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\griddly.css" />
     <Content Include="Content\img\hero-main-bg.jpg" />
     <Content Include="Content\img\iyzico-ile-Ode%401X.png" />
     <Content Include="Content\img\iyzico-ile-Ode_Alt%401X.png" />
@@ -1390,6 +1407,7 @@
     <Content Include="Areas\Admin\Views\Dashboard\SearchContent.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pSaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\IndexGrid.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductTags.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductFiles.cshtml" />
     <Content Include="Areas\Admin\Views\Media\Index.cshtml" />
@@ -1589,6 +1607,7 @@
     <Content Include="Scripts\eimece.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\griddly.js" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -1649,6 +1668,14 @@
     <Content Include="Views\Shared\DisplayTemplates\Product.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
+    <Content Include="Views\Shared\Griddly\BootstrapButton.cshtml" />
+    <Content Include="Views\Shared\Griddly\ButtonStrip.cshtml" />
+    <Content Include="Views\Shared\Griddly\Griddly.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterBar.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterForm.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterInline.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilters.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterValues.cshtml" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags.cshtml" />
     <Content Include="Views\Pages\Detail.cshtml" />

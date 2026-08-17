@@ -3092,3 +3092,157 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     outline-offset: 1px;
     background: #fff;
 }
+
+/* ==========================================================================
+   Griddly Integration & Aesthetic Harmony
+   Ensures Griddly grids match Grid.Mvc modern design 1:1
+   ========================================================================== */
+
+.griddly {
+    position: relative;
+    background: var(--eg-surface);
+    border: 1px solid var(--eg-border);
+    border-radius: var(--eg-radius);
+    box-shadow: var(--eg-shadow);
+    margin-bottom: 20px;
+    font-family: var(--eg-font);
+}
+
+.griddly .griddly-scrollable-container {
+    overflow-x: auto;
+    overflow-y: visible;
+    background: var(--eg-surface);
+}
+
+.griddly table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    color: var(--eg-text);
+    background: var(--eg-surface);
+}
+
+.griddly table > thead > tr.columnHeaders > th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
+    color: #1a365d;
+    font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    white-space: nowrap;
+    border-bottom: 2px solid #c3d4e8 !important;
+    border-top: 0 !important;
+    padding: 11px 12px !important;
+    vertical-align: middle;
+}
+
+.griddly table > thead > tr.columnHeaders > th a {
+    color: #1a365d !important;
+    text-decoration: none !important;
+}
+
+.griddly table > thead > tr.columnHeaders > th a:hover {
+    color: #2b6cb0 !important;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sortable {
+    cursor: pointer;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sortable .icon:after {
+    content: " \21C5";
+    opacity: 0.4;
+    font-size: 11px;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sorted_a .icon:after {
+    content: " \25B2";
+    opacity: 0.9;
+    color: #2b6cb0;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sorted_d .icon:after {
+    content: " \25BC";
+    opacity: 0.9;
+    color: #2b6cb0;
+}
+
+.griddly table > tbody > tr > td {
+    padding: var(--eg-row-pad-y) var(--eg-row-pad-x) !important;
+    border-top: 1px solid var(--eg-border) !important;
+    border-bottom: 0 !important;
+    vertical-align: middle !important;
+    transition: background 0.15s ease;
+}
+
+.griddly table > tbody > tr:hover > td {
+    background-color: var(--eg-row-hover) !important;
+}
+
+.griddly table > tbody > tr.GridIsActive > td {
+    opacity: 0.65;
+}
+
+.griddly .griddly-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--eg-surface-muted);
+    border-top: 1px solid var(--eg-border);
+    border-radius: 0 0 var(--eg-radius) var(--eg-radius);
+    font-size: 13px;
+    color: var(--eg-text-muted);
+}
+
+.griddly .griddly-summary {
+    font-weight: 500;
+}
+
+.griddly .griddly-recordtotal {
+    font-weight: 700;
+    color: var(--eg-text);
+}
+
+.griddly .griddly-pager {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.griddly .griddly-pager a {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--eg-border);
+    background: #fff;
+    color: var(--eg-link);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.15s ease;
+}
+
+.griddly .griddly-pager a:hover {
+    background: var(--eg-row-hover);
+    border-color: var(--eg-link);
+    color: var(--eg-link-hover);
+}
+
+.griddly .griddly-pager input.pageNumber {
+    width: 48px;
+    height: 28px;
+    text-align: center;
+    border: 1px solid var(--eg-border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+

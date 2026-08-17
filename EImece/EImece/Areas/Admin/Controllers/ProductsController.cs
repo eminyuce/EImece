@@ -1,9 +1,11 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -21,6 +23,37 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
+
+        [HttpGet]
+        public async Task<ActionResult> IndexGrid(
+            CancellationToken cancellationToken,
+            int id = 0,
+            AdminProductsIndexQuery query = null)
+        {
+            if (query == null)
+            {
+                query = new AdminProductsIndexQuery();
+            }
+
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+
+            var filter = new ProductAdminListFilter
+            {
+                State = query.State,
+                IsActive = query.IsActive == true ? true : (bool?)null,
+                MainPage = query.MainPage == true ? true : (bool?)null,
+                IsCampaign = query.IsCampaign == true ? true : (bool?)null,
+                MinPrice = query.MinPrice,
+                MaxPrice = query.MaxPrice,
+                ApplyPriceFilter = priceEnabled
+            };
+
+            var products = await ProductService.GetAdminPageListAsync(id, query.BrandId, query.Search, CurrentLanguage, filter, cancellationToken);
+            ViewBag.IsProductPriceEnable = isProductPriceEnable;
+            ViewBag.PriceEnabled = priceEnabled;
+            return new QueryableResult<Product>(products.AsQueryable());
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(

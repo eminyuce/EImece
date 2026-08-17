@@ -1,0 +1,86 @@
+@model GriddlyResult<Product>
+@using Griddly.Mvc
+@using EImece.Domain.Entities
+@using EImece.Domain.Models.Enums
+@using Resources
+@using EImece.Domain
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+
+@{
+    Layout = null;
+    var controllerName = "Products";
+    var gridName = "productGrid";
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable != null ? (Setting)ViewBag.IsProductPriceEnable : null;
+    bool priceEnabled = ViewBag.PriceEnabled != null ? (bool)ViewBag.PriceEnabled : (isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true));
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+
+    var settings = new GriddlySettings<Product>()
+    {
+        Name = gridName,
+        ClassName = "eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        RowClass = item => item.IsActive ? string.Empty : "GridIsActive",
+        DefaultSort = new[] { new SortField() { Field = "Position", Direction = SortDirection.Ascending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings
+        .Column(null, "", template: (d) => @<text><span class="eg-row-index">@(d.Position > 0 ? d.Position.ToString() : d.Id.ToString())</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "36px")
+        .Column(null, "", template: (d) => @<text><input gridkey-id="@d.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "36px")
+        .Column(null, AdminResource.Images, template: (d) => Html.Partial("Grid/_GridImageCell", d), className: "eg-col-image", width: "56px")
+        .Column(x => x.Name, AdminResource.Name, template: (d) => Html.Partial("Grid/_GridNameCell", d), className: "eg-col-name", filter: x => x.FilterBox(FilterDataType.String))
+        .Column(x => x.ProductCategory.Name, AdminResource.ProductCategory, template: (d) => @<text>@(d.ProductCategory != null ? d.ProductCategory.Name : "")</text>, filter: x => x.FilterBox(FilterDataType.String))
+        .Column(x => x.Brand.Name, AdminResource.Brands, template: (d) => @<text>@((d.BrandId.HasValue && d.Brand != null) ? d.Brand.Name : "")</text>, filter: x => x.FilterBox(FilterDataType.String));
+
+    if (priceEnabled)
+    {
+        settings.Column(x => x.Price, AdminResource.Price, template: (d) => Html.Partial("Grid/_GridPriceCell", d), className: "eg-col-price");
+    }
+
+    settings
+        .Column(x => x.State, AdminResource.ProductState, template: (d) => {
+            var stateText = GetProductStateResourceText(d.StateEnum);
+            return new HtmlString(String.Format("<div class='eg-state-badge' Product-State-Id='{0}' name='ProductState' title='{1}'>{1}</div>", d.Id, HttpUtility.HtmlAttributeEncode(stateText)));
+        }, className: "smallGridColumn eg-col-state")
+        .Column(x => x.Position, AdminResource.Position, template: (d) => new HtmlString(String.Format("<input gridkey-id='{0}' value='{1}' class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", d.Id, d.Position)), className: "smallGridColumn")
+        .Column(x => x.IsActive, AdminResource.IsActive, template: (d) => Html.Partial("Grid/_GridStatusGroup", d), className: "smallGridColumn eg-col-status")
+        .Column(null, "İşlemler", template: (d) => Html.Partial("Grid/_GridActionsMenu", d, new ViewDataDictionary(ViewData) { { "controllerName", controllerName } }), className: "eg-sticky-right eg-col-actions", width: "60px");
+}
+
+@Html.Griddly(settings)
+
+@functions {
+    private string GetProductStateResourceText(ProductState state)
+    {
+        switch (state)
+        {
+            case ProductState.NONE:
+                return Resource.NONE;
+            case ProductState.ProductInStock:
+                return Resource.ProductInStock;
+            case ProductState.ProductOutOfStock:
+                return Resource.ProductOutOfStock;
+            case ProductState.PreOrder:
+                return Resource.PreOrderAvailable;
+            case ProductState.Discontinued:
+                return Resource.Discontinued;
+            case ProductState.Backorder:
+                return Resource.BackorderAvailable;
+            case ProductState.ComingSoon:
+                return Resource.ComingSoon;
+            case ProductState.LimitedStock:
+                return Resource.LimitedStockAvailable;
+            case ProductState.Reserved:
+                return Resource.ReservedForCustomers;
+            case ProductState.AwaitingRestock:
+                return Resource.AwaitingRestock;
+            case ProductState.NotForSale:
+                return Resource.NotForSale;
+            default:
+                return state.ToString();
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿@model List<Product>
+@model List<Product>
+@using Griddly.Mvc
 @using GridMvc.Html
 @using GridMvc.Sorting
 @using EImece.Domain.Entities;
@@ -414,103 +415,18 @@
 
         @Html.Partial("Grid/_GridChrome")
 
-        <div class="panel panel-primary eg-grid-shell">
-
-            @Html.Partial("pGridDropDown", baseList)
-
-            @Html.Grid(contents).Named(gridName).Columns(columns =>
-       {
-           columns.Add()
-    .Encoded(false)
-    .Sanitized(false)
-    .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-    .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-           columns.Add(o => o.Id, true);
-
-           columns.Add()
-                          .Encoded(false)
-                          .Sanitized(false)
-                           .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-                          .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId",d.Id}}));
-
-           columns.Add()
-              .Titled(AdminResource.Images)
-              .Encoded(false)
-              .Sanitized(false)
-              .Css("eg-col-image")
-              .RenderValueAs(o => Html.Partial("Grid/_GridImageCell", o));
-
-           columns.Add(c => c.Name)
-              .Titled(AdminResource.Name)
-              .Filterable(true)
-               .Encoded(false)
-                .Sanitized(false)
-                .Css("eg-col-name")
-          .RenderValueAs(d => Html.Partial("Grid/_GridNameCell", d));
-
-           columns.Add(c => c.ProductCategory)
-           .Titled(AdminResource.ProductCategory)
-           .Encoded(false)
-           .Filterable(true)
-           .RenderValueAs(o => o.ProductCategory != null ? o.ProductCategory.Name : "");
-
-           columns.Add(c => c.BrandId)
-           .Titled(AdminResource.Brands)
-           .Encoded(false)
-           .Filterable(true)
-           .RenderValueAs(o => (o.BrandId.HasValue && o.Brand != null) ? o.Brand.Name : "");
-
-
-           if (isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true))
-           {
-               columns.Add(c => c.Price).
-               Titled(AdminResource.Price).
-               Sanitized(false).
-               Sortable(true).
-               Encoded(false).
-               Css("eg-col-price").
-               RenderValueAs(o => Html.Partial("Grid/_GridPriceCell", o));
-
-           }
-
-           columns.Add(o => o.State)
-            .Titled(AdminResource.ProductState)
-            .Sortable(true)
-            .Css("smallGridColumn eg-col-state")
-            .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-            Sanitized(false)
-            .RenderValueAs(o => {
-                var stateText = GetProductStateResourceText(o.StateEnum);
-                return String.Format("<div class='eg-state-badge' Product-State-Id='{0}' name='ProductState' title='{1}'>{1}</div>", o.Id, HttpUtility.HtmlAttributeEncode(stateText));
-            });
-
-           columns.Add(o => o.Position).Titled(AdminResource.Position)
-     .Encoded(false).
-     Sanitized(false).
-     Css("smallGridColumn").
-     RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
-
-           columns.Add(o => o.IsActive)
-           .Titled(AdminResource.IsActive)
-           .Sortable(true)
-           .Css("smallGridColumn eg-col-status")
-           .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-           Sanitized(false)
-           .RenderValueAs(o => Html.Partial("Grid/_GridStatusGroup", o));
-
-           columns.Add()
-           .Titled("İşlemler")
-           .Encoded(false)
-           .Sanitized(false)
-           .Css("eg-sticky-right eg-col-actions")
-           .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", d, new ViewDataDictionary(ViewData){
-               {"controllerName", controllerName}
-           }));
-
-       }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-        </div>
+        @Html.Griddly("IndexGrid", new
+        {
+            id = categoryIdForFilter,
+            brandId = selectedBrandId > 0 ? (int?)selectedBrandId : null,
+            search = string.IsNullOrEmpty(search) ? null : search,
+            state = string.IsNullOrEmpty(selectedState) ? null : selectedState,
+            isActive = filterIsActive ? (bool?)true : null,
+            mainPage = filterMainPage ? (bool?)true : null,
+            isCampaign = filterIsCampaign ? (bool?)true : null,
+            minPrice = priceEnabled ? minPrice : null,
+            maxPrice = priceEnabled ? maxPrice : null
+        })
     </div>
 </div>
 
