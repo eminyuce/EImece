@@ -10,11 +10,6 @@
 @{
     ViewBag.Title = "Products";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    var products = Model;
-    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
-    var gridName = "productsGrid";
-    var baseList = products.DownCasting<Product>();
     ProductCategory selectedCategory = (ProductCategory)ViewBag.SelectedCategory;
 
     List<ProductCategoryTreeModel> ProductCategoryTreeLeft = ViewBag.ProductCategoryTreeLeft;

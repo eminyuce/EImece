@@ -10,14 +10,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
-
     var controllerName = "Menus";
-    var gridName = "MenusGrid";
-    List<Menu> contents = Model;
-    var baseList = contents.DownCasting<Menu>();
 
     var menuTreeNodeList = (List<Menu>)ViewBag.MenuLeaves;
     List<MenuTreeModel> MenuTree = ViewBag.MenuTree;

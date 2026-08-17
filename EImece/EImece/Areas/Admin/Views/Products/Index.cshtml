@@ -14,26 +14,15 @@
     ViewBag.Title = "Products";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
-
     var controllerName = "Products";
-    var gridName = "productGrid";
-    var contents = Model;
     ProductCategory selectedCategory = (ProductCategory)ViewBag.SelectedCategory;
     var products = Model;
-    var baseList = contents.DownCasting<Product>();
     List<Brand> brands = (ViewBag.Brands != null ? (List<Brand>)ViewBag.Brands : new List<Brand>())
         .OrderBy(b => b.Name, StringComparer.CurrentCultureIgnoreCase)
         .ToList();
     List<ProductState> productStates = ViewBag.ProductStates != null
         ? (List<ProductState>)ViewBag.ProductStates
         : Enum.GetValues(typeof(ProductState)).Cast<ProductState>().ToList();
-    var gridImagesText = AdminResource.GridImagesText;
-    var gridEditText = AdminResource.GridEditText;
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var gridDetailText = AdminResource.GridDetailText;
 
     Setting isProductPriceEnable = ViewBag.IsProductPriceEnable != null ? (Setting)ViewBag.IsProductPriceEnable : null;
     bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
