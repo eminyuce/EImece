@@ -45,10 +45,10 @@
         .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item)</text>, className: "eg-col-image", width: "80px")
         .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() }, { "LinkUrl", item.DetailPageLink } })</text>, className: "eg-col-name", width: "240px")
         .Column(x => x.ParentId, caption: AdminResource.ProductCategoryParentId, template: @<text>@(item.ParentId == 0 ? Resource.RootCategory : "")</text>, className: "smallGridColumn", width: "130px")
-        .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="type" /></text>, className: "smallGridColumn", width: "80px")
+        .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn", width: "80px")
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "ShowState", true }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "120px")
         .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px")
-        .Column(caption: "İşlemler", template: @<text>@MenuActionsCell(item, menuTreeNodeList, controllerName)</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+        .Column(caption: "İşlemler", template: @<text>@MenuActionsCell(item, menuTreeNodeList, controllerName)</text>, className: "eg-sticky-right eg-col-actions", width: "148px");
 }
 
 @helper MenuActionsCell(Menu d, List<Menu> menuTreeNodeList, string controllerName)
@@ -64,8 +64,8 @@
     })
     if (UserRoleHelper.IsDeletedEnableRoles() && !isLeaf)
     {
-        <span class="text-muted" title="@AdminResource.MenuCannotDeleteHasChildren" style="font-size:11px;white-space:nowrap;">
-            <i class="fa fa-ban" aria-hidden="true"></i> @AdminResource.MenuCannotDeleteHasChildren
+        <span class="eg-cannot-delete" title="@AdminResource.MenuCannotDeleteHasChildren" aria-label="@AdminResource.MenuCannotDeleteHasChildren">
+            <i class="fa fa-ban" aria-hidden="true"></i>
         </span>
     }
 }
