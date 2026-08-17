@@ -1,142 +1,78 @@
-﻿@using EImece.Domain.Entities;
-@using EImece.Domain.Models.AdminModels;
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using EImece.Domain.Helpers.Extensions;
 @using Resources;
-@{
 
-}
-
-<form id="fileupload" class="admin-media-uploader" method="POST" enctype="multipart/form-data" data-url="@Url.Action("Upload","Media")">
-    <div class="admin-media-dropzone">
-        <p class="admin-media-drop-hint">Dosyaları bu alana sürükleyin veya <strong>Resimler ekle</strong> ile seçin. Yüklemek için <strong>Yüklemeye Başla</strong>’ya basın.</p>
-
-        <div class="row fileupload-buttonbar">
-            <div class="col-lg-8 admin-media-toolbar">
-                <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>@AdminResource.AddImages...</span>
-                    <input type="file" name="files[]" multiple>
-                </span>
-                <button type="submit" class="btn btn-primary start">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span>@AdminResource.StartUpload</span>
-                </button>
-                <button type="reset" class="btn btn-warning cancel">
-                    <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span>@AdminResource.CancelUpload</span>
-                </button>
-                <button type="button" class="btn btn-danger delete">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <span>@AdminResource.Delete</span>
-                </button>
-                <label class="admin-media-select-all">
-                    <input type="checkbox" class="toggle">
-                    <span>@AdminResource.GridSelectAllButtonText</span>
-                </label>
-                <!-- The global file processing state -->
-                <span class="fileupload-process"></span>
+<div class="admin-media-modern-uploader">
+    <!-- Real-Time Overall Upload Progress Card -->
+    <div class="filepond-overall-progress-card" style="display: none;" aria-live="polite">
+        <div class="fpop-header">
+            <div class="fpop-title-wrap">
+                <span class="fpop-status-icon"><i class="glyphicon glyphicon-cloud-upload"></i></span>
+                <span class="fpop-status-title">Fotoğraflar yükleniyor</span>
             </div>
-            <!-- The global progress state -->
-            <div class="col-lg-4 fileupload-progress fade">
-                <!-- The global progress bar -->
-                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
-                </div>
-                <!-- The extended global progress state -->
-                <div class="progress-extended">&nbsp;</div>
-            </div>
+            <div class="fpop-percentage">0%</div>
         </div>
 
-        <!-- The table listing the files available for upload/download -->
-        <table role="presentation" class="table table-striped admin-media-files"><tbody class="files"></tbody></table>
-    </div>
-</form>
+        <div class="fpop-count-row">
+            <span class="fpop-file-count-text">0 / 0 fotoğraf yüklendi</span>
+        </div>
 
-<!-- The blueimp Gallery widget -->
-<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
-    <div class="slides"></div>
-    <h3 class="title"></h3>
-    <a class="prev">‹</a>
-    <a class="next">›</a>
-    <a class="close">×</a>
-    <a class="play-pause"></a>
-    <ol class="indicator"></ol>
-</div>
-<!-- The template to display files available for upload -->
-<script id="template-upload" type="text/x-tmpl">
-    {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
-        <td>
-            <span class="preview"></span>
-        </td>
-        <td>
-            <p class="name">{%=file.name%}</p>
-            <strong class="error text-danger"></strong>
-        </td>
-        <td>
-            <p class="size">@AdminResource.Processing</p>
-            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
-        </td>
-        <td>
-            {% if (!i && !o.options.autoUpload) { %}
-            <button class="btn btn-primary start" disabled>
-                <i class="glyphicon glyphicon-upload"></i>
-                <span>@AdminResource.StartUploadingAndSave</span>
+        <div class="fpop-bar-track">
+            <div class="fpop-bar-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: 0%;"></div>
+        </div>
+
+        <div class="fpop-metrics-row">
+            <span class="fpop-metric fpop-speed-text">-- Mbit/s</span>
+            <span class="fpop-separator">·</span>
+            <span class="fpop-metric fpop-bytes-text">0 MB / 0 MB</span>
+            <span class="fpop-separator">·</span>
+            <span class="fpop-metric fpop-eta-text">Hesaplanıyor...</span>
+        </div>
+    </div>
+
+    <!-- Post-Upload Success Card with Direct Navigation / Refresh Actions -->
+    <div class="admin-media-upload-success-card" style="display: none;">
+        <div class="success-message-wrap">
+            <div class="success-icon">
+                <i class="glyphicon glyphicon-ok"></i>
+            </div>
+            <div>
+                <h4 class="success-title">Fotoğraflar Başarıyla Yüklendi!</h4>
+                <p class="success-desc"><strong class="uploaded-count-number">0</strong> fotoğraf sunucuya yüklendi ve veritabanına kaydedildi.</p>
+            </div>
+        </div>
+        <div class="success-actions">
+            <button type="button" class="btn btn-go-to-grid" title="Yüklenen resimleri tabloda görüntüle">
+                <i class="glyphicon glyphicon-th-list"></i> Yüklenen Resimleri Tabloda Göster
             </button>
-            {% } %}
-            {% if (!i) { %}
-            <button class="btn btn-warning cancel">
-                <i class="glyphicon glyphicon-ban-circle"></i>
-                <span>@AdminResource.CancelUploading</span>
+            <button type="button" class="btn btn-upload-more" title="Daha fazla resim ekle">
+                <i class="glyphicon glyphicon-plus"></i> Yeni Resimler Yükle
             </button>
-            {% } %}
-        </td>
-    </tr>
-    {% } %}
-</script>
-<!-- The template to display files available for download -->
-<script id="template-download" type="text/x-tmpl">
-    {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-download fade">
-        <td>
-            <span class="preview">
-                {% if (file.thumbnailUrl) { %}
-                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.fileImageSrc%}"></a>
-                {% } %}
+        </div>
+    </div>
+
+    <!-- Header Bar with Quick Status & Actions -->
+    <div class="admin-media-upload-header" style="display: none;">
+        <div class="admin-media-upload-status">
+            <span class="badge badge-info admin-media-files-count-badge">
+                <i class="glyphicon glyphicon-picture"></i> <span class="admin-media-count-text">0 Resim Seçildi</span>
             </span>
-        </td>
-        <td>
-            <p class="name">
-                {% if (file.url) { %}
-                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
-                {% } else { %}
-                <span>{%=file.name%}</span>
-                {% } %}
-            </p>
-            {% if (file.error) { %}
-            <div><span class="label label-danger">@AdminResource.Error</span> {%=file.error%}</div>
-            {% } %}
-        </td>
-        <td>
-            <span class="size">{%=o.formatFileSize(file.size)%}</span>
-        </td>
-        <td>
-            {% if (file.deleteUrl) { %}
-            <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deletewithcredentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
-                <i class="glyphicon glyphicon-trash"></i>
-                <span>@AdminResource.Delete</span>
+            <span class="admin-media-total-size-text text-muted" style="font-size: 12px; margin-left: 8px;"></span>
+        </div>
+        <div class="admin-media-upload-actions">
+            <button type="button" class="btn btn-default btn-xs btn-clear-all-pond" title="Listeyi Temizle">
+                <i class="glyphicon glyphicon-trash"></i> Tümünü Temizle
             </button>
-            <input type="checkbox" name="delete" value="1" class="toggle">
-            {% } else { %}
-            <button class="btn btn-warning cancel">
-                <i class="glyphicon glyphicon-ban-circle"></i>
-                <span>@AdminResource.CancelUploading</span>
-            </button>
-            {% } %}
-        </td>
-    </tr>
-    {% } %}
-</script>
+        </div>
+    </div>
+
+    <!-- FilePond Input -->
+    <div class="admin-media-filepond-wrapper">
+        <input type="file" 
+               class="filepond-media-input" 
+               name="files" 
+               multiple 
+               data-allow-reorder="true"
+               data-max-file-size="20MB"
+               data-max-files="50" />
+    </div>
+</div>
+

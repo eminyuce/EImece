@@ -329,30 +329,13 @@ namespace EImece.Domain.Helpers
 
         public void UploadAndShowResults(HttpContextBase ContentBase, List<ViewDataUploadFilesResult> resultList)
         {
-            var httpRequest = ContentBase.Request;
-            // System.Diagnostics.Debug.WriteLine(Directory.Exists(tempPath));
-
-            String fullPath = Path.Combine(StorageRoot);
-            //Directory.CreateDirectory(fullPath);
-            // Create new folder for thumbs
-            //Directory.CreateDirectory(fullPath + "/thumbs/");
-
-            foreach (String inputTagName in httpRequest.Files)
+            if (ContentBase?.Request == null || resultList == null)
             {
-                var headers = httpRequest.Headers;
-
-                var file = httpRequest.Files[inputTagName];
-                //System.Diagnostics.Debug.WriteLine(file.FileName);
-
-                if (string.IsNullOrEmpty(headers["X-File-Name"]))
-                {
-                    UploadWholeFile(ContentBase, resultList);
-                }
-                else
-                {
-                    //   UploadPartialFile(headers["X-File-Name"], ContentBase, resultList);
-                }
+                return;
             }
+
+            EnsureStorageInitialized();
+            UploadWholeFile(ContentBase, resultList);
         }
 
         private void UploadWholeFile(HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
