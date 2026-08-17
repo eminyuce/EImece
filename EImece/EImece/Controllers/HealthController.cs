@@ -55,7 +55,6 @@ namespace EImece.Controllers
             return Content(JsonConvert.SerializeObject(publicPayload), "application/json");
         }
 
-
         // ============================================================
         // ASP.NET MVC 5 - Precompiled Deployment / IIS Publish
         // ============================================================
@@ -281,7 +280,5 @@ namespace EImece.Controllers
         //     11. Deploy C:\Publish\EImece to IIS.
         //
         // ============================================================
-
-
     }
 }
