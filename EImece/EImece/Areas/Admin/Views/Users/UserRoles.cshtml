@@ -1,4 +1,4 @@
-﻿@using EImece.Models;
+@using EImece.Models;
 @using EImece.Domain;
 @model SelectUserRolesViewModel
 @using Resources;
@@ -15,19 +15,24 @@
     var selectedCount = Model.Roles != null ? Model.Roles.Count(r => r.Selected) : 0;
 }
 
-<h2>@AdminResource.Users</h2>
-<hr class="adminLine" />
-
-<div class="user-roles-page">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="card border-primary user-roles-panel">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fa fa-shield" aria-hidden="true"></i>
-                        @AdminResource.Roles
-                    </h3>
-                </div>
+<div class="row justify-content-center">
+    <div class="col-lg-8 mx-auto">
+        <h2 class="admin-page-title">@AdminResource.Roles</h2>
+        <p class="text-muted mb-4">Bu kullanıcının yetkilerini işaretleyin. Değişikliklerin uygulanması için kaydetmeyi unutmayın.</p>
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h3 class="card-title mb-0">
+                    <i class="fa fa-shield me-1" aria-hidden="true"></i>
+                    @AdminResource.Roles
+                </h3>
+            </div>
+            @using (Html.BeginForm("UserRoles", "Users", FormMethod.Post, new { @class = "user-roles-form", id = "userRolesForm" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.UserName)
+                @Html.HiddenFor(model => model.FirstName)
+                @Html.HiddenFor(model => model.LastName)
                 <div class="card-body">
                     <div class="user-roles-user">
                         <div class="user-roles-avatar" aria-hidden="true">
@@ -39,47 +44,38 @@
                                 <i class="fa fa-envelope-o" aria-hidden="true"></i>
                                 @Model.UserName
                             </div>
-                            <div class="user-roles-user-status">
-                                <span class="label @(selectedCount > 0 ? "text-bg-success" : "text-bg-secondary")">
-                                    @selectedCount yetki secili
+                            <div class="user-roles-user-status mt-2">
+                                <span class="badge @(selectedCount > 0 ? "text-bg-primary" : "text-bg-secondary")">
+                                    @selectedCount yetki seçili
                                 </span>
                             </div>
                         </div>
                         <div class="user-roles-user-actions">
-                            @Html.ActionLink(AdminResource.Edit, "Edit", "Users", new { id = Model.Id }, new { @class = "btn btn-secondary btn-sm" })
-                            @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", "Users", new { id = Model.Id }, new { @class = "btn btn-info btn-sm" })
+                            @Html.ActionLink(AdminResource.Edit, "Edit", "Users", new { id = Model.Id }, new { @class = "btn btn-outline-secondary btn-sm" })
+                            @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", "Users", new { id = Model.Id }, new { @class = "btn btn-outline-primary btn-sm" })
                         </div>
                     </div>
 
-                    <div class="alert alert-info user-roles-alert" role="alert">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    <div class="alert alert-info" role="alert">
+                        <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
                         <strong>@AdminResource.SelectRoleAssignments</strong>
-                        Kartlara tiklayarak yetkileri acip kapatabilirsiniz. Degisiklikleri kaydetmeyi unutmayin.
+                        Rolleri işaretleyerek yetkileri açıp kapatabilirsiniz.
                     </div>
 
-                    @using (Html.BeginForm("UserRoles", "Users", FormMethod.Post, new { @class = "user-roles-form", id = "userRolesForm" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
-                        @Html.HiddenFor(model => model.Id)
-                        @Html.HiddenFor(model => model.UserName)
-                        @Html.HiddenFor(model => model.FirstName)
-                        @Html.HiddenFor(model => model.LastName)
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-                        <div class="user-roles-list" role="group" aria-label="@AdminResource.Roles">
-                            @Html.EditorFor(model => model.Roles)
-                        </div>
-
-                        <div class="user-roles-actions">
-                            <button type="submit" class="btn btn-success btn-lg">
-                                <i class="fa fa-check" aria-hidden="true"></i>
-                                @AdminResource.SaveButtonText
-                            </button>
-                            @Html.ActionLink(AdminResource.BackToList, "Index", "Users", null, new { @class = "btn btn-secondary btn-lg" })
-                        </div>
-                    }
+                    <div class="user-roles-list" role="group" aria-label="@AdminResource.Roles">
+                        @Html.EditorFor(model => model.Roles)
+                    </div>
                 </div>
-            </div>
+                <div class="card-footer bg-light d-flex flex-wrap gap-2 justify-content-end">
+                    @Html.ActionLink(AdminResource.BackToList, "Index", "Users", null, new { @class = "btn btn-secondary" })
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-check me-1" aria-hidden="true"></i>
+                        @AdminResource.SaveButtonText
+                    </button>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -91,35 +87,29 @@
             return;
         }
 
-        var statusLabel = document.querySelector(".user-roles-user-status .label");
+        var statusLabel = document.querySelector(".user-roles-user-status .badge");
 
-        function refreshRoleCards() {
+        function refreshRoleChecks() {
             var selectedCount = 0;
-            var cards = form.querySelectorAll(".user-role-card");
-            for (var i = 0; i < cards.length; i++) {
-                var card = cards[i];
-                var checkbox = card.querySelector(".user-role-checkbox");
-                var selected = checkbox && checkbox.checked;
-                if (selected) {
+            var checks = form.querySelectorAll(".form-check-input[type='checkbox']");
+            for (var i = 0; i < checks.length; i++) {
+                if (checks[i].checked) {
                     selectedCount++;
-                    card.classList.add("is-selected");
-                } else {
-                    card.classList.remove("is-selected");
                 }
             }
 
             if (statusLabel) {
-                statusLabel.textContent = selectedCount + " yetki secili";
-                statusLabel.className = "label " + (selectedCount > 0 ? "text-bg-success" : "text-bg-secondary");
+                statusLabel.textContent = selectedCount + " yetki seçili";
+                statusLabel.className = "badge " + (selectedCount > 0 ? "text-bg-primary" : "text-bg-secondary");
             }
         }
 
         form.addEventListener("change", function (event) {
-            if (event.target && event.target.classList.contains("user-role-checkbox")) {
-                refreshRoleCards();
+            if (event.target && event.target.classList.contains("form-check-input")) {
+                refreshRoleChecks();
             }
         });
 
-        refreshRoleCards();
+        refreshRoleChecks();
     })();
 </script>

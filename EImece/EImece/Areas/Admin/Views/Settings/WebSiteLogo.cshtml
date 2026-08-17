@@ -11,77 +11,84 @@
     string thumbUrl = !string.IsNullOrWhiteSpace(fileName)
         ? Url.Content("~/media/images/thumbs/thb" + fileName)
         : "";
+    var hasLogo = !string.IsNullOrWhiteSpace(fileName);
 }
 
-<h2 class="admin-page-title">@AdminResource.WebSiteLogo</h2>
-<hr class="adminLine" />
+<div class="row justify-content-center">
+    <div class="col-lg-8 mx-auto">
+        <h2 class="admin-page-title">@AdminResource.WebSiteLogo</h2>
+        <p class="text-muted mb-3">Sitenizin üst menüsünde görünen logoyu buradan yükleyin. Kaydettikten sonra üst çubuktaki yenile ile önbelleği temizleyin.</p>
 
-@{ ViewData["HelpId"] = "webSiteLogoHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>Bu sayfada web sitenizin <strong>logosunu</strong> değiştirebilirsiniz.</li>
-    <li>Logo seçmek için aşağıdaki alandan dosya (Gözat / Dosya Seç) butonuna tıklayın ve bilgisayarınızdan logonuzu seçin.</li>
-    <li>Mevcut logonuz sol tarafta önizleme olarak görünmektedir.</li>
-    <li>Değişiklikleri kaydetmek için <strong>@saveButtonText</strong> butonuna tıklamayı unutmayın.</li>
-    <li>Logo kaydedildikten sonra üst menüdeki <strong>@AdminResource.Refresh</strong> ile site önbelleğini temizleyebilirsiniz; ardından logo vitrinde görünür.</li>
-</ul>
-<p style="margin-top: 12px; margin-bottom: 0;"><strong>Tavsiye:</strong> Görseli, tasarımınızda görünmesini istediğiniz boyutlarda ve formatta (tercihen PNG) yüklemeniz tavsiye edilir. İhtiyacınız olmayan boyutlandırma ayarları kullanıcılara kolaylık sağlamak amacıyla kaldırılmıştır.</p>
-@Html.Partial("_AdminHelpAccordionEnd")
+        @{ ViewData["HelpId"] = "webSiteLogoHelp"; }
+        @Html.Partial("_AdminHelpAccordionStart")
+        <ul class="mb-2">
+            <li>Bu sayfada web sitenizin <strong>logosunu</strong> değiştirebilirsiniz.</li>
+            <li>Logo seçmek için aşağıdaki alandan dosya (Gözat / Dosya Seç) butonuna tıklayın ve bilgisayarınızdan logonuzu seçin.</li>
+            <li>Mevcut logo aşağıda önizleme olarak görünür. Önizleme yoksa yeni bir dosya yükleyin.</li>
+            <li>Değişiklikleri kaydetmek için <strong>@saveButtonText</strong> butonuna tıklamayı unutmayın.</li>
+            <li>Logo kaydedildikten sonra üst menüdeki <strong>@AdminResource.Refresh</strong> ile site önbelleğini temizleyebilirsiniz; ardından logo vitrinde görünür.</li>
+        </ul>
+        <p class="mb-0"><strong>Tavsiye:</strong> Yatay PNG (şeffaf arka plan), yaklaşık 240&times;80 piksel veya aynı oran. İhtiyacınız olmayan boyutlandırma ayarları kaldırılmıştır.</p>
+        @Html.Partial("_AdminHelpAccordionEnd")
 
-@using (Html.BeginForm("UploadWebSiteLogo", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(r => r.Id)
-    
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-9">
+        @using (Html.BeginForm("UploadWebSiteLogo", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(r => r.Id)
             @Html.AdminValidationSummary()
-        </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-success w-100 btn-lg">
-                <i class="fa fa-upload"></i> @saveButtonText
-            </button>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header"><h3 class="card-title">Mevcut Logo ve Yeni Yükleme</h3></div>
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">
+                        <i class="fa fa-picture-o me-1" aria-hidden="true"></i>
+                        Mevcut logo ve yeni yükleme
+                    </h3>
+                </div>
                 <div class="card-body">
-                    <div class="row">
-                        <!-- Current Logo Preview -->
-                        <div class="col-md-4 text-center">
-                            <h4 style="margin-bottom: 15px;">Mevcut Logo</h4>
-                            <div class="rounded border bg-light d-flex align-items-center justify-content-center" style="min-height: 180px;">
-                                @if (!string.IsNullOrEmpty(thumbUrl))
-                                {
-                                    <img style="max-width: 100%; max-height: 150px; object-fit: contain;" src="@thumbUrl" alt="@AdminResource.WebSiteLogo" />
-                                }
-                                else
-                                {
-                                    <div class="text-muted" style="padding: 20px;">
-                                        <i class="fa fa-picture-o" style="font-size: 32px; color: #ccc;"></i><br/><br/>
-                                        Logo henüz yüklenmedi.
-                                    </div>
-                                }
-                            </div>
+                    <div class="mb-4 pb-3 border-bottom">
+                        <div class="small text-uppercase text-muted fw-semibold mb-2">Mevcut logo</div>
+                        <div class="admin-logo-preview rounded d-flex align-items-center justify-content-center mx-auto p-4">
+                            @if (hasLogo)
+                            {
+                                <img src="@thumbUrl" alt="@AdminResource.WebSiteLogo" class="img-fluid" style="max-height: 168px; object-fit: contain;" onerror="this.classList.add('d-none'); var e=this.parentNode.querySelector('.js-logo-empty'); if(e){ e.classList.remove('d-none'); }" />
+                                <div class="js-logo-empty d-none text-center text-muted">
+                                    <i class="fa fa-picture-o fa-3x d-block mb-3" aria-hidden="true"></i>
+                                    <div class="fw-semibold">Logo önizlemesi gösterilemiyor</div>
+                                    <div class="small">Yeni bir dosya yükleyerek güncelleyebilirsiniz.</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center text-muted">
+                                    <i class="fa fa-picture-o fa-3x d-block mb-3" aria-hidden="true"></i>
+                                    <div class="fw-semibold">Henüz logo yüklenmedi</div>
+                                    <div class="small">Aşağıdan bir dosya seçip kaydedin.</div>
+                                </div>
+                            }
                         </div>
-                        
-                        <!-- Upload New Logo -->
-                        <div class="col-md-8">
-                            <h4 style="margin-bottom: 15px;">Yeni Logo Yükle</h4>
-                            <div class="form-group row mb-3" style="background-color: #f5f5f5; padding: 20px; border-radius: 4px; border: 1px dashed #ccc; margin-top: 10px;">
-                                <label class="col-form-label">@AdminResource.WebSiteLogo Dosyası (PNG, JPG vb.)</label>
-                                <input type="file" name="postedImage" class="form-control" style="padding-bottom: 40px; margin-top: 10px;" />
-                                <span class="form-text" style="margin-top: 15px;">
-                                    <strong>Not:</strong> Logonuzu yüklerken sitenizin genel tasarımına uygun, transparan arka planlı PNG formatlarını tercih edebilirsiniz.
-                                </span>
-                            </div>
+                        @if (hasLogo)
+                        {
+                            <p class="small text-muted text-center mt-2 mb-0">Kayıtlı dosya: @fileName</p>
+                        }
+                    </div>
+
+                    <div class="mb-0">
+                        <label class="form-label fw-semibold" for="postedImage">@AdminResource.WebSiteLogo dosyası (PNG, JPG)</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text"><i class="fa fa-file-image-o" aria-hidden="true"></i></span>
+                            <input type="file" id="postedImage" name="postedImage" class="form-control" accept=".png,.jpg,.jpeg,.gif,.webp,.svg,image/*" />
+                        </div>
+                        <div class="form-text mt-2">
+                            <strong>Önerilen boyut:</strong> 240&times;80 piksel (veya aynı oran). Şeffaf arka planlı PNG tercih edilir.
                         </div>
                     </div>
                 </div>
+                <div class="card-footer bg-light d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btn-lg px-4">
+                        <i class="fa fa-upload me-1" aria-hidden="true"></i> @saveButtonText
+                    </button>
+                </div>
             </div>
-        </div>
+        }
     </div>
-}
+</div>

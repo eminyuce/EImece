@@ -4774,3 +4774,43 @@ body.admin-app .admin-content .admin-home h2::after {
 }
 .admin-app .admin-import-page .list-group-item { padding: 0.65rem 1rem; }
 .admin-app .form-select { max-width: 100%; }
+
+/* batch4-admin-centered-forms */
+.user-roles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 0;
+}
+.user-roles-list .user-role-check {
+    padding: 0.9rem 1rem 0.9rem 2.6rem;
+    margin: 0;
+    border: 1px solid #d7e0ea;
+    border-radius: 0.375rem;
+    background: #fff;
+}
+.user-roles-list .user-role-check:has(.form-check-input:checked) {
+    background: #e8f1fa;
+    border-color: #2b6cb0;
+}
+.user-roles-list .form-check-label {
+    cursor: pointer;
+}
+.admin-app .input-group > input[type="file"].form-control {
+    width: auto;
+    flex: 1 1 auto;
+}
+.admin-app .card-footer {
+    padding: 0.85rem 1rem;
+}
+
+.admin-logo-preview {
+    min-height: 220px;
+    max-width: 560px;
+    background: #f8fafc;
+    border: 1px dashed #c5d0dc;
+}
+.admin-logo-preview img {
+    max-height: 168px;
+    object-fit: contain;
+}
