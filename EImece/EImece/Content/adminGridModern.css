@@ -139,7 +139,9 @@ body.admin-app .eg-grid table.grid-table {
     font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
-.grid-record-count-badge {
+.grid-record-count-badge,
+.griddly .grid-record-count-badge,
+.griddly .grid-record-count-badge.griddly-recordtotal {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -147,9 +149,9 @@ body.admin-app .eg-grid table.grid-table {
     height: 26px;
     padding: 0 10px;
     border-radius: 999px;
-    background: #163a6b;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    color: #fff;
+    background: #163a6b !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    color: #ffffff !important;
     font-size: 13px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
@@ -3307,7 +3309,7 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     font-weight: 500;
 }
 
-.griddly .griddly-recordtotal {
+.griddly .griddly-footer .griddly-recordtotal {
     font-weight: 700;
     color: var(--eg-text);
 }
