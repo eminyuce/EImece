@@ -445,7 +445,7 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     align-items: center;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 2px;
+    gap: 8px;
 }
 
 .admin-topbar-actions > li {
@@ -458,12 +458,12 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     align-items: center;
     justify-content: center;
     gap: 4px;
-    padding: 3px 6px;
+    padding: 4px 10px;
     color: var(--admin-link);
     text-decoration: none;
     font-size: 12px;
     font-weight: 600;
-    border-radius: 3px;
+    border-radius: 6px;
     white-space: nowrap;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;

@@ -1,4 +1,4 @@
-@using EImece.Domain.Entities
+﻿@using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Models.FrontModels
@@ -45,9 +45,9 @@
     settings
         .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
-        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@CartNameCell(item)</text>, className: "eg-col-name", width: "260px")
-        .Column(x => x.OrderGuid, caption: "Sipariş GUID", template: @<text>@MonoChip(item.OrderGuid)</text>, className: "eg-col-guid", width: "160px")
-        .Column(x => x.UserId, caption: "Kullanıcı", template: @<text>@MonoChip(item.UserId, 18)</text>, className: "eg-col-userid", width: "160px")
+        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@CartNameCell(item)</text>, className: "eg-col-name", width: "220px")
+        .Column(x => x.OrderGuid, caption: "Sipariş GUID", template: @<text>@MonoChip(item.OrderGuid, 12)</text>, className: "eg-col-guid", width: "140px")
+        .Column(x => x.UserId, caption: "Kullanıcı", template: @<text>@MonoChip(item.UserId, 12)</text>, className: "eg-col-userid", width: "140px")
         .Column(caption: "Ürün", template: @<text>@CartItemsCell(item)</text>, className: "eg-col-cart-items", width: "140px");
 
     if (showTotals)
@@ -94,12 +94,29 @@
     </div>
 }
 
+
+@helper ShortLabel(string value)
+{
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        <text>—</text>
+    }
+    else if (value.Length > 18 && value.IndexOf(' ') < 0)
+    {
+        @(value.Substring(0, 8) + "…" + value.Substring(value.Length - 4))
+    }
+    else
+    {
+        @value
+    }
+}
+
 @helper CartNameCell(ShoppingCart cart)
 {
     var summary = SummarizeCart(cart);
     <div class="eg-name-cell">
-        <div class="eg-name-main">
-            @(string.IsNullOrWhiteSpace(cart.Name) ? "—" : cart.Name)
+        <div class="eg-name-main" title="@cart.Name">
+            @ShortLabel(cart.Name)
             <span class="eg-name-id">#@cart.Id</span>
         </div>
         @if (!string.IsNullOrWhiteSpace(summary.Email))
