@@ -8,6 +8,9 @@
     Layout = null;
     var gridName = "CouponGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var controllerName = "Coupons";
 
     var settings = new GriddlySettings<Coupon>()
@@ -40,7 +43,7 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(x => x.Name, caption: AdminResource.CouponName, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "240px")
         .Column(x => x.Code, caption: AdminResource.CouponCode, template: @<text><code>@item.Code</code></text>, className: "eg-col-code", width: "140px")

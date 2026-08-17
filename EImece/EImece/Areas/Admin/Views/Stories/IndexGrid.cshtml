@@ -8,6 +8,9 @@
     Layout = null;
     var gridName = "StoryGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var controllerName = "Stories";
 
     var settings = new GriddlySettings<Story>()
@@ -40,7 +43,7 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item)</text>, className: "eg-col-image", width: "80px")
         .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() }, { "LinkUrl", item.StoryCategory != null ? Url.Action("Detail", "Stories", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(item.StoryCategory.Name), id = item.GetSeoUrl() }) : null } })</text>, className: "eg-col-name", width: "260px")

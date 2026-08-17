@@ -9,6 +9,9 @@
     Layout = null;
     var gridName = "OrderGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var controllerName = "Home";
 
     var settings = new GriddlySettings<Order>()
@@ -41,7 +44,8 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-1 eg-col-check", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(x => x.OrderNumber, caption: AdminResource.OrderNumber, template: @<text>@CustomerOrderDetail(item, controllerName)</text>, className: "eg-col-name", width: "200px")
         .Column(x => x.AdminOrderNote, caption: AdminResource.AdminOrderNote, template: @<text>@WriteAdminOrderNote(item)</text>, className: "eg-col-note", width: "320px")
         .Column(x => x.PaymentId, caption: AdminResource.PaymentIyzicoNumber, template: @<text><b>@item.PaymentId</b></text>, className: "smallGridColumn", width: "140px")

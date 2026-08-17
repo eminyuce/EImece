@@ -227,6 +227,42 @@
         });
     }
 
+
+    function numberGridRows(context) {
+        var $root = context ? $(context) : $(document);
+        var $grids = $root.is('[data-role=griddly]') ? $root : $root.find('[data-role=griddly]');
+        if (!$grids.length) {
+            $grids = $('[data-role=griddly]');
+        }
+        $grids.each(function () {
+            var $g = $(this);
+            var pageSize = parseInt($g.attr('data-griddly-pagesize'), 10) || 0;
+            var pageNumber = 0;
+            var inst = $g.data('griddly');
+            if (inst && inst.options && typeof inst.options.pageNumber === 'number') {
+                pageNumber = inst.options.pageNumber;
+            } else {
+                var $input = $g.find('input.pageNumber').first();
+                if ($input.length) {
+                    pageNumber = Math.max(0, (parseInt($input.val(), 10) || 1) - 1);
+                }
+            }
+            if (pageNumber < 0) {
+                pageNumber = 0;
+            }
+            var start = pageNumber * pageSize;
+            var $rows = $g.find('table tbody.data > tr, table.eg-grid-table > tbody > tr, table.grid-table > tbody > tr');
+            $rows.each(function (i) {
+                var $idx = $(this).find('.eg-row-index').first();
+                if (!$idx.length) {
+                    return;
+                }
+                $idx.text(String(start + i + 1));
+                $idx.removeClass('eg-row-index-guid');
+            });
+        });
+    }
+
     function markModernGrids() {
         $('.griddly, .eg-grid-shell, .grid-mvc').addClass('eg-grid');
         $('.admin-grid-ops').addClass('eg-bulk-bar');
@@ -249,6 +285,7 @@
         applyDensity(saved);
         markSecondaryGridColumns();
         fixGriddlyRecordRange();
+        numberGridRows();
     }
 
     /**
@@ -627,7 +664,7 @@
     });
 
     // Re-mark after Grid.Mvc and Griddly AJAX redraws
-    $(document).on('gridmvc.loaded griddly.loaded', function () {
+    $(document).on('gridmvc.loaded griddly.loaded refresh.griddly', function () {
         markModernGrids();
         wireFloatingScrollbar();
         sizeReviewNotes(document);

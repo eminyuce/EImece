@@ -10,6 +10,9 @@
     Layout = null;
     var gridName = "MediaGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var controllerName = "Media";
     var contentId = ViewBag.ContentId != null ? (int)ViewBag.ContentId : 0;
     var mediaMod = ViewBag.MediaMod != null ? ViewBag.MediaMod.ToString() : "";
@@ -51,7 +54,7 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@string.Format("{0}-{1}-{2}-{3}", item.Id, contentId, mediaMod, imageType)" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(caption: AdminResource.Images, template: @<text>@ImageLinkColumn(item, filesHelper)</text>, className: "eg-col-image-preview", width: "300px")
         .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn", width: "80px")

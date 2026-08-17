@@ -7,6 +7,9 @@
     Layout = null;
     var gridName = "UsersGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var controllerName = "Users";
 
     var settings = new GriddlySettings<EditUserViewModel>()
@@ -38,7 +41,7 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index eg-row-index-guid" title="@item.Id">@ShortId(item.Id)</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "72px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(x => x.Email, caption: AdminResource.Email, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Email }, { "Subtitle", string.Format("{0} {1}", item.FirstName, item.LastName) } })</text>, className: "eg-col-name", width: "320px")
         .Column(x => x.Role, caption: AdminResource.Roles, template: @<text>@RoleBadge(item.Role)</text>, className: "eg-col-state", width: "160px")
         .Column(x => x.AuthenticatorEnabled, caption: "2FA", template: @<text>@(item.AuthenticatorEnabled ? Html.Raw("<span class='eg-state-badge'>Aktif</span>") : Html.Raw("<span class='eg-state-badge is-muted'>Yok</span>"))</text>, className: "eg-col-state", width: "100px")
@@ -68,10 +71,5 @@
     </span>
 }
 
-@helper ShortId(string id)
-{
-    var s = id ?? "";
-    @(s.Length <= 8 ? s : s.Substring(0, 8))
-}
 
 @Html.Griddly(settings)

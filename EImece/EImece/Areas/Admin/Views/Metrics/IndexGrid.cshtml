@@ -8,6 +8,9 @@
     Layout = null;
     var gridName = "MetricsGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var inv = CultureInfo.InvariantCulture;
 
     var settings = new GriddlySettings<MetricDisplayItem>()
@@ -39,6 +42,7 @@
     </text>;
 
     settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "Açıkla", template: @<text>
             <button type="button" class="btn btn-sm btn-info metrics-explain-btn"
                     data-name="@item.Name"

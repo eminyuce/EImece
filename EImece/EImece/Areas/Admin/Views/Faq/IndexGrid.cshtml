@@ -7,6 +7,9 @@
     Layout = null;
     var gridName = "FaqGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var controllerName = "Faq";
 
     var settings = new GriddlySettings<Faq>()
@@ -39,7 +42,7 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(x => x.Question, caption: AdminResource.Question, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Question }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "240px")
         .Column(x => x.Answer, caption: AdminResource.Answer, template: @<text><span class="eg-cell-clip eg-cell-clip-wrap" title="@GeneralHelper.StripHtml(item.Answer).ToStr(400)">@(string.IsNullOrWhiteSpace(GeneralHelper.StripHtml(item.Answer)) ? "—" : GeneralHelper.StripHtml(item.Answer).ToStr(180))</span></text>, className: "eg-col-answer", width: "320px")

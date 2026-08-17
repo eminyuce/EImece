@@ -8,6 +8,9 @@
     Layout = null;
     var gridName = "CustomersGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var controllerName = "customers";
 
     var settings = new GriddlySettings<Customer>()
@@ -39,7 +42,7 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.UserId" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", string.Format("{0} {1}", item.Name, item.Surname) }, { "ItemId", item.UserId.ToString() } })</text>, className: "eg-col-name", width: "320px")
         .Column(x => x.Orders.Count, caption: AdminResource.TotalOrderNumber, template: @<text>@(item.Orders != null ? item.Orders.Count.ToString() : "0")</text>, className: "smallGridColumn", width: "120px")
