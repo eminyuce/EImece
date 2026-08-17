@@ -3350,4 +3350,83 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     font-weight: 600;
 }
 
+/* ==========================================================================
+   Horizontal Scroll Enhancements (Floating scrollbar & nav buttons)
+   ========================================================================== */
+
+.eg-floating-scrollbar {
+    position: fixed;
+    bottom: 0;
+    z-index: 1050;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid #cbd5e0;
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.16);
+    display: none;
+}
+
+.eg-floating-scrollbar-inner {
+    height: 1px;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar,
+.griddly-scrollable-container::-webkit-scrollbar,
+.eg-grid-scroll::-webkit-scrollbar,
+.grid-wrap::-webkit-scrollbar {
+    height: 12px !important;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar-track,
+.griddly-scrollable-container::-webkit-scrollbar-track,
+.eg-grid-scroll::-webkit-scrollbar-track,
+.grid-wrap::-webkit-scrollbar-track {
+    background: #edf2f7 !important;
+    border-radius: 6px !important;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar-thumb,
+.griddly-scrollable-container::-webkit-scrollbar-thumb,
+.eg-grid-scroll::-webkit-scrollbar-thumb,
+.grid-wrap::-webkit-scrollbar-thumb {
+    background: #3182ce !important;
+    border-radius: 6px !important;
+    border: 2px solid #edf2f7 !important;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar-thumb:hover,
+.griddly-scrollable-container::-webkit-scrollbar-thumb:hover,
+.eg-grid-scroll::-webkit-scrollbar-thumb:hover,
+.grid-wrap::-webkit-scrollbar-thumb:hover {
+    background: #1e4e8c !important;
+}
+
+.eg-grid-scroll-controls {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.eg-scroll-nav-btn {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    border-radius: 4px;
+    padding: 3px 10px !important;
+    font-size: 11px;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.eg-scroll-nav-btn:hover,
+.eg-scroll-nav-btn:focus {
+    background: rgba(255, 255, 255, 0.42) !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+
 
