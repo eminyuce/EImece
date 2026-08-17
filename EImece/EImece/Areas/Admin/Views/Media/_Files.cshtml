@@ -1,6 +1,27 @@
 @using Resources;
 
 <div class="admin-media-modern-uploader">
+    <!-- Post-Upload Success Card with Direct Navigation / Refresh Actions -->
+    <div class="admin-media-upload-success-card" style="display: none;">
+        <div class="success-message-wrap">
+            <div class="success-icon">
+                <i class="glyphicon glyphicon-ok"></i>
+            </div>
+            <div>
+                <h4 class="success-title">Fotoğraflar Başarıyla Yüklendi!</h4>
+                <p class="success-desc"><strong class="uploaded-count-number">0</strong> fotoğraf sunucuya yüklendi ve veritabanına kaydedildi.</p>
+            </div>
+        </div>
+        <div class="success-actions">
+            <button type="button" class="btn btn-go-to-grid" title="Yüklenen resimleri tabloda görüntüle">
+                <i class="glyphicon glyphicon-th-list"></i> Yüklenen Resimleri Tabloda Göster
+            </button>
+            <button type="button" class="btn btn-upload-more" title="Daha fazla resim ekle">
+                <i class="glyphicon glyphicon-plus"></i> Yeni Resimler Yükle
+            </button>
+        </div>
+    </div>
+
     <!-- Header Bar with Quick Status & Actions -->
     <div class="admin-media-upload-header" style="display: none;">
         <div class="admin-media-upload-status">
@@ -27,3 +48,4 @@
                data-max-files="50" />
     </div>
 </div>
+

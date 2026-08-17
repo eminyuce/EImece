@@ -70,12 +70,17 @@
             }
 
             var hasUploadedFiles = false;
+            var uploadedBatchCount = 0;
             var uploadUrl = '@Url.Action("Upload", "Media")';
             var $input = $('.filepond-media-input');
             var $uploadHeader = $('.admin-media-upload-header');
             var $countText = $('.admin-media-count-text');
             var $sizeText = $('.admin-media-total-size-text');
             var $btnClearAll = $('.btn-clear-all-pond');
+            var $successCard = $('.admin-media-upload-success-card');
+            var $uploadedCountNumber = $('.uploaded-count-number');
+            var $btnGoToGrid = $('.btn-go-to-grid');
+            var $btnUploadMore = $('.btn-upload-more');
 
             function formatBytes(bytes) {
                 if (!bytes || bytes === 0) return '0 B';
@@ -172,10 +177,12 @@
                                 var res = typeof response === 'string' ? JSON.parse(response) : response;
                                 if (res && res.files && res.files.length > 0) {
                                     hasUploadedFiles = true;
+                                    uploadedBatchCount += res.files.length;
                                     return res.files[0].name || response;
                                 }
                             } catch (e) {
                                 hasUploadedFiles = true;
+                                uploadedBatchCount++;
                             }
                             return response;
                         },
@@ -186,6 +193,7 @@
                     }
                 },
                 onaddfile: function () {
+                    $successCard.slideUp(150);
                     updateHeaderSummary();
                 },
                 onremovefile: function () {
@@ -197,14 +205,29 @@
                 onprocessfiles: function () {
                     updateHeaderSummary();
                     if (hasUploadedFiles) {
-                        hasUploadedFiles = false;
-                        sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
-                        setTimeout(function () {
-                            window.location.href = window.location.pathname + window.location.search + '#tab2default';
-                            window.location.reload(true);
-                        }, 600);
+                        $uploadedCountNumber.text(uploadedBatchCount || 1);
+                        $successCard.slideDown(200);
                     }
                 }
+            });
+
+            // Action: "Yüklenen Resimleri Tabloda Göster"
+            $btnGoToGrid.on('click', function () {
+                sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
+                window.location.href = window.location.pathname + window.location.search + '#tab2default';
+                window.location.reload(true);
+            });
+
+            // Action: "Yeni Resimler Yükle"
+            $btnUploadMore.on('click', function () {
+                var pond = $input.filepond ? $input.filepond('getPond') : null;
+                if (pond) {
+                    pond.removeFiles();
+                }
+                hasUploadedFiles = false;
+                uploadedBatchCount = 0;
+                $successCard.slideUp(150);
+                updateHeaderSummary();
             });
 
             // Handle "Tümünü Temizle"
@@ -213,6 +236,16 @@
                 if (pond) {
                     pond.removeFiles();
                     updateHeaderSummary();
+                }
+            });
+
+            // If user directly clicks "Yüklenen Resimler" tab after an upload, refresh grid
+            $('.admin-media-tabs a[href="#tab2default"]').on('shown.bs.tab', function () {
+                if (hasUploadedFiles) {
+                    hasUploadedFiles = false;
+                    sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
+                    window.location.href = window.location.pathname + window.location.search + '#tab2default';
+                    window.location.reload(true);
                 }
             });
 
@@ -242,16 +275,19 @@
 
                 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
             {"controllerName",controllerName}
-           ,{"StateTypes","State"}
-           ,{"IsNewRecordButtonEnabled",false}
-           ,{"IsSearchFormEnabled",false}
-           ,{"orderingButton",true}
-           ,{"selectAll",true}
-           ,{"deleteAll",true}
-           ,{"ProductState",false}
-           ,{"SetStateOnOrOff",true}})
+            ,{"StateTypes","State"}
+            ,{"IsNewRecordButtonEnabled",false}
+            ,{"IsSearchFormEnabled",false}
+            ,{"orderingButton",true}
+            ,{"selectAll",true}
+            ,{"deleteAll",true}
+            ,{"ProductState",false}
+            ,{"SetStateOnOrOff",true}})
 
                 <div class="media-clean-actions" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px;">
+                    <button type="button" class="btn btn-info btn-sm btn-refresh-grid" onclick="sessionStorage.setItem('adminMediaActiveTab', '#tab2default'); window.location.href = window.location.pathname + window.location.search + '#tab2default'; window.location.reload(true);" title="Veritabanındaki resimleri ve tabloyu yenile">
+                        <i class="glyphicon glyphicon-refresh"></i> Veritabanından Yenile
+                    </button>
                     <form method="post" action="@Url.Action("DeleteMissingFiles", "Media")" onsubmit="return confirm('@AdminResource.DeleteMissingFilesConfirmMessage');">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="contentId" value="@Model.Id" />

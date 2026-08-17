@@ -26,6 +26,11 @@
         var $countText = $('.admin-media-count-text');
         var $sizeText = $('.admin-media-total-size-text');
         var $btnClearAll = $('.btn-clear-all-pond');
+        var $successCard = $('.admin-media-upload-success-card');
+        var $uploadedCountNumber = $('.uploaded-count-number');
+        var $btnGoToGrid = $('.btn-go-to-grid');
+        var $btnUploadMore = $('.btn-upload-more');
+        var uploadedBatchCount = 0;
 
         function formatBytes(bytes) {
             if (!bytes || bytes === 0) return '0 B';
@@ -89,10 +94,15 @@
                     ondata: function (formData) {
                         formData.append('__RequestVerificationToken', $('input[name="__RequestVerificationToken"]').first().val() || '');
                         return formData;
+                    },
+                    onload: function (response) {
+                        uploadedBatchCount++;
+                        return response;
                     }
                 }
             },
             onaddfile: function () {
+                $successCard.slideUp(150);
                 updateHeaderSummary();
             },
             onremovefile: function () {
@@ -103,7 +113,25 @@
             },
             onprocessfiles: function () {
                 updateHeaderSummary();
+                if (uploadedBatchCount > 0) {
+                    $uploadedCountNumber.text(uploadedBatchCount);
+                    $successCard.slideDown(200);
+                }
             }
+        });
+
+        $btnGoToGrid.on('click', function () {
+            location.reload();
+        });
+
+        $btnUploadMore.on('click', function () {
+            var pond = $input.filepond ? $input.filepond('getPond') : null;
+            if (pond) {
+                pond.removeFiles();
+            }
+            uploadedBatchCount = 0;
+            $successCard.slideUp(150);
+            updateHeaderSummary();
         });
 
         $btnClearAll.on('click', function () {
