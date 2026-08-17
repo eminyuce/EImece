@@ -24,7 +24,7 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
 
-        [HttpGet]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult IndexGrid(
             int id = 0,
             AdminProductsIndexQuery query = null)
@@ -32,6 +32,24 @@ namespace EImece.Areas.Admin.Controllers
             if (query == null)
             {
                 query = new AdminProductsIndexQuery();
+            }
+
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                string redirectSearch = !string.IsNullOrWhiteSpace(query.Search) ? query.Search : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : null);
+                return RedirectToAction(IndexAction, "Products", new
+                {
+                    id = id,
+                    area = "Admin",
+                    search = redirectSearch,
+                    brandId = query.BrandId > 0 ? (int?)query.BrandId : null,
+                    state = string.IsNullOrEmpty(query.State) ? null : query.State,
+                    isActive = query.IsActive,
+                    mainPage = query.MainPage,
+                    isCampaign = query.IsCampaign,
+                    minPrice = query.MinPrice,
+                    maxPrice = query.MaxPrice
+                });
             }
 
             var isProductPriceEnable = AsyncHelper.RunSync(() => SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable));
@@ -48,7 +66,8 @@ namespace EImece.Areas.Admin.Controllers
                 ApplyPriceFilter = priceEnabled
             };
 
-            var products = AsyncHelper.RunSync(() => ProductService.GetAdminPageListAsync(id, query.BrandId, query.Search, CurrentLanguage, filter, CancellationToken.None));
+            string searchParam = !string.IsNullOrWhiteSpace(query.Search) ? query.Search : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : null);
+            var products = AsyncHelper.RunSync(() => ProductService.GetAdminPageListAsync(id, query.BrandId, searchParam, CurrentLanguage, filter, CancellationToken.None));
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             ViewBag.PriceEnabled = priceEnabled;
             return new QueryableResult<Product>(products.AsQueryable());
@@ -381,6 +400,8 @@ namespace EImece.Areas.Admin.Controllers
         public int BrandId { get; set; } = -1;
 
         public string Search { get; set; } = "";
+
+        public string Name { get; set; } = "";
 
         public string State { get; set; } = "";
 
