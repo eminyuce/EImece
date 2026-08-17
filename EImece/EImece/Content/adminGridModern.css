@@ -3474,4 +3474,35 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
 }
 
 
+/* ----- Selected rows follow the checkbox (Bootstrap 5) -----
+   Checking adds .eg-row-selected / .gridChecked / .table-success.
+   Unchecking must drop the green even if a leftover class remains. */
+body.admin-app .eg-grid table > tbody > tr:has(input[name="checkboxGrid"]:checked) > td,
+body.admin-app .griddly table > tbody > tr:has(input[name="checkboxGrid"]:checked) > td,
+body.admin-app .eg-grid table > tbody > tr.table-success > td,
+body.admin-app .griddly table > tbody > tr.table-success > td {
+    background: var(--eg-row-selected) !important;
+    background-color: var(--eg-row-selected) !important;
+    box-shadow: none !important;
+}
 
+body.admin-app .eg-grid table > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).gridChecked > td,
+body.admin-app .eg-grid table > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).eg-row-selected > td,
+body.admin-app .eg-grid table > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).table-success > td,
+body.admin-app .griddly table > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).gridChecked > td,
+body.admin-app .griddly table > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).eg-row-selected > td,
+body.admin-app .griddly table > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).table-success > td {
+    background: var(--eg-surface) !important;
+    background-color: var(--eg-surface) !important;
+    box-shadow: none !important;
+}
+
+body.admin-app .eg-grid table.table-striped > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).gridChecked:nth-of-type(odd) > td,
+body.admin-app .eg-grid table.table-striped > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).eg-row-selected:nth-of-type(odd) > td,
+body.admin-app .eg-grid table.table-striped > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).table-success:nth-of-type(odd) > td,
+body.admin-app .griddly table.table-striped > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).gridChecked:nth-of-type(odd) > td,
+body.admin-app .griddly table.table-striped > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).eg-row-selected:nth-of-type(odd) > td,
+body.admin-app .griddly table.table-striped > tbody > tr:not(:has(input[name="checkboxGrid"]:checked)).table-success:nth-of-type(odd) > td {
+    background: #fbfcfe !important;
+    background-color: #fbfcfe !important;
+}

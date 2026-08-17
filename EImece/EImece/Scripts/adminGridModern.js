@@ -136,7 +136,13 @@
         });
         $('input[name="checkboxGrid"]').each(function () {
             var $tr = $(this).closest('tr');
-            $tr.toggleClass('eg-row-selected', this.checked);
+            var checked = !!this.checked;
+            $tr.toggleClass('eg-row-selected', checked)
+                .toggleClass('gridChecked', checked)
+                .toggleClass('table-success', checked);
+            if (!checked) {
+                $tr.removeClass('success active info table-active');
+            }
         });
     }
 
@@ -602,6 +608,8 @@
         markModernGrids();
         wireFloatingScrollbar();
         sizeReviewNotes(document);
+        updateSelectedCount();
     });
     window.egMarkModernGrids = markModernGrids;
+    window.egUpdateSelectedCount = updateSelectedCount;
 }(window, window.jQuery));

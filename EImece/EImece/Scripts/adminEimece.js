@@ -310,17 +310,32 @@ $(document).ready(function () {
             console.warn("Could not restore admin edit tab from sessionStorage.", err);
         }
     }
-    $("input[name=checkboxGrid]").each(function () {
-        $(this).off("click");
-        $(this).on("click", function (e) {
-            var m = $(this).is(':checked');
-            if (m) {
-                $(this).parents("tr:first").addClass('gridChecked');
-            } else {
-                $(this).parents("tr:first").removeClass('gridChecked');
+    function syncGridCheckboxRow($checkbox) {
+        var $tr = $checkbox.closest("tr");
+        var checked = $checkbox.prop("checked") === true;
+        $tr.toggleClass("eg-row-selected", checked)
+            .toggleClass("gridChecked", checked)
+            .toggleClass("table-success", checked);
+        if (!checked) {
+            $tr.removeClass("success active info table-active");
+        }
+    }
+    function syncAllGridCheckboxRows() {
+        $("input[name=checkboxGrid]").each(function () {
+            syncGridCheckboxRow($(this));
+        });
+        if (typeof window.egUpdateSelectedCount === "function") {
+            window.egUpdateSelectedCount();
+        }
+    }
+    $(document)
+        .off("change.egGridCheck", "input[name=checkboxGrid]")
+        .on("change.egGridCheck", "input[name=checkboxGrid]", function () {
+            syncGridCheckboxRow($(this));
+            if (typeof window.egUpdateSelectedCount === "function") {
+                window.egUpdateSelectedCount();
             }
         });
-    });
     function OrderingItem() {
         var item = this;
         item.Id = "";
@@ -428,20 +443,12 @@ $(document).ready(function () {
     }
 
     $("#DeselectAll").on("click", function () {
-        var i = 0;
-        $("input[name=checkboxGrid]").each(function () {
-            $(this).parents("tr:first").removeClass('gridChecked');
-            var m = $(this).prop('checked', false);
-        });
+        $("input[name=checkboxGrid]").prop("checked", false);
+        syncAllGridCheckboxRows();
     });
     $("#SelectAll").on("click", function () {
-        //  console.log("SelectAll is clicked.");
-        var i = 0;
-        $("input[name=checkboxGrid]").each(function () {
-            var selectedId = $(this).attr('gridkey-id');
-            $(this).parents("tr:first").addClass('gridChecked');
-            var m = $(this).prop('checked', true);
-        });
+        $("input[name=checkboxGrid]").prop("checked", true);
+        syncAllGridCheckboxRows();
     });
 
     $("#SetStateOffAll").on("click", function () {
