@@ -146,7 +146,7 @@
                     </div>
                     <div class="form-group row mb-3">
                         <label for="usersRole">@AdminResource.Roles</label>
-                        <select class="form-control form-control-sm" id="usersRole" name="role">
+                        <select class="form-select form-select-sm" id="usersRole" name="role">
                             <option value="">Tümü</option>
                             @foreach (var roleOption in availableRoles)
                             {
@@ -158,7 +158,7 @@
                     </div>
                     <div class="form-group row mb-3">
                         <label for="usersTwoFactor">2FA</label>
-                        <select class="form-control form-control-sm" id="usersTwoFactor" name="twoFactor">
+                        <select class="form-select form-select-sm" id="usersTwoFactor" name="twoFactor">
                             <option value="">Tümü</option>
                             <option value="yes" @(string.Equals(selectedTwoFactor, "yes", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "1" ? "selected=\"selected\"" : null)>Aktif</option>
                             <option value="no" @(string.Equals(selectedTwoFactor, "no", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "0" ? "selected=\"selected\"" : null)>Yok</option>
@@ -175,7 +175,9 @@
         </div>
     </div>
 
-    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"], role = Request.QueryString["role"], twoFactor = Request.QueryString["twoFactor"] })"></div>
+    @Html.Partial("Grid/_GridChrome")
+
+<div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"], role = Request.QueryString["role"], twoFactor = Request.QueryString["twoFactor"] })"></div>
 </div>
 
 <style>

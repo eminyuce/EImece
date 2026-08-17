@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using Resources;
 @using EImece.Domain.Models.Enums;
 @{
@@ -108,7 +108,7 @@
                             <label class="visually-hidden" for="ItemStateSelection">@State</label>
                             @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                             {
-                                <select class="form-control form-control-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <select class="form-select form-select-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
                                     <option value="State">@State</option>
                                     <option value="ImageState">@ImageState</option>
                                     <option value="MainPage">@MainPage</option>
@@ -117,7 +117,7 @@
                             }
                             else if (StateTypes.Equals("State,ImageState,MainPage"))
                             {
-                                <select class="form-control form-control-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <select class="form-select form-select-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
                                     <option value="State">@State</option>
                                     <option value="ImageState">@ImageState</option>
                                     <option value="MainPage">@MainPage</option>
@@ -125,7 +125,7 @@
                             }
                             else if (StateTypes.Equals("State,ImageState"))
                             {
-                                <select class="form-control form-control-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <select class="form-select form-select-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
                                     <option value="State">@State</option>
                                     <option value="ImageState">@ImageState</option>
                                 </select>
@@ -166,7 +166,7 @@
                         <fieldset class="admin-grid-toolbar-group admin-grid-toolbar-product eg-ops-group eg-ops-group-product" style="border:0;padding:0;margin:0;min-width:0">
                             <legend class="visually-hidden">@ProductStateChangeText</legend>
                             <label class="visually-hidden" for="ProductStateSelection">@ProductStateChangeText</label>
-                            <select class="form-control form-control-sm admin-grid-state-select eg-ops-select eg-ops-select-wide" name="ProductStateSelection" id="ProductStateSelection" title="@ProductStateChangeText">
+                            <select class="form-select form-select-sm admin-grid-state-select eg-ops-select eg-ops-select-wide" name="ProductStateSelection" id="ProductStateSelection" title="@ProductStateChangeText">
                                 @foreach (EImece.Domain.Models.Enums.ProductState state in Enum.GetValues(typeof(EImece.Domain.Models.Enums.ProductState)))
                                 {
                                     <option value="@((int)state)">@GetProductStateResourceText(state)</option>

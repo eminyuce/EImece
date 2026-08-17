@@ -38,11 +38,11 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index eg-row-index-guid" title="@item.Id">@ShortId(item.Id)</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "72px")
         .Column(x => x.Email, caption: AdminResource.Email, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Email }, { "Subtitle", string.Format("{0} {1}", item.FirstName, item.LastName) } })</text>, className: "eg-col-name", width: "320px")
         .Column(x => x.Role, caption: AdminResource.Roles, template: @<text>@RoleBadge(item.Role)</text>, className: "eg-col-state", width: "160px")
         .Column(x => x.AuthenticatorEnabled, caption: "2FA", template: @<text>@(item.AuthenticatorEnabled ? Html.Raw("<span class='eg-state-badge'>Aktif</span>") : Html.Raw("<span class='eg-state-badge is-muted'>Yok</span>"))</text>, className: "eg-col-state", width: "100px")
-        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", string.Format("{0} {1}", item.FirstName, item.LastName) }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "EditAction", "Edit" }, { "ShowDelete", true }, { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = item.Id }) }, { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = item.Id }) }, { "RolesUrl", Url.Action("UserRoles", controllerName, new { id = item.Id }) } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", string.Format("{0} {1}", item.FirstName, item.LastName) }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "EditAction", "Edit" }, { "ShowDelete", true }, { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = item.Id }) }, { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = item.Id }) }, { "RolesUrl", Url.Action("UserRoles", controllerName, new { id = item.Id }) } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
 }
 
 @helper RoleBadge(string role)
@@ -66,6 +66,12 @@
         <span class="eg-role-icon fa fa-user" aria-hidden="true"></span>
         <span class="eg-role-text">@(string.IsNullOrWhiteSpace(role) ? "—" : role)</span>
     </span>
+}
+
+@helper ShortId(string id)
+{
+    var s = id ?? "";
+    @(s.Length <= 8 ? s : s.Substring(0, 8))
 }
 
 @Html.Griddly(settings)

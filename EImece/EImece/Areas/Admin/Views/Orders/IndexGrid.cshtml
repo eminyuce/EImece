@@ -43,17 +43,17 @@
         .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(x => x.OrderNumber, caption: AdminResource.OrderNumber, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.OrderNumber }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "StrongName", true } })</text>, className: "eg-col-name", width: "240px")
-        .Column(x => x.OrderStatus, caption: AdminResource.OrderStatus, template: @<text>@OrderStatusBadge(item.OrderStatus)</text>, className: "eg-col-state eg-col-order-status", width: "160px")
+        .Column(x => x.OrderStatus, caption: AdminResource.OrderStatus, template: @<text>@OrderStatusBadge(item.OrderStatus)</text>, className: "eg-col-state eg-col-order-status", width: "200px")
         .Column(x => x.CreatedDate, caption: AdminResource.CreatedDate, template: @<text>@(item.CreatedDate.ToShortDateString())</text>, className: "gridDateClass eg-col-secondary", width: "120px")
         .Column(x => x.PaidPrice, caption: "Ödenen Tutar", template: @<text>@(item.PaidPrice + " " + item.Currency)</text>, className: "eg-col-order-amount", width: "140px")
-        .Column(x => x.PaymentStatus, caption: AdminResource.PaymentStatus, template: @<text>@item.PaymentStatus</text>, className: "eg-col-secondary", width: "130px")
-        .Column(x => x.ShipmentCompanyName, caption: AdminResource.CargoCompany, template: @<text>@item.ShipmentCompanyName</text>, className: "eg-col-secondary", width: "140px")
-        .Column(x => x.ShipmentTrackingNumber, caption: AdminResource.ShipmentTrackingNumber, template: @<text>@item.ShipmentTrackingNumber</text>, className: "eg-col-secondary", width: "150px")
-        .Column(x => x.AdminOrderNote, caption: AdminResource.AdminOrderNote, template: @<text>@item.AdminOrderNote</text>, className: "eg-col-secondary", width: "160px")
+        .Column(x => x.PaymentStatus, caption: AdminResource.PaymentStatus, template: @<text>@PaymentBadge(item.PaymentStatus)</text>, className: "eg-col-secondary eg-col-payment", width: "130px")
+        .Column(x => x.ShipmentCompanyName, caption: AdminResource.CargoCompany, template: @<text>@EmptyDash(item.ShipmentCompanyName)</text>, className: "eg-col-secondary", width: "140px")
+        .Column(x => x.ShipmentTrackingNumber, caption: AdminResource.ShipmentTrackingNumber, template: @<text>@EmptyDash(item.ShipmentTrackingNumber)</text>, className: "eg-col-secondary", width: "150px")
+        .Column(x => x.AdminOrderNote, caption: AdminResource.AdminOrderNote, template: @<text>@EmptyDash(item.AdminOrderNote)</text>, className: "eg-col-secondary", width: "180px")
         .Column(x => x.DeliveryDate, caption: "Teslimat Tarihi", template: @<text>@(item.DeliveryDate.ToShortDateString())</text>, className: "gridDateClass eg-col-secondary", width: "130px")
         .Column(x => x.CargoPrice, caption: AdminResource.CargoPrice, template: @<text>@(item.CargoPrice.ToString() + " " + item.Currency)</text>, className: "eg-col-secondary", width: "120px")
-        .Column(x => x.CardType, caption: "Ödeme Yöntemi", template: @<text>@item.CardType</text>, className: "eg-col-secondary", width: "130px")
-        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.OrderNumber }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "DetailText", AdminResource.GridDetailText } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+        .Column(x => x.CardType, caption: "Ödeme Yöntemi", template: @<text>@EmptyDash(item.CardType)</text>, className: "eg-col-secondary", width: "130px")
+        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.OrderNumber }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "DetailText", AdminResource.GridDetailText } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
 }
 
 @helper OrderStatusBadge(int orderStatusValue)
@@ -61,6 +61,40 @@
     var status = (EImeceOrderStatus)orderStatusValue;
     var text = status.ToDescription();
     <span class="eg-state-badge eg-order-status-badge" title="@text">@text</span>
+}
+
+@helper EmptyDash(string value)
+{
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        <span class="eg-cell-empty">—</span>
+    }
+    else
+    {
+        @value
+    }
+}
+
+@helper PaymentBadge(string status)
+{
+    var raw = (status ?? "").Trim();
+    if (string.IsNullOrEmpty(raw))
+    {
+        <span class="eg-cell-empty">—</span>
+    }
+    else
+    {
+        var css = "eg-state-badge is-muted";
+        if (string.Equals(raw, "SUCCESS", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "PAID", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge";
+        }
+        else if (string.Equals(raw, "FAILED", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "ERROR", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge is-danger";
+        }
+        <span class="@css" title="@raw">@raw</span>
+    }
 }
 
 @Html.Griddly(settings)
