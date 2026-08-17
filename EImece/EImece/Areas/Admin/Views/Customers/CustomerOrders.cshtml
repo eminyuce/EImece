@@ -2,77 +2,157 @@
 @using EImece.Domain.Entities
 @using Griddly.Mvc
 @using Resources
+@using System.Linq
 
 @{
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     Customer customer = ViewBag.Customer as Customer;
     var customerName = customer != null ? customer.FullName : "";
     var customerEmail = customer != null ? customer.Email : "";
+    var customerPhone = customer != null ? customer.GsmNumber : "";
+    var cityParts = new List<string>();
+    if (customer != null)
+    {
+        if (!string.IsNullOrWhiteSpace(customer.City)) { cityParts.Add(customer.City.Trim()); }
+        if (!string.IsNullOrWhiteSpace(customer.Town)) { cityParts.Add(customer.Town.Trim()); }
+    }
+    var cityLine = string.Join(" / ", cityParts);
     ViewBag.Title = string.IsNullOrWhiteSpace(customerName)
-        ? AdminResource.OrdersBelongCustomer
-        : (customerName + " " + AdminResource.OrdersBelongCustomer);
+        ? "Siparişler"
+        : (customerName + " — siparişler");
     var controllerName = "customers";
 }
 
 <div class="admin-customer-orders">
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-        <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "Customers")">
+    <div class="admin-co-identity">
+        <a class="btn btn-secondary btn-sm admin-co-back" href="@Url.Action("Index", "Customers")">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
             Müşterilere Dön
         </a>
-    </div>
-
-    <h2 class="admin-page-title text-center mb-1">
-        @if (!string.IsNullOrWhiteSpace(customerName))
-        {
-            @customerName <span class="fw-normal">@AdminResource.OrdersBelongCustomer</span>
-        }
-        else
-        {
-            @AdminResource.OrdersBelongCustomer
-        }
-    </h2>
-    @if (!string.IsNullOrWhiteSpace(customerEmail))
-    {
-        <p class="text-center text-muted mb-4">
-            <i class="fa fa-envelope-o" aria-hidden="true"></i>
-            <a href="mailto:@customerEmail">@customerEmail</a>
-        </p>
-    }
-    else
-    {
-        <div class="mb-4"></div>
-    }
-
-    @if (customer != null)
-    {
-        <div class="card shadow-sm mb-4">
-            <div class="card-header">
-                <h3 class="card-title h6 mb-0">
-                    <i class="fa fa-user me-1" aria-hidden="true"></i>
-                    Müşteri bilgileri
-                </h3>
-            </div>
-            <div class="card-body">
-                @Html.DisplayFor(r => customer, "CustomerOrderDetail")
+        <div class="admin-co-identity-main">
+            <h1 class="admin-co-title">
+                @if (!string.IsNullOrWhiteSpace(customerName))
+                {
+                    @customerName <span class="admin-co-title-muted">— siparişler</span>
+                }
+                else
+                {
+                    <text>Siparişler</text>
+                }
+            </h1>
+            <div class="admin-co-meta">
+                @if (!string.IsNullOrWhiteSpace(customerEmail))
+                {
+                    <a href="mailto:@customerEmail" class="admin-co-meta-item">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        @customerEmail
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(customerPhone))
+                {
+                    <a href="tel:@customerPhone" class="admin-co-meta-item">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        @customerPhone
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(cityLine))
+                {
+                    <span class="admin-co-meta-item text-muted">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        @cityLine
+                    </span>
+                }
             </div>
         </div>
+    </div>
+
+    @if (customer != null && HasAddress(customer))
+    {
+        <details class="admin-co-address">
+            <summary>Adres</summary>
+            <div class="admin-co-address-body small">
+                @if (!string.IsNullOrWhiteSpace(customer.Street))
+                {
+                    <div>@customer.Street</div>
+                }
+                @if (!string.IsNullOrWhiteSpace(customer.District))
+                {
+                    <div>@customer.District</div>
+                }
+                <div>
+                    @(string.Join(" / ", new[] { customer.Town, customer.City, customer.Country }.Where(s => !string.IsNullOrWhiteSpace(s))))
+                    @if (!string.IsNullOrWhiteSpace(customer.ZipCode))
+                    {
+                        <span>@customer.ZipCode</span>
+                    }
+                </div>
+                @if (!string.IsNullOrWhiteSpace(customer.Description))
+                {
+                    <div class="text-muted mt-1">@customer.Description</div>
+                }
+            </div>
+        </details>
     }
 
-    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-        {"controllerName", controllerName},
-        {"IsNewRecordButtonEnabled", false},
-        {"IsSearchFormEnabled", true},
-        {"IsExcelButtonEnabled", false},
-        {"selectAll", false},
-        {"deleteAll", false},
-        {"SetStateOnOrOff", false},
-        {"orderingButton", false},
-        {"ProductState", false},
-        {"IdValueExists", true}
-    })
-
-    @Html.Partial("Grid/_GridChrome")
+    <div class="admin-co-toolbar">
+        @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+            {"controllerName", controllerName},
+            {"IsNewRecordButtonEnabled", false},
+            {"IsSearchFormEnabled", true},
+            {"IsExcelButtonEnabled", false},
+            {"selectAll", false},
+            {"deleteAll", false},
+            {"SetStateOnOrOff", false},
+            {"orderingButton", false},
+            {"ProductState", false},
+            {"IdValueExists", true}
+        })
+        @Html.Partial("Grid/_GridChrome")
+    </div>
 
     <div class="js-griddly-async" data-url="@Url.Action("CustomerOrdersGrid", new { id = customer != null ? customer.UserId : "", search = Request.QueryString["search"] })"></div>
 </div>
+
+<div class="modal fade" id="adminOrderNoteModal" tabindex="-1" aria-labelledby="adminOrderNoteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminOrderNoteModalTitle">Yönetici notu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <p class="small text-muted mb-2" data-eg-note-order-label></p>
+                <p class="small text-muted">Sadece yöneticiler görür.</p>
+                <label class="form-label" for="adminOrderNoteModalText">Not</label>
+                <textarea id="adminOrderNoteModalText" class="form-control" rows="4" data-eg-note-textarea placeholder="Sipariş hakkında iç not"></textarea>
+                <div class="admin-co-modal-cargo mt-3">
+                    <div class="form-label mb-2">Kargo</div>
+                    <div class="mb-2">
+                        <label class="form-label small mb-1" for="adminOrderNoteModalCompany">Firma</label>
+                        <input id="adminOrderNoteModalCompany" class="form-control form-control-sm" type="text" data-eg-note-company placeholder="Kargo firması" />
+                    </div>
+                    <div>
+                        <label class="form-label small mb-1" for="adminOrderNoteModalTracking">Takip no</label>
+                        <input id="adminOrderNoteModalTracking" class="form-control form-control-sm" type="text" data-eg-note-tracking placeholder="Takip numarası" />
+                    </div>
+                </div>
+                <div class="small text-success mt-2" data-eg-note-save-result></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" data-eg-note-save>Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    bool HasAddress(Customer c)
+    {
+        if (c == null) { return false; }
+        return !string.IsNullOrWhiteSpace(c.Street)
+            || !string.IsNullOrWhiteSpace(c.District)
+            || !string.IsNullOrWhiteSpace(c.ZipCode)
+            || !string.IsNullOrWhiteSpace(c.Description);
+    }
+}

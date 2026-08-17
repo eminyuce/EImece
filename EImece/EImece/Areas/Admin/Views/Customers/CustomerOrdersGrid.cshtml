@@ -16,7 +16,7 @@
 
     var settings = new GriddlySettings<Order>()
     {
-        ClassName = "eg-grid eg-grid-shell eg-orders-grid",
+        ClassName = "eg-grid eg-grid-shell eg-orders-grid eg-customer-orders-grid",
         TableClassName = "table table-hover table-striped eg-grid-table",
         PageSize = pageSizeNumber,
         AllowedFilterModes = FilterMode.None,
@@ -46,50 +46,221 @@
     settings
         .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
-        .Column(x => x.OrderNumber, caption: AdminResource.OrderNumber, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.OrderNumber }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "StrongName", true } })</text>, className: "eg-col-name", width: "200px")
-        .Column(x => x.OrderStatus, caption: AdminResource.OrderStatus, template: @<text>@OrderStatusBadge(item.OrderStatus)</text>, className: "eg-col-state eg-col-order-status", width: "180px")
-        .Column(x => x.AdminOrderNote, caption: AdminResource.AdminOrderNote, template: @<text>@WriteAdminOrderNote(item)</text>, className: "eg-col-note", width: "320px")
-        .Column(x => x.PaymentId, caption: AdminResource.PaymentIyzicoNumber, template: @<text>@EmptyDash(item.PaymentId)</text>, className: "smallGridColumn", width: "140px")
-        .Column(x => x.Price, caption: AdminResource.Price, template: @<text><span class="text-primary">@item.PaidPriceDecimal.CurrencySign()</span></text>, className: "smallGridColumn", width: "120px")
-        .Column(x => x.OrderComments, caption: AdminResource.OrderComments, template: @<text>@EmptyDash(item.OrderComments)</text>, className: "eg-col-comment", width: "220px")
-        .Column(x => x.CreatedDate, caption: AdminResource.OrderDatePurchased, template: @<text>@(item.CreatedDate.ToString("dd MMMM ddd yyyy, HH:mm"))</text>, className: "gridDateClass", width: "160px")
-        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.OrderNumber }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", false }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "DetailText", AdminResource.OrderDetails } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
+        .Column(x => x.OrderNumber, caption: "Sipariş", template: @<text>@OrderNumberCell(item)</text>, className: "eg-col-name", width: "168px")
+        .Column(x => x.OrderStatus, caption: "Durum", template: @<text>@StatusCell(item)</text>, className: "eg-col-state eg-col-order-status", width: "158px")
+        .Column(x => x.AdminOrderNote, caption: "Not", template: @<text>@NoteCell(item)</text>, className: "eg-col-note", width: "140px")
+        .Column(x => x.PaymentId, caption: "Ödeme", template: @<text>@PaymentCell(item)</text>, className: "eg-col-payment", width: "128px")
+        .Column(x => x.Price, caption: "Tutar", template: @<text><span class="eg-co-amount">@item.PaidPriceDecimal.CurrencySign()</span></text>, className: "eg-col-order-amount", width: "96px")
+        .Column(x => x.ShipmentCompanyName, caption: "Kargo", template: @<text>@CargoCell(item)</text>, className: "eg-col-cargo", width: "140px")
+        .Column(caption: "İşlemler", template: @<text>@ActionsCell(item)</text>, className: "eg-sticky-right eg-col-actions", width: "118px");
 }
 
-@helper OrderStatusBadge(int orderStatusValue)
+@helper OrderNumberCell(Order order)
 {
-    var status = (EImeceOrderStatus)orderStatusValue;
-    var text = status.ToDescription();
-    <span class="eg-state-badge eg-order-status-badge" title="@text">@text</span>
+    var detailUrl = Url.Action("Details", "Orders", new { id = order.Id });
+    <div class="eg-name-cell">
+        <a class="eg-name-link" href="@detailUrl">
+            <strong>@order.OrderNumber</strong>
+        </a>
+        <div class="eg-name-sub">@order.CreatedDate.ToString("dd MMM yyyy, HH:mm")</div>
+        @if (!string.IsNullOrWhiteSpace(order.OrderComments))
+        {
+            <div class="eg-co-customer-comment text-muted" title="@order.OrderComments">Müşteri: @order.OrderComments</div>
+        }
+    </div>
 }
 
-@helper EmptyDash(string value)
+@helper StatusCell(Order order)
 {
-    if (string.IsNullOrWhiteSpace(value))
+    var os = (EImeceOrderStatus)order.OrderStatus;
+    string label;
+    switch (os)
+    {
+        case EImeceOrderStatus.NewlyOrder: label = "Yeni sipariş"; break;
+        case EImeceOrderStatus.PaymentPending: label = "Ödeme bekleniyor"; break;
+        case EImeceOrderStatus.InProgress: label = "Hazırlanmakta"; break;
+        case EImeceOrderStatus.Shipped: label = "Kargoda"; break;
+        case EImeceOrderStatus.Delivered: label = "Teslim edildi"; break;
+        case EImeceOrderStatus.Cancelled: label = "İptal"; break;
+        case EImeceOrderStatus.Returned: label = "İade"; break;
+        case EImeceOrderStatus.Refunded: label = "İade tamamlandı"; break;
+        default: label = os.ToDescription(); break;
+    }
+    var statusItems = new[] {
+        new SelectListItem { Value = "NewlyOrder", Text = "Yeni sipariş" },
+        new SelectListItem { Value = "PaymentPending", Text = "Ödeme bekleniyor" },
+        new SelectListItem { Value = "InProgress", Text = "Hazırlanmakta" },
+        new SelectListItem { Value = "Shipped", Text = "Kargoda" },
+        new SelectListItem { Value = "Delivered", Text = "Teslim edildi" },
+        new SelectListItem { Value = "Cancelled", Text = "İptal" },
+        new SelectListItem { Value = "Returned", Text = "İade" },
+        new SelectListItem { Value = "Refunded", Text = "İade tamamlandı" }
+    };
+    <div class="eg-co-status-cell">
+        <span class="eg-state-badge eg-order-status-badge eg-order-status-@os" data-eg-status-badge="@order.Id" title="@os.ToDescription()">@label</span>
+        @Html.DropDownList("orderStatusSelectList",
+            new SelectList(statusItems, "Value", "Text", os.ToString()),
+            new { @class = "form-select form-select-sm eg-co-status-select", @data_change_order_status = order.Id, title = "Durumu değiştir" })
+        <span class="visually-hidden" data-changed-order-result="@order.Id"></span>
+    </div>
+}
+
+@helper NoteCell(Order order)
+{
+    var raw = order.AdminOrderNote ?? "";
+    var preview = raw.Replace("\r", " ").Replace("\n", " ").Trim();
+    var hasNote = !string.IsNullOrWhiteSpace(preview);
+    <div class="eg-co-note-cell">
+        @if (hasNote)
+        {
+            <span class="eg-co-note-preview" title="@raw">@preview</span>
+        }
+        else
+        {
+            <span class="eg-co-note-empty">Not yok</span>
+        }
+        <button type="button"
+                class="btn btn-link btn-sm eg-co-note-edit"
+                data-eg-open-order-note="1"
+                data-order-id="@order.Id"
+                data-order-number="@order.OrderNumber"
+                data-note="@raw"
+                data-company="@(order.ShipmentCompanyName ?? "")"
+                data-tracking="@(order.ShipmentTrackingNumber ?? "")"
+                title="Yönetici notunu düzenle">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            <span>Düzenle</span>
+        </button>
+    </div>
+}
+
+@helper PaymentCell(Order order)
+{
+    <div class="eg-co-pay-cell">
+        @PaymentBadge(order.PaymentStatus)
+        @if (!string.IsNullOrWhiteSpace(order.PaymentId))
+        {
+            <div class="eg-co-pay-id" title="@order.PaymentId">@order.PaymentId</div>
+        }
+    </div>
+}
+
+@helper CargoCell(Order order)
+{
+    var company = (order.ShipmentCompanyName ?? "").Trim();
+    var tracking = (order.ShipmentTrackingNumber ?? "").Trim();
+    var hasCargo = !string.IsNullOrWhiteSpace(company) || !string.IsNullOrWhiteSpace(tracking);
+    <div class="eg-co-cargo-cell">
+        @if (hasCargo)
+        {
+            <span class="eg-co-cargo-line" title="@(company + (string.IsNullOrWhiteSpace(tracking) ? "" : " · " + tracking))">
+                @if (!string.IsNullOrWhiteSpace(company) && !string.IsNullOrWhiteSpace(tracking))
+                {
+                    @company <span class="eg-co-cargo-sep">·</span> @tracking
+                }
+                else if (!string.IsNullOrWhiteSpace(company))
+                {
+                    @company
+                }
+                else
+                {
+                    @tracking
+                }
+            </span>
+        }
+        else
+        {
+            <span class="eg-co-cargo-empty">Kargo yok</span>
+        }
+        <button type="button"
+                class="btn btn-link btn-sm eg-co-cargo-edit"
+                data-eg-open-order-note="1"
+                data-eg-focus="cargo"
+                data-order-id="@order.Id"
+                data-order-number="@order.OrderNumber"
+                data-note="@(order.AdminOrderNote ?? "")"
+                data-company="@company"
+                data-tracking="@tracking"
+                title="Kargoyu düzenle">
+            Kargo
+        </button>
+    </div>
+}
+
+@helper ActionsCell(Order order)
+{
+    var detailUrl = Url.Action("Details", "Orders", new { id = order.Id });
+    <div class="eg-actions btn-group">
+        <button type="button"
+                class="btn btn-secondary btn-sm dropdown-toggle eg-actions-toggle"
+                data-bs-toggle="dropdown"
+                data-bs-display="static"
+                aria-haspopup="true"
+                aria-expanded="false">
+            <i class="fa fa-cog" aria-hidden="true"></i>
+            <span>İşlemler</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end eg-actions-menu">
+            <li>
+                <a class="dropdown-item" href="@detailUrl">
+                    <i class="fa fa-info-circle"></i> Detay
+                </a>
+            </li>
+            <li>
+                <button type="button"
+                        class="dropdown-item"
+                        data-eg-open-order-note="1"
+                        data-order-id="@order.Id"
+                        data-order-number="@order.OrderNumber"
+                        data-note="@(order.AdminOrderNote ?? "")"
+                        data-company="@(order.ShipmentCompanyName ?? "")"
+                        data-tracking="@(order.ShipmentTrackingNumber ?? "")">
+                    <i class="fa fa-pencil"></i> Not
+                </button>
+            </li>
+        </ul>
+    </div>
+}
+
+@helper PaymentBadge(string status)
+{
+    var raw = (status ?? "").Trim();
+    if (string.IsNullOrEmpty(raw))
     {
         <span class="eg-cell-empty">—</span>
     }
     else
     {
-        <span class="eg-cell-clip" title="@value">@value</span>
+        var css = "eg-state-badge is-muted";
+        var text = raw;
+        if (string.Equals(raw, "SUCCESS", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "PAID", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge eg-pay-badge-success";
+            text = "Başarılı";
+        }
+        else if (string.Equals(raw, "FAILURE", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "FAILED", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "ERROR", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge is-danger eg-pay-badge-failed";
+            text = "Başarısız";
+        }
+        else if (string.Equals(raw, "INIT_THREEDS", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "CALLBACK_THREEDS", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge eg-pay-badge-pending";
+            text = "Beklemede";
+        }
+        else if (string.Equals(raw, "BKM_POS_SELECTED", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge is-muted";
+            text = "BKM POS seçildi";
+        }
+        else if (string.Equals(raw, "CALLBACK_PECCO", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge is-muted";
+            text = "Pecco dönüşü";
+        }
+        <span class="@css" title="@text">@text</span>
     }
 }
 
-@helper WriteAdminOrderNote(Order order)
-{
-    var os = (EImeceOrderStatus)order.OrderStatus;
-    var orderStatusSelectList = EImece.Domain.Helpers.EnumHelper.ToSelectList(os);
-
-    <div class="d-grid gap-1">
-        <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success w-100 btn-sm" />
-        <span class="text-danger small" data-changed-order-result="@order.Id"></span>
-        @Html.DropDownList("orderStatusSelectList",
-            new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
-            new { @class = "form-select form-select-sm", @data_change_order_status = order.Id })
-        <textarea class="form-control form-control-sm" placeholder="@Resource.AdminOrderNote" rows="2" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
-        <input class="form-control form-control-sm" type="text" placeholder="@Resource.ShipmentCompanyName" data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
-        <input class="form-control form-control-sm" type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
-    </div>
-}
 
 @Html.Griddly(settings)

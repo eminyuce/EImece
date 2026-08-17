@@ -193,17 +193,16 @@ function submitAdminDeleteForm(url, id) {
 $(document).ready(function () {
     bindSaveAdminOrderNote();
     function bindSaveAdminOrderNote() {
-        $('[data-save-admin-order-note]').each(function () {
-            $(this).off("click");
-            $(this).on("click", handleSaveAdminOrderNote);
-        });
+        $(document)
+            .off("click.adminOrderNote", "[data-save-admin-order-note]")
+            .on("click.adminOrderNote", "[data-save-admin-order-note]", handleSaveAdminOrderNote);
     }
     function handleSaveAdminOrderNote(e) {
-        var caller = e.target;
-        var orderId = $(caller).attr('data-save-admin-order-note');
-        var adminOrderNote = $('[data-textarea-admin-order-note=' + orderId + ']').val();
-        var shipmentCompanyName = $('[data-order-shipment-company-name=' + orderId + ']').val();
-        var shipmentTrackingNumber = $('[data-order-shipment-tracking-number=' + orderId + ']').val();
+        var caller = e.currentTarget || e.target;
+        var orderId = $(caller).attr("data-save-admin-order-note");
+        var adminOrderNote = $("[data-textarea-admin-order-note=" + orderId + "]").val();
+        var shipmentCompanyName = $("[data-order-shipment-company-name=" + orderId + "]").val();
+        var shipmentTrackingNumber = $("[data-order-shipment-tracking-number=" + orderId + "]").val();
 
         var postData = JSON.stringify({
             "orderId": orderId,
@@ -212,30 +211,147 @@ $(document).ready(function () {
             "shipmentTrackingNumber": shipmentTrackingNumber
         });
         ajaxMethodCall(postData, "/admin/Ajax/SaveAdminOrderNote", function (data) {
-            $('[data-changed-order-result=' + orderId + ']').text(data);
+            $("[data-changed-order-result=" + orderId + "]").text(data);
         });
     }
- 
 
     bindChangeOrderStatus();
     function bindChangeOrderStatus() {
-        $('[data-change-order-status]').each(function () {
-            $(this).off("change");
-            $(this).on("change", handleChangedOrderStatus);
-        });
+        $(document)
+            .off("change.adminOrderStatus", "[data-change-order-status]")
+            .on("change.adminOrderStatus", "[data-change-order-status]", handleChangedOrderStatus);
     }
     function handleChangedOrderStatus(e) {
-        var caller = e.target;
+        var caller = e.currentTarget || e.target;
         var orderStatus = $(caller).val();
-        var orderId = $(caller).attr('data-change-order-status');
-        $('[data-changed-order-result="' + orderId + '"]').text("");
+        var orderId = $(caller).attr("data-change-order-status");
+        $("[data-changed-order-result=\"" + orderId + "\"]").text("");
         var postData = JSON.stringify({ "orderId": orderId, "orderStatus": orderStatus });
         ajaxMethodCall(postData, "/admin/Ajax/ChangedOrderStatus", function (data) {
-            console.log(data);
-            $('[data-changed-order-result="' + orderId + '"]').text(data);
+            var $badge = $("[data-eg-status-badge=\"" + orderId + "\"]");
+            if ($badge.length) {
+                var label = $(caller).find("option:selected").text();
+                $badge.text(label);
+                $badge.attr("class", "eg-state-badge eg-order-status-badge eg-order-status-" + orderStatus);
+                $badge.attr("title", label);
+            }
+            $("[data-changed-order-result=\"" + orderId + "\"]").text(data);
         });
-
     }
+
+    bindAdminOrderNoteModal();
+    function bindAdminOrderNoteModal() {
+        $(document)
+            .off("click.adminOrderNoteModal", "[data-eg-open-order-note]")
+            .on("click.adminOrderNoteModal", "[data-eg-open-order-note]", function (e) {
+                e.preventDefault();
+                openAdminOrderNoteModal(this);
+            });
+        $(document)
+            .off("click.adminOrderNoteSave", "[data-eg-note-save]")
+            .on("click.adminOrderNoteSave", "[data-eg-note-save]", function (e) {
+                e.preventDefault();
+                saveAdminOrderNoteModal();
+            });
+    }
+
+    function getAdminOrderNoteModal() {
+        return $("#adminOrderNoteModal");
+    }
+
+    function openAdminOrderNoteModal(trigger) {
+        var $btn = $(trigger);
+        var $modal = getAdminOrderNoteModal();
+        if (!$modal.length) {
+            return;
+        }
+        var orderId = $btn.attr("data-order-id");
+        var orderNumber = $btn.attr("data-order-number") || "";
+        $modal.data("orderId", orderId);
+        $modal.find("[data-eg-note-textarea]").val($btn.attr("data-note") || "");
+        $modal.find("[data-eg-note-company]").val($btn.attr("data-company") || "");
+        $modal.find("[data-eg-note-tracking]").val($btn.attr("data-tracking") || "");
+        $modal.find("[data-eg-note-order-label]").text(orderNumber ? ("Sipariş " + orderNumber) : "");
+        $modal.find("[data-eg-note-save-result]").text("");
+        if (window.bootstrap && bootstrap.Modal && $modal[0]) {
+            bootstrap.Modal.getOrCreateInstance($modal[0]).show();
+        } else if ($modal.modal) {
+            $modal.modal("show");
+        }
+        window.setTimeout(function () {
+            if ($btn.attr("data-eg-focus") === "cargo") {
+                $modal.find("[data-eg-note-company]").trigger("focus");
+            } else {
+                $modal.find("[data-eg-note-textarea]").trigger("focus");
+            }
+        }, 150);
+    }
+
+    function saveAdminOrderNoteModal() {
+        var $modal = getAdminOrderNoteModal();
+        var orderId = $modal.data("orderId");
+        if (!orderId) {
+            return;
+        }
+        var note = $modal.find("[data-eg-note-textarea]").val() || "";
+        var company = $modal.find("[data-eg-note-company]").val() || "";
+        var tracking = $modal.find("[data-eg-note-tracking]").val() || "";
+        var $save = $modal.find("[data-eg-note-save]");
+        $save.prop("disabled", true);
+        var postData = JSON.stringify({
+            "orderId": orderId,
+            "adminOrderNote": note,
+            "shipmentCompanyName": company,
+            "shipmentTrackingNumber": tracking
+        });
+        ajaxMethodCall(postData, "/admin/Ajax/SaveAdminOrderNote", function (data) {
+            $save.prop("disabled", false);
+            $modal.find("[data-eg-note-save-result]").text(data || "");
+            applyAdminOrderNoteToRow(orderId, note, company, tracking);
+            if (window.bootstrap && bootstrap.Modal && $modal[0]) {
+                var inst = bootstrap.Modal.getInstance($modal[0]);
+                if (inst) { inst.hide(); }
+            } else if ($modal.modal) {
+                $modal.modal("hide");
+            }
+        }, function () {
+            $save.prop("disabled", false);
+        });
+    }
+
+    function applyAdminOrderNoteToRow(orderId, note, company, tracking) {
+        var $btns = $("[data-eg-open-order-note][data-order-id=\"" + orderId + "\"]");
+        $btns.attr("data-note", note).attr("data-company", company).attr("data-tracking", tracking);
+        var preview = (note || "").replace(/\s+/g, " ").trim();
+        var $noteCell = $btns.filter(".eg-co-note-edit").closest(".eg-co-note-cell");
+        if ($noteCell.length) {
+            var $preview = $noteCell.find(".eg-co-note-preview, .eg-co-note-empty");
+            if (preview) {
+                if ($preview.hasClass("eg-co-note-empty")) {
+                    $preview.removeClass("eg-co-note-empty").addClass("eg-co-note-preview");
+                }
+                $preview.attr("title", note).text(preview);
+            } else {
+                $preview.removeClass("eg-co-note-preview").addClass("eg-co-note-empty").removeAttr("title").text("Not yok");
+            }
+        }
+        var cargoLine = "";
+        var c = (company || "").trim();
+        var t = (tracking || "").trim();
+        if (c && t) { cargoLine = c + " · " + t; }
+        else if (c) { cargoLine = c; }
+        else if (t) { cargoLine = t; }
+        var $cargoCell = $btns.filter(".eg-co-cargo-edit").closest(".eg-co-cargo-cell");
+        if ($cargoCell.length) {
+            var $line = $cargoCell.find(".eg-co-cargo-line, .eg-co-cargo-empty");
+            if (cargoLine) {
+                $line.removeClass("eg-co-cargo-empty").addClass("eg-co-cargo-line").attr("title", cargoLine).text(cargoLine);
+            } else {
+                $line.removeClass("eg-co-cargo-line").addClass("eg-co-cargo-empty").removeAttr("title").text("Kargo yok");
+            }
+        }
+    }
+
     bindProductDetailToolTip();
     if (window.EImece && EImece.RichTextEditor) {
         EImece.RichTextEditor.init();
