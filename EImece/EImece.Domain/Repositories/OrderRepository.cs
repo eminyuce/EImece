@@ -47,7 +47,6 @@ namespace EImece.Domain.Repositories
                     UserId = o.UserId,
                     Price = o.Price,
                     PaidPrice = o.PaidPrice,
-                    PaidPriceDecimal = o.PaidPriceDecimal,
                     CargoPrice = o.CargoPrice,
                     Currency = o.Currency,
                     PaymentStatus = o.PaymentStatus,
@@ -63,11 +62,10 @@ namespace EImece.Domain.Repositories
                         Id = op.Id,
                         OrderId = op.OrderId,
                         ProductId = op.ProductId,
-                        ProductName = op.Product != null ? op.Product.Name : string.Empty,
-                        ProductCode = op.Product != null ? op.Product.ProductCode : string.Empty,
-                        CategoryName = op.Product != null && op.Product.ProductCategory != null ? op.Product.ProductCategory.Name : string.Empty,
+                        ProductName = op.ProductName,
+                        ProductCode = op.ProductCode,
+                        CategoryName = op.CategoryName,
                         Quantity = op.Quantity,
-                        Price = op.Price,
                         TotalPrice = op.TotalPrice,
                         ProductSalePrice = op.ProductSalePrice,
                         ProductSpecItems = op.ProductSpecItems
@@ -94,7 +92,6 @@ namespace EImece.Domain.Repositories
                     UserId = o.UserId,
                     Price = o.Price,
                     PaidPrice = o.PaidPrice,
-                    PaidPriceDecimal = o.PaidPriceDecimal,
                     CargoPrice = o.CargoPrice,
                     Currency = o.Currency,
                     PaymentStatus = o.PaymentStatus,
@@ -108,7 +105,6 @@ namespace EImece.Domain.Repositories
                     CardType = o.CardType,
                     LastFourDigits = o.LastFourDigits,
                     Installment = o.Installment,
-                    InstallmentDescription = o.InstallmentDescription,
                     ShipmentCompanyName = o.ShipmentCompanyName,
                     ShipmentTrackingNumber = o.ShipmentTrackingNumber,
                     ShippingAddressId = o.ShippingAddressId,
@@ -116,42 +112,15 @@ namespace EImece.Domain.Repositories
                     IsActive = o.IsActive,
                     Position = o.Position,
                     Lang = o.Lang,
-                    ShippingAddress = o.ShippingAddress != null ? new AddressDto
-                    {
-                        Id = o.ShippingAddress.Id,
-                        Name = o.ShippingAddress.Name,
-                        City = o.ShippingAddress.City,
-                        Country = o.ShippingAddress.Country,
-                        District = o.ShippingAddress.District,
-                        Street = o.ShippingAddress.Street,
-                        ZipCode = o.ShippingAddress.ZipCode,
-                        Description = o.ShippingAddress.Description,
-                        AddressInfo = o.ShippingAddress.AddressInfo,
-                        AddressType = o.ShippingAddress.AddressType
-                    } : null,
-                    BillingAddress = o.BillingAddress != null ? new AddressDto
-                    {
-                        Id = o.BillingAddress.Id,
-                        Name = o.BillingAddress.Name,
-                        City = o.BillingAddress.City,
-                        Country = o.BillingAddress.Country,
-                        District = o.BillingAddress.District,
-                        Street = o.BillingAddress.Street,
-                        ZipCode = o.BillingAddress.ZipCode,
-                        Description = o.BillingAddress.Description,
-                        AddressInfo = o.BillingAddress.AddressInfo,
-                        AddressType = o.BillingAddress.AddressType
-                    } : null,
                     OrderProducts = o.OrderProducts.Select(op => new OrderProductDto
                     {
                         Id = op.Id,
                         OrderId = op.OrderId,
                         ProductId = op.ProductId,
-                        ProductName = op.Product != null ? op.Product.Name : string.Empty,
-                        ProductCode = op.Product != null ? op.Product.ProductCode : string.Empty,
-                        CategoryName = op.Product != null && op.Product.ProductCategory != null ? op.Product.ProductCategory.Name : string.Empty,
+                        ProductName = op.ProductName,
+                        ProductCode = op.ProductCode,
+                        CategoryName = op.CategoryName,
                         Quantity = op.Quantity,
-                        Price = op.Price,
                         TotalPrice = op.TotalPrice,
                         ProductSalePrice = op.ProductSalePrice,
                         ProductSpecItems = op.ProductSpecItems
@@ -160,55 +129,133 @@ namespace EImece.Domain.Repositories
             }
         }
 
+
+        private static Expression<Func<Address, AddressDto>> AddressDtoProjection
+        {
+            get
+            {
+                return a => new AddressDto
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    City = a.City,
+                    Country = a.Country,
+                    District = a.District,
+                    Street = a.Street,
+                    ZipCode = a.ZipCode,
+                    Description = a.Description,
+                    AddressType = a.AddressType
+                };
+            }
+        }
+
+        private async Task FillAddressesAsync(OrderDto dto, CancellationToken cancellationToken)
+        {
+            if (dto == null)
+            {
+                return;
+            }
+            if (dto.ShippingAddressId > 0)
+            {
+                dto.ShippingAddress = await EImeceDbContext.Addresses.AsNoTracking()
+                    .Where(a => a.Id == dto.ShippingAddressId)
+                    .Select(AddressDtoProjection)
+                    .FirstOrDefaultAsync(cancellationToken)
+                    .ConfigureAwait(false);
+            }
+            if (dto.BillingAddressId > 0)
+            {
+                dto.BillingAddress = await EImeceDbContext.Addresses.AsNoTracking()
+                    .Where(a => a.Id == dto.BillingAddressId)
+                    .Select(AddressDtoProjection)
+                    .FirstOrDefaultAsync(cancellationToken)
+                    .ConfigureAwait(false);
+            }
+        }
+
+        private void FillAddresses(OrderDto dto)
+        {
+            if (dto == null)
+            {
+                return;
+            }
+            if (dto.ShippingAddressId > 0)
+            {
+                dto.ShippingAddress = EImeceDbContext.Addresses.AsNoTracking()
+                    .Where(a => a.Id == dto.ShippingAddressId)
+                    .Select(AddressDtoProjection)
+                    .FirstOrDefault();
+            }
+            if (dto.BillingAddressId > 0)
+            {
+                dto.BillingAddress = EImeceDbContext.Addresses.AsNoTracking()
+                    .Where(a => a.Id == dto.BillingAddressId)
+                    .Select(AddressDtoProjection)
+                    .FirstOrDefault();
+            }
+        }
+
         public async Task<OrderDto> GetStorefrontOrderByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await EImeceDbContext.Orders.AsNoTracking()
+            var dto = await EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.Id == id)
                 .Select(OrderDetailProjection)
                 .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
+            await FillAddressesAsync(dto, cancellationToken).ConfigureAwait(false);
+            return dto;
         }
 
         public OrderDto GetStorefrontOrderById(int id)
         {
-            return EImeceDbContext.Orders.AsNoTracking()
+            var dto = EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.Id == id)
                 .Select(OrderDetailProjection)
                 .FirstOrDefault();
+            FillAddresses(dto);
+            return dto;
         }
 
         public async Task<OrderDto> GetStorefrontOrderByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await EImeceDbContext.Orders.AsNoTracking()
+            var dto = await EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.OrderNumber == orderNumber)
                 .Select(OrderDetailProjection)
                 .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
+            await FillAddressesAsync(dto, cancellationToken).ConfigureAwait(false);
+            return dto;
         }
 
         public OrderDto GetStorefrontOrderByOrderNumber(string orderNumber)
         {
-            return EImeceDbContext.Orders.AsNoTracking()
+            var dto = EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.OrderNumber == orderNumber)
                 .Select(OrderDetailProjection)
                 .FirstOrDefault();
+            FillAddresses(dto);
+            return dto;
         }
 
         public async Task<OrderDto> GetStorefrontOrderByGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await EImeceDbContext.Orders.AsNoTracking()
+            var dto = await EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.OrderGuid == orderGuid)
                 .Select(OrderDetailProjection)
                 .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
+            await FillAddressesAsync(dto, cancellationToken).ConfigureAwait(false);
+            return dto;
         }
 
         public OrderDto GetStorefrontOrderByGuid(string orderGuid)
         {
-            return EImeceDbContext.Orders.AsNoTracking()
+            var dto = EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.OrderGuid == orderGuid)
                 .Select(OrderDetailProjection)
                 .FirstOrDefault();
+            FillAddresses(dto);
+            return dto;
         }
 
         public async Task<List<OrderDto>> GetStorefrontOrdersByUserIdAsync(string userId, string search, CancellationToken cancellationToken = default(CancellationToken))
@@ -251,8 +298,6 @@ namespace EImece.Domain.Repositories
         public Order GetOrderById(int id)
         {
             var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.ShippingAddress);
-            includeProperties.Add(r => r.BillingAddress);
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
@@ -264,8 +309,6 @@ namespace EImece.Domain.Repositories
         public async Task<Order> GetOrderByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.ShippingAddress);
-            includeProperties.Add(r => r.BillingAddress);
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.ProductCategory));
@@ -277,8 +320,6 @@ namespace EImece.Domain.Repositories
         public Order GetByOrderNumber(string orderNumber)
         {
             var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.ShippingAddress);
-            includeProperties.Add(r => r.BillingAddress);
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
             Expression<Func<Order, bool>> match = r2 => r2.OrderNumber == orderNumber;
@@ -290,8 +331,6 @@ namespace EImece.Domain.Repositories
         public async Task<Order> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default(CancellationToken))
         {
             var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.ShippingAddress);
-            includeProperties.Add(r => r.BillingAddress);
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product));
             includeProperties.Add(r => r.OrderProducts.Select(q => q.Product.MainImage));
             Expression<Func<Order, bool>> match = r2 => r2.OrderNumber == orderNumber;
@@ -305,8 +344,6 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.OrderProducts);
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.MainImage));
-            includeProperties.Add(r => r.ShippingAddress);
-            includeProperties.Add(r => r.BillingAddress);
 
             search = search.ToStr().Trim();
             Expression<Func<Order, bool>> match;
@@ -331,8 +368,6 @@ namespace EImece.Domain.Repositories
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.OrderProducts);
             includeProperties.Add(r => r.OrderProducts.Select(r1 => r1.Product.MainImage));
-            includeProperties.Add(r => r.ShippingAddress);
-            includeProperties.Add(r => r.BillingAddress);
 
             search = search.ToStr().Trim();
             Expression<Func<Order, bool>> match;

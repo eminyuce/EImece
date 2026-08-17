@@ -259,6 +259,10 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.CustomerDetail;
             var customer = await GetCustomerAsync();
             var order = await OrderService.GetStorefrontOrderByIdAsync(id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
             return View(new CustomerOrderDetailViewModel() { Customer = customer, Order = order });
         }
 

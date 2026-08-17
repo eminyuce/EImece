@@ -15,7 +15,7 @@
                     <h1 class="h3 mb-2">@Resource.CustomerLoginPage</h1>
                     <p class="text-muted mb-4">@Resource.CustomerLoginInfoText</p>
 
-                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form" }))
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login", role = "form", id = "customer-login-form" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
@@ -48,7 +48,7 @@
 
                         @Html.CaptchaWidget("CustomerLogin", "text-danger small")
 
-                        <button type="submit" class="btn btn-success btn-block btn-lg mt-3">@Resource.Login</button>
+                        <button type="submit" name="login" value="login" class="btn btn-success btn-block btn-lg mt-3">@Resource.Login</button>
                     }
 
                     <hr class="my-4" />

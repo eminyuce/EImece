@@ -1,3 +1,4 @@
+using EImece.Domain.Helpers;
 using System;
 
 namespace EImece.Domain.Models.DTOs
@@ -21,6 +22,19 @@ namespace EImece.Domain.Models.DTOs
         public string ZipCode { get; set; }
         public string Street { get; set; }
         public string District { get; set; }
-        public string AddressInfo { get; set; }
+
+        public string AddressInfo
+        {
+            get
+            {
+                return string.Format("{0} {1} {2} {3} {4} {5}",
+                    District.ToStr(),
+                    Street.ToStr(),
+                    ZipCode.ToStr(),
+                    Description.ToStr(),
+                    City.ToStr(),
+                    Country.ToStr());
+            }
+        }
     }
 }

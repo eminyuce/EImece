@@ -30,7 +30,7 @@
                         <h2 class="crizal-customer-login__form-title">@Resource.Login</h2>
                         <p class="crizal-customer-login__form-help">@Resource.Email &amp; @Resource.Password</p>
 
-                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "crizal-customer-login__form", role = "form", autocomplete = "on" }))
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "crizal-customer-login__form", role = "form", autocomplete = "on", id = "customer-login-form" }))
                         {
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true, "", new { @class = "alert alert-danger crizal-customer-login__errors" })
@@ -69,7 +69,7 @@
                                 @Html.CaptchaWidget("CustomerLogin", "text-danger small d-block mt-1")
                             </div>
 
-                            <button type="submit" class="butn-style8 crizal-customer-login__submit">
+                            <button type="submit" name="login" value="login" class="butn-style8 crizal-customer-login__submit">
                                 <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
                                 <span>@Resource.Login</span>
                             </button>

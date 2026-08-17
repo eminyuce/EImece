@@ -15,7 +15,10 @@ namespace EImece.Domain.Models.DTOs
         public string ProductCode { get; set; }
         public string CategoryName { get; set; }
         public string ProductSpecItems { get; set; }
-        public decimal Price { get; set; }
+        public decimal Price
+        {
+            get { return Quantity == 0 ? 0 : TotalPrice / Quantity; }
+        }
         public List<ProductSpecItem> ProductSpecObjItems { get; set; }
         public ProductSpecItem ProductSpecColorItem { get; set; }
 

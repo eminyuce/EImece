@@ -1,3 +1,5 @@
+using EImece.Domain.Helpers;
+using Resources;
 using System;
 using System.Collections.Generic;
 
@@ -60,8 +62,22 @@ namespace EImece.Domain.Models.DTOs
         public long SystemTime { get; set; }
         public string ShipmentTrackingNumber { get; set; }
         public string ShipmentCompanyName { get; set; }
-        public decimal PaidPriceDecimal { get; set; }
-        public string InstallmentDescription { get; set; }
+
+        public decimal PaidPriceDecimal
+        {
+            get
+            {
+                return decimal.Round(PaidPrice.ToDecimal(), 3, MidpointRounding.AwayFromZero);
+            }
+        }
+
+        public string InstallmentDescription
+        {
+            get
+            {
+                return string.Format("{0} X {1}", string.Format("{0} {1}", this.Installment, Resource.Installment), (this.PaidPriceDecimal / this.Installment.ToInt()).CurrencySign());
+            }
+        }
 
         public List<OrderProductDto> OrderProducts { get; set; } = new List<OrderProductDto>();
         public AddressDto ShippingAddress { get; set; }

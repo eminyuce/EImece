@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
@@ -12,6 +12,7 @@
 
 @{
     var order = Model.Order;
+    if (order == null) { throw new System.Web.HttpException(404, "Order not found"); }
     var os = (EImeceOrderStatus)order.OrderStatus;
     var rm = new ResourceManager(typeof(Resource));
     var orderStatusText = rm.GetString(os.GetType().Name + "_" + os);
@@ -55,15 +56,18 @@
                     {
                         var ProductSpecItems = JsonConvert.DeserializeObject<List<EImece.Domain.Models.DTOs.ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
                         var product = orderProduct.Product;
-                        var imgTag = product.GetCroppedImageUrl(product.MainImageId, 160, 0);
+                        var productName = product != null ? product.Name : orderProduct.ProductName;
+                        var categoryName = product != null ? product.ProductCategoryName : orderProduct.CategoryName;
+                        var detailUrl = product != null ? product.DetailPageAbsoluteUrl : "#";
+                        var imgTag = product != null ? product.GetCroppedImageUrl(product.MainImageId, 160, 0) : string.Empty;
                         <!-- Item-->
                         <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
                             <div class="media d-block d-sm-flex text-center text-sm-left">
-                                <a class="cart-item-thumb mx-auto mr-sm-4" target="_blank" href="@product.DetailPageAbsoluteUrl"><img src="@imgTag" alt="Product"></a>
+                                <a class="cart-item-thumb mx-auto mr-sm-4" target="_blank" href="@detailUrl"><img src="@imgTag" alt="Product"></a>
                                 <div class="media-body pt-3">
-                                    <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a target="_blank" href="@product.DetailPageAbsoluteUrl">@product.Name</a></h3>
+                                    <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a target="_blank" href="@detailUrl">@productName</a></h3>
                                     <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.ProductCategoryName</div>
+                                    <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@categoryName</div>
                                     @if (ProductSpecItems.IsNotEmpty())
                                     {
                                         foreach (var psi in ProductSpecItems)

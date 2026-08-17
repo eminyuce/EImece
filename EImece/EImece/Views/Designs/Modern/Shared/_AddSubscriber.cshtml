@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Factories;
+@using EImece.Domain.Factories;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
@@ -10,7 +10,7 @@
     Subscriber subscriber = new Subscriber();
 }
 
-@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "validate pb-4" }))
+@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "validate pb-4", id = "footer-newsletter-form" }))
 {
 
 <div class="input-group mb-2">

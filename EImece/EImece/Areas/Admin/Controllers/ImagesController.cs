@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +16,10 @@ namespace EImece.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, string id, int width = 0, int height = 0)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return HttpNotFound();
+            }
             var fileStorageId = id.Replace(".jpg", "").ToInt();
             var imageByte = await FilesHelper.GetResizedImageAsync(fileStorageId, width, height, cancellationToken);
             if (imageByte != null)

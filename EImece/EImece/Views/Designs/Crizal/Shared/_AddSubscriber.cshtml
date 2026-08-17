@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Factories;
+@using EImece.Domain.Factories;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
@@ -10,7 +10,7 @@
     Subscriber subscriber = new Subscriber();
 }
 
-@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "crizal-subscribe validate" }))
+@using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "crizal-subscribe validate", id = "footer-newsletter-form" }))
 {
     <div class="crizal-subscribe__row">
         <label class="sr-only" for="subscriber-email">@Resource.Email</label>

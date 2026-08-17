@@ -84,7 +84,6 @@ namespace EImece.Controllers
         /// Returns a HTTP 404 Not Found error view. Returns a partial view if the request is an AJAX call.
         /// </summary>
         /// <returns>The partial or full not found view.</returns>
-        [CustomOutputCache(CacheProfile = "NotFound")]
         public ActionResult NotFound()
         {
             Logger.Info("Entering NotFound action.");
@@ -130,8 +129,12 @@ namespace EImece.Controllers
             this.Response.StatusCode = (int)statusCode;
             Logger.Info($"Set Response.StatusCode to: {(int)statusCode}");
 
-            // Don't show IIS custom errors.
+            // Don't show IIS custom errors / don't recurse customErrors ResponseRewrite.
             this.Response.TrySkipIisCustomErrors = true;
+            if (this.Server != null)
+            {
+                this.Server.ClearError();
+            }
             Logger.Info("Set Response.TrySkipIisCustomErrors to true.");
 
             ErrorModel error = new ErrorModel()
