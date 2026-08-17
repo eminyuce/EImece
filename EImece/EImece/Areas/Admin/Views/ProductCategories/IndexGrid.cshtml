@@ -8,7 +8,6 @@
     var gridName = "ProductCategoriesGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "ProductCategories";
-    var productCategoryLeaves = (List<ProductCategory>)ViewBag.ProductCategoryLeaves;
 
     Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
     var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
@@ -58,42 +57,7 @@
         settings.Column(caption: "Fiyat Güncellemesi", template: @<text>@Html.Partial("pPriceUpdates", new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemType", "ProductCategory" } })</text>, className: "smallGridColumn", width: "130px");
     }
 
-    settings.Column(caption: "İşlemler", template: @<text>@CategoryActionsCell(item, productCategoryLeaves, controllerName)</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
-}
-
-@helper CategoryActionsCell(ProductCategory d, List<ProductCategory> productCategoryLeaves, string controllerName)
-{
-    var canDelete = false;
-    string cannotDeleteMessage = null;
-
-    if (d.Products != null && d.Products.Any())
-    {
-        cannotDeleteMessage = AdminResource.CategoryHasProducts;
-    }
-    else if (productCategoryLeaves != null && productCategoryLeaves.Any(r => r.Id == d.Id))
-    {
-        canDelete = true;
-    }
-    else
-    {
-        cannotDeleteMessage = AdminResource.CategoryCannotDelete;
-    }
-
-    @Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-        { "ItemId", d.Id },
-        { "ItemName", d.Name },
-        { "controllerName", controllerName },
-        { "ShowMedia", false },
-        { "ShowEdit", true },
-        { "ShowDelete", canDelete }
-    })
-
-    if (UserRoleHelper.IsDeletedEnableRoles() && !canDelete && !string.IsNullOrEmpty(cannotDeleteMessage))
-    {
-        <span class="text-muted" style="font-size:11px;white-space:nowrap;">
-            @cannotDeleteMessage
-        </span>
-    }
+    settings.Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
 }
 
 @Html.Griddly(settings)
