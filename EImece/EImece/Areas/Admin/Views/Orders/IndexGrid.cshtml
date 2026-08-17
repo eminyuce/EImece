@@ -1,4 +1,4 @@
-@using EImece.Domain.Entities
+﻿@using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Models.Enums
@@ -14,12 +14,27 @@
 
     var controllerName = "Orders";
 
+    Func<Order, string> paymentRowClass = delegate(Order o)
+    {
+        var raw = (o.PaymentStatus ?? "").Trim();
+        if (string.Equals(raw, "SUCCESS", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "PAID", StringComparison.OrdinalIgnoreCase))
+        {
+            return "eg-pay-success";
+        }
+        if (string.Equals(raw, "FAILURE", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "FAILED", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "ERROR", StringComparison.OrdinalIgnoreCase))
+        {
+            return "eg-pay-failed";
+        }
+        return string.Empty;
+    };
+
     var settings = new GriddlySettings<Order>()
     {
         ClassName = "eg-grid eg-grid-shell eg-orders-grid",
         TableClassName = "table table-hover table-striped eg-grid-table",
         PageSize = pageSizeNumber,
         AllowedFilterModes = FilterMode.None,
+        RowClass = paymentRowClass,
         DefaultSort = new[] { new SortField() { Field = "CreatedDate", Direction = SortDirection.Descending } }
     };
 
@@ -63,7 +78,7 @@
 {
     var status = (EImeceOrderStatus)orderStatusValue;
     var text = status.ToDescription();
-    <span class="eg-state-badge eg-order-status-badge" title="@text">@text</span>
+    <span class="eg-state-badge eg-order-status-badge eg-order-status-@status" title="@text">@text</span>
 }
 
 @helper EmptyDash(string value)
@@ -88,15 +103,33 @@
     else
     {
         var css = "eg-state-badge is-muted";
+        var text = raw;
         if (string.Equals(raw, "SUCCESS", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "PAID", StringComparison.OrdinalIgnoreCase))
         {
-            css = "eg-state-badge";
+            css = "eg-state-badge eg-pay-badge-success";
+            text = "Başarılı";
         }
-        else if (string.Equals(raw, "FAILED", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "ERROR", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals(raw, "FAILURE", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "FAILED", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "ERROR", StringComparison.OrdinalIgnoreCase))
         {
-            css = "eg-state-badge is-danger";
+            css = "eg-state-badge is-danger eg-pay-badge-failed";
+            text = "Başarısız";
         }
-        <span class="@css" title="@raw">@raw</span>
+        else if (string.Equals(raw, "INIT_THREEDS", StringComparison.OrdinalIgnoreCase) || string.Equals(raw, "CALLBACK_THREEDS", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge eg-pay-badge-pending";
+            text = "Beklemede";
+        }
+        else if (string.Equals(raw, "BKM_POS_SELECTED", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge is-muted";
+            text = "BKM POS seçildi";
+        }
+        else if (string.Equals(raw, "CALLBACK_PECCO", StringComparison.OrdinalIgnoreCase))
+        {
+            css = "eg-state-badge is-muted";
+            text = "Pecco dönüşü";
+        }
+        <span class="@css" title="@text">@text</span>
     }
 }
 

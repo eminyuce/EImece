@@ -3764,3 +3764,72 @@ body.admin-app .eg-move-products-grid table.eg-grid-table {
     min-width: 0 !important;
     max-width: 100% !important;
 }
+
+/* ----- Orders grid: colorful order-status badges + payment row tints ----- */
+body.admin-app .eg-state-badge.eg-order-status-NewlyOrder,
+body.admin-app .eg-state-badge.eg-order-status-PaymentPending {
+    background: #fef3c7;
+    color: #b45309;
+}
+body.admin-app .eg-state-badge.eg-order-status-InProgress {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+body.admin-app .eg-state-badge.eg-order-status-Shipped {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+body.admin-app .eg-state-badge.eg-order-status-Delivered {
+    background: #dcfce7;
+    color: #166534;
+}
+body.admin-app .eg-state-badge.eg-order-status-Cancelled,
+body.admin-app .eg-state-badge.eg-order-status-Returned,
+body.admin-app .eg-state-badge.eg-order-status-Refunded {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+body.admin-app .eg-state-badge.eg-pay-badge-success {
+    background: #dcfce7;
+    color: #166534;
+}
+body.admin-app .eg-state-badge.eg-pay-badge-pending {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+/* Payment result tints the whole row. Dedicated classes (not table-success)
+   so checkbox selection green is not confused with payment success. */
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-success > td,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-success > td.eg-sticky-left,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-success > td.eg-sticky-right {
+    background: #ecfdf5 !important;
+    background-color: #ecfdf5 !important;
+}
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-failed > td,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-failed > td.eg-sticky-left,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-failed > td.eg-sticky-right {
+    background: #fef2f2 !important;
+    background-color: #fef2f2 !important;
+}
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-success:hover > td,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-success:hover > td.eg-sticky-left,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-success:hover > td.eg-sticky-right {
+    background: #d1fae5 !important;
+    background-color: #d1fae5 !important;
+}
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-failed:hover > td,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-failed:hover > td.eg-sticky-left,
+body.admin-app .eg-orders-grid table > tbody > tr.eg-pay-failed:hover > td.eg-sticky-right {
+    background: #fee2e2 !important;
+    background-color: #fee2e2 !important;
+}
+
+/* Checked rows keep the stronger selected green on top of payment tints.
+   Unchecking drops this rule and the payment tint returns. */
+body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]:checked) > td,
+body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]:checked) > td.eg-sticky-left,
+body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]:checked) > td.eg-sticky-right {
+    background: var(--eg-row-selected) !important;
+    background-color: var(--eg-row-selected) !important;
+}
