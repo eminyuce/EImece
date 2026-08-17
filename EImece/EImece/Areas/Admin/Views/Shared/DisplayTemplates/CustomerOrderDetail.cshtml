@@ -1,97 +1,73 @@
-﻿@model EImece.Domain.Entities.Customer
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using EImece.Domain.Entities;
-@using Resources;
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Models.Enums;
+@model EImece.Domain.Entities.Customer
+@using EImece.Domain.Helpers
+@using EImece.Domain.Entities
+@using Resources
+@using EImece.Domain.Models.Enums
 
-<div class="row">
-    <div class="col-md-2">
-        @if (!String.IsNullOrEmpty(Model.FullName))
-        {
-        <b class="display-label">
-            @String.Format("{0} {1}", AdminResource.Name, AdminResource.LastName)
-        </b>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.FullName)
+<div class="row g-3">
+    <div class="col-sm-6 col-lg-3">
+        <div class="text-muted small">@String.Format("{0} {1}", AdminResource.Name, AdminResource.LastName)</div>
+        <div class="fw-semibold">@(string.IsNullOrWhiteSpace(Model.FullName) ? "—" : Model.FullName)</div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="text-muted small">@AdminResource.Email</div>
+        <div>
+            @if (!string.IsNullOrWhiteSpace(Model.Email))
+            {
+                <a href="mailto:@Model.Email">@Model.Email</a>
+            }
+            else
+            {
+                <span class="text-muted">—</span>
+            }
         </div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="text-muted small">@AdminResource.PhoneNumber</div>
+        <div>@(string.IsNullOrWhiteSpace(Model.GsmNumber) ? "—" : Model.GsmNumber)</div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="text-muted small">@AdminResource.Gender</div>
+        <div>@GetGenderText(Model.Gender)</div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="text-muted small">@AdminResource.CustomerRegistrationDate</div>
+        <div>@Model.CreatedDate.ToString("dd.MM.yyyy HH:mm")</div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Company))
+    {
+        <div class="col-sm-6 col-lg-3">
+            <div class="text-muted small">@Html.DisplayNameFor(model => model.Company)</div>
+            <div>@Model.Company</div>
+        </div>
+    }
+</div>
+
+<div class="mt-3 pt-3 border-top">
+    <div class="text-muted small mb-2">@AdminResource.CustomerRegistrationAddress</div>
+    <div class="row g-2 small">
+        <div class="col-sm-6 col-lg-2"><span class="text-muted">@Resource.City:</span> @Empty(Model.City)</div>
+        <div class="col-sm-6 col-lg-2"><span class="text-muted">@Resource.Town:</span> @Empty(Model.Town)</div>
+        <div class="col-sm-6 col-lg-2"><span class="text-muted">@Resource.District:</span> @Empty(Model.District)</div>
+        <div class="col-sm-6 col-lg-3"><span class="text-muted">@Resource.Street:</span> @Empty(Model.Street)</div>
+        <div class="col-sm-6 col-lg-1"><span class="text-muted">@Resource.ZipCode:</span> @Empty(Model.ZipCode)</div>
+        <div class="col-sm-6 col-lg-2"><span class="text-muted">@Resource.Country:</span> @Empty(Model.Country)</div>
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="col-12"><span class="text-muted">@Resource.Description:</span> @Model.Description</div>
         }
     </div>
-    @if (!String.IsNullOrEmpty(Model.Email))
-    {
-    <div class="col-md-2">
-        <b class="display-label">
-            @Html.DisplayNameFor(model => model.Email)
-        </b>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Email)
-        </div>
-    </div>
-    }
-    @if (!String.IsNullOrEmpty(Model.GsmNumber))
-    {
-    <div class="col-md-2">
-        <b class="display-label">
-            @Html.DisplayNameFor(model => model.GsmNumber)
-        </b>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.GsmNumber)
-        </div>
-    </div>
-    }
-    <div class="col-md-1">
-        <b class="display-label">
-            @Html.DisplayNameFor(model => model.Gender)
-        </b>
-        <div class="display-field">
-            @GetGenderText(Model.Gender)
-        </div>
-    </div>
-    <div class="col-md-2">
-        <b class="display-label">
-            @AdminResource.CustomerRegistrationDate
-        </b>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </div>
-    </div>
-    @if (!String.IsNullOrEmpty(Model.Company))
-    {
-    <div class="col-md-2">
-        <b class="display-label">
-            @Html.DisplayNameFor(model => model.Company)
-        </b>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Company)
-        </div>
-    </div>
-    }
 </div>
- 
-<div class="row">
-    <div class="col-md-12">
-        <b class="display-label">
-            @AdminResource.CustomerRegistrationAddress
-        </b>
-        <div class="display-field">
-         <strong>@Resource.City:</strong> @Html.DisplayFor(model => model.City) |
-        <strong>@Resource.Town:</strong> @Html.DisplayFor(model => model.Town) |
-        <strong>@Resource.District:</strong> @Html.DisplayFor(model => model.District) |
-        <strong>@Resource.Street:</strong> @Html.DisplayFor(model => model.Street) |
-        <strong>@Resource.ZipCode:</strong> @Html.DisplayFor(model => model.ZipCode) |
-        <strong>@Resource.Country:</strong> @Html.DisplayFor(model => model.Country) |
-        <strong>@Resource.Description:</strong> @Html.DisplayFor(model => model.Description)
-        </div>
-    </div>
-</div>
- 
 
-<div class="row">
-    <div class="col-md-12">
-        @Html.DisplayFor(model => model.IsPermissionGranted)
-        @AdminResource.IsPermissionGrantedDescription
-    </div>
+<div class="mt-3">
+    @if (Model.IsPermissionGranted)
+    {
+        <span class="badge text-bg-success">@AdminResource.IsPermissionGrantedDescription</span>
+    }
+    else
+    {
+        <span class="badge text-bg-secondary">@AdminResource.IsPermissionGrantedDescription</span>
+    }
 </div>
 
 @helper GetGenderText(int gender)
@@ -99,11 +75,19 @@
     var genderEnum = (GenderType)gender;
     if (GenderType.Man == genderEnum)
     {
-<div>@AdminResource.ManGender</div>
+        @AdminResource.ManGender
     }
     else if (GenderType.Woman == genderEnum)
     {
-<div>@AdminResource.WomanGender</div>
+        @AdminResource.WomanGender
     }
+    else
+    {
+        <span class="text-muted">—</span>
+    }
+}
 
+@helper Empty(string value)
+{
+    @(string.IsNullOrWhiteSpace(value) ? "—" : value)
 }

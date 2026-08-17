@@ -4,19 +4,75 @@
 @using Resources
 
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    Customer customer = ViewBag.Customer;
+    Customer customer = ViewBag.Customer as Customer;
+    var customerName = customer != null ? customer.FullName : "";
+    var customerEmail = customer != null ? customer.Email : "";
+    ViewBag.Title = string.IsNullOrWhiteSpace(customerName)
+        ? AdminResource.OrdersBelongCustomer
+        : (customerName + " " + AdminResource.OrdersBelongCustomer);
+    var controllerName = "customers";
 }
 
-<h2>@customer.FullName @AdminResource.OrdersBelongCustomer</h2>
-<hr class="adminLine" />
-@Html.DisplayFor(r => customer, "CustomerOrderDetail")
-<hr class="adminLine" />
-@Html.Partial("pAdminSearchForm", new ViewDataDictionary(ViewData){
-    {"IdValueExists",true}
-})
-<br />
-<br />
+<div class="admin-customer-orders">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "Customers")">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            Müşterilere Dön
+        </a>
+    </div>
 
-<div class="js-griddly-async" data-url="@Url.Action("CustomerOrdersGrid", new { id = customer.UserId, search = Request.QueryString["search"] })"></div>
+    <h2 class="admin-page-title text-center mb-1">
+        @if (!string.IsNullOrWhiteSpace(customerName))
+        {
+            @customerName <span class="fw-normal">@AdminResource.OrdersBelongCustomer</span>
+        }
+        else
+        {
+            @AdminResource.OrdersBelongCustomer
+        }
+    </h2>
+    @if (!string.IsNullOrWhiteSpace(customerEmail))
+    {
+        <p class="text-center text-muted mb-4">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+            <a href="mailto:@customerEmail">@customerEmail</a>
+        </p>
+    }
+    else
+    {
+        <div class="mb-4"></div>
+    }
+
+    @if (customer != null)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h3 class="card-title h6 mb-0">
+                    <i class="fa fa-user me-1" aria-hidden="true"></i>
+                    Müşteri bilgileri
+                </h3>
+            </div>
+            <div class="card-body">
+                @Html.DisplayFor(r => customer, "CustomerOrderDetail")
+            </div>
+        </div>
+    }
+
+    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+        {"controllerName", controllerName},
+        {"IsNewRecordButtonEnabled", false},
+        {"IsSearchFormEnabled", true},
+        {"IsExcelButtonEnabled", false},
+        {"selectAll", false},
+        {"deleteAll", false},
+        {"SetStateOnOrOff", false},
+        {"orderingButton", false},
+        {"ProductState", false},
+        {"IdValueExists", true}
+    })
+
+    @Html.Partial("Grid/_GridChrome")
+
+    <div class="js-griddly-async" data-url="@Url.Action("CustomerOrdersGrid", new { id = customer != null ? customer.UserId : "", search = Request.QueryString["search"] })"></div>
+</div>
