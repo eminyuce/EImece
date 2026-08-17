@@ -42,70 +42,114 @@
 
     <p class="admin-media-design-hint">@AdminResource.WarningForDesign</p>
 
-    <!-- blueimp File Upload & Gallery styles -->
-    @Styles.Render("~/Content/jQuery-File-Upload")
+    <!-- FilePond Styles -->
+    @Styles.Render("~/Content/filepondcss")
+
+    <!-- FilePond Scripts -->
+    @Scripts.Render("~/bundles/filepond")
 
     <script>
-        var $form = null;
-
-        $('#fileupload').addClass('fileupload-processing');
         $(function () {
-
-            $form = $('#fileupload').fileupload({
-                dataType: 'json',
-                messages: {
-                    maxNumberOfFiles: '@AdminResource.FileUploadMaxNumberOfFiles',
-                    acceptFileTypes: '@AdminResource.FileUploadAcceptFileTypes',
-                    maxFileSize: '@AdminResource.FileUploadMaxFileSize',
-                    minFileSize: '@AdminResource.FileUploadMinFileSize'
+            // Register FilePond plugins
+            if (window.FilePond) {
+                if (window.FilePondPluginImagePreview) {
+                    FilePond.registerPlugin(FilePondPluginImagePreview);
                 }
-            });
-            $('#fileupload').bind('fileuploadsubmit', function (e, data) {
-                data.formData = {
-                    contentId: $("#Id").val(),
-                    imageType: $("#ImageType").val(),
-                    mod: $("#MediaMod").val(),
-                    imageHeight: $("#ImageHeight").val(),
-                    imageWidth: $("#ImageWidth").val(),
-                    selectedTags: ""
+                if (window.FilePondPluginFileValidateType) {
+                    FilePond.registerPlugin(FilePondPluginFileValidateType);
                 }
-            });
-
-            var $upload = $('#fileupload');
-            var dropTimer;
-            var hasUploadedFiles = false;
-
-            $upload.on('fileuploaddone', function (e, data) {
-                if (data && data.result && data.result.files && data.result.files.length > 0) {
-                    hasUploadedFiles = true;
+                if (window.FilePondPluginFileValidateSize) {
+                    FilePond.registerPlugin(FilePondPluginFileValidateSize);
                 }
-            });
-
-            $upload.on('fileuploadstop', function () {
-                if (hasUploadedFiles) {
-                    hasUploadedFiles = false;
-                    // Persist uploaded tab so Grid.Mvc displays the newly uploaded files immediately
-                    sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
-                    setTimeout(function () {
-                        window.location.href = window.location.pathname + window.location.search + '#tab2default';
-                        window.location.reload(true);
-                    }, 500);
+                if (window.FilePondPluginImageExifOrientation) {
+                    FilePond.registerPlugin(FilePondPluginImageExifOrientation);
                 }
-            });
-
-            $upload.on('dragover', function () {
-                $upload.addClass('is-dragover');
-                clearTimeout(dropTimer);
-            });
-            $upload.on('dragleave drop', function () {
-                dropTimer = setTimeout(function () {
-                    $upload.removeClass('is-dragover');
-                }, 80);
-            });
-            function syncQueueState() {
-                $upload.toggleClass('has-files', $upload.find('.files tr').length > 0);
+                if (window.FilePondPluginImageValidateSize) {
+                    FilePond.registerPlugin(FilePondPluginImageValidateSize);
+                }
             }
-            $upload.on('fileuploadadd fileuploadfinished fileuploaddestroyed fileuploadfail fileuploadalways', syncQueueState);
+
+            var hasUploadedFiles = false;
+            var uploadUrl = '@Url.Action("Upload", "Media")';
+
+            // Initialize FilePond via official jQuery adapter
+            $('.filepond-media-input').filepond({
+                allowMultiple: true,
+                allowReorder: true,
+                maxFiles: 30,
+                maxParallelUploads: 3,
+                acceptedFileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'],
+                maxFileSize: '20MB',
+                imagePreviewHeight: 160,
+                credits: false,
+                // Turkish localization strings
+                labelIdle: '<i class="glyphicon glyphicon-cloud-upload" style="font-size: 28px; display: block; margin-bottom: 8px; color: #3b82f6;"></i><span class="filepond--label-action" style="font-weight: 600;">Resimleri Seçin</span> veya bu alana sürükleyin',
+                labelFileProcessing: '@AdminResource.Processing',
+                labelFileProcessingComplete: 'Yükleme Tamamlandı',
+                labelFileProcessingAborted: '@AdminResource.CancelUpload',
+                labelFileProcessingError: '@AdminResource.UploadError',
+                labelTapToCancel: 'İptal etmek için dokunun',
+                labelTapToRetry: 'Yeniden denemek için dokunun',
+                labelTapToUndo: 'Geri almak için dokunun',
+                labelButtonRemoveItem: '@AdminResource.Delete',
+                labelButtonAbortItemLoad: 'Durdur',
+                labelButtonRetryItemLoad: 'Yeniden Dene',
+                labelButtonAbortItemProcessing: '@AdminResource.CancelUpload',
+                labelButtonUndoItemProcessing: 'Geri Al',
+                labelButtonRetryItemProcessing: 'Yeniden Dene',
+                labelButtonProcessItem: '@AdminResource.StartUpload',
+                labelFileTypeNotAllowed: '@AdminResource.FileUploadAcceptFileTypes',
+                fileValidateTypeLabelExpectedTypes: 'Desteklenen formatlar: JPG, PNG, GIF, WebP',
+                labelMaxFileSizeExceeded: '@AdminResource.FileUploadMaxFileSize',
+                labelMaxFileSize: 'Maksimum dosya boyutu: {filesize}',
+                labelMaxTotalFileSizeExceeded: 'Toplam dosya boyutu aşıldı',
+                server: {
+                    process: {
+                        url: uploadUrl,
+                        method: 'POST',
+                        headers: {
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').first().val() || ''
+                        },
+                        ondata: function (formData) {
+                            formData.append('contentId', $("#Id").val());
+                            formData.append('imageType', $("#ImageType").val());
+                            formData.append('mod', $("#MediaMod").val());
+                            formData.append('imageHeight', $("#ImageHeight").val() || '0');
+                            formData.append('imageWidth', $("#ImageWidth").val() || '0');
+                            formData.append('selectedTags', '');
+                            formData.append('__RequestVerificationToken', $('input[name="__RequestVerificationToken"]').first().val() || '');
+                            return formData;
+                        },
+                        onload: function (response) {
+                            try {
+                                var res = typeof response === 'string' ? JSON.parse(response) : response;
+                                if (res && res.files && res.files.length > 0) {
+                                    hasUploadedFiles = true;
+                                    return res.files[0].name || response;
+                                }
+                            } catch (e) {
+                                hasUploadedFiles = true;
+                            }
+                            return response;
+                        },
+                        onerror: function (response) {
+                            console.error('FilePond upload error:', response);
+                            return response;
+                        }
+                    }
+                },
+                onprocessfiles: function () {
+                    if (hasUploadedFiles) {
+                        hasUploadedFiles = false;
+                        // Persist uploaded tab so Grid.Mvc displays the newly uploaded files immediately
+                        sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
+                        setTimeout(function () {
+                            window.location.href = window.location.pathname + window.location.search + '#tab2default';
+                            window.location.reload(true);
+                        }, 500);
+                    }
+                }
+            });
 
             // Restore active tab after reload if specified in sessionStorage or URL hash
             var savedTab = sessionStorage.getItem('adminMediaActiveTab') || window.location.hash;
@@ -113,7 +157,6 @@
                 $('.admin-media-tabs a[href="' + savedTab + '"]').tab('show');
                 sessionStorage.removeItem('adminMediaActiveTab');
             }
-
         });
     </script>
 
@@ -233,10 +276,7 @@
             </div>
         </div>
     </div>
-    </div>
 </div>
-
-@Scripts.Render("~/bundles/jQuery-File-Upload")
 
 @helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
 {
