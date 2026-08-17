@@ -47,7 +47,6 @@ namespace EImece
                     "~/Content/mstore/js/theme.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
-                      "~/Content/Gridmvc.css",
                       "~/Content/griddly.css",
                       "~/Content/deleteStyle.css",
                       "~/Content/checkBoxStyle.css",
@@ -61,8 +60,7 @@ namespace EImece
                   "~/Scripts/rich-text-editor.js",
                   "~/Scripts/adminEimece.js",
                   "~/Scripts/adminGridModern.js",
-                  "~/Scripts/griddly.js",
-                  "~/Scripts/gridmvc.js"));
+                  "~/Scripts/griddly.js"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                                 "~/Content/themes/base/accordion.css",

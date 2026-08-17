@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -7,7 +7,7 @@ using EImece.Domain;
 namespace EImece.Domain.Helpers.HtmlHelpers
 {
     /// <summary>
-    /// Shared Grid.Mvc cell helpers. Status toggles keep the legacy span contract
+    /// Shared admin grid cell helpers. Status toggles keep the legacy span contract
     /// (name, gridkey-id, grid-data-value, gridActiveIcon/gridNotActiveIcon) so
     /// adminEimece.js bulk actions and changeStateSuccess continue to work.
     /// </summary>

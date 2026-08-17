@@ -1,21 +1,13 @@
 ﻿@model EImece.Areas.Admin.Models.MetricsIndexViewModel
 @using EImece.Domain
 @using EImece.Domain.Helpers
-@using GridMvc.Html
-@using GridMvc.Sorting
-@using System.Globalization
+@using Griddly.Mvc
 
 @{
     ViewBag.Title = "Metrikler";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : pageSizeNumber * (gridPage - 1);
-
-    var gridName = "MetricsGrid";
     var contents = Model.Metrics;
-    var inv = CultureInfo.InvariantCulture;
 }
 
 <h2>Uygulama Metrikleri</h2>
@@ -230,91 +222,7 @@ else
             </span>
         </div>
         <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
-            @(Html.Grid(contents).Named(gridName).Columns(columns =>
-{
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.RenderValueAs(_ => string.Format("<span class='badge badge-primary badge-pill' style='font-size: 1.5em; padding: 0.5rem 1rem;'>{0}</span>", ++rowIndex));
-
-columns.Add()
-.Titled("Açıkla")
-.Encoded(false)
-.Sanitized(false)
-.Sortable(false)
-.Filterable(false)
-.RenderValueAs(m => string.Format(
-    CultureInfo.InvariantCulture,
-    "<button type='button' class='btn btn-xs btn-info metrics-explain-btn' " +
-    "data-name='{0}' data-count='{1}' data-errors='{2}' data-window='{3}' " +
-    "data-avg='{4}' data-min='{5}' data-max='{6}' " +
-    "data-p50='{7}' data-p75='{8}' data-p90='{9}' data-p95='{10}' data-p99='{11}'>" +
-    "<span class='glyphicon glyphicon-question-sign'></span> Açıkla</button>",
-    System.Web.HttpUtility.HtmlAttributeEncode(m.Name ?? string.Empty),
-    m.Count,
-    m.ErrorCount,
-    m.SampleWindowSize,
-    m.AverageDurationMs.ToString("0.##", inv),
-    m.MinDurationMs,
-    m.MaxDurationMs,
-    m.P50DurationMs,
-    m.P75DurationMs,
-    m.P90DurationMs,
-    m.P95DurationMs,
-    m.P99DurationMs));
-
-columns.Add(m => m.Name)
-.Titled("Metrik Adı")
-.Sortable(true)
-.Filterable(true)
-.Css("metric-name");
-
-columns.Add(m => m.Count)
-.Titled("Adet")
-.Sortable(true)
-.SortInitialDirection(GridSortDirection.Descending)
-.Filterable(false);
-
-columns.Add(m => m.ErrorCount)
-.Titled("Hata")
-.Sortable(true)
-.Filterable(false)
-.Encoded(false)
-.Sanitized(false)
-.RenderValueAs(m => string.Format("<span class='label label-{0}' title='Başarısız çağrı sayısı'>{1}</span>",
-    m.ErrorCount > 0 ? "danger" : "success", m.ErrorCount.ToString("N0")));
-
-columns.Add(m => m.AverageDurationMs)
-.Titled("Ort. süre (ms)")
-.Sortable(true)
-.Filterable(false);
-
-columns.Add(m => m.P50DurationMs)
-.Titled("P50 (ms)")
-.Sortable(true)
-.Filterable(false);
-
-columns.Add(m => m.P75DurationMs)
-.Titled("P75 (ms)")
-.Sortable(true)
-.Filterable(false);
-
-columns.Add(m => m.P90DurationMs)
-.Titled("P90 (ms)")
-.Sortable(true)
-.Filterable(false);
-
-columns.Add(m => m.P95DurationMs)
-.Titled("P95 (ms)")
-.Sortable(true)
-.Filterable(false);
-
-columns.Add(m => m.P99DurationMs)
-.Titled("P99 (ms)")
-.Sortable(true)
-.Filterable(false);
-
-}).WithPaging(pageSizeNumber).Sortable(true).Filterable(true).WithMultipleFilters())
+            @Html.Griddly("IndexGrid", new { search = Model.SearchTerm })
         </div>
     </div>
 }
