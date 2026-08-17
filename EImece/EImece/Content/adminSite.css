@@ -4737,3 +4737,29 @@ body.admin-app .admin-content .admin-home h2::after {
 .admin-app .nav-pills .nav-link.active:focus-visible {
     outline-color: #9ed4f5;
 }
+
+.admin-settings-pills {
+    border: 1px solid #d7e0ea;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 8px;
+}
+.admin-settings-pills .nav-link {
+    color: #334155;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+.admin-settings-pills .nav-link.active,
+.admin-settings-pills .nav-link.active:hover,
+.admin-settings-pills .nav-link.active:focus {
+    background-color: #2b6cb0;
+    color: #fff;
+    font-weight: 700;
+}
+.admin-settings-save-row .btn {
+    min-height: 42px;
+}
+.admin-settings-card .tab-pane > .card {
+    border-color: #d7e0ea;
+    box-shadow: none;
+}

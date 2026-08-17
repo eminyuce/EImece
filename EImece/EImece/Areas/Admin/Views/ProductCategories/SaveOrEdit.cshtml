@@ -102,7 +102,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.TemplateId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.TemplateId, templates, new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.TemplateId, templates, new { @class = "form-select" })
                                     @Html.ValidationMessageFor(model => model.TemplateId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -123,18 +123,19 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row mb-3">
-                                <div class="col-md-4">
-                                </div>
-                                <div class="col-md-4">
-                                    @Html.LabelFor(model => model.IsActive)
-                                    @Html.EditorFor(model => model.IsActive)
-                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="col-md-4">
-                                    @Html.LabelFor(model => model.MainPage)
-                                    @Html.EditorFor(model => model.MainPage)
-                                    @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                            <div class="form-group row mb-3 align-items-center">
+                                <div class="col-md-2 col-form-label">Durum</div>
+                                <div class="col-md-10 d-flex flex-wrap gap-4 align-items-center">
+                                    <div class="form-check">
+                                        @Html.EditorFor(model => model.IsActive)
+                                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "form-check-label" })
+                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-check">
+                                        @Html.EditorFor(model => model.MainPage)
+                                        @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "form-check-label" })
+                                        @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
 
@@ -149,7 +150,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-3">
-                                    <input type="file" name="postedImage" />
+                                    <input type="file" name="postedImage" class="form-control" />
                                     @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="col-md-3">
@@ -224,7 +225,7 @@
         }
         else
         {
-@String.Format("No Delete")
+<span class="text-muted small">Alt kategorisi olduğu için silinemez</span>
         }
     }
 }

@@ -11,7 +11,7 @@
     var activeTab = productPriceEnabled ? "cargo" : "seo";
 }
 
-<h2>@AdminResource.AdminGeneralSettings</h2>
+<h2 class="admin-page-title">@AdminResource.AdminGeneralSettings</h2>
 <hr class="adminLine" />
 
 @{ ViewData["HelpId"] = "generalSettingsHelp"; }
@@ -32,12 +32,12 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="row" style="margin-bottom: 20px;">
+    <div class="row mb-3 admin-settings-save-row">
         <div class="col-md-9">
             @Html.AdminValidationSummary()
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-success w-100 btn-lg">
+            <button type="submit" class="btn btn-success w-100">
                 <i class="fa fa-save"></i> @AdminResource.SaveButtonText
             </button>
         </div>
@@ -46,23 +46,23 @@
     <div class="row">
         <!-- Vertical Tabs Menu -->
         <div class="col-md-3">
-            <ul class="nav nav-pills flex-column" id="settingsTabs" role="tablist" style="border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9; padding: 10px 0;">
+            <ul class="nav nav-pills flex-column admin-settings-pills" id="settingsTabs" role="tablist">
                 @if (productPriceEnabled)
                 {
                     <li class="nav-item">
                         <a class="nav-link @(activeTab == "cargo" ? "active" : "")" data-bs-toggle="pill" href="#tab-cargo" role="tab" aria-selected="@(activeTab == "cargo" ? "true" : "false")">
-                            <i class="fa fa-paper-plane" style="margin-right:8px;"></i> @AdminResource.CargoSettings
+                            <i class="fa fa-paper-plane me-2" aria-hidden="true"></i> @AdminResource.CargoSettings
                         </a>
                     </li>
                 }
                 <li class="nav-item">
                     <a class="nav-link @(activeTab == "seo" ? "active" : "")" data-bs-toggle="pill" href="#tab-seo" role="tab" aria-selected="@(activeTab == "seo" ? "true" : "false")">
-                        <i class="fa fa-search" style="margin-right:8px;"></i> @AdminResource.SeoSettings
+                        <i class="fa fa-search me-2" aria-hidden="true"></i> @AdminResource.SeoSettings
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#tab-footer" role="tab" aria-selected="false">
-                        <i class="fa fa-list-alt" style="margin-right:8px;"></i> @AdminResource.FooterSettings
+                        <i class="fa fa-list-alt me-2" aria-hidden="true"></i> @AdminResource.FooterSettings
                     </a>
                 </li>
             </ul>
@@ -70,14 +70,14 @@
 
         <!-- Vertical Tabs Content -->
         <div class="col-md-9">
-            <div class="tab-content form-horizontal">
+            <div class="tab-content">
                 
                 @if (productPriceEnabled)
                 {
                     <!-- Cargo Settings -->
                     <div id="tab-cargo" class="tab-pane fade @(activeTab == "cargo" ? "show active" : "")" role="tabpanel">
                         <div class="card">
-                            <div class="card-header"><h3 class="card-title">@AdminResource.CargoSettings</h3></div>
+                            <div class="card-header"><h3 class="h6 mb-0">@AdminResource.CargoSettings</h3></div>
                             <div class="card-body">
                                 <div class="form-group row mb-3">
                                     @Html.LabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "col-form-label col-md-3" })
@@ -111,7 +111,7 @@
                 <!-- SEO Settings -->
                 <div id="tab-seo" class="tab-pane fade @(activeTab == "seo" ? "show active" : "")" role="tabpanel">
                     <div class="card">
-                        <div class="card-header"><h3 class="card-title">@AdminResource.SeoSettings</h3></div>
+                        <div class="card-header"><h3 class="h6 mb-0">@AdminResource.SeoSettings</h3></div>
                         <div class="card-body">
                             <div class="form-group row mb-3">
                                 <label class="col-form-label col-md-3" for="SiteIndexMetaTitle">
@@ -151,9 +151,9 @@
                 </div>
 
                 <!-- Footer Settings -->
-                <div id="tab-footer" class="tab-pane fade">
+                <div id="tab-footer" class="tab-pane fade" role="tabpanel">
                     <div class="card">
-                        <div class="card-header"><h3 class="card-title">@AdminResource.FooterSettings</h3></div>
+                        <div class="card-header"><h3 class="h6 mb-0">@AdminResource.FooterSettings</h3></div>
                         <div class="card-body">
                             <div class="form-group row mb-3">
                                 <label class="col-form-label col-md-3" for="FooterDescription">
@@ -197,47 +197,22 @@
     </div>
 }
 
-<style>
-    /* Styling for the nav pills */
-    #settingsTabs > li > a,
-    #settingsTabs .nav-link {
-        border-radius: 4px;
-        margin-bottom: 2px;
-        color: #555;
-    }
-    #settingsTabs > li.active > a,
-    #settingsTabs > li.active > a:hover,
-    #settingsTabs > li.active > a:focus,
-    #settingsTabs .nav-link.active,
-    #settingsTabs .nav-link.active:hover,
-    #settingsTabs .nav-link.active:focus {
-        background-color: #2b6cb0;
-        color: #fff;
-        font-weight: 700;
-    }
-    .tab-content {
-        padding-left: 15px;
-    }
-    .tab-pane .card-header {
-        background-color: #f5f5f5;
-        font-weight: bold;
-    }
-</style>
-
 <script>
-    // Tab persist via hash in URL
-    $(function(){
-        var hash = window.location.hash;
-        if (hash) {
-            $(".nav-pills a[href='" + hash + "']").tab('show');
+    (function () {
+        function showPill(hash) {
+            if (!hash || !window.bootstrap || !bootstrap.Tab) { return; }
+            var el = document.querySelector("#settingsTabs a[href='" + hash + "']");
+            if (el) { bootstrap.Tab.getOrCreateInstance(el).show(); }
         }
-        $('.nav-pills a').click(function (e) {
-            $(this).tab('show');
-            var scrollmem = $('body').scrollTop() || $('html').scrollTop();
-            window.location.hash = this.hash;
-            $('html,body').scrollTop(scrollmem);
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.location.hash) { showPill(window.location.hash); }
+            document.querySelectorAll("#settingsTabs a[data-bs-toggle='pill']").forEach(function (link) {
+                link.addEventListener("shown.bs.tab", function () {
+                    if (this.hash) { history.replaceState(null, "", this.hash); }
+                });
+            });
         });
-    });
+    })();
 </script>
 
 @Html.Partial("_AdminInitTooltips")
