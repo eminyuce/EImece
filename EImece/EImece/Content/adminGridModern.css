@@ -3111,6 +3111,13 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     overflow: hidden;
 }
 
+.griddly .griddly-filters,
+.griddly-filters-form,
+.griddly-filters-inline,
+.griddly-filter-values {
+    display: none !important;
+}
+
 .griddly .griddly-scrollable-container {
     overflow-x: auto !important;
     overflow-y: visible !important;
