@@ -36,10 +36,10 @@
             return;
         }
         if (isOn) {
-            $span.attr('class', 'eg-status-icon gridActiveIcon glyphicon glyphicon-ok-circle');
+            $span.attr('class', 'eg-status-icon gridActiveIcon fa fa-check-circle');
             $span.attr('grid-data-value', 'True');
         } else {
-            $span.attr('class', 'eg-status-icon gridNotActiveIcon glyphicon glyphicon-remove-circle');
+            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa fa-times-circle');
             $span.attr('grid-data-value', 'False');
         }
     }
@@ -183,8 +183,8 @@
                 $span.attr('grid-data-value', isOn ? 'True' : 'False');
                 // Preserve eg-status-icon when present / always add for toggle wrappers
                 var cls = isOn
-                    ? 'eg-status-icon gridActiveIcon glyphicon glyphicon-ok-circle'
-                    : 'eg-status-icon gridNotActiveIcon glyphicon glyphicon-remove-circle';
+                    ? 'eg-status-icon gridActiveIcon fa fa-check-circle'
+                    : 'eg-status-icon gridNotActiveIcon fa fa-times-circle';
                 $span.attr('class', cls);
                 var $toggle = $span.closest('[data-eg-status-toggle]');
                 if ($toggle.length) {
@@ -323,7 +323,7 @@
             }
 
             // Close any other portaled action menu first.
-            $('.eg-actions.btn-group.open').not($group).each(function () {
+            $('.eg-actions.btn-group.show').not($group).each(function () {
                 restorePortaledMenu($(this));
             });
 
@@ -343,15 +343,15 @@
         });
 
         $(document).on('scroll', '.eg-grid-scroll, .eg-grid .grid-wrap', function () {
-            var $open = $('.eg-actions.btn-group.open');
+            var $open = $('.eg-actions.btn-group.show');
             if ($open.length) {
-                $open.removeClass('open');
+                $open.removeClass('show');
                 restorePortaledMenu($open);
             }
         });
 
         $(window).on('resize.egActionsMenu', function () {
-            var $open = $('.eg-actions.btn-group.open');
+            var $open = $('.eg-actions.btn-group.show');
             if (!$open.length) {
                 return;
             }

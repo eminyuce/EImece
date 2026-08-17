@@ -25,7 +25,7 @@ function deleteBaseContentMainImage(contentId, ImageId, contentClass, confirmati
 }
 
 /**
- * Reusable admin delete confirmation (Bootstrap 3 modal).
+ * Reusable admin delete confirmation (Bootstrap 5 modal).
  * options: { title, message, entityName, itemCount, deleteButtonText, cancelButtonText, onConfirm }
  * onConfirm(done): call done() after success, done(false) to keep the dialog open on failure.
  * If onConfirm takes no arguments, the dialog closes immediately after invoking it.
@@ -83,7 +83,7 @@ function showDeleteConfirmation(options) {
         $dialog.toggleClass("is-loading", state.loading);
         $ok.prop("disabled", state.loading);
         $cancel.prop("disabled", state.loading);
-        $modal.find(".close").prop("disabled", state.loading);
+        $modal.find(".btn-close").prop("disabled", state.loading);
         if (state.loading) {
             $modal.attr("aria-busy", "true");
         } else {
@@ -93,7 +93,11 @@ function showDeleteConfirmation(options) {
 
     function closeModal() {
         setLoading(false);
-        $modal.modal("hide");
+        if (window.bootstrap && bootstrap.Modal && $modal[0]) {
+            bootstrap.Modal.getOrCreateInstance($modal[0]).hide();
+        } else if ($modal.modal) {
+            $modal.modal("hide");
+        }
     }
 
     function finish(success) {
@@ -156,7 +160,11 @@ function showDeleteConfirmation(options) {
     });
 
     setLoading(false);
-    $modal.modal("show");
+    if (window.bootstrap && bootstrap.Modal && $modal[0]) {
+        bootstrap.Modal.getOrCreateInstance($modal[0]).show();
+    } else if ($modal.modal) {
+        $modal.modal("show");
+    }
 }
 
 function submitAdminDeleteForm(url, id) {
@@ -244,7 +252,12 @@ $(document).ready(function () {
 
         function activateTab(href) {
             var $link = $form.find('.admin-edit-tabs a[href="' + href + '"]');
-            if ($link.length) {
+            if (!$link.length) {
+                return;
+            }
+            if (window.bootstrap && bootstrap.Tab) {
+                bootstrap.Tab.getOrCreateInstance($link[0]).show();
+            } else if ($link.tab) {
                 $link.tab("show");
             }
         }
@@ -269,8 +282,8 @@ $(document).ready(function () {
                 activateTab("#admin-edit-tab-fields");
             });
 
-        $form.off("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-toggle="tab"]')
-            .on("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-toggle="tab"]', function (e) {
+        $form.off("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-bs-toggle="tab"]')
+            .on("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-bs-toggle="tab"]', function (e) {
                 var href = $(e.target).attr("href");
                 try {
                     if (window.sessionStorage && href) {
@@ -690,10 +703,10 @@ function changeStateSuccess(data) {
     data.values.forEach(function (entry) {
         var $span = $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]');
         if (entry.IsActive) {
-            $span.attr('class', 'eg-status-icon gridActiveIcon glyphicon glyphicon-ok-circle');
+            $span.attr('class', 'eg-status-icon gridActiveIcon fa fa-check-circle');
             $span.attr('grid-data-value', 'True');
         } else {
-            $span.attr('class', 'eg-status-icon gridNotActiveIcon glyphicon glyphicon-remove-circle');
+            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa fa-times-circle');
             $span.attr('grid-data-value', 'False');
         }
         // Sync modern pill/switch wrappers when present (Products reference + reusable toggles).
@@ -893,13 +906,13 @@ function adminTreeMarkPicked(id) {
 
 function adminTreeSetIcon($picker, state) {
     var $icon = $picker.find("[data-tree-picker-icon]");
-    $icon.removeClass("glyphicon-home glyphicon-folder-open glyphicon-exclamation-sign");
+    $icon.removeClass("fa fa-home fa fa-folder-open fa fa-exclamation-circle");
     if (state === "child") {
-        $icon.addClass("glyphicon-folder-open");
+        $icon.addClass("fa fa-folder-open");
     } else if (state === "empty") {
-        $icon.addClass("glyphicon-exclamation-sign");
+        $icon.addClass("fa fa-exclamation-circle");
     } else {
-        $icon.addClass("glyphicon-home");
+        $icon.addClass("fa fa-home");
     }
 }
 

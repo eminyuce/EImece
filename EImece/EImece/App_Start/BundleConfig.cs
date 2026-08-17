@@ -28,12 +28,12 @@ namespace EImece
             bundles.Add(new StyleBundle("~/Content/adminJqueryUiCss").Include(
                         "~/Content/admin-vendor/jquery-ui/jquery-ui.css"));
 
-            // Phase 1: Bootstrap 3.3.7 JS with jQuery 4 version-check patch. Phase 3 swaps this to bootstrap.bundle.js 5.3.8.
-            bundles.Add(new ScriptBundle("~/bundles/adminBootstrap").Include(
-                        "~/Scripts/admin-vendor/bootstrap-3.3.7.js"));
+            // Admin Bootstrap 5.3.8 (already minified; ScriptBundle AjaxMin cannot parse BS5 ES6).
+            bundles.Add(new Bundle("~/bundles/adminBootstrap").Include(
+                        "~/Scripts/admin-vendor/bootstrap.bundle.min.js"));
 
-            bundles.Add(new StyleBundle("~/Content/adminBootstrapCss").Include(
-                        "~/Content/admin-vendor/bootstrap/bootstrap.css"));
+            bundles.Add(new Bundle("~/Content/adminBootstrapCss").Include(
+                        "~/Content/admin-vendor/bootstrap/bootstrap.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -78,6 +78,7 @@ namespace EImece
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
+                  "~/Scripts/admin-bs5-jquery-bridge.js",
                   "~/Scripts/rich-text-editor.js",
                   "~/Scripts/adminEimece.js",
                   "~/Scripts/adminGridModern.js",
