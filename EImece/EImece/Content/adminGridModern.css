@@ -3710,3 +3710,57 @@ body.admin-app .eg-lists-grid table.eg-grid-table {
 .eg-col-address .eg-cell-clip {
     max-width: 260px;
 }
+
+/* MoveProductsInTrees: narrow center pane — keep flag pills on-screen */
+body.admin-app .eg-move-products-grid,
+body.admin-app .eg-grid.eg-move-products-grid,
+body.admin-app .griddly.eg-move-products-grid {
+    max-width: 100%;
+}
+body.admin-app .eg-move-products-grid table,
+body.admin-app .eg-grid.eg-move-products-grid table,
+body.admin-app .griddly.eg-move-products-grid table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+}
+body.admin-app .eg-move-products-grid th.eg-col-index,
+body.admin-app .eg-move-products-grid td.eg-col-index,
+body.admin-app .eg-move-products-grid th.eg-col-check,
+body.admin-app .eg-move-products-grid td.eg-col-check {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 48px !important;
+}
+body.admin-app .eg-move-products-grid th.eg-col-name,
+body.admin-app .eg-move-products-grid td.eg-col-name {
+    min-width: 0 !important;
+    width: auto !important;
+}
+body.admin-app .eg-move-products-grid th.eg-col-isactive,
+body.admin-app .eg-move-products-grid td.eg-col-isactive,
+body.admin-app .eg-move-products-grid th.eg-col-mainpage,
+body.admin-app .eg-move-products-grid td.eg-col-mainpage,
+body.admin-app .eg-move-products-grid th.eg-col-iscampaign,
+body.admin-app .eg-move-products-grid td.eg-col-iscampaign {
+    width: 92px !important;
+    min-width: 92px !important;
+    max-width: 100px !important;
+    text-align: center;
+}
+body.admin-app .eg-move-products-grid th.gridDateClass,
+body.admin-app .eg-move-products-grid td.gridDateClass {
+    width: 96px !important;
+    min-width: 96px !important;
+    max-width: 110px !important;
+}
+body.admin-app .eg-move-products-grid .griddly-scrollable-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+body.admin-app .eg-move-products-grid .griddly-scrollable-container > table,
+body.admin-app .eg-move-products-grid table.eg-grid-table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+}
