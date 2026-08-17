@@ -41,7 +41,7 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                             <div class="custom-control custom-checkbox">
                                 @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input", id = "RememberMe" })
-                                @Html.LabelFor(model => model.RememberMe, new { @class = "custom-control-label", @for = "RememberMe" })
+                                @Html.LabelFor(model => model.RememberMe, new { @class = "custom-col-form-label", @for = "RememberMe" })
                             </div>
                             @Html.ActionLink(Resource.LostYourPassword, "ForgotPassword", "Account", null, new { @class = "small" })
                         </div>

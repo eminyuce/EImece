@@ -41,9 +41,9 @@ namespace EImece.App_Start
 
             // Plain Bundle — WebGrease JsMinify fails on modern syntax in main.js / theme.js.
             bundles.Add(new Bundle("~/bundles/designs/crizal/vendor/js").Include(
-                "~/Scripts/jquery-{version}.js",
-                "~/Content/designs/crizal/vendor/js/popper.min.js",
-                "~/Content/designs/crizal/vendor/js/bootstrap.min.js",
+                "~/Scripts/admin-vendor/jquery-4.0.0.js",
+                "~/Scripts/admin-vendor/jquery-migrate-4.0.2.js",
+                "~/Scripts/admin-vendor/bootstrap.bundle.min.js",
                 "~/Content/designs/crizal/vendor/js/jquery.magnific-popup.min.js",
                 "~/Content/designs/crizal/vendor/js/jarallax.min.js",
                 "~/Content/designs/crizal/vendor/js/nav-menu.js",

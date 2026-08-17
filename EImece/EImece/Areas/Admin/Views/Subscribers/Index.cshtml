@@ -8,7 +8,7 @@
     var controllerName = "Subscribers";
 }
 
-<h2>@AdminResource.Subscribers</h2>
+<h2 class="admin-page-title">@AdminResource.Subscribers</h2>
 <hr class="adminLine" />
 
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -21,5 +21,7 @@
     {"IsNewRecordButtonEnabled",false},
     {"IsExcelButtonEnabled",true}
 })
+
+@Html.Partial("Grid/_GridChrome")
 
 <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"] })"></div>

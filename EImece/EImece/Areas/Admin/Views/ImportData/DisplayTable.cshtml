@@ -1,7 +1,7 @@
 ﻿@model System.Data.DataTable
 @using System.Data;
 @{
-    ViewBag.Title = "Contact2";
+    ViewBag.Title = "Excel Tablosu";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var pathName=(String) ViewBag.PathName;
 }
@@ -29,10 +29,10 @@
 {
 @Html.AntiForgeryToken()
 <input type="hidden" name="pathName" value="@pathName" />
-@Html.DropDownList("selectedTable", listItems, "-- Select Tables --")
+@Html.DropDownList("selectedTable", listItems, "-- Tablolar --", new { @class = "form-select mb-3" })
 
-<div class="col-md-offset-2 col-md-10">
-    <input type="submit" value="Save" class="btn btn-default" />
+<div class="mt-3">
+    <input type="submit" value="Kaydet" class="btn btn-primary" />
 </div>
 }
 

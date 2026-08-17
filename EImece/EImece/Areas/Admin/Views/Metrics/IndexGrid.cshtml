@@ -8,6 +8,9 @@
     Layout = null;
     var gridName = "MetricsGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
     var inv = CultureInfo.InvariantCulture;
 
     var settings = new GriddlySettings<MetricDisplayItem>()
@@ -22,25 +25,26 @@
     settings.HtmlAttributes["data-gridname"] = gridName;
 
     settings.BeforeTemplate = @<text>
-        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+        <output class="card-header grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
                 <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">metrik</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="fa fa-chevron-left"></i>
                 </button>
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
-                    <i class="glyphicon glyphicon-chevron-right"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="fa fa-chevron-right"></i>
                 </button>
             </div>
         </output>
     </text>;
 
     settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "Açıkla", template: @<text>
-            <button type="button" class="btn btn-xs btn-info metrics-explain-btn"
+            <button type="button" class="btn btn-sm btn-info metrics-explain-btn"
                     data-name="@item.Name"
                     data-count="@item.Count"
                     data-errors="@item.ErrorCount"
@@ -53,13 +57,13 @@
                     data-p90="@item.P90DurationMs"
                     data-p95="@item.P95DurationMs"
                     data-p99="@item.P99DurationMs">
-                <span class="glyphicon glyphicon-question-sign"></span> Açıkla
+                <span class="fa fa-question-circle"></span> Açıkla
             </button>
         </text>, className: "eg-col-explain", width: "90px")
         .Column(x => x.Name, caption: "Metrik Adı", className: "metric-name eg-col-name", width: "280px")
         .Column(x => x.Count, caption: "Adet", className: "eg-col-count", width: "80px")
         .Column(x => x.ErrorCount, caption: "Hata", template: @<text>
-            <span class="label label-@(item.ErrorCount > 0 ? "danger" : "success")" title="Başarısız çağrı sayısı">@item.ErrorCount.ToString("N0")</span>
+            <span class="badge @(item.ErrorCount > 0 ? "text-bg-danger" : "text-bg-success")" title="Başarısız çağrı sayısı">@item.ErrorCount.ToString("N0")</span>
         </text>, className: "eg-col-errors", width: "80px")
         .Column(x => x.AverageDurationMs, caption: "Ort. süre (ms)", className: "eg-col-avg", width: "120px")
         .Column(x => x.P50DurationMs, caption: "P50 (ms)", width: "90px")

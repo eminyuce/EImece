@@ -8,7 +8,7 @@
     var controllerName = "Templates";
 }
 
-<h2>@AdminResource.Templates</h2>
+<h2 class="admin-page-title">@AdminResource.Templates</h2>
 <hr class="adminLine" />
 
 <div class="admin-workflow-callout">
@@ -26,5 +26,7 @@
     {"SetStateOnOrOff",true},
     {"IsExcelButtonEnabled",true}
 })
+
+@Html.Partial("Grid/_GridChrome")
 
 <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"] })"></div>

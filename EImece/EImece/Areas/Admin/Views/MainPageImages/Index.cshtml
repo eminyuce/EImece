@@ -8,7 +8,7 @@
     var controllerName = "MainPageImages";
 }
 
-<h2>@AdminResource.MainPageImages</h2>
+<h2 class="admin-page-title">@AdminResource.MainPageImages</h2>
 <hr class="adminLine" />
 
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
@@ -19,5 +19,7 @@
     {"deleteAll",true},
     {"SetStateOnOrOff",true}
 })
+
+@Html.Partial("Grid/_GridChrome")
 
 <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"] })"></div>

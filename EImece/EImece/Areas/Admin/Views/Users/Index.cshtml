@@ -94,23 +94,23 @@
             </p>
         </div>
         <div class="users-admin-header-actions">
-            <a href="@Url.Action("CustomerRoles", controllerName)" class="btn btn-default btn-sm">
-                <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+            <a href="@Url.Action("CustomerRoles", controllerName)" class="btn btn-secondary btn-sm">
+                <i class="fa fa-user" aria-hidden="true"></i>
                 Sitede hesabı olan müşteriler
             </a>
             <a href="@Url.Action("Register", controllerName)" class="btn btn-primary btn-sm">
-                <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                <i class="fa fa-plus" aria-hidden="true"></i>
                 @AdminResource.NewUserInsert
             </a>
         </div>
     </div>
     <hr class="adminLine" />
 
-    <div class="panel panel-default users-admin-filters" id="usersAdminFilters">
-        <div class="panel-heading users-admin-filters-heading">
+    <div class="card users-admin-filters" id="usersAdminFilters">
+        <div class="card-header users-admin-filters-heading">
             <div class="users-admin-filters-heading-main">
                 <span class="users-admin-filters-title">
-                    <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>
+                    <i class="fa fa-filter" aria-hidden="true"></i>
                     Filtreler
                 </span>
                 @if (activeFilterChips.Count > 0)
@@ -118,10 +118,10 @@
                     <span class="badge users-admin-filters-count">@activeFilterChips.Count</span>
                     foreach (var chip in activeFilterChips)
                     {
-                        <span class="label label-info product-admin-filter-chip">@chip.Item1: @chip.Item2</span>
+                        <span class="label text-bg-info product-admin-filter-chip">@chip.Item1: @chip.Item2</span>
                     }
                     <a class="users-admin-filters-clear" href="@clearFiltersUrl" title="@Resource.Clear">
-                        <i class="glyphicon glyphicon-remove" aria-hidden="true"></i> @Resource.Clear
+                        <i class="fa fa-times" aria-hidden="true"></i> @Resource.Clear
                     </a>
                 }
                 else
@@ -130,23 +130,23 @@
                 }
             </div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             @using (Html.BeginForm("Index", controllerName, FormMethod.Get, new { @class = "users-admin-filter-form", id = "usersAdminFilterForm" }))
             {
                 <div class="users-admin-filter-grid">
-                    <div class="form-group users-admin-filter-search">
+                    <div class="form-group row mb-3 users-admin-filter-search">
                         <label for="usersSearch">Arama</label>
                         <input type="text"
-                               class="form-control input-sm"
+                               class="form-control form-control-sm"
                                id="usersSearch"
                                name="search"
                                value="@search"
                                placeholder="Ad, soyad veya e-posta"
                                autocomplete="off" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="usersRole">@AdminResource.Roles</label>
-                        <select class="form-control input-sm" id="usersRole" name="role">
+                        <select class="form-select form-select-sm" id="usersRole" name="role">
                             <option value="">Tümü</option>
                             @foreach (var roleOption in availableRoles)
                             {
@@ -156,18 +156,18 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="usersTwoFactor">2FA</label>
-                        <select class="form-control input-sm" id="usersTwoFactor" name="twoFactor">
+                        <select class="form-select form-select-sm" id="usersTwoFactor" name="twoFactor">
                             <option value="">Tümü</option>
                             <option value="yes" @(string.Equals(selectedTwoFactor, "yes", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "1" ? "selected=\"selected\"" : null)>Aktif</option>
                             <option value="no" @(string.Equals(selectedTwoFactor, "no", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "0" ? "selected=\"selected\"" : null)>Yok</option>
                         </select>
                     </div>
-                    <div class="form-group users-admin-filter-actions">
-                        <span class="control-label">&nbsp;</span>
+                    <div class="form-group row mb-3 users-admin-filter-actions">
+                        <span class="col-form-label">&nbsp;</span>
                         <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Uygula
+                            <i class="fa fa-search" aria-hidden="true"></i> Uygula
                         </button>
                     </div>
                 </div>
@@ -175,7 +175,9 @@
         </div>
     </div>
 
-    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"], role = Request.QueryString["role"], twoFactor = Request.QueryString["twoFactor"] })"></div>
+    @Html.Partial("Grid/_GridChrome")
+
+<div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"], role = Request.QueryString["role"], twoFactor = Request.QueryString["twoFactor"] })"></div>
 </div>
 
 <style>
@@ -245,7 +247,7 @@
         color: #1f2937;
     }
 
-    .users-admin-filters-title .glyphicon {
+    .users-admin-filters-title .fa {
         margin-right: 4px;
         color: #3b6ea5;
     }
@@ -271,7 +273,7 @@
         text-decoration: none;
     }
 
-    .users-admin-filters .panel-body {
+    .users-admin-filters .card-body {
         padding: 12px 14px 4px;
         background: #fff;
     }

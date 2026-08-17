@@ -41,7 +41,7 @@
     <div class="modal fade pt-lightbox" id="@lightboxId" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
-                <button type="button" class="pt-lightbox__close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">&times;</button>
+                <button type="button" class="pt-lightbox__close" data-bs-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">&times;</button>
                 <div class="modal-body p-0">
                     <div id="@carouselId" class="carousel slide" data-bs-interval="false" data-interval="false">
                         <div class="carousel-inner">
@@ -57,15 +57,15 @@
                         </div>
                         @if (files.Count > 1)
                         {
-                            <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev" data-target="#@carouselId" data-slide="prev">
+                            <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev" data-bs-target="#@carouselId" data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="pt-lightbox__nav-label">Önceki</span>
-                                <span class="visually-hidden sr-only">Önceki</span>
+                                <span class="visually-hidden visually-hidden">Önceki</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next" data-target="#@carouselId" data-slide="next">
+                            <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next" data-bs-target="#@carouselId" data-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="pt-lightbox__nav-label">Sonraki</span>
-                                <span class="visually-hidden sr-only">Sonraki</span>
+                                <span class="visually-hidden visually-hidden">Sonraki</span>
                             </button>
                         }
                     </div>

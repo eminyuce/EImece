@@ -24,26 +24,26 @@
 
 @helper OrderStatusLabel(EImeceOrderStatus status)
 {
-    string css = "label-default";
+    string css = "text-bg-secondary";
     switch (status)
     {
         case EImeceOrderStatus.NewlyOrder:
         case EImeceOrderStatus.PaymentPending:
-            css = "label-warning";
+            css = "text-bg-warning";
             break;
         case EImeceOrderStatus.InProgress:
-            css = "label-info";
+            css = "text-bg-info";
             break;
         case EImeceOrderStatus.Shipped:
-            css = "label-primary";
+            css = "text-bg-primary";
             break;
         case EImeceOrderStatus.Delivered:
-            css = "label-success";
+            css = "text-bg-success";
             break;
         case EImeceOrderStatus.Cancelled:
         case EImeceOrderStatus.Returned:
         case EImeceOrderStatus.Refunded:
-            css = "label-danger";
+            css = "text-bg-danger";
             break;
     }
     <span class="label @css order-status-badge">@status.ToDescription()</span>
@@ -52,7 +52,7 @@
 @helper PaymentStatusLabel(string paymentStatus)
 {
     var ok = string.Equals(paymentStatus, "SUCCESS", StringComparison.OrdinalIgnoreCase);
-    var css = ok ? "label-success" : "label-danger";
+    var css = ok ? "text-bg-success" : "text-bg-danger";
     string text = paymentStatus;
     if (string.Equals(paymentStatus, "SUCCESS", StringComparison.OrdinalIgnoreCase))
     {
@@ -65,15 +65,15 @@
     else if (string.IsNullOrWhiteSpace(paymentStatus))
     {
         text = "Ödeme durumu yok";
-        css = "label-default";
+        css = "text-bg-secondary";
     }
     <span class="label @css order-status-badge">@text</span>
 }
 
 <div class="order-details-page">
     <div class="clearfix order-details-header">
-        <div class="pull-right">
-            <a href="@Url.Action("Index", "Orders", new { area = "Admin" })" class="btn btn-default btn-sm">
+        <div class="float-end">
+            <a href="@Url.Action("Index", "Orders", new { area = "Admin" })" class="btn btn-secondary btn-sm">
                 <i class="fa fa-arrow-left"></i> Siparişlere Dön
             </a>
         </div>
@@ -127,9 +127,9 @@
 
     <div class="row">
         <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>Müşteri ve adres bilgileri</strong></div>
-                <div class="panel-body">
+            <div class="card">
+                <div class="card-header"><strong>Müşteri ve adres bilgileri</strong></div>
+                <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
                             <h5 class="order-section-title">Müşteri</h5>
@@ -223,20 +223,20 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="card">
+                <div class="card-header">
                     <strong>Sipariş ürünleri</strong>
                     <span class="badge">@productCount</span>
                 </div>
-                <div class="panel-body" style="padding:0;">
+                <div class="card-body" style="padding:0;">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover mb-0 order-products-table">
                             <thead>
                                 <tr>
                                     <th>Ürün</th>
                                     <th class="text-center" style="width:80px;">Adet</th>
-                                    <th class="text-right" style="width:110px;">Birim fiyat</th>
-                                    <th class="text-right" style="width:110px;">Toplam</th>
+                                    <th class="text-end" style="width:110px;">Birim fiyat</th>
+                                    <th class="text-end" style="width:110px;">Toplam</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -253,8 +253,8 @@
                                                 }
                                             </td>
                                             <td class="text-center">@product.Quantity</td>
-                                            <td class="text-right">@product.ProductSalePrice.CurrencySign()</td>
-                                            <td class="text-right"><strong>@product.TotalPrice.CurrencySign()</strong></td>
+                                            <td class="text-end">@product.ProductSalePrice.CurrencySign()</td>
+                                            <td class="text-end"><strong>@product.TotalPrice.CurrencySign()</strong></td>
                                         </tr>
                                     }
                                 }
@@ -267,23 +267,23 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3" class="text-right">Ara toplam</td>
-                                    <td class="text-right">@subtotal.CurrencySign()</td>
+                                    <td colspan="3" class="text-end">Ara toplam</td>
+                                    <td class="text-end">@subtotal.CurrencySign()</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3" class="text-right">Kargo</td>
-                                    <td class="text-right">@Model.CargoPrice.CurrencySign()</td>
+                                    <td colspan="3" class="text-end">Kargo</td>
+                                    <td class="text-end">@Model.CargoPrice.CurrencySign()</td>
                                 </tr>
                                 @if (!string.IsNullOrWhiteSpace(Model.Coupon))
                                 {
                                     <tr>
-                                        <td colspan="3" class="text-right">Kupon (@Model.Coupon)</td>
-                                        <td class="text-right text-danger">-@couponDiscount.CurrencySign()</td>
+                                        <td colspan="3" class="text-end">Kupon (@Model.Coupon)</td>
+                                        <td class="text-end text-danger">-@couponDiscount.CurrencySign()</td>
                                     </tr>
                                 }
                                 <tr class="order-total-row">
-                                    <td colspan="3" class="text-right"><strong>Ödenen toplam</strong></td>
-                                    <td class="text-right"><strong>@Model.PaidPriceDecimal.CurrencySign()</strong></td>
+                                    <td colspan="3" class="text-end"><strong>Ödenen toplam</strong></td>
+                                    <td class="text-end"><strong>@Model.PaidPriceDecimal.CurrencySign()</strong></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -291,12 +291,12 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="card">
+                <div class="card-header">
                     <strong>Ödeme ve kart bilgileri</strong>
-                    <a class="btn btn-link btn-xs pull-right" role="button" data-toggle="collapse" href="#paymentTechDetails">Teknik detayları göster</a>
+                    <a class="btn btn-link btn-sm float-end" role="button" data-bs-toggle="collapse" href="#paymentTechDetails">Teknik detayları göster</a>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
                             <dl class="dl-horizontal order-dl">
@@ -373,25 +373,25 @@
         </div>
 
         <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><strong>Siparişi yönet</strong></div>
-                <div class="panel-body">
-                    <div class="form-group">
+            <div class="card border-primary">
+                <div class="card-header"><strong>Siparişi yönet</strong></div>
+                <div class="card-body">
+                    <div class="form-group row mb-3">
                         <label for="orderStatusSelect">Sipariş durumu</label>
                         @Html.DropDownList("orderStatusSelectList",
                             new SelectList(orderStatusList, "Value", "Text", orderStatus.ToString()),
                             new { @class = "form-control", id = "orderStatusSelect", @data_change_order_status = Model.Id })
-                        <span class="help-block">Durum değişince otomatik kaydedilir.</span>
+                        <span class="form-text">Durum değişince otomatik kaydedilir.</span>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="adminOrderNote">Yönetici notu</label>
                         <textarea id="adminOrderNote" class="form-control" rows="3"
                                   placeholder="Sadece admin panelinde görünür..."
                                   data-textarea-admin-order-note="@Model.Id">@Model.AdminOrderNote</textarea>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="shipmentCompany">Kargo firması</label>
                         <input id="shipmentCompany" class="form-control" type="text"
                                placeholder="Örn. Yurtiçi Kargo"
@@ -399,7 +399,7 @@
                                value="@Model.ShipmentCompanyName" />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="shipmentTracking">Takip numarası</label>
                         <div class="input-group">
                             <input id="shipmentTracking" class="form-control" type="text"
@@ -408,8 +408,8 @@
                                    value="@Model.ShipmentTrackingNumber" />
                             @if (!string.IsNullOrWhiteSpace(Model.ShipmentTrackingNumber))
                             {
-                                <span class="input-group-btn">
-                                    <a class="btn btn-default"
+                                <span class="input-group">
+                                    <a class="btn btn-secondary"
                                        href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.UrlEncode(Model.ShipmentTrackingNumber.ToStr()))"
                                        target="_blank" title="Takibi aç">
                                         <i class="fa fa-external-link"></i>
@@ -419,16 +419,16 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-success btn-block" data-save-admin-order-note="@Model.Id">
+                    <button type="button" class="btn btn-success w-100" data-save-admin-order-note="@Model.Id">
                         <i class="fa fa-save"></i> Not ve kargoyu kaydet
                     </button>
                     <p class="text-success" style="margin-top:8px;" data-changed-order-result="@Model.Id"></p>
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>Müşteri notu</strong></div>
-                <div class="panel-body">
+            <div class="card">
+                <div class="card-header"><strong>Müşteri notu</strong></div>
+                <div class="card-body">
                     @if (!string.IsNullOrWhiteSpace(Model.OrderComments))
                     {
                         <p style="white-space:pre-wrap; margin:0;">@Model.OrderComments</p>
@@ -440,9 +440,9 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>Özet</strong></div>
-                <div class="panel-body">
+            <div class="card">
+                <div class="card-header"><strong>Özet</strong></div>
+                <div class="card-body">
                     <dl class="dl-horizontal order-dl">
                         <dt>Sipariş no</dt>
                         <dd>@Model.OrderNumber</dd>
@@ -483,7 +483,7 @@
         .order-products-table { margin-bottom: 0; }
         .order-total-row td { background: #f0f4f8; }
         .order-status-badge { display: inline-block; }
-        .panel > .panel-heading { background: #f0f4f8; color: #334e68; }
-        .panel-primary > .panel-heading { background: #334e68; color: #fff; border-color: #334e68; }
+        .panel > .card-header { background: #f0f4f8; color: #334e68; }
+        .card border-primary > .card-header { background: #334e68; color: #fff; border-color: #334e68; }
     </style>
 }

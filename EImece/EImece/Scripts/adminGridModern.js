@@ -36,10 +36,10 @@
             return;
         }
         if (isOn) {
-            $span.attr('class', 'eg-status-icon gridActiveIcon glyphicon glyphicon-ok-circle');
+            $span.attr('class', 'eg-status-icon gridActiveIcon fa fa-check-circle');
             $span.attr('grid-data-value', 'True');
         } else {
-            $span.attr('class', 'eg-status-icon gridNotActiveIcon glyphicon glyphicon-remove-circle');
+            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa fa-times-circle');
             $span.attr('grid-data-value', 'False');
         }
     }
@@ -136,7 +136,13 @@
         });
         $('input[name="checkboxGrid"]').each(function () {
             var $tr = $(this).closest('tr');
-            $tr.toggleClass('eg-row-selected', this.checked);
+            var checked = !!this.checked;
+            $tr.toggleClass('eg-row-selected', checked)
+                .toggleClass('gridChecked', checked)
+                .toggleClass('table-success', checked);
+            if (!checked) {
+                $tr.removeClass('success active info table-active');
+            }
         });
     }
 
@@ -183,8 +189,8 @@
                 $span.attr('grid-data-value', isOn ? 'True' : 'False');
                 // Preserve eg-status-icon when present / always add for toggle wrappers
                 var cls = isOn
-                    ? 'eg-status-icon gridActiveIcon glyphicon glyphicon-ok-circle'
-                    : 'eg-status-icon gridNotActiveIcon glyphicon glyphicon-remove-circle';
+                    ? 'eg-status-icon gridActiveIcon fa fa-check-circle'
+                    : 'eg-status-icon gridNotActiveIcon fa fa-times-circle';
                 $span.attr('class', cls);
                 var $toggle = $span.closest('[data-eg-status-toggle]');
                 if ($toggle.length) {
@@ -197,6 +203,64 @@
             });
         };
         window.changeStateSuccess.__egPatched = true;
+    }
+
+
+    function fixGriddlyRecordRange() {
+        var walker = function (root) {
+            if (!root) { return; }
+            var nodes = root.querySelectorAll ? root.querySelectorAll('*') : [];
+            var list = [root];
+            for (var i = 0; i < nodes.length; i++) { list.push(nodes[i]); }
+            for (var n = 0; n < list.length; n++) {
+                var el = list[n];
+                for (var c = 0; c < el.childNodes.length; c++) {
+                    var node = el.childNodes[c];
+                    if (node.nodeType === 3 && node.nodeValue && node.nodeValue.indexOf('through-') !== -1) {
+                        node.nodeValue = node.nodeValue.replace(/through-\s*/g, '– ');
+                    }
+                }
+            }
+        };
+        $('.griddly, .eg-grid, .griddly-footer, .griddly-summary').each(function () {
+            walker(this);
+        });
+    }
+
+
+    function numberGridRows(context) {
+        var $root = context ? $(context) : $(document);
+        var $grids = $root.is('[data-role=griddly]') ? $root : $root.find('[data-role=griddly]');
+        if (!$grids.length) {
+            $grids = $('[data-role=griddly]');
+        }
+        $grids.each(function () {
+            var $g = $(this);
+            var pageSize = parseInt($g.attr('data-griddly-pagesize'), 10) || 0;
+            var pageNumber = 0;
+            var inst = $g.data('griddly');
+            if (inst && inst.options && typeof inst.options.pageNumber === 'number') {
+                pageNumber = inst.options.pageNumber;
+            } else {
+                var $input = $g.find('input.pageNumber').first();
+                if ($input.length) {
+                    pageNumber = Math.max(0, (parseInt($input.val(), 10) || 1) - 1);
+                }
+            }
+            if (pageNumber < 0) {
+                pageNumber = 0;
+            }
+            var start = pageNumber * pageSize;
+            var $rows = $g.find('table tbody.data > tr, table.eg-grid-table > tbody > tr, table.grid-table > tbody > tr');
+            $rows.each(function (i) {
+                var $idx = $(this).find('.eg-row-index').first();
+                if (!$idx.length) {
+                    return;
+                }
+                $idx.text(String(start + i + 1));
+                $idx.removeClass('eg-row-index-guid');
+            });
+        });
     }
 
     function markModernGrids() {
@@ -220,6 +284,8 @@
         } catch (e) { /* ignore */ }
         applyDensity(saved);
         markSecondaryGridColumns();
+        fixGriddlyRecordRange();
+        numberGridRows();
     }
 
     /**
@@ -227,7 +293,7 @@
      * Keeps index / check / name / image / status / state / price / actions.
      */
     function markSecondaryGridColumns() {
-        var keep = /(^|\s)(eg-col-index|eg-col-check|eg-col-name|eg-col-image|eg-col-status|eg-col-state|eg-col-price|eg-col-actions|gridButtons)(\s|$)/;
+        var keep = /(^|\s)(eg-col-index|eg-col-check|eg-col-name|eg-col-image|eg-col-status|eg-col-state|eg-col-price|eg-col-actions|eg-col-isservice|eg-col-isvalues|gridButtons)(\s|$)/;
         $('.eg-grid table.grid-table, .eg-grid table.eg-grid-table, .griddly table').each(function () {
             var $table = $(this);
             var $ths = $table.find('thead > tr > th');
@@ -323,7 +389,7 @@
             }
 
             // Close any other portaled action menu first.
-            $('.eg-actions.btn-group.open').not($group).each(function () {
+            $('.eg-actions.btn-group.show').not($group).each(function () {
                 restorePortaledMenu($(this));
             });
 
@@ -343,15 +409,15 @@
         });
 
         $(document).on('scroll', '.eg-grid-scroll, .eg-grid .grid-wrap', function () {
-            var $open = $('.eg-actions.btn-group.open');
+            var $open = $('.eg-actions.btn-group.show');
             if ($open.length) {
-                $open.removeClass('open');
+                $open.removeClass('show');
                 restorePortaledMenu($open);
             }
         });
 
         $(window).on('resize.egActionsMenu', function () {
-            var $open = $('.eg-actions.btn-group.open');
+            var $open = $('.eg-actions.btn-group.show');
             if (!$open.length) {
                 return;
             }
@@ -598,10 +664,12 @@
     });
 
     // Re-mark after Grid.Mvc and Griddly AJAX redraws
-    $(document).on('gridmvc.loaded griddly.loaded', function () {
+    $(document).on('gridmvc.loaded griddly.loaded refresh.griddly', function () {
         markModernGrids();
         wireFloatingScrollbar();
         sizeReviewNotes(document);
+        updateSelectedCount();
     });
     window.egMarkModernGrids = markModernGrids;
+    window.egUpdateSelectedCount = updateSelectedCount;
 }(window, window.jQuery));

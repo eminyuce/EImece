@@ -1,4 +1,4 @@
-@using EImece.Domain.Entities;
+﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Models.Enums;
 @model Brand
 @using Resources;
@@ -42,60 +42,63 @@
 
     @Html.HiddenFor(model => model.Lang)
 
-    <div class="panel panel-default admin-edit-form">
+    <div class="card admin-edit-form">
                 @Html.Partial("_AdminEditFormToolbar")
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="tab-content">
-                        <div id="admin-edit-tab-fields" class="tab-pane fade in active" role="tabpanel">
-<div class="form-group">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div id="admin-edit-tab-fields" class="tab-pane fade show active" role="tabpanel">
+<div class="form-group row mb-3">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group row mb-3">
+                        @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-3">
-                            @Html.LabelFor(model => model.IsActive)
-                            @Html.EditorFor(model => model.IsActive)
-                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-md-3">
-                            @Html.LabelFor(model => model.MainPage)
-                            @Html.EditorFor(model => model.MainPage)
-                            @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                    <div class="form-group row mb-3 align-items-center">
+                        <div class="col-md-2 col-form-label">Durum</div>
+                        <div class="col-md-10 d-flex flex-wrap gap-4 align-items-center">
+                            <div class="form-check">
+                                @Html.EditorFor(model => model.IsActive)
+                                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "form-check-label" })
+                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-check">
+                                @Html.EditorFor(model => model.MainPage)
+                                @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "form-check-label" })
+                                @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group row mb-3">
+                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group row mb-3">
+                        @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-3">
-                            <input type="file" name="postedImage" />
+                            <input type="file" name="postedImage" class="form-control" />
                             @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-3">
-                            @Html.LabelFor(model => model.ImageState)
-                            @Html.EditorFor(model => model.ImageState)
-                            @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                            <div class="form-check mt-2">
+                                @Html.EditorFor(model => model.ImageState)
+                                @Html.LabelFor(model => model.ImageState, htmlAttributes: new { @class = "form-check-label" })
+                                @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                         <div class="col-md-3">
                             @if (Model.MainImageId.HasValue)
@@ -110,7 +113,7 @@
                         </div>
                         <div id="admin-edit-tab-content" class="tab-pane fade" role="tabpanel">
                             @Html.Partial("_AdminEditBackToFields")
-<div class="form-group">
+<div class="form-group row mb-3">
                         <div class="col-md-12">
                             @Html.TextAreaFor(model => model.Description, new { @class = "form-control eimece-rich-text-editor" })
                         </div>

@@ -26,8 +26,8 @@
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
                 <i class="fas fa-check-circle mr-2" aria-hidden="true"></i>
-                <span class="font-weight-semibold mr-auto">Updated!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="font-weight-semibold me-auto">Updated!</span>
+                <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
         </div>
@@ -66,23 +66,23 @@
             </header>
             <div class="customer-panel__grid">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label", @for = "account-fn" })
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label", @for = "account-fn" })
                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "account-fn", autocomplete = "given-name" } })
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label", @for = "account-ln" })
+                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "col-form-label", @for = "account-ln" })
                     @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @id = "account-ln", autocomplete = "family-name" } })
                     @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "col-form-label" })
                     @Html.EditorFor(model => model.IdentityNumber, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
                     <small class="form-text text-muted customer-help-text">@Resource.WhyNeedIdentityNumber</small>
                     @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    <span class="control-label d-block">@Html.DisplayNameFor(model => model.Gender)</span>
+                    <span class="col-form-label d-block">@Html.DisplayNameFor(model => model.Gender)</span>
                     <div class="customer-gender" role="radiogroup" aria-label="@Html.DisplayNameFor(model => model.Gender)">
                         <label class="customer-gender__option">
                             @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString(), new { @class = "customer-gender__input" })
@@ -105,13 +105,13 @@
             </header>
             <div class="customer-panel__grid">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "control-label", @for = "account-phone" })
+                    @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "col-form-label", @for = "account-phone" })
                     @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone", placeholder = "+90 5XX XXX XX XX", autocomplete = "tel" } })
                     <small class="form-text text-muted customer-help-text">@Resource.WhyNeedGsmNumber</small>
                     @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="account-email-ro">E-posta</label>
+                    <label class="col-form-label" for="account-email-ro">E-posta</label>
                     <input id="account-email-ro" class="form-control" type="email" value="@Model.Email" readonly disabled />
                 </div>
             </div>
@@ -125,34 +125,34 @@
             <div class="customer-panel__grid">
                 <div class="form-group">
                     <input type="hidden" id="SelectedCity" value="@Model.City" />
-                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-form-label" })
                     @Html.DropDownListFor(model => model.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
                     @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
                     <input type="hidden" id="SelectedTown" value="@Model.Town" />
-                    @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "col-form-label" })
                     @Html.DropDownListFor(model => model.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
                     @Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
                     <input type="hidden" id="SelectedDistrict" value="@Model.District" />
-                    @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "col-form-label" })
                     @Html.DropDownListFor(model => model.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
                     @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "col-form-label" })
                     @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control", autocomplete = "street-address" } })
                     @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "col-form-label" })
                     @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control", autocomplete = "postal-code" } })
                     @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "col-form-label" })
                     @Html.DropDownListFor(model => model.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                 </div>
@@ -170,16 +170,16 @@
                 <h2 class="customer-panel__section-title">Notlar &amp; izinler</h2>
             </header>
             <div class="form-group mb-3">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-form-label" })
                 @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", placeholder = "Teslimat notu veya ek bilgi (isteğe bağlı)" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
             <div class="customer-profile-actions">
                 <div class="custom-control custom-checkbox customer-consent">
                     @Html.CheckBoxFor(model => model.IsPermissionGranted, new { @class = "custom-control-input", id = "IsPermissionGranted" })
-                    <label class="custom-control-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
+                    <label class="custom-col-form-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
                 </div>
-                <button class="btn customer-btn-primary customer-profile-actions__submit" type="submit" data-toggle="toast" data-target="#profile-toast">
+                <button class="btn customer-btn-primary customer-profile-actions__submit" type="submit" data-bs-toggle="toast" data-bs-target="#profile-toast">
                     @Resource.Update
                 </button>
             </div>

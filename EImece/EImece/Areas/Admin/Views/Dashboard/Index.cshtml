@@ -31,7 +31,7 @@
     </header>
 
     <form class="admin-home__search" action="@Url.Action("SearchContent", "Dashboard", new { area = "admin" })" method="get" role="search">
-        <label class="sr-only" for="searchTxt">@AdminResource.AdminMainSeachPlaceHolder</label>
+        <label class="visually-hidden" for="searchTxt">@AdminResource.AdminMainSeachPlaceHolder</label>
         <div class="admin-home__search-box">
             <span class="admin-home__search-icon" aria-hidden="true"><i class="fa fa-search"></i></span>
             <input type="text"

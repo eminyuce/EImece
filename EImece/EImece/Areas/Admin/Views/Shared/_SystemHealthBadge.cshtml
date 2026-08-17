@@ -95,11 +95,11 @@
                 if (isHealthy) {
                     dashDot.addClass('health-status-dot--ok');
                     dashText.text("Sistem Durumu: Sağlıklı (System OK)");
-                    dashBadge.removeClass('label-danger label-default').addClass('label-success').text("UP");
+                    dashBadge.removeClass('text-bg-danger text-bg-secondary').addClass('text-bg-success').text("UP");
                 } else {
                     dashDot.addClass('health-status-dot--issue');
                     dashText.text("Sistem Durumu: Sorun Tespit Edildi (System Issue)");
-                    dashBadge.removeClass('label-success label-default').addClass('label-danger').text("DOWN");
+                    dashBadge.removeClass('text-bg-success text-bg-secondary').addClass('text-bg-danger').text("DOWN");
                 }
             }
 

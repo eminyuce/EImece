@@ -11,7 +11,7 @@
 @if (listItems.Count() > 1)
 {
 <li class="admin-topbar-action--essential admin-topbar-lang-item">
-    <label class="sr-only" for="CookieLanguage">Language @selectedLangText</label>
+    <label class="visually-hidden" for="CookieLanguage">Language @selectedLangText</label>
     <select class="form-control admin-topbar-lang" id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)" aria-label="Language @selectedLangText">
         @foreach (var l in listItems)
         {

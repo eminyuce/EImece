@@ -10,7 +10,7 @@
     var contents = Model.Metrics;
 }
 
-<h2>Uygulama Metrikleri</h2>
+<h2 class="admin-page-title">Uygulama Metrikleri</h2>
 <hr class="adminLine" />
 
 @{
@@ -32,9 +32,9 @@
 
         <div class="row metrics-help-cards" style="margin-top: 16px;">
             <div class="col-md-6">
-                <div class="panel panel-default" style="margin-bottom: 15px;">
-                    <div class="panel-heading"><strong>Sütunlar ne anlama gelir?</strong></div>
-                    <div class="panel-body">
+                <div class="card" style="margin-bottom: 15px;">
+                    <div class="card-header"><strong>Sütunlar ne anlama gelir?</strong></div>
+                    <div class="card-body">
                         <dl class="metrics-dl">
                             <dt>Metrik Adı</dt>
                             <dd>Ölçülen işlem. Önek türe göre değişir (<code>controller:</code>, <code>service:</code>, …).</dd>
@@ -70,10 +70,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="panel panel-default" style="margin-bottom: 15px;">
-                    <div class="panel-heading"><strong>Yüzdelikler — kısa örnek (100 çağrı)</strong></div>
-                    <div class="panel-body">
-                        <table class="table table-condensed table-bordered metrics-example-table">
+                <div class="card" style="margin-bottom: 15px;">
+                    <div class="card-header"><strong>Yüzdelikler — kısa örnek (100 çağrı)</strong></div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered metrics-example-table">
                             <thead>
                                 <tr>
                                     <th>Değer</th>
@@ -110,9 +110,9 @@
                     </div>
                 </div>
 
-                <div class="panel panel-default" style="margin-bottom: 15px;">
-                    <div class="panel-heading"><strong>Nasıl yorumlanır?</strong></div>
-                    <div class="panel-body">
+                <div class="card" style="margin-bottom: 15px;">
+                    <div class="card-header"><strong>Nasıl yorumlanır?</strong></div>
+                    <div class="card-body">
                         <ul class="metrics-help-bullets" style="margin-bottom: 0;">
                             <li><strong>P50 düşük, P99 çok yüksek</strong> → çoğu hızlı; ara sıra spike var.</li>
                             <li><strong>P50 / P95 / P99 hepsi yüksek</strong> → işlem genel olarak yavaş.</li>
@@ -125,9 +125,9 @@
             </div>
         </div>
 
-        <div class="panel panel-default" style="margin-bottom: 0;">
-            <div class="panel-heading"><strong>Metrik adı önekleri</strong></div>
-            <div class="panel-body" style="padding: 0;">
+        <div class="card" style="margin-bottom: 0;">
+            <div class="card-header"><strong>Metrik adı önekleri</strong></div>
+            <div class="card-body" style="padding: 0;">
                 <div class="table-responsive">
                     <table class="table table-striped metrics-prefix-table" style="margin-bottom: 0;">
                         <thead>
@@ -174,23 +174,23 @@
         </div>
 @Html.Partial("_AdminHelpAccordionEnd")
 
-<div class="panel panel-default" style="margin-bottom: 20px;">
-    <div class="panel-body">
-        <form method="get" class="form-inline">
-            <div class="form-group">
-                <label for="search">Metrik ara:</label>
+<div class="card" style="margin-bottom: 20px;">
+    <div class="card-body">
+        <form method="get" class="d-flex flex-wrap align-items-end gap-2">
+            <div>
+                <label for="search" class="form-label">Metrik ara:</label>
                 <input type="text" id="search" name="search" class="form-control"
                        placeholder="örn. controller:, service:, db:, Products"
                        value="@Model.SearchTerm" />
             </div>
             <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-search"></span> Ara
+                <span class="fa fa-search"></span> Ara
             </button>
-            <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-default">
-                <span class="glyphicon glyphicon-refresh"></span> Temizle
+            <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-secondary">
+                <span class="fa fa-refresh"></span> Temizle
             </a>
         </form>
-        <p class="help-block" style="margin: 8px 0 0;">
+        <p class="form-text" style="margin: 8px 0 0;">
             İpucu: <code>controller:</code> / <code>service:</code> ile filtreleyin.
             Her satırdaki <strong>Açıkla</strong> o metriğin ayrıntılı yorumunu açar.
         </p>
@@ -214,32 +214,33 @@
 }
 else
 {
-    <div class="panel panel-primary">
-        <div class="panel-heading">
+    <div class="card border-primary">
+        <div class="card-header">
             Canlı ölçümler
             <span class="small" style="font-weight: normal; margin-left: 8px;">
                 Sütun başlıklarına gelerek kısa ipucu görebilirsiniz. Satırdaki <strong>Açıkla</strong> ile ayrıntı açılır.
             </span>
         </div>
         <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
+            @Html.Partial("Grid/_GridChrome")
             <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Model.SearchTerm })"></div>
         </div>
     </div>
 }
 
-@* Bootstrap 3 modal — per-row explain breakdown *@
+@* Metrics explain modal *@
 <div class="modal fade" id="metricExplainModal" tabindex="-1" role="dialog" aria-labelledby="metricExplainModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="metricExplainModalLabel">Metrik açıklaması</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
             </div>
             <div class="modal-body" id="metricExplainBody">
                 <p class="text-muted">Bir satırdan <strong>Açıkla</strong> seçin.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
@@ -479,7 +480,7 @@ else
 
                 "<div class='explain-section'>" +
                 "<h5>Yüzdelik dilimler (bu satır)</h5>" +
-                "<table class='table table-condensed table-bordered percentile-table'>" +
+                "<table class='table table-sm table-bordered percentile-table'>" +
                 "<thead><tr><th>Dilimler</th><th>Süre</th><th>Bu satır için anlamı</th></tr></thead>" +
                 "<tbody>" +
                 "<tr><td><strong>P50</strong></td><td>" + fmtMs(p50) + "</td><td>Çağrıların <strong>%50’si</strong> " + fmtMs(p50) + " veya daha hızlı (medyan).</td></tr>" +

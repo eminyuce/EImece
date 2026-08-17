@@ -114,8 +114,8 @@
 <div class="toast-container toast-bottom-center">
     <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-success text-white">
-            <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold mr-auto">@Resource.AddedToCart</span>
-            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold me-auto">@Resource.AddedToCart</span>
+            <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
         </div>
         <div class="toast-body">@Resource.ThisItemAddedYourCart</div>
     </div>
@@ -287,7 +287,7 @@
                                     <label class="d-block mb-1" for="quantity">@Resource.Quantity</label>
                                     <input class="px-2 form-control" min="1" id="quantity" type="number" name="quantity" style="width: 5.5rem;" value="1" required aria-label="@Resource.Quantity">
                                 </div>
-                                <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast">
+                                <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-bs-toggle="toast" data-bs-target="#cart-toast">
                                     <i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart
                                 </button>
                             </div>
@@ -360,7 +360,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="accordion-heading">
-                            <a href="#productInfo" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
+                            <a href="#productInfo" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
                                 <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                     <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
                                 </span>@Resource.ProductInformation
@@ -406,7 +406,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
+                                <a class="collapsed" href="#shippingOptions" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                         <i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i>
                                     </span>@Resource.ShippingOptions
@@ -428,7 +428,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
+                                <a class="collapsed" href="#tagCloud" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                         <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
                                     </span>@Resource.Tags
@@ -700,7 +700,7 @@
                             </div>
                         }
                     }
-                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
+                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-bs-toggle="modal">@Resource.LeaveReview</a></div>
                 </div>
             </div>
         </div>
@@ -846,7 +846,7 @@
             @if (relatedProductPriceEnabled && product.IsBuyableState)
             {
                 <h3 class="product-card-title">
-                    <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-toggle="toast" data-target="#cart-toast">
+                    <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-bs-toggle="toast" data-bs-target="#cart-toast">
                         @Resource.AddToCart
                     </button>
                     <a href="@product.DetailPageRelativeUrl">@shortDesc</a>

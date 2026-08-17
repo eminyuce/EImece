@@ -172,6 +172,10 @@ namespace EImece.Areas.Admin.Controllers
             else
             {
                 content = await ProductService.GetBaseContentAsync(id, cancellationToken);
+                if (content == null)
+                {
+                    return HttpNotFound();
+                }
                 content.PriceStr = decimal.Round(content.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",");
                 content.DiscountStr = content.Discount.HasValue ? decimal.Round(content.Discount.Value, 2, MidpointRounding.AwayFromZero).ToString().Replace(".", ",") : "";
                 productCategory = await ProductCategoryService.GetSingleAsync(content.ProductCategoryId);

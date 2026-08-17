@@ -50,12 +50,12 @@
 }
 else if (showPanel)
 {
-    <div class="panel panel-default report-results-panel">
-        <div class="panel-heading">
+    <div class="card report-results-panel">
+        <div class="card-header">
             @panelTitle
             <span class="text-muted">(@table.Rows.Count.ToString("N0", tr) kayıt)</span>
         </div>
-        <div class="panel-body" style="padding:0;">
+        <div class="card-body" style="padding:0;">
             @RenderTable(table)
         </div>
     </div>

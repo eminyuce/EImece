@@ -49,6 +49,10 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("Id cannot be zero");
             }
             var item = BaseContentRepository.GetBaseContent(id);
+            if (item == null)
+            {
+                return null;
+            }
             if (item.MainImageId.HasValue && item.MainImageId > 0)
             {
                 var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);
@@ -73,6 +77,10 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("Id cannot be zero");
             }
             var item = await BaseContentRepository.GetBaseContentAsync(id, cancellationToken).ConfigureAwait(false);
+            if (item == null)
+            {
+                return null;
+            }
             if (item.MainImageId.HasValue && item.MainImageId > 0)
             {
                 var imageSize = FilesHelper.GetThumbnailImageSize(item.MainImage);

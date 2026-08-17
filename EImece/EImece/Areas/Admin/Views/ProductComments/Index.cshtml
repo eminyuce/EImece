@@ -54,18 +54,18 @@
         <div class="product-comments-admin-header-actions">
             @if (product != null)
             {
-                <a class="btn btn-default btn-sm" href="@Url.Action("Index", "Products", new { search = productName })">
-                    <i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i>
+                <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "Products", new { search = productName })">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     @AdminResource.BackToList
                 </a>
-                <a class="btn btn-default btn-sm" href="@Url.Action("SaveOrEdit", "Products", new { id = productId })">
-                    <i class="glyphicon glyphicon-pencil" aria-hidden="true"></i>
+                <a class="btn btn-secondary btn-sm" href="@Url.Action("SaveOrEdit", "Products", new { id = productId })">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
                     Ürünü düzenle
                 </a>
                 if (!string.IsNullOrEmpty(storefrontUrl))
                 {
-                    <a class="btn btn-default btn-sm" href="@storefrontUrl" target="_blank" rel="noopener">
-                        <i class="glyphicon glyphicon-new-window" aria-hidden="true"></i>
+                    <a class="btn btn-secondary btn-sm" href="@storefrontUrl" target="_blank" rel="noopener">
+                        <i class="fa fa-external-link" aria-hidden="true"></i>
                         Sitede gör
                     </a>
                 }
@@ -96,7 +96,7 @@
                 <span class="eg-rating-star@(i <= r ? " is-on" : "")">★</span>
             }
         </span>
-        <span class="sr-only">@r yıldız</span>
+        <span class="visually-hidden">@r yıldız</span>
     </span>
 }
 
@@ -119,7 +119,7 @@
     var sizeClass = len == 0 ? "is-empty" : (len <= 48 ? "is-short" : (len <= 140 ? "is-medium" : "is-long"));
     var lineCount = string.IsNullOrEmpty(text) ? 2 : text.Split(new[] { '\n' }, StringSplitOptions.None).Length;
     var rows = Math.Max(2, Math.Min(lineCount, 8));
-    <label class="sr-only" for="pcomment-@comment.Id">Yorum</label>
+    <label class="visually-hidden" for="pcomment-@comment.Id">Yorum</label>
     if (len == 0)
     {
         <span class="eg-review-empty">—</span>

@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers;
@@ -12,14 +12,14 @@
 }
 
 <div class="admin-price-update">
-    <button class="btn btn-outline btn-success btn-xs"
+    <button class="btn btn-outline-success btn-sm"
             type="button"
             data-product-item-type="@ItemType"
             data-product-item-id="@ItemId"
             onclick="fiyatlariGuncelleGeneric(event)">
         Güncelle
     </button>
-    <select class="admin-price-update-select" data-product-item-percentage="@ItemType-@ItemId">
+    <select class="form-select form-select-sm admin-price-update-select" data-product-item-percentage="@ItemType-@ItemId">
         <option value="50.00">%50 Artır</option>
         <option value="45.00">%45 Artır</option>
         <option value="40.00">%40 Artır</option>

@@ -9,11 +9,29 @@ namespace EImece
         {
             BundleTable.EnableOptimizations = true;
             bundles.IgnoreList.Clear();
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
-
+            // Customers/Account still render datepicker via this bundle. Admin uses adminJqueryUi 1.14.2.
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                   "~/Scripts/jquery-ui-{version}.js"));
+
+            // Admin-only stack (jQuery 4 / Bootstrap 5). Storefront uses siteJquery / Crizal vendor bundles.
+            bundles.Add(new ScriptBundle("~/bundles/adminJquery").Include(
+                        "~/Scripts/admin-vendor/jquery-4.0.0.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/adminJqueryMigrate").Include(
+                        "~/Scripts/admin-vendor/jquery-migrate-4.0.2.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/adminJqueryUi").Include(
+                        "~/Scripts/admin-vendor/jquery-ui-1.14.2.js"));
+
+            bundles.Add(new StyleBundle("~/Content/adminJqueryUiCss").Include(
+                        "~/Content/admin-vendor/jquery-ui/jquery-ui.css"));
+
+            // Admin Bootstrap 5.3.8 (already minified; ScriptBundle AjaxMin cannot parse BS5 ES6).
+            bundles.Add(new Bundle("~/bundles/adminBootstrap").Include(
+                        "~/Scripts/admin-vendor/bootstrap.bundle.min.js"));
+
+            bundles.Add(new Bundle("~/Content/adminBootstrapCss").Include(
+                        "~/Content/admin-vendor/bootstrap/bootstrap.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -22,16 +40,6 @@ namespace EImece
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/bootstrap-theme.css",
-                   "~/Content/site.css"
-                      ));
 
             // Core theme + tiny vendor CSS. Skin duplicates removed from layout (see perf-overrides.css).
             bundles.Add(new StyleBundle("~/Content/eimeceTheme").Include(
@@ -45,6 +53,17 @@ namespace EImece
             bundles.Add(new ScriptBundle("~/bundles/mstore").Include(
                     "~/Content/mstore/js/vendor.min.js",
                     "~/Content/mstore/js/theme.min.js"));
+            // Storefront site-wide Bootstrap 5.3.8 + jQuery 4 (shared vendor files with admin).
+            bundles.Add(new ScriptBundle("~/bundles/siteJquery").Include(
+                        "~/Scripts/admin-vendor/jquery-4.0.0.js"));
+            bundles.Add(new ScriptBundle("~/bundles/siteJqueryMigrate").Include(
+                        "~/Scripts/admin-vendor/jquery-migrate-4.0.2.js"));
+            bundles.Add(new Bundle("~/bundles/siteBootstrap").Include(
+                        "~/Scripts/admin-vendor/bootstrap.bundle.min.js"));
+            bundles.Add(new Bundle("~/Content/siteBootstrapCss").Include(
+                        "~/Content/admin-vendor/bootstrap/bootstrap.min.css",
+                        "~/Content/pageThemes.css"));
+
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/griddly.css",
@@ -58,6 +77,7 @@ namespace EImece
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
+                  "~/Scripts/admin-bs5-jquery-bridge.js",
                   "~/Scripts/rich-text-editor.js",
                   "~/Scripts/adminEimece.js",
                   "~/Scripts/adminGridModern.js",

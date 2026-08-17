@@ -39,13 +39,13 @@
             <tbody>
                 <tr>
                     <th scope="row">@Resource.MyBasket</th>
-                    <td class="text-right" id="TotalPrice">@Model.TotalPrice.CurrencySign()</td>
+                    <td class="text-end" id="TotalPrice">@Model.TotalPrice.CurrencySign()</td>
                 </tr>
                 @if (Model.Coupon != null)
                 {
                     <tr>
                         <th scope="row">@Resource.CouponCode</th>
-                        <td class="text-right" id="CouponName">@Model.CouponName</td>
+                        <td class="text-end" id="CouponName">@Model.CouponName</td>
                     </tr>
                 }
                 <tr id="CargoFreeTextInfo">
@@ -58,13 +58,13 @@
                         else
                         {
                             <th scope="row">@Resource.CargoPrice</th>
-                            <td class="text-right">@Model.CargoPriceValue.CurrencySign()</td>
+                            <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
                         }
                     }
                     else if (Model.CargoPriceValue > 0)
                     {
                         <th scope="row">@Resource.CargoPrice</th>
-                        <td class="text-right">@Model.CargoPriceValue.CurrencySign()</td>
+                        <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
                     }
                     else
                     {
@@ -73,7 +73,7 @@
                 </tr>
                 <tr class="crizal-cart-total__grand">
                     <th scope="row">@Resource.Total</th>
-                    <td class="text-right" id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</td>
+                    <td class="text-end" id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</td>
                 </tr>
             </tbody>
         </table>
@@ -84,7 +84,7 @@
             {
                 @Html.AntiForgeryToken()
                 <div class="form-group mb-2">
-                    <label class="sr-only" for="cart-promocode">@Resource.CouponCode</label>
+                    <label class="visually-hidden" for="cart-promocode">@Resource.CouponCode</label>
                     <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
                     <div class="invalid-feedback">@Resource.ValidPromoCode</div>
                 </div>
@@ -92,7 +92,7 @@
             }
             <hr class="my-3">
             <h3 class="h6 font-weight-semibold mb-2">@Resource.AdditionalComments</h3>
-            <label class="sr-only" for="orderComments">@Resource.AdditionalComments</label>
+            <label class="visually-hidden" for="orderComments">@Resource.AdditionalComments</label>
             <textarea class="form-control mb-3"
                       data-shopping-order-guid="@Model.OrderGuid"
                       id="orderComments" rows="4"

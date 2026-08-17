@@ -170,18 +170,18 @@
                 })"
                    title="Kategori filtresini temizle"
                    aria-label="Kategori filtresini temizle">
-                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </a>
             </div>
         }
 
-        <div class="panel panel-default product-admin-filters @(hasAdvancedFilter ? "is-open" : "is-collapsed")" id="productAdminFilters">
-            <button type="button" class="panel-heading product-admin-filters-heading"
-                 data-toggle="collapse" data-target="#productAdminFiltersBody"
+        <div class="card product-admin-filters @(hasAdvancedFilter ? "is-open" : "is-collapsed")" id="productAdminFilters">
+            <button type="button" class="card-header product-admin-filters-heading"
+                 data-bs-toggle="collapse" data-bs-target="#productAdminFiltersBody"
                  aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="productAdminFiltersBody">
                 <div class="product-admin-filters-heading-main">
                     <span class="product-admin-filters-title">
-                        <i class="glyphicon glyphicon-filter" aria-hidden="true"></i>
+                        <i class="fa fa-filter" aria-hidden="true"></i>
                         Filtreler
                     </span>
                     @if (activeFilterChips.Count > 0)
@@ -193,7 +193,7 @@
                         <span class="product-admin-filters-hint">Marka, durum, fiyat…</span>
                     }
                 </div>
-                <span class="product-admin-filters-chevron glyphicon @(hasAdvancedFilter ? "glyphicon-chevron-up" : "glyphicon-chevron-down")" aria-hidden="true"></span>
+                <span class="product-admin-filters-chevron fa @(hasAdvancedFilter ? "fa fa-chevron-up" : "fa fa-chevron-down")" aria-hidden="true"></span>
             </button>
 
             @if (activeFilterChips.Count > 0)
@@ -216,10 +216,10 @@
                                 chipText = chip.Item1 + ": " + chip.Item2;
                             }
                         }
-                        <span class="label label-info product-admin-filter-chip">@chipText</span>
+                        <span class="label text-bg-info product-admin-filter-chip">@chipText</span>
                     }
                     <a class="product-admin-filters-clear-link" href="@clearFiltersUrl" title="@AdminResource.Clear">
-                        <i class="glyphicon glyphicon-remove" aria-hidden="true"></i> @AdminResource.Clear
+                        <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
                     </a>
                 </div>
             }
@@ -238,8 +238,8 @@
                         : selectedState;
                 }
             }
-            <div id="productAdminFiltersBody" class="panel-collapse collapse @(hasAdvancedFilter ? "in" : "")">
-                <div class="panel-body">
+            <div id="productAdminFiltersBody" class="collapse @(hasAdvancedFilter ? "show" : "")">
+                <div class="card-body">
                     @using (Html.BeginForm("Index", "Products", FormMethod.Get, new { @class = "product-admin-filter-form", id = "productAdminFilterForm" }))
                     {
                         <input type="hidden" name="id" value="@categoryIdForFilter" />
@@ -250,11 +250,11 @@
 
                         <div class="row">
                             <div class="col-sm-@(priceEnabled ? "3" : "6")">
-                                <div class="form-group">
+                                <div class="form-group row mb-3">
                                     <label for="brandSearch">@AdminResource.Brands</label>
                                     <div class="product-admin-combo">
                                         <input type="text"
-                                               class="form-control input-sm"
+                                               class="form-control form-control-sm"
                                                id="brandSearch"
                                                list="brandDatalist"
                                                value="@selectedBrandName"
@@ -272,11 +272,11 @@
                                 </div>
                             </div>
                             <div class="col-sm-@(priceEnabled ? "3" : "6")">
-                                <div class="form-group">
+                                <div class="form-group row mb-3">
                                     <label for="stateSearch">@AdminResource.ProductState</label>
                                     <div class="product-admin-combo">
                                         <input type="text"
-                                               class="form-control input-sm"
+                                               class="form-control form-control-sm"
                                                id="stateSearch"
                                                list="stateDatalist"
                                                value="@selectedStateLabel"
@@ -296,15 +296,15 @@
                             @if (priceEnabled)
                             {
                                 <div class="col-sm-6">
-                                    <div class="form-group">
+                                    <div class="form-group row mb-3">
                                         <label for="minPrice">@AdminResource.Price</label>
                                         <div class="product-admin-price-range">
-                                            <input type="number" step="0.01" min="0" class="form-control input-sm" id="minPrice" name="minPrice"
+                                            <input type="number" step="0.01" min="0" class="form-control form-control-sm" id="minPrice" name="minPrice"
                                                    placeholder="Min"
                                                    value="@(minPrice.HasValue ? minPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />
                                             <span class="product-admin-price-sep">–</span>
-                                            <label class="sr-only" for="maxPrice">Max</label>
-                                            <input type="number" step="0.01" min="0" class="form-control input-sm" id="maxPrice" name="maxPrice"
+                                            <label class="visually-hidden" for="maxPrice">Max</label>
+                                            <input type="number" step="0.01" min="0" class="form-control form-control-sm" id="maxPrice" name="maxPrice"
                                                    placeholder="Max"
                                                    value="@(maxPrice.HasValue ? maxPrice.Value.ToString(CultureInfo.InvariantCulture) : "")" />
                                         </div>
@@ -333,10 +333,10 @@
 
                         <div class="product-admin-filter-actions">
                             <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="glyphicon glyphicon-ok" aria-hidden="true"></i> Filtrele
+                                <i class="fa fa-check" aria-hidden="true"></i> Filtrele
                             </button>
-                            <a class="btn btn-default btn-sm" href="@clearFiltersUrl">
-                                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i> @AdminResource.Clear
+                            <a class="btn btn-secondary btn-sm" href="@clearFiltersUrl">
+                                <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
                             </a>
                         </div>
                     }
@@ -406,7 +406,7 @@
 
         <div class="eg-products-toolbar-gap">
             <a class="eg-admin-move-link eg-products-move-link" href="@Url.Action("MoveProductsInTrees")">
-                <i class="glyphicon glyphicon-transfer" aria-hidden="true"></i>
+                <i class="fa fa-exchange" aria-hidden="true"></i>
                 <span>@AdminResource.MoveProductsInTrees</span>
             </a>
         </div>
@@ -438,11 +438,11 @@
 
             $body.on('show.bs.collapse', function () {
                 $panel.removeClass('is-collapsed').addClass('is-open');
-                $chevron.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+                $chevron.removeClass('fa fa-chevron-down').addClass('fa fa-chevron-up');
                 $heading.attr('aria-expanded', 'true');
             }).on('hide.bs.collapse', function () {
                 $panel.removeClass('is-open').addClass('is-collapsed');
-                $chevron.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+                $chevron.removeClass('fa fa-chevron-up').addClass('fa fa-chevron-down');
                 $heading.attr('aria-expanded', 'false');
             });
 

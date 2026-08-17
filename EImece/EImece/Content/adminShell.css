@@ -10,7 +10,7 @@
     --admin-sidebar-text: #d9e2ec;
     --admin-sidebar-muted: #9aa5b1;
     --admin-sidebar-hover: #323f4b;
-    --admin-sidebar-active: #243b53;
+    --admin-sidebar-active: #2b6cb0;
     --admin-sidebar-accent: #62b0e8;
     --admin-topbar-bg: #ffffff;
     --admin-topbar-border: #d9e2ec;
@@ -236,13 +236,21 @@ body.admin-app {
 .admin-nav-item.active:focus {
     background: var(--admin-sidebar-active);
     color: #fff;
-    border-left-color: var(--admin-sidebar-accent);
-    font-weight: 600;
+    border-left-color: #9ed4f5;
+    font-weight: 700;
 }
 
 .admin-nav-item.active .fa {
-    color: var(--admin-sidebar-accent);
+    color: #fff;
     opacity: 1;
+}
+
+body.admin-app.sidebar-collapsed .admin-nav-item.active,
+body.admin-app.sidebar-collapsed .admin-nav-item.active:hover,
+body.admin-app.sidebar-collapsed .admin-nav-item.active:focus {
+    background: var(--admin-sidebar-active);
+    color: #fff;
+    box-shadow: inset 3px 0 0 #9ed4f5;
 }
 
 .admin-nav-group.has-active > .admin-nav-group-toggle {
@@ -437,7 +445,7 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     align-items: center;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 2px;
+    gap: 8px;
 }
 
 .admin-topbar-actions > li {
@@ -450,12 +458,12 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     align-items: center;
     justify-content: center;
     gap: 4px;
-    padding: 3px 6px;
+    padding: 4px 10px;
     color: var(--admin-link);
     text-decoration: none;
     font-size: 12px;
     font-weight: 600;
-    border-radius: 3px;
+    border-radius: 6px;
     white-space: nowrap;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
@@ -533,7 +541,7 @@ body.admin-app .admin-content .adminLine {
     display: none;
 }
 
-body.admin-app .admin-content .panel-body {
+body.admin-app .admin-content .card-body {
     padding-top: 12px;
     padding-bottom: 12px;
 }
@@ -876,7 +884,7 @@ body.admin-app .table-responsive {
     body.admin-app .admin-content .table-responsive,
     body.admin-app .admin-content .eg-grid .grid-wrap,
     body.admin-app .admin-content .eg-grid-scroll,
-    body.admin-app .admin-content .panel-body:has(> table),
+    body.admin-app .admin-content .card-body:has(> table),
     body.admin-app .admin-content .panel:has(> table.grid-table),
     body.admin-app .admin-content .panel:has(> .table) {
         overflow-x: auto;
@@ -1067,7 +1075,7 @@ body.admin-app .table-responsive {
         margin-right: 0;
     }
 
-    body.admin-app .admin-content .form-horizontal .control-label,
+    body.admin-app .admin-content .form-horizontal .col-form-label,
     body.admin-app .admin-content .form-horizontal .col-xs-12,
     body.admin-app .admin-content .form-horizontal [class*="col-sm-"],
     body.admin-app .admin-content .form-horizontal [class*="col-md-"],
@@ -1204,7 +1212,8 @@ body.admin-app .table-responsive {
         margin: 0;
     }
 
-    body.admin-app .modal-header .close {
+    body.admin-app .modal-header .close,
+    body.admin-app .modal-header .btn-close {
         width: var(--admin-touch-min);
         height: var(--admin-touch-min);
         min-width: var(--admin-touch-min);

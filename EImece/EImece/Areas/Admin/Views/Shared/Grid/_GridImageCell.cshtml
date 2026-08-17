@@ -1,4 +1,4 @@
-@model EImece.Domain.Entities.BaseContent
+﻿@model EImece.Domain.Entities.BaseContent
 @using EImece.Domain
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
@@ -11,7 +11,7 @@
     bool showImageState = ViewData["ShowImageState"].ToBool(true);
 }
 <div class="eg-image-cell">
-    <div class="eg-thumb @(hasImage ? "" : "is-placeholder")">
+    <div class="eg-thumb @(hasImage ? "" : "is-placeholder")" title="@(hasImage ? "" : AdminResource.NoImage)">
         @if (hasImage && !string.IsNullOrEmpty(thumbUrl))
         {
             <img src="@thumbUrl" alt="" width="48" height="48" loading="lazy" />
@@ -19,24 +19,20 @@
         else
         {
             <span class="eg-thumb-placeholder" aria-hidden="true">
-                <i class="glyphicon glyphicon-picture"></i>
+                <i class="fa fa-picture-o"></i>
             </span>
         }
     </div>
-    <div class="eg-image-meta">
-        @if (showImageState)
-        {
+    @if (showImageState)
+    {
+        <div class="eg-image-meta">
             @Html.GridStatusToggle(o.Id, o.ImageState, "ImageState", AdminResource.ImageState, "Resim")
-        }
-        @if (hasImage)
-        {
-            <div class="eg-image-actions">
-                @Html.Partial("pGridImageMainPage", o)
-            </div>
-        }
-        else
-        {
-            <span class="eg-image-none">@AdminResource.NoImage</span>
-        }
-    </div>
+        </div>
+    }
+    else if (hasImage)
+    {
+        <div class="eg-image-actions">
+            @Html.Partial("pGridImageMainPage", o)
+        </div>
+    }
 </div>

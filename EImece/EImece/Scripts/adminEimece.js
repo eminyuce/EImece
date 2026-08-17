@@ -25,7 +25,7 @@ function deleteBaseContentMainImage(contentId, ImageId, contentClass, confirmati
 }
 
 /**
- * Reusable admin delete confirmation (Bootstrap 3 modal).
+ * Reusable admin delete confirmation (Bootstrap 5 modal).
  * options: { title, message, entityName, itemCount, deleteButtonText, cancelButtonText, onConfirm }
  * onConfirm(done): call done() after success, done(false) to keep the dialog open on failure.
  * If onConfirm takes no arguments, the dialog closes immediately after invoking it.
@@ -83,7 +83,7 @@ function showDeleteConfirmation(options) {
         $dialog.toggleClass("is-loading", state.loading);
         $ok.prop("disabled", state.loading);
         $cancel.prop("disabled", state.loading);
-        $modal.find(".close").prop("disabled", state.loading);
+        $modal.find(".btn-close").prop("disabled", state.loading);
         if (state.loading) {
             $modal.attr("aria-busy", "true");
         } else {
@@ -93,7 +93,11 @@ function showDeleteConfirmation(options) {
 
     function closeModal() {
         setLoading(false);
-        $modal.modal("hide");
+        if (window.bootstrap && bootstrap.Modal && $modal[0]) {
+            bootstrap.Modal.getOrCreateInstance($modal[0]).hide();
+        } else if ($modal.modal) {
+            $modal.modal("hide");
+        }
     }
 
     function finish(success) {
@@ -156,7 +160,11 @@ function showDeleteConfirmation(options) {
     });
 
     setLoading(false);
-    $modal.modal("show");
+    if (window.bootstrap && bootstrap.Modal && $modal[0]) {
+        bootstrap.Modal.getOrCreateInstance($modal[0]).show();
+    } else if ($modal.modal) {
+        $modal.modal("show");
+    }
 }
 
 function submitAdminDeleteForm(url, id) {
@@ -244,7 +252,12 @@ $(document).ready(function () {
 
         function activateTab(href) {
             var $link = $form.find('.admin-edit-tabs a[href="' + href + '"]');
-            if ($link.length) {
+            if (!$link.length) {
+                return;
+            }
+            if (window.bootstrap && bootstrap.Tab) {
+                bootstrap.Tab.getOrCreateInstance($link[0]).show();
+            } else if ($link.tab) {
                 $link.tab("show");
             }
         }
@@ -269,8 +282,8 @@ $(document).ready(function () {
                 activateTab("#admin-edit-tab-fields");
             });
 
-        $form.off("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-toggle="tab"]')
-            .on("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-toggle="tab"]', function (e) {
+        $form.off("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-bs-toggle="tab"]')
+            .on("shown.bs.tab.adminEditTabs", '.admin-edit-tabs a[data-bs-toggle="tab"]', function (e) {
                 var href = $(e.target).attr("href");
                 try {
                     if (window.sessionStorage && href) {
@@ -297,17 +310,32 @@ $(document).ready(function () {
             console.warn("Could not restore admin edit tab from sessionStorage.", err);
         }
     }
-    $("input[name=checkboxGrid]").each(function () {
-        $(this).off("click");
-        $(this).on("click", function (e) {
-            var m = $(this).is(':checked');
-            if (m) {
-                $(this).parents("tr:first").addClass('gridChecked');
-            } else {
-                $(this).parents("tr:first").removeClass('gridChecked');
+    function syncGridCheckboxRow($checkbox) {
+        var $tr = $checkbox.closest("tr");
+        var checked = $checkbox.prop("checked") === true;
+        $tr.toggleClass("eg-row-selected", checked)
+            .toggleClass("gridChecked", checked)
+            .toggleClass("table-success", checked);
+        if (!checked) {
+            $tr.removeClass("success active info table-active");
+        }
+    }
+    function syncAllGridCheckboxRows() {
+        $("input[name=checkboxGrid]").each(function () {
+            syncGridCheckboxRow($(this));
+        });
+        if (typeof window.egUpdateSelectedCount === "function") {
+            window.egUpdateSelectedCount();
+        }
+    }
+    $(document)
+        .off("change.egGridCheck", "input[name=checkboxGrid]")
+        .on("change.egGridCheck", "input[name=checkboxGrid]", function () {
+            syncGridCheckboxRow($(this));
+            if (typeof window.egUpdateSelectedCount === "function") {
+                window.egUpdateSelectedCount();
             }
         });
-    });
     function OrderingItem() {
         var item = this;
         item.Id = "";
@@ -333,7 +361,7 @@ $(document).ready(function () {
         return jsonRequest;
     }
     var YOUR_MESSAGE_STRING_CONST = $("#AdminMultiSelectDeleteConfirmMessage").text();
-    $("#DeleteAll").click(function () {
+    $("#DeleteAll").on("click", function () {
         var selectedCount = GetSelectedCheckBoxValuesArray().length;
         if (selectedCount === 0) {
             showAdminAjaxError($("#CheckboxesDataTableDoesNotSelected").val() || "Lütfen en az bir kayıt seçin.");
@@ -347,7 +375,7 @@ $(document).ready(function () {
             deleteButtonText: $deleteModal.attr("data-bulk-delete-text") || $(this).text().trim(),
             onConfirm: function (done) {
                 var postData = GetSelectedCheckBoxValues();
-                var parsedPostData = jQuery.parseJSON(postData);
+                var parsedPostData = JSON.parse(postData);
                 if (parsedPostData.values.length > 0) {
                     var tableName = $("[data-gridname]").attr("data-gridname");
                     ajaxMethodCall(postData, "/admin/Ajax/Delete" + tableName + "Item", function (data) {
@@ -385,7 +413,7 @@ $(document).ready(function () {
             onConfirm: onConfirm
         });
     }
-    $("#OrderingAll").click(function () {
+    $("#OrderingAll").on("click", function () {
         //  console.log("OrderingAll is clicked.");
         var postData = GetSelectedOrderingValues();
         //  console.log(postData);
@@ -414,32 +442,24 @@ $(document).ready(function () {
         return itemArray;
     }
 
-    $("#DeselectAll").click(function () {
-        var i = 0;
-        $("input[name=checkboxGrid]").each(function () {
-            $(this).parents("tr:first").removeClass('gridChecked');
-            var m = $(this).prop('checked', false);
-        });
+    $("#DeselectAll").on("click", function () {
+        $("input[name=checkboxGrid]").prop("checked", false);
+        syncAllGridCheckboxRows();
     });
-    $("#SelectAll").click(function () {
-        //  console.log("SelectAll is clicked.");
-        var i = 0;
-        $("input[name=checkboxGrid]").each(function () {
-            var selectedId = $(this).attr('gridkey-id');
-            $(this).parents("tr:first").addClass('gridChecked');
-            var m = $(this).prop('checked', true);
-        });
+    $("#SelectAll").on("click", function () {
+        $("input[name=checkboxGrid]").prop("checked", true);
+        syncAllGridCheckboxRows();
     });
 
-    $("#SetStateOffAll").click(function () {
+    $("#SetStateOffAll").on("click", function () {
         console.log("SetStateOffAll is clicked.");
         changeState(false);
     });
-    $("#SetStateOnAll").click(function () {
+    $("#SetStateOnAll").on("click", function () {
         //  console.log("SetStateOnAll is clicked.");
         changeState(true);
     });
-    $("#ProductStateChanged").click(function (e) {
+    $("#ProductStateChanged").on("click", function (e) {
         e.preventDefault();
 
         var ProductStateSelection = Number.parseInt($("#ProductStateSelection").val(), 10);
@@ -477,7 +497,7 @@ $(document).ready(function () {
             displayMessage("error", $("#CheckboxesDataTableDoesNotSelected").val());
         }
     }
-    $("#GridListItemSize").change(function (e) {
+    $("#GridListItemSize").on("change", function (e) {
         var originalURL = window.location.href;
         var q = getQueryStringParameter(originalURL, "GridPageSize");
         if (!isEmpty(q)) {
@@ -690,10 +710,10 @@ function changeStateSuccess(data) {
     data.values.forEach(function (entry) {
         var $span = $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]');
         if (entry.IsActive) {
-            $span.attr('class', 'eg-status-icon gridActiveIcon glyphicon glyphicon-ok-circle');
+            $span.attr('class', 'eg-status-icon gridActiveIcon fa fa-check-circle');
             $span.attr('grid-data-value', 'True');
         } else {
-            $span.attr('class', 'eg-status-icon gridNotActiveIcon glyphicon glyphicon-remove-circle');
+            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa fa-times-circle');
             $span.attr('grid-data-value', 'False');
         }
         // Sync modern pill/switch wrappers when present (Products reference + reusable toggles).
@@ -817,7 +837,7 @@ function searchAutoComplete() {
             }
         },
         select: function (event, ui) {
-            $("#SearchButton").click();
+            $("#SearchButton").trigger("click");
         }
     });
 }
@@ -893,13 +913,13 @@ function adminTreeMarkPicked(id) {
 
 function adminTreeSetIcon($picker, state) {
     var $icon = $picker.find("[data-tree-picker-icon]");
-    $icon.removeClass("glyphicon-home glyphicon-folder-open glyphicon-exclamation-sign");
+    $icon.removeClass("fa fa-home fa fa-folder-open fa fa-exclamation-circle");
     if (state === "child") {
-        $icon.addClass("glyphicon-folder-open");
+        $icon.addClass("fa fa-folder-open");
     } else if (state === "empty") {
-        $icon.addClass("glyphicon-exclamation-sign");
+        $icon.addClass("fa fa-exclamation-circle");
     } else {
-        $icon.addClass("glyphicon-home");
+        $icon.addClass("fa fa-home");
     }
 }
 

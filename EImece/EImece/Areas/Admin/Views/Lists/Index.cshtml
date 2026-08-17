@@ -1,4 +1,4 @@
-@model List<EImece.Domain.Entities.List>
+﻿@model List<EImece.Domain.Entities.List>
 @using Griddly.Mvc
 @using Resources
 
@@ -8,7 +8,7 @@
     var controllerName = "Lists";
 }
 
-<h2>@AdminResource.ProductSpecTemplateItemList</h2>
+<h2 class="admin-page-title">@AdminResource.ProductSpecTemplateItemList</h2>
 <hr class="adminLine" />
 
 <div class="admin-workflow-callout">
@@ -17,15 +17,15 @@
     Sonraki adım: <a href="@Url.Action("Index", "Templates")">Şablonlar</a>.
 </div>
 
-<div class="panel panel-info">
-    @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-        {"controllerName",controllerName},
-        {"StateTypes","State"},
-        {"orderingButton",true},
-        {"selectAll",true},
-        {"deleteAll",true},
-        {"SetStateOnOrOff",true}
-    })
-</div>
+@Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
+    {"controllerName",controllerName},
+    {"StateTypes","State"},
+    {"orderingButton",true},
+    {"selectAll",true},
+    {"deleteAll",true},
+    {"SetStateOnOrOff",true}
+})
+
+@Html.Partial("Grid/_GridChrome")
 
 <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"] })"></div>

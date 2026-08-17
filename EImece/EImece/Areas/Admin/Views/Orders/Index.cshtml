@@ -23,4 +23,6 @@
     {"IsSearchFormEnabled", true}
 })
 
+@Html.Partial("Grid/_GridChrome")
+
 <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"] })"></div>

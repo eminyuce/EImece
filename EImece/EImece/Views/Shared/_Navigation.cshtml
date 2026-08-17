@@ -17,7 +17,7 @@
             <!-- Site menu-->
             <ul class="navbar-nav">
                 <li class="nav-item dropdown mega-dropdown dropdown-more">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Resources.Resource.ProductCategories <i data-feather="more-horizontal" aria-hidden="true"></i></a>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Resources.Resource.ProductCategories <i data-feather="more-horizontal" aria-hidden="true"></i></a>
                     <div class="dropdown-menu">
                         <div class="dropdown-inner">
                             @for (int i = 0; i < productCategories.Count; i++)
@@ -97,7 +97,7 @@ var productCategoryLink = productCategory.ProductCategoryLink;
     if (menuTreeModel.Childrens.IsNotEmpty())
     {
 <li class="nav-item dropdown @activeClass">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">@menu.Name</a>
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">@menu.Name</a>
     <ul class="dropdown-menu">
         @foreach (var menuChildren in menuTreeModel.Childrens)
         {

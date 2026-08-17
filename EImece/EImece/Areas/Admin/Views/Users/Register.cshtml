@@ -13,45 +13,45 @@
 @Html.AntiForgeryToken()
 @Html.AdminValidationSummary()
 
-<div class="form-group">
-    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+<div class="form-group row mb-3">
+    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
     </div>
 </div>
-<div class="form-group">
-    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+<div class="form-group row mb-3">
+    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        <span class="label label-danger text-uppercase">
+        <span class="label text-bg-danger text-uppercase">
             @AdminResource.PasswordInfoMessage
         </span>
     </div>
 </div>
-<div class="form-group">
-    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+<div class="form-group row mb-3">
+    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
     </div>
 </div>
 
     // Add the LastName, FirstName, and Email Properties:
-<div class="form-group">
-    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+<div class="form-group row mb-3">
+    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
     </div>
 </div>
-<div class="form-group">
-    @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+<div class="form-group row mb-3">
+    @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
     </div>
 </div>
 
-<div class="form-group">
+<div class="form-group row mb-3">
     <div class="col-md-offset-2 col-md-10">
-        <input type="submit" class="btn btn-success btn-block" value="@AdminResource.Register" />
+        <input type="submit" class="btn btn-success w-100" value="@AdminResource.Register" />
     </div>
 </div>
 }

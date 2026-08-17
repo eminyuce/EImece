@@ -47,9 +47,9 @@
                     </a>
                             }
                 </td>
-                <td class="text-left name"><a href="@c.Product.DetailPageUrl">@c.Product.Name</a></td>
-                <td class="text-right">x @c.Quantity</td>
-                <td class="text-right amount">@String.Format("{0:c}", c.TotalPrice) </td>
+                <td class="text-start name"><a href="@c.Product.DetailPageUrl">@c.Product.Name</a></td>
+                <td class="text-end">x @c.Quantity</td>
+                <td class="text-end amount">@String.Format("{0:c}", c.TotalPrice) </td>
             </tr>
                 }
             <tr>
@@ -62,10 +62,10 @@
                 <td>
                     @shoppingCart.Customer.Address
                 </td>
-                <td class="text-right">
+                <td class="text-end">
                     @shoppingCart.TotalItemCount
                 </td>
-                <td class="text-right amount">
+                <td class="text-end amount">
                     @shoppingCart.TotalPrice.CurrencySign()
                 </td>
 
@@ -76,10 +76,10 @@
                 </td>
                 <td>
                 </td>
-                <td class="text-right">
+                <td class="text-end">
                     @shoppingCart.TotalItemCount
                 </td>
-                <td class="text-right amount">
+                <td class="text-end amount">
                     @shoppingCart.TotalPrice.CurrencySign()
                 </td>
                     }

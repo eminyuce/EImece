@@ -54,9 +54,9 @@
 @Html.Partial("_ReportHeader")
 @Html.Partial("_ReportExportButtons")
 
-<div class="panel panel-default report-filter-panel">
-    <div class="panel-heading">Filtreler</div>
-    <div class="panel-body">
+<div class="card report-filter-panel">
+    <div class="card-header">Filtreler</div>
+    <div class="card-body">
         @using (Html.BeginForm("ProductInventory", "Report", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
@@ -64,14 +64,14 @@
 
             <div class="report-filter-row">
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         @Html.LabelFor(m => m.State, "Durum")
                         @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "Örn. Active" })
                         @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="IsCampaign">Kampanya</label>
                         <div class="checkbox">
                             <label>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="MainPage">Ana Sayfa</label>
                         <div class="checkbox">
                             <label>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="report-filter-field report-filter-actions">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label>&nbsp;</label>
                         <div>
                             <button type="submit" class="btn btn-primary">Raporu Getir</button>

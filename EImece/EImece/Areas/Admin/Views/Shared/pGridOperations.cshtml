@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using Resources;
 @using EImece.Domain.Models.Enums;
 @{
@@ -34,8 +34,8 @@
     var currentSearch = Request.QueryString["search"].ToStr();
 }
 
-<div class="panel panel-info admin-grid-ops eg-bulk-bar">
-    <div class="panel-body">
+<div class="card border-info admin-grid-ops eg-bulk-bar">
+    <div class="card-body">
 
         @if (isNewRecordButtonEnabled || IsSearchFormEnabled || IsExcelButtonEnabled)
         {
@@ -43,7 +43,7 @@
                 @if (isNewRecordButtonEnabled)
                 {
                     <a class="btn btn-primary eg-ops-new" href="@Url.Action("SaveOrEdit", controllerName)">
-                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         <span>@NewRecordText</span>
                     </a>
                 }
@@ -60,13 +60,13 @@
                 @if (IsExcelButtonEnabled)
                 {
                     <fieldset class="eg-ops-export" style="border:0;padding:0;margin:0;min-width:0">
-                        <legend class="sr-only">@AdminResource.Excel</legend>
-                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch })" title="@AdminResource.Excel">
-                            <i class="glyphicon glyphicon-export" aria-hidden="true"></i>
+                        <legend class="visually-hidden">@AdminResource.Excel</legend>
+                        <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch })" title="@AdminResource.Excel">
+                            <i class="fa fa-upload" aria-hidden="true"></i>
                             <span>@AdminResource.Excel</span>
                         </a>
-                        <a class="btn btn-default btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "csv", search = currentSearch })" title="@AdminResource.Csv">
-                            <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
+                        <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "csv", search = currentSearch })" title="@AdminResource.Csv">
+                            <i class="fa fa-download" aria-hidden="true"></i>
                             <span>@AdminResource.Csv</span>
                         </a>
                     </fieldset>
@@ -79,7 +79,7 @@
             <details class="eg-ops-more" open>
                 <summary class="eg-ops-more-summary">
                     <span class="eg-ops-more-summary-main">
-                        <i class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></i>
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                         <span>Toplu işlemler</span>
                     </span>
                     <span class="eg-ops-more-hint">Seç, yayınla, sil…</span>
@@ -89,13 +89,13 @@
                     @if (selectAll)
                     {
                         <fieldset class="admin-grid-toolbar-group eg-ops-group eg-ops-group-select" style="border:0;padding:0;margin:0;min-width:0">
-                            <legend class="sr-only">@GridSelectAllButtonText</legend>
-                            <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="SelectAll" title="@GridSelectAllButtonText">
-                                <i class="glyphicon glyphicon-check" aria-hidden="true"></i>
+                            <legend class="visually-hidden">@GridSelectAllButtonText</legend>
+                            <button type="button" class="btn btn-secondary btn-sm eg-ops-btn" id="SelectAll" title="@GridSelectAllButtonText">
+                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                 <span>Tümü</span>
                             </button>
-                            <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="DeselectAll" title="@GridDeSelectAllButtonText">
-                                <i class="glyphicon glyphicon-unchecked" aria-hidden="true"></i>
+                            <button type="button" class="btn btn-secondary btn-sm eg-ops-btn" id="DeselectAll" title="@GridDeSelectAllButtonText">
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
                                 <span>Temizle</span>
                             </button>
                         </fieldset>
@@ -104,11 +104,11 @@
                     @if (SetStateOnOrOff)
                     {
                         <fieldset class="admin-grid-toolbar-group eg-ops-group" style="border:0;padding:0;margin:0;min-width:0">
-                            <legend class="sr-only">@State</legend>
-                            <label class="sr-only" for="ItemStateSelection">@State</label>
+                            <legend class="visually-hidden">@State</legend>
+                            <label class="visually-hidden" for="ItemStateSelection">@State</label>
                             @if (StateTypes.Equals("State,ImageState,MainPage,IsCampaign"))
                             {
-                                <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <select class="form-select form-select-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
                                     <option value="State">@State</option>
                                     <option value="ImageState">@ImageState</option>
                                     <option value="MainPage">@MainPage</option>
@@ -117,7 +117,7 @@
                             }
                             else if (StateTypes.Equals("State,ImageState,MainPage"))
                             {
-                                <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <select class="form-select form-select-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
                                     <option value="State">@State</option>
                                     <option value="ImageState">@ImageState</option>
                                     <option value="MainPage">@MainPage</option>
@@ -125,7 +125,7 @@
                             }
                             else if (StateTypes.Equals("State,ImageState"))
                             {
-                                <select class="form-control input-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
+                                <select class="form-select form-select-sm admin-grid-state-select eg-ops-select" name="ItemStateSelection" id="ItemStateSelection" title="@State">
                                     <option value="State">@State</option>
                                     <option value="ImageState">@ImageState</option>
                                 </select>
@@ -136,11 +136,11 @@
                             }
 
                             <button type="button" class="btn btn-success btn-sm eg-ops-btn eg-ops-btn-success" id="SetStateOnAll" title="@GridActiveSelectedButtonText">
-                                <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
+                                <i class="fa fa-check" aria-hidden="true"></i>
                                 <span>Yayınla</span>
                             </button>
                             <button type="button" class="btn btn-warning btn-sm eg-ops-btn eg-ops-btn-warning" id="SetStateOffAll" title="@GridDeActiveSelectedButtonText">
-                                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                <i class="fa fa-times" aria-hidden="true"></i>
                                 <span>Kaldır</span>
                             </button>
                         </fieldset>
@@ -153,9 +153,9 @@
                     @if (orderingButton)
                     {
                         <fieldset class="admin-grid-toolbar-group eg-ops-group" style="border:0;padding:0;margin:0;min-width:0">
-                            <legend class="sr-only">@GridOrderingAllButtonText</legend>
-                            <button type="button" class="btn btn-default btn-sm eg-ops-btn" id="OrderingAll" title="@GridOrderingAllButtonText">
-                                <i class="glyphicon glyphicon-sort" aria-hidden="true"></i>
+                            <legend class="visually-hidden">@GridOrderingAllButtonText</legend>
+                            <button type="button" class="btn btn-secondary btn-sm eg-ops-btn" id="OrderingAll" title="@GridOrderingAllButtonText">
+                                <i class="fa fa-sort" aria-hidden="true"></i>
                                 <span>Sıra</span>
                             </button>
                         </fieldset>
@@ -164,16 +164,16 @@
                     @if (ProductState)
                     {
                         <fieldset class="admin-grid-toolbar-group admin-grid-toolbar-product eg-ops-group eg-ops-group-product" style="border:0;padding:0;margin:0;min-width:0">
-                            <legend class="sr-only">@ProductStateChangeText</legend>
-                            <label class="sr-only" for="ProductStateSelection">@ProductStateChangeText</label>
-                            <select class="form-control input-sm admin-grid-state-select eg-ops-select eg-ops-select-wide" name="ProductStateSelection" id="ProductStateSelection" title="@ProductStateChangeText">
+                            <legend class="visually-hidden">@ProductStateChangeText</legend>
+                            <label class="visually-hidden" for="ProductStateSelection">@ProductStateChangeText</label>
+                            <select class="form-select form-select-sm admin-grid-state-select eg-ops-select eg-ops-select-wide" name="ProductStateSelection" id="ProductStateSelection" title="@ProductStateChangeText">
                                 @foreach (EImece.Domain.Models.Enums.ProductState state in Enum.GetValues(typeof(EImece.Domain.Models.Enums.ProductState)))
                                 {
                                     <option value="@((int)state)">@GetProductStateResourceText(state)</option>
                                 }
                             </select>
                             <button type="button" class="btn btn-info btn-sm eg-ops-btn eg-ops-btn-info" id="ProductStateChanged" title="@ProductStateChangeText">
-                                <i class="glyphicon glyphicon-refresh" aria-hidden="true"></i>
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
                                 <span>Güncelle</span>
                             </button>
                         </fieldset>
@@ -182,9 +182,9 @@
                     @if (deleteAll)
                     {
                         <fieldset class="admin-grid-toolbar-group eg-ops-group eg-ops-group-danger" style="border:0;padding:0;margin:0;min-width:0">
-                            <legend class="sr-only">@GridDeleteSelectedButtonText</legend>
+                            <legend class="visually-hidden">@GridDeleteSelectedButtonText</legend>
                             <button type="button" class="btn btn-danger btn-sm eg-ops-btn eg-ops-btn-danger" id="DeleteAll" title="@GridDeleteSelectedButtonText">
-                                <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                <i class="fa fa-trash" aria-hidden="true"></i>
                                 <span>Sil</span>
                             </button>
                         </fieldset>

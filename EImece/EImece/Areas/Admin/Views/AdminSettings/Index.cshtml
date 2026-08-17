@@ -11,7 +11,7 @@
     var activeTab = productPriceEnabled ? "cargo" : "seo";
 }
 
-<h2>@AdminResource.AdminGeneralSettings</h2>
+<h2 class="admin-page-title">@AdminResource.AdminGeneralSettings</h2>
 <hr class="adminLine" />
 
 @{ ViewData["HelpId"] = "generalSettingsHelp"; }
@@ -32,13 +32,13 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="row" style="margin-bottom: 20px;">
+    <div class="row mb-3 admin-settings-save-row">
         <div class="col-md-9">
             @Html.AdminValidationSummary()
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-success btn-block btn-lg">
-                <i class="glyphicon glyphicon-floppy-disk"></i> @AdminResource.SaveButtonText
+            <button type="submit" class="btn btn-success w-100">
+                <i class="fa fa-save"></i> @AdminResource.SaveButtonText
             </button>
         </div>
     </div>
@@ -46,23 +46,23 @@
     <div class="row">
         <!-- Vertical Tabs Menu -->
         <div class="col-md-3">
-            <ul class="nav nav-pills nav-stacked" id="settingsTabs" style="border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9; padding: 10px 0;">
+            <ul class="nav nav-pills flex-column admin-settings-pills" id="settingsTabs" role="tablist">
                 @if (productPriceEnabled)
                 {
-                    <li class="@(activeTab == "cargo" ? "active" : "")">
-                        <a data-toggle="pill" href="#tab-cargo">
-                            <i class="glyphicon glyphicon-send" style="margin-right:8px;"></i> @AdminResource.CargoSettings
+                    <li class="nav-item">
+                        <a class="nav-link @(activeTab == "cargo" ? "active" : "")" data-bs-toggle="pill" href="#tab-cargo" role="tab" aria-selected="@(activeTab == "cargo" ? "true" : "false")">
+                            <i class="fa fa-paper-plane me-2" aria-hidden="true"></i> @AdminResource.CargoSettings
                         </a>
                     </li>
                 }
-                <li class="@(activeTab == "seo" ? "active" : "")">
-                    <a data-toggle="pill" href="#tab-seo">
-                        <i class="glyphicon glyphicon-search" style="margin-right:8px;"></i> @AdminResource.SeoSettings
+                <li class="nav-item">
+                    <a class="nav-link @(activeTab == "seo" ? "active" : "")" data-bs-toggle="pill" href="#tab-seo" role="tab" aria-selected="@(activeTab == "seo" ? "true" : "false")">
+                        <i class="fa fa-search me-2" aria-hidden="true"></i> @AdminResource.SeoSettings
                     </a>
                 </li>
-                <li>
-                    <a data-toggle="pill" href="#tab-footer">
-                        <i class="glyphicon glyphicon-list-alt" style="margin-right:8px;"></i> @AdminResource.FooterSettings
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#tab-footer" role="tab" aria-selected="false">
+                        <i class="fa fa-list-alt me-2" aria-hidden="true"></i> @AdminResource.FooterSettings
                     </a>
                 </li>
             </ul>
@@ -70,35 +70,35 @@
 
         <!-- Vertical Tabs Content -->
         <div class="col-md-9">
-            <div class="tab-content form-horizontal">
+            <div class="tab-content">
                 
                 @if (productPriceEnabled)
                 {
                     <!-- Cargo Settings -->
-                    <div id="tab-cargo" class="tab-pane fade @(activeTab == "cargo" ? "in active" : "")">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><h3 class="panel-title">@AdminResource.CargoSettings</h3></div>
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div id="tab-cargo" class="tab-pane fade @(activeTab == "cargo" ? "show active" : "")" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header"><h3 class="h6 mb-0">@AdminResource.CargoSettings</h3></div>
+                            <div class="card-body">
+                                <div class="form-group row mb-3">
+                                    @Html.LabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.EditorFor(model => model.CargoCompany, new { htmlAttributes = new { @class = "form-control" } })
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CargoPrice, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="form-group row mb-3">
+                                    @Html.LabelFor(model => model.CargoPrice, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.EditorFor(model => model.CargoPrice, new { htmlAttributes = new { @class = "form-control" } })
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="form-group row mb-3">
+                                    @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control" } })
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CargoDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="form-group row mb-3">
+                                    @Html.LabelFor(model => model.CargoDescription, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.TextAreaFor(model => model.CargoDescription, 3, 50, new { @class = "form-control" })
                                     </div>
@@ -109,41 +109,41 @@
                 }
 
                 <!-- SEO Settings -->
-                <div id="tab-seo" class="tab-pane fade @(activeTab == "seo" ? "in active" : "")">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><h3 class="panel-title">@AdminResource.SeoSettings</h3></div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="SiteIndexMetaTitle">
+                <div id="tab-seo" class="tab-pane fade @(activeTab == "seo" ? "show active" : "")" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header"><h3 class="h6 mb-0">@AdminResource.SeoSettings</h3></div>
+                        <div class="card-body">
+                            <div class="form-group row mb-3">
+                                <label class="col-form-label col-md-3" for="SiteIndexMetaTitle">
                                     @Html.DisplayNameFor(model => model.SiteIndexMetaTitle)
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SiteIndexMetaTitleTooltip } })
                                 </label>
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.SiteIndexMetaTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Firma Adı - Slogan / Ana Hizmetler", title = AdminResource.SiteIndexMetaTitleTooltip } })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaTitle, "", new { @class = "text-danger" })
-                                    <p class="help-block">@AdminResource.SiteIndexMetaTitleTooltip</p>
+                                    <p class="form-text">@AdminResource.SiteIndexMetaTitleTooltip</p>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="SiteIndexMetaKeywords">
+                            <div class="form-group row mb-3">
+                                <label class="col-form-label col-md-3" for="SiteIndexMetaKeywords">
                                     @Html.DisplayNameFor(model => model.SiteIndexMetaKeywords)
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SiteIndexMetaKeywordsTooltip } })
                                 </label>
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.SiteIndexMetaKeywords, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: e-ticaret, led ampul, aydınlatma, toptan", title = AdminResource.SiteIndexMetaKeywordsTooltip } })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaKeywords, "", new { @class = "text-danger" })
-                                    <p class="help-block">@AdminResource.SiteIndexMetaKeywordsTooltip</p>
+                                    <p class="form-text">@AdminResource.SiteIndexMetaKeywordsTooltip</p>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="SiteIndexMetaDescription">
+                            <div class="form-group row mb-3">
+                                <label class="col-form-label col-md-3" for="SiteIndexMetaDescription">
                                     @Html.DisplayNameFor(model => model.SiteIndexMetaDescription)
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SiteIndexMetaDescriptionTooltip } })
                                 </label>
                                 <div class="col-md-9">
                                     @Html.TextAreaFor(model => model.SiteIndexMetaDescription, 3, 50, new { @class = "form-control", placeholder = "Sitenizi tanıtan kısa ve etkili bir açıklama girin...", title = AdminResource.SiteIndexMetaDescriptionTooltip })
                                     @Html.ValidationMessageFor(model => model.SiteIndexMetaDescription, "", new { @class = "text-danger" })
-                                    <p class="help-block">@AdminResource.SiteIndexMetaDescriptionTooltip</p>
+                                    <p class="form-text">@AdminResource.SiteIndexMetaDescriptionTooltip</p>
                                 </div>
                             </div>
                         </div>
@@ -151,41 +151,41 @@
                 </div>
 
                 <!-- Footer Settings -->
-                <div id="tab-footer" class="tab-pane fade">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><h3 class="panel-title">@AdminResource.FooterSettings</h3></div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="FooterDescription">
+                <div id="tab-footer" class="tab-pane fade" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header"><h3 class="h6 mb-0">@AdminResource.FooterSettings</h3></div>
+                        <div class="card-body">
+                            <div class="form-group row mb-3">
+                                <label class="col-form-label col-md-3" for="FooterDescription">
                                     @Html.DisplayNameFor(model => model.FooterDescription)
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.FooterDescriptionTooltip } })
                                 </label>
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.FooterDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Firma — Seçili markalar, özenli teslimat.", title = AdminResource.FooterDescriptionTooltip } })
                                     @Html.ValidationMessageFor(model => model.FooterDescription, "", new { @class = "text-danger" })
-                                    <p class="help-block">@AdminResource.FooterDescriptionTooltip</p>
+                                    <p class="form-text">@AdminResource.FooterDescriptionTooltip</p>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="FooterEmailListDescription">
+                            <div class="form-group row mb-3">
+                                <label class="col-form-label col-md-3" for="FooterEmailListDescription">
                                     @Html.DisplayNameFor(model => model.FooterEmailListDescription)
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.FooterEmailListDescriptionTooltip } })
                                 </label>
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.FooterEmailListDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: Kampanya ve yeniliklerden haberdar olmak için abone olun.", title = AdminResource.FooterEmailListDescriptionTooltip } })
                                     @Html.ValidationMessageFor(model => model.FooterEmailListDescription, "", new { @class = "text-danger" })
-                                    <p class="help-block">@AdminResource.FooterEmailListDescriptionTooltip</p>
+                                    <p class="form-text">@AdminResource.FooterEmailListDescriptionTooltip</p>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="FooterHtmlDescription">
+                            <div class="form-group row mb-3">
+                                <label class="col-form-label col-md-3" for="FooterHtmlDescription">
                                     @Html.DisplayNameFor(model => model.FooterHtmlDescription)
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.FooterHtmlDescriptionTooltip } })
                                 </label>
                                 <div class="col-md-9">
                                     @Html.TextAreaFor(model => model.FooterHtmlDescription, 10, 50, new { @class = "form-control", placeholder = "<p>© Firma Adı. Tüm hakları saklıdır.</p>", title = AdminResource.FooterHtmlDescriptionTooltip })
                                     @Html.ValidationMessageFor(model => model.FooterHtmlDescription, "", new { @class = "text-danger" })
-                                    <p class="help-block">@AdminResource.FooterHtmlDescriptionTooltip</p>
+                                    <p class="form-text">@AdminResource.FooterHtmlDescriptionTooltip</p>
                                 </div>
                             </div>
                         </div>
@@ -197,42 +197,22 @@
     </div>
 }
 
-<style>
-    /* Styling for the nav pills */
-    #settingsTabs > li > a {
-        border-radius: 4px;
-        margin-bottom: 2px;
-        color: #555;
-    }
-    #settingsTabs > li.active > a,
-    #settingsTabs > li.active > a:hover,
-    #settingsTabs > li.active > a:focus {
-        background-color: #337ab7;
-        color: #fff;
-    }
-    .tab-content {
-        padding-left: 15px;
-    }
-    .tab-pane .panel-heading {
-        background-color: #f5f5f5;
-        font-weight: bold;
-    }
-</style>
-
 <script>
-    // Tab persist via hash in URL
-    $(function(){
-        var hash = window.location.hash;
-        if (hash) {
-            $(".nav-pills a[href='" + hash + "']").tab('show');
+    (function () {
+        function showPill(hash) {
+            if (!hash || !window.bootstrap || !bootstrap.Tab) { return; }
+            var el = document.querySelector("#settingsTabs a[href='" + hash + "']");
+            if (el) { bootstrap.Tab.getOrCreateInstance(el).show(); }
         }
-        $('.nav-pills a').click(function (e) {
-            $(this).tab('show');
-            var scrollmem = $('body').scrollTop() || $('html').scrollTop();
-            window.location.hash = this.hash;
-            $('html,body').scrollTop(scrollmem);
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.location.hash) { showPill(window.location.hash); }
+            document.querySelectorAll("#settingsTabs a[data-bs-toggle='pill']").forEach(function (link) {
+                link.addEventListener("shown.bs.tab", function () {
+                    if (this.hash) { history.replaceState(null, "", this.hash); }
+                });
+            });
         });
-    });
+    })();
 </script>
 
 @Html.Partial("_AdminInitTooltips")

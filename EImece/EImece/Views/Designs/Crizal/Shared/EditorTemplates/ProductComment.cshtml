@@ -29,7 +29,7 @@
                         <span class="crizal-review-modal__icon" aria-hidden="true"><i class="fas fa-comment-dots"></i></span>
                         <h4 class="modal-title" id="leaveReviewTitle">@Resource.LeaveReview</h4>
                     </div>
-                    <button class="crizal-review-modal__close" type="button" data-bs-dismiss="modal" data-dismiss="modal" aria-label="@Resource.Close">&times;</button>
+                    <button class="crizal-review-modal__close" type="button" data-bs-dismiss="modal" data-bs-dismiss="modal" aria-label="@Resource.Close">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="crizal-review-modal__alert alert alert-danger@(string.IsNullOrEmpty(reviewError) ? " d-none" : "")" role="alert" data-server-error="@(string.IsNullOrEmpty(reviewError) ? "false" : "true")">@reviewError</div>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="crizal-review-modal__cancel" type="button" data-bs-dismiss="modal" data-dismiss="modal">@Resource.Close</button>
+                    <button class="crizal-review-modal__cancel" type="button" data-bs-dismiss="modal" data-bs-dismiss="modal">@Resource.Close</button>
                     <button class="butn-style8 crizal-review-modal__submit" type="submit">
                         <i class="fas fa-paper-plane" aria-hidden="true"></i>
                         <span>@Resource.SubmitReview</span>
