@@ -2379,6 +2379,148 @@ label[for^="ImageState"]:not(.control-label) {
     margin-bottom: 20px;
 }
 
+/* Real-Time Overall Upload Progress Card */
+.filepond-overall-progress-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.filepond-overall-progress-card.state-uploading {
+    border-color: #93c5fd;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.08);
+}
+
+.filepond-overall-progress-card.state-completing {
+    border-color: #6ee7b7;
+    background: #f0fdf4;
+}
+
+.filepond-overall-progress-card.state-completed {
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.filepond-overall-progress-card.state-error {
+    border-color: #fca5a5;
+    background: #fef2f2;
+}
+
+.fpop-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.fpop-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fpop-status-icon {
+    color: #3b82f6;
+    font-size: 16px;
+}
+
+.state-completed .fpop-status-icon {
+    color: #16a34a;
+}
+
+.state-error .fpop-status-icon {
+    color: #dc2626;
+}
+
+.fpop-status-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.state-completed .fpop-status-title {
+    color: #15803d;
+}
+
+.state-error .fpop-status-title {
+    color: #b91c1c;
+}
+
+.fpop-percentage {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2563eb;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.state-completed .fpop-percentage {
+    color: #16a34a;
+}
+
+.state-error .fpop-percentage {
+    color: #dc2626;
+}
+
+.fpop-count-row {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.fpop-bar-track {
+    width: 100%;
+    height: 8px;
+    background-color: #e2e8f0;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.fpop-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 9999px;
+    transition: width 0.15s ease-out;
+}
+
+.state-completing .fpop-bar-fill {
+    background: linear-gradient(90deg, #2563eb 0%, #16a34a 100%);
+}
+
+.state-completed .fpop-bar-fill {
+    background: #16a34a;
+}
+
+.state-error .fpop-bar-fill {
+    background: #dc2626;
+}
+
+.fpop-metrics-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: #64748b;
+    font-variant-numeric: tabular-nums;
+}
+
+.fpop-metric {
+    font-weight: 500;
+}
+
+.fpop-separator {
+    color: #cbd5e1;
+    font-weight: bold;
+}
+
 /* Post-Upload Success Card */
 .admin-media-upload-success-card {
     background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);

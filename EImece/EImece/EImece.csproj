@@ -524,6 +524,7 @@
     <Content Include="Content\filepond\filepond-plugin-image-preview.min.css" />
     <Content Include="Scripts\filepond\filepond.min.js" />
     <Content Include="Scripts\filepond\filepond.jquery.js" />
+    <Content Include="Scripts\admin\filepond-progress-tracker.js" />
     <Content Include="Scripts\filepond\filepond-plugin-image-preview.min.js" />
     <Content Include="Scripts\filepond\filepond-plugin-file-validate-type.min.js" />
     <Content Include="Scripts\filepond\filepond-plugin-file-validate-size.min.js" />

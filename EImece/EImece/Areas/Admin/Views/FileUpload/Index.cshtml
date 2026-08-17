@@ -32,6 +32,10 @@
         var $btnUploadMore = $('.btn-upload-more');
         var uploadedBatchCount = 0;
 
+        var progressTracker = window.FilePondOverallProgressTracker ? new FilePondOverallProgressTracker({
+            container: '.filepond-overall-progress-card'
+        }) : null;
+
         function formatBytes(bytes) {
             if (!bytes || bytes === 0) return '0 B';
             var k = 1024;
@@ -101,14 +105,31 @@
                     }
                 }
             },
-            onaddfile: function () {
+            onaddfile: function (error, file) {
                 $successCard.slideUp(150);
+                if (progressTracker && file) progressTracker.addFile(file);
                 updateHeaderSummary();
             },
-            onremovefile: function () {
+            onremovefile: function (error, file) {
+                if (progressTracker && file) progressTracker.removeFile(file.id);
                 updateHeaderSummary();
             },
-            onprocessfile: function () {
+            onprocessfilestart: function (file) {
+                if (progressTracker) progressTracker.startProcessing();
+            },
+            onprocessfileprogress: function (file, progress) {
+                if (progressTracker && file) progressTracker.updateProgress(file, progress);
+            },
+            onprocessfile: function (error, file) {
+                if (progressTracker && file) progressTracker.setFileComplete(file, error);
+                updateHeaderSummary();
+            },
+            onprocessfileabort: function (file) {
+                if (progressTracker && file) progressTracker.setFileComplete(file, true);
+                updateHeaderSummary();
+            },
+            onprocessfileerror: function (file, error) {
+                if (progressTracker && file) progressTracker.setFileComplete(file, error);
                 updateHeaderSummary();
             },
             onprocessfiles: function () {
@@ -129,6 +150,9 @@
             if (pond) {
                 pond.removeFiles();
             }
+            if (progressTracker) {
+                progressTracker.reset();
+            }
             uploadedBatchCount = 0;
             $successCard.slideUp(150);
             updateHeaderSummary();
@@ -138,8 +162,11 @@
             var pond = $input.filepond ? $input.filepond('getPond') : null;
             if (pond) {
                 pond.removeFiles();
-                updateHeaderSummary();
             }
+            if (progressTracker) {
+                progressTracker.reset();
+            }
+            updateHeaderSummary();
         });
     });
 </script>

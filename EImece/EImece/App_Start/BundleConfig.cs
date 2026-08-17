@@ -96,7 +96,8 @@ namespace EImece
                     "~/Scripts/filepond/filepond-plugin-image-exif-orientation.min.js",
                     "~/Scripts/filepond/filepond-plugin-image-validate-size.min.js",
                     "~/Scripts/filepond/filepond.min.js",
-                    "~/Scripts/filepond/filepond.jquery.js"
+                    "~/Scripts/filepond/filepond.jquery.js",
+                    "~/Scripts/admin/filepond-progress-tracker.js"
                     ));
 
             bundles.Add(new StyleBundle("~/Content/blueimp-gallery").Include(

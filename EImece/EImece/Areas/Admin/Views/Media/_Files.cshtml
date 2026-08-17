@@ -1,6 +1,33 @@
 @using Resources;
 
 <div class="admin-media-modern-uploader">
+    <!-- Real-Time Overall Upload Progress Card -->
+    <div class="filepond-overall-progress-card" style="display: none;" aria-live="polite">
+        <div class="fpop-header">
+            <div class="fpop-title-wrap">
+                <span class="fpop-status-icon"><i class="glyphicon glyphicon-cloud-upload"></i></span>
+                <span class="fpop-status-title">Fotoğraflar yükleniyor</span>
+            </div>
+            <div class="fpop-percentage">0%</div>
+        </div>
+
+        <div class="fpop-count-row">
+            <span class="fpop-file-count-text">0 / 0 fotoğraf yüklendi</span>
+        </div>
+
+        <div class="fpop-bar-track">
+            <div class="fpop-bar-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: 0%;"></div>
+        </div>
+
+        <div class="fpop-metrics-row">
+            <span class="fpop-metric fpop-speed-text">-- Mbit/s</span>
+            <span class="fpop-separator">·</span>
+            <span class="fpop-metric fpop-bytes-text">0 MB / 0 MB</span>
+            <span class="fpop-separator">·</span>
+            <span class="fpop-metric fpop-eta-text">Hesaplanıyor...</span>
+        </div>
+    </div>
+
     <!-- Post-Upload Success Card with Direct Navigation / Refresh Actions -->
     <div class="admin-media-upload-success-card" style="display: none;">
         <div class="success-message-wrap">
