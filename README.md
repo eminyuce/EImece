@@ -7,6 +7,7 @@
 | **Runtime** | .NET Framework **4.8.1** |
 | **Web** | ASP.NET MVC **5.3**, ASP.NET Identity, OWIN |
 | **Data** | Entity Framework **6.5**, SQL Server |
+| **Admin lists** | **Griddly 3.8** (`Griddly.Core`) — Grid.Mvc has been removed |
 | **Payments** | [Iyzico](https://www.iyzico.com/en) (Strategy pattern) |
 | **Storefront designs** | Interchangeable Razor designs (**Crizal**, **Modern**) |
 | **License** | [Apache License 2.0](LICENSE) |
@@ -19,6 +20,7 @@
 
 - [Why EImece](#why-eimece)
 - [Key features](#key-features)
+- [Admin grids (Griddly)](#admin-grids-griddly)
 - [Architecture](#architecture)
 - [Technology stack](#technology-stack)
 - [Repository layout](#repository-layout)
@@ -70,10 +72,19 @@ EImece is aimed at shops that need a complete storefront and admin back office w
 - Customers, users, and customer roles
 - Orders — status, cargo numbers, internal notes
 - Products, categories, brands, tags, and bulk price updates
-- Media library and file uploads
+- List pages powered by **Griddly 3.8** (async `IndexGrid`, AJAX pager/sort)
+- **TinyMCE** for rich admin content (products, stories, menus, mail templates)
+- Media library with **FilePond-style** uploads
 - Menus, main-page slides, stories, FAQs, coupons, subscribers
 - Mail templates, settings, and application logs
 - Authenticated **metrics** endpoint for in-process counters
+
+**Logins**
+
+| Who | URL |
+|-----|-----|
+| Administrators | `/account/adminlogin/` |
+| Customers | `/account/login/` |
 
 ### Customer area (`/Customers`)
 
@@ -93,6 +104,35 @@ EImece is aimed at shops that need a complete storefront and admin back office w
 
 ---
 
+## Admin grids (Griddly)
+
+Admin list pages use **Griddly 3.8** (`Griddly.Core` / `Griddly.Mvc`). **Grid.Mvc has been removed** — do not restore that package or its helpers.
+
+### How lists load
+
+- Each list has a normal `Index` view plus an **`IndexGrid`** action that returns `QueryableResult<T>`.
+- Keep **`IndexGrid` async** (`async Task<ActionResult>`) so EF6 queries can `await` without blocking the thread pool.
+- The list view hosts `@Html.Partial("Grid/_GridChrome")` and a `.js-griddly-async` container whose `data-url` points at `IndexGrid`.
+- **First paint** is full table HTML: column headers, pager, and the blue record-count bar.
+- Later **pager / sort** requests replace **tbody** via AJAX (not a full page reload).
+
+### Skin and ProductState badges
+
+- Skin: `Content/adminGridModern.css` + `Content/adminGriddlyCompat.css` (loaded with `Content/griddly.css`).
+- **ProductState** badges are color-coded, for example: in stock **green**, out of stock **red**, pre-order **blue** (also discontinued, backorder, coming soon, limited stock, reserved, awaiting restock, not for sale).
+
+### Adding a new admin list
+
+Copy an existing pair rather than inventing a new grid stack:
+
+1. `Areas/Admin/Views/{Controller}/IndexGrid.cshtml` — `GriddlySettings<T>` columns and templates
+2. `{Controller}Controller.IndexGrid` — **async**, `CanRenderGrid()` guard, `return new QueryableResult<T>(query)`
+3. `Index.cshtml` — chrome + `.js-griddly-async` pointing at `IndexGrid`
+
+Reference implementations: `Brands`, `Products`, `Orders`, `Stories`.
+
+---
+
 ## Architecture
 
 ```
@@ -100,6 +140,7 @@ EImece is aimed at shops that need a complete storefront and admin back office w
 │  EImece (ASP.NET MVC 5)                                     │
 │  Controllers · Areas/Admin · Areas/Customers · Razor Views  │
 │  DesignAwareRazorViewEngine · OWIN Identity · Bundles       │
+│  Admin lists: Griddly 3.8 (async IndexGrid)                 │
 └────────────────────────────┬────────────────────────────────┘
                              │ DI (Microsoft.Extensions.DependencyInjection)
 ┌────────────────────────────▼────────────────────────────────┐
@@ -118,7 +159,7 @@ EImece is aimed at shops that need a complete storefront and admin back office w
 
 | Layer | Responsibility |
 |-------|----------------|
-| **Web (`EImece`)** | HTTP, MVC controllers, Razor views, admin/customer areas, design resolution, OWIN auth |
+| **Web (`EImece`)** | HTTP, MVC controllers, Razor views, admin/customer areas, Griddly lists, design resolution, OWIN auth |
 | **Domain (`EImece.Domain`)** | Entities, EF6 context, generic repositories, business services, caching, payments, jobs |
 | **Resources** | Localized string resources |
 | **Tests / Console** | MSTest coverage and one-off maintenance utilities |
@@ -130,6 +171,7 @@ EImece is aimed at shops that need a complete storefront and admin back office w
 - **Payment Strategy** (`IPaymentStrategy` / `PaymentContext` / `IyzicoPaymentStrategy`)
 - Design-aware Razor view engine with fallback to shared views
 - Memory cache with hierarchical keys and prefix invalidation
+- **Storefront projections + `AsNoTracking`** — public catalog reads project to DTOs at the repository boundary (see `ProductCategoryRepository` storefront methods). Admin CRUD keeps full tracked EF entities.
 
 ---
 
@@ -145,7 +187,7 @@ EImece is aimed at shops that need a complete storefront and admin back office w
 | Payments | Iyzico (`Iyzipay`) |
 | Logging / telemetry | NLog, Serilog, Application Insights **3.x**, OpenTelemetry (OTLP / Azure Monitor) |
 | Jobs | Quartz.NET (optional; disable locally with `Quartz_Scheduler_IsEnabled=False`) |
-| Front end | jQuery, Bootstrap, TinyMCE (admin content) |
+| Front end | jQuery, Bootstrap, **Griddly 3.8** (admin grids), TinyMCE (admin content), FilePond-style media uploads |
 | E2E tests | Playwright (Crizal theme against local IIS) |
 | Unit tests | MSTest |
 
@@ -228,6 +270,7 @@ cd EImece/EImece/SqlScripts
 
 - Shared seed password pattern for test users: concatenate `Test` + `123` + `!` (local/test only)
 - Known logins include `admin@eimece.test` (Admin), `editor@eimece.test`, `customer1@eimece.test`
+- Admin sign-in: `/account/adminlogin/` — customer sign-in: `/account/login/`
 - Cleanup: `CleanupDummyData.sql`, or re-run the seed script (`@CleanupFirst = 1` by default)
 - Details: [BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md)
 
@@ -254,12 +297,18 @@ chmod +x scripts/build.sh
 ### 4. Run
 
 1. Set **EImece** as the startup project.
-2. Press **F5** (or host the `EImece/EImece` folder in IIS).
-3. Default IIS Express URL is typically `http://localhost:31544` (check project Web properties if different).
-4. Confirm health:
+2. Press **F5**, or host the `EImece/EImece` folder in **IIS**.
+3. Typical local URLs:
+   - **IIS (common):** `http://localhost:81/`
+   - **IIS Express:** `http://localhost:31544/` (check project Web properties if different)
+4. Sign in:
+   - Admin: `http://localhost:81/account/adminlogin/`
+   - Customer: `http://localhost:81/account/login/`
+5. Confirm health:
 
 ```bash
-curl -s http://localhost:31544/health
+curl -s http://localhost:81/health
+# IIS Express: curl -s http://localhost:31544/health
 # Expect HTTP 200 and "Status": "UP"
 ```
 
@@ -311,7 +360,7 @@ To remove a design without breaking MSBuild publish, follow [DESIGN_REMOVAL_GUID
 
 ## Payments (Iyzico)
 
-Checkout uses **Iyzico** for real-time payment (guest and registered users), with confirmation and cargo / tracking support. PCI-sensitive card handling stays with Iyzico’s infrastructure.
+Checkout uses **Iyzico** for real-time payment (guest and registered users), with confirmation and cargo / tracking support. PCI-sensitive card handling stays with Iyzico's infrastructure.
 
 Implementation uses a **Strategy pattern**:
 
@@ -335,7 +384,7 @@ Configure Iyzico keys and base URL on the server (environment / server-only conf
 OpenTelemetry configuration (OTLP, sampling, Azure Monitor):  
 [EImece/docs/OPENTELEMETRY.md](EImece/docs/OPENTELEMETRY.md)
 
-Performance (EF6 queries, SQL indexes, MemoryCache):  
+Performance (EF6 queries, SQL indexes, MemoryCache, storefront projections):  
 [EImece/docs/PERFORMANCE_AND_CACHING.md](EImece/docs/PERFORMANCE_AND_CACHING.md)
 
 ---
@@ -347,17 +396,17 @@ Performance (EF6 queries, SQL indexes, MemoryCache):
 Tests compile on Linux but **run on Windows** with Visual Studio and a configured test database.
 
 1. Set `EIMECE_DB_CONNECTION_STRING` or a gitignored `EImece.Tests/ConnectionStrings.config`.
-2. Visual Studio → **Test → Test Explorer → Run All**, or:
+2. Visual Studio: Test Explorer, Run All, or:
 
 ```powershell
-vstest.console.exe EImece.Tests\bin\Release\EImece.Tests.dll
+vstest.console.exe EImece.Tests/bin/Release/EImece.Tests.dll
 ```
 
 Suggested first run: `ImageUtilitiesTests`, then controller integration tests that need SQL.
 
 ### End-to-end (Playwright)
 
-The `Playwright/` suite targets a local IIS site (default `http://localhost:81`) for the Crizal theme — cart, checkout, auth, navigation, responsive checks, and more. It is **not** part of the production deploy workflow.
+The `Playwright/` suite targets a local IIS site (default `http://localhost:81`) for the Crizal theme. It covers cart, checkout, auth, navigation, and responsive checks. It is **not** part of the production deploy workflow.
 
 ```bash
 cd Playwright
@@ -402,7 +451,7 @@ Full guide: **[DEPLOYMENT.md](DEPLOYMENT.md)**
 | [SECURE_CONNECTION_STRINGS.md](EImece/docs/SECURE_CONNECTION_STRINGS.md) | Env vars, `configSource`, TLS, production |
 | [OPENTELEMETRY.md](EImece/docs/OPENTELEMETRY.md) | OTLP, sampling, Azure Monitor exporter |
 | [LATENCY_PERCENTILES.md](EImece/docs/LATENCY_PERCENTILES.md) | P90/P95/P99 metrics and Admin `/metrics` |
-| [PERFORMANCE_AND_CACHING.md](EImece/docs/PERFORMANCE_AND_CACHING.md) | EF6 query tuning, SQL indexes, MemoryCache |
+| [PERFORMANCE_AND_CACHING.md](EImece/docs/PERFORMANCE_AND_CACHING.md) | EF6 query tuning, SQL indexes, MemoryCache, storefront projections |
 | [ASYNC_AWAIT_GUIDE.md](EImece/docs/ASYNC_AWAIT_GUIDE.md) | Async EF6 / thread-pool guidance |
 | [DESIGN_REMOVAL_GUIDE.md](EImece/docs/DESIGN_REMOVAL_GUIDE.md) | Removing a storefront design from the `.csproj` safely |
 | [IIS_APP_POOL_PERMISSIONS.md](EImece/docs/IIS_APP_POOL_PERMISSIONS.md) | `media/` ACL for IIS |
@@ -418,6 +467,7 @@ Full guide: **[DEPLOYMENT.md](DEPLOYMENT.md)**
 3. Prefer small, focused pull requests with a clear description of behavior changes.
 4. Build locally (or via `./scripts/build.sh` on Linux) before opening a PR.
 5. Add or update tests when changing business logic, payments, or design resolution.
+6. **Admin lists:** keep `IndexGrid` **async**; copy an existing `*Grid.cshtml` + `IndexGrid` action. **Do not add Grid.Mvc back.**
 
 Questions about runtime errors? Start with the troubleshooting tables in [BUILD_AND_RUN.md](EImece/docs/BUILD_AND_RUN.md).
 
