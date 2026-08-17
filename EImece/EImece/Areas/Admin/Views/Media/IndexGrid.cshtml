@@ -90,7 +90,7 @@
         @if (fileExists)
         {
             <div class="mt-1">
-                <button type="button" class="btn btn-outline-info btn-sm eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#myModal_@fileStorage.Id">@AdminResource.GridMainPageImageText</button>
+                <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#myModal_@fileStorage.Id"><i class="fa fa-picture-o" aria-hidden="true"></i> @AdminResource.GridMainPageImageText</button>
                 @Html.Partial("pImagePopUp", fileStorage)
             </div>
         }
