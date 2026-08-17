@@ -3336,6 +3336,8 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
 .griddly table .eg-col-position { min-width: 90px; }
 .griddly table .eg-col-status { min-width: 170px; }
 .griddly table .eg-col-actions { min-width: 60px; width: 60px; text-align: center; }
+.griddly table .eg-col-isservice,
+.griddly table .eg-col-isvalues { min-width: 120px; text-align: center; }
 
 /* Griddly Footer & Pagination */
 .griddly .griddly-footer {
