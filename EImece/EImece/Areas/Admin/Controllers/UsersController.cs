@@ -1,10 +1,12 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;
 using EImece.Domain.DependencyInjection;
 using Resources;
@@ -42,6 +44,7 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "")
         {
             var staffUsers = (await UsersService.GetUsersAsync(string.Empty))
@@ -87,6 +90,47 @@ namespace EImece.Areas.Admin.Controllers
             return View(query.ToList());
         }
 
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "")
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { search, role, twoFactor });
+            }
+
+            var staffUsers = (await UsersService.GetUsersAsync(string.Empty))
+                .Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase))
+                .OrderBy(r => r.FirstName)
+                .ToList();
+
+            IEnumerable<EditUserViewModel> query = staffUsers;
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = (await UsersService.GetUsersAsync(search))
+                    .Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderBy(r => r.FirstName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(role))
+            {
+                query = query.Where(r => r.Role.Equals(role.Trim(), StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (string.Equals(twoFactor, "yes", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(twoFactor, "1", StringComparison.OrdinalIgnoreCase))
+            {
+                query = query.Where(r => r.AuthenticatorEnabled);
+            }
+            else if (string.Equals(twoFactor, "no", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(twoFactor, "0", StringComparison.OrdinalIgnoreCase))
+            {
+                query = query.Where(r => !r.AuthenticatorEnabled);
+            }
+
+            return new QueryableResult<EditUserViewModel>(query.AsQueryable());
+        }
+
+        [HttpGet]
         public async Task<ActionResult> CustomerRoles(CancellationToken cancellationToken, String search = "")
         {
             List<EditUserViewModel> model = await UsersService.GetUsersAsync(search);
@@ -108,6 +152,35 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(model);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> CustomerRolesGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("CustomerRoles", new { search });
+            }
+
+            List<EditUserViewModel> model = await UsersService.GetUsersAsync(search);
+            model = model.Where(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.FirstName).ToList();
+
+            var userIds = model.Select(m => m.Id).Where(id => !string.IsNullOrWhiteSpace(id)).ToList();
+            var customers = userIds.Count == 0
+                ? new List<Customer>()
+                : (await CustomerService.GetAllAsync())
+                    .Where(c => !string.IsNullOrWhiteSpace(c.UserId) && userIds.Contains(c.UserId))
+                    .ToList();
+            var customerByUserId = customers
+                .GroupBy(c => c.UserId, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.UpdatedDate).First(), StringComparer.OrdinalIgnoreCase);
+
+            foreach (var item in model)
+            {
+                EnrichCustomerDetailNote(item, customerByUserId);
+            }
+
+            return new QueryableResult<EditUserViewModel>(model.AsQueryable());
         }
 
         private static void EnrichCustomerDetailNote(EditUserViewModel item, IDictionary<string, Customer> customerByUserId)

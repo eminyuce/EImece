@@ -1,7 +1,6 @@
-﻿@model List<Menu>
+@model List<Menu>
 @using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting
+@using Griddly.Mvc;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
@@ -56,89 +55,7 @@
             </a>
         </div>
 
-        @Html.Partial("Grid/_GridChrome")
-
-        <div class="panel panel-primary eg-grid-shell">
-
-            @Html.Partial("pGridDropDown", baseList)
-            @Html.Grid(contents).Named(gridName).Columns(columns =>
-       {
-
-           columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-.RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-           columns.Add(o => o.Id, true);
-
-           columns.Add()
-                          .Encoded(false)
-                          .Sanitized(false)
-                           .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-                          .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId",d.Id}}));
-
-           columns.Add()
-              .Titled(AdminResource.Images)
-              .Encoded(false)
-              .Sanitized(false)
-              .Css("eg-col-image")
-              .RenderValueAs(o => Html.Partial("Grid/_GridImageCell", o));
-
-           columns.Add(c => c.Name)
-                            .Titled(AdminResource.Name)
-                           .Filterable(true)
-                            .Encoded(false)
-                             .Sanitized(false)
-                             .Css("eg-col-name")
-                       .RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-                           { "Name", d.Name },
-                           { "ItemId", d.Id.ToString() },
-                           { "LinkUrl", d.DetailPageLink }
-                       }));
-
-           columns.Add(c => c.ParentId)
-.Titled(AdminResource.ProductCategoryParentId)
-.Encoded(false)
-.Filterable(true)
-.RenderValueAs(o => o.ParentId == 0 ? string.Format("{0}", Resource.RootCategory) : "");
-
-           columns.Add(o => o.Position).Titled(AdminResource.Position)
-              .Encoded(false).
-                   Sanitized(false).
-                   Css("smallGridColumn").
-                   RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
-
-           columns.Add(o => o.IsActive)
-                      .Titled(AdminResource.IsActive)
-                  .Sortable(true)
-                  .Css("smallGridColumn eg-col-status")
-                  .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                   Sanitized(false)
-                  .RenderValueAs(o => Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) {
-                      { "ItemId", o.Id },
-                      { "IsActive", o.IsActive },
-                      { "ShowState", true },
-                      { "ShowImageState", false }
-                  }));
-
-           columns.Add(o => o.UpdatedDate)
-                      .Titled(AdminResource.UpdatedDate)
-                  .Sortable(true)
-                  .Css("gridDateClass")
-                  .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
-                  .SortInitialDirection(GridSortDirection.Descending);
-
-           columns.Add()
-           .Titled("İşlemler")
-           .Encoded(false)
-           .Sanitized(false)
-           .Css("eg-sticky-right eg-col-actions")
-           .RenderValueAs(d => MenuActionsCell(d, menuTreeNodeList, controllerName));
-
-       }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-        </div>
+        @Html.Griddly("IndexGrid", new { search = Request.QueryString["search"] })
     </div>
 </div>
 

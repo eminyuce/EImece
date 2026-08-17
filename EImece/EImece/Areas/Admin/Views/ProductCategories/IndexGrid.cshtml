@@ -1,0 +1,99 @@
+@model GriddlyResult<ProductCategory>
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using Griddly.Mvc
+@using Resources
+
+@{
+    var gridName = "ProductCategoriesGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var controllerName = "ProductCategories";
+    var productCategoryLeaves = (List<ProductCategory>)ViewBag.ProductCategoryLeaves;
+
+    Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
+    var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+
+    var settings = new GriddlySettings<ProductCategory>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        RowClass = item => item.IsActive ? string.Empty : "GridIsActive",
+        DefaultSort = new[] { new SortField() { Field = "Position", Direction = SortDirection.Ascending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(item.Position > 0 ? item.Position.ToString() : item.Id.ToString())</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
+        .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item)</text>, className: "eg-col-image", width: "64px")
+        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "360px")
+        .Column(x => x.ParentId, caption: AdminResource.ProductCategoryParentId, template: @<text>@(item.ParentId == 0 ? Resource.RootCategory : "")</text>, className: "eg-col-parent", width: "140px")
+        .Column(x => x.DiscountPercantage, caption: AdminResource.Discount, template: @<text>@(item.DiscountPercantage.HasValue && item.DiscountPercantage.Value > 0 ? string.Format("%{0} {1}", item.DiscountPercantage, Resource.Discount) : "")</text>, className: "eg-col-discount", width: "120px")
+        .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn eg-col-position", width: "90px")
+        .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "MainPage", item.MainPage }, { "ShowState", true }, { "ShowMainPage", true }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "170px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate != null ? item.UpdatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "120px");
+
+    if (productPriceEnabled)
+    {
+        settings.Column(caption: "Fiyat Güncellemesi", template: @<text>@Html.Partial("pPriceUpdates", new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemType", "ProductCategory" } })</text>, className: "smallGridColumn", width: "130px");
+    }
+
+    settings.Column(caption: "İşlemler", template: @<text>@CategoryActionsCell(item, productCategoryLeaves, controllerName)</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+}
+
+@helper CategoryActionsCell(ProductCategory d, List<ProductCategory> productCategoryLeaves, string controllerName)
+{
+    var canDelete = false;
+    string cannotDeleteMessage = null;
+
+    if (d.Products != null && d.Products.Any())
+    {
+        cannotDeleteMessage = AdminResource.CategoryHasProducts;
+    }
+    else if (productCategoryLeaves != null && productCategoryLeaves.Any(r => r.Id == d.Id))
+    {
+        canDelete = true;
+    }
+    else
+    {
+        cannotDeleteMessage = AdminResource.CategoryCannotDelete;
+    }
+
+    @Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
+        { "ItemId", d.Id },
+        { "ItemName", d.Name },
+        { "controllerName", controllerName },
+        { "ShowMedia", false },
+        { "ShowEdit", true },
+        { "ShowDelete", canDelete }
+    })
+
+    if (UserRoleHelper.IsDeletedEnableRoles() && !canDelete && !string.IsNullOrEmpty(cannotDeleteMessage))
+    {
+        <span class="text-muted" style="font-size:11px;white-space:nowrap;">
+            @cannotDeleteMessage
+        </span>
+    }
+}
+
+@Html.Griddly(settings)

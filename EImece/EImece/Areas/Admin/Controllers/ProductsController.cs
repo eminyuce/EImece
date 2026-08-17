@@ -362,6 +362,23 @@ namespace EImece.Areas.Admin.Controllers
             return View(products);
         }
 
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> MoveProductsInTreesGrid(CancellationToken cancellationToken, int id = 0)
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("MoveProductsInTrees", new { id });
+            }
+
+            var products = new System.Collections.Generic.List<Product>();
+            if (id > 0)
+            {
+                products = await ProductService.GetAdminPageListAsync(id, "", CurrentLanguage, cancellationToken);
+            }
+
+            return new QueryableResult<Product>(products.AsQueryable());
+        }
+
         public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int id, string productIdList, int oldCategoryId)
         {
             await ProductService.MoveProductsInTreesAsync(id, productIdList, cancellationToken);

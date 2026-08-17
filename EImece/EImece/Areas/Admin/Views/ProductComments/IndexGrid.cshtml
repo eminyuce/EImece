@@ -1,0 +1,117 @@
+@model GriddlyResult<ProductComment>
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using Griddly.Mvc
+@using Resources
+
+@{
+    var gridName = "ProductCommentsGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var controllerName = "ProductComments";
+
+    var settings = new GriddlySettings<ProductComment>()
+    {
+        ClassName = "eg-grid eg-grid-shell eg-product-comments-grid",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        RowClass = item => item.IsActive ? string.Empty : "GridIsActive",
+        DefaultSort = new[] { new SortField() { Field = "CreatedDate", Direction = SortDirection.Descending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
+        .Column(x => x.Subject, caption: AdminResource.ReviewSubject, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Subject }, { "ItemId", item.Id.ToString() }, { "SubName", ReviewerSubName(item) } })</text>, className: "eg-col-name", width: "240px")
+        .Column(x => x.Email, caption: AdminResource.Email, template: @<text>@EmailCell(item.Email)</text>, className: "eg-col-email", width: "180px")
+        .Column(x => x.Rating, caption: AdminResource.Rating, template: @<text>@RatingCell(item.Rating)</text>, className: "smallGridColumn eg-col-rating", width: "110px")
+        .Column(x => x.Review, caption: AdminResource.Review, template: @<text>@ReviewNoteCell(item)</text>, className: "eg-col-review", width: "300px")
+        .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "ShowState", true }, { "ShowMainPage", false }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "120px")
+        .Column(x => x.CreatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.CreatedDate != default(DateTime) ? item.CreatedDate.ToString("dd.MM.yyyy HH:mm") : "")</text>, className: "gridDateClass", width: "130px");
+
+    if (UserRoleHelper.IsDeletedEnableRoles())
+    {
+        settings.Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Subject + " " + item.Review }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+    }
+}
+
+@helper RatingCell(int rating)
+{
+    var r = rating < 0 ? 0 : (rating > 5 ? 5 : rating);
+    <span class="eg-rating" title="@r / 5">
+        <span class="eg-rating-stars" aria-hidden="true">
+            @for (var i = 1; i <= 5; i++)
+            {
+                <span class="eg-rating-star@(i <= r ? " is-on" : "")">★</span>
+            }
+        </span>
+        <span class="sr-only">@r yıldız</span>
+    </span>
+}
+
+@helper EmailCell(string email)
+{
+    if (string.IsNullOrWhiteSpace(email))
+    {
+        <span class="text-muted">—</span>
+    }
+    else
+    {
+        <a class="eg-email-link" href="mailto:@email">@email</a>
+    }
+}
+
+@helper ReviewNoteCell(ProductComment comment)
+{
+    var text = (comment.Review ?? "").Trim();
+    var len = text.Length;
+    var sizeClass = len == 0 ? "is-empty" : (len <= 48 ? "is-short" : (len <= 140 ? "is-medium" : "is-long"));
+    var lineCount = string.IsNullOrEmpty(text) ? 2 : text.Split(new[] { '\n' }, StringSplitOptions.None).Length;
+    var rows = Math.Max(2, Math.Min(lineCount, 8));
+    <label class="sr-only" for="pcomment-@comment.Id">Yorum</label>
+    if (len == 0)
+    {
+        <span class="eg-review-empty">—</span>
+    }
+    else
+    {
+        <textarea id="pcomment-@comment.Id" class="eg-review-note @sizeClass" readonly rows="@rows" cols="1" style="width: 280px; background: transparent; border: 1px solid #d7dee8; border-radius: 4px; padding: 4px 6px; resize: vertical;">@text</textarea>
+    }
+}
+
+@functions {
+    public static string ReviewerSubName(ProductComment comment)
+    {
+        if (comment == null)
+        {
+            return null;
+        }
+        var name = (comment.Name ?? "").Trim();
+        if (string.IsNullOrEmpty(name) || string.Equals(name, comment.Subject, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+        return name;
+    }
+}
+
+@Html.Griddly(settings)

@@ -1,108 +1,25 @@
-@model List<Subscriber>
-@using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting;
-@using EImece.Domain;
-@using EImece.Domain.Models.Enums;
-@using EImece.Domain.Entities;
-@using Resources;
-@using EImece.Domain.Helpers.Extensions;
+@model List<EImece.Domain.Entities.Subscriber>
+@using Griddly.Mvc
+@using Resources
+
 @{
     ViewBag.Title = "Subscribers";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
-
     var controllerName = "Subscribers";
-    var gridName = "SubscriberGrid";
-    var contents = Model;
-    var baseList = contents.DownCasting();
-    var search = Request.QueryString["search"].ToStr();
-    var ExportToExcel = AdminResource.ExportToExcel;
 }
 
 <h2>@AdminResource.Subscribers</h2>
 <hr class="adminLine" />
 
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-        {"controllerName",controllerName}
-        ,{"StateTypes","State"}
-       ,{"orderingButton",false}
-       ,{"selectAll",true}
-       ,{"deleteAll",true}
-        ,{"SetStateOnOrOff",true},
-{ "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
+    {"controllerName",controllerName},
+    {"StateTypes","State"},
+    {"orderingButton",false},
+    {"selectAll",true},
+    {"deleteAll",true},
+    {"SetStateOnOrOff",true},
+    {"IsNewRecordButtonEnabled",false},
+    {"IsExcelButtonEnabled",true}
+})
 
-@Html.Partial("Grid/_GridChrome")
-
-<div class="panel panel-primary eg-grid-shell">
-    @Html.Partial("pGridDropDown", baseList)
-
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
-{
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-        .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-    columns.Add(o => o.Id, true);
-
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-        .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId",d.Id}}));
-
-    columns.Add(c => c.Name)
-        .Titled(AdminResource.Name)
-        .Filterable(true)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-col-name")
-        .RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-            { "Name", d.Name },
-            { "ItemId", d.Id.ToString() }
-        }));
-
-    columns.Add(c => c.Email)
-        .Titled(AdminResource.Email)
-        .Filterable(true);
-
-    columns.Add(o => o.Note)
-        .Titled(AdminResource.Note)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-col-review")
-        .RenderValueAs(o => NoteCell(o).ToHtmlString());
-
-    columns.Add(o => o.UpdatedDate)
-        .Titled(AdminResource.UpdatedDate)
-        .Sortable(true)
-        .Css("gridDateClass")
-        .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
-        .SortInitialDirection(GridSortDirection.Descending);
-
-}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-</div>
-
-@helper NoteCell(Subscriber subscriber)
-{
-    var text = (subscriber.Note ?? "").Trim();
-    var len = text.Length;
-    var sizeClass = len == 0 ? "is-empty" : (len <= 48 ? "is-short" : (len <= 140 ? "is-medium" : "is-long"));
-    var lineCount = string.IsNullOrEmpty(text) ? 2 : text.Split(new[] { '\n' }, StringSplitOptions.None).Length;
-    var rows = Math.Max(2, Math.Min(lineCount, 8));
-    <label class="sr-only" for="sub-note-@subscriber.Id">Not</label>
-    if (len == 0)
-    {
-        <span class="eg-review-empty">—</span>
-    }
-    else
-    {
-        <textarea id="sub-note-@subscriber.Id" class="eg-review-note @sizeClass" readonly rows="@rows" cols="1">@text</textarea>
-    }
-}
+@Html.Griddly("IndexGrid", new { search = Request.QueryString["search"] })

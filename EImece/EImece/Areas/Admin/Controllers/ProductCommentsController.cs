@@ -1,7 +1,11 @@
-﻿using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers.AttributeHelper;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +29,23 @@ namespace EImece.Areas.Admin.Controllers
             var productComments = await ProductCommentService.GetAdminPageListAsync(id.Value, search, CurrentLanguage, cancellationToken);
             ViewBag.Product = await ProductService.GetSingleAsync(id.Value);
             return View(productComments);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, int? id, String search = "")
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction("Index", "Products");
+            }
+
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { id = id.Value, search });
+            }
+
+            var productComments = await ProductCommentService.GetAdminPageListAsync(id.Value, search, CurrentLanguage, cancellationToken);
+            return new QueryableResult<ProductComment>(productComments.AsQueryable());
         }
 
         [HttpPost, ActionName("Delete")]

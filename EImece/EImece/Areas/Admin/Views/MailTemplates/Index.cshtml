@@ -1,141 +1,24 @@
-﻿@model List<MailTemplate>
-@using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting
-@using EImece.Domain;
-@using EImece.Domain.Entities;
-@using Resources;
-@using EImece.Domain.Helpers.Extensions;
+@model List<EImece.Domain.Entities.MailTemplate>
+@using Griddly.Mvc
+@using Resources
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
-
     var controllerName = "MailTemplates";
-    var gridName = "MailTemplateGrid";
-    var contents = Model;
-    var baseList = contents.DownCasting<MailTemplate>();
 }
 
 <h2>@AdminResource.MailTemplates</h2>
 <hr class="adminLine" />
 
 @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
-        {"controllerName",controllerName}
-                 ,{"StateTypes","State"}
-       ,{"orderingButton",true}
-       ,{"selectAll",true}
-       ,{"deleteAll",true}
-        ,{"SetStateOnOrOff",true},{"IsExcelButtonEnabled",true}})
+    {"controllerName",controllerName},
+    {"StateTypes","State"},
+    {"orderingButton",true},
+    {"selectAll",true},
+    {"deleteAll",true},
+    {"SetStateOnOrOff",true},
+    {"IsExcelButtonEnabled",true}
+})
 
-@Html.Partial("Grid/_GridChrome")
-
-<div class="panel panel-primary eg-grid-shell">
-    @Html.Partial("pGridDropDown", baseList)
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
-{
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-.RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-columns.Add(o => o.Id, true);
-
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-.RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId",d.Id}}));
-
-columns.Add(c => c.Name)
-.Titled(AdminResource.Name)
-.Filterable(true)
-.Encoded(false)
-.Sanitized(false)
-.Css("eg-col-name")
-.RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-    { "Name", d.Name },
-    { "ItemId", d.Id.ToString() }
-}));
-
-columns.Add(c => c.Subject)
-.Titled(AdminResource.MailSubject)
-.Filterable(true);
-
-columns.Add(o => o.Position).Titled(AdminResource.Position)
-.Encoded(false)
-.Sanitized(false)
-.Css("smallGridColumn")
-.RenderValueAs(o => String.Format("<label class='sr-only' for='mail-pos-{0}'>Sıra</label><input id='mail-pos-{0}'   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
-
-columns.Add(o => o.IsActive)
-.Titled(AdminResource.IsActive)
-.Sortable(true)
-.Css("smallGridColumn eg-col-status")
-.SortInitialDirection(GridSortDirection.Descending).Encoded(false)
-.Sanitized(false)
-.RenderValueAs(o => Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) {
-    { "ItemId", o.Id },
-    { "IsActive", o.IsActive },
-    { "ShowState", true },
-    { "ShowMainPage", false },
-    { "ShowImageState", false }
-}));
-
-columns.Add(o => o.CreatedDate)
-.Titled(AdminResource.CreatedDate)
-.Sortable(true)
-.Css("gridDateClass")
-.RenderValueAs(o => String.Format("{0}", o.CreatedDate.ToShortDateString()))
-.SortInitialDirection(GridSortDirection.Descending);
-
-columns.Add(o => o.UpdatedDate)
-.Titled(AdminResource.UpdatedDate)
-.Sortable(true)
-.Css("gridDateClass")
-.RenderValueAs(o => String.Format("{0}", o.UpdatedDate.ToShortDateString()))
-.SortInitialDirection(GridSortDirection.Descending);
-
-columns.Add()
-.Encoded(false)
-.Sanitized(false)
-.RenderValueAs(d =>
-    @<div class="eg-mail-template-actions">
-        @if (d.Name != null && d.Name.ToLower().Contains("rss"))
-        {
-            @Html.ActionLink("HTML İndir", "GenerateHtmlBody", controllerName, new { id = d.Id }, new { @class = "btn btn-primary btn-xs", title = "Şablondan HTML gövde oluştur ve indir" })
-        }
-        @Html.ActionLink("Yedekle", "CreateBackup", controllerName, new { id = d.Id }, new { @class = "btn btn-default btn-xs", title = "Şablonun bir kopyasını oluştur" })
-        <button type="button"
-                class="btn btn-info btn-xs js-mail-template-test"
-                data-template-id="@d.Id"
-                data-template-name="@d.Name"
-                title="Şablonu SMTP ile test e-postası olarak gönder">
-            Test E-posta
-        </button>
-    </div>);
-
-columns.Add()
-.Titled("İşlemler")
-.Encoded(false)
-.Sanitized(false)
-.Css("eg-sticky-right eg-col-actions")
-.RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-    { "ItemId", d.Id },
-    { "ItemName", d.Name },
-    { "controllerName", controllerName },
-    { "ShowMedia", false },
-    { "ShowEdit", true },
-    { "ShowDelete", true }
-}));
-
-}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-</div>
-
-@Html.Partial("_TestEmailModal")
+@Html.Griddly("IndexGrid", new { search = Request.QueryString["search"] })

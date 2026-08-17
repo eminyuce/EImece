@@ -1,7 +1,10 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +17,7 @@ namespace EImece.Areas.Admin.Controllers
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // GET: Admin/BuyNowOrders
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<Order, bool>> whereLambda = r =>
@@ -22,6 +26,22 @@ namespace EImece.Areas.Admin.Controllers
               || r.Token.Contains(search);
             var orders = await OrderService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(orders);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            Expression<Func<Order, bool>> whereLambda = r =>
+            r.Name.Contains(search)
+            || r.OrderNumber.Contains(search)
+              || r.Token.Contains(search);
+            var orders = await OrderService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
+            return new QueryableResult<Order>(orders.AsQueryable());
         }
 
         public async Task<ActionResult> Details(CancellationToken cancellationToken, int id)

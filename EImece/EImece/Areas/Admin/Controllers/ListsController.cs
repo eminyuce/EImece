@@ -1,9 +1,12 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,11 +18,25 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<List, bool>> whereLambda = r => r.Name.Contains(search);
             var tags = await ListService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(tags);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            Expression<Func<List, bool>> whereLambda = r => r.Name.Contains(search);
+            var tags = await ListService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
+            return new QueryableResult<List>(tags.AsQueryable());
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

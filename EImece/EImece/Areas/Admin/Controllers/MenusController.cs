@@ -5,6 +5,8 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -33,6 +35,20 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.MenuTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
             ViewBag.MenuLeaves = await MenuService.GetMenuLeavesAsync(null, CurrentLanguage, cancellationToken);
             return View(menus);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
+            var menus = await MenuService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
+            ViewBag.MenuLeaves = await MenuService.GetMenuLeavesAsync(null, CurrentLanguage, cancellationToken);
+            return new QueryableResult<Menu>(menus.AsQueryable());
         }
 
         [HttpGet]

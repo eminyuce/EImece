@@ -1,0 +1,71 @@
+@model GriddlyResult<EditUserViewModel>
+@using EImece.Domain.Helpers
+@using EImece.Models
+@using Griddly.Mvc
+@using Resources
+
+@{
+    var gridName = "UsersGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var controllerName = "Users";
+
+    var settings = new GriddlySettings<EditUserViewModel>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        DefaultSort = new[] { new SortField() { Field = "Email", Direction = SortDirection.Ascending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(x => x.Email, caption: AdminResource.Email, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Email }, { "Subtitle", string.Format("{0} {1}", item.FirstName, item.LastName) } })</text>, className: "eg-col-name", width: "320px")
+        .Column(x => x.Role, caption: AdminResource.Roles, template: @<text>@RoleBadge(item.Role)</text>, className: "eg-col-state", width: "160px")
+        .Column(x => x.AuthenticatorEnabled, caption: "2FA", template: @<text>@(item.AuthenticatorEnabled ? Html.Raw("<span class='eg-state-badge'>Aktif</span>") : Html.Raw("<span class='eg-state-badge is-muted'>Yok</span>"))</text>, className: "eg-col-state", width: "100px")
+        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", string.Format("{0} {1}", item.FirstName, item.LastName) }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "EditAction", "Edit" }, { "ShowDelete", true }, { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = item.Id }) }, { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = item.Id }) }, { "RolesUrl", Url.Action("UserRoles", controllerName, new { id = item.Id }) } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+}
+
+@helper RoleBadge(string role)
+{
+    var roleKey = (role ?? string.Empty).ToLowerInvariant();
+    var extraClass = string.Empty;
+    if (roleKey == "administrator" || roleKey == "admin")
+    {
+        extraClass = "is-admin";
+    }
+    else if (roleKey.Contains("manager") || roleKey.Contains("editor"))
+    {
+        extraClass = "is-manager";
+    }
+    else if (roleKey == "customer" || roleKey == "user")
+    {
+        extraClass = "is-customer";
+    }
+
+    <span class="eg-role-badge @extraClass">
+        <span class="eg-role-icon glyphicon glyphicon-user" aria-hidden="true"></span>
+        <span class="eg-role-text">@(string.IsNullOrWhiteSpace(role) ? "—" : role)</span>
+    </span>
+}
+
+@Html.Griddly(settings)

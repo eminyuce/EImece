@@ -1,0 +1,51 @@
+@model GriddlyResult<List>
+@using EImece.Domain
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using Griddly.Mvc
+@using Resources
+
+@{
+    var gridName = "ListGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var controllerName = "Lists";
+
+    var settings = new GriddlySettings<List>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        RowClass = item => item.Id % 2 == 0 ? "warning" : string.Empty,
+        DefaultSort = new[] { new SortField() { Field = "Name", Direction = SortDirection.Ascending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
+        .Column(x => x.Name, caption: AdminResource.Title, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "320px")
+        .Column(x => x.IsService, caption: AdminResource.IsService, template: @<text><span gridkey-id="@item.Id" grid-data-value="@item.IsService" class="@(item.IsService ? Constants.OkStyle : Constants.CancelStyle)" name="spanImageState"></span></text>, className: "smallGridColumn", width: "100px")
+        .Column(x => x.IsValues, caption: AdminResource.IsValues, template: @<text><span gridkey-id="@item.Id" grid-data-value="@item.IsValues" class="@(item.IsValues ? Constants.OkStyle : Constants.CancelStyle)" name="spanImageState"></span></text>, className: "smallGridColumn", width: "100px")
+        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+}
+
+@Html.Griddly(settings)

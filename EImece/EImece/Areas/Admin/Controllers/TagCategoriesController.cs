@@ -1,6 +1,8 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -18,11 +20,25 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var tags = await TagCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(tags);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
+            var tags = await TagCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
+            return new QueryableResult<TagCategory>(tags.AsQueryable());
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

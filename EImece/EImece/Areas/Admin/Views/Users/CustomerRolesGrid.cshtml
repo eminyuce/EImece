@@ -1,0 +1,49 @@
+@model GriddlyResult<EditUserViewModel>
+@using EImece.Domain.Helpers
+@using EImece.Models
+@using Griddly.Mvc
+@using Resources
+
+@{
+    var gridName = "UsersGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var controllerName = "Users";
+
+    var settings = new GriddlySettings<EditUserViewModel>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        DefaultSort = new[] { new SortField() { Field = "FirstName", Direction = SortDirection.Ascending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
+        .Column(x => x.Email, caption: AdminResource.Email, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Email }, { "Subtitle", string.Format("{0} {1}", item.FirstName, item.LastName) } })</text>, className: "eg-col-name", width: "260px")
+        .Column(x => x.FirstName, caption: AdminResource.Name, template: @<text>@(string.Format("{0} {1}", item.FirstName, item.LastName))</text>, className: "eg-col-fullname", width: "160px")
+        .Column(x => x.DetailNote, caption: AdminResource.Note, template: @<text><textarea readonly class="eg-grid-note" style="width: 280px; height: 60px; background: transparent; border: 1px solid #d7dee8; border-radius: 4px; padding: 4px 6px; resize: none;">@item.DetailNote</textarea></text>, className: "eg-col-note", width: "300px")
+        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", string.Format("{0} {1}", item.FirstName, item.LastName) }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "EditAction", "Edit" }, { "ShowDelete", true }, { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = item.Id }) }, { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = item.Id }) } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+}
+
+@Html.Griddly(settings)

@@ -1,9 +1,12 @@
 using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -43,6 +46,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         // GET: Admin/Media
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int? contentId, String mod = null, String imageType = null)
         {
             if (!contentId.HasValue || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
@@ -109,6 +113,34 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View(returnModel);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, int? contentId, String mod = null, String imageType = null)
+        {
+            if (!contentId.HasValue || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
+            {
+                return RedirectToAction(IndexAction, "Dashboard");
+            }
+
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { contentId, mod, imageType });
+            }
+
+            MediaModType? enumMod = EnumHelper.Parse<MediaModType>(mod);
+            EImeceImageType? enumImageType = EnumHelper.Parse<EImeceImageType>(imageType);
+            if (!enumMod.HasValue || !enumImageType.HasValue)
+            {
+                return RedirectToAction(IndexAction, "Dashboard");
+            }
+
+            int id = contentId.Value;
+            var fileStorages = await FileStorageService.GetUploadImagesAsync(id, enumMod.Value, enumImageType.Value, cancellationToken);
+            ViewBag.ContentId = id;
+            ViewBag.MediaMod = enumMod.Value;
+            ViewBag.ImageType = enumImageType.Value;
+            return new QueryableResult<FileStorage>((fileStorages ?? new List<FileStorage>()).AsQueryable());
         }
 
         public ActionResult Show(int id, String mod, String imageType)

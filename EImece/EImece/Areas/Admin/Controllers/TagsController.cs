@@ -1,6 +1,9 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -18,10 +21,27 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             var result = await TagService.GetAdminPageListAsync(search, CurrentLanguage);
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = isProductPriceEnable;
             return View(result);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            var result = await TagService.GetAdminPageListAsync(search, CurrentLanguage);
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = isProductPriceEnable;
+            return new QueryableResult<Tag>(result.AsQueryable());
         }
 
         private async Task<List<SelectListItem>> GetCategoriesSelectListAsync(CancellationToken cancellationToken)

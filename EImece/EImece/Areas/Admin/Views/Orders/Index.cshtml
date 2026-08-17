@@ -1,29 +1,11 @@
-﻿@using EImece.Models;
-@using GridMvc.Html;
-@using GridMvc.Sorting;
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using EImece.Domain.Entities;
-@using Resources;
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Models.Enums;
-
-@model List<Order>
+@model List<EImece.Domain.Entities.Order>
+@using Griddly.Mvc
+@using Resources
 
 @{
-    var orders = Model;
-
     ViewBag.Title = AdminResource.Orders;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-
-    int pageSizeNumber = Request.QueryString["GridPageSize"].ToInt();
-    pageSizeNumber = pageSizeNumber == 0 ? AppConfig.GridPageSizeNumber : pageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : pageSizeNumber * (gridPage - 1);
     var controllerName = "Orders";
-    var gridName = "OrdersGrid";
-    var contents = Model;
-    var baseList = contents.DownCasting<Order>();
 }
 
 <h2 class="admin-page-title">@AdminResource.Orders</h2>
@@ -41,120 +23,4 @@
     {"IsSearchFormEnabled", true}
 })
 
-@Html.Partial("Grid/_GridChrome")
-
-<div class="panel panel-primary eg-grid-shell eg-orders-grid">
-    @Html.Partial("pGridDropDown", baseList)
-    @Html.Grid(contents).Named(gridName).Columns(columns =>
-{
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-        .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-    columns.Add(o => o.Id, true);
-
-    columns.Add()
-        .Titled("")
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-        .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId", d.Id}
-        }));
-
-    columns.Add(c => c.OrderNumber)
-        .Titled(AdminResource.OrderNumber)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-sticky-left eg-sticky-left-3 eg-col-name")
-        .RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-            { "Name", d.OrderNumber },
-            { "DetailUrl", Url.Action("Details", controllerName, new { id = d.Id }) },
-            { "StrongName", true }
-        }));
-
-    columns.Add(o => o.OrderStatus)
-        .Titled(AdminResource.OrderStatus)
-        .Sortable(true)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-col-state eg-col-order-status")
-        .RenderValueAs(o => OrderStatusBadge(o.OrderStatus));
-
-    columns.Add(o => o.CreatedDate)
-        .Titled(AdminResource.CreatedDate)
-        .Sortable(true)
-        .Css("gridDateClass eg-col-secondary")
-        .RenderValueAs(o => o.CreatedDate != null ? o.CreatedDate.ToShortDateString() : "-")
-        .SortInitialDirection(GridSortDirection.Descending);
-
-    columns.Add(o => o.PaidPrice)
-        .Titled("Ödenen Tutar")
-        .Sortable(true)
-        .Css("eg-col-order-amount")
-        .RenderValueAs(o => o.PaidPrice + " " + o.Currency);
-
-    columns.Add(o => o.PaymentStatus)
-        .Titled(AdminResource.PaymentStatus)
-        .Sortable(true)
-        .Css("eg-col-secondary");
-
-    columns.Add(o => o.ShipmentCompanyName)
-        .Titled(AdminResource.CargoCompany)
-        .Sortable(true)
-        .Css("eg-col-secondary");
-
-    columns.Add(o => o.ShipmentTrackingNumber)
-        .Titled(AdminResource.ShipmentTrackingNumber)
-        .Sortable(true)
-        .Css("eg-col-secondary");
-
-    columns.Add(o => o.AdminOrderNote)
-        .Titled(AdminResource.AdminOrderNote)
-        .Sortable(true)
-        .Css("eg-col-secondary");
-
-    columns.Add(o => o.DeliveryDate)
-        .Titled("Teslimat Tarihi")
-        .Sortable(true)
-        .Css("gridDateClass eg-col-secondary")
-        .RenderValueAs(o => o.DeliveryDate != null ? o.DeliveryDate.ToShortDateString() : "-");
-
-    columns.Add(o => o.CargoPrice)
-        .Titled(AdminResource.CargoPrice)
-        .Sortable(true)
-        .Css("eg-col-secondary")
-        .RenderValueAs(o => o.CargoPrice.ToString() + " " + o.Currency);
-
-    columns.Add(o => o.CardType)
-        .Titled("Ödeme Yöntemi")
-        .Sortable(true)
-        .Css("eg-col-secondary");
-
-    columns.Add()
-        .Titled("İşlemler")
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-sticky-right eg-col-actions")
-        .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-            { "ItemId", d.Id },
-            { "ItemName", d.OrderNumber },
-            { "controllerName", controllerName },
-            { "ShowMedia", false },
-            { "ShowEdit", false },
-            { "ShowDelete", true },
-            { "DetailUrl", Url.Action("Details", controllerName, new { id = d.Id }) },
-            { "DetailText", AdminResource.GridDetailText }
-        }));
-
-}).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-</div>
-
-@helper OrderStatusBadge(int orderStatusValue)
-{
-    var status = (EImeceOrderStatus)orderStatusValue;
-    var text = status.ToDescription();
-    <span class="eg-state-badge eg-order-status-badge" title="@text">@text</span>
-}
+@Html.Griddly("IndexGrid", new { search = Request.QueryString["search"] })
