@@ -141,9 +141,9 @@
     }
 
     function wireChrome() {
-        var saved = 'comfortable';
+        var saved = 'compact';
         try {
-            saved = window.localStorage.getItem(DENSITY_KEY) || 'comfortable';
+            saved = window.localStorage.getItem(DENSITY_KEY) || 'compact';
         } catch (e) { /* ignore */ }
         applyDensity(saved);
 
@@ -200,9 +200,25 @@
     }
 
     function markModernGrids() {
-        $('.grid-mvc').addClass('eg-grid');
+        $('.griddly, .eg-grid-shell, .grid-mvc').addClass('eg-grid');
         $('.admin-grid-ops').addClass('eg-bulk-bar');
-        $('.eg-grid table.grid-table > thead > tr > th').addClass('grid-header');
+        $('.eg-grid table.grid-table > thead > tr > th, .eg-grid table.eg-grid-table > thead > tr > th, .griddly table > thead > tr > th').addClass('grid-header');
+        $('[data-role=griddly]').each(function () {
+            var $g = $(this);
+            var n = $g.attr('data-griddly-count');
+            if (n != null && n !== '') {
+                $g.find('.grid-record-count-badge.griddly-recordtotal').each(function () {
+                    if (!$.trim($(this).text())) {
+                        $(this).text(n);
+                    }
+                });
+            }
+        });
+        var saved = 'compact';
+        try {
+            saved = window.localStorage.getItem(DENSITY_KEY) || 'compact';
+        } catch (e) { /* ignore */ }
+        applyDensity(saved);
         markSecondaryGridColumns();
     }
 
@@ -212,7 +228,7 @@
      */
     function markSecondaryGridColumns() {
         var keep = /(^|\s)(eg-col-index|eg-col-check|eg-col-name|eg-col-image|eg-col-status|eg-col-state|eg-col-price|eg-col-actions|gridButtons)(\s|$)/;
-        $('.eg-grid table.grid-table').each(function () {
+        $('.eg-grid table.grid-table, .eg-grid table.eg-grid-table, .griddly table').each(function () {
             var $table = $(this);
             var $ths = $table.find('thead > tr > th');
             if ($ths.length < 7) {
@@ -460,6 +476,113 @@
         }
     }
 
+    function wireScrollNavButtons() {
+        $(document).on('click', '.eg-scroll-nav-left', function (e) {
+            e.preventDefault();
+            var $shell = $(this).closest('.eg-grid, .griddly, .eg-grid-shell');
+            var $scroll = $shell.find('.griddly-scrollable-container, .eg-grid-scroll, .grid-wrap').first();
+            if ($scroll.length) {
+                $scroll.animate({ scrollLeft: $scroll.scrollLeft() - 350 }, 200);
+            }
+        });
+
+        $(document).on('click', '.eg-scroll-nav-right', function (e) {
+            e.preventDefault();
+            var $shell = $(this).closest('.eg-grid, .griddly, .eg-grid-shell');
+            var $scroll = $shell.find('.griddly-scrollable-container, .eg-grid-scroll, .grid-wrap').first();
+            if ($scroll.length) {
+                $scroll.animate({ scrollLeft: $scroll.scrollLeft() + 350 }, 200);
+            }
+        });
+    }
+
+    function wireFloatingScrollbar() {
+        var $containers = $('.griddly-scrollable-container, .eg-grid-scroll, .grid-wrap');
+        if (!$containers.length) {
+            return;
+        }
+
+        $containers.each(function () {
+            var $grid = $(this);
+            if ($grid.data('hasFloatingScrollbar')) {
+                return;
+            }
+            $grid.data('hasFloatingScrollbar', true);
+
+            var $floatWrap = $('<div class="eg-floating-scrollbar"><div class="eg-floating-scrollbar-inner"></div></div>');
+            var $inner = $floatWrap.find('.eg-floating-scrollbar-inner');
+            $('body').append($floatWrap);
+
+            var isSyncingGrid = false;
+            var isSyncingFloat = false;
+
+            function updateDimensions() {
+                var el = $grid[0];
+                if (!el) return;
+                var scrollW = el.scrollWidth;
+                var clientW = el.clientWidth;
+                var rect = el.getBoundingClientRect();
+
+                // Has horizontal overflow?
+                if (scrollW > clientW + 2) {
+                    $inner.css('width', scrollW + 'px');
+                    $floatWrap.css({
+                        left: rect.left + 'px',
+                        width: clientW + 'px'
+                    });
+
+                    // Is table partially on-screen, but table bottom is below viewport?
+                    var windowH = $(window).height();
+                    var isVisible = rect.top < windowH && rect.bottom > windowH + 30;
+                    $floatWrap.toggle(isVisible);
+                    if (isVisible) {
+                        $floatWrap.scrollLeft($grid.scrollLeft());
+                    }
+                } else {
+                    $floatWrap.hide();
+                }
+            }
+
+            // Sync from grid to float
+            $grid.on('scroll', function () {
+                if (isSyncingGrid) {
+                    isSyncingGrid = false;
+                    return;
+                }
+                isSyncingFloat = true;
+                $floatWrap.scrollLeft($grid.scrollLeft());
+            });
+
+            // Sync from float to grid
+            $floatWrap.on('scroll', function () {
+                if (isSyncingFloat) {
+                    isSyncingFloat = false;
+                    return;
+                }
+                isSyncingGrid = true;
+                $grid.scrollLeft($floatWrap.scrollLeft());
+            });
+
+            // Mouse wheel / shift+wheel support on grid
+            $grid.on('wheel', function (e) {
+                var deltaY = e.originalEvent.deltaY;
+                var deltaX = e.originalEvent.deltaX;
+                if (e.shiftKey || Math.abs(deltaX) > Math.abs(deltaY)) {
+                    var delta = e.shiftKey ? deltaY : deltaX;
+                    $grid.scrollLeft($grid.scrollLeft() + delta);
+                    e.preventDefault();
+                }
+            });
+
+            $(window).on('scroll resize', updateDimensions);
+            $(document).on('gridmvc.loaded griddly.loaded setfilters.griddly beforerefresh.griddly', function () {
+                setTimeout(updateDimensions, 200);
+            });
+
+            updateDimensions();
+        });
+    }
+
     $(function () {
         markModernGrids();
         enhanceLegacyChangeStateSuccess();
@@ -469,12 +592,16 @@
         wireActionMenus();
         wireCategoryTree();
         wireOpsMore();
+        wireScrollNavButtons();
+        wireFloatingScrollbar();
         sizeReviewNotes(document);
     });
 
-    // Re-mark after Grid.Mvc AJAX redraws
-    $(document).on('gridmvc.loaded', function () {
+    // Re-mark after Grid.Mvc and Griddly AJAX redraws
+    $(document).on('gridmvc.loaded griddly.loaded', function () {
         markModernGrids();
+        wireFloatingScrollbar();
         sizeReviewNotes(document);
     });
+    window.egMarkModernGrids = markModernGrids;
 }(window, window.jQuery));

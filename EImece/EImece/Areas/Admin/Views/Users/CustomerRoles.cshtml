@@ -1,8 +1,6 @@
-﻿@using EImece.Models;
+@using EImece.Models;
 @model List<EditUserViewModel>
 @using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
@@ -49,72 +47,7 @@
         {"IsExcelButtonEnabled", false}
     })
 
-    @Html.Partial("Grid/_GridChrome")
-
-    <div class="panel panel-primary eg-grid-shell">
-        @Html.Partial("pGridDropDown", contents)
-        @Html.Grid(contents).Named(gridName).Columns(columns =>
-        {
-            columns.Add()
-                .Titled("#")
-                .Encoded(false)
-                .Sanitized(false)
-                .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-                .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-            columns.Add()
-                .Encoded(false)
-                .Sanitized(false)
-                .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-                .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-                    {"ItemId", d.Id}
-                }));
-
-            columns.Add(c => c.Email)
-                .Titled(AdminResource.Email)
-                .Filterable(true)
-                .Encoded(false)
-                .Sanitized(false)
-                .Css("eg-col-name")
-                .RenderValueAs(o => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-                    { "Name", o.Email },
-                    { "Subtitle", String.Format("{0} {1}", o.FirstName, o.LastName) }
-                }));
-
-            columns.Add(o => o.FirstName)
-                .Encoded(false)
-                .Titled(AdminResource.Name)
-                .Filterable(true)
-                .RenderValueAs(o => String.Format("{0} {1}", o.FirstName, o.LastName));
-
-            columns.Add(o => o.DetailNote)
-                .Titled(AdminResource.Note)
-                .Encoded(false)
-                .Sanitized(false)
-                .Css("eg-col-note")
-                .RenderValueAs(o => String.Format(
-                    "<label class='sr-only' for='role-note-{0}'>Not</label><textarea id='role-note-{0}' readonly class='eg-grid-note'>{1}</textarea>",
-                    o.Id,
-                    System.Web.HttpUtility.HtmlEncode(o.DetailNote ?? string.Empty)));
-
-            columns.Add()
-                .Titled("İşlemler")
-                .Encoded(false)
-                .Sanitized(false)
-                .Css("eg-sticky-right eg-col-actions")
-                .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-                    { "ItemId", d.Id },
-                    { "ItemName", String.Format("{0} {1}", d.FirstName, d.LastName) },
-                    { "controllerName", controllerName },
-                    { "ShowMedia", false },
-                    { "ShowEdit", true },
-                    { "EditAction", "Edit" },
-                    { "ShowDelete", true },
-                    { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = d.Id }) },
-                    { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = d.Id }) }
-                }));
-        }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-    </div>
+    <div class="js-griddly-async" data-url="@Url.Action("CustomerRolesGrid", new { search = Request.QueryString["search"] })"></div>
 </div>
 
 <style>

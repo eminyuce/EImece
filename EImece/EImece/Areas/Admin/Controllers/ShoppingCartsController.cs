@@ -1,8 +1,11 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using Newtonsoft.Json.Linq;
 using NLog;
 using System;
@@ -20,10 +23,23 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             var items = await ShoppingCartService.GetAdminPageListAsync(search, CurrentLanguage, cancellationToken);
             return View(items);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            var items = await ShoppingCartService.GetAdminPageListAsync(search, CurrentLanguage, cancellationToken);
+            return new QueryableResult<ShoppingCart>(items.AsQueryable());
         }
 
         [HttpGet, ActionName("ExportExcel")]

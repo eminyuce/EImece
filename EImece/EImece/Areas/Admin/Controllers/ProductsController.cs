@@ -1,9 +1,11 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -21,6 +23,55 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult IndexGrid(
+            int id = 0,
+            AdminProductsIndexQuery query = null)
+        {
+            if (query == null)
+            {
+                query = new AdminProductsIndexQuery();
+            }
+
+            if (!CanRenderGrid())
+            {
+                string redirectSearch = !string.IsNullOrWhiteSpace(query.Search) ? query.Search : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : null);
+                return RedirectToAction(IndexAction, "Products", new
+                {
+                    id = id,
+                    area = "Admin",
+                    search = redirectSearch,
+                    brandId = query.BrandId > 0 ? (int?)query.BrandId : null,
+                    state = string.IsNullOrEmpty(query.State) ? null : query.State,
+                    isActive = query.IsActive,
+                    mainPage = query.MainPage,
+                    isCampaign = query.IsCampaign,
+                    minPrice = query.MinPrice,
+                    maxPrice = query.MaxPrice
+                });
+            }
+
+            var isProductPriceEnable = AsyncHelper.RunSync(() => SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable));
+            bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+
+            var filter = new ProductAdminListFilter
+            {
+                State = query.State,
+                IsActive = query.IsActive == true ? true : (bool?)null,
+                MainPage = query.MainPage == true ? true : (bool?)null,
+                IsCampaign = query.IsCampaign == true ? true : (bool?)null,
+                MinPrice = query.MinPrice,
+                MaxPrice = query.MaxPrice,
+                ApplyPriceFilter = priceEnabled
+            };
+
+            string searchParam = !string.IsNullOrWhiteSpace(query.Search) ? query.Search : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : null);
+            var products = AsyncHelper.RunSync(() => ProductService.GetAdminPageListAsync(id, query.BrandId, searchParam, CurrentLanguage, filter, CancellationToken.None));
+            ViewBag.IsProductPriceEnable = isProductPriceEnable;
+            ViewBag.PriceEnabled = priceEnabled;
+            return new QueryableResult<Product>(products.AsQueryable());
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(
@@ -311,6 +362,23 @@ namespace EImece.Areas.Admin.Controllers
             return View(products);
         }
 
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> MoveProductsInTreesGrid(CancellationToken cancellationToken, int id = 0)
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("MoveProductsInTrees", new { id });
+            }
+
+            var products = new System.Collections.Generic.List<Product>();
+            if (id > 0)
+            {
+                products = await ProductService.GetAdminPageListAsync(id, "", CurrentLanguage, cancellationToken);
+            }
+
+            return new QueryableResult<Product>(products.AsQueryable());
+        }
+
         public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int id, string productIdList, int oldCategoryId)
         {
             await ProductService.MoveProductsInTreesAsync(id, productIdList, cancellationToken);
@@ -349,6 +417,8 @@ namespace EImece.Areas.Admin.Controllers
         public int BrandId { get; set; } = -1;
 
         public string Search { get; set; } = "";
+
+        public string Name { get; set; } = "";
 
         public string State { get; set; } = "";
 

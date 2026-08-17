@@ -1,10 +1,13 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading;
@@ -19,11 +22,25 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // GET: Admin/MainPageImages
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.Contains(search);
             var mainPageImages = await MainPageImageService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(mainPageImages);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.Contains(search);
+            var mainPageImages = await MainPageImageService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
+            return new QueryableResult<MainPageImage>(mainPageImages.AsQueryable());
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

@@ -1,9 +1,11 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using NLog;
@@ -29,11 +31,25 @@ namespace EImece.Areas.Admin.Controllers
         [Inject]
         public IMailTemplateTestService MailTemplateTestService { get; set; }
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
             var result = await MailTemplateService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             return View(result);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
+            var result = await MailTemplateService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
+            return new QueryableResult<MailTemplate>(result.AsQueryable());
         }
 
         public async Task<ActionResult> CreateBackup(CancellationToken cancellationToken, int id = 0)

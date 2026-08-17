@@ -1,0 +1,111 @@
+@using EImece.Domain
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using EImece.Domain.Models.Enums
+@using Griddly.Mvc
+@using Resources
+
+@{
+    Layout = null;
+    var gridName = "MediaGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var controllerName = "Media";
+    var contentId = ViewBag.ContentId != null ? (int)ViewBag.ContentId : 0;
+    var mediaMod = ViewBag.MediaMod != null ? ViewBag.MediaMod.ToString() : "";
+    var imageType = ViewBag.ImageType != null ? ViewBag.ImageType.ToString() : "";
+
+    var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
+    if (filesHelper != null)
+    {
+        filesHelper.InitFilesMediaFolder();
+    }
+
+    var settings = new GriddlySettings<FileStorage>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        RowClass = item => item.IsActive ? string.Empty : "GridIsActive",
+        DefaultSort = new[] { new SortField() { Field = "UpdatedDate", Direction = SortDirection.Descending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
+                <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@string.Format("{0}-{1}-{2}-{3}", item.Id, contentId, mediaMod, imageType)" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
+        .Column(caption: AdminResource.Images, template: @<text>@ImageLinkColumn(item, filesHelper)</text>, className: "eg-col-image-preview", width: "300px")
+        .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="type" /></text>, className: "smallGridColumn", width: "80px")
+        .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "ShowState", true }, { "ShowMainPage", false }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "120px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px")
+        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "gridDeleteText", AdminResource.Remove } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+}
+
+@helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
+{
+    bool fileExists = fileHelper != null && fileHelper.NormalFileExists(fileStorage.FileName);
+    var imageSizes = fileHelper != null ? fileHelper.GetThumbnailImageSize(fileStorage) : null;
+    var fullImageUrl = string.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase);
+    var thumbImageUrl = string.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase);
+    var downloadUrl = string.Format("/media/images/{0}", fileStorage.FileName);
+<div class="media-file-preview">
+    <div class="media-file-preview-thumb">
+        @if (fileExists)
+        {
+            <a href="@downloadUrl" title="@fileStorage.FileName" download="@fileStorage.FileName" data-gallery="">
+                <img src="@fileStorage.GetAdminCroppedImageUrl(150,0)" alt="@fileStorage.FileName" />
+            </a>
+        }
+        else
+        {
+            <div class="alert alert-danger" style="padding:6px;margin-bottom:4px;font-size:11px;line-height:1.2;text-align:center;">
+                <i class="glyphicon glyphicon-exclamation-sign"></i><br />
+                <strong>@AdminResource.FileNotFound</strong><br />
+                <span style="font-size:10px;">@AdminResource.MissingFileNotFoundOnDisk</span>
+            </div>
+        }
+        <div class="media-file-preview-name">@fileStorage.FileName</div>
+    </div>
+    <div class="media-file-preview-meta">
+        @if (fileExists && imageSizes != null)
+        {
+            <div>
+                @string.Format(AdminResource.OriginalWidthHeightFormat, imageSizes.OriginalWidth, imageSizes.OriginalHeight)
+                <a href="@fullImageUrl" target="_blank">@AdminResource.FullImage</a>
+            </div>
+            <div>
+                @string.Format(AdminResource.ThumbsWidthHeightFormat, imageSizes.Width, imageSizes.Height)
+                <a href="@thumbImageUrl" target="_blank">@AdminResource.ThumbsImage</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <span class="label label-danger" title="@AdminResource.MissingFileTooltip">
+                    <i class="glyphicon glyphicon-remove"></i> @AdminResource.MissingFile
+                </span>
+            </div>
+        }
+    </div>
+</div>
+}
+
+@Html.Griddly(settings)

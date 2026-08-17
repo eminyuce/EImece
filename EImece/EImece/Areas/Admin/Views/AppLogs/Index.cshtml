@@ -1,9 +1,8 @@
-﻿@model List<AppLog>
+@model List<AppLog>
 @using System;
 @using System.Collections.Generic;
 @using EImece.Domain.Helpers;
-@using GridMvc.Html;
-@using GridMvc.Sorting;
+@using Griddly.Mvc;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
 @using Resources;
@@ -144,62 +143,7 @@
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#logAccordion">
             <div class="accordion-body">
-                @Html.Partial("Grid/_GridChrome")
-
-                <div class="panel panel-primary eg-grid-shell">
-                @Html.Grid(contents).Named(gridName).Columns(columns =>
-                  {
-                      columns.Add()
-                          .Encoded(false)
-                          .Sanitized(false)
-                          .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-                          .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-                      columns.Add()
-                          .Encoded(false)
-                          .Sanitized(false)
-                          .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-                          .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-                            {"ItemId",d.Id}}));
-
-                      columns.Add(c => c.Id)
-                          .Filterable(true)
-                          .Encoded(false)
-                          .Sanitized(false)
-                          .Css("eg-col-name")
-                          .RenderValueAs(d => CreateAppLogModal(d));
-
-                      columns.Add(c => c.EventLevel)
-                          .Titled("Seviye")
-                          .Filterable(true)
-                          .Encoded(false)
-                          .Sanitized(false)
-                          .Css("eg-col-state")
-                          .RenderValueAs(o => EventLevelBadge(o.EventLevel));
-
-                      columns.Add(o => o.EventMessage)
-                          .Titled("Mesaj")
-                          .Encoded(false)
-                          .Sanitized(false)
-                          .SetWidth(10)
-                          .RenderValueAs(o => String.Format("<label class='sr-only' for='applog-msg-{0}'>Mesaj</label><textarea id='applog-msg-{0}' readonly style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{1}</textarea>", o.Id, String.Format("{0} {1} {2}", o.EventMessage, o.ErrorSource, o.ErrorMessage)));
-
-                      columns.Add(o => o.InnerErrorMessage)
-                          .Titled("İç Hata Mesajı")
-                          .Encoded(false)
-                          .Sanitized(false)
-                          .SetWidth(10)
-                          .RenderValueAs(o => String.Format("<label class='sr-only' for='applog-inner-{0}'>İç Hata Mesajı</label><textarea id='applog-inner-{0}' readonly style='height: 146px; background-color: transparent; width: 399px; margin: 0px;'>{1}</textarea>", o.Id, o.InnerErrorMessage));
-
-                      columns.Add(o => o.CreatedDate)
-                          .Titled(AdminResource.CreatedDate)
-                          .Sortable(true)
-                          .Css("gridDateClass")
-                          .RenderValueAs(o => o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss"))
-                          .SortInitialDirection(GridSortDirection.Descending);
-
-                  }).SetRowCssClasses(item => item.Id % 2 == 0 ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-                </div>
+                <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = currentSearch, eventLevel = currentEventLevel })"></div>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -61,9 +61,21 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
+    <Reference Include="Griddly.Mvc, Version=3.8.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griddly.Core.3.8.9\lib\net461\Griddly.Mvc.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Dynamic.Core, Version=1.6.0.1, Culture=neutral, PublicKeyToken=0f07ec44de6ac832, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.Core.1.6.0.1\lib\net46\System.Linq.Dynamic.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.4.5.3\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.90\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.27.1.1\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
     <Reference Include="Iyzipay, Version=2.1.78.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Iyzipay.2.1.78\lib\net45\Iyzipay.dll</HintPath>
@@ -519,6 +531,7 @@
     <Content Include="Content\adminSearchResult.css" />
     <Content Include="Content\adminShell.css" />
     <Content Include="Content\adminGridModern.css" />
+    <Content Include="Content\adminGriddlyCompat.css" />
     <Content Include="Content\adminReports.css" />
     <Content Include="Content\filepond\filepond.min.css" />
     <Content Include="Content\filepond\filepond-plugin-image-preview.min.css" />
@@ -686,7 +699,7 @@
     <Content Include="Content\codemirror\codemirror.css" />
     <Content Include="Content\codemirror\doc\docs.css" />
     <Content Include="Content\deleteStyle.css" />
-    <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\griddly.css" />
     <Content Include="Content\img\hero-main-bg.jpg" />
     <Content Include="Content\img\iyzico-ile-Ode%401X.png" />
     <Content Include="Content\img\iyzico-ile-Ode_Alt%401X.png" />
@@ -1157,8 +1170,6 @@
     <Content Include="Views\Designs\Modern\Shared\_CarouselMainPageImages.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_ContactUsFormViewModel.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_Footer.cshtml" />
-    <Content Include="Views\Designs\Modern\Shared\_Grid.cshtml" />
-    <Content Include="Views\Designs\Modern\Shared\_GridPager.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_Languages.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_Layout.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_LoginPartial.cshtml" />
@@ -1252,8 +1263,6 @@
     <Content Include="Views\Designs\Crizal\Shared\_CarouselMainPageImages.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_ContactUsFormViewModel.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Footer.cshtml" />
-    <Content Include="Views\Designs\Crizal\Shared\_Grid.cshtml" />
-    <Content Include="Views\Designs\Crizal\Shared\_GridPager.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Header.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Languages.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Layout.cshtml" />
@@ -1390,6 +1399,7 @@
     <Content Include="Areas\Admin\Views\Dashboard\SearchContent.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pSaveOrEdit.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\IndexGrid.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductTags.cshtml" />
     <Content Include="Areas\Admin\Views\Products\_pProductFiles.cshtml" />
     <Content Include="Areas\Admin\Views\Media\Index.cshtml" />
@@ -1535,6 +1545,31 @@
     <None Include="ApplicationInsights.config.example" />
     <Content Include="Areas\Admin\Views\Shared\_SystemHealthBadge.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\SystemHealth.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\CustomerOrdersGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Coupons\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Brands\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\AppLogs\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Lists\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\MailTemplates\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\MainPageImages\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Faq\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Media\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Menus\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Metrics\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategories\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductComments\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\MoveProductsInTreesGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\ShoppingCarts\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Stories\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\StoryCategories\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Subscribers\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\TagCategories\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Tags\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\IndexGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\CustomerRolesGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\IndexGrid.cshtml" />
     <None Include="ConnectionStrings.config.example" />
     <Content Include="Areas\Admin\Views\Shared\_AdminTopbar.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminSidebar.cshtml" />
@@ -1587,8 +1622,7 @@
     <Content Include="Scripts\adminTemplateBuilder.js" />
     <Content Include="Scripts\cookie-consent.js" />
     <Content Include="Scripts\eimece.js" />
-    <Content Include="Scripts\gridmvc.js" />
-    <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\griddly.js" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -1647,8 +1681,14 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Product.cshtml" />
-    <Content Include="Views\Shared\_GridPager.cshtml" />
-    <Content Include="Views\Shared\_Grid.cshtml" />
+    <Content Include="Views\Shared\Griddly\BootstrapButton.cshtml" />
+    <Content Include="Views\Shared\Griddly\ButtonStrip.cshtml" />
+    <Content Include="Views\Shared\Griddly\Griddly.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterBar.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterForm.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterInline.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilters.cshtml" />
+    <Content Include="Views\Shared\Griddly\GriddlyFilterValues.cshtml" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags.cshtml" />
     <Content Include="Views\Pages\Detail.cshtml" />

@@ -1,8 +1,11 @@
 using EImece.Domain.DbContext;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -40,10 +43,23 @@ namespace EImece.Areas.Admin.Controllers
             this.CustomerService = customerService;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             var model = await CustomerService.GetCustomerServicesAsync(search);
             return View(model);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            var model = await CustomerService.GetCustomerServicesAsync(search);
+            return new QueryableResult<Customer>(model.AsQueryable());
         }
 
         [HttpGet, ActionName("ExportExcel")]
@@ -66,6 +82,7 @@ namespace EImece.Areas.Admin.Controllers
             return DownloadFile(result, string.Format("customers-{0}", GetCurrentLanguage), format);
         }
 
+        [HttpGet]
         public async Task<ActionResult> CustomerOrders(CancellationToken cancellationToken, string id, string search = "")
         {
             var orders = await OrderService.GetOrdersUserIdAsync(id, search);
@@ -73,6 +90,21 @@ namespace EImece.Areas.Admin.Controllers
             orders.ForEach(r => r.Customer = customer);
             ViewBag.Customer = customer;
             return View(orders.OrderByDescending(r => r.UpdatedDate).ToList());
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> CustomerOrdersGrid(CancellationToken cancellationToken, string id, string search = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("CustomerOrders", new { id, search });
+            }
+
+            var orders = await OrderService.GetOrdersUserIdAsync(id, search);
+            var customer = await CustomerService.GetUserIdAsync(id);
+            orders.ForEach(r => r.Customer = customer);
+            ViewBag.Customer = customer;
+            return new QueryableResult<Order>(orders.OrderByDescending(r => r.UpdatedDate).AsQueryable());
         }
 
         [HttpPost, ActionName("Delete")]

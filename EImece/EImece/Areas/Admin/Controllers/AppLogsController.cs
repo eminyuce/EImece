@@ -1,5 +1,8 @@
-﻿using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Entities;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Repositories;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using System;
 using System.Linq;
@@ -25,6 +28,7 @@ namespace EImece.Areas.Admin.Controllers
             this.AppLogRepository = repository;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, string search = "", string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
@@ -33,6 +37,19 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.EventLevels = KnownEventLevels;
             var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
             return View(logs);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, string search = "", string eventLevel = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("Index", new { search, eventLevel });
+            }
+
+            eventLevel = NormalizeEventLevel(eventLevel);
+            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
+            return new QueryableResult<AppLog>(logs.AsQueryable());
         }
 
         [HttpGet]

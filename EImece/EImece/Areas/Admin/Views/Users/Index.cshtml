@@ -1,8 +1,6 @@
-﻿@using EImece.Models;
+@using EImece.Models;
 @model List<EditUserViewModel>
 @using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
@@ -177,68 +175,7 @@
         </div>
     </div>
 
-    @Html.Partial("Grid/_GridChrome")
-
-    <div class="panel panel-primary eg-grid-shell">
-        @Html.Partial("pGridDropDown", contents)
-        @Html.Grid(contents).Named(gridName).Columns(columns =>
-    {
-        columns.Add()
-            .Titled("#")
-            .Encoded(false)
-            .Sanitized(false)
-            .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-            .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-        columns.Add(c => c.Email)
-            .Titled(AdminResource.Email)
-            .Filterable(true)
-            .Encoded(false)
-            .Sanitized(false)
-            .Css("eg-col-name")
-            .RenderValueAs(o => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-                { "Name", o.Email },
-                { "Subtitle", String.Format("{0} {1}", o.FirstName, o.LastName) }
-            }));
-
-        columns.Add(o => o.Role)
-            .Encoded(false)
-            .Sanitized(false)
-            .Titled(AdminResource.Roles)
-            .Filterable(true)
-            .Css("eg-col-state")
-            .RenderValueAs(o => RoleBadge(o.Role).ToHtmlString());
-
-        columns.Add(o => o.AuthenticatorEnabled)
-            .Encoded(false)
-            .Sanitized(false)
-            .Titled("2FA")
-            .Filterable(true)
-            .Css("eg-col-state")
-            .RenderValueAs(o => o.AuthenticatorEnabled
-                ? "<span class='eg-state-badge'>Aktif</span>"
-                : "<span class='eg-state-badge is-muted'>Yok</span>");
-
-        columns.Add()
-            .Titled("İşlemler")
-            .Encoded(false)
-            .Sanitized(false)
-            .Css("eg-sticky-right eg-col-actions")
-            .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-                { "ItemId", d.Id },
-                { "ItemName", String.Format("{0} {1}", d.FirstName, d.LastName) },
-                { "controllerName", controllerName },
-                { "ShowMedia", false },
-                { "ShowEdit", true },
-                { "EditAction", "Edit" },
-                { "ShowDelete", true },
-                { "ForgotPasswordUrl", Url.Action("ForgotPassword", controllerName, new { id = d.Id }) },
-                { "NewPasswordUrl", Url.Action("GenerateNewPassword", controllerName, new { id = d.Id }) },
-                { "RolesUrl", Url.Action("UserRoles", controllerName, new { id = d.Id }) }
-            }));
-
-    }).WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-    </div>
+    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"], role = Request.QueryString["role"], twoFactor = Request.QueryString["twoFactor"] })"></div>
 </div>
 
 <style>

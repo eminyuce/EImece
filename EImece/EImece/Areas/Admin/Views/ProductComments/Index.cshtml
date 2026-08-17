@@ -1,8 +1,6 @@
 ﻿@model List<ProductComment>
 @using System.Linq
 @using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting;
 @using EImece.Domain;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Entities;
@@ -85,113 +83,7 @@
         ,{"SetStateOnOrOff",true},
 { "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
 
-    @Html.Partial("Grid/_GridChrome")
-
-    <div class="panel panel-primary eg-grid-shell eg-product-comments-grid">
-        @Html.Partial("pGridDropDown", baseList)
-
-        @if (!contents.Any())
-        {
-            <div class="product-comments-empty">
-                <p>Bu ürüne henüz yorum yok.</p>
-            </div>
-        }
-        else
-        {
-            @Html.Grid(contents).Named(gridName).Columns(columns =>
-{
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-        .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-    columns.Add(o => o.Id, true);
-
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-        .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-            {"ItemId",d.Id}}));
-
-    columns.Add(c => c.Subject)
-        .Titled(AdminResource.ReviewSubject)
-        .Filterable(true)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-col-name")
-        .RenderValueAs(d => Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) {
-            { "Name", d.Subject },
-            { "ItemId", d.Id.ToString() },
-            { "SubName", ReviewerSubName(d) }
-        }));
-
-    columns.Add(c => c.Email)
-        .Titled(AdminResource.Email)
-        .Filterable(true)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-col-email")
-        .RenderValueAs(d => EmailCell(d.Email).ToHtmlString());
-
-    columns.Add(c => c.Rating)
-        .Titled(AdminResource.Rating)
-        .Filterable(true)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("smallGridColumn eg-col-rating")
-        .RenderValueAs(o => RatingCell(o.Rating).ToHtmlString());
-
-    columns.Add(o => o.Review)
-        .Titled(AdminResource.Review)
-        .Encoded(false)
-        .Sanitized(false)
-        .Css("eg-col-review")
-        .RenderValueAs(o => ReviewNoteCell(o).ToHtmlString());
-
-    columns.Add(o => o.IsActive)
-        .Titled(AdminResource.IsActive)
-        .Sortable(true)
-        .Css("smallGridColumn eg-col-status")
-        .SortInitialDirection(GridSortDirection.Descending)
-        .Encoded(false)
-        .Sanitized(false)
-        .RenderValueAs(o => Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) {
-            { "ItemId", o.Id },
-            { "IsActive", o.IsActive },
-            { "ShowState", true },
-            { "ShowMainPage", false },
-            { "ShowImageState", false }
-        }));
-
-    columns.Add(o => o.CreatedDate)
-        .Titled(AdminResource.UpdatedDate)
-        .Sortable(true)
-        .Css("gridDateClass")
-        .RenderValueAs(o => o.CreatedDate != default(DateTime) ? o.CreatedDate.ToString("dd.MM.yyyy HH:mm") : null)
-        .SortInitialDirection(GridSortDirection.Descending);
-
-    if (UserRoleHelper.IsDeletedEnableRoles())
-    {
-        columns.Add()
-            .Titled("İşlemler")
-            .Encoded(false)
-            .Sanitized(false)
-            .Css("eg-sticky-right eg-col-actions")
-            .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-                { "ItemId", d.Id },
-                { "ItemName", d.Subject + " " + d.Review },
-                { "controllerName", controllerName },
-                { "ShowMedia", false },
-                { "ShowEdit", false },
-                { "ShowDelete", true }
-            }));
-    }
-
-}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-        }
-    </div>
+    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { id = product.Id, search = Request.QueryString["search"] })"></div>
 </div>
 
 @helper RatingCell(int rating)

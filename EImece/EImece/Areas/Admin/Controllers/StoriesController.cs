@@ -1,7 +1,9 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -20,12 +22,26 @@ namespace EImece.Areas.Admin.Controllers
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
 
+        [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int id = 0, String search = "")
         {
             int categoryId = id;
 
             var stories = await StoryService.GetAdminPageListAsync(categoryId, search, CurrentLanguage);
             return View(stories);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, int id = 0, String search = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("Index", new { id, search });
+            }
+
+            int categoryId = id;
+            var stories = await StoryService.GetAdminPageListAsync(categoryId, search, CurrentLanguage);
+            return new QueryableResult<Story>(stories.AsQueryable());
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

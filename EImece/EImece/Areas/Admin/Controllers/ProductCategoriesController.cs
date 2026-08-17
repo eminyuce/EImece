@@ -1,9 +1,11 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using NLog;
 using Resources;
 using System;
@@ -30,6 +32,19 @@ namespace EImece.Areas.Admin.Controllers
             var productCategories = await ProductCategoryService.GetAdminProductCategoriesAsync(search, CurrentLanguage, cancellationToken);
             ViewBag.ProductCategoryLeaves = await ProductCategoryService.GetProductCategoryLeavesAsync(null, CurrentLanguage, cancellationToken);
             return View(productCategories);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "")
+        {
+            if (!CanRenderGrid())
+            {
+                return RedirectToAction("Index", new { search });
+            }
+
+            ViewBag.ProductCategoryLeaves = await ProductCategoryService.GetProductCategoryLeavesAsync(null, CurrentLanguage, cancellationToken);
+            var productCategories = await ProductCategoryService.GetAdminProductCategoriesAsync(search, CurrentLanguage, cancellationToken);
+            return new QueryableResult<ProductCategory>(productCategories.AsQueryable());
         }
 
         [HttpGet]

@@ -1,8 +1,7 @@
 @using EImece.Domain.Entities;
 @using EImece.Domain.Models.AdminModels;
 @using EImece.Domain.Helpers;
-@using GridMvc.Html
-@using GridMvc.Sorting
+@using Griddly.Mvc;
 @using EImece.Domain;
 @using EImece.Domain.Helpers.Extensions;
 @using Resources;
@@ -327,81 +326,7 @@
                     </form>
                 </div>
 
-                @Html.Partial("Grid/_GridChrome")
-
-                <div class="panel panel-primary eg-grid-shell">
-                   
-                    @Html.Partial("pGridDropDown", baseList)
-                    @Html.Grid(contents).Named(gridName).Columns(columns =>
-               {
-
-                   columns.Add()
-          .Encoded(false)
-                       .Sanitized(false)
-           .Css("eg-sticky-left eg-sticky-left-1 eg-col-index")
-           .RenderValueAs(_ => string.Format("<span class='eg-row-index'>{0}</span>", ++rowIndex));
-
-                   columns.Add()
-                       .Encoded(false)
-                       .Sanitized(false)
-                       .Css("gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check")
-                       .RenderValueAs(d => Html.Partial("pGridCheckbox",
-                                          new ViewDataDictionary(ViewData){
-            // DeleteMediaGridItem / FileStorageService.DeleteBaseEntity expects:
-            // fileStorageId-contentId-mod-imageType
-            {"ItemId", String.Format("{0}-{1}-{2}-{3}", d.Id, Model.Id, Model.MediaMod, Model.ImageType)}}));
-
-                   columns.Add(o => o.Id, true);
-
-                   columns.Add()
-                     .Encoded(false)
-                     .Sanitized(false)
-                     .RenderValueAs(d => ImageLinkColumn(d, filesHelper));
-
-                   columns.Add(o => o.Position).Titled(AdminResource.Position)
-                     .Encoded(false).
-                          Sanitized(false).
-                          Css("smallGridColumn").
-                          RenderValueAs(o => String.Format("<input   gridkey-id='{0}' value='{1}'   class='GridOrderingTextbox input-xs' name='gridOrdering' type='type'>", o.Id, o.Position));
-
-                   columns.Add(o => o.IsActive)
-                              .Titled(AdminResource.IsActive)
-                          .Sortable(true)
-                          .Css("smallGridColumn eg-col-status")
-                          .SortInitialDirection(GridSortDirection.Descending).Encoded(false).
-                           Sanitized(false)
-                          .RenderValueAs(o => Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) {
-                              { "ItemId", o.Id },
-                              { "IsActive", o.IsActive },
-                              { "ShowState", true },
-                              { "ShowMainPage", false },
-                              { "ShowImageState", false }
-                          }));
-
-                   columns.Add(o => o.UpdatedDate)
-                              .Titled(AdminResource.UpdatedDate)
-                          .Sortable(true)
-                          .Css("gridDateClass")
-                          .RenderValueAs(o => o.UpdatedDate != null ? String.Format("{0}", o.UpdatedDate.ToShortDateString()) : null)
-                          .SortInitialDirection(GridSortDirection.Descending);
-
-                   columns.Add()
-                       .Titled("İşlemler")
-                       .Encoded(false)
-                       .Sanitized(false)
-                       .Css("eg-sticky-right eg-col-actions")
-                       .RenderValueAs(d => Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) {
-                           { "ItemId", d.Id },
-                           { "ItemName", d.Name },
-                           { "controllerName", controllerName },
-                           { "ShowMedia", false },
-                           { "ShowEdit", false },
-                           { "ShowDelete", true },
-                           { "gridDeleteText", AdminResource.Remove }
-                       }));
-
-               }).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Filterable().WithMultipleFilters().Selectable(false)
-                </div>
+                <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { contentId = Model.Id, mod = Model.MediaMod.ToString(), imageType = Model.ImageType.ToString() })"></div>
             </div>
         </div>
     </div>

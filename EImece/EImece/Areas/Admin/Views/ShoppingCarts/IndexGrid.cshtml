@@ -1,0 +1,218 @@
+@using EImece.Domain.Entities
+@using EImece.Domain.Helpers
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Models.FrontModels
+@using Griddly.Mvc
+@using Newtonsoft.Json.Linq
+@using Resources
+@using System.Linq
+
+@{
+    Layout = null;
+    var gridName = "ShoppingCartGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var controllerName = "shoppingcarts";
+    var showTotals = true;
+
+    var settings = new GriddlySettings<ShoppingCart>()
+    {
+        ClassName = "eg-grid eg-grid-shell eg-shoppingcarts-grid",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        DefaultSort = new[] { new SortField() { Field = "UpdatedDate", Direction = SortDirection.Descending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
+                <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@item.Id</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
+        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@CartNameCell(item)</text>, className: "eg-col-name", width: "260px")
+        .Column(x => x.OrderGuid, caption: "Sipariş GUID", template: @<text>@MonoChip(item.OrderGuid)</text>, className: "eg-col-guid", width: "160px")
+        .Column(x => x.UserId, caption: "Kullanıcı", template: @<text>@MonoChip(item.UserId, 18)</text>, className: "eg-col-userid", width: "160px")
+        .Column(caption: "Ürün", template: @<text>@CartItemsCell(item)</text>, className: "eg-col-cart-items", width: "140px");
+
+    if (showTotals)
+    {
+        settings.Column(caption: "Tutar", template: @<text>@CartTotalCell(item)</text>, className: "eg-col-cart-total", width: "120px");
+    }
+
+    settings
+        .Column(x => x.IsActive, caption: "Durum", template: @<text>@StatusPill(item.IsActive)</text>, className: "eg-col-status", width: "100px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@DateTimeCell(item.UpdatedDate)</text>, className: "gridDateClass eg-col-datetime", width: "130px")
+        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "DetailUrl", Url.Action("Detail", controllerName, new { id = item.Id }) }, { "DetailText", AdminResource.GridDetailText } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+}
+
+@helper MonoChip(string value, int maxLen = 13)
+{
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        <span class="eg-muted">—</span>
+    }
+    else
+    {
+        var display = value.Length > maxLen ? value.Substring(0, Math.Max(8, maxLen - 1)) + "…" : value;
+        <code class="eg-mono-chip" title="@value">@display</code>
+    }
+}
+
+@helper StatusPill(bool isActive)
+{
+    if (isActive)
+    {
+        <span class="eg-status-pill is-on">Aktif</span>
+    }
+    else
+    {
+        <span class="eg-status-pill is-off">Pasif</span>
+    }
+}
+
+@helper DateTimeCell(DateTime value)
+{
+    <div class="eg-datetime-cell">
+        <span class="eg-datetime-date">@value.ToString("dd.MM.yyyy")</span>
+        <span class="eg-datetime-time">@value.ToString("HH:mm")</span>
+    </div>
+}
+
+@helper CartNameCell(ShoppingCart cart)
+{
+    var summary = SummarizeCart(cart);
+    <div class="eg-name-cell">
+        <div class="eg-name-main">
+            @(string.IsNullOrWhiteSpace(cart.Name) ? "—" : cart.Name)
+            <span class="eg-name-id">#@cart.Id</span>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(summary.Email))
+        {
+            <div class="eg-name-meta" title="@summary.Email">@summary.Email</div>
+        }
+    </div>
+}
+
+@helper CartItemsCell(ShoppingCart cart)
+{
+    var summary = SummarizeCart(cart);
+    if (summary.ItemCount <= 0)
+    {
+        <span class="eg-muted">—</span>
+    }
+    else
+    {
+        <div class="eg-cart-items-cell">
+            <span class="eg-count-badge">@summary.ItemCount</span>
+            <span class="eg-cart-items-label">kalem</span>
+            @if (summary.Quantity > 0 && summary.Quantity != summary.ItemCount)
+            {
+                <span class="eg-cart-items-qty">(@summary.Quantity adet)</span>
+            }
+        </div>
+    }
+}
+
+@helper CartTotalCell(ShoppingCart cart)
+{
+    var summary = SummarizeCart(cart);
+    if (!summary.Total.HasValue)
+    {
+        <span class="eg-muted" title="Tutar bu sepet JSON biçiminde hesaplanamadı">—</span>
+    }
+    else
+    {
+        <div class="eg-price-cell">
+            <div class="eg-price-current">@summary.Total.GetValueOrDefault().CurrencySign()</div>
+        </div>
+    }
+}
+
+@functions {
+    private class CartSummary
+    {
+        public int ItemCount { get; set; }
+        public int Quantity { get; set; }
+        public decimal? Total { get; set; }
+        public string Email { get; set; }
+    }
+
+    private static CartSummary SummarizeCart(ShoppingCart cart)
+    {
+        var summary = new CartSummary();
+        if (cart == null || string.IsNullOrWhiteSpace(cart.ShoppingCartJson))
+        {
+            return summary;
+        }
+
+        try
+        {
+            var token = JToken.Parse(cart.ShoppingCartJson);
+
+            // Full session carts
+            var items = token["ShoppingCartItems"] as JArray;
+            if (items != null && items.Count > 0)
+            {
+                summary.ItemCount = items.Count;
+                summary.Quantity = items.Sum(i => i.Value<int?>("Quantity") ?? 0);
+                try
+                {
+                    var session = token.ToObject<ShoppingCartSession>();
+                    if (session != null)
+                    {
+                        summary.Total = session.TotalPrice;
+                        if (session.Customer != null)
+                        {
+                            summary.Email = session.Customer.Email.ToStr();
+                        }
+                    }
+                }
+                catch
+                {
+                    // keep counts only
+                }
+                return summary;
+            }
+
+            // Seed / lightweight carts
+            var seedItems = token["Items"] as JArray;
+            if (seedItems != null && seedItems.Count > 0)
+            {
+                summary.ItemCount = seedItems.Count;
+                summary.Quantity = seedItems.Sum(i => i.Value<int?>("Quantity") ?? 0);
+                summary.Total = null;
+                return summary;
+            }
+
+            var email = token.SelectToken("Customer.Email");
+            if (email != null)
+            {
+                summary.Email = email.ToString();
+            }
+        }
+        catch
+        {
+            // ignore malformed json
+        }
+
+        return summary;
+    }
+}
+
+@Html.Griddly(settings)

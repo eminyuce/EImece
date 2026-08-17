@@ -1,0 +1,72 @@
+@using EImece.Areas.Admin.Models
+@using EImece.Domain
+@using EImece.Domain.Helpers
+@using Griddly.Mvc
+@using System.Globalization
+
+@{
+    Layout = null;
+    var gridName = "MetricsGrid";
+    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    var inv = CultureInfo.InvariantCulture;
+
+    var settings = new GriddlySettings<MetricDisplayItem>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        DefaultSort = new[] { new SortField() { Field = "Count", Direction = SortDirection.Descending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
+                <span class="grid-record-count-label">metrik</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "Açıkla", template: @<text>
+            <button type="button" class="btn btn-xs btn-info metrics-explain-btn"
+                    data-name="@item.Name"
+                    data-count="@item.Count"
+                    data-errors="@item.ErrorCount"
+                    data-window="@item.SampleWindowSize"
+                    data-avg="@item.AverageDurationMs.ToString("0.##", inv)"
+                    data-min="@item.MinDurationMs"
+                    data-max="@item.MaxDurationMs"
+                    data-p50="@item.P50DurationMs"
+                    data-p75="@item.P75DurationMs"
+                    data-p90="@item.P90DurationMs"
+                    data-p95="@item.P95DurationMs"
+                    data-p99="@item.P99DurationMs">
+                <span class="glyphicon glyphicon-question-sign"></span> Açıkla
+            </button>
+        </text>, className: "eg-col-explain", width: "90px")
+        .Column(x => x.Name, caption: "Metrik Adı", className: "metric-name eg-col-name", width: "280px")
+        .Column(x => x.Count, caption: "Adet", className: "eg-col-count", width: "80px")
+        .Column(x => x.ErrorCount, caption: "Hata", template: @<text>
+            <span class="label label-@(item.ErrorCount > 0 ? "danger" : "success")" title="Başarısız çağrı sayısı">@item.ErrorCount.ToString("N0")</span>
+        </text>, className: "eg-col-errors", width: "80px")
+        .Column(x => x.AverageDurationMs, caption: "Ort. süre (ms)", className: "eg-col-avg", width: "120px")
+        .Column(x => x.P50DurationMs, caption: "P50 (ms)", width: "90px")
+        .Column(x => x.P75DurationMs, caption: "P75 (ms)", width: "90px")
+        .Column(x => x.P90DurationMs, caption: "P90 (ms)", width: "90px")
+        .Column(x => x.P95DurationMs, caption: "P95 (ms)", width: "90px")
+        .Column(x => x.P99DurationMs, caption: "P99 (ms)", width: "90px");
+}
+
+@Html.Griddly(settings)

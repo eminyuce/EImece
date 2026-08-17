@@ -78,6 +78,44 @@
                     }
                 });
             }
+
+        $(function () {
+            $(".js-griddly-async").each(function () {
+                var $el = $(this);
+                var url = $el.attr("data-url");
+                if (!url) {
+                    return;
+                }
+                var sep = url.indexOf("?") >= 0 ? "&" : "?";
+                var embedUrl = url + sep + "gridembed=1";
+                $el.addClass("is-loading").html('<div class="eg-grid-embed-loading" style="padding:16px;color:#607487">Yükleniyor…</div>');
+                $.ajax({
+                    url: embedUrl,
+                    type: "GET",
+                    dataType: "html",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-Requested-With", "EimeceGridEmbed");
+                    },
+                    success: function (html) {
+                        $el.html(html).removeClass("is-loading");
+                        var $grid = $el.find("[data-role=griddly]");
+                        if ($grid.length && $.fn.griddly) {
+                            $grid.griddly();
+                        }
+                        var n = $grid.attr("data-griddly-count");
+                        if (n) {
+                            $el.find(".grid-record-count-badge").text(n);
+                        }
+                        if (typeof window.egMarkModernGrids === "function") {
+                            window.egMarkModernGrids();
+                        }
+                    },
+                    error: function () {
+                        $el.removeClass("is-loading").html('<div class="eg-grid-embed-loading" style="padding:16px;color:#b42318">Grid yüklenemedi.</div>');
+                    }
+                });
+            });
+        });
             if (window.jQuery) {
                 wireAjaxAntiForgery();
             } else {

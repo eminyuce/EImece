@@ -1,8 +1,6 @@
-﻿@model List<Product>
+@model List<Product>
 @using EImece.Domain.Helpers;
-
-@using GridMvc.Html
-@using GridMvc.Sorting
+@using Griddly.Mvc;
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Entities;
@@ -74,60 +72,7 @@
 
         }
         @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-default btn-sm", style = "margin-bottom:10px;" })
-        <div class="panel panel-primary">
-            @Html.Partial("pGridDropDown", baseList)
-            @Html.Grid(products).Named(gridName).Columns(columns =>
-       {
-
-           columns.Add(o => o.Id, true);
-
-           columns.Add()
-                         .Encoded(false)
-                         .Sanitized(false)
-                          .Css("gridButtons")
-                         .RenderValueAs(d => Html.Partial("pGridCheckbox", new ViewDataDictionary(ViewData){
-               {"ItemId",d.Id}}));
-
-           columns.Add(c => c.Name)
-                  .Titled(AdminResource.Name)
-                   .Encoded(false)
-              .RenderValueAs(d =>
-            @<div>
-
-                @Html.ActionLink(d.Name, "Detail", "Products", new { area = "", categoryName = GeneralHelper.GetUrlSeoString(d.ProductCategory.Name), id = d.GetSeoUrl() }, new { @class = "btn btn-sm btn-link", @target = "_blank" })
-            </div>
-
-);
-
-columns.Add(o => o.IsActive)
-.Titled(AdminResource.IsActive)
-.Encoded(false).
-Sanitized(false)
-.RenderValueAs(o => String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'> </span>",
-o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsActive));
-
-columns.Add(o => o.MainPage)
-.Titled(AdminResource.MainPage)
-.Encoded(false).
-Sanitized(false)
-.RenderValueAs(o => String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'> </span>",
-o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.MainPage));
-
-columns.Add(o => o.IsCampaign)
-.Titled(AdminResource.IsCampaign)
-.Encoded(false).
-Sanitized(false)
-.RenderValueAs(o => String.Format("<span gridkey-id='{0}' grid-data-value='{2}' {1} name='spanState'> </span>",
-o.Id, (o.IsActive ? Constants.OkStyle : Constants.CancelStyle), o.IsCampaign));
-
-columns.Add(o => o.UpdatedDate)
-.Titled(AdminResource.UpdatedDate)
-.Css("gridDateClass")
-.RenderValueAs(o => String.Format("{0}", o.UpdatedDate.ToShortDateString()))
-.SortInitialDirection(GridSortDirection.Descending);
-
-}).SetRowCssClasses(item => item.IsActive ? string.Empty : "GridIsActive").WithPaging(pageSizeNumber).Sortable().Selectable(false)
-        </div>
+        <div class="js-griddly-async" data-url="@Url.Action("MoveProductsInTreesGrid", new { id = selectedCategory != null ? selectedCategory.Id : 0 })"></div>
     </div>
     <div class="col-md-3">
 

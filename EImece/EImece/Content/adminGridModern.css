@@ -139,7 +139,9 @@ body.admin-app .eg-grid table.grid-table {
     font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
-.grid-record-count-badge {
+.grid-record-count-badge,
+.griddly .grid-record-count-badge,
+.griddly .grid-record-count-badge.griddly-recordtotal {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -147,9 +149,9 @@ body.admin-app .eg-grid table.grid-table {
     height: 26px;
     padding: 0 10px;
     border-radius: 999px;
-    background: #163a6b;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    color: #fff;
+    background: #163a6b !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    color: #ffffff !important;
     font-size: 13px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
@@ -319,8 +321,8 @@ body.admin-app .eg-grid table.grid-table > tbody > tr > td {
 
 /* ----- Name / meta ----- */
 .eg-name-cell {
-    min-width: 180px;
-    max-width: 280px;
+    min-width: 260px;
+    max-width: 440px;
 }
 
 .eg-name-link {
@@ -467,6 +469,51 @@ body.admin-app .eg-grid table.grid-table > tbody > tr > td {
 .eg-state-badge.is-muted {
     background: #eef2f6;
     color: var(--eg-text-muted);
+}
+
+body.admin-app .eg-state-badge.eg-state-NONE {
+    background: #eef2f6;
+    color: #64748b;
+}
+body.admin-app .eg-state-badge.eg-state-ProductInStock {
+    background: #dcfce7;
+    color: #166534;
+}
+body.admin-app .eg-state-badge.eg-state-ProductOutOfStock {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+body.admin-app .eg-state-badge.eg-state-PreOrder {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+body.admin-app .eg-state-badge.eg-state-Discontinued {
+    background: #e2e8f0;
+    color: #475569;
+}
+body.admin-app .eg-state-badge.eg-state-Backorder {
+    background: #ffedd5;
+    color: #c2410c;
+}
+body.admin-app .eg-state-badge.eg-state-ComingSoon {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+body.admin-app .eg-state-badge.eg-state-LimitedStock {
+    background: #fef3c7;
+    color: #b45309;
+}
+body.admin-app .eg-state-badge.eg-state-Reserved {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+body.admin-app .eg-state-badge.eg-state-AwaitingRestock {
+    background: #ffedd5;
+    color: #9a3412;
+}
+body.admin-app .eg-state-badge.eg-state-NotForSale {
+    background: #f1f5f9;
+    color: #334155;
 }
 
 /* ----- Status toggles (critical) ----- */
@@ -3092,3 +3139,339 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     outline-offset: 1px;
     background: #fff;
 }
+
+/* ==========================================================================
+   Griddly Integration & Aesthetic Harmony
+   Ensures Griddly grids match Grid.Mvc modern design 1:1 with horizontal scroll
+   ========================================================================== */
+
+.griddly,
+.eg-grid.griddly,
+.griddly.eg-grid-shell {
+    position: relative;
+    background: var(--eg-surface);
+    border: 1px solid var(--eg-border);
+    border-radius: var(--eg-radius);
+    box-shadow: var(--eg-shadow);
+    margin-bottom: 20px;
+    font-family: var(--eg-font);
+    overflow: hidden;
+}
+
+.griddly .griddly-filters,
+.griddly-filters-form,
+.griddly-filters-inline,
+.griddly-filter-values {
+    display: none !important;
+}
+
+.griddly .griddly-scrollable-container {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    background: var(--eg-surface);
+    -webkit-overflow-scrolling: touch;
+}
+
+.griddly table,
+.griddly table.eg-grid-table,
+.griddly .table {
+    width: 100% !important;
+    min-width: 1450px !important;
+    margin-bottom: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    font-family: var(--eg-font);
+    font-size: 13px;
+    color: var(--eg-text);
+    background: var(--eg-surface);
+    table-layout: auto;
+}
+
+.griddly table > thead > tr.columnHeaders > th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
+    color: #1a365d;
+    font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    white-space: nowrap;
+    border-bottom: 2px solid #c3d4e8 !important;
+    border-top: 0 !important;
+    padding: 11px 12px !important;
+    vertical-align: middle;
+}
+
+.griddly table > thead > tr.columnHeaders > th a {
+    color: #1a365d !important;
+    text-decoration: none !important;
+}
+
+.griddly table > thead > tr.columnHeaders > th a:hover {
+    color: #2b6cb0 !important;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sortable {
+    cursor: pointer;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sortable .icon:after {
+    content: " \21C5";
+    opacity: 0.4;
+    font-size: 11px;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sorted_a .icon:after {
+    content: " \25B2";
+    opacity: 0.9;
+    color: #2b6cb0;
+}
+
+.griddly table > thead > tr.columnHeaders > th.sorted_d .icon:after {
+    content: " \25BC";
+    opacity: 0.9;
+    color: #2b6cb0;
+}
+
+.griddly table > tbody > tr > td {
+    padding: var(--eg-row-pad-y, 8px) var(--eg-row-pad-x, 10px) !important;
+    border-top: 1px solid var(--eg-border) !important;
+    border-bottom: 0 !important;
+    vertical-align: middle !important;
+    background-color: var(--eg-surface);
+    transition: background 0.15s ease;
+}
+
+.griddly table > tbody > tr:hover > td {
+    background-color: var(--eg-row-hover) !important;
+}
+
+.griddly table > tbody > tr.gridChecked > td,
+.griddly table > tbody > tr.eg-row-selected > td {
+    background-color: var(--eg-row-selected) !important;
+}
+
+.griddly table > tbody > tr.GridIsActive > td {
+    opacity: 0.65;
+}
+
+/* Griddly Sticky Columns */
+.griddly table > thead > tr > th.eg-sticky-left,
+.griddly table > tbody > tr > td.eg-sticky-left,
+.griddly table > thead > tr > th.eg-sticky-right,
+.griddly table > tbody > tr > td.eg-sticky-right {
+    position: sticky !important;
+}
+
+.griddly table > thead > tr > th.eg-sticky-left,
+.griddly table > tbody > tr > td.eg-sticky-left {
+    left: 0;
+    z-index: 3;
+    box-shadow: 1px 0 0 var(--eg-border);
+}
+
+.griddly table > thead > tr > th.eg-sticky-left-1,
+.griddly table > tbody > tr > td.eg-sticky-left-1 {
+    left: 0 !important;
+    min-width: 44px;
+    width: 44px;
+    box-shadow: none;
+}
+
+.griddly table > thead > tr > th.eg-sticky-left-2,
+.griddly table > tbody > tr > td.eg-sticky-left-2 {
+    left: 44px !important;
+    min-width: 44px;
+    width: 44px;
+    z-index: 3;
+    box-shadow: 1px 0 0 var(--eg-border);
+}
+
+.griddly table > thead > tr > th.eg-sticky-right,
+.griddly table > tbody > tr > td.eg-sticky-right {
+    right: 0 !important;
+    z-index: 3;
+    box-shadow: -1px 0 0 var(--eg-border);
+}
+
+.griddly table > thead > tr > th.eg-sticky-left,
+.griddly table > thead > tr > th.eg-sticky-right {
+    z-index: 7 !important;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
+}
+
+.griddly table > tbody > tr > td.eg-sticky-left,
+.griddly table > tbody > tr > td.eg-sticky-right {
+    background-color: var(--eg-surface) !important;
+}
+
+.griddly table > tbody > tr:hover > td.eg-sticky-left,
+.griddly table > tbody > tr:hover > td.eg-sticky-right {
+    background-color: var(--eg-row-hover) !important;
+}
+
+.griddly table > tbody > tr.gridChecked > td.eg-sticky-left,
+.griddly table > tbody > tr.gridChecked > td.eg-sticky-right,
+.griddly table > tbody > tr.eg-row-selected > td.eg-sticky-left,
+.griddly table > tbody > tr.eg-row-selected > td.eg-sticky-right {
+    background-color: var(--eg-row-selected) !important;
+}
+
+/* Griddly Column Sizes */
+.griddly table .eg-col-index { min-width: 44px; width: 44px; text-align: center; }
+.griddly table .eg-col-check { min-width: 44px; width: 44px; text-align: center; }
+.griddly table .eg-col-image { min-width: 64px; width: 64px; text-align: center; }
+.griddly table .eg-col-name { min-width: 360px; }
+.griddly table .eg-col-category { min-width: 150px; }
+.griddly table .eg-col-brand { min-width: 130px; }
+.griddly table .eg-col-price { min-width: 132px; }
+.griddly table .eg-col-state { min-width: 148px; }
+.griddly table .eg-col-position { min-width: 90px; }
+.griddly table .eg-col-status { min-width: 170px; }
+.griddly table .eg-col-actions { min-width: 60px; width: 60px; text-align: center; }
+
+/* Griddly Footer & Pagination */
+.griddly .griddly-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--eg-surface-muted);
+    border-top: 1px solid var(--eg-border);
+    border-radius: 0 0 var(--eg-radius) var(--eg-radius);
+    font-size: 13px;
+    color: var(--eg-text-muted);
+}
+
+.griddly .griddly-summary {
+    font-weight: 500;
+}
+
+.griddly .griddly-footer .griddly-recordtotal {
+    font-weight: 700;
+    color: var(--eg-text);
+}
+
+.griddly .griddly-pager {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.griddly .griddly-pager a {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--eg-border);
+    background: #fff;
+    color: var(--eg-link);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.15s ease;
+}
+
+.griddly .griddly-pager a:hover {
+    background: var(--eg-row-hover);
+    border-color: var(--eg-link);
+    color: var(--eg-link-hover);
+}
+
+.griddly .griddly-pager input.pageNumber {
+    width: 48px;
+    height: 28px;
+    text-align: center;
+    border: 1px solid var(--eg-border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Horizontal Scroll Enhancements (Floating scrollbar & nav buttons)
+   ========================================================================== */
+
+.eg-floating-scrollbar {
+    position: fixed;
+    bottom: 0;
+    z-index: 1050;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid #cbd5e0;
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.16);
+    display: none;
+}
+
+.eg-floating-scrollbar-inner {
+    height: 1px;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar,
+.griddly-scrollable-container::-webkit-scrollbar,
+.eg-grid-scroll::-webkit-scrollbar,
+.grid-wrap::-webkit-scrollbar {
+    height: 12px !important;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar-track,
+.griddly-scrollable-container::-webkit-scrollbar-track,
+.eg-grid-scroll::-webkit-scrollbar-track,
+.grid-wrap::-webkit-scrollbar-track {
+    background: #edf2f7 !important;
+    border-radius: 6px !important;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar-thumb,
+.griddly-scrollable-container::-webkit-scrollbar-thumb,
+.eg-grid-scroll::-webkit-scrollbar-thumb,
+.grid-wrap::-webkit-scrollbar-thumb {
+    background: #3182ce !important;
+    border-radius: 6px !important;
+    border: 2px solid #edf2f7 !important;
+}
+
+.eg-floating-scrollbar::-webkit-scrollbar-thumb:hover,
+.griddly-scrollable-container::-webkit-scrollbar-thumb:hover,
+.eg-grid-scroll::-webkit-scrollbar-thumb:hover,
+.grid-wrap::-webkit-scrollbar-thumb:hover {
+    background: #1e4e8c !important;
+}
+
+.eg-grid-scroll-controls {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.eg-scroll-nav-btn {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    border-radius: 4px;
+    padding: 3px 10px !important;
+    font-size: 11px;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.eg-scroll-nav-btn:hover,
+.eg-scroll-nav-btn:focus {
+    background: rgba(255, 255, 255, 0.42) !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+
+
