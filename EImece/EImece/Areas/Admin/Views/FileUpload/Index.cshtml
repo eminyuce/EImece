@@ -18,112 +18,67 @@
             if (window.FilePondPluginFileValidateType) FilePond.registerPlugin(FilePondPluginFileValidateType);
             if (window.FilePondPluginFileValidateSize) FilePond.registerPlugin(FilePondPluginFileValidateSize);
             if (window.FilePondPluginImageExifOrientation) FilePond.registerPlugin(FilePondPluginImageExifOrientation);
+            if (window.FilePondPluginImageValidateSize) FilePond.registerPlugin(FilePondPluginImageValidateSize);
         }
 
         var $input = $('.filepond-fileupload-input');
-        var $btnBrowse = $('.filepond-btn-browse');
-        var $btnStart = $('.filepond-btn-start');
-        var $btnCancel = $('.filepond-btn-cancel');
-        var $btnDelete = $('.filepond-btn-delete');
-        var $toggleAll = $('.filepond-toggle-all');
-        var $progressWrapper = $('.filepond-global-progress-wrapper');
-        var $progressBar = $('.filepond-global-progress-bar');
-        var $progressText = $('.filepond-progress-extended');
-        var uploadStartTime = null;
+        var $uploadHeader = $('.admin-media-upload-header');
+        var $countText = $('.admin-media-count-text');
+        var $sizeText = $('.admin-media-total-size-text');
+        var $btnClearAll = $('.btn-clear-all-pond');
 
         function formatBytes(bytes) {
-            if (!bytes || bytes === 0) return '0.00 MB';
-            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+            if (!bytes || bytes === 0) return '0 B';
+            var k = 1024;
+            var sizes = ['B', 'KB', 'MB', 'GB'];
+            var i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
 
-        function formatTime(seconds) {
-            if (!seconds || isNaN(seconds) || seconds < 0 || !isFinite(seconds)) return '00:00:00';
-            var s = Math.floor(seconds);
-            var hrs = Math.floor(s / 3600);
-            var mins = Math.floor((s % 3600) / 60);
-            var secs = s % 60;
-            return (hrs < 10 ? '0' : '') + hrs + ':' + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
-        }
-
-        function updateToolbarState() {
-            var pond = $input.filepond ? $input.filepond('getPond') : null;
-            if (!pond) return;
-
-            var files = pond.getFiles();
-            var idleFiles = files.filter(function (f) { return f.status === 2; });
-            var processingFiles = files.filter(function (f) { return f.status === 3 || f.status === 4; });
-
-            if (processingFiles.length > 0) {
-                $btnStart.prop('disabled', true);
-                $btnCancel.prop('disabled', false);
-                $btnDelete.prop('disabled', true);
-                $progressWrapper.show();
-            } else if (idleFiles.length > 0) {
-                $btnStart.prop('disabled', false);
-                $btnCancel.prop('disabled', true);
-                $btnDelete.prop('disabled', false);
-            } else {
-                $btnStart.prop('disabled', true);
-                $btnCancel.prop('disabled', true);
-                $btnDelete.prop('disabled', files.length === 0);
-                if (files.length === 0) {
-                    $progressWrapper.hide();
-                    $toggleAll.prop('checked', false);
-                }
-            }
-        }
-
-        function updateGlobalProgress() {
+        function updateHeaderSummary() {
             var pond = $input.filepond ? $input.filepond('getPond') : null;
             if (!pond) return;
 
             var files = pond.getFiles();
             if (files.length === 0) {
-                $progressWrapper.hide();
+                $uploadHeader.slideUp(150);
                 return;
             }
 
             var totalBytes = 0;
-            var loadedBytes = 0;
+            var completeCount = 0;
 
             files.forEach(function (f) {
-                var size = f.fileSize || (f.file ? f.file.size : 0);
-                totalBytes += size;
-                if (f.status === 5) {
-                    loadedBytes += size;
-                } else if (f.status === 3) {
-                    loadedBytes += (size * (f.transferProgress || 0));
-                }
+                totalBytes += f.fileSize || (f.file ? f.file.size : 0);
+                if (f.status === 5) completeCount++;
             });
 
-            var percent = totalBytes > 0 ? (loadedBytes / totalBytes) * 100 : 0;
-            $progressBar.css('width', percent.toFixed(1) + '%');
-
-            var elapsedSeconds = uploadStartTime ? (Date.now() - uploadStartTime) / 1000 : 0;
-            var speedMbits = (elapsedSeconds > 0 && loadedBytes > 0)
-                ? ((loadedBytes * 8) / (elapsedSeconds * 1000 * 1000)).toFixed(2)
-                : '0.00';
-
-            var remainingBytes = Math.max(0, totalBytes - loadedBytes);
-            var bytesPerSec = elapsedSeconds > 0 ? loadedBytes / elapsedSeconds : 0;
-            var remainingSecs = bytesPerSec > 0 ? remainingBytes / bytesPerSec : 0;
-
-            $progressText.text(
-                speedMbits + ' Mbit/s | ' +
-                formatTime(remainingSecs) + ' | ' +
-                percent.toFixed(2) + ' % | ' +
-                formatBytes(loadedBytes) + ' / ' + formatBytes(totalBytes)
-            );
+            $countText.text(files.length + ' Fotoğraf (' + completeCount + '/' + files.length + ' Yüklendi)');
+            $sizeText.text('Toplam: ' + formatBytes(totalBytes));
+            $uploadHeader.slideDown(150);
         }
 
         $input.filepond({
-            instantUpload: false,
+            instantUpload: true,
             allowMultiple: true,
             allowReorder: true,
+            allowPaste: true,
             maxFiles: 50,
-            acceptedFileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+            maxParallelUploads: 4,
+            acceptedFileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'],
             maxFileSize: '20MB',
+            imagePreviewHeight: 180,
             credits: false,
+            labelIdle: '<div class="filepond-hero-label">' +
+                       '<div class="filepond-hero-icon"><i class="glyphicon glyphicon-cloud-upload"></i></div>' +
+                       '<div class="filepond-hero-title">Fotoğrafları buraya sürükleyip bırakın</div>' +
+                       '<div class="filepond-hero-subtitle">veya <span class="filepond--label-action">Dosyalara Göz Atın</span></div>' +
+                       '<div class="filepond-hero-badges">' +
+                       '<span class="badge-pill">📸 JPG, PNG, WEBP, GIF, BMP</span>' +
+                       '<span class="badge-pill">⚡ Maks. 20 MB</span>' +
+                       '<span class="badge-pill">✨ Çoklu Seçim & Sıralama</span>' +
+                       '</div>' +
+                       '</div>',
             server: {
                 process: {
                     url: '@Url.Action("Upload", "FileUpload")',
@@ -138,77 +93,25 @@
                 }
             },
             onaddfile: function () {
-                updateToolbarState();
-                updateGlobalProgress();
+                updateHeaderSummary();
             },
             onremovefile: function () {
-                updateToolbarState();
-                updateGlobalProgress();
+                updateHeaderSummary();
             },
-            onprocessfilestart: function () {
-                if (!uploadStartTime) uploadStartTime = Date.now();
-                $progressWrapper.show();
-                updateToolbarState();
-            },
-            onprocessfileprogress: function (file, progress) {
-                file.transferProgress = progress;
-                updateGlobalProgress();
-            },
-            onprocessfile: function (error, file) {
-                if (!error) file.transferProgress = 1.0;
-                updateToolbarState();
-                updateGlobalProgress();
+            onprocessfile: function () {
+                updateHeaderSummary();
             },
             onprocessfiles: function () {
-                uploadStartTime = null;
-                updateToolbarState();
-                updateGlobalProgress();
+                updateHeaderSummary();
             }
         });
 
-        $btnBrowse.on('click', function (e) {
-            e.preventDefault();
-            $input.filepond('browse');
-        });
-
-        $btnStart.on('click', function (e) {
-            e.preventDefault();
-            uploadStartTime = Date.now();
-            $progressWrapper.show();
-            $progressBar.css('width', '0%');
-            $input.filepond('processFiles');
-            updateToolbarState();
-        });
-
-        $btnCancel.on('click', function (e) {
-            e.preventDefault();
-            var pond = $input.filepond('getPond');
+        $btnClearAll.on('click', function () {
+            var pond = $input.filepond ? $input.filepond('getPond') : null;
             if (pond) {
-                var files = pond.getFiles();
-                files.forEach(function (f) {
-                    if (f.status === 3 || f.status === 4) pond.abortProcessing(f.id);
-                });
-            }
-            uploadStartTime = null;
-            updateToolbarState();
-            updateGlobalProgress();
-        });
-
-        $btnDelete.on('click', function (e) {
-            e.preventDefault();
-            var pond = $input.filepond('getPond');
-            if (!pond) return;
-            if (confirm('Yükleme listesini temizlemek istiyor musunuz?')) {
                 pond.removeFiles();
-                $progressBar.css('width', '0%');
-                $progressWrapper.hide();
-                updateToolbarState();
+                updateHeaderSummary();
             }
-        });
-
-        $toggleAll.on('change', function () {
-            var checked = $(this).is(':checked');
-            $('.filepond--item').toggleClass('is-selected', checked);
         });
     });
 </script>

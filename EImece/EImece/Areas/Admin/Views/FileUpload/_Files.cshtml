@@ -1,30 +1,16 @@
-<div class="admin-media-filepond-container">
-    <!-- Top Action Toolbar matching blueimp UI -->
-    <div class="admin-media-toolbar">
-        <div class="admin-media-toolbar-left">
-            <button type="button" class="btn btn-success filepond-btn-browse" title="Resimleri Seç">
-                <i class="glyphicon glyphicon-plus"></i> <span>Resimler ekle...</span>
-            </button>
-            <button type="button" class="btn btn-primary filepond-btn-start" title="Yüklemeye Başla" disabled>
-                <i class="glyphicon glyphicon-upload"></i> <span>Yüklemeye Başla</span>
-            </button>
-            <button type="button" class="btn btn-warning filepond-btn-cancel" title="Yüklemeyi İptal Et" disabled>
-                <i class="glyphicon glyphicon-ban-circle"></i> <span>Yüklemeyi İptal Et</span>
-            </button>
-            <button type="button" class="btn btn-danger filepond-btn-delete" title="Sil / Listeyi Temizle" disabled>
-                <i class="glyphicon glyphicon-trash"></i> <span>Sil</span>
-            </button>
-            <label class="admin-media-select-all" title="Tümünü Seç / Seçimi Kaldır">
-                <input type="checkbox" class="filepond-toggle-all"> <span>Hepsi seç</span>
-            </label>
+<div class="admin-media-modern-uploader">
+    <!-- Header Bar with Quick Status & Actions -->
+    <div class="admin-media-upload-header" style="display: none;">
+        <div class="admin-media-upload-status">
+            <span class="badge badge-info admin-media-files-count-badge">
+                <i class="glyphicon glyphicon-picture"></i> <span class="admin-media-count-text">0 Resim Seçildi</span>
+            </span>
+            <span class="admin-media-total-size-text text-muted" style="font-size: 12px; margin-left: 8px;"></span>
         </div>
-
-        <!-- Global Upload Progress Bar -->
-        <div class="admin-media-toolbar-right filepond-global-progress-wrapper" style="display: none;">
-            <div class="progress progress-striped active filepond-global-progress-bar-container">
-                <div class="progress-bar progress-bar-success filepond-global-progress-bar" role="progressbar" style="width: 0%;"></div>
-            </div>
-            <div class="filepond-progress-extended">0.00 Mbit/s | 00:00:00 | 0.00 % | 0.00 MB / 0.00 MB</div>
+        <div class="admin-media-upload-actions">
+            <button type="button" class="btn btn-default btn-xs btn-clear-all-pond" title="Listeyi Temizle">
+                <i class="glyphicon glyphicon-trash"></i> Tümünü Temizle
+            </button>
         </div>
     </div>
 
@@ -38,4 +24,4 @@
                data-max-file-size="20MB"
                data-max-files="50" />
     </div>
-</div>
+</div>
