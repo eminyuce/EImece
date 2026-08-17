@@ -91,7 +91,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => customer.Gender, htmlAttributes: new { @class = "control-label" })<br />
+                                    @Html.LabelFor(model => customer.Gender, htmlAttributes: new { @class = "col-form-label" })<br />
 
                                     <label class="me-2">
                                         @Html.RadioButtonFor(model => customer.Gender, ((int)GenderType.Woman).ToString()) Kadin
@@ -161,7 +161,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <div>@Html.LabelFor(model => customer.Description, htmlAttributes: new { @class = "control-label" }) </div>
+                                    <div>@Html.LabelFor(model => customer.Description, htmlAttributes: new { @class = "col-form-label" }) </div>
                                     @Html.TextAreaFor(model => customer.Description, new { @class = "form-control", placeholder = "", rows = "3" })
                                     @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
                                 </div>

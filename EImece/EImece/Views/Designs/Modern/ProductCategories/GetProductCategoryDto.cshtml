@@ -138,7 +138,7 @@
                 {
                     <li class="list-group-item">
                         <strong>@child.Name</strong>
-                        <small class="text-muted pull-right">ID: @child.Id | Position: @child.Position</small>
+                        <small class="text-muted float-end">ID: @child.Id | Position: @child.Position</small>
                     </li>
                 }
             </ul>
@@ -147,7 +147,7 @@
 }
 
 <div class="form-group mt-4">
-    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
 </div>
 

@@ -65,6 +65,17 @@ namespace EImece
             bundles.Add(new ScriptBundle("~/bundles/mstore").Include(
                     "~/Content/mstore/js/vendor.min.js",
                     "~/Content/mstore/js/theme.min.js"));
+            // Storefront site-wide Bootstrap 5.3.8 + jQuery 4 (shared vendor files with admin).
+            bundles.Add(new ScriptBundle("~/bundles/siteJquery").Include(
+                        "~/Scripts/admin-vendor/jquery-4.0.0.js"));
+            bundles.Add(new ScriptBundle("~/bundles/siteJqueryMigrate").Include(
+                        "~/Scripts/admin-vendor/jquery-migrate-4.0.2.js"));
+            bundles.Add(new Bundle("~/bundles/siteBootstrap").Include(
+                        "~/Scripts/admin-vendor/bootstrap.bundle.min.js"));
+            bundles.Add(new Bundle("~/Content/siteBootstrapCss").Include(
+                        "~/Content/admin-vendor/bootstrap/bootstrap.min.css",
+                        "~/Content/pageThemes.css"));
+
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/griddly.css",

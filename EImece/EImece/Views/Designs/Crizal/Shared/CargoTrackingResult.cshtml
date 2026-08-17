@@ -137,8 +137,8 @@
                                 <tr>
                                     <th>@Resource.ProductName</th>
                                     <th class="text-center">@Resource.Quantity</th>
-                                    <th class="text-right">@Resource.UnitPrice</th>
-                                    <th class="text-right">@Resource.TotalPrice</th>
+                                    <th class="text-end">@Resource.UnitPrice</th>
+                                    <th class="text-end">@Resource.TotalPrice</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -147,15 +147,15 @@
                                     <tr>
                                         <td>@product.ProductName</td>
                                         <td class="text-center">@product.Quantity</td>
-                                        <td class="text-right">@product.ProductSalePrice.CurrencySign()</td>
-                                        <td class="text-right">@product.TotalPrice.CurrencySign()</td>
+                                        <td class="text-end">@product.ProductSalePrice.CurrencySign()</td>
+                                        <td class="text-end">@product.TotalPrice.CurrencySign()</td>
                                     </tr>
                                 }
                             </tbody>
                             <tfoot class="bg-light">
                                 <tr>
-                                    <td colspan="3" class="text-right font-weight-bold">@Resource.TotalPaid:</td>
-                                    <td class="text-right font-weight-bold">@item.PaidPriceDecimal.CurrencySign()</td>
+                                    <td colspan="3" class="text-end font-weight-bold">@Resource.TotalPaid:</td>
+                                    <td class="text-end font-weight-bold">@item.PaidPriceDecimal.CurrencySign()</td>
                                 </tr>
                             </tfoot>
                         </table>

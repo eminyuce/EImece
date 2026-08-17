@@ -128,7 +128,7 @@
                                 data-griddly-filter-data-type="@filter.DataType" />
                             @*@if (filter.DataType == FilterDataType.Percent)
                                 {
-                                    <span class="input-group-addon">%</span>
+                                    <span class="input-group-text">%</span>
                                 }*@
                             <span class="@(css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "input-group-append" : "input-group-btn")">
                                 <a class="@css.ButtonDefault griddly-filter-clear" href="javascript:;" tabindex="-1"><i class="@(css.Icons.Remove)"></i></a>
@@ -150,7 +150,7 @@
                                 data-griddly-filter-data-type="@filter.DataType" placeholder="Range Start" />
                             @*@if (filter.DataType == FilterDataType.Percent)
                                 {
-                                    <span class="input-group-addon">%</span>
+                                    <span class="input-group-text">%</span>
                                 }*@
                             <span class="@(css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "input-group-append" : "input-group-btn")">
                                 <a class="@css.ButtonDefault griddly-filter-clear" href="javascript:;" tabindex="-1"><i class="@(css.Icons.Remove)"></i></a>
@@ -170,7 +170,7 @@
                                 data-griddly-filter-data-type="@filter.DataType" placeholder="Range End"/>
                             @*@if (filter.DataType == FilterDataType.Percent)
                                 {
-                                    <span class="input-group-addon">%</span>
+                                    <span class="input-group-text">%</span>
                                 }*@
                             <span class="@(css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "input-group-append" : "input-group-btn")">
                                 <a class="@css.ButtonDefault griddly-filter-clear" href="javascript:;" tabindex="-1"><i class="@(css.Icons.Remove)"></i></a>
@@ -283,6 +283,6 @@
     }
     else
     {
-        <span class="input-group-addon">@htmlContent(new MvcHtmlString(""))</span>
+        <span class="input-group-text">@htmlContent(new MvcHtmlString(""))</span>
     }
 }

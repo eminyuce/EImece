@@ -73,7 +73,7 @@
     <!-- LCP discovery: preload logo; homepage can add hero preload in HeadExtra -->
     <link rel="preload" as="image" href="/images/logo.jpg" fetchpriority="high" />
 
-    @Styles.Render("~/Content/eimeceTheme")
+    @Styles.Render("~/Content/siteBootstrapCss")
     @* Duplicate full skin CSS (~560KB) removed. Rounded + contrast overrides ship via perf-overrides.css in the bundle. *@
 
     @RenderSection("HeadExtra", required: false)
@@ -82,7 +82,7 @@
     <input name="currentLang" type="hidden" value="@countryCode.ToString()" />
 
     <!-- Skip link for keyboard / AT users -->
-    <a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+    <a class="visually-hidden visually-hidden-focusable" href="#main-content">Skip to main content</a>
 
     <!-- Navbar Multilevel-->
     <!-- First line: Topbar-->
@@ -92,7 +92,7 @@
             @Html.Action("WebSiteAddressInfo", "Home", new { isMobilePage = false })
             <!-- links collapsed (mobile)-->
             <div class="dropdown d-inline-block d-lg-none">
-                <a class="dropdown-toggle text-light font-size-sm py-1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Resource.UsefulLinks</a>
+                <a class="dropdown-toggle text-light  py-1" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Resource.UsefulLinks</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
                     <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
@@ -108,21 +108,21 @@
             <div class="d-flex">
                 <!-- topbar menu-->
                 <ul class="list-inline mb-0 d-none d-lg-block">
-                    <li class="list-inline-item mr-2">
+                    <li class="list-inline-item me-2">
                         @Html.Action("Languages", "Home")
                     </li>
-                    <li class="list-inline-item mr-2">
-                        <a class="text-light font-size-sm py-1 pl-0 pr-2 border-right border-light"
+                    <li class="list-inline-item me-2">
+                        <a class="text-light  py-1 ps-0 pe-2 border-right border-light"
                            href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
                     </li>
-                    <li class="list-inline-item mr-2">
-                        <a class="text-light font-size-sm py-1 pl-0 pr-2"
+                    <li class="list-inline-item me-2">
+                        <a class="text-light  py-1 ps-0 pe-2"
                            href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
                     </li>
                     @if (productPriceEnabled)
                     {
-                        <li class="list-inline-item mr-2">
-                            <a class="text-light font-size-sm py-1 pl-0 pr-2"
+                        <li class="list-inline-item me-2">
+                            <a class="text-light  py-1 ps-0 pe-2"
                                href="@Url.Action("CargoTracking","Payment")">@Resource.TrackYourCargo</a>
                         </li>
                     }
@@ -144,7 +144,7 @@
             <!-- navbar buttons-->
             <div class="navbar-btns d-flex position-relative order-sm-3">
                 <button type="button" class="navbar-toggler navbar-btn collapsed bg-0 border-left-0 my-3"
-                     data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Menu">
+                     data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Menu">
                     <i class="mx-auto mb-2" data-feather="menu" aria-hidden="true"></i>
                     <span>Menu</span>
                 </button>
@@ -152,13 +152,13 @@
                 {
                     if (Request.IsAuthenticated)
                     {
-                        <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-toggle="offcanvas">
+                        <a class="navbar-btn bg-0 my-3" href="@Url.Action("index","home",new { @area="customers" })" data-bs-toggle="offcanvas">
                             <i class="mx-auto mb-1" data-feather="user" aria-hidden="true"></i>@Resource.MyAccount
                         </a>
                     }
                     else
                     {
-                        <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-toggle="offcanvas">
+                        <a class="navbar-btn bg-0 my-3" href="@Url.Action("login","account")" data-bs-toggle="offcanvas">
                             <i class="mx-auto mb-1" data-feather="log-in" aria-hidden="true"></i>@Resource.SignInOrUp
                         </a>
                     }
@@ -182,10 +182,12 @@
     @Html.Raw(Html.Action("GoogleAnalyticsTrackingScript", "Home"))
     @Html.Raw(Html.Action("WhatsAppCommunicationScript", "Home"))
     <a class="scroll-to-top-btn" href="#main-content" aria-label="Scroll to top">
-        <i class="scroll-to-top-btn-icon" data-feather="chevron-up" aria-hidden="true"></i>
+        <span class="scroll-to-top-btn-icon" aria-hidden="true">^</span>
     </a>
 
-    @Scripts.Render("~/bundles/mstore")
+    @Scripts.Render("~/bundles/siteJquery")
+    @Scripts.Render("~/bundles/siteJqueryMigrate")
+    @Scripts.Render("~/bundles/siteBootstrap")
     @Scripts.Render("~/bundles/eimeceScripts")
     @RenderSection("scripts", required: false)
 </body>

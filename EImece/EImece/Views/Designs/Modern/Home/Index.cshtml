@@ -32,7 +32,7 @@
     }
 }
 
-<h1 class="sr-only">@ViewBag.Title</h1>
+<h1 class="visually-hidden">@ViewBag.Title</h1>
 
 <!-- Hero slider + Promo list-->
 <section class="container px-1" aria-label="@Resource.PopularProducts">
@@ -73,7 +73,7 @@
         <div class="col-md-10">
             <div class="bg-white border p-4 rounded shadow-sm">
                 @Html.Raw(Resource.MainPageProductSubscriptionHtml)
-                <label class="sr-only" for="SubscribeEmailText">@Resource.PleaseEnterYourEmail</label>
+                <label class="visually-hidden" for="SubscribeEmailText">@Resource.PleaseEnterYourEmail</label>
                 <input type="email" name="email" id="SubscribeEmailText" class="form-control mb-3" placeholder="@Resource.PleaseEnterYourEmail" autocomplete="email" />
                 <button type="button" id="SubscribeEmailBtn" class="btn btn-primary btn-block">@Resource.Subscribe*</button>
                 <div class="success-message text-center mt-3" id="SubscribeEmailTextSuccessMessage" style="display: none;">@Html.Raw(@Resource.MainPageProductSubscriptionThanks)</div>
@@ -211,7 +211,7 @@
     <li @string.Format("{0}", isLast ? "" : "class=border-bottom")>
         <a class="d-flex align-items-center nav-link-inline pb-3 pt-3"
            href="@productCategoryLink"
-           data-toggle="popover" data-placement="right" data-trigger="hover"
+           data-bs-toggle="popover" data-placement="right" data-trigger="hover"
            data-html="true" data-content="@Html.Raw(popoverContent)">
             <i class="text-primary opacity-60 mr-2 mt-1" data-feather="arrow-right" style="width: 1.25rem; height: 1.25rem;" aria-hidden="true"></i>
             <span>

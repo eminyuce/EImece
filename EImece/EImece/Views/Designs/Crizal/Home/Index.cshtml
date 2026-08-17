@@ -26,7 +26,7 @@
     }
 }
 
-<h1 class="sr-only">@ViewBag.Title</h1>
+<h1 class="visually-hidden">@ViewBag.Title</h1>
 
 @if (mainPageImages.IsNotEmpty())
 {
@@ -51,7 +51,7 @@
                 <div class="crizal-home-subscribe__text">@Html.Raw(Resource.MainPageProductSubscriptionHtml)</div>
             </div>
             <div class="crizal-home-subscribe__form">
-                <label class="sr-only" for="SubscribeEmailText">@Resource.PleaseEnterYourEmail</label>
+                <label class="visually-hidden" for="SubscribeEmailText">@Resource.PleaseEnterYourEmail</label>
                 <div class="crizal-home-subscribe__row">
                     <input type="email" name="email" id="SubscribeEmailText" class="form-control" placeholder="@Resource.PleaseEnterYourEmail" autocomplete="email" />
                     <button type="button" id="SubscribeEmailBtn" class="butn-style8"><span>@Resource.Subscribe</span></button>
@@ -102,8 +102,8 @@
     <div class="@slideClass"
          @if (hasImage) { <text>data-background="@imgLink" data-hero-fallback="@staticMediaUrl" style="@bgStyle"</text> }>
         <div class="crizal-home-hero__veil" aria-hidden="true"></div>
-        @* Do NOT put a visible/sr-only image inside owl-carousel: .owl-item img { display:block;width:100% }
-           overrides .sr-only and dumps broken-image alt/filename text into the hero. *@
+        @* Do NOT put a visible/visually-hidden image inside owl-carousel: .owl-item img { display:block;width:100% }
+           overrides .visually-hidden and dumps broken-image alt/filename text into the hero. *@
         <div class="container">
             <div class="crizal-home-hero__copy">
                 <p class="crizal-home-hero__brand">@brandName</p>

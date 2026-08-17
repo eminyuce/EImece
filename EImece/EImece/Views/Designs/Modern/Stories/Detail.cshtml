@@ -181,7 +181,7 @@
             <nav class="entry-navigation" aria-label="@Resource.PostNavigation">
                 @if (Model.StorefrontPreviousStory != null)
                 {
-                    <a class="entry-navigation-link" href="@Model.StorefrontPreviousStory.DetailPageUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.StorefrontPreviousStory.GetCroppedImageUrl(Model.StorefrontPreviousStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;@Model.StorefrontPreviousStory.Name&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.StorefrontPreviousStory.Name&lt;/h6&gt;&lt;/div&gt;&lt;/div&gt;">
+                    <a class="entry-navigation-link" href="@Model.StorefrontPreviousStory.DetailPageUrl" data-bs-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.StorefrontPreviousStory.GetCroppedImageUrl(Model.StorefrontPreviousStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;@Model.StorefrontPreviousStory.Name&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.StorefrontPreviousStory.Name&lt;/h6&gt;&lt;/div&gt;&lt;/div&gt;">
                         <i class="mr-1" data-feather="chevron-left"></i>
                         <span class="d-none d-sm-inline">@Resource.PrevPost</span>
                     </a>
@@ -192,7 +192,7 @@
                 </a>
                 @if (Model.StorefrontNextStory != null)
                 {
-                    <a class="entry-navigation-link" href="@Model.StorefrontNextStory.DetailPageUrl" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.StorefrontNextStory.GetCroppedImageUrl(Model.StorefrontNextStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;@Model.StorefrontNextStory.Name&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.StorefrontNextStory.Name&lt;/h6&gt;&lt;/div&gt;&lt;/div&gt;">
+                    <a class="entry-navigation-link" href="@Model.StorefrontNextStory.DetailPageUrl" data-bs-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="&lt;div class=&quot;media align-items-center&quot;&gt;&lt;img src=&quot;@Model.StorefrontNextStory.GetCroppedImageUrl(Model.StorefrontNextStory.MainImageId, 60, 60)&quot; width=&quot;60&quot; class=&quot;mr-3&quot; alt=&quot;@Model.StorefrontNextStory.Name&quot;&gt;&lt;div class=&quot;media-body&quot;&gt;&lt;h6 class=&quot;font-size-sm font-weight-semibold mb-0&quot;&gt;@Model.StorefrontNextStory.Name&lt;/h6&gt;&lt;/div&gt;&lt;/div&gt;">
                         <span class="d-none d-sm-inline">@Resource.NextPost</span>
                         <i class="ml-1" data-feather="chevron-right"></i>
                     </a>

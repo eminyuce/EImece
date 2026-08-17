@@ -30,7 +30,7 @@ else
             @RenderLink(Model, true, false)
             @if (Model.DropdownCaret == GriddlyDropdownCaret.Split)
             {
-                <button type="button" class="dropdown-toggle dropdown-toggle-split @css.ButtonDefault" data-toggle="@(css.Is(CssFramework.Bootstrap3, CssFramework.Bootstrap4) ? "dropdown" : null)" data-bs-toggle="@(css.Is(CssFramework.Bootstrap5) ? "dropdown" : null)">
+                <button type="button" class="dropdown-toggle dropdown-toggle-split @css.ButtonDefault" data-bs-toggle="@(css.Is(CssFramework.Bootstrap3, CssFramework.Bootstrap4) ? "dropdown" : null)" data-bs-toggle="@(css.Is(CssFramework.Bootstrap5) ? "dropdown" : null)">
                     @if (css.Is(CssFramework.Bootstrap3))
                     {
                     <span class="@css.Icons.CaretDown"></span>
@@ -45,13 +45,13 @@ else
             }
             else if (css.Is(CssFramework.Bootstrap4))
             {
-                <div class="dropdown-menu @(Model.AlignRight ? "dropdown-menu-right float-right" : "")">
+                <div class="dropdown-menu @(Model.AlignRight ? "dropdown-menu-end float-right" : "")">
                     @RenderList()
                 </div>
             }
             else
             {
-                <ul class="dropdown-menu @(Model.AlignRight ? "pull-right" : "")">
+                <ul class="dropdown-menu @(Model.AlignRight ? "float-end" : "")">
                     @RenderList()
                 </ul>
             }

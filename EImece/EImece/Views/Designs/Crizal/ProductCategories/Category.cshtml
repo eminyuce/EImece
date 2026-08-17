@@ -314,7 +314,7 @@
                     if (rating > 5) { rating = 5; }
                     <div class="custom-control custom-checkbox crizal-rating-filter">
                         <input class="custom-control-input" type="checkbox" @(selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : null) value="@filter.CategoryFilterId" name="filters" id="@filterId">
-                        <label class="custom-control-label" for="@filterId">
+                        <label class="custom-col-form-label" for="@filterId">
                             <span class="crizal-stars" aria-hidden="true">
                                 @for (int i = 1; i <= 5; i++)
                                 {
@@ -342,7 +342,7 @@
                     var filterId = string.Format("filter-{0}", filter.CategoryFilterId);
                     <div class="custom-control custom-checkbox">
                         <input class="custom-control-input" type="checkbox" @(selectedFilters.Contains(filter.CategoryFilterId) ? "checked" : null) value="@filter.CategoryFilterId" name="filters" id="@filterId">
-                        <label class="custom-control-label" for="@filterId">
+                        <label class="custom-col-form-label" for="@filterId">
                             <span class="crizal-filter-name">@filter.name</span>
                             @if (filter.count > 0)
                             {
