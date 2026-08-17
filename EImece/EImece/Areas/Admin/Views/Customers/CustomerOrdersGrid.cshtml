@@ -24,17 +24,17 @@
     settings.HtmlAttributes["data-gridname"] = gridName;
 
     settings.BeforeTemplate = @<text>
-        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+        <output class="card-header grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
                 <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="fa fa-chevron-left"></i>
                 </button>
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
-                    <i class="glyphicon glyphicon-chevron-right"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="fa fa-chevron-right"></i>
                 </button>
             </div>
         </output>
@@ -54,7 +54,7 @@
 {
     <b>@o.OrderNumber </b>
     <br />
-    <a data-toggle="modal" class="btn btn-outline @createOrderStatusBtn(o) btn-xs" data-order-Id="@o.Id" style="font-size:0.8em;" data-target="@String.Format("#myModal_{0}",o.Id)">
+    <a data-bs-toggle="modal" class="btn btn-outline @createOrderStatusBtn(o) btn-sm" data-order-Id="@o.Id" style="font-size:0.8em;" data-bs-target="@String.Format("#myModal_{0}",o.Id)">
         @AdminResource.OrderDetails
     </a>
 
@@ -62,14 +62,14 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
                     <h4 class="order-details__title"> @AdminResource.OrderNumber - @o.OrderNumber - @createOrderStatus(o)</h4>
                 </div>
                 <div class="modal-body">
                     @Html.Partial("pOrderDetail", o)
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">@AdminResource.Close</button>
+                    <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">@AdminResource.Close</button>
                 </div>
             </div>
         </div>
@@ -147,7 +147,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success btn-block btn-xs" style="margin-bottom: 4px;" />
+            <input type="button" data-save-admin-order-note="@order.Id" value="@AdminResource.SaveButtonText" class="btn btn-success w-100 btn-sm" style="margin-bottom: 4px;" />
         </div>
         <div class="col-md-12">
             <span class="text-danger" data-changed-order-result="@order.Id"></span>
@@ -155,16 +155,16 @@
         <div class="col-md-12" style="margin-bottom: 4px;">
             @Html.DropDownList("orderStatusSelectList",
                 new SelectList(orderStatusSelectList, "Value", "Text", os.ToString()),
-                new { @class = "form-control input-sm", @data_change_order_status = order.Id })
+                new { @class = "form-control form-control-sm", @data_change_order_status = order.Id })
         </div>
         <div class="col-md-12" style="margin-bottom: 4px;">
-            <textarea class="form-control input-sm" placeholder="@Resource.AdminOrderNote" rows="2" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
+            <textarea class="form-control form-control-sm" placeholder="@Resource.AdminOrderNote" rows="2" data-textarea-admin-order-note="@order.Id">@order.AdminOrderNote</textarea>
         </div>
         <div class="col-md-12" style="margin-bottom: 4px;">
-            <input class="form-control input-sm" type="text" placeholder="@Resource.ShipmentCompanyName" data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
+            <input class="form-control form-control-sm" type="text" placeholder="@Resource.ShipmentCompanyName" data-order-shipment-company-name="@order.Id" value="@order.ShipmentCompanyName" />
         </div>
         <div class="col-md-12">
-            <input class="form-control input-sm" type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
+            <input class="form-control form-control-sm" type="text" placeholder="@Resource.ShipmentTrackingNumber" data-order-shipment-tracking-number="@order.Id" value="@order.ShipmentTrackingNumber" />
         </div>
     </div>
 }

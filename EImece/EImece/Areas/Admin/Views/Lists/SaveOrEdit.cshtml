@@ -62,14 +62,14 @@ XXL</pre>
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
 
-        <div class="panel panel-default admin-edit-form">
+        <div class="card admin-edit-form">
             @Html.Partial("_AdminEditSimpleToolbar")
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="admin-sample-bar">
                     <span class="admin-sample-bar__label">Hızlı başlangıç</span>
                     <button type="button" id="btnGenerateListSample" class="btn btn-info btn-sm"
                             title="Rastgele örnek liste doldurur; kaydetmeden önce düzenleyebilirsiniz.">
-                        <span class="glyphicon glyphicon-flash"></span> Rastgele örnek liste oluştur
+                        <span class="fa fa-bolt"></span> Rastgele örnek liste oluştur
                     </button>
                     <p class="admin-sample-bar__hint">Örnek üretip öğeleri düzenleyin. Kaydettiğinizde şablondaki <code>values</code> ile aynı adı kullanın.</p>
                 </div>
@@ -77,8 +77,8 @@ XXL</pre>
 
                 <p class="admin-edit-section-help">Ürün şablonlarındaki dropdown’lar bu listelerden beslenir.</p>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="Name">
+                <div class="form-group row mb-3">
+                    <label class="col-form-label col-md-2" for="Name">
                         @Html.DisplayNameFor(model => model.Name)
                         @{ ViewData["TipText"] = "Şablondaki values=\"...\" ile birebir aynı olmalı. Büyük/küçük harf ve boşluklar önemli."; }
                         @Html.Partial("_AdminFieldTip")
@@ -90,7 +90,7 @@ XXL</pre>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row mb-3">
                     <div class="col-md-2"></div>
                     <div class="col-md-10">
                         <div class="row admin-checkbox-help-group">
@@ -128,8 +128,8 @@ XXL</pre>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="Position">
+                <div class="form-group row mb-3">
+                    <label class="col-form-label col-md-2" for="Position">
                         @Html.DisplayNameFor(model => model.Position)
                         @{ ViewData["TipText"] = "Listeler ekranındaki sıra. Küçük sayı önce gelir."; }
                         @Html.Partial("_AdminFieldTip")
@@ -141,8 +141,8 @@ XXL</pre>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="itemText">
+                <div class="form-group row mb-3">
+                    <label class="col-form-label col-md-2" for="itemText">
                         Liste öğeleri
                         @{ ViewData["TipText"] = "Her satır bir seçenek. İsteğe bağlı: Görünen metin, değer"; }
                         @Html.Partial("_AdminFieldTip")
@@ -157,8 +157,8 @@ XXL</pre>
 
                 @if (Model.ListItems != null && Model.ListItems.Any())
                 {
-                    <div class="form-group">
-                        <label class="control-label col-md-2">
+                    <div class="form-group row mb-3">
+                        <label class="col-form-label col-md-2">
                             Kayıtlı öğeler
                             @{ ViewData["TipText"] = "Daha önce kaydedilmiş öğeler. Üstteki metin kutusunu düzenleyip tekrar kaydederek güncellersiniz."; }
                             @Html.Partial("_AdminFieldTip")

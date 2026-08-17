@@ -60,23 +60,23 @@
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
 
-        <div class="panel panel-default admin-edit-form">
+        <div class="card admin-edit-form">
             @Html.Partial("_AdminEditSimpleToolbar")
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="admin-sample-bar">
                     <span class="admin-sample-bar__label">Hızlı başlangıç</span>
                     <button type="button" class="btn btn-info btn-sm" data-tb-sample title="Rastgele örnek şablonu görsel editöre yükler">
-                        <span class="glyphicon glyphicon-flash"></span> Rastgele örnek yükle
+                        <span class="fa fa-bolt"></span> Rastgele örnek yükle
                     </button>
-                    <button type="button" class="btn btn-default btn-sm" data-tb-clear title="Tüm grup ve alanları temizler">
+                    <button type="button" class="btn btn-secondary btn-sm" data-tb-clear title="Tüm grup ve alanları temizler">
                         Temizle
                     </button>
                     <p class="admin-sample-bar__hint">Örnek yükleyip sürükle-bırak ile düzenleyin. Kaydetmeden önce alan adlarını kontrol edin.</p>
                 </div>
                 <div id="templateSampleExplain" class="admin-sample-explain" aria-live="polite"></div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="Name">
+                <div class="form-group row mb-3">
+                    <label class="col-form-label col-md-2" for="Name">
                         @Html.DisplayNameFor(model => model.Name)
                         @{ ViewData["TipText"] = "Şablona anlaşılır bir ad verin. Kategori seçerken bu adı görürsünüz."; }
                         @Html.Partial("_AdminFieldTip")
@@ -88,7 +88,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row mb-3">
                     <div class="col-md-2"></div>
                     <div class="col-md-10 admin-checkbox-help-group">
                         <label for="IsActive" title="İşaretliyse şablon kullanılabilir">
@@ -102,8 +102,8 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="Position">
+                <div class="form-group row mb-3">
+                    <label class="col-form-label col-md-2" for="Position">
                         @Html.DisplayNameFor(model => model.Position)
                         @{ ViewData["TipText"] = "Listede sıralama: küçük sayı önce gelir."; }
                         @Html.Partial("_AdminFieldTip")
@@ -115,8 +115,8 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2">
+                <div class="form-group row mb-3">
+                    <label class="col-form-label col-md-2">
                         Şablon alanları
                         @{ ViewData["TipText"] = "Sürükle-bırak ile grup ve alan ekleyin. Kayıtta XML otomatik üretilir."; }
                         @Html.Partial("_AdminFieldTip")
@@ -126,28 +126,28 @@
                             <div class="tb-palette">
                                 <div class="tb-palette__label">Bileşenler — tıklayın veya sürükleyin</div>
                                 <a href="#" class="tb-palette__item" data-tb-add="group" title="Yeni grup ekle">
-                                    <span class="glyphicon glyphicon-folder-open"></span> Grup
+                                    <span class="fa fa-folder-open"></span> Grup
                                 </a>
                                 <a href="#" class="tb-palette__item" data-tb-add="textbox" title="Metin alanı ekle">
-                                    <span class="glyphicon glyphicon-font"></span> Metin
+                                    <span class="fa fa-font"></span> Metin
                                 </a>
                                 <a href="#" class="tb-palette__item" data-tb-add="dropdown" title="Açılır liste ekle">
-                                    <span class="glyphicon glyphicon-list"></span> Açılır liste
+                                    <span class="fa fa-list"></span> Açılır liste
                                 </a>
                                 <a href="#" class="tb-palette__item" data-tb-add="checkbox" title="Evet/Hayır alanı ekle">
-                                    <span class="glyphicon glyphicon-check"></span> Evet / Hayır
+                                    <span class="fa fa-check-square-o"></span> Evet / Hayır
                                 </a>
                                 <a href="#" class="tb-palette__item" data-tb-add="textarea" title="HTML kabul eden metin alanı ekle">
-                                    <span class="glyphicon glyphicon-align-left"></span> Metin alanı
+                                    <span class="fa fa-align-left"></span> Metin alanı
                                 </a>
                                 <a href="#" class="tb-palette__item" data-tb-add="radio" title="Radyo düğmeleri ekle">
-                                    <span class="glyphicon glyphicon-record"></span> Radyo
+                                    <span class="fa fa-dot-circle-o"></span> Radyo
                                 </a>
                                 <a href="#" class="tb-palette__item" data-tb-add="multiselect" title="Çoklu seçim onay kutuları ekle">
-                                    <span class="glyphicon glyphicon-ok"></span> Çoklu seçim
+                                    <span class="fa fa-check"></span> Çoklu seçim
                                 </a>
                                 <a href="#" class="tb-palette__item" data-tb-add="datetime" title="Tarih / saat seçici ekle">
-                                    <span class="glyphicon glyphicon-calendar"></span> Tarih / Saat
+                                    <span class="fa fa-calendar"></span> Tarih / Saat
                                 </a>
                             </div>
 
@@ -160,8 +160,8 @@
                         </div>
 
                         <div class="tb-advanced">
-                            <a class="tb-advanced__toggle collapsed" data-toggle="collapse" href="#templateXmlAdvanced" aria-expanded="false">
-                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            <a class="tb-advanced__toggle collapsed" data-bs-toggle="collapse" href="#templateXmlAdvanced" aria-expanded="false">
+                                <span class="fa fa-chevron-down"></span>
                                 Gelişmiş: XML önizleme / düzenle
                             </a>
                             <div id="templateXmlAdvanced" class="collapse tb-advanced__body">
@@ -177,7 +177,7 @@
                                     title = "TemplateXml"
                                 })
                                 @Html.ValidationMessageFor(model => model.TemplateXml, "", new { @class = "text-danger" })
-                                <button type="button" id="btnApplyXmlToBuilder" class="btn btn-default btn-sm" style="margin-top:8px;">
+                                <button type="button" id="btnApplyXmlToBuilder" class="btn btn-secondary btn-sm" style="margin-top:8px;">
                                     XML’i görsel editöre uygula
                                 </button>
                             </div>

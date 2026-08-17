@@ -131,7 +131,7 @@
                 credits: false,
                 // Modern, friendly Turkish microcopy
                 labelIdle: '<div class="filepond-hero-label">' +
-                           '<div class="filepond-hero-icon"><i class="glyphicon glyphicon-cloud-upload"></i></div>' +
+                           '<div class="filepond-hero-icon"><i class="fa fa-cloud-upload"></i></div>' +
                            '<div class="filepond-hero-title">Fotoğrafları buraya sürükleyip bırakın</div>' +
                            '<div class="filepond-hero-subtitle">veya <span class="filepond--label-action">Dosyalara Göz Atın</span></div>' +
                            '<div class="filepond-hero-badges">' +
@@ -285,16 +285,16 @@
         });
     </script>
 
-    <div class="panel with-nav-tabs panel-default admin-media-tabs">
-    <div class="panel-heading">
+    <div class="card with-nav-tabs card admin-media-tabs">
+    <div class="card-header">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab1default" data-toggle="tab">@AdminResource.FileUploadingSection</a></li>
-            <li><a href="#tab2default" data-toggle="tab">@AdminResource.UploadedFilesSection</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#tab1default" data-bs-toggle="tab">@AdminResource.FileUploadingSection</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab2default" data-bs-toggle="tab">@AdminResource.UploadedFilesSection</a></li>
         </ul>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <div class="tab-content">
-            <div class="tab-pane fade in active" id="tab1default">
+            <div class="tab-pane fade show active" id="tab1default">
                 @Html.Partial("pSliderResizing", baseContent)
                 @Html.Partial("_Files")
             </div>
@@ -313,7 +313,7 @@
 
                 <div class="media-clean-actions" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px;">
                     <button type="button" class="btn btn-info btn-sm btn-refresh-grid" onclick="sessionStorage.setItem('adminMediaActiveTab', '#tab2default'); window.location.href = window.location.pathname + window.location.search + '#tab2default'; window.location.reload(true);" title="Veritabanındaki resimleri ve tabloyu yenile">
-                        <i class="glyphicon glyphicon-refresh"></i> Veritabanından Yenile
+                        <i class="fa fa-refresh"></i> Veritabanından Yenile
                     </button>
                     <form method="post" action="@Url.Action("DeleteMissingFiles", "Media")" onsubmit="return confirm('@AdminResource.DeleteMissingFilesConfirmMessage');">
                         @Html.AntiForgeryToken()
@@ -321,7 +321,7 @@
                         <input type="hidden" name="mod" value="@Model.MediaMod" />
                         <input type="hidden" name="imageType" value="@Model.ImageType" />
                         <button type="submit" class="btn btn-danger btn-sm" id="btnDeleteMissingFiles" title="@AdminResource.DeleteMissingFilesTooltip">
-                            <i class="glyphicon glyphicon-trash"></i> @AdminResource.DeleteMissingFilesButtonText
+                            <i class="fa fa-trash"></i> @AdminResource.DeleteMissingFilesButtonText
                         </button>
                     </form>
                 </div>
@@ -350,7 +350,7 @@
         else
         {
             <div class="alert alert-danger" style="padding:6px;margin-bottom:4px;font-size:11px;line-height:1.2;text-align:center;">
-                <i class="glyphicon glyphicon-exclamation-sign"></i><br />
+                <i class="fa fa-exclamation-circle"></i><br />
                 <strong>@AdminResource.FileNotFound</strong><br />
                 <span style="font-size:10px;">@AdminResource.MissingFileNotFoundOnDisk</span>
             </div>
@@ -372,8 +372,8 @@
         else
         {
             <div>
-                <span class="label label-danger" title="@AdminResource.MissingFileTooltip">
-                    <i class="glyphicon glyphicon-remove"></i> @AdminResource.MissingFile
+                <span class="label text-bg-danger" title="@AdminResource.MissingFileTooltip">
+                    <i class="fa fa-times"></i> @AdminResource.MissingFile
                 </span>
             </div>
         }

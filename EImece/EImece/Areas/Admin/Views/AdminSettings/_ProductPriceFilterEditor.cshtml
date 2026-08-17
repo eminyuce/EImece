@@ -9,22 +9,22 @@
     <!-- Hidden input bound to SystemSettingModel.ProductPriceFilterSetting -->
     <input type="hidden" id="ProductPriceFilterSetting" name="ProductPriceFilterSetting" value="@initialJson" />
 
-    <div class="panel panel-default" style="border: 1px solid #dcdfe6; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 5px;">
-        <div class="panel-heading" style="background-color: #f8f9fc; border-bottom: 1px solid #e3e6f0; display:flex; justify-content:space-between; align-items:center; padding: 10px 15px;">
+    <div class="card" style="border: 1px solid #dcdfe6; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 5px;">
+        <div class="card-header" style="background-color: #f8f9fc; border-bottom: 1px solid #e3e6f0; display:flex; justify-content:space-between; align-items:center; padding: 10px 15px;">
             <strong style="color: #337ab7; font-size: 13px;">
                 <i class="fa fa-sliders" style="margin-right: 5px;"></i> Fiyat Filtresi Aralıkları
             </strong>
             <div>
-                <button type="button" class="btn btn-xs btn-default" id="btnResetDefaultRanges" title="Varsayılan e-ticaret aralıklarını yükle">
+                <button type="button" class="btn btn-sm btn-secondary" id="btnResetDefaultRanges" title="Varsayılan e-ticaret aralıklarını yükle">
                     <i class="fa fa-refresh"></i> Varsayılanları Yükle
                 </button>
-                <button type="button" class="btn btn-xs btn-primary" id="btnAddPriceRange" style="margin-left: 5px;">
+                <button type="button" class="btn btn-sm btn-primary" id="btnAddPriceRange" style="margin-left: 5px;">
                     <i class="fa fa-plus-circle"></i> Yeni Aralık Ekle
                 </button>
             </div>
         </div>
 
-        <div class="panel-body" style="padding: 15px;">
+        <div class="card-body" style="padding: 15px;">
             <!-- Alert / Validation Message Area -->
             <div id="priceRangeValidationAlert" class="alert alert-danger" style="display:none; margin-bottom: 15px; padding: 8px 15px; font-size: 13px;">
                 <i class="fa fa-exclamation-triangle"></i> <span class="msg"></span>
@@ -132,13 +132,13 @@
                     '<td class="row-num text-center" style="vertical-align:middle; font-weight:bold; color:#64748b; font-size:12px;">' + (index + 1) + '</td>' +
                     '<td>' +
                         '<div class="input-group input-group-sm">' +
-                            '<span class="input-group-addon">₺</span>' +
+                            '<span class="input-group-text">₺</span>' +
                             '<input type="number" min="0" step="1" class="form-control txt-min" value="' + min + '" required />' +
                         '</div>' +
                     '</td>' +
                     '<td>' +
                         '<div class="input-group input-group-sm">' +
-                            '<span class="input-group-addon">₺</span>' +
+                            '<span class="input-group-text">₺</span>' +
                             '<input type="number" min="0" step="1" class="form-control txt-max" value="' + max + '" ' + (isLast ? 'disabled placeholder="Üst Limit Yok"' : '') + ' required />' +
                         '</div>' +
                     '</td>' +
@@ -149,12 +149,12 @@
                     '</td>' +
                     '<td class="text-center" style="vertical-align:middle;">' +
                         '<div class="btn-group btn-group-xs">' +
-                            '<button type="button" class="btn btn-default btn-move-up" title="Yukarı Taşı"><i class="fa fa-chevron-up"></i></button>' +
-                            '<button type="button" class="btn btn-default btn-move-down" title="Aşağı Taşı"><i class="fa fa-chevron-down"></i></button>' +
+                            '<button type="button" class="btn btn-secondary btn-move-up" title="Yukarı Taşı"><i class="fa fa-chevron-up"></i></button>' +
+                            '<button type="button" class="btn btn-secondary btn-move-down" title="Aşağı Taşı"><i class="fa fa-chevron-down"></i></button>' +
                         '</div>' +
                     '</td>' +
                     '<td class="text-center" style="vertical-align:middle;">' +
-                        '<button type="button" class="btn btn-danger btn-xs btn-remove-range" title="Sil"><i class="fa fa-trash"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm btn-remove-range" title="Sil"><i class="fa fa-trash"></i></button>' +
                     '</td>' +
                 '</tr>';
             }

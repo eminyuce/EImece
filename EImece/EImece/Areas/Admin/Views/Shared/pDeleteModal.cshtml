@@ -24,6 +24,6 @@
    data-delete-button="@gridDeleteText"
    title="@gridDeleteText"
    aria-label="@gridDeleteText">@if (String.IsNullOrEmpty(deleteIcon))
-{<text><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> @gridDeleteText</text>}
+{<text><i class="fa fa-trash" aria-hidden="true"></i> @gridDeleteText</text>}
 else
-{<span class="sr-only">@gridDeleteText</span>}</button>
+{<span class="visually-hidden">@gridDeleteText</span>}</button>

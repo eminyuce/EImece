@@ -71,9 +71,9 @@
 @Html.Partial("_ReportHeader")
 @Html.Partial("_ReportExportButtons")
 
-<div class="panel panel-default report-filter-panel">
-    <div class="panel-heading">Filtreler</div>
-    <div class="panel-body">
+<div class="card report-filter-panel">
+    <div class="card-header">Filtreler</div>
+    <div class="card-body">
         @using (Html.BeginForm(Model.ReportActionName, "Report", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
@@ -81,19 +81,19 @@
 
             <div class="report-filter-row">
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         @Html.LabelFor(m => m.StartDate, "Başlangıç Tarihi")
                         @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                     </div>
                 </div>
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         @Html.LabelFor(m => m.EndDate, "Bitiş Tarihi")
                         @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                     </div>
                 </div>
                 <div class="report-filter-field report-filter-actions">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label>&nbsp;</label>
                         <div>
                             <button type="submit" class="btn btn-primary">Raporu Getir</button>

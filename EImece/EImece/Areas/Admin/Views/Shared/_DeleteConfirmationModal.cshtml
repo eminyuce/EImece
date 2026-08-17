@@ -19,9 +19,7 @@
     <div class="modal-dialog modal-confirm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="@AdminResource.ButtonCancel">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@AdminResource.ButtonCancel"></button>
                 <div class="icon-box" aria-hidden="true">
                     <i class="material-icons">warning</i>
                 </div>
@@ -33,7 +31,7 @@
                 <p class="admin-delete-count" id="adminDeleteConfirmCount" hidden></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal" id="adminDeleteConfirmCancel">
+                <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal" id="adminDeleteConfirmCancel">
                     @AdminResource.ButtonCancel
                 </button>
                 <button type="button" class="btn btn-danger btn-confirm" id="adminDeleteConfirmOk">

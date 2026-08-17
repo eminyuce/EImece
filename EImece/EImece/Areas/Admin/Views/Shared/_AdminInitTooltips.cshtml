@@ -1,10 +1,21 @@
 <script>
     (function () {
-        if (!window.jQuery || !jQuery.fn.tooltip) {
-            return;
+        function initAdminTooltips() {
+            if (window.bootstrap && bootstrap.Tooltip) {
+                document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+                    bootstrap.Tooltip.getOrCreateInstance(el, { container: "body" });
+                });
+                return;
+            }
+            if (!window.jQuery || !jQuery.fn.tooltip) {
+                return;
+            }
+            jQuery('[data-bs-toggle="tooltip"]').tooltip({ container: "body" });
         }
-        jQuery(function () {
-            jQuery('[data-toggle="tooltip"]').tooltip({ container: 'body' });
-        });
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initAdminTooltips);
+        } else {
+            initAdminTooltips();
+        }
     })();
 </script>

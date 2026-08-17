@@ -33,7 +33,7 @@
            ,{"deleteAll",true}
             ,{"SetStateOnOrOff",true}})
 
-        <div class="panel panel-primary">
+        <div class="card border-primary">
 
             @Html.Partial("pGridDropDown", baseList)
 
@@ -62,7 +62,7 @@ columns.Add()
               .SetWidth(30)
               .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(AdminResource.ProductSpecs, "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
+                @Html.ActionLink(AdminResource.ProductSpecs, "SaveOrEditProductSpecs", controllerName, new { Id = d.Id }, new { @class = "btn btn-secondary  btn-sm" })
             </b>);
 
 columns.Add()
@@ -80,7 +80,7 @@ columns.Add()
       .SetWidth(30)
       .RenderValueAs(d =>
             @<b>
-                @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-default  btn-sm" })
+                @Html.ActionLink(gridImagesText, "Media", controllerName, new { Id = d.Id }, new { @class = "btn btn-secondary  btn-sm" })
             </b>);
 
    columns.Add()

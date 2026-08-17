@@ -46,7 +46,7 @@
 </div>
 
 <form method="post" enctype="multipart/form-data" action="@Url.Action("CompressImages", "Images")">
-    <div class="form-group">
+    <div class="form-group row mb-3">
         <label for="file">Choose Folder</label>
         <input type="file" name="file" id="file" class="form-control" required webkitdirectory
                title="Select a folder containing image files for compression." />
@@ -55,7 +55,7 @@
         </small>
     </div>
 
-    <div class="form-group">
+    <div class="form-group row mb-3">
         <label for="quality">Compression Quality (1-100)</label>
         <input type="text" name="quality" id="quality" class="form-control" placeholder="Enter compression quality (1-100)"
                title="Enter compression quality between 1 and 100. Recommended range: 40-70 for good balance of size and quality." />
@@ -64,7 +64,7 @@
         </small>
     </div>
 
-    <div class="form-group">
+    <div class="form-group row mb-3">
         <label for="newExtension">File Extension</label>
         <select name="newExtension" id="newExtension" class="form-control">
             <option value="">Retain Original</option>
@@ -80,7 +80,7 @@
         </small>
     </div>
 
-    <div class="form-group">
+    <div class="form-group row mb-3">
         <label for="baseFileName">Base File Name</label>
         <input type="text" name="baseFileName" id="baseFileName" class="form-control" placeholder="Enter base file name"
                title="Enter a base name for the output files. Files will be saved as baseFileName-1.jpg, baseFileName-2.jpg, etc." />
@@ -89,7 +89,7 @@
         </small>
     </div>
 
-    <div class="form-group">
+    <div class="form-group row mb-3">
         <label for="newWidth">New Width</label>
         <input type="text" name="newWidth" id="newWidth" class="form-control" placeholder="Enter new width (optional)"
                title="Optional. If provided, height will be auto-calculated to maintain aspect ratio." />
@@ -98,7 +98,7 @@
         </small>
     </div>
 
-    <div class="form-group">
+    <div class="form-group row mb-3">
         <label for="newHeight">New Height</label>
         <input type="text" name="newHeight" id="newHeight" class="form-control" placeholder="Enter new height (optional)"
                title="Optional. If provided, width will be auto-calculated to maintain aspect ratio." />
@@ -107,7 +107,7 @@
         </small>
     </div>
 
-    <div class="form-group">
+    <div class="form-group row mb-3">
         <button type="submit" class="btn btn-primary">Compress Images</button>
 
     </div>

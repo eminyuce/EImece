@@ -26,17 +26,17 @@
     settings.HtmlAttributes["data-gridname"] = gridName;
 
     settings.BeforeTemplate = @<text>
-        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+        <output class="card-header grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
                 <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="fa fa-chevron-left"></i>
                 </button>
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
-                    <i class="glyphicon glyphicon-chevron-right"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="fa fa-chevron-right"></i>
                 </button>
             </div>
         </output>

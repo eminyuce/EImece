@@ -21,14 +21,14 @@
 <div class="user-roles-page">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-primary user-roles-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
+            <div class="card border-primary user-roles-panel">
+                <div class="card-header">
+                    <h3 class="card-title">
                         <i class="fa fa-shield" aria-hidden="true"></i>
                         @AdminResource.Roles
                     </h3>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="user-roles-user">
                         <div class="user-roles-avatar" aria-hidden="true">
                             <i class="fa fa-user"></i>
@@ -40,13 +40,13 @@
                                 @Model.UserName
                             </div>
                             <div class="user-roles-user-status">
-                                <span class="label @(selectedCount > 0 ? "label-success" : "label-default")">
+                                <span class="label @(selectedCount > 0 ? "text-bg-success" : "text-bg-secondary")">
                                     @selectedCount yetki secili
                                 </span>
                             </div>
                         </div>
                         <div class="user-roles-user-actions">
-                            @Html.ActionLink(AdminResource.Edit, "Edit", "Users", new { id = Model.Id }, new { @class = "btn btn-default btn-sm" })
+                            @Html.ActionLink(AdminResource.Edit, "Edit", "Users", new { id = Model.Id }, new { @class = "btn btn-secondary btn-sm" })
                             @Html.ActionLink(AdminResource.NewPassword, "GenerateNewPassword", "Users", new { id = Model.Id }, new { @class = "btn btn-info btn-sm" })
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                                 <i class="fa fa-check" aria-hidden="true"></i>
                                 @AdminResource.SaveButtonText
                             </button>
-                            @Html.ActionLink(AdminResource.BackToList, "Index", "Users", null, new { @class = "btn btn-default btn-lg" })
+                            @Html.ActionLink(AdminResource.BackToList, "Index", "Users", null, new { @class = "btn btn-secondary btn-lg" })
                         </div>
                     }
                 </div>
@@ -110,7 +110,7 @@
 
             if (statusLabel) {
                 statusLabel.textContent = selectedCount + " yetki secili";
-                statusLabel.className = "label " + (selectedCount > 0 ? "label-success" : "label-default");
+                statusLabel.className = "label " + (selectedCount > 0 ? "text-bg-success" : "text-bg-secondary");
             }
         }
 

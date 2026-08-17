@@ -125,14 +125,14 @@
     opacity: 0.75;
 }
 
-.modal-confirm .btn-default.btn-cancel {
+.modal-confirm .btn-secondary.btn-cancel {
     color: #52606d;
     background: #e4e7eb;
     border-color: #e4e7eb;
 }
 
-.modal-confirm .btn-default.btn-cancel:hover,
-.modal-confirm .btn-default.btn-cancel:focus {
+.modal-confirm .btn-secondary.btn-cancel:hover,
+.modal-confirm .btn-secondary.btn-cancel:focus {
     color: #334e68;
     background: #cbd2d9;
     border-color: #cbd2d9;

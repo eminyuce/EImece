@@ -4,15 +4,15 @@
     var accordionId = helpId + "Accordion";
     var collapseId = helpId + "Collapse";
 }
-<div class="panel-group" id="@accordionId" style="margin-bottom: 15px;">
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#@accordionId" href="#@collapseId" class="collapsed" aria-expanded="false">
-                    <span class="glyphicon glyphicon-question-sign"></span>
+<div class="accordion" id="@accordionId" style="margin-bottom: 15px;">
+    <div class="card border-info">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-bs-toggle="collapse" data-bs-parent="#@accordionId" href="#@collapseId" class="collapsed" aria-expanded="false">
+                    <span class="fa fa-question-circle"></span>
                     @helpTitle <small>(açmak / kapatmak için tıklayın)</small>
                 </a>
             </h4>
         </div>
-        <div id="@collapseId" class="panel-collapse collapse">
-            <div class="panel-body">
+        <div id="@collapseId" class="collapse">
+            <div class="card-body">

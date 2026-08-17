@@ -3,11 +3,11 @@
 @{
     var contentSectionTitle = ViewBag.ContentSectionTitle as string ?? AdminResource.EntityDescriptionPage;
 }
-<div class="panel-heading admin-edit-tabs-heading">
+<div class="card-header admin-edit-tabs-heading">
     <ul class="nav nav-tabs admin-edit-tabs" role="tablist">
-        <li class="active">
-            <a href="#admin-edit-tab-fields"
-               data-toggle="tab"
+        <li class="nav-item">
+            <a class="nav-link active" href="#admin-edit-tab-fields"
+               data-bs-toggle="tab"
                role="tab"
                aria-controls="admin-edit-tab-fields"
                data-admin-edit-tab="fields">
@@ -15,9 +15,9 @@
                 <span class="admin-edit-tab-text">@AdminResource.EntityShortFields</span>
             </a>
         </li>
-        <li>
-            <a href="#admin-edit-tab-content"
-               data-toggle="tab"
+        <li class="nav-item">
+            <a class="nav-link" href="#admin-edit-tab-content"
+               data-bs-toggle="tab"
                role="tab"
                aria-controls="admin-edit-tab-content"
                data-admin-edit-tab="content"

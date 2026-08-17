@@ -54,9 +54,9 @@
 @Html.Partial("_ReportHeader")
 @Html.Partial("_ReportExportButtons")
 
-<div class="panel panel-default report-filter-panel">
-    <div class="panel-heading">Filtreler</div>
-    <div class="panel-body">
+<div class="card report-filter-panel">
+    <div class="card-header">Filtreler</div>
+    <div class="card-body">
         @using (Html.BeginForm("PriceAnalysis", "Report", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
@@ -64,28 +64,28 @@
 
             <div class="report-filter-row">
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         @Html.LabelFor(m => m.MinPrice, "Minimum Fiyat")
                         @Html.TextBoxFor(m => m.MinPrice, new { @class = "form-control", type = "number", step = "0.01" })
                         @Html.ValidationMessageFor(m => m.MinPrice, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         @Html.LabelFor(m => m.MaxPrice, "Maksimum Fiyat")
                         @Html.TextBoxFor(m => m.MaxPrice, new { @class = "form-control", type = "number", step = "0.01" })
                         @Html.ValidationMessageFor(m => m.MaxPrice, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         @Html.LabelFor(m => m.ProductCategoryId, "Kategori Id")
                         @Html.TextBoxFor(m => m.ProductCategoryId, new { @class = "form-control", type = "number" })
                         @Html.ValidationMessageFor(m => m.ProductCategoryId, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="report-filter-field report-filter-actions">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label>&nbsp;</label>
                         <div>
                             <button type="submit" class="btn btn-primary">Raporu Getir</button>

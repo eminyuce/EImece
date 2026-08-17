@@ -33,17 +33,17 @@
     settings.HtmlAttributes["data-gridname"] = gridName;
 
     settings.BeforeTemplate = @<text>
-        <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
+        <output class="card-header grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
                 <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+                    <i class="fa fa-chevron-left"></i>
                 </button>
-                <button type="button" class="btn btn-xs eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
-                    <i class="glyphicon glyphicon-chevron-right"></i>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                    <i class="fa fa-chevron-right"></i>
                 </button>
             </div>
         </output>
@@ -77,7 +77,7 @@
         else
         {
             <div class="alert alert-danger" style="padding:6px;margin-bottom:4px;font-size:11px;line-height:1.2;text-align:center;">
-                <i class="glyphicon glyphicon-exclamation-sign"></i><br />
+                <i class="fa fa-exclamation-circle"></i><br />
                 <strong>@AdminResource.FileNotFound</strong><br />
                 <span style="font-size:10px;">@AdminResource.MissingFileNotFoundOnDisk</span>
             </div>
@@ -99,8 +99,8 @@
         else
         {
             <div>
-                <span class="label label-danger" title="@AdminResource.MissingFileTooltip">
-                    <i class="glyphicon glyphicon-remove"></i> @AdminResource.MissingFile
+                <span class="label text-bg-danger" title="@AdminResource.MissingFileTooltip">
+                    <i class="fa fa-times"></i> @AdminResource.MissingFile
                 </span>
             </div>
         }

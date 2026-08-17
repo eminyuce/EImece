@@ -23,12 +23,12 @@
     var selectedPreview = ProductSpecificationFieldHelper.NormalizeMultiSelectStorageValue(dbValue);
 }
 
-<div class="form-group">
+<div class="form-group row mb-3">
     <div class="col-md-2">
-        <span class="control-label" style="text-align:left;">
+        <span class="col-form-label" style="text-align:left;">
             @valueDisplayName
-            <button type="button" class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" aria-label="@tipText">
-                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            <button type="button" class="admin-field-tip" data-bs-toggle="tooltip" data-placement="top" title="@tipText" aria-label="@tipText">
+                <span class="fa fa-question-circle" aria-hidden="true"></span>
             </button>
         </span>
         <div class="admin-spec-field-meta">çoklu seçim</div>
@@ -37,7 +37,7 @@
         @if (options.Any())
         {
             <fieldset class="admin-spec-multiselect-list" style="border:0;padding:0;margin:0;min-width:0" data-spec-multiselect="@fieldKey">
-                <legend class="sr-only">@valueDisplayName</legend>
+                <legend class="visually-hidden">@valueDisplayName</legend>
                 @foreach (var opt in options)
                 {
                     var optId = "spec_" + fieldKey + "_" + (opt.Value ?? "").GetHashCode().ToString("x");
@@ -73,7 +73,7 @@
     <div class="col-md-1">
         @if (unit != null)
         {
-            <span class="help-block" style="margin-top:8px;">@unit.Value</span>
+            <span class="form-text" style="margin-top:8px;">@unit.Value</span>
         }
     </div>
 </div>

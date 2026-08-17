@@ -59,7 +59,7 @@
             }
 
             <a href="@Url.Action("MoveProductsInTrees", "Products",new { id=0 })">
-                <span class="glyphicon glyphicon-remove-circle gridNotActiveIcon" aria-hidden="true"></span>
+                <span class="fa fa-times-circle gridNotActiveIcon" aria-hidden="true"></span>
             </a>
             <input type="hidden" id="selectedCategory" value="@selectedCategory.Id" />
             @if (!String.IsNullOrEmpty(ViewBag.MoveProductsMessage))
@@ -71,7 +71,7 @@
         </span>
 
         }
-        @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-default btn-sm", style = "margin-bottom:10px;" })
+        @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-secondary btn-sm", style = "margin-bottom:10px;" })
         <div class="js-griddly-async" data-url="@Url.Action("MoveProductsInTreesGrid", new { id = selectedCategory != null ? selectedCategory.Id : 0 })"></div>
     </div>
     <div class="col-md-3">

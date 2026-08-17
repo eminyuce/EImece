@@ -54,13 +54,13 @@
     @Html.HiddenFor(model => model.TrackWithBitly)
     @Html.HiddenFor(model => model.TrackWithMlnk)
 
-    <div class="panel panel-default admin-edit-form">
+    <div class="card admin-edit-form">
                 @Html.Partial("_AdminEditFormToolbar")
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="tab-content">
-                        <div id="admin-edit-tab-fields" class="tab-pane fade in active" role="tabpanel">
-<div class="form-group">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div id="admin-edit-tab-fields" class="tab-pane fade show active" role="tabpanel">
+<div class="form-group row mb-3">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @if (Model.Id > 0)
                             {
@@ -77,14 +77,14 @@
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group row mb-3">
+                        @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-3">
@@ -94,8 +94,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group row mb-3">
+                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
@@ -105,7 +105,7 @@
                         </div>
                         <div id="admin-edit-tab-content" class="tab-pane fade" role="tabpanel">
                             @Html.Partial("_AdminEditBackToFields")
-<div class="form-group">
+<div class="form-group row mb-3">
                         <div class="col-md-12">
                             @Html.TextAreaFor(model => model.Body, 50, 50, new { @class = "form-control" })
                         </div>

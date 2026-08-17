@@ -1,3 +1,25 @@
+/* Bootstrap 5 admin compatibility (keep chrome close to previous look) */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.admin-app .card { margin-bottom: 1rem; }
+.admin-app .card.border-info { border-color: #bee5eb; }
+.admin-app .form-group.row { --bs-gutter-x: 1.5rem; }
+.admin-app .form-horizontal .form-group.row { margin-left: 0; margin-right: 0; }
+.admin-app .dropdown-menu .dropdown-item { display: block; padding: 0.35rem 1rem; }
+.admin-app .eg-actions .dropdown-menu { min-width: 12rem; }
+.admin-app .btn-close { box-shadow: none; }
+.admin-app .badge.text-bg-secondary,
+.admin-app .badge.text-bg-primary,
+.admin-app .badge.text-bg-success,
+.admin-app .badge.text-bg-info,
+.admin-app .badge.text-bg-warning,
+.admin-app .badge.text-bg-danger { font-weight: 500; }
+.admin-app .label { display: inline-block; padding: 0.2em 0.5em; border-radius: 0.25rem; font-size: 75%; }
+.admin-app .input-group-text { min-width: 2.25rem; justify-content: center; }
+.admin-app .nav-tabs .nav-link { cursor: pointer; }
+.admin-app .accordion .card-header a { display: block; text-decoration: none; }
+.admin-app .well { background: #f8f9fa; padding: 1rem; border-radius: 0.375rem; }
+.admin-app .thumbnail { display: block; padding: 0.25rem; background: #fff; border: 1px solid #dee2e6; border-radius: 0.375rem; }
+
 body {
     padding-top: 1px;
     padding-bottom: 1px;
@@ -273,7 +295,7 @@ input[name='checkboxGrid'] {
     border-radius: 3px;
 }
 
-.panel.with-nav-tabs .panel-heading {
+.panel.with-nav-tabs .card-header {
     padding: 5px 5px 0 5px;
 }
 
@@ -286,48 +308,48 @@ input[name='checkboxGrid'] {
 }
 /********************************************************************/
 /*** PANEL DEFAULT ***/
-.with-nav-tabs.panel-default .nav-tabs > li > a,
-.with-nav-tabs.panel-default .nav-tabs > li > a:hover,
-.with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+.with-nav-tabs.card .nav-tabs > li > a,
+.with-nav-tabs.card .nav-tabs > li > a:hover,
+.with-nav-tabs.card .nav-tabs > li > a:focus {
     color: #777;
 }
 
-    .with-nav-tabs.panel-default .nav-tabs > .open > a,
-    .with-nav-tabs.panel-default .nav-tabs > .open > a:hover,
-    .with-nav-tabs.panel-default .nav-tabs > .open > a:focus,
-    .with-nav-tabs.panel-default .nav-tabs > li > a:hover,
-    .with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+    .with-nav-tabs.card .nav-tabs > .open > a,
+    .with-nav-tabs.card .nav-tabs > .open > a:hover,
+    .with-nav-tabs.card .nav-tabs > .open > a:focus,
+    .with-nav-tabs.card .nav-tabs > li > a:hover,
+    .with-nav-tabs.card .nav-tabs > li > a:focus {
         color: #777;
         background-color: #ddd;
         border-color: transparent;
     }
 
-.with-nav-tabs.panel-default .nav-tabs > li.active > a,
-.with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
-.with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
+.with-nav-tabs.card .nav-tabs > li.active > a,
+.with-nav-tabs.card .nav-tabs > li.active > a:hover,
+.with-nav-tabs.card .nav-tabs > li.active > a:focus {
     color: #555;
     background-color: #fff;
     border-color: #ddd;
     border-bottom-color: transparent;
 }
 
-.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu {
+.with-nav-tabs.card .nav-tabs > li.dropdown .dropdown-menu {
     background-color: #f5f5f5;
     border-color: #ddd;
 }
 
-    .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a {
+    .with-nav-tabs.card .nav-tabs > li.dropdown .dropdown-menu > li > a {
         color: #777;
     }
 
-        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
-        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+        .with-nav-tabs.card .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+        .with-nav-tabs.card .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
             background-color: #ddd;
         }
 
-    .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a,
-    .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
-    .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+    .with-nav-tabs.card .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+    .with-nav-tabs.card .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+    .with-nav-tabs.card .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
         color: #fff;
         background-color: #555;
     }
@@ -671,7 +693,7 @@ body.admin-app .form-horizontal .checkbox.admin-bool-field {
     gap: 0 10px;
 }
 
-body.admin-app .form-horizontal .form-group:has(> [class*="col-"] > .checkbox) > .control-label {
+body.admin-app .form-horizontal .form-group:has(> [class*="col-"] > .checkbox) > .col-form-label {
     padding-top: 8px;
 }
 
@@ -770,33 +792,33 @@ body.admin-app .report-filter-panel .checkbox input[type="checkbox"] {
 }
 
 /* Fix for label alignment inside Bootstrap grid */
-.control-label {
+.col-form-label {
     padding-top: 7px;
     font-weight: bold;
 }
 
 /* Tabs area spacing */
-.panel-heading .nav-tabs {
+.card-header .nav-tabs {
     margin-bottom: -1px;
 }
 
 /* The -1px above lets the active tab cover the panel border, but it also leaves
-   the floated tab <li> elements overlapping the first pixel of .panel-body.
+   the floated tab <li> elements overlapping the first pixel of .card-body.
    Nothing between the panel and .form-group starts a new block formatting
-   context, so that leftover float pushes the first row's .control-label out of
+   context, so that leftover float pushes the first row's .col-form-label out of
    the grid and drops its input column onto the next line. */
-.panel.with-nav-tabs > .panel-body {
+.panel.with-nav-tabs > .card-body {
     clear: both;
 }
 
-.panel-heading .Tools {
+.card-header .Tools {
     float: right;
     margin-left: 10px;
     padding-top: 5px;
 }
 
 /* Buttons inside tab headers */
-.panel-heading .btn {
+.card-header .btn {
     margin-right: 5px;
 }
 
@@ -823,7 +845,7 @@ body.admin-app .report-filter-panel .checkbox input[type="checkbox"] {
 }
 
 /* Ensure inner panels don't look cluttered */
-.panel-body {
+.card-body {
     padding-top: 25px;
 }
 
@@ -848,17 +870,17 @@ input[type="radio"] {
 }
 
 /* Button width for uniform appearance */
-.panel-heading input[type="submit"],
-.panel-heading input[type="button"] {
+.card-header input[type="submit"],
+.card-header input[type="button"] {
     min-width: 110px;
 }
 
 /* Inline label+checkbox pairs only (e.g. Menus SaveOrEdit in col-md-3).
-   Must not apply to form-horizontal .control-label.col-md-* or the
+   Must not apply to form-horizontal .col-form-label.col-md-* or the
    Bootstrap column float layout breaks and the checkbox drops out of grid. */
-label[for^="IsActive"]:not(.control-label),
-label[for^="MainPage"]:not(.control-label),
-label[for^="ImageState"]:not(.control-label) {
+label[for^="IsActive"]:not(.col-form-label),
+label[for^="MainPage"]:not(.col-form-label),
+label[for^="ImageState"]:not(.col-form-label) {
     display: inline-block;
     margin-right: 5px;
     font-weight: normal;
@@ -978,11 +1000,11 @@ label[for^="ImageState"]:not(.control-label) {
     margin-top: 12px;
 }
 
-.generate-password-panel > .panel-heading .panel-title {
+.generate-password-panel > .card-header .card-title {
     font-size: 18px;
 }
 
-.generate-password-panel > .panel-heading .fa {
+.generate-password-panel > .card-header .fa {
     margin-right: 6px;
 }
 
@@ -1087,11 +1109,11 @@ label[for^="ImageState"]:not(.control-label) {
     margin-top: 12px;
 }
 
-.user-roles-panel > .panel-heading .panel-title {
+.user-roles-panel > .card-header .card-title {
     font-size: 18px;
 }
 
-.user-roles-panel > .panel-heading .fa {
+.user-roles-panel > .card-header .fa {
     margin-right: 6px;
 }
 
@@ -1329,11 +1351,11 @@ label[for^="ImageState"]:not(.control-label) {
     margin-top: 12px;
 }
 
-.forgot-password-panel > .panel-heading .panel-title {
+.forgot-password-panel > .card-header .card-title {
     font-size: 18px;
 }
 
-.forgot-password-panel > .panel-heading .fa {
+.forgot-password-panel > .card-header .fa {
     margin-right: 6px;
 }
 
@@ -1466,7 +1488,7 @@ label[for^="ImageState"]:not(.control-label) {
     overflow: visible;
 }
 
-.admin-edit-form > .panel-body {
+.admin-edit-form > .card-body {
     clear: both;
     padding-top: 20px;
 }
@@ -1824,7 +1846,7 @@ label[for^="ImageState"]:not(.control-label) {
     color: #1f2937;
 }
 
-.product-admin-filters-title .glyphicon {
+.product-admin-filters-title .fa {
     margin-right: 4px;
     color: #3b6ea5;
 }
@@ -2033,7 +2055,7 @@ label[for^="ImageState"]:not(.control-label) {
     max-width: 320px;
 }
 
-.admin-tag-picker__search-wrap .glyphicon {
+.admin-tag-picker__search-wrap .fa {
     position: absolute;
     left: 10px;
     top: 50%;
@@ -2214,7 +2236,7 @@ label[for^="ImageState"]:not(.control-label) {
     text-decoration: none;
 }
 
-.admin-image-size-override__toggle .glyphicon {
+.admin-image-size-override__toggle .fa {
     font-size: 12px;
 }
 
@@ -2345,7 +2367,7 @@ label[for^="ImageState"]:not(.control-label) {
     border-color: #d9dee7;
 }
 
-.admin-media-tabs > .panel-heading {
+.admin-media-tabs > .card-header {
     background: #f8fafc;
     border-bottom: 1px solid #e2e8f0;
     padding: 8px 12px 0;
@@ -2369,7 +2391,7 @@ label[for^="ImageState"]:not(.control-label) {
     border-color: #e2e8f0 #e2e8f0 #fff;
 }
 
-.admin-media-tabs > .panel-body {
+.admin-media-tabs > .card-body {
     background: #fff;
     padding: 16px;
 }
@@ -3409,7 +3431,7 @@ body.admin-app .admin-content .osf-guide .osf-guide__section-head h2,
     outline: none;
 }
 
-.admin-field-tip .glyphicon {
+.admin-field-tip .fa {
     font-size: 13px;
 }
 
@@ -3552,7 +3574,7 @@ body.admin-app .admin-content .osf-guide .osf-guide__section-head h2,
     color: #163a5c;
 }
 
-.tb-palette__item .glyphicon {
+.tb-palette__item .fa {
     font-size: 12px;
 }
 
@@ -3762,11 +3784,11 @@ body.admin-app .admin-content .osf-guide .osf-guide__section-head h2,
     margin-bottom: 18px;
 }
 
-.admin-spec-group > .panel-heading {
+.admin-spec-group > .card-header {
     background: #f3f6fb;
 }
 
-.admin-spec-group > .panel-heading .panel-title {
+.admin-spec-group > .card-header .card-title {
     font-size: 15px;
     font-weight: 600;
 }
@@ -4625,7 +4647,7 @@ body.admin-app .admin-content .admin-home h2::after {
     cursor: not-allowed;
 }
 
-.admin-tree-picker__root-btn .glyphicon {
+.admin-tree-picker__root-btn .fa {
     margin-right: 4px;
     top: 1px;
 }
@@ -4635,3 +4657,10 @@ body.admin-app .admin-content .admin-home h2::after {
         max-width: none;
     }
 }
+
+.admin-app .nav-pills.flex-column .nav-link { border-radius: 0; color: #334e68; }
+.admin-app .nav-pills.flex-column .nav-link.active { background: #2b6cb0; color: #fff; }
+.admin-app .btn.w-100 { display: block; }
+.admin-app .with-nav-tabs > .card-header { padding-bottom: 0; background: #fff; }
+.admin-app .admin-edit-tabs .nav-link { color: #334e68; }
+.admin-app .admin-edit-tabs .nav-link.active { font-weight: 600; }

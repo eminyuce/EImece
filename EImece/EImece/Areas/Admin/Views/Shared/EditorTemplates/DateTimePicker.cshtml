@@ -38,12 +38,12 @@
     var inputType = includeTime ? "datetime-local" : "date";
 }
 
-<div class="form-group">
+<div class="form-group row mb-3">
     <div class="col-md-2">
-        <label class="control-label" for="spec_@fieldKey" style="text-align:left;">
+        <label class="col-form-label" for="spec_@fieldKey" style="text-align:left;">
             @valueDisplayName
-            <button type="button" class="admin-field-tip" data-toggle="tooltip" data-placement="top" title="@tipText" aria-label="@tipText">
-                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            <button type="button" class="admin-field-tip" data-bs-toggle="tooltip" data-placement="top" title="@tipText" aria-label="@tipText">
+                <span class="fa fa-question-circle" aria-hidden="true"></span>
             </button>
         </label>
         <div class="admin-spec-field-meta">@(includeTime ? "tarih + saat" : "tarih")</div>
@@ -58,7 +58,7 @@
     <div class="col-md-1">
         @if (unit != null)
         {
-            <span class="help-block" style="margin-top:8px;">@unit.Value</span>
+            <span class="form-text" style="margin-top:8px;">@unit.Value</span>
         }
     </div>
 </div>

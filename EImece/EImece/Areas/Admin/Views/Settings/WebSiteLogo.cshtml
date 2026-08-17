@@ -38,17 +38,17 @@
             @Html.AdminValidationSummary()
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-success btn-block btn-lg">
-                <i class="glyphicon glyphicon-upload"></i> @saveButtonText
+            <button type="submit" class="btn btn-success w-100 btn-lg">
+                <i class="fa fa-upload"></i> @saveButtonText
             </button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title">Mevcut Logo ve Yeni Yükleme</h3></div>
-                <div class="panel-body">
+            <div class="card">
+                <div class="card-header"><h3 class="card-title">Mevcut Logo ve Yeni Yükleme</h3></div>
+                <div class="card-body">
                     <div class="row">
                         <!-- Current Logo Preview -->
                         <div class="col-md-4 text-center">
@@ -61,7 +61,7 @@
                                 else
                                 {
                                     <div class="text-muted" style="padding: 20px;">
-                                        <i class="glyphicon glyphicon-picture" style="font-size: 32px; color: #ccc;"></i><br/><br/>
+                                        <i class="fa fa-picture-o" style="font-size: 32px; color: #ccc;"></i><br/><br/>
                                         Logo henüz yüklenmedi.
                                     </div>
                                 }
@@ -71,10 +71,10 @@
                         <!-- Upload New Logo -->
                         <div class="col-md-8">
                             <h4 style="margin-bottom: 15px;">Yeni Logo Yükle</h4>
-                            <div class="form-group" style="background-color: #f5f5f5; padding: 20px; border-radius: 4px; border: 1px dashed #ccc; margin-top: 10px;">
-                                <label class="control-label">@AdminResource.WebSiteLogo Dosyası (PNG, JPG vb.)</label>
+                            <div class="form-group row mb-3" style="background-color: #f5f5f5; padding: 20px; border-radius: 4px; border: 1px dashed #ccc; margin-top: 10px;">
+                                <label class="col-form-label">@AdminResource.WebSiteLogo Dosyası (PNG, JPG vb.)</label>
                                 <input type="file" name="postedImage" class="form-control" style="padding-bottom: 40px; margin-top: 10px;" />
-                                <span class="help-block" style="margin-top: 15px;">
+                                <span class="form-text" style="margin-top: 15px;">
                                     <strong>Not:</strong> Logonuzu yüklerken sitenizin genel tasarımına uygun, transparan arka planlı PNG formatlarını tercih edebilirsiniz.
                                 </span>
                             </div>

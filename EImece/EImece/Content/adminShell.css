@@ -533,7 +533,7 @@ body.admin-app .admin-content .adminLine {
     display: none;
 }
 
-body.admin-app .admin-content .panel-body {
+body.admin-app .admin-content .card-body {
     padding-top: 12px;
     padding-bottom: 12px;
 }
@@ -876,7 +876,7 @@ body.admin-app .table-responsive {
     body.admin-app .admin-content .table-responsive,
     body.admin-app .admin-content .eg-grid .grid-wrap,
     body.admin-app .admin-content .eg-grid-scroll,
-    body.admin-app .admin-content .panel-body:has(> table),
+    body.admin-app .admin-content .card-body:has(> table),
     body.admin-app .admin-content .panel:has(> table.grid-table),
     body.admin-app .admin-content .panel:has(> .table) {
         overflow-x: auto;
@@ -1067,7 +1067,7 @@ body.admin-app .table-responsive {
         margin-right: 0;
     }
 
-    body.admin-app .admin-content .form-horizontal .control-label,
+    body.admin-app .admin-content .form-horizontal .col-form-label,
     body.admin-app .admin-content .form-horizontal .col-xs-12,
     body.admin-app .admin-content .form-horizontal [class*="col-sm-"],
     body.admin-app .admin-content .form-horizontal [class*="col-md-"],

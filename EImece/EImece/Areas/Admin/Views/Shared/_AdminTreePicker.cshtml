@@ -17,7 +17,7 @@
     var stateClass = isChild ? "is-child" : (isEmpty ? "is-empty" : "is-root");
     var badgeText = isChild ? "Seçilen" : (isEmpty ? "Seçilmedi" : rootText);
     var displayName = isChild ? selectedName : (isEmpty ? emptyText : rootText);
-    var iconClass = isChild ? "glyphicon-folder-open" : (isEmpty ? "glyphicon-exclamation-sign" : "glyphicon-home");
+    var iconClass = isChild ? "fa fa-folder-open" : (isEmpty ? "fa fa-exclamation-circle" : "fa fa-home");
 }
 <div class="admin-tree-picker @stateClass"
      data-admin-tree-picker
@@ -26,7 +26,7 @@
      data-root-text="@rootText"
      data-empty-text="@emptyText">
     <div class="admin-tree-picker__card">
-        <span class="admin-tree-picker__icon glyphicon @iconClass" data-tree-picker-icon aria-hidden="true"></span>
+        <span class="admin-tree-picker__icon fa @iconClass" data-tree-picker-icon aria-hidden="true"></span>
         <div class="admin-tree-picker__body">
             <div class="admin-tree-picker__row">
                 <span class="admin-tree-picker__badge" data-tree-picker-badge>@badgeText</span>
@@ -40,10 +40,10 @@
             {
                 <button type="button"
                         id="SetParentIdRoot"
-                        class="btn btn-default btn-sm admin-tree-picker__root-btn"
+                        class="btn btn-secondary btn-sm admin-tree-picker__root-btn"
                         data-tree-root-btn
                         @(isRoot ? "disabled=\"disabled\"" : null)>
-                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+                    <i class="fa fa-home" aria-hidden="true"></i>
                     @rootButtonText
                 </button>
             }

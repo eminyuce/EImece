@@ -60,7 +60,7 @@
     var deleteCompactVd = new ViewDataDictionary(ViewData);
     deleteCompactVd["ItemId"] = itemId;
     deleteCompactVd["controllerName"] = controllerName;
-    deleteCompactVd["DeleteIcon"] = "btn btn-danger btn-xs glyphicon glyphicon-remove-circle";
+    deleteCompactVd["DeleteIcon"] = "btn btn-danger btn-sm fa fa-times-circle";
     deleteCompactVd["ItemDescription"] = itemName;
     deleteCompactVd["gridDeleteText"] = ViewData["gridDeleteText"].ToStr(AdminResource.GridDeleteText);
 }
@@ -70,91 +70,91 @@ if (!isSingleAction)
 {
 <div class="eg-actions btn-group">
     <button type="button"
-            class="btn btn-default btn-sm dropdown-toggle eg-actions-toggle"
-            data-toggle="dropdown"
+            class="btn btn-secondary btn-sm dropdown-toggle eg-actions-toggle"
+            data-bs-toggle="dropdown"
+            data-bs-display="static"
             aria-haspopup="true"
             aria-expanded="false">
-        <i class="glyphicon glyphicon-cog" aria-hidden="true"></i>
+        <i class="fa fa-cog" aria-hidden="true"></i>
         <span>İşlemler</span>
-        <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu dropdown-menu-right eg-actions-menu">
+    <ul class="dropdown-menu dropdown-menu-end eg-actions-menu">
         @if (!string.IsNullOrEmpty(detailUrl))
         {
             <li>
-                <a href="@detailUrl">
-                    <i class="glyphicon glyphicon-info-sign"></i> @detailText
+                <a class="dropdown-item" href="@detailUrl">
+                    <i class="fa fa-info-circle"></i> @detailText
                 </a>
             </li>
         }
         @if (!string.IsNullOrEmpty(ordersUrl))
         {
             <li>
-                <a href="@ordersUrl">
-                    <i class="glyphicon glyphicon-shopping-cart"></i> @ordersText
+                <a class="dropdown-item" href="@ordersUrl">
+                    <i class="fa fa-shopping-cart"></i> @ordersText
                 </a>
             </li>
         }
         @if (showMedia)
         {
             <li>
-                <a href="@Url.Action("Media", controllerName, new { Id = itemId })">
-                    <i class="glyphicon glyphicon-camera"></i> @AdminResource.GridImagesText
+                <a class="dropdown-item" href="@Url.Action("Media", controllerName, new { Id = itemId })">
+                    <i class="fa fa-camera"></i> @AdminResource.GridImagesText
                 </a>
             </li>
         }
         @if (hasEdit)
         {
             <li>
-                <a href="@editUrl">
-                    <i class="glyphicon glyphicon-pencil"></i> @AdminResource.GridEditText
+                <a class="dropdown-item" href="@editUrl">
+                    <i class="fa fa-pencil"></i> @AdminResource.GridEditText
                 </a>
             </li>
         }
         @if (hasSpecs)
         {
             <li>
-                <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
+                <a class="dropdown-item" href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
                    title="@AdminResource.ProductSpecs">
-                    <i class="glyphicon glyphicon-plus"></i> Özellikler
+                    <i class="fa fa-plus"></i> Özellikler
                 </a>
             </li>
         }
         @if (hasComments)
         {
             <li>
-                <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })">
-                    <i class="glyphicon glyphicon-user"></i> Yorumlar
+                <a class="dropdown-item" href="@Url.Action("Index", "ProductComments", new { Id = itemId })">
+                    <i class="fa fa-user"></i> Yorumlar
                 </a>
             </li>
         }
         @if (!string.IsNullOrEmpty(forgotPasswordUrl))
         {
             <li>
-                <a href="@forgotPasswordUrl">
-                    <i class="glyphicon glyphicon-envelope"></i> @AdminResource.ForgotPassword
+                <a class="dropdown-item" href="@forgotPasswordUrl">
+                    <i class="fa fa-envelope"></i> @AdminResource.ForgotPassword
                 </a>
             </li>
         }
         @if (!string.IsNullOrEmpty(newPasswordUrl))
         {
             <li>
-                <a href="@newPasswordUrl">
-                    <i class="glyphicon glyphicon-lock"></i> @AdminResource.NewPassword
+                <a class="dropdown-item" href="@newPasswordUrl">
+                    <i class="fa fa-lock"></i> @AdminResource.NewPassword
                 </a>
             </li>
         }
         @if (!string.IsNullOrEmpty(rolesUrl))
         {
             <li>
-                <a href="@rolesUrl">
-                    <i class="glyphicon glyphicon-user"></i> @AdminResource.Roles
+                <a class="dropdown-item" href="@rolesUrl">
+                    <i class="fa fa-user"></i> @AdminResource.Roles
                 </a>
             </li>
         }
         @if (hasDelete)
         {
-            <li class="divider"></li>
+            <li><hr class="dropdown-divider" /></li>
             <li class="eg-actions-danger">
                 @Html.Partial("pDeleteModal", deleteMenuVd)
             </li>
@@ -165,27 +165,27 @@ if (!isSingleAction)
 <div class="eg-actions-compact@(isSingleAction ? " eg-actions-single" : "")" aria-hidden="@(isSingleAction ? "false" : "true")">
     @if (!string.IsNullOrEmpty(detailUrl))
     {
-        <a href="@detailUrl" class="btn btn-info btn-xs" title="@detailText">
-            <i class="glyphicon glyphicon-info-sign"></i>
+        <a href="@detailUrl" class="btn btn-info btn-sm" title="@detailText">
+            <i class="fa fa-info-circle"></i>
         </a>
     }
     @if (!string.IsNullOrEmpty(ordersUrl))
     {
-        <a href="@ordersUrl" class="btn btn-success btn-xs" title="@ordersText">
-            <i class="glyphicon glyphicon-shopping-cart"></i>
+        <a href="@ordersUrl" class="btn btn-success btn-sm" title="@ordersText">
+            <i class="fa fa-shopping-cart"></i>
         </a>
     }
     @if (showMedia)
     {
         <a href="@Url.Action("Media", controllerName, new { Id = itemId })"
-           class="btn btn-default btn-xs" title="@AdminResource.GridImagesText">
-            <i class="glyphicon glyphicon-camera"></i>
+           class="btn btn-secondary btn-sm" title="@AdminResource.GridImagesText">
+            <i class="fa fa-camera"></i>
         </a>
     }
     @if (hasEdit)
     {
-        <a href="@editUrl" class="btn btn-primary btn-xs" title="@AdminResource.GridEditText">
-            <i class="glyphicon glyphicon-pencil"></i>
+        <a href="@editUrl" class="btn btn-primary btn-sm" title="@AdminResource.GridEditText">
+            <i class="fa fa-pencil"></i>
             @if (isSingleAction)
             {
                 <span>@AdminResource.GridEditText</span>
@@ -195,8 +195,8 @@ if (!isSingleAction)
     @if (hasSpecs)
     {
         <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
-           class="btn btn-default btn-xs" title="@AdminResource.ProductSpecs">
-            <i class="glyphicon glyphicon-plus"></i>
+           class="btn btn-secondary btn-sm" title="@AdminResource.ProductSpecs">
+            <i class="fa fa-plus"></i>
         </a>
     }
     @if (hasDelete)
@@ -206,8 +206,8 @@ if (!isSingleAction)
     @if (hasComments)
     {
         <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })"
-           class="btn btn-default btn-xs" title="Yorumlar">
-            <i class="glyphicon glyphicon-user"></i>
+           class="btn btn-secondary btn-sm" title="Yorumlar">
+            <i class="fa fa-user"></i>
         </a>
     }
 </div>

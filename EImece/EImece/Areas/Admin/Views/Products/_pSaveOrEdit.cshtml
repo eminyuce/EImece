@@ -25,8 +25,8 @@
             @Html.HiddenFor(model => product.UpdatedDate)
             @Html.HiddenFor(model => product.MainImageId)
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.ProductCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.ProductCategoryId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     @if (productCategory != null && productCategory.Id > 0)
                         {
@@ -46,16 +46,16 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => product.Name, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => product.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.IsActive, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     <div class="checkbox">
                         @Html.EditorFor(model => product.IsActive)
@@ -64,16 +64,16 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => product.Position, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => product.Position, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.Description, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     @Html.TextAreaFor(model => product.Description, new { @class = "form-control eimece-rich-text-editor" })
 
@@ -81,8 +81,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.MainPage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.MainPage, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     <div class="checkbox">
                         @Html.EditorFor(model => product.MainPage)
@@ -91,15 +91,15 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     <input type="file" name="postedImage" />
                     @Html.ValidationMessageFor(model => product.MainImageId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="form-group">
-                @Html.LabelFor(model => product.ImageState, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.ImageState, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     <div class="checkbox">
                         @Html.EditorFor(model => product.ImageState)
@@ -108,24 +108,24 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.Price, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => product.Price, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => product.Price, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.Discount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.Discount, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => product.Discount, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => product.Discount, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => product.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group row mb-3">
+                @Html.LabelFor(model => product.ProductCode, htmlAttributes: new { @class = "col-form-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => product.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => product.ProductCode, "", new { @class = "text-danger" })
@@ -134,9 +134,9 @@
             <div id="productTagsHtml">
                 @Html.Partial("_pProductTags", Model)
             </div>
-            <div class="form-group">
+            <div class="form-group row mb-3">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="@saveButtonText" class="btn btn-default btn-lg btn-block" />
+                    <input type="submit" value="@saveButtonText" class="btn btn-secondary btn-lg w-100" />
                 </div>
             </div>
         </div>

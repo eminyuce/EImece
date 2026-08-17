@@ -33,15 +33,15 @@
 <h2>@AdminResource.AppLogs</h2>
 <hr class="adminLine" />
 
-<div class="panel panel-default" style="margin-bottom: 15px;">
-    <div class="panel-heading"><strong>Log seviyesi filtrele / indir</strong></div>
-    <div class="panel-body">
+<div class="card" style="margin-bottom: 15px;">
+    <div class="card-header"><strong>Log seviyesi filtrele / indir</strong></div>
+    <div class="card-body">
         <form method="get" action="@Url.Action("Index", controllerName)" class="form-inline" style="margin-bottom: 10px;">
             @if (!string.IsNullOrEmpty(currentSearch))
             {
                 <input type="hidden" name="search" value="@currentSearch" />
             }
-            <div class="form-group" style="margin-right: 10px;">
+            <div class="form-group row mb-3" style="margin-right: 10px;">
                 <label for="eventLevel" style="margin-right: 6px;">Seviye (debug type):</label>
                 <select id="eventLevel" name="eventLevel" class="form-control">
                     <option value="">Tümü</option>
@@ -52,27 +52,27 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-filter"></span> Filtrele
+                <span class="fa fa-filter"></span> Filtrele
             </button>
             @if (!string.IsNullOrEmpty(currentEventLevel) || !string.IsNullOrEmpty(currentSearch))
             {
-                <a href="@Url.Action("Index", controllerName)" class="btn btn-default">Temizle</a>
+                <a href="@Url.Action("Index", controllerName)" class="btn btn-secondary">Temizle</a>
             }
         </form>
 
         <div class="btn-toolbar" role="toolbar" style="margin-bottom: 8px;">
             <fieldset class="btn-group" style="border:0;padding:0;margin:0;min-width:0">
-                <legend class="sr-only">İndir</legend>
+                <legend class="visually-hidden">İndir</legend>
                 <a class="btn btn-success"
                    href="@Url.Action("Download", controllerName, new { search = currentSearch, eventLevel = currentEventLevel })">
-                    <span class="glyphicon glyphicon-download-alt"></span>
+                    <span class="fa fa-download"></span>
                     İndir (.txt)@(string.IsNullOrEmpty(currentEventLevel) ? "" : " — " + currentEventLevel)
                 </a>
-                <a class="btn btn-default"
+                <a class="btn btn-secondary"
                    href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch, eventLevel = currentEventLevel })">
                     Excel
                 </a>
-                <a class="btn btn-default"
+                <a class="btn btn-secondary"
                    href="@Url.Action("ExportExcel", controllerName, new { format = "csv", search = currentSearch, eventLevel = currentEventLevel })">
                     CSV
                 </a>
@@ -102,7 +102,7 @@
         ,{"SetStateOnOrOff",false},{"IsExcelButtonEnabled",false}
         ,{"PreserveQuery", preserveQuery}})
 <div style="margin-bottom: 12px;">
-    @Html.ActionLink("Trace Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Trace" }, new { @class = "btn btn-default btn-sm" })
+    @Html.ActionLink("Trace Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Trace" }, new { @class = "btn btn-secondary btn-sm" })
     @Html.ActionLink("Debug Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Debug" }, new { @class = "btn btn-warning btn-sm" })
     @Html.ActionLink("Info Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Info" }, new { @class = "btn btn-info btn-sm" })
     @Html.ActionLink("Warn Seviye Loglari Sil", "RemoveAll", new { eventLevel = "Warn" }, new { @class = "btn btn-warning btn-sm" })
@@ -121,7 +121,7 @@
                 Log Metin Görünümü
             </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#logAccordion">
+        <div id="collapseOne" class="accordion-collapse show" aria-labelledby="headingOne" data-bs-parent="#logAccordion">
             <div class="accordion-body">
                 <textarea id="logTextBox" rows="20" readonly style="width: 100%; height: 500px; font-family: monospace;">
 @foreach (var log in Model)
@@ -141,7 +141,7 @@
                 Log Grid Görünümü
             </button>
         </h2>
-        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#logAccordion">
+        <div id="collapseTwo" class="accordion-collapse" aria-labelledby="headingTwo" data-bs-parent="#logAccordion">
             <div class="accordion-body">
                 <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = currentSearch, eventLevel = currentEventLevel })"></div>
             </div>
@@ -166,10 +166,10 @@
 @helper CreateAppLogModal(AppLog o)
 {
     <div class="eg-name-cell">
-        <a data-toggle="modal"
+        <a data-bs-toggle="modal"
            class="eg-name-link"
            data-order-Id="@o.Id"
-           data-target="@String.Format("#myModal_{0}", o.Id)">
+           data-bs-target="@String.Format("#myModal_{0}", o.Id)">
             <strong>@o.Id</strong>
         </a>
     </div>
@@ -184,7 +184,7 @@
                     @Html.DisplayFor(item => o)
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">@AdminResource.Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@AdminResource.Close</button>
                 </div>
             </div>
         </div>

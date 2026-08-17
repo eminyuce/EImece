@@ -20,16 +20,16 @@
 @Html.Partial("_ReportHeader")
 @Html.Partial("_ReportExportButtons")
 
-<div class="panel panel-default report-filter-panel">
-    <div class="panel-heading">Filtreler</div>
-    <div class="panel-body">
+<div class="card report-filter-panel">
+    <div class="card-header">Filtreler</div>
+    <div class="card-body">
         @using (Html.BeginForm("GetRegionalSalesReport", "Report", FormMethod.Post, new { @class = "form-horizontal", area = "Admin" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="report-filter-row">
                 <div class="report-filter-field">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label for="paymentStatus">Ödeme Durumu</label>
                         <select class="form-control report-filter-select" id="paymentStatus" name="paymentStatus">
                             <option value="" @(string.IsNullOrEmpty(paymentStatus) ? "selected=\"selected\"" : null)>Tümü</option>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="report-filter-field report-filter-actions">
-                    <div class="form-group">
+                    <div class="form-group row mb-3">
                         <label>&nbsp;</label>
                         <div>
                             <button type="submit" class="btn btn-primary">Raporu Getir</button>

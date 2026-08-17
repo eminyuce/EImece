@@ -117,7 +117,7 @@ body.admin-app .eg-grid table.grid-table {
 }
 
 /* Record count bar — shared across all admin Grid.Mvc shells */
-.eg-grid-shell > .panel-heading.grid-record-count,
+.eg-grid-shell > .card-header.grid-record-count,
 .eg-grid-shell .grid-record-count,
 .grid-record-count {
     display: flex;
@@ -213,7 +213,7 @@ body.admin-app .eg-grid table.grid-table > thead > tr > th,
 }
 
 .eg-grid .grid-table > thead > tr > th .grid-sort-arrow,
-.eg-grid .grid-table > thead > tr > th [class*="glyphicon-sort"],
+.eg-grid .grid-table > thead > tr > th [class*="fa fa-sort"],
 .eg-grid .grid-table > thead > tr > th .sorted-asc,
 .eg-grid .grid-table > thead > tr > th .sorted-desc {
     color: #2b6cb0;
@@ -597,7 +597,7 @@ body.admin-app .eg-state-badge.eg-state-NotForSale {
     transform: translateX(12px);
 }
 
-/* Keep legacy glyphicon span in DOM for JS, but hide visually inside toggles */
+/* Keep legacy fa span in DOM for JS, but hide visually inside toggles */
 .eg-status-toggle .eg-status-icon,
 .eg-status-toggle .gridActiveIcon,
 .eg-status-toggle .gridNotActiveIcon {
@@ -1012,11 +1012,11 @@ body.admin-app .eg-grid .grid-filter-btn {
     margin-bottom: 14px;
 }
 
-.admin-grid-ops.eg-bulk-bar > .panel-heading {
+.admin-grid-ops.eg-bulk-bar > .card-header {
     display: none;
 }
 
-.admin-grid-ops.eg-bulk-bar .panel-body {
+.admin-grid-ops.eg-bulk-bar .card-body {
     padding: 14px 16px;
 }
 
@@ -1210,14 +1210,14 @@ body.admin-app .eg-grid .grid-filter-btn {
     font-size: 11px;
 }
 
-.admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-default {
+.admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-secondary {
     background: #f8fafc;
     border-color: var(--eg-border);
     color: var(--eg-text);
 }
 
-.admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-default:hover,
-.admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-default:focus {
+.admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-secondary:hover,
+.admin-grid-ops.eg-bulk-bar .eg-ops-btn.btn-secondary:focus {
     background: var(--eg-row-hover);
     border-color: var(--eg-border-strong);
     color: var(--eg-link);
@@ -1435,7 +1435,7 @@ body.admin-app .eg-grid table.grid-table td:first-child .badge.badge-primary {
 }
 
 /* ----- Shopping carts grid ----- */
-.eg-shoppingcarts-ops .admin-grid-ops.eg-bulk-bar .panel-body {
+.eg-shoppingcarts-ops .admin-grid-ops.eg-bulk-bar .card-body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -2524,7 +2524,7 @@ body.admin-app .eg-grid .grid-wrap {
 
     body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status .grid-filter-btn,
     body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status .grid-sort-arrow,
-    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status [class*="glyphicon"] {
+    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status [class*="fa"] {
         font-size: 14px !important;
         line-height: 1;
     }
@@ -2726,7 +2726,7 @@ body.admin-app .eg-grid .grid-wrap {
 }
 
 @media (max-width: 767px) {
-    .admin-grid-ops.eg-bulk-bar .panel-body {
+    .admin-grid-ops.eg-bulk-bar .card-body {
         padding: 12px;
     }
 

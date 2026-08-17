@@ -63,13 +63,13 @@
 
             @Html.HiddenFor(model => model.Lang)
 
-            <div class="panel panel-default admin-edit-form">
+            <div class="card admin-edit-form">
                 @Html.Partial("_AdminEditFormToolbar")
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="tab-content">
-                        <div id="admin-edit-tab-fields" class="tab-pane fade in active" role="tabpanel">
-<div class="form-group">
-                                @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div id="admin-edit-tab-fields" class="tab-pane fade show active" role="tabpanel">
+<div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.HiddenFor(model => model.ParentId)
                                     @Html.Partial("_AdminTreePicker", null, new ViewDataDictionary(ViewData) {
@@ -84,31 +84,31 @@
                                     })
                                 </div>
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group row mb-3">
                                 <div class="col-md-3">
                                 </div>
                                 <div class="col-md-3">
@@ -125,8 +125,8 @@
 
                             @if (Model.Id == 0)
                         {
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.MenuLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.MenuLink, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.DropDownListFor(model => model.MenuLink, menuLinks, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.MenuLink, "", new { @class = "text-danger" })
@@ -138,8 +138,8 @@
                             @Html.HiddenFor(model => model.MenuLink)
                         }
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-3">
                                     <input type="file" name="postedImage" />
                                     @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
@@ -159,15 +159,15 @@
                             </div>
                             @Html.Partial("pSliderResizing", (BaseContent)Model)
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group row mb-3">
                                 <div class="col-md-3">
                                 </div>
                                 <div class="col-md-3">
@@ -176,11 +176,11 @@
                                     @Html.ValidationMessageFor(model => model.LinkIsActive, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div id="pageThemeWrapper" style="@String.Format("{0}", (Model.Id>0 && Model.MenuLink.Equals("pages-index") ) ? "" : "display: none;")" class="form-group page-theme-form-group">
+                            <div id="pageThemeWrapper" style="@String.Format("{0}", (Model.Id>0 && Model.MenuLink.Equals("pages-index") ) ? "" : "display: none;")" class="form-group row mb-3 page-theme-form-group row mb-3">
                                 <div class="col-md-12">
                                     <div class="page-theme-section">
                                         <div class="page-theme-section__head">
-                                            @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "control-label page-theme-section__label" })
+                                            @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "col-form-label page-theme-section__label" })
                                             <p class="page-theme-section__hint">Sayfa içeriğinin yerleşimini seçin. Karta tıklayarak uygulayın; büyüteç ile yerleşimi büyütün.</p>
                                         </div>
                                         @Html.Partial("pPageThemes", Model)
@@ -192,7 +192,7 @@
                         </div>
                         <div id="admin-edit-tab-content" class="tab-pane fade" role="tabpanel">
                             @Html.Partial("_AdminEditBackToFields")
-<div class="form-group">
+<div class="form-group row mb-3">
                                 <div class="col-md-12">
                                     @Html.TextAreaFor(model => model.Description, new { @class = "form-control eimece-rich-text-editor" })
                                 </div>

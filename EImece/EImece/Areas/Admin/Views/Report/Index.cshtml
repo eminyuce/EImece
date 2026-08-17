@@ -57,12 +57,12 @@
 
     var categoryIcons = new Dictionary<string, string>
     {
-        { "Satış Raporları", "glyphicon-stats" },
-        { "Ödeme Raporları", "glyphicon-credit-card" },
-        { "Ürün Raporları", "glyphicon-tags" },
-        { "Risk ve Analiz", "glyphicon-warning-sign" },
-        { "Pazarlama ve Lojistik", "glyphicon-send" },
-        { "Finansal Raporlar", "glyphicon-briefcase" }
+        { "Satış Raporları", "fa fa-bar-chart" },
+        { "Ödeme Raporları", "fa fa-credit-card" },
+        { "Ürün Raporları", "fa fa-tags" },
+        { "Risk ve Analiz", "fa fa-exclamation-triangle" },
+        { "Pazarlama ve Lojistik", "fa fa-paper-plane" },
+        { "Finansal Raporlar", "fa fa-briefcase" }
     };
 
     var allActions = new List<string> {
@@ -224,7 +224,7 @@
         overflow: hidden;
     }
 
-    .report-quick-panel > .panel-heading {
+    .report-quick-panel > .card-header {
         background: linear-gradient(180deg, #f7fbff 0%, #eef5fc 100%);
         border-color: #d9e2ec;
         color: #243b53;
@@ -283,11 +283,10 @@
     </div>
 
     <!-- Mobile navigation -->
-    <div class="visible-xs report-mobile-menu">
+    <div class="d-sm-none report-mobile-menu">
         <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="mobileReportMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="mobileReportMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Rapor Seçin
-                <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="mobileReportMenu">
                 @foreach (var category in reportCategories)
@@ -314,20 +313,20 @@
                             }
                         </li>
                     }
-                    <li class="divider"></li>
+                    <li><hr class="dropdown-divider" /></li>
                 }
             </ul>
         </div>
     </div>
 
     <!-- Desktop categorized cards -->
-    <div class="hidden-xs">
+    <div class="d-none d-sm-block">
         @foreach (var category in reportCategories)
         {
-            var icon = categoryIcons.ContainsKey(category.Key) ? categoryIcons[category.Key] : "glyphicon-list-alt";
+            var icon = categoryIcons.ContainsKey(category.Key) ? categoryIcons[category.Key] : "fa fa-list-alt";
             <div class="report-category">
                 <h3 class="report-category-title">
-                    <i class="glyphicon @icon" aria-hidden="true"></i>
+                    <i class="fa @icon" aria-hidden="true"></i>
                     <span>@category.Key</span>
                 </h3>
                 <div class="report-grid">
@@ -363,9 +362,9 @@
     </div>
 
     <!-- Quick Reports -->
-    <div class="panel panel-default report-quick-panel">
-        <div class="panel-heading">Hızlı Raporlar</div>
-        <div class="panel-body">
+    <div class="card report-quick-panel">
+        <div class="card-header">Hızlı Raporlar</div>
+        <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     <h4>Satış (tarih)</h4>
