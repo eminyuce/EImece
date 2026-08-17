@@ -30,7 +30,7 @@
         .Column(caption: "", template: @<text><span class="eg-row-index">@(item.Position > 0 ? item.Position.ToString() : item.Id.ToString())</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item)</text>, className: "eg-col-image", width: "64px")
-        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", item)</text>, className: "eg-col-name", width: "260px")
+        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", item)</text>, className: "eg-col-name", width: "360px")
         .Column(x => x.ProductCategory.Name, caption: AdminResource.ProductCategory, template: @<text>@(item.ProductCategory != null ? item.ProductCategory.Name : "")</text>, className: "eg-col-category", width: "160px")
         .Column(x => x.Brand.Name, caption: AdminResource.Brands, template: @<text>@((item.BrandId.HasValue && item.Brand != null) ? item.Brand.Name : "")</text>, className: "eg-col-brand", width: "140px");
 

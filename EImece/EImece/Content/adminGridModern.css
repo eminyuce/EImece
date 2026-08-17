@@ -319,8 +319,8 @@ body.admin-app .eg-grid table.grid-table > tbody > tr > td {
 
 /* ----- Name / meta ----- */
 .eg-name-cell {
-    min-width: 180px;
-    max-width: 280px;
+    min-width: 260px;
+    max-width: 440px;
 }
 
 .eg-name-link {
@@ -3133,7 +3133,7 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
 .griddly table.eg-grid-table,
 .griddly .table {
     width: 100% !important;
-    min-width: 1350px !important;
+    min-width: 1450px !important;
     margin-bottom: 0 !important;
     border-collapse: separate !important;
     border-spacing: 0 !important;
@@ -3281,7 +3281,7 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
 .griddly table .eg-col-index { min-width: 44px; width: 44px; text-align: center; }
 .griddly table .eg-col-check { min-width: 44px; width: 44px; text-align: center; }
 .griddly table .eg-col-image { min-width: 64px; width: 64px; text-align: center; }
-.griddly table .eg-col-name { min-width: 240px; }
+.griddly table .eg-col-name { min-width: 360px; }
 .griddly table .eg-col-category { min-width: 150px; }
 .griddly table .eg-col-brand { min-width: 130px; }
 .griddly table .eg-col-price { min-width: 132px; }
