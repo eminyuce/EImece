@@ -20,12 +20,109 @@
             if (window.FilePondPluginImageExifOrientation) FilePond.registerPlugin(FilePondPluginImageExifOrientation);
         }
 
-        $('.filepond-fileupload-input').filepond({
+        var $input = $('.filepond-fileupload-input');
+        var $btnBrowse = $('.filepond-btn-browse');
+        var $btnStart = $('.filepond-btn-start');
+        var $btnCancel = $('.filepond-btn-cancel');
+        var $btnDelete = $('.filepond-btn-delete');
+        var $toggleAll = $('.filepond-toggle-all');
+        var $progressWrapper = $('.filepond-global-progress-wrapper');
+        var $progressBar = $('.filepond-global-progress-bar');
+        var $progressText = $('.filepond-progress-extended');
+        var uploadStartTime = null;
+
+        function formatBytes(bytes) {
+            if (!bytes || bytes === 0) return '0.00 MB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds) || seconds < 0 || !isFinite(seconds)) return '00:00:00';
+            var s = Math.floor(seconds);
+            var hrs = Math.floor(s / 3600);
+            var mins = Math.floor((s % 3600) / 60);
+            var secs = s % 60;
+            return (hrs < 10 ? '0' : '') + hrs + ':' + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+
+        function updateToolbarState() {
+            var pond = $input.filepond ? $input.filepond('getPond') : null;
+            if (!pond) return;
+
+            var files = pond.getFiles();
+            var idleFiles = files.filter(function (f) { return f.status === 2; });
+            var processingFiles = files.filter(function (f) { return f.status === 3 || f.status === 4; });
+
+            if (processingFiles.length > 0) {
+                $btnStart.prop('disabled', true);
+                $btnCancel.prop('disabled', false);
+                $btnDelete.prop('disabled', true);
+                $progressWrapper.show();
+            } else if (idleFiles.length > 0) {
+                $btnStart.prop('disabled', false);
+                $btnCancel.prop('disabled', true);
+                $btnDelete.prop('disabled', false);
+            } else {
+                $btnStart.prop('disabled', true);
+                $btnCancel.prop('disabled', true);
+                $btnDelete.prop('disabled', files.length === 0);
+                if (files.length === 0) {
+                    $progressWrapper.hide();
+                    $toggleAll.prop('checked', false);
+                }
+            }
+        }
+
+        function updateGlobalProgress() {
+            var pond = $input.filepond ? $input.filepond('getPond') : null;
+            if (!pond) return;
+
+            var files = pond.getFiles();
+            if (files.length === 0) {
+                $progressWrapper.hide();
+                return;
+            }
+
+            var totalBytes = 0;
+            var loadedBytes = 0;
+
+            files.forEach(function (f) {
+                var size = f.fileSize || (f.file ? f.file.size : 0);
+                totalBytes += size;
+                if (f.status === 5) {
+                    loadedBytes += size;
+                } else if (f.status === 3) {
+                    loadedBytes += (size * (f.transferProgress || 0));
+                }
+            });
+
+            var percent = totalBytes > 0 ? (loadedBytes / totalBytes) * 100 : 0;
+            $progressBar.css('width', percent.toFixed(1) + '%');
+
+            var elapsedSeconds = uploadStartTime ? (Date.now() - uploadStartTime) / 1000 : 0;
+            var speedMbits = (elapsedSeconds > 0 && loadedBytes > 0)
+                ? ((loadedBytes * 8) / (elapsedSeconds * 1000 * 1000)).toFixed(2)
+                : '0.00';
+
+            var remainingBytes = Math.max(0, totalBytes - loadedBytes);
+            var bytesPerSec = elapsedSeconds > 0 ? loadedBytes / elapsedSeconds : 0;
+            var remainingSecs = bytesPerSec > 0 ? remainingBytes / bytesPerSec : 0;
+
+            $progressText.text(
+                speedMbits + ' Mbit/s | ' +
+                formatTime(remainingSecs) + ' | ' +
+                percent.toFixed(2) + ' % | ' +
+                formatBytes(loadedBytes) + ' / ' + formatBytes(totalBytes)
+            );
+        }
+
+        $input.filepond({
+            instantUpload: false,
             allowMultiple: true,
             allowReorder: true,
-            maxFiles: 20,
+            maxFiles: 50,
             acceptedFileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-            maxFileSize: '15MB',
+            maxFileSize: '20MB',
             credits: false,
             server: {
                 process: {
@@ -39,7 +136,79 @@
                         return formData;
                     }
                 }
+            },
+            onaddfile: function () {
+                updateToolbarState();
+                updateGlobalProgress();
+            },
+            onremovefile: function () {
+                updateToolbarState();
+                updateGlobalProgress();
+            },
+            onprocessfilestart: function () {
+                if (!uploadStartTime) uploadStartTime = Date.now();
+                $progressWrapper.show();
+                updateToolbarState();
+            },
+            onprocessfileprogress: function (file, progress) {
+                file.transferProgress = progress;
+                updateGlobalProgress();
+            },
+            onprocessfile: function (error, file) {
+                if (!error) file.transferProgress = 1.0;
+                updateToolbarState();
+                updateGlobalProgress();
+            },
+            onprocessfiles: function () {
+                uploadStartTime = null;
+                updateToolbarState();
+                updateGlobalProgress();
             }
+        });
+
+        $btnBrowse.on('click', function (e) {
+            e.preventDefault();
+            $input.filepond('browse');
+        });
+
+        $btnStart.on('click', function (e) {
+            e.preventDefault();
+            uploadStartTime = Date.now();
+            $progressWrapper.show();
+            $progressBar.css('width', '0%');
+            $input.filepond('processFiles');
+            updateToolbarState();
+        });
+
+        $btnCancel.on('click', function (e) {
+            e.preventDefault();
+            var pond = $input.filepond('getPond');
+            if (pond) {
+                var files = pond.getFiles();
+                files.forEach(function (f) {
+                    if (f.status === 3 || f.status === 4) pond.abortProcessing(f.id);
+                });
+            }
+            uploadStartTime = null;
+            updateToolbarState();
+            updateGlobalProgress();
+        });
+
+        $btnDelete.on('click', function (e) {
+            e.preventDefault();
+            var pond = $input.filepond('getPond');
+            if (!pond) return;
+            if (confirm('Yükleme listesini temizlemek istiyor musunuz?')) {
+                pond.removeFiles();
+                $progressBar.css('width', '0%');
+                $progressWrapper.hide();
+                updateToolbarState();
+            }
+        });
+
+        $toggleAll.on('change', function () {
+            var checked = $(this).is(':checked');
+            $('.filepond--item').toggleClass('is-selected', checked);
         });
     });
 </script>

@@ -70,20 +70,124 @@
             }
 
             var hasUploadedFiles = false;
+            var isUploading = false;
+            var uploadStartTime = null;
             var uploadUrl = '@Url.Action("Upload", "Media")';
+            var $input = $('.filepond-media-input');
+            var $btnBrowse = $('.filepond-btn-browse');
+            var $btnStart = $('.filepond-btn-start');
+            var $btnCancel = $('.filepond-btn-cancel');
+            var $btnDelete = $('.filepond-btn-delete');
+            var $toggleAll = $('.filepond-toggle-all');
+            var $progressWrapper = $('.filepond-global-progress-wrapper');
+            var $progressBar = $('.filepond-global-progress-bar');
+            var $progressText = $('.filepond-progress-extended');
+
+            // Format bytes helper
+            function formatBytes(bytes) {
+                if (!bytes || bytes === 0) return '0.00 MB';
+                return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+            }
+
+            // Format seconds to hh:mm:ss
+            function formatTime(seconds) {
+                if (!seconds || isNaN(seconds) || seconds < 0 || !isFinite(seconds)) return '00:00:00';
+                var s = Math.floor(seconds);
+                var hrs = Math.floor(s / 3600);
+                var mins = Math.floor((s % 3600) / 60);
+                var secs = s % 60;
+                return (hrs < 10 ? '0' : '') + hrs + ':' + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+            }
+
+            // Update toolbar button states based on queued files
+            function updateToolbarState() {
+                var pond = $input.filepond ? $input.filepond('getPond') : null;
+                if (!pond) return;
+
+                var files = pond.getFiles();
+                var idleFiles = files.filter(function (f) { return f.status === 2; /* FileStatus.IDLE */ });
+                var processingFiles = files.filter(function (f) { return f.status === 3 || f.status === 4; /* PROCESSING/PROCESSING_QUEUED */ });
+
+                if (processingFiles.length > 0) {
+                    isUploading = true;
+                    $btnStart.prop('disabled', true);
+                    $btnCancel.prop('disabled', false);
+                    $btnDelete.prop('disabled', true);
+                    $progressWrapper.show();
+                } else if (idleFiles.length > 0) {
+                    isUploading = false;
+                    $btnStart.prop('disabled', false);
+                    $btnCancel.prop('disabled', true);
+                    $btnDelete.prop('disabled', false);
+                } else {
+                    isUploading = false;
+                    $btnStart.prop('disabled', true);
+                    $btnCancel.prop('disabled', true);
+                    $btnDelete.prop('disabled', files.length === 0);
+                    if (files.length === 0) {
+                        $progressWrapper.hide();
+                        $toggleAll.prop('checked', false);
+                    }
+                }
+            }
+
+            // Update overall transfer metrics
+            function updateGlobalProgress() {
+                var pond = $input.filepond ? $input.filepond('getPond') : null;
+                if (!pond) return;
+
+                var files = pond.getFiles();
+                if (files.length === 0) {
+                    $progressWrapper.hide();
+                    return;
+                }
+
+                var totalBytes = 0;
+                var loadedBytes = 0;
+
+                files.forEach(function (f) {
+                    var size = f.fileSize || (f.file ? f.file.size : 0);
+                    totalBytes += size;
+                    if (f.status === 5 /* COMPLETE */) {
+                        loadedBytes += size;
+                    } else if (f.status === 3 /* PROCESSING */) {
+                        loadedBytes += (size * (f.transferProgress || 0));
+                    }
+                });
+
+                var percent = totalBytes > 0 ? (loadedBytes / totalBytes) * 100 : 0;
+                $progressBar.css('width', percent.toFixed(1) + '%');
+
+                var elapsedSeconds = uploadStartTime ? (Date.now() - uploadStartTime) / 1000 : 0;
+                var speedMbits = (elapsedSeconds > 0 && loadedBytes > 0)
+                    ? ((loadedBytes * 8) / (elapsedSeconds * 1000 * 1000)).toFixed(2)
+                    : '0.00';
+
+                var remainingBytes = Math.max(0, totalBytes - loadedBytes);
+                var bytesPerSec = elapsedSeconds > 0 ? loadedBytes / elapsedSeconds : 0;
+                var remainingSecs = bytesPerSec > 0 ? remainingBytes / bytesPerSec : 0;
+
+                $progressText.text(
+                    speedMbits + ' Mbit/s | ' +
+                    formatTime(remainingSecs) + ' | ' +
+                    percent.toFixed(2) + ' % | ' +
+                    formatBytes(loadedBytes) + ' / ' + formatBytes(totalBytes)
+                );
+            }
 
             // Initialize FilePond via official jQuery adapter
-            $('.filepond-media-input').filepond({
+            $input.filepond({
+                instantUpload: false,
                 allowMultiple: true,
                 allowReorder: true,
-                maxFiles: 30,
-                maxParallelUploads: 3,
+                maxFiles: 50,
+                maxParallelUploads: 4,
                 acceptedFileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'],
                 maxFileSize: '20MB',
-                imagePreviewHeight: 160,
+                imagePreviewHeight: 100,
                 credits: false,
-                // Turkish localization strings
-                labelIdle: '<i class="glyphicon glyphicon-cloud-upload" style="font-size: 28px; display: block; margin-bottom: 8px; color: #3b82f6;"></i><span class="filepond--label-action" style="font-weight: 600;">Resimleri Seçin</span> veya bu alana sürükleyin',
+                // Turkish localization strings matching blueimp experience
+                labelIdle: '<i class="glyphicon glyphicon-cloud-upload" style="font-size: 26px; display: block; margin-bottom: 6px; color: #3b82f6;"></i><span class="filepond--label-action" style="font-weight: 600;">Resimleri Seçin</span> veya bu alana sürükleyip bırakın',
                 labelFileProcessing: '@AdminResource.Processing',
                 labelFileProcessingComplete: 'Yükleme Tamamlandı',
                 labelFileProcessingAborted: '@AdminResource.CancelUpload',
@@ -99,7 +203,7 @@
                 labelButtonRetryItemProcessing: 'Yeniden Dene',
                 labelButtonProcessItem: '@AdminResource.StartUpload',
                 labelFileTypeNotAllowed: '@AdminResource.FileUploadAcceptFileTypes',
-                fileValidateTypeLabelExpectedTypes: 'Desteklenen formatlar: JPG, PNG, GIF, WebP',
+                fileValidateTypeLabelExpectedTypes: 'Desteklenen formatlar: JPG, PNG, GIF, WebP, BMP',
                 labelMaxFileSizeExceeded: '@AdminResource.FileUploadMaxFileSize',
                 labelMaxFileSize: 'Maksimum dosya boyutu: {filesize}',
                 labelMaxTotalFileSizeExceeded: 'Toplam dosya boyutu aşıldı',
@@ -138,10 +242,39 @@
                         }
                     }
                 },
+                onaddfile: function () {
+                    updateToolbarState();
+                    updateGlobalProgress();
+                },
+                onremovefile: function () {
+                    updateToolbarState();
+                    updateGlobalProgress();
+                },
+                onprocessfilestart: function () {
+                    if (!uploadStartTime) {
+                        uploadStartTime = Date.now();
+                    }
+                    $progressWrapper.show();
+                    updateToolbarState();
+                },
+                onprocessfileprogress: function (file, progress) {
+                    file.transferProgress = progress;
+                    updateGlobalProgress();
+                },
+                onprocessfile: function (error, file) {
+                    if (!error) {
+                        file.transferProgress = 1.0;
+                    }
+                    updateToolbarState();
+                    updateGlobalProgress();
+                },
                 onprocessfiles: function () {
+                    uploadStartTime = null;
+                    updateToolbarState();
+                    updateGlobalProgress();
+
                     if (hasUploadedFiles) {
                         hasUploadedFiles = false;
-                        // Persist uploaded tab so Grid.Mvc displays the newly uploaded files immediately
                         sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
                         setTimeout(function () {
                             window.location.href = window.location.pathname + window.location.search + '#tab2default';
@@ -149,6 +282,63 @@
                         }, 500);
                     }
                 }
+            });
+
+            // Wire Toolbar Button: Resimler ekle...
+            $btnBrowse.on('click', function (e) {
+                e.preventDefault();
+                $input.filepond('browse');
+            });
+
+            // Wire Toolbar Button: Yüklemeye Başla
+            $btnStart.on('click', function (e) {
+                e.preventDefault();
+                uploadStartTime = Date.now();
+                $progressWrapper.show();
+                $progressBar.css('width', '0%');
+                $input.filepond('processFiles');
+                updateToolbarState();
+            });
+
+            // Wire Toolbar Button: Yüklemeyi İptal Et
+            $btnCancel.on('click', function (e) {
+                e.preventDefault();
+                var pond = $input.filepond('getPond');
+                if (pond) {
+                    var files = pond.getFiles();
+                    files.forEach(function (f) {
+                        if (f.status === 3 || f.status === 4) {
+                            pond.abortProcessing(f.id);
+                        }
+                    });
+                }
+                uploadStartTime = null;
+                updateToolbarState();
+                updateGlobalProgress();
+            });
+
+            // Wire Toolbar Button: Sil / Temizle
+            $btnDelete.on('click', function (e) {
+                e.preventDefault();
+                var pond = $input.filepond('getPond');
+                if (!pond) return;
+
+                var files = pond.getFiles();
+                if (files.length === 0) return;
+
+                if (confirm('Yükleme listesindeki resimleri temizlemek istiyor musunuz?')) {
+                    pond.removeFiles();
+                    $progressBar.css('width', '0%');
+                    $progressWrapper.hide();
+                    updateToolbarState();
+                }
+            });
+
+            // Wire Toolbar Toggle: Hepsi seç
+            $toggleAll.on('change', function () {
+                var checked = $(this).is(':checked');
+                // Visual feedback or selection toggle
+                $('.filepond--item').toggleClass('is-selected', checked);
             });
 
             // Restore active tab after reload if specified in sessionStorage or URL hash
