@@ -1,4 +1,3 @@
-@model GriddlyResult<Customer>
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using EImece.Domain.Models.Enums
@@ -6,6 +5,7 @@
 @using Resources
 
 @{
+    Layout = null;
     var gridName = "CustomersGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "customers";
@@ -24,7 +24,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -47,7 +47,7 @@
         .Column(x => x.Email, caption: AdminResource.Email, template: @<text>@item.Email</text>, className: "eg-col-email", width: "200px")
         .Column(x => x.Gender, caption: AdminResource.Gender, template: @<text>@GetGenderText(item.Gender)</text>, className: "smallGridColumn", width: "100px")
         .Column(x => x.RegistrationAddress, caption: AdminResource.CustomerRegistrationAddress, template: @<text><textarea readonly style="height: 38px; background-color: transparent; width: 280px; margin: 0; resize: none; border: none;">@item.RegistrationAddress</textarea></text>, className: "eg-col-address", width: "300px")
-        .Column(x => x.CreatedDate, caption: AdminResource.CustomerRegistrationDate, template: @<text>@(item.CreatedDate != null ? item.CreatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "130px")
+        .Column(x => x.CreatedDate, caption: AdminResource.CustomerRegistrationDate, template: @<text>@(item.CreatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px")
         .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.UserId }, { "ItemName", string.Format("{0} {1}", item.Name, item.Surname) }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "OrdersUrl", Url.Action("CustomerOrders", controllerName, new { id = item.UserId }) }, { "OrdersText", AdminResource.CustomerComingOrders } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
 }
 

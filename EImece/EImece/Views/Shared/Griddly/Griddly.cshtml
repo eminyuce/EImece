@@ -19,7 +19,8 @@
     settings.Columns.RemoveAll(x => !x.RenderMode.HasFlag(ColumnRenderMode.View));
 
     bool simple = ViewBag.isSimpleGriddly == true;
-    bool isFirstRender = simple || ViewContext.Controller.ControllerContext.IsChildAction;
+    bool isGridEmbed = string.Equals(Convert.ToString(Request["gridembed"]), "1", StringComparison.OrdinalIgnoreCase);
+    bool isFirstRender = simple || ViewContext.Controller.ControllerContext.IsChildAction || isGridEmbed;
 
     if (GriddlySettings.OnBeforeRender != null)
     {

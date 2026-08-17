@@ -34,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
                 query = new AdminProductsIndexQuery();
             }
 
-            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            if (!CanRenderGrid())
             {
                 string redirectSearch = !string.IsNullOrWhiteSpace(query.Search) ? query.Search : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : null);
                 return RedirectToAction(IndexAction, "Products", new
@@ -365,7 +365,7 @@ namespace EImece.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public async Task<ActionResult> MoveProductsInTreesGrid(CancellationToken cancellationToken, int id = 0)
         {
-            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            if (!CanRenderGrid())
             {
                 return RedirectToAction("MoveProductsInTrees", new { id });
             }

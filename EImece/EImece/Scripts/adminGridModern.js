@@ -141,9 +141,9 @@
     }
 
     function wireChrome() {
-        var saved = 'comfortable';
+        var saved = 'compact';
         try {
-            saved = window.localStorage.getItem(DENSITY_KEY) || 'comfortable';
+            saved = window.localStorage.getItem(DENSITY_KEY) || 'compact';
         } catch (e) { /* ignore */ }
         applyDensity(saved);
 
@@ -200,9 +200,25 @@
     }
 
     function markModernGrids() {
-        $('.grid-mvc').addClass('eg-grid');
+        $('.griddly, .eg-grid-shell, .grid-mvc').addClass('eg-grid');
         $('.admin-grid-ops').addClass('eg-bulk-bar');
-        $('.eg-grid table.grid-table > thead > tr > th').addClass('grid-header');
+        $('.eg-grid table.grid-table > thead > tr > th, .eg-grid table.eg-grid-table > thead > tr > th, .griddly table > thead > tr > th').addClass('grid-header');
+        $('[data-role=griddly]').each(function () {
+            var $g = $(this);
+            var n = $g.attr('data-griddly-count');
+            if (n != null && n !== '') {
+                $g.find('.grid-record-count-badge.griddly-recordtotal').each(function () {
+                    if (!$.trim($(this).text())) {
+                        $(this).text(n);
+                    }
+                });
+            }
+        });
+        var saved = 'compact';
+        try {
+            saved = window.localStorage.getItem(DENSITY_KEY) || 'compact';
+        } catch (e) { /* ignore */ }
+        applyDensity(saved);
         markSecondaryGridColumns();
     }
 
@@ -212,7 +228,7 @@
      */
     function markSecondaryGridColumns() {
         var keep = /(^|\s)(eg-col-index|eg-col-check|eg-col-name|eg-col-image|eg-col-status|eg-col-state|eg-col-price|eg-col-actions|gridButtons)(\s|$)/;
-        $('.eg-grid table.grid-table').each(function () {
+        $('.eg-grid table.grid-table, .eg-grid table.eg-grid-table, .griddly table').each(function () {
             var $table = $(this);
             var $ths = $table.find('thead > tr > th');
             if ($ths.length < 7) {
@@ -587,4 +603,5 @@
         wireFloatingScrollbar();
         sizeReviewNotes(document);
     });
+    window.egMarkModernGrids = markModernGrids;
 }(window, window.jQuery));

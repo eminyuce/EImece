@@ -34,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, int id = 0, String search = "")
         {
-            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            if (!CanRenderGrid())
             {
                 return RedirectToAction("Index", new { id, search });
             }

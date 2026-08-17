@@ -1,4 +1,3 @@
-@model GriddlyResult<ShoppingCart>
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
@@ -9,10 +8,11 @@
 @using System.Linq
 
 @{
+    Layout = null;
     var gridName = "ShoppingCartGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "shoppingcarts";
-    var showTotals = Model != null && Model.Data != null && Model.Data.Any(c => SummarizeCart(c).Total.HasValue);
+    var showTotals = true;
 
     var settings = new GriddlySettings<ShoppingCart>()
     {
@@ -28,7 +28,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -57,7 +57,7 @@
 
     settings
         .Column(x => x.IsActive, caption: "Durum", template: @<text>@StatusPill(item.IsActive)</text>, className: "eg-col-status", width: "100px")
-        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@DateTimeCell(item.UpdatedDate.GetValueOrDefault())</text>, className: "gridDateClass eg-col-datetime", width: "130px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@DateTimeCell(item.UpdatedDate)</text>, className: "gridDateClass eg-col-datetime", width: "130px")
         .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "DetailUrl", Url.Action("Detail", controllerName, new { id = item.Id }) }, { "DetailText", AdminResource.GridDetailText } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
 }
 
@@ -139,7 +139,7 @@
     else
     {
         <div class="eg-price-cell">
-            <div class="eg-price-current">@summary.Total.Value.CurrencySign()</div>
+            <div class="eg-price-current">@summary.Total.GetValueOrDefault().CurrencySign()</div>
         </div>
     }
 }

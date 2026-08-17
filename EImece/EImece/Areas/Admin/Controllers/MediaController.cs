@@ -123,7 +123,7 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction(IndexAction, "Dashboard");
             }
 
-            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            if (!CanRenderGrid())
             {
                 return RedirectToAction("Index", new { contentId, mod, imageType });
             }

@@ -48,6 +48,7 @@ namespace EImece
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/griddly.css",
+                      "~/Content/adminGriddlyCompat.css",
                       "~/Content/deleteStyle.css",
                       "~/Content/checkBoxStyle.css",
                       "~/Content/adminSite.css",

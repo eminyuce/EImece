@@ -1,10 +1,10 @@
-@model GriddlyResult<ProductCategory>
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using Griddly.Mvc
 @using Resources
 
 @{
+    Layout = null;
     var gridName = "ProductCategoriesGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "ProductCategories";
@@ -28,7 +28,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -48,10 +48,10 @@
         .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item)</text>, className: "eg-col-image", width: "64px")
         .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "360px")
         .Column(x => x.ParentId, caption: AdminResource.ProductCategoryParentId, template: @<text>@(item.ParentId == 0 ? Resource.RootCategory : "")</text>, className: "eg-col-parent", width: "140px")
-        .Column(x => x.DiscountPercantage, caption: AdminResource.Discount, template: @<text>@(item.DiscountPercantage.HasValue && item.DiscountPercantage.Value > 0 ? string.Format("%{0} {1}", item.DiscountPercantage, Resource.Discount) : "")</text>, className: "eg-col-discount", width: "120px")
+        .Column(x => x.DiscountPercantage, caption: AdminResource.Discount, template: @<text>@(item.DiscountPercantage.GetValueOrDefault() > 0 ? string.Format("%{0} {1}", item.DiscountPercantage, Resource.Discount) : "")</text>, className: "eg-col-discount", width: "120px")
         .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn eg-col-position", width: "90px")
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "MainPage", item.MainPage }, { "ShowState", true }, { "ShowMainPage", true }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "170px")
-        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate != null ? item.UpdatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "120px");
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "120px");
 
     if (productPriceEnabled)
     {

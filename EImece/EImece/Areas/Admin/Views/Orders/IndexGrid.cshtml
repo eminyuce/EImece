@@ -1,4 +1,3 @@
-@model GriddlyResult<Order>
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
@@ -7,6 +6,7 @@
 @using Resources
 
 @{
+    Layout = null;
     var gridName = "OrdersGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "Orders";
@@ -25,7 +25,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -44,13 +44,13 @@
         .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
         .Column(x => x.OrderNumber, caption: AdminResource.OrderNumber, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.OrderNumber }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "StrongName", true } })</text>, className: "eg-col-name", width: "240px")
         .Column(x => x.OrderStatus, caption: AdminResource.OrderStatus, template: @<text>@OrderStatusBadge(item.OrderStatus)</text>, className: "eg-col-state eg-col-order-status", width: "160px")
-        .Column(x => x.CreatedDate, caption: AdminResource.CreatedDate, template: @<text>@(item.CreatedDate != null ? item.CreatedDate.Value.ToShortDateString() : "-")</text>, className: "gridDateClass eg-col-secondary", width: "120px")
+        .Column(x => x.CreatedDate, caption: AdminResource.CreatedDate, template: @<text>@(item.CreatedDate.ToShortDateString())</text>, className: "gridDateClass eg-col-secondary", width: "120px")
         .Column(x => x.PaidPrice, caption: "Ödenen Tutar", template: @<text>@(item.PaidPrice + " " + item.Currency)</text>, className: "eg-col-order-amount", width: "140px")
         .Column(x => x.PaymentStatus, caption: AdminResource.PaymentStatus, template: @<text>@item.PaymentStatus</text>, className: "eg-col-secondary", width: "130px")
         .Column(x => x.ShipmentCompanyName, caption: AdminResource.CargoCompany, template: @<text>@item.ShipmentCompanyName</text>, className: "eg-col-secondary", width: "140px")
         .Column(x => x.ShipmentTrackingNumber, caption: AdminResource.ShipmentTrackingNumber, template: @<text>@item.ShipmentTrackingNumber</text>, className: "eg-col-secondary", width: "150px")
         .Column(x => x.AdminOrderNote, caption: AdminResource.AdminOrderNote, template: @<text>@item.AdminOrderNote</text>, className: "eg-col-secondary", width: "160px")
-        .Column(x => x.DeliveryDate, caption: "Teslimat Tarihi", template: @<text>@(item.DeliveryDate != null ? item.DeliveryDate.Value.ToShortDateString() : "-")</text>, className: "gridDateClass eg-col-secondary", width: "130px")
+        .Column(x => x.DeliveryDate, caption: "Teslimat Tarihi", template: @<text>@(item.DeliveryDate.ToShortDateString())</text>, className: "gridDateClass eg-col-secondary", width: "130px")
         .Column(x => x.CargoPrice, caption: AdminResource.CargoPrice, template: @<text>@(item.CargoPrice.ToString() + " " + item.Currency)</text>, className: "eg-col-secondary", width: "120px")
         .Column(x => x.CardType, caption: "Ödeme Yöntemi", template: @<text>@item.CardType</text>, className: "eg-col-secondary", width: "130px")
         .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.OrderNumber }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "DetailText", AdminResource.GridDetailText } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");

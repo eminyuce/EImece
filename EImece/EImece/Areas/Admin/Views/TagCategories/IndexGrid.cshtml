@@ -1,10 +1,10 @@
-@model GriddlyResult<TagCategory>
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using Griddly.Mvc
 @using Resources
 
 @{
+    Layout = null;
     var gridName = "TagCategoriesGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "TagCategories";
@@ -24,7 +24,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -44,7 +44,7 @@
         .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "260px")
         .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="type" /></text>, className: "smallGridColumn", width: "80px")
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "ShowState", true }, { "ShowMainPage", false }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "120px")
-        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate != null ? item.UpdatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "130px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px")
         .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
 }
 

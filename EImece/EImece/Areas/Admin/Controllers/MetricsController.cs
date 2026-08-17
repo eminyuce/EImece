@@ -37,7 +37,7 @@ namespace EImece.Areas.Admin.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult IndexGrid(string search = "")
         {
-            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            if (!CanRenderGrid())
             {
                 return RedirectToAction("Index", new { search });
             }

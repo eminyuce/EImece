@@ -1,11 +1,12 @@
-@model GriddlyResult<Product>
 @using EImece.Domain
+@using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using Griddly.Mvc
 @using Resources
 
 @{
+    Layout = null;
     var gridName = "productsGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
 
@@ -24,7 +25,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -49,7 +50,7 @@
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text><span gridkey-id="@item.Id" grid-data-value="@item.IsActive" class="@(item.IsActive ? Constants.OkStyle : Constants.CancelStyle)" name="spanState"> </span></text>, className: "smallGridColumn", width: "70px")
         .Column(x => x.MainPage, caption: AdminResource.MainPage, template: @<text><span gridkey-id="@item.Id" grid-data-value="@item.MainPage" class="@(item.MainPage ? Constants.OkStyle : Constants.CancelStyle)" name="spanState"> </span></text>, className: "smallGridColumn", width: "70px")
         .Column(x => x.IsCampaign, caption: AdminResource.IsCampaign, template: @<text><span gridkey-id="@item.Id" grid-data-value="@item.IsCampaign" class="@(item.IsCampaign ? Constants.OkStyle : Constants.CancelStyle)" name="spanState"> </span></text>, className: "smallGridColumn", width: "70px")
-        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate != null ? item.UpdatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "130px");
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px");
 }
 
 @Html.Griddly(settings)

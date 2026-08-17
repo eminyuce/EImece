@@ -471,6 +471,51 @@ body.admin-app .eg-grid table.grid-table > tbody > tr > td {
     color: var(--eg-text-muted);
 }
 
+body.admin-app .eg-state-badge.eg-state-NONE {
+    background: #eef2f6;
+    color: #64748b;
+}
+body.admin-app .eg-state-badge.eg-state-ProductInStock {
+    background: #dcfce7;
+    color: #166534;
+}
+body.admin-app .eg-state-badge.eg-state-ProductOutOfStock {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+body.admin-app .eg-state-badge.eg-state-PreOrder {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+body.admin-app .eg-state-badge.eg-state-Discontinued {
+    background: #e2e8f0;
+    color: #475569;
+}
+body.admin-app .eg-state-badge.eg-state-Backorder {
+    background: #ffedd5;
+    color: #c2410c;
+}
+body.admin-app .eg-state-badge.eg-state-ComingSoon {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+body.admin-app .eg-state-badge.eg-state-LimitedStock {
+    background: #fef3c7;
+    color: #b45309;
+}
+body.admin-app .eg-state-badge.eg-state-Reserved {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+body.admin-app .eg-state-badge.eg-state-AwaitingRestock {
+    background: #ffedd5;
+    color: #9a3412;
+}
+body.admin-app .eg-state-badge.eg-state-NotForSale {
+    background: #f1f5f9;
+    color: #334155;
+}
+
 /* ----- Status toggles (critical) ----- */
 .eg-status-group {
     display: flex;

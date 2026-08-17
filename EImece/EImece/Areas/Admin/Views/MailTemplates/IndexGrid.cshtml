@@ -1,10 +1,10 @@
-@model GriddlyResult<MailTemplate>
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using Griddly.Mvc
 @using Resources
 
 @{
+    Layout = null;
     var gridName = "MailTemplateGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "MailTemplates";
@@ -24,7 +24,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -45,8 +45,8 @@
         .Column(x => x.Subject, caption: AdminResource.MailSubject, template: @<text>@item.Subject</text>, className: "smallGridColumn", width: "200px")
         .Column(x => x.Position, caption: AdminResource.Position, template: @<text><label class="sr-only" for="mail-pos-@item.Id">Sıra</label><input id="mail-pos-@item.Id" gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="type" /></text>, className: "smallGridColumn", width: "80px")
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "ShowState", true }, { "ShowMainPage", false }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "120px")
-        .Column(x => x.CreatedDate, caption: AdminResource.CreatedDate, template: @<text>@(item.CreatedDate != null ? item.CreatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "120px")
-        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate != null ? item.UpdatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "120px")
+        .Column(x => x.CreatedDate, caption: AdminResource.CreatedDate, template: @<text>@(item.CreatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "120px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "120px")
         .Column(caption: "", template: @<text>
             <div class="eg-mail-template-actions">
                 @if (item.Name != null && item.Name.ToLower().Contains("rss"))

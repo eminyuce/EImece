@@ -1,10 +1,10 @@
-@model GriddlyResult<Subscriber>
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using Griddly.Mvc
 @using Resources
 
 @{
+    Layout = null;
     var gridName = "SubscriberGrid";
     int pageSizeNumber = AppConfig.GridPageSizeNumber;
     var controllerName = "Subscribers";
@@ -24,7 +24,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">@AdminResource.GridResultRecordNumber</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
@@ -44,7 +44,7 @@
         .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "240px")
         .Column(x => x.Email, caption: AdminResource.Email, template: @<text>@item.Email</text>, className: "eg-col-email", width: "200px")
         .Column(x => x.Note, caption: AdminResource.Note, template: @<text>@NoteCell(item)</text>, className: "eg-col-review", width: "300px")
-        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate != null ? item.UpdatedDate.Value.ToShortDateString() : "")</text>, className: "gridDateClass", width: "130px");
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px");
 }
 
 @helper NoteCell(Subscriber subscriber)

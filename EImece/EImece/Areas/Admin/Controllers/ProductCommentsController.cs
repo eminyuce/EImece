@@ -39,7 +39,7 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Products");
             }
 
-            if (!Request.IsAjaxRequest() && !ControllerContext.IsChildAction)
+            if (!CanRenderGrid())
             {
                 return RedirectToAction("Index", new { id = id.Value, search });
             }

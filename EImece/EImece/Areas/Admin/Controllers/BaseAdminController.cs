@@ -373,6 +373,13 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
+        protected bool CanRenderGrid()
+        {
+            if (ControllerContext != null && ControllerContext.IsChildAction) return true;
+            if (Request.IsAjaxRequest()) return true;
+            return string.Equals(Request["gridembed"], "1", StringComparison.OrdinalIgnoreCase);
+        }
+
         protected ActionResult RequestReturn(RedirectToRouteResult returnDefault)
         {
             string redirectUrl;

@@ -1,4 +1,3 @@
-@model GriddlyResult<EImece.Areas.Admin.Models.MetricDisplayItem>
 @using EImece.Areas.Admin.Models
 @using EImece.Domain
 @using EImece.Domain.Helpers
@@ -25,7 +24,7 @@
     settings.BeforeTemplate = @<text>
         <output class="panel-heading grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
-                <span class="grid-record-count-badge griddly-recordtotal">@(Model != null ? Model.Total.ToString() : "")</span>
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
                 <span class="grid-record-count-label">metrik</span>
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">

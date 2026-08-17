@@ -452,10 +452,13 @@ $(document).ready(function () {
         });
 
         ajaxMethodCall(postData, "/admin/Ajax/ProductStateChanged", function (data) {
+            var stateNames = ["NONE","ProductInStock","ProductOutOfStock","PreOrder","Discontinued","Backorder","ComingSoon","LimitedStock","Reserved","AwaitingRestock","NotForSale"];
+            var stateClasses = stateNames.map(function (n) { return "eg-state-" + n; }).join(" ");
+            var nextClass = "eg-state-" + (stateNames[ProductStateSelection] || "NONE");
             $("div[name=ProductState]").each(function () {
                 var productId = $(this).attr('Product-State-Id');
-                if (selectedProductId.includes(productId)) {
-                    $(this).text(ProductStateText);
+                if (selectedProductId.includes(productId) || selectedProductId.includes(Number(productId))) {
+                    $(this).removeClass(stateClasses).addClass(nextClass).attr("title", ProductStateText).text(ProductStateText);
                 }
             });
         });

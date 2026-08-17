@@ -1,0 +1,176 @@
+/* Griddly markup aliases for the modern admin Grid.Mvc skin.
+   Loaded after Content/griddly.css and before adminGridModern.css. */
+
+/* Kill default Griddly gray (#c8c8c8) headers so they cannot fight the skin. */
+body.admin-app .griddly th,
+body.admin-app .griddly table th,
+body.admin-app .griddly table > thead > tr > th,
+body.admin-app .griddly table > thead > tr.columnHeaders > th,
+body.admin-app .griddly th.sortable:hover,
+body.admin-app .griddly th.sorted_a,
+body.admin-app .griddly th.sorted_d {
+    background-color: transparent;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
+    color: #1a365d !important;
+    border-width: inherit !important;
+}
+
+body.admin-app .griddly th.sortable:hover,
+body.admin-app .griddly table > thead > tr.columnHeaders > th.sortable:hover {
+    background: linear-gradient(180deg, #eef4fa 0%, #dce8f4 100%) !important;
+}
+
+/* Shell: match .grid-mvc / .eg-grid-shell, do not clip dropdowns or sticky cols */
+.griddly,
+.eg-grid-shell,
+.griddly.eg-grid,
+.griddly.eg-grid-shell {
+    background: #fff;
+    border: 1px solid #d7e0ea;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 12px rgba(16, 24, 40, 0.04);
+    overflow: visible;
+}
+
+.griddly-scrollable-container,
+.eg-grid-scroll,
+.griddly .grid-wrap {
+    overflow-x: auto;
+    overflow-y: visible;
+    max-height: none;
+    background: #fff;
+    border: 0;
+    border-radius: 0;
+}
+
+/* Table + header: same treatment as old table.grid-table .grid-header */
+body.admin-app .griddly table,
+body.admin-app .griddly table.eg-grid-table,
+body.admin-app .eg-grid table.eg-grid-table,
+body.admin-app table.eg-grid-table,
+body.admin-app .js-griddly-async table {
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    background: #fff;
+    font-size: 13px;
+    color: #1f2a37;
+}
+
+body.admin-app .griddly table > thead > tr > th,
+body.admin-app .griddly table > thead > tr.columnHeaders > th,
+body.admin-app .griddly table.eg-grid-table > thead > tr > th,
+body.admin-app .eg-grid table.eg-grid-table > thead > tr > th,
+body.admin-app table.eg-grid-table > thead > tr > th,
+body.admin-app .js-griddly-async table > thead > tr > th,
+body.admin-app .griddly table > thead > tr > th.grid-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
+    color: #1a365d !important;
+    font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    white-space: nowrap;
+    border-top: 0 !important;
+    border-left: 0 !important;
+    border-right: 1px solid #e2eaf3 !important;
+    border-bottom: 2px solid #c3d4e8 !important;
+    padding: 11px 12px !important;
+    vertical-align: middle;
+}
+
+body.admin-app .griddly table > thead > tr > th:last-child,
+body.admin-app table.eg-grid-table > thead > tr > th:last-child {
+    border-right: 0 !important;
+}
+
+body.admin-app .griddly table > tbody > tr > td,
+body.admin-app .eg-grid table.eg-grid-table > tbody > tr > td,
+body.admin-app table.eg-grid-table > tbody > tr > td {
+    padding: 10px 12px !important;
+    vertical-align: middle !important;
+    border-top: 1px solid #e8eef5 !important;
+    border-bottom: 0 !important;
+    background: #fff;
+}
+
+body.admin-app .griddly table.table-striped > tbody > tr:nth-of-type(odd) > td,
+body.admin-app table.eg-grid-table.table-striped > tbody > tr:nth-of-type(odd) > td {
+    background: #fbfcfe;
+}
+
+body.admin-app .griddly table > tbody > tr:hover > td,
+body.admin-app table.eg-grid-table > tbody > tr:hover > td {
+    background: #eef6fb !important;
+}
+
+/* Compact density (Kompakt) */
+body.admin-app .eg-grid.is-compact table > tbody > tr > td,
+body.admin-app .eg-grid.is-compact table > thead > tr > th {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+/* Deep-blue record-count bar — white text */
+body.admin-app .griddly .grid-record-count,
+body.admin-app .eg-grid-shell .grid-record-count,
+body.admin-app .grid-record-count {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    margin: 0;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #1e4e8c 0%, #2b6cb0 55%, #3182ce 100%) !important;
+    color: #fff !important;
+    border: 0;
+    border-radius: 0;
+}
+
+body.admin-app .grid-record-count-label,
+body.admin-app .griddly .grid-record-count-label {
+    color: rgba(255, 255, 255, 0.92) !important;
+}
+
+body.admin-app .griddly .griddly-footer {
+    background: #f4f7fa !important;
+    border: 0 !important;
+    border-top: 1px solid #d7e0ea !important;
+    border-radius: 0 0 8px 8px;
+    color: #607487;
+}
+
+/* Actions: not a raw Bootstrap button */
+body.admin-app .eg-actions-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+    height: 30px;
+    padding: 0 10px !important;
+    border-radius: 7px !important;
+    border: 1px solid #d7e0ea !important;
+    background: #f8fafc !important;
+    color: #1f2a37 !important;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: none !important;
+}
+
+body.admin-app .eg-grid.is-compact .eg-actions-toggle {
+    height: 26px;
+    padding: 0 8px !important;
+}
+
+body.admin-app .griddly table > tbody > tr > td,
+body.admin-app table.eg-grid-table > tbody > tr > td {
+    border-right: 1px solid #eef2f6;
+}
+
+body.admin-app .eg-actions-toggle .glyphicon-cog {
+    font-size: 12px;
+    color: #607487;
+}
