@@ -3095,10 +3095,12 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
 
 /* ==========================================================================
    Griddly Integration & Aesthetic Harmony
-   Ensures Griddly grids match Grid.Mvc modern design 1:1
+   Ensures Griddly grids match Grid.Mvc modern design 1:1 with horizontal scroll
    ========================================================================== */
 
-.griddly {
+.griddly,
+.eg-grid.griddly,
+.griddly.eg-grid-shell {
     position: relative;
     background: var(--eg-surface);
     border: 1px solid var(--eg-border);
@@ -3106,22 +3108,33 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     box-shadow: var(--eg-shadow);
     margin-bottom: 20px;
     font-family: var(--eg-font);
+    overflow: hidden;
 }
 
 .griddly .griddly-scrollable-container {
-    overflow-x: auto;
-    overflow-y: visible;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
     background: var(--eg-surface);
+    -webkit-overflow-scrolling: touch;
 }
 
-.griddly table {
-    width: 100%;
-    margin-bottom: 0;
-    border-collapse: separate;
-    border-spacing: 0;
+.griddly table,
+.griddly table.eg-grid-table,
+.griddly .table {
+    width: 100% !important;
+    min-width: 1350px !important;
+    margin-bottom: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    font-family: var(--eg-font);
     font-size: 13px;
     color: var(--eg-text);
     background: var(--eg-surface);
+    table-layout: auto;
 }
 
 .griddly table > thead > tr.columnHeaders > th {
@@ -3174,10 +3187,11 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
 }
 
 .griddly table > tbody > tr > td {
-    padding: var(--eg-row-pad-y) var(--eg-row-pad-x) !important;
+    padding: var(--eg-row-pad-y, 8px) var(--eg-row-pad-x, 10px) !important;
     border-top: 1px solid var(--eg-border) !important;
     border-bottom: 0 !important;
     vertical-align: middle !important;
+    background-color: var(--eg-surface);
     transition: background 0.15s ease;
 }
 
@@ -3185,10 +3199,91 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     background-color: var(--eg-row-hover) !important;
 }
 
+.griddly table > tbody > tr.gridChecked > td,
+.griddly table > tbody > tr.eg-row-selected > td {
+    background-color: var(--eg-row-selected) !important;
+}
+
 .griddly table > tbody > tr.GridIsActive > td {
     opacity: 0.65;
 }
 
+/* Griddly Sticky Columns */
+.griddly table > thead > tr > th.eg-sticky-left,
+.griddly table > tbody > tr > td.eg-sticky-left,
+.griddly table > thead > tr > th.eg-sticky-right,
+.griddly table > tbody > tr > td.eg-sticky-right {
+    position: sticky !important;
+}
+
+.griddly table > thead > tr > th.eg-sticky-left,
+.griddly table > tbody > tr > td.eg-sticky-left {
+    left: 0;
+    z-index: 3;
+    box-shadow: 1px 0 0 var(--eg-border);
+}
+
+.griddly table > thead > tr > th.eg-sticky-left-1,
+.griddly table > tbody > tr > td.eg-sticky-left-1 {
+    left: 0 !important;
+    min-width: 44px;
+    width: 44px;
+    box-shadow: none;
+}
+
+.griddly table > thead > tr > th.eg-sticky-left-2,
+.griddly table > tbody > tr > td.eg-sticky-left-2 {
+    left: 44px !important;
+    min-width: 44px;
+    width: 44px;
+    z-index: 3;
+    box-shadow: 1px 0 0 var(--eg-border);
+}
+
+.griddly table > thead > tr > th.eg-sticky-right,
+.griddly table > tbody > tr > td.eg-sticky-right {
+    right: 0 !important;
+    z-index: 3;
+    box-shadow: -1px 0 0 var(--eg-border);
+}
+
+.griddly table > thead > tr > th.eg-sticky-left,
+.griddly table > thead > tr > th.eg-sticky-right {
+    z-index: 7 !important;
+    background: linear-gradient(180deg, #f4f8fc 0%, #e8f0f8 100%) !important;
+}
+
+.griddly table > tbody > tr > td.eg-sticky-left,
+.griddly table > tbody > tr > td.eg-sticky-right {
+    background-color: var(--eg-surface) !important;
+}
+
+.griddly table > tbody > tr:hover > td.eg-sticky-left,
+.griddly table > tbody > tr:hover > td.eg-sticky-right {
+    background-color: var(--eg-row-hover) !important;
+}
+
+.griddly table > tbody > tr.gridChecked > td.eg-sticky-left,
+.griddly table > tbody > tr.gridChecked > td.eg-sticky-right,
+.griddly table > tbody > tr.eg-row-selected > td.eg-sticky-left,
+.griddly table > tbody > tr.eg-row-selected > td.eg-sticky-right {
+    background-color: var(--eg-row-selected) !important;
+}
+
+/* Griddly Column Sizes */
+.griddly table .eg-col-index { min-width: 44px; width: 44px; text-align: center; }
+.griddly table .eg-col-check { min-width: 44px; width: 44px; text-align: center; }
+.griddly table .eg-col-image { min-width: 64px; width: 64px; text-align: center; }
+.griddly table .eg-col-name { min-width: 240px; }
+.griddly table .eg-col-category { min-width: 150px; }
+.griddly table .eg-col-brand { min-width: 130px; }
+.griddly table .eg-col-price { min-width: 132px; }
+.griddly table .eg-col-state { min-width: 148px; }
+.griddly table .eg-col-position { min-width: 90px; }
+.griddly table .eg-col-status { min-width: 170px; }
+.griddly table .eg-col-actions { min-width: 60px; width: 60px; text-align: center; }
+
+/* Griddly Footer & Pagination */
 .griddly .griddly-footer {
     display: flex;
     align-items: center;
@@ -3245,4 +3340,5 @@ body.admin-app .eg-product-comments-grid .grid-table > tbody > tr > td.eg-col-em
     font-size: 12px;
     font-weight: 600;
 }
+
 

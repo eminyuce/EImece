@@ -16,7 +16,7 @@
 
     var settings = new GriddlySettings<Product>()
     {
-        ClassName = "eg-grid-shell",
+        ClassName = "eg-grid eg-grid-shell",
         TableClassName = "table table-hover table-striped eg-grid-table",
         PageSize = pageSizeNumber,
         RowClass = item => item.IsActive ? string.Empty : "GridIsActive",
@@ -26,22 +26,22 @@
     settings.HtmlAttributes["data-gridname"] = gridName;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@(item.Position > 0 ? item.Position.ToString() : item.Id.ToString())</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "36px")
-        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "36px")
-        .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item)</text>, className: "eg-col-image", width: "56px")
-        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", item)</text>, className: "eg-col-name", filter: x => x.FilterBox(FilterDataType.String))
-        .Column(x => x.ProductCategory.Name, caption: AdminResource.ProductCategory, template: @<text>@(item.ProductCategory != null ? item.ProductCategory.Name : "")</text>, filter: x => x.FilterBox(FilterDataType.String))
-        .Column(x => x.Brand.Name, caption: AdminResource.Brands, template: @<text>@((item.BrandId.HasValue && item.Brand != null) ? item.Brand.Name : "")</text>, filter: x => x.FilterBox(FilterDataType.String));
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(item.Position > 0 ? item.Position.ToString() : item.Id.ToString())</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
+        .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item)</text>, className: "eg-col-image", width: "64px")
+        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", item)</text>, className: "eg-col-name", width: "260px", filter: x => x.FilterBox(FilterDataType.String))
+        .Column(x => x.ProductCategory.Name, caption: AdminResource.ProductCategory, template: @<text>@(item.ProductCategory != null ? item.ProductCategory.Name : "")</text>, className: "eg-col-category", width: "160px", filter: x => x.FilterBox(FilterDataType.String))
+        .Column(x => x.Brand.Name, caption: AdminResource.Brands, template: @<text>@((item.BrandId.HasValue && item.Brand != null) ? item.Brand.Name : "")</text>, className: "eg-col-brand", width: "140px", filter: x => x.FilterBox(FilterDataType.String));
 
     if (priceEnabled)
     {
-        settings.Column(x => x.Price, caption: AdminResource.Price, template: @<text>@Html.Partial("Grid/_GridPriceCell", item)</text>, className: "eg-col-price");
+        settings.Column(x => x.Price, caption: AdminResource.Price, template: @<text>@Html.Partial("Grid/_GridPriceCell", item)</text>, className: "eg-col-price", width: "132px");
     }
 
     settings
-        .Column(x => x.State, caption: AdminResource.ProductState, template: @<text><div class="eg-state-badge" Product-State-Id="@item.Id" name="ProductState" title="@GetProductStateResourceText(item.StateEnum)">@GetProductStateResourceText(item.StateEnum)</div></text>, className: "smallGridColumn eg-col-state")
-        .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn")
-        .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusGroup", item)</text>, className: "smallGridColumn eg-col-status")
+        .Column(x => x.State, caption: AdminResource.ProductState, template: @<text><div class="eg-state-badge" Product-State-Id="@item.Id" name="ProductState" title="@GetProductStateResourceText(item.StateEnum)">@GetProductStateResourceText(item.StateEnum)</div></text>, className: "smallGridColumn eg-col-state", width: "150px")
+        .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn eg-col-position", width: "90px")
+        .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusGroup", item)</text>, className: "smallGridColumn eg-col-status", width: "180px")
         .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", item, new ViewDataDictionary(ViewData) { { "controllerName", controllerName } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
 }
 
