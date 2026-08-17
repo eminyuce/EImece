@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Entities.BaseContent
+@model EImece.Domain.Entities.BaseContent
 @using EImece.Domain
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
@@ -23,16 +23,11 @@
             </span>
         }
     </div>
-    @if (showImageState)
-    {
-        <div class="eg-image-meta">
+    <div class="eg-image-meta">
+        @if (showImageState)
+        {
             @Html.GridStatusToggle(o.Id, o.ImageState, "ImageState", AdminResource.ImageState, "Resim")
-        </div>
-    }
-    else if (hasImage)
-    {
-        <div class="eg-image-actions">
-            @Html.Partial("pGridImageMainPage", o)
-        </div>
-    }
+        }
+        @Html.Partial("pGridImageMainPage", o, new ViewDataDictionary(ViewData) { { "ShowRemoveImage", false }, { "ShowExistingLabel", false } })
+    </div>
 </div>

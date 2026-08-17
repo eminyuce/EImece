@@ -1,35 +1,40 @@
-﻿@model  BaseContent
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using Resources;
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Entities;
-@using System.Data.Entity.Core.Objects;
-<b>
-    @{
-        var baseContent = Model;
-        FileStorage f = baseContent.MainImage;
-        var gridMainPageImageText = AdminResource.GridMainPageImageText;
-        var gridMainNoPageImageText = AdminResource.GridNoMainPageImageText;
-        Boolean IsMainImageExists = FilesHelper.IsMainImageExists(baseContent.MainImageId, f);
-        string className = ObjectContext.GetObjectType(baseContent.GetType()).Name;
-        var confirmationText = AdminResource.RemoveMainImageConfirmationText;
-    }
-
-    @if (IsMainImageExists)
+@model BaseContent
+@using EImece.Domain.Helpers
+@using EImece.Domain
+@using Resources
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Entities
+@using System.Data.Entity.Core.Objects
+@{
+    var baseContent = Model;
+    FileStorage f = baseContent != null ? baseContent.MainImage : null;
+    var gridMainPageImageText = AdminResource.GridMainPageImageText;
+    Boolean IsMainImageExists = baseContent != null && FilesHelper.IsMainImageExists(baseContent.MainImageId, f);
+    string className = baseContent != null ? ObjectContext.GetObjectType(baseContent.GetType()).Name : "";
+    var confirmationText = AdminResource.RemoveMainImageConfirmationText;
+    bool showRemove = ViewData["ShowRemoveImage"] == null ? true : ViewData["ShowRemoveImage"].ToBool(true);
+    bool showExistingLabel = ViewData["ShowExistingLabel"] == null ? showRemove : ViewData["ShowExistingLabel"].ToBool(false);
+    var modalTarget = (IsMainImageExists && f != null) ? ("#myModal_" + f.Id) : "";
+}
+<div class="eg-image-preview">
+@if (IsMainImageExists && f != null)
+{
+    if (showExistingLabel)
     {
+        <div class="small fw-semibold mb-1">@AdminResource.ExistingMainImageText</div>
+    }
     <span data-main-image-delete-id="@f.Id">
-        <a data-bs-toggle="modal" class="btn btn-outline btn-info btn-sm" style="font-size:0.8em;" data-bs-target="@String.Format("#myModal_{0}",baseContent.MainImageId)">@gridMainPageImageText</a>
+        <button type="button" class="btn btn-outline-info btn-sm eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="@modalTarget">@gridMainPageImageText</button>
         @Html.Partial("pImagePopUp", f)
-        <input id="MainImageId" name="MainImageId" type="hidden" value="@baseContent.MainImageId">
-        <a onclick="deleteBaseContentMainImage(@baseContent.Id, @f.Id,'@className','@confirmationText')" class="btn btn-outline btn-danger btn-sm">@AdminResource.RemoveJustImage</a>
+        @if (showRemove)
+        {
+            <input id="MainImageId" name="MainImageId" type="hidden" value="@baseContent.MainImageId" />
+            <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteBaseContentMainImage(@baseContent.Id, @f.Id,'@className','@confirmationText')">@AdminResource.RemoveJustImage</button>
+        }
     </span>
-
-    }
-    else
-    {
-    <b style="font-size:0.8em;">
-        @AdminResource.NoImage
-    </b>
-    }
-</b>
+}
+else
+{
+    <span class="eg-image-none">@AdminResource.GridNoMainPageImageText</span>
+}
+</div>

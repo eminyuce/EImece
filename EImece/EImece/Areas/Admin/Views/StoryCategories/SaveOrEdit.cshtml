@@ -95,11 +95,9 @@
                             @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-5">
-                            @if (Model.MainImageId.HasValue)
-                            {
-                            <b>@ExistingMainImageText :</b>
                             @Html.Partial("pGridImageMainPage", (BaseContent)Model)
-                            }
+
+
                         </div>
                     </div>
                     @Html.Partial("pSliderResizing", (BaseContent)Model)

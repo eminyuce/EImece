@@ -420,6 +420,42 @@ body.admin-app .eg-grid table.grid-table > tbody > tr > td {
     color: var(--eg-text-muted);
 }
 
+.eg-image-preview-btn {
+    font-size: 11px;
+    padding: 2px 8px;
+    line-height: 1.3;
+}
+
+.eg-image-preview-frame {
+    background: var(--eg-surface-muted, #f4f6f8);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.eg-image-preview-img {
+    max-height: 70vh;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+    object-fit: contain;
+}
+
+.eg-image-preview-meta dt {
+    color: var(--eg-text-muted, #607487);
+    font-weight: 600;
+}
+
+.eg-image-preview-meta dd {
+    margin-bottom: 0.35rem;
+    word-break: break-all;
+}
+
+.eg-grid-table td.eg-col-image,
+.eg-grid-table th.eg-col-image {
+    min-width: 168px;
+}
+
 /* ----- Price ----- */
 .eg-price-cell {
     white-space: nowrap;

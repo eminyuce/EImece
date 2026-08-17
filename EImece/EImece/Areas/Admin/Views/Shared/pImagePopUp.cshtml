@@ -1,78 +1,122 @@
-﻿@model FileStorage
-@using EImece.Domain.Helpers;
-@using EImece.Domain;
-@using Resources;
-@using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Entities;
-
+@model FileStorage
+@using EImece.Domain.Helpers
+@using EImece.Domain
+@using Resources
+@using EImece.Domain.Helpers.Extensions
+@using EImece.Domain.Entities
+@using System.IO
 @{
-    var close = AdminResource.Close;
     var fileStorage = Model;
-    var imageWidth = 300;
-    var imageHeight = 0;
-    var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
-    filesHelper.InitFilesMediaFolder();
-    var imageSizes = filesHelper.GetThumbnailImageSize(fileStorage);
+    if (fileStorage == null)
+    {
+        return;
+    }
+    var close = AdminResource.Close;
+    var isExternal = !string.IsNullOrEmpty(fileStorage.FileName) && fileStorage.FileName.Equals(FilesHelper.EXTERNAL_IMAGE);
+    var previewUrl = isExternal
+        ? fileStorage.FileUrl
+        : (!string.IsNullOrEmpty(fileStorage.FileName)
+            ? (Constants.UrlBase + fileStorage.FileName)
+            : fileStorage.GetCroppedImageUrl(fileStorage.Id, 800, 800, false, false));
+    var fullUrl = isExternal
+        ? fileStorage.FileUrl
+        : (!string.IsNullOrEmpty(fileStorage.FileName) ? (Constants.UrlBase + fileStorage.FileName) : previewUrl);
+    var title = !string.IsNullOrEmpty(fileStorage.FileName) ? fileStorage.FileName : fileStorage.Name;
+    var ext = "";
+    if (!string.IsNullOrEmpty(fileStorage.FileName) && !isExternal)
+    {
+        ext = Path.GetExtension(fileStorage.FileName);
+        if (!string.IsNullOrEmpty(ext) && ext.StartsWith("."))
+        {
+            ext = ext.Substring(1).ToUpperInvariant();
+        }
+    }
+    string humanSize = null;
+    if (fileStorage.FileSize > 0)
+    {
+        var bytes = fileStorage.FileSize;
+        if (bytes >= 1048576)
+        {
+            humanSize = string.Format("{0:0.##} MB", bytes / 1048576.0);
+        }
+        else if (bytes >= 1024)
+        {
+            humanSize = string.Format("{0:0.#} KB", bytes / 1024.0);
+        }
+        else
+        {
+            humanSize = bytes + " B";
+        }
+    }
+    var modalId = "myModal_" + fileStorage.Id;
+    var labelId = "myModalLabel_" + fileStorage.Id;
 }
-
-<!-- Modal -->
-<div id="@String.Format("myModal_{0}",fileStorage.Id)" class="modal fade" role="dialog">
-
-    @if (fileStorage.FileName.Equals(FilesHelper.EXTERNAL_IMAGE))
-    {
-
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
+<div id="@modalId" class="modal fade eg-image-preview-modal" tabindex="-1" role="dialog" aria-labelledby="@labelId" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
-                <h4 class="modal-title">@fileStorage.Name</h4>
+                <h5 class="modal-title" id="@labelId">@title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@close"></button>
             </div>
             <div class="modal-body">
-                <p>
-                    <a href=@String.Format("{0}",Model.FileUrl) target="_blank">Full Image</a>
-                </p>
-                <img src=@String.Format("{0}",Model.FileUrl) />
+                @if (!string.IsNullOrEmpty(previewUrl))
+                {
+                    <div class="eg-image-preview-frame text-center mb-3">
+                        <img src="@previewUrl" alt="@title" class="img-fluid eg-image-preview-img" />
+                    </div>
+                }
+                <dl class="row small mb-0 eg-image-preview-meta">
+                    @if (fileStorage.Id > 0)
+                    {
+                        <dt class="col-sm-4">Id</dt>
+                        <dd class="col-sm-8">@fileStorage.Id</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(fileStorage.FileName))
+                    {
+                        <dt class="col-sm-4">Dosya adı</dt>
+                        <dd class="col-sm-8">@fileStorage.FileName</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(humanSize))
+                    {
+                        <dt class="col-sm-4">Dosya boyutu</dt>
+                        <dd class="col-sm-8">@humanSize (@fileStorage.FileSize.ToString("N0") bytes)</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(fileStorage.MimeType) || !string.IsNullOrEmpty(ext))
+                    {
+                        <dt class="col-sm-4">Tür</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrEmpty(fileStorage.MimeType) ? ext : (fileStorage.MimeType + (string.IsNullOrEmpty(ext) ? "" : " (" + ext + ")")))</dd>
+                    }
+                    @if (fileStorage.Width > 0 || fileStorage.Height > 0)
+                    {
+                        <dt class="col-sm-4">Boyutlar</dt>
+                        <dd class="col-sm-8">@fileStorage.Width &times; @fileStorage.Height px</dd>
+                    }
+                    @if (fileStorage.CreatedDate != default(DateTime))
+                    {
+                        <dt class="col-sm-4">Oluşturma</dt>
+                        <dd class="col-sm-8">@fileStorage.CreatedDate.ToString("dd.MM.yyyy HH:mm")</dd>
+                    }
+                </dl>
+                @if (!string.IsNullOrEmpty(fullUrl))
+                {
+                    <p class="mt-3 mb-0"><a href="@fullUrl" target="_blank" rel="noopener">@AdminResource.FullImage</a></p>
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@close</button>
             </div>
         </div>
     </div>
-
-    }
-    else
-    {
-
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
-                <h4 class="modal-title">@fileStorage.FileName</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    @String.Format("Original {2}={0}px {3}={1}px",
-               imageSizes.OriginalWidth,
-               imageSizes.OriginalHeight, AdminResource.ImageWidth, AdminResource.ImageHeight)
-                    <a href=@String.Format("../..{1}{0}",Model.FileName, Constants.UrlBase) target="_blank">Full Image</a>
-                </p>
-                <p>
-                    @String.Format("Thumbs {2}={0}px {3}={1}px",
-               imageSizes.ThumpBitmapWidth,
-               imageSizes.ThumpBitmapHeight, AdminResource.ImageWidth, AdminResource.ImageHeight)
-                    <a href=@String.Format("../..{1}thumbs/thb{0}", Model.FileName, Constants.UrlBase) target="_blank">Thumps Image</a>
-                </p>
-                <img src="@Url.Action("Index","Images",new { area="admin", id = fileStorage.Id, width=imageWidth, height= imageHeight })" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@close</button>
-            </div>
-        </div>
-    </div>
-
-    }
 </div>
+<script>
+(function () {
+    if (window.__egImagePreviewModalWired) { return; }
+    window.__egImagePreviewModalWired = true;
+    document.addEventListener("show.bs.modal", function (e) {
+        var m = e.target;
+        if (m && m.classList && m.classList.contains("eg-image-preview-modal") && m.parentElement !== document.body) {
+            document.body.appendChild(m);
+        }
+    });
+})();
+</script>

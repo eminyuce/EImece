@@ -69,6 +69,47 @@
                         @if (hasLogo)
                         {
                             <p class="small text-muted text-center mt-2 mb-0">Kayıtlı dosya: @fileName</p>
+                            <div class="text-center mt-2">
+                                <button type="button" class="btn btn-outline-info btn-sm eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#websiteLogoPreviewModal">@AdminResource.GridMainPageImageText</button>
+                            </div>
+                            <div class="modal fade eg-image-preview-modal" id="websiteLogoPreviewModal" tabindex="-1" aria-labelledby="websiteLogoPreviewLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="websiteLogoPreviewLabel">@fileName</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@AdminResource.Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="eg-image-preview-frame text-center mb-3">
+                                                <img src="@Url.Content("~/media/images/" + fileName)" alt="@fileName" class="img-fluid eg-image-preview-img" />
+                                            </div>
+                                            <dl class="row small mb-0 eg-image-preview-meta">
+                                                <dt class="col-sm-4">Dosya adı</dt>
+                                                <dd class="col-sm-8">@fileName</dd>
+                                            </dl>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@AdminResource.Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                            (function () {
+                                if (window.__egImagePreviewModalWired) { return; }
+                                window.__egImagePreviewModalWired = true;
+                                document.addEventListener("show.bs.modal", function (e) {
+                                    var m = e.target;
+                                    if (m && m.classList && m.classList.contains("eg-image-preview-modal") && m.parentElement !== document.body) {
+                                        document.body.appendChild(m);
+                                    }
+                                });
+                            })();
+                            </script>
+                        }
+                        else
+                        {
+                            <div class="text-center mt-2"><span class="eg-image-none">@AdminResource.GridNoMainPageImageText</span></div>
                         }
                     </div>
 

@@ -87,6 +87,17 @@
             </div>
         }
         <div class="media-file-preview-name">@fileStorage.FileName</div>
+        @if (fileExists)
+        {
+            <div class="mt-1">
+                <button type="button" class="btn btn-outline-info btn-sm eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#myModal_@fileStorage.Id">@AdminResource.GridMainPageImageText</button>
+                @Html.Partial("pImagePopUp", fileStorage)
+            </div>
+        }
+        else
+        {
+            <span class="eg-image-none">@AdminResource.GridNoMainPageImageText</span>
+        }
     </div>
     <div class="media-file-preview-meta">
         @if (fileExists && imageSizes != null)
