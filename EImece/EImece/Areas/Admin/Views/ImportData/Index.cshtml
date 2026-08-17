@@ -1,16 +1,34 @@
-﻿@model List<String>
+@model List<String>
 @{
-    ViewBag.Title = "Contact3";
+    ViewBag.Title = "Veri Ice Aktar";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var pathName = (String)ViewBag.PathName;
 }
 
-<h2>File List</h2>
-@Html.ActionLink("File Upload","ExcelUpload")
-@foreach (var m in Model)
-{
+<h2 class="admin-page-title">Veri İçe Aktar</h2>
+<hr class="adminLine" />
 
-<div>
-    @Html.ActionLink(m.Replace(pathName, ""), "DisplayTable", new { id=m.Replace(pathName,"") })
+<div class="card admin-edit-form admin-import-page">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>Excel dosyaları</strong>
+        <a class="btn btn-primary btn-sm" href="@Url.Action("ExcelUpload")">
+            <i class="fa fa-upload"></i> Excel Yükle
+        </a>
+    </div>
+    <div class="card-body">
+        @if (Model == null || !Model.Any())
+        {
+            <p class="text-muted mb-0">Henüz yüklenmiş bir Excel dosyası yok.</p>
+        }
+        else
+        {
+            <div class="list-group">
+            @foreach (var m in Model)
+            {
+                var name = m.Replace(pathName, "");
+                <a class="list-group-item list-group-item-action" href="@Url.Action("DisplayTable", new { id = name })">@name</a>
+            }
+            </div>
+        }
+    </div>
 </div>
-}

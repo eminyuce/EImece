@@ -3,7 +3,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>File Upload</h2>
+<h2 class="admin-page-title">Dosya Yükle</h2>
 
 <!-- FilePond Styles -->
 @Styles.Render("~/Content/filepondcss")
@@ -171,4 +171,8 @@
     });
 </script>
 
-@Html.Partial("_Files")
+<div class="card admin-edit-form">
+    <div class="card-body">
+        @Html.Partial("_Files")
+    </div>
+</div>

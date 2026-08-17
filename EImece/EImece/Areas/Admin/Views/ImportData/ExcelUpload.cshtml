@@ -1,17 +1,22 @@
-﻿@{
-
+@{
+    ViewBag.Title = "Excel Yukle";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Upload Excel File</h2>
-@using (Html.BeginForm("ExcelUploadImport", "ImportData", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-@Html.AntiForgeryToken()
-<input type="file" name="excelFile" />
+<h2 class="admin-page-title">Excel Yükle</h2>
+<hr class="adminLine" />
 
-<div class="form-group row mb-3">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Upload" class="btn btn-secondary" />
+<div class="card admin-edit-form">
+    <div class="card-body">
+        @using (Html.BeginForm("ExcelUploadImport", "ImportData", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label class="form-label" for="excelFile">Excel dosyası</label>
+                <input id="excelFile" type="file" name="excelFile" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Yükle</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">Listeye Dön</a>
+        }
     </div>
 </div>
-}

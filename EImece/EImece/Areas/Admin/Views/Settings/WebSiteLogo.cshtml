@@ -13,7 +13,7 @@
         : "";
 }
 
-<h2>@AdminResource.WebSiteLogo</h2>
+<h2 class="admin-page-title">@AdminResource.WebSiteLogo</h2>
 <hr class="adminLine" />
 
 @{ ViewData["HelpId"] = "webSiteLogoHelp"; }
@@ -53,7 +53,7 @@
                         <!-- Current Logo Preview -->
                         <div class="col-md-4 text-center">
                             <h4 style="margin-bottom: 15px;">Mevcut Logo</h4>
-                            <div class="well" style="min-height: 180px; display: flex; align-items: center; justify-content: center; background-color: #f9f9f9; border: 1px solid #e3e3e3;">
+                            <div class="rounded border bg-light d-flex align-items-center justify-content-center" style="min-height: 180px;">
                                 @if (!string.IsNullOrEmpty(thumbUrl))
                                 {
                                     <img style="max-width: 100%; max-height: 150px; object-fit: contain;" src="@thumbUrl" alt="@AdminResource.WebSiteLogo" />

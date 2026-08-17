@@ -267,19 +267,22 @@
             });
 
             // If user directly clicks "Yüklenen Resimler" tab after an upload, refresh grid
-            $('.admin-media-tabs a[href="#tab2default"]').on('shown.bs.tab', function () {
-                if (hasUploadedFiles) {
-                    hasUploadedFiles = false;
-                    sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
-                    window.location.href = window.location.pathname + window.location.search + '#tab2default';
-                    window.location.reload(true);
-                }
+            document.querySelectorAll('.admin-media-tabs a[href="#tab2default"]').forEach(function (el) {
+                el.addEventListener('shown.bs.tab', function () {
+                    if (hasUploadedFiles) {
+                        hasUploadedFiles = false;
+                        sessionStorage.setItem('adminMediaActiveTab', '#tab2default');
+                        window.location.href = window.location.pathname + window.location.search + '#tab2default';
+                        window.location.reload(true);
+                    }
+                });
             });
 
             // Restore active tab after reload if specified in sessionStorage or URL hash
             var savedTab = sessionStorage.getItem('adminMediaActiveTab') || window.location.hash;
-            if (savedTab && $('.admin-media-tabs a[href="' + savedTab + '"]').length) {
-                $('.admin-media-tabs a[href="' + savedTab + '"]').tab('show');
+            var tabTrigger = savedTab ? document.querySelector('.admin-media-tabs a[href="' + savedTab + '"]') : null;
+            if (tabTrigger && window.bootstrap && bootstrap.Tab) {
+                bootstrap.Tab.getOrCreateInstance(tabTrigger).show();
                 sessionStorage.removeItem('adminMediaActiveTab');
             }
         });
@@ -295,7 +298,10 @@
     <div class="card-body">
         <div class="tab-content">
             <div class="tab-pane fade show active" id="tab1default">
-                @Html.Partial("pSliderResizing", baseContent)
+                @if (baseContent != null)
+                {
+                    @Html.Partial("pSliderResizing", baseContent)
+                }
                 @Html.Partial("_Files")
             </div>
             <div class="tab-pane fade" id="tab2default">
@@ -326,6 +332,7 @@
                     </form>
                 </div>
 
+                @Html.Partial("Grid/_GridChrome")
                 <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { contentId = Model.Id, mod = Model.MediaMod.ToString(), imageType = Model.ImageType.ToString() })"></div>
             </div>
         </div>
@@ -344,7 +351,7 @@
         @if (fileExists)
         {
             <a href="@downloadUrl" title="@fileStorage.FileName" download="@fileStorage.FileName" data-gallery="">
-                <img src="@fileStorage.GetAdminCroppedImageUrl(150,0)" alt="@fileStorage.FileName" />
+                <img src="@fileStorage.GetCroppedImageUrl(fileStorage.Id, 150, 0, false, true)" alt="@fileStorage.FileName" />
             </a>
         }
         else

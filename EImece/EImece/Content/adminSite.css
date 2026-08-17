@@ -4763,3 +4763,14 @@ body.admin-app .admin-content .admin-home h2::after {
     border-color: #d7e0ea;
     box-shadow: none;
 }
+
+.admin-app .form-check input[type="checkbox"] {
+    width: 1.1em;
+    height: 1.1em;
+    margin-top: 0.2em;
+    margin-right: 0.35em;
+    vertical-align: top;
+    flex-shrink: 0;
+}
+.admin-app .admin-import-page .list-group-item { padding: 0.65rem 1rem; }
+.admin-app .form-select { max-width: 100%; }

@@ -59,7 +59,7 @@
         .Column(x => x.Name, caption: "Metrik Adı", className: "metric-name eg-col-name", width: "280px")
         .Column(x => x.Count, caption: "Adet", className: "eg-col-count", width: "80px")
         .Column(x => x.ErrorCount, caption: "Hata", template: @<text>
-            <span class="label label-@(item.ErrorCount > 0 ? "danger" : "success")" title="Başarısız çağrı sayısı">@item.ErrorCount.ToString("N0")</span>
+            <span class="badge @(item.ErrorCount > 0 ? "text-bg-danger" : "text-bg-success")" title="Başarısız çağrı sayısı">@item.ErrorCount.ToString("N0")</span>
         </text>, className: "eg-col-errors", width: "80px")
         .Column(x => x.AverageDurationMs, caption: "Ort. süre (ms)", className: "eg-col-avg", width: "120px")
         .Column(x => x.P50DurationMs, caption: "P50 (ms)", width: "90px")
