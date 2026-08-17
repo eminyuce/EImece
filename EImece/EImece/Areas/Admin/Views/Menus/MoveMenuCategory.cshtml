@@ -48,14 +48,14 @@
             <div class="form-group row mb-3">
                 @Html.LabelFor(model => model.SecondCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.SecondCategoryId, productCategoryDropDownList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.SecondCategoryId, productCategoryDropDownList, new { @class = "form-select" })
                     @Html.ValidationMessageFor(model => model.SecondCategoryId, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group row mb-3">
                 @Html.LabelFor(model => model.FirstCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.FirstCategoryId, productCategoryDropDownList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.FirstCategoryId, productCategoryDropDownList, new { @class = "form-select" })
                     @Html.ValidationMessageFor(model => model.FirstCategoryId, "", new { @class = "text-danger" })
                 </div>
             </div>
