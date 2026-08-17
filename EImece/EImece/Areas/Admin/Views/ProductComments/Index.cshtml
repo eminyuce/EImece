@@ -10,14 +10,8 @@
     ViewBag.Title = AdminResource.ProductComments;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);
-
     var controllerName = "ProductComments";
-    var gridName = "ProductCommentGrid";
     var contents = Model ?? new List<ProductComment>();
-    var baseList = contents.DownCasting();
     var search = Request.QueryString["search"].ToStr();
     Product product = ViewBag.Product as Product;
     var productName = product != null ? product.Name : "";

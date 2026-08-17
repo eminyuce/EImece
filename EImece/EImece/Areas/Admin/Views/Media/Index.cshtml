@@ -12,20 +12,8 @@
     var baseContent = Model.BaseContent;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
-    int gridPage = Request.QueryString["grid-page"].ToInt();
-    var rowIndex = gridPage == 0 ? 0 : AppConfig.GridPageSizeNumber * (gridPage - 1);  
-
     var controllerName = "Media";
     var title = AdminResource.Medias;
-    var gridName = "MediaGrid";
-    var contents = Model.FileStorages;
-    var baseList = contents.DownCasting<FileStorage>();
-
-    var gridImagesText = AdminResource.GridImagesText;
-    var gridEditText = AdminResource.GridEditText;
-    var gridDeleteText = AdminResource.GridDeleteText;
-    var gridDetailText = AdminResource.GridDetailText;
 
     var filesHelper = DependencyResolver.Current.GetService<FilesHelper>();
     filesHelper.InitFilesMediaFolder();
