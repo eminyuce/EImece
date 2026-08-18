@@ -3802,58 +3802,133 @@ body.admin-app .eg-lists-grid table.eg-grid-table {
     max-width: 260px;
 }
 
-/* MoveProductsInTrees: narrow center pane — keep flag pills on-screen */
+/* MoveProductsInTrees: clean center pane grid */
 body.admin-app .eg-move-products-grid,
 body.admin-app .eg-grid.eg-move-products-grid,
 body.admin-app .griddly.eg-move-products-grid {
     max-width: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
+
+body.admin-app .eg-move-products-grid .griddly-scrollable-container {
+    overflow-x: auto;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
 body.admin-app .eg-move-products-grid table,
 body.admin-app .eg-grid.eg-move-products-grid table,
-body.admin-app .griddly.eg-move-products-grid table {
+body.admin-app .griddly.eg-move-products-grid table,
+body.admin-app .eg-move-products-grid .griddly-scrollable-container > table,
+body.admin-app .eg-move-products-grid table.eg-grid-table {
     width: 100% !important;
+    min-width: 580px;
     max-width: 100% !important;
-    table-layout: fixed !important;
+    table-layout: auto !important;
+    margin-bottom: 0 !important;
 }
+
 body.admin-app .eg-move-products-grid th.eg-col-index,
-body.admin-app .eg-move-products-grid td.eg-col-index,
+body.admin-app .eg-move-products-grid td.eg-col-index {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 44px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    padding: 8px 4px !important;
+}
+
 body.admin-app .eg-move-products-grid th.eg-col-check,
 body.admin-app .eg-move-products-grid td.eg-col-check {
     width: 44px !important;
     min-width: 44px !important;
     max-width: 48px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    padding: 8px 4px !important;
 }
+
+body.admin-app .eg-move-products-grid th.eg-col-image,
+body.admin-app .eg-move-products-grid td.eg-col-image {
+    width: 56px !important;
+    min-width: 56px !important;
+    max-width: 60px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    padding: 8px 6px !important;
+}
+
 body.admin-app .eg-move-products-grid th.eg-col-name,
 body.admin-app .eg-move-products-grid td.eg-col-name {
-    min-width: 0 !important;
+    min-width: 180px !important;
     width: auto !important;
+    vertical-align: middle !important;
+    padding: 8px 10px !important;
 }
-body.admin-app .eg-move-products-grid th.eg-col-isactive,
-body.admin-app .eg-move-products-grid td.eg-col-isactive,
-body.admin-app .eg-move-products-grid th.eg-col-mainpage,
-body.admin-app .eg-move-products-grid td.eg-col-mainpage,
-body.admin-app .eg-move-products-grid th.eg-col-iscampaign,
-body.admin-app .eg-move-products-grid td.eg-col-iscampaign {
-    width: 92px !important;
-    min-width: 92px !important;
-    max-width: 100px !important;
+
+body.admin-app .eg-move-products-grid th.eg-col-status,
+body.admin-app .eg-move-products-grid td.eg-col-status {
+    width: 175px !important;
+    min-width: 175px !important;
+    max-width: 180px !important;
     text-align: center;
+    vertical-align: middle !important;
+    padding: 8px 6px !important;
 }
+
 body.admin-app .eg-move-products-grid th.gridDateClass,
 body.admin-app .eg-move-products-grid td.gridDateClass {
-    width: 96px !important;
-    min-width: 96px !important;
-    max-width: 110px !important;
+    width: 105px !important;
+    min-width: 105px !important;
+    max-width: 115px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    padding: 8px 6px !important;
+    font-size: 12px;
+    color: #64748b;
+    white-space: nowrap;
 }
-body.admin-app .eg-move-products-grid .griddly-scrollable-container {
-    overflow-x: auto;
-    max-width: 100%;
+
+body.admin-app .eg-move-products-grid .eg-date-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #475569;
+    font-weight: 500;
+    white-space: nowrap;
 }
-body.admin-app .eg-move-products-grid .griddly-scrollable-container > table,
-body.admin-app .eg-move-products-grid table.eg-grid-table {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
+
+body.admin-app .eg-move-products-grid td .eg-name-cell {
+    max-width: none !important;
+}
+
+body.admin-app .eg-move-products-grid td .eg-name-link {
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.35;
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+body.admin-app .eg-move-products-grid td .eg-name-link:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+body.admin-app .eg-move-products-grid td .eg-name-meta {
+    margin-top: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 11px;
 }
 
 /* MoveProductsInTrees layout & controls */
@@ -3863,7 +3938,10 @@ body.admin-app .eg-move-products-grid table.eg-grid-table {
 
 .eg-move-tree-wrapper {
     background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .eg-move-toolbar {
@@ -3878,6 +3956,22 @@ body.admin-app .eg-move-products-grid table.eg-grid-table {
     flex-wrap: wrap;
     gap: 8px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.eg-move-back-btn {
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.eg-move-selected-counter {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #2563eb !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
 }
 
 .eg-move-selected-card {

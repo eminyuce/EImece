@@ -92,16 +92,18 @@
 
         <div class="eg-move-toolbar">
             <div class="d-flex align-items-center flex-wrap gap-2">
-                @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-secondary btn-sm", id = "btnBackToProducts" })
-                <button type="button" id="btnSelectAll" class="btn btn-outline-primary btn-sm">
+                <a href="@Url.Action("Index", "Products")" class="btn btn-sm btn-outline-secondary eg-move-back-btn" id="btnBackToProducts">
+                    <i class="fa fa-arrow-left"></i> Ürün Listesine Dön
+                </a>
+                <button type="button" id="btnSelectAll" class="btn btn-sm btn-outline-primary">
                     <i class="fa fa-check-square-o"></i> Tümünü Seç
                 </button>
-                <button type="button" id="btnDeselectAll" class="btn btn-outline-secondary btn-sm">
+                <button type="button" id="btnDeselectAll" class="btn btn-sm btn-outline-secondary">
                     <i class="fa fa-square-o"></i> Seçimi Kaldır
                 </button>
             </div>
             <div id="selectedCountBadgeContainer" style="display:none;">
-                <span class="badge bg-primary text-white p-2">
+                <span class="badge bg-primary text-white eg-move-selected-counter">
                     <i class="fa fa-check-circle"></i> <span id="selectedProductCount">0</span> ürün seçildi
                 </span>
             </div>

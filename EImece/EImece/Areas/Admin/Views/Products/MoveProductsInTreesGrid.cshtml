@@ -43,25 +43,13 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
-        .Column(caption: "", template: @<text><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
-        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", item)</text>, className: "eg-col-name", width: "180px")
-        .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@FlagIcon(item.Id, item.IsActive, "State")</text>, className: "smallGridColumn eg-col-isactive", width: "88px")
-        .Column(x => x.MainPage, caption: AdminResource.MainPage, template: @<text>@FlagIcon(item.Id, item.MainPage, "MainPage")</text>, className: "smallGridColumn eg-col-mainpage", width: "88px")
-        .Column(x => x.IsCampaign, caption: AdminResource.IsCampaign, template: @<text>@FlagIcon(item.Id, item.IsCampaign, "IsCampaign")</text>, className: "smallGridColumn eg-col-iscampaign", width: "88px")
-        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "90px");
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-col-index eg-sticky-left eg-sticky-left-1", width: "44px")
+        .Column(caption: "", template: @<text><label class="eg-check-hit"><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></label></text>, className: "gridButtons eg-col-check eg-sticky-left eg-sticky-left-2", width: "44px")
+        .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item, new ViewDataDictionary(ViewData) { { "ShowImageState", false } })</text>, className: "eg-col-image", width: "56px")
+        .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", item)</text>, className: "eg-col-name")
+        .Column(x => x.IsActive, caption: AdminResource.Status, template: @<text>@Html.Partial("Grid/_GridStatusGroup", item)</text>, className: "smallGridColumn eg-col-status", width: "175px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text><span class="eg-date-cell"><i class="fa fa-calendar-o text-muted" aria-hidden="true"></i> @(item.UpdatedDate.ToString("dd.MM.yyyy"))</span></text>, className: "gridDateClass eg-col-date", width: "110px");
 }
 
 @Html.Griddly(settings)
 
-@helper FlagIcon(int id, bool isOn, string field)
-{
-    var iconClass = isOn ? "eg-status-icon gridActiveIcon fa fa-check-circle" : "eg-status-icon gridNotActiveIcon fa fa-times-circle";
-    var value = isOn ? "True" : "False";
-    var label = isOn ? "Evet" : "Hayır";
-    <span class="eg-flag-cell @(isOn ? "is-on" : "is-off")" title="@label">
-        <span gridkey-id="@id" grid-data-value="@value" class="@iconClass" name="span@(field)" aria-hidden="true"></span>
-        <span class="eg-flag-dot" aria-hidden="true"></span>
-        <span class="eg-flag-text">@label</span>
-    </span>
-}
