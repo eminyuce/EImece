@@ -23,11 +23,11 @@
             </span>
         }
     </div>
-    <div class="eg-image-meta">
-        @if (showImageState)
-        {
+    @if (showImageState)
+    {
+        <div class="eg-image-meta">
             @Html.GridStatusToggle(o.Id, o.ImageState, "ImageState", AdminResource.ImageState, "Resim")
-        }
-        @Html.Partial("pGridImageMainPage", o, new ViewDataDictionary(ViewData) { { "ShowRemoveImage", false }, { "ShowExistingLabel", false } })
-    </div>
+            @Html.Partial("pGridImageMainPage", o, new ViewDataDictionary(ViewData) { { "ShowRemoveImage", false }, { "ShowExistingLabel", false } })
+        </div>
+    }
 </div>

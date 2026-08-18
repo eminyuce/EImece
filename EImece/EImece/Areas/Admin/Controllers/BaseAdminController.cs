@@ -377,6 +377,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (ControllerContext != null && ControllerContext.IsChildAction) return true;
             if (Request.IsAjaxRequest()) return true;
+            if (Request.Headers != null && !string.IsNullOrEmpty(Request.Headers["X-Requested-With"])) return true;
             return string.Equals(Request["gridembed"], "1", StringComparison.OrdinalIgnoreCase);
         }
 

@@ -109,7 +109,17 @@
             </div>
         </div>
 
-        <div class="js-griddly-async" data-url="@Url.Action("MoveProductsInTreesGrid", new { id = selectedCategory != null ? selectedCategory.Id : 0 })"></div>
+        <div class="eg-move-search-card">
+            <div class="eg-move-search-inner">
+                <i class="fa fa-search eg-move-search-icon" aria-hidden="true"></i>
+                <input type="text" id="egMoveSearchInput" class="form-control form-control-sm eg-move-search-field" placeholder="Ürün adı, ürün kodu veya ID ile ara..." value="@ViewBag.Search" autocomplete="off" />
+                <button type="button" id="egBtnClearSearch" class="btn btn-sm eg-move-search-clear" title="Aramayı temizle" style="@(string.IsNullOrEmpty(ViewBag.Search as string) ? "display:none;" : "")">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="js-griddly-async" data-url="@Url.Action("MoveProductsInTreesGrid", new { id = selectedCategory != null ? selectedCategory.Id : 0, search = ViewBag.Search })"></div>
     </div>
     <div class="col-md-3">
         <div class="eg-move-tree-wrapper">
@@ -133,6 +143,42 @@
                 badgeContainer.show();
             } else {
                 badgeContainer.hide();
+            }
+        }
+
+        function filterGridRows() {
+            var query = ($("#egMoveSearchInput").val() || "").toLowerCase().trim();
+            $("#egBtnClearSearch").toggle(query.length > 0);
+            var $rows = $(".eg-move-products-grid tbody tr:not(#egNoSearchResultRow)");
+            var matches = 0;
+
+            $rows.each(function () {
+                var $row = $(this);
+                if ($row.find(".griddly-empty").length) {
+                    return;
+                }
+                var text = $row.text().toLowerCase();
+                if (!query || text.indexOf(query) >= 0) {
+                    $row.show();
+                    matches++;
+                } else {
+                    $row.hide();
+                }
+            });
+
+            var $noMatchRow = $("#egNoSearchResultRow");
+            if ($rows.length > 0 && matches === 0 && query.length > 0) {
+                if (!$noMatchRow.length) {
+                    var safeQuery = $("<div>").text(query).html();
+                    $(".eg-move-products-grid tbody").append('<tr id="egNoSearchResultRow"><td colspan="5" class="text-center text-muted py-4"><i class="fa fa-search fa-2x mb-2 d-block text-secondary"></i>"<strong>' + safeQuery + '</strong>" ile eşleşen ürün bulunamadı.</td></tr>');
+                } else {
+                    var safeQuery = $("<div>").text(query).html();
+                    $noMatchRow.html('<td colspan="5" class="text-center text-muted py-4"><i class="fa fa-search fa-2x mb-2 d-block text-secondary"></i>"<strong>' + safeQuery + '</strong>" ile eşleşen ürün bulunamadı.</td>').show();
+                }
+            } else {
+                if ($noMatchRow.length) {
+                    $noMatchRow.hide();
+                }
             }
         }
 
@@ -173,7 +219,8 @@
         $(document).ready(function () {
             $(document).on("click", "#btnSelectAll", function (e) {
                 e.preventDefault();
-                $("input[name=checkboxGrid]").prop("checked", true).trigger("change");
+                // Check visible products
+                $(".eg-move-products-grid tbody tr:visible input[name=checkboxGrid]").prop("checked", true).trigger("change");
                 updateSelectedCount();
             });
 
@@ -187,11 +234,23 @@
                 updateSelectedCount();
             });
 
+            $(document).on("input keyup", "#egMoveSearchInput", function () {
+                filterGridRows();
+            });
+
+            $(document).on("click", "#egBtnClearSearch", function () {
+                $("#egMoveSearchInput").val("");
+                filterGridRows();
+                $("#egMoveSearchInput").focus();
+            });
+
             $(document).ajaxComplete(function () {
                 updateSelectedCount();
+                filterGridRows();
             });
 
             updateSelectedCount();
+            filterGridRows();
         });
     </script>
 }

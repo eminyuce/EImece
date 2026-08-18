@@ -43,11 +43,10 @@
     </text>;
 
     settings
-        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-col-index eg-sticky-left eg-sticky-left-1", width: "44px")
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-col-index eg-sticky-left eg-sticky-left-1", width: "40px")
         .Column(caption: "", template: @<text><label class="eg-check-hit"><input gridkey-id="@item.Id" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></label></text>, className: "gridButtons eg-col-check eg-sticky-left eg-sticky-left-2", width: "44px")
-        .Column(caption: AdminResource.Images, template: @<text>@Html.Partial("Grid/_GridImageCell", item, new ViewDataDictionary(ViewData) { { "ShowImageState", false } })</text>, className: "eg-col-image", width: "56px")
         .Column(x => x.Name, caption: AdminResource.Name, template: @<text>@Html.Partial("Grid/_GridNameCell", item)</text>, className: "eg-col-name")
-        .Column(x => x.IsActive, caption: AdminResource.Status, template: @<text>@Html.Partial("Grid/_GridStatusGroup", item)</text>, className: "smallGridColumn eg-col-status", width: "175px")
+        .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusGroup", item)</text>, className: "smallGridColumn eg-col-status", width: "175px")
         .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text><span class="eg-date-cell"><i class="fa fa-calendar-o text-muted" aria-hidden="true"></i> @(item.UpdatedDate.ToString("dd.MM.yyyy"))</span></text>, className: "gridDateClass eg-col-date", width: "110px");
 }
 

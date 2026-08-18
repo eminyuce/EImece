@@ -344,14 +344,15 @@ namespace EImece.Areas.Admin.Controllers
             return DownloadFile(result, String.Format("Products-{0}", GetCurrentLanguage), format);
         }
 
-        public async Task<ActionResult> MoveProductsInTrees(CancellationToken cancellationToken, int id = 0, string productIdList = "", int oldCategoryId = 0)
+        public async Task<ActionResult> MoveProductsInTrees(CancellationToken cancellationToken, int id = 0, string search = "", string productIdList = "", int oldCategoryId = 0)
         {
             ViewBag.ProductCategoryTreeLeft = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
             ViewBag.ProductCategoryTreeRight = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            ViewBag.Search = search;
             var products = new System.Collections.Generic.List<Product>();
             if (id > 0)
             {
-                products = await ProductService.GetAdminPageListAsync(id, "", CurrentLanguage, cancellationToken);
+                products = await ProductService.GetAdminPageListAsync(id, search, CurrentLanguage, cancellationToken);
             }
 
             var newCategory = await ProductCategoryService.GetSingleAsync(id);
@@ -370,17 +371,17 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public async Task<ActionResult> MoveProductsInTreesGrid(CancellationToken cancellationToken, int id = 0)
+        public async Task<ActionResult> MoveProductsInTreesGrid(CancellationToken cancellationToken, int id = 0, string search = "")
         {
             if (!CanRenderGrid())
             {
-                return RedirectToAction("MoveProductsInTrees", new { id });
+                return RedirectToAction("MoveProductsInTrees", new { id, search });
             }
 
             var products = new System.Collections.Generic.List<Product>();
             if (id > 0)
             {
-                products = await ProductService.GetAdminPageListAsync(id, "", CurrentLanguage, cancellationToken);
+                products = await ProductService.GetAdminPageListAsync(id, search, CurrentLanguage, cancellationToken);
             }
 
             return new QueryableResult<Product>(products.AsQueryable());
