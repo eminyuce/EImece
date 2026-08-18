@@ -28,7 +28,8 @@
     <link href="~/Content/adminReports.css?v=20260804b" rel="stylesheet" type="text/css" />
     <link href="~/Content/adminSite.css?v=20260817c2" rel="stylesheet" type="text/css" />
     <link href="~/Content/adminShell.css?v=20260817b3" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminGridModern.css?v=20260818a" rel="stylesheet" type="text/css" />
+    <link href="~/Content/adminGridModern.css?v=20260818g" rel="stylesheet" type="text/css" />
+    <link href="~/Content/adminMobile.css?v=20260818c" rel="stylesheet" type="text/css" />
     @RenderSection("scripts", required: false)
     @Styles.Render("~/Content/adminJqueryUiCss")
     @RenderSection("Styles", false)
@@ -121,6 +122,16 @@
                 });
             });
         });
+            function syncBulkDetails() {
+                var open = window.matchMedia('(min-width: 992px)').matches;
+                var nodes = document.querySelectorAll('details.eg-ops-more');
+                for (var i = 0; i < nodes.length; i++) { nodes[i].open = open; }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', syncBulkDetails);
+            } else {
+                syncBulkDetails();
+            }
             if (window.jQuery) {
                 wireAjaxAntiForgery();
             } else {

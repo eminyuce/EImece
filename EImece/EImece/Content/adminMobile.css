@@ -1,0 +1,192 @@
+/* Admin panel mobile/tablet last-wins. Loaded after adminGridModern.css. */
+
+@media (max-width: 991px) {
+    body.admin-app .eg-grid-table > thead > tr > th.smallGridColumn,
+    body.admin-app .eg-grid-table > tbody > tr > td.smallGridColumn,
+    body.admin-app .eg-lists-grid th.eg-col-isservice,
+    body.admin-app .eg-lists-grid td.eg-col-isservice,
+    body.admin-app .eg-lists-grid th.eg-col-isvalues,
+    body.admin-app .eg-lists-grid td.eg-col-isvalues {
+        display: none !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+    }
+
+    body.admin-app .eg-grid-table > thead > tr > th.eg-col-name,
+    body.admin-app .eg-grid-table > tbody > tr > td.eg-col-name {
+        width: auto !important;
+        min-width: 140px !important;
+        max-width: none !important;
+    }
+
+    body.admin-app .eg-lists-grid table.eg-grid-table,
+    body.admin-app .eg-lists-grid .griddly-scrollable-container > table {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    body.admin-app .eg-admin-move-link,
+    body.admin-app .eg-products-move-link {
+        display: flex !important;
+        align-items: flex-start;
+        gap: 8px;
+        white-space: normal !important;
+        line-height: 1.35;
+        min-height: 44px;
+        padding: 10px 12px;
+        max-width: 100%;
+    }
+
+    body.admin-app .eg-quick-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    body.admin-app .eg-quick-chip {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+    }
+
+    body.admin-app .eg-ops-primary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    body.admin-app .eg-ops-new {
+        min-height: 44px;
+        flex: 1 1 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    body.admin-app .admin-content input[type="text"],
+    body.admin-app .admin-content input[type="email"],
+    body.admin-app .admin-content input[type="number"],
+    body.admin-app .admin-content input[type="password"],
+    body.admin-app .admin-content input[type="url"],
+    body.admin-app .admin-content select,
+    body.admin-app .admin-content textarea,
+    body.admin-app .admin-content .form-control,
+    body.admin-app .admin-content .form-select {
+        font-size: 16px !important;
+        min-height: 44px;
+    }
+
+    body.admin-app .admin-edit-toolbar-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    body.admin-app .admin-edit-toolbar-actions .btn {
+        width: 100%;
+        min-height: 44px;
+        justify-content: center;
+    }
+
+    body.admin-app .admin-content .modal-dialog {
+        width: auto !important;
+        max-width: calc(100vw - 24px);
+        margin: 12px;
+    }
+
+    body.admin-app .admin-content .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body.admin-app .admin-content .checkbox,
+    body.admin-app .admin-content .form-check {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 991px) {
+    body.admin-app .eg-lists-grid table.eg-grid-table {
+        table-layout: auto !important;
+    }
+
+    body.admin-app .eg-grid-table > thead > tr > th.eg-col-actions,
+    body.admin-app .eg-grid-table > tbody > tr > td.eg-col-actions,
+    body.admin-app .eg-lists-grid th.eg-col-actions,
+    body.admin-app .eg-lists-grid td.eg-col-actions {
+        width: 52px !important;
+        min-width: 52px !important;
+        max-width: 72px !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    body.admin-app .eg-actions-toggle span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+    }
+
+    body.admin-app .eg-actions-toggle {
+        width: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 8px !important;
+        justify-content: center;
+    }
+
+    body.admin-app .eg-lists-grid th.eg-col-name,
+    body.admin-app .eg-lists-grid td.eg-col-name {
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .price-filter-builder-wrapper .card-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px;
+    }
+    .price-filter-builder-wrapper .card-header > div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    .price-filter-builder-wrapper .card-header .btn {
+        min-height: 44px;
+        width: 100%;
+        margin-left: 0 !important;
+    }
+    .price-filter-builder-wrapper .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+    }
+    #tblPriceRanges {
+        min-width: 560px;
+        width: 100%;
+    }
+    #tblPriceRanges input[type="number"] {
+        min-height: 44px !important;
+        height: auto !important;
+        font-size: 16px !important;
+    }
+    #tblPriceRanges .btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
