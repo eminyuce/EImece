@@ -305,19 +305,25 @@
             ,{"ProductState",false}
             ,{"SetStateOnOrOff",true}})
 
+                @{
+                    bool hasMissingFiles = Model.FileStorages != null && filesHelper != null && Model.FileStorages.Any(f => f != null && !string.IsNullOrWhiteSpace(f.FileName) && !string.Equals(f.FileName, FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase) && !filesHelper.NormalFileExists(f.FileName));
+                }
                 <div class="media-clean-actions" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px;">
                     <button type="button" class="btn btn-info btn-sm btn-refresh-grid" onclick="sessionStorage.setItem('adminMediaActiveTab', '#tab2default'); window.location.href = window.location.pathname + window.location.search + '#tab2default'; window.location.reload(true);" title="Veritabanındaki resimleri ve tabloyu yenile">
                         <i class="fa fa-refresh"></i> Veritabanından Yenile
                     </button>
-                    <form method="post" action="@Url.Action("DeleteMissingFiles", "Media")" onsubmit="return confirm('@AdminResource.DeleteMissingFilesConfirmMessage');">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="contentId" value="@Model.Id" />
-                        <input type="hidden" name="mod" value="@Model.MediaMod" />
-                        <input type="hidden" name="imageType" value="@Model.ImageType" />
-                        <button type="submit" class="btn btn-danger btn-sm" id="btnDeleteMissingFiles" title="@AdminResource.DeleteMissingFilesTooltip">
-                            <i class="fa fa-trash"></i> @AdminResource.DeleteMissingFilesButtonText
-                        </button>
-                    </form>
+                    @if (hasMissingFiles)
+                    {
+                        <form method="post" action="@Url.Action("DeleteMissingFiles", "Media")" onsubmit="return confirm('@AdminResource.DeleteMissingFilesConfirmMessage');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="contentId" value="@Model.Id" />
+                            <input type="hidden" name="mod" value="@Model.MediaMod" />
+                            <input type="hidden" name="imageType" value="@Model.ImageType" />
+                            <button type="submit" class="btn btn-danger btn-sm" id="btnDeleteMissingFiles" title="@AdminResource.DeleteMissingFilesTooltip">
+                                <i class="fa fa-trash"></i> @AdminResource.DeleteMissingFilesButtonText
+                            </button>
+                        </form>
+                    }
                 </div>
 
                 @Html.Partial("Grid/_GridChrome")

@@ -716,6 +716,25 @@
             showLightbox(modalEl, null, 0);
         });
 
+        document.addEventListener('click', function (e) {
+            var closeBtn = e.target.closest('.pt-lightbox__close');
+            if (closeBtn) {
+                var modal = closeBtn.closest('.pt-lightbox');
+                if (modal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.bootstrap && window.bootstrap.Modal) {
+                        var bsModal = window.bootstrap.Modal.getInstance(modal) || window.bootstrap.Modal.getOrCreateInstance(modal);
+                        if (bsModal) {
+                            bsModal.hide();
+                        }
+                    } else if (window.jQuery) {
+                        window.jQuery(modal).modal('hide');
+                    }
+                }
+            }
+        });
+
         function showLightbox(modalEl, carouselEl, idx) {
             if (modalEl.parentElement !== document.body) {
                 document.body.appendChild(modalEl);

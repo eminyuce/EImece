@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace EImece.Domain.Models.AdminHelperModels
 {
@@ -37,6 +37,8 @@ namespace EImece.Domain.Models.AdminHelperModels
         {
             ThumpBitmapWidth = thumpBitmapWidth;
             ThumpBitmapHeight = thumpBitmapHeight;
+            Width = thumpBitmapWidth;
+            Height = thumpBitmapHeight;
             OriginalWidth = originalWidth;
             OriginalHeight = originalHeight;
             FileName = fileName;
@@ -46,6 +48,8 @@ namespace EImece.Domain.Models.AdminHelperModels
         {
             Width = width;
             Height = height;
+            ThumpBitmapWidth = width;
+            ThumpBitmapHeight = height;
             OriginalWidth = originalWidth;
             OriginalHeight = originalHeight;
         }

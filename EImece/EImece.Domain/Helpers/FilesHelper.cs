@@ -73,46 +73,123 @@ namespace EImece.Domain.Helpers
 
         public SavedImage GetThumbnailImageSize(FileStorage mainImage)
         {
-            int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
-            int originalWidth = 0, originalHeight = 0;
-            String fileName = "";
             if (mainImage != null)
             {
-                fileName = mainImage.FileName;
-                return GetThumbnailImageSize(fileName);
+                return GetThumbnailImageSize(mainImage.FileName, mainImage.Width, mainImage.Height);
             }
-            var result = new SavedImage(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
-            return result;
+            return new SavedImage(0, 0, 0, 0, string.Empty);
         }
 
         public SavedImage GetThumbnailImageSize(String fileName)
         {
+            return GetThumbnailImageSize(fileName, 0, 0);
+        }
+
+        public SavedImage GetThumbnailImageSize(String fileName, int fallbackOriginalWidth, int fallbackOriginalHeight)
+        {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
-            int originalWidth = 0, originalHeight = 0;
-            String fullPath = SecurityHelper.GetSafeStorageFilePath(StorageRoot, fileName);
-            String thumbPath = "/thb" + Path.GetFileName(fileName) + "";
-            String partThumb1 = Path.Combine(StorageRoot, THUMBS);
-            String partThumb2 = Path.Combine(partThumb1, THB + Path.GetFileName(fileName));
+            int originalWidth = fallbackOriginalWidth, originalHeight = fallbackOriginalHeight;
+
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return new SavedImage(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName ?? string.Empty);
+            }
+
+            string storageRoot = !string.IsNullOrWhiteSpace(StorageRoot) ? StorageRoot : AppConfig.StorageRoot;
+            string fullPath = SecurityHelper.GetSafeStorageFilePath(storageRoot, fileName);
+            string partThumb1 = Path.Combine(storageRoot, THUMBS);
+            string partThumb2 = Path.Combine(partThumb1, THB + Path.GetFileName(fileName));
+
+            // 1. Measure Original Image Dimensions at runtime
+            if (File.Exists(fullPath))
+            {
+                if (TryGetImageDimensions(fullPath, out int origW, out int origH) && origW > 0 && origH > 0)
+                {
+                    originalWidth = origW;
+                    originalHeight = origH;
+                }
+            }
+
+            // 2. Measure Thumbnail Dimensions at runtime if thumbnail exists
             if (File.Exists(partThumb2))
             {
-                using (Bitmap thumpBitmap = new Bitmap(partThumb2))
+                if (TryGetImageDimensions(partThumb2, out int thumbW, out int thumbH) && thumbW > 0 && thumbH > 0)
                 {
-                    thumpBitmapWidth = thumpBitmap.Width;
-                    thumpBitmapHeight = thumpBitmap.Height;
-                    thumpBitmap.Dispose();
-
-                    if (File.Exists(partThumb2))
-                    {
-                        Bitmap fullBitmap = new Bitmap(fullPath);
-                        originalWidth = fullBitmap.Width;
-                        originalHeight = fullBitmap.Height;
-                        fullBitmap.Dispose();
-                    }
+                    thumpBitmapWidth = thumbW;
+                    thumpBitmapHeight = thumbH;
+                }
+            }
+            else if (File.Exists(fullPath) && originalWidth > 0 && originalHeight > 0)
+            {
+                // Auto-generate missing thumbnail on disk if original exists
+                try
+                {
+                    EnsureDirectoryExists(partThumb2);
+                    byte[] originalBytes = File.ReadAllBytes(fullPath);
+                    Size thumbTarget = ResolveThumbnailTargetSize(0, 0, originalWidth, originalHeight);
+                    var thumbOpt = ImageUploadOptimizer.Optimize(
+                        originalBytes,
+                        ImageUploadOptimizeOptions.ForThumbnail(fileName, null, thumbTarget.Width, thumbTarget.Height, Path.GetExtension(fileName)));
+                    SaveBytesToFilePath(thumbOpt.Bytes, partThumb2);
+                    thumpBitmapWidth = thumbOpt.Width;
+                    thumpBitmapHeight = thumbOpt.Height;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug(ex, "Could not auto-generate thumbnail on disk for {0}", fileName);
+                    // Fallback to calculated target thumbnail size
+                    Size calculated = ResolveThumbnailTargetSize(0, 0, originalWidth, originalHeight);
+                    thumpBitmapWidth = calculated.Width;
+                    thumpBitmapHeight = calculated.Height;
                 }
             }
 
             var result = new SavedImage(thumpBitmapWidth, thumpBitmapHeight, originalWidth, originalHeight, fileName);
             return result;
+        }
+
+        public static bool TryGetImageDimensions(string path, out int width, out int height)
+        {
+            width = 0;
+            height = 0;
+            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+            {
+                return false;
+            }
+
+            try
+            {
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var img = Image.FromStream(fs, useEmbeddedColorManagement: false, validateImageData: false))
+                {
+                    width = img.Width;
+                    height = img.Height;
+                    return width > 0 && height > 0;
+                }
+            }
+            catch
+            {
+                // Fallback for WebP and non-GDI+ image formats
+                try
+                {
+                    using (var factory = new ImageProcessor.ImageFactory(preserveExifData: false))
+                    {
+                        factory.Load(path);
+                        if (factory.Image != null)
+                        {
+                            width = factory.Image.Width;
+                            height = factory.Image.Height;
+                            return width > 0 && height > 0;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug(ex, "Could not read image dimensions from {0}", path);
+                }
+            }
+
+            return false;
         }
 
         public void DeleteFiles(String pathToDelete)
