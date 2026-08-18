@@ -360,7 +360,10 @@ namespace EImece.Areas.Admin.Controllers
             if (id > 0 && oldCategoryId > 0)
             {
                 var oldCategory = await ProductCategoryService.GetSingleAsync(oldCategoryId);
-                ViewBag.MoveProductsMessage = String.Format("Seçilen {0} Ürün '{1}' kategorisinden '{2}' kategorisine tasindi", productIdList.Split(',').Count().ToString(), oldCategory.Name, newCategory.Name);
+                var oldCatName = oldCategory != null ? oldCategory.Name : "-";
+                var newCatName = newCategory != null ? newCategory.Name : "-";
+                var count = productIdList.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Length;
+                ViewBag.MoveProductsMessage = String.Format("Seçilen {0} ürün '{1}' kategorisinden '{2}' kategorisine başarıyla taşındı.", count, oldCatName, newCatName);
             }
 
             return View(products);

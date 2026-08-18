@@ -8,13 +8,12 @@
 @using EImece.Domain.Models.FrontModels;
 
 @{
-    ViewBag.Title = "Products";
+    ViewBag.Title = AdminResource.MoveProductsInTrees;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     ProductCategory selectedCategory = (ProductCategory)ViewBag.SelectedCategory;
 
     List<ProductCategoryTreeModel> ProductCategoryTreeLeft = ViewBag.ProductCategoryTreeLeft;
     List<ProductCategoryTreeModel> ProductCategoryTreeRight = ViewBag.ProductCategoryTreeRight;
-
 }
 <h2>@AdminResource.MoveProductsInTrees</h2>
 <hr class="adminLine" />
@@ -26,60 +25,119 @@
     <li><strong>1.</strong> Soldaki ağaçtan <strong>kaynak kategoriyi</strong> seçin → ortada o kategorinin ürünleri listelenir.</li>
     <li><strong>2.</strong> Taşınacak ürünleri ortadaki listeden <strong>işaretleyin</strong> (checkbox).</li>
     <li><strong>3.</strong> Sağdaki ağaçtan <strong>hedef kategoriyi</strong> tıklayın → seçili ürünler o kategoriye taşınır.</li>
-    <li>Kaynak seçimini temizlemek için seçili kategori yanındaki <strong>X</strong> ikonunu kullanın.</li>
+    <li>Kaynak seçimini temizlemek için seçili kategori kutusundaki <strong>Seçimi Temizle</strong> butonunu kullanın.</li>
 </ul>
 <p style="margin-top: 12px; margin-bottom: 0;"><strong>Örnek:</strong> Solda “Tişörtler” seç → 3 ürünü işaretle → sağda “Kampanya Ürünleri”ne tıkla → ürünler taşınır.</p>
 @Html.Partial("_AdminHelpAccordionEnd")
 
-<div class="row">
+<div class="row eg-move-products-container">
     <div class="col-md-3">
-        @Html.Partial("_ProductCategoryTree", ProductCategoryTreeLeft, new ViewDataDictionary(ViewData){
-                        {"UrlPattern","/admin/products/MoveProductsInTrees/"}
-                      ,{"IsExcelButtonEnabled",true}})
-
-        <span id="treeClickContainer"></span>
+        <div class="eg-move-tree-wrapper">
+            @Html.Partial("_ProductCategoryTree", ProductCategoryTreeLeft, new ViewDataDictionary(ViewData){
+                            {"UrlPattern","/admin/products/MoveProductsInTrees/"},
+                            {"SelectedCategoryId", selectedCategory != null ? selectedCategory.Id : 0},
+                            {"TreeTitle", "1. Kaynak Kategori"},
+                            {"ShowAllLink", false},
+                            {"IsExcelButtonEnabled", true}})
+            <span id="treeClickContainer"></span>
+        </div>
     </div>
     <div class="col-md-6">
         @if (selectedCategory != null)
         {
-
-        <span>
-            @{
-                <span>
-                    @AdminResource.SelectedCategory
-                </span>
-                <b style="color:red;">
-                    @String.Format("{0}", selectedCategory.Name)
-                </b>
-            }
-
-            <a href="@Url.Action("MoveProductsInTrees", "Products",new { id=0 })">
-                <span class="fa fa-times-circle gridNotActiveIcon" aria-hidden="true"></span>
-            </a>
-            <input type="hidden" id="selectedCategory" value="@selectedCategory.Id" />
-            @if (!String.IsNullOrEmpty(ViewBag.MoveProductsMessage))
-                {
-            <div class="alert alert-success" role="alert">
-                @ViewBag.MoveProductsMessage
+            <div class="eg-move-selected-card">
+                <div class="eg-move-selected-content">
+                    <span class="eg-move-selected-icon"><i class="fa fa-folder-open"></i></span>
+                    <div class="eg-move-selected-text">
+                        <span class="eg-move-selected-label">@AdminResource.SelectedCategory</span>
+                        <strong class="eg-move-selected-title">@selectedCategory.Name</strong>
+                    </div>
+                </div>
+                <a href="@Url.Action("MoveProductsInTrees", "Products", new { id = 0 })" class="btn btn-sm btn-outline-danger eg-move-clear-btn" title="Kategori seçimini temizle">
+                    <i class="fa fa-times"></i> Seçimi Temizle
+                </a>
+                <input type="hidden" id="selectedCategory" value="@selectedCategory.Id" />
             </div>
-                }
-        </span>
 
+            if (!String.IsNullOrEmpty(ViewBag.MoveProductsMessage))
+            {
+                <div class="alert alert-success eg-move-success-alert d-flex align-items-center justify-content-between" role="alert">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa fa-check-circle fa-lg eg-move-success-icon" aria-hidden="true"></i>
+                        <span>@ViewBag.MoveProductsMessage</span>
+                    </div>
+                </div>
+            }
         }
-        @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-secondary btn-sm", style = "margin-bottom:10px;" })
+        else
+        {
+            <div class="alert alert-info eg-move-guide-alert d-flex align-items-center gap-3">
+                <i class="fa fa-info-circle fa-2x text-primary" aria-hidden="true"></i>
+                <div>
+                    <h6 class="mb-1 fw-bold text-dark">Kaynak Kategori Seçilmedi</h6>
+                    <p class="mb-0 text-muted small">Ürünlerini listelemek ve taşımak için soldaki <strong>1. Kaynak Kategori</strong> ağacından bir kategoriye tıklayın.</p>
+                </div>
+            </div>
+
+            if (!String.IsNullOrEmpty(ViewBag.MoveProductsMessage))
+            {
+                <div class="alert alert-success eg-move-success-alert d-flex align-items-center justify-content-between" role="alert">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa fa-check-circle fa-lg eg-move-success-icon" aria-hidden="true"></i>
+                        <span>@ViewBag.MoveProductsMessage</span>
+                    </div>
+                </div>
+            }
+        }
+
+        <div class="eg-move-toolbar">
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                @Html.ActionLink("Ürün listesine dön", "Index", null, new { @class = "btn btn-secondary btn-sm", id = "btnBackToProducts" })
+                <button type="button" id="btnSelectAll" class="btn btn-outline-primary btn-sm">
+                    <i class="fa fa-check-square-o"></i> Tümünü Seç
+                </button>
+                <button type="button" id="btnDeselectAll" class="btn btn-outline-secondary btn-sm">
+                    <i class="fa fa-square-o"></i> Seçimi Kaldır
+                </button>
+            </div>
+            <div id="selectedCountBadgeContainer" style="display:none;">
+                <span class="badge bg-primary text-white p-2">
+                    <i class="fa fa-check-circle"></i> <span id="selectedProductCount">0</span> ürün seçildi
+                </span>
+            </div>
+        </div>
+
         <div class="js-griddly-async" data-url="@Url.Action("MoveProductsInTreesGrid", new { id = selectedCategory != null ? selectedCategory.Id : 0 })"></div>
     </div>
     <div class="col-md-3">
-
-        @Html.Partial("_ProductCategoryTree", ProductCategoryTreeRight, new ViewDataDictionary(ViewData){
-                        {"UrlPattern",""}
-                      ,{"IsExcelButtonEnabled",true}})
+        <div class="eg-move-tree-wrapper">
+            @Html.Partial("_ProductCategoryTree", ProductCategoryTreeRight, new ViewDataDictionary(ViewData){
+                            {"UrlPattern",""},
+                            {"TreeTitle", "2. Hedef Kategori"},
+                            {"ShowPickHint", true},
+                            {"IsExcelButtonEnabled", true}})
+        </div>
     </div>
 </div>
+
 @section Scripts{
     <script>
+        function updateSelectedCount() {
+            var count = $("input[name=checkboxGrid]:checked").length;
+            var badgeContainer = $("#selectedCountBadgeContainer");
+            var badgeCount = $("#selectedProductCount");
+            if (count > 0) {
+                badgeCount.text(count);
+                badgeContainer.show();
+            } else {
+                badgeContainer.hide();
+            }
+        }
 
         function productTreeClick(e, id, name) {
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
             var productIdList = [];
             $("input[name=checkboxGrid]").each(function () {
                 var m = $(this).is(':checked');
@@ -88,15 +146,50 @@
                 }
             });
 
-            if (productIdList.length > 0) {
-                var link = '/admin/products/MoveProducts/' + id + "?productIdList=" + productIdList + "&oldCategoryId=" + $("#selectedCategory").val();
-                console.log(link);
-                window.location = link;
+            if (productIdList.length === 0) {
+                alert("Lütfen önce ortadaki listeden taşımak istediğiniz ürünleri işaretleyin (checkbox).");
+                return;
             }
 
-        }
-        $(document).ready(function () {
+            var selectedCat = $("#selectedCategory").val();
+            if (!selectedCat || selectedCat === "0") {
+                alert("Lütfen önce soldaki ağaçtan kaynak kategoriyi seçin.");
+                return;
+            }
 
+            if (String(selectedCat) === String(id)) {
+                alert("Hedef kategori ile kaynak kategori aynı olamaz. Lütfen farklı bir hedef kategori seçin.");
+                return;
+            }
+
+            if (confirm(productIdList.length + " adet seçili ürün '" + name + "' kategorisine taşınacak. Onaylıyor musunuz?")) {
+                var link = '/admin/products/MoveProducts/' + id + "?productIdList=" + productIdList.join(',') + "&oldCategoryId=" + selectedCat;
+                window.location = link;
+            }
+        }
+
+        $(document).ready(function () {
+            $(document).on("click", "#btnSelectAll", function (e) {
+                e.preventDefault();
+                $("input[name=checkboxGrid]").prop("checked", true).trigger("change");
+                updateSelectedCount();
+            });
+
+            $(document).on("click", "#btnDeselectAll", function (e) {
+                e.preventDefault();
+                $("input[name=checkboxGrid]").prop("checked", false).trigger("change");
+                updateSelectedCount();
+            });
+
+            $(document).on("change", "input[name=checkboxGrid]", function () {
+                updateSelectedCount();
+            });
+
+            $(document).ajaxComplete(function () {
+                updateSelectedCount();
+            });
+
+            updateSelectedCount();
         });
     </script>
-}
+}
