@@ -11,6 +11,9 @@
         return;
     }
 
+    var isOverlayReload = !!window.__egGridModernV;
+    window.__egGridModernV = 2;
+
     var DENSITY_KEY = 'eimece.admin.gridDensity';
 
     function getGridName() {
@@ -542,23 +545,49 @@
         }
     }
 
-    function wireScrollNavButtons() {
-        $(document).on('click', '.eg-scroll-nav-left', function (e) {
-            e.preventDefault();
-            var $shell = $(this).closest('.eg-grid, .griddly, .eg-grid-shell');
-            var $scroll = $shell.find('.griddly-scrollable-container, .eg-grid-scroll, .grid-wrap').first();
-            if ($scroll.length) {
-                $scroll.animate({ scrollLeft: $scroll.scrollLeft() - 350 }, 200);
-            }
+    function findGridScrollElement($from) {
+        var $roots = $from.closest('.js-griddly-async, .eg-grid, .griddly, .eg-grid-shell, .admin-content');
+        var sel = '.griddly-scrollable-container, .eg-grid-scroll, .grid-wrap';
+        var $cands = $roots.find(sel);
+        if (!$cands.length) {
+            $cands = $(sel);
+        }
+        var overflowing = $cands.filter(function () {
+            return this.scrollWidth > this.clientWidth + 1;
         });
+        return (overflowing.length ? overflowing : $cands).get(0) || null;
+    }
 
-        $(document).on('click', '.eg-scroll-nav-right', function (e) {
+    function scrollGridBy(el, delta) {
+        if (!el) {
+            return;
+        }
+        var next = el.scrollLeft + delta;
+        if (typeof el.scrollTo === 'function') {
+            try {
+                el.scrollTo({ left: next, behavior: 'smooth' });
+                return;
+            } catch (err) { /* iOS old scrollTo signature */ }
+        }
+        if (typeof el.scrollBy === 'function') {
+            try {
+                el.scrollBy({ left: delta, behavior: 'smooth' });
+                return;
+            } catch (err2) { /* ignore */ }
+        }
+        el.scrollLeft = next;
+    }
+
+    function wireScrollNavButtons() {
+        // Drop any prior click handlers (bundle + cache-busted overlay).
+        $(document).off('click', '.eg-scroll-nav-left');
+        $(document).off('click', '.eg-scroll-nav-right');
+        $(document).off('click.egScrollNav');
+        $(document).on('click.egScrollNav', '.eg-scroll-nav-left, .eg-scroll-nav-right', function (e) {
             e.preventDefault();
-            var $shell = $(this).closest('.eg-grid, .griddly, .eg-grid-shell');
-            var $scroll = $shell.find('.griddly-scrollable-container, .eg-grid-scroll, .grid-wrap').first();
-            if ($scroll.length) {
-                $scroll.animate({ scrollLeft: $scroll.scrollLeft() + 350 }, 200);
-            }
+            e.stopImmediatePropagation();
+            var delta = $(this).hasClass('eg-scroll-nav-right') ? 280 : -280;
+            scrollGridBy(findGridScrollElement($(this)), delta);
         });
     }
 
@@ -650,6 +679,11 @@
     }
 
     $(function () {
+        if (isOverlayReload) {
+            wireScrollNavButtons();
+            markModernGrids();
+            return;
+        }
         markModernGrids();
         enhanceLegacyChangeStateSuccess();
         wireChrome();

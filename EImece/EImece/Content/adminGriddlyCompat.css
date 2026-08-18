@@ -174,3 +174,20 @@ body.admin-app .eg-actions-toggle .fa fa-cog {
     font-size: 12px;
     color: #607487;
 }
+
+/* iPhone: force Griddly's own scroller to be the horizontal pan surface. */
+@media (max-width: 991px) {
+    body.admin-app .griddly-scrollable-container {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    body.admin-app .griddly-scrollable-container > table {
+        width: max-content !important;
+        max-width: none !important;
+        min-width: 1100px !important;
+    }
+}

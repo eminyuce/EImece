@@ -4814,3 +4814,17 @@ body.admin-app .admin-content .admin-home h2::after {
     max-height: 168px;
     object-fit: contain;
 }
+
+/* iPhone/Products grid: padding:5em on checkboxGrid becomes a giant native box on iOS. */
+@media (max-width: 991px) {
+    body.admin-app input[name='checkboxGrid'],
+    body.admin-app input.gridCheckboxes {
+        padding: 0 !important;
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+        max-width: 20px !important;
+        max-height: 20px !important;
+    }
+}
