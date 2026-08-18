@@ -29,11 +29,19 @@
     <meta property="og:title" content="@ViewBag.Title" />
     <meta property="og:url" content="@string.Format("https://{0}", AppConfig.Domain)" />
 
-    @if (!string.IsNullOrEmpty(ViewBag.Description))
-    {
-        <meta name="description" content="@((string)ViewBag.Description)">
-        <meta name="og:description" content="@((string)ViewBag.Description)">
+    @{
+        var pageMetaDesc = (string)ViewBag.Description;
+        if (string.IsNullOrWhiteSpace(pageMetaDesc))
+        {
+            pageMetaDesc = (string)ViewBag.Title;
+        }
+        if (string.IsNullOrWhiteSpace(pageMetaDesc))
+        {
+            pageMetaDesc = companyName?.ToString() ?? AppConfig.Domain;
+        }
     }
+    <meta name="description" content="@pageMetaDesc">
+    <meta property="og:description" content="@pageMetaDesc">
 
     @if (!string.IsNullOrEmpty(ViewBag.Keywords))
     {
