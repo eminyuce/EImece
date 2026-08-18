@@ -2355,6 +2355,7 @@ body.admin-app .eg-grid .grid-wrap {
         padding-right: 0;
     }
 
+    .media-grid-thumb,
     .media-file-preview-thumb img {
         max-width: 100%;
     }

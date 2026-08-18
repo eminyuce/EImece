@@ -972,27 +972,81 @@ label[for^="ImageState"]:not(.col-form-label) {
     align-items: flex-start;
 }
 
+.media-file-thumb-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.media-grid-thumb,
 .media-file-preview-thumb img {
-    max-width: 150px;
+    max-width: 120px;
+    max-height: 90px;
+    width: auto;
     height: auto;
-    border: 1px solid #ddd;
+    object-fit: contain;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
     background: #fff;
+    padding: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.media-file-preview-name {
-    margin-top: 6px;
-    word-break: break-all;
+.media-file-thumb-container a:hover .media-grid-thumb,
+.media-file-preview-thumb a:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.media-file-info-container {
     font-size: 12px;
-    color: #555;
+    line-height: 1.5;
+    text-align: left;
 }
 
+.media-file-name,
+.media-file-preview-name {
+    margin-bottom: 4px;
+    word-break: break-all;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.media-file-meta-line,
 .media-file-preview-meta {
     font-size: 12px;
-    line-height: 1.6;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 2px;
 }
 
+.media-file-link,
 .media-file-preview-meta a {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
     margin-left: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #0d6efd;
+    background-color: #f0f7ff;
+    border: 1px solid #cce3ff;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.media-file-link:hover,
+.media-file-preview-meta a:hover {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+.media-file-btn-wrap {
+    margin-top: 6px;
 }
 
 /* Generate new password page */

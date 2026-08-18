@@ -56,70 +56,70 @@
     settings
         .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
         .Column(caption: "", template: @<text><input gridkey-id="@string.Format("{0}-{1}-{2}-{3}", item.Id, contentId, mediaMod, imageType)" class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></text>, className: "gridButtons eg-sticky-left eg-sticky-left-2 eg-col-check", width: "44px")
-        .Column(caption: AdminResource.Images, template: @<text>@ImageLinkColumn(item, filesHelper)</text>, className: "eg-col-image-preview", width: "300px")
+        .Column(caption: AdminResource.Images, template: @<text>@ImageThumbnailColumn(item, filesHelper)</text>, className: "eg-col-image-preview text-center", width: "140px")
+        .Column(caption: "Resim Bilgisi", template: @<text>@ImageInfoColumn(item, filesHelper)</text>, className: "eg-col-image-info", width: "320px")
         .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn", width: "80px")
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "ShowState", true }, { "ShowMainPage", false }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "120px")
         .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px")
         .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true }, { "gridDeleteText", AdminResource.Remove } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
 }
 
-@helper ImageLinkColumn(FileStorage fileStorage, FilesHelper fileHelper)
+@helper ImageThumbnailColumn(FileStorage fileStorage, FilesHelper fileHelper)
+{
+    bool fileExists = fileHelper != null && fileHelper.NormalFileExists(fileStorage.FileName);
+    var downloadUrl = string.Format("/media/images/{0}", fileStorage.FileName);
+<div class="media-file-thumb-container">
+    @if (fileExists)
+    {
+        <a href="@downloadUrl" title="@fileStorage.FileName" download="@fileStorage.FileName" data-gallery="">
+            <img src="@fileStorage.GetCroppedImageUrl(fileStorage.Id, 120, 0, false, true)" alt="@fileStorage.FileName" class="media-grid-thumb" />
+        </a>
+    }
+    else
+    {
+        <div class="alert alert-danger p-1 mb-0 text-center" style="font-size:11px;line-height:1.2;">
+            <i class="fa fa-exclamation-circle"></i><br />
+            <strong>@AdminResource.FileNotFound</strong>
+        </div>
+    }
+</div>
+}
+
+@helper ImageInfoColumn(FileStorage fileStorage, FilesHelper fileHelper)
 {
     bool fileExists = fileHelper != null && fileHelper.NormalFileExists(fileStorage.FileName);
     var imageSizes = fileHelper != null ? fileHelper.GetThumbnailImageSize(fileStorage) : null;
     var fullImageUrl = string.Format("../..{1}{0}", fileStorage.FileName, Constants.UrlBase);
     var thumbImageUrl = string.Format("../..{1}thumbs/thb{0}", fileStorage.FileName, Constants.UrlBase);
-    var downloadUrl = string.Format("/media/images/{0}", fileStorage.FileName);
-<div class="media-file-preview">
-    <div class="media-file-preview-thumb">
-        @if (fileExists)
-        {
-            <a href="@downloadUrl" title="@fileStorage.FileName" download="@fileStorage.FileName" data-gallery="">
-                <img src="@fileStorage.GetCroppedImageUrl(fileStorage.Id, 150, 0, false, true)" alt="@fileStorage.FileName" />
-            </a>
-        }
-        else
-        {
-            <div class="alert alert-danger" style="padding:6px;margin-bottom:4px;font-size:11px;line-height:1.2;text-align:center;">
-                <i class="fa fa-exclamation-circle"></i><br />
-                <strong>@AdminResource.FileNotFound</strong><br />
-                <span style="font-size:10px;">@AdminResource.MissingFileNotFoundOnDisk</span>
-            </div>
-        }
-        <div class="media-file-preview-name">@fileStorage.FileName</div>
-        @if (fileExists)
-        {
-            <div class="mt-1">
-                <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#myModal_@fileStorage.Id"><i class="fa fa-picture-o" aria-hidden="true"></i> @AdminResource.GridMainPageImageText</button>
-                @Html.Partial("pImagePopUp", fileStorage)
-            </div>
-        }
-        else
-        {
-            <span class="eg-image-none">@AdminResource.GridNoMainPageImageText</span>
-        }
-    </div>
-    <div class="media-file-preview-meta">
-        @if (fileExists && imageSizes != null)
-        {
-            <div>
-                @string.Format(AdminResource.OriginalWidthHeightFormat, imageSizes.OriginalWidth, imageSizes.OriginalHeight)
-                <a href="@fullImageUrl" target="_blank">@AdminResource.FullImage</a>
-            </div>
-            <div>
-                @string.Format(AdminResource.ThumbsWidthHeightFormat, imageSizes.Width, imageSizes.Height)
-                <a href="@thumbImageUrl" target="_blank">@AdminResource.ThumbsImage</a>
-            </div>
-        }
-        else
-        {
-            <div>
-                <span class="label text-bg-danger" title="@AdminResource.MissingFileTooltip">
-                    <i class="fa fa-times"></i> @AdminResource.MissingFile
-                </span>
-            </div>
-        }
-    </div>
+<div class="media-file-info-container">
+    <div class="media-file-name" title="@fileStorage.FileName">@fileStorage.FileName</div>
+    @if (fileExists && imageSizes != null)
+    {
+        <div class="media-file-meta-line">
+            <span>@string.Format(AdminResource.OriginalWidthHeightFormat, imageSizes.OriginalWidth, imageSizes.OriginalHeight)</span>
+            <a href="@fullImageUrl" target="_blank" class="media-file-link">@AdminResource.FullImage</a>
+        </div>
+        <div class="media-file-meta-line">
+            <span>@string.Format(AdminResource.ThumbsWidthHeightFormat, imageSizes.Width, imageSizes.Height)</span>
+            <a href="@thumbImageUrl" target="_blank" class="media-file-link">@AdminResource.ThumbsImage</a>
+        </div>
+        <div class="media-file-btn-wrap">
+            <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#myModal_@fileStorage.Id">
+                <i class="fa fa-picture-o" aria-hidden="true"></i> @AdminResource.GridMainPageImageText
+            </button>
+            @Html.Partial("pImagePopUp", fileStorage)
+        </div>
+    }
+    else
+    {
+        <div class="mb-1">
+            <span class="badge text-bg-danger" title="@AdminResource.MissingFileTooltip">
+                <i class="fa fa-times"></i> @AdminResource.MissingFile
+            </span>
+            <span class="text-danger small ms-1">@AdminResource.MissingFileNotFoundOnDisk</span>
+        </div>
+        <span class="eg-image-none">@AdminResource.GridNoMainPageImageText</span>
+    }
 </div>
 }
 
