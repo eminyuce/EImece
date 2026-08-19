@@ -36,6 +36,12 @@ namespace EImece.Domain.Services.ExportImport
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
+        private static readonly JsonWriterOptions WriterOptions = new JsonWriterOptions
+        {
+            Indented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+
         public async Task<DataExportResult> ExportDataAsync(DataExportRequest request, Stream outputStream, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (outputStream == null)
@@ -1257,7 +1263,7 @@ namespace EImece.Domain.Services.ExportImport
             var skip = 0;
 
             using (var entryStream = entry.Open())
-            using (var writer = new Utf8JsonWriter(entryStream, new JsonWriterOptions { Indented = true }))
+            using (var writer = new Utf8JsonWriter(entryStream, WriterOptions))
             {
                 writer.WriteStartObject();
                 writer.WriteString("entity", entityName);

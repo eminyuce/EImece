@@ -36,6 +36,12 @@ namespace EImece.Tests.Services
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
 
+            private static readonly JsonWriterOptions WriterOptions = new JsonWriterOptions
+            {
+                Indented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
             public async Task<DataExportResult> ExportDataAsync(DataExportRequest request, Stream outputStream, CancellationToken cancellationToken = default(CancellationToken))
             {
                 if (outputStream == null)
@@ -71,14 +77,20 @@ namespace EImece.Tests.Services
                     {
                         var entry = archive.CreateEntry("settings.json");
                         using (var stream = entry.Open())
+                        using (var writer = new Utf8JsonWriter(stream, WriterOptions))
                         {
-                            var container = new EntityExportContainer<SettingExportDto>
+                            writer.WriteStartObject();
+                            writer.WriteString("entity", "Setting");
+                            writer.WriteNumber("schemaVersion", 1);
+                            writer.WriteStartArray("records");
+                            foreach (var item in MockSettings)
                             {
-                                Entity = "Setting",
-                                RecordCount = MockSettings.Count,
-                                Records = MockSettings
-                            };
-                            await JsonSerializer.SerializeAsync(stream, container, JsonOptions, cancellationToken);
+                                JsonSerializer.Serialize(writer, item, JsonOptions);
+                            }
+                            writer.WriteEndArray();
+                            writer.WriteNumber("recordCount", MockSettings.Count);
+                            writer.WriteEndObject();
+                            await writer.FlushAsync(cancellationToken);
                         }
                         manifest.Entities["Settings"] = new ExportEntityManifestEntry { File = "settings.json", RecordCount = MockSettings.Count };
                         totalRecords += MockSettings.Count;
@@ -89,14 +101,20 @@ namespace EImece.Tests.Services
                     {
                         var entry = archive.CreateEntry("product-categories.json");
                         using (var stream = entry.Open())
+                        using (var writer = new Utf8JsonWriter(stream, WriterOptions))
                         {
-                            var container = new EntityExportContainer<ProductCategoryExportDto>
+                            writer.WriteStartObject();
+                            writer.WriteString("entity", "ProductCategory");
+                            writer.WriteNumber("schemaVersion", 1);
+                            writer.WriteStartArray("records");
+                            foreach (var item in MockCategories)
                             {
-                                Entity = "ProductCategory",
-                                RecordCount = MockCategories.Count,
-                                Records = MockCategories
-                            };
-                            await JsonSerializer.SerializeAsync(stream, container, JsonOptions, cancellationToken);
+                                JsonSerializer.Serialize(writer, item, JsonOptions);
+                            }
+                            writer.WriteEndArray();
+                            writer.WriteNumber("recordCount", MockCategories.Count);
+                            writer.WriteEndObject();
+                            await writer.FlushAsync(cancellationToken);
                         }
                         manifest.Entities["ProductCategories"] = new ExportEntityManifestEntry { File = "product-categories.json", RecordCount = MockCategories.Count };
                         totalRecords += MockCategories.Count;
@@ -107,14 +125,20 @@ namespace EImece.Tests.Services
                     {
                         var entry = archive.CreateEntry("products.json");
                         using (var stream = entry.Open())
+                        using (var writer = new Utf8JsonWriter(stream, WriterOptions))
                         {
-                            var container = new EntityExportContainer<ProductExportDto>
+                            writer.WriteStartObject();
+                            writer.WriteString("entity", "Product");
+                            writer.WriteNumber("schemaVersion", 1);
+                            writer.WriteStartArray("records");
+                            foreach (var item in MockProducts)
                             {
-                                Entity = "Product",
-                                RecordCount = MockProducts.Count,
-                                Records = MockProducts
-                            };
-                            await JsonSerializer.SerializeAsync(stream, container, JsonOptions, cancellationToken);
+                                JsonSerializer.Serialize(writer, item, JsonOptions);
+                            }
+                            writer.WriteEndArray();
+                            writer.WriteNumber("recordCount", MockProducts.Count);
+                            writer.WriteEndObject();
+                            await writer.FlushAsync(cancellationToken);
                         }
                         manifest.Entities["Products"] = new ExportEntityManifestEntry { File = "products.json", RecordCount = MockProducts.Count };
                         totalRecords += MockProducts.Count;
@@ -125,14 +149,20 @@ namespace EImece.Tests.Services
                     {
                         var entry = archive.CreateEntry("orders.json");
                         using (var stream = entry.Open())
+                        using (var writer = new Utf8JsonWriter(stream, WriterOptions))
                         {
-                            var container = new EntityExportContainer<OrderExportDto>
+                            writer.WriteStartObject();
+                            writer.WriteString("entity", "Order");
+                            writer.WriteNumber("schemaVersion", 1);
+                            writer.WriteStartArray("records");
+                            foreach (var item in MockOrders)
                             {
-                                Entity = "Order",
-                                RecordCount = MockOrders.Count,
-                                Records = MockOrders
-                            };
-                            await JsonSerializer.SerializeAsync(stream, container, JsonOptions, cancellationToken);
+                                JsonSerializer.Serialize(writer, item, JsonOptions);
+                            }
+                            writer.WriteEndArray();
+                            writer.WriteNumber("recordCount", MockOrders.Count);
+                            writer.WriteEndObject();
+                            await writer.FlushAsync(cancellationToken);
                         }
                         manifest.Entities["Orders"] = new ExportEntityManifestEntry { File = "orders.json", RecordCount = MockOrders.Count };
                         totalRecords += MockOrders.Count;
@@ -143,14 +173,20 @@ namespace EImece.Tests.Services
                     {
                         var entry = archive.CreateEntry("users.json");
                         using (var stream = entry.Open())
+                        using (var writer = new Utf8JsonWriter(stream, WriterOptions))
                         {
-                            var container = new EntityExportContainer<UserExportDto>
+                            writer.WriteStartObject();
+                            writer.WriteString("entity", "User");
+                            writer.WriteNumber("schemaVersion", 1);
+                            writer.WriteStartArray("records");
+                            foreach (var item in MockUsers)
                             {
-                                Entity = "User",
-                                RecordCount = MockUsers.Count,
-                                Records = MockUsers
-                            };
-                            await JsonSerializer.SerializeAsync(stream, container, JsonOptions, cancellationToken);
+                                JsonSerializer.Serialize(writer, item, JsonOptions);
+                            }
+                            writer.WriteEndArray();
+                            writer.WriteNumber("recordCount", MockUsers.Count);
+                            writer.WriteEndObject();
+                            await writer.FlushAsync(cancellationToken);
                         }
                         manifest.Entities["Users"] = new ExportEntityManifestEntry { File = "users.json", RecordCount = MockUsers.Count };
                         totalRecords += MockUsers.Count;
@@ -389,6 +425,81 @@ namespace EImece.Tests.Services
                         Assert.IsTrue(json.Contains("Türkçe Karakterli Ürün Adı"));
                         Assert.IsTrue(json.Contains("ğüşiöç"));
                         Assert.IsTrue(json.Contains("İstanbul / Türkiye"));
+                        Assert.IsTrue(json.Contains("<p>Özel <strong>HTML</strong>"));
+                        Assert.IsFalse(json.Contains("\\u0130"), "Must not escape İ as \\u0130");
+                        Assert.IsFalse(json.Contains("\\u003C"), "Must not escape < as \\u003C");
+                        Assert.IsFalse(json.Contains("\\u003E"), "Must not escape > as \\u003E");
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public async Task ExportDataAsync_PreservesAllTurkishCharactersAndHtmlMarkupWithoutEscapeSequences()
+        {
+            var fakeService = new FakeDataExportService();
+            var allTurkishChars = "İıŞşĞğÇçÖöÜü";
+            var htmlContent = "<h2>İletişim</h2><p>Müşteri hizmetleri & destek hattı: 0850 123 45 67</p><strong>Önemli Bilgilendirme: Çarşamba günleri açıktır.</strong>";
+
+            fakeService.MockSettings.Add(new SettingExportDto
+            {
+                Id = 1,
+                Name = "İletişim Ayarları - " + allTurkishChars,
+                SettingKey = "ContactInfo",
+                SettingValue = htmlContent,
+                Description = "Tüm Türkçe harfler: " + allTurkishChars,
+                IsActive = true,
+                CreatedDate = DateTime.UtcNow,
+                UpdatedDate = DateTime.UtcNow
+            });
+
+            using (var memoryStream = new MemoryStream())
+            {
+                var result = await fakeService.ExportDataAsync(new DataExportRequest(), memoryStream);
+                Assert.IsTrue(result.Success);
+
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                using (var zip = new ZipArchive(memoryStream, ZipArchiveMode.Read))
+                {
+                    var settingsEntry = zip.GetEntry("settings.json");
+                    Assert.IsNotNull(settingsEntry);
+
+                    using (var reader = new StreamReader(settingsEntry.Open()))
+                    {
+                        var json = await reader.ReadToEndAsync();
+
+                        // 1. Direct UTF-8 check
+                        Assert.IsTrue(json.Contains("İletişim"));
+                        Assert.IsTrue(json.Contains(allTurkishChars));
+                        Assert.IsTrue(json.Contains("<h2>İletişim</h2>"));
+                        Assert.IsTrue(json.Contains("<p>Müşteri hizmetleri & destek"));
+                        Assert.IsTrue(json.Contains("<strong>Önemli Bilgilendirme: Çarşamba"));
+
+                        // 2. Escape sequence negation check
+                        Assert.IsFalse(json.Contains("\\u0130"), "İ must not be escaped as \\u0130");
+                        Assert.IsFalse(json.Contains("\\u0131"), "ı must not be escaped as \\u0131");
+                        Assert.IsFalse(json.Contains("\\u015E"), "Ş must not be escaped as \\u015E");
+                        Assert.IsFalse(json.Contains("\\u015F"), "ş must not be escaped as \\u015F");
+                        Assert.IsFalse(json.Contains("\\u011E"), "Ğ must not be escaped as \\u011E");
+                        Assert.IsFalse(json.Contains("\\u011F"), "ğ must not be escaped as \\u011F");
+                        Assert.IsFalse(json.Contains("\\u00C7"), "Ç must not be escaped as \\u00C7");
+                        Assert.IsFalse(json.Contains("\\u00E7"), "ç must not be escaped as \\u00E7");
+                        Assert.IsFalse(json.Contains("\\u00D6"), "Ö must not be escaped as \\u00D6");
+                        Assert.IsFalse(json.Contains("\\u00F6"), "ö must not be escaped as \\u00F6");
+                        Assert.IsFalse(json.Contains("\\u00DC"), "Ü must not be escaped as \\u00DC");
+                        Assert.IsFalse(json.Contains("\\u00FC"), "ü must not be escaped as \\u00FC");
+                        Assert.IsFalse(json.Contains("\\u003C"), "< must not be escaped as \\u003C");
+                        Assert.IsFalse(json.Contains("\\u003E"), "> must not be escaped as \\u003E");
+                        Assert.IsFalse(json.Contains("\\u0026"), "& must not be escaped as \\u0026");
+
+                        // 3. Deserialization round-trip check
+                        var container = JsonSerializer.Deserialize<EntityExportContainer<SettingExportDto>>(json, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                        Assert.IsNotNull(container);
+                        Assert.AreEqual(1, container.RecordCount);
+                        var setting = container.Records.First();
+                        Assert.AreEqual("İletişim Ayarları - " + allTurkishChars, setting.Name);
+                        Assert.AreEqual(htmlContent, setting.SettingValue);
+                        Assert.AreEqual("Tüm Türkçe harfler: " + allTurkishChars, setting.Description);
                     }
                 }
             }
