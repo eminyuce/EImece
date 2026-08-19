@@ -17,6 +17,7 @@ using EImece.Filters;
 using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
+using EImece.Domain.Services.ExportImport;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.Services.Payment;
 using Microsoft.AspNet.Identity;
@@ -284,6 +285,7 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IProductCommentService, ProductCommentService>();
             services.AddScopedWithProps<IBrandService, BrandService>();
             services.AddScopedWithProps<ICouponService, CouponService>();
+            services.AddScopedWithProps<IDataExportService, DataExportService>();
 
             services.AddScopedWithProps<IEmailSender, EmailSender>();
             services.AddScopedWithProps<AdresService>();

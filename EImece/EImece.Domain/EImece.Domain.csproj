@@ -901,6 +901,10 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Services\TurkishRegionService.cs" />
     <Compile Include="Services\UsersService.cs" />
+    <Compile Include="Services\ExportImport\DataExportModels.cs" />
+    <Compile Include="Services\ExportImport\IDataExportService.cs" />
+    <Compile Include="Services\ExportImport\IDataImportService.cs" />
+    <Compile Include="Services\ExportImport\DataExportService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

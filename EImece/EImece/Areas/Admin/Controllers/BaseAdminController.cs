@@ -6,6 +6,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services;
+using EImece.Domain.Services.ExportImport;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using Microsoft.AspNet.Identity;
@@ -103,6 +104,9 @@ namespace EImece.Areas.Admin.Controllers
 
         [Inject]
         public ApplicationUserManager UserManager { get; set; }
+ 
+        [Inject]
+        public IDataExportService DataExportService { get; set; }
 
         private FilesHelper _filesHelper { get; set; }
 

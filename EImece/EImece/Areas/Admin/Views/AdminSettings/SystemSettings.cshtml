@@ -422,7 +422,7 @@
                         <div class="card-body">
                             
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="well well-sm text-center">
                                         <h4><i class="fa fa-dashboard text-primary" style="font-size:24px;"></i><br/>@AdminResource.SystemMonitoring</h4>
                                         <p class="text-muted">Sistem durumunu ve performansını inceleyin.</p>
@@ -430,23 +430,42 @@
                                         <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-primary w-100">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i> @AdminResource.Metrics
                                         </a>
-                                        <a href="@Url.Action("Index", "Health", new { area = "" })" class="btn btn-secondary w-100" target="_blank" rel="noopener noreferrer">
+                                        <a href="@Url.Action("Index", "Health", new { area = "" })" class="btn btn-secondary w-100" target="_blank" rel="noopener noreferrer" style="margin-top: 8px;">
                                             <i class="fa fa-heartbeat" aria-hidden="true"></i> @AdminResource.Health
                                         </a>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="well well-sm text-center">
                                         <h4><i class="fa fa-cogs text-warning" style="font-size:24px;"></i><br />@AdminResource.AppLogs & Bakım</h4>
                                         <p class="text-muted">Uygulama kayıtlarını görüntüleyin ve bakım yapın.</p>
+                                        <br/>
                                         @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn w-100 btn-warning" })
                                         <a href="@Url.Action("DownloadCompressedImages", "Images", new { area = "admin" })" class="btn btn-outline-primary w-100" style="margin-top: 8px;">
-                                            <i class="fa fa-file-archive-o" aria-hidden="true"></i> Sıkıştırılmış Görselleri İndir (ZIP)
+                                            <i class="fa fa-file-archive-o" aria-hidden="true"></i> Sıkıştırılmış Görseller (ZIP)
                                         </a>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="well well-sm text-center" style="border: 1px solid #198754; background-color: #f8fff9;">
+                                        <h4><i class="fa fa-database text-success" style="font-size:24px;"></i><br />Veri Yedekleme (JSON)</h4>
+                                        <p class="text-muted">Uygulama iş verilerini versiyonlu JSON formatında yedekleyin.</p>
+                                        <div style="margin-bottom: 12px;">
+                                            <span class="badge bg-success" style="font-size: 11px;">v1.0 JSON</span>
+                                            <span class="badge bg-info text-dark" style="font-size: 11px;">İlişki Korumalı</span>
+                                            <span class="badge bg-secondary" style="font-size: 11px;">ZIP Paket</span>
+                                        </div>
+                                        <a href="@Url.Action("ExportBackup", "AdminSettings", new { area = "admin" })" class="btn btn-success w-100 btn-export-backup" id="btnExportBackup" title="Tüm sistem verilerini JSON ZIP olarak dışa aktar">
+                                            <i class="fa fa-download" aria-hidden="true"></i> Verileri Dışa Aktar (ZIP)
+                                        </a>
+                                        <p class="form-text text-muted" style="margin-top: 8px; font-size: 11px;">
+                                            Katalog, siparişler, ayarlar ve kullanıcı meta verilerini içerir. Şifreler ve ödeme kart bilgileri dahil edilmez.
+                                        </p>
+                                    </div>
                                 </div>
+                            </div>
 
                             </div>
                         </div>

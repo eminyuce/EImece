@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework;
 using System.Data.Entity;
 
@@ -41,5 +41,6 @@ namespace EImece.Domain.DbContext
 
         IDbSet<Brand> Brands { get; set; }
         IDbSet<Coupon> Coupons { get; set; }
+        IDbSet<MainPageImage> MainPageImages { get; set; }
     }
 }
