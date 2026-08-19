@@ -441,8 +441,11 @@
                                         <h4><i class="fa fa-cogs text-warning" style="font-size:24px;"></i><br />@AdminResource.AppLogs & Bakım</h4>
                                         <p class="text-muted">Uygulama kayıtlarını görüntüleyin ve bakım yapın.</p>
                                         @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn w-100 btn-warning" })
+                                        <a href="@Url.Action("DownloadCompressedImages", "Images", new { area = "admin" })" class="btn btn-outline-primary w-100" style="margin-top: 8px;">
+                                            <i class="fa fa-file-archive-o" aria-hidden="true"></i> Sıkıştırılmış Görselleri İndir (ZIP)
+                                        </a>
                                     </div>
-                                    </div>
+                                </div>
                                 </div>
 
                             </div>

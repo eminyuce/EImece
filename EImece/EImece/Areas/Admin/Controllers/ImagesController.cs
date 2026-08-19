@@ -1,8 +1,9 @@
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,6 +13,9 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ImagesController : BaseAdminController
     {
+        [Inject]
+        public ICompressedImageExportService CompressedImageExportService { get; set; }
+
         // Get method to resize and display image
         [AcceptVerbs(HttpVerbs.Get)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, string id, int width = 0, int height = 0)
@@ -32,51 +36,25 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult DownloadCompressedImages()
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public async Task<ActionResult> DownloadCompressedImages(CancellationToken cancellationToken)
         {
-            string outputDirectory = Path.Combine(Server.MapPath("~/media"), "compressed_images");
-
-            if (!Directory.Exists(outputDirectory))
+            string mediaImagesDirectory = null;
+            try
             {
-                ViewBag.Message = "No compressed images found.";
-                return View("CompressImages");
+                mediaImagesDirectory = Server != null ? Server.MapPath("~/media/images") : null;
+            }
+            catch
+            {
+                // Fallback to service default resolution (AppConfig.StorageRoot)
             }
 
-            // Create a memory stream to hold the zip data
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                // Create a zip archive in memory
-                using (ZipArchive zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                {
-                    // Iterate through the files in the directory and add them to the zip
-                    foreach (string filePath in Directory.GetFiles(outputDirectory))
-                    {
-                        // Get the file name from the path
-                        string fileName1 = Path.GetFileName(filePath);
+            var result = await CompressedImageExportService.ExportCompressedImagesAsync(
+                mediaImagesDirectory,
+                jpegQuality: 70L,
+                cancellationToken: cancellationToken).ConfigureAwait(false);
 
-                        // Add the file to the zip
-                        ZipArchiveEntry zipEntry = zipArchive.CreateEntry(fileName1);
-
-                        using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                        using (Stream zipStream = zipEntry.Open())
-                        {
-                            fileStream.CopyTo(zipStream); // Copy file content to zip entry
-                        }
-                    }
-                }
-
-                // Set the position to the beginning of the memory stream before returning it
-                memoryStream.Seek(0, SeekOrigin.Begin);
-
-                // Get the current timestamp in a suitable format (e.g., "yyyyMMdd_HHmmss")
-                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-
-                // Generate the filename with the timestamp
-                string fileName = $"compressed_images_{timestamp}.zip";
-
-                // Return the memory stream as a file download with the dynamic filename
-                return File(memoryStream.ToArray(), "application/zip", fileName);
-            }
+            return File(result.ZipBytes, result.ContentType, result.FileName);
         }
 
         public ActionResult RemoveCompressedImages()

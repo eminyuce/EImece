@@ -257,6 +257,7 @@ namespace EImece.App_Start
 
         private static void RegisterServices(IServiceCollection services)
         {
+            services.AddScopedWithProps<ICompressedImageExportService, CompressedImageExportService>();
             services.AddScopedWithProps<IFileStorageService, FileStorageService>();
             services.AddScopedWithProps<IListItemService, ListItemService>();
             services.AddScopedWithProps<IListService, ListService>();
