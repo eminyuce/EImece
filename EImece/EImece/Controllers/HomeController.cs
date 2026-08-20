@@ -59,9 +59,6 @@ namespace EImece.Controllers
         [Inject]
         public IProductService ProductService { get; set; }
 
-        [Inject]
-        public MigrationRepository MigrationRepository { get; set; }
-
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         public async Task<ActionResult> Index()
         {

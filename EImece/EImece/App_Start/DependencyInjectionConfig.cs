@@ -265,7 +265,6 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IProductCommentRepository, ProductCommentRepository>();
             services.AddScopedWithProps<IBrandRepository, BrandRepository>();
 
-            services.AddScopedWithProps<MigrationRepository>();
             services.AddScopedWithProps<BitlyRepository>();
             services.AddScopedWithProps<AppLogRepository>();
         }

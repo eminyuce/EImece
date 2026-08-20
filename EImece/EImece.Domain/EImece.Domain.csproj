@@ -798,7 +798,6 @@
     <Compile Include="Repositories\MainPageImageRepository.cs" />
     <Compile Include="Repositories\MenuFileRepository.cs" />
     <Compile Include="Repositories\MenuRepository.cs" />
-    <Compile Include="Repositories\MigrationRepository.cs" />
     <Compile Include="Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Repositories\ProductFileRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
