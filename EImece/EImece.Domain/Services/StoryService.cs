@@ -540,7 +540,9 @@ namespace EImece.Domain.Services
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take).ToList();
 
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
+            var request = HttpContextFactory.Create()?.Request;
+            var host = request?.Url?.Host ?? "localhost";
+            var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
@@ -550,19 +552,22 @@ namespace EImece.Domain.Services
                 Language = lang
             };
 
-            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name, url, rssParams));
+            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory?.Name ?? "", url, rssParams));
 
             return new Rss20FeedFormatter(feed);
         }
 
         public async Task<Rss20FeedFormatter> GetStoryCategoriesRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var request = HttpContextFactory.Create()?.Request;
+            var host = request?.Url?.Host ?? "localhost";
+            var builder = new UriBuilder(AppConfig.HttpProtocol, host);
+            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+
             var storyCategory = await StoryCategoryService.GetSingleAsync(rssParams.CategoryId).ConfigureAwait(false);
             var paginated = await StoryRepository.GetStoriesByStoryCategoryIdAsync(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take, cancellationToken).ConfigureAwait(false);
             var items = paginated.ToList();
 
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
-            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
@@ -571,7 +576,7 @@ namespace EImece.Domain.Services
                 Language = lang
             };
 
-            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory.Name, url, rssParams));
+            feed.Items = items.Select(s => s.GetStorySyndicationItem(storyCategory?.Name ?? "", url, rssParams));
 
             return new Rss20FeedFormatter(feed);
         }
@@ -584,7 +589,9 @@ namespace EImece.Domain.Services
                 return null;
             }
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
+            var request = HttpContextFactory.Create()?.Request;
+            var host = request?.Url?.Host ?? "localhost";
+            var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
@@ -597,22 +604,31 @@ namespace EImece.Domain.Services
             feed.AddGoogleContentNameSpace();
             feed.AddYahooMediaNamespace();
             feed.LastUpdatedTime = new DateTimeOffset(items.Max(t => t.UpdatedDate));
-            feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory.Name, url, rssParams));
+            feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory?.Name ?? "", url, rssParams));
 
-            var urlHelper = new UrlHelper(HttpContextFactory.Create().Request.RequestContext);
-            String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss", null, AppConfig.HttpProtocol);
+            var urlHelper = request?.RequestContext != null ? new UrlHelper(request.RequestContext) : null;
+            String imagePath = urlHelper?.Action("StoryCategoriesFull", "Rss", null, AppConfig.HttpProtocol)
+                ?? $"{url}/rss/StoryCategoriesFull";
 
             var formatter = new Rss20FeedFormatter(feed);
             formatter.SerializeExtensionsAsAtom = false;
             XNamespace atom = "http://www.w3.org/2005/Atom";
             formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
-            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", imagePath.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", imagePath), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
 
             return formatter;
         }
 
         public async Task<Rss20FeedFormatter> GetStoryCategoriesRssFullAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var request = HttpContextFactory.Create()?.Request;
+            var host = request?.Url?.Host ?? "localhost";
+            var builder = new UriBuilder(AppConfig.HttpProtocol, host);
+            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+            var urlHelper = request?.RequestContext != null ? new UrlHelper(request.RequestContext) : null;
+            String imagePath = urlHelper?.Action("StoryCategoriesFull", "Rss", null, AppConfig.HttpProtocol)
+                ?? $"{url}/rss/StoryCategoriesFull";
+
             var paginated = await StoryRepository.GetStoriesByStoryCategoryIdAsync(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take, cancellationToken).ConfigureAwait(false);
             var items = paginated.ToList();
             if (items.IsEmpty())
@@ -620,8 +636,7 @@ namespace EImece.Domain.Services
                 return null;
             }
             var storyCategory = await StoryCategoryService.GetSingleAsync(rssParams.CategoryId).ConfigureAwait(false);
-            var builder = new UriBuilder(AppConfig.HttpProtocol, HttpContextFactory.Create().Request.Url.Host);
-            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+
             String title = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
 
@@ -633,16 +648,13 @@ namespace EImece.Domain.Services
             feed.AddGoogleContentNameSpace();
             feed.AddYahooMediaNamespace();
             feed.LastUpdatedTime = new DateTimeOffset(items.Max(t => t.UpdatedDate));
-            feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory.Name, url, rssParams));
-
-            var urlHelper = new UrlHelper(HttpContextFactory.Create().Request.RequestContext);
-            String imagePath = urlHelper.Action("StoryCategoriesFull", "Rss", null, AppConfig.HttpProtocol);
+            feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory?.Name ?? "", url, rssParams));
 
             var formatter = new Rss20FeedFormatter(feed);
             formatter.SerializeExtensionsAsAtom = false;
             XNamespace atom = "http://www.w3.org/2005/Atom";
             formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
-            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", imagePath.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", imagePath), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
 
             return formatter;
         }
