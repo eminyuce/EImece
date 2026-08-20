@@ -226,6 +226,14 @@ namespace EImece.Tests.Services
                 IsActive = true,
                 Description = Constants.SystemSettings
             });
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 12,
+                SettingKey = Constants.IsSiteUnderConstruction,
+                SettingValue = "true",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
 
             AppConfig.SettingResolver = key => _settingService.GetSettingByKey(key);
             var designProvider = new ConfigDesignProvider();
@@ -233,6 +241,7 @@ namespace EImece.Tests.Services
             // Act & Assert
             Assert.IsTrue(SeoSettings.AllowIndexing);
             Assert.AreEqual("Modern", designProvider.GetActiveDesign());
+            Assert.IsTrue(AppConfig.IsSiteUnderConstruction);
         }
 
         private class FakeDbContextProxy : RealProxy
