@@ -44,8 +44,6 @@ namespace EImece.Domain.Services.IServices
 
         Task DeleteProductCategoriesAsync(List<string> values);
 
-        ProductCategoryViewModel GetProductCategoryViewModel(int categoryId);
-
         Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int categoryId);
 
         List<ProductCategory> GetMainPageProductCategories(int language);

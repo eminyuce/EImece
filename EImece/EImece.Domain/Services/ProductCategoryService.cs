@@ -486,13 +486,6 @@ namespace EImece.Domain.Services
             return null;
         }
 
-        public ProductCategoryViewModel GetProductCategoryViewModel(int categoryId)
-        {
-            var categoryDto = ProductCategoryRepository.GetStorefrontCategoryById(categoryId);
-            if (categoryDto == null) return null;
-            return GetStorefrontCategoryPageViewModelAsync(categoryId, 1, Models.Enums.SortingType.Default, null, null, null, 20, categoryDto.Lang).GetAwaiter().GetResult();
-        }
-
         public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int categoryId)
         {
             var categoryDto = await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId).ConfigureAwait(false);

@@ -63,13 +63,6 @@ namespace EImece.Tests.Services
                     TotalCompressedSizeBytes = 80
                 });
             }
-
-            public ImageExportPackageResult ExportCompressedImages(
-                string mediaImagesDirectory = null,
-                long jpegQuality = 70L)
-            {
-                return ExportCompressedImagesAsync(mediaImagesDirectory, jpegQuality).GetAwaiter().GetResult();
-            }
         }
 
         private string _tempDirectory;

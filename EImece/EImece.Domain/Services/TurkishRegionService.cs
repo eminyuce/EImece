@@ -12,18 +12,14 @@ namespace EImece.Domain.Services
 {
     public class TurkishRegionService : ITurkishRegionService
     {
-        private List<City> _cities;
+        private static readonly Lazy<List<City>> CachedCities = new Lazy<List<City>>(LoadDataInternal, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
         public TurkishRegionService()
         {
-            // Initialize and load data from the file
-            LoadData();
         }
 
-        // Method to read the file and cache it
-        private void LoadData()
+        private static List<City> LoadDataInternal()
         {
-            // Specify the file path where your JSON is located
             string filePath = null;
             if (HostingEnvironment.IsHosted)
             {
@@ -41,37 +37,30 @@ namespace EImece.Domain.Services
             if (filePath != null && File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                _cities = JsonConvert.DeserializeObject<List<City>>(json) ?? new List<City>();
+                return JsonConvert.DeserializeObject<List<City>>(json) ?? new List<City>();
             }
-            else
-            {
-                _cities = new List<City>();
-            }
+
+            return new List<City>();
         }
 
-        // Get all cities
         public List<string> GetAllCities()
         {
-            return _cities.Select(c => c.Name).ToList();
+            return CachedCities.Value.Select(c => c.Name).ToList();
         }
 
-        // Get all towns based on selected city
         public List<string> GetTownsByCity(string cityName)
         {
-            var city = _cities.FirstOrDefault(c => c.Name.Equals(cityName, StringComparison.OrdinalIgnoreCase));
-
+            var city = CachedCities.Value.FirstOrDefault(c => c.Name.Equals(cityName, StringComparison.OrdinalIgnoreCase));
             if (city != null)
             {
                 return city.Towns.Select(t => t.Name).ToList();
             }
-
             return new List<string>();
         }
 
-        // Get all districts based on selected town
         public List<string> GetDistrictsByTown(string cityName, string townName)
         {
-            var city = _cities.FirstOrDefault(c => c.Name.Equals(cityName, StringComparison.OrdinalIgnoreCase));
+            var city = CachedCities.Value.FirstOrDefault(c => c.Name.Equals(cityName, StringComparison.OrdinalIgnoreCase));
             if (city != null)
             {
                 var town = city.Towns.FirstOrDefault(t => t.Name.Equals(townName, StringComparison.OrdinalIgnoreCase));
@@ -84,7 +73,6 @@ namespace EImece.Domain.Services
                                .ToList();
                 }
             }
-
             return new List<string>();
         }
     }

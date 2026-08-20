@@ -46,7 +46,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeAsync(ShoppingCartSession shoppingCart, string userId, String actionName = "PaymentResult")
+        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeAsync(ShoppingCartSession shoppingCart, string userId, string actionName = "PaymentResult", string callbackUrl = null)
         {
             Logger.Info("Initializing CheckoutForm for user: " + userId);
 
@@ -71,15 +71,25 @@ namespace EImece.Domain.Services
             Options options = GetOptions();
 
             // Build callback URL
-            Logger.Debug("Building callback URL for Payment Result...");
-            var requestContext = HttpContext.Current.Request.RequestContext;
-            string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
-            string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
             string orderNumber = GeneralHelper.GenerateOrderNumber();
-            string callbackUrl = new UrlHelper(requestContext).Action(actionName,
-                                               "Payment",
-                                               new { o, u, orderNumber },
-                                               AppConfig.HttpProtocol);
+            if (string.IsNullOrEmpty(callbackUrl))
+            {
+                Logger.Debug("Building callback URL for Payment Result...");
+                string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
+                string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
+                if (HttpContext.Current != null && HttpContext.Current.Request != null)
+                {
+                    var requestContext = HttpContext.Current.Request.RequestContext;
+                    callbackUrl = new UrlHelper(requestContext).Action(actionName,
+                                                       "Payment",
+                                                       new { o, u, orderNumber },
+                                                       AppConfig.HttpProtocol);
+                }
+                else
+                {
+                    callbackUrl = $"/Payment/{actionName}?o={o}&u={u}&orderNumber={orderNumber}";
+                }
+            }
 
             // Initialize request
             CreateCheckoutFormInitializeRequest request = new CreateCheckoutFormInitializeRequest
@@ -206,20 +216,30 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeBuyNowAsync(BuyNowModel buyNowModel)
+        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeBuyNowAsync(BuyNowModel buyNowModel, string callbackUrl = null)
         {
             Logger.Info("Initializing CheckoutForm for BuyNow with OrderGuid: " + buyNowModel.OrderGuid);
 
             Options options = GetOptions();
             var customer = buyNowModel.Customer;
 
-            Logger.Debug("Building callback URL for BuyNow Payment Result...");
-            var requestContext = HttpContext.Current.Request.RequestContext;
-            string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
-            string callbackUrl = new UrlHelper(requestContext).Action("BuyNowPaymentResult",
-                                               "Payment",
-                                               new { o },
-                                               AppConfig.HttpProtocol);
+            if (string.IsNullOrEmpty(callbackUrl))
+            {
+                Logger.Debug("Building callback URL for BuyNow Payment Result...");
+                string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
+                if (HttpContext.Current != null && HttpContext.Current.Request != null)
+                {
+                    var requestContext = HttpContext.Current.Request.RequestContext;
+                    callbackUrl = new UrlHelper(requestContext).Action("BuyNowPaymentResult",
+                                                       "Payment",
+                                                       new { o },
+                                                       AppConfig.HttpProtocol);
+                }
+                else
+                {
+                    callbackUrl = $"/Payment/BuyNowPaymentResult?o={o}";
+                }
+            }
 
             var request = new CreateCheckoutFormInitializeRequest
             {

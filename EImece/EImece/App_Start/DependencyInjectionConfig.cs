@@ -49,7 +49,7 @@ namespace EImece.App_Start
         /// <summary>
         /// Optional ambient scope for Application_Start (no HttpContext) when resolving scoped services.
         /// </summary>
-        private static IServiceScope _ambientScope;
+        private static readonly System.Threading.AsyncLocal<IServiceScope> _ambientScope = new System.Threading.AsyncLocal<IServiceScope>();
 
         /// <summary>
         /// Called early from Application_Start (after ConnectionStringProvider.Initialize).
@@ -90,21 +90,27 @@ namespace EImece.App_Start
                 throw new InvalidOperationException("DependencyInjectionConfig.Register() must be called first.");
             }
 
-            SetAmbientScope(ServiceProvider.CreateScope());
-            return new AmbientScopeReleaser();
-        }
-
-        private static void SetAmbientScope(IServiceScope scope)
-        {
-            _ambientScope = scope;
+            var scope = ServiceProvider.CreateScope();
+            _ambientScope.Value = scope;
+            return new AmbientScopeReleaser(scope);
         }
 
         private sealed class AmbientScopeReleaser : IDisposable
         {
+            private readonly IServiceScope _scope;
+
+            public AmbientScopeReleaser(IServiceScope scope)
+            {
+                _scope = scope;
+            }
+
             public void Dispose()
             {
-                _ambientScope?.Dispose();
-                _ambientScope = null;
+                if (_ambientScope.Value == _scope)
+                {
+                    _ambientScope.Value = null;
+                }
+                _scope?.Dispose();
             }
         }
 
@@ -139,7 +145,7 @@ namespace EImece.App_Start
                 return scope.ServiceProvider;
             }
 
-            return _ambientScope?.ServiceProvider;
+            return _ambientScope.Value?.ServiceProvider;
         }
 
         private static void ConfigureServices(IServiceCollection services)

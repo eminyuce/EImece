@@ -111,13 +111,6 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public ImageExportPackageResult ExportCompressedImages(string mediaImagesDirectory = null, long jpegQuality = 70L)
-        {
-            return ExportCompressedImagesAsync(mediaImagesDirectory, jpegQuality, CancellationToken.None)
-                .GetAwaiter()
-                .GetResult();
-        }
-
         private string ResolveMediaImagesDirectory(string customDirectory)
         {
             if (!string.IsNullOrWhiteSpace(customDirectory))
