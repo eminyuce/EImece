@@ -340,6 +340,7 @@ namespace EImece.App_Start
         {
             services.AddScopedWithProps<FilesHelper>();
             services.AddScopedWithProps<XmlEditorHelper>();
+            services.AddScopedWithProps<IRazorEngineHelper, RazorEngineHelper>();
             services.AddScopedWithProps<RazorEngineHelper>();
         }
 

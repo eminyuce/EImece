@@ -84,5 +84,19 @@ namespace EImece.Tests.Services
             Assert.IsNotNull(towns);
             Assert.AreEqual(0, towns.Count);
         }
+
+        [TestMethod]
+        public void RazorEngineHelper_Constructor_ThrowsOnNullDependency()
+        {
+            try
+            {
+                var helper = new EImece.Domain.Helpers.EmailHelper.RazorEngineHelper(null, null, null, null, null, null);
+                Assert.Fail("Expected ArgumentNullException was not thrown.");
+            }
+            catch (ArgumentNullException)
+            {
+                // Expected
+            }
+        }
     }
 }

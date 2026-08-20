@@ -38,7 +38,7 @@ namespace EImece.Controllers
         public IUsersService UsersService { get; set; }
 
         [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
+        public IRazorEngineHelper RazorEngineHelper { get; set; }
 
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }

@@ -54,7 +54,7 @@ namespace EImece.Controllers
         public IMailTemplateService MailTemplateService { get; set; }
 
         [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
+        public IRazorEngineHelper RazorEngineHelper { get; set; }
 
         [Inject]
         public IProductService ProductService { get; set; }
