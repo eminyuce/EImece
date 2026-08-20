@@ -624,7 +624,6 @@
     <Compile Include="Helpers\Extensions\ListEntityExtension.cs" />
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
-    <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\AuthenticatorHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />

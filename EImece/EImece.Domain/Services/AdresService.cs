@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Caching;
+using EImece.Domain.Caching;
 using EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle;
 using Newtonsoft.Json;
 using EImece.Domain.DependencyInjection;
@@ -57,9 +57,27 @@ namespace EImece.Domain.Services
 
         private static string read(string filePath)
         {
-            string filePath2 = HttpContext.Current.Server.MapPath(filePath);
-            string result = System.IO.File.ReadAllText(filePath2);
-            return result;
+            string resolvedPath = null;
+            if (System.Web.Hosting.HostingEnvironment.IsHosted)
+            {
+                resolvedPath = System.Web.Hosting.HostingEnvironment.MapPath(filePath);
+            }
+            else if (HttpContext.Current != null && HttpContext.Current.Server != null)
+            {
+                resolvedPath = HttpContext.Current.Server.MapPath(filePath);
+            }
+            else
+            {
+                string cleanPath = filePath.TrimStart('~', '/', '\\');
+                resolvedPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cleanPath);
+            }
+
+            if (resolvedPath != null && System.IO.File.Exists(resolvedPath))
+            {
+                return System.IO.File.ReadAllText(resolvedPath);
+            }
+
+            return string.Empty;
         }
     }
 }

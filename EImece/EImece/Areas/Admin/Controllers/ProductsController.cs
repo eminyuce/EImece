@@ -25,9 +25,10 @@ namespace EImece.Areas.Admin.Controllers
         private const string IndexAction = "Index";
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult IndexGrid(
+        public async Task<ActionResult> IndexGrid(
             int id = 0,
-            AdminProductsIndexQuery query = null)
+            AdminProductsIndexQuery query = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (query == null)
             {
@@ -52,7 +53,7 @@ namespace EImece.Areas.Admin.Controllers
                 });
             }
 
-            var isProductPriceEnable = AsyncHelper.RunSync(() => SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable));
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
             bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
             var filter = new ProductAdminListFilter
@@ -67,7 +68,7 @@ namespace EImece.Areas.Admin.Controllers
             };
 
             string searchParam = !string.IsNullOrWhiteSpace(query.Search) ? query.Search : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : null);
-            var products = AsyncHelper.RunSync(() => ProductService.GetAdminPageListAsync(id, query.BrandId, searchParam, CurrentLanguage, filter, CancellationToken.None));
+            var products = await ProductService.GetAdminPageListAsync(id, query.BrandId, searchParam, CurrentLanguage, filter, cancellationToken).ConfigureAwait(false);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             ViewBag.PriceEnabled = priceEnabled;
             return new QueryableResult<Product>(products.AsQueryable());

@@ -10,9 +10,5 @@ namespace EImece.Domain.Services.IServices
             string mediaImagesDirectory = null,
             long jpegQuality = 70L,
             CancellationToken cancellationToken = default(CancellationToken));
-
-        ImageExportPackageResult ExportCompressedImages(
-            string mediaImagesDirectory = null,
-            long jpegQuality = 70L);
     }
 }
