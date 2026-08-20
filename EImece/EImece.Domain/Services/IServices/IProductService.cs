@@ -58,6 +58,10 @@ namespace EImece.Domain.Services.IServices
 
         Task<Rss20FeedFormatter> GetProductsRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken));
 
+        Rss20FeedFormatter GetProductCategoriesRss(RssParams rssParams);
+
+        Task<Rss20FeedFormatter> GetProductCategoriesRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken));
+
         ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang);
 
         Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken));

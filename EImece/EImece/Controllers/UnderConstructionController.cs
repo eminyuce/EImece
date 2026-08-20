@@ -1,16 +1,17 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using NLog;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
     public class UnderConstructionController : Controller
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); // Added logger instance
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // GET: UnderConstruction
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             Logger.Info("Entering Index action.");
             Logger.Info($"Checking site status: IsSiteUnderConstruction = {AppConfig.IsSiteUnderConstruction}");
@@ -22,14 +23,13 @@ namespace EImece.Controllers
                 response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
                 response.TrySkipIisCustomErrors = true;
                 Logger.Info("Returning Index view with 503 status.");
-                return View();
+                return await Task.FromResult(View());
             }
             else
             {
                 Logger.Info("Site is not under construction. Redirecting to Home Index.");
-                return RedirectToAction("Index", "Home");
+                return await Task.FromResult(RedirectToAction("Index", "Home"));
             }
         }
-
     }
 }

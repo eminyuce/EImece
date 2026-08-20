@@ -496,12 +496,12 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public List<Product> GetActiveProductsForRss(int language, int take)
+        public List<Product> GetActiveProductsForRss(int language, int take, int? categoryId = null)
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.Brand);
-            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive && (!categoryId.HasValue || r2.ProductCategoryId == categoryId.Value);
             return GetAllIncludingReadOnly(includeProperties.ToArray())
                 .Where(match)
                 .OrderByStorefrontDefault()
@@ -509,12 +509,12 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<Product>> GetActiveProductsForRssAsync(int language, int take, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<Product>> GetActiveProductsForRssAsync(int language, int take, int? categoryId = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.Brand);
-            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive;
+            Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == language && r2.ProductCategory.IsActive && (!categoryId.HasValue || r2.ProductCategoryId == categoryId.Value);
             return await GetAllIncludingReadOnly(includeProperties.ToArray())
                 .Where(match)
                 .OrderByStorefrontDefault()

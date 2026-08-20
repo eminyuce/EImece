@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -121,7 +122,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             string fileName = string.Format("{0}_{1}.html", safeName, timestamp);
 
-            return File(fileBytes, "text/html", fileName);
+            return File(fileBytes, MediaTypeNames.Text.Html, fileName);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Net.Mime;
 using System.Text;
 using System.Web.Mvc;
 using System.Xml;
@@ -31,7 +32,7 @@ namespace EImece.Domain.Helpers.SiteMap
         {
             var response = context.HttpContext.Response;
 
-            response.ContentType = "text/xml";
+            response.ContentType = MediaTypeNames.Text.Xml;
             response.ContentEncoding = Encoding.UTF8;
 
             using (var writer = new XmlTextWriter(response.Output))

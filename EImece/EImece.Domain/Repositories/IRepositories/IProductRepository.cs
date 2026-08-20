@@ -17,9 +17,9 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<Product> GetActiveProducts(int? language);
 
-        List<Product> GetActiveProductsForRss(int language, int take);
+        List<Product> GetActiveProductsForRss(int language, int take, int? categoryId = null);
 
-        Task<List<Product>> GetActiveProductsForRssAsync(int language, int take, CancellationToken cancellationToken = default(CancellationToken));
+        Task<List<Product>> GetActiveProductsForRssAsync(int language, int take, int? categoryId = null, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<PaginatedList<Product>> GetActiveProductsAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken));
 

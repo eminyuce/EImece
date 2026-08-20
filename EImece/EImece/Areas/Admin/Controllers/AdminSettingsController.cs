@@ -8,6 +8,7 @@ using NLog;
 using Resources;
 using System;
 using System.IO;
+using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -144,7 +145,7 @@ namespace EImece.Areas.Admin.Controllers
                 Logger.Info("Admin JSON data export completed. File={0}, TotalRecords={1}, SizeBytes={2} (CorrelationId: {3})",
                     fileName, exportResult.TotalRecords, exportResult.CompressedSizeBytes, correlationId);
 
-                return File(memoryStream, "application/zip", fileName);
+                return File(memoryStream, MediaTypeNames.Application.Zip, fileName);
             }
             catch (Exception ex)
             {

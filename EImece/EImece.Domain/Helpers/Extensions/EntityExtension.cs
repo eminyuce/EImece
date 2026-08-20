@@ -6,6 +6,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mime;
 using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Web;
@@ -48,7 +49,7 @@ namespace EImece.Domain.Helpers.Extensions
                     try
                     {
                         SyndicationLink imageLink =
-                            SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
+                            SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), MediaTypeNames.Image.Jpeg, 100);
                         si.Links.Add(imageLink);
                     }
                     catch (Exception e)
@@ -137,7 +138,7 @@ namespace EImece.Domain.Helpers.Extensions
                     try
                     {
                         SyndicationLink imageLink =
-                            SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), "image/jpeg", 100);
+                            SyndicationLink.CreateMediaEnclosureLink(new Uri(imageUrl), MediaTypeNames.Image.Jpeg, 100);
                         si.Links.Add(imageLink);
                     }
                     catch (Exception e)

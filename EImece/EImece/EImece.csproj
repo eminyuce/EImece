@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -460,7 +460,9 @@
     <Compile Include="Areas\Admin\Controllers\TagsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RssFeedsController.cs" />
     <Compile Include="Areas\Admin\Models\MetricsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RssFeedViewModels.cs" />
     <Compile Include="Areas\Customers\Controllers\HomeController.cs" />
     <Compile Include="Areas\Customers\CustomersAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -1528,6 +1530,7 @@
     <None Include="ApplicationInsights.config.example" />
     <Content Include="Areas\Admin\Views\Shared\_SystemHealthBadge.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\SystemHealth.cshtml" />
+    <Content Include="Areas\Admin\Views\RssFeeds\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Customers\IndexGrid.cshtml" />
     <Content Include="Areas\Admin\Views\Customers\CustomerOrdersGrid.cshtml" />
     <Content Include="Areas\Admin\Views\Coupons\IndexGrid.cshtml" />

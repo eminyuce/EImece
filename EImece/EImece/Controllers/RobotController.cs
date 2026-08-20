@@ -3,7 +3,9 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using NLog;
 using System;
+using System.Net.Mime;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -11,11 +13,10 @@ namespace EImece.Controllers
     public class RobotController : Controller
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private const string TextPlain = "text/plain";
 
         // GET: Robots
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
-        public FileContentResult RobotsText()
+        public async Task<FileContentResult> RobotsText()
         {
             Logger.Info("Entering RobotsText action.");
 
@@ -59,7 +60,7 @@ namespace EImece.Controllers
                   .AppendLine("Allow: /");
             }
 
-            return File(Encoding.UTF8.GetBytes(sb.ToString()), TextPlain);
+            return await Task.FromResult(File(Encoding.UTF8.GetBytes(sb.ToString()), MediaTypeNames.Text.Plain));
         }
     }
 }

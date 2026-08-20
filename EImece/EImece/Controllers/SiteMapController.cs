@@ -1,8 +1,9 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Services;
 using EImece.Domain.DependencyInjection;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Text;
 using System.Web.Mvc;
@@ -11,8 +12,6 @@ namespace EImece.Controllers
 {
     public class SiteMapController : BaseController
     {
-        private const string TextPlain = "text/plain";
-
         [Inject]
         public SiteMapService SiteMapService { get; set; }
 
@@ -23,7 +22,7 @@ namespace EImece.Controllers
         {
             if (AppConfig.IsSiteUnderConstruction)
             {
-                return File(Encoding.UTF8.GetBytes(""), TextPlain);
+                return File(Encoding.UTF8.GetBytes(""), MediaTypeNames.Text.Plain);
             }
             return new SitemapResult(await SiteMapService.GenerateSiteMapAsync());
         }

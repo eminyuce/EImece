@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers.ActionResultHelpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.FrontModels;
@@ -60,6 +60,27 @@ namespace EImece.Controllers
                     return Content("No RSS for Stories");
                 }
                 comment.AppendLine("/rss/storycategories?take=10&language=1&categoryId=53&description=250");
+                return new FeedResult(items, comment);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ex.Message);
+                return Content(ex.Message);
+            }
+        }
+
+        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        public async Task<ActionResult> ProductCategories(RssParams rssParams)
+        {
+            var comment = new StringBuilder();
+            try
+            {
+                var items = await ProductService.GetProductCategoriesRssAsync(rssParams);
+                if (items == null)
+                {
+                    return Content("No RSS for Products");
+                }
+                comment.AppendLine("/rss/productcategories?take=10&language=1&categoryId=1&description=200");
                 return new FeedResult(items, comment);
             }
             catch (Exception ex)

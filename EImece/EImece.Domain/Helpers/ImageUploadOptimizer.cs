@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Runtime.InteropServices;
 
 namespace EImece.Domain.Helpers
@@ -20,9 +21,9 @@ namespace EImece.Domain.Helpers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public const string MimeJpeg = "image/jpeg";
+        public const string MimeJpeg = MediaTypeNames.Image.Jpeg;
         public const string MimePng = "image/png";
-        public const string MimeGif = "image/gif";
+        public const string MimeGif = MediaTypeNames.Image.Gif;
         public const string MimeWebP = "image/webp";
         public const string MimeBmp = "image/bmp";
 

@@ -2,6 +2,7 @@ using EImece.Domain;
 using NLog;
 using System;
 using System.Net;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 
@@ -159,14 +160,14 @@ namespace EImece.Filters
                 return new ContentResult
                 {
                     Content = $"<div class='alert alert-warning text-center' style='margin:20px;'>{message}</div>",
-                    ContentType = "text/html"
+                    ContentType = MediaTypeNames.Text.Html
                 };
             }
 
             return new ContentResult
             {
                 Content = $"<!DOCTYPE html><html><head><title>429 Too Many Requests</title><meta charset='utf-8'/><style>body{{font-family:sans-serif;text-align:center;padding:50px;background:#f8f9fa;color:#333;}} .card{{max-width:500px;margin:0 auto;background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}} a{{display:inline-block;margin-top:15px;color:#007bff;text-decoration:none;}}</style></head><body><div class='card'><h2>İstek Sınırı Aşıldı</h2><p>{message}</p><p><small>Lütfen {retryAfterSeconds} saniye sonra tekrar deneyiniz.</small></p><a href='/'>Ana Sayfaya Dön</a></div></body></html>",
-                ContentType = "text/html"
+                ContentType = MediaTypeNames.Text.Html
             };
         }
     }

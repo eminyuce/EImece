@@ -790,7 +790,7 @@ namespace EImece.Domain.Services
 
         public async Task<Rss20FeedFormatter> GetProductsRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var items = await ProductRepository.GetActiveProductsForRssAsync(rssParams.Language, rssParams.Take, cancellationToken).ConfigureAwait(false);
+            var items = await ProductRepository.GetActiveProductsForRssAsync(rssParams.Language, rssParams.Take, null, cancellationToken).ConfigureAwait(false);
             var request = HttpContextFactory.Create().Request;
             var builder = new UriBuilder(AppConfig.HttpProtocol, request.Url.Host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
@@ -805,6 +805,70 @@ namespace EImece.Domain.Services
 
             var urlHelper = new UrlHelper(request.RequestContext);
             String atomSelfHref = urlHelper.Action("products", "rss", new { rssParams.Take, rssParams.Language }, AppConfig.HttpProtocol);
+
+            feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
+            var formatter = new Rss20FeedFormatter(feed);
+            formatter.SerializeExtensionsAsAtom = false;
+            XNamespace atom = "http://www.w3.org/2005/Atom";
+            formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", atomSelfHref.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+
+            return formatter;
+        }
+
+        public Rss20FeedFormatter GetProductCategoriesRss(RssParams rssParams)
+        {
+            var productCategory = rssParams.CategoryId > 0
+                ? ProductCategoryService.GetSingle(rssParams.CategoryId)
+                : null;
+            var items = ProductRepository.GetActiveProductsForRss(rssParams.Language, rssParams.Take, rssParams.CategoryId > 0 ? (int?)rssParams.CategoryId : null);
+            var request = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, request.Url.Host);
+            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+
+            String companyName = SettingService.GetSettingByKey(Constants.CompanyName);
+            String title = productCategory != null ? $"{companyName} - {productCategory.Name}" : companyName;
+            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
+
+            var feed = new SyndicationFeed(title, productCategory?.Description ?? "", new Uri(url))
+            {
+                Language = lang
+            };
+
+            var urlHelper = new UrlHelper(request.RequestContext);
+            String atomSelfHref = urlHelper.Action("productcategories", "rss", new { rssParams.Take, rssParams.Language, rssParams.CategoryId }, AppConfig.HttpProtocol);
+
+            feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
+            var formatter = new Rss20FeedFormatter(feed);
+            formatter.SerializeExtensionsAsAtom = false;
+            XNamespace atom = "http://www.w3.org/2005/Atom";
+            formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", atomSelfHref.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+
+            return formatter;
+        }
+
+        public async Task<Rss20FeedFormatter> GetProductCategoriesRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var productCategory = rssParams.CategoryId > 0
+                ? await ProductCategoryService.GetSingleAsync(rssParams.CategoryId).ConfigureAwait(false)
+                : null;
+            var items = await ProductRepository.GetActiveProductsForRssAsync(rssParams.Language, rssParams.Take, rssParams.CategoryId > 0 ? (int?)rssParams.CategoryId : null, cancellationToken).ConfigureAwait(false);
+            var request = HttpContextFactory.Create().Request;
+            var builder = new UriBuilder(AppConfig.HttpProtocol, request.Url.Host);
+            var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
+
+            String companyName = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            String title = productCategory != null ? $"{companyName} - {productCategory.Name}" : companyName;
+            string lang = EnumHelper.GetEnumDescription((EImeceLanguage)rssParams.Language);
+
+            var feed = new SyndicationFeed(title, productCategory?.Description ?? "", new Uri(url))
+            {
+                Language = lang
+            };
+
+            var urlHelper = new UrlHelper(request.RequestContext);
+            String atomSelfHref = urlHelper.Action("productcategories", "rss", new { rssParams.Take, rssParams.Language, rssParams.CategoryId }, AppConfig.HttpProtocol);
 
             feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
             var formatter = new Rss20FeedFormatter(feed);

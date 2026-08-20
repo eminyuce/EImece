@@ -1,0 +1,624 @@
+@model EImece.Areas.Admin.Models.RssFeedsIndexViewModel
+@using EImece.Areas.Admin.Models
+@using Resources
+@{
+    ViewBag.Title = "RSS Beslemeleri & Bağlantı Oluşturucu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var baseUrl = Model.BaseUrl ?? "";
+}
+
+<div class="admin-rss-page" style="padding: 20px 24px; max-width: 1400px; margin: 0 auto;">
+    <!-- Breadcrumb & Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+            <ol class="breadcrumb" style="background: transparent; padding: 0; margin-bottom: 6px; font-size: 13px;">
+                <li><a href="@Url.Action("Index", "Dashboard", new { area = "admin" })"><i class="fa fa-home"></i> @AdminResource.AdminHome</a></li>
+                <li><a href="#">@AdminResource.Content</a></li>
+                <li class="active" style="color: #627d98;">RSS Beslemeleri</li>
+            </ol>
+            <h1 style="font-size: 24px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 10px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: #fff4e6; color: #f76707;">
+                    <i class="fa fa-rss" aria-hidden="true"></i>
+                </span>
+                RSS Beslemeleri & Bağlantı Oluşturucu
+            </h1>
+            <p style="margin: 6px 0 0 0; color: #627d98; font-size: 13px;">
+                Sistemdeki tüm RSS 2.0 besleme uç noktalarını inceleyebilir, parametrelerini özelleştirebilir ve kullanıma hazır bağlantılar üretebilirsiniz.
+            </p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="#rss-builder-section" class="btn btn-primary btn-sm" style="font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa fa-magic"></i> Bağlantı Oluşturucu
+            </a>
+            <a href="#rss-catalog-section" class="btn btn-secondary btn-sm" style="font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa fa-list"></i> Besleme Kataloğu
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert / Info Notice -->
+    <div style="background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 12px;">
+        <i class="fa fa-info-circle" style="color: #4f46e5; font-size: 18px; margin-top: 2px;"></i>
+        <div style="font-size: 13px; color: #3730a3; line-height: 1.5;">
+            <strong>Otomatik Önbellekleme Bilgisi:</strong> Tüm RSS beslemeleri sunucu tarafında 20 dakika boyunca çıktı önbelleğinde (<code>CustomOutputCache</code>) tutulur. Beslemeler harici RSS okuyucular, bülten servisleri (Mailchimp vb.) ve sosyal medya otomasyonları ile %100 uyumludur.
+        </div>
+    </div>
+
+    <!-- SECTION 1: INTERACTIVE RSS LINK BUILDER -->
+    <div id="rss-builder-section" class="card" style="border-radius: 10px; border: 1px solid #d9e2ec; box-shadow: 0 4px 12px rgba(16,42,67,0.06); margin-bottom: 32px; overflow: hidden;">
+        <div class="card-header" style="background: linear-gradient(135deg, #102a43 0%, #243b53 100%); color: #fff; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background: rgba(255,255,255,0.15); color: #fed7aa;">
+                    <i class="fa fa-sliders"></i>
+                </span>
+                <div>
+                    <h3 style="font-size: 16px; font-weight: 700; margin: 0; color: #fff;">İnteraktif RSS Bağlantı Oluşturucu (Link Builder)</h3>
+                    <div style="font-size: 12px; color: #9fb3c8;">Parametreleri seçin; bağlantınız anında canlı olarak üretilsin.</div>
+                </div>
+            </div>
+            <span class="badge" style="background: #0ea5e9; color: #fff; font-size: 11px; padding: 6px 12px; border-radius: 20px; font-weight: 600;">
+                <i class="fa fa-bolt"></i> Canlı Önizleme
+            </span>
+        </div>
+
+        <div class="card-body" style="padding: 24px; background: #fff;">
+            <!-- Output URL Bar -->
+            <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                    <label style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; margin: 0;">
+                        <i class="fa fa-link text-primary"></i> Üretilen Paylaşılabilir RSS Bağlantısı:
+                    </label>
+                    <span id="builderFeedTypeBadge" class="badge" style="background: #3b82f6; color: #fff; font-size: 11px;">Ürünler Beslemesi</span>
+                </div>
+                <div class="input-group" style="display: flex; width: 100%;">
+                    <input type="text" id="generatedRssUrl" class="form-control" readonly
+                           style="background: #ffffff; font-family: Consolas, Monaco, monospace; font-size: 13px; font-weight: 600; color: #0f172a; border: 1px solid #cbd5e1; height: 42px; border-radius: 6px 0 0 6px;"
+                           value="" />
+                    <button type="button" class="btn btn-primary js-copy-builder-btn" id="btnCopyGeneratedUrl"
+                            style="font-weight: 600; padding: 0 20px; display: inline-flex; align-items: center; gap: 6px; border-radius: 0;"
+                            title="Panoya Kopyala">
+                        <i class="fa fa-copy" id="copyIcon"></i> <span id="copyText">Kopyala</span>
+                    </button>
+                    <a href="#" target="_blank" rel="noopener noreferrer" id="btnTestGeneratedUrl" class="btn btn-secondary"
+                       style="font-weight: 600; padding: 0 16px; display: inline-flex; align-items: center; gap: 6px; border-radius: 0 6px 6px 0;"
+                       title="Yeni Sekmede Aç / Beslemeyi İncele">
+                        <i class="fa fa-external-link"></i> Test Et
+                    </a>
+                </div>
+            </div>
+
+            <!-- Builder Form Controls -->
+            <form id="rssBuilderForm" onsubmit="return false;">
+                <div class="row" style="margin-left: -10px; margin-right: -10px;">
+                    <!-- Feed Type -->
+                    <div class="col-md-4 col-sm-6" style="padding: 0 10px; margin-bottom: 16px;">
+                        <label for="builderFeedSelect" style="font-size: 13px; font-weight: 700; color: #334e68; margin-bottom: 6px; display: block;">
+                            1. RSS Besleme Türü <span class="text-danger">*</span>
+                        </label>
+                        <select id="builderFeedSelect" class="form-control" style="height: 38px; border-radius: 6px; font-weight: 600;">
+                            <option value="products" data-path="/rss/products" data-require-cat="false">Tüm Ürünler (All Products) - /rss/products</option>
+                            <option value="productcategories" data-path="/rss/productcategories" data-require-cat="true">Ürün Kategorisi (Product Category) - /rss/productcategories</option>
+                            <option value="storycategories" data-path="/rss/storycategories" data-require-cat="true">Haber/Blog Özet (Stories) - /rss/storycategories</option>
+                            <option value="storycategoriesfull" data-path="/rss/storycategoriesfull" data-require-cat="true">Haber/Blog Tam Metin (Stories Full) - /rss/storycategoriesfull</option>
+                        </select>
+                    </div>
+
+                    <!-- Category Selector -->
+                    <div class="col-md-4 col-sm-6" style="padding: 0 10px; margin-bottom: 16px;">
+                        <label for="builderCategoryId" style="font-size: 13px; font-weight: 700; color: #334e68; margin-bottom: 6px; display: block;">
+                            2. Kategori <span id="builderCategoryReqStar" class="text-danger" style="display: none;">*</span>
+                        </label>
+                        <select id="builderCategorySelect" class="form-control" style="height: 38px; border-radius: 6px;">
+                            <option value="">-- Tüm Kategoriler / Varsayılan --</option>
+                            @if (Model.StoryCategories != null && Model.StoryCategories.Any())
+                            {
+                                <optgroup label="Haber / Blog Kategorileri (Stories)" id="optgroupStories">
+                                    @foreach (var cat in Model.StoryCategories)
+                                    {
+                                        <option value="@cat.Value" data-type="story">@cat.Text</option>
+                                    }
+                                </optgroup>
+                            }
+                            @if (Model.ProductCategories != null && Model.ProductCategories.Any())
+                            {
+                                <optgroup label="Ürün Kategorileri (Products)" id="optgroupProducts">
+                                    @foreach (var cat in Model.ProductCategories)
+                                    {
+                                        <option value="@cat.Value" data-type="product">@cat.Text</option>
+                                    }
+                                </optgroup>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Language -->
+                    <div class="col-md-4 col-sm-6" style="padding: 0 10px; margin-bottom: 16px;">
+                        <label for="builderLanguage" style="font-size: 13px; font-weight: 700; color: #334e68; margin-bottom: 6px; display: block;">
+                            3. Dil (Language)
+                        </label>
+                        <select id="builderLanguage" class="form-control" style="height: 38px; border-radius: 6px;">
+                            @foreach (var lang in Model.Languages)
+                            {
+                                <option value="@lang.Value" selected="@(lang.Selected)">@lang.Text</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Take / Limit -->
+                    <div class="col-md-4 col-sm-6" style="padding: 0 10px; margin-bottom: 16px;">
+                        <label for="builderTake" style="font-size: 13px; font-weight: 700; color: #334e68; margin-bottom: 6px; display: block;">
+                            4. İçerik Sayısı (Take)
+                        </label>
+                        <div class="input-group" style="display: flex;">
+                            <input type="number" id="builderTake" class="form-control" value="20" min="1" max="500" style="height: 38px; border-radius: 6px 0 0 6px;" />
+                            <div class="btn-group" style="display: flex;">
+                                <button type="button" class="btn btn-default btn-sm js-quick-take" data-val="10" style="padding: 0 8px; font-size: 11px;">10</button>
+                                <button type="button" class="btn btn-default btn-sm js-quick-take" data-val="25" style="padding: 0 8px; font-size: 11px;">25</button>
+                                <button type="button" class="btn btn-default btn-sm js-quick-take" data-val="50" style="padding: 0 8px; font-size: 11px;">50</button>
+                                <button type="button" class="btn btn-default btn-sm js-quick-take" data-val="100" style="padding: 0 8px; font-size: 11px; border-radius: 0 6px 6px 0;">100</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description Length -->
+                    <div class="col-md-4 col-sm-6" style="padding: 0 10px; margin-bottom: 16px;">
+                        <label for="builderDescription" style="font-size: 13px; font-weight: 700; color: #334e68; margin-bottom: 6px; display: block;">
+                            5. Açıklama Karakter Limiti (Description)
+                        </label>
+                        <input type="number" id="builderDescription" class="form-control" value="200" min="0" max="2000" step="50" style="height: 38px; border-radius: 6px;" placeholder="200" />
+                    </div>
+
+                    <!-- Image Dimensions (Width x Height) -->
+                    <div class="col-md-4 col-sm-6" style="padding: 0 10px; margin-bottom: 16px;">
+                        <label style="font-size: 13px; font-weight: 700; color: #334e68; margin-bottom: 6px; display: block;">
+                            6. Görsel Boyutları (Width x Height px)
+                        </label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="number" id="builderWidth" class="form-control" value="300" min="0" max="1920" step="50" placeholder="Genişlik (W)" style="height: 38px; border-radius: 6px;" />
+                            <span style="color: #94a3b8; font-weight: 700;">&times;</span>
+                            <input type="number" id="builderHeight" class="form-control" value="250" min="0" max="1080" step="50" placeholder="Yükseklik (H)" style="height: 38px; border-radius: 6px;" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UTM Campaign Analytics Accordion -->
+                <div style="margin-top: 10px; border-top: 1px dashed #cbd5e1; padding-top: 16px;">
+                    <button type="button" class="btn btn-link btn-sm" id="btnToggleUtmParams" style="padding: 0; font-weight: 700; color: #4f46e5; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-chevron-right" id="utmToggleIcon"></i> Google Analytics & UTM Kampanya Takip Parametreleri (İsteğe Bağlı)
+                    </button>
+
+                    <div id="utmParamsPanel" style="display: none; margin-top: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                        <div style="font-size: 12px; color: #64748b; margin-bottom: 12px;">
+                            Buraya girilen parametreler besleme içerisindeki ürün ve haber bağlantılarına otomatik olarak eklenir. Böylece RSS trafiğini Google Analytics üzerinden ayrıntılı ölçebilirsiniz.
+                        </div>
+                        <div class="row" style="margin-left: -8px; margin-right: -8px;">
+                            <div class="col-md-4 col-sm-6" style="padding: 0 8px; margin-bottom: 10px;">
+                                <label for="builderUtmSource" style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; display: block;">utm_source (Kaynak)</label>
+                                <input type="text" id="builderUtmSource" class="form-control" placeholder="ör. rss, newsletter, google" style="height: 34px; font-size: 12px;" />
+                            </div>
+                            <div class="col-md-4 col-sm-6" style="padding: 0 8px; margin-bottom: 10px;">
+                                <label for="builderUtmMedium" style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; display: block;">utm_medium (Araç)</label>
+                                <input type="text" id="builderUtmMedium" class="form-control" placeholder="ör. feed, cpc, email" style="height: 34px; font-size: 12px;" />
+                            </div>
+                            <div class="col-md-4 col-sm-6" style="padding: 0 8px; margin-bottom: 10px;">
+                                <label for="builderUtmCampaign" style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; display: block;">utm_campaign (Kampanya)</label>
+                                <input type="text" id="builderUtmCampaign" class="form-control" placeholder="ör. bahar_firsatlari, weekly" style="height: 34px; font-size: 12px;" />
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="padding: 0 8px; margin-bottom: 10px;">
+                                <label for="builderUtmTerm" style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; display: block;">utm_term (Anahtar Kelime)</label>
+                                <input type="text" id="builderUtmTerm" class="form-control" placeholder="ör. indirimli_urunler" style="height: 34px; font-size: 12px;" />
+                            </div>
+                            <div class="col-md-6 col-sm-6" style="padding: 0 8px; margin-bottom: 10px;">
+                                <label for="builderUtmContent" style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; display: block;">utm_content (İçerik Varyantı)</label>
+                                <input type="text" id="builderUtmContent" class="form-control" placeholder="ör. rss_feed_v1" style="height: 34px; font-size: 12px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset & Quick Actions -->
+                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" id="btnResetBuilder" class="btn btn-default btn-sm" style="font-weight: 600;">
+                        <i class="fa fa-undo"></i> Varsayılanlara Sıfırla
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION 2: FEED CATALOG & DOCUMENTATION CARDS -->
+    <div id="rss-catalog-section" style="margin-bottom: 32px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <h2 style="font-size: 18px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa fa-database text-primary"></i> Projede Kullanılabilir RSS Besleme Uç Noktaları
+                </h2>
+                <div style="font-size: 13px; color: #627d98; margin-top: 4px;">
+                    Aşağıda sistemdeki her bir RSS beslemesinin işlevi, çıktı formatı ve desteklediği parametrelerin detaylı listesi yer almaktadır.
+                </div>
+            </div>
+            <span class="badge" style="background: #f1f5f9; color: #334e68; border: 1px solid #cbd5e1; font-size: 12px; padding: 6px 12px;">
+                Toplam <strong>@Model.Feeds.Count</strong> Besleme
+            </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            @foreach (var feed in Model.Feeds)
+            {
+                var fullEndpointUrl = string.Format("{0}{1}", baseUrl, feed.RelativePath);
+                var fullSampleUrl = string.Format("{0}{1}?{2}", baseUrl, feed.RelativePath, feed.DefaultSampleQuery);
+
+                <div class="card" style="border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 2px 8px rgba(16,42,67,0.05); overflow: hidden;">
+                    <!-- Feed Header -->
+                    <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <span class="badge" style="background: #102a43; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase;">
+                                    @feed.HttpMethod
+                                </span>
+                                <h3 style="font-size: 16px; font-weight: 700; color: #102a43; margin: 0; display: inline;">
+                                    @feed.Title
+                                </h3>
+                                <span class="badge" style="background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; font-size: 11px;">
+                                    @feed.CategoryName
+                                </span>
+                                <span class="badge" style="background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; font-size: 11px;">
+                                    <i class="fa fa-clock-o"></i> @feed.CacheDuration
+                                </span>
+                            </div>
+                            <div style="font-size: 12px; color: #64748b; margin-top: 4px; font-family: monospace;">
+                                Action: @feed.ControllerAction
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button type="button" class="btn btn-default btn-sm js-load-into-builder"
+                                    data-feed-key="@feed.Key"
+                                    data-feed-path="@feed.RelativePath"
+                                    style="font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"
+                                    title="Bu beslemeyi bağlantı oluşturucuya aktar">
+                                <i class="fa fa-pencil text-primary"></i> Oluşturucuda Aç
+                            </button>
+                            <a href="@fullSampleUrl" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm"
+                               style="font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"
+                               title="Örnek bağlantıyı yeni sekmede test et">
+                                <i class="fa fa-external-link"></i> Beslemeyi Aç
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-body" style="padding: 20px;">
+                        <!-- Description & Output Format -->
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-size: 14px; color: #334e68; line-height: 1.6; margin-bottom: 8px;">
+                                @feed.Description
+                            </div>
+                            <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #475569;">
+                                <div><strong>Çıktı Formatı:</strong> <code>@feed.OutputFormat</code></div>
+                                <div><strong>MIME Türü:</strong> <code>@feed.ContentType</code></div>
+                            </div>
+                        </div>
+
+                        <!-- URL Box -->
+                        <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                            <div style="flex: 1; min-width: 250px;">
+                                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 4px;">Örnek Kullanıma Hazır Bağlantı:</div>
+                                <code style="font-size: 13px; color: #0f172a; word-break: break-all; font-weight: 600;">@fullSampleUrl</code>
+                            </div>
+                            <button type="button" class="btn btn-default btn-sm js-copy-feed-url" data-url="@fullSampleUrl" style="font-weight: 600;">
+                                <i class="fa fa-copy"></i> Kopyala
+                            </button>
+                        </div>
+
+                        <!-- Parameters Table -->
+                        <div style="margin-top: 16px;">
+                            <h4 style="font-size: 13px; font-weight: 700; color: #334e68; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fa fa-code text-primary"></i> Desteklenen Parametreler (Query Strings):
+                            </h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" style="font-size: 12px; margin-bottom: 0;">
+                                    <thead>
+                                        <tr style="background: #f8fafc; color: #334e68;">
+                                            <th style="width: 140px;">Parametre</th>
+                                            <th style="width: 80px;">Tip</th>
+                                            <th style="width: 100px;">Durum</th>
+                                            <th style="width: 90px;">Varsayılan</th>
+                                            <th>Açıklama</th>
+                                            <th style="width: 160px;">Örnek</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var param in feed.Parameters)
+                                        {
+                                            <tr>
+                                                <td style="font-weight: 700; font-family: monospace; color: #0f172a;">@param.Name</td>
+                                                <td><span class="badge" style="background: #e2e8f0; color: #334e68; font-family: monospace;">@param.Type</span></td>
+                                                <td>
+                                                    @if (param.IsRequired)
+                                                    {
+                                                        <span class="badge" style="background: #fee2e2; color: #b91c1c; font-weight: 700;">Zorunlu</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge" style="background: #f1f5f9; color: #64748b;">İsteğe Bağlı</span>
+                                                    }
+                                                </td>
+                                                <td style="font-family: monospace; color: #64748b;">@(string.IsNullOrEmpty(param.DefaultValue) ? "-" : param.DefaultValue)</td>
+                                                <td style="color: #334e68;">@param.Description</td>
+                                                <td style="font-family: monospace; color: #4f46e5;">@param.Example</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- SECTION 3: TECHNICAL INTEGRATION & BEST PRACTICES -->
+    <div class="card" style="border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 2px 6px rgba(16,42,67,0.06); background: #ffffff;">
+        <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 14px 20px; font-weight: 700; font-size: 14px; color: #334e68;">
+            <i class="fa fa-book text-primary"></i> RSS Beslemesi Entegrasyon Rehberi & Teknik İpuçları
+        </div>
+        <div class="card-body" style="padding: 20px; font-size: 13px; color: #334e68; line-height: 1.6;">
+            <div class="row">
+                <div class="col-md-4 col-sm-12" style="margin-bottom: 16px;">
+                    <h5 style="font-size: 14px; font-weight: 700; color: #102a43; margin-bottom: 6px;">
+                        <i class="fa fa-image text-warning"></i> Enclosure Medya Etiketleri
+                    </h5>
+                    <p style="color: #627d98;">
+                        Beslemeler, makale veya ürün görsellerini <code>&lt;enclosure url="..." type="image/jpeg" /&gt;</code> formatında barındırır. <code>Width</code> ve <code>Height</code> parametrelerini belirterek görsel boyutunu harici okuyucular için optimize edebilirsiniz.
+                    </p>
+                </div>
+                <div class="col-md-4 col-sm-12" style="margin-bottom: 16px;">
+                    <h5 style="font-size: 14px; font-weight: 700; color: #102a43; margin-bottom: 6px;">
+                        <i class="fa fa-line-chart text-success"></i> Google Analytics (UTM) Takibi
+                    </h5>
+                    <p style="color: #627d98;">
+                        <code>utm_source</code>, <code>utm_medium</code> ve <code>utm_campaign</code> parametreleri tanımlandığında, XML içindeki her bir bağlantının arkasına otomatik sorgu dizesi eklenir. RSS'ten sitenize gelen tüm tıklamaları ve dönüşümleri takip edebilirsiniz.
+                    </p>
+                </div>
+                <div class="col-md-4 col-sm-12" style="margin-bottom: 16px;">
+                    <h5 style="font-size: 14px; font-weight: 700; color: #102a43; margin-bottom: 6px;">
+                        <i class="fa fa-code-fork text-info"></i> Atom Self Link & RSS 2.0
+                    </h5>
+                    <p style="color: #627d98;">
+                        Tüm beslemeler <code>http://www.w3.org/2005/Atom</code> standartlarına uygun <code>atom:link rel="self"</code> başlığı içerir. Bu sayede RSS doğrulayıcılarında (W3C Feed Validator) hatasız onay alır.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Toast Notification for Copy Feedback -->
+<div id="rssCopyToast" style="display: none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: #0f172a; color: #fff; padding: 12px 20px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); font-size: 13px; font-weight: 600; align-items: center; gap: 10px;">
+    <i class="fa fa-check-circle text-success" style="font-size: 16px;"></i>
+    <span id="rssToastMessage">Bağlantı panoya kopyalandı!</span>
+</div>
+
+@section scripts {
+<script>
+    (function () {
+        var baseUrl = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(baseUrl));
+        if (!baseUrl) {
+            baseUrl = window.location.origin;
+        }
+
+        function showToast(msg) {
+            var $toast = $('#rssCopyToast');
+            $('#rssToastMessage').text(msg || 'Bağlantı panoya kopyalandı!');
+            $toast.css('display', 'flex').hide().fadeIn(200);
+            setTimeout(function () {
+                $toast.fadeOut(300);
+            }, 2500);
+        }
+
+        function copyToClipboard(text, $btn) {
+            if (!text) return;
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(function () {
+                    onCopied($btn);
+                }).catch(function () {
+                    fallbackCopy(text, $btn);
+                });
+            } else {
+                fallbackCopy(text, $btn);
+            }
+        }
+
+        function fallbackCopy(text, $btn) {
+            var textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                onCopied($btn);
+            } catch (err) {
+                console.error('Panoya kopyalanamadı', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function onCopied($btn) {
+            showToast('Bağlantı başarıyla panoya kopyalandı!');
+            if ($btn && $btn.length) {
+                var origHtml = $btn.html();
+                $btn.addClass('btn-success').removeClass('btn-primary btn-default');
+                $btn.html('<i class="fa fa-check"></i> Kopyalandı!');
+                setTimeout(function () {
+                    $btn.html(origHtml).removeClass('btn-success');
+                    if ($btn.hasClass('js-copy-builder-btn')) {
+                        $btn.addClass('btn-primary');
+                    } else {
+                        $btn.addClass('btn-default');
+                    }
+                }, 1800);
+            }
+        }
+
+        // Update Link Builder URL
+        function updateBuilderUrl() {
+            var $feedOpt = $('#builderFeedSelect option:selected');
+            var path = $feedOpt.attr('data-path') || '/rss/products';
+            var requireCat = $feedOpt.attr('data-require-cat') === 'true';
+            var feedVal = $('#builderFeedSelect').val();
+
+            // Toggle Category Star & Filter
+            if (requireCat) {
+                $('#builderCategoryReqStar').show();
+            } else {
+                $('#builderCategoryReqStar').hide();
+            }
+
+            // Adjust category options depending on feed type
+            if (feedVal === 'products') {
+                $('#builderFeedTypeBadge').text('Tüm Ürünler Beslemesi').css('background', '#3b82f6');
+                $('#optgroupStories').hide();
+                $('#optgroupProducts').show();
+            } else if (feedVal === 'productcategories') {
+                $('#builderFeedTypeBadge').text('Ürün Kategorisi Beslemesi').css('background', '#0284c7');
+                $('#optgroupStories').hide();
+                $('#optgroupProducts').show();
+            } else if (feedVal === 'storycategories') {
+                $('#builderFeedTypeBadge').text('Haber/Blog Özet Beslemesi').css('background', '#10b981');
+                $('#optgroupStories').show();
+                $('#optgroupProducts').hide();
+            } else {
+                $('#builderFeedTypeBadge').text('Haber/Blog Tam Metin Beslemesi').css('background', '#8b5cf6');
+                $('#optgroupStories').show();
+                $('#optgroupProducts').hide();
+            }
+
+            var categoryId = $('#builderCategorySelect').val();
+            var language = $('#builderLanguage').val();
+            var take = $('#builderTake').val();
+            var description = $('#builderDescription').val();
+            var width = $('#builderWidth').val();
+            var height = $('#builderHeight').val();
+
+            var utmSource = $('#builderUtmSource').val();
+            var utmMedium = $('#builderUtmMedium').val();
+            var utmCampaign = $('#builderUtmCampaign').val();
+            var utmTerm = $('#builderUtmTerm').val();
+            var utmContent = $('#builderUtmContent').val();
+
+            var params = [];
+
+            if (categoryId) {
+                params.push('categoryId=' + encodeURIComponent(categoryId));
+            } else if (requireCat) {
+                // Pick first available category from the visible optgroup
+                var firstCatVal = feedVal === 'productcategories'
+                    ? $('#optgroupProducts option').first().val()
+                    : $('#optgroupStories option').first().val();
+
+                if (firstCatVal) {
+                    params.push('categoryId=' + encodeURIComponent(firstCatVal));
+                } else {
+                    params.push('categoryId=1');
+                }
+            }
+
+            if (take && parseInt(take, 10) > 0) {
+                params.push('take=' + encodeURIComponent(take));
+            }
+            if (language && parseInt(language, 10) > 0) {
+                params.push('language=' + encodeURIComponent(language));
+            }
+            if (description && parseInt(description, 10) > 0) {
+                params.push('description=' + encodeURIComponent(description));
+            }
+            if (width && parseInt(width, 10) > 0) {
+                params.push('width=' + encodeURIComponent(width));
+            }
+            if (height && parseInt(height, 10) > 0) {
+                params.push('height=' + encodeURIComponent(height));
+            }
+
+            if (utmSource) params.push('utm_source=' + encodeURIComponent(utmSource));
+            if (utmMedium) params.push('utm_medium=' + encodeURIComponent(utmMedium));
+            if (utmCampaign) params.push('utm_campaign=' + encodeURIComponent(utmCampaign));
+            if (utmTerm) params.push('utm_term=' + encodeURIComponent(utmTerm));
+            if (utmContent) params.push('utm_content=' + encodeURIComponent(utmContent));
+
+            var fullUrl = baseUrl + path;
+            if (params.length > 0) {
+                fullUrl += '?' + params.join('&');
+            }
+
+            $('#generatedRssUrl').val(fullUrl);
+            $('#btnTestGeneratedUrl').attr('href', fullUrl);
+        }
+
+        $(document).ready(function () {
+            // Initial Builder URL Build
+            updateBuilderUrl();
+
+            // Bind change events
+            $('#builderFeedSelect, #builderCategorySelect, #builderLanguage, #builderTake, #builderDescription, #builderWidth, #builderHeight, #builderUtmSource, #builderUtmMedium, #builderUtmCampaign, #builderUtmTerm, #builderUtmContent').on('input change', function () {
+                updateBuilderUrl();
+            });
+
+            // Quick Take Buttons
+            $('.js-quick-take').on('click', function () {
+                var val = $(this).attr('data-val');
+                $('#builderTake').val(val).trigger('change');
+            });
+
+            // Toggle UTM Panel
+            $('#btnToggleUtmParams').on('click', function () {
+                var $panel = $('#utmParamsPanel');
+                var $icon = $('#utmToggleIcon');
+                if ($panel.is(':visible')) {
+                    $panel.slideUp(200);
+                    $icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                } else {
+                    $panel.slideDown(200);
+                    $icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                }
+            });
+
+            // Reset Builder
+            $('#btnResetBuilder').on('click', function () {
+                $('#rssBuilderForm')[0].reset();
+                $('#builderFeedSelect').val('products');
+                $('#builderTake').val('20');
+                $('#builderDescription').val('200');
+                $('#builderWidth').val('300');
+                $('#builderHeight').val('250');
+                updateBuilderUrl();
+            });
+
+            // Copy Builder URL
+            $('#btnCopyGeneratedUrl').on('click', function () {
+                var url = $('#generatedRssUrl').val();
+                copyToClipboard(url, $(this));
+            });
+
+            // Copy Catalog Card URL
+            $('.js-copy-feed-url').on('click', function () {
+                var url = $(this).attr('data-url');
+                copyToClipboard(url, $(this));
+            });
+
+            // Load Feed into Builder
+            $('.js-load-into-builder').on('click', function () {
+                var feedKey = $(this).attr('data-feed-key');
+                $('#builderFeedSelect').val(feedKey).trigger('change');
+                $('html, body').animate({
+                    scrollTop: $('#rss-builder-section').offset().top - 70
+                }, 400);
+            });
+        });
+    })();
+</script>
+}

@@ -13,6 +13,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace EImece.Domain.Services
             var result = new ImageExportPackageResult
             {
                 FileName = $"compressed_images_{DateTime.Now:yyyyMMdd_HHmmss}.zip",
-                ContentType = "application/zip"
+                ContentType = MediaTypeNames.Application.Zip
             };
 
             if (string.IsNullOrWhiteSpace(targetDirectory) || !Directory.Exists(targetDirectory))
@@ -587,17 +588,17 @@ namespace EImece.Domain.Services
             {
                 case ".jpg":
                 case ".jpeg":
-                    return "image/jpeg";
+                    return MediaTypeNames.Image.Jpeg;
                 case ".png":
                     return "image/png";
                 case ".gif":
-                    return "image/gif";
+                    return MediaTypeNames.Image.Gif;
                 case ".bmp":
                     return "image/bmp";
                 case ".webp":
                     return "image/webp";
                 default:
-                    return "application/octet-stream";
+                    return MediaTypeNames.Application.Octet;
             }
         }
 

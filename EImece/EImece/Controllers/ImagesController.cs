@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,7 +21,6 @@ namespace EImece.Controllers
 {
     public class ImagesController : BaseController
     {
-        private const string ContentType = "image/Jpeg";
         private IEimeceCacheProvider _memoryCacheProvider { get; set; }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -171,7 +171,7 @@ namespace EImece.Controllers
             timer.Stop();
             //Logger.Info("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
-            return this.File(fileContents, ContentType);
+            return this.File(fileContents, MediaTypeNames.Image.Jpeg);
         }
 
         // Legacy arithmetic CAPTCHA image (used when CaptchaProvider=Legacy)
@@ -187,7 +187,7 @@ namespace EImece.Controllers
             FileContentResult img = null;
             try
             {
-                img = this.File(FilesHelper.GenerateCaptchaImg(captcha, true), ContentType);
+                img = this.File(FilesHelper.GenerateCaptchaImg(captcha, true), MediaTypeNames.Image.Jpeg);
             }
             catch
             {
@@ -217,7 +217,7 @@ namespace EImece.Controllers
                 if (isFullFileExits)
                 {
                     var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
-                    result = File(ms.ToArray(), ContentType);
+                    result = File(ms.ToArray(), MediaTypeNames.Image.Jpeg);
                     ms.Dispose();
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                 }
