@@ -110,7 +110,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.IsSiteUnderConstruction, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.IsSiteUnderConstruction, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="IsSiteUnderConstruction">Bakım modu aktif (Ziyaretçilere bakım sayfası gösterilir ve arama motorlarına noindex verilir)</label>
                                     </div>
@@ -121,7 +121,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.AllowSearchEngineIndexing, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.AllowSearchEngineIndexing, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="AllowSearchEngineIndexing">Arama motoru indekslemesine izin ver (Google/Bing robots.txt ve meta tag izni)</label>
                                     </div>
@@ -150,7 +150,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.IsProductPriceEnable, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.IsProductPriceEnable, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="IsProductPriceEnable">Ürün fiyatları ve sepete ekleme aktif</label>
                                     </div>
@@ -162,7 +162,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.IsProductReviewEnable, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.IsProductReviewEnable, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="IsProductReviewEnable">Ürün yorumları ve puanlama aktif</label>
                                     </div>
@@ -416,7 +416,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.ImageUploadPreferWebP, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.ImageUploadPreferWebP, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="ImageUploadPreferWebP">Yüklenen görselleri otomatik WebP formatına dönüştür</label>
                                     </div>
@@ -435,7 +435,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.ImageUploadSaveWebPSidecar, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.ImageUploadSaveWebPSidecar, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="ImageUploadSaveWebPSidecar">Orijinal dosyanın yanında .webp kopyasını da kaydet (Sidecar)</label>
                                     </div>
@@ -470,7 +470,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.ImageUploadKeepOriginalIfSmaller, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.ImageUploadKeepOriginalIfSmaller, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="ImageUploadKeepOriginalIfSmaller">Yeniden kodlama boyutu küçültmüyorsa orijinal baytları koru</label>
                                     </div>
@@ -572,7 +572,7 @@
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.RateLimit_Enabled, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.RateLimit_Enabled, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="RateLimit_Enabled">Rate Limiting mekanizmasını aktif et (Brute-force ve flood koruması)</label>
                                     </div>
@@ -731,7 +731,7 @@
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailEnableSslTooltip } })
                                 </label>
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.AdminEmailEnableSsl, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="AdminEmailEnableSsl">SMTP bağlantısında SSL/TLS kullanılsın</label>
                                     </div>
@@ -745,7 +745,7 @@
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailUseDefaultCredentialsTooltip } })
                                 </label>
                                 <div class="col-md-9">
-                                    <div class="form-check form-switch">
+                                    <div class="form-check">
                                         @Html.CheckBoxFor(model => model.AdminEmailUseDefaultCredentials, new { @class = "form-check-input" })
                                         <label class="form-check-label" for="AdminEmailUseDefaultCredentials">SMTP için varsayılan kimlik bilgileri kullanılsın</label>
                                     </div>

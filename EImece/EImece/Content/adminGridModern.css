@@ -319,7 +319,7 @@ body.admin-app .eg-grid table.grid-table > tbody > tr > td {
     background: var(--eg-row-selected) !important;
 }
 
-/* ----- Global Datagrid Selection Checkboxes ----- */
+/* ----- Global Datagrid & Admin Form Selection Checkboxes ----- */
 body.admin-app input.gridCheckboxes,
 body.admin-app input[name="checkboxGrid"],
 body.admin-app input[name="checkboxGridHeader"],
@@ -338,7 +338,16 @@ body.admin-app .gridButtons .checkbox input[type="checkbox"],
 body.admin-app .gridButtons input[type="checkbox"],
 body.admin-app table.eg-grid-table input[type="checkbox"],
 body.admin-app table.grid-table input[type="checkbox"],
-body.admin-app .griddly table input[type="checkbox"] {
+body.admin-app .griddly table input[type="checkbox"],
+body.admin-app .form-check-input[type="checkbox"],
+body.admin-app input[type="checkbox"].form-check-input,
+body.admin-app .form-check input[type="checkbox"],
+body.admin-app input[type="checkbox"].check-box,
+body.admin-app input[type="checkbox"].styled,
+body.admin-app input[type="checkbox"].chk-is-last,
+body.admin-app .admin-content input[type="checkbox"],
+body.admin-app .tab-content input[type="checkbox"],
+body.admin-app .form-group input[type="checkbox"] {
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
@@ -352,7 +361,7 @@ body.admin-app .griddly table input[type="checkbox"] {
     min-height: 18.5px !important;
     max-width: 18.5px !important;
     max-height: 18.5px !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     padding: 0 !important;
     border: 1.5px solid #8fa2b7 !important;
     border-radius: 4px !important;
@@ -374,7 +383,16 @@ body.admin-app .eg-grid input[name="checkboxGrid"]:hover,
 body.admin-app .griddly input.gridCheckboxes:hover,
 body.admin-app .griddly input[name="checkboxGrid"]:hover,
 body.admin-app .eg-check-hit input:hover,
-body.admin-app .gridButtons input:hover {
+body.admin-app .gridButtons input:hover,
+body.admin-app .form-check-input[type="checkbox"]:hover,
+body.admin-app input[type="checkbox"].form-check-input:hover,
+body.admin-app .form-check input[type="checkbox"]:hover,
+body.admin-app input[type="checkbox"].check-box:hover,
+body.admin-app input[type="checkbox"].styled:hover,
+body.admin-app input[type="checkbox"].chk-is-last:hover,
+body.admin-app .admin-content input[type="checkbox"]:hover,
+body.admin-app .tab-content input[type="checkbox"]:hover,
+body.admin-app .form-group input[type="checkbox"]:hover {
     border-color: #1f7a45 !important;
     background-color: #f4fbf6 !important;
     box-shadow: 0 0 0 3px rgba(31, 122, 69, 0.14) !important;
@@ -388,7 +406,16 @@ body.admin-app .eg-grid input[name="checkboxGrid"]:focus,
 body.admin-app .griddly input.gridCheckboxes:focus,
 body.admin-app .griddly input[name="checkboxGrid"]:focus,
 body.admin-app .eg-check-hit input:focus,
-body.admin-app .gridButtons input:focus {
+body.admin-app .gridButtons input:focus,
+body.admin-app .form-check-input[type="checkbox"]:focus,
+body.admin-app input[type="checkbox"].form-check-input:focus,
+body.admin-app .form-check input[type="checkbox"]:focus,
+body.admin-app input[type="checkbox"].check-box:focus,
+body.admin-app input[type="checkbox"].styled:focus,
+body.admin-app input[type="checkbox"].chk-is-last:focus,
+body.admin-app .admin-content input[type="checkbox"]:focus,
+body.admin-app .tab-content input[type="checkbox"]:focus,
+body.admin-app .form-group input[type="checkbox"]:focus {
     outline: none !important;
     border-color: #1f7a45 !important;
     box-shadow: 0 0 0 3.5px rgba(31, 122, 69, 0.22) !important;
@@ -405,7 +432,16 @@ body.admin-app .eg-check-hit input:checked,
 body.admin-app .gridButtons input:checked,
 body.admin-app table.eg-grid-table input[type="checkbox"]:checked,
 body.admin-app table.grid-table input[type="checkbox"]:checked,
-body.admin-app .griddly table input[type="checkbox"]:checked {
+body.admin-app .griddly table input[type="checkbox"]:checked,
+body.admin-app .form-check-input[type="checkbox"]:checked,
+body.admin-app input[type="checkbox"].form-check-input:checked,
+body.admin-app .form-check input[type="checkbox"]:checked,
+body.admin-app input[type="checkbox"].check-box:checked,
+body.admin-app input[type="checkbox"].styled:checked,
+body.admin-app input[type="checkbox"].chk-is-last:checked,
+body.admin-app .admin-content input[type="checkbox"]:checked,
+body.admin-app .tab-content input[type="checkbox"]:checked,
+body.admin-app .form-group input[type="checkbox"]:checked {
     background-color: #1f7a45 !important;
     border-color: #1f7a45 !important;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' d='M4.5 10.5l4 4 7-8'/%3E%3C/svg%3E") !important;
@@ -413,6 +449,14 @@ body.admin-app .griddly table input[type="checkbox"]:checked {
     background-position: center !important;
     background-size: 13px 13px !important;
     box-shadow: 0 1px 2px rgba(31, 122, 69, 0.25) !important;
+}
+
+body.admin-app input[type="checkbox"]:disabled,
+body.admin-app .form-check-input[type="checkbox"]:disabled {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    opacity: 0.65 !important;
+    cursor: not-allowed !important;
 }
 
 /* Touch hit zone label helper */

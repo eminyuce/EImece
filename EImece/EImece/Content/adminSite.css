@@ -4880,3 +4880,152 @@ body.admin-app .admin-content .admin-home h2::after {
         max-height: 18.5px !important;
     }
 }
+
+/* ==========================================================================
+   Admin Form & Datagrid Unified Modern Checkbox System
+   ========================================================================== */
+body.admin-app .form-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 24px;
+    padding-left: 0;
+    margin-bottom: 0.35rem;
+}
+
+body.admin-app .form-check .form-check-input,
+body.admin-app .form-check input[type="checkbox"] {
+    float: none !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+body.admin-app .form-check .form-check-label,
+body.admin-app .form-check label {
+    margin-bottom: 0;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.4;
+}
+
+/* Neutralize bootstrap .form-switch */
+body.admin-app .form-switch {
+    padding-left: 0 !important;
+}
+body.admin-app .form-switch .form-check-input {
+    width: 18.5px !important;
+    height: 18.5px !important;
+    min-width: 18.5px !important;
+    min-height: 18.5px !important;
+    max-width: 18.5px !important;
+    max-height: 18.5px !important;
+    margin-left: 0 !important;
+    background-image: none !important;
+    border-radius: 4px !important;
+}
+
+/* Unified checkbox appearance for all admin checkboxes */
+body.admin-app input.gridCheckboxes,
+body.admin-app input[name="checkboxGrid"],
+body.admin-app input[name="checkboxGridHeader"],
+body.admin-app .form-check-input[type="checkbox"],
+body.admin-app input[type="checkbox"].form-check-input,
+body.admin-app .form-check input[type="checkbox"],
+body.admin-app input[type="checkbox"].check-box,
+body.admin-app input[type="checkbox"].styled,
+body.admin-app input[type="checkbox"].chk-is-last,
+body.admin-app .admin-content input[type="checkbox"],
+body.admin-app .tab-content input[type="checkbox"],
+body.admin-app .form-group input[type="checkbox"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    position: static !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    box-sizing: border-box !important;
+    width: 18.5px !important;
+    height: 18.5px !important;
+    min-width: 18.5px !important;
+    min-height: 18.5px !important;
+    max-width: 18.5px !important;
+    max-height: 18.5px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1.5px solid #8fa2b7 !important;
+    border-radius: 4px !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+    transform: none !important;
+    flex: 0 0 18.5px !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+body.admin-app input.gridCheckboxes:hover,
+body.admin-app input[name="checkboxGrid"]:hover,
+body.admin-app input[name="checkboxGridHeader"]:hover,
+body.admin-app .form-check-input[type="checkbox"]:hover,
+body.admin-app input[type="checkbox"].form-check-input:hover,
+body.admin-app .form-check input[type="checkbox"]:hover,
+body.admin-app input[type="checkbox"].check-box:hover,
+body.admin-app input[type="checkbox"].styled:hover,
+body.admin-app input[type="checkbox"].chk-is-last:hover,
+body.admin-app .admin-content input[type="checkbox"]:hover,
+body.admin-app .tab-content input[type="checkbox"]:hover,
+body.admin-app .form-group input[type="checkbox"]:hover {
+    border-color: #1f7a45 !important;
+    background-color: #f4fbf6 !important;
+    box-shadow: 0 0 0 3px rgba(31, 122, 69, 0.14) !important;
+}
+
+body.admin-app input.gridCheckboxes:focus,
+body.admin-app input[name="checkboxGrid"]:focus,
+body.admin-app input[name="checkboxGridHeader"]:focus,
+body.admin-app .form-check-input[type="checkbox"]:focus,
+body.admin-app input[type="checkbox"].form-check-input:focus,
+body.admin-app .form-check input[type="checkbox"]:focus,
+body.admin-app input[type="checkbox"].check-box:focus,
+body.admin-app input[type="checkbox"].styled:focus,
+body.admin-app input[type="checkbox"].chk-is-last:focus,
+body.admin-app .admin-content input[type="checkbox"]:focus,
+body.admin-app .tab-content input[type="checkbox"]:focus,
+body.admin-app .form-group input[type="checkbox"]:focus {
+    outline: none !important;
+    border-color: #1f7a45 !important;
+    box-shadow: 0 0 0 3.5px rgba(31, 122, 69, 0.22) !important;
+}
+
+body.admin-app input.gridCheckboxes:checked,
+body.admin-app input[name="checkboxGrid"]:checked,
+body.admin-app input[name="checkboxGridHeader"]:checked,
+body.admin-app .form-check-input[type="checkbox"]:checked,
+body.admin-app input[type="checkbox"].form-check-input:checked,
+body.admin-app .form-check input[type="checkbox"]:checked,
+body.admin-app input[type="checkbox"].check-box:checked,
+body.admin-app input[type="checkbox"].styled:checked,
+body.admin-app input[type="checkbox"].chk-is-last:checked,
+body.admin-app .admin-content input[type="checkbox"]:checked,
+body.admin-app .tab-content input[type="checkbox"]:checked,
+body.admin-app .form-group input[type="checkbox"]:checked {
+    background-color: #1f7a45 !important;
+    border-color: #1f7a45 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' d='M4.5 10.5l4 4 7-8'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 13px 13px !important;
+    box-shadow: 0 1px 2px rgba(31, 122, 69, 0.25) !important;
+}
+
+body.admin-app input[type="checkbox"]:disabled,
+body.admin-app .form-check-input[type="checkbox"]:disabled {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    opacity: 0.65 !important;
+    cursor: not-allowed !important;
+}
+
