@@ -28,6 +28,8 @@ namespace EImece.Domain
         public const string EN_US_CULTURE_INFO = "en-US";
         /*********CACHE KEYS*********/
         public const string Cache30Days = "Cache30Days";
+        public const string Cache10Days = "Cache10Days";
+        public const string Cache1Day = "Cache1Day";
         public const string Cache20Minutes = "Cache20Minutes";
         public const string ImageProxyCaching = "ImageProxyCaching";
         public const string Cache1Hour = "Cache1Hour";

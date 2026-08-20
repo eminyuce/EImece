@@ -27,7 +27,7 @@ namespace EImece.Controllers
 
         // GET: Rss
         /// rss/products/?Take=10&Description=1&CategoryId=2&Language=1&Width=300&Height=250&utm_source=google&utm_medium=cpc&utm_campaign=spring_sale&utm_term=shoes&utm_content=ad1
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache1Day)]
         public async Task<ActionResult> Products(RssParams rssParams)
         {
             var comment = new StringBuilder();
@@ -48,7 +48,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache1Day)]
         public async Task<ActionResult> StoryCategories(RssParams rssParams)
         {
             var comment = new StringBuilder();
@@ -69,7 +69,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache1Day)]
         public async Task<ActionResult> ProductCategories(RssParams rssParams)
         {
             var comment = new StringBuilder();
@@ -90,7 +90,7 @@ namespace EImece.Controllers
             }
         }
 
-        [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
+        [CustomOutputCache(CacheProfile = Constants.Cache1Day)]
         public async Task<ActionResult> StoryCategoriesFull(RssParams rssParams)
         {
             var comment = new StringBuilder();
