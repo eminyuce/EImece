@@ -873,6 +873,8 @@
     <Compile Include="Services\IServices\ITagCategoryService.cs" />
     <Compile Include="Services\IServices\ITagService.cs" />
     <Compile Include="Services\IServices\ITemplateService.cs" />
+    <Compile Include="Services\IServices\IUsersService.cs" />
+    <Compile Include="Services\IServices\IIdentityManager.cs" />
     <Compile Include="Services\CaptchaService.cs" />
     <Compile Include="Services\RecaptchaService.cs" />
     <Compile Include="Services\IyzicoService.cs" />

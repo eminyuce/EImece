@@ -3,7 +3,7 @@ using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Observability.Logging;
-using Microsoft.AspNet.Identity.EntityFramework;
+using EImece.Domain.Services.IServices;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace EImece.Domain.Services.ExportImport
         public IEImeceContext Context { get; set; }
 
         [Inject]
-        public ApplicationDbContext IdentityDbContext { get; set; }
+        public IUsersService UsersService { get; set; }
 
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
         {
@@ -359,7 +359,7 @@ namespace EImece.Domain.Services.ExportImport
                     }
 
                     // 32. Identity Users & Roles
-                    if (request.ShouldExport("Users") && IdentityDbContext != null)
+                    if (request.ShouldExport("Users") && UsersService != null)
                     {
                         var count = await ExportUsersAsync(archive, request.BatchSize, cancellationToken).ConfigureAwait(false);
                         manifest.Entities["Users"] = new ExportEntityManifestEntry { File = "users.json", RecordCount = count };
@@ -367,7 +367,7 @@ namespace EImece.Domain.Services.ExportImport
                         metadata.IncludedEntities.Add("Users");
                     }
 
-                    if (request.ShouldExport("Roles") && IdentityDbContext != null)
+                    if (request.ShouldExport("Roles") && UsersService != null)
                     {
                         var count = await ExportRolesAsync(archive, request.BatchSize, cancellationToken).ConfigureAwait(false);
                         manifest.Entities["Roles"] = new ExportEntityManifestEntry { File = "roles.json", RecordCount = count };
@@ -443,10 +443,10 @@ namespace EImece.Domain.Services.ExportImport
                 summary.EstimatedCounts["OrderProducts"] = await Context.OrderProducts.CountAsync(cancellationToken).ConfigureAwait(false);
             }
 
-            if (IdentityDbContext != null)
+            if (UsersService != null)
             {
-                summary.EstimatedCounts["Users"] = await IdentityDbContext.Users.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Roles"] = await IdentityDbContext.Roles.CountAsync(cancellationToken).ConfigureAwait(false);
+                summary.EstimatedCounts["Users"] = await UsersService.GetUsersCountAsync(cancellationToken).ConfigureAwait(false);
+                summary.EstimatedCounts["Roles"] = await UsersService.GetRolesCountAsync(cancellationToken).ConfigureAwait(false);
             }
 
             summary.TotalEstimatedRecords = summary.EstimatedCounts.Values.Sum();
@@ -1193,42 +1193,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "users.json", "User", batchSize, ct, async (skip, take) =>
             {
-                var query = IdentityDbContext.Users.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
-
-                var userDtos = new List<UserExportDto>();
-                foreach (var user in items)
-                {
-                    var dto = new UserExportDto
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        Email = user.Email,
-                        EmailConfirmed = user.EmailConfirmed,
-                        PhoneNumber = user.PhoneNumber,
-                        PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        TwoFactorAuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled,
-                        TwoFactorEnabled = user.TwoFactorEnabled,
-                        LockoutEnabled = user.LockoutEnabled
-                    };
-
-                    if (user.Roles != null && user.Roles.Count > 0)
-                    {
-                        var roleIds = user.Roles.Select(r => r.RoleId).ToList();
-                        var roleNames = await IdentityDbContext.Roles
-                            .Where(r => roleIds.Contains(r.Id))
-                            .Select(r => r.Name)
-                            .ToListAsync(ct)
-                            .ConfigureAwait(false);
-                        dto.Roles = roleNames;
-                    }
-
-                    userDtos.Add(dto);
-                }
-
-                return userDtos;
+                return await UsersService.GetUsersForExportAsync(skip, take, ct).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 
@@ -1236,13 +1201,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "roles.json", "Role", batchSize, ct, async (skip, take) =>
             {
-                var query = IdentityDbContext.Roles.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
-                return items.Select(x => new RoleExportDto
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                }).ToList();
+                return await UsersService.GetRolesForExportAsync(skip, take, ct).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 

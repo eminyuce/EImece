@@ -1,4 +1,3 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Services;
@@ -33,7 +32,10 @@ namespace EImece.Controllers
         private const string AdminLoginAction = "AdminLogin";
 
         [Inject]
-        public IdentityManager IdentityManager { get; set; }
+        public IIdentityManager IdentityManager { get; set; }
+
+        [Inject]
+        public IUsersService UsersService { get; set; }
 
         [Inject]
         public RazorEngineHelper RazorEngineHelper { get; set; }
@@ -44,9 +46,6 @@ namespace EImece.Controllers
         public ApplicationSignInManager SignInManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
-
-        [Inject]
-        public ApplicationDbContext ApplicationDbContext { get; set; }
 
         [Inject]
         public TwoFactorTokenService TwoFactorTokenService { get; set; }
@@ -212,13 +211,7 @@ namespace EImece.Controllers
         {
             Logger.Info($"Entering isUserAsCustomerRole for email: {model.Email}");
             var login = (model.Email ?? string.Empty).Trim();
-            var usersRoles = from u in ApplicationDbContext.Users
-                             from ur in u.Roles
-                             join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
-                             where u.UserName.Equals(login, StringComparison.InvariantCultureIgnoreCase)
-                                || u.Email.Equals(login, StringComparison.InvariantCultureIgnoreCase)
-                             select new { Role = r.Name };
-            bool isCustomer = usersRoles.Any(r => r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase));
+            bool isCustomer = UsersService.IsUserInRole(login, Domain.Constants.CustomerRole);
             Logger.Info($"User role check result: isCustomer = {isCustomer}");
             return isCustomer;
         }
@@ -329,7 +322,7 @@ namespace EImece.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                 case SignInStatus.Failure:
-                    var user = ApplicationDbContext.Users.FirstOrDefault(u => u.UserName.Equals(model.Email));
+                    var user = await FindUserByEmailOrUserNameAsync(model.Email);
                     if (user != null)
                     {
                         bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user, model.Password);
@@ -596,13 +589,20 @@ namespace EImece.Controllers
                     return View(model);
 
                 case SignInStatus.Failure:
-                    var user2 = ApplicationDbContext.Users.First(u => u.UserName.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
-                    bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user2, model.Password);
-                    Logger.Info($"Password check for {model.Email}: {checkPassword}");
-                    if (!checkPassword)
-                        ModelState.AddModelError("", "Invalid login attempt. Password is not correct");
+                    var user2 = await FindUserByEmailOrUserNameAsync(model.Email);
+                    if (user2 != null)
+                    {
+                        bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user2, model.Password);
+                        Logger.Info($"Password check for {model.Email}: {checkPassword}");
+                        if (!checkPassword)
+                            ModelState.AddModelError("", "Invalid login attempt. Password is not correct");
+                        else
+                            ModelState.AddModelError("", "Invalid login attempt." + result2.ToString());
+                    }
                     else
-                        ModelState.AddModelError("", "Invalid login attempt." + result2.ToString());
+                    {
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                    }
                     return View(model);
 
                 default:

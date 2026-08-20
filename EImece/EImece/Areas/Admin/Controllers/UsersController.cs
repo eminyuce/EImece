@@ -1,4 +1,3 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -27,7 +26,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         private const string IndexAction = "Index";
         [Inject]
-        public UsersService UsersService { get; set; }
+        public IUsersService UsersService { get; set; }
 
         [Inject]
         public ICustomerService CustomerService { get; set; }
@@ -39,10 +38,7 @@ namespace EImece.Areas.Admin.Controllers
         public new ApplicationUserManager UserManager { get; set; }
 
         [Inject]
-        public IdentityManager IdentityManager { get; set; }
-
-        [Inject]
-        public ApplicationDbContext ApplicationDbContext { get; set; }
+        public IIdentityManager IdentityManager { get; set; }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "")
@@ -296,15 +292,7 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == model.Id);
-                // Update the user data:
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.Email = model.Email;
-                user.UserName = model.Email;
-
-                ApplicationDbContext.Entry(user).State = System.Data.Entity.EntityState.Modified;
-                await ApplicationDbContext.SaveChangesAsync();
+                await UsersService.UpdateUserAsync(model);
                 return RedirectToAction(IndexAction);
             }
             else
@@ -322,7 +310,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+            var user = await UsersService.GetUserAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -341,7 +329,7 @@ namespace EImece.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+            var user = await UsersService.GetUserAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -383,9 +371,7 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, string id)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id, cancellationToken);
-            ApplicationDbContext.Users.Remove(user);
-            await ApplicationDbContext.SaveChangesAsync(cancellationToken);
+            await UsersService.DeleteUserAsync(id);
             SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer(IndexAction);
         }
@@ -393,9 +379,7 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> UserRoles(CancellationToken cancellationToken, string id)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == id, cancellationToken);
-            var model = new SelectUserRolesViewModel(user);
-            model.SetAdminRoles(user);
+            var model = await UsersService.GetAdminUserRolesViewModelAsync(id);
             return View(model);
         }
 
@@ -404,7 +388,7 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UserRoles(SelectUserRolesViewModel model)
         {
-            var user = await ApplicationDbContext.Users.FirstAsync(u => u.Id == model.Id);
+            var user = await UsersService.GetUserAsync(model.Id);
             IdentityManager.ClearUserRoles(user.Id);
             foreach (var role in model.Roles)
             {
@@ -425,7 +409,7 @@ namespace EImece.Areas.Admin.Controllers
             var model = new ForgotPasswordViewModel();
             if (!String.IsNullOrEmpty(id))
             {
-                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+                var user = await UsersService.GetUserAsync(id);
                 if (user == null)
                 {
                     return HttpNotFound();

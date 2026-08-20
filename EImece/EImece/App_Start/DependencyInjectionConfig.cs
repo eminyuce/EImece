@@ -327,7 +327,7 @@ namespace EImece.App_Start
 
             services.AddScopedWithProps<ReportService>();
             services.AddScopedWithProps<SiteMapService>();
-            services.AddScopedWithProps<UsersService>();
+            services.AddScopedWithProps<IUsersService, UsersService>();
 
             // Transient matches Ninject default (no scope) for IEntityFactory / IHttpContextFactory.
             services.AddTransientWithProps<IEntityFactory, EntityFactory>();
@@ -343,8 +343,8 @@ namespace EImece.App_Start
 
         private static void RegisterIdentity(IServiceCollection services)
         {
-            services.AddScopedWithProps<IdentityManager>();
-            services.AddScopedWithProps<ApplicationDbContext>();
+            services.AddScoped<ApplicationDbContext>();
+            services.AddScopedWithProps<IIdentityManager, IdentityManager>();
             services.AddScopedWithProps<ApplicationUserManager>();
             services.AddScopedWithProps<ApplicationSignInManager>();
             services.AddScopedWithProps<TwoFactorTokenService>();
@@ -375,6 +375,13 @@ namespace EImece.App_Start
 
             services.AddScoped<IUserStore<ApplicationUser>>(sp =>
                 new UserStore<ApplicationUser>(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<UserStore<ApplicationUser>>(sp =>
+                new UserStore<ApplicationUser>(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<IRoleStore<IdentityRole, string>>(sp =>
+                new RoleStore<IdentityRole>(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<RoleStore<IdentityRole>>(sp =>
+                new RoleStore<IdentityRole>(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<RoleManager<IdentityRole>>();
 
             services.AddScoped(sp =>
             {
