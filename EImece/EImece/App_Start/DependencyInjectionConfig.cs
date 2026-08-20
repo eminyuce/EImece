@@ -64,6 +64,20 @@ namespace EImece.App_Start
             DependencyResolver.SetResolver(new MsDiDependencyResolver(ServiceProvider));
             GlobalConfiguration.Configuration.DependencyResolver =
                 new MsDiWebApiDependencyResolver(ServiceProvider);
+
+            // Hook AppConfig setting resolver to database-first via ISettingService
+            AppConfig.SettingResolver = key =>
+            {
+                try
+                {
+                    var settingService = DependencyResolver.Current?.GetService<ISettingService>();
+                    return settingService?.GetSettingByKey(key);
+                }
+                catch
+                {
+                    return null;
+                }
+            };
         }
 
         /// <summary>

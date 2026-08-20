@@ -5924,5 +5924,293 @@ namespace Resources {
                 return ResourceManager.GetString("FooterHtmlDescriptionTooltip", resourceCulture);
             }
         }
+        
+        public static string IsSiteUnderConstruction {
+            get {
+                return ResourceManager.GetString("IsSiteUnderConstruction", resourceCulture);
+            }
+        }
+        
+        public static string AllowSearchEngineIndexing {
+            get {
+                return ResourceManager.GetString("AllowSearchEngineIndexing", resourceCulture);
+            }
+        }
+        
+        public static string ActiveDesign {
+            get {
+                return ResourceManager.GetString("ActiveDesign", resourceCulture);
+            }
+        }
+        
+        public static string ThemeColor {
+            get {
+                return ResourceManager.GetString("ThemeColor", resourceCulture);
+            }
+        }
+        
+        public static string ManifestBackgroundColor {
+            get {
+                return ResourceManager.GetString("ManifestBackgroundColor", resourceCulture);
+            }
+        }
+        
+        public static string ManifestDisplay {
+            get {
+                return ResourceManager.GetString("ManifestDisplay", resourceCulture);
+            }
+        }
+        
+        public static string ManifestOrientation {
+            get {
+                return ResourceManager.GetString("ManifestOrientation", resourceCulture);
+            }
+        }
+        
+        public static string ManifestStartUrl {
+            get {
+                return ResourceManager.GetString("ManifestStartUrl", resourceCulture);
+            }
+        }
+        
+        public static string ManifestFallbackName {
+            get {
+                return ResourceManager.GetString("ManifestFallbackName", resourceCulture);
+            }
+        }
+        
+        public static string ManifestShortNameMaxLength {
+            get {
+                return ResourceManager.GetString("ManifestShortNameMaxLength", resourceCulture);
+            }
+        }
+        
+        public static string GridPageSizeNumber {
+            get {
+                return ResourceManager.GetString("GridPageSizeNumber", resourceCulture);
+            }
+        }
+        
+        public static string ProductShortDescriptionPreviewLength {
+            get {
+                return ResourceManager.GetString("ProductShortDescriptionPreviewLength", resourceCulture);
+            }
+        }
+        
+        public static string IsEditLinkEnable {
+            get {
+                return ResourceManager.GetString("IsEditLinkEnable", resourceCulture);
+            }
+        }
+        
+        public static string AdminImageHeightPercantage {
+            get {
+                return ResourceManager.GetString("AdminImageHeightPercantage", resourceCulture);
+            }
+        }
+        
+        public static string AdminImageWidthPercantage {
+            get {
+                return ResourceManager.GetString("AdminImageWidthPercantage", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadMaxWidth {
+            get {
+                return ResourceManager.GetString("ImageUploadMaxWidth", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadMaxHeight {
+            get {
+                return ResourceManager.GetString("ImageUploadMaxHeight", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadJpegQuality {
+            get {
+                return ResourceManager.GetString("ImageUploadJpegQuality", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadPreferWebP {
+            get {
+                return ResourceManager.GetString("ImageUploadPreferWebP", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadWebPQuality {
+            get {
+                return ResourceManager.GetString("ImageUploadWebPQuality", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadSaveWebPSidecar {
+            get {
+                return ResourceManager.GetString("ImageUploadSaveWebPSidecar", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadThumbMaxWidth {
+            get {
+                return ResourceManager.GetString("ImageUploadThumbMaxWidth", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadThumbMaxHeight {
+            get {
+                return ResourceManager.GetString("ImageUploadThumbMaxHeight", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadThumbJpegQuality {
+            get {
+                return ResourceManager.GetString("ImageUploadThumbJpegQuality", resourceCulture);
+            }
+        }
+        
+        public static string ImageUploadKeepOriginalIfSmaller {
+            get {
+                return ResourceManager.GetString("ImageUploadKeepOriginalIfSmaller", resourceCulture);
+            }
+        }
+        
+        public static string PaymentProvider {
+            get {
+                return ResourceManager.GetString("PaymentProvider", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoEnabledInstallments {
+            get {
+                return ResourceManager.GetString("IyzicoEnabledInstallments", resourceCulture);
+            }
+        }
+        
+        public static string BuyerIdentityNumber {
+            get {
+                return ResourceManager.GetString("BuyerIdentityNumber", resourceCulture);
+            }
+        }
+        
+        public static string CaptchaProvider {
+            get {
+                return ResourceManager.GetString("CaptchaProvider", resourceCulture);
+            }
+        }
+        
+        public static string RecaptchaSiteKey {
+            get {
+                return ResourceManager.GetString("RecaptchaSiteKey", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Enabled {
+            get {
+                return ResourceManager.GetString("RateLimit_Enabled", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Login_Limit {
+            get {
+                return ResourceManager.GetString("RateLimit_Login_Limit", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Login_WindowMinutes {
+            get {
+                return ResourceManager.GetString("RateLimit_Login_WindowMinutes", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Contact_Limit {
+            get {
+                return ResourceManager.GetString("RateLimit_Contact_Limit", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Contact_WindowMinutes {
+            get {
+                return ResourceManager.GetString("RateLimit_Contact_WindowMinutes", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Checkout_Limit {
+            get {
+                return ResourceManager.GetString("RateLimit_Checkout_Limit", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Checkout_WindowMinutes {
+            get {
+                return ResourceManager.GetString("RateLimit_Checkout_WindowMinutes", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Search_Limit {
+            get {
+                return ResourceManager.GetString("RateLimit_Search_Limit", resourceCulture);
+            }
+        }
+        
+        public static string RateLimit_Search_WindowMinutes {
+            get {
+                return ResourceManager.GetString("RateLimit_Search_WindowMinutes", resourceCulture);
+            }
+        }
+        
+        public static string HexColorErrorMessage {
+            get {
+                return ResourceManager.GetString("HexColorErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range1To100ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range1To100ErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range1To1000ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range1To1000ErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range1To1440ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range1To1440ErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range10To5000ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range10To5000ErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range0To10000ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range0To10000ErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range0To5000ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range0To5000ErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range40To95ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range40To95ErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string Range40To100ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range40To100ErrorMessage", resourceCulture);
+            }
+        }
     }
 }

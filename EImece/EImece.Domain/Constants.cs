@@ -90,6 +90,56 @@ namespace EImece.Domain
         public const string ELanguage = "ELanguage";
         public const string ProductPriceFilterSetting = "ProductPriceFilterSetting";
 
+        // Site Maintenance & SEO Setting Keys
+        public const string IsSiteUnderConstruction = "IsSiteUnderConstruction";
+        public const string AllowSearchEngineIndexing = "AllowSearchEngineIndexing";
+        public const string ActiveDesign = "ActiveDesign";
+
+        // PWA & Web App Manifest Setting Keys
+        public const string ManifestBackgroundColor = "ManifestBackgroundColor";
+        public const string ManifestDisplay = "ManifestDisplay";
+        public const string ManifestOrientation = "ManifestOrientation";
+        public const string ManifestStartUrl = "ManifestStartUrl";
+        public const string ManifestFallbackName = "ManifestFallbackName";
+        public const string ManifestShortNameMaxLength = "ManifestShortNameMaxLength";
+
+        // Admin & Content UI Preferences Setting Keys
+        public const string GridPageSizeNumber = "GridPageSizeNumber";
+        public const string ProductShortDescriptionPreviewLength = "ProductShortDescriptionPreviewLength";
+        public const string IsEditLinkEnable = "IsEditLinkEnable";
+        public const string AdminImageHeightPercantage = "AdminImageHeightPercantage";
+        public const string AdminImageWidthPercantage = "AdminImageWidthPercantage";
+
+        // Media & Image Upload Policies Setting Keys
+        public const string ImageUploadMaxWidth = "ImageUploadMaxWidth";
+        public const string ImageUploadMaxHeight = "ImageUploadMaxHeight";
+        public const string ImageUploadJpegQuality = "ImageUploadJpegQuality";
+        public const string ImageUploadPreferWebP = "ImageUploadPreferWebP";
+        public const string ImageUploadWebPQuality = "ImageUploadWebPQuality";
+        public const string ImageUploadSaveWebPSidecar = "ImageUploadSaveWebPSidecar";
+        public const string ImageUploadThumbMaxWidth = "ImageUploadThumbMaxWidth";
+        public const string ImageUploadThumbMaxHeight = "ImageUploadThumbMaxHeight";
+        public const string ImageUploadThumbJpegQuality = "ImageUploadThumbJpegQuality";
+        public const string ImageUploadKeepOriginalIfSmaller = "ImageUploadKeepOriginalIfSmaller";
+
+        // Payments & E-Commerce Options Setting Keys
+        public const string PaymentProvider = "PaymentProvider";
+        public const string IyzicoEnabledInstallments = "IyzicoEnabledInstallments";
+        public const string BuyerIdentityNumber = "BuyerIdentityNumber";
+
+        // Captcha & Anti-Spam Setting Keys
+        public const string CaptchaProvider = "CaptchaProvider";
+        public const string RecaptchaSiteKey = "RecaptchaSiteKey";
+        public const string RateLimit_Enabled = "RateLimit:Enabled";
+        public const string RateLimit_Login_Limit = "RateLimit:Login:Limit";
+        public const string RateLimit_Login_WindowMinutes = "RateLimit:Login:WindowMinutes";
+        public const string RateLimit_Contact_Limit = "RateLimit:Contact:Limit";
+        public const string RateLimit_Contact_WindowMinutes = "RateLimit:Contact:WindowMinutes";
+        public const string RateLimit_Checkout_Limit = "RateLimit:Checkout:Limit";
+        public const string RateLimit_Checkout_WindowMinutes = "RateLimit:Checkout:WindowMinutes";
+        public const string RateLimit_Search_Limit = "RateLimit:Search:Limit";
+        public const string RateLimit_Search_WindowMinutes = "RateLimit:Search:WindowMinutes";
+
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string DbConnectionEnvironmentVariable = "EIMECE_DB_CONNECTION_STRING";
         public const string AdministratorRole = "Admin";

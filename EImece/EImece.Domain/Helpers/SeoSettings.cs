@@ -14,8 +14,7 @@ namespace EImece.Domain.Helpers
         {
             get
             {
-                var value = ConfigurationManager.AppSettings[AllowSearchEngineIndexingKey];
-                return string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+                return AppConfig.AllowSearchEngineIndexing;
             }
         }
     }

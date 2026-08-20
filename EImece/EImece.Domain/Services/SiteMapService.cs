@@ -89,13 +89,14 @@ namespace EImece.Domain.Services
         public async Task<List<SitemapItem>> GenerateSiteMapAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             List<EImeceLanguage> eImeceLanguages = EnumHelper.GetLanguageEnumListFromWebConfig();
+            var requestContext = HttpContext.Current?.Request?.RequestContext;
 
             var sitemapItems = new List<SitemapItem>();
             foreach (var item in eImeceLanguages)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 int language = (int)item;
-                await GenerateMenuSiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
+                await GenerateMenuSiteMapAsync(sitemapItems, language, cancellationToken, requestContext).ConfigureAwait(false);
                 List<ProductCategory> productCategories = await GenerateProductCategorySiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
                 await GenerateProductSiteMapAsync(sitemapItems, language, productCategories, cancellationToken).ConfigureAwait(false);
                 List<StoryCategory> storyCategories = await GenerateStoryCategorySiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
@@ -106,13 +107,16 @@ namespace EImece.Domain.Services
             return sitemapItems;
         }
 
-        private async Task GenerateMenuSiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken)
+        private async Task GenerateMenuSiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken, RequestContext requestContext = null)
         {
             try
             {
-                if (HttpContext.Current == null)
+                if (requestContext == null && HttpContext.Current != null)
+                {
+                    requestContext = HttpContext.Current.Request?.RequestContext;
+                }
+                if (requestContext == null)
                     return;
-                var requestContext = HttpContext.Current.Request.RequestContext;
 
                 var menus = await MenuService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
                 cancellationToken.ThrowIfCancellationRequested();

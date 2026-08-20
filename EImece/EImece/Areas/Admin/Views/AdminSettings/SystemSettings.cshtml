@@ -11,13 +11,16 @@
 @{ ViewData["HelpId"] = "systemSettingsHelp"; }
 @Html.Partial("_AdminHelpAccordionStart")
 <ul style="margin-top: 0;">
-    <li>Bu sayfada sitenizin <strong>genel sistem ayarlarını</strong> yönetebilirsiniz.</li>
-    <li><strong>Genel Ayarlar:</strong> Varsayılan resim boyutları, ürün fiyat/yorum gösterimi ve kargo için minimum sepet tutarı gibi ayarları içerir.</li>
-    <li><strong>Firma Ayarları:</strong> Sitede görünen firma adı, adresi, e-posta ve telefon/lokasyon bilgilerini güncelleyebilirsiniz.</li>
-    <li><strong>SMTP E-Posta Ayarları:</strong> Sistemin e-posta gönderebilmesi için gereken sunucu bilgilerini (Host, Port, Kullanıcı vb.) ayarlayıp test edebilirsiniz.</li>
-    <li><strong>Sosyal Medya Ayarları:</strong> Sitenizdeki sosyal medya (Facebook, Instagram vb.) ve canlı destek (Zopim) bağlantılarını tanımlayabilirsiniz.</li>
-    <li><strong>Dışa Bağlantı ve Script Ayarları:</strong> Google Analytics, WhatsApp iletişim ve Google Haritalar script/link ayarlarınızı buradan yapabilirsiniz.</li>
-    <li><strong>Sistem İzleme & Log:</strong> Uygulama metriklerini ve logları inceleyebilirsiniz.</li>
+    <li>Bu sayfada sitenizin <strong>genel sistem ve yapılandırma ayarlarını</strong> yönetebilirsiniz.</li>
+    <li><strong>Genel & SEO:</strong> Bakım modu, arama motoru indeksleme izni, aktif tema ve ürün görünürlük ayarları.</li>
+    <li><strong>Firma & İletişim:</strong> Firma unvanı, adresi, iletişim e-postası ve kargo sepet limitleri.</li>
+    <li><strong>Tasarım & PWA:</strong> PWA manifest renkleri, başlangıç URL'si ve tema tercihlerini yönetebilirsiniz.</li>
+    <li><strong>Medya & Yükleme:</strong> Görsel sıkıştırma kalitesi, maksimum boyutlar ve WebP politikaları.</li>
+    <li><strong>E-Ticaret & Ödeme:</strong> Ödeme sağlayıcı, taksit seçenekleri ve alıcı kimlik ayarları.</li>
+    <li><strong>Güvenlik & Rate Limiting:</strong> Captcha sağlayıcı, reCAPTCHA anahtarı ve istek limitleri (Rate Limiting).</li>
+    <li><strong>SMTP E-Posta:</strong> Giden e-posta sunucusu ayarları ve test e-postası gönderimi.</li>
+    <li><strong>Sosyal Medya & Scriptler:</strong> Sosyal medya profilleri ve Google Analytics / harita scriptleri.</li>
+    <li><strong>Sistem Araçları:</strong> Metrikler, sağlık kontrolleri ve JSON veri yedekleme.</li>
 </ul>
 <p style="margin-top: 12px; margin-bottom: 0;"><strong>Önemli:</strong> Yaptığınız değişikliklerin geçerli olması için kaydet butonuna tıklamayı unutmayın.</p>
 @Html.Partial("_AdminHelpAccordionEnd")
@@ -43,12 +46,33 @@
             <ul class="nav nav-pills flex-column" id="settingsTabs" style="border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9; padding: 10px 0;">
                 <li class="nav-item">
                     <a class="nav-link active" data-bs-toggle="pill" href="#tab-general">
-                        <i class="fa fa-cog" style="margin-right:8px;"></i> @AdminResource.AdminGeneralSettings
+                        <i class="fa fa-cog" style="margin-right:8px;"></i> Genel & SEO
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#tab-company">
                         <i class="fa fa-briefcase" style="margin-right:8px;"></i> @AdminResource.CompanyAdminSettings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#tab-design">
+                        <i class="fa fa-paint-brush" style="margin-right:8px;"></i> Tasarım & PWA
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#tab-media">
+                        <i class="fa fa-picture-o" style="margin-right:8px;"></i> Medya & Yükleme
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-payments" id="nav-tab-payments">
+                        <span><i class="fa fa-credit-card" style="margin-right:8px;"></i> E-Ticaret &amp; Ödeme</span>
+                        <span class="badge bg-secondary payment-disabled-badge" style="display:none; font-size:10px;">Kilitli</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#tab-security">
+                        <i class="fa fa-shield" style="margin-right:8px;"></i> Güvenlik & Rate Limit
                     </a>
                 </li>
                 <li class="nav-item">
@@ -63,7 +87,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#tab-scripts">
-                        <i class="fa fa-link" style="margin-right:8px;"></i> Dış Bağlantılar & Scriptler
+                        <i class="fa fa-code" style="margin-right:8px;"></i> Scriptler & Dış Bağlantılar
                     </a>
                 </li>
                 <li class="nav-item">
@@ -78,64 +102,94 @@
         <div class="col-md-9">
             <div class="tab-content form-horizontal">
                 
-                <!-- General Settings -->
+                <!-- 1. General & SEO Settings -->
                 <div id="tab-general" class="tab-pane fade show active">
-                    <div class="card">
-                        <div class="card-header"><h3 class="card-title">@AdminResource.AdminGeneralSettings</h3></div>
+                    <div class="card mb-3">
+                        <div class="card-header"><h3 class="card-title">Site Durumu & SEO</h3></div>
                         <div class="card-body">
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.DefaultImageHeight, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                @Html.LabelFor(model => model.IsSiteUnderConstruction, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.DefaultImageHeight, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.DefaultImageHeight, "", new { @class = "text-danger" })
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.IsSiteUnderConstruction, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="IsSiteUnderConstruction">Bakım modu aktif (Ziyaretçilere bakım sayfası gösterilir ve arama motorlarına noindex verilir)</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.IsSiteUnderConstruction, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.DefaultImageWidth, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                @Html.LabelFor(model => model.AllowSearchEngineIndexing, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.DefaultImageWidth, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.DefaultImageWidth, "", new { @class = "text-danger" })
-                                    <p class="form-text" style="margin-top:10px; margin-bottom:0;">
-                                        Yüklenen görseller için sitede kullanılan küçültülmüş kopyanın varsayılan boyutudur.
-                                        Her kayıt sayfasında “Görsel boyutunu bu yükleme için özelleştir” ile geçici olarak değiştirilebilir.
-                                        Buradaki değişiklikler mevcut görselleri yeniden boyutlandırmaz.
-                                    </p>
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.AllowSearchEngineIndexing, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="AllowSearchEngineIndexing">Arama motoru indekslemesine izin ver (Google/Bing robots.txt ve meta tag izni)</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.AllowSearchEngineIndexing, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ActiveDesign, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.ActiveDesign, new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "Crizal (Yeşil Kurumsal Tema)", Value = "Crizal" },
+                                        new SelectListItem { Text = "Modern (Minimal Beyaz Tema)", Value = "Modern" }
+                                    }, new { @class = "form-select" })
+                                    @Html.ValidationMessageFor(model => model.ActiveDesign, "", new { @class = "text-danger" })
+                                    <p class="form-text">Ön yüz vitrin teması.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header"><h3 class="card-title">Ürün & İçerik Tercihleri</h3></div>
+                        <div class="card-body">
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.IsProductPriceEnable, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="checkbox admin-bool-field">
-                                        @Html.CheckBoxFor(model => model.IsProductPriceEnable)
-                                        <label for="IsProductPriceEnable">Ürün fiyatları sitede gösterilsin</label>
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.IsProductPriceEnable, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="IsProductPriceEnable">Ürün fiyatları ve sepete ekleme aktif</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.IsProductPriceEnable, "", new { @class = "text-danger" })
-                                    <p class="form-text" style="margin-top:10px; margin-bottom:0;">
-                                        Açık: e-ticaret (fiyat, sepet, ödeme, sipariş). Kapalı: ürün listeleme sitesi;
-                                        fiyat/sepet/ödeme gizlenir, ziyaretçi iletişimle ilerler.
-                                    </p>
+                                    <p class="form-text">Kapalı olduğunda site katalog/tanıtım modunda çalışır.</p>
                                 </div>
                             </div>
-                            <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.PaymentDetailHtml, htmlAttributes: new { @class = "col-form-label col-md-3" })
-                                <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.PaymentDetailHtml, 12, 50, new { @class = "form-control", placeholder = "Ürün detay sayfası Ödeme sekmesinde gösterilecek HTML" })
-                                    @Html.ValidationMessageFor(model => model.PaymentDetailHtml, "", new { @class = "text-danger" })
-                                    <p class="form-text" style="margin-top:10px; margin-bottom:0;">
-                                        Ürün detay sayfasındaki Ödeme Bilgisi sekmesinde gösterilir. Ödeme altyapısı değiştiğinde bu HTML’i güncellemeniz yeterlidir.
-                                    </p>
-                                </div>
-                            </div>
+
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.IsProductReviewEnable, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    <div class="checkbox admin-bool-field">
-                                        @Html.CheckBoxFor(model => model.IsProductReviewEnable)
-                                        <label for="IsProductReviewEnable">Ürün yorumları açılsın</label>
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.IsProductReviewEnable, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="IsProductReviewEnable">Ürün yorumları ve puanlama aktif</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.IsProductReviewEnable, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+
+
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.GridPageSizeNumber, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.GridPageSizeNumber, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1", max = "1000" } })
+                                    @Html.ValidationMessageFor(model => model.GridPageSizeNumber, "", new { @class = "text-danger" })
+                                    <p class="form-text">Yönetici paneli listelerinde sayfa başına gösterilecek satır sayısı (Varsayılan: 100).</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ProductShortDescriptionPreviewLength, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ProductShortDescriptionPreviewLength, new { htmlAttributes = new { @class = "form-control", type = "number", min = "10", max = "5000" } })
+                                    @Html.ValidationMessageFor(model => model.ProductShortDescriptionPreviewLength, "", new { @class = "text-danger" })
+                                    <p class="form-text">Ürün detay sayfasında 'Devamını Gör...' butonundan önce gösterilecek karakter sayısı (Varsayılan: 180).</p>
+                                </div>
+                            </div>
+
                             <div class="form-group row mb-3">
                                 @Html.LabelFor(model => model.ProductPriceFilterSetting, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
@@ -143,17 +197,20 @@
                                     @Html.ValidationMessageFor(model => model.ProductPriceFilterSetting, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                @Html.LabelFor(model => model.PaymentDetailHtml, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.TextAreaFor(model => model.PaymentDetailHtml, 10, 50, new { @class = "form-control", placeholder = "Ürün detay sayfası Ödeme sekmesinde gösterilecek HTML" })
+                                    @Html.ValidationMessageFor(model => model.PaymentDetailHtml, "", new { @class = "text-danger" })
+                                    <p class="form-text">Ürün detay sayfasındaki Ödeme Bilgisi sekmesinde gösterilir.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Company Settings -->
+                <!-- 2. Company Settings -->
                 <div id="tab-company" class="tab-pane fade">
                     <div class="card">
                         <div class="card-header"><h3 class="card-title">@AdminResource.CompanyAdminSettings</h3></div>
@@ -186,11 +243,418 @@
                                     @Html.ValidationMessageFor(model => model.WebSiteCompanyEmailAddress, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                                    @Html.ValidationMessageFor(model => model.BasketMinTotalPriceForCargo, "", new { @class = "text-danger" })
+                                    <p class="form-text">Ücretsiz kargo için minimum sepet tutarı.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SMTP Settings -->
+                <!-- 3. Design & PWA Settings -->
+                <div id="tab-design" class="tab-pane fade">
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h3 class="card-title mb-0">PWA &amp; Web App Manifest</h3>
+                            <a href="@Url.Content("~/manifest.json")" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" id="btnPreviewManifest">
+                                <i class="fa fa-external-link me-1"></i> manifest.json Görüntüle / Test Et
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info py-2 px-3 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div class="small">
+                                    <i class="fa fa-info-circle me-1"></i>
+                                    PWA manifest yapılandırmanızı canlı olarak incelemek için:
+                                    <a href="@Url.Content("~/manifest.json")" target="_blank" rel="noopener noreferrer" class="fw-bold text-decoration-underline ms-1">
+                                        /manifest.json <i class="fa fa-external-link small"></i>
+                                    </a>
+                                </div>
+                                <a href="@Url.Content("~/manifest.json")" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
+                                    Canlı Sonucu Gör
+                                </a>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ThemeColor, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        @Html.EditorFor(model => model.ThemeColor, new { htmlAttributes = new { @class = "form-control", placeholder = "#1789F9" } })
+                                        <span class="input-group-text p-1">
+                                            <input type="color" class="form-control form-control-color border-0" style="width:36px;height:30px;padding:0;" onchange="$('#ThemeColor').val(this.value);" />
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ThemeColor, "", new { @class = "text-danger" })
+                                    <p class="form-text">Tarayıcı adres çubuğu ve PWA başlık rengi (Hex, örn: #067a36 veya #1789F9).</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ManifestBackgroundColor, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        @Html.EditorFor(model => model.ManifestBackgroundColor, new { htmlAttributes = new { @class = "form-control", placeholder = "#ffffff" } })
+                                        <span class="input-group-text p-1">
+                                            <input type="color" class="form-control form-control-color border-0" style="width:36px;height:30px;padding:0;" onchange="$('#ManifestBackgroundColor').val(this.value);" />
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ManifestBackgroundColor, "", new { @class = "text-danger" })
+                                    <p class="form-text">PWA açılış ekranı (Splash Screen) arka plan rengi.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ManifestDisplay, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.ManifestDisplay, new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "standalone (Bağımsız Uygulama Penceresi)", Value = "standalone" },
+                                        new SelectListItem { Text = "fullscreen (Tam Ekran)", Value = "fullscreen" },
+                                        new SelectListItem { Text = "minimal-ui (Minimal Tarayıcı Kontrolleri)", Value = "minimal-ui" },
+                                        new SelectListItem { Text = "browser (Standart Tarayıcı)", Value = "browser" }
+                                    }, new { @class = "form-select" })
+                                    @Html.ValidationMessageFor(model => model.ManifestDisplay, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ManifestOrientation, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.ManifestOrientation, new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "portrait (Dikey)", Value = "portrait" },
+                                        new SelectListItem { Text = "landscape (Yatay)", Value = "landscape" },
+                                        new SelectListItem { Text = "any (Otomatik / Serbest)", Value = "any" }
+                                    }, new { @class = "form-select" })
+                                    @Html.ValidationMessageFor(model => model.ManifestOrientation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ManifestStartUrl, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ManifestStartUrl, new { htmlAttributes = new { @class = "form-control", placeholder = "/" } })
+                                    @Html.ValidationMessageFor(model => model.ManifestStartUrl, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ManifestFallbackName, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ManifestFallbackName, new { htmlAttributes = new { @class = "form-control", placeholder = "Web App" } })
+                                    @Html.ValidationMessageFor(model => model.ManifestFallbackName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ManifestShortNameMaxLength, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ManifestShortNameMaxLength, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1", max = "100" } })
+                                    @Html.ValidationMessageFor(model => model.ManifestShortNameMaxLength, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 4. Media & Image Upload Policies -->
+                <div id="tab-media" class="tab-pane fade">
+                    <div class="card mb-3">
+                        <div class="card-header"><h3 class="card-title">Varsayılan Boyutlar</h3></div>
+                        <div class="card-body">
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.DefaultImageWidth, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DefaultImageWidth, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.DefaultImageWidth, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.DefaultImageHeight, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DefaultImageHeight, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.DefaultImageHeight, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header"><h3 class="card-title">Görsel Yükleme ve Sıkıştırma Politikaları</h3></div>
+                        <div class="card-body">
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadMaxWidth, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ImageUploadMaxWidth, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                                    @Html.ValidationMessageFor(model => model.ImageUploadMaxWidth, "", new { @class = "text-danger" })
+                                    <p class="form-text">Tam boyutlu görseller için maksimum genişlik (px). 0 = sınır yok.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadMaxHeight, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ImageUploadMaxHeight, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                                    @Html.ValidationMessageFor(model => model.ImageUploadMaxHeight, "", new { @class = "text-danger" })
+                                    <p class="form-text">Tam boyutlu görseller için maksimum yükseklik (px). 0 = sınır yok.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadJpegQuality, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ImageUploadJpegQuality, new { htmlAttributes = new { @class = "form-control", type = "number", min = "40", max = "95" } })
+                                    @Html.ValidationMessageFor(model => model.ImageUploadJpegQuality, "", new { @class = "text-danger" })
+                                    <p class="form-text">JPEG sıkıştırma kalitesi (40–95). Varsayılan: 82.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadPreferWebP, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.ImageUploadPreferWebP, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="ImageUploadPreferWebP">Yüklenen görselleri otomatik WebP formatına dönüştür</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ImageUploadPreferWebP, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadWebPQuality, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ImageUploadWebPQuality, new { htmlAttributes = new { @class = "form-control", type = "number", min = "40", max = "100" } })
+                                    @Html.ValidationMessageFor(model => model.ImageUploadWebPQuality, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadSaveWebPSidecar, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.ImageUploadSaveWebPSidecar, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="ImageUploadSaveWebPSidecar">Orijinal dosyanın yanında .webp kopyasını da kaydet (Sidecar)</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ImageUploadSaveWebPSidecar, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadThumbMaxWidth, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ImageUploadThumbMaxWidth, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                                    @Html.ValidationMessageFor(model => model.ImageUploadThumbMaxWidth, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadThumbMaxHeight, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ImageUploadThumbMaxHeight, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                                    @Html.ValidationMessageFor(model => model.ImageUploadThumbMaxHeight, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadThumbJpegQuality, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ImageUploadThumbJpegQuality, new { htmlAttributes = new { @class = "form-control", type = "number", min = "40", max = "95" } })
+                                    @Html.ValidationMessageFor(model => model.ImageUploadThumbJpegQuality, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.ImageUploadKeepOriginalIfSmaller, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.ImageUploadKeepOriginalIfSmaller, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="ImageUploadKeepOriginalIfSmaller">Yeniden kodlama boyutu küçültmüyorsa orijinal baytları koru</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ImageUploadKeepOriginalIfSmaller, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Payments & E-Commerce Options -->
+                <div id="tab-payments" class="tab-pane fade">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h3 class="card-title mb-0">Ödeme Sağlayıcı &amp; Parametreleri</h3>
+                            <span class="badge bg-warning text-dark payment-disabled-badge" style="display:none;">
+                                <i class="fa fa-lock me-1"></i> Fiyat &amp; Satış Aktif Olmalıdır
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div id="payment-disabled-alert" class="alert alert-warning d-flex align-items-center mb-3" style="display:none;">
+                                <i class="fa fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+                                <div>
+                                    <strong>Ödeme Ayarları Kilitli:</strong>
+                                    Ödeme Sağlayıcı ve parametrelerini yapılandırabilmek için <strong>Genel &amp; SEO</strong> sekmesindeki <em>"Ürün fiyatları ve sepete ekleme aktif"</em> seçeneğinin açık olması gerekmektedir.
+                                </div>
+                            </div>
+
+                            <div id="payment-settings-fields">
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle"></i> <strong>Güvenlik Notu:</strong> İyzico API ve Secret anahtarları güvenlik nedeniyle veritabanında saklanmaz; <code>Web.config</code> veya ortam değişkenlerinde (<code>EIMECE_IYZICO_API_KEY</code>, <code>EIMECE_IYZICO_SECRET_KEY</code>) tanımlanır.
+                                </div>
+
+                                <div class="form-group row mb-3">
+                                    @Html.LabelFor(model => model.PaymentProvider, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.PaymentProvider, new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Text = "Iyzico (Checkout Form & 3D Secure)", Value = "Iyzico" }
+                                        }, new { @class = "form-select payment-input" })
+                                        @Html.ValidationMessageFor(model => model.PaymentProvider, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-3">
+                                    @Html.LabelFor(model => model.IyzicoEnabledInstallments, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.IyzicoEnabledInstallments, new { htmlAttributes = new { @class = "form-control payment-input", placeholder = "1,2,4,6,9" } })
+                                        @Html.ValidationMessageFor(model => model.IyzicoEnabledInstallments, "", new { @class = "text-danger" })
+                                        <p class="form-text">Ödeme ekranında müşteriye sunulacak taksit seçenekleri (virgülle ayrılmış).</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-3">
+                                    @Html.LabelFor(model => model.BuyerIdentityNumber, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.BuyerIdentityNumber, new { htmlAttributes = new { @class = "form-control payment-input", placeholder = "10000000000" } })
+                                        @Html.ValidationMessageFor(model => model.BuyerIdentityNumber, "", new { @class = "text-danger" })
+                                        <p class="form-text">Kullanıcı TCKN belirtmediğinde kullanılan varsayılan kimlik numarası.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Security & Rate Limiting -->
+                <div id="tab-security" class="tab-pane fade">
+                    <div class="card mb-3">
+                        <div class="card-header"><h3 class="card-title">Captcha (Spam Koruması)</h3></div>
+                        <div class="card-body">
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.CaptchaProvider, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.CaptchaProvider, new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "Legacy (Dahili Matematiksel Görsel)", Value = "Legacy" },
+                                        new SelectListItem { Text = "Recaptcha (Google reCAPTCHA v2)", Value = "Recaptcha" },
+                                        new SelectListItem { Text = "None (Devre Dışı)", Value = "None" }
+                                    }, new { @class = "form-select" })
+                                    @Html.ValidationMessageFor(model => model.CaptchaProvider, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.RecaptchaSiteKey, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.RecaptchaSiteKey, new { htmlAttributes = new { @class = "form-control", placeholder = "Google reCAPTCHA v2 Site Key" } })
+                                    @Html.ValidationMessageFor(model => model.RecaptchaSiteKey, "", new { @class = "text-danger" })
+                                    <p class="form-text">Google reCAPTCHA public site anahtarı (RecaptchaSecretKey Web.config dosyasında kalır).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header"><h3 class="card-title">Rate Limiting (İstek Sınırlandırma)</h3></div>
+                        <div class="card-body">
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.RateLimit_Enabled, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.RateLimit_Enabled, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="RateLimit_Enabled">Rate Limiting mekanizmasını aktif et (Brute-force ve flood koruması)</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.RateLimit_Enabled, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <hr />
+                            <h5>Özellik Bazlı Limitler</h5>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6><i class="fa fa-sign-in"></i> Giriş (Login) Sayfası</h6>
+                                            <div class="mb-2">
+                                                @Html.LabelFor(model => model.RateLimit_Login_Limit, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Login_Limit, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                            <div>
+                                                @Html.LabelFor(model => model.RateLimit_Login_WindowMinutes, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Login_WindowMinutes, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6><i class="fa fa-envelope-o"></i> İletişim (Contact) Formu</h6>
+                                            <div class="mb-2">
+                                                @Html.LabelFor(model => model.RateLimit_Contact_Limit, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Contact_Limit, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                            <div>
+                                                @Html.LabelFor(model => model.RateLimit_Contact_WindowMinutes, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Contact_WindowMinutes, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6><i class="fa fa-shopping-cart"></i> Ödeme (Checkout) İsteği</h6>
+                                            <div class="mb-2">
+                                                @Html.LabelFor(model => model.RateLimit_Checkout_Limit, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Checkout_Limit, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                            <div>
+                                                @Html.LabelFor(model => model.RateLimit_Checkout_WindowMinutes, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Checkout_WindowMinutes, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6><i class="fa fa-search"></i> Arama (Search) İstekleri</h6>
+                                            <div class="mb-2">
+                                                @Html.LabelFor(model => model.RateLimit_Search_Limit, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Search_Limit, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                            <div>
+                                                @Html.LabelFor(model => model.RateLimit_Search_WindowMinutes, new { @class = "form-label" })
+                                                @Html.EditorFor(model => model.RateLimit_Search_WindowMinutes, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. SMTP Settings -->
                 <div id="tab-smtp" class="tab-pane fade">
                     <div class="card">
                         <div class="card-header"><h3 class="card-title">@AdminResource.SmtpEmailSettings</h3></div>
@@ -267,9 +731,9 @@
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailEnableSslTooltip } })
                                 </label>
                                 <div class="col-md-9">
-                                    <div class="checkbox admin-bool-field">
-                                        @Html.CheckBoxFor(model => model.AdminEmailEnableSsl)
-                                        <label for="AdminEmailEnableSsl">SMTP bağlantısında SSL/TLS kullanılsın</label>
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.AdminEmailEnableSsl, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="AdminEmailEnableSsl">SMTP bağlantısında SSL/TLS kullanılsın</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminEmailEnableSsl, "", new { @class = "text-danger" })
                                     <p class="form-text">@AdminResource.AdminEmailEnableSslTooltip</p>
@@ -281,18 +745,18 @@
                                     @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailUseDefaultCredentialsTooltip } })
                                 </label>
                                 <div class="col-md-9">
-                                    <div class="checkbox admin-bool-field">
-                                        @Html.CheckBoxFor(model => model.AdminEmailUseDefaultCredentials)
-                                        <label for="AdminEmailUseDefaultCredentials">SMTP için varsayılan kimlik bilgileri kullanılsın</label>
+                                    <div class="form-check form-switch">
+                                        @Html.CheckBoxFor(model => model.AdminEmailUseDefaultCredentials, new { @class = "form-check-input" })
+                                        <label class="form-check-label" for="AdminEmailUseDefaultCredentials">SMTP için varsayılan kimlik bilgileri kullanılsın</label>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminEmailUseDefaultCredentials, "", new { @class = "text-danger" })
                                     <p class="form-text">@AdminResource.AdminEmailUseDefaultCredentialsTooltip</p>
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                <div class="col-md-9 col-md-offset-3">
+                                <div class="col-md-9 offset-md-3">
                                     @Html.ActionLink("E-Posta Denemesi Yap", "SendSampleEmail", null, new { @class = "btn btn-info" })
-                                    <span class="form-text" style="display:inline-block; margin-left:10px; margin-bottom:0;">
+                                    <span class="form-text d-inline-block ms-2 mb-0">
                                         (Firma E-posta Adresinize Test E-maili Atılacaktır)
                                     </span>
                                 </div>
@@ -301,7 +765,7 @@
                     </div>
                 </div>
 
-                <!-- Social Media Settings -->
+                <!-- 8. Social Media Settings -->
                 <div id="tab-social" class="tab-pane fade">
                     <div class="card">
                         <div class="card-header"><h3 class="card-title">@AdminResource.SocialMediaSetttings</h3></div>
@@ -360,7 +824,7 @@
                     </div>
                 </div>
 
-                <!-- Scripts & External Services -->
+                <!-- 9. Scripts & External Services -->
                 <div id="tab-scripts" class="tab-pane fade">
                     <div class="card">
                         <div class="card-header"><h3 class="card-title">Dış Bağlantılar & Scriptler</h3></div>
@@ -415,44 +879,41 @@
                     </div>
                 </div>
 
-                <!-- System Tools Tab -->
+                <!-- 10. System Tools Tab -->
                 <div id="tab-tools" class="tab-pane fade">
                     <div class="card">
                         <div class="card-header"><h3 class="card-title">Sistem Araçları & İzleme</h3></div>
                         <div class="card-body">
-                            
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="well well-sm text-center">
+                                    <div class="p-3 border rounded text-center bg-light">
                                         <h4><i class="fa fa-dashboard text-primary" style="font-size:24px;"></i><br/>@AdminResource.SystemMonitoring</h4>
                                         <p class="text-muted">Sistem durumunu ve performansını inceleyin.</p>
-                                        <br/>
                                         <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-primary w-100">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i> @AdminResource.Metrics
                                         </a>
-                                        <a href="@Url.Action("Index", "Health", new { area = "" })" class="btn btn-secondary w-100" target="_blank" rel="noopener noreferrer" style="margin-top: 8px;">
+                                        <a href="@Url.Action("Index", "Health", new { area = "" })" class="btn btn-secondary w-100 mt-2" target="_blank" rel="noopener noreferrer">
                                             <i class="fa fa-heartbeat" aria-hidden="true"></i> @AdminResource.Health
                                         </a>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <div class="well well-sm text-center">
+                                    <div class="p-3 border rounded text-center bg-light">
                                         <h4><i class="fa fa-cogs text-warning" style="font-size:24px;"></i><br />@AdminResource.AppLogs & Bakım</h4>
                                         <p class="text-muted">Uygulama kayıtlarını görüntüleyin ve bakım yapın.</p>
-                                        <br/>
                                         @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn w-100 btn-warning" })
-                                        <a href="@Url.Action("DownloadCompressedImages", "Images", new { area = "admin" })" class="btn btn-outline-primary w-100" style="margin-top: 8px;">
+                                        <a href="@Url.Action("DownloadCompressedImages", "Images", new { area = "admin" })" class="btn btn-outline-primary w-100 mt-2">
                                             <i class="fa fa-file-archive-o" aria-hidden="true"></i> Sıkıştırılmış Görseller (ZIP)
                                         </a>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <div class="well well-sm text-center" style="border: 1px solid #198754; background-color: #f8fff9;">
+                                    <div class="p-3 border rounded text-center" style="border: 1px solid #198754; background-color: #f8fff9;">
                                         <h4><i class="fa fa-database text-success" style="font-size:24px;"></i><br />Veri Yedekleme (JSON)</h4>
                                         <p class="text-muted">Uygulama iş verilerini versiyonlu JSON formatında yedekleyin.</p>
-                                        <div style="margin-bottom: 12px;">
+                                        <div class="mb-2">
                                             <span class="badge bg-success" style="font-size: 11px;">v1.0 JSON</span>
                                             <span class="badge bg-info text-dark" style="font-size: 11px;">İlişki Korumalı</span>
                                             <span class="badge bg-secondary" style="font-size: 11px;">ZIP Paket</span>
@@ -460,63 +921,80 @@
                                         <a href="@Url.Action("ExportBackup", "AdminSettings", new { area = "admin" })" class="btn btn-success w-100 btn-export-backup" id="btnExportBackup" title="Tüm sistem verilerini JSON ZIP olarak dışa aktar">
                                             <i class="fa fa-download" aria-hidden="true"></i> Verileri Dışa Aktar (ZIP)
                                         </a>
-                                        <p class="form-text text-muted" style="margin-top: 8px; font-size: 11px;">
+                                        <p class="form-text text-muted mt-2" style="font-size: 11px;">
                                             Katalog, siparişler, ayarlar ve kullanıcı meta verilerini içerir. Şifreler ve ödeme kart bilgileri dahil edilmez.
                                         </p>
                                     </div>
                                 </div>
                             </div>
-
-                            </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
+    </div>
+}
+
+<style>
+    /* Styling for the nav pills */
+    #settingsTabs > li > a,
+    #settingsTabs .nav-link {
+        border-radius: 4px;
+        margin-bottom: 2px;
+        color: #555;
+    }
+    #settingsTabs > li.active > a,
+    #settingsTabs > li.active > a:hover,
+    #settingsTabs > li.active > a:focus,
+    #settingsTabs .nav-link.active,
+    #settingsTabs .nav-link.active:hover,
+    #settingsTabs .nav-link.active:focus {
+        background-color: #2b6cb0;
+        color: #fff;
+        font-weight: 700;
+    }
+    .tab-content {
+        padding-left: 15px;
+    }
+    .tab-pane .card-header {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    function syncPaymentSettingsState() {
+        var isPriceEnabled = $('#IsProductPriceEnable').is(':checked');
+        if (isPriceEnabled) {
+            $('#payment-disabled-alert').hide();
+            $('.payment-disabled-badge').hide();
+            $('#payment-settings-fields').css({ 'opacity': '1', 'pointer-events': 'auto' });
+            $('.payment-input').prop('disabled', false);
+        } else {
+            $('#payment-disabled-alert').show();
+            $('.payment-disabled-badge').show();
+            $('#payment-settings-fields').css({ 'opacity': '0.5', 'pointer-events': 'none' });
+            $('.payment-input').prop('disabled', true);
+        }
     }
 
-    <style>
-        /* Styling for the nav pills */
-        #settingsTabs > li > a,
-        #settingsTabs .nav-link {
-            border-radius: 4px;
-            margin-bottom: 2px;
-            color: #555;
+    // Tab persist via hash in URL
+    $(function(){
+        var hash = window.location.hash;
+        if (hash) {
+            $(".nav-pills a[href='" + hash + "']").tab('show');
         }
-        #settingsTabs > li.active > a,
-        #settingsTabs > li.active > a:hover,
-        #settingsTabs > li.active > a:focus,
-        #settingsTabs .nav-link.active,
-        #settingsTabs .nav-link.active:hover,
-        #settingsTabs .nav-link.active:focus {
-            background-color: #2b6cb0;
-            color: #fff;
-            font-weight: 700;
-        }
-        .tab-content {
-            padding-left: 15px;
-        }
-        .tab-pane .card-header {
-            background-color: #f5f5f5;
-            font-weight: bold;
-        }
-    </style>
-
-    <script>
-        // Tab persist via hash in URL
-        $(function(){
-            var hash = window.location.hash;
-            if (hash) {
-                $(".nav-pills a[href='" + hash + "']").tab('show');
-            }
-            $('.nav-pills a').click(function (e) {
-                $(this).tab('show');
-                var scrollmem = $('body').scrollTop() || $('html').scrollTop();
-                window.location.hash = this.hash;
-                $('html,body').scrollTop(scrollmem);
-            });
+        $('.nav-pills a').click(function (e) {
+            $(this).tab('show');
+            var scrollmem = $('body').scrollTop() || $('html').scrollTop();
+            window.location.hash = this.hash;
+            $('html,body').scrollTop(scrollmem);
         });
-    </script>
 
-    @Html.Partial("_AdminInitTooltips")
+        $('#IsProductPriceEnable').on('change', syncPaymentSettingsState);
+        syncPaymentSettingsState();
+    });
+</script>
+
+@Html.Partial("_AdminInitTooltips")
