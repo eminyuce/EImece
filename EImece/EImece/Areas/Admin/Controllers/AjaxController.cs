@@ -1,4 +1,3 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -28,8 +27,6 @@ namespace EImece.Areas.Admin.Controllers
     public class AjaxController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        [Inject]
-        public ApplicationDbContext ApplicationDbContext { get; set; }
 
         private AppLogRepository AppLogRepository { get; set; }
 
@@ -37,7 +34,7 @@ namespace EImece.Areas.Admin.Controllers
         public IShoppingCartService ShoppingCartService { get; set; }
 
         [Inject]
-        public UsersService UsersService { get; set; }
+        public IUsersService UsersService { get; set; }
 
         [Inject]
         public ICustomerService CustomerService { get; set; }
@@ -333,8 +330,7 @@ namespace EImece.Areas.Admin.Controllers
 
         private async Task<List<string>> SearchUsersIndexAsync(string searchKey)
         {
-            var users = ApplicationDbContext.Users.AsQueryable();
-            return await users.Where(r => r.Email.ToLower().Contains(searchKey) || r.FirstName.ToLower().Contains(searchKey) || r.LastName.ToLower().Contains(searchKey)).Select(r => r.Email).ToListAsync();
+            return await UsersService.SearchUserEmailsAsync(searchKey);
         }
 
         [DeleteAuthorize()]

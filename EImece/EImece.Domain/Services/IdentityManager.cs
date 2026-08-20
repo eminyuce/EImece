@@ -1,56 +1,66 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
+using EImece.Domain.Services.IServices;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace EImece.Domain.Services
 {
-    public class IdentityManager
+    public class IdentityManager : IIdentityManager
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public IdentityManager(ApplicationUserManager userManager, RoleManager<IdentityRole> roleManager)
+        {
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+        }
+
+        public IdentityManager(ApplicationDbContext dbContext)
+        {
+            if (dbContext == null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
+            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbContext));
+            _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
+        }
+
         public bool RoleExists(string name)
         {
-            var rm = new RoleManager<IdentityRole>(
-                new RoleStore<IdentityRole>(new ApplicationDbContext()));
-            return rm.RoleExists(name);
+            return _roleManager.RoleExists(name);
         }
 
         public bool CreateRole(string name)
         {
-            var rm = new RoleManager<IdentityRole>(
-                new RoleStore<IdentityRole>(new ApplicationDbContext()));
-            var idResult = rm.Create(new IdentityRole(name));
+            var idResult = _roleManager.Create(new IdentityRole(name));
             return idResult.Succeeded;
         }
 
         public bool CreateUser(ApplicationUser user, string password)
         {
-            var um = new UserManager<ApplicationUser>(
-                new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var idResult = um.Create(user, password);
+            var idResult = _userManager.Create(user, password);
             return idResult.Succeeded;
         }
 
         public bool AddUserToRole(string userId, string roleName)
         {
-            var um = new UserManager<ApplicationUser>(
-                new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var idResult = um.AddToRole(userId, roleName);
+            var idResult = _userManager.AddToRole(userId, roleName);
             return idResult.Succeeded;
         }
 
         public void ClearUserRoles(string userId)
         {
-            var dbContext = new ApplicationDbContext();
-            var um = new UserManager<ApplicationUser>(
-                new UserStore<ApplicationUser>(dbContext));
-            var user = um.FindById(userId);
-            var currentRoles = new List<IdentityUserRole>();
-            currentRoles.AddRange(user.Roles);
-            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
-            foreach (var role in currentRoles)
+            var roles = _userManager.GetRoles(userId);
+            if (roles != null && roles.Count > 0)
             {
-                var roleObj = rm.FindById(role.RoleId);
-                um.RemoveFromRole(userId, roleObj.Name);
+                foreach (var role in roles.ToList())
+                {
+                    _userManager.RemoveFromRole(userId, role);
+                }
             }
         }
     }

@@ -1,8 +1,8 @@
 using EImece.Domain.DbContext;
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,16 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
-    public class UsersService
+    public class UsersService : IUsersService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private readonly ApplicationDbContext _dbContext;
+
+        public UsersService(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
 
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
@@ -31,9 +38,6 @@ namespace EImece.Domain.Services
         [Inject]
         public IOrderService OrderService { get; set; }
 
-        [Inject]
-        public ApplicationDbContext ApplicationDbContext { get; set; }
-
         public ApplicationUser GetUser(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -41,7 +45,7 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId should have value");
             }
 
-            var user = ApplicationDbContext.Users.FirstOrDefault(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -56,7 +60,7 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId should have value");
             }
 
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -64,13 +68,73 @@ namespace EImece.Domain.Services
             return user;
         }
 
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return null;
+            }
+
+            var key = email.Trim();
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == key || u.Email == key).ConfigureAwait(false);
+        }
+
+        public async Task<ApplicationUser> GetUserByEmailOrUserNameAsync(string emailOrUserName)
+        {
+            if (string.IsNullOrWhiteSpace(emailOrUserName))
+            {
+                return null;
+            }
+
+            var key = emailOrUserName.Trim();
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == key || u.Email == key).ConfigureAwait(false);
+        }
+
+        public async Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
+        {
+            if (string.IsNullOrWhiteSpace(emailOrUserName) || string.IsNullOrWhiteSpace(roleName))
+            {
+                return false;
+            }
+
+            var login = emailOrUserName.Trim();
+            var query = from u in _dbContext.Users
+                        from ur in u.Roles
+                        join r in _dbContext.Roles on ur.RoleId equals r.Id
+                        where (u.UserName.Equals(login, StringComparison.InvariantCultureIgnoreCase)
+                               || u.Email.Equals(login, StringComparison.InvariantCultureIgnoreCase))
+                              && r.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)
+                        select r.Id;
+
+            return await query.AnyAsync().ConfigureAwait(false);
+        }
+
+        public bool IsUserInRole(string emailOrUserName, string roleName)
+        {
+            if (string.IsNullOrWhiteSpace(emailOrUserName) || string.IsNullOrWhiteSpace(roleName))
+            {
+                return false;
+            }
+
+            var login = emailOrUserName.Trim();
+            var query = from u in _dbContext.Users
+                        from ur in u.Roles
+                        join r in _dbContext.Roles on ur.RoleId equals r.Id
+                        where (u.UserName.Equals(login, StringComparison.InvariantCultureIgnoreCase)
+                               || u.Email.Equals(login, StringComparison.InvariantCultureIgnoreCase))
+                              && r.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)
+                        select r.Id;
+
+            return query.Any();
+        }
+
         public List<EditUserViewModel> GetUsers(string search)
         {
-            var users = ApplicationDbContext.Users.AsQueryable();
+            var users = _dbContext.Users.AsQueryable();
 
-            var users2 = from u in ApplicationDbContext.Users
+            var users2 = from u in _dbContext.Users
                          from ur in u.Roles
-                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                         join r in _dbContext.Roles on ur.RoleId equals r.Id
                          select new
                          {
                              u.Id,
@@ -106,11 +170,11 @@ namespace EImece.Domain.Services
 
         public async Task<List<EditUserViewModel>> GetUsersAsync(string search)
         {
-            var users = ApplicationDbContext.Users.AsQueryable();
+            var users = _dbContext.Users.AsQueryable();
 
-            var users2 = from u in ApplicationDbContext.Users
+            var users2 = from u in _dbContext.Users
                          from ur in u.Roles
-                         join r in ApplicationDbContext.Roles on ur.RoleId equals r.Id
+                         join r in _dbContext.Roles on ur.RoleId equals r.Id
                          select new
                          {
                              u.Id,
@@ -143,13 +207,27 @@ namespace EImece.Domain.Services
             return model;
         }
 
+        public async Task<List<string>> SearchUserEmailsAsync(string searchKey)
+        {
+            var users = _dbContext.Users.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(searchKey))
+            {
+                searchKey = searchKey.ToLower().Trim();
+                users = users.Where(r => r.Email.ToLower().Contains(searchKey)
+                                      || r.FirstName.ToLower().Contains(searchKey)
+                                      || r.LastName.ToLower().Contains(searchKey));
+            }
+
+            return await users.Select(r => r.Email).ToListAsync().ConfigureAwait(false);
+        }
+
         public void DeleteUser(string id)
         {
             var user = GetUser(id);
             if (user != null)
             {
-                ApplicationDbContext.Users.Remove(user);
-                ApplicationDbContext.SaveChanges();
+                _dbContext.Users.Remove(user);
+                _dbContext.SaveChanges();
             }
         }
 
@@ -158,8 +236,8 @@ namespace EImece.Domain.Services
             var user = await GetUserAsync(id).ConfigureAwait(false);
             if (user != null)
             {
-                ApplicationDbContext.Users.Remove(user);
-                await ApplicationDbContext.SaveChangesAsync().ConfigureAwait(false);
+                _dbContext.Users.Remove(user);
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
         }
 
@@ -180,7 +258,7 @@ namespace EImece.Domain.Services
                     continue;
                 }
 
-                var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
+                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
                 if (user == null)
                 {
                     continue;
@@ -209,6 +287,112 @@ namespace EImece.Domain.Services
 
             Logger.Info($"DeleteUsersAsync finished. Total deleted: {deleted.Count}");
             return deleted;
+        }
+
+        public async Task UpdateUserAsync(EditUserViewModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var user = await _dbContext.Users.FirstAsync(u => u.Id == model.Id).ConfigureAwait(false);
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.UserName = model.Email;
+
+            _dbContext.Entry(user).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public async Task<SelectUserRolesViewModel> GetAdminUserRolesViewModelAsync(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentException("userId cannot be empty", nameof(userId));
+            }
+
+            var user = await _dbContext.Users.FirstAsync(u => u.Id == userId).ConfigureAwait(false);
+            var allRoles = await _dbContext.Roles.ToListAsync().ConfigureAwait(false);
+            var model = new SelectUserRolesViewModel(user);
+            model.PopulateAdminRoles(user, allRoles);
+            return model;
+        }
+
+        public async Task<SelectUserRolesViewModel> GetUserRolesViewModelAsync(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentException("userId cannot be empty", nameof(userId));
+            }
+
+            var user = await _dbContext.Users.FirstAsync(u => u.Id == userId).ConfigureAwait(false);
+            var allRoles = await _dbContext.Roles.ToListAsync().ConfigureAwait(false);
+            var model = new SelectUserRolesViewModel(user);
+            model.PopulateRoles(user, allRoles);
+            return model;
+        }
+
+        public async Task<int> GetUsersCountAsync(System.Threading.CancellationToken ct = default)
+        {
+            return await _dbContext.Users.CountAsync(ct).ConfigureAwait(false);
+        }
+
+        public async Task<int> GetRolesCountAsync(System.Threading.CancellationToken ct = default)
+        {
+            return await _dbContext.Roles.CountAsync(ct).ConfigureAwait(false);
+        }
+
+        public async Task<List<EImece.Domain.Services.ExportImport.UserExportDto>> GetUsersForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default)
+        {
+            var query = _dbContext.Users.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
+            var items = await query.ToListAsync(ct).ConfigureAwait(false);
+
+            var userDtos = new List<EImece.Domain.Services.ExportImport.UserExportDto>();
+            foreach (var user in items)
+            {
+                var dto = new EImece.Domain.Services.ExportImport.UserExportDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    EmailConfirmed = user.EmailConfirmed,
+                    PhoneNumber = user.PhoneNumber,
+                    PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    TwoFactorAuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled,
+                    TwoFactorEnabled = user.TwoFactorEnabled,
+                    LockoutEnabled = user.LockoutEnabled
+                };
+
+                if (user.Roles != null && user.Roles.Count > 0)
+                {
+                    var roleIds = user.Roles.Select(r => r.RoleId).ToList();
+                    var roleNames = await _dbContext.Roles
+                        .Where(r => roleIds.Contains(r.Id))
+                        .Select(r => r.Name)
+                        .ToListAsync(ct)
+                        .ConfigureAwait(false);
+                    dto.Roles = roleNames;
+                }
+
+                userDtos.Add(dto);
+            }
+
+            return userDtos;
+        }
+
+        public async Task<List<EImece.Domain.Services.ExportImport.RoleExportDto>> GetRolesForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default)
+        {
+            var query = _dbContext.Roles.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
+            var items = await query.ToListAsync(ct).ConfigureAwait(false);
+            return items.Select(x => new EImece.Domain.Services.ExportImport.RoleExportDto
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToList();
         }
     }
 }

@@ -323,7 +323,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
+        public IRazorEngineHelper RazorEngineHelper { get; set; }
 
         protected int SelectedLanguage
         {

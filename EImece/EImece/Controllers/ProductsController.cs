@@ -1,5 +1,4 @@
 using EImece.Domain;
-using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -38,7 +37,7 @@ namespace EImece.Controllers
         public ICustomerService CustomerService { get; set; }
 
         [Inject]
-        public ApplicationDbContext ApplicationDbContext { get; set; }
+        public IUsersService UsersService { get; set; }
 
         public ProductsController(IProductCommentService ProductCommentService)
         {
@@ -225,7 +224,7 @@ namespace EImece.Controllers
             // Compared with == rather than String.Equals(StringComparison): EF6 cannot translate the
             // StringComparison overloads, and the database collation is already case-insensitive.
             var email = productComment.Email.ToStr().Trim();
-            var user = await ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.UserName == email);
+            var user = await UsersService.GetUserByEmailAsync(email);
             Logger.Info($"User found: {(user != null ? $"ID: {user.Id}" : "None")}");
 
             productComment.UserId = user == null ? "" : user.Id;

@@ -1,5 +1,5 @@
-﻿using EImece.Domain.DbContext;
 using EImece.Domain.Services;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -17,63 +17,69 @@ namespace EImece.Models
         // Enable initialization with an instance of ApplicationUser:
         public SelectUserRolesViewModel(ApplicationUser user) : this()
         {
-            this.UserName = user.UserName;
-            this.FirstName = user.FirstName;
-            this.LastName = user.LastName;
-            this.Id = user.Id;
+            if (user != null)
+            {
+                this.UserName = user.UserName;
+                this.FirstName = user.FirstName;
+                this.LastName = user.LastName;
+                this.Id = user.Id;
+            }
         }
 
-        public void SetAdminRoles(ApplicationUser user)
+        public void PopulateAdminRoles(ApplicationUser user, IEnumerable<IdentityRole> allRoles)
         {
-            var Db = new ApplicationDbContext();
+            if (user == null || allRoles == null)
+            {
+                return;
+            }
 
-            // Add all available roles to the list of EditorViewModels:
-            var allRoles = Db.Roles;
+            this.Roles.Clear();
             foreach (var role in allRoles)
             {
-                if (role.Name.Equals(Domain.Constants.AdministratorRole, StringComparison.InvariantCultureIgnoreCase) || role.Name.Equals(Domain.Constants.EditorRole, StringComparison.InvariantCultureIgnoreCase))
+                if (role.Name.Equals(Domain.Constants.AdministratorRole, StringComparison.InvariantCultureIgnoreCase) ||
+                    role.Name.Equals(Domain.Constants.EditorRole, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // An EditorViewModel will be used by Editor Template:
                     var rvm = new SelectRoleEditorViewModel(role);
                     this.Roles.Add(rvm);
                 }
             }
 
-            // Set the Selected property to true for those roles for
-            // which the current user is a member:
-            foreach (var userRole in user.Roles)
+            if (user.Roles != null)
             {
-                var checkUserRole =
-                    this.Roles.Find(r => r.RoleId.Equals(userRole.RoleId));
-                if (checkUserRole != null)
+                foreach (var userRole in user.Roles)
                 {
-                    checkUserRole.Selected = true;
+                    var checkUserRole = this.Roles.Find(r => r.RoleId.Equals(userRole.RoleId));
+                    if (checkUserRole != null)
+                    {
+                        checkUserRole.Selected = true;
+                    }
                 }
             }
         }
 
-        public void SetRoles(ApplicationUser user)
+        public void PopulateRoles(ApplicationUser user, IEnumerable<IdentityRole> allRoles)
         {
-            var Db = new ApplicationDbContext();
+            if (user == null || allRoles == null)
+            {
+                return;
+            }
 
-            // Add all available roles to the list of EditorViewModels:
-            var allRoles = Db.Roles;
+            this.Roles.Clear();
             foreach (var role in allRoles)
             {
-                // An EditorViewModel will be used by Editor Template:
                 var rvm = new SelectRoleEditorViewModel(role);
                 this.Roles.Add(rvm);
             }
 
-            // Set the Selected property to true for those roles for
-            // which the current user is a member:
-            foreach (var userRole in user.Roles)
+            if (user.Roles != null)
             {
-                var checkUserRole =
-                    this.Roles.Find(r => r.RoleId.Equals(userRole.RoleId));
-                if (checkUserRole != null)
+                foreach (var userRole in user.Roles)
                 {
-                    checkUserRole.Selected = true;
+                    var checkUserRole = this.Roles.Find(r => r.RoleId.Equals(userRole.RoleId));
+                    if (checkUserRole != null)
+                    {
+                        checkUserRole.Selected = true;
+                    }
                 }
             }
         }

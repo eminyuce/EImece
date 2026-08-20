@@ -22,8 +22,10 @@ namespace EImece.Controllers
         [Inject]
         public ISubscriberService SubsciberService { get; set; }
 
+        [Inject]
+        public ITurkishRegionService TurkishRegionService { get; set; }
+
         private const string Main_Page_Product_Subscription = "Main-Page-Product-Subscription";
-        public TurkishRegionService turkishRegionService;
 
         [HttpPost]
         public JsonResult HomePageShoppingCart()
@@ -37,7 +39,6 @@ namespace EImece.Controllers
 
         public AjaxController()
         {
-            turkishRegionService = new TurkishRegionService();
         }
 
         public async Task<JsonResult> SubscribeEmail(string subscribeEmail)
@@ -67,7 +68,8 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public Task<JsonResult> GetAllCities()
         {
-            var cities = turkishRegionService.GetAllCities()
+            var service = TurkishRegionService ?? new TurkishRegionService();
+            var cities = service.GetAllCities()
                 .OrderBy(city => city)
                 .Select(city => new SelectListItem
                 {
@@ -82,7 +84,8 @@ namespace EImece.Controllers
 
         public Task<JsonResult> GetTownsByCity(string cityName)
         {
-            var towns = turkishRegionService.GetTownsByCity(cityName)
+            var service = TurkishRegionService ?? new TurkishRegionService();
+            var towns = service.GetTownsByCity(cityName)
                 .OrderBy(town => town)
                 .Select(town => new SelectListItem
                 {
@@ -97,7 +100,8 @@ namespace EImece.Controllers
 
         public Task<JsonResult> GetDistrictsByTown(string cityName, string townName)
         {
-            var districts = turkishRegionService.GetDistrictsByTown(cityName, townName)
+            var service = TurkishRegionService ?? new TurkishRegionService();
+            var districts = service.GetDistrictsByTown(cityName, townName)
                 .OrderBy(d => d)
                 .Select(d => new SelectListItem
                 {

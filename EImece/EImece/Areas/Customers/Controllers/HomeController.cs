@@ -58,12 +58,12 @@ namespace EImece.Areas.Customers.Controllers
         public ApplicationSignInManager SignInManager { get; set; }
 
         [Inject]
-        public IdentityManager IdentityManager { get; set; }
+        public IIdentityManager IdentityManager { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
 
         [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
+        public IRazorEngineHelper RazorEngineHelper { get; set; }
 
         public HomeController(ApplicationUserManager userManager)
         {

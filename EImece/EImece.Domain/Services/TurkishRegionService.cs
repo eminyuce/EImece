@@ -1,14 +1,16 @@
-﻿using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 
 namespace EImece.Domain.Services
 {
-    public class TurkishRegionService
+    public class TurkishRegionService : ITurkishRegionService
     {
         private List<City> _cities;
 
@@ -22,16 +24,27 @@ namespace EImece.Domain.Services
         private void LoadData()
         {
             // Specify the file path where your JSON is located
-            string filePath = HttpContext.Current.Server.MapPath("~/App_Data/data.json");
-            //  var configurations = File.ReadAllText(url);
-            if (File.Exists(filePath))
+            string filePath = null;
+            if (HostingEnvironment.IsHosted)
             {
-                string json = File.ReadAllText(filePath);
-                _cities = JsonConvert.DeserializeObject<List<City>>(json);
+                filePath = HostingEnvironment.MapPath("~/App_Data/data.json");
+            }
+            else if (HttpContext.Current != null && HttpContext.Current.Server != null)
+            {
+                filePath = HttpContext.Current.Server.MapPath("~/App_Data/data.json");
             }
             else
             {
-                Console.WriteLine("File not found!");
+                filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "data.json");
+            }
+
+            if (filePath != null && File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                _cities = JsonConvert.DeserializeObject<List<City>>(json) ?? new List<City>();
+            }
+            else
+            {
                 _cities = new List<City>();
             }
         }

@@ -1,4 +1,3 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Services;
@@ -19,7 +18,7 @@ namespace EImece.Areas.Admin.Controllers
     public class CustomersController : BaseAdminController
     {
         [Inject]
-        public UsersService UsersService { get; set; }
+        public IUsersService UsersService { get; set; }
 
         [Inject]
         public ApplicationSignInManager SignInManager { get; set; }
@@ -28,10 +27,7 @@ namespace EImece.Areas.Admin.Controllers
         public new ApplicationUserManager UserManager { get; set; }
 
         [Inject]
-        public IdentityManager IdentityManager { get; set; }
-
-        [Inject]
-        public ApplicationDbContext ApplicationDbContext { get; set; }
+        public IIdentityManager IdentityManager { get; set; }
 
         public ICustomerService CustomerService { get; set; }
 

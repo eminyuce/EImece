@@ -54,13 +54,10 @@ namespace EImece.Controllers
         public IMailTemplateService MailTemplateService { get; set; }
 
         [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
+        public IRazorEngineHelper RazorEngineHelper { get; set; }
 
         [Inject]
         public IProductService ProductService { get; set; }
-
-        [Inject]
-        public MigrationRepository MigrationRepository { get; set; }
 
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         public async Task<ActionResult> Index()
