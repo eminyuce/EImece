@@ -191,17 +191,18 @@
     }
 }
 
-/* Grid row checkboxes: visual 18px, tap via .eg-check-hit — not 44px inputs. */
+/* Grid row checkboxes: visual 18.5px, tap via .eg-check-hit (44px tap zone). */
 @media (max-width: 991px) {
     body.admin-app .eg-grid input.gridCheckboxes,
     body.admin-app .eg-grid input[name="checkboxGrid"],
-    body.admin-app .admin-content .eg-grid input[type="checkbox"].gridCheckboxes {
-        width: 18px !important;
-        height: 18px !important;
-        min-width: 18px !important;
-        min-height: 18px !important;
-        max-width: 20px !important;
-        max-height: 20px !important;
+    body.admin-app .admin-content .eg-grid input[type="checkbox"].gridCheckboxes,
+    body.admin-app .eg-check-hit input[type="checkbox"] {
+        width: 18.5px !important;
+        height: 18.5px !important;
+        min-width: 18.5px !important;
+        min-height: 18.5px !important;
+        max-width: 18.5px !important;
+        max-height: 18.5px !important;
         font-size: 16px !important;
     }
 }

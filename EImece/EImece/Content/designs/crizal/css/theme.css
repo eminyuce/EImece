@@ -430,14 +430,21 @@ body[data-design="crizal"] .crizal-customer-login__form-wrap {
     background: #fff;
 }
 
+body[data-design="crizal"] .crizal-customer-login__form-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--crizal-border);
+}
+
 body[data-design="crizal"] .crizal-customer-login__badge {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    margin-bottom: 1rem;
-    padding: 0.35rem 0.7rem;
+    margin-bottom: 0.65rem;
+    padding: 0.3rem 0.75rem;
     border-radius: 999px;
-    background: rgba(9, 184, 80, 0.1);
+    background: rgba(6, 122, 54, 0.08);
+    border: 1px solid rgba(6, 122, 54, 0.16);
     color: var(--crizal-primary);
     font-size: 0.75rem;
     font-weight: 700;
@@ -446,16 +453,31 @@ body[data-design="crizal"] .crizal-customer-login__badge {
 }
 
 body[data-design="crizal"] .crizal-customer-login__form-title {
-    margin: 0 0 0.35rem;
-    font-size: 1.35rem;
+    margin: 0 0 0.4rem;
+    font-size: 1.65rem;
     font-weight: 800;
     color: var(--crizal-heading);
+    letter-spacing: -0.025em;
+    line-height: 1.25;
 }
 
 body[data-design="crizal"] .crizal-customer-login__form-help {
-    margin: 0 0 1.35rem;
-    font-size: 0.9rem;
-    color: var(--crizal-muted);
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--crizal-text);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    background: var(--crizal-surface-alt);
+    border: 1px solid var(--crizal-border);
+}
+
+body[data-design="crizal"] .crizal-customer-login__form-help i {
+    color: var(--crizal-primary);
+    font-size: 0.82rem;
 }
 
 body[data-design="crizal"] .crizal-customer-login__label {

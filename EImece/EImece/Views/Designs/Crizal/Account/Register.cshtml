@@ -22,12 +22,17 @@
                     </aside>
 
                     <div class="crizal-customer-login__form-wrap">
-                        <div class="crizal-customer-login__badge">
-                            <i class="fas fa-user-plus" aria-hidden="true"></i>
-                            <span>@Resource.CustomerAccount</span>
+                        <div class="crizal-customer-login__form-header">
+                            <div class="crizal-customer-login__badge">
+                                <i class="fas fa-user-plus" aria-hidden="true"></i>
+                                <span>@Resource.CustomerAccount</span>
+                            </div>
+                            <h2 class="crizal-customer-login__form-title">@Resource.CustomerRegister</h2>
+                            <p class="crizal-customer-login__form-help">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                <span>@Resource.PasswordInfoMessage</span>
+                            </p>
                         </div>
-                        <h2 class="crizal-customer-login__form-title">@Resource.CustomerRegister</h2>
-                        <p class="crizal-customer-login__form-help">@Resource.PasswordInfoMessage</p>
 
                         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "crizal-customer-login__form form-horizontal", role = "form", autocomplete = "on" }))
                         {
@@ -87,7 +92,7 @@
 
                             <div class="custom-control custom-checkbox mb-3">
                                 @Html.CheckBoxFor(m => m.IsPermissionGranted, new { @class = "custom-control-input" })
-                                @Html.LabelFor(m => m.IsPermissionGranted, new { @class = "custom-col-form-label" })
+                                @Html.LabelFor(m => m.IsPermissionGranted, new { @class = "custom-control-label" })
                             </div>
 
                             <button type="submit" class="butn-style8 crizal-customer-login__submit">

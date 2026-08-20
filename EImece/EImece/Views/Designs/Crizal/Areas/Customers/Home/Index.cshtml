@@ -177,7 +177,7 @@
             <div class="customer-profile-actions">
                 <div class="custom-control custom-checkbox customer-consent">
                     @Html.CheckBoxFor(model => model.IsPermissionGranted, new { @class = "custom-control-input", id = "IsPermissionGranted" })
-                    <label class="custom-col-form-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
+                    <label class="custom-control-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
                 </div>
                 <button class="btn customer-btn-primary customer-profile-actions__submit" type="submit" data-bs-toggle="toast" data-bs-target="#profile-toast">
                     @Resource.Update

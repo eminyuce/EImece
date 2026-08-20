@@ -217,10 +217,8 @@ li.Tools {
 }
 
 input[name='checkboxGrid'] {
-    /* width: 34px;
-    height: 30px; */
-    padding: 5em;
-    border: 1px solid #369;
+    padding: 0;
+    margin: 0;
 }
 
 .gridToolBox {
@@ -4874,11 +4872,11 @@ body.admin-app .admin-content .admin-home h2::after {
     body.admin-app input[name='checkboxGrid'],
     body.admin-app input.gridCheckboxes {
         padding: 0 !important;
-        width: 18px !important;
-        height: 18px !important;
-        min-width: 18px !important;
-        min-height: 18px !important;
-        max-width: 20px !important;
-        max-height: 20px !important;
+        width: 18.5px !important;
+        height: 18.5px !important;
+        min-width: 18.5px !important;
+        min-height: 18.5px !important;
+        max-width: 18.5px !important;
+        max-height: 18.5px !important;
     }
 }

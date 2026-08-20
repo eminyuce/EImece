@@ -23,12 +23,17 @@
                     </aside>
 
                     <div class="crizal-customer-login__form-wrap">
-                        <div class="crizal-customer-login__badge">
-                            <i class="fas fa-user" aria-hidden="true"></i>
-                            <span>@Resource.CustomerAccount</span>
+                        <div class="crizal-customer-login__form-header">
+                            <div class="crizal-customer-login__badge">
+                                <i class="fas fa-user-circle" aria-hidden="true"></i>
+                                <span>@Resource.CustomerAccount</span>
+                            </div>
+                            <h2 class="crizal-customer-login__form-title">@Resource.Login</h2>
+                            <p class="crizal-customer-login__form-help">
+                                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                                <span>@Resource.Email &amp; @Resource.Password</span>
+                            </p>
                         </div>
-                        <h2 class="crizal-customer-login__form-title">@Resource.Login</h2>
-                        <p class="crizal-customer-login__form-help">@Resource.Email &amp; @Resource.Password</p>
 
                         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "crizal-customer-login__form", role = "form", autocomplete = "on", id = "customer-login-form" }))
                         {
@@ -60,7 +65,7 @@
                             <div class="crizal-customer-login__meta">
                                 <div class="custom-control custom-checkbox">
                                     @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input", id = "RememberMe" })
-                                    @Html.LabelFor(model => model.RememberMe, new { @class = "custom-col-form-label", @for = "RememberMe" })
+                                    @Html.LabelFor(model => model.RememberMe, new { @class = "custom-control-label", @for = "RememberMe" })
                                 </div>
                                 @Html.ActionLink(Resource.LostYourPassword, "ForgotPassword", "Account", null, new { @class = "crizal-customer-login__forgot" })
                             </div>
