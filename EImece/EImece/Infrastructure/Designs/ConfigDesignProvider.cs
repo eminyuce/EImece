@@ -1,3 +1,4 @@
+using EImece.Domain;
 using System.Configuration;
 
 namespace EImece.Infrastructure.Designs
@@ -8,8 +9,14 @@ namespace EImece.Infrastructure.Designs
 
         public string GetActiveDesign()
         {
-            var design = ConfigurationManager.AppSettings[AppSettingsKey];
-            return string.IsNullOrWhiteSpace(design) ? string.Empty : design.Trim();
+            var design = AppConfig.ActiveDesign;
+            if (!string.IsNullOrWhiteSpace(design))
+            {
+                return design.Trim();
+            }
+
+            var appSettingDesign = ConfigurationManager.AppSettings[AppSettingsKey];
+            return string.IsNullOrWhiteSpace(appSettingDesign) ? string.Empty : appSettingDesign.Trim();
         }
     }
 }

@@ -65,10 +65,11 @@ namespace EImece.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));
+                return View(settingModel);
             }
 
             await SettingService.SaveSystemSettingModelAsync(settingModel);
+            SetSuccessMessage(AdminResource.SuccessfullySavedCompleted);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));
         }

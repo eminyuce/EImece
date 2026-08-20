@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -15,17 +15,17 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public List<Setting> GetAllActiveSettings()
+        public virtual List<Setting> GetAllActiveSettings()
         {
             return GetAll().Where(t => t.IsActive).ToList();
         }
 
-        public List<Setting> GetAllSettings()
+        public virtual List<Setting> GetAllSettings()
         {
             return GetAll().ToList();
         }
 
-        public async Task<List<Setting>> GetAllSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<List<Setting>> GetAllSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             return await GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
         }

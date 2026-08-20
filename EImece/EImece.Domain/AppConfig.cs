@@ -238,20 +238,20 @@ namespace EImece.Domain
         }
 
         /// <summary>
-        /// Browser / PWA chrome color. Web.config ThemeColor wins when set;
+        /// Browser / PWA chrome color. Database/Web.config ThemeColor wins when set;
         /// otherwise the active design default (Crizal=#067a36, Modern=#ffffff), else ManifestDefaultThemeColor.
         /// </summary>
         public static string ThemeColor
         {
             get
             {
-                var configured = ConfigurationManager.AppSettings["ThemeColor"];
+                var configured = GetConfigString("ThemeColor", string.Empty);
                 if (!string.IsNullOrWhiteSpace(configured))
                 {
                     return configured.Trim();
                 }
 
-                var design = ConfigurationManager.AppSettings["ActiveDesign"];
+                var design = ActiveDesign;
                 if (!string.IsNullOrWhiteSpace(design))
                 {
                     if (design.Trim().Equals("Crizal", StringComparison.OrdinalIgnoreCase))
@@ -266,6 +266,51 @@ namespace EImece.Domain
                 }
 
                 return ManifestDefaultThemeColor;
+            }
+        }
+
+        public static string ActiveDesign
+        {
+            get
+            {
+                return GetConfigString("ActiveDesign", "Crizal");
+            }
+        }
+
+        public static bool AllowSearchEngineIndexing
+        {
+            get
+            {
+                return GetConfigBool("AllowSearchEngineIndexing", false);
+            }
+        }
+
+        public static int AdminImageHeightPercantage
+        {
+            get
+            {
+                return GetConfigInt("AdminImageHeightPercantage", 50);
+            }
+        }
+
+        public static int AdminImageWidthPercantage
+        {
+            get
+            {
+                return GetConfigInt("AdminImageWidthPercantage", 50);
+            }
+        }
+
+        public static string BuyerIdentityNumber
+        {
+            get
+            {
+                var configured = GetConfigString("BuyerIdentityNumber", string.Empty);
+                if (!string.IsNullOrWhiteSpace(configured))
+                {
+                    return configured;
+                }
+                return DummyIdentityNumber;
             }
         }
 
@@ -359,6 +404,15 @@ namespace EImece.Domain
             get { return 20; }
         }
 
+        /// <summary>
+        /// Optional delegate to resolve settings dynamically (e.g. from SettingService / Database).
+        /// When provided, GetConfigString/Bool/Int checks this resolver first before falling back to Web.config.
+        /// </summary>
+        public static Func<string, string> SettingResolver { get; set; }
+
+        [ThreadStatic]
+        private static bool _isResolvingSetting;
+
         private static void WriteLog(string configName, object defaultValue)
         {
             if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)) && defaultValue != null)
@@ -369,6 +423,27 @@ namespace EImece.Domain
 
         public static string GetConfigString(string configName, string defaultValue = "")
         {
+            if (SettingResolver != null && !_isResolvingSetting)
+            {
+                _isResolvingSetting = true;
+                try
+                {
+                    var resolved = SettingResolver(configName);
+                    if (!string.IsNullOrWhiteSpace(resolved))
+                    {
+                        return resolved.Trim();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn(ex, "SettingResolver failed for key '{0}'. Falling back to Web.config.", configName);
+                }
+                finally
+                {
+                    _isResolvingSetting = false;
+                }
+            }
+
             var appValue = ConfigurationManager.AppSettings[configName];
             if (string.IsNullOrEmpty(appValue))
             {
@@ -383,6 +458,27 @@ namespace EImece.Domain
 
         public static bool GetConfigBool(string configName, bool defaultValue = false)
         {
+            if (SettingResolver != null && !_isResolvingSetting)
+            {
+                _isResolvingSetting = true;
+                try
+                {
+                    var resolved = SettingResolver(configName);
+                    if (!string.IsNullOrWhiteSpace(resolved))
+                    {
+                        return resolved.ToBool();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn(ex, "SettingResolver failed for key '{0}'. Falling back to Web.config.", configName);
+                }
+                finally
+                {
+                    _isResolvingSetting = false;
+                }
+            }
+
             var configValue = defaultValue;
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
             {
@@ -397,6 +493,28 @@ namespace EImece.Domain
 
         public static int GetConfigInt(string configName, int defaultValue = 0)
         {
+            if (SettingResolver != null && !_isResolvingSetting)
+            {
+                _isResolvingSetting = true;
+                try
+                {
+                    var resolved = SettingResolver(configName);
+                    if (!string.IsNullOrWhiteSpace(resolved))
+                    {
+                        int parsed = resolved.ToInt();
+                        return parsed == -1 ? defaultValue : parsed;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn(ex, "SettingResolver failed for key '{0}'. Falling back to Web.config.", configName);
+                }
+                finally
+                {
+                    _isResolvingSetting = false;
+                }
+            }
+
             int configValue = -1;
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
             {

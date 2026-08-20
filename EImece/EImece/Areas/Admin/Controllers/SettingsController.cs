@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -23,6 +23,11 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index()
         {
             return RedirectToAction("AddWebSiteLogo");
+        }
+
+        public ActionResult SystemSettings()
+        {
+            return RedirectToAction("SystemSettings", "AdminSettings");
         }
 
         public async Task<ActionResult> AddWebSiteLogo(CancellationToken cancellationToken)

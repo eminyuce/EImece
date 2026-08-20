@@ -2113,4 +2113,148 @@
   <data name="FooterHtmlDescriptionTooltip" xml:space="preserve">
     <value>Sitenin en alt (footer) kısmında gösterilecek özel HTML içeriğidir (ör. telif hakkı / copyright bilgisi, güvenli ödeme logoları, sertifikalar veya ek bağlantılar).</value>
   </data>
+  <data name="IsSiteUnderConstruction" xml:space="preserve">
+    <value>Bakım Modu (Site Under Construction)</value>
+  </data>
+  <data name="AllowSearchEngineIndexing" xml:space="preserve">
+    <value>Arama Motoru İndeksleme İzni (Allow Indexing)</value>
+  </data>
+  <data name="ActiveDesign" xml:space="preserve">
+    <value>Aktif Tasarım / Tema (Active Design)</value>
+  </data>
+  <data name="ThemeColor" xml:space="preserve">
+    <value>Tema Rengi (Theme Color)</value>
+  </data>
+  <data name="ManifestBackgroundColor" xml:space="preserve">
+    <value>PWA Arka Plan Rengi (Background Color)</value>
+  </data>
+  <data name="ManifestDisplay" xml:space="preserve">
+    <value>PWA Görüntüleme Modu (Display Mode)</value>
+  </data>
+  <data name="ManifestOrientation" xml:space="preserve">
+    <value>PWA Yönlendirme (Orientation)</value>
+  </data>
+  <data name="ManifestStartUrl" xml:space="preserve">
+    <value>PWA Başlangıç URL (Start URL)</value>
+  </data>
+  <data name="ManifestFallbackName" xml:space="preserve">
+    <value>PWA Varsayılan İsim (Fallback Name)</value>
+  </data>
+  <data name="ManifestShortNameMaxLength" xml:space="preserve">
+    <value>PWA Kısa İsim Maks. Uzunluk</value>
+  </data>
+  <data name="GridPageSizeNumber" xml:space="preserve">
+    <value>Admin Tablo Sayfa Başına Kayıt</value>
+  </data>
+  <data name="ProductShortDescriptionPreviewLength" xml:space="preserve">
+    <value>Ürün Kısa Açıklama Önizleme Uzunluğu</value>
+  </data>
+  <data name="IsEditLinkEnable" xml:space="preserve">
+    <value>Ön Yüz Düzenleme Bağlantıları (IsEditLinkEnable)</value>
+  </data>
+  <data name="AdminImageHeightPercantage" xml:space="preserve">
+    <value>Admin Görsel Yükseklik Yüzdesi (%)</value>
+  </data>
+  <data name="AdminImageWidthPercantage" xml:space="preserve">
+    <value>Admin Görsel Genişlik Yüzdesi (%)</value>
+  </data>
+  <data name="ImageUploadMaxWidth" xml:space="preserve">
+    <value>Görsel Yükleme Maks. Genişlik (px)</value>
+  </data>
+  <data name="ImageUploadMaxHeight" xml:space="preserve">
+    <value>Görsel Yükleme Maks. Yükseklik (px)</value>
+  </data>
+  <data name="ImageUploadJpegQuality" xml:space="preserve">
+    <value>JPEG Kalitesi (40-95)</value>
+  </data>
+  <data name="ImageUploadPreferWebP" xml:space="preserve">
+    <value>WebP Formatını Tercih Et</value>
+  </data>
+  <data name="ImageUploadWebPQuality" xml:space="preserve">
+    <value>WebP Kalitesi (40-100)</value>
+  </data>
+  <data name="ImageUploadSaveWebPSidecar" xml:space="preserve">
+    <value>WebP Sidecar Dosyası Kaydet</value>
+  </data>
+  <data name="ImageUploadThumbMaxWidth" xml:space="preserve">
+    <value>Küçük Görsel (Thumb) Maks. Genişlik (px)</value>
+  </data>
+  <data name="ImageUploadThumbMaxHeight" xml:space="preserve">
+    <value>Küçük Görsel (Thumb) Maks. Yükseklik (px)</value>
+  </data>
+  <data name="ImageUploadThumbJpegQuality" xml:space="preserve">
+    <value>Küçük Görsel JPEG Kalitesi (40-95)</value>
+  </data>
+  <data name="ImageUploadKeepOriginalIfSmaller" xml:space="preserve">
+    <value>Orijinal Görsel Daha Küçükse Koru</value>
+  </data>
+  <data name="PaymentProvider" xml:space="preserve">
+    <value>Aktif Ödeme Sağlayıcı</value>
+  </data>
+  <data name="IyzicoEnabledInstallments" xml:space="preserve">
+    <value>İyzico İzin Verilen Taksitler (örn: 1,2,4,6,9)</value>
+  </data>
+  <data name="BuyerIdentityNumber" xml:space="preserve">
+    <value>Yedek Alıcı TCKN / Kimlik No</value>
+  </data>
+  <data name="CaptchaProvider" xml:space="preserve">
+    <value>Captcha Sağlayıcı</value>
+  </data>
+  <data name="RecaptchaSiteKey" xml:space="preserve">
+    <value>Google reCAPTCHA Site Key (Public)</value>
+  </data>
+  <data name="RateLimit_Enabled" xml:space="preserve">
+    <value>Rate Limiting Aktif</value>
+  </data>
+  <data name="RateLimit_Login_Limit" xml:space="preserve">
+    <value>Giriş (Login) Maks. İstek</value>
+  </data>
+  <data name="RateLimit_Login_WindowMinutes" xml:space="preserve">
+    <value>Giriş (Login) Zaman Penceresi (Dk)</value>
+  </data>
+  <data name="RateLimit_Contact_Limit" xml:space="preserve">
+    <value>İletişim Formu Maks. İstek</value>
+  </data>
+  <data name="RateLimit_Contact_WindowMinutes" xml:space="preserve">
+    <value>İletişim Formu Zaman Penceresi (Dk)</value>
+  </data>
+  <data name="RateLimit_Checkout_Limit" xml:space="preserve">
+    <value>Ödeme (Checkout) Maks. İstek</value>
+  </data>
+  <data name="RateLimit_Checkout_WindowMinutes" xml:space="preserve">
+    <value>Ödeme (Checkout) Zaman Penceresi (Dk)</value>
+  </data>
+  <data name="RateLimit_Search_Limit" xml:space="preserve">
+    <value>Arama (Search) Maks. İstek</value>
+  </data>
+  <data name="RateLimit_Search_WindowMinutes" xml:space="preserve">
+    <value>Arama (Search) Zaman Penceresi (Dk)</value>
+  </data>
+  <data name="HexColorErrorMessage" xml:space="preserve">
+    <value>Geçerli bir hex renk kodu giriniz (örn: #1789F9)</value>
+  </data>
+  <data name="Range1To100ErrorMessage" xml:space="preserve">
+    <value>1 ile 100 arasında bir değer giriniz.</value>
+  </data>
+  <data name="Range1To1000ErrorMessage" xml:space="preserve">
+    <value>1 ile 1000 arasında bir değer giriniz.</value>
+  </data>
+  <data name="Range1To1440ErrorMessage" xml:space="preserve">
+    <value>1 ile 1440 dakika arasında bir değer giriniz.</value>
+  </data>
+  <data name="Range10To5000ErrorMessage" xml:space="preserve">
+    <value>10 ile 5000 arasında bir değer giriniz.</value>
+  </data>
+  <data name="Range0To10000ErrorMessage" xml:space="preserve">
+    <value>0 ile 10000 arasında bir piksel değeri giriniz.</value>
+  </data>
+  <data name="Range0To5000ErrorMessage" xml:space="preserve">
+    <value>0 ile 5000 arasında bir piksel değeri giriniz.</value>
+  </data>
+  <data name="Range40To95ErrorMessage" xml:space="preserve">
+    <value>40 ile 95 arasında bir kalite değeri giriniz.</value>
+  </data>
+  <data name="Range40To100ErrorMessage" xml:space="preserve">
+    <value>40 ile 100 arasında bir kalite değeri giriniz.</value>
+  </data>
 </root>

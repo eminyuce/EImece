@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Caching;
+using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
@@ -40,13 +40,20 @@ namespace EImece.Domain.Services
 
         public void ClearCache()
         {
-            DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY);
-            DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix);
-            DataCachingProvider.Clear(CacheKeys.WebAppManifest);
+            if (DataCachingProvider != null)
+            {
+                DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY);
+                DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix);
+                DataCachingProvider.Clear(CacheKeys.WebAppManifest);
+            }
         }
 
         private List<Setting> GetAllSettings()
         {
+            if (DataCachingProvider == null)
+            {
+                return SettingRepository.GetAllSettings();
+            }
             return DataCachingProvider.GetOrAdd(
                 ALL_SETTING_CACHE_KEY,
                 () => SettingRepository.GetAllSettings(),
@@ -55,6 +62,10 @@ namespace EImece.Domain.Services
 
         private async Task<List<Setting>> GetAllSettingsAsync()
         {
+            if (DataCachingProvider == null)
+            {
+                return await SettingRepository.GetAllSettingsAsync(CancellationToken.None).ConfigureAwait(false);
+            }
             // CancellationToken.None: the cached task is shared by all concurrent misses.
             return await DataCachingProvider.GetOrAddAsync(
                 ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix,
@@ -65,25 +76,41 @@ namespace EImece.Domain.Services
         public string GetSettingByKey(string key)
         {
             var result = GetSettingObjectByKey(key);
-            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
 
         public string GetSettingByKey(string key, int language)
         {
             var result = GetSettingObjectByKey(key, language);
-            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
 
         public async Task<string> GetSettingByKeyAsync(string key)
         {
             var result = await GetSettingObjectByKeyAsync(key).ConfigureAwait(false);
-            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
 
         public async Task<string> GetSettingByKeyAsync(string key, int language)
         {
             var result = await GetSettingObjectByKeyAsync(key, language).ConfigureAwait(false);
-            return result.SettingValue == NULL_VALUE ? string.Empty : result.SettingValue;
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
 
         public Setting GetSettingObjectByKey(string key)
@@ -110,18 +137,21 @@ namespace EImece.Domain.Services
 
         private Setting SelectSettingByKey(List<Setting> allSettings, string key)
         {
-            // Prefer the most recently updated row when duplicates exist for the same key.
-            var result = allSettings
-                .Where(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase))
-                .OrderByDescending(r => r.UpdatedDate)
-                .ThenByDescending(r => r.Id)
-                .FirstOrDefault();
-            if (result != null)
+            if (allSettings != null)
             {
-                return result;
+                // Prefer the most recently updated row when duplicates exist for the same key.
+                var result = allSettings
+                    .Where(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderByDescending(r => r.UpdatedDate)
+                    .ThenByDescending(r => r.Id)
+                    .FirstOrDefault();
+                if (result != null)
+                {
+                    return result;
+                }
             }
 
-            var setting = EntityFactory.GetBaseEntityInstance<Setting>();
+            var setting = new Setting();
             setting.SettingKey = key;
             setting.SettingValue = NULL_VALUE;
             return setting;
@@ -129,17 +159,20 @@ namespace EImece.Domain.Services
 
         private Setting SelectSettingByKey(List<Setting> allSettings, string key, int language)
         {
-            var result = allSettings
-                .Where(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(r => r.UpdatedDate)
-                .ThenByDescending(r => r.Id)
-                .FirstOrDefault();
-            if (result != null)
+            if (allSettings != null)
             {
-                return result;
+                var result = allSettings
+                    .Where(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.OrdinalIgnoreCase))
+                    .OrderByDescending(r => r.UpdatedDate)
+                    .ThenByDescending(r => r.Id)
+                    .FirstOrDefault();
+                if (result != null)
+                {
+                    return result;
+                }
             }
 
-            var setting = EntityFactory.GetBaseEntityInstance<Setting>();
+            var setting = new Setting();
             setting.SettingKey = key;
             setting.SettingValue = NULL_VALUE;
             setting.Lang = language;
@@ -156,6 +189,22 @@ namespace EImece.Domain.Services
             return await SettingRepository.GetAllSettingsAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        private static string GetSettingKeyForProperty(string propertyName)
+        {
+            if (propertyName.StartsWith("RateLimit_", StringComparison.OrdinalIgnoreCase))
+            {
+                return propertyName.Replace('_', ':');
+            }
+            return propertyName;
+        }
+
+        private static Setting FindSettingForProperty(List<Setting> settings, List<Setting> allSettings, string propertyName)
+        {
+            string key = GetSettingKeyForProperty(propertyName);
+            return settings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase) || r.SettingKey.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase))
+                ?? allSettings.FirstOrDefault(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase) || r.SettingKey.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public SystemSettingModel GetSystemSettingModel()
         {
             var result = new SystemSettingModel();
@@ -170,22 +219,26 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
-                // Get value on the target instance.
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-                    ?? allSettings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-                if (setting != null)
+                string key = GetSettingKeyForProperty(name);
+                var setting = FindSettingForProperty(Settings, allSettings, name);
+
+                string rawValue = (setting != null && setting.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(setting.SettingValue))
+                    ? setting.SettingValue
+                    : System.Configuration.ConfigurationManager.AppSettings[key] ?? System.Configuration.ConfigurationManager.AppSettings[name];
+
+                if (rawValue != null)
                 {
                     if (propertyInfo.PropertyType == typeof(int))
                     {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
+                        propertyInfo.SetValue(result, rawValue.ToInt(), null);
                     }
-                    if (propertyInfo.PropertyType == typeof(string))
+                    else if (propertyInfo.PropertyType == typeof(string))
                     {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
+                        propertyInfo.SetValue(result, rawValue.ToStr(), null);
                     }
-                    if (propertyInfo.PropertyType == typeof(bool))
+                    else if (propertyInfo.PropertyType == typeof(bool))
                     {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
+                        propertyInfo.SetValue(result, rawValue.ToBool(), null);
                     }
                 }
             }
@@ -208,22 +261,26 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
-                // Get value on the target instance.
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-                    ?? allSettings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-                if (setting != null)
+                string key = GetSettingKeyForProperty(name);
+                var setting = FindSettingForProperty(Settings, allSettings, name);
+
+                string rawValue = (setting != null && setting.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(setting.SettingValue))
+                    ? setting.SettingValue
+                    : System.Configuration.ConfigurationManager.AppSettings[key] ?? System.Configuration.ConfigurationManager.AppSettings[name];
+
+                if (rawValue != null)
                 {
                     if (propertyInfo.PropertyType == typeof(int))
                     {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
+                        propertyInfo.SetValue(result, rawValue.ToInt(), null);
                     }
-                    if (propertyInfo.PropertyType == typeof(string))
+                    else if (propertyInfo.PropertyType == typeof(string))
                     {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
+                        propertyInfo.SetValue(result, rawValue.ToStr(), null);
                     }
-                    if (propertyInfo.PropertyType == typeof(bool))
+                    else if (propertyInfo.PropertyType == typeof(bool))
                     {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
+                        propertyInfo.SetValue(result, rawValue.ToBool(), null);
                     }
                 }
             }
@@ -246,27 +303,31 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
+                string settingKey = GetSettingKeyForProperty(name);
 
                 // Get value on the target instance.
                 object value = propertyInfo.GetValue(settingModel, null);
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(settingKey, StringComparison.InvariantCultureIgnoreCase) || r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting == null)
                 {
                     var newSetting = new Setting();
-                    newSetting.Name = name;
+                    newSetting.Name = settingKey;
                     newSetting.IsActive = true;
-                    newSetting.SettingKey = name;
+                    newSetting.SettingKey = settingKey;
                     newSetting.Description = Constants.SystemSettings;
                     newSetting.SettingValue = value.ToStr();
                     SaveOrEditEntity(newSetting);
                 }
                 else
                 {
+                    setting.SettingKey = settingKey;
                     setting.Description = Constants.SystemSettings;
                     setting.SettingValue = value.ToStr();
                     SaveOrEditEntity(setting);
                 }
             }
+
+            ClearCache();
         }
 
         public async Task SaveSystemSettingModelAsync(SystemSettingModel settingModel)
@@ -284,27 +345,31 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
+                string settingKey = GetSettingKeyForProperty(name);
 
                 // Get value on the target instance.
                 object value = propertyInfo.GetValue(settingModel, null);
-                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                var setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(settingKey, StringComparison.InvariantCultureIgnoreCase) || r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
                 if (setting == null)
                 {
                     var newSetting = new Setting();
-                    newSetting.Name = name;
+                    newSetting.Name = settingKey;
                     newSetting.IsActive = true;
-                    newSetting.SettingKey = name;
+                    newSetting.SettingKey = settingKey;
                     newSetting.Description = Constants.SystemSettings;
                     newSetting.SettingValue = value.ToStr();
                     await SaveOrEditEntityAsync(newSetting).ConfigureAwait(false);
                 }
                 else
                 {
+                    setting.SettingKey = settingKey;
                     setting.Description = Constants.SystemSettings;
                     setting.SettingValue = value.ToStr();
                     await SaveOrEditEntityAsync(setting).ConfigureAwait(false);
                 }
             }
+
+            ClearCache();
         }
 
         public SettingModel GetSettingModel(int language)
