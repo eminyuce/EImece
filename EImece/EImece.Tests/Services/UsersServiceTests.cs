@@ -75,5 +75,14 @@ namespace EImece.Tests.Services
                 // Expected
             }
         }
+
+        [TestMethod]
+        public void TurkishRegionService_GetTownsByCity_ReturnsEmptyForUnknownCity()
+        {
+            var service = new TurkishRegionService();
+            var towns = service.GetTownsByCity("NonExistentCity");
+            Assert.IsNotNull(towns);
+            Assert.AreEqual(0, towns.Count);
+        }
     }
 }

@@ -303,6 +303,8 @@ namespace EImece.App_Start
 
             services.AddScopedWithProps<IEmailSender, EmailSender>();
             services.AddScopedWithProps<AdresService>();
+            services.AddScopedWithProps<ITurkishRegionService, TurkishRegionService>();
+            services.AddScopedWithProps<TurkishRegionService>();
 
             // Payment Strategy: Iyzico remains the default/production provider.
             // IyzicoService (Checkout Form initialize/retrieve) is unchanged and used only by IyzicoPaymentStrategy.
