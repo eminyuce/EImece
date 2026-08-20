@@ -265,7 +265,6 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IProductCommentRepository, ProductCommentRepository>();
             services.AddScopedWithProps<IBrandRepository, BrandRepository>();
 
-            services.AddScopedWithProps<MigrationRepository>();
             services.AddScopedWithProps<BitlyRepository>();
             services.AddScopedWithProps<AppLogRepository>();
         }
@@ -340,6 +339,7 @@ namespace EImece.App_Start
         {
             services.AddScopedWithProps<FilesHelper>();
             services.AddScopedWithProps<XmlEditorHelper>();
+            services.AddScopedWithProps<IRazorEngineHelper, RazorEngineHelper>();
             services.AddScopedWithProps<RazorEngineHelper>();
         }
 

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.ApiRepositories;
+using EImece.Domain.ApiRepositories;
 using EImece.Domain.Entities;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers.Extensions;
@@ -17,25 +17,37 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
-    public class RazorEngineHelper
+    public class RazorEngineHelper : IRazorEngineHelper
     {
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
+        private readonly IMailTemplateService _mailTemplateService;
+        private readonly ISettingService _settingService;
+        private readonly IHttpContextFactory _httpContext;
+        private readonly IEmailSender _emailSender;
+        private readonly BitlyRepository _bitlyRepository;
+        private readonly IRazorTemplateEngine _razorTemplateEngine;
 
-        [Inject]
-        public ISettingService SettingService { get; set; }
+        public IMailTemplateService MailTemplateService => _mailTemplateService;
+        public ISettingService SettingService => _settingService;
+        public IHttpContextFactory HttpContext => _httpContext;
+        public IEmailSender EmailSender => _emailSender;
+        public BitlyRepository BitlyRepository => _bitlyRepository;
+        public IRazorTemplateEngine RazorTemplateEngine => _razorTemplateEngine;
 
-        [Inject]
-        public IHttpContextFactory HttpContext { get; set; }
-
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
-
-        [Inject]
-        public BitlyRepository BitlyRepository { get; set; }
-
-        [Inject]
-        public IRazorTemplateEngine RazorTemplateEngine { get; set; }
+        public RazorEngineHelper(
+            IMailTemplateService mailTemplateService,
+            ISettingService settingService,
+            IHttpContextFactory httpContext,
+            IEmailSender emailSender,
+            BitlyRepository bitlyRepository,
+            IRazorTemplateEngine razorTemplateEngine)
+        {
+            _mailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
+            _settingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            _bitlyRepository = bitlyRepository ?? throw new ArgumentNullException(nameof(bitlyRepository));
+            _razorTemplateEngine = razorTemplateEngine ?? throw new ArgumentNullException(nameof(razorTemplateEngine));
+        }
 
         public Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl)
         {

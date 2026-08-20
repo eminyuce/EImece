@@ -49,7 +49,7 @@ namespace EImece.Controllers
         public ICouponService CouponService { get; set; }
 
         [Inject]
-        public RazorEngineHelper RazorEngineHelper { get; set; }
+        public IRazorEngineHelper RazorEngineHelper { get; set; }
 
         [Inject]
         public IOrderService OrderService { get; set; }

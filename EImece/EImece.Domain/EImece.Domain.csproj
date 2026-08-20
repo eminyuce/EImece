@@ -612,6 +612,7 @@
     <Compile Include="Helpers\EmailHelper\DummyMailValue.cs" />
     <Compile Include="Helpers\EmailHelper\DynamicMailTemplateModel.cs" />
     <Compile Include="Helpers\EmailHelper\MailTemplateModelInspector.cs" />
+    <Compile Include="Helpers\EmailHelper\IRazorEngineHelper.cs" />
     <Compile Include="Helpers\EmailHelper\RazorEngineHelper.cs" />
     <Compile Include="Helpers\EmailHelper\RazorTemplateEngine.cs" />
     <Compile Include="Helpers\EntityFilterHelper.cs" />
@@ -797,7 +798,6 @@
     <Compile Include="Repositories\MainPageImageRepository.cs" />
     <Compile Include="Repositories\MenuFileRepository.cs" />
     <Compile Include="Repositories\MenuRepository.cs" />
-    <Compile Include="Repositories\MigrationRepository.cs" />
     <Compile Include="Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Repositories\ProductFileRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
