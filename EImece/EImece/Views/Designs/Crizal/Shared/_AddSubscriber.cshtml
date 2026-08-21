@@ -2,12 +2,12 @@
 @using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
-@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Models.DTOs;
 @model FooterViewModel
 @{
-    Subscriber subscriber = new Subscriber();
+    SubscriberDto subscriber = new SubscriberDto();
 }
 
 @using (Html.BeginForm("AddSubscriber", "Home", FormMethod.Post, new { @class = "crizal-subscribe validate", id = "footer-newsletter-form" }))

@@ -163,6 +163,13 @@ namespace EImece.Domain.Models.DTOs.Storefront
             return dummy.GetCroppedImageUrl(imageId, width, height, isFullPath, isThumb);
         }
 
+        public string GetCroppedImageTag(int width = 0, int height = 0, bool lazy = true, string fetchPriority = null, string sizes = null)
+        {
+            int imageId = MainImageId.HasValue ? MainImageId.Value : 0;
+            var dummy = new ProductCategory { Id = Id, Name = Name };
+            return dummy.GetCroppedImageTag(imageId, width, height, lazy: lazy, fetchPriority: fetchPriority, sizes: sizes);
+        }
+
         public string GetResponsiveImageSrcSet(int fileStorageId, int width = 0, int height = 0)
         {
             var dummy = new ProductCategory { Id = Id, Name = Name };
