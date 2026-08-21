@@ -21,6 +21,9 @@ namespace EImece.Controllers
         [Inject]
         public ISettingService SettingService { get; set; }
 
+        [Inject]
+        public AutoMapper.IMapper Mapper { get; set; }
+
         private static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
         public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
@@ -205,7 +208,10 @@ namespace EImece.Controllers
         {
             get
             {
-                return SettingService.GetSettingByKey(Constants.IsProductPriceEnable).ToBool(true);
+                if (SettingService == null)
+                    return true;
+                var setting = SettingService.GetSettingByKey(Constants.IsProductPriceEnable);
+                return setting.ToBool(true);
             }
         }
 

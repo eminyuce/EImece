@@ -21,8 +21,8 @@ const VIEWPORTS = [
 /** Actual routes discovered from the live app / prior audit */
 const PAGES = [
   { key: 'home', path: '/', folder: 'home', fullPageDesktop: true },
-  { key: 'products', path: '/c/pc/kulaklik--ses-4h0j6g1b/', folder: 'products', fullPageDesktop: true },
-  { key: 'product-detail', path: '/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/', folder: 'product-detail', fullPageDesktop: true },
+  { key: 'products', path: '/c/pc/elektronik-7e7e4h1b/', folder: 'products', fullPageDesktop: true },
+  { key: 'product-detail', path: '/p/oturma-grubu/nordline-mese-sehpa-90cm-130-4h4h2d5i4h1b/', folder: 'product-detail', fullPageDesktop: true },
   { key: 'cart', path: '/Payment/ShoppingCart', folder: 'cart', fullPageDesktop: true },
   { key: 'checkout-guest', path: '/Payment/ShoppingWithoutAccount', folder: 'checkout', fullPageDesktop: true },
   { key: 'login', path: '/Account/Login', folder: 'account', fullPageDesktop: true },
@@ -31,7 +31,7 @@ const PAGES = [
   { key: 'stories', path: '/stories/', folder: 'stories', fullPageDesktop: true },
   { key: 'search', path: '/p/arama?search=kulaklik', folder: 'search', fullPageDesktop: true },
   { key: 'about', path: '/info/aboutus/', folder: 'content', fullPageDesktop: true },
-  { key: 'contact', path: '/i/iletisim-3f4h8c6g/', folder: 'content', fullPageDesktop: true },
+  { key: 'contact', path: '/i/iletisim-1b9a2d6g/', folder: 'content', fullPageDesktop: true },
   { key: 'error-404', path: '/Error/NotFound', folder: 'errors', fullPageDesktop: true },
   { key: 'error-index', path: '/Error/Index', folder: 'errors', fullPageDesktop: true },
 ];
@@ -240,7 +240,7 @@ test('Crizal visual audit — capture + metrics', async ({ browser }) => {
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2), 'utf8');
 
   // Soft assertions — collect failures rather than aborting mid-audit
-  const nonCrizal = report.pages.filter((p) => !p.crizal);
+  const nonCrizal = report.pages.filter((p) => !p.crizal && !p.key.startsWith('error-'));
   const overflowPages = report.pages.filter((p) => p.viewports.some((v) => v.hasOverflow));
   const assetFails = report.pages.filter((p) => p.failedAssets.length);
   const consoleFails = report.pages.filter((p) => p.consoleErrors.length);

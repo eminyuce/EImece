@@ -183,14 +183,14 @@ namespace EImece.Domain.Services
         public FooterViewModel GetFooterViewModel(int language)
         {
             var result = new FooterViewModel();
-            result.Menus = MenuService.GetActiveBaseContentsFromCache(true, language).ToList();
+            result.Menus = MenuService.GetStorefrontActiveMenus(language);
             result.ProductCategories = ProductCategoryService.GetStorefrontMainPageCategories(language);
-            result.FooterLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-            result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
-            result.CompanyAddress = SettingService.GetSettingObjectByKey(Constants.CompanyAddress);
-            result.FooterDescription = SettingService.GetSettingObjectByKey(Constants.FooterDescription, language);
-            result.FooterEmailListDescription = SettingService.GetSettingObjectByKey(Constants.FooterEmailListDescription, language);
-            result.FooterHtmlDescription = SettingService.GetSettingObjectByKey(Constants.FooterHtmlDescription, language);
+            result.FooterLogo = SettingService.GetSettingDtoByKey(Constants.WebSiteLogo);
+            result.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
+            result.CompanyAddress = SettingService.GetSettingDtoByKey(Constants.CompanyAddress);
+            result.FooterDescription = SettingService.GetSettingDtoByKey(Constants.FooterDescription, language);
+            result.FooterEmailListDescription = SettingService.GetSettingDtoByKey(Constants.FooterEmailListDescription, language);
+            result.FooterHtmlDescription = SettingService.GetSettingDtoByKey(Constants.FooterHtmlDescription, language);
 
             return result;
         }

@@ -1,8 +1,11 @@
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using System;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.DTOs
 {
+    [Serializable]
     public class CustomerDto
     {
         // from BaseEntity
@@ -33,10 +36,108 @@ namespace EImece.Domain.Models.DTOs
         public string Description { get; set; }
         public string Company { get; set; }
         public int CustomerType { get; set; }
-        public String Captcha { get; set; }
+        public string Captcha { get; set; }
         public DateTime OrderLatestDate { get; set; }
-        public String FullName { get; set; }
-        public string Address { get; set; }
-        public string RegistrationAddress { get; set; }
+
+        public List<OrderDto> Orders { get; set; } = new List<OrderDto>();
+
+        private string _fullName;
+        public string FullName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_fullName)) return _fullName;
+                return string.Format("{0} {1}", Name.ToStr(), Surname.ToStr()).Trim();
+            }
+            set { _fullName = value; }
+        }
+
+        private string _address;
+        public string Address
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_address)) return _address;
+                return string.Format("{0} {6} {1} {6} {2} {6} {3} {6} {4} {6} {5} {6}",
+                    Street.ToStr(),
+                    District.ToStr(),
+                    Town.ToStr(),
+                    City.ToStr(),
+                    Country.ToStr(),
+                    Description.ToStr(),
+                    Environment.NewLine);
+            }
+            set { _address = value; }
+        }
+
+        private string _registrationAddress;
+        public string RegistrationAddress
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_registrationAddress)) return _registrationAddress;
+                return string.Format("{0} {1}, {2}, {3} {4}, {5}. {6}",
+                    Street.ToStr(),
+                    District.ToStr(),
+                    Town.ToStr(),
+                    ZipCode.ToStr(),
+                    City.ToStr(),
+                    Country.ToStr(),
+                    Description.ToStr());
+            }
+            set { _registrationAddress = value; }
+        }
+
+        public bool isValidCustomer()
+        {
+            return !string.IsNullOrEmpty(Name)
+                   && !string.IsNullOrEmpty(Surname)
+                   && !string.IsNullOrEmpty(GsmNumber.ToStr()) && GeneralHelper.IsGsmNumberValid(GsmNumber.ToStr())
+                   && !string.IsNullOrEmpty(Email.ToStr()) && GeneralHelper.IsValidEmail(Email.ToStr())
+                   && !string.IsNullOrEmpty(City)
+                   && !string.IsNullOrEmpty(Town)
+                   && !string.IsNullOrEmpty(Country);
+        }
+
+        public bool IsEmpty()
+        {
+            return string.IsNullOrEmpty(Name)
+                   || string.IsNullOrEmpty(Surname)
+                   || string.IsNullOrEmpty(GsmNumber)
+                   || string.IsNullOrEmpty(Email)
+                   || string.IsNullOrEmpty(District)
+                   || string.IsNullOrEmpty(City)
+                   || string.IsNullOrEmpty(Town)
+                   || string.IsNullOrEmpty(Street)
+                   || string.IsNullOrEmpty(Country);
+        }
+
+        public EImece.Domain.Entities.Customer ToEntity()
+        {
+            return new EImece.Domain.Entities.Customer
+            {
+                Id = Id,
+                Name = Name,
+                Surname = Surname,
+                Email = Email,
+                GsmNumber = GsmNumber,
+                IdentityNumber = IdentityNumber,
+                City = City,
+                Town = Town,
+                District = District,
+                Street = Street,
+                ZipCode = ZipCode,
+                Country = Country,
+                Description = Description,
+                Ip = Ip,
+                UserId = UserId,
+                CustomerType = CustomerType,
+                Position = Position,
+                Lang = Lang,
+                IsActive = IsActive,
+                CreatedDate = CreatedDate,
+                UpdatedDate = UpdatedDate
+            };
+        }
     }
 }

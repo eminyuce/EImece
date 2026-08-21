@@ -1,5 +1,5 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs;
 using Newtonsoft.Json;
 using System;
 
@@ -9,7 +9,7 @@ namespace EImece.Domain.Models.FrontModels
     public class BuyNowModel
     {
         public int ProductId { get; set; }
-        public Customer Customer { get; set; }
+        public CustomerDto Customer { get; set; }
         public string OrderGuid { get; set; }
 
         public string ConversationId
@@ -25,16 +25,16 @@ namespace EImece.Domain.Models.FrontModels
         [JsonIgnore]
         public ProductDetailViewModel ProductDetailViewModel { get; set; }
 
-        public Address ShippingAddress { get; set; }
+        public AddressDto ShippingAddress { get; set; }
 
         [JsonIgnore]
-        public Setting CargoCompany { get; set; }
+        public SettingDto CargoCompany { get; set; }
 
         [JsonIgnore]
-        public Setting BasketMinTotalPriceForCargo { get; set; }
+        public SettingDto BasketMinTotalPriceForCargo { get; set; }
 
         [JsonIgnore]
-        public Setting CargoPrice { get; set; }
+        public SettingDto CargoPrice { get; set; }
 
         [JsonIgnore]
         public decimal CargoPriceValue

@@ -1,15 +1,16 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
+using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 
 namespace EImece.Domain.Models.FrontModels
 {
     public class SimiliarStoryTagsViewModel
     {
-        public Tag Tag { get; set; }
-        public PaginatedList<StoryTag> StoryTags { get; set; }
+        public StorefrontTagDto Tag { get; set; }
+        public PaginatedList<StorefrontStoryCardDto> StoryTags { get; set; }
 
-        public PaginatedList<ProductTag> ProductTags { get; set; }
+        public PaginatedList<StorefrontProductCardDto> ProductTags { get; set; }
 
-        public Setting CompanyName { get; set; }
+        public SettingDto CompanyName { get; set; }
     }
 }

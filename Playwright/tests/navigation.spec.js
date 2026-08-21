@@ -83,8 +83,8 @@ test.describe('Crizal Navigation', () => {
     // Prefer a story/tag page that renders a large in-flow page title under the header.
     const titleLink = page.locator('a[href*="/s/t/"], a[href*="/s/sc/"], a[href*="/s/"], a[href*="/c/"], a[href*="/stories"]').first();
     if (await titleLink.count()) {
-      await titleLink.click();
-      await page.waitForLoadState('domcontentloaded');
+      const href = await titleLink.getAttribute('href');
+      await page.goto(href, { waitUntil: 'domcontentloaded' });
       await assertMobileMenuCoversPageTitle(page, page.url());
       return;
     }

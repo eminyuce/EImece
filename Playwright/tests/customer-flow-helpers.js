@@ -10,10 +10,10 @@ const {
 } = require('./helpers');
 
 /** Prefer known in-stock products (many demo SKUs are OutOfStock). */
-const PRODUCT_CATEGORY = '/c/pc/ayakkabi-1b9a4h1b/';
-const PRODUCT_DETAIL = '/p/ayakkabi/fitlife-unisex-kosu-ayakkabisi-airflex-9a6g9a5i4h1b/';
+const PRODUCT_CATEGORY = '/c/pc/oturma-grubu-4h3f4h1b/';
+const PRODUCT_DETAIL = '/p/oturma-grubu/nordline-mese-sehpa-90cm-130-4h4h2d5i4h1b/';
 const PRODUCT_DETAIL_ALT =
-  '/p/ev--yasam/petfriend-evcil-hayvan-mama-kabi-seti-110-7e3f1b5i4h1b/';
+  '/p/oturma-grubu/nordline-mese-sehpa-90cm-130-4h4h2d5i4h1b/';
 
 /** Official iyzico sandbox success card (Akbank commercial MasterCard). */
 const IYZICO_SUCCESS_CARD = {

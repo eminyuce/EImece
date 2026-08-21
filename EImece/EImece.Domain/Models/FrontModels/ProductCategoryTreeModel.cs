@@ -1,5 +1,5 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,7 +9,7 @@ namespace EImece.Domain.Models.FrontModels
     {
         public string CssClassName { get; set; }
         public int TreeLevel { get; set; }
-        public ProductCategory ProductCategory { get; set; }
+        public StorefrontCategoryDto ProductCategory { get; set; }
         public int ProductCount { get; set; }
         public int ProductCountAdmin { get; set; }
         public List<ProductCategoryTreeModel> Childrens { get; set; }
@@ -53,7 +53,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return string.Format("{0}", ProductCategory.Name);
+                return ProductCategory != null ? ProductCategory.Name : string.Empty;
             }
         }
 
@@ -61,13 +61,14 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
+                var name = ProductCategory != null ? ProductCategory.Name : string.Empty;
                 if (ProductCountAdmin > 0)
                 {
-                    return string.Format("{0} ({1})", ProductCategory.Name, ProductCountAdmin);
+                    return string.Format("{0} ({1})", name, ProductCountAdmin);
                 }
                 else
                 {
-                    return string.Format("{0}", ProductCategory.Name);
+                    return string.Format("{0}", name);
                 }
             }
         }
@@ -76,13 +77,14 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
+                var name = ProductCategory != null ? ProductCategory.Name : string.Empty;
                 if (ProductCount > 0)
                 {
-                    return string.Format("{0} ({1})", ProductCategory.Name, ProductCount);
+                    return string.Format("{0} ({1})", name, ProductCount);
                 }
                 else
                 {
-                    return string.Format("{0}", ProductCategory.Name);
+                    return string.Format("{0}", name);
                 }
             }
         }
@@ -91,13 +93,14 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
+                var name = ProductCategory != null ? ProductCategory.Name : string.Empty;
                 if (ProductCount > 0)
                 {
-                    return string.Format("{2}{0} ({1})", ProductCategory.Name, ProductCount, ProduceArrow());
+                    return string.Format("{2}{0} ({1})", name, ProductCount, ProduceArrow());
                 }
                 else
                 {
-                    return string.Format("{1}{0}", ProductCategory.Name, ProduceArrow());
+                    return string.Format("{1}{0}", name, ProduceArrow());
                 }
             }
         }

@@ -25,6 +25,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public bool IsActive { get; set; }
         public int TreeLevel { get; set; }
         public string PageTheme { get; set; }
+        public string IsPageActived { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
@@ -44,6 +45,27 @@ namespace EImece.Domain.Models.DTOs.Storefront
             MenuFiles = new List<StorefrontMenuFileDto>();
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;
+        }
+
+        public static StorefrontMenuDto FromEntity(Menu m)
+        {
+            if (m == null) return null;
+            return new StorefrontMenuDto
+            {
+                Id = m.Id,
+                Name = m.Name,
+                ParentId = m.ParentId,
+                MenuLink = m.MenuLink,
+                Description = m.Description,
+                MainImageId = m.MainImageId,
+                Position = m.Position,
+                Lang = m.Lang,
+                IsActive = m.IsActive,
+                PageTheme = m.PageTheme,
+                IsPageActived = m.IsPageActived,
+                CreatedDate = m.CreatedDate,
+                UpdatedDate = m.UpdatedDate
+            };
         }
 
         public string ModifiedId

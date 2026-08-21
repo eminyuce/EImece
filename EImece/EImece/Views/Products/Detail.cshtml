@@ -1,5 +1,4 @@
 @model EImece.Domain.Models.FrontModels.ProductDetailViewModel
-@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
@@ -410,7 +409,7 @@
                         </div>
                     </div>
                 </div>
-                @if (Model.CargoDescription.IsNotEmpty())
+                @if (Model.CargoDescription != null && !string.IsNullOrEmpty(Model.CargoDescription.SettingValue))
                 {
                     <div class="card">
                         <div class="card-header">
@@ -537,7 +536,7 @@
         @if (productPriceEnabled)
         {
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                @if (Model.PaymentDetailHtml != null && Model.PaymentDetailHtml.IsNotEmpty())
+                @if (Model.PaymentDetailHtml != null && !string.IsNullOrEmpty(Model.PaymentDetailHtml.SettingValue))
                 {
                     @Html.Raw(Model.PaymentDetailHtml.SettingValue)
                 }

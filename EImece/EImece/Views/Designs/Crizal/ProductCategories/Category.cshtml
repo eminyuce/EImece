@@ -1,5 +1,4 @@
 @model ProductCategoryViewModel
-@using EImece.Domain.Entities
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
@@ -11,7 +10,7 @@
 @using EImece.Domain.Models.Enums;
 @{
 
-    ProductCategory category = Model.ProductCategory;
+    StorefrontCategoryDto category = Model.CategoryDto;
     var pagedDtos = Model.PagedProductDtos;
     var products = new PaginatedModelList<StorefrontProductCardDto>(pagedDtos, pagedDtos.PageIndex, pagedDtos.PageSize, pagedDtos.TotalCount);
     products.RouteId = Model.SeoId;
@@ -183,7 +182,7 @@
                         </div>
 
                         @Html.Partial("_ProductCategoryTreeHeadLine",
-                       new Tuple<ProductCategory, List<ProductCategoryTreeModel>>(category, Model.ProductCategoryTree))
+                       new Tuple<StorefrontCategoryDto, List<ProductCategoryTreeModel>>(category, Model.ProductCategoryTree))
                         @if (Model.HasAnyFilters)
                         {
                             <div class="column mb-2 pb-1">

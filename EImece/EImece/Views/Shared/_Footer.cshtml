@@ -1,15 +1,15 @@
-﻿@using Resources;
+@using Resources;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain;
-@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using System.Threading;
 @model FooterViewModel
 @{
     var footerModel = Model;
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
-    Menu communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
+    StorefrontMenuDto communicationPageLink = Model.Menus.FirstOrDefault(r => r.PageTheme.ToStr().Equals(Constants.PageThemeCommunication));
     int communicationId = 0;
     var countryCode = Thread.CurrentThread.CurrentUICulture.ToString();
     var SpecialFooterMenuLinkMenuId = countryCode.Equals("tr-TR") ? AppConfig.MusteriIliskileriChildrenIdTurkce : -1;

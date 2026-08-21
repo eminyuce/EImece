@@ -1,4 +1,3 @@
-using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
@@ -16,72 +15,11 @@ namespace EImece.Domain.Models.FrontModels
         public StorefrontCategoryDto CategoryDto { get; set; }
         public PaginatedList<StorefrontProductCardDto> PagedProductDtos { get; set; }
 
-        private ProductCategory _productCategory;
-        public ProductCategory ProductCategory
-        {
-            get
-            {
-                if (_productCategory != null) return _productCategory;
-                if (CategoryDto == null) return null;
-                return new ProductCategory
-                {
-                    Id = CategoryDto.Id,
-                    Name = CategoryDto.Name,
-                    ParentId = CategoryDto.ParentId,
-                    ShortDescription = CategoryDto.ShortDescription,
-                    Description = CategoryDto.Description,
-                    MetaKeywords = CategoryDto.MetaKeywords,
-                    IsActive = CategoryDto.IsActive,
-                    Position = CategoryDto.Position,
-                    Lang = CategoryDto.Lang,
-                    MainImageId = CategoryDto.MainImageId
-                };
-            }
-            set
-            {
-                _productCategory = value;
-            }
-        }
-
         public List<StorefrontProductCardDto> CategoryChildrenProducts { get; set; }
         public StorefrontMenuDto ProductMenu { get; set; }
         public StorefrontMenuDto MainPageMenu { get; set; }
         public List<StorefrontCategoryDto> ChildrenProductCategories { get; set; }
         public List<StorefrontBrandDto> StorefrontBrands { get; set; }
-
-        public List<Brand> Brands
-        {
-            get
-            {
-                if (StorefrontBrands == null) return new List<Brand>();
-                return StorefrontBrands.Select(b => new Brand
-                {
-                    Id = b.Id,
-                    Name = b.Name,
-                    Position = b.Position,
-                    Lang = b.Lang,
-                    IsActive = b.IsActive,
-                    MainImageId = b.MainImageId
-                }).ToList();
-            }
-            set
-            {
-                if (value == null)
-                {
-                    StorefrontBrands = new List<StorefrontBrandDto>();
-                    return;
-                }
-                StorefrontBrands = value.Select(b => new StorefrontBrandDto
-                {
-                    Id = b.Id,
-                    Name = b.Name,
-                    Position = b.Position,
-                    Lang = b.Lang,
-                    IsActive = b.IsActive,
-                    MainImageId = b.MainImageId
-                }).ToList();
-            }
-        }
 
         public List<ProductCategoryTreeModel> ProductCategoryTree { get; set; }
         private List<CategoryFilter> _selectedFilterTypes;
@@ -100,9 +38,9 @@ namespace EImece.Domain.Models.FrontModels
                 _selectedFilterTypes = value;
             }
         }
-        public Setting PriceFilterSetting { get; set; }
-        public Setting IsProductPriceEnable { get; set; }
-        public Setting IsProductReviewEnable { get; set; }
+        public SettingDto PriceFilterSetting { get; set; }
+        public SettingDto IsProductPriceEnable { get; set; }
+        public SettingDto IsProductReviewEnable { get; set; }
         public List<StorefrontProductCardDto> AllProducts { get; set; }
 
         public ProductCategoryViewModel()

@@ -197,19 +197,21 @@ async function captureFailure(page, name) {
  * @param {(page: import('@playwright/test').Page) => Promise<boolean>} isSuccess
  */
 async function submitWithLegacyCaptchaBruteForce(page, fillAndSubmit, isSuccess) {
-  for (let answer = 2; answer <= 8; answer++) {
+  for (let attempt = 0; attempt < 16; attempt++) {
+    const answer = (attempt % 7) + 2;
     await fillAndSubmit();
-    const captcha = page.locator('input[name="Captcha"], #Captcha').first();
+    const form = loginForm(page);
+    const captcha = form.locator('input[name="Captcha"], #Captcha').first();
     if (await captcha.count()) {
       await captcha.fill(String(answer));
     }
+    const submitBtn = form.locator('button[type="submit"], input[type="submit"]').first();
     await Promise.all([
-      page.waitForLoadState('domcontentloaded'),
-      page.locator('form').first().evaluate((f) => f.requestSubmit()),
-    ]).catch(async () => {
-      await page.locator('button[type="submit"], input[type="submit"]').first().click();
-      await page.waitForLoadState('domcontentloaded');
-    });
+      page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 5000 }).catch(() => {}),
+      submitBtn.click().catch(async () => {
+        await form.evaluate((f) => f.requestSubmit()).catch(() => {});
+      }),
+    ]);
 
     if (await isSuccess(page)) {
       return true;
@@ -225,7 +227,7 @@ async function submitWithLegacyCaptchaBruteForce(page, fillAndSubmit, isSuccess)
 function loginForm(page) {
   return page
     .locator(
-      'form.crizal-customer-login__form, form.crizal-admin-login__form, form[action*="/account/login"], form[action*="/account/adminlogin"], .crizal-auth-card form, main form[method="post"]'
+      '#customer-login-form, #admin-login-form, form.crizal-customer-login__form, form.crizal-admin-login__form, form[action*="/account/login"], form[action*="/account/adminlogin"], form[action*="/account/register"], form[action*="/account/forgotpassword"], .crizal-auth-card form, form.needs-validation, main form[method="post"]'
     )
     .first();
 }
@@ -236,11 +238,13 @@ async function loginWithPassword(page, { email, password, loginPath }) {
   await form.locator('#Email, input[name="Email"]').first().fill(email);
   await form.locator('#Password, input[name="Password"]').first().fill(password);
 
-  const captchaVisible = await form.locator('input[name="Captcha"], #Captcha').first().isVisible().catch(() => false);
+  const captchaCount = await form.locator('input[name="Captcha"], #Captcha').count();
+  const captchaVisible = captchaCount > 0 && await form.locator('input[name="Captcha"], #Captcha').first().isVisible();
   if (!captchaVisible) {
+    const submitBtn = form.locator('button[type="submit"], input[type="submit"], .crizal-customer-login__submit, .crizal-admin-login__submit').first();
     await Promise.all([
-      page.waitForLoadState('domcontentloaded'),
-      form.locator('button[type="submit"], input[type="submit"]:visible').first().click(),
+      page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {}),
+      submitBtn.click(),
     ]);
     return !/\/account\/(login|adminlogin)/i.test(page.url());
   }

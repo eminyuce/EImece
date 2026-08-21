@@ -1,6 +1,6 @@
 @model EImece.Domain.Models.FrontModels.SimiliarStoryTagsViewModel
 @using EImece.Domain.GenericRepository;
-@using EImece.Domain.Entities;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Helpers
@@ -8,11 +8,11 @@
 @using Resources
 
 @{
-    PaginatedList<StoryTag> storyTags = Model.StoryTags;
+    PaginatedList<StorefrontStoryCardDto> storyTags = Model.StoryTags;
     var tag = Model.Tag;
     ViewBag.Title = tag != null ? tag.GetSeoTitle() : "";
     var companyName = Model.CompanyName != null ? Model.CompanyName.SettingValue : "";
-    ViewBag.Description = (companyName + " - " + String.Join(",", storyTags.Where(r => r.Story != null).Select(r => r.Story.Name))).ToStr(150);
+    ViewBag.Description = (companyName + " - " + String.Join(",", storyTags.Select(r => r.Name))).ToStr(150);
 }
 
 <div class="page-title-wrapper" role="region" aria-label="Page title">
@@ -51,9 +51,9 @@
     <div class="row">
         @foreach (var item in storyTags)
         {
-            if (item.Story == null) { continue; }
+            if (item == null) { continue; }
             <div class="col-sm-6 col-lg-3 mb-4 d-flex">
-                @Html.DisplayFor(modelItem => item.Story, "TagStory", new { Width = 400, Height = 260 })
+                @Html.DisplayFor(modelItem => item, "TagStory", new { Width = 400, Height = 260 })
             </div>
         }
     </div>

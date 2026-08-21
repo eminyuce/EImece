@@ -1,6 +1,6 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,14 +11,14 @@ namespace EImece.Domain.Models.FrontModels
     [Serializable]
     public class BuyWithNoAccountCreation
     {
-        private Customer _customer = new Customer();
+        private CustomerDto _customer = new CustomerDto();
         public string OrderGuid { get; set; }
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
-        public Coupon Coupon { get; set; }
+        public CouponDto Coupon { get; set; }
         public string CouponStr    { get { return Coupon == null ? "" : Coupon.Name; } }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
-        public Address ShippingAddress { get; set; }
+        public AddressDto ShippingAddress { get; set; }
 
         public string CouponName
         {
@@ -39,7 +39,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Customer Customer
+        public CustomerDto Customer
         {
             get
             {
@@ -64,13 +64,13 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         [JsonIgnore]
-        public Setting CargoCompany { get; set; }
+        public SettingDto CargoCompany { get; set; }
 
         [JsonIgnore]
-        public Setting BasketMinTotalPriceForCargo { get; set; }
+        public SettingDto BasketMinTotalPriceForCargo { get; set; }
 
         [JsonIgnore]
-        public Setting CargoPrice { get; set; }
+        public SettingDto CargoPrice { get; set; }
 
         [JsonIgnore]
         public decimal CargoPriceValue

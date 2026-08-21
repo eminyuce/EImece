@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 
@@ -6,14 +6,20 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class FooterViewModel
     {
-        public List<Menu> Menus { get; set; }
+        public List<StorefrontMenuDto> Menus { get; set; }
         public List<StorefrontCategoryDto> ProductCategories { get; set; }
-        public Setting FooterLogo { get; set; }
-        public Setting CompanyName { get; set; }
-        public Setting CompanyAddress { get; set; }
-        public Setting FooterDescription { get; set; }
-        public Setting FooterHtmlDescription { get; set; }
+        public SettingDto FooterLogo { get; set; }
+        public SettingDto CompanyName { get; set; }
+        public SettingDto CompanyAddress { get; set; }
+        public SettingDto FooterDescription { get; set; }
+        public SettingDto FooterHtmlDescription { get; set; }
 
-        public Setting FooterEmailListDescription { get; set; }
+        public SettingDto FooterEmailListDescription { get; set; }
+
+        public FooterViewModel()
+        {
+            Menus = new List<StorefrontMenuDto>();
+            ProductCategories = new List<StorefrontCategoryDto>();
+        }
     }
 }

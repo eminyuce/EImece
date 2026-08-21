@@ -1,4 +1,4 @@
-@using EImece.Domain.Entities
+@using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.FrontModels;
@@ -9,7 +9,7 @@
 @using EImece.Domain.Models.Enums;
 @using System.Linq;
 
-@model Tuple<ProductCategory, List<ProductCategoryTreeModel>>
+@model Tuple<StorefrontCategoryDto, List<ProductCategoryTreeModel>>
 @{
     var selectedProductCategory = Model.Item1;
     var productCategories = Model.Item2;
@@ -34,7 +34,7 @@
                 <i class="widget-categories-indicator" data-feather="chevron-down"></i>
                 @badgeProductNumber(p, selectedProductCategory)
             </a>
-            @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<ProductCategory, ProductCategoryTreeModel>(selectedProductCategory, p))
+            @Html.Partial("_ProductCategoryTreeChildrenHeadLine", new Tuple<StorefrontCategoryDto, ProductCategoryTreeModel>(selectedProductCategory, p))
         </li>
 
                 }
@@ -53,7 +53,7 @@
 </div>
 }
 
-@helper badgeProductNumber(ProductCategoryTreeModel p, ProductCategory selectedProductCategory)
+@helper badgeProductNumber(ProductCategoryTreeModel p, StorefrontCategoryDto selectedProductCategory)
 {
 
 if (p.ProductCount > 0)

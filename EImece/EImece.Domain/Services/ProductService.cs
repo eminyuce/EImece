@@ -266,12 +266,15 @@ namespace EImece.Domain.Services
                 {
                     var result = new ProductIndexViewModel();
                     int pageSize = AppConfig.RecordPerPage;
-                    result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
-                    result.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-                    result.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+                    result.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
+                    var menus = MenuService.GetActiveBaseContentsFromCache(true, lang);
+                    var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+                    var productMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+                    result.MainPageMenu = StorefrontMenuDto.FromEntity(mainPageMenu);
+                    result.ProductMenu = StorefrontMenuDto.FromEntity(productMenu);
 
                     result.Products = ProductRepository.GetStorefrontActiveProductsPaged(pageIndex, pageSize, lang);
-                    result.Tags = TagService.GetActiveBaseEntities(true, lang);
+                    result.Tags = TagService.GetActiveBaseEntities(true, lang).Select(t => StorefrontTagDto.FromEntity(t)).ToList();
                     return result;
                 },
                 CachePolicy.Absolute(AppConfig.CacheMediumSeconds));
@@ -293,14 +296,17 @@ namespace EImece.Domain.Services
             var result = new ProductIndexViewModel();
             int pageSize = AppConfig.RecordPerPage;
 
-            result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            result.CompanyName = await SettingService.GetSettingDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
 
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var productMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.MainPageMenu = StorefrontMenuDto.FromEntity(mainPageMenu);
+            result.ProductMenu = StorefrontMenuDto.FromEntity(productMenu);
 
             result.Products = await ProductRepository.GetStorefrontActiveProductsPagedAsync(pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
-            result.Tags = await TagService.GetActiveBaseEntitiesFromCacheAsync(true, lang).ConfigureAwait(false);
+            var tags = await TagService.GetActiveBaseEntitiesFromCacheAsync(true, lang).ConfigureAwait(false);
+            result.Tags = tags.Select(t => StorefrontTagDto.FromEntity(t)).ToList();
 
             return result;
         }
@@ -365,14 +371,14 @@ namespace EImece.Domain.Services
                 return result;
             }
             result.ProductDto = productDto;
-            result.IsProductPriceEnable = SettingService.GetSettingObjectByKey(Constants.IsProductPriceEnable);
-            result.IsProductReviewEnable = SettingService.GetSettingObjectByKey(Constants.IsProductReviewEnable);
-            result.PaymentDetailHtml = SettingService.GetSettingObjectByKey(Constants.PaymentDetailHtml);
-            result.WhatsAppCommunicationLink = SettingService.GetSettingObjectByKey(Constants.WhatsAppCommunicationLink);
-            result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+            result.IsProductPriceEnable = SettingService.GetSettingDtoByKey(Constants.IsProductPriceEnable);
+            result.IsProductReviewEnable = SettingService.GetSettingDtoByKey(Constants.IsProductReviewEnable);
+            result.PaymentDetailHtml = SettingService.GetSettingDtoByKey(Constants.PaymentDetailHtml);
+            result.WhatsAppCommunicationLink = SettingService.GetSettingDtoByKey(Constants.WhatsAppCommunicationLink);
+            result.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
-            result.CargoDescription = SettingService.GetSettingObjectByKey(Constants.CargoDescription, productDto.Lang);
-            result.CargoPrice = SettingService.GetSettingObjectByKey(Constants.CargoPrice, productDto.Lang);
+            result.CargoDescription = SettingService.GetSettingDtoByKey(Constants.CargoDescription, productDto.Lang);
+            result.CargoPrice = SettingService.GetSettingDtoByKey(Constants.CargoPrice, productDto.Lang);
             var mainPageDto = MenuService.GetStorefrontPageByMenuLink(Constants.HomeIndexMenuLink, productDto.Lang);
             if (mainPageDto != null)
             {
@@ -429,14 +435,14 @@ namespace EImece.Domain.Services
                 return result;
             }
             result.ProductDto = productDto;
-            result.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
-            result.IsProductReviewEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
-            result.PaymentDetailHtml = await SettingService.GetSettingObjectByKeyAsync(Constants.PaymentDetailHtml).ConfigureAwait(false);
-            result.WhatsAppCommunicationLink = await SettingService.GetSettingObjectByKeyAsync(Constants.WhatsAppCommunicationLink).ConfigureAwait(false);
-            result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            result.IsProductPriceEnable = await SettingService.GetSettingDtoByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
+            result.IsProductReviewEnable = await SettingService.GetSettingDtoByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
+            result.PaymentDetailHtml = await SettingService.GetSettingDtoByKeyAsync(Constants.PaymentDetailHtml).ConfigureAwait(false);
+            result.WhatsAppCommunicationLink = await SettingService.GetSettingDtoByKeyAsync(Constants.WhatsAppCommunicationLink).ConfigureAwait(false);
+            result.CompanyName = await SettingService.GetSettingDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
-            result.CargoDescription = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoDescription, productDto.Lang).ConfigureAwait(false);
-            result.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Constants.CargoPrice, productDto.Lang).ConfigureAwait(false);
+            result.CargoDescription = await SettingService.GetSettingDtoByKeyAsync(Constants.CargoDescription, productDto.Lang).ConfigureAwait(false);
+            result.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Constants.CargoPrice, productDto.Lang).ConfigureAwait(false);
             var mainPageDtoAsync = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.HomeIndexMenuLink, productDto.Lang, cancellationToken).ConfigureAwait(false);
             if (mainPageDtoAsync != null)
             {
@@ -655,8 +661,11 @@ namespace EImece.Domain.Services
                 r.Products = new PaginatedList<StorefrontProductCardDto>(new List<StorefrontProductCardDto>(), pageIndex, pageSize, 0);
             }
 
-            r.MainPageMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            r.ProductMenu = MenuService.GetActiveBaseContentsFromCache(true, lang).FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var menus = MenuService.GetActiveBaseContentsFromCache(true, lang);
+            var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var productMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            r.MainPageMenu = StorefrontMenuDto.FromEntity(mainPageMenu);
+            r.ProductMenu = StorefrontMenuDto.FromEntity(productMenu);
 
             return r;
         }
@@ -675,8 +684,10 @@ namespace EImece.Domain.Services
             }
 
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            r.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            r.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            var productMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            r.MainPageMenu = StorefrontMenuDto.FromEntity(mainPageMenu);
+            r.ProductMenu = StorefrontMenuDto.FromEntity(productMenu);
 
             return r;
         }
@@ -1145,36 +1156,40 @@ namespace EImece.Domain.Services
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
             var r = new SimiliarProductTagsViewModel();
-            r.Tag = TagService.GetSingle(tagId);
+            var tagEntity = TagService.GetSingle(tagId);
+            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
             r.Products = ProductRepository.GetStorefrontProductsByTagId(tagId, pageIndex, pageSize, lang, SortingType.Newest);
-            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
+            r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;
         }
 
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting)
         {
             var r = new SimiliarProductTagsViewModel();
-            r.Tag = TagService.GetSingle(tagId);
+            var tagEntity = TagService.GetSingle(tagId);
+            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
             r.Products = ProductRepository.GetStorefrontProductsByTagId(tagId, page, pageSize, currentLanguage, sorting);
-            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
+            r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;
         }
 
         public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
-            r.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
+            var tagEntity = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
+            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
             r.Products = await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, SortingType.Newest, cancellationToken).ConfigureAwait(false);
-            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
+            r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;
         }
 
         public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
-            r.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
+            var tagEntity = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
+            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
             r.Products = await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, page, pageSize, currentLanguage, sorting, cancellationToken).ConfigureAwait(false);
-            r.StoryTags = new PaginatedList<StoryTag>(new List<StoryTag>(), 1, 10, 0);
+            r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;
         }
 

@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
@@ -166,7 +167,7 @@ namespace EImece.Controllers
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             Logger.Info($"Set model properties: Page={page}, RecordPerPage={pageSize}, Sorting={(SortingType)sorting}, TagId={id}, SeoId={ViewBag.SeoId}");
 
-            SetCurrentCulture(products.Tag);
+            SetCurrentCulture(products.Tag.Lang);
             Logger.Info("Set current culture based on tag.");
             Logger.Info("Returning Tag view.");
             return View(products);
@@ -195,7 +196,7 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateCaptcha(Prefix = "ProductReview")]
-        public async Task<ActionResult> Review(ProductComment productComment)
+        public async Task<ActionResult> Review(ProductCommentDto productComment)
         {
             Logger.Info($"Entering Review POST action with productComment Email: {productComment?.Email}, ProductId: {productComment?.ProductId}");
             if (productComment == null)
@@ -227,16 +228,25 @@ namespace EImece.Controllers
             var user = await UsersService.GetUserByEmailAsync(email);
             Logger.Info($"User found: {(user != null ? $"ID: {user.Id}" : "None")}");
 
-            productComment.UserId = user == null ? "" : user.Id;
-            productComment.CreatedDate = DateTime.Now;
-            productComment.UpdatedDate = DateTime.Now;
-            productComment.IsActive = false;
-            productComment.Position = 1;
-            productComment.Lang = CurrentLanguage;
-            Logger.Info($"Set productComment properties: UserId={productComment.UserId}, CreatedDate={productComment.CreatedDate}, Lang={productComment.Lang}");
+            var entity = new ProductComment
+            {
+                ProductId = productComment.ProductId,
+                Name = productComment.Name,
+                Email = productComment.Email,
+                Subject = productComment.Subject,
+                Rating = productComment.Rating,
+                Review = productComment.Review,
+                SeoUrl = productComment.SeoUrl,
+                UserId = user == null ? "" : user.Id,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                IsActive = false,
+                Position = 1,
+                Lang = CurrentLanguage
+            };
 
-            await productCommentService.SaveOrEditEntityAsync(productComment);
-            Logger.Info($"Saved product comment with ID: {productComment.Id}");
+            await productCommentService.SaveOrEditEntityAsync(entity);
+            Logger.Info($"Saved product comment with ID: {entity.Id}");
 
             Logger.Info($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");
             return RedirectToAction("Detail", new { id = productComment.SeoUrl });

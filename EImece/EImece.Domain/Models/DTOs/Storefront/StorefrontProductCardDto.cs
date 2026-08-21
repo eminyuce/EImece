@@ -36,6 +36,37 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
+        public static StorefrontProductCardDto FromEntity(Product p)
+        {
+            if (p == null) return null;
+            return new StorefrontProductCardDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                NameShort = p.NameShort,
+                NameLong = p.NameLong,
+                ShortDescription = p.ShortDescription,
+                Price = p.Price,
+                Discount = p.Discount,
+                ProductCode = p.ProductCode,
+                Rating = p.Rating,
+                SoldCount = 0,
+                MainImageId = p.MainImageId,
+                ProductCategoryId = p.ProductCategoryId,
+                ProductCategoryName = p.ProductCategory != null ? p.ProductCategory.Name : string.Empty,
+                BrandId = p.BrandId,
+                BrandName = p.Brand != null ? p.Brand.Name : string.Empty,
+                IsActive = p.IsActive,
+                MainPage = p.MainPage,
+                IsCampaign = p.IsCampaign,
+                State = p.State,
+                Lang = p.Lang,
+                Position = p.Position,
+                CreatedDate = p.CreatedDate,
+                UpdatedDate = p.UpdatedDate
+            };
+        }
+
         // Computed properties (client-side derived from projected columns)
         public decimal PriceWithDiscount
         {

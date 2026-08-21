@@ -1,4 +1,3 @@
-﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.FrontModels;
@@ -135,7 +134,7 @@
     /// Crizal nav already emits a dedicated Home link. Skip CMS "Ana Sayfa" / home-index
     /// roots so Home does not appear twice.
     /// </summary>
-    bool IsDuplicateHomeMenu(Menu menu, string homeHref)
+    bool IsDuplicateHomeMenu(EImece.Domain.Models.DTOs.Storefront.StorefrontMenuDto menu, string homeHref)
     {
         if (menu == null)
         {

@@ -1,0 +1,208 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e8]:
+        - list [ref=e11]:
+          - listitem [ref=e12]:
+            - generic [ref=e13]: 
+            - link "02423110350" [ref=e14] [cursor=pointer]:
+              - /url: tel:02423110350
+          - listitem [ref=e15]:
+            - generic [ref=e16]: 
+            - link "bizim.saglikli.urunlerimiz@gmail.com" [ref=e17] [cursor=pointer]:
+              - /url: mailto:bizim.saglikli.urunlerimiz@gmail.com
+        - generic [ref=e18]:
+          - list
+      - generic [ref=e19]:
+        - text:  
+        - navigation [ref=e24]:
+          - link [ref=e26] [cursor=pointer]:
+            - /url: /
+            - img "Yuvadan.com.tr" [ref=e27]
+          - button "Menü" [ref=e28] [cursor=pointer]
+          - list [ref=e30]:
+            - listitem [ref=e31]:
+              - link "Giriş" [ref=e32] [cursor=pointer]:
+                - /url: /account/login/
+                - generic [ref=e33]: 
+            - listitem [ref=e34]:
+              - link " 1" [ref=e35] [cursor=pointer]:
+                - /url: /payment/shoppingcart/
+                - generic [ref=e36]: 
+                - generic [ref=e37]: "1"
+            - listitem [ref=e38]:
+              - link "Ara" [ref=e39] [cursor=pointer]:
+                - /url: "#!"
+                - generic [ref=e40]: 
+    - main [ref=e41]:
+      - region "Page title" [ref=e42]:
+        - generic [ref=e43]:
+          - navigation "breadcrumb" [ref=e44]:
+            - list [ref=e45]:
+              - listitem [ref=e46]:
+                - link "Ana Sayfa" [ref=e47] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - text: ›
+                - generic [ref=e53]: Sepetim
+          - heading "Sepetim" [level=1] [ref=e54]
+      - generic [ref=e55]:
+        - generic "Ödeme" [ref=e56]:
+          - generic [ref=e57]:
+            - link "1.Sepetim" [ref=e58] [cursor=pointer]:
+              - /url: /payment/shoppingcart/
+              - generic [ref=e59]: 
+            - link "2.Sipariş Detayları" [ref=e62] [cursor=pointer]:
+              - /url: /payment/checkoutbillingdetails/
+              - generic [ref=e63]: 
+            - link "3.Sipariş Özeti" [ref=e66] [cursor=pointer]:
+              - /url: /payment/checkoutpaymentorderreview/
+              - generic [ref=e67]: 
+            - link "4.Ödeme" [ref=e70] [cursor=pointer]:
+              - /url: /payment/placeorder/
+              - generic [ref=e71]: 
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "Ürünler Alışverişe devam et" [level=2] [ref=e78]:
+              - generic [ref=e79]: Ürünler
+              - link "Alışverişe devam et" [ref=e80] [cursor=pointer]:
+                - /url: /productcategories/category/
+            - generic [ref=e81]:
+              - generic [ref=e82]:
+                - link [ref=e83] [cursor=pointer]:
+                  - /url: http://localhost:81/p/ayakkabi/fitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b/
+                  - img "FitLife Unisex Koşu Ayakkabısı AirFlex" [ref=e84]
+                - generic [ref=e85]:
+                  - heading [level=3] [ref=e86]:
+                    - link "FitLife Unisex Koşu Ayakkabısı AirFlex" [ref=e87] [cursor=pointer]:
+                      - /url: http://localhost:81/p/ayakkabi/fitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b/
+                  - text: 1.905,00 ₺
+                  - generic [ref=e88]: Fiyat :1.905,00 ₺
+                  - generic [ref=e89]: Ürün Kategorisi :Ayakkabı
+                  - generic [ref=e90]: Ürün Kodu:EIMC-000006
+                  - generic [ref=e91]: Ürün Markası:FitLife
+                  - generic [ref=e92]: Boyutu :36
+                  - generic [ref=e93]: Ürün Rengi :Siyah
+              - generic [ref=e94]:
+                - generic [ref=e95]:
+                  - generic [ref=e96]: Miktar
+                  - spinbutton "Miktar" [ref=e97]: "1"
+                - button "Güncelle" [ref=e98] [cursor=pointer]:
+                  - generic [ref=e99]: 
+                  - text: Güncelle
+                - button "Sil" [ref=e100] [cursor=pointer]:
+                  - generic [ref=e101]: 
+                  - text: Sil
+          - generic [ref=e103]:
+            - heading "Sipariş özeti" [level=2] [ref=e105]
+            - paragraph [ref=e106]:
+              - generic [ref=e107]: 1.000 TL ve üzeri alışverişlerde KARGO ÜCRETSİZ!
+            - table [ref=e108]:
+              - rowgroup [ref=e109]:
+                - row [ref=e110]:
+                  - rowheader "Sepetim" [ref=e111]
+                  - cell "1.905,00 ₺" [ref=e112]
+                - row [ref=e113]:
+                  - rowheader "KARGO ÜCRETSİZ!" [ref=e114]
+                - row [ref=e116]:
+                  - rowheader "Toplam" [ref=e117]
+                  - cell "1.905,00 ₺" [ref=e118]
+            - generic [ref=e119]:
+              - generic [ref=e120]:
+                - generic [ref=e121]: Kupon Kodu
+                - textbox "Kupon Kodu" [ref=e122]
+              - button "Kupon Kodu Kullan" [ref=e123] [cursor=pointer]
+            - separator [ref=e124]
+            - heading "Siparişiniz için notunuz" [level=3] [ref=e125]
+            - generic [ref=e126]: Siparişiniz için notunuz
+            - textbox "Siparişiniz için notunuz" [ref=e127]
+            - link "Üyelikle Devam Et" [ref=e128] [cursor=pointer]:
+              - /url: /payment/checkoutbillingdetails/
+              - generic [ref=e129]: 
+              - text: Üyelikle Devam Et
+            - link "Üyeliksiz Devam Et" [ref=e130] [cursor=pointer]:
+              - /url: /payment/shoppingwithoutaccount/
+              - generic [ref=e131]: 
+              - text: Üyeliksiz Devam Et
+    - region "Yuvadan.com.tr" [ref=e132]:
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - heading "Yuvadan.com.tr" [level=2] [ref=e136]
+          - paragraph [ref=e137]: Haberdar olun
+        - link "Hakkımızda" [ref=e139] [cursor=pointer]:
+          - /url: /info/aboutus/?lang=tr-TR
+    - contentinfo [ref=e141]:
+      - generic [ref=e142]:
+        - generic [ref=e143]:
+          - generic [ref=e144]:
+            - link "Yuvadan.com.tr" [ref=e145] [cursor=pointer]:
+              - /url: /
+              - img "Yuvadan.com.tr" [ref=e146]
+            - paragraph [ref=e147]: Haberdar olun
+            - generic [ref=e149]:
+              - generic [ref=e150]:
+                - generic [ref=e151]: E-Posta
+                - textbox "E-Posta" [ref=e152]
+                - button "Abone ol" [ref=e153] [cursor=pointer]
+              - generic [ref=e155]:
+                - generic [ref=e156]: Leave blank
+                - textbox [ref=e157]
+              - paragraph [ref=e158]: "*Erken indirim teklifleri, güncellemeler ve yeni ürün bilgileri almak için bültenimize abone olun."
+              - generic:
+                - list
+              - paragraph [ref=e159]: Emeğe ve doğallığa değer verenlere özel… Taze kudret narı ve yöresel ürünler, doğrudan üreticisinden, katkısız ve güvenilir şekilde size ulaşıyor.
+              - paragraph [ref=e160]:
+                - strong [ref=e161]: Yuvadan.com.tr
+                - text: Sinan Mah.Cebesoy Cad. Zümrüt Apt. A Blok No:60/C Muratpaşa / ANTALYA
+            - img "MasterCard and Visa accepted" [ref=e162]
+          - generic [ref=e163]:
+            - heading "Ürün Kategorileri" [level=2] [ref=e164]
+            - list [ref=e165]:
+              - listitem [ref=e166]:
+                - link "Moda & Giyim" [ref=e167] [cursor=pointer]:
+                  - /url: /c/pc/moda--giyim-3f7e4h1b/
+              - listitem [ref=e168]:
+                - link "Ev & Yaşam" [ref=e169] [cursor=pointer]:
+                  - /url: /c/pc/ev--yasam-6g7e4h1b/
+              - listitem [ref=e170]:
+                - link "Mutfak" [ref=e171] [cursor=pointer]:
+                  - /url: /c/pc/mutfak-1b3f4h1b/
+          - generic [ref=e172]:
+            - heading "Hakkımızda" [level=2] [ref=e173]
+            - list [ref=e174]:
+              - listitem [ref=e175]:
+                - link "Hakkımızda" [ref=e176] [cursor=pointer]:
+                  - /url: /info/aboutus/
+              - listitem [ref=e177]:
+                - link "Kampanyalar" [ref=e178] [cursor=pointer]:
+                  - /url: /i/kampanyalar-7e9a2d6g/
+          - generic [ref=e179]:
+            - heading "Müşteri ilişkileri" [level=2] [ref=e180]
+            - list [ref=e181]:
+              - listitem [ref=e182]:
+                - link "Kargo Takibi" [ref=e183] [cursor=pointer]:
+                  - /url: /payment/cargotracking/
+              - listitem [ref=e184]:
+                - link "Teslimat Bilgileri" [ref=e185] [cursor=pointer]:
+                  - /url: /info/deliveryinfo/
+        - generic [ref=e188]:
+          - generic [ref=e190]:
+            - heading "Ücretsiz yerel teslimat" [level=3] [ref=e197]
+            - paragraph [ref=e198]: 3 iş günü içerisinde kargoya teslim
+          - generic [ref=e200]:
+            - heading "Para iade garantisi" [level=3] [ref=e206]
+            - paragraph [ref=e207]: İptal ve İade Şartları geregi para iadesi garantisi ile
+          - generic [ref=e209]:
+            - heading "7/24 müşteri desteği" [level=3] [ref=e219]
+            - paragraph [ref=e220]: Dostane 7/24 müşteri desteği
+          - generic [ref=e222]:
+            - heading "Güvenli online ödeme" [level=3] [ref=e226]
+            - paragraph [ref=e227]: SSL / Güvenli sertifikaya sahibiz
+        - generic [ref=e228]:
+          - paragraph [ref=e229]: © 2026 Yuvadan.com.tr.
+          - paragraph [ref=e230]:
+            - text: Made by
+            - link "Erayweb" [ref=e231] [cursor=pointer]:
+              - /url: http://www.erayweb.com/

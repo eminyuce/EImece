@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using System.Collections.Generic;
@@ -24,6 +24,14 @@ namespace EImece.Domain.Services.IServices
         Task<Setting> GetSettingObjectByKeyAsync(string key);
 
         Task<Setting> GetSettingObjectByKeyAsync(string key, int language);
+
+        Models.DTOs.SettingDto GetSettingDtoByKey(string key);
+
+        Models.DTOs.SettingDto GetSettingDtoByKey(string key, int language);
+
+        Task<Models.DTOs.SettingDto> GetSettingDtoByKeyAsync(string key);
+
+        Task<Models.DTOs.SettingDto> GetSettingDtoByKeyAsync(string key, int language);
 
         SettingModel GetSettingModel(int language);
 

@@ -1,20 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers.Extensions;
+using System.Text;
+using System.Globalization;
+using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 
 namespace EImece.Domain.Helpers
 {
     /// <summary>
-    /// Resolves legacy category bookmarks such as /c/Ev-Yasam to canonical /c/pc/{seo-hash}/ URLs.
+    /// Helps resolve legacy / modified category slugs (e.g. from IIS 301 redirects,
+    /// sitemaps, or old bookmarked URLs) to the current canonical category.
     /// </summary>
     public static class CategorySlugHelper
     {
-        private static readonly Regex MultiDash = new Regex("-{2,}", RegexOptions.Compiled, TimeSpan.FromMilliseconds(250));
-
         public static string NormalizeSlug(string slug)
         {
             if (string.IsNullOrWhiteSpace(slug))
@@ -22,38 +22,48 @@ namespace EImece.Domain.Helpers
                 return string.Empty;
             }
 
-            var value = slug.Trim().Trim('/').ToLowerInvariant();
-            value = MultiDash.Replace(value, "-");
-            return value.Trim('-');
+            var normalized = slug.Trim().ToLower(CultureInfo.InvariantCulture);
+            normalized = normalized.Replace("ı", "i")
+                                   .Replace("ğ", "g")
+                                   .Replace("ü", "u")
+                                   .Replace("ş", "s")
+                                   .Replace("ö", "o")
+                                   .Replace("ç", "c");
+
+            var sb = new StringBuilder(normalized.Length);
+            foreach (var ch in normalized)
+            {
+                if (char.IsLetterOrDigit(ch) || ch == '-')
+                {
+                    sb.Append(ch);
+                }
+            }
+
+            return sb.ToString().Trim('-');
         }
 
-        public static bool SlugMatchesCategoryName(string legacySlug, string categoryName)
+        public static bool SlugMatchesCategoryName(string incomingSlug, string categoryName)
         {
-            if (string.IsNullOrWhiteSpace(legacySlug) || string.IsNullOrWhiteSpace(categoryName))
+            if (string.IsNullOrWhiteSpace(incomingSlug) || string.IsNullOrWhiteSpace(categoryName))
             {
                 return false;
             }
 
-            var incoming = NormalizeSlug(legacySlug);
+            var incoming = NormalizeSlug(incomingSlug);
             var fromName = NormalizeSlug(GeneralHelper.GetUrlSeoString(categoryName));
-            if (string.IsNullOrEmpty(incoming) || string.IsNullOrEmpty(fromName))
-            {
-                return false;
-            }
 
-            if (string.Equals(incoming, fromName, StringComparison.OrdinalIgnoreCase))
+            if (incoming.Equals(fromName, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
 
-            // Allow /c/Ev-Yasam to match "Ev & Yaşam" → ev--yasam after dash collapse.
             return string.Equals(
                 NormalizeSlug(incoming.Replace("-", string.Empty)),
                 NormalizeSlug(fromName.Replace("-", string.Empty)),
                 StringComparison.OrdinalIgnoreCase);
         }
 
-        public static ProductCategory FindMatchingCategory(IEnumerable<ProductCategoryTreeModel> tree, string legacySlug)
+        public static StorefrontCategoryDto FindMatchingCategory(IEnumerable<ProductCategoryTreeModel> tree, string legacySlug)
         {
             if (tree == null || string.IsNullOrWhiteSpace(legacySlug))
             {

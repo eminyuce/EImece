@@ -518,20 +518,36 @@ namespace EImece.Domain.Services
         public SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int currentLanguage)
         {
             var result = new SimiliarStoryTagsViewModel();
-            result.Tag = TagService.GetSingle(tagId);
-            result.ProductTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, currentLanguage);
-            result.StoryTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, currentLanguage);
-            result.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+            var tag = TagService.GetSingle(tagId);
+            result.Tag = StorefrontTagDto.FromEntity(tag);
+
+            var productTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, currentLanguage);
+            var productCards = productTags.Select(pt => StorefrontProductCardDto.FromEntity(pt.Product)).ToList();
+            result.ProductTags = new PaginatedList<StorefrontProductCardDto>(productCards, productTags.PageIndex, productTags.PageSize, productTags.TotalCount);
+
+            var storyTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, currentLanguage);
+            var storyCards = storyTags.Select(st => StorefrontStoryCardDto.FromEntity(st.Story)).ToList();
+            result.StoryTags = new PaginatedList<StorefrontStoryCardDto>(storyCards, storyTags.PageIndex, storyTags.PageSize, storyTags.TotalCount);
+
+            result.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
             return result;
         }
 
         public async Task<SimiliarStoryTagsViewModel> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new SimiliarStoryTagsViewModel();
-            result.Tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            result.ProductTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, currentLanguage, cancellationToken).ConfigureAwait(false);
-            result.StoryTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, currentLanguage, cancellationToken).ConfigureAwait(false);
-            result.CompanyName = await SettingService.GetSettingObjectByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            var tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
+            result.Tag = StorefrontTagDto.FromEntity(tag);
+
+            var productTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, currentLanguage, cancellationToken).ConfigureAwait(false);
+            var productCards = productTags.Select(pt => StorefrontProductCardDto.FromEntity(pt.Product)).ToList();
+            result.ProductTags = new PaginatedList<StorefrontProductCardDto>(productCards, productTags.PageIndex, productTags.PageSize, productTags.TotalCount);
+
+            var storyTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, currentLanguage, cancellationToken).ConfigureAwait(false);
+            var storyCards = storyTags.Select(st => StorefrontStoryCardDto.FromEntity(st.Story)).ToList();
+            result.StoryTags = new PaginatedList<StorefrontStoryCardDto>(storyCards, storyTags.PageIndex, storyTags.PageSize, storyTags.TotalCount);
+
+            result.CompanyName = await SettingService.GetSettingDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             return result;
         }
 

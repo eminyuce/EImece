@@ -49,6 +49,29 @@ namespace EImece.Domain.Models.DTOs.Storefront
             UpdatedDate = DateTime.UtcNow;
         }
 
+        public static StorefrontCategoryDto FromEntity(ProductCategory r)
+        {
+            if (r == null) return null;
+            return new StorefrontCategoryDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                ParentId = r.ParentId,
+                ShortDescription = r.ShortDescription,
+                Description = r.Description,
+                MainImageId = r.MainImageId,
+                DiscountPercentage = (int?)r.DiscountPercantage,
+                Position = r.Position,
+                Lang = r.Lang,
+                IsActive = r.IsActive,
+                MainPage = r.MainPage,
+                TemplateId = r.TemplateId,
+                CreatedDate = r.CreatedDate,
+                UpdatedDate = r.UpdatedDate,
+                MetaKeywords = r.MetaKeywords
+            };
+        }
+
         public string GetSeoTitle(int lang = 1)
         {
             return !string.IsNullOrWhiteSpace(MetaTitle) ? MetaTitle : Name;
@@ -104,6 +127,16 @@ namespace EImece.Domain.Models.DTOs.Storefront
         }
 
         public string DetailPageAbsoluteUrl
+        {
+            get { return DetailPageUrl; }
+        }
+
+        public string DetailPageLink
+        {
+            get { return DetailPageUrl; }
+        }
+
+        public string ProductCategoryLink
         {
             get { return DetailPageUrl; }
         }
