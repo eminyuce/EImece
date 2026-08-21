@@ -19,6 +19,7 @@ namespace EImece.Domain.DbContext
         {
             this.Database.CommandTimeout = AppConfig.GetConfigInt("DatabaseCommandTimeoutSeconds", 120);
             this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
             EfSqlLogger.Attach(this);
         }
 

@@ -50,7 +50,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
                 Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
                 Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = this.FindAllIncluding(predicate, keySelector, OrderByType.Ascending, null, null, includeProperties);
+                var items = this.FindAllIncludingReadOnly(predicate, keySelector, OrderByType.Ascending, null, null, includeProperties);
 
                 var result = items.ToList();
 
@@ -76,7 +76,7 @@ namespace EImece.Domain.Repositories
                 Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
                 Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
                 Expression<Func<T, int>> keySelector = t => t.Position;
-                var items = this.FindAllIncluding(predicate, keySelector, OrderByType.Ascending, null, null, includeProperties);
+                var items = this.FindAllIncludingReadOnly(predicate, keySelector, OrderByType.Ascending, null, null, includeProperties);
 
                 var result = await items.ToListAsync(cancellationToken).ConfigureAwait(false);
 
@@ -94,7 +94,7 @@ namespace EImece.Domain.Repositories
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
             Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
-            var menus = GetAllIncluding(includeProperties.ToArray());
+            var menus = GetAllIncludingReadOnly(includeProperties.ToArray());
 
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
@@ -111,7 +111,7 @@ namespace EImece.Domain.Repositories
             Expression<Func<T, bool>> match = r2 => r2.Lang == language;
             Expression<Func<T, object>> includeProperty1 = r => r.MainImage;
             Expression<Func<T, object>>[] includeProperties = { includeProperty1 };
-            var menus = GetAllIncluding(includeProperties.ToArray());
+            var menus = GetAllIncludingReadOnly(includeProperties.ToArray());
 
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))

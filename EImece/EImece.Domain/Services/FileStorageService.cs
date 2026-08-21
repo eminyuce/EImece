@@ -37,22 +37,31 @@ namespace EImece.Domain.Services
 
         public FileStorage GetFileStorage(int fileStorageId)
         {
-            var result = GetFileStorages().FirstOrDefault(r => r.Id == fileStorageId);
-            if (result == null)
+            if (fileStorageId <= 0) return null;
+            if (!IsCachingActivated)
             {
-                result = GetSingle(fileStorageId);
+                return FileStorageRepository.GetAll().AsNoTracking().FirstOrDefault(r => r.Id == fileStorageId) ?? GetSingle(fileStorageId);
             }
-            return result;
+            var cacheKey = $"FileStorage:{fileStorageId}";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => FileStorageRepository.GetAll().AsNoTracking().FirstOrDefault(r => r.Id == fileStorageId) ?? GetSingle(fileStorageId),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<FileStorage> GetFileStorageAsync(int fileStorageId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = (await GetFileStoragesAsync(cancellationToken).ConfigureAwait(false)).FirstOrDefault(r => r.Id == fileStorageId);
-            if (result == null)
+            if (fileStorageId <= 0) return null;
+            if (!IsCachingActivated)
             {
-                result = await GetSingleAsync(fileStorageId).ConfigureAwait(false);
+                var direct = await FileStorageRepository.GetAll().AsNoTracking().FirstOrDefaultAsync(r => r.Id == fileStorageId, cancellationToken).ConfigureAwait(false);
+                return direct ?? await GetSingleAsync(fileStorageId).ConfigureAwait(false);
             }
-            return result;
+            var cacheKey = $"FileStorage:{fileStorageId}" + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                async () => await FileStorageRepository.GetAll().AsNoTracking().FirstOrDefaultAsync(r => r.Id == fileStorageId, CancellationToken.None).ConfigureAwait(false) ?? await GetSingleAsync(fileStorageId).ConfigureAwait(false),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public List<FileStorage> GetFileStorages()
@@ -501,31 +510,32 @@ namespace EImece.Domain.Services
 
         public List<FileStorage> GetUploadImages(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType)
         {
+            var typeStr = enumImageType.ToStr();
             switch (enumMod.Value)
             {
                 case MediaModType.Stories:
                     Expression<Func<StoryFile, object>> includeProperty = r => r.FileStorage;
                     Expression<Func<StoryFile, object>>[] includeProperties = { includeProperty };
-                    Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId;
+                    Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item = StoryFileRepository.FindAllIncluding(match, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToList();
-                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Products:
                     Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
                     Expression<Func<ProductFile, object>>[] includeProperties1 = { includeProperty1 };
-                    Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId;
+                    Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item1 = ProductFileRepository.FindAllIncluding(match1, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToList();
-                    return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item1.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Menus:
                     Expression<Func<MenuFile, object>> includeProperty2 = r => r.FileStorage;
                     Expression<Func<MenuFile, object>>[] includeProperties2 = { includeProperty2 };
-                    Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId;
+                    Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item2 = MenuFileRepository.FindAllIncluding(match2, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToList();
-                    return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item2.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 default:
                     break;
@@ -536,31 +546,32 @@ namespace EImece.Domain.Services
 
         public async Task<List<FileStorage>> GetUploadImagesAsync(int contentId, MediaModType? enumMod, EImeceImageType? enumImageType, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var typeStr = enumImageType.ToStr();
             switch (enumMod.Value)
             {
                 case MediaModType.Stories:
                     Expression<Func<StoryFile, object>> includeProperty = r => r.FileStorage;
                     Expression<Func<StoryFile, object>>[] includeProperties = { includeProperty };
-                    Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId;
+                    Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item = await StoryFileRepository.FindAllIncluding(match, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToListAsync(cancellationToken).ConfigureAwait(false);
-                    return item.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Products:
                     Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
                     Expression<Func<ProductFile, object>>[] includeProperties1 = { includeProperty1 };
-                    Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId;
+                    Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item1 = await ProductFileRepository.FindAllIncluding(match1, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToListAsync(cancellationToken).ConfigureAwait(false);
-                    return item1.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item1.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 case MediaModType.Menus:
                     Expression<Func<MenuFile, object>> includeProperty2 = r => r.FileStorage;
                     Expression<Func<MenuFile, object>>[] includeProperties2 = { includeProperty2 };
-                    Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId;
+                    Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item2 = await MenuFileRepository.FindAllIncluding(match2, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToListAsync(cancellationToken).ConfigureAwait(false);
-                    return item2.Select(r => r.FileStorage).Where(t => t.Type.Equals(enumImageType.ToStr(), StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item2.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
 
                 default:
                     break;

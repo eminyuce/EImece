@@ -22,12 +22,12 @@ namespace EImece.Domain.Repositories
 
         public virtual List<Setting> GetAllSettings()
         {
-            return GetAll().ToList();
+            return GetAllReadOnly().ToList();
         }
 
         public virtual async Task<List<Setting>> GetAllSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
+            return await GetAllReadOnly().ToListAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }
