@@ -1,5 +1,5 @@
-using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -31,12 +31,12 @@ namespace EImece.Tests.Helpers
             {
                 new ProductCategoryTreeModel
                 {
-                    ProductCategory = new ProductCategory { Id = 4, Name = "Ev & Yaşam", IsActive = true },
+                    ProductCategory = new StorefrontCategoryDto { Id = 4, Name = "Ev & Yaşam", IsActive = true },
                     Childrens = new List<ProductCategoryTreeModel>()
                 },
                 new ProductCategoryTreeModel
                 {
-                    ProductCategory = new ProductCategory { Id = 1, Name = "Elektronik", IsActive = true },
+                    ProductCategory = new StorefrontCategoryDto { Id = 1, Name = "Elektronik", IsActive = true },
                     Childrens = new List<ProductCategoryTreeModel>()
                 }
             };
@@ -53,7 +53,7 @@ namespace EImece.Tests.Helpers
             {
                 new ProductCategoryTreeModel
                 {
-                    ProductCategory = new ProductCategory { Id = 1, Name = "Elektronik", IsActive = true },
+                    ProductCategory = new StorefrontCategoryDto { Id = 1, Name = "Elektronik", IsActive = true },
                     Childrens = new List<ProductCategoryTreeModel>()
                 }
             };

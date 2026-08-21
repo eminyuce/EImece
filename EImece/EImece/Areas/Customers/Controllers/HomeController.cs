@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
@@ -38,6 +39,9 @@ namespace EImece.Areas.Customers.Controllers
         }
         [Inject]
         public IAuthenticationManager AuthenticationManager { get; set; }
+
+        [Inject]
+        public AutoMapper.IMapper Mapper { get; set; }
 
         [Inject]
         public ICustomerService CustomerService { get; set; }
@@ -95,14 +99,14 @@ namespace EImece.Areas.Customers.Controllers
         // GET: Customers/Home
         public async Task<ActionResult> Index()
         {
-            Customer customer = await GetCustomerAsync();
+            CustomerDto customer = await GetCustomerAsync();
             ViewBag.Title = Resource.CustomerAccount;
             return View(customer);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index(Customer customer)
+        public async Task<ActionResult> Index(CustomerDto customer)
         {
             if (customer == null)
             {
@@ -119,11 +123,27 @@ namespace EImece.Areas.Customers.Controllers
                     await UserManager.UpdateAsync(user);
                 }
 
-                customer.UserId = user.Id;
-                customer.Ip = GeneralHelper.GetIpAddress();
-                customer = await CustomerService.SaveOrEditEntityAsync(customer);
+                var customerEntity = await CustomerService.GetUserIdAsync(user.Id) ?? new Customer();
+                customerEntity.UserId = user.Id;
+                customerEntity.Name = customer.Name;
+                customerEntity.Surname = customer.Surname;
+                customerEntity.GsmNumber = customer.GsmNumber;
+                customerEntity.Email = customer.Email;
+                customerEntity.City = customer.City;
+                customerEntity.Town = customer.Town;
+                customerEntity.District = customer.District;
+                customerEntity.Street = customer.Street;
+                customerEntity.ZipCode = customer.ZipCode;
+                customerEntity.Country = customer.Country;
+                customerEntity.Gender = customer.Gender;
+                customerEntity.IdentityNumber = customer.IdentityNumber;
+                customerEntity.Description = customer.Description;
+                customerEntity.Ip = GeneralHelper.GetIpAddress();
+                customerEntity.IsActive = true;
+                customerEntity = await CustomerService.SaveOrEditEntityAsync(customerEntity);
+                var updatedDto = Mapper.Map<CustomerDto>(customerEntity);
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                return View(customer);
+                return View(updatedDto);
             }
             else
             {
@@ -132,18 +152,17 @@ namespace EImece.Areas.Customers.Controllers
             }
         }
 
-        private async Task<Customer> GetCustomerAsync()
+        private async Task<CustomerDto> GetCustomerAsync()
         {
-            ApplicationUser user;
-            Customer customer;
-            user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-            customer = await CustomerService.GetUserIdAsync(user.Id);
-            customer.Orders = await OrderService.GetOrdersByUserIdAsync(customer.UserId);
-            if (customer.Gender == 0)
+            ApplicationUser user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
+            var customer = await CustomerService.GetUserIdAsync(user.Id);
+            var customerDto = Mapper.Map<CustomerDto>(customer) ?? new CustomerDto();
+            customerDto.Orders = (await OrderService.GetStorefrontOrdersByUserIdAsync(user.Id)).OrderByDescending(r => r.CreatedDate).ToList();
+            if (customerDto.Gender == 0)
             {
-                customer.Gender = (int)GenderType.Man;
+                customerDto.Gender = (int)GenderType.Man;
             }
-            return customer;
+            return customerDto;
         }
 
         // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
@@ -151,12 +170,12 @@ namespace EImece.Areas.Customers.Controllers
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Domain.Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingDtoByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingDtoByKey(Domain.Constants.WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", item);
         }
 
-        private void InformCustomerToFillOutForm(Customer customer)
+        private void InformCustomerToFillOutForm(CustomerDto customer)
         {
             if (String.IsNullOrEmpty(customer.Name))
             {
@@ -209,7 +228,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             ViewBag.Title = Resource.SendMessageToSeller;
             var customer = await GetCustomerAsync();
-            var faqs = await FaqService.GetActiveBaseEntitiesFromCacheAsync(true, null);
+            var faqs = await FaqService.GetStorefrontFaqsAsync(CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
@@ -241,7 +260,7 @@ namespace EImece.Areas.Customers.Controllers
         {
             ViewBag.Title = Resource.Faq;
             var customer = await GetCustomerAsync();
-            var faqs = await FaqService.GetActiveBaseEntitiesFromCacheAsync(true, CurrentLanguage);
+            var faqs = await FaqService.GetStorefrontFaqsAsync(CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 

@@ -1,0 +1,142 @@
+- generic [active] [ref=f1e1]:
+  - link "Skip to main content" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=f1e3]:
+    - banner [ref=f1e4]:
+      - generic [ref=f1e7]:
+        - list [ref=f1e10]:
+          - listitem [ref=f1e11]:
+            - generic [ref=f1e12]: 
+            - link "02423110350" [ref=f1e13] [cursor=pointer]:
+              - /url: tel:02423110350
+          - listitem [ref=f1e14]:
+            - generic [ref=f1e15]: 
+            - link "bizim.saglikli.urunlerimiz@gmail.com" [ref=f1e16] [cursor=pointer]:
+              - /url: mailto:bizim.saglikli.urunlerimiz@gmail.com
+        - generic [ref=f1e17]:
+          - list
+      - generic [ref=f1e18]:
+        - text:  
+        - navigation [ref=f1e23]:
+          - link [ref=f1e25] [cursor=pointer]:
+            - /url: /
+            - img "Yuvadan.com.tr" [ref=f1e26]
+          - button "Menü" [ref=f1e27] [cursor=pointer]
+          - list [ref=f1e29]:
+            - listitem [ref=f1e30]:
+              - link "Giriş" [ref=f1e31] [cursor=pointer]:
+                - /url: /account/login/
+                - generic [ref=f1e32]: 
+            - listitem [ref=f1e33]:
+              - link " 1" [ref=f1e34] [cursor=pointer]:
+                - /url: /payment/shoppingcart/
+                - generic [ref=f1e35]: 
+                - generic [ref=f1e36]: "1"
+            - listitem [ref=f1e37]:
+              - link "Ara" [ref=f1e38] [cursor=pointer]:
+                - /url: "#!"
+                - generic [ref=f1e39]: 
+    - main [ref=f1e40]:
+      - region "Page title" [ref=f1e41]:
+        - generic [ref=f1e42]:
+          - navigation "breadcrumb" [ref=f1e43]:
+            - list [ref=f1e44]:
+              - listitem [ref=f1e45]:
+                - link "Ana Sayfa" [ref=f1e46] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f1e51]:
+                - text: ›
+                - generic [ref=f1e52]: Hakkımızda
+          - heading "Hakkımızda" [level=1] [ref=f1e53]
+          - separator [ref=f1e54]
+      - generic [ref=f1e55]:
+        - generic [ref=f1e56]:
+          - link [ref=f1e59]:
+            - /url: /images/w400h400/hakkimizda-0j7e6g5i1b.jpg/
+            - img "Hakkımızda" [ref=f1e60]
+          - paragraph [ref=f1e62]: EImece, seçili markaları tek çatı altında sunan online mağazadır.
+        - generic [ref=f1e63]:
+          - link [ref=f1e65]:
+            - /url: /images/w300h300/urun-gorseli-486--on-gorunum-0j1b8c.jpg/
+            - img "product-00486.jpg" [ref=f1e66]
+          - generic [ref=f1e67]: ALBÜM
+    - region "Yuvadan.com.tr" [ref=f1e77]:
+      - generic [ref=f1e79]:
+        - generic [ref=f1e80]:
+          - heading "Yuvadan.com.tr" [level=2] [ref=f1e81]
+          - paragraph [ref=f1e82]: Haberdar olun
+        - link "Hakkımızda" [ref=f1e84] [cursor=pointer]:
+          - /url: /info/aboutus/?lang=tr-TR
+    - contentinfo [ref=f1e86]:
+      - generic [ref=f1e87]:
+        - generic [ref=f1e88]:
+          - generic [ref=f1e89]:
+            - link "Yuvadan.com.tr" [ref=f1e90] [cursor=pointer]:
+              - /url: /
+              - img "Yuvadan.com.tr" [ref=f1e91]
+            - paragraph [ref=f1e92]: Haberdar olun
+            - generic [ref=f1e94]:
+              - generic [ref=f1e95]:
+                - generic [ref=f1e96]: E-Posta
+                - textbox "E-Posta" [ref=f1e97]
+                - button "Abone ol" [ref=f1e98] [cursor=pointer]
+              - generic [ref=f1e100]:
+                - generic [ref=f1e101]: Leave blank
+                - textbox [ref=f1e102]
+              - paragraph [ref=f1e103]: "*Erken indirim teklifleri, güncellemeler ve yeni ürün bilgileri almak için bültenimize abone olun."
+              - generic:
+                - list
+              - paragraph [ref=f1e104]: Emeğe ve doğallığa değer verenlere özel… Taze kudret narı ve yöresel ürünler, doğrudan üreticisinden, katkısız ve güvenilir şekilde size ulaşıyor.
+              - paragraph [ref=f1e105]:
+                - strong [ref=f1e106]: Yuvadan.com.tr
+                - text: Sinan Mah.Cebesoy Cad. Zümrüt Apt. A Blok No:60/C Muratpaşa / ANTALYA
+            - img "MasterCard and Visa accepted" [ref=f1e107]
+          - generic [ref=f1e108]:
+            - heading "Ürün Kategorileri" [level=2] [ref=f1e109]
+            - list [ref=f1e110]:
+              - listitem [ref=f1e111]:
+                - link "Moda & Giyim" [ref=f1e112] [cursor=pointer]:
+                  - /url: /c/pc/moda--giyim-3f7e4h1b/
+              - listitem [ref=f1e113]:
+                - link "Ev & Yaşam" [ref=f1e114] [cursor=pointer]:
+                  - /url: /c/pc/ev--yasam-6g7e4h1b/
+              - listitem [ref=f1e115]:
+                - link "Mutfak" [ref=f1e116] [cursor=pointer]:
+                  - /url: /c/pc/mutfak-1b3f4h1b/
+          - generic [ref=f1e117]:
+            - heading "Hakkımızda" [level=2] [ref=f1e118]
+            - list [ref=f1e119]:
+              - listitem [ref=f1e120]:
+                - link "Hakkımızda" [ref=f1e121] [cursor=pointer]:
+                  - /url: /info/aboutus/
+              - listitem [ref=f1e122]:
+                - link "Kampanyalar" [ref=f1e123] [cursor=pointer]:
+                  - /url: /i/kampanyalar-7e9a2d6g/
+          - generic [ref=f1e124]:
+            - heading "Müşteri ilişkileri" [level=2] [ref=f1e125]
+            - list [ref=f1e126]:
+              - listitem [ref=f1e127]:
+                - link "Kargo Takibi" [ref=f1e128] [cursor=pointer]:
+                  - /url: /payment/cargotracking/
+              - listitem [ref=f1e129]:
+                - link "Teslimat Bilgileri" [ref=f1e130] [cursor=pointer]:
+                  - /url: /info/deliveryinfo/
+        - generic [ref=f1e133]:
+          - generic [ref=f1e135]:
+            - heading "Ücretsiz yerel teslimat" [level=3] [ref=f1e142]
+            - paragraph [ref=f1e143]: 3 iş günü içerisinde kargoya teslim
+          - generic [ref=f1e145]:
+            - heading "Para iade garantisi" [level=3] [ref=f1e151]
+            - paragraph [ref=f1e152]: İptal ve İade Şartları geregi para iadesi garantisi ile
+          - generic [ref=f1e154]:
+            - heading "7/24 müşteri desteği" [level=3] [ref=f1e164]
+            - paragraph [ref=f1e165]: Dostane 7/24 müşteri desteği
+          - generic [ref=f1e167]:
+            - heading "Güvenli online ödeme" [level=3] [ref=f1e171]
+            - paragraph [ref=f1e172]: SSL / Güvenli sertifikaya sahibiz
+        - generic [ref=f1e173]:
+          - paragraph [ref=f1e174]: © 2026 Yuvadan.com.tr.
+          - paragraph [ref=f1e175]:
+            - text: Made by
+            - link "Erayweb" [ref=f1e176] [cursor=pointer]:
+              - /url: http://www.erayweb.com/

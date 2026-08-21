@@ -1,4 +1,3 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
@@ -12,8 +11,8 @@ namespace EImece.Domain.Models.FrontModels
         public string Search { get; set; }
         public PaginatedList<StorefrontProductCardDto> Products { get; set; }
 
-        public Menu ProductMenu { get; set; }
-        public Menu MainPageMenu { get; set; }
+        public StorefrontMenuDto ProductMenu { get; set; }
+        public StorefrontMenuDto MainPageMenu { get; set; }
 
         public string ProductsListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {

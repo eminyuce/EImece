@@ -1,4 +1,3 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
@@ -10,9 +9,9 @@ namespace EImece.Domain.Models.FrontModels
     public class SimiliarProductTagsViewModel : ItemListing
     {
         public string TagId { get; set; }
-        public Tag Tag { get; set; }
+        public StorefrontTagDto Tag { get; set; }
         public PaginatedList<StorefrontProductCardDto> Products { get; set; }
-        public PaginatedList<StoryTag> StoryTags { get; set; }
+        public PaginatedList<StorefrontStoryCardDto> StoryTags { get; set; }
 
         public string ProductsListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {

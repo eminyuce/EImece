@@ -6,7 +6,10 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
+using ProductSpecItem = EImece.Domain.Models.FrontModels.ProductSpecItem;
 using EImece.Domain.Models.Payment;
 using PaymentResultDto = EImece.Domain.Models.Payment.PaymentResult;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
@@ -245,9 +248,9 @@ namespace EImece.Controllers
                 result = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
             }
 
-            result.CargoCompany = SettingService.GetSettingObjectByKey(Domain.Constants.CargoCompany);
-            result.BasketMinTotalPriceForCargo = SettingService.GetSettingObjectByKey(Domain.Constants.BasketMinTotalPriceForCargo);
-            result.CargoPrice = SettingService.GetSettingObjectByKey(Domain.Constants.CargoPrice);
+            result.CargoCompany = SettingService.GetSettingDtoByKey(Domain.Constants.CargoCompany);
+            result.BasketMinTotalPriceForCargo = SettingService.GetSettingDtoByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+            result.CargoPrice = SettingService.GetSettingDtoByKey(Domain.Constants.CargoPrice);
             return result;
         }
 
@@ -319,9 +322,9 @@ namespace EImece.Controllers
                 PaymentLogger.Info($"Updated shopping cart UserId to: {item.UserId}");
             }
 
-            result.CargoCompany = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoCompany);
-            result.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            result.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
+            result.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
+            result.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            result.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
             PaymentLogger.Info("Set cargo details for shopping cart.");
             return result;
         }
@@ -353,12 +356,18 @@ namespace EImece.Controllers
             if (c == null)
             {
                 PaymentLogger.Info("No customer found. Creating new customer.");
-                c = new Customer();
-                c.UserId = user.Id;
-                c.CustomerType = (int)EImeceCustomerType.Normal;
+                var newCustomer = new CustomerDto();
+                newCustomer.UserId = user.Id;
+                newCustomer.CustomerType = (int)EImeceCustomerType.Normal;
+                newCustomer.IsSameAsShippingAddress = true;
+                result.Customer = newCustomer;
             }
-            result.Customer = c;
-            c.IsSameAsShippingAddress = true;
+            else
+            {
+                var cDto = Mapper.Map<CustomerDto>(c);
+                cDto.IsSameAsShippingAddress = true;
+                result.Customer = cDto;
+            }
         }
 
         private async Task<ShoppingCartSession> GetShoppingCartAsync()
@@ -380,7 +389,7 @@ namespace EImece.Controllers
                     if (shoppingCart.Customer == null)
                     {
                         PaymentLogger.Info("No customer in shopping cart. Creating new customer.");
-                        shoppingCart.Customer = new Customer();
+                        shoppingCart.Customer = new CustomerDto();
                         shoppingCart.Customer.CustomerType = (int)EImeceCustomerType.Normal;
                         shoppingCart.Customer.Country = Domain.Constants.IYZICO_ADDRESS_COUNTRY;
                         shoppingCart.Customer.Ip = GeneralHelper.GetIpAddress();
@@ -412,7 +421,7 @@ namespace EImece.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CheckoutBillingDetails(Customer customer)
+        public async Task<ActionResult> CheckoutBillingDetails(CustomerDto customer)
         {
             PaymentLogger.Info("Entering CheckoutBillingDetails POST action.");
             if (customer == null)
@@ -481,10 +490,11 @@ namespace EImece.Controllers
             {
                 return Json("", JsonRequestBehavior.AllowGet);
             }
+            var orderDto = Mapper.Map<OrderDto>(order);
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         "CargoTrackingResult",
-                        new ViewDataDictionary(order), tempData);
+                        new ViewDataDictionary(orderDto), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
         }
 
@@ -721,7 +731,8 @@ namespace EImece.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            return View(order);
+            var orderDto = Mapper.Map<OrderDto>(order);
+            return View(orderDto);
         }
 
         private bool CanViewOrder(Order order)
@@ -790,7 +801,7 @@ namespace EImece.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
-        public async Task<ActionResult> BuyNow(String productId, Customer customer)
+        public async Task<ActionResult> BuyNow(String productId, CustomerDto customer)
         {
             PaymentLogger.Info($"Entering BuyNow POST with productId: {productId}");
             if (customer == null)
@@ -853,9 +864,9 @@ namespace EImece.Controllers
             buyNowModel.ShoppingCartItem.Quantity = 1;
             buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
             PaymentLogger.Info($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");
-            buyNowModel.CargoCompany = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoCompany);
-            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            buyNowModel.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
+            buyNowModel.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
+            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyNowModel.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
             PaymentLogger.Debug("Set cargo details in BuyNow model.");
             return buyNowModel;
         }
@@ -927,9 +938,9 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            buyNowModel.CargoCompany = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoCompany);
-            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            buyNowModel.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
+            buyNowModel.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
+            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyNowModel.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
             buyNowModel.Customer.Lang = CurrentLanguage;
             PaymentLogger.Debug("Updated BuyNow model with cargo and language details.");
 
@@ -949,7 +960,7 @@ namespace EImece.Controllers
             var shoppingCart = await GetShoppingCartFromDataSourceAsync();
             if (couponObj != null)
             {
-                shoppingCart.Coupon = couponObj;
+                shoppingCart.Coupon = Mapper.Map<CouponDto>(couponObj);
             }
             else
             {
@@ -966,7 +977,7 @@ namespace EImece.Controllers
             PaymentLogger.Info("BuyNow cart deleted from data source.");
         }
 
-        protected void InformCustomerToFillOutForm(Customer customer)
+        protected void InformCustomerToFillOutForm(CustomerDto customer)
         {
             PaymentLogger.Info("Entering InformCustomerToFillOutForm method.");
             if (customer == null)
@@ -1030,17 +1041,23 @@ namespace EImece.Controllers
             {
                 ModelState.AddModelError("customer.Street", Resource.PleaseEnterYourStreet);
             }
+
+            if (customer.IdentityNumber.ToStr().Length != 11)
+            {
+                ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
+            }
              
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
+            PaymentLogger.Info("Completed InformCustomerToFillOutForm validation.");
         }
 
-        protected Domain.Entities.Address SetAddress(Customer customer, Domain.Entities.Address address)
+        protected AddressDto SetAddress(CustomerDto customer, AddressDto address)
         {
             PaymentLogger.Info("Entering SetAddress method.");
             if (address == null)
             {
                 PaymentLogger.Info("Address is null. Creating new address.");
-                address = new Domain.Entities.Address();
+                address = new AddressDto();
             }
             if (customer == null)
             {
@@ -1159,7 +1176,7 @@ namespace EImece.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
-        public async Task<ActionResult> ShoppingWithoutAccount(Customer customer)
+        public async Task<ActionResult> ShoppingWithoutAccount(CustomerDto customer)
         {
             PaymentLogger.Info("Entering ContinueShoppingWithoutAccount POST action.");
             if (customer == null)
@@ -1187,10 +1204,10 @@ namespace EImece.Controllers
                 customer.UpdatedDate = DateTime.Now;
                 customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
                 customer.UserId = Guid.NewGuid().ToString();
-                customer = await CustomerService.SaveOrEditEntityAsync(customer);
-                PaymentLogger.Info("Saving customer information,customer.Id:"+ customer.Id);
+                var customerEntity = await CustomerService.SaveOrEditEntityAsync(customer.ToEntity());
+                PaymentLogger.Info("Saving customer information,customer.Id:"+ customerEntity.Id);
 
-                shoppingCart.Customer = customer;
+                shoppingCart.Customer = Mapper.Map<CustomerDto>(customerEntity);
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
                 shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 shoppingCart.BillingAddress = SetAddress(customer, shoppingCart.BillingAddress);
@@ -1276,9 +1293,9 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            buyWithNoAccountCreation.CargoCompany = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoCompany);
-            buyWithNoAccountCreation.BasketMinTotalPriceForCargo = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            buyWithNoAccountCreation.CargoPrice = await SettingService.GetSettingObjectByKeyAsync(Domain.Constants.CargoPrice);
+            buyWithNoAccountCreation.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
+            buyWithNoAccountCreation.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyWithNoAccountCreation.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
             buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
             PaymentLogger.Debug("Updated buyWithNoAccountCreation model with cargo and language details.");
 
@@ -1315,7 +1332,8 @@ namespace EImece.Controllers
 
             try
             {
-                shoppingCart.Coupon = await CouponService.GetCouponByCodeAsync(shoppingCart.Coupon.Code, CurrentLanguage);
+                var couponEntity = await CouponService.GetCouponByCodeAsync(shoppingCart.Coupon.Code, CurrentLanguage);
+                shoppingCart.Coupon = Mapper.Map<CouponDto>(couponEntity);
             }
             catch (Exception ex)
             {

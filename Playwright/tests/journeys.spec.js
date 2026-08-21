@@ -6,12 +6,11 @@ test.describe('Crizal Critical Journeys', () => {
     await page.goto('/');
     await assertCrizalChrome(page);
 
-    await page.goto('/c/pc/kulaklik--ses-4h0j6g1b/');
-    expect((await page.waitForResponse((r) => r.url().includes('kulaklik') || r.status() === 200).catch(() => null)) || true).toBeTruthy();
+    await page.goto('/c/pc/elektronik-7e7e4h1b/', { waitUntil: 'domcontentloaded' });
     await assertCrizalChrome(page);
     await expect(page.locator('main#main-content')).toBeVisible();
 
-    await page.goto('/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/');
+    await page.goto('/p/kosu--fitness/fitlife-yoga-mati-6mm-133-8c0j2d5i4h1b/', { waitUntil: 'domcontentloaded' });
     await assertCrizalChrome(page);
     await expect(page.locator('main#main-content')).toBeVisible();
   });

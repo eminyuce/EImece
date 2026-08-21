@@ -18,7 +18,7 @@ namespace EImece.Tests.Helpers
             // p102 corresponds to index 2 (99 - 499)
             CategoryFilterHelper.ParseCategoryFilter(
                 "p102",
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds,
                 out var ratings,
                 out var priceRanges);
@@ -36,7 +36,7 @@ namespace EImece.Tests.Helpers
             // p103 corresponds to index 3 (499 - 999)
             CategoryFilterHelper.ParseCategoryFilter(
                 "p103",
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds,
                 out var ratings,
                 out var priceRanges);
@@ -53,7 +53,7 @@ namespace EImece.Tests.Helpers
         {
             CategoryFilterHelper.ParseCategoryFilter(
                 "b102",
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds,
                 out var ratings,
                 out var priceRanges);
@@ -69,7 +69,7 @@ namespace EImece.Tests.Helpers
         {
             CategoryFilterHelper.ParseCategoryFilter(
                 "r5",
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds,
                 out var ratings,
                 out var priceRanges);
@@ -85,7 +85,7 @@ namespace EImece.Tests.Helpers
         {
             CategoryFilterHelper.ParseCategoryFilter(
                 "p102-b15-r4-b20",
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds,
                 out var ratings,
                 out var priceRanges);
@@ -124,7 +124,7 @@ namespace EImece.Tests.Helpers
         {
             CategoryFilterHelper.ParseCategoryFilter(
                 "p100-p102",
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds,
                 out var ratings,
                 out var priceRanges);
@@ -162,7 +162,7 @@ namespace EImece.Tests.Helpers
         {
             CategoryFilterHelper.ParseCategoryFilter(
                 null,
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds1,
                 out var ratings1,
                 out var priceRanges1);
@@ -173,7 +173,7 @@ namespace EImece.Tests.Helpers
 
             CategoryFilterHelper.ParseCategoryFilter(
                 "invalid-p999-b-r",
-                null,
+                (EImece.Domain.Models.DTOs.SettingDto)null,
                 out var brandIds2,
                 out var ratings2,
                 out var priceRanges2);

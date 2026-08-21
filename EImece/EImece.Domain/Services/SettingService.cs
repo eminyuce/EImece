@@ -135,6 +135,47 @@ namespace EImece.Domain.Services
             return SelectSettingByKey(allSettings, key, language);
         }
 
+        public Models.DTOs.SettingDto GetSettingDtoByKey(string key)
+        {
+            var s = GetSettingObjectByKey(key);
+            return MapToSettingDto(s);
+        }
+
+        public Models.DTOs.SettingDto GetSettingDtoByKey(string key, int language)
+        {
+            var s = GetSettingObjectByKey(key, language);
+            return MapToSettingDto(s);
+        }
+
+        public async Task<Models.DTOs.SettingDto> GetSettingDtoByKeyAsync(string key)
+        {
+            var s = await GetSettingObjectByKeyAsync(key).ConfigureAwait(false);
+            return MapToSettingDto(s);
+        }
+
+        public async Task<Models.DTOs.SettingDto> GetSettingDtoByKeyAsync(string key, int language)
+        {
+            var s = await GetSettingObjectByKeyAsync(key, language).ConfigureAwait(false);
+            return MapToSettingDto(s);
+        }
+
+        private static Models.DTOs.SettingDto MapToSettingDto(Setting s)
+        {
+            if (s == null) return null;
+            return new Models.DTOs.SettingDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                SettingKey = s.SettingKey,
+                SettingValue = s.SettingValue,
+                Lang = s.Lang,
+                Position = s.Position,
+                IsActive = s.IsActive,
+                CreatedDate = s.CreatedDate,
+                UpdatedDate = s.UpdatedDate
+            };
+        }
+
         private Setting SelectSettingByKey(List<Setting> allSettings, string key)
         {
             if (allSettings != null)

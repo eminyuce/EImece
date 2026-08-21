@@ -36,5 +36,41 @@ namespace EImece.Domain.Models.DTOs
                     Country.ToStr());
             }
         }
+
+        public bool EqualsAddress(AddressDto other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return string.Equals(this.Street, other.Street, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.District, other.District, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.ZipCode, other.ZipCode, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.City, other.City, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.Country, other.Country, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(this.Description, other.Description, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public EImece.Domain.Entities.Address ToEntity()
+        {
+            return new EImece.Domain.Entities.Address
+            {
+                Id = Id,
+                Name = Name,
+                Description = Description,
+                AddressType = AddressType,
+                City = City,
+                Country = Country,
+                ZipCode = ZipCode,
+                Street = Street,
+                District = District,
+                Position = Position,
+                Lang = Lang,
+                IsActive = IsActive,
+                CreatedDate = CreatedDate,
+                UpdatedDate = UpdatedDate
+            };
+        }
     }
 }

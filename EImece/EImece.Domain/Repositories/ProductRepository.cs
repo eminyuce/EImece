@@ -612,13 +612,13 @@ namespace EImece.Domain.Repositories
                 cmd.Parameters.AddRange(parameterList.ToArray());
                 // Run the sproc
                 var reader = cmd.ExecuteReader();
-
                 // Read Blogs from the first result set
                 var products = ((IObjectContextAdapter)db)
                     .ObjectContext
                     .Translate<Product>(reader, "Products", MergeOption.AppendOnly);
 
-                searchResult.Products = products.OrderByStorefrontDefault().ToList();
+                var productList = products.OrderByStorefrontDefault().ToList();
+                searchResult.Products = productList.Select(p => StorefrontProductCardDto.FromEntity(p)).ToList();
 
                 // Move to second result set and read Posts
                 reader.NextResult();
@@ -626,7 +626,7 @@ namespace EImece.Domain.Repositories
                     .ObjectContext
                     .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);
 
-                searchResult.ProductCategories = productCategories.ToList();
+                searchResult.ProductCategories = productCategories.Select(c => StorefrontCategoryDto.FromEntity(c)).ToList();
             }
             catch (Exception ex)
             {
@@ -691,14 +691,15 @@ namespace EImece.Domain.Repositories
                     .ObjectContext
                     .Translate<Product>(reader, "Products", MergeOption.AppendOnly);
 
-                searchResult.Products = products.OrderByStorefrontDefault().ToList();
+                var productList = products.OrderByStorefrontDefault().ToList();
+                searchResult.Products = productList.Select(p => StorefrontProductCardDto.FromEntity(p)).ToList();
 
                 await reader.NextResultAsync(cancellationToken).ConfigureAwait(false);
                 var productCategories = ((IObjectContextAdapter)db)
                     .ObjectContext
                     .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);
 
-                searchResult.ProductCategories = productCategories.ToList();
+                searchResult.ProductCategories = productCategories.Select(c => StorefrontCategoryDto.FromEntity(c)).ToList();
             }
             catch (Exception ex)
             {

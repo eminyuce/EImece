@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,17 +7,17 @@ namespace EImece.Domain.Models.FrontModels
     public class ProductsSearchResult
     {
         public RecordsStats Stats { get; set; }
-        private List<Product> _products = new List<Product>();
+        private List<StorefrontProductCardDto> _products = new List<StorefrontProductCardDto>();
 
-        public List<Product> Products
+        public List<StorefrontProductCardDto> Products
         {
             get { return _products; }
             set { _products = value; }
         }
 
-        private List<ProductCategory> _productCategories = new List<ProductCategory>();
+        private List<StorefrontCategoryDto> _productCategories = new List<StorefrontCategoryDto>();
 
-        public List<ProductCategory> ProductCategories
+        public List<StorefrontCategoryDto> ProductCategories
         {
             get { return _productCategories; }
             set { _productCategories = value; }

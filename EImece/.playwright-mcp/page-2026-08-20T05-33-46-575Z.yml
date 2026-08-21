@@ -1,0 +1,514 @@
+- generic [ref=f2e1]:
+  - link "Skip to main content" [ref=f2e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=f2e4]:
+    - banner [ref=f2e5]:
+      - generic [ref=f2e8]:
+        - list [ref=f2e11]:
+          - listitem [ref=f2e12]:
+            - generic [ref=f2e13]: 
+            - link "02423110350" [ref=f2e14] [cursor=pointer]:
+              - /url: tel:02423110350
+          - listitem [ref=f2e15]:
+            - generic [ref=f2e16]: 
+            - link "bizim.saglikli.urunlerimiz@gmail.com" [ref=f2e17] [cursor=pointer]:
+              - /url: mailto:bizim.saglikli.urunlerimiz@gmail.com
+        - generic [ref=f2e18]:
+          - list
+      - generic [ref=f2e19]:
+        - text:  
+        - navigation [ref=f2e24]:
+          - link [ref=f2e26] [cursor=pointer]:
+            - /url: /
+            - img "Yuvadan.com.tr" [ref=f2e27]
+          - button "Menü" [ref=f2e28] [cursor=pointer]
+          - list [ref=f2e30]:
+            - listitem [ref=f2e31]:
+              - link "Giriş" [ref=f2e32] [cursor=pointer]:
+                - /url: /account/login/
+                - generic [ref=f2e33]: 
+            - listitem [ref=f2e34]:
+              - link " 1" [ref=f2e522] [cursor=pointer]:
+                - /url: /payment/shoppingcart/
+                - generic [ref=f2e523]: 
+                - generic [ref=f2e524]: "1"
+            - listitem [ref=f2e37]:
+              - link "Ara" [ref=f2e38] [cursor=pointer]:
+                - /url: "#!"
+                - generic [ref=f2e39]: 
+    - main [ref=f2e40]:
+      - generic "Page title" [ref=f2e41]:
+        - generic [ref=f2e42]:
+          - navigation "breadcrumb" [ref=f2e43]:
+            - list [ref=f2e44]:
+              - listitem [ref=f2e45]:
+                - link "Ana Sayfa" [ref=f2e46] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f2e51]:
+                - text: ›
+                - link "Moda & Giyim" [ref=f2e52] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/moda--giyim-3f7e4h1b/
+              - listitem [ref=f2e53]:
+                - text: ›
+                - link "Ayakkabı" [ref=f2e54] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/ayakkabi-6g3f4h1b/
+              - listitem [ref=f2e55]:
+                - text: ›
+                - generic "FitLife Unisex Koşu Ayakkabısı AirFlex" [ref=f2e56]
+          - heading "FitLife Unisex Koşu Ayakkabısı AirFlex" [level=1] [ref=f2e57]
+          - generic [ref=f2e58]: Hafif tabanlı koşu ayakkabısı.
+          - list [ref=f2e60]:
+            - listitem [ref=f2e61]:
+              - generic [ref=f2e62]: Ürün Markası
+              - link "FitLife" [ref=f2e63] [cursor=pointer]:
+                - /url: /c/pc/ayakkabi-6g3f4h1b?filtreler=b1281
+            - listitem [ref=f2e64]:
+              - generic [ref=f2e65]: Ürün Kodu
+              - strong [ref=f2e66]: EIMC-000006
+      - generic [ref=f2e68]:
+        - generic [ref=f2e70]:
+          - list [ref=f2e71]:
+            - listitem [ref=f2e72]:
+              - link [ref=f2e73] [cursor=pointer]:
+                - /url: "#one"
+                - img "FitLife Unisex Koşu Ayakkabısı AirFlex" [ref=f2e74]
+            - listitem [ref=f2e75]:
+              - link [ref=f2e76] [cursor=pointer]:
+                - /url: "#two"
+                - img "Marka logosu 219" [ref=f2e77]
+            - listitem [ref=f2e78]:
+              - link [ref=f2e79] [cursor=pointer]:
+                - /url: "#three"
+                - img "Marka logosu 369" [ref=f2e80]
+          - generic [ref=f2e83]:
+            - link [ref=f2e85]:
+              - /url: /images/w0h0/fitlife-unisex-kosu-ayakkabisi-airflex-6g8c8c5i1b.jpg/
+              - img "FitLife Unisex Koşu Ayakkabısı AirFlex" [ref=f2e86]
+            - link [ref=f2e88]:
+              - /url: /images/w0h0/product00219-7e0j2d5i1b.jpg/
+              - img "Marka logosu 219" [ref=f2e89]
+            - link [ref=f2e91]:
+              - /url: /images/w0h0/product00369-7e7e3f5i1b.jpg/
+              - img "Marka logosu 369" [ref=f2e92]
+        - generic [ref=f2e93]:
+          - generic [ref=f2e94]:
+            - link "3 stars, 1 Yorum" [ref=f2e95] [cursor=pointer]:
+              - /url: "#reviews"
+              - generic [ref=f2e96]:
+                - generic [ref=f2e97]: ★
+                - generic [ref=f2e98]: ★
+                - generic [ref=f2e99]: ★
+                - generic [ref=f2e100]: ★
+                - generic [ref=f2e101]: ★
+              - generic [ref=f2e102]: 1 Yorum
+            - heading "1.905,00 ₺" [level=2] [ref=f2e103]
+            - generic [ref=f2e104]: Sınırlı Stok Mevcut
+            - generic [ref=f2e106]:
+              - generic [ref=f2e107]: Boyutu
+              - combobox "Boyutu" [ref=f2e108]:
+                - option "36" [selected]
+                - option "37"
+                - option "38"
+                - option "39"
+                - option "40"
+                - option "41"
+                - option "42"
+                - option "43"
+                - option "44"
+            - generic [ref=f2e109]:
+              - generic [ref=f2e110]: Ürün Rengi
+              - combobox "Ürün Rengi" [ref=f2e111]:
+                - option "Siyah" [selected]
+                - option "Gri"
+                - option "Mavi"
+                - option "Turuncu"
+            - generic [ref=f2e112]:
+              - generic [ref=f2e113]:
+                - generic [ref=f2e114]: Miktar
+                - spinbutton "Miktar" [ref=f2e115]: "1"
+              - button "Sepete ekle" [active] [ref=f2e116] [cursor=pointer]
+            - link "WhatsApp ile sipariş ver" [ref=f2e119] [cursor=pointer]:
+              - /url: https://wa.me/905322739101?text=Merhaba%20http%3A%2F%2Flocalhost%3A81%2Fp%2Fayakkabi%2Ffitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b%2F%20ile%20ilgili%20bilgi%20almak%20istiyorum.
+              - img "WhatsApp simgesi" [ref=f2e120]
+              - generic [ref=f2e121]: WhatsApp İle Sipariş
+          - generic [ref=f2e122]:
+            - generic [ref=f2e123]:
+              - heading [level=3] [ref=f2e125]:
+                - button "Ürün Bilgisi" [expanded] [ref=f2e126] [cursor=pointer]:
+                  - generic [ref=f2e127]: 
+                  - generic [ref=f2e129]: 
+              - generic [ref=f2e132]:
+                - paragraph [ref=f2e133]:
+                  - text: "Ürün Markası:"
+                  - link "FitLife" [ref=f2e134] [cursor=pointer]:
+                    - /url: /c/pc/ayakkabi-6g3f4h1b?filtreler=b1281
+                - paragraph [ref=f2e135]:
+                  - text: "Ürün No :"
+                  - strong [ref=f2e136]: EIMC-000006
+            - heading [level=3] [ref=f2e139]:
+              - button "Kargo Bilgisi" [ref=f2e140] [cursor=pointer]:
+                - generic [ref=f2e141]: 
+                - generic [ref=f2e143]: 
+            - heading [level=3] [ref=f2e147]:
+              - button "Etiketler" [ref=f2e148] [cursor=pointer]:
+                - generic [ref=f2e149]: 
+                - generic [ref=f2e151]: 
+          - generic [ref=f2e153]:
+            - generic [ref=f2e154]: Ürünü paylaş
+            - generic [ref=f2e155]:
+              - button "Bağlantıyı kopyala" [ref=f2e156] [cursor=pointer]:
+                - generic [ref=f2e157]: 
+              - link "Facebook" [ref=f2e158] [cursor=pointer]:
+                - /url: https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A81%2Fp%2Fayakkabi%2Ffitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b
+                - generic [ref=f2e159]: 
+              - link "Twitter" [ref=f2e160] [cursor=pointer]:
+                - /url: https://twitter.com/intent/tweet?url=http%3A%2F%2Flocalhost%3A81%2Fp%2Fayakkabi%2Ffitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b&text=FitLife+Unisex+Ko%C5%9Fu+Ayakkab%C4%B1s%C4%B1+AirFlex
+                - generic [ref=f2e161]: 
+              - link "LinkedIn" [ref=f2e162] [cursor=pointer]:
+                - /url: https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A81%2Fp%2Fayakkabi%2Ffitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b&title=FitLife+Unisex+Ko%C5%9Fu+Ayakkab%C4%B1s%C4%B1+AirFlex
+                - generic [ref=f2e163]: 
+              - link "Pinterest" [ref=f2e164] [cursor=pointer]:
+                - /url: https://pinterest.com/pin/create/button/?url=http%3A%2F%2Flocalhost%3A81%2Fp%2Fayakkabi%2Ffitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b&media=http%3A%2F%2Flocalhost%3A81%2Fimages%2Fw1000h1000%2Ffitlife-unisex-kosu-ayakkabisi-airflex-6g8c8c5i1b.jpg&description=FitLife+Unisex+Ko%C5%9Fu+Ayakkab%C4%B1s%C4%B1+AirFlex
+                - generic [ref=f2e165]: 
+      - region "Açıklama" [ref=f2e166]:
+        - generic [ref=f2e167]:
+          - tablist [ref=f2e168]:
+            - tab "Açıklama" [selected] [ref=f2e169] [cursor=pointer]:
+              - generic [ref=f2e170]: 
+            - tab "Yorumlar" [ref=f2e172] [cursor=pointer]:
+              - generic [ref=f2e173]: 
+            - tab "Ödeme Bilgisi" [ref=f2e175] [cursor=pointer]:
+              - generic [ref=f2e176]: 
+          - generic [ref=f2e178]:
+            - tabpanel "Açıklama" [ref=f2e179]:
+              - paragraph [ref=f2e182]: Nefes alan mesh üst, darbe emici taban. Yol koşusu için optimize edildi.
+            - text:      
+      - generic [ref=f2e183]:
+        - heading "Benzer Ürünler" [level=2] [ref=f2e184]
+        - generic [ref=f2e185]:
+          - generic [ref=f2e187]:
+            - generic [ref=f2e189]:
+              - link "MiniNest USB-C Hızlı Şarj Adaptörü 65W" [ref=f2e191] [cursor=pointer]:
+                - /url: http://localhost:81/p/ayakkabi/mininest-usbc-hizli-sarj-adaptoru-65w-5i7e2d5i4h1b/
+                - img "MiniNest USB-C Hızlı Şarj Adaptörü 65W" [ref=f2e192]
+              - generic [ref=f2e193]:
+                - link "Ayakkabı" [ref=f2e194] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/ayakkabi-6g3f4h1b/
+                - heading [level=3] [ref=f2e195]:
+                  - link "MiniNest USB-C Hızlı Şarj Adaptörü 65W" [ref=f2e196] [cursor=pointer]:
+                    - /url: http://localhost:81/p/ayakkabi/mininest-usbc-hizli-sarj-adaptoru-65w-5i7e2d5i4h1b/
+                - paragraph [ref=f2e197]: 451,00 ₺
+            - generic [ref=f2e199]:
+              - 'link "Sportiva Erkek Polar Mont #114" [ref=f2e201] [cursor=pointer]':
+                - /url: http://localhost:81/p/erkek-giyim/sportiva-erkek-polar-mont-114-9a4h7e5i4h1b/
+                - 'img "Sportiva Erkek Polar Mont #114" [ref=f2e202]'
+              - generic [ref=f2e203]:
+                - link "Erkek Giyim" [ref=f2e204] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/erkek-giyim-3f3f4h1b/
+                - heading [level=3] [ref=f2e205]:
+                  - 'link "Sportiva Erkek Polar Mont #114" [ref=f2e206] [cursor=pointer]':
+                    - /url: http://localhost:81/p/erkek-giyim/sportiva-erkek-polar-mont-114-9a4h7e5i4h1b/
+                - paragraph [ref=f2e207]: 1.013,00 ₺
+            - generic [ref=f2e209]:
+              - 'link "Beauté Lab Güneş Kremi SPF50 50ml #116" [ref=f2e211] [cursor=pointer]':
+                - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-gunes-kremi-spf50-50ml-116-6g4h7e5i4h1b/
+                - 'img "Beauté Lab Güneş Kremi SPF50 50ml #116" [ref=f2e212]'
+              - generic [ref=f2e213]:
+                - link "Cilt Bakımı" [ref=f2e214] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/cilt-bakimi-8c6g4h1b/
+                - heading [level=3] [ref=f2e215]:
+                  - 'link "Beauté Lab Güneş Kremi SPF50 50ml #116" [ref=f2e216] [cursor=pointer]':
+                    - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-gunes-kremi-spf50-50ml-116-6g4h7e5i4h1b/
+                - paragraph [ref=f2e217]: 295,00 ₺
+                - button "Sepete ekle" [ref=f2e218] [cursor=pointer]
+            - generic [ref=f2e221]:
+              - 'link "Casa Bella Pamuk Saten Nevresim Takımı #51" [ref=f2e223] [cursor=pointer]':
+                - /url: http://localhost:81/p/yatak-odasi/casa-bella-pamuk-saten-nevresim-takimi-51-8c5i2d5i4h1b/
+                - 'img "Casa Bella Pamuk Saten Nevresim Takımı #51" [ref=f2e224]'
+              - generic [ref=f2e225]:
+                - link "Yatak Odası" [ref=f2e226] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/yatak-odasi-5i3f4h1b/
+                - heading [level=3] [ref=f2e227]:
+                  - 'link "Casa Bella Pamuk Saten Nevresim Takımı #51" [ref=f2e228] [cursor=pointer]':
+                    - /url: http://localhost:81/p/yatak-odasi/casa-bella-pamuk-saten-nevresim-takimi-51-8c5i2d5i4h1b/
+                - paragraph [ref=f2e229]: 950,00 ₺
+            - generic [ref=f2e231]:
+              - link "PetFriend Evcil Hayvan Mama Kabı Seti" [ref=f2e233] [cursor=pointer]:
+                - /url: http://localhost:81/p/ev--yasam/petfriend-evcil-hayvan-mama-kabi-seti-9a6g7e5i4h1b/
+                - img "PetFriend Evcil Hayvan Mama Kabı Seti" [ref=f2e234]
+              - generic [ref=f2e235]:
+                - link "Ev & Yaşam" [ref=f2e236] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/ev--yasam-6g7e4h1b/
+                - heading [level=3] [ref=f2e237]:
+                  - link "PetFriend Evcil Hayvan Mama Kabı Seti" [ref=f2e238] [cursor=pointer]:
+                    - /url: http://localhost:81/p/ev--yasam/petfriend-evcil-hayvan-mama-kabi-seti-9a6g7e5i4h1b/
+                - paragraph [ref=f2e239]: 229,00 ₺
+                - button "Sepete ekle" [ref=f2e240] [cursor=pointer]
+            - generic [ref=f2e243]:
+              - generic [ref=f2e244]:
+                - generic [ref=f2e245]: Satışta
+                - 'link "Meridian Outdoor 2 Kişilik Kamp Çadırı #55" [ref=f2e246] [cursor=pointer]':
+                  - /url: http://localhost:81/p/kamp--doga/meridian-outdoor-2-kisilik-kamp-cadiri-55-5i0j2d5i4h1b/
+                  - 'img "Meridian Outdoor 2 Kişilik Kamp Çadırı #55" [ref=f2e247]'
+              - generic [ref=f2e248]:
+                - link "Kamp & Doğa" [ref=f2e249] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/kamp--doga-1b6g4h1b/
+                - heading [level=3] [ref=f2e250]:
+                  - 'link "Meridian Outdoor 2 Kişilik Kamp Çadırı #55" [ref=f2e251] [cursor=pointer]':
+                    - /url: http://localhost:81/p/kamp--doga/meridian-outdoor-2-kisilik-kamp-cadiri-55-5i0j2d5i4h1b/
+                - paragraph [ref=f2e252]: 2.254,00 ₺
+            - generic [ref=f2e254]:
+              - link "Beauté Lab Güneş Kremi SPF50 50ml" [ref=f2e256] [cursor=pointer]:
+                - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-gunes-kremi-spf50-50ml-5i4h7e5i4h1b/
+                - img "Beauté Lab Güneş Kremi SPF50 50ml" [ref=f2e257]
+              - generic [ref=f2e258]:
+                - link "Cilt Bakımı" [ref=f2e259] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/cilt-bakimi-8c6g4h1b/
+                - heading [level=3] [ref=f2e260]:
+                  - link "Beauté Lab Güneş Kremi SPF50 50ml" [ref=f2e261] [cursor=pointer]:
+                    - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-gunes-kremi-spf50-50ml-5i4h7e5i4h1b/
+                - paragraph [ref=f2e262]: 295,00 ₺
+                - button "Sepete ekle" [ref=f2e263] [cursor=pointer]
+            - generic [ref=f2e266]:
+              - 'link "FitLife Yoga Matı 6mm #53" [ref=f2e268] [cursor=pointer]':
+                - /url: http://localhost:81/p/kosu--fitness/fitlife-yoga-mati-6mm-53-9a0j2d5i4h1b/
+                - 'img "FitLife Yoga Matı 6mm #53" [ref=f2e269]'
+              - generic [ref=f2e270]:
+                - link "Koşu & Fitness" [ref=f2e271] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/kosu--fitness-9a6g4h1b/
+                - heading [level=3] [ref=f2e272]:
+                  - 'link "FitLife Yoga Matı 6mm #53" [ref=f2e273] [cursor=pointer]':
+                    - /url: http://localhost:81/p/kosu--fitness/fitlife-yoga-mati-6mm-53-9a0j2d5i4h1b/
+                - paragraph [ref=f2e274]: 402,00 ₺
+            - generic [ref=f2e276]:
+              - link "SoundWave Bluetooth Hoparlör Mini" [ref=f2e278] [cursor=pointer]:
+                - /url: http://localhost:81/p/telefon-aksesuarlari/soundwave-bluetooth-hoparlor-mini-7e5i7e5i4h1b/
+                - img "SoundWave Bluetooth Hoparlör Mini" [ref=f2e279]
+              - generic [ref=f2e280]:
+                - link "Telefon Aksesuarları" [ref=f2e281] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/telefon-aksesuarlari-2d3f4h1b/
+                - heading [level=3] [ref=f2e282]:
+                  - link "SoundWave Bluetooth Hoparlör Mini" [ref=f2e283] [cursor=pointer]:
+                    - /url: http://localhost:81/p/telefon-aksesuarlari/soundwave-bluetooth-hoparlor-mini-7e5i7e5i4h1b/
+                - paragraph [ref=f2e284]: 837,00 ₺
+            - generic [ref=f2e286]:
+              - 'link "Beauté Lab Onarıcı Şampuan 400ml #59" [ref=f2e288] [cursor=pointer]':
+                - /url: http://localhost:81/p/sac-bakimi/beaut-lab-onarici-sampuan-400ml-59-7e1b7e5i4h1b/
+                - 'img "Beauté Lab Onarıcı Şampuan 400ml #59" [ref=f2e289]'
+              - generic [ref=f2e290]:
+                - link "Saç Bakımı" [ref=f2e291] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/sac-bakimi-2d6g4h1b/
+                - heading [level=3] [ref=f2e292]:
+                  - 'link "Beauté Lab Onarıcı Şampuan 400ml #59" [ref=f2e293] [cursor=pointer]':
+                    - /url: http://localhost:81/p/sac-bakimi/beaut-lab-onarici-sampuan-400ml-59-7e1b7e5i4h1b/
+                - paragraph [ref=f2e294]: 248,00 ₺
+            - generic [ref=f2e296]:
+              - 'link "Beauté Lab Vitamin C Aydınlatıcı Serum 30ml #57" [ref=f2e298] [cursor=pointer]':
+                - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-vitamin-c-aydinlatici-serum-30ml-57-6g9a7e5i4h1b/
+                - 'img "Beauté Lab Vitamin C Aydınlatıcı Serum 30ml #57" [ref=f2e299]'
+              - generic [ref=f2e300]:
+                - link "Cilt Bakımı" [ref=f2e301] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/cilt-bakimi-8c6g4h1b/
+                - heading [level=3] [ref=f2e302]:
+                  - 'link "Beauté Lab Vitamin C Aydınlatıcı Serum 30ml #57" [ref=f2e303] [cursor=pointer]':
+                    - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-vitamin-c-aydinlatici-serum-30ml-57-6g9a7e5i4h1b/
+                - paragraph [ref=f2e304]: 446,00 ₺
+            - generic [ref=f2e306]:
+              - link "Atlas Tekstil Erkek Oxford Gömlek" [ref=f2e308] [cursor=pointer]:
+                - /url: http://localhost:81/p/erkek-giyim/atlas-tekstil-erkek-oxford-gomlek-8c4h2d5i4h1b/
+                - img "Atlas Tekstil Erkek Oxford Gömlek" [ref=f2e309]
+              - generic [ref=f2e310]:
+                - link "Erkek Giyim" [ref=f2e311] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/erkek-giyim-3f3f4h1b/
+                - heading [level=3] [ref=f2e312]:
+                  - link "Atlas Tekstil Erkek Oxford Gömlek" [ref=f2e313] [cursor=pointer]:
+                    - /url: http://localhost:81/p/erkek-giyim/atlas-tekstil-erkek-oxford-gomlek-8c4h2d5i4h1b/
+                - paragraph [ref=f2e314]: 457,00 ₺
+            - generic [ref=f2e316]:
+              - generic [ref=f2e317]:
+                - generic [ref=f2e318]: Satışta
+                - 'link "Kitap Köşesi Çağdaş Roman - Seçki #22" [ref=f2e319] [cursor=pointer]':
+                  - /url: http://localhost:81/p/roman--edebiyat/kitap-kosesi-cagdas-roman--secki-22-5i8c7e5i4h1b/
+                  - 'img "Kitap Köşesi Çağdaş Roman - Seçki #22" [ref=f2e320]'
+              - generic [ref=f2e321]:
+                - link "Roman & Edebiyat" [ref=f2e322] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/roman--edebiyat-6g6g4h1b/
+                - heading [level=3] [ref=f2e323]:
+                  - 'link "Kitap Köşesi Çağdaş Roman - Seçki #22" [ref=f2e324] [cursor=pointer]':
+                    - /url: http://localhost:81/p/roman--edebiyat/kitap-kosesi-cagdas-roman--secki-22-5i8c7e5i4h1b/
+                - paragraph [ref=f2e325]: 171,00 ₺
+            - generic [ref=f2e327]:
+              - link "MiniNest Bebek Bakım Seti 5'li" [ref=f2e329] [cursor=pointer]:
+                - /url: http://localhost:81/p/bebek-bakim/mininest-bebek-bakim-seti-5li-9a8c7e5i4h1b/
+                - img "MiniNest Bebek Bakım Seti 5'li" [ref=f2e330]
+              - generic [ref=f2e331]:
+                - link "Bebek Bakım" [ref=f2e332] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/bebek-bakim-7e6g4h1b/
+                - heading [level=3] [ref=f2e333]:
+                  - link "MiniNest Bebek Bakım Seti 5'li" [ref=f2e334] [cursor=pointer]:
+                    - /url: http://localhost:81/p/bebek-bakim/mininest-bebek-bakim-seti-5li-9a8c7e5i4h1b/
+                - paragraph [ref=f2e335]: 469,00 ₺
+                - button "Sepete ekle" [ref=f2e336] [cursor=pointer]
+            - generic [ref=f2e339]:
+              - link "AquaPure Cam Su Şişesi 750ml" [ref=f2e341] [cursor=pointer]:
+                - /url: http://localhost:81/p/mutfak/aquapure-cam-su-sisesi-750ml-7e7e7e5i4h1b/
+                - img "AquaPure Cam Su Şişesi 750ml" [ref=f2e342]
+              - generic [ref=f2e343]:
+                - link "Mutfak" [ref=f2e344] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/mutfak-1b3f4h1b/
+                - heading [level=3] [ref=f2e345]:
+                  - link "AquaPure Cam Su Şişesi 750ml" [ref=f2e346] [cursor=pointer]:
+                    - /url: http://localhost:81/p/mutfak/aquapure-cam-su-sisesi-750ml-7e7e7e5i4h1b/
+                - paragraph [ref=f2e347]: 275,00 ₺
+                - button "Sepete ekle" [ref=f2e348] [cursor=pointer]
+            - generic [ref=f2e351]:
+              - link "ChefPro Granit Tava 28cm" [ref=f2e353] [cursor=pointer]:
+                - /url: http://localhost:81/p/pisirme-gerecleri/chefpro-granit-tava-28cm-6g2d7e5i4h1b/
+                - img "ChefPro Granit Tava 28cm" [ref=f2e354]
+              - generic [ref=f2e355]:
+                - link "Pişirme Gereçleri" [ref=f2e356] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/pisirme-gerecleri-5i6g4h1b/
+                - heading [level=3] [ref=f2e357]:
+                  - link "ChefPro Granit Tava 28cm" [ref=f2e358] [cursor=pointer]:
+                    - /url: http://localhost:81/p/pisirme-gerecleri/chefpro-granit-tava-28cm-6g2d7e5i4h1b/
+                - paragraph [ref=f2e359]: 573,00 ₺
+            - generic [ref=f2e361]:
+              - link "Voyage Pack Kabin Boyu Valiz 55cm" [ref=f2e363] [cursor=pointer]:
+                - /url: http://localhost:81/p/moda--giyim/voyage-pack-kabin-boyu-valiz-55cm-8c3f7e5i4h1b/
+                - img "Voyage Pack Kabin Boyu Valiz 55cm" [ref=f2e364]
+              - generic [ref=f2e365]:
+                - link "Moda & Giyim" [ref=f2e366] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/moda--giyim-3f7e4h1b/
+                - heading [level=3] [ref=f2e367]:
+                  - link "Voyage Pack Kabin Boyu Valiz 55cm" [ref=f2e368] [cursor=pointer]:
+                    - /url: http://localhost:81/p/moda--giyim/voyage-pack-kabin-boyu-valiz-55cm-8c3f7e5i4h1b/
+                - paragraph [ref=f2e369]:
+                  - generic [ref=f2e370]: 1.927,00 ₺
+                  - text: 1.747,08 ₺
+            - generic [ref=f2e372]:
+              - 'link "GreenLeaf Organik Zeytinyağı 1L #67" [ref=f2e374] [cursor=pointer]':
+                - /url: http://localhost:81/p/mutfak/greenleaf-organik-zeytinyagi-1l-67-6g7e7e5i4h1b/
+                - 'img "GreenLeaf Organik Zeytinyağı 1L #67" [ref=f2e375]'
+              - generic [ref=f2e376]:
+                - link "Mutfak" [ref=f2e377] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/mutfak-1b3f4h1b/
+                - heading [level=3] [ref=f2e378]:
+                  - 'link "GreenLeaf Organik Zeytinyağı 1L #67" [ref=f2e379] [cursor=pointer]':
+                    - /url: http://localhost:81/p/mutfak/greenleaf-organik-zeytinyagi-1l-67-6g7e7e5i4h1b/
+                - paragraph [ref=f2e380]: 396,00 ₺
+            - generic [ref=f2e382]:
+              - link "Beauté Lab Nemlendirici Yüz Kremi 50ml" [ref=f2e384] [cursor=pointer]:
+                - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-nemlendirici-yuz-kremi-50ml-8c1b7e5i4h1b/
+                - img "Beauté Lab Nemlendirici Yüz Kremi 50ml" [ref=f2e385]
+              - generic [ref=f2e386]:
+                - link "Cilt Bakımı" [ref=f2e387] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/cilt-bakimi-8c6g4h1b/
+                - heading [level=3] [ref=f2e388]:
+                  - link "Beauté Lab Nemlendirici Yüz Kremi 50ml" [ref=f2e389] [cursor=pointer]:
+                    - /url: http://localhost:81/p/cilt-bakimi/beaut-lab-nemlendirici-yuz-kremi-50ml-8c1b7e5i4h1b/
+                - paragraph [ref=f2e390]: 317,00 ₺
+            - generic [ref=f2e392]:
+              - 'link "Deri Atölyesi Deri Omuz Çantası #69" [ref=f2e394] [cursor=pointer]':
+                - /url: http://localhost:81/p/moda--giyim/deri-atolyesi-deri-omuz-cantasi-69-7e3f7e5i4h1b/
+                - 'img "Deri Atölyesi Deri Omuz Çantası #69" [ref=f2e395]'
+              - generic [ref=f2e396]:
+                - link "Moda & Giyim" [ref=f2e397] [cursor=pointer]:
+                  - /url: http://localhost:81/c/pc/moda--giyim-3f7e4h1b/
+                - heading [level=3] [ref=f2e398]:
+                  - 'link "Deri Atölyesi Deri Omuz Çantası #69" [ref=f2e399] [cursor=pointer]':
+                    - /url: http://localhost:81/p/moda--giyim/deri-atolyesi-deri-omuz-cantasi-69-7e3f7e5i4h1b/
+                - paragraph [ref=f2e400]: 1.368,00 ₺
+          - generic:
+            - button "Previous": ‹
+            - button "Next" [ref=f2e401] [cursor=pointer]: ›
+          - generic [ref=f2e402]:
+            - button [ref=f2e403] [cursor=pointer]
+            - button [ref=f2e405] [cursor=pointer]
+            - button [ref=f2e407] [cursor=pointer]
+            - button [ref=f2e409] [cursor=pointer]
+            - button [ref=f2e411] [cursor=pointer]
+    - region "Yuvadan.com.tr" [ref=f2e413]:
+      - generic [ref=f2e415]:
+        - generic [ref=f2e416]:
+          - heading "Yuvadan.com.tr" [level=2] [ref=f2e417]
+          - paragraph [ref=f2e418]: Haberdar olun
+        - link "Hakkımızda" [ref=f2e420] [cursor=pointer]:
+          - /url: /info/aboutus/?lang=tr-TR
+    - contentinfo [ref=f2e422]:
+      - generic [ref=f2e423]:
+        - generic [ref=f2e424]:
+          - generic [ref=f2e425]:
+            - link "Yuvadan.com.tr" [ref=f2e426] [cursor=pointer]:
+              - /url: /
+              - img "Yuvadan.com.tr" [ref=f2e427]
+            - paragraph [ref=f2e428]: Haberdar olun
+            - generic [ref=f2e430]:
+              - generic [ref=f2e431]:
+                - generic [ref=f2e432]: E-Posta
+                - textbox "E-Posta" [ref=f2e433]
+                - button "Abone ol" [ref=f2e434] [cursor=pointer]
+              - generic [ref=f2e436]:
+                - generic [ref=f2e437]: Leave blank
+                - textbox [ref=f2e438]
+              - paragraph [ref=f2e439]: "*Erken indirim teklifleri, güncellemeler ve yeni ürün bilgileri almak için bültenimize abone olun."
+              - generic:
+                - list
+              - paragraph [ref=f2e440]: Emeğe ve doğallığa değer verenlere özel… Taze kudret narı ve yöresel ürünler, doğrudan üreticisinden, katkısız ve güvenilir şekilde size ulaşıyor.
+              - paragraph [ref=f2e441]:
+                - strong [ref=f2e442]: Yuvadan.com.tr
+                - text: Sinan Mah.Cebesoy Cad. Zümrüt Apt. A Blok No:60/C Muratpaşa / ANTALYA
+            - img "MasterCard and Visa accepted" [ref=f2e443]
+          - generic [ref=f2e444]:
+            - heading "Ürün Kategorileri" [level=2] [ref=f2e445]
+            - list [ref=f2e446]:
+              - listitem [ref=f2e447]:
+                - link "Moda & Giyim" [ref=f2e448] [cursor=pointer]:
+                  - /url: /c/pc/moda--giyim-3f7e4h1b/
+              - listitem [ref=f2e449]:
+                - link "Ev & Yaşam" [ref=f2e450] [cursor=pointer]:
+                  - /url: /c/pc/ev--yasam-6g7e4h1b/
+              - listitem [ref=f2e451]:
+                - link "Mutfak" [ref=f2e452] [cursor=pointer]:
+                  - /url: /c/pc/mutfak-1b3f4h1b/
+          - generic [ref=f2e453]:
+            - heading "Hakkımızda" [level=2] [ref=f2e454]
+            - list [ref=f2e455]:
+              - listitem [ref=f2e456]:
+                - link "Hakkımızda" [ref=f2e457] [cursor=pointer]:
+                  - /url: /info/aboutus/
+              - listitem [ref=f2e458]:
+                - link "Kampanyalar" [ref=f2e459] [cursor=pointer]:
+                  - /url: /i/kampanyalar-7e9a2d6g/
+          - generic [ref=f2e460]:
+            - heading "Müşteri ilişkileri" [level=2] [ref=f2e461]
+            - list [ref=f2e462]:
+              - listitem [ref=f2e463]:
+                - link "Kargo Takibi" [ref=f2e464] [cursor=pointer]:
+                  - /url: /payment/cargotracking/
+              - listitem [ref=f2e465]:
+                - link "Teslimat Bilgileri" [ref=f2e466] [cursor=pointer]:
+                  - /url: /info/deliveryinfo/
+        - generic [ref=f2e469]:
+          - generic [ref=f2e471]:
+            - heading "Ücretsiz yerel teslimat" [level=3] [ref=f2e478]
+            - paragraph [ref=f2e479]: 3 iş günü içerisinde kargoya teslim
+          - generic [ref=f2e481]:
+            - heading "Para iade garantisi" [level=3] [ref=f2e487]
+            - paragraph [ref=f2e488]: İptal ve İade Şartları geregi para iadesi garantisi ile
+          - generic [ref=f2e490]:
+            - heading "7/24 müşteri desteği" [level=3] [ref=f2e500]
+            - paragraph [ref=f2e501]: Dostane 7/24 müşteri desteği
+          - generic [ref=f2e503]:
+            - heading "Güvenli online ödeme" [level=3] [ref=f2e507]
+            - paragraph [ref=f2e508]: SSL / Güvenli sertifikaya sahibiz
+        - generic [ref=f2e509]:
+          - paragraph [ref=f2e510]: © 2026 Yuvadan.com.tr.
+          - paragraph [ref=f2e511]:
+            - text: Made by
+            - link "Erayweb" [ref=f2e512] [cursor=pointer]:
+              - /url: http://www.erayweb.com/
+  - generic [ref=f2e525] [cursor=pointer]: 36%
+  - text:  
+  - generic [ref=f2e514]:
+    - generic [ref=f2e515] [cursor=pointer]: Merhaba! Yuvadan.com.tr yetkilisi
+    - generic "Open messengers list" [ref=f2e518] [cursor=pointer]

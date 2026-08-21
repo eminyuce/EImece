@@ -2,6 +2,7 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.Payment;
@@ -195,7 +196,7 @@ namespace EImece.Domain.Services
                         shoppingCart.ShippingAddress.City = shoppingCart.Customer.City.ToStr();
                         shoppingCart.ShippingAddress.Country = shoppingCart.Customer.Country.ToStr();
                         shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                        var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress);
+                        var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress.ToEntity());
                         shippingAddressId = shippingAddress.Id;
                         Logger.Info($"New shipping address created with Id: {shippingAddressId}");
                     }
@@ -208,7 +209,7 @@ namespace EImece.Domain.Services
                         shoppingCart.BillingAddress.City = shoppingCart.Customer.City.ToStr();
                         shoppingCart.BillingAddress.Country = shoppingCart.Customer.Country.ToStr();
                         shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                        var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress);
+                        var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress.ToEntity());
                         billingAddressId = billingAddress.Id;
                         Logger.Info($"New billing address created with Id: {billingAddressId}");
                     }
@@ -275,7 +276,7 @@ namespace EImece.Domain.Services
                         shoppingCart.ShippingAddress.City = shoppingCart.Customer.City.ToStr();
                         shoppingCart.ShippingAddress.Country = shoppingCart.Customer.Country.ToStr();
                         shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                        var shippingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.ShippingAddress).ConfigureAwait(false);
+                        var shippingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.ShippingAddress.ToEntity()).ConfigureAwait(false);
                         shippingAddressId = shippingAddress.Id;
                     }
                     if (billingAddressId == 0)
@@ -286,7 +287,7 @@ namespace EImece.Domain.Services
                         shoppingCart.BillingAddress.City = shoppingCart.Customer.City.ToStr();
                         shoppingCart.BillingAddress.Country = shoppingCart.Customer.Country.ToStr();
                         shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
-                        var billingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.BillingAddress).ConfigureAwait(false);
+                        var billingAddress = await AddressService.SaveOrEditEntityAsync(shoppingCart.BillingAddress.ToEntity()).ConfigureAwait(false);
                         billingAddressId = billingAddress.Id;
                     }
 
@@ -731,8 +732,8 @@ namespace EImece.Domain.Services
             {
                 try
                 {
-                    Customer customer = buyWithNoAccountCreation.Customer;
-                    Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
+                    CustomerDto customer = buyWithNoAccountCreation.Customer;
+                    AddressDto shippingAddress = buyWithNoAccountCreation.ShippingAddress;
                     int shippingAddressId = shippingAddress.Id;
                     if (shippingAddressId == 0)
                     {
@@ -743,8 +744,8 @@ namespace EImece.Domain.Services
                         shippingAddress.City = customer.City;
                         shippingAddress.Country = customer.Country;
                         shippingAddress.ZipCode = customer.ZipCode;
-                        shippingAddress = AddressService.SaveOrEditEntity(buyWithNoAccountCreation.ShippingAddress);
-                        shippingAddressId = shippingAddress.Id;
+                        var savedShippingAddress = AddressService.SaveOrEditEntity(shippingAddress.ToEntity());
+                        shippingAddressId = savedShippingAddress.Id;
                         Logger.Info($"New shipping address created with Id: {shippingAddressId}");
                     }
 
@@ -791,17 +792,17 @@ namespace EImece.Domain.Services
                 try
                 {
                     Logger.Info("Saving customer information");
-                    Customer customer = buyNowSession.Customer;
+                    CustomerDto customer = buyNowSession.Customer;
                     customer.CustomerType = (int)EImeceCustomerType.BuyNow;
                     customer.CreatedDate = DateTime.Now;
                     customer.UpdatedDate = DateTime.Now;
-                    customer = CustomerService.SaveOrEditEntity(customer);
-                    Logger.Info($"Customer saved with Id: {customer.Id}");
+                    var customerEntity = CustomerService.SaveOrEditEntity(customer.ToEntity());
+                    Logger.Info($"Customer saved with Id: {customerEntity.Id}");
 
-                    buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
+                    buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + customerEntity.Id;
                     Logger.Info($"Generated UserId for BuyNow customer: {buyNowSession.Customer.UserId}");
 
-                    Entities.Address shippingAddress = buyNowSession.ShippingAddress;
+                    AddressDto shippingAddress = buyNowSession.ShippingAddress;
                     int shippingAddressId = shippingAddress.Id;
                     if (shippingAddressId == 0)
                     {
@@ -812,8 +813,8 @@ namespace EImece.Domain.Services
                         shippingAddress.City = customer.City;
                         shippingAddress.Country = customer.Country;
                         shippingAddress.ZipCode = customer.ZipCode;
-                        shippingAddress = AddressService.SaveOrEditEntity(buyNowSession.ShippingAddress);
-                        shippingAddressId = shippingAddress.Id;
+                        var savedShippingAddress = AddressService.SaveOrEditEntity(shippingAddress.ToEntity());
+                        shippingAddressId = savedShippingAddress.Id;
                         Logger.Info($"New shipping address created with Id: {shippingAddressId}");
                     }
 
@@ -859,8 +860,8 @@ namespace EImece.Domain.Services
             {
                 try
                 {
-                    Customer customer = buyWithNoAccountCreation.Customer;
-                    Entities.Address shippingAddress = buyWithNoAccountCreation.ShippingAddress;
+                    CustomerDto customer = buyWithNoAccountCreation.Customer;
+                    AddressDto shippingAddress = buyWithNoAccountCreation.ShippingAddress;
                     int shippingAddressId = shippingAddress.Id;
                     if (shippingAddressId == 0)
                     {
@@ -871,8 +872,8 @@ namespace EImece.Domain.Services
                         shippingAddress.City = customer.City;
                         shippingAddress.Country = customer.Country;
                         shippingAddress.ZipCode = customer.ZipCode;
-                        shippingAddress = await AddressService.SaveOrEditEntityAsync(buyWithNoAccountCreation.ShippingAddress).ConfigureAwait(false);
-                        shippingAddressId = shippingAddress.Id;
+                        var savedShippingAddress = await AddressService.SaveOrEditEntityAsync(shippingAddress.ToEntity()).ConfigureAwait(false);
+                        shippingAddressId = savedShippingAddress.Id;
                         Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
                     }
 
@@ -919,15 +920,15 @@ namespace EImece.Domain.Services
                 try
                 {
                     Logger.Debug("Saving customer information");
-                    Customer customer = buyNowSession.Customer;
+                    CustomerDto customer = buyNowSession.Customer;
                     customer.CustomerType = (int)EImeceCustomerType.BuyNow;
                     customer.CreatedDate = DateTime.Now;
                     customer.UpdatedDate = DateTime.Now;
-                    customer = await CustomerService.SaveOrEditEntityAsync(customer).ConfigureAwait(false);
+                    var customerEntity = await CustomerService.SaveOrEditEntityAsync(customer.ToEntity()).ConfigureAwait(false);
 
-                    buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + buyNowSession.Customer.Id;
+                    buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + customerEntity.Id;
 
-                    Entities.Address shippingAddress = buyNowSession.ShippingAddress;
+                    AddressDto shippingAddress = buyNowSession.ShippingAddress;
                     int shippingAddressId = shippingAddress.Id;
                     if (shippingAddressId == 0)
                     {
@@ -937,8 +938,8 @@ namespace EImece.Domain.Services
                         shippingAddress.City = customer.City;
                         shippingAddress.Country = customer.Country;
                         shippingAddress.ZipCode = customer.ZipCode;
-                        shippingAddress = await AddressService.SaveOrEditEntityAsync(buyNowSession.ShippingAddress).ConfigureAwait(false);
-                        shippingAddressId = shippingAddress.Id;
+                        var savedShippingAddress = await AddressService.SaveOrEditEntityAsync(shippingAddress.ToEntity()).ConfigureAwait(false);
+                        shippingAddressId = savedShippingAddress.Id;
                     }
 
                     Logger.Debug($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");

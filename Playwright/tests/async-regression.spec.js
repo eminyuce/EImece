@@ -27,17 +27,13 @@ const STATIC_ROUTES = [
   '/info/deliveryinfo/',
   '/info/privacypolicy/',
   '/info/termsandconditions/',
-  '/i/iletisim-3f4h8c6g/',
-  '/i/kampanyalar-5i4h8c6g/',
-  '/i/sikca-sorulan-sorular-4h4h8c6g/',
-  '/i/iade--degisim-8c5i8c6g/',
+  '/i/iletisim-1b9a2d6g/',
   '/p/arama?search=nordline',
   '/p/advancedsearchproducts?search=test',
-  '/c/pc/kulaklik--ses-4h0j6g1b/',
-  '/c/pc/elektronik-0j5i6g1b/',
-  '/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/',
-  '/p/aydinlatma/homeglow-akilli-led-ampul-9w-4h3f1b5i4h1b/',
-  '/s/sc/stil-rehberi-8c6g/',
+  '/c/pc/kulaklik--ses-8c3f4h1b/',
+  '/c/pc/elektronik-7e7e4h1b/',
+  '/p/oturma-grubu/nordline-mese-sehpa-90cm-130-4h4h2d5i4h1b/',
+  '/s/sc/stil-rehberi-4h4h/',
   '/s/stil-rehberi/2024-sonbahar-kombin-onerileri-1b3f1b/',
   '/health',
   '/sitemap.xml',
@@ -314,11 +310,11 @@ test.describe('Async controller full regression', () => {
   });
 
   test('product detail renders (async child-action smoke)', async ({ page }) => {
-    const res = await page.goto(
-      '/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/',
+    const detailRes = await page.goto(
+      '/p/oturma-grubu/nordline-mese-sehpa-90cm-130-4h4h2d5i4h1b/',
       { waitUntil: 'domcontentloaded' }
     );
-    expect(res?.status()).toBe(200);
+    expect(detailRes?.status()).toBe(200);
     await expect(page.locator('main#main-content')).toBeVisible();
     const text = await page.locator('body').innerText();
     expect(looksLikeAsyncChildActionError(text)).toBeFalsy();
@@ -329,7 +325,7 @@ test.describe('Async controller full regression', () => {
   test('add to cart AJAX + cart page', async ({ page }) => {
     const flow = { name: 'add-to-cart', ok: false };
     await page.goto(
-      '/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/',
+      '/p/oturma-grubu/nordline-mese-sehpa-90cm-130-4h4h2d5i4h1b/',
       { waitUntil: 'domcontentloaded' }
     );
 

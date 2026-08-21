@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ namespace EImece.Domain.Models.FrontModels
 {
     public class MenuTreeModel
     {
-        public Menu Menu { get; set; }
+        public StorefrontMenuDto Menu { get; set; }
 
         /// <summary>
         /// True when this node or any descendant matches the current request (for nav active CSS).
@@ -34,12 +34,12 @@ namespace EImece.Domain.Models.FrontModels
         {
         }
 
-        public MenuTreeModel(Menu r)
+        public MenuTreeModel(StorefrontMenuDto r)
         {
             this.Menu = r;
         }
 
-        public MenuTreeModel(Menu r, int level)
+        public MenuTreeModel(StorefrontMenuDto r, int level)
         {
             this.Menu = r;
             this.TreeLevel = level;
@@ -49,7 +49,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return Menu.Id;
+                return Menu != null ? Menu.Id : 0;
             }
         }
 
@@ -57,7 +57,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return Menu.Name;
+                return Menu != null ? Menu.Name : string.Empty;
             }
         }
 
@@ -69,7 +69,7 @@ namespace EImece.Domain.Models.FrontModels
         {
             get
             {
-                return string.Format("{1}{0}", Menu.Name, ProduceArrow());
+                return string.Format("{1}{0}", Menu != null ? Menu.Name : string.Empty, ProduceArrow());
             }
         }
 

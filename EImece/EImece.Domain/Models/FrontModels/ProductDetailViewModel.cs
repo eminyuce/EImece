@@ -1,4 +1,3 @@
-using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
@@ -17,7 +16,7 @@ namespace EImece.Domain.Models.FrontModels
     {
         public StorefrontProductDetailDto ProductDto { get; set; }
 
-        public ProductComment ProductComment { get; set; }
+        public ProductCommentDto ProductComment { get; set; }
 
         public StorefrontMenuDto ProductMenu { get; set; }
 
@@ -33,18 +32,18 @@ namespace EImece.Domain.Models.FrontModels
 
         public ContactUsFormViewModel Contact { get; set; }
 
-        public Setting CargoDescription { get; set; }
-        public Setting CargoPrice { get; set; }
-        public Setting PaymentDetailHtml { get; set; }
-        public Setting IsProductPriceEnable { get; set; }
-        public Setting IsProductReviewEnable { get; set; }
-        public Setting WhatsAppCommunicationLink { get; set; }
-        public Setting CompanyName { get; set; }
+        public SettingDto CargoDescription { get; set; }
+        public SettingDto CargoPrice { get; set; }
+        public SettingDto PaymentDetailHtml { get; set; }
+        public SettingDto IsProductPriceEnable { get; set; }
+        public SettingDto IsProductReviewEnable { get; set; }
+        public SettingDto WhatsAppCommunicationLink { get; set; }
+        public SettingDto CompanyName { get; set; }
         public string SeoId { get; set; }
 
         public ProductDetailViewModel()
         {
-            ProductComment = new ProductComment();
+            ProductComment = new ProductCommentDto();
             RelatedStories = new List<StorefrontStoryCardDto>();
             RelatedProducts = new List<StorefrontProductCardDto>();
         }

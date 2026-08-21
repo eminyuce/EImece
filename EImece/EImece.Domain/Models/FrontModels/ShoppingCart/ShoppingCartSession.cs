@@ -1,6 +1,6 @@
-﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using Newtonsoft.Json;
 using System;
@@ -13,24 +13,24 @@ namespace EImece.Domain.Models.FrontModels
     public class ShoppingCartSession
     {
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
-        private Customer _customer = new Customer();
-        private Address _shippingAddress = new Address();
-        private Address _billingAddress = new Address();
+        private CustomerDto _customer = new CustomerDto();
+        private AddressDto _shippingAddress = new AddressDto();
+        private AddressDto _billingAddress = new AddressDto();
         public int CurrentLanguage { get; set; }
 
         public string OrderGuid { get; set; }
-        public Coupon Coupon { get; set; }
+        public CouponDto Coupon { get; set; }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
 
         [JsonIgnore]
-        public Setting CargoCompany { get; set; }
+        public SettingDto CargoCompany { get; set; }
 
         [JsonIgnore]
-        public Setting BasketMinTotalPriceForCargo { get; set; }
+        public SettingDto BasketMinTotalPriceForCargo { get; set; }
 
         [JsonIgnore]
-        public Setting CargoPrice { get; set; }
+        public SettingDto CargoPrice { get; set; }
 
         public string CouponCode
         {
@@ -60,7 +60,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Customer Customer
+        public CustomerDto Customer
         {
             get
             {
@@ -72,7 +72,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Address ShippingAddress
+        public AddressDto ShippingAddress
         {
             get
             {
@@ -84,7 +84,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public Address BillingAddress
+        public AddressDto BillingAddress
         {
             get
             {
@@ -230,15 +230,15 @@ namespace EImece.Domain.Models.FrontModels
         public static ShoppingCartSession CreateDefaultShopingCard(int currentLanguage, string ip)
         {
             var shoppingCart = new ShoppingCartSession();
-            var shippingAddress = new Address();
+            var shippingAddress = new AddressDto();
             shippingAddress.Country = Constants.IYZICO_ADDRESS_COUNTRY;
             shippingAddress.AddressType = (int)AddressType.ShippingAddress;
-            var billingAddress = new Domain.Entities.Address();
+            var billingAddress = new AddressDto();
             billingAddress.Country = Constants.IYZICO_ADDRESS_COUNTRY;
             billingAddress.AddressType = (int)AddressType.BillingAddress;
             shoppingCart.ShippingAddress = shippingAddress;
             shoppingCart.BillingAddress = billingAddress;
-            Customer customer = shoppingCart.Customer;
+            CustomerDto customer = shoppingCart.Customer;
             customer.IsSameAsShippingAddress = true;
             customer.Country = Constants.IYZICO_ADDRESS_COUNTRY;
             customer.Ip = ip;

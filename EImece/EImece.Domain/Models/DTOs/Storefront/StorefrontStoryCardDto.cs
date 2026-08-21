@@ -41,6 +41,28 @@ namespace EImece.Domain.Models.DTOs.Storefront
             UpdatedDate = DateTime.UtcNow;
         }
 
+        public static StorefrontStoryCardDto FromEntity(Story s)
+        {
+            if (s == null) return null;
+            return new StorefrontStoryCardDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                ShortDescription = s.ShortDescription,
+                StoryCategoryId = s.StoryCategoryId,
+                StoryCategoryName = s.StoryCategory != null ? s.StoryCategory.Name : string.Empty,
+                MainImageId = s.MainImageId,
+                Position = s.Position,
+                Lang = s.Lang,
+                IsActive = s.IsActive,
+                MainPage = s.MainPage,
+                IsFeaturedStory = s.IsFeaturedStory,
+                CreatedDate = s.CreatedDate,
+                UpdatedDate = s.UpdatedDate,
+                AuthorName = s.AuthorName
+            };
+        }
+
         public string ModifiedId
         {
             get { return GeneralHelper.ModifyId(Id); }

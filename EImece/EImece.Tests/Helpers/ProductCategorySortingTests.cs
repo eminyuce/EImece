@@ -34,9 +34,9 @@ namespace EImece.Tests.Helpers
                 CategoryChildrenProducts = new List<StorefrontProductCardDto>(),
                 Sorting = sorting,
                 Filter = string.Empty,
-                IsProductPriceEnable = new Setting { SettingValue = "true" },
-                IsProductReviewEnable = new Setting { SettingValue = "true" },
-                PriceFilterSetting = new Setting { SettingValue = "0-100;100-500;500-1000" }
+                IsProductPriceEnable = new EImece.Domain.Models.DTOs.SettingDto { SettingValue = "true" },
+                IsProductReviewEnable = new EImece.Domain.Models.DTOs.SettingDto { SettingValue = "true" },
+                PriceFilterSetting = new EImece.Domain.Models.DTOs.SettingDto { SettingValue = "0-100;100-500;500-1000" }
             };
         }
 

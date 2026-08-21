@@ -220,7 +220,8 @@ namespace EImece.Domain.Repositories
 
             foreach (var i in topLevels)
             {
-                var p = new MenuTreeModel(i, 1);
+                var dto = StorefrontMenuDto.FromEntity(i);
+                var p = new MenuTreeModel(dto, 1);
                 GetTreeview(list, p, p.TreeLevel);
                 returnList.Add(p);
             }
@@ -241,7 +242,8 @@ namespace EImece.Domain.Repositories
             int childLevel = level + 1;
             foreach (var childMenu in childMenus)
             {
-                var childNode = new MenuTreeModel(childMenu, childLevel)
+                var dto = StorefrontMenuDto.FromEntity(childMenu);
+                var childNode = new MenuTreeModel(dto, childLevel)
                 {
                     Parent = current
                 };
@@ -290,7 +292,8 @@ namespace EImece.Domain.Repositories
 
             foreach (var i in topLevels)
             {
-                var p = new MenuTreeModel(i, 1);
+                var dto = StorefrontMenuDto.FromEntity(i);
+                var p = new MenuTreeModel(dto, 1);
                 GetTreeview(list, p, p.TreeLevel);
                 returnList.Add(p);
             }

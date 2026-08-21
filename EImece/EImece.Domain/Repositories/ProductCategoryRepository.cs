@@ -41,7 +41,7 @@ namespace EImece.Domain.Repositories
 
             List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel()
             {
-                ProductCategory = r
+                ProductCategory = StorefrontCategoryDto.FromEntity(r)
             }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
@@ -81,7 +81,7 @@ namespace EImece.Domain.Repositories
                 ProductCount = productCounts.ContainsKey(c.Id) ? productCounts[c.Id] : 0
             }).ToList();
 
-            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
+            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = StorefrontCategoryDto.FromEntity(r.ProductCategory), ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
             int level = 1;
@@ -121,7 +121,7 @@ namespace EImece.Domain.Repositories
                 ProductCount = productCounts.ContainsKey(c.Id) ? productCounts[c.Id] : 0
             }).ToList();
 
-            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = r.ProductCategory, ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
+            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = StorefrontCategoryDto.FromEntity(r.ProductCategory), ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
             int level = 1;

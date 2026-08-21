@@ -12,7 +12,7 @@ test.describe('Cart and AJAX interactions', () => {
     test.setTimeout(120_000);
     const issues = await collectPageIssues(page);
 
-    await page.goto('/c/pc/elektronik-0j5i6g1b/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/c/pc/elektronik-7e7e4h1b/', { waitUntil: 'domcontentloaded' });
     const productHref = await page.locator('a[href*="/p/"]').first().getAttribute('href');
     expect(productHref).toBeTruthy();
 

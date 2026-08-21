@@ -45,7 +45,7 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId should have value");
             }
 
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -60,7 +60,7 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId should have value");
             }
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -90,6 +90,18 @@ namespace EImece.Domain.Services
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == key || u.Email == key).ConfigureAwait(false);
         }
 
+        public async Task<ApplicationUser> GetUserByIdAsync(string id)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
+            return user;
+        }
+
+        public ApplicationUser GetUserById(string id)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+            return user;
+        }
+
         public async Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
         {
             if (string.IsNullOrWhiteSpace(emailOrUserName) || string.IsNullOrWhiteSpace(roleName))
@@ -101,9 +113,8 @@ namespace EImece.Domain.Services
             var query = from u in _dbContext.Users
                         from ur in u.Roles
                         join r in _dbContext.Roles on ur.RoleId equals r.Id
-                        where (u.UserName.Equals(login, StringComparison.InvariantCultureIgnoreCase)
-                               || u.Email.Equals(login, StringComparison.InvariantCultureIgnoreCase))
-                              && r.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)
+                        where (u.UserName == login || u.Email == login)
+                              && r.Name == roleName
                         select r.Id;
 
             return await query.AnyAsync().ConfigureAwait(false);
@@ -120,9 +131,8 @@ namespace EImece.Domain.Services
             var query = from u in _dbContext.Users
                         from ur in u.Roles
                         join r in _dbContext.Roles on ur.RoleId equals r.Id
-                        where (u.UserName.Equals(login, StringComparison.InvariantCultureIgnoreCase)
-                               || u.Email.Equals(login, StringComparison.InvariantCultureIgnoreCase))
-                              && r.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)
+                        where (u.UserName == login || u.Email == login)
+                              && r.Name == roleName
                         select r.Id;
 
             return query.Any();

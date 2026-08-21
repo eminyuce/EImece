@@ -1,0 +1,328 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e7]:
+        - list [ref=e10]:
+          - listitem [ref=e11]:
+            - generic [ref=e12]: 
+            - link "02423110350" [ref=e13] [cursor=pointer]:
+              - /url: tel:02423110350
+          - listitem [ref=e14]:
+            - generic [ref=e15]: 
+            - link "bizim.saglikli.urunlerimiz@gmail.com" [ref=e16] [cursor=pointer]:
+              - /url: mailto:bizim.saglikli.urunlerimiz@gmail.com
+        - generic [ref=e17]:
+          - list
+      - generic [ref=e18]:
+        - text:  
+        - navigation [ref=e23]:
+          - link [ref=e25] [cursor=pointer]:
+            - /url: /
+            - img "Yuvadan.com.tr" [ref=e26]
+          - button "Menü" [ref=e27] [cursor=pointer]
+          - list [ref=e29]:
+            - listitem [ref=e30]:
+              - link "Giriş" [ref=e31] [cursor=pointer]:
+                - /url: /account/login/
+                - generic [ref=e32]: 
+            - listitem [ref=e33]:
+              - link "" [ref=e34] [cursor=pointer]:
+                - /url: /payment/shoppingcart/
+            - listitem [ref=e36]:
+              - link "Ara" [ref=e37] [cursor=pointer]:
+                - /url: "#!"
+                - generic [ref=e38]: 
+    - main [ref=e39]:
+      - heading "Yuvadan – Kudret Narı ve Daha Fazlası" [level=1] [ref=e40]
+      - region "Yuvadan.com.tr" [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e44]:
+            - generic [ref=e48]:
+              - paragraph [ref=e49]: Yuvadan.com.tr
+              - heading "Evini Yenile" [level=2] [ref=e50]
+              - paragraph [ref=e51]: Köşe koltuk ve sehpa takımlarında kaçırılmayacak fırsatlar.
+              - link "Alışverişe devam et" [ref=e52] [cursor=pointer]:
+                - /url: /c/Ev-Yasam
+            - generic [ref=e57]:
+              - paragraph [ref=e58]: Yuvadan.com.tr
+              - heading "Cilt Bakım Haftası" [level=2] [ref=e59]
+              - paragraph [ref=e60]: Beauté Lab serum ve kremlerde 2 al 1 öde.
+              - link "Alışverişe devam et" [ref=e61] [cursor=pointer]:
+                - /url: /c/Kozmetik-Bakim
+            - generic [ref=e66]:
+              - paragraph [ref=e67]: Yuvadan.com.tr
+              - heading "Seyahat Hazırlığı" [level=2] [ref=e68]
+              - paragraph [ref=e69]: Kabin boyu valizlerde ekstra %10.
+              - link "Alışverişe devam et" [ref=e70] [cursor=pointer]:
+                - /url: /c/Moda-Giyim
+            - generic [ref=e75]:
+              - paragraph [ref=e76]: Yuvadan.com.tr
+              - heading "Sonbahar Koleksiyonu" [level=2] [ref=e77]
+              - paragraph [ref=e78]: Yeni sezon trençkot ve botlarda %20'ye varan indirim.
+              - link "Alışverişe devam et" [ref=e79] [cursor=pointer]:
+                - /url: /c/Moda-Giyim
+            - generic [ref=e84]:
+              - paragraph [ref=e85]: Yuvadan.com.tr
+              - heading "Mutfakta Yenilikler" [level=2] [ref=e86]
+              - paragraph [ref=e87]: ChefPro tencere setlerinde ücretsiz kargo.
+              - link "Alışverişe devam et" [ref=e88] [cursor=pointer]:
+                - /url: /c/Mutfak
+            - generic [ref=e93]:
+              - paragraph [ref=e94]: Yuvadan.com.tr
+              - heading "Koşu Sezonu Başladı" [level=2] [ref=e95]
+              - paragraph [ref=e96]: AirFlex koşu ayakkabılarında peşin fiyatına taksit.
+              - link "Alışverişe devam et" [ref=e97] [cursor=pointer]:
+                - /url: /c/Spor-Outdoor
+            - generic [ref=e102]:
+              - paragraph [ref=e103]: Yuvadan.com.tr
+              - heading "Evini Yenile" [level=2] [ref=e104]
+              - paragraph [ref=e105]: Köşe koltuk ve sehpa takımlarında kaçırılmayacak fırsatlar.
+              - link "Alışverişe devam et" [ref=e106] [cursor=pointer]:
+                - /url: /c/Ev-Yasam
+            - generic [ref=e111]:
+              - paragraph [ref=e112]: Yuvadan.com.tr
+              - heading "Cilt Bakım Haftası" [level=2] [ref=e113]
+              - paragraph [ref=e114]: Beauté Lab serum ve kremlerde 2 al 1 öde.
+              - link "Alışverişe devam et" [ref=e115] [cursor=pointer]:
+                - /url: /c/Kozmetik-Bakim
+            - generic [ref=e120]:
+              - paragraph [ref=e121]: Yuvadan.com.tr
+              - heading "Seyahat Hazırlığı" [level=2] [ref=e122]
+              - paragraph [ref=e123]: Kabin boyu valizlerde ekstra %10.
+              - link "Alışverişe devam et" [ref=e124] [cursor=pointer]:
+                - /url: /c/Moda-Giyim
+            - generic [ref=e129]:
+              - paragraph [ref=e130]: Yuvadan.com.tr
+              - heading "Sonbahar Koleksiyonu" [level=2] [ref=e131]
+              - paragraph [ref=e132]: Yeni sezon trençkot ve botlarda %20'ye varan indirim.
+              - link "Alışverişe devam et" [ref=e133] [cursor=pointer]:
+                - /url: /c/Moda-Giyim
+            - generic [ref=e138]:
+              - paragraph [ref=e139]: Yuvadan.com.tr
+              - heading "Mutfakta Yenilikler" [level=2] [ref=e140]
+              - paragraph [ref=e141]: ChefPro tencere setlerinde ücretsiz kargo.
+              - link "Alışverişe devam et" [ref=e142] [cursor=pointer]:
+                - /url: /c/Mutfak
+            - generic [ref=e147]:
+              - paragraph [ref=e148]: Yuvadan.com.tr
+              - heading "Koşu Sezonu Başladı" [level=2] [ref=e149]
+              - paragraph [ref=e150]: AirFlex koşu ayakkabılarında peşin fiyatına taksit.
+              - link "Alışverişe devam et" [ref=e151] [cursor=pointer]:
+                - /url: /c/Spor-Outdoor
+          - generic:
+            - button "" [ref=e153] [cursor=pointer]
+            - button "" [ref=e155] [cursor=pointer]
+          - generic [ref=e157]:
+            - button [ref=e158] [cursor=pointer]
+            - button [ref=e160] [cursor=pointer]
+            - button [ref=e162] [cursor=pointer]
+            - button [ref=e164] [cursor=pointer]
+            - button [ref=e166] [cursor=pointer]
+            - button [ref=e168] [cursor=pointer]
+      - region "Haberdar olun" [ref=e170]:
+        - generic [ref=e172]:
+          - generic [ref=e173]:
+            - paragraph [ref=e174]: Yuvadan.com.tr
+            - heading "Haberdar olun" [level=2] [ref=e175]
+            - generic [ref=e176]:
+              - paragraph [ref=e177]: Ürünlerimiz stokta olduğunda veya ilk kez satışa sunulduğunda ilk siz haberdar olun.
+              - paragraph [ref=e178]: E-postanızı girin; hazır olur olmaz size bir bildirim gönderelim!
+          - generic [ref=e179]:
+            - generic [ref=e180]: Lütfen e-posta giriniz.
+            - generic [ref=e181]:
+              - textbox "Lütfen e-posta giriniz." [ref=e182]
+              - button "Abone ol" [ref=e183] [cursor=pointer]
+      - generic [ref=e186]:
+        - generic [ref=e187]:
+          - paragraph [ref=e188]: Yuvadan.com.tr
+          - heading "Popüler Ürünler" [level=2] [ref=e189]
+        - generic [ref=e190]:
+          - generic [ref=e192]:
+            - heading "VİTRİN ÜRÜNLERİ" [level=3] [ref=e193]
+            - generic [ref=e194]:
+              - link "FitLife Unisex Koşu Ayakkabısı AirFlex" [ref=e195] [cursor=pointer]:
+                - /url: http://localhost:81/p/ayakkabi/fitlife-unisex-kosu-ayakkabisi-airflex-7e6g2d5i4h1b/
+                - generic [ref=e197]:
+                  - generic [ref=e198]: FitLife Unisex Koşu Ayakkabısı AirFlex
+                  - generic [ref=e199]:
+                    - generic [ref=e200]: ★
+                    - generic [ref=e201]: ★
+                    - generic [ref=e202]: ★
+                    - generic [ref=e203]: ★
+                    - generic [ref=e204]: ★
+                  - generic [ref=e205]: 1.905,00 ₺
+              - link "Nordline Meşe Sehpa 90cm" [ref=e206] [cursor=pointer]:
+                - /url: http://localhost:81/p/oturma-grubu/nordline-mese-sehpa-90cm-9a5i2d5i4h1b/
+                - generic [ref=e208]:
+                  - generic [ref=e209]: Nordline Meşe Sehpa 90cm
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: ★
+                    - generic [ref=e212]: ★
+                    - generic [ref=e213]: ★
+                    - generic [ref=e214]: ★
+                    - generic [ref=e215]: ★
+                  - generic [ref=e216]: 3.309,00 ₺
+          - generic [ref=e218]:
+            - heading "KAMPANYALI ÜRÜNLER" [level=3] [ref=e219]
+            - generic [ref=e220]:
+              - 'link "PetFriend Evcil Hayvan Mama Kabı Seti #110" [ref=e221] [cursor=pointer]':
+                - /url: http://localhost:81/p/ev--yasam/petfriend-evcil-hayvan-mama-kabi-seti-110-5i3f7e5i4h1b/
+                - generic [ref=e223]:
+                  - generic [ref=e224]: "PetFriend Evcil Hayvan Mama Kabı Seti #110"
+                  - generic [ref=e225]: 229,00 ₺
+              - 'link "AquaPure Cam Su Şişesi 750ml #66" [ref=e226] [cursor=pointer]':
+                - /url: http://localhost:81/p/mutfak/aquapure-cam-su-sisesi-750ml-66-2d7e7e5i4h1b/
+                - generic [ref=e228]:
+                  - generic [ref=e229]: "AquaPure Cam Su Şişesi 750ml #66"
+                  - generic [ref=e230]: 315,00 ₺
+          - generic [ref=e232]:
+            - heading "YENİ ÜRÜNLER" [level=3] [ref=e233]
+            - generic [ref=e234]:
+              - 'link "Nordline Meşe Sehpa 90cm #130" [ref=e235] [cursor=pointer]':
+                - /url: http://localhost:81/p/oturma-grubu/nordline-mese-sehpa-90cm-130-4h4h2d5i4h1b/
+                - generic [ref=e237]:
+                  - generic [ref=e238]: "Nordline Meşe Sehpa 90cm #130"
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: ★
+                    - generic [ref=e241]: ★
+                    - generic [ref=e242]: ★
+                    - generic [ref=e243]: ★
+                    - generic [ref=e244]: ★
+                  - generic [ref=e245]: 3.429,00 ₺
+              - 'link "Meridian Outdoor Trekking Sırt Çantası 40L #136" [ref=e246] [cursor=pointer]':
+                - /url: http://localhost:81/p/kamp--doga/meridian-outdoor-trekking-sirt-cantasi-40l-136-1b9a7e5i4h1b/
+                - generic [ref=e248]:
+                  - generic [ref=e249]: "Meridian Outdoor Trekking Sırt Çantası 40L #136"
+                  - generic [ref=e250]:
+                    - generic [ref=e251]: ★
+                    - generic [ref=e252]: ★
+                    - generic [ref=e253]: ★
+                    - generic [ref=e254]: ★
+                    - generic [ref=e255]: ★
+                  - generic [ref=e256]: 1.735,00 ₺
+              - 'link "MiniNest Bebek Bakım Seti 5''li #140" [ref=e257] [cursor=pointer]':
+                - /url: http://localhost:81/p/bebek-bakim/mininest-bebek-bakim-seti-5li-140-4h1b7e5i4h1b/
+                - generic [ref=e259]:
+                  - generic [ref=e260]: "MiniNest Bebek Bakım Seti 5'li #140"
+                  - generic [ref=e261]:
+                    - generic [ref=e262]: ★
+                    - generic [ref=e263]: ★
+                    - generic [ref=e264]: ★
+                    - generic [ref=e265]: ★
+                    - generic [ref=e266]: ★
+                  - generic [ref=e267]: 533,08 ₺
+              - 'link "PetFriend Evcil Hayvan Mama Kabı Seti #110" [ref=e268] [cursor=pointer]':
+                - /url: http://localhost:81/p/ev--yasam/petfriend-evcil-hayvan-mama-kabi-seti-110-5i3f7e5i4h1b/
+                - generic [ref=e270]:
+                  - generic [ref=e271]: "PetFriend Evcil Hayvan Mama Kabı Seti #110"
+                  - generic [ref=e272]: 229,00 ₺
+              - 'link "AquaPure Cam Su Şişesi 750ml #146" [ref=e273] [cursor=pointer]':
+                - /url: http://localhost:81/p/mutfak/aquapure-cam-su-sisesi-750ml-146-1b7e7e5i4h1b/
+                - generic [ref=e275]:
+                  - generic [ref=e276]: "AquaPure Cam Su Şişesi 750ml #146"
+                  - generic [ref=e277]: 315,00 ₺
+      - generic [ref=e279]:
+        - generic [ref=e280]:
+          - paragraph [ref=e281]: Yuvadan.com.tr
+          - heading "Bloglar" [level=2] [ref=e282]
+        - article [ref=e285]:
+          - link "2024 Sonbahar Kombin Önerileri" [ref=e286] [cursor=pointer]:
+            - /url: http://localhost:81/s/stil-rehberi/2024-sonbahar-kombin-onerileri-3f1b8c/
+            - img "2024 Sonbahar Kombin Önerileri" [ref=e287]
+          - generic [ref=e288]:
+            - paragraph [ref=e289]:
+              - link "Stil Rehberi" [ref=e290] [cursor=pointer]:
+                - /url: http://localhost:81/s/sc/stil-rehberi-4h4h/
+              - text: ·
+              - time [ref=e291]: 12.08.2026
+            - heading [level=3] [ref=e292]:
+              - link "2024 Sonbahar Kombin Önerileri" [ref=e293] [cursor=pointer]:
+                - /url: http://localhost:81/s/stil-rehberi/2024-sonbahar-kombin-onerileri-3f1b8c/
+            - paragraph [ref=e294]: Katmanlı sonbahar stilleri.
+            - link "Devamı..." [ref=e295] [cursor=pointer]:
+              - /url: http://localhost:81/s/stil-rehberi/2024-sonbahar-kombin-onerileri-3f1b8c/
+    - region "Yuvadan.com.tr" [ref=e296]:
+      - generic [ref=e298]:
+        - generic [ref=e299]:
+          - heading "Yuvadan.com.tr" [level=2] [ref=e300]
+          - paragraph [ref=e301]: Haberdar olun
+        - link "Hakkımızda" [ref=e303] [cursor=pointer]:
+          - /url: /info/aboutus/?lang=tr-TR
+    - contentinfo [ref=e305]:
+      - generic [ref=e306]:
+        - generic [ref=e307]:
+          - generic [ref=e308]:
+            - link "Yuvadan.com.tr" [ref=e309] [cursor=pointer]:
+              - /url: /
+              - img "Yuvadan.com.tr" [ref=e310]
+            - paragraph [ref=e311]: Haberdar olun
+            - generic [ref=e313]:
+              - generic [ref=e314]:
+                - generic [ref=e315]: E-Posta
+                - textbox "E-Posta" [ref=e316]
+                - button "Abone ol" [ref=e317] [cursor=pointer]
+              - generic [ref=e319]:
+                - generic [ref=e320]: Leave blank
+                - textbox [ref=e321]
+              - paragraph [ref=e322]: "*Erken indirim teklifleri, güncellemeler ve yeni ürün bilgileri almak için bültenimize abone olun."
+              - generic:
+                - list
+              - paragraph [ref=e323]: Emeğe ve doğallığa değer verenlere özel… Taze kudret narı ve yöresel ürünler, doğrudan üreticisinden, katkısız ve güvenilir şekilde size ulaşıyor.
+              - paragraph [ref=e324]:
+                - strong [ref=e325]: Yuvadan.com.tr
+                - text: Sinan Mah.Cebesoy Cad. Zümrüt Apt. A Blok No:60/C Muratpaşa / ANTALYA
+            - img "MasterCard and Visa accepted" [ref=e326]
+          - generic [ref=e327]:
+            - heading "Ürün Kategorileri" [level=2] [ref=e328]
+            - list [ref=e329]:
+              - listitem [ref=e330]:
+                - link "Moda & Giyim" [ref=e331] [cursor=pointer]:
+                  - /url: /c/pc/moda--giyim-3f7e4h1b/
+              - listitem [ref=e332]:
+                - link "Ev & Yaşam" [ref=e333] [cursor=pointer]:
+                  - /url: /c/pc/ev--yasam-6g7e4h1b/
+              - listitem [ref=e334]:
+                - link "Mutfak" [ref=e335] [cursor=pointer]:
+                  - /url: /c/pc/mutfak-1b3f4h1b/
+          - generic [ref=e336]:
+            - heading "Hakkımızda" [level=2] [ref=e337]
+            - list [ref=e338]:
+              - listitem [ref=e339]:
+                - link "Hakkımızda" [ref=e340] [cursor=pointer]:
+                  - /url: /info/aboutus/
+              - listitem [ref=e341]:
+                - link "Kampanyalar" [ref=e342] [cursor=pointer]:
+                  - /url: /i/kampanyalar-7e9a2d6g/
+          - generic [ref=e343]:
+            - heading "Müşteri ilişkileri" [level=2] [ref=e344]
+            - list [ref=e345]:
+              - listitem [ref=e346]:
+                - link "Kargo Takibi" [ref=e347] [cursor=pointer]:
+                  - /url: /payment/cargotracking/
+              - listitem [ref=e348]:
+                - link "Teslimat Bilgileri" [ref=e349] [cursor=pointer]:
+                  - /url: /info/deliveryinfo/
+        - generic [ref=e352]:
+          - generic [ref=e354]:
+            - heading "Ücretsiz yerel teslimat" [level=3] [ref=e361]
+            - paragraph [ref=e362]: 3 iş günü içerisinde kargoya teslim
+          - generic [ref=e364]:
+            - heading "Para iade garantisi" [level=3] [ref=e370]
+            - paragraph [ref=e371]: İptal ve İade Şartları geregi para iadesi garantisi ile
+          - generic [ref=e373]:
+            - heading "7/24 müşteri desteği" [level=3] [ref=e383]
+            - paragraph [ref=e384]: Dostane 7/24 müşteri desteği
+          - generic [ref=e386]:
+            - heading "Güvenli online ödeme" [level=3] [ref=e390]
+            - paragraph [ref=e391]: SSL / Güvenli sertifikaya sahibiz
+        - generic [ref=e392]:
+          - paragraph [ref=e393]: © 2026 Yuvadan.com.tr.
+          - paragraph [ref=e394]:
+            - text: Made by
+            - link "Erayweb" [ref=e395] [cursor=pointer]:
+              - /url: http://www.erayweb.com/
+  - generic [ref=e397]:
+    - generic [ref=e398] [cursor=pointer]: Merhaba! Yuvadan.com.tr yetkilisi
+    - generic "Open messengers list" [ref=e401] [cursor=pointer]

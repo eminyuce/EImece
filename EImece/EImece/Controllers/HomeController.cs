@@ -187,8 +187,8 @@ namespace EImece.Controllers
         public ActionResult WebSiteLogo()
         {
             var item = new SettingLayoutViewModel();
-            item.WebSiteLogo = SettingService.GetSettingObjectByKey(Constants.WebSiteLogo);
-            item.CompanyName = SettingService.GetSettingObjectByKey(Constants.CompanyName);
+            item.WebSiteLogo = SettingService.GetSettingDtoByKey(Constants.WebSiteLogo);
+            item.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
             return PartialView("_WebSiteLogo", item);
         }
 
@@ -214,8 +214,8 @@ namespace EImece.Controllers
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingDtoByKey(Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingDtoByKey(Constants.WebSiteCompanyEmailAddress);
             HomeLogger.Info("Returning _WebSiteAddressInfo partial view.");
             return PartialView("_WebSiteAddressInfo", item);
         }

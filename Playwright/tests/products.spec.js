@@ -4,7 +4,7 @@ const { assertCrizalChrome, collectPageIssues, filterConsoleNoise } = require('.
 test.describe('Crizal Products', () => {
   test('product category listing renders Crizal UI', async ({ page }) => {
     const issues = await collectPageIssues(page);
-    const res = await page.goto('/c/pc/kulaklik--ses-4h0j6g1b/', { waitUntil: 'domcontentloaded' });
+    const res = await page.goto('/c/pc/elektronik-7e7e4h1b/', { waitUntil: 'domcontentloaded' });
     expect(res?.status()).toBe(200);
     await assertCrizalChrome(page);
     await expect(page.locator('main#main-content')).toBeVisible();
@@ -15,7 +15,7 @@ test.describe('Crizal Products', () => {
 
   test('product detail renders gallery and CTA area', async ({ page }) => {
     const res = await page.goto(
-      '/p/kulaklik--ses/nordline-wireless-bluetooth-kulaklik-pro-4h2d9a5i4h1b/',
+      '/p/kosu--fitness/fitlife-yoga-mati-6mm-133-8c0j2d5i4h1b/',
       { waitUntil: 'domcontentloaded' }
     );
     expect(res?.status()).toBe(200);

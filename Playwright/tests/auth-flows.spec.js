@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { assertCrizalChrome, loginWithPassword, loginForm, captureFailure } = require('./helpers');
 
-const CUSTOMER = { email: 'customer1@eimece.test', password: 'Test123!' };
+const CUSTOMER = { email: 'eminyuce1111@gmail.com', password: 'V02y.qcF' };
 const ADMIN = { email: 'admin@eimece.test', password: 'Test123!' };
 
 test.describe('Authentication flows', () => {

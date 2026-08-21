@@ -18,6 +18,21 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public bool IsActive { get; set; }
         public int ItemCount { get; set; }
 
+        public static StorefrontTagDto FromEntity(Tag t)
+        {
+            if (t == null) return null;
+            return new StorefrontTagDto
+            {
+                Id = t.Id,
+                Name = t.Name,
+                TagCategoryId = t.TagCategoryId,
+                TagCategoryName = t.TagCategory != null ? t.TagCategory.Name : string.Empty,
+                Position = t.Position,
+                Lang = t.Lang,
+                IsActive = t.IsActive
+            };
+        }
+
         public string ModifiedId
         {
             get { return GeneralHelper.ModifyId(Id); }

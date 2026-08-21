@@ -27,14 +27,13 @@ const PUBLIC_GET_ROUTES = [
   { name: 'privacy', path: '/info/privacypolicy/' },
   { name: 'terms', path: '/info/termsandconditions/' },
   { name: 'delivery', path: '/info/deliveryinfo/' },
-  { name: 'contact-page', path: '/i/iletisim-3f4h8c6g/' },
-  { name: 'faq-page', path: '/i/sikca-sorulan-sorular-4h4h8c6g/' },
-  { name: 'category-electronics', path: '/c/pc/elektronik-0j5i6g1b/' },
-  { name: 'category-headphones', path: '/c/pc/kulaklik--ses-4h0j6g1b/' },
+  { name: 'contact-page', path: '/i/iletisim-1b9a2d6g/' },
+  { name: 'category-electronics', path: '/c/pc/elektronik-7e7e4h1b/' },
+  { name: 'category-headphones', path: '/c/pc/kulaklik--ses-8c3f4h1b/' },
   // BUG-006 / BUG-010: legacy and bare category URLs should not 5xx (redirect or friendly page).
   { name: 'category-legacy-ev-yasam', path: '/c/Ev-Yasam' },
   { name: 'category-pc-root', path: '/c/pc/' },
-  { name: 'story-category', path: '/s/sc/stil-rehberi-8c6g/' },
+  { name: 'story-category', path: '/s/sc/stil-rehberi-4h4h/' },
   { name: 'rss-products', path: '/rss/products/', raw: true },
   { name: 'rss-stories', path: '/rss/storycategories/', raw: true },
   { name: 'ajax-cities', path: '/ajax/getallcities/', raw: true },
@@ -112,7 +111,7 @@ test.describe('Static route inventory', () => {
 
   test('product detail pages from category listing (async regression)', async ({ page }) => {
     test.setTimeout(180_000);
-    await page.goto('/c/pc/elektronik-0j5i6g1b/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/c/pc/elektronik-7e7e4h1b/', { waitUntil: 'domcontentloaded' });
     const productHrefs = await page.$$eval('a[href*="/p/"]', (as) =>
       [...new Set(as.map((a) => a.getAttribute('href')).filter(Boolean))]
     );
