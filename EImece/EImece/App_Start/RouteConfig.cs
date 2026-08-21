@@ -135,6 +135,27 @@ namespace EImece
              );
 
             routes.MapRoute(
+                 name: "SearchProductsLegacyMvc",
+                 url: "products/searchproducts",
+                 defaults: new { controller = "Products", action = "searchproducts" },
+                 namespaces: new[] { Constants.ControllersNamespace }
+             );
+
+            routes.MapRoute(
+                 name: "SearchProductsShortMvc",
+                 url: "products/search",
+                 defaults: new { controller = "Products", action = "searchproducts" },
+                 namespaces: new[] { Constants.ControllersNamespace }
+             );
+
+            routes.MapRoute(
+                name: "AdvancedSearchMvc",
+                url: "products/advancedsearch",
+                defaults: new { controller = "Products", action = "searchproducts" },
+                namespaces: new[] { Constants.ControllersNamespace }
+            );
+
+            routes.MapRoute(
                name: "SearchProducts2",
                url: Constants.ProductsControllerRoutingPrefix + "/advancedsearchproducts",
                defaults: new { controller = "Products", action = "advancedsearchproducts" },

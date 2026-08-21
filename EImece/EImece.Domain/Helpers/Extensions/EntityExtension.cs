@@ -784,32 +784,7 @@ namespace EImece.Domain.Helpers.Extensions
 
             if (entity != null)
             {
-                if (HttpContext.Current != null)
-                {
-                    var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                    if (!String.IsNullOrEmpty(authorName))
-                    {
-                        path = urlHelper.Action(action, controller, new { id = authorName, area = "" });
-                    }
-                    else if (String.IsNullOrEmpty(categoryName))
-                    {
-                        path = urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" });
-                    }
-                    else
-                    {
-                        path = urlHelper.Action(action, controller, new
-                        {
-                            categoryName = GeneralHelper.GetUrlSeoString(categoryName),
-                            id = GetSeoUrl(entity),
-                            area = ""
-                        });
-                    }
-                }
-                else
-                {
-                    // Async service continuations lose HttpContext; reconstruct SEO routes used by RouteConfig.
-                    path = BuildDetailRelativePathWithoutHttpContext(entity, action, controller, categoryName, authorName);
-                }
+                path = BuildDetailRelativePathWithoutHttpContext(entity, action, controller, categoryName, authorName);
             }
 
             string domain = AppConfig.Domain;

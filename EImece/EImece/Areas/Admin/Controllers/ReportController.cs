@@ -620,13 +620,17 @@ namespace EImece.Areas.Admin.Controllers
 
                 reportKey = filter.ReportKey;
                 format = filter.Format;
-                if (!filter.StartDate.HasValue)
+
+                var rawStart = Request?["startDate"] ?? Request?["StartDate"];
+                var rawEnd = Request?["endDate"] ?? Request?["EndDate"];
+
+                if (!string.IsNullOrWhiteSpace(rawStart))
                 {
-                    filter.StartDate = GeneralHelper.TryParseFlexibleDate(Request["startDate"]);
+                    filter.StartDate = GeneralHelper.TryParseFlexibleDate(rawStart) ?? filter.StartDate;
                 }
-                if (!filter.EndDate.HasValue)
+                if (!string.IsNullOrWhiteSpace(rawEnd))
                 {
-                    filter.EndDate = GeneralHelper.TryParseFlexibleDate(Request["endDate"]);
+                    filter.EndDate = GeneralHelper.TryParseFlexibleDate(rawEnd) ?? filter.EndDate;
                 }
                 var isCsv = string.Equals(format, "csv", StringComparison.OrdinalIgnoreCase);
                 var isExcel = string.IsNullOrWhiteSpace(format)

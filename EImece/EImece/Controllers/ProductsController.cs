@@ -174,6 +174,11 @@ namespace EImece.Controllers
         }
 
         [Route(Constants.SearchProductPrefix)]
+        [Route("search")]
+        [Route("~/products/searchproducts")]
+        [Route("~/products/search")]
+        [Route("~/products/advancedsearch")]
+        [Route("~/products/advancedsearchproducts")]
         [RateLimit("search", DefaultLimit = 30, DefaultWindowMinutes = 1)]
         public async Task<ActionResult> SearchProducts(String search, CancellationToken cancellationToken, int page = 1, int sorting = 0)
         {
@@ -191,7 +196,7 @@ namespace EImece.Controllers
             Logger.Info($"Set model properties: RecordPerPage={pageSize}, Page={page}, Sorting={(SortingType)sorting}");
 
             Logger.Info("Returning SearchProducts view.");
-            return View(products);
+            return View("SearchProducts", products);
         }
 
         [HttpPost]
