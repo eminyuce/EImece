@@ -44,8 +44,45 @@ namespace EImece.Domain.Services
             {
                 DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY);
                 DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix);
+                DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + "_DICT");
+                DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + "_DICT" + AsyncCacheKeySuffix);
                 DataCachingProvider.Clear(CacheKeys.WebAppManifest);
             }
+        }
+
+        private Dictionary<string, Setting> GetCachedSettingsDictionary()
+        {
+            if (DataCachingProvider == null) return BuildDeduplicatedDictionary(GetAllSettingsNoCache());
+            return DataCachingProvider.GetOrAdd(
+                ALL_SETTING_CACHE_KEY + "_DICT",
+                () => BuildDeduplicatedDictionary(GetAllSettings()),
+                AppConfig.CacheLongSeconds);
+        }
+
+        private async Task<Dictionary<string, Setting>> GetCachedSettingsDictionaryAsync()
+        {
+            if (DataCachingProvider == null) return BuildDeduplicatedDictionary(await GetAllSettingsNoCacheAsync().ConfigureAwait(false));
+            return await DataCachingProvider.GetOrAddAsync(
+                ALL_SETTING_CACHE_KEY + "_DICT" + AsyncCacheKeySuffix,
+                async () => BuildDeduplicatedDictionary(await GetAllSettingsAsync().ConfigureAwait(false)),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+        }
+
+        private static Dictionary<string, Setting> BuildDeduplicatedDictionary(List<Setting> allSettings)
+        {
+            if (allSettings == null || allSettings.Count == 0) return new Dictionary<string, Setting>(StringComparer.OrdinalIgnoreCase);
+            return allSettings
+                .GroupBy(s => s.SettingKey ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).First(), StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static Dictionary<string, Setting> BuildDeduplicatedDictionaryByLang(List<Setting> allSettings, int language)
+        {
+            if (allSettings == null) return new Dictionary<string, Setting>(StringComparer.OrdinalIgnoreCase);
+            return allSettings
+                .Where(s => s.Lang == language)
+                .GroupBy(s => s.SettingKey ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).First(), StringComparer.OrdinalIgnoreCase);
         }
 
         private List<Setting> GetAllSettings()
@@ -178,20 +215,24 @@ namespace EImece.Domain.Services
 
         private Setting SelectSettingByKey(List<Setting> allSettings, string key)
         {
-            if (allSettings != null)
+            if (string.IsNullOrWhiteSpace(key)) return new Setting { SettingKey = key, SettingValue = NULL_VALUE };
+            // O(1) dictionary path when called via cached dictionary; fallback linear for ad-hoc lists.
+            if (allSettings != null && allSettings.Count > 0)
             {
-                // Prefer the most recently updated row when duplicates exist for the same key.
+                // Fast path: if this list is the cached ALL set, use dictionary.
+                var dict = GetCachedSettingsDictionary();
+                if (dict.TryGetValue(key, out var cached))
+                {
+                    return cached;
+                }
+                // Slow fallback for filtered/materialized subsets (still correct).
                 var result = allSettings
                     .Where(r => r.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase))
                     .OrderByDescending(r => r.UpdatedDate)
                     .ThenByDescending(r => r.Id)
                     .FirstOrDefault();
-                if (result != null)
-                {
-                    return result;
-                }
+                if (result != null) return result;
             }
-
             var setting = new Setting();
             setting.SettingKey = key;
             setting.SettingValue = NULL_VALUE;
@@ -200,19 +241,18 @@ namespace EImece.Domain.Services
 
         private Setting SelectSettingByKey(List<Setting> allSettings, string key, int language)
         {
-            if (allSettings != null)
+            if (string.IsNullOrWhiteSpace(key)) return new Setting { SettingKey = key, SettingValue = NULL_VALUE, Lang = language };
+            if (allSettings != null && allSettings.Count > 0)
             {
+                var dictByLang = BuildDeduplicatedDictionaryByLang(allSettings, language);
+                if (dictByLang.TryGetValue(key, out var cached)) return cached;
                 var result = allSettings
                     .Where(r => r.Lang == language && r.SettingKey.Equals(key, StringComparison.OrdinalIgnoreCase))
                     .OrderByDescending(r => r.UpdatedDate)
                     .ThenByDescending(r => r.Id)
                     .FirstOrDefault();
-                if (result != null)
-                {
-                    return result;
-                }
+                if (result != null) return result;
             }
-
             var setting = new Setting();
             setting.SettingKey = key;
             setting.SettingValue = NULL_VALUE;
@@ -251,9 +291,8 @@ namespace EImece.Domain.Services
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            // Prefer Description=SystemSettings, but fall back by SettingKey so seed rows
-            // (human-readable Description) still populate the admin form before first save.
-            List<Setting> allSettings = GetAllSettingsNoCache();
+            // Use cached settings (AsNoTracking list) instead of bypassing cache with tracked query.
+            List<Setting> allSettings = GetAllSettings();
             List<Setting> Settings = allSettings.Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
@@ -292,9 +331,7 @@ namespace EImece.Domain.Services
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            // Prefer Description=SystemSettings, but fall back by SettingKey so seed rows
-            // (human-readable Description) still populate the admin form before first save.
-            List<Setting> allSettings = await GetAllSettingsNoCacheAsync(cancellationToken).ConfigureAwait(false);
+            List<Setting> allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
             List<Setting> Settings = allSettings
                 .Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.

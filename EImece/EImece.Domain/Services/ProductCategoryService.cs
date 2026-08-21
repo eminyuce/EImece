@@ -132,11 +132,11 @@ namespace EImece.Domain.Services
             var childCategories = await ProductCategoryRepository.GetStorefrontChildrenCategoriesAsync(categoryId, cancellationToken).ConfigureAwait(false);
             var childCategoryIds = childCategories.Select(c => c.Id).ToList();
 
+            var priceFilterSetting = await SettingService.GetSettingDtoByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
+
             var result = new ProductCategoryViewModel();
             result.CategoryDto = categoryDto;
             result.ChildrenProductCategories = childCategories;
-
-            var priceFilterSetting = await SettingService.GetSettingDtoByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
 
             List<int> brandIds = null;
             List<int> ratings = null;

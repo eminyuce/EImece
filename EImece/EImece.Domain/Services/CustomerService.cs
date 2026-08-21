@@ -9,6 +9,7 @@ using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,9 @@ namespace EImece.Domain.Services
 
         [Inject]
         public IOrderService OrderService { get; set; }
+
+        [Inject]
+        public IOrderRepository OrderRepository { get; set; }
 
         private ICustomerRepository CustomerRepository { get; set; }
 
@@ -189,30 +193,67 @@ namespace EImece.Domain.Services
         {
             Logger.Info($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
-            var result = CustomerRepository.GetAll().Where(r => r.CustomerType == (int)EImeceCustomerType.Normal || r.CustomerType == (int)EImeceCustomerType.ShoppingWithoutAccount).ToList();
-            var allOrders = OrderService.GetAll().Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder || r.OrderType == (int)EImeceOrderType.BuyWithNoAccountCreation).ToList();
-            var resultList = result.ToList();
 
-            if (resultList.IsNotEmpty())
+            // AsNoTracking avoids change-tracker overhead for read-only admin grid.
+            var customers = CustomerRepository.GetAll().AsNoTracking()
+                .Where(r => r.CustomerType == (int)EImeceCustomerType.Normal || r.CustomerType == (int)EImeceCustomerType.ShoppingWithoutAccount)
+                .ToList();
+
+            if (!customers.IsNotEmpty())
             {
-                foreach (var item in resultList)
+                return new List<Customer>();
+            }
+
+            var userIds = customers.Where(c => !string.IsNullOrWhiteSpace(c.UserId)).Select(c => c.UserId).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            // Single round-trip for lightweight order aggregates (UserId, CreatedDate only) instead of full Order entities.
+            var orderQuery = (OrderRepository != null ? OrderRepository.GetAll().AsNoTracking() : OrderService.GetAll().AsQueryable())
+                .Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder || r.OrderType == (int)EImeceOrderType.BuyWithNoAccountCreation)
+                .Select(r => new { r.UserId, r.CreatedDate, r.Id });
+            var orderRows = orderQuery.ToList();
+
+            var ordersByUser = orderRows
+                .GroupBy(r => r.UserId, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.ToList(), StringComparer.OrdinalIgnoreCase);
+
+            // Batch UsersService lookup: 1 query instead of N per customer.
+            var usersDict = BuildUsersDictionary(userIds);
+
+            var resultList = new List<Customer>(customers.Count);
+            foreach (var item in customers)
+            {
+                if (ordersByUser.TryGetValue(item.UserId ?? string.Empty, out var uOrders))
                 {
-                    item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                    item.OrderLatestDate = item.Orders.IsNotEmpty() ? item.Orders.Max(T => T.CreatedDate) : DateTime.Now.AddYears(-2);
-                    GetUserFields(item);
+                    item.Orders = uOrders.Select(o => new Order { Id = o.Id, UserId = o.UserId, CreatedDate = o.CreatedDate }).ToList();
+                    item.OrderLatestDate = uOrders.Max(t => t.CreatedDate);
+                }
+                else
+                {
+                    item.Orders = new List<Order>();
+                    item.OrderLatestDate = DateTime.Now.AddYears(-2);
                 }
 
-                if (!string.IsNullOrEmpty(search))
+                if (usersDict.TryGetValue(item.UserId ?? string.Empty, out var u))
                 {
-                    resultList = resultList.Where(r =>
-                    r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                                       string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
-                                           .ToList();
+                    item.Email = u.Email;
+                    item.Name = u.FirstName;
+                    item.Surname = u.LastName;
                 }
             }
 
-            resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
-            Logger.Info("Customer services retrieved successfully.");
+            if (!string.IsNullOrEmpty(search))
+            {
+                resultList = customers.Where(r =>
+                    (r.Email != null && r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+            }
+            else
+            {
+                resultList = customers.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+            }
+
+            Logger.Info("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
             return resultList;
         }
 
@@ -220,31 +261,107 @@ namespace EImece.Domain.Services
         {
             Logger.Info($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
-            var result = (await GetAllAsync().ConfigureAwait(false)).Where(r => r.CustomerType == (int)EImeceCustomerType.Normal || r.CustomerType == (int)EImeceCustomerType.ShoppingWithoutAccount).ToList();
-            var allOrders = (await OrderService.GetAllAsync().ConfigureAwait(false)).Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder || r.OrderType == (int)EImeceOrderType.BuyWithNoAccountCreation).ToList();
-            var resultList = result.ToList();
 
-            if (resultList.IsNotEmpty())
+            var customers = await CustomerRepository.GetAll().AsNoTracking()
+                .Where(r => r.CustomerType == (int)EImeceCustomerType.Normal || r.CustomerType == (int)EImeceCustomerType.ShoppingWithoutAccount)
+                .ToListAsync().ConfigureAwait(false);
+
+            if (!customers.IsNotEmpty())
             {
-                foreach (var item in resultList)
+                return new List<Customer>();
+            }
+
+            var userIds = customers.Where(c => !string.IsNullOrWhiteSpace(c.UserId)).Select(c => c.UserId).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            var orderQueryAsync = (OrderRepository != null ? OrderRepository.GetAll().AsNoTracking() : OrderService.GetAll().AsQueryable())
+                .Where(r => r.OrderType == (int)EImeceOrderType.NormalOrder || r.OrderType == (int)EImeceOrderType.BuyWithNoAccountCreation)
+                .Select(r => new { r.UserId, r.CreatedDate, r.Id });
+            var orderRows = await orderQueryAsync.ToListAsync().ConfigureAwait(false);
+
+            var ordersByUser = orderRows
+                .GroupBy(r => r.UserId, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.ToList(), StringComparer.OrdinalIgnoreCase);
+
+            var usersDict = await BuildUsersDictionaryAsync(userIds).ConfigureAwait(false);
+
+            foreach (var item in customers)
+            {
+                if (ordersByUser.TryGetValue(item.UserId ?? string.Empty, out var uOrders))
                 {
-                    item.Orders = allOrders.Where(r => r.UserId.Equals(item.UserId, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                    item.OrderLatestDate = item.Orders.IsNotEmpty() ? item.Orders.Max(T => T.CreatedDate) : DateTime.Now.AddYears(-2);
-                    await GetUserFieldsAsync(item).ConfigureAwait(false);
+                    item.Orders = uOrders.Select(o => new Order { Id = o.Id, UserId = o.UserId, CreatedDate = o.CreatedDate }).ToList();
+                    item.OrderLatestDate = uOrders.Max(t => t.CreatedDate);
+                }
+                else
+                {
+                    item.Orders = new List<Order>();
+                    item.OrderLatestDate = DateTime.Now.AddYears(-2);
                 }
 
-                if (!string.IsNullOrEmpty(search))
+                if (usersDict.TryGetValue(item.UserId ?? string.Empty, out var u))
                 {
-                    resultList = resultList.Where(r =>
-                    r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                                       string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
-                                           .ToList();
+                    item.Email = u.Email;
+                    item.Name = u.FirstName;
+                    item.Surname = u.LastName;
                 }
             }
 
-            resultList = resultList.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
-            Logger.Info("Customer services retrieved successfully.");
+            List<Customer> resultList;
+            if (!string.IsNullOrEmpty(search))
+            {
+                resultList = customers.Where(r =>
+                    (r.Email != null && r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+            }
+            else
+            {
+                resultList = customers.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+            }
+
+            Logger.Info("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
             return resultList;
+        }
+
+        private Dictionary<string, (string Email, string FirstName, string LastName)> BuildUsersDictionary(List<string> userIds)
+        {
+            if (userIds == null || userIds.Count == 0 || UsersService?.UserManager == null)
+            {
+                return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
+            }
+            try
+            {
+                return UsersService.UserManager.Users
+                    .Where(u => userIds.Contains(u.Id))
+                    .Select(u => new { u.Id, u.Email, u.FirstName, u.LastName })
+                    .ToList()
+                    .ToDictionary(x => x.Id, x => (x.Email, x.FirstName, x.LastName), StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "BuildUsersDictionary batch fetch failed, falling back to per-item lookup.");
+                return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
+            }
+        }
+
+        private async Task<Dictionary<string, (string Email, string FirstName, string LastName)>> BuildUsersDictionaryAsync(List<string> userIds)
+        {
+            if (userIds == null || userIds.Count == 0 || UsersService?.UserManager == null)
+            {
+                return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
+            }
+            try
+            {
+                var rows = await UsersService.UserManager.Users
+                    .Where(u => userIds.Contains(u.Id))
+                    .Select(u => new { u.Id, u.Email, u.FirstName, u.LastName })
+                    .ToListAsync().ConfigureAwait(false);
+                return rows.ToDictionary(x => x.Id, x => (x.Email, x.FirstName, x.LastName), StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "BuildUsersDictionaryAsync batch fetch failed, falling back to per-item lookup.");
+                return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
+            }
         }
 
         public void GetUserFields(Customer item)
