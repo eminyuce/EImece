@@ -475,9 +475,8 @@ async function runAudit() {
   console.log(`Attempting customer registration with: ${testRegEmail}`);
   await desktopPage.goto(`${BASE}/account/register/`, { waitUntil: 'networkidle' });
   try {
-    const regForm = desktopPage.locator('form').first();
-    await desktopPage.fill('input[name="Name"], #Name', 'QA Tester');
-    await desktopPage.fill('input[name="Surname"], #Surname', 'Automated');
+    await desktopPage.fill('input[name="FirstName"], #FirstName, #Name', 'QA Tester');
+    await desktopPage.fill('input[name="LastName"], #LastName, #Surname', 'Automated');
     await desktopPage.fill('input[name="Email"], #Email', testRegEmail);
     await desktopPage.fill('input[name="Password"], #Password', 'Test12345!');
     await desktopPage.fill('input[name="ConfirmPassword"], #ConfirmPassword', 'Test12345!');
@@ -643,8 +642,8 @@ async function runAudit() {
   const anonPage = await anonContext.newPage();
   // If BypassAdminAuth is enabled, let's test if protected customer/admin routes behave
   const anonCustomerRes = await anonPage.goto(`${BASE}/customers/`, { waitUntil: 'networkidle' });
-  console.log(`Anonymous access to /customers/ status: ${anonCustomerRes?.status()}, URL: ${anonPage.url()}`);
-  if (!anonPage.url().includes('/account/login') && !anonPage.url().includes('/account/register') && anonCustomerRes?.status() === 200) {
+  const anonUrl = anonPage.url().toLowerCase();
+  if (!anonUrl.includes('/account/login') && !anonUrl.includes('/account/register') && anonCustomerRes?.status() === 200) {
     // If it allows anonymous access to customer profile
     const custText = await anonPage.evaluate(() => document.body.innerText);
     if (custText.includes('Siparişlerim') || custText.includes('Profilim')) {

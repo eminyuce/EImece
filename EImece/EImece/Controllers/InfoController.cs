@@ -39,24 +39,31 @@ namespace EImece.Controllers
             if (page == null)
             {
                 var settingVal = SettingService.GetSettingByKey(id);
-                if (!string.IsNullOrWhiteSpace(settingVal))
+                var allSettings = SettingService.GetAllActiveSettings();
+                var settingsList = allSettings != null ? allSettings.Select(s => new SettingDto
                 {
-                    var allSettings = SettingService.GetAllActiveSettings();
+                    Id = s.Id,
+                    SettingKey = s.SettingKey,
+                    SettingValue = s.SettingValue,
+                    Lang = s.Lang
+                }).ToList() : new System.Collections.Generic.List<SettingDto>();
+
+                string title = GetFriendlyInfoTitle(id);
+                string description = !string.IsNullOrWhiteSpace(settingVal)
+                    ? settingVal
+                    : GetFriendlyInfoDefaultContent(id, title);
+
+                if (!string.IsNullOrEmpty(title) || !string.IsNullOrWhiteSpace(settingVal))
+                {
                     page = new MenuPageViewModel
                     {
                         Menu = new StorefrontMenuDto
                         {
-                            Name = id,
-                            Description = settingVal,
+                            Name = !string.IsNullOrEmpty(title) ? title : id,
+                            Description = description,
                             IsActive = true
                         },
-                        ApplicationSettings = allSettings != null ? allSettings.Select(s => new SettingDto
-                        {
-                            Id = s.Id,
-                            SettingKey = s.SettingKey,
-                            SettingValue = s.SettingValue,
-                            Lang = s.Lang
-                        }).ToList() : new System.Collections.Generic.List<SettingDto>()
+                        ApplicationSettings = settingsList
                     };
                 }
                 else
@@ -65,6 +72,54 @@ namespace EImece.Controllers
                 }
             }
             return View(page);
+        }
+
+        private static string GetFriendlyInfoTitle(string slug)
+        {
+            if (string.IsNullOrWhiteSpace(slug)) return string.Empty;
+            var normalized = slug.Trim().ToLowerInvariant().Replace("-", "").Replace("_", "");
+
+            switch (normalized)
+            {
+                case "contactus":
+                case "iletisim":
+                    return "İletişim";
+                case "aboutus":
+                case "hakkimizda":
+                    return "Hakkımızda";
+                case "delivery":
+                case "teslimat":
+                case "kargo":
+                    return "Teslimat ve Kargo Bilgileri";
+                case "faq":
+                case "sss":
+                    return "Sıkça Sorulan Sorular";
+                case "privacy":
+                case "gizlilik":
+                case "gizlilikpolitikasi":
+                    return "Gizlilik Politikası";
+                case "returnconditions":
+                case "iade":
+                case "iadevedegisim":
+                    return "İade ve Değişim Koşulları";
+                case "distancecontract":
+                case "mesafelisatis":
+                case "mesafelisatissozlesmesi":
+                    return "Mesafeli Satış Sözleşmesi";
+                case "kvkk":
+                case "kvkkaydinlatmametni":
+                    return "KVKK Aydınlatma Metni";
+                case "terms":
+                case "kullanimkosullari":
+                    return "Kullanım Koşulları";
+                default:
+                    return GeneralHelper.GetStringTitleCase(slug.Replace("-", " ").Replace("_", " "));
+            }
+        }
+
+        private static string GetFriendlyInfoDefaultContent(string slug, string title)
+        {
+            return $"<div class=\"info-content\"><p>{title} sayfamız güncellenmektedir. Detaylı bilgi için müşteri hizmetlerimizle iletişime geçebilirsiniz.</p></div>";
         }
     }
 }
