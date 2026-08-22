@@ -742,15 +742,19 @@ namespace EImece.Domain.Services
         /// <summary>
         /// Drops every product list/search MemoryCache entry after a mutating admin action so the
         /// next storefront request rebuilds from SQL instead of serving stale AbsoluteExpiration data.
+        /// Also drops cached category detail/children DTOs because they embed active-product counts
+        /// (parent = sum of children) that would otherwise go stale until their medium TTL expires.
         /// </summary>
         public void InvalidateProductListCaches()
         {
             var listRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
             var searchRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductSearchPrefix);
+            var categoryRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.CategoryPrefix);
             ProductServiceLogger.Info(
-                "InvalidateProductListCaches removed {0} list + {1} search entries",
+                "InvalidateProductListCaches removed {0} list + {1} search + {2} category entries",
                 listRemoved,
-                searchRemoved);
+                searchRemoved,
+                categoryRemoved);
         }
 
         public override Product SaveOrEditEntity(Product entity)
