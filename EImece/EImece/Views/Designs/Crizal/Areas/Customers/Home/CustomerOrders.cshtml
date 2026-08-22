@@ -5,160 +5,91 @@
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using System.Resources;
-@using EImece.Domain.Models.DTOs;
 @model CustomerOrdersViewModel
 
 @{
-    var myOrders = Model.Orders ?? new List<OrderDto>();
-    var paginatedOrders = new PaginatedModelList<OrderDto>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
-    var hasOrders = myOrders.Count > 0;
+    var myOrders = Model.Orders;
+    var paginatedOrders = new PaginatedModelList<OrderListItemDto>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
 }
 
 <!-- Page Content-->
-<div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
+<div class="container pt-lg-3 pb-5 mb-sm-3">
     <!-- Toast notifications-->
     <div class="toast-container toast-bottom-center">
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
-                <i class="fas fa-check-circle mr-2" aria-hidden="true"></i><span class="font-weight-semibold me-auto">Updated!</span>
+                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold me-auto">Updated!</span>
                 <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
         </div>
     </div>
     <div class="row pt-1">
+        <!-- Main content-->
+        <!-- Main content-->
         <div class="col-lg-12">
-            @Html.Partial("_CustomerDetails", Model.Customer)
+            @Html.Partial("_CustomerSummaryDetails", Model.Customer)
 
-            @if (!hasOrders)
-            {
-                <div class="customer-panel">
-                    <output class="customer-orders-empty text-center py-5 px-3 d-block">
-                        <div class="customer-orders-empty__icon" aria-hidden="true">
-                            <i class="fas fa-box-open"></i>
-                        </div>
-                        <h2 class="customer-orders-empty__title h4 mb-2">Henüz siparişiniz yok</h2>
-                        <p class="customer-orders-empty__text text-muted mb-4">Alışverişe başladığınızda siparişleriniz burada listelenir.</p>
-                        <a class="btn customer-btn-primary px-4" href="@Url.Action("Index", "Home", new { area = "" })">
-                            <i class="fas fa-home mr-1" aria-hidden="true"></i>
-                            Alışverişe devam et
-                        </a>
-                    </output>
-                </div>
-            }
-            else
-            {
-                <div class="customer-panel customer-panel__section customer-panel__section--last">
-                <!-- Desktop / tablet table -->
-                <div class="table-responsive font-size-sm d-none d-md-block">
-                    <table class="table table-hover mb-0">
-                        <thead>
+            <!-- Orders table-->
+            <div class="table-responsive font-size-sm">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@Resource.OrderStatus</th>
+                            <th>@Resource.OrderNumber</th>
+                            <th>@Resource.ShipmentCompanyName</th>
+                            <th>@Resource.ShipmentTrackingNumber</th>
+                            <th>@Resource.DatePurchased</th>
+                            <th>@Resource.Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var o in paginatedOrders)
+                        {
                             <tr>
-                                <th></th>
-                                <th>@Resource.OrderStatus</th>
-                                <th>@Resource.OrderNumber</th>
-                                <th>@Resource.ShipmentCompanyName</th>
-                                <th>@Resource.ShipmentTrackingNumber</th>
-                                <th>@Resource.DatePurchased</th>
-                                <th>@Resource.Total</th>
+                                <td>
+                                    @Html.ActionLink(Resource.OrderSummary,
+                                        "CustomerOrderDetail", "Home", new { id = o.Id },
+                                        new { @class = "btn btn-pill btn-outline-success", area = "customers" })
+                                </td>
+                                <td>
+                                    <h5>@createOrderStatus(o)</h5>
+                                </td>
+                                <td>
+                                    @o.OrderNumber
+                                </td>
+                                <td>
+                                    @o.ShipmentCompanyName
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
+                                    {
+                                        <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))" target="_blank">
+                                            @o.ShipmentTrackingNumber
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        @Resource.NoShipmentDoneYetForYourOrder
+                                    }
+                                </td>
+                                <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
+                                <td>@o.PaidPriceDecimal.CurrencySign()</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var o in paginatedOrders)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.ActionLink(Resource.OrderSummary,
-                                            "CustomerOrderDetail", "Home", new { id = o.Id },
-                                            new { @class = "btn btn-pill btn-outline-success", area = "customers" })
-                                    </td>
-                                    <td>
-                                        <h5>@createOrderStatus(o)</h5>
-                                    </td>
-                                    <td>
-                                        @o.OrderNumber
-                                    </td>
-                                    <td>
-                                        @o.ShipmentCompanyName
-                                    </td>
-                                    <td>
-                                        @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
-                                        {
-                                            <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))" target="_blank">
-                                                @o.ShipmentTrackingNumber
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            @Resource.NoShipmentDoneYetForYourOrder
-                                        }
-                                    </td>
-                                    <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
-                                    <td>@o.PaidPriceDecimal.CurrencySign()</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Mobile order cards -->
-                <div class="customer-orders-cards d-md-none">
-                    @foreach (var o in paginatedOrders)
-                    {
-                        <article class="customer-order-card mb-3">
-                            <div class="customer-order-card__header">
-                                <div>
-                                    <div class="customer-order-card__label">@Resource.OrderNumber</div>
-                                    <div class="customer-order-card__value font-weight-semibold">@o.OrderNumber</div>
-                                </div>
-                                <div>@createOrderStatus(o)</div>
-                            </div>
-                            <div class="customer-order-card__meta mb-3">
-                                <dl class="mb-0">
-                                    <dt>@Resource.DatePurchased</dt>
-                                    <dd>@o.CreatedDate.ToString("dd MMMM yyyy HH:mm")</dd>
-                                </dl>
-                                <dl class="mb-0">
-                                    <dt>@Resource.Total</dt>
-                                    <dd>@o.PaidPriceDecimal.CurrencySign()</dd>
-                                </dl>
-                                <dl class="mb-0">
-                                    <dt>@Resource.ShipmentCompanyName</dt>
-                                    <dd>@(string.IsNullOrEmpty(o.ShipmentCompanyName) ? "—" : o.ShipmentCompanyName)</dd>
-                                </dl>
-                                <dl class="mb-0">
-                                    <dt>@Resource.ShipmentTrackingNumber</dt>
-                                    <dd>
-                                        @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
-                                        {
-                                            <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))" target="_blank" rel="noopener">
-                                                @o.ShipmentTrackingNumber
-                                            </a>
-                                        }
-                                        else
-                                        {
-                                            @Resource.NoShipmentDoneYetForYourOrder
-                                        }
-                                    </dd>
-                                </dl>
-                            </div>
-                            @Html.ActionLink(Resource.OrderSummary,
-                                "CustomerOrderDetail", "Home", new { id = o.Id },
-                                new { @class = "btn customer-btn-primary btn-block", area = "customers" })
-                        </article>
-                    }
-                </div>
-
-                <hr class="pb-4">
-                @Html.Partial("_PaginatedOrderList", paginatedOrders)
-                </div>
-            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr class="pb-4">
+            @Html.Partial("_PaginatedOrderList", paginatedOrders)
         </div>
     </div>
 </div>
 
-@helper createOrderStatus(OrderDto o)
+@helper createOrderStatus(OrderListItemDto o)
 {
 
     var os = (EImeceOrderStatus)o.OrderStatus;

@@ -1,6 +1,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -64,13 +65,13 @@ namespace EImece.Domain.Models.FrontModels
         }
 
         [JsonIgnore]
-        public SettingDto CargoCompany { get; set; }
+        public SettingValueDto CargoCompany { get; set; }
 
         [JsonIgnore]
-        public SettingDto BasketMinTotalPriceForCargo { get; set; }
+        public SettingValueDto BasketMinTotalPriceForCargo { get; set; }
 
         [JsonIgnore]
-        public SettingDto CargoPrice { get; set; }
+        public SettingValueDto CargoPrice { get; set; }
 
         [JsonIgnore]
         public decimal CargoPriceValue

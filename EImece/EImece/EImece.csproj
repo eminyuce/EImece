@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -1069,6 +1069,7 @@
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\Index.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\SendMessageToSeller.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\_CustomerDetails.cshtml" />
+    <Content Include="Views\Designs\Modern\Areas\Customers\Home\_CustomerSummaryDetails.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\_PaginatedOrderList.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\_SendContactSellerForCustomer.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Shared\_Layout.cshtml" />
@@ -1202,6 +1203,7 @@
     <Content Include="Views\Designs\Crizal\Account\VerifyCode.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\_ViewStart.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_CustomerDetails.cshtml" />
+    <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_CustomerSummaryDetails.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_PaginatedOrderList.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_SendContactSellerForCustomer.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\ChangePassword.cshtml" />
@@ -1477,6 +1479,7 @@
     <Content Include="Content\mstore\fonts\Flaticon.ttf" />
     <Content Include="Content\mstore\fonts\Flaticon.woff" />
     <Content Include="Areas\Customers\Views\Home\_CustomerDetails.cshtml" />
+    <Content Include="Areas\Customers\Views\Home\_CustomerSummaryDetails.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_PaginatedOrderList.cshtml" />
     <Content Include="Areas\Admin\Views\Brands\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Brands\SaveOrEdit.cshtml" />

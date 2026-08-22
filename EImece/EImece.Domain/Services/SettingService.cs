@@ -213,6 +213,77 @@ namespace EImece.Domain.Services
             };
         }
 
+        // Minimal projection delegates — single column, bypasses full-entity cache
+        public string GetSettingValue(string key)
+        {
+            var val = SettingRepository.GetSettingValue(key);
+            if (!string.IsNullOrWhiteSpace(val)) return val;
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
+        public string GetSettingValue(string key, int language)
+        {
+            var val = SettingRepository.GetSettingValue(key, language);
+            if (!string.IsNullOrWhiteSpace(val)) return val;
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
+        public async Task<string> GetSettingValueAsync(string key, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var val = await SettingRepository.GetSettingValueAsync(key, cancellationToken).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(val)) return val;
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
+        public async Task<string> GetSettingValueAsync(string key, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var val = await SettingRepository.GetSettingValueAsync(key, language, cancellationToken).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(val)) return val;
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
+        public Models.DTOs.Storefront.SettingValueDto GetSettingValueDtoByKey(string key)
+        {
+            return new Models.DTOs.Storefront.SettingValueDto { SettingValue = GetSettingValue(key) };
+        }
+
+        public Models.DTOs.Storefront.SettingValueDto GetSettingValueDtoByKey(string key, int language)
+        {
+            return new Models.DTOs.Storefront.SettingValueDto { SettingValue = GetSettingValue(key, language) };
+        }
+
+        public async Task<Models.DTOs.Storefront.SettingValueDto> GetSettingValueDtoByKeyAsync(string key, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var val = await GetSettingValueAsync(key, cancellationToken).ConfigureAwait(false);
+            return new Models.DTOs.Storefront.SettingValueDto { SettingValue = val };
+        }
+
+        public async Task<Models.DTOs.Storefront.SettingValueDto> GetSettingValueDtoByKeyAsync(string key, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var val = await GetSettingValueAsync(key, language, cancellationToken).ConfigureAwait(false);
+            return new Models.DTOs.Storefront.SettingValueDto { SettingValue = val };
+        }
+
+        public Dictionary<string, string> GetSettingValues(IEnumerable<string> keys)
+        {
+            return SettingRepository.GetSettingValues(keys);
+        }
+
+        public async Task<Dictionary<string, string>> GetSettingValuesAsync(IEnumerable<string> keys, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await SettingRepository.GetSettingValuesAsync(keys, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<Models.DTOs.Storefront.SettingKeyValueDto> GetSettingKeyValues(int language)
+        {
+            return SettingRepository.GetSettingKeyValues(language);
+        }
+
+        public async Task<List<Models.DTOs.Storefront.SettingKeyValueDto>> GetSettingKeyValuesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await SettingRepository.GetSettingKeyValuesAsync(language, cancellationToken).ConfigureAwait(false);
+        }
+
         private Setting SelectSettingByKey(List<Setting> allSettings, string key)
         {
             if (string.IsNullOrWhiteSpace(key)) return new Setting { SettingKey = key, SettingValue = NULL_VALUE };

@@ -55,14 +55,28 @@ namespace EImece.Domain.Repositories
                     ParentId = m.ParentId,
                     MenuLink = m.MenuLink,
                     Url = m.Link,
-                    Target = m.LinkIsActive ? "_blank" : "_self",
                     Description = m.Description,
                     ShortDescription = m.Description,
                     MainImageId = m.MainImageId,
                     Position = m.Position,
-                    Lang = m.Lang,
+                    PageTheme = m.PageTheme
+                };
+            }
+        }
+
+        private static Expression<Func<Menu, StorefrontMenuNavigationDto>> MenuNavigationProjection
+        {
+            get
+            {
+                return m => new StorefrontMenuNavigationDto
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    ParentId = m.ParentId,
+                    MenuLink = m.MenuLink,
+                    Url = m.Link,
                     PageTheme = m.PageTheme,
-                    IsActive = m.IsActive
+                    Position = m.Position
                 };
             }
         }
@@ -148,6 +162,39 @@ namespace EImece.Domain.Repositories
             return BuildMenuHierarchy(allMenus);
         }
 
+        public async Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Menus.AsNoTracking()
+                .Where(m => m.Lang == language && m.IsActive)
+                .OrderBy(m => m.Position)
+                .ThenByDescending(m => m.Id)
+                .Select(MenuNavigationProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language)
+        {
+            return EImeceDbContext.Menus.AsNoTracking()
+                .Where(m => m.Lang == language && m.IsActive)
+                .OrderBy(m => m.Position)
+                .ThenByDescending(m => m.Id)
+                .Select(MenuNavigationProjection)
+                .ToList();
+        }
+
+        public async Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var allMenus = await GetStorefrontMenuNavigationAsync(language, cancellationToken).ConfigureAwait(false);
+            return BuildMenuNavigationHierarchy(allMenus);
+        }
+
+        public List<StorefrontMenuNavigationDto> BuildStorefrontMenuNavigationTree(int language)
+        {
+            var allMenus = GetStorefrontMenuNavigation(language);
+            return BuildMenuNavigationHierarchy(allMenus);
+        }
+
         private static List<StorefrontMenuDto> BuildMenuHierarchy(List<StorefrontMenuDto> allMenus)
         {
             var topLevels = allMenus.Where(m => m.ParentId == 0).OrderBy(m => m.Position).ToList();
@@ -169,6 +216,30 @@ namespace EImece.Domain.Repositories
             {
                 child.TreeLevel = childLevel;
                 PopulateMenuChildren(allMenus, child, childLevel);
+            }
+        }
+
+        private static List<StorefrontMenuNavigationDto> BuildMenuNavigationHierarchy(List<StorefrontMenuNavigationDto> allMenus)
+        {
+            var topLevels = allMenus.Where(m => m.ParentId == 0).OrderBy(m => m.Position).ToList();
+            foreach (var top in topLevels)
+            {
+                top.TreeLevel = 1;
+                PopulateMenuNavigationChildren(allMenus, top, 1);
+            }
+            return topLevels;
+        }
+
+        private static void PopulateMenuNavigationChildren(List<StorefrontMenuNavigationDto> allMenus, StorefrontMenuNavigationDto current, int level)
+        {
+            var children = allMenus.Where(m => m.ParentId == current.Id).OrderBy(m => m.Position).ToList();
+            current.Children = children;
+            current.SideMenus = children;
+            int childLevel = level + 1;
+            foreach (var child in children)
+            {
+                child.TreeLevel = childLevel;
+                PopulateMenuNavigationChildren(allMenus, child, childLevel);
             }
         }
 

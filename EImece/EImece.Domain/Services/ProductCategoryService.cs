@@ -132,7 +132,7 @@ namespace EImece.Domain.Services
             var childCategories = await ProductCategoryRepository.GetStorefrontChildrenCategoriesAsync(categoryId, cancellationToken).ConfigureAwait(false);
             var childCategoryIds = childCategories.Select(c => c.Id).ToList();
 
-            var priceFilterSetting = await SettingService.GetSettingDtoByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
+            var priceFilterSetting = await SettingService.GetSettingValueDtoByKeyAsync(Constants.ProductPriceFilterSetting).ConfigureAwait(false);
 
             var result = new ProductCategoryViewModel();
             result.CategoryDto = categoryDto;
@@ -197,8 +197,8 @@ namespace EImece.Domain.Services
             result.StorefrontBrands = await BrandService.GetStorefrontBrandsAsync(language, categoryId, cancellationToken).ConfigureAwait(false);
             result.ProductCategoryTree = await BuildTreeAsync(true, language).ConfigureAwait(false);
             result.PriceFilterSetting = priceFilterSetting;
-            result.IsProductPriceEnable = await SettingService.GetSettingDtoByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
-            result.IsProductReviewEnable = await SettingService.GetSettingDtoByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
+            result.IsProductPriceEnable = await SettingService.GetSettingValueDtoByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
+            result.IsProductReviewEnable = await SettingService.GetSettingValueDtoByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
 
             return result;
         }

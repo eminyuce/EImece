@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.props" Condition="Exists('..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.props')" />
   <Import Project="..\packages\Microsoft.SourceLink.Common.10.0.301\build\Microsoft.SourceLink.Common.props" Condition="Exists('..\packages\Microsoft.SourceLink.Common.10.0.301\build\Microsoft.SourceLink.Common.props')" />
@@ -515,12 +515,21 @@
     <Compile Include="Models\DTOs\Storefront\StorefrontBrandDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontTagDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontMenuDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\StorefrontMenuNavigationDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\StorefrontMenuLinkDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontStoryCardDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontStoryDetailDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontBannerDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontPageDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontMenuFileDto.cs" />
     <Compile Include="Models\DTOs\Storefront\StorefrontFilterDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\SettingValueDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\SettingKeyValueDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\OrderListItemDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\CustomerSummaryDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\TemplateXmlDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\AddressSummaryDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\FaqSummaryDto.cs" />
     <Compile Include="Models\Enums\EImeceCustomerType.cs" />
     <Compile Include="Models\Enums\EImeceOrderStatus.cs" />
     <Compile Include="Models\Enums\EImeceOrderType.cs" />
@@ -960,3 +969,5 @@
   <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.4.151.0\build\net48\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.4.151.0\build\net48\SkiaSharp.NativeAssets.macOS.targets')" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.Win32.4.151.0\build\net48\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Win32.4.151.0\build\net48\SkiaSharp.NativeAssets.Win32.targets')" />
 </Project>
+
+

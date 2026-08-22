@@ -40,13 +40,11 @@ namespace EImece.Controllers
             {
                 var settingVal = SettingService.GetSettingByKey(id);
                 var allSettings = SettingService.GetAllActiveSettings();
-                var settingsList = allSettings != null ? allSettings.Select(s => new SettingDto
+                var settingsList = allSettings != null ? allSettings.Select(s => new SettingKeyValueDto
                 {
-                    Id = s.Id,
                     SettingKey = s.SettingKey,
-                    SettingValue = s.SettingValue,
-                    Lang = s.Lang
-                }).ToList() : new System.Collections.Generic.List<SettingDto>();
+                    SettingValue = s.SettingValue
+                }).ToList() : new System.Collections.Generic.List<SettingKeyValueDto>();
 
                 string title = GetFriendlyInfoTitle(id);
                 string description = !string.IsNullOrWhiteSpace(settingVal)

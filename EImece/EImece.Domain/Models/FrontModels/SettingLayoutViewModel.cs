@@ -1,13 +1,13 @@
-using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 
 namespace EImece.Domain.Models.FrontModels
 {
     public class SettingLayoutViewModel
     {
-        public SettingDto WebSiteCompanyPhoneAndLocation { get; set; }
-        public SettingDto WebSiteCompanyEmailAddress { get; set; }
-        public SettingDto WebSiteLogo { get; set; }
-        public SettingDto CompanyName { get; set; }
+        public SettingValueDto WebSiteCompanyPhoneAndLocation { get; set; }
+        public SettingValueDto WebSiteCompanyEmailAddress { get; set; }
+        public SettingValueDto WebSiteLogo { get; set; }
+        public SettingValueDto CompanyName { get; set; }
 
         public bool isMobilePage { get; set; }
     }

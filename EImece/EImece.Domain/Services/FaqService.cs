@@ -42,6 +42,24 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
+        public async Task<List<Models.DTOs.Storefront.FaqSummaryDto>> GetStorefrontFaqSummariesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var cacheKey = CacheKeys.FaqListAsync(language) + "-Summary";
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => FaqRepository.GetStorefrontFaqSummariesAsync(language, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+        }
+
+        public List<Models.DTOs.Storefront.FaqSummaryDto> GetStorefrontFaqSummaries(int language)
+        {
+            var cacheKey = CacheKeys.FaqList(language) + "-Summary";
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => FaqRepository.GetStorefrontFaqSummaries(language),
+                AppConfig.CacheLongSeconds);
+        }
+
         private void InvalidateFaqCaches()
         {
             DataCachingProvider.ClearByPrefix(CacheKeys.FaqPrefix);

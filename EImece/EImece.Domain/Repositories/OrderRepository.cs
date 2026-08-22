@@ -123,7 +123,18 @@ namespace EImece.Domain.Repositories
                         Quantity = op.Quantity,
                         TotalPrice = op.TotalPrice,
                         ProductSalePrice = op.ProductSalePrice,
-                        ProductSpecItems = op.ProductSpecItems
+                        ProductSpecItems = op.ProductSpecItems,
+                        Product = op.Product != null ? new EImece.Domain.Models.DTOs.Storefront.StorefrontProductCardDto
+                        {
+                            Id = op.Product.Id,
+                            Name = op.Product.Name,
+                            ProductCategoryId = op.Product.ProductCategoryId,
+                            ProductCategoryName = op.Product.ProductCategory != null ? op.Product.ProductCategory.Name : op.CategoryName,
+                            MainImageId = op.Product.MainImageId,
+                            Price = op.Product.Price,
+                            Discount = op.Product.Discount,
+                            Rating = op.Product.Rating
+                        } : null
                     }).ToList()
                 };
             }
@@ -291,6 +302,52 @@ namespace EImece.Domain.Repositories
                 .OrderByDescending(o => o.UpdatedDate)
                 .Select(OrderSummaryProjection)
                 .ToList();
+        }
+
+        public async Task<List<Models.DTOs.Storefront.OrderListItemDto>> GetStorefrontOrderListByUserIdAsync(string userId, string search, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            search = search.ToStr().Trim();
+            var query = EImeceDbContext.Orders.AsNoTracking()
+                .Where(o => o.UserId == userId);
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(o => o.OrderGuid == search || o.OrderNumber == search);
+            }
+            return await query
+                .OrderByDescending(o => o.UpdatedDate)
+                .Select(o => new Models.DTOs.Storefront.OrderListItemDto
+                {
+                    Id = o.Id,
+                    OrderNumber = o.OrderNumber,
+                    OrderStatus = o.OrderStatus,
+                    CreatedDate = o.CreatedDate,
+                    PaidPrice = o.PaidPrice,
+                    ShipmentTrackingNumber = o.ShipmentTrackingNumber,
+                    ShipmentCompanyName = o.ShipmentCompanyName
+                }).ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<Models.DTOs.Storefront.OrderListItemDto> GetStorefrontOrderListByUserId(string userId, string search)
+        {
+            search = search.ToStr().Trim();
+            var query = EImeceDbContext.Orders.AsNoTracking()
+                .Where(o => o.UserId == userId);
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(o => o.OrderGuid == search || o.OrderNumber == search);
+            }
+            return query
+                .OrderByDescending(o => o.UpdatedDate)
+                .Select(o => new Models.DTOs.Storefront.OrderListItemDto
+                {
+                    Id = o.Id,
+                    OrderNumber = o.OrderNumber,
+                    OrderStatus = o.OrderStatus,
+                    CreatedDate = o.CreatedDate,
+                    PaidPrice = o.PaidPrice,
+                    ShipmentTrackingNumber = o.ShipmentTrackingNumber,
+                    ShipmentCompanyName = o.ShipmentCompanyName
+                }).ToList();
         }
 
         #endregion

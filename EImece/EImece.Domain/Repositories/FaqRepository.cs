@@ -65,6 +65,40 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
+        private static Expression<Func<Faq, Models.DTOs.Storefront.FaqSummaryDto>> FaqSummaryProjection
+        {
+            get
+            {
+                return f => new Models.DTOs.Storefront.FaqSummaryDto
+                {
+                    Id = f.Id,
+                    Question = f.Question,
+                    Answer = f.Answer
+                };
+            }
+        }
+
+        public async Task<List<Models.DTOs.Storefront.FaqSummaryDto>> GetStorefrontFaqSummariesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Faqs.AsNoTracking()
+                .Where(f => f.Lang == language && f.IsActive)
+                .OrderBy(f => f.Position)
+                .ThenByDescending(f => f.Id)
+                .Select(FaqSummaryProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<Models.DTOs.Storefront.FaqSummaryDto> GetStorefrontFaqSummaries(int language)
+        {
+            return EImeceDbContext.Faqs.AsNoTracking()
+                .Where(f => f.Lang == language && f.IsActive)
+                .OrderBy(f => f.Position)
+                .ThenByDescending(f => f.Id)
+                .Select(FaqSummaryProjection)
+                .ToList();
+        }
+
         #endregion
     }
 }

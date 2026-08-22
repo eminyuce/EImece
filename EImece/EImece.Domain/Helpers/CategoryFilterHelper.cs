@@ -15,6 +15,7 @@ namespace EImece.Domain.Helpers
         private List<string> selectedFilters;
         private Setting priceFilterSetting;
         private Models.DTOs.SettingDto priceFilterSettingDto;
+        private Models.DTOs.Storefront.SettingValueDto priceFilterSettingValueDto;
 
         public CategoryFilterHelper(Setting priceFilterSetting)
         {
@@ -24,6 +25,11 @@ namespace EImece.Domain.Helpers
         public CategoryFilterHelper(Models.DTOs.SettingDto priceFilterSettingDto)
         {
             this.priceFilterSettingDto = priceFilterSettingDto;
+        }
+
+        public CategoryFilterHelper(Models.DTOs.Storefront.SettingValueDto priceFilterSettingValueDto)
+        {
+            this.priceFilterSettingValueDto = priceFilterSettingValueDto;
         }
 
         public CategoryFilterHelper(List<CategoryFilterType> categoryFilterTypes, List<string> selectedFilters)
@@ -305,6 +311,52 @@ namespace EImece.Domain.Helpers
             }
         }
 
+        public static PriceFilterConfig GetPriceFilterConfig(Models.DTOs.Storefront.SettingValueDto priceFilterSetting)
+        {
+            if (priceFilterSetting == null || string.IsNullOrWhiteSpace(priceFilterSetting.SettingValue))
+            {
+                return new PriceFilterConfig
+                {
+                    PriceRanges = new List<PriceRange>
+                    {
+                        new PriceRange { Min = 0, Max = 49, IsLast = false },
+                        new PriceRange { Min = 49, Max = 99, IsLast = false },
+                        new PriceRange { Min = 99, Max = 499, IsLast = false },
+                        new PriceRange { Min = 499, Max = 999, IsLast = false },
+                        new PriceRange { Min = 999, Max = 4999, IsLast = false },
+                        new PriceRange { Min = 4999, Max = 9999999, IsLast = true }
+                    }
+                };
+            }
+            else
+            {
+                try
+                {
+                    var json = priceFilterSetting.SettingValue.ToStr();
+                    var result = JsonConvert.DeserializeObject<PriceFilterConfig>(json);
+                    if (result != null && result.PriceRanges != null && result.PriceRanges.Count > 0)
+                    {
+                        return result;
+                    }
+                }
+                catch
+                {
+                }
+                return new PriceFilterConfig
+                {
+                    PriceRanges = new List<PriceRange>
+                    {
+                        new PriceRange { Min = 0, Max = 49, IsLast = false },
+                        new PriceRange { Min = 49, Max = 99, IsLast = false },
+                        new PriceRange { Min = 99, Max = 499, IsLast = false },
+                        new PriceRange { Min = 499, Max = 999, IsLast = false },
+                        new PriceRange { Min = 999, Max = 4999, IsLast = false },
+                        new PriceRange { Min = 4999, Max = 9999999, IsLast = true }
+                    }
+                };
+            }
+        }
+
         public static void ParseCategoryFilter(
             string filter,
             Models.DTOs.SettingDto priceFilterSetting,
@@ -363,6 +415,71 @@ namespace EImece.Domain.Helpers
                         if (rangeIdx >= 0 && rangeIdx < priceFilterConfig.PriceRanges.Count)
                         {
                             priceRanges.Add(priceFilterConfig.PriceRanges[rangeIdx]);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void ParseCategoryFilter(
+            string filter,
+            Models.DTOs.Storefront.SettingValueDto priceFilterSetting,
+            out List<int> brandIds,
+            out List<int> ratings,
+            out List<PriceRange> priceRanges)
+        {
+            brandIds = new List<int>();
+            ratings = new List<int>();
+            priceRanges = new List<PriceRange>();
+
+            if (string.IsNullOrWhiteSpace(filter))
+            {
+                return;
+            }
+
+            var tokens = filter.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries)
+                               .Select(t => t.Trim())
+                               .Where(t => !string.IsNullOrEmpty(t))
+                               .ToList();
+
+            var priceFilterConfig = GetPriceFilterConfig(priceFilterSetting);
+
+            foreach (var token in tokens)
+            {
+                if (token.Length < 2)
+                {
+                    continue;
+                }
+
+                char prefix = char.ToLowerInvariant(token[0]);
+                string valueStr = token.Substring(1);
+
+                if (prefix == 'b')
+                {
+                    if (int.TryParse(valueStr, out int bId) && bId > 0 && !brandIds.Contains(bId))
+                    {
+                        brandIds.Add(bId);
+                    }
+                }
+                else if (prefix == 'r')
+                {
+                    if (int.TryParse(valueStr, out int rVal) && rVal > 0 && !ratings.Contains(rVal))
+                    {
+                        ratings.Add(rVal);
+                    }
+                }
+                else if (prefix == 'p')
+                {
+                    if (int.TryParse(valueStr, out int pVal))
+                    {
+                        int index = pVal - 100;
+                        if (priceFilterConfig.PriceRanges != null && index >= 0 && index < priceFilterConfig.PriceRanges.Count)
+                        {
+                            var pr = priceFilterConfig.PriceRanges[index];
+                            if (!priceRanges.Contains(pr))
+                            {
+                                priceRanges.Add(pr);
+                            }
                         }
                     }
                 }
@@ -436,6 +553,8 @@ namespace EImece.Domain.Helpers
 
         private PriceFilterConfig ReadPriceFilterFromSetting()
         {
+            if (this.priceFilterSettingValueDto != null)
+                return GetPriceFilterConfig(this.priceFilterSettingValueDto);
             if (this.priceFilterSettingDto != null)
                 return GetPriceFilterConfig(this.priceFilterSettingDto);
             return GetPriceFilterConfig(this.priceFilterSetting);

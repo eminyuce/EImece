@@ -248,9 +248,9 @@ namespace EImece.Controllers
                 result = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
             }
 
-            result.CargoCompany = SettingService.GetSettingDtoByKey(Domain.Constants.CargoCompany);
-            result.BasketMinTotalPriceForCargo = SettingService.GetSettingDtoByKey(Domain.Constants.BasketMinTotalPriceForCargo);
-            result.CargoPrice = SettingService.GetSettingDtoByKey(Domain.Constants.CargoPrice);
+            result.CargoCompany = SettingService.GetSettingValueDtoByKey(Domain.Constants.CargoCompany);
+            result.BasketMinTotalPriceForCargo = SettingService.GetSettingValueDtoByKey(Domain.Constants.BasketMinTotalPriceForCargo);
+            result.CargoPrice = SettingService.GetSettingValueDtoByKey(Domain.Constants.CargoPrice);
             return result;
         }
 
@@ -322,9 +322,9 @@ namespace EImece.Controllers
                 PaymentLogger.Info($"Updated shopping cart UserId to: {item.UserId}");
             }
 
-            result.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
-            result.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            result.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
+            result.CargoCompany = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoCompany);
+            result.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            result.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
             PaymentLogger.Info("Set cargo details for shopping cart.");
             return result;
         }
@@ -864,9 +864,9 @@ namespace EImece.Controllers
             buyNowModel.ShoppingCartItem.Quantity = 1;
             buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
             PaymentLogger.Info($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");
-            buyNowModel.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
-            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            buyNowModel.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
+            buyNowModel.CargoCompany = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoCompany);
+            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyNowModel.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
             PaymentLogger.Debug("Set cargo details in BuyNow model.");
             return buyNowModel;
         }
@@ -938,9 +938,9 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            buyNowModel.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
-            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            buyNowModel.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
+            buyNowModel.CargoCompany = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoCompany);
+            buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyNowModel.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
             buyNowModel.Customer.Lang = CurrentLanguage;
             PaymentLogger.Debug("Updated BuyNow model with cargo and language details.");
 
@@ -1293,9 +1293,9 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            buyWithNoAccountCreation.CargoCompany = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoCompany);
-            buyWithNoAccountCreation.BasketMinTotalPriceForCargo = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
-            buyWithNoAccountCreation.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Domain.Constants.CargoPrice);
+            buyWithNoAccountCreation.CargoCompany = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoCompany);
+            buyWithNoAccountCreation.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
+            buyWithNoAccountCreation.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
             buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
             PaymentLogger.Debug("Updated buyWithNoAccountCreation model with cargo and language details.");
 
