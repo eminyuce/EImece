@@ -31,11 +31,18 @@ namespace EImece.App_Start
             // Controllers need a request scope for scoped services (validateScopes: true).
             DependencyInjectionConfig.BeginRequestScope();
             var provider = DependencyInjectionConfig.GetRequestServiceProvider() ?? _rootProvider;
-            var service = provider.GetService(serviceType);
-            if (service != null)
+            try
             {
-                // Registered services already receive property injection from their factories.
-                return service;
+                var service = provider.GetService(serviceType);
+                if (service != null)
+                {
+                    // Registered services already receive property injection from their factories.
+                    return service;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Root provider cannot resolve scoped service outside active request scope
             }
 
             if (serviceType.IsClass && !serviceType.IsAbstract && !serviceType.IsInterface)

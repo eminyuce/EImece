@@ -32,7 +32,7 @@ namespace EImece.Domain.Helpers.HtmlHelpers
                 return MvcHtmlString.Empty;
             }
 
-            switch (AppConfig.CaptchaProvider)
+            switch (CaptchaSettings.Provider)
             {
                 case CaptchaProviderType.None:
                     return MvcHtmlString.Empty;
@@ -52,7 +52,7 @@ namespace EImece.Domain.Helpers.HtmlHelpers
         /// </summary>
         public static MvcHtmlString Recaptcha(this HtmlHelper htmlHelper, string validationCssClass = "text-danger")
         {
-            if (htmlHelper == null || AppConfig.CaptchaProvider != CaptchaProviderType.Recaptcha)
+            if (htmlHelper == null || CaptchaSettings.Provider != CaptchaProviderType.Recaptcha)
             {
                 return MvcHtmlString.Empty;
             }
@@ -62,7 +62,7 @@ namespace EImece.Domain.Helpers.HtmlHelpers
 
         private static MvcHtmlString RenderRecaptcha(HtmlHelper htmlHelper, string validationCssClass)
         {
-            var siteKey = AppConfig.RecaptchaSiteKey;
+            var siteKey = CaptchaSettings.RecaptchaSiteKey;
             if (string.IsNullOrWhiteSpace(siteKey))
             {
                 return MvcHtmlString.Create(

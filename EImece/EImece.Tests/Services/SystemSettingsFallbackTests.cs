@@ -4,8 +4,10 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Infrastructure.Designs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -17,6 +19,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace EImece.Tests.Services
 {
@@ -33,12 +36,13 @@ namespace EImece.Tests.Services
             _settingService = new SettingService(_repository);
             _settingService.DataCachingProvider = new MemoryCacheProvider();
             _settingService.ClearCache();
+            DependencyResolver.SetResolver(new SimpleTestDependencyResolver(_settingService));
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            AppConfig.SettingResolver = null;
+            DependencyResolver.SetResolver(new SimpleTestDependencyResolver(null));
             _settingService?.ClearCache();
         }
 
@@ -117,35 +121,6 @@ namespace EImece.Tests.Services
         }
 
         [TestMethod]
-        public void AppConfig_WithSettingResolver_PrefersDatabaseOverWebConfig()
-        {
-            // Arrange
-            _repository.InMemSettings.Add(new Setting
-            {
-                Id = 4,
-                SettingKey = Constants.ImageUploadJpegQuality,
-                SettingValue = "92",
-                IsActive = true,
-                Description = Constants.SystemSettings
-            });
-
-            AppConfig.SettingResolver = key => _settingService.GetSettingByKey(key);
-
-            // Act & Assert
-            Assert.AreEqual(92, AppConfig.ImageUploadJpegQuality);
-        }
-
-        [TestMethod]
-        public void AppConfig_WithSettingResolver_FallsBackToWebConfigWhenDbMissing()
-        {
-            // Arrange
-            AppConfig.SettingResolver = key => _settingService.GetSettingByKey(key);
-
-            // Act & Assert (GridPageSizeNumber in Web.config is 100)
-            Assert.AreEqual(100, AppConfig.GridPageSizeNumber);
-        }
-
-        [TestMethod]
         public void SystemSettingModel_RoundTrip_MapsColonKeysAndSavesSuccessfully()
         {
             // Arrange
@@ -154,6 +129,7 @@ namespace EImece.Tests.Services
                 ActiveDesign = "Modern",
                 AllowSearchEngineIndexing = true,
                 IsSiteUnderConstruction = false,
+                UnderConstructionHtml = "<p>Bakımdayız. Saat 02:00'de açılacağız.</p>",
                 RateLimit_Enabled = true,
                 RateLimit_Login_Limit = 15,
                 RateLimit_Login_WindowMinutes = 20,
@@ -198,6 +174,7 @@ namespace EImece.Tests.Services
             var loadedModel = _settingService.GetSystemSettingModel();
             Assert.AreEqual("Modern", loadedModel.ActiveDesign);
             Assert.IsTrue(loadedModel.AllowSearchEngineIndexing);
+            Assert.AreEqual("<p>Bakımdayız. Saat 02:00'de açılacağız.</p>", loadedModel.UnderConstructionHtml);
             Assert.AreEqual(15, loadedModel.RateLimit_Login_Limit);
             Assert.AreEqual(20, loadedModel.RateLimit_Login_WindowMinutes);
             Assert.AreEqual(88, loadedModel.ImageUploadJpegQuality);
@@ -235,13 +212,107 @@ namespace EImece.Tests.Services
                 Description = Constants.SystemSettings
             });
 
-            AppConfig.SettingResolver = key => _settingService.GetSettingByKey(key);
             var designProvider = new ConfigDesignProvider();
 
             // Act & Assert
             Assert.IsTrue(SeoSettings.AllowIndexing);
             Assert.AreEqual("Modern", designProvider.GetActiveDesign());
-            Assert.IsTrue(AppConfig.IsSiteUnderConstruction);
+            Assert.IsTrue(_settingService.GetSettingByKey(Constants.IsSiteUnderConstruction).ToBool(false));
+        }
+
+        [TestMethod]
+        public void CaptchaSettings_ReflectsDynamicDbChanges()
+        {
+            // Arrange
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 13,
+                SettingKey = Constants.CaptchaProvider,
+                SettingValue = "Recaptcha",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 14,
+                SettingKey = Constants.RecaptchaSiteKey,
+                SettingValue = "site-key-123",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+
+            // Act & Assert
+            Assert.AreEqual(CaptchaProviderType.Recaptcha, CaptchaSettings.Provider);
+            Assert.AreEqual("site-key-123", CaptchaSettings.RecaptchaSiteKey);
+            Assert.IsTrue(CaptchaSettings.RecaptchaEnabled);
+            Assert.IsFalse(CaptchaSettings.IsLegacyCaptchaEnabled);
+        }
+
+        [TestMethod]
+        public void AdminSettings_ReflectsDynamicDbChanges()
+        {
+            // Arrange - with custom DB settings
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 15,
+                SettingKey = Constants.GridPageSizeNumber,
+                SettingValue = "50",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 16,
+                SettingKey = Constants.ProductShortDescriptionPreviewLength,
+                SettingValue = "250",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+
+            // Act & Assert
+            Assert.AreEqual(50, AdminSettings.GridPageSizeNumber);
+            Assert.AreEqual(250, AdminSettings.ProductShortDescriptionPreviewLength);
+        }
+
+        [TestMethod]
+        public void AppConfig_ShowThemeSelectionInAdmin_DefaultsToTrue_WhenNotSet()
+        {
+            ConfigurationManager.AppSettings["ShowThemeSelectionInAdmin"] = null;
+            Assert.IsTrue(AppConfig.ShowThemeSelectionInAdmin);
+        }
+
+        [TestMethod]
+        public void AppConfig_ShowThemeSelectionInAdmin_ReturnsConfiguredValue()
+        {
+            ConfigurationManager.AppSettings["ShowThemeSelectionInAdmin"] = "false";
+            Assert.IsFalse(AppConfig.ShowThemeSelectionInAdmin);
+
+            ConfigurationManager.AppSettings["ShowThemeSelectionInAdmin"] = "true";
+            Assert.IsTrue(AppConfig.ShowThemeSelectionInAdmin);
+        }
+
+        private class SimpleTestDependencyResolver : IDependencyResolver
+        {
+            private readonly ISettingService _service;
+
+            public SimpleTestDependencyResolver(ISettingService service)
+            {
+                _service = service;
+            }
+
+            public object GetService(Type serviceType)
+            {
+                if (serviceType == typeof(ISettingService))
+                {
+                    return _service;
+                }
+                return null;
+            }
+
+            public IEnumerable<object> GetServices(Type serviceType)
+            {
+                return Enumerable.Empty<object>();
+            }
         }
 
         private class FakeDbContextProxy : RealProxy

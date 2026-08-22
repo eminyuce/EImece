@@ -1,22 +1,21 @@
 using EImece.Domain;
-using System.Configuration;
+using EImece.Domain.Services.IServices;
+using System.Web.Mvc;
 
 namespace EImece.Infrastructure.Designs
 {
     public class ConfigDesignProvider : IDesignProvider
     {
-        public static string AppSettingsKey { get; set; } = "ActiveDesign";
-
         public string GetActiveDesign()
         {
-            var design = AppConfig.ActiveDesign;
+            var settingService = DependencyResolver.Current?.GetService<ISettingService>();
+            var design = settingService?.GetSettingByKey(Constants.ActiveDesign);
             if (!string.IsNullOrWhiteSpace(design))
             {
                 return design.Trim();
             }
 
-            var appSettingDesign = ConfigurationManager.AppSettings[AppSettingsKey];
-            return string.IsNullOrWhiteSpace(appSettingDesign) ? string.Empty : appSettingDesign.Trim();
+            return Constants.DefaultActiveDesign;
         }
     }
 }

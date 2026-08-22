@@ -212,6 +212,7 @@ namespace EImece.Areas.Admin.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
+            ViewBag.GridPageSizeNumber = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
 
             if (!IsProductPriceEnabled)
             {
@@ -241,7 +242,9 @@ namespace EImece.Areas.Admin.Controllers
         /// </summary>
         private bool MustRedirectToEnableAuthenticator(ActionExecutingContext filterContext)
         {
-            if (!AppConfig.RequireAdminAuthenticator || AppConfig.BypassAdminAuth)
+            bool requireAuth = SettingService?.GetSettingByKey(Domain.Constants.RequireAdminAuthenticator).ToBool(Domain.Constants.DefaultRequireAdminAuthenticator)
+                               ?? Domain.Constants.DefaultRequireAdminAuthenticator;
+            if (!requireAuth || AppConfig.BypassAdminAuth)
             {
                 return false;
             }

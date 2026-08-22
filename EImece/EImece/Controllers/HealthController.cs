@@ -7,8 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
+
 namespace EImece.Controllers
 {
+    [UnderConst]
     [AllowAnonymous]
     public class HealthController : Controller
     {
@@ -17,6 +21,28 @@ namespace EImece.Controllers
         public HealthController(IHealthCheckService healthCheckService)
         {
             _healthCheckService = healthCheckService;
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext != null && filterContext.HttpContext != null)
+            {
+                var settingService = DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+                var isUnderConstruction = settingService != null && settingService.GetSettingByKey(Constants.IsSiteUnderConstruction).ToBool(false);
+                if (isUnderConstruction)
+                {
+                    var user = filterContext.HttpContext.User;
+                    var isAuth = user != null && user.Identity != null && user.Identity.IsAuthenticated;
+                    var isAdmin = isAuth && (user.IsInRole(Constants.AdministratorRole) || user.IsInRole(Constants.EditorRole));
+                    if (!isAdmin)
+                    {
+                        filterContext.Result = new RedirectResult("/underconstruction");
+                        return;
+                    }
+                }
+            }
+
+            base.OnActionExecuting(filterContext);
         }
         /*
          * One writable root for uploads + NLog files (media/images and media/logs).

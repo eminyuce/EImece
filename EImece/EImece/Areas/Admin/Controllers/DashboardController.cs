@@ -36,7 +36,8 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Gösterge Paneli";
-            ViewBag.IyzicoCredentialsMissing = string.Equals(AppConfig.PaymentProvider, "Iyzico", StringComparison.OrdinalIgnoreCase)
+            var paymentProvider = SettingService?.GetSettingByKey(Domain.Constants.PaymentProvider) ?? Domain.Constants.DefaultPaymentProvider;
+            ViewBag.IyzicoCredentialsMissing = string.Equals(paymentProvider, "Iyzico", StringComparison.OrdinalIgnoreCase)
                 && !AppConfig.HasConfiguredIyzicoCredentials;
             return View();
         }

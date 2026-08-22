@@ -5931,6 +5931,12 @@ namespace Resources {
             }
         }
         
+        public static string UnderConstructionHtml {
+            get {
+                return ResourceManager.GetString("UnderConstructionHtml", resourceCulture);
+            }
+        }
+        
         public static string AllowSearchEngineIndexing {
             get {
                 return ResourceManager.GetString("AllowSearchEngineIndexing", resourceCulture);

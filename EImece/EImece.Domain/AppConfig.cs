@@ -1,8 +1,6 @@
 using EImece.Domain.Helpers;
-using EImece.Domain.Models.Enums;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -10,75 +8,22 @@ using System.Web.Hosting;
 
 namespace EImece.Domain
 {
+    /// <summary>
+    /// Static Web.config / infrastructure settings only.
+    /// Dynamic business and admin settings are managed via ISettingService.
+    /// </summary>
     public static class AppConfig
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-     
 
         public static string GetDefaultImage(int w, int h)
         {
             return GetDefaultImage($"w{w}h{h}");
         }
 
-        public static string GetDefaultImage(String imageSize)
+        public static string GetDefaultImage(string imageSize)
         {
             return $"/images/defaultimage/{imageSize}/default.jpg";
-        }
-
-        /// <summary>
-        /// Captcha implementation: Legacy (arithmetic image), Recaptcha (Google v2), or None.
-        /// Default is Legacy for backward compatibility with the original CAPTCHA.
-        /// </summary>
-        public static CaptchaProviderType CaptchaProvider
-        {
-            get
-            {
-                var raw = GetConfigString("CaptchaProvider", string.Empty);
-                if (!string.IsNullOrWhiteSpace(raw))
-                {
-                    if (Enum.TryParse(raw.Trim(), true, out CaptchaProviderType parsed))
-                    {
-                        return parsed;
-                    }
-
-                    // Accept common aliases
-                    if (raw.Equals("Arithmetic", StringComparison.OrdinalIgnoreCase)
-                        || raw.Equals("Weak", StringComparison.OrdinalIgnoreCase)
-                        || raw.Equals("Old", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return CaptchaProviderType.Legacy;
-                    }
-
-                    if (raw.Equals("Google", StringComparison.OrdinalIgnoreCase)
-                        || raw.Equals("GoogleRecaptcha", StringComparison.OrdinalIgnoreCase)
-                        || raw.Equals("RecaptchaV2", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return CaptchaProviderType.Recaptcha;
-                    }
-
-                    Logger.Warn($"Unknown CaptchaProvider value '{raw}'. Falling back to Legacy.");
-                    return CaptchaProviderType.Legacy;
-                }
-
-                // Backward compatible with RecaptchaEnabled from earlier integration
-                if (GetConfigBool("RecaptchaEnabled", false))
-                {
-                    return CaptchaProviderType.Recaptcha;
-                }
-
-                return CaptchaProviderType.Legacy;
-            }
-        }
-
-        /// <summary>
-        /// Google reCAPTCHA v2 site key (public). Configure via Web.config RecaptchaSiteKey.
-        /// </summary>
-        public static string RecaptchaSiteKey
-        {
-            get
-            {
-                return GetConfigString("RecaptchaSiteKey", string.Empty);
-            }
         }
 
         /// <summary>
@@ -99,30 +44,7 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigString("RecaptchaSiteVerifyUrl", "https://" + "www.google.com" + "/recaptcha/api/siteverify");
-            }
-        }
-
-        /// <summary>
-        /// True when CaptchaProvider is Recaptcha. Kept for callers that previously checked RecaptchaEnabled.
-        /// Prefer <see cref="CaptchaProvider"/>.
-        /// </summary>
-        public static bool RecaptchaEnabled
-        {
-            get
-            {
-                return CaptchaProvider == CaptchaProviderType.Recaptcha;
-            }
-        }
-
-        /// <summary>
-        /// True when CaptchaProvider is Legacy (original arithmetic CAPTCHA).
-        /// </summary>
-        public static bool IsLegacyCaptchaEnabled
-        {
-            get
-            {
-                return CaptchaProvider == CaptchaProviderType.Legacy;
+                return GetConfigString("RecaptchaSiteVerifyUrl", "https://www.google.com/recaptcha/api/siteverify");
             }
         }
 
@@ -181,20 +103,16 @@ namespace EImece.Domain
 
         /// <summary>
         /// Validates that payment credentials are configured when required.
-        /// Fails closed with ConfigurationErrorsException if Iyzico is the active provider but keys are missing.
+        /// Fails closed with ConfigurationErrorsException if Iyzico keys are missing.
         /// </summary>
         public static void ValidatePaymentGatewayCredentials()
         {
-            var provider = PaymentProvider;
-            if (string.IsNullOrWhiteSpace(provider) || string.Equals(provider, "Iyzico", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(IyzicoApiKey) || string.IsNullOrWhiteSpace(IyzicoSecretKey))
             {
-                if (string.IsNullOrWhiteSpace(IyzicoApiKey) || string.IsNullOrWhiteSpace(IyzicoSecretKey))
-                {
-                    throw new ConfigurationErrorsException(
-                        "Payment gateway credentials are missing. " +
-                        "Set environment variables 'EIMECE_IYZICO_API_KEY' and 'EIMECE_IYZICO_SECRET_KEY', " +
-                        "or configure 'IyzicoApiKey' and 'IyzicoSecretKey' in AppSettings.");
-                }
+                throw new ConfigurationErrorsException(
+                    "Payment gateway credentials are missing. " +
+                    "Set environment variables 'EIMECE_IYZICO_API_KEY' and 'EIMECE_IYZICO_SECRET_KEY', " +
+                    "or configure 'IyzicoApiKey' and 'IyzicoSecretKey' in AppSettings.");
             }
         }
 
@@ -210,9 +128,10 @@ namespace EImece.Domain
         {
             get
             {
-                return string.Format("http{0}", UseSSL ? "s" : "");
+                return GetConfigString("HttpProtocolForImages", "http");
             }
         }
+
         public static bool UseSSL
         {
             get
@@ -225,7 +144,7 @@ namespace EImece.Domain
         {
             get
             {
-                return string.Format("http{0}", UseSSL ? "s" : "");
+                return UseSSL ? "https" : "http";
             }
         }
 
@@ -233,346 +152,33 @@ namespace EImece.Domain
         {
             get
             {
-                return GetConfigString("domain");
+                return GetConfigString("domain", "127.0.0.1:81");
             }
-        }
-
-        /// <summary>
-        /// Browser / PWA chrome color. Database/Web.config ThemeColor wins when set;
-        /// otherwise the active design default (Crizal=#067a36, Modern=#ffffff), else ManifestDefaultThemeColor.
-        /// </summary>
-        public static string ThemeColor
-        {
-            get
-            {
-                var configured = GetConfigString("ThemeColor", string.Empty);
-                if (!string.IsNullOrWhiteSpace(configured))
-                {
-                    return configured.Trim();
-                }
-
-                var design = ActiveDesign;
-                if (!string.IsNullOrWhiteSpace(design))
-                {
-                    if (design.Trim().Equals("Crizal", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return "#067a36";
-                    }
-
-                    if (design.Trim().Equals("Modern", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return "#ffffff";
-                    }
-                }
-
-                return ManifestDefaultThemeColor;
-            }
-        }
-
-        public static string ActiveDesign
-        {
-            get
-            {
-                return GetConfigString("ActiveDesign", "Crizal");
-            }
-        }
-
-        public static bool AllowSearchEngineIndexing
-        {
-            get
-            {
-                return GetConfigBool("AllowSearchEngineIndexing", false);
-            }
-        }
-
-        public static int AdminImageHeightPercantage
-        {
-            get
-            {
-                return GetConfigInt("AdminImageHeightPercantage", 50);
-            }
-        }
-
-        public static int AdminImageWidthPercantage
-        {
-            get
-            {
-                return GetConfigInt("AdminImageWidthPercantage", 50);
-            }
-        }
-
-        public static string BuyerIdentityNumber
-        {
-            get
-            {
-                var configured = GetConfigString("BuyerIdentityNumber", string.Empty);
-                if (!string.IsNullOrWhiteSpace(configured))
-                {
-                    return configured;
-                }
-                return DummyIdentityNumber;
-            }
-        }
-
-        public static string ManifestDefaultThemeColor
-        {
-            get { return GetConfigString("ManifestDefaultThemeColor", "#1789F9"); }
-        }
-
-        public static string ManifestBackgroundColor
-        {
-            get { return GetConfigString("ManifestBackgroundColor", "#ffffff"); }
-        }
-
-        public static string ManifestDisplay
-        {
-            get { return GetConfigString("ManifestDisplay", "standalone"); }
-        }
-
-        public static string ManifestOrientation
-        {
-            get { return GetConfigString("ManifestOrientation", "portrait"); }
-        }
-
-        public static string ManifestStartUrl
-        {
-            get { return GetConfigString("ManifestStartUrl", "/"); }
-        }
-
-        public static string ManifestFallbackName
-        {
-            get { return GetConfigString("ManifestFallbackName", "Web App"); }
-        }
-
-        public static int ManifestShortNameMaxLength
-        {
-            get
-            {
-                var length = GetConfigInt("ManifestShortNameMaxLength", 12);
-                return length < 1 ? 12 : length;
-            }
-        }
-
-        public static int GridPageSizeNumber
-        {
-            get
-            {
-                return GetConfigInt("GridPageSizeNumber", 100);
-            }
-        }
-
-        public static int HomePageMainProductCountRandomLimit
-        {
-            get
-            {
-                return HomePageMainProductCountLimit / 3;
-            }
-        }
-
-        public static int HomePageMainProductCountLimit
-        {
-            get
-            {
-                return GetConfigInt("HomePageMainProductCountLimit", 15);
-            }
-        }
-
-        public static int HomePageFeatureStoryCountLimit
-        {
-            get
-            {
-                return GetConfigInt("HomePageFeatureStoryCountLimit", 1);
-            }
-        }
-
-        //en-US,tr-TR
-        public static string ApplicationLanguages
-        {
-            get
-            {
-                return GetConfigString("Application_Languages");
-            }
-        }
-
-        public static int RecordPerPage
-        {
-            get { return 24; }
-        }
-
-        public static int MaxItemsCountInFilter
-        {
-            get { return 20; }
-        }
-
-        /// <summary>
-        /// Optional delegate to resolve settings dynamically (e.g. from SettingService / Database).
-        /// When provided, GetConfigString/Bool/Int checks this resolver first before falling back to Web.config.
-        /// </summary>
-        public static Func<string, string> SettingResolver { get; set; }
-
-        [ThreadStatic]
-        private static bool _isResolvingSetting;
-
-        private static void WriteLog(string configName, object defaultValue)
-        {
-            if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)) && defaultValue != null)
-            {
-                Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
-            }
-        }
-
-        public static string GetConfigString(string configName, string defaultValue = "")
-        {
-            if (SettingResolver != null && !_isResolvingSetting)
-            {
-                _isResolvingSetting = true;
-                try
-                {
-                    var resolved = SettingResolver(configName);
-                    if (!string.IsNullOrWhiteSpace(resolved))
-                    {
-                        return resolved.Trim();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Warn(ex, "SettingResolver failed for key '{0}'. Falling back to Web.config.", configName);
-                }
-                finally
-                {
-                    _isResolvingSetting = false;
-                }
-            }
-
-            var appValue = ConfigurationManager.AppSettings[configName];
-            if (string.IsNullOrEmpty(appValue))
-            {
-                WriteLog(configName, defaultValue);
-                return defaultValue;
-            }
-            else
-            {
-                return appValue;
-            }
-        }
-
-        public static bool GetConfigBool(string configName, bool defaultValue = false)
-        {
-            if (SettingResolver != null && !_isResolvingSetting)
-            {
-                _isResolvingSetting = true;
-                try
-                {
-                    var resolved = SettingResolver(configName);
-                    if (!string.IsNullOrWhiteSpace(resolved))
-                    {
-                        return resolved.ToBool();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Warn(ex, "SettingResolver failed for key '{0}'. Falling back to Web.config.", configName);
-                }
-                finally
-                {
-                    _isResolvingSetting = false;
-                }
-            }
-
-            var configValue = defaultValue;
-            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
-            {
-                configValue = ConfigurationManager.AppSettings[configName].ToBool();
-            }
-            else
-            {
-                WriteLog(configName, defaultValue);
-            }
-            return configValue;
-        }
-
-        public static int GetConfigInt(string configName, int defaultValue = 0)
-        {
-            if (SettingResolver != null && !_isResolvingSetting)
-            {
-                _isResolvingSetting = true;
-                try
-                {
-                    var resolved = SettingResolver(configName);
-                    if (!string.IsNullOrWhiteSpace(resolved))
-                    {
-                        int parsed = resolved.ToInt();
-                        return parsed == -1 ? defaultValue : parsed;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Warn(ex, "SettingResolver failed for key '{0}'. Falling back to Web.config.", configName);
-                }
-                finally
-                {
-                    _isResolvingSetting = false;
-                }
-            }
-
-            int configValue = -1;
-            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
-            {
-                configValue = ConfigurationManager.AppSettings[configName].ToInt();
-            }
-            else
-            {
-                WriteLog(configName, defaultValue);
-            }
-            return configValue == -1 ? defaultValue : configValue;
         }
 
         public static int CacheTinySeconds
         {
-            get
-            {
-                return GetConfigInt("CacheTinySeconds", 1);
-            }
+            get { return 10; }
         }
 
         public static int CacheShortSeconds
         {
-            get
-            {
-                return GetConfigInt("CacheShortSeconds", 10);
-            }
+            get { return 60; }
         }
 
         public static int CacheMediumSeconds
         {
-            get
-            {
-                return GetConfigInt("CacheMediumSeconds", 300);
-            }
+            get { return 300; }
         }
 
         public static int CacheLongSeconds
         {
-            get
-            {
-                return GetConfigInt("CacheLongSeconds", 1800);
-            }
+            get { return 900; }
         }
 
         public static int CacheVeryLongSeconds
         {
-            get
-            {
-                return GetConfigInt("CacheVeryLongSeconds", 180000);
-            }
-        }
-
-        public static int MusteriIliskileriChildrenIdTurkce
-        {
-            get
-            {
-                return GetConfigInt("MusteriIliskileriChildrenIdTurkce", 6149);
-            }
+            get { return 86400; }
         }
 
         public static bool IsEditLinkEnable
@@ -583,15 +189,77 @@ namespace EImece.Domain
             }
         }
 
-        public static bool IsDebug
+        public static bool ShowThemeSelectionInAdmin
         {
             get
             {
-                var isDebug = false;
-#if DEBUG
-                isDebug = true;
-#endif
-                return isDebug;
+                return GetConfigBool("ShowThemeSelectionInAdmin", true);
+            }
+        }
+
+        public static int HomePageMainProductCountRandomLimit
+        {
+            get
+            {
+                return GetConfigInt("HomePageMainProductCountRandomLimit", 100);
+            }
+        }
+
+        public static int HomePageMainProductCountLimit
+        {
+            get
+            {
+                return GetConfigInt("HomePageMainProductCountLimit", 12);
+            }
+        }
+
+        public static int HomePageFeatureStoryCountLimit
+        {
+            get
+            {
+                return GetConfigInt("HomePageFeatureStoryCountLimit", 6);
+            }
+        }
+
+        public static int RecordPerPage
+        {
+            get
+            {
+                return GetConfigInt("RecordPerPage", 20);
+            }
+        }
+
+        public static int ProductDefaultRecordPerPage
+        {
+            get { return 24; }
+        }
+
+        public static int ProductCommentsRecordPerPage
+        {
+            get { return 8; }
+        }
+
+        public static int MaxItemsCountInFilter
+        {
+            get
+            {
+                return GetConfigInt("MaxItemsCountInFilter", 10);
+            }
+        }
+
+        public static string ApplicationLanguages
+        {
+            get
+            {
+                return GetConfigString("ApplicationLanguages", "1,2");
+            }
+        }
+
+        public static int MainLanguage
+        {
+            get
+            {
+                return GetConfigInt("MainLanguage", 1);
             }
         }
 
@@ -603,11 +271,55 @@ namespace EImece.Domain
             }
         }
 
-        public static int MainLanguage
+        public static bool IsImageFullSrcUnderMediaFolder
         {
             get
             {
-                return GetConfigInt("MainLanguage", 1);
+                return GetConfigBool("IsImageFullSrcUnderMediaFolder", true);
+            }
+        }
+
+        public static string ShoppingCartItemCategory2
+        {
+            get
+            {
+                return GetConfigString("ShoppingCartItemCategory2", "ShoppingCartItemCategory2");
+            }
+        }
+
+        public static int MusteriIliskileriChildrenIdTurkce
+        {
+            get
+            {
+                return GetConfigInt("MusteriIliskileriChildrenIdTurkce", 25);
+            }
+        }
+
+        public static int AdminImageHeightPercantage
+        {
+            get
+            {
+                return GetConfigInt("AdminImageHeightPercantage", 65);
+            }
+        }
+
+        public static int AdminImageWidthPercantage
+        {
+            get
+            {
+                return GetConfigInt("AdminImageWidthPercantage", 65);
+            }
+        }
+
+        public static bool IsDebug
+        {
+            get
+            {
+#if DEBUG
+                return true;
+#else
+                return false;
+#endif
             }
         }
 
@@ -624,196 +336,11 @@ namespace EImece.Domain
             }
         }
 
-        public static bool IsImageFullSrcUnderMediaFolder
-        {
-            get
-            {
-                return GetConfigBool("IsImageFullSrcUnderMediaFolder", true);
-            }
-        }
-
-        /// <summary>
-        /// Max width of the stored full-size catalog image. 0 = no width cap. Images are never upscaled.
-        /// </summary>
-        public static int ImageUploadMaxWidth
-        {
-            get
-            {
-                int value = GetConfigInt("ImageUploadMaxWidth", 1920);
-                return value < 0 ? 1920 : value;
-            }
-        }
-
-        /// <summary>
-        /// Max height of the stored full-size catalog image. 0 = no height cap. Images are never upscaled.
-        /// </summary>
-        public static int ImageUploadMaxHeight
-        {
-            get
-            {
-                int value = GetConfigInt("ImageUploadMaxHeight", 1920);
-                return value < 0 ? 1920 : value;
-            }
-        }
-
-        /// <summary>
-        /// JPEG quality (40–95) for stored full-size images. Default 82 balances catalog quality vs disk.
-        /// Lower (75) saves more disk; higher (85–90) keeps more detail for zoom.
-        /// </summary>
-        public static int ImageUploadJpegQuality
-        {
-            get
-            {
-                return ImageUploadOptimizer.ClampQuality(GetConfigInt("ImageUploadJpegQuality", 82), 82);
-            }
-        }
-
-        /// <summary>
-        /// Max width of prebuilt thumbs under media/images/thumbs/. 0 = no extra cap beyond the caller size.
-        /// </summary>
-        public static int ImageUploadThumbMaxWidth
-        {
-            get
-            {
-                int value = GetConfigInt("ImageUploadThumbMaxWidth", 800);
-                return value < 0 ? 800 : value;
-            }
-        }
-
-        /// <summary>
-        /// Max height of prebuilt thumbs. 0 = no extra cap beyond the caller size.
-        /// </summary>
-        public static int ImageUploadThumbMaxHeight
-        {
-            get
-            {
-                int value = GetConfigInt("ImageUploadThumbMaxHeight", 800);
-                return value < 0 ? 800 : value;
-            }
-        }
-
-        /// <summary>
-        /// JPEG quality (40–95) for prebuilt thumbs. Default 75.
-        /// </summary>
-        public static int ImageUploadThumbJpegQuality
-        {
-            get
-            {
-                return ImageUploadOptimizer.ClampQuality(GetConfigInt("ImageUploadThumbJpegQuality", 75), 75);
-            }
-        }
-
-        /// <summary>
-        /// When true, store the primary file as WebP when that encoding is smaller. Default false so
-        /// existing JPEG/PNG URLs, thumbs, and consumers keep working. The /images resize proxy already serves WebP to capable browsers.
-        /// </summary>
-        public static bool ImageUploadPreferWebP
-        {
-            get
-            {
-                return GetConfigBool("ImageUploadPreferWebP", false);
-            }
-        }
-
-        /// <summary>
-        /// WebP quality (40–95) used when PreferWebP is true or a sidecar WebP is written. Default 82.
-        /// </summary>
-        public static int ImageUploadWebPQuality
-        {
-            get
-            {
-                return ImageUploadOptimizer.ClampQuality(GetConfigInt("ImageUploadWebPQuality", 82), 82);
-            }
-        }
-
-        /// <summary>
-        /// When true, also write a .webp next to the stored JPEG/PNG. Increases disk use; leave false unless you serve those files directly.
-        /// </summary>
-        public static bool ImageUploadSaveWebPSidecar
-        {
-            get
-            {
-                return GetConfigBool("ImageUploadSaveWebPSidecar", false);
-            }
-        }
-
-        /// <summary>
-        /// When true, keep the original bytes if re-encoding is not smaller and dimensions did not change.
-        /// BMP/TIFF are always converted.
-        /// </summary>
-        public static bool ImageUploadKeepOriginalIfSmaller
-        {
-            get
-            {
-                return GetConfigBool("ImageUploadKeepOriginalIfSmaller", true);
-            }
-        }
-
-        public static int ProductDefaultRecordPerPage
-        {
-            get { return 24; }
-        }
-
-        public static int ProductCommentsRecordPerPage
-        {
-            get { return 8; }
-        }
-
-        /// <summary>
-        /// Product detail ShortDescription preview length in characters.
-        /// Longer copy is truncated and shown behind a Continue... control.
-        /// </summary>
-        public static int ProductShortDescriptionPreviewLength
-        {
-            get { return GetConfigInt("ProductShortDescriptionPreviewLength", 180); }
-        }
-
-        /// <summary>
-        /// Active payment provider strategy key (e.g. "Iyzico"). Used by DI to select <c>IPaymentStrategy</c>.
-        /// </summary>
-        public static string PaymentProvider
-        {
-            get
-            {
-                return GetConfigString("PaymentProvider", "Iyzico");
-            }
-        }
-
-        public static List<int> IyzicoEnabledInstallments
-        {
-            get
-            {
-                var IyzicoEnabledInstallmentsStr = GetConfigString("IyzicoEnabledInstallments", "1,2,4,6,9");
-                List<int> enabledInstallments = new List<int>();
-                foreach (var item in IyzicoEnabledInstallmentsStr.Split(",".ToCharArray()))
-                {
-                    enabledInstallments.Add(item.ToInt());
-                }
-                return enabledInstallments;
-            }
-        }
-
-        public static string ShoppingCartItemCategory2
-        {
-            get
-            {
-                return GetConfigString("ShoppingCartItemCategory2", "ShoppingCartItemCategory2");
-            }
-        }
-
-        public static bool IsSiteUnderConstruction
-        {
-            get
-            {
-                return GetConfigBool("IsSiteUnderConstruction", false);
-            }
-        }
-
         public static bool IsSiteLive
         {
             get
             {
-                String siteStatus = AppConfig.GetConfigString("SiteStatus", "dev");
+                string siteStatus = GetConfigString("SiteStatus", "dev");
                 return string.Equals(siteStatus, "live", StringComparison.InvariantCultureIgnoreCase);
             }
         }
@@ -827,10 +354,8 @@ namespace EImece.Domain
         }
 
         /// <summary>
-        /// When true, unhandled exceptions show full stack traces (YSOD / detailed error pages)
-        /// instead of the generic friendly 500 page. Defaults to true in non-live environments.
-        /// Set appSetting ExposeDetailedErrors=true to force this even when SiteStatus=live (local IIS).
-        /// Web.Release.config should keep this false for production.
+        /// When true, unhandled exceptions show full stack traces instead of the generic friendly 500 page.
+        /// Defaults to true in non-live environments.
         /// </summary>
         public static bool ExposeDetailedErrors
         {
@@ -850,8 +375,7 @@ namespace EImece.Domain
         /// <summary>
         /// TEMPORARY debug switch: when true, admin auth/login is bypassed and a debug Admin principal is injected.
         /// Keep false in production (Web.Release.config forces false).
-        /// Hard-disabled whenever SiteStatus indicates a live environment (safety latch).
-        /// If BypassAdminAuth=true while SiteStatus=live, a Warning is logged once and bypass stays off.
+        /// Hard-disabled whenever SiteStatus indicates a live environment.
         /// </summary>
         public static bool BypassAdminAuth
         {
@@ -876,8 +400,7 @@ namespace EImece.Domain
         }
 
         /// <summary>
-        /// When false, AdminLogin is unavailable and unauthenticated /admin requests redirect to the site home
-        /// instead of the login page. Set true to allow the normal admin login flow.
+        /// When false, AdminLogin is unavailable and unauthenticated /admin requests redirect to the site home.
         /// </summary>
         public static bool AdminLoginEnabled
         {
@@ -888,22 +411,7 @@ namespace EImece.Domain
         }
 
         /// <summary>
-        /// When true, admin/editor users must enable TOTP authenticator before using the admin panel.
-        /// Defaults to true. Set false for temporary local work; Web.Release keeps true for production.
-        /// Enforcement is also skipped when compilation debug is on, BypassAdminAuth is on,
-        /// or the user is listed in TwoFactorBypassUsers.
-        /// </summary>
-        public static bool RequireAdminAuthenticator
-        {
-            get
-            {
-                return GetConfigBool("RequireAdminAuthenticator", true);
-            }
-        }
-
-        /// <summary>
-        /// Comma-separated emails/usernames that may use the admin panel without authenticator 2FA
-        /// (e.g. a dedicated local debug account).
+        /// Comma-separated emails/usernames that may use the admin panel without authenticator 2FA.
         /// </summary>
         public static string TwoFactorBypassUsers
         {
@@ -937,6 +445,56 @@ namespace EImece.Domain
             {
                 return GetConfigString("DummyIdentityNumber", "83312007240");
             }
+        }
+
+        private static void WriteLog(string configName, object defaultValue)
+        {
+            if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)) && defaultValue != null)
+            {
+                Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
+            }
+        }
+
+        public static string GetConfigString(string configName, string defaultValue = "")
+        {
+            var appValue = ConfigurationManager.AppSettings[configName];
+            if (string.IsNullOrEmpty(appValue))
+            {
+                WriteLog(configName, defaultValue);
+                return defaultValue;
+            }
+            else
+            {
+                return appValue;
+            }
+        }
+
+        public static bool GetConfigBool(string configName, bool defaultValue = false)
+        {
+            var configValue = defaultValue;
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
+            {
+                configValue = ConfigurationManager.AppSettings[configName].ToBool();
+            }
+            else
+            {
+                WriteLog(configName, defaultValue);
+            }
+            return configValue;
+        }
+
+        public static int GetConfigInt(string configName, int defaultValue = 0)
+        {
+            int configValue = -1;
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
+            {
+                configValue = ConfigurationManager.AppSettings[configName].ToInt();
+            }
+            else
+            {
+                WriteLog(configName, defaultValue);
+            }
+            return configValue == -1 ? defaultValue : configValue;
         }
     }
 }

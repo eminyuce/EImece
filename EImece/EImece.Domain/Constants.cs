@@ -92,6 +92,8 @@ namespace EImece.Domain
 
         // Site Maintenance & SEO Setting Keys
         public const string IsSiteUnderConstruction = "IsSiteUnderConstruction";
+        public const string UnderConstructionHtml = "UnderConstructionHtml";
+        public const string DefaultUnderConstructionHtml = "";
         public const string AllowSearchEngineIndexing = "AllowSearchEngineIndexing";
         public const string ActiveDesign = "ActiveDesign";
 
@@ -127,9 +129,10 @@ namespace EImece.Domain
         public const string IyzicoEnabledInstallments = "IyzicoEnabledInstallments";
         public const string BuyerIdentityNumber = "BuyerIdentityNumber";
 
-        // Captcha & Anti-Spam Setting Keys
+        // Captcha & Anti-Spam / Security Setting Keys
         public const string CaptchaProvider = "CaptchaProvider";
         public const string RecaptchaSiteKey = "RecaptchaSiteKey";
+        public const string RequireAdminAuthenticator = "RequireAdminAuthenticator";
         public const string RateLimit_Enabled = "RateLimit:Enabled";
         public const string RateLimit_Login_Limit = "RateLimit:Login:Limit";
         public const string RateLimit_Login_WindowMinutes = "RateLimit:Login:WindowMinutes";
@@ -139,6 +142,34 @@ namespace EImece.Domain
         public const string RateLimit_Checkout_WindowMinutes = "RateLimit:Checkout:WindowMinutes";
         public const string RateLimit_Search_Limit = "RateLimit:Search:Limit";
         public const string RateLimit_Search_WindowMinutes = "RateLimit:Search:WindowMinutes";
+
+        // Default Fallback Values for Admin System Settings
+        public const string DefaultActiveDesign = "Crizal";
+        public const bool DefaultAllowSearchEngineIndexing = false;
+        public const string DefaultThemeColor = "#067a36";
+        public const string DefaultManifestBackgroundColor = "#ffffff";
+        public const string DefaultManifestDisplay = "standalone";
+        public const string DefaultManifestOrientation = "portrait";
+        public const string DefaultManifestStartUrl = "/";
+        public const string DefaultManifestFallbackName = "Web App";
+        public const int DefaultManifestShortNameMaxLength = 12;
+        public const int DefaultGridPageSizeNumber = 100;
+        public const int DefaultProductShortDescriptionPreviewLength = 180;
+        public const int DefaultImageUploadMaxWidth = 1920;
+        public const int DefaultImageUploadMaxHeight = 1920;
+        public const int DefaultImageUploadJpegQuality = 82;
+        public const int DefaultImageUploadWebPQuality = 82;
+        public const int DefaultImageUploadThumbMaxWidth = 800;
+        public const int DefaultImageUploadThumbMaxHeight = 800;
+        public const int DefaultImageUploadThumbJpegQuality = 75;
+        public const bool DefaultImageUploadPreferWebP = false;
+        public const bool DefaultImageUploadSaveWebPSidecar = false;
+        public const bool DefaultImageUploadKeepOriginalIfSmaller = true;
+        public const string DefaultPaymentProvider = "Iyzico";
+        public const string DefaultIyzicoEnabledInstallments = "1,2,4,6,9";
+        public const string DefaultBuyerIdentityNumber = "11111111111";
+        public const bool DefaultRequireAdminAuthenticator = true;
+        public const string DefaultCaptchaProvider = "Legacy";
 
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string DbConnectionEnvironmentVariable = "EIMECE_DB_CONNECTION_STRING";

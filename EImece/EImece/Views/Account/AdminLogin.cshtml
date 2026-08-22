@@ -1,7 +1,8 @@
-﻿@using EImece.Models
+@using EImece.Models
 @model LoginViewModel
 @using Resources;
 @using EImece.Domain;
+@using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain.Models.Enums;
 
@@ -11,7 +12,7 @@
     var remoteIp = EImece.Domain.Helpers.GeneralHelper.GetRemoteIP(Request.ServerVariables);
     var loginStamp = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm");
     string securityStepText;
-    switch (AppConfig.CaptchaProvider)
+    switch (CaptchaSettings.Provider)
     {
         case CaptchaProviderType.Recaptcha:
             securityStepText = "Google reCAPTCHA kutusunu işaretleyerek robot olmadığınızı doğrulayın.";
@@ -637,7 +638,7 @@
                         <label class="form-check-label" for="rememberMe">@Resource.RememberMe</label>
                     </div>
 
-                    if (AppConfig.CaptchaProvider != CaptchaProviderType.None)
+                    if (CaptchaSettings.Provider != CaptchaProviderType.None)
                     {
                         <div class="admin-login__captcha-block">
                             @Html.CaptchaWidget("AdminLogin", "invalid-feedback d-block text-danger", "Buraya Yaziniz.")

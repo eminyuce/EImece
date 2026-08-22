@@ -1,13 +1,15 @@
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
 using System;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
     /// <summary>
     /// Builds a W3C Web App Manifest JSON document from storefront branding values.
-    /// Structural defaults come from <see cref="AppConfig"/> / Web.config (Manifest* keys).
+    /// Structural defaults come from ISettingService / Constants.
     /// </summary>
     public static class WebAppManifestHelper
     {
@@ -15,6 +17,20 @@ namespace EImece.Domain.Helpers
         private static readonly Regex HexColorRegex = new Regex(
             "^#(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$",
             RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static string GetSetting(string key, string defaultValue)
+        {
+            var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+            var val = settingService?.GetSettingByKey(key);
+            return !string.IsNullOrWhiteSpace(val) ? val.Trim() : defaultValue;
+        }
+
+        private static int GetSettingInt(string key, int defaultValue)
+        {
+            var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+            var val = settingService?.GetSettingByKey(key);
+            return !string.IsNullOrWhiteSpace(val) ? val.ToInt(defaultValue) : defaultValue;
+        }
 
         public static string BuildJson(
             string companyName,
@@ -43,7 +59,8 @@ namespace EImece.Domain.Helpers
             string themeColorFallback,
             string domainFallback)
         {
-            var name = FirstNonEmpty(companyName, siteIndexMetaTitle, HostFromDomain(domainFallback), AppConfig.ManifestFallbackName);
+            var fallbackName = GetSetting(Constants.ManifestFallbackName, Constants.DefaultManifestFallbackName);
+            var name = FirstNonEmpty(companyName, siteIndexMetaTitle, HostFromDomain(domainFallback), fallbackName);
             var shortName = ToShortName(name);
             var description = FirstNonEmpty(siteIndexMetaDescription, name);
 
@@ -52,28 +69,28 @@ namespace EImece.Domain.Helpers
                 Name = name,
                 ShortName = shortName,
                 Description = description,
-                StartUrl = AppConfig.ManifestStartUrl,
-                Display = AppConfig.ManifestDisplay,
-                Orientation = AppConfig.ManifestOrientation,
+                StartUrl = GetSetting(Constants.ManifestStartUrl, Constants.DefaultManifestStartUrl),
+                Display = GetSetting(Constants.ManifestDisplay, Constants.DefaultManifestDisplay),
+                Orientation = GetSetting(Constants.ManifestOrientation, Constants.DefaultManifestOrientation),
                 ThemeColor = ResolveThemeColor(themeColorFromSettings, themeColorFallback),
-                BackgroundColor = AppConfig.ManifestBackgroundColor,
+                BackgroundColor = GetSetting(Constants.ManifestBackgroundColor, Constants.DefaultManifestBackgroundColor),
                 Icons = CreateIcons()
             };
         }
 
-        public static string ResolveThemeColor(string fromSettings, string fromAppConfig)
+        public static string ResolveThemeColor(string fromSettings, string fromFallback)
         {
             if (IsValidHexColor(fromSettings))
             {
                 return fromSettings.Trim();
             }
 
-            if (IsValidHexColor(fromAppConfig))
+            if (IsValidHexColor(fromFallback))
             {
-                return fromAppConfig.Trim();
+                return fromFallback.Trim();
             }
 
-            return AppConfig.ManifestDefaultThemeColor;
+            return GetSetting(Constants.ThemeColor, Constants.DefaultThemeColor);
         }
 
         public static bool IsValidHexColor(string value)
@@ -83,13 +100,14 @@ namespace EImece.Domain.Helpers
 
         public static string ToShortName(string name)
         {
+            var fallbackName = GetSetting(Constants.ManifestFallbackName, Constants.DefaultManifestFallbackName);
             if (string.IsNullOrWhiteSpace(name))
             {
-                return AppConfig.ManifestFallbackName;
+                return fallbackName;
             }
 
             var trimmed = name.Trim();
-            var maxLength = AppConfig.ManifestShortNameMaxLength;
+            var maxLength = GetSettingInt(Constants.ManifestShortNameMaxLength, Constants.DefaultManifestShortNameMaxLength);
             if (trimmed.Length <= maxLength)
             {
                 return trimmed;

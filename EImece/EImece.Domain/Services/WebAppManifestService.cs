@@ -52,7 +52,7 @@ namespace EImece.Domain.Services
                 metaTitle,
                 metaDescription,
                 themeColorSetting,
-                AppConfig.ThemeColor,
+                Constants.DefaultThemeColor,
                 AppConfig.Domain);
         }
     }

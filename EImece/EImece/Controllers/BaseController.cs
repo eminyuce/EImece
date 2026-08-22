@@ -42,6 +42,7 @@ namespace EImece.Controllers
             }
         }
 
+
         protected override void OnException(ExceptionContext filterContext)
         {
             if (filterContext != null && filterContext.Exception != null)
@@ -217,6 +218,58 @@ namespace EImece.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (filterContext != null && filterContext.HttpContext != null)
+            {
+                var controller = filterContext.ActionDescriptor?.ControllerDescriptor?.ControllerName ?? string.Empty;
+                var action = filterContext.ActionDescriptor?.ActionName ?? string.Empty;
+                var area = filterContext.RouteData?.DataTokens["area"]?.ToString() ?? string.Empty;
+
+                if (!controller.Equals("UnderConstruction", StringComparison.OrdinalIgnoreCase) &&
+                    !controller.Equals("Error", StringComparison.OrdinalIgnoreCase) &&
+                    !area.Equals("Admin", StringComparison.OrdinalIgnoreCase) &&
+                    !(controller.Equals("Account", StringComparison.OrdinalIgnoreCase) &&
+                      (action.Equals("AdminLogin", StringComparison.OrdinalIgnoreCase) ||
+                       action.Equals("VerifyAuthenticator", StringComparison.OrdinalIgnoreCase) ||
+                       action.Equals("LogOff", StringComparison.OrdinalIgnoreCase))))
+                {
+                    var settingService = SettingService;
+                    if (settingService == null)
+                    {
+                        try
+                        {
+                            settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                        }
+                        catch
+                        {
+                            settingService = null;
+                        }
+                    }
+
+                    var isUnderConstruction = settingService != null
+                        ? settingService.GetSettingByKey(Constants.IsSiteUnderConstruction).ToBool(false)
+                        : false;
+
+                    if (isUnderConstruction)
+                    {
+                        var user = filterContext.HttpContext.User;
+                        var isAuth = user != null && user.Identity != null && user.Identity.IsAuthenticated;
+                        var isAdmin = isAuth && (user.IsInRole(Constants.AdministratorRole) || user.IsInRole(Constants.EditorRole));
+
+                        if (!isAdmin)
+                        {
+                            if (filterContext.IsChildAction)
+                            {
+                                filterContext.Result = new EmptyResult();
+                                return;
+                            }
+
+                            filterContext.Result = new RedirectResult("/underconstruction");
+                            return;
+                        }
+                    }
+                }
+            }
+
             ViewBag.IsProductPriceEnable = IsProductPriceEnabled;
             base.OnActionExecuting(filterContext);
         }

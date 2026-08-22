@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.HtmlHelpers;
 @using EImece.Domain;
 @using Resources;
@@ -56,7 +56,7 @@
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId))
     @Html.Raw(SeoUrlHelper.GetCanonicalTag(this.ViewContext, seoId, "amp"))
 
-    @if (!SeoSettings.AllowIndexing || AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+    @if (!SeoSettings.AllowIndexing || AppConfig.IsSiteUnderDevelopment)
     {
         <meta name="robots" content="noindex, nofollow, noarchive" />
         <meta name="googlebot" content="noindex, nofollow, noarchive" />

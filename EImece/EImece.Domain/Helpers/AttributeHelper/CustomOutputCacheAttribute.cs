@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+using EImece.Domain.Services.IServices;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.AttributeHelper
 {
@@ -7,15 +8,14 @@ namespace EImece.Domain.Helpers.AttributeHelper
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var httpContext = filterContext.HttpContext;
+            var isUnderConstruction = IsSiteUnderConstruction();
 
-            if (httpContext.User.Identity.IsAuthenticated)
+            if (isUnderConstruction || httpContext.User.Identity.IsAuthenticated)
             {
-                // Skip output-cache for authenticated users, but avoid Cache-Control: no-store
-                // so browsers can use back/forward cache (bfcache) on public GET pages.
+                // Skip output-cache when under construction or for authenticated users
                 httpContext.Response.Cache.SetNoServerCaching();
-                httpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.Private);
-                httpContext.Response.Cache.SetMaxAge(System.TimeSpan.Zero);
-                httpContext.Response.Cache.SetRevalidation(System.Web.HttpCacheRevalidation.AllCaches);
+                httpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+                httpContext.Response.Cache.SetNoStore();
             }
             else
             {
@@ -26,17 +26,30 @@ namespace EImece.Domain.Helpers.AttributeHelper
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             var httpContext = filterContext.HttpContext;
+            var isUnderConstruction = IsSiteUnderConstruction();
 
-            if (httpContext.User.Identity.IsAuthenticated)
+            if (isUnderConstruction || httpContext.User.Identity.IsAuthenticated)
             {
                 httpContext.Response.Cache.SetNoServerCaching();
-                httpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.Private);
-                httpContext.Response.Cache.SetMaxAge(System.TimeSpan.Zero);
-                httpContext.Response.Cache.SetRevalidation(System.Web.HttpCacheRevalidation.AllCaches);
+                httpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+                httpContext.Response.Cache.SetNoStore();
             }
             else
             {
                 base.OnResultExecuting(filterContext);
+            }
+        }
+
+        private static bool IsSiteUnderConstruction()
+        {
+            try
+            {
+                var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                return settingService != null && settingService.GetSettingByKey(Constants.IsSiteUnderConstruction).ToBool(false);
+            }
+            catch
+            {
+                return false;
             }
         }
 

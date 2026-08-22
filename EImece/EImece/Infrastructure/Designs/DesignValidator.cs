@@ -128,6 +128,10 @@ namespace EImece.Infrastructure.Designs
         private static bool IsExcludedDefaultView(string relative)
         {
             return relative.StartsWith("Designs", StringComparison.OrdinalIgnoreCase) ||
+                   relative.StartsWith(@"Shared\Griddly", StringComparison.OrdinalIgnoreCase) ||
+                   relative.StartsWith("Shared/Griddly", StringComparison.OrdinalIgnoreCase) ||
+                   relative.Equals(@"Shared\_ErrorLayout.cshtml", StringComparison.OrdinalIgnoreCase) ||
+                   relative.Equals(@"Shared/_ErrorLayout.cshtml", StringComparison.OrdinalIgnoreCase) ||
                    relative.Equals(@"Account\AdminLogin.cshtml", StringComparison.OrdinalIgnoreCase) ||
                    relative.Equals(@"Account\VerifyAuthenticator.cshtml", StringComparison.OrdinalIgnoreCase);
         }

@@ -1,28 +1,346 @@
-﻿@{
+@using EImece.Domain
+@{
     Layout = null;
+    var domain = AppConfig.Domain;
+    if (string.IsNullOrWhiteSpace(domain))
+    {
+        domain = Request?.Url?.Host ?? "EImece";
+    }
+    var themeColor = Constants.DefaultThemeColor;
+    var customHtml = ViewBag.CustomHtml as string;
+    if (string.IsNullOrWhiteSpace(customHtml))
+    {
+        var settingService = DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+        customHtml = settingService?.GetSettingByKey(Constants.UnderConstructionHtml);
+    }
 }
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="tr">
 <head>
-
-    <!-- metas -->
-    <meta charset="utf-8">
-    <meta name="author" content="Erayweb" />
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="keywords" content="Yuvadan.com.tr" />
-    <meta name="description" content="Antalya’nın köylerinden, kudret narı başta olmak üzere tüm doğal ve sağlıklı tarım ürünleriyle buluşun! Emeğin ve doğallığın lezzete dönüştüğü adres.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="theme-color" content="@themeColor" />
+    <title>Bakım Modu - @domain</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <style>
+        :root {
+            --primary: @themeColor;
+            --primary-dark: #045a27;
+            --accent: #f59e0b;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
 
-    <!-- title  -->
-    <title>Yuvadan.com.tr</title>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
- 
- 
-    <!--End of Whatsapp-->
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-shape-1 {
+            width: 320px;
+            height: 320px;
+            background: var(--primary);
+            top: 10%;
+            left: 15%;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .bg-shape-2 {
+            width: 280px;
+            height: 280px;
+            background: var(--accent);
+            bottom: 10%;
+            right: 15%;
+            animation: float 10s ease-in-out infinite alternate-reverse;
+        }
+
+        @@keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(30px) scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 2.75rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .brand-logo {
+            margin-bottom: 1.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo img {
+            max-height: 50px;
+            max-width: 200px;
+            object-fit: contain;
+            border-radius: 0.5rem;
+        }
+
+        .brand-logo .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            color: #fbbf24;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #fbbf24;
+            box-shadow: 0 0 0 rgba(251, 191, 36, 0.7);
+            animation: pulse 1.8s infinite;
+        }
+
+        @@keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+
+        .icon-container {
+            margin: 0 auto 1.5rem auto;
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-container svg {
+            width: 44px;
+            height: 44px;
+            fill: #fbbf24;
+            animation: rotate-gear 12s linear infinite;
+        }
+
+        @@keyframes rotate-gear {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.85rem;
+            color: #ffffff;
+            line-height: 1.25;
+        }
+
+        .desc-primary {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .desc-secondary {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+        .custom-maintenance-message {
+            margin: 1.25rem 0;
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        .custom-maintenance-message p {
+            margin-bottom: 0.75rem;
+        }
+
+        .custom-maintenance-message p:last-child {
+            margin-bottom: 0;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 1.75rem 0;
+        }
+
+        .action-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.65rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        @@media (max-width: 480px) {
+            .card {
+                padding: 2rem 1.25rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .desc-primary {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
- 
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="brand-logo">
+                <img src="/images/logo.jpg" alt="@domain" onerror="this.style.display='none'; document.getElementById('brandFallback').style.display='block';" />
+                <span id="brandFallback" class="brand-text" style="display: none;">@domain</span>
+            </div>
+
+            <div class="status-badge">
+                <span class="status-pulse"></span>
+                <span>Bakım Modu &bull; Maintenance Mode</span>
+            </div>
+
+            <div class="icon-container">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                </svg>
+            </div>
+
+            <h1>Sitemiz Yapım Aşamasında</h1>
+            @if (!string.IsNullOrWhiteSpace(customHtml))
+            {
+                <div class="custom-maintenance-message">
+                    @Html.Raw(customHtml)
+                </div>
+            }
+            else
+            {
+                <p class="desc-primary">
+                    Sizlere daha iyi bir alışveriş deneyimi sunabilmek için sitemizde teknik bakım ve güncelleme çalışmaları yapmaktayız.
+                </p>
+                <p class="desc-secondary">
+                    We are currently performing scheduled maintenance to improve our services. We will be back online shortly. Thank you for your patience!
+                </p>
+            }
+
+            <div class="divider"></div>
+
+            <div class="action-row">
+                <a href="javascript:location.reload();" class="btn-action btn-outline">
+                    &#x21bb; Yenile / Refresh
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            &copy; @DateTime.UtcNow.Year @domain &bull; Tüm Hakları Saklıdır.
+        </div>
+    </div>
 </body>
 </html>
