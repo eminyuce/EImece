@@ -1830,11 +1830,14 @@
     <Content Include="Content\mstore\img\gallery-cursor@2x.png" />
     <Content Include="Views\Designs\Crizal\Error\Gone.cshtml" />
     <Content Include="Views\Designs\Crizal\Error\_ViewStart.cshtml" />
+    <Content Include="Views\Designs\Crizal\UnderConstruction\Index.cshtml" />
     <Content Include="Views\Designs\Modern\Error\Gone.cshtml" />
     <Content Include="Views\Designs\Modern\Error\_ViewStart.cshtml" />
+    <Content Include="Views\Designs\Modern\UnderConstruction\Index.cshtml" />
     <Content Include="Views\Error\InternalServerError.cshtml" />
     <Content Include="Views\Error\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
+    <Content Include="Views\UnderConstruction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customers\Data\" />
