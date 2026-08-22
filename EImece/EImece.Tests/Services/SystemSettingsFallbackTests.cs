@@ -246,6 +246,32 @@ namespace EImece.Tests.Services
             Assert.IsFalse(CaptchaSettings.IsLegacyCaptchaEnabled);
         }
 
+        [TestMethod]
+        public void AdminSettings_ReflectsDynamicDbChanges()
+        {
+            // Arrange - with custom DB settings
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 15,
+                SettingKey = Constants.GridPageSizeNumber,
+                SettingValue = "50",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 16,
+                SettingKey = Constants.ProductShortDescriptionPreviewLength,
+                SettingValue = "250",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+
+            // Act & Assert
+            Assert.AreEqual(50, AdminSettings.GridPageSizeNumber);
+            Assert.AreEqual(250, AdminSettings.ProductShortDescriptionPreviewLength);
+        }
+
         private class SimpleTestDependencyResolver : IDependencyResolver
         {
             private readonly ISettingService _service;

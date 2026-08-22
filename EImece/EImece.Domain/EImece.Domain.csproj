@@ -655,6 +655,7 @@
     <Compile Include="Helpers\RazorCustomRssTemplate\VBCustomTemplateBase.cs" />
     <Compile Include="Helpers\ReportUiHelper.cs" />
     <Compile Include="Helpers\RssHelper.cs" />
+    <Compile Include="Helpers\AdminSettings.cs" />
     <Compile Include="Helpers\CaptchaSettings.cs" />
     <Compile Include="Helpers\SeoSettings.cs" />
     <Compile Include="Helpers\SeoUrlHelper.cs" />

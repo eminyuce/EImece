@@ -212,6 +212,7 @@ namespace EImece.Areas.Admin.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
+            ViewBag.GridPageSizeNumber = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
 
             if (!IsProductPriceEnabled)
             {

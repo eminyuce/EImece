@@ -8,7 +8,7 @@
 @{
     Layout = null;
     var gridName = "OrderGrid";
-    int pageSizeNumber = Constants.DefaultGridPageSizeNumber;
+    int pageSizeNumber = ViewBag.GridPageSizeNumber != null ? (int)ViewBag.GridPageSizeNumber : AdminSettings.GridPageSizeNumber;
     int rowNum = 0;
     int startIndex = 0;
 
