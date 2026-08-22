@@ -189,9 +189,10 @@ namespace EImece
                     return;
                 }
 
-                // Allow UnderConstruction, Error, and Admin login/2FA/logoff endpoints
+                // Allow UnderConstruction, Error, Admin area, and Admin login/2FA/logoff endpoints
                 if (path.StartsWith("/underconstruction") ||
                     path.StartsWith("/error") ||
+                    path.StartsWith("/admin") ||
                     path.StartsWith("/account/adminlogin") ||
                     path.StartsWith("/account/verifyauthenticator") ||
                     path.StartsWith("/account/logoff"))

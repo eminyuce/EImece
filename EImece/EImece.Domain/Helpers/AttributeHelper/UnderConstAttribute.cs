@@ -19,9 +19,10 @@ namespace EImece.Domain.Helpers.AttributeHelper
             var action = filterContext.ActionDescriptor?.ActionName ?? string.Empty;
             var area = filterContext.RouteData?.DataTokens["area"]?.ToString() ?? string.Empty;
 
-            // Allow ErrorController, UnderConstructionController, and Admin login/2FA/logoff
+            // Allow ErrorController, UnderConstructionController, Admin area, and Admin login/2FA/logoff
             if (controller.Equals("UnderConstruction", StringComparison.OrdinalIgnoreCase) ||
                 controller.Equals("Error", StringComparison.OrdinalIgnoreCase) ||
+                area.Equals("Admin", StringComparison.OrdinalIgnoreCase) ||
                 (controller.Equals("Account", StringComparison.OrdinalIgnoreCase) &&
                  (action.Equals("AdminLogin", StringComparison.OrdinalIgnoreCase) ||
                   action.Equals("VerifyAuthenticator", StringComparison.OrdinalIgnoreCase) ||

@@ -226,6 +226,7 @@ namespace EImece.Controllers
 
                 if (!controller.Equals("UnderConstruction", StringComparison.OrdinalIgnoreCase) &&
                     !controller.Equals("Error", StringComparison.OrdinalIgnoreCase) &&
+                    !area.Equals("Admin", StringComparison.OrdinalIgnoreCase) &&
                     !(controller.Equals("Account", StringComparison.OrdinalIgnoreCase) &&
                       (action.Equals("AdminLogin", StringComparison.OrdinalIgnoreCase) ||
                        action.Equals("VerifyAuthenticator", StringComparison.OrdinalIgnoreCase) ||
