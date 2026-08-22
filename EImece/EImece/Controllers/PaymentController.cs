@@ -1,4 +1,4 @@
-using EImece.Domain;
+﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Helpers;
@@ -144,7 +144,7 @@ namespace EImece.Controllers
             PaymentLogger.Info($"Entering AddToCart action with productId: {productId}, quantity: {quantity}, orderGuid: {orderGuid}");
             int pId = GeneralHelper.RevertId(productId);
             PaymentLogger.Info($"Reverted productId to: {pId}");
-            var product = await ProductService.GetProductByIdAsync(pId);
+            var product = await ProductService.GetStorefrontProductCardByIdAsync(pId);
             if (product != null)
             {
                 PaymentLogger.Info($"Product found with ID: {pId}");
@@ -405,7 +405,7 @@ namespace EImece.Controllers
                 else
                 {
                     PaymentLogger.Info("Shopping cart is empty. Redirecting to shoppingcart.");
-                    TempData["StatusMessage"] = "Sepetiniz boş";
+                    TempData["StatusMessage"] = "Sepetiniz boÅŸ";
                     return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
                 }
             }
@@ -485,12 +485,11 @@ namespace EImece.Controllers
                 return Json("", JsonRequestBehavior.AllowGet);
             }
 
-            var order = await OrderService.GetByOrderNumberAsync(orderNumber);
-            if (order == null)
+            var orderDto = await OrderService.GetStorefrontOrderConfirmationByOrderNumberAsync(orderNumber);
+            if (orderDto == null)
             {
                 return Json("", JsonRequestBehavior.AllowGet);
             }
-            var orderDto = Mapper.Map<OrderDto>(order);
             var tempData = new TempDataDictionary();
             var html = this.RenderPartialToString(
                         "CargoTrackingResult",
@@ -658,7 +657,7 @@ namespace EImece.Controllers
         
         public async Task<ActionResult> PaymentResult(PaymentCallbackRequest model, string o, string u, String orderNumber)
         {
-            // iyzico Checkout Form callback POSTs "token" — same binding as the former RetrieveCheckoutFormRequest.
+            // iyzico Checkout Form callback POSTs "token" â€” same binding as the former RetrieveCheckoutFormRequest.
             PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
             PaymentLogger.Info($"PaymentResult with ACCOUNT status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
             if (!IsSuccessfulPayment(paymentResult))
@@ -711,7 +710,7 @@ namespace EImece.Controllers
                 : paymentResult.ConversationId;
             var order = await ShoppingCartService.SaveShoppingCartAsync(resolvedOrderNumber, shoppingCart, paymentResult, userId);
             PaymentLogger.Info($"Order saved with ID: {order.Id}. Cart cleared. Redirecting to ThankYouForYourOrder.");
-            await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
+            await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(order.Id);
             await ClearCartAsync(shoppingCart);
             PaymentLogger.Debug("Cart cleared. Redirecting to ThankYouForYourOrder.");
             TempData[LastCompletedOrderIdKey] = order.Id;
@@ -720,32 +719,27 @@ namespace EImece.Controllers
 
         public async Task<ActionResult> ThankYouForYourOrder(int orderId)
         {
-            var order = await OrderService.GetOrderByIdAsync(orderId);
-            if (order == null)
+            string restrictToUserId = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                restrictToUserId = User.Identity.GetUserId();
+            }
+            else
+            {
+                var lastCompletedOrderId = TempData[LastCompletedOrderIdKey] as int?;
+                if (!lastCompletedOrderId.HasValue || lastCompletedOrderId.Value != orderId)
+                {
+                    return new HttpUnauthorizedResult();
+                }
+            }
+
+            var orderDto = await OrderService.GetStorefrontOrderConfirmationByIdAsync(orderId, restrictToUserId);
+            if (orderDto == null)
             {
                 return HttpNotFound();
             }
 
-            if (!CanViewOrder(order))
-            {
-                return new HttpUnauthorizedResult();
-            }
-
-            var orderDto = Mapper.Map<OrderDto>(order);
             return View(orderDto);
-        }
-
-        private bool CanViewOrder(Order order)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var userId = User.Identity.GetUserId();
-                return !string.IsNullOrEmpty(order.UserId)
-                    && order.UserId.Equals(userId, StringComparison.OrdinalIgnoreCase);
-            }
-
-            var lastCompletedOrderId = TempData[LastCompletedOrderIdKey] as int?;
-            return lastCompletedOrderId.HasValue && lastCompletedOrderId.Value == order.Id;
         }
 
         public ActionResult NoSuccessForYourOrder()
@@ -859,8 +853,7 @@ namespace EImece.Controllers
             buyNowModel.ProductDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(productId);
             PaymentLogger.Debug("Set product details in BuyNow model.");
             buyNowModel.ShoppingCartItem = new ShoppingCartItem();
-            var buyNowProduct = await ProductService.GetProductByIdAsync(productId);
-            buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(buyNowProduct, new List<ProductSpecItem>());
+            buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(buyNowModel.ProductDetailViewModel.ProductDto, new List<ProductSpecItem>());
             buyNowModel.ShoppingCartItem.Quantity = 1;
             buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
             PaymentLogger.Info($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");
@@ -956,16 +949,9 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ApplyCoupon(String couponCode)
         {
-            var couponObj = await CouponService.GetCouponByCodeAsync(couponCode, CurrentLanguage);
+            var couponDto = await CouponService.GetStorefrontCouponByCodeAsync(couponCode, CurrentLanguage);
             var shoppingCart = await GetShoppingCartFromDataSourceAsync();
-            if (couponObj != null)
-            {
-                shoppingCart.Coupon = Mapper.Map<CouponDto>(couponObj);
-            }
-            else
-            {
-                shoppingCart.Coupon = null;
-            }
+            shoppingCart.Coupon = couponDto;
             await SaveShoppingCartAsync(shoppingCart);
             return RedirectToAction(ShoppingCartAction);
         }
@@ -1080,17 +1066,17 @@ namespace EImece.Controllers
             return address;
         }
 
-        protected async Task SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(Order order)
+        protected async Task SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(int orderId)
         {
-            PaymentLogger.Info($"Entering SendEmails for order ID: {order.Id}");
+            PaymentLogger.Info($"Entering SendEmails for order ID: {orderId}");
 
             var emailAccount = await SettingService.GetEmailAccountAsync();
-            var customerTemplate = await TryRenderOrderConfirmationEmailAsync(order.Id);
-            var adminTemplate = await TryRenderCompanyGotNewOrderEmailAsync(order.Id);
+            var customerTemplate = await TryRenderOrderConfirmationEmailAsync(orderId);
+            var adminTemplate = await TryRenderCompanyGotNewOrderEmailAsync(orderId);
 
             if (customerTemplate == null && adminTemplate == null)
             {
-                PaymentLogger.Error($"No order notification email could be rendered. order.Id:{order.Id}");
+                PaymentLogger.Error($"No order notification email could be rendered. order.Id:{orderId}");
                 return;
             }
 
@@ -1099,11 +1085,11 @@ namespace EImece.Controllers
                 try
                 {
                     EmailSender.SendRenderedEmailTemplateToCustomer(emailAccount, customerTemplate, sendInBackground: true);
-                    PaymentLogger.Info($"Order confirmation email queued for customer. order.Id:{order.Id}");
+                    PaymentLogger.Info($"Order confirmation email queued for customer. order.Id:{orderId}");
                 }
                 catch (Exception e)
                 {
-                    PaymentLogger.Error(e, $"Failed to queue order confirmation email. order.Id:{order.Id}: {e.Message}");
+                    PaymentLogger.Error(e, $"Failed to queue order confirmation email. order.Id:{orderId}: {e.Message}");
                 }
             }
 
@@ -1112,11 +1098,11 @@ namespace EImece.Controllers
                 try
                 {
                     EmailSender.SendRenderedEmailTemplateToAdminUsers(emailAccount, adminTemplate, sendInBackground: true);
-                    PaymentLogger.Info($"New order email queued for admin users. order.Id:{order.Id}");
+                    PaymentLogger.Info($"New order email queued for admin users. order.Id:{orderId}");
                 }
                 catch (Exception e)
                 {
-                    PaymentLogger.Error(e, $"Failed to queue company new order email. order.Id:{order.Id}: {e.Message}");
+                    PaymentLogger.Error(e, $"Failed to queue company new order email. order.Id:{orderId}: {e.Message}");
                 }
             }
         }
@@ -1304,7 +1290,7 @@ namespace EImece.Controllers
                 : paymentResult.ConversationId;
             var order = await ShoppingCartService.SaveBuyWithNoAccountCreationAsync(resolvedOrderNumber, buyWithNoAccountCreation, paymentResult);
             PaymentLogger.Info($"Order saved with ID: {order.Id}. Cleared cart. Redirecting to ThankYouForYourOrder.");
-            await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(await OrderService.GetOrderByIdAsync(order.Id));
+            await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(order.Id);
             await ClearBuyWithNoAccountCreationAsync(buyWithNoAccountCreation);
             await ClearCartAsync(shoppingCart);
             PaymentLogger.Debug("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
@@ -1332,8 +1318,7 @@ namespace EImece.Controllers
 
             try
             {
-                var couponEntity = await CouponService.GetCouponByCodeAsync(shoppingCart.Coupon.Code, CurrentLanguage);
-                shoppingCart.Coupon = Mapper.Map<CouponDto>(couponEntity);
+                shoppingCart.Coupon = await CouponService.GetStorefrontCouponByCodeAsync(shoppingCart.Coupon.Code, CurrentLanguage);
             }
             catch (Exception ex)
             {

@@ -16,6 +16,10 @@ namespace EImece.Domain.Services.IServices
         Task<StorefrontPageDto> GetStorefrontPageByMenuLinkAsync(string menuLink, int? language, CancellationToken cancellationToken = default(CancellationToken));
         StorefrontPageDto GetStorefrontPageByMenuLink(string menuLink, int? language);
         Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusCachedAsync(int language);
+
+        Task<List<StorefrontMenuDto>> GetActiveMenuIdNamesAsync();
         List<StorefrontMenuDto> GetStorefrontActiveMenus(int language);
         Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
         List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language);

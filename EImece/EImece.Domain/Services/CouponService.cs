@@ -25,5 +25,10 @@ namespace EImece.Domain.Services
         {
             return await CouponRepository.GetCouponByCodeAsync(code, lang).ConfigureAwait(false);
         }
+
+        public async Task<Models.DTOs.CouponDto> GetStorefrontCouponByCodeAsync(string code, int lang)
+        {
+            return await CouponRepository.GetStorefrontCouponByCodeAsync(code, lang).ConfigureAwait(false);
+        }
     }
 }

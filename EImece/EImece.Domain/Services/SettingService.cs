@@ -47,7 +47,50 @@ namespace EImece.Domain.Services
                 DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + "_DICT");
                 DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + "_DICT" + AsyncCacheKeySuffix);
                 DataCachingProvider.Clear(CacheKeys.WebAppManifest);
+                DataCachingProvider.ClearByPrefix("SettingValueDto:");
             }
+        }
+
+        private const string SettingValueDtoCachePrefix = "SettingValueDto:";
+
+        private Models.DTOs.Storefront.SettingValueDto GetOrAddCachedSettingValueDto(string cacheKey, Func<Models.DTOs.Storefront.SettingValueDto> factory)
+        {
+            if (DataCachingProvider == null)
+            {
+                return factory();
+            }
+            return DataCachingProvider.GetOrAdd(cacheKey, factory, AppConfig.CacheLongSeconds);
+        }
+
+        /// <summary>
+        /// LazyCache-backed single-column setting read for layout/footer partials.
+        /// </summary>
+        public Models.DTOs.Storefront.SettingValueDto GetCachedSettingValueDtoByKey(string key)
+        {
+            return GetOrAddCachedSettingValueDto(
+                SettingValueDtoCachePrefix + key,
+                () => GetSettingValueDtoByKey(key));
+        }
+
+        /// <summary>
+        /// LazyCache-backed language-scoped setting read for layout/footer partials.
+        /// </summary>
+        public Models.DTOs.Storefront.SettingValueDto GetCachedSettingValueDtoByKey(string key, int language)
+        {
+            return GetOrAddCachedSettingValueDto(
+                SettingValueDtoCachePrefix + key + ":lang" + language,
+                () => GetSettingValueDtoByKey(key, language));
+        }
+
+        /// <summary>
+        /// LazyCache-backed single-column setting read.
+        /// </summary>
+        public string GetCachedSettingValue(string key)
+        {
+            var dto = GetOrAddCachedSettingValueDto(
+                SettingValueDtoCachePrefix + key,
+                () => GetSettingValueDtoByKey(key));
+            return dto == null ? null : dto.SettingValue;
         }
 
         private Dictionary<string, Setting> GetCachedSettingsDictionary()

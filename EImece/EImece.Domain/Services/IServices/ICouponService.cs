@@ -8,5 +8,7 @@ namespace EImece.Domain.Services.IServices
         Coupon GetCouponByCode(string code, int lang);
 
         Task<Coupon> GetCouponByCodeAsync(string code, int lang);
+
+        Task<Models.DTOs.CouponDto> GetStorefrontCouponByCodeAsync(string code, int lang);
     }
 }

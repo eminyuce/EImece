@@ -518,16 +518,10 @@ namespace EImece.Domain.Services
         public SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int currentLanguage)
         {
             var result = new SimiliarStoryTagsViewModel();
-            var tag = TagService.GetSingle(tagId);
-            result.Tag = StorefrontTagDto.FromEntity(tag);
+            result.Tag = TagService.GetStorefrontTagById(tagId);
 
-            var productTags = ProductTagRepository.GetProductsByTagId(tagId, 1, 10, currentLanguage);
-            var productCards = productTags.Select(pt => StorefrontProductCardDto.FromEntity(pt.Product)).ToList();
-            result.ProductTags = new PaginatedList<StorefrontProductCardDto>(productCards, productTags.PageIndex, productTags.PageSize, productTags.TotalCount);
-
-            var storyTags = StoryTagRepository.GetStoriesByTagId(tagId, pageIndex, pageSize, currentLanguage);
-            var storyCards = storyTags.Select(st => StorefrontStoryCardDto.FromEntity(st.Story)).ToList();
-            result.StoryTags = new PaginatedList<StorefrontStoryCardDto>(storyCards, storyTags.PageIndex, storyTags.PageSize, storyTags.TotalCount);
+            // Projected story cards by tag — no entity graphs; the unused ProductTags leg was removed.
+            result.StoryTags = StoryRepository.GetStorefrontStoriesByTagId(tagId, pageIndex, pageSize, currentLanguage);
 
             result.CompanyName = SettingService.GetSettingValueDtoByKey(Constants.CompanyName);
             return result;
@@ -536,16 +530,10 @@ namespace EImece.Domain.Services
         public async Task<SimiliarStoryTagsViewModel> GetStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new SimiliarStoryTagsViewModel();
-            var tag = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            result.Tag = StorefrontTagDto.FromEntity(tag);
+            result.Tag = await TagService.GetStorefrontTagByIdAsync(tagId, cancellationToken).ConfigureAwait(false);
 
-            var productTags = await ProductTagRepository.GetProductsByTagIdAsync(tagId, 1, 10, currentLanguage, cancellationToken).ConfigureAwait(false);
-            var productCards = productTags.Select(pt => StorefrontProductCardDto.FromEntity(pt.Product)).ToList();
-            result.ProductTags = new PaginatedList<StorefrontProductCardDto>(productCards, productTags.PageIndex, productTags.PageSize, productTags.TotalCount);
-
-            var storyTags = await StoryTagRepository.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, currentLanguage, cancellationToken).ConfigureAwait(false);
-            var storyCards = storyTags.Select(st => StorefrontStoryCardDto.FromEntity(st.Story)).ToList();
-            result.StoryTags = new PaginatedList<StorefrontStoryCardDto>(storyCards, storyTags.PageIndex, storyTags.PageSize, storyTags.TotalCount);
+            // Projected story cards by tag — no entity graphs; the unused ProductTags leg was removed.
+            result.StoryTags = await StoryRepository.GetStorefrontStoriesByTagIdAsync(tagId, pageIndex, pageSize, currentLanguage, cancellationToken).ConfigureAwait(false);
 
             result.CompanyName = await SettingService.GetSettingValueDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             return result;

@@ -1,19 +1,16 @@
 @using EImece.Domain;
-@using EImece.Domain.Services.IServices;
-@using System.Web.Mvc;
+@using EImece.Domain.Models.FrontModels;
 @using Newtonsoft.Json;
+@model JsonLdOrganizationModel
 
 @{
-    var settingService = DependencyResolver.Current.GetService<ISettingService>();
-    string companyName = settingService != null ? settingService.GetSettingByKey(Constants.CompanyName) : "EImece";
-    if (string.IsNullOrWhiteSpace(companyName)) { companyName = "EImece"; }
+    string companyName = !string.IsNullOrWhiteSpace(Model.CompanyName) ? Model.CompanyName : "EImece";
 
     string domain = !string.IsNullOrWhiteSpace(AppConfig.Domain) ? AppConfig.Domain : "localhost:81";
     string baseUrl = string.Format("{0}://{1}", AppConfig.HttpProtocol, domain);
-    string logoSetting = settingService != null ? settingService.GetSettingByKey(Constants.WebSiteLogo) : null;
-    string logoUrl = !string.IsNullOrWhiteSpace(logoSetting) ? string.Format("{0}{1}", baseUrl, logoSetting) : string.Format("{0}/images/logo.jpg", baseUrl);
-    string phone = settingService != null ? settingService.GetSettingByKey(Constants.WebSiteCompanyPhoneAndLocation) : null;
-    string email = settingService != null ? settingService.GetSettingByKey(Constants.WebSiteCompanyEmailAddress) : null;
+    string logoUrl = !string.IsNullOrWhiteSpace(Model.LogoSetting) ? string.Format("{0}{1}", baseUrl, Model.LogoSetting) : string.Format("{0}/images/logo.jpg", baseUrl);
+    string phone = Model.Phone;
+    string email = Model.Email;
 
     var orgSchema = new Dictionary<string, object>
     {

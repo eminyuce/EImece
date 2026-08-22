@@ -1,4 +1,4 @@
-@using Iyzipay.Model;
+﻿@using Iyzipay.Model;
 @using EImece.Domain;
 @using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Helpers;
@@ -7,7 +7,7 @@
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
 @using System.Resources;
-@model OrderDto
+@model EImece.Domain.Models.DTOs.Storefront.StorefrontOrderConfirmationDto
 @{
     var item = Model;
     string urlActionLink = Url.Action("index", "home");
@@ -242,7 +242,7 @@
 </style>
 
 
-@helper createOrderStatus(OrderDto o)
+@helper createOrderStatus(EImece.Domain.Models.DTOs.Storefront.StorefrontOrderConfirmationDto o)
 {
 
     var os = (EImeceOrderStatus)o.OrderStatus;

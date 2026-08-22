@@ -185,12 +185,11 @@ namespace EImece.Domain.Services
             var result = new FooterViewModel();
             result.Menus = MenuService.GetStorefrontMenuNavigation(language);
             result.ProductCategories = ProductCategoryService.GetStorefrontMainPageCategories(language);
-            result.FooterLogo = SettingService.GetSettingValueDtoByKey(Constants.WebSiteLogo);
-            result.CompanyName = SettingService.GetSettingValueDtoByKey(Constants.CompanyName);
-            result.CompanyAddress = SettingService.GetSettingValueDtoByKey(Constants.CompanyAddress);
-            result.FooterDescription = SettingService.GetSettingValueDtoByKey(Constants.FooterDescription, language);
-            result.FooterEmailListDescription = SettingService.GetSettingValueDtoByKey(Constants.FooterEmailListDescription, language);
-            result.FooterHtmlDescription = SettingService.GetSettingValueDtoByKey(Constants.FooterHtmlDescription, language);
+            result.CompanyName = SettingService.GetCachedSettingValueDtoByKey(Constants.CompanyName);
+            result.CompanyAddress = SettingService.GetCachedSettingValueDtoByKey(Constants.CompanyAddress);
+            result.FooterDescription = SettingService.GetCachedSettingValueDtoByKey(Constants.FooterDescription, language);
+            result.FooterEmailListDescription = SettingService.GetCachedSettingValueDtoByKey(Constants.FooterEmailListDescription, language);
+            result.FooterHtmlDescription = SettingService.GetCachedSettingValueDtoByKey(Constants.FooterHtmlDescription, language);
 
             return result;
         }

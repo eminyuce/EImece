@@ -75,11 +75,11 @@ namespace EImece.Controllers
                 return null;
             }
 
-            var menus = await MenuService.GetMenusAsync().ConfigureAwait(false);
+            // Two-column projected read instead of materializing every menu with files/images.
+            var menus = await MenuService.GetActiveMenuIdNamesAsync().ConfigureAwait(false);
             var contact = menus == null
                 ? null
                 : menus.FirstOrDefault(m => m != null
-                    && m.IsActive
                     && m.GetSeoUrl().StartsWith("iletisim-", StringComparison.OrdinalIgnoreCase));
 
             if (contact != null)

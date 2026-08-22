@@ -48,7 +48,7 @@ namespace EImece.Controllers
                 return Json(Resource.NotValidEmailAddress, JsonRequestBehavior.AllowGet);
             }
 
-            if (await SubsciberService.GetSubscriberByEmailAsync(subscribeEmail) == null)
+            if (!await SubsciberService.SubscriberExistsByEmailAsync(subscribeEmail))
             {
                 var subscriber = new Subscriber();
                 subscriber.Name = subscribeEmail;

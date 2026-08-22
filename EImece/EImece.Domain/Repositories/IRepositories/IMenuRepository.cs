@@ -1,4 +1,4 @@
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
@@ -38,6 +38,8 @@ namespace EImece.Domain.Repositories.IRepositories
         Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
 
         List<StorefrontMenuDto> GetStorefrontActiveMenus(int language);
+
+        Task<List<StorefrontMenuDto>> GetActiveMenuIdNamesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
 

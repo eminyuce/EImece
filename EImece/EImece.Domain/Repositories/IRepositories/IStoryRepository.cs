@@ -65,6 +65,10 @@ namespace EImece.Domain.Repositories.IRepositories
 
         PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize);
 
+        Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByTagId(int tagId, int pageIndex, int pageSize, int language);
+
         Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIdList, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken));
 
         List<StorefrontStoryCardDto> GetStorefrontRelatedStories(int[] tagIdList, int take, int language, int excludedStoryId);

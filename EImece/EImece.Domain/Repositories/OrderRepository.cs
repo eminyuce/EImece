@@ -350,6 +350,153 @@ namespace EImece.Domain.Repositories
                 }).ToList();
         }
 
+        private static readonly Expression<Func<Address, Models.DTOs.Storefront.StorefrontOrderConfirmationAddressDto>> ConfirmationAddressProjection =
+            a => new Models.DTOs.Storefront.StorefrontOrderConfirmationAddressDto
+            {
+                Name = a.Name,
+                Description = a.Description,
+                City = a.City,
+                Country = a.Country,
+                ZipCode = a.ZipCode,
+                Street = a.Street,
+                District = a.District
+            };
+
+        private sealed class OrderConfirmationRow
+        {
+            public string UserId { get; set; }
+            public int ShippingAddressId { get; set; }
+            public int BillingAddressId { get; set; }
+            public Models.DTOs.Storefront.StorefrontOrderConfirmationDto Dto { get; set; }
+        }
+
+        private static readonly Expression<Func<Order, OrderConfirmationRow>> OrderConfirmationRowProjection =
+            o => new OrderConfirmationRow
+            {
+                UserId = o.UserId,
+                ShippingAddressId = o.ShippingAddressId,
+                BillingAddressId = o.BillingAddressId,
+                Dto = new Models.DTOs.Storefront.StorefrontOrderConfirmationDto
+                {
+                    Id = o.Id,
+                    OrderNumber = o.OrderNumber,
+                    CreatedDate = o.CreatedDate,
+                    OrderStatus = o.OrderStatus,
+                    CargoPrice = o.CargoPrice,
+                    Coupon = o.Coupon,
+                    CouponDiscount = o.CouponDiscount,
+                    Price = o.Price,
+                    PaidPrice = o.PaidPrice,
+                    Installment = o.Installment,
+                    CardFamily = o.CardFamily,
+                    CardType = o.CardType,
+                    CardAssociation = o.CardAssociation,
+                    LastFourDigits = o.LastFourDigits,
+                    ShipmentCompanyName = o.ShipmentCompanyName,
+                    ShipmentTrackingNumber = o.ShipmentTrackingNumber,
+                    AdminOrderNote = o.AdminOrderNote,
+                    OrderComments = o.OrderComments,
+                    OrderProducts = o.OrderProducts.Select(op => new Models.DTOs.Storefront.StorefrontOrderConfirmationItemDto
+                    {
+                        ProductName = op.ProductName,
+                        Quantity = op.Quantity,
+                        ProductSalePrice = op.ProductSalePrice,
+                        TotalPrice = op.TotalPrice
+                    }).ToList()
+                }
+            };
+
+        private async Task FillConfirmationDetailsAsync(Models.DTOs.Storefront.StorefrontOrderConfirmationDto dto, string userId, int shippingAddressId, int billingAddressId, CancellationToken cancellationToken)
+        {
+            if (dto == null)
+            {
+                return;
+            }
+
+            if (shippingAddressId > 0)
+            {
+                dto.ShippingAddress = await EImeceDbContext.Addresses.AsNoTracking()
+                    .Where(a => a.Id == shippingAddressId)
+                    .Select(ConfirmationAddressProjection)
+                    .FirstOrDefaultAsync(cancellationToken)
+                    .ConfigureAwait(false);
+            }
+            if (billingAddressId > 0)
+            {
+                dto.BillingAddress = await EImeceDbContext.Addresses.AsNoTracking()
+                    .Where(a => a.Id == billingAddressId)
+                    .Select(ConfirmationAddressProjection)
+                    .FirstOrDefaultAsync(cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                dto.Customer = await EImeceDbContext.Customers.AsNoTracking()
+                    .Where(c => c.UserId == userId)
+                    .Select(c => new Models.DTOs.Storefront.StorefrontOrderConfirmationCustomerDto
+                    {
+                        Name = c.Name,
+                        Surname = c.Surname,
+                        Email = c.Email,
+                        GsmNumber = c.GsmNumber
+                    })
+                    .FirstOrDefaultAsync(cancellationToken)
+                    .ConfigureAwait(false);
+            }
+        }
+
+        public async Task<Models.DTOs.Storefront.StorefrontOrderConfirmationDto> GetStorefrontOrderConfirmationByIdAsync(int id, string restrictToUserId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var query = EImeceDbContext.Orders.AsNoTracking().Where(o => o.Id == id);
+            if (!string.IsNullOrEmpty(restrictToUserId))
+            {
+                query = query.Where(o => o.UserId == restrictToUserId);
+            }
+            var row = await query
+                .Select(OrderConfirmationRowProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+            if (row == null)
+            {
+                return null;
+            }
+            await FillConfirmationDetailsAsync(row.Dto, row.UserId, row.ShippingAddressId, row.BillingAddressId, cancellationToken).ConfigureAwait(false);
+            return row.Dto;
+        }
+
+        public async Task<Models.DTOs.Storefront.StorefrontOrderConfirmationDto> GetStorefrontOrderConfirmationByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var row = await EImeceDbContext.Orders.AsNoTracking()
+                .Where(o => o.OrderNumber == orderNumber)
+                .Select(OrderConfirmationRowProjection)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+            if (row == null)
+            {
+                return null;
+            }
+            await FillConfirmationDetailsAsync(row.Dto, row.UserId, row.ShippingAddressId, row.BillingAddressId, cancellationToken).ConfigureAwait(false);
+            return row.Dto;
+        }
+
+        /// <summary>
+        /// Aggregated order stats (COUNT + total paid) for a user. PaidPrice is stored as string,
+        /// so the rounding/parse happens in memory over that single projected column only.
+        /// </summary>
+        public async Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var query = EImeceDbContext.Orders.AsNoTracking().Where(o => o.UserId == userId);
+            var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var stats = new Models.DTOs.Storefront.OrderStatsDto { TotalOrderCount = count };
+            if (count > 0)
+            {
+                var paidPrices = await query.Select(o => o.PaidPrice).ToListAsync(cancellationToken).ConfigureAwait(false);
+                stats.TotalPaid = paidPrices.Sum(p => decimal.Round(p.ToDecimal(), 3, MidpointRounding.AwayFromZero));
+            }
+            return stats;
+        }
+
         #endregion
 
         public Order GetOrderById(int id)

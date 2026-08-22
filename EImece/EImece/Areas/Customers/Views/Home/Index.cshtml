@@ -5,13 +5,7 @@
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.DTOs;
-@{
-    List<OrderDto> orders = Model.Orders;
-    if (orders.IsEmpty())
-    {
-        orders = new List<OrderDto>();
-    }
-}
+@using EImece.Domain.Models.DTOs.Storefront;
 
 <!-- Page Content-->
 <div class="container pt-lg-3 pb-5 mb-sm-3">
@@ -28,7 +22,7 @@
     <div class="row pt-1">
         <!-- Main content-->
         <div class="col-lg-12">
-            @Html.Partial("_CustomerDetails", Model)
+            @Html.Partial("_CustomerSummaryDetails", (CustomerSummaryDto)ViewBag.CustomerSummary)
             <div class="col-md-12">
                 <div class="alert alert-secondary">
                     <div class="text-center">

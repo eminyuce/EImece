@@ -85,6 +85,18 @@ namespace EImece.Domain.Services
             return await TagRepository.GetStorefrontTagByIdAsync(tagId, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Single-flight cached projected tag list (no entity materialization).
+        /// </summary>
+        public async Task<List<StorefrontTagDto>> GetStorefrontProductTagsCachedAsync(int language)
+        {
+            var cacheKey = CacheKeys.TagPrefix + "storefront:lang" + language;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => TagRepository.GetStorefrontProductTagsAsync(language),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+        }
+
         public StorefrontTagDto GetStorefrontTagById(int tagId)
         {
             return TagRepository.GetStorefrontTagById(tagId);

@@ -15,6 +15,10 @@ namespace EImece.Domain.Services.IServices
 
         Task<Customer> GetUserIdAsync(string userId);
 
+        System.Threading.Tasks.Task<EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId);
+
+        System.Threading.Tasks.Task<EImece.Domain.Models.DTOs.CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId);
+
         void DeleteByUserId(string userId);
 
         Task DeleteByUserIdAsync(string userId);

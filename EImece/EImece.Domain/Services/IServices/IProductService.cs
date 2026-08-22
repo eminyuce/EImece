@@ -1,4 +1,4 @@
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.DTOs.Storefront;
@@ -83,6 +83,8 @@ namespace EImece.Domain.Services.IServices
         Product GetProductById(int id);
 
         Task<Product> GetProductByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<Models.DTOs.Storefront.StorefrontProductCardDto> GetStorefrontProductCardByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
         ProductDeleteResult DeleteProductById(int id);
 

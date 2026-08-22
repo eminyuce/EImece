@@ -551,6 +551,39 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
         }
 
+        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByTagIdAsync(int tagId, int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var query = EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.Lang == language &&
+                            s.StoryTags.Any(st => st.TagId == tagId && st.Tag != null && st.Tag.IsActive))
+                .OrderBy(s => s.Position);
+
+            var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var items = await query
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .Select(StoryCardProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+            return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
+        }
+
+        public PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByTagId(int tagId, int pageIndex, int pageSize, int language)
+        {
+            var query = EImeceDbContext.Stories.AsNoTracking()
+                .Where(s => s.IsActive && s.Lang == language &&
+                            s.StoryTags.Any(st => st.TagId == tagId && st.Tag != null && st.Tag.IsActive))
+                .OrderBy(s => s.Position);
+
+            var total = query.Count();
+            var items = query
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .Select(StoryCardProjection)
+                .ToList();
+            return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
+        }
+
         public async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIdList, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (tagIdList == null || tagIdList.Length == 0) return new List<StorefrontStoryCardDto>();

@@ -24,5 +24,15 @@ namespace EImece.Domain.Services
         {
             return await SubscriberRepository.GetSubscriberByEmailAsync(email).ConfigureAwait(false);
         }
+
+        public async Task<bool> SubscriberExistsByEmailAsync(string email)
+        {
+            return await SubscriberRepository.SubscriberExistsByEmailAsync(email).ConfigureAwait(false);
+        }
+
+        public async Task<string> GetSubscriberEmailByIdAsync(int id)
+        {
+            return await SubscriberRepository.GetSubscriberEmailByIdAsync(id).ConfigureAwait(false);
+        }
     }
 }
