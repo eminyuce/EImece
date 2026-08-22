@@ -116,6 +116,10 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsSiteUnderConstruction))]
         public bool IsSiteUnderConstruction { get; set; }
 
+        [AllowHtml]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.UnderConstructionHtml))]
+        public string UnderConstructionHtml { get; set; }
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AllowSearchEngineIndexing))]
         public bool AllowSearchEngineIndexing { get; set; }
 

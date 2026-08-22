@@ -2116,6 +2116,9 @@
   <data name="IsSiteUnderConstruction" xml:space="preserve">
     <value>Bakım Modu (Site Under Construction)</value>
   </data>
+  <data name="UnderConstructionHtml" xml:space="preserve">
+    <value>Bakım Sayfası Özel Mesaj / HTML (Under Construction Custom Message)</value>
+  </data>
   <data name="AllowSearchEngineIndexing" xml:space="preserve">
     <value>Arama Motoru İndeksleme İzni (Allow Indexing)</value>
   </data>

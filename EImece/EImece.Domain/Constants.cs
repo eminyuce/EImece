@@ -92,6 +92,8 @@ namespace EImece.Domain
 
         // Site Maintenance & SEO Setting Keys
         public const string IsSiteUnderConstruction = "IsSiteUnderConstruction";
+        public const string UnderConstructionHtml = "UnderConstructionHtml";
+        public const string DefaultUnderConstructionHtml = "";
         public const string AllowSearchEngineIndexing = "AllowSearchEngineIndexing";
         public const string ActiveDesign = "ActiveDesign";
 

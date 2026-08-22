@@ -7,6 +7,12 @@
         domain = Request?.Url?.Host ?? "EImece";
     }
     var themeColor = Constants.DefaultThemeColor;
+    var customHtml = ViewBag.CustomHtml as string;
+    if (string.IsNullOrWhiteSpace(customHtml))
+    {
+        var settingService = DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+        customHtml = settingService?.GetSettingByKey(Constants.UnderConstructionHtml);
+    }
 }
 <!DOCTYPE html>
 <html lang="tr">
@@ -198,6 +204,21 @@
             line-height: 1.5;
             margin-bottom: 2rem;
         }
+        .custom-maintenance-message {
+            margin: 1.25rem 0;
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        .custom-maintenance-message p {
+            margin-bottom: 0.75rem;
+        }
+
+        .custom-maintenance-message p:last-child {
+            margin-bottom: 0;
+        }
 
         .divider {
             height: 1px;
@@ -292,12 +313,21 @@
             </div>
 
             <h1>Sitemiz Yapım Aşamasında</h1>
-            <p class="desc-primary">
-                Sizlere daha iyi bir alışveriş deneyimi sunabilmek için sitemizde teknik bakım ve güncelleme çalışmaları yapmaktayız.
-            </p>
-            <p class="desc-secondary">
-                We are currently performing scheduled maintenance to improve our services. We will be back online shortly. Thank you for your patience!
-            </p>
+            @if (!string.IsNullOrWhiteSpace(customHtml))
+            {
+                <div class="custom-maintenance-message">
+                    @Html.Raw(customHtml)
+                </div>
+            }
+            else
+            {
+                <p class="desc-primary">
+                    Sizlere daha iyi bir alışveriş deneyimi sunabilmek için sitemizde teknik bakım ve güncelleme çalışmaları yapmaktayız.
+                </p>
+                <p class="desc-secondary">
+                    We are currently performing scheduled maintenance to improve our services. We will be back online shortly. Thank you for your patience!
+                </p>
+            }
 
             <div class="divider"></div>
 

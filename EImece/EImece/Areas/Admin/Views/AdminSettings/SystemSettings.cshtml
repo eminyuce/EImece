@@ -414,6 +414,16 @@
                                     @Html.ValidationMessageFor(model => model.IsSiteUnderConstruction, "", new { @class = "text-danger small mt-1 d-block" })
                                 </div>
 
+                                <!-- Under Construction Custom HTML Message -->
+                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="UnderConstructionHtml" data-setting-label="Bakım Sayfası Özel Mesaj / HTML" data-setting-desc="Bakım modu aktifken ziyaretçilere gösterilecek özel duyuru veya HTML metni" data-keywords="bakım modu html duyuru mesaj özel under construction custom html message">
+                                    <label class="fw-bold mb-1 d-block" for="UnderConstructionHtml">
+                                        <i class="fa fa-code text-info me-1"></i> Bakım Sayfası Özel Mesaj / HTML
+                                    </label>
+                                    <p class="text-muted small mb-2">Bakım sayfası yayındayken ziyaretçilerinize gösterilecek özel duyuru, bilgilendirme metni veya HTML kodu girebilirsiniz. Boş bırakılırsa standart bakım mesajı gösterilir.</p>
+                                    @Html.TextAreaFor(model => model.UnderConstructionHtml, new { @class = "form-control font-monospace", rows = 4, placeholder = "Örn: <p>Sistemlerimizde planlı altyapı yükseltmesi yapılmaktadır. Saat 02:00 itibarıyla yeniden hizmetinizdeyiz.</p>" })
+                                    @Html.ValidationMessageFor(model => model.UnderConstructionHtml, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+
                                 <!-- SEO Indexing -->
                                 <div class="setting-item p-3 rounded border bg-light" data-setting-name="AllowSearchEngineIndexing" data-setting-label="Arama Motoru İndeksleme" data-setting-desc="Google, Bing ve diğer arama motorlarının sitenizi dizine eklemesine izin verir" data-keywords="seo google bing robot robots.txt meta indexing">
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">

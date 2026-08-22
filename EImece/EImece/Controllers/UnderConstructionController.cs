@@ -61,6 +61,8 @@ namespace EImece.Controllers
                     response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
                     response.TrySkipIisCustomErrors = true;
                 }
+                var customHtml = settingService != null ? await settingService.GetSettingByKeyAsync(Constants.UnderConstructionHtml) : string.Empty;
+                ViewBag.CustomHtml = customHtml;
                 Logger.Info("Returning Index view with 503 status.");
                 return await Task.FromResult(View());
             }

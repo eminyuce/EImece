@@ -129,6 +129,7 @@ namespace EImece.Tests.Services
                 ActiveDesign = "Modern",
                 AllowSearchEngineIndexing = true,
                 IsSiteUnderConstruction = false,
+                UnderConstructionHtml = "<p>Bakımdayız. Saat 02:00'de açılacağız.</p>",
                 RateLimit_Enabled = true,
                 RateLimit_Login_Limit = 15,
                 RateLimit_Login_WindowMinutes = 20,
@@ -173,6 +174,7 @@ namespace EImece.Tests.Services
             var loadedModel = _settingService.GetSystemSettingModel();
             Assert.AreEqual("Modern", loadedModel.ActiveDesign);
             Assert.IsTrue(loadedModel.AllowSearchEngineIndexing);
+            Assert.AreEqual("<p>Bakımdayız. Saat 02:00'de açılacağız.</p>", loadedModel.UnderConstructionHtml);
             Assert.AreEqual(15, loadedModel.RateLimit_Login_Limit);
             Assert.AreEqual(20, loadedModel.RateLimit_Login_WindowMinutes);
             Assert.AreEqual(88, loadedModel.ImageUploadJpegQuality);
