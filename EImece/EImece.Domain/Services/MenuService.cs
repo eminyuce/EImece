@@ -1,4 +1,4 @@
-using EImece.Domain.Caching;
+﻿using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -68,6 +68,23 @@ namespace EImece.Domain.Services
             return await MenuRepository.GetStorefrontActiveMenusAsync(language, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Single-flight cached projected menu list (no entity materialization).
+        /// </summary>
+        public async Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusCachedAsync(int language)
+        {
+            var cacheKey = CacheKeys.MenuPrefix + "activemenus:lang" + language;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => MenuRepository.GetStorefrontActiveMenusAsync(language),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+        }
+
+        public async Task<List<StorefrontMenuDto>> GetActiveMenuIdNamesAsync()
+        {
+            return await MenuRepository.GetActiveMenuIdNamesAsync().ConfigureAwait(false);
+        }
+
         public List<StorefrontMenuDto> GetStorefrontActiveMenus(int language)
         {
             return MenuRepository.GetStorefrontActiveMenus(language);
@@ -93,12 +110,20 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await MenuRepository.GetStorefrontMenuNavigationAsync(language, cancellationToken).ConfigureAwait(false);
+            var cacheKey = CacheKeys.MenuPrefix + "nav:lang" + language + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => MenuRepository.GetStorefrontMenuNavigationAsync(language, cancellationToken),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language)
         {
-            return MenuRepository.GetStorefrontMenuNavigation(language);
+            var cacheKey = CacheKeys.MenuPrefix + "nav:lang" + language;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => MenuRepository.GetStorefrontMenuNavigation(language),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
@@ -189,24 +214,17 @@ namespace EImece.Domain.Services
                 MenuFiles = MenuRepository.GetStorefrontMenuFiles(pageId)
             };
 
-            var mainPageDto = MenuRepository.GetStorefrontPageByMenuLink("home-index", pageDto.Lang);
-            if (mainPageDto != null)
-            {
-                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
-            }
-
             result.ApplicationSettings = SettingService.GetSettingKeyValues(pageDto.Lang);
-
             var allMenus = GetStorefrontActiveMenus(pageDto.Lang);
             result.SideMenus = allMenus.Where(m => m.ParentId == pageDto.Id || m.Id == pageDto.Id).ToList();
 
             var socialList = new Dictionary<string, string>();
-            socialList.Add(Constants.InstagramWebSiteLink, SettingService.GetSettingValue(Constants.InstagramWebSiteLink));
-            socialList.Add(Constants.LinkedinWebSiteLink, SettingService.GetSettingValue(Constants.LinkedinWebSiteLink));
-            socialList.Add(Constants.YotubeWebSiteLink, SettingService.GetSettingValue(Constants.YotubeWebSiteLink));
-            socialList.Add(Constants.FacebookWebSiteLink, SettingService.GetSettingValue(Constants.FacebookWebSiteLink));
-            socialList.Add(Constants.TwitterWebSiteLink, SettingService.GetSettingValue(Constants.TwitterWebSiteLink));
-            socialList.Add(Constants.PinterestWebSiteLink, SettingService.GetSettingValue(Constants.PinterestWebSiteLink));
+            socialList.Add(Constants.InstagramWebSiteLink, SettingService.GetCachedSettingValue(Constants.InstagramWebSiteLink));
+            socialList.Add(Constants.LinkedinWebSiteLink, SettingService.GetCachedSettingValue(Constants.LinkedinWebSiteLink));
+            socialList.Add(Constants.YotubeWebSiteLink, SettingService.GetCachedSettingValue(Constants.YotubeWebSiteLink));
+            socialList.Add(Constants.FacebookWebSiteLink, SettingService.GetCachedSettingValue(Constants.FacebookWebSiteLink));
+            socialList.Add(Constants.TwitterWebSiteLink, SettingService.GetCachedSettingValue(Constants.TwitterWebSiteLink));
+            socialList.Add(Constants.PinterestWebSiteLink, SettingService.GetCachedSettingValue(Constants.PinterestWebSiteLink));
             result.SocialMediaLinks = socialList;
 
             return result;
@@ -236,24 +254,18 @@ namespace EImece.Domain.Services
                 MenuFiles = menuFiles
             };
 
-            var mainPageDto = await MenuRepository.GetStorefrontPageByMenuLinkAsync("home-index", pageDto.Lang).ConfigureAwait(false);
-            if (mainPageDto != null)
-            {
-                result.MainPageMenu = new StorefrontMenuDto { Id = mainPageDto.Id, Name = mainPageDto.Name, MenuLink = mainPageDto.MenuLink };
-            }
-
             result.ApplicationSettings = await SettingService.GetSettingKeyValuesAsync(pageDto.Lang).ConfigureAwait(false);
 
             var allMenus = await GetStorefrontActiveMenusAsync(pageDto.Lang).ConfigureAwait(false);
             result.SideMenus = allMenus.Where(m => m.ParentId == pageDto.Id || m.Id == pageDto.Id).ToList();
 
             var socialList = new Dictionary<string, string>();
-            socialList.Add(Constants.InstagramWebSiteLink, await SettingService.GetSettingValueAsync(Constants.InstagramWebSiteLink));
-            socialList.Add(Constants.LinkedinWebSiteLink, await SettingService.GetSettingValueAsync(Constants.LinkedinWebSiteLink));
-            socialList.Add(Constants.YotubeWebSiteLink, await SettingService.GetSettingValueAsync(Constants.YotubeWebSiteLink));
-            socialList.Add(Constants.FacebookWebSiteLink, await SettingService.GetSettingValueAsync(Constants.FacebookWebSiteLink));
-            socialList.Add(Constants.TwitterWebSiteLink, await SettingService.GetSettingValueAsync(Constants.TwitterWebSiteLink));
-            socialList.Add(Constants.PinterestWebSiteLink, await SettingService.GetSettingValueAsync(Constants.PinterestWebSiteLink));
+            socialList.Add(Constants.InstagramWebSiteLink, SettingService.GetCachedSettingValue(Constants.InstagramWebSiteLink));
+            socialList.Add(Constants.LinkedinWebSiteLink, SettingService.GetCachedSettingValue(Constants.LinkedinWebSiteLink));
+            socialList.Add(Constants.YotubeWebSiteLink, SettingService.GetCachedSettingValue(Constants.YotubeWebSiteLink));
+            socialList.Add(Constants.FacebookWebSiteLink, SettingService.GetCachedSettingValue(Constants.FacebookWebSiteLink));
+            socialList.Add(Constants.TwitterWebSiteLink, SettingService.GetCachedSettingValue(Constants.TwitterWebSiteLink));
+            socialList.Add(Constants.PinterestWebSiteLink, SettingService.GetCachedSettingValue(Constants.PinterestWebSiteLink));
             result.SocialMediaLinks = socialList;
 
             return result;

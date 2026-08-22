@@ -1,7 +1,8 @@
-using EImece.Domain.DbContext;
+﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
@@ -27,21 +28,46 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1)
+        private static Expression<Func<ProductCategory, StorefrontCategoryDto>> NavigationCategoryProjection
         {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MainImage);
-            Expression<Func<ProductCategory, bool>> match = r => r.Lang == language;
-            bool isActived = isActive != null && isActive.HasValue;
-            if (isActived)
+            get
             {
-                match = match.And(r => r.IsActive == isActive);
+                return c => new StorefrontCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.ParentId,
+                    ShortDescription = c.ShortDescription,
+                    Description = c.Description,
+                    MainImageId = c.MainImageId,
+                    Position = c.Position,
+                    Lang = c.Lang,
+                    IsActive = c.IsActive,
+                    MainPage = c.MainPage
+                };
             }
-            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
+        }
 
-            List<ProductCategoryTreeModel> list = pcList.Select(r => new ProductCategoryTreeModel()
+        private List<StorefrontCategoryDto> GetProjectedNavigationCategories(bool? isActive, int language)
+        {
+            var query = EImeceDbContext.ProductCategories.AsNoTracking().Where(c => c.Lang == language);
+            if (isActive.HasValue)
             {
-                ProductCategory = StorefrontCategoryDto.FromEntity(r)
+                query = query.Where(c => c.IsActive == isActive.Value);
+            }
+            return query
+                .OrderBy(c => c.Position)
+                .Select(NavigationCategoryProjection)
+                .ToList();
+        }
+
+        private static List<ProductCategoryTreeModel> AssembleTreeModels(List<StorefrontCategoryDto> categories)
+        {
+            var list = categories.Select(r => new ProductCategoryTreeModel()
+            {
+                ProductCategory = r,
+                // raw per-category count, captured before the tree walk accumulates children
+                ProductCountAdmin = r.ProductCount
             }).ToList();
             List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
 
@@ -52,61 +78,81 @@ namespace EImece.Domain.Repositories
             returnList.AddRange(topLevels);
             foreach (var i in topLevels)
             {
-                GetTreeview(list, i, level);
+                GetProjectedTreeview(list, i, level);
             }
             return returnList;
         }
 
+        private static void GetProjectedTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, int level)
+        {
+            //Recursion method for recursively get all child nodes
+            var childs = list.Where(a => a.ProductCategory.ParentId == current.ProductCategory.Id).OrderBy(r => r.ProductCategory.Position).ToList();
+            current.Childrens = new List<ProductCategoryTreeModel>();
+            level = level + 1;
+            childs.ForEach(r => r.TreeLevel = level);
+
+            current.Childrens.AddRange(childs);
+            foreach (var i in childs)
+            {
+                i.ProductCategory.Parent = current.ProductCategory;
+                i.Parent = current;
+                GetProjectedTreeview(list, i, level);
+                current.ProductCount += i.ProductCount;
+            }
+        }
+
+        public List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1)
+        {
+            var pcList = GetProjectedNavigationCategories(isActive, language);
+            return AssembleTreeModels(pcList);
+        }
+
+        public async Task<List<ProductCategoryTreeModel>> BuildNavigationAsync(bool? isActive, int language = 1, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var query = EImeceDbContext.ProductCategories.AsNoTracking().Where(c => c.Lang == language);
+            if (isActive.HasValue)
+            {
+                query = query.Where(c => c.IsActive == isActive.Value);
+            }
+            var pcList = await query
+                .OrderBy(c => c.Position)
+                .Select(NavigationCategoryProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+            return AssembleTreeModels(pcList);
+        }
+
         public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MainImage);
-            Expression<Func<ProductCategory, bool>> match = r => r.Lang == language;
+            var pcList = GetProjectedNavigationCategories(isActive, language);
             bool isActived = isActive != null && isActive.HasValue;
-            if (isActived)
-            {
-                match = match.And(r => r.IsActive == isActive);
-            }
-            var pcList = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToList();
             var categoryIds = pcList.Select(c => c.Id).ToList();
             var productCounts = EImeceDbContext.Products.AsNoTracking()
                 .Where(p => categoryIds.Contains(p.ProductCategoryId) && p.Lang == language && (!isActived || p.IsActive))
                 .GroupBy(p => p.ProductCategoryId)
                 .Select(g => new { CategoryId = g.Key, Count = g.Count() })
                 .ToDictionary(x => x.CategoryId, x => x.Count);
-            var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
-            new
-            {
-                ProductCategory = c,
-                ProductCount = productCounts.ContainsKey(c.Id) ? productCounts[c.Id] : 0
-            }).ToList();
 
-            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = StorefrontCategoryDto.FromEntity(r.ProductCategory), ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
-            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
-
-            int level = 1;
-            //find top levels items
-            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
-            topLevels.ForEach(r => r.TreeLevel = level);
-            returnList.AddRange(topLevels);
-            foreach (var i in topLevels)
+            foreach (var node in pcList)
             {
-                GetTreeview(list, i, level);
+                node.ProductCount = productCounts.ContainsKey(node.Id) ? productCounts[node.Id] : 0;
             }
-            return returnList;
+            return AssembleTreeModels(pcList);
         }
 
         public async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
         {
-            var includeProperties = GetIncludePropertyExpressionList();
-            includeProperties.Add(r => r.MainImage);
-            Expression<Func<ProductCategory, bool>> match = r => r.Lang == language;
-            bool isActived = isActive != null && isActive.HasValue;
-            if (isActived)
+            var query = EImeceDbContext.ProductCategories.AsNoTracking().Where(c => c.Lang == language);
+            if (isActive.HasValue)
             {
-                match = match.And(r => r.IsActive == isActive);
+                query = query.Where(c => c.IsActive == isActive.Value);
             }
-            var pcList = await FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray()).ToListAsync(CancellationToken.None).ConfigureAwait(false);
+            var pcList = await query
+                .OrderBy(c => c.Position)
+                .Select(NavigationCategoryProjection)
+                .ToListAsync(CancellationToken.None)
+                .ConfigureAwait(false);
+            bool isActived = isActive != null && isActive.HasValue;
             var categoryIds = pcList.Select(c => c.Id).ToList();
             var productCountRows = await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => categoryIds.Contains(p.ProductCategoryId) && p.Lang == language && (!isActived || p.IsActive))
@@ -114,25 +160,12 @@ namespace EImece.Domain.Repositories
                 .Select(g => new { CategoryId = g.Key, Count = g.Count() })
                 .ToListAsync(CancellationToken.None).ConfigureAwait(false);
             var productCounts = productCountRows.ToDictionary(x => x.CategoryId, x => x.Count);
-            var productCategories = pcList.OrderBy(r => r.Position).Select(c =>
-            new
-            {
-                ProductCategory = c,
-                ProductCount = productCounts.ContainsKey(c.Id) ? productCounts[c.Id] : 0
-            }).ToList();
 
-            List<ProductCategoryTreeModel> list = productCategories.Select(r => new ProductCategoryTreeModel() { ProductCategory = StorefrontCategoryDto.FromEntity(r.ProductCategory), ProductCount = r.ProductCount, ProductCountAdmin = r.ProductCount }).ToList();
-            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
-
-            int level = 1;
-            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
-            topLevels.ForEach(r => r.TreeLevel = level);
-            returnList.AddRange(topLevels);
-            foreach (var i in topLevels)
+            foreach (var node in pcList)
             {
-                GetTreeview(list, i, level);
+                node.ProductCount = productCounts.ContainsKey(node.Id) ? productCounts[node.Id] : 0;
             }
-            return returnList;
+            return AssembleTreeModels(pcList);
         }
 
         private List<ProductCategory> GetActiveProductCategoriesWithActiveProducts(int language)
@@ -144,25 +177,6 @@ namespace EImece.Domain.Repositories
             var result = FindAllIncluding(match, r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
 
             return result.ToList();
-        }
-
-        //Recursion method for recursively get all child nodes
-        private void GetTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, int level)
-        {
-            //get child of current item
-            var childs = list.Where(a => a.ProductCategory.ParentId == current.ProductCategory.Id).OrderBy(r => r.ProductCategory.Position).ToList();
-            current.Childrens = new List<ProductCategoryTreeModel>();
-            level = level + 1;
-            childs.ForEach(r => r.TreeLevel = level);
-
-            current.Childrens.AddRange(childs);
-            foreach (var i in childs)
-            {
-                i.ProductCategory.Parent = current.ProductCategory;
-                i.Parent = current;
-                GetTreeview(list, i, level);
-                current.ProductCount += i.ProductCount;
-            }
         }
 
         public ProductCategory GetProductCategory(int categoryId, bool isOnlyActive = true)
@@ -371,7 +385,7 @@ namespace EImece.Domain.Repositories
 
         public ProductCategoryDto GetProductCategoryDto(int categoryId)
         {
-            return EImeceDbContext.ProductCategories.AsNoTracking()
+            var dto = EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.Id == categoryId && c.IsActive)
                 .Select(c => new ProductCategoryDto
                 {
@@ -392,11 +406,13 @@ namespace EImece.Domain.Repositories
                     DiscountPercentage = c.DiscountPercantage
                 })
                 .FirstOrDefault();
+            FillProductCategoryDto(dto);
+            return dto;
         }
 
         public async Task<ProductCategoryDto> GetProductCategoryDtoAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await EImeceDbContext.ProductCategories.AsNoTracking()
+            var dto = await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.Id == categoryId && c.IsActive)
                 .Select(c => new ProductCategoryDto
                 {
@@ -418,6 +434,45 @@ namespace EImece.Domain.Repositories
                 })
                 .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
+            await FillProductCategoryDtoAsync(dto, cancellationToken).ConfigureAwait(false);
+            return dto;
+        }
+
+        private void FillProductCategoryDto(ProductCategoryDto dto)
+        {
+            if (dto == null) return;
+            ApplyCategoryComputedUrls(dto);
+
+            dto.Children = EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.ParentId == dto.Id && c.IsActive)
+                .OrderBy(c => c.Position)
+                .Select(c => new ProductCategoryDto { Id = c.Id, Name = c.Name, Position = c.Position })
+                .ToList();
+        }
+
+        private async Task FillProductCategoryDtoAsync(ProductCategoryDto dto, CancellationToken cancellationToken)
+        {
+            if (dto == null) return;
+            ApplyCategoryComputedUrls(dto);
+
+            dto.Children = await EImeceDbContext.ProductCategories.AsNoTracking()
+                .Where(c => c.ParentId == dto.Id && c.IsActive)
+                .OrderBy(c => c.Position)
+                .Select(c => new ProductCategoryDto { Id = c.Id, Name = c.Name, Position = c.Position })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        private static void ApplyCategoryComputedUrls(ProductCategoryDto dto)
+        {
+            dto.SeoUrl = string.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(dto.Name), GeneralHelper.ModifyId(dto.Id));
+            var dummy = new ProductCategory { Id = dto.Id, Name = dto.Name };
+            dto.DetailPageUrl = dummy.GetDetailPageUrl("Category", "ProductCategories");
+            if (dto.MainImageId.HasValue && dto.MainImageId.Value > 0)
+            {
+                dto.MainImageUrl = dummy.GetCroppedImageUrl(dto.MainImageId.Value, 800, 0);
+                dto.MainImageThumbnailUrl = dummy.GetCroppedImageUrl(dto.MainImageId.Value, 200, 200);
+            }
         }
 
         public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))

@@ -5,13 +5,9 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
+@using EImece.Domain.Models.DTOs.Storefront;
 @{
     ViewBag.Title = Resource.MyAccount;
-    List<EImece.Domain.Models.DTOs.OrderDto> orders = Model.Orders;
-    if (orders.IsEmpty())
-    {
-        orders = new List<EImece.Domain.Models.DTOs.OrderDto>();
-    }
 
     var billingIncomplete = string.IsNullOrWhiteSpace(Model.Name)
         || string.IsNullOrWhiteSpace(Model.Surname)
@@ -33,7 +29,7 @@
         </div>
     </div>
 
-    @Html.Partial("_CustomerDetails", Model)
+    @Html.Partial("_CustomerSummaryDetails", (CustomerSummaryDto)ViewBag.CustomerSummary)
 
     @if (billingIncomplete)
     {

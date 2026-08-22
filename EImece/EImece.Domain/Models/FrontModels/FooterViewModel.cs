@@ -7,7 +7,6 @@ namespace EImece.Domain.Models.FrontModels
     {
         public List<StorefrontMenuNavigationDto> Menus { get; set; }
         public List<StorefrontCategoryDto> ProductCategories { get; set; }
-        public SettingValueDto FooterLogo { get; set; }
         public SettingValueDto CompanyName { get; set; }
         public SettingValueDto CompanyAddress { get; set; }
         public SettingValueDto FooterDescription { get; set; }

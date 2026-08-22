@@ -1,4 +1,4 @@
-using EImece.Domain.Models.DTOs.Storefront;
+﻿using EImece.Domain.Models.DTOs.Storefront;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +47,6 @@ namespace EImece.Domain.Models.FrontModels
             return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase)) ?? new SettingKeyValueDto { SettingKey = key, SettingValue = string.Empty };
         }
 
-        public StorefrontMenuDto MainPageMenu { get; set; }
 
         /// <summary>
         /// Sibling (or child) pages used by themes T5/T6 left navigation.

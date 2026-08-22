@@ -81,5 +81,27 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
                 this.ProductSpecItems.AddRange(productSpecItems);
             }
         }
+
+        /// <summary>
+        /// Build from the projected card read model (no entity materialization).
+        /// </summary>
+        public ShoppingCartProduct(StorefrontProductCardDto product, List<ProductSpecItem> productSpecItems) : this()
+        {
+            this.Id = product.Id;
+            this.Name = string.IsNullOrEmpty(product.NameLong) ? product.Name : product.NameLong;
+            this.Price = product.PriceWithDiscount;
+            this.ProductCode = product.ProductCode;
+            this.CategoryName = product.ProductCategoryName ?? "";
+            this.BrandName = product.BrandName ?? "";
+            this.DetailPageUrl = product.DetailPageRelativeUrl;
+            if (product.MainImageId.HasValue)
+            {
+                this.CroppedImageUrl = product.GetCroppedImageUrl(product.MainImageId.Value, 200, 0);
+            }
+            if (productSpecItems != null)
+            {
+                this.ProductSpecItems.AddRange(productSpecItems);
+            }
+        }
     }
 }

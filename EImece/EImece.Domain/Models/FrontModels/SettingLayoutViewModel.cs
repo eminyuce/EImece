@@ -6,8 +6,6 @@ namespace EImece.Domain.Models.FrontModels
     {
         public SettingValueDto WebSiteCompanyPhoneAndLocation { get; set; }
         public SettingValueDto WebSiteCompanyEmailAddress { get; set; }
-        public SettingValueDto WebSiteLogo { get; set; }
-        public SettingValueDto CompanyName { get; set; }
 
         public bool isMobilePage { get; set; }
     }

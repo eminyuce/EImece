@@ -39,8 +39,6 @@ namespace EImece.Domain.Models.DTOs
         public string Captcha { get; set; }
         public DateTime OrderLatestDate { get; set; }
 
-        public List<OrderDto> Orders { get; set; } = new List<OrderDto>();
-
         private string _fullName;
         public string FullName
         {

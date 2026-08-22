@@ -8,5 +8,9 @@ namespace EImece.Domain.Repositories.IRepositories
         Subscriber GetSubscriberByEmail(string email);
 
         Task<Subscriber> GetSubscriberByEmailAsync(string email);
+
+        Task<bool> SubscriberExistsByEmailAsync(string email);
+
+        Task<string> GetSubscriberEmailByIdAsync(int id);
     }
 }

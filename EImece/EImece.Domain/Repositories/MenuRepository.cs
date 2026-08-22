@@ -55,6 +55,7 @@ namespace EImece.Domain.Repositories
                     ParentId = m.ParentId,
                     MenuLink = m.MenuLink,
                     Url = m.Link,
+                    LinkIsActive = m.LinkIsActive,
                     Description = m.Description,
                     ShortDescription = m.Description,
                     MainImageId = m.MainImageId,
@@ -148,6 +149,19 @@ namespace EImece.Domain.Repositories
                 .ThenByDescending(m => m.Id)
                 .Select(MenuProjection)
                 .ToList();
+        }
+
+        /// <summary>
+        /// Two-column projection (Id, Name) of all active menus — used for slug lookups that
+        /// need the computed SeoUrl but not the full row.
+        /// </summary>
+        public async Task<List<StorefrontMenuDto>> GetActiveMenuIdNamesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Menus.AsNoTracking()
+                .Where(m => m.IsActive)
+                .Select(m => new StorefrontMenuDto { Id = m.Id, Name = m.Name })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
         }
 
         public async Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
@@ -284,25 +298,37 @@ namespace EImece.Domain.Repositories
 
         public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {
-            List<Menu> list = GetActiveBaseContents(isActive, language);
+            var projectedMenus = GetProjectedMenus(isActive, language);
             var returnList = new List<MenuTreeModel>();
             //find top levels items
-            var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
+            var topLevels = projectedMenus.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
 
             foreach (var i in topLevels)
             {
-                var dto = StorefrontMenuDto.FromEntity(i);
-                var p = new MenuTreeModel(dto, 1);
-                GetTreeview(list, p, p.TreeLevel);
+                var p = new MenuTreeModel(i, 1);
+                GetProjectedTreeview(projectedMenus, p, p.TreeLevel);
                 returnList.Add(p);
             }
             return returnList;
         }
 
-        private void GetTreeview(List<Menu> list, MenuTreeModel current, int level)
+        private List<StorefrontMenuDto> GetProjectedMenus(bool? isActive, int language)
+        {
+            var query = EImeceDbContext.Menus.AsNoTracking().Where(m => m.Lang == language);
+            if (isActive.HasValue)
+            {
+                query = query.Where(m => m.IsActive == isActive.Value);
+            }
+            return query
+                .OrderBy(m => m.Position)
+                .Select(MenuProjection)
+                .ToList();
+        }
+
+        private void GetProjectedTreeview(List<StorefrontMenuDto> list, MenuTreeModel current, int level)
         {
             //get child of current item — recurse on the same instances added to Childrens
-            // so nested levels (3+) are attached (previous code built orphans and dropped them).
+            // so nested levels (3+) are attached.
             var childMenus = list.Where(a => a.ParentId == current.Id).OrderBy(r => r.Position).ToList();
             current.Childrens = new List<MenuTreeModel>();
             if (childMenus.IsEmpty())
@@ -313,13 +339,12 @@ namespace EImece.Domain.Repositories
             int childLevel = level + 1;
             foreach (var childMenu in childMenus)
             {
-                var dto = StorefrontMenuDto.FromEntity(childMenu);
-                var childNode = new MenuTreeModel(dto, childLevel)
+                var childNode = new MenuTreeModel(childMenu, childLevel)
                 {
                     Parent = current
                 };
                 current.Childrens.Add(childNode);
-                GetTreeview(list, childNode, childLevel);
+                GetProjectedTreeview(list, childNode, childLevel);
             }
         }
 
@@ -357,15 +382,23 @@ namespace EImece.Domain.Repositories
 
         public async Task<List<MenuTreeModel>> BuildTreeAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            List<Menu> list = await GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
+            var query = EImeceDbContext.Menus.AsNoTracking().Where(m => m.Lang == language);
+            if (isActive.HasValue)
+            {
+                query = query.Where(m => m.IsActive == isActive.Value);
+            }
+            var list = await query
+                .OrderBy(m => m.Position)
+                .Select(MenuProjection)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
             var returnList = new List<MenuTreeModel>();
             var topLevels = list.Where(a => a.ParentId == 0).OrderBy(r => r.Position).ToList();
 
             foreach (var i in topLevels)
             {
-                var dto = StorefrontMenuDto.FromEntity(i);
-                var p = new MenuTreeModel(dto, 1);
-                GetTreeview(list, p, p.TreeLevel);
+                var p = new MenuTreeModel(i, 1);
+                GetProjectedTreeview(list, p, p.TreeLevel);
                 returnList.Add(p);
             }
             return returnList;

@@ -529,6 +529,8 @@
     <Compile Include="Models\DTOs\Storefront\CustomerSummaryDto.cs" />
     <Compile Include="Models\DTOs\Storefront\TemplateXmlDto.cs" />
     <Compile Include="Models\DTOs\Storefront\AddressSummaryDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\OrderStatsDto.cs" />
+    <Compile Include="Models\DTOs\Storefront\StorefrontOrderConfirmationDto.cs" />
     <Compile Include="Models\DTOs\Storefront\FaqSummaryDto.cs" />
     <Compile Include="Models\Enums\EImeceCustomerType.cs" />
     <Compile Include="Models\Enums\EImeceOrderStatus.cs" />
@@ -536,6 +538,7 @@
     <Compile Include="Models\Enums\IyzicoPaymentStatus.cs" />
     <Compile Include="Models\Enums\ProductState.cs" />
     <Compile Include="Models\Enums\ProductDeleteResult.cs" />
+    <Compile Include="Models\FrontModels\JsonLdOrganizationModel.cs" />
     <Compile Include="Models\FrontModels\BuyWithNoAccountCreation.cs" />
     <Compile Include="Models\FrontModels\BuyNowModel.cs" />
     <Compile Include="Models\FrontModels\CompanyGotNewOrderEmailRazorTemplate.cs" />

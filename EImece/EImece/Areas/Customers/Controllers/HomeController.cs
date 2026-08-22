@@ -1,4 +1,4 @@
-using EImece.Domain;
+﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -100,6 +100,7 @@ namespace EImece.Areas.Customers.Controllers
         public async Task<ActionResult> Index()
         {
             CustomerDto customer = await GetCustomerAsync();
+            await FillCustomerSummaryInViewBag();
             ViewBag.Title = Resource.CustomerAccount;
             return View(customer);
         }
@@ -142,23 +143,34 @@ namespace EImece.Areas.Customers.Controllers
                 customerEntity.IsActive = true;
                 customerEntity = await CustomerService.SaveOrEditEntityAsync(customerEntity);
                 var updatedDto = Mapper.Map<CustomerDto>(customerEntity);
+                await FillCustomerSummaryInViewBag();
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
                 return View(updatedDto);
             }
             else
             {
                 InformCustomerToFillOutForm(customer);
+                await FillCustomerSummaryInViewBag();
                 return View(customer);
             }
         }
 
         private async Task<CustomerDto> GetCustomerAsync()
         {
-            ApplicationUser user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-            var customer = await CustomerService.GetUserIdAsync(user.Id);
-            var customerDto = Mapper.Map<CustomerDto>(customer) ?? new CustomerDto();
-            // Minimal order list for header stats — 7 cols, no OrderProducts collection
-            customerDto.Orders = (await OrderService.GetStorefrontOrdersByUserIdAsync(user.Id)).OrderByDescending(r => r.CreatedDate).ToList();
+            var userId = User.Identity.GetUserId();
+            ApplicationUser user = null;
+            var customerDto = await CustomerService.GetStorefrontCustomerProfileByUserIdAsync(userId);
+            if (customerDto == null)
+            {
+                user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
+                customerDto = new CustomerDto
+                {
+                    UserId = userId,
+                    Email = user.Email,
+                    Name = user.FirstName,
+                    Surname = user.LastName
+                };
+            }
             if (customerDto.Gender == 0)
             {
                 customerDto.Gender = (int)GenderType.Man;
@@ -166,22 +178,32 @@ namespace EImece.Areas.Customers.Controllers
             return customerDto;
         }
 
-        private async Task<EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto> GetCustomerSummaryAsync()
+        private async Task<EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto> BuildCustomerSummaryAsync()
         {
-            var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-            var customer = await CustomerService.GetUserIdAsync(user.Id);
-            var orders = await OrderService.GetStorefrontOrderListByUserIdAsync(user.Id);
-            return new EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto
+            var userId = User.Identity.GetUserId();
+            var summary = await CustomerService.GetStorefrontCustomerSummaryByUserIdAsync(userId) ??
+                          new EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto { UserId = userId };
+            if (string.IsNullOrEmpty(summary.Name) || string.IsNullOrEmpty(summary.Email))
             {
-                Id = customer?.Id ?? 0,
-                Name = customer?.Name ?? user.FirstName,
-                Surname = customer?.Surname ?? user.LastName,
-                Email = user.Email,
-                CreatedDate = customer?.CreatedDate ?? DateTime.Now,
-                UserId = user.Id,
-                TotalOrderCount = orders.Count,
-                TotalPaid = orders.Sum(o => o.PaidPriceDecimal)
-            };
+                var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
+                if (string.IsNullOrEmpty(summary.Name)) summary.Name = user.FirstName;
+                if (string.IsNullOrEmpty(summary.Surname)) summary.Surname = user.LastName;
+                if (string.IsNullOrEmpty(summary.Email)) summary.Email = user.Email;
+            }
+            if (summary.CreatedDate == default(DateTime))
+            {
+                summary.CreatedDate = DateTime.Now;
+            }
+            summary.UserId = userId;
+            var stats = await OrderService.GetStorefrontOrderStatsByUserIdAsync(userId);
+            summary.TotalOrderCount = stats.TotalOrderCount;
+            summary.TotalPaid = stats.TotalPaid;
+            return summary;
+        }
+
+        private async Task FillCustomerSummaryInViewBag()
+        {
+            ViewBag.CustomerSummary = await BuildCustomerSummaryAsync();
         }
 
         // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
@@ -246,7 +268,7 @@ namespace EImece.Areas.Customers.Controllers
         public async Task<ActionResult> SendMessageToSeller()
         {
             ViewBag.Title = Resource.SendMessageToSeller;
-            var customer = await GetCustomerSummaryAsync();
+            var customer = await BuildCustomerSummaryAsync();
             var faqs = await FaqService.GetStorefrontFaqSummariesAsync(CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
@@ -278,7 +300,7 @@ namespace EImece.Areas.Customers.Controllers
         public async Task<ActionResult> Faq()
         {
             ViewBag.Title = Resource.Faq;
-            var customer = await GetCustomerSummaryAsync();
+            var customer = await BuildCustomerSummaryAsync();
             var faqs = await FaqService.GetStorefrontFaqSummariesAsync(CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
@@ -286,16 +308,16 @@ namespace EImece.Areas.Customers.Controllers
         public async Task<ActionResult> CustomerOrders(string search = "")
         {
             ViewBag.Title = Resource.CustomerDetail;
-            var customer = await GetCustomerSummaryAsync();
-            var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-            var orders = (await OrderService.GetStorefrontOrderListByUserIdAsync(user.Id, search)).OrderByDescending(r=>r.CreatedDate).ToList();
+            var customer = await BuildCustomerSummaryAsync();
+            var userId = User.Identity.GetUserId();
+            var orders = (await OrderService.GetStorefrontOrderListByUserIdAsync(userId, search)).OrderByDescending(r=>r.CreatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 
         public async Task<ActionResult> CustomerOrderDetail(int id)
         {
             ViewBag.Title = Resource.CustomerDetail;
-            var customer = await GetCustomerSummaryAsync();
+            var customer = await BuildCustomerSummaryAsync();
             var order = await OrderService.GetStorefrontOrderByIdAsync(id);
             if (order == null)
             {
@@ -317,7 +339,7 @@ namespace EImece.Areas.Customers.Controllers
         public async Task<ActionResult> ChangePassword()
         {
             ViewBag.Title = Resource.Password;
-            ViewBag.Customer = await GetCustomerAsync();
+            ViewBag.CustomerSummary = await BuildCustomerSummaryAsync();
             return View();
         }
 

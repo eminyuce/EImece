@@ -1,4 +1,4 @@
-using EImece.Domain.Caching;
+﻿using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -298,15 +298,13 @@ namespace EImece.Domain.Services
 
             result.CompanyName = await SettingService.GetSettingValueDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
 
-            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            var productMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            result.MainPageMenu = StorefrontMenuDto.FromEntity(mainPageMenu);
-            result.ProductMenu = StorefrontMenuDto.FromEntity(productMenu);
+            var menus = await MenuService.GetStorefrontActiveMenusCachedAsync(lang).ConfigureAwait(false);
+            result.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            result.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
             result.Products = await ProductRepository.GetStorefrontActiveProductsPagedAsync(pageIndex, pageSize, lang, cancellationToken).ConfigureAwait(false);
-            var tags = await TagService.GetActiveBaseEntitiesFromCacheAsync(true, lang).ConfigureAwait(false);
-            result.Tags = tags.Select(t => StorefrontTagDto.FromEntity(t)).ToList();
+            var tags = await TagService.GetStorefrontProductTagsCachedAsync(lang).ConfigureAwait(false);
+            result.Tags = tags;
 
             return result;
         }
@@ -683,11 +681,9 @@ namespace EImece.Domain.Services
                 r.Products = new PaginatedList<StorefrontProductCardDto>(new List<StorefrontProductCardDto>(), pageIndex, pageSize, 0);
             }
 
-            var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
-            var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            var productMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
-            r.MainPageMenu = StorefrontMenuDto.FromEntity(mainPageMenu);
-            r.ProductMenu = StorefrontMenuDto.FromEntity(productMenu);
+            var menus = await MenuService.GetStorefrontActiveMenusCachedAsync(lang).ConfigureAwait(false);
+            r.MainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
+            r.ProductMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
 
             return r;
         }
@@ -1091,6 +1087,11 @@ namespace EImece.Domain.Services
             return await ProductRepository.GetProductAsync(id, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task<Models.DTOs.Storefront.StorefrontProductCardDto> GetStorefrontProductCardByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await ProductRepository.GetStorefrontProductCardByIdAsync(id, cancellationToken).ConfigureAwait(false);
+        }
+
         public List<Product> GetChildrenProducts(ProductCategory productCategory, List<ProductCategory> ChildrenProductCategories)
         {
             if (productCategory == null || ChildrenProductCategories.IsEmpty())
@@ -1156,8 +1157,7 @@ namespace EImece.Domain.Services
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
             var r = new SimiliarProductTagsViewModel();
-            var tagEntity = TagService.GetSingle(tagId);
-            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
+            r.Tag = TagService.GetStorefrontTagById(tagId);
             r.Products = ProductRepository.GetStorefrontProductsByTagId(tagId, pageIndex, pageSize, lang, SortingType.Newest);
             r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;
@@ -1166,8 +1166,7 @@ namespace EImece.Domain.Services
         public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting)
         {
             var r = new SimiliarProductTagsViewModel();
-            var tagEntity = TagService.GetSingle(tagId);
-            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
+            r.Tag = TagService.GetStorefrontTagById(tagId);
             r.Products = ProductRepository.GetStorefrontProductsByTagId(tagId, page, pageSize, currentLanguage, sorting);
             r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;
@@ -1176,8 +1175,7 @@ namespace EImece.Domain.Services
         public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
-            var tagEntity = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
+            r.Tag = await TagService.GetStorefrontTagByIdAsync(tagId, cancellationToken).ConfigureAwait(false);
             r.Products = await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, SortingType.Newest, cancellationToken).ConfigureAwait(false);
             r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;
@@ -1186,8 +1184,7 @@ namespace EImece.Domain.Services
         public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
-            var tagEntity = await TagService.GetSingleAsync(tagId).ConfigureAwait(false);
-            r.Tag = StorefrontTagDto.FromEntity(tagEntity);
+            r.Tag = await TagService.GetStorefrontTagByIdAsync(tagId, cancellationToken).ConfigureAwait(false);
             r.Products = await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, page, pageSize, currentLanguage, sorting, cancellationToken).ConfigureAwait(false);
             r.StoryTags = new PaginatedList<StorefrontStoryCardDto>(new List<StorefrontStoryCardDto>(), 1, 10, 0);
             return r;

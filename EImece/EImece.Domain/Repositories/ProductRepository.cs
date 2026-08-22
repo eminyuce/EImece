@@ -563,6 +563,34 @@ namespace EImece.Domain.Repositories
             return await GetProductsSearchResultAsync(search, fltrs, top, skip, language, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Narrow carrier for sproc product rows — only the columns the storefront search
+        /// consumer needs; ObjectContext.Translate ignores non-matching result-set columns.
+        /// </summary>
+        public sealed class SearchProductRowDto
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public decimal Price { get; set; }
+            public decimal? Discount { get; set; }
+            public string ProductCode { get; set; }
+            public int Position { get; set; }
+            public bool MainPage { get; set; }
+            public bool IsCampaign { get; set; }
+            public DateTime UpdatedDate { get; set; }
+        }
+
+        /// <summary>
+        /// Narrow carrier for sproc category rows.
+        /// </summary>
+        public sealed class SearchCategoryRowDto
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int ParentId { get; set; }
+            public int Position { get; set; }
+        }
+
         private ProductsSearchResult GetProductsSearchResult(
            string search,
            List<Filter> filters,
@@ -615,18 +643,40 @@ namespace EImece.Domain.Repositories
                 // Read Blogs from the first result set
                 var products = ((IObjectContextAdapter)db)
                     .ObjectContext
-                    .Translate<Product>(reader, "Products", MergeOption.AppendOnly);
+                    .Translate<SearchProductRowDto>(reader);
 
-                var productList = products.OrderByStorefrontDefault().ToList();
-                searchResult.Products = productList.Select(p => StorefrontProductCardDto.FromEntity(p)).ToList();
+                var productList = products
+                    .OrderBy(r => r.Position)
+                    .ThenByDescending(r => r.MainPage)
+                    .ThenByDescending(r => r.IsCampaign)
+                    .ThenByDescending(r => r.UpdatedDate)
+                    .ToList();
+                searchResult.Products = productList.Select(p => new StorefrontProductCardDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Discount = p.Discount,
+                    ProductCode = p.ProductCode,
+                    Position = p.Position,
+                    MainPage = p.MainPage,
+                    IsCampaign = p.IsCampaign,
+                    UpdatedDate = p.UpdatedDate
+                }).ToList();
 
                 // Move to second result set and read Posts
                 reader.NextResult();
                 var productCategories = ((IObjectContextAdapter)db)
                     .ObjectContext
-                    .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);
+                    .Translate<SearchCategoryRowDto>(reader);
 
-                searchResult.ProductCategories = productCategories.Select(c => StorefrontCategoryDto.FromEntity(c)).ToList();
+                searchResult.ProductCategories = productCategories.Select(c => new StorefrontCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.ParentId,
+                    Position = c.Position
+                }).ToList();
             }
             catch (Exception ex)
             {
@@ -689,17 +739,39 @@ namespace EImece.Domain.Repositories
 
                 var products = ((IObjectContextAdapter)db)
                     .ObjectContext
-                    .Translate<Product>(reader, "Products", MergeOption.AppendOnly);
+                    .Translate<SearchProductRowDto>(reader);
 
-                var productList = products.OrderByStorefrontDefault().ToList();
-                searchResult.Products = productList.Select(p => StorefrontProductCardDto.FromEntity(p)).ToList();
+                var productList = products
+                    .OrderBy(r => r.Position)
+                    .ThenByDescending(r => r.MainPage)
+                    .ThenByDescending(r => r.IsCampaign)
+                    .ThenByDescending(r => r.UpdatedDate)
+                    .ToList();
+                searchResult.Products = productList.Select(p => new StorefrontProductCardDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Discount = p.Discount,
+                    ProductCode = p.ProductCode,
+                    Position = p.Position,
+                    MainPage = p.MainPage,
+                    IsCampaign = p.IsCampaign,
+                    UpdatedDate = p.UpdatedDate
+                }).ToList();
 
                 await reader.NextResultAsync(cancellationToken).ConfigureAwait(false);
                 var productCategories = ((IObjectContextAdapter)db)
                     .ObjectContext
-                    .Translate<ProductCategory>(reader, "ProductCategories", MergeOption.AppendOnly);
+                    .Translate<SearchCategoryRowDto>(reader);
 
-                searchResult.ProductCategories = productCategories.Select(c => StorefrontCategoryDto.FromEntity(c)).ToList();
+                searchResult.ProductCategories = productCategories.Select(c => new StorefrontCategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.ParentId,
+                    Position = c.Position
+                }).ToList();
             }
             catch (Exception ex)
             {

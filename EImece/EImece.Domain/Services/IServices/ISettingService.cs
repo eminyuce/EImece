@@ -1,4 +1,4 @@
-using EImece.Domain.Entities;
+﻿using EImece.Domain.Entities;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using System.Collections.Generic;
@@ -33,13 +33,16 @@ namespace EImece.Domain.Services.IServices
 
         Task<Models.DTOs.SettingDto> GetSettingDtoByKeyAsync(string key, int language);
 
-        // Minimal projection — single column, no cache amplification
+        // Minimal projection â€” single column, no cache amplification
         string GetSettingValue(string key);
         string GetSettingValue(string key, int language);
         Task<string> GetSettingValueAsync(string key, CancellationToken cancellationToken = default(CancellationToken));
         Task<string> GetSettingValueAsync(string key, int language, CancellationToken cancellationToken = default(CancellationToken));
         Models.DTOs.Storefront.SettingValueDto GetSettingValueDtoByKey(string key);
         Models.DTOs.Storefront.SettingValueDto GetSettingValueDtoByKey(string key, int language);
+        Models.DTOs.Storefront.SettingValueDto GetCachedSettingValueDtoByKey(string key);
+        Models.DTOs.Storefront.SettingValueDto GetCachedSettingValueDtoByKey(string key, int language);
+        string GetCachedSettingValue(string key);
         Task<Models.DTOs.Storefront.SettingValueDto> GetSettingValueDtoByKeyAsync(string key, CancellationToken cancellationToken = default(CancellationToken));
         Task<Models.DTOs.Storefront.SettingValueDto> GetSettingValueDtoByKeyAsync(string key, int language, CancellationToken cancellationToken = default(CancellationToken));
         Dictionary<string, string> GetSettingValues(IEnumerable<string> keys);

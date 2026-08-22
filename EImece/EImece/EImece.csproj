@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -1068,7 +1068,6 @@
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\Faq.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\Index.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\SendMessageToSeller.cshtml" />
-    <Content Include="Views\Designs\Modern\Areas\Customers\Home\_CustomerDetails.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\_CustomerSummaryDetails.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\_PaginatedOrderList.cshtml" />
     <Content Include="Views\Designs\Modern\Areas\Customers\Home\_SendContactSellerForCustomer.cshtml" />
@@ -1118,7 +1117,6 @@
     <Content Include="Views\Designs\Modern\Shared\DisplayTemplates\FileStorage.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\DisplayTemplates\FileStorageThumbnails.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\DisplayTemplates\LatestStory.cshtml" />
-    <Content Include="Views\Designs\Modern\Shared\DisplayTemplates\MainPageImage.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\DisplayTemplates\MainPageProduct.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\DisplayTemplates\MainPageProductCategory.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\DisplayTemplates\MainPageProductShort.cshtml" />
@@ -1162,7 +1160,6 @@
     <Content Include="Views\Designs\Modern\Shared\StoriesPageThemes\PageTheme_T5.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\StoriesPageThemes\_StoryCategoryBootstrap.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_AddSubscriber.cshtml" />
-    <Content Include="Views\Designs\Modern\Shared\_CarouselMainPageImages.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_ContactUsFormViewModel.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_Footer.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_Languages.cshtml" />
@@ -1172,7 +1169,6 @@
     <Content Include="Views\Designs\Modern\Shared\_PaginatedModelList.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_PagingPartial.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_ProductBreadCrumb.cshtml" />
-    <Content Include="Views\Designs\Modern\Shared\_ProductCategoryTree.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_ProductCategoryTreeChildren.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_ProductCategoryTreeChildrenHeadLine.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_ProductCategoryTreeHeadLine.cshtml" />
@@ -1181,7 +1177,6 @@
     <Content Include="Views\Designs\Modern\Shared\_SocialMediaLinks.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Designs\Modern\Shared\_WebSiteAddressInfo.cshtml" />
-    <Content Include="Views\Designs\Modern\Shared\_WebSiteLogo.cshtml" />
     <Content Include="Views\Designs\Modern\Stories\Categories.cshtml" />
     <Content Include="Views\Designs\Modern\Stories\Detail.cshtml" />
     <Content Include="Views\Designs\Modern\Stories\Index.cshtml" />
@@ -1202,7 +1197,6 @@
     <Content Include="Views\Designs\Crizal\Account\SendCode.cshtml" />
     <Content Include="Views\Designs\Crizal\Account\VerifyCode.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\_ViewStart.cshtml" />
-    <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_CustomerDetails.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_CustomerSummaryDetails.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_PaginatedOrderList.cshtml" />
     <Content Include="Views\Designs\Crizal\Areas\Customers\Home\_SendContactSellerForCustomer.cshtml" />
@@ -1256,7 +1250,6 @@
     <Content Include="Views\Designs\Crizal\Products\SearchProducts.cshtml" />
     <Content Include="Views\Designs\Crizal\Products\Tag.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_AddSubscriber.cshtml" />
-    <Content Include="Views\Designs\Crizal\Shared\_CarouselMainPageImages.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_ContactUsFormViewModel.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Footer.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_Header.cshtml" />
@@ -1267,7 +1260,6 @@
     <Content Include="Views\Designs\Crizal\Shared\_PaginatedModelList.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_PagingPartial.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_ProductBreadCrumb.cshtml" />
-    <Content Include="Views\Designs\Crizal\Shared\_ProductCategoryTree.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_ProductCategoryTreeChildren.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_ProductCategoryTreeChildrenHeadLine.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_ProductCategoryTreeHeadLine.cshtml" />
@@ -1277,14 +1269,12 @@
     <Content Include="Views\Designs\Crizal\Shared\_SocialMediaLinks.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_SocialMediaShareLinks.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\_WebSiteAddressInfo.cshtml" />
-    <Content Include="Views\Designs\Crizal\Shared\_WebSiteLogo.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\CargoTrackingResult.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\FeaturedProductCategoryItem.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\FeaturedProductItem.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\FileStorage.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\FileStorageThumbnails.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\LatestStory.cshtml" />
-    <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\MainPageImage.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\MainPageProduct.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\MainPageProductCategory.cshtml" />
     <Content Include="Views\Designs\Crizal\Shared\DisplayTemplates\MainPageProductShort.cshtml" />
@@ -1478,7 +1468,6 @@
     <Content Include="Content\mstore\fonts\Flaticon.eot" />
     <Content Include="Content\mstore\fonts\Flaticon.ttf" />
     <Content Include="Content\mstore\fonts\Flaticon.woff" />
-    <Content Include="Areas\Customers\Views\Home\_CustomerDetails.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_CustomerSummaryDetails.cshtml" />
     <Content Include="Areas\Customers\Views\Home\_PaginatedOrderList.cshtml" />
     <Content Include="Areas\Admin\Views\Brands\Index.cshtml" />
@@ -1684,11 +1673,9 @@
     <Content Include="Areas\Admin\Views\Shared\pSelectedTags.cshtml" />
     <Content Include="Views\Pages\Detail.cshtml" />
     <Content Include="Views\Stories\Index.cshtml" />
-    <Content Include="Views\Shared\_ProductCategoryTree.cshtml" />
     <Content Include="Views\Shared\_ProductCategoryTreeChildren.cshtml" />
     <Content Include="Views\Shared\PageThemes\PageTheme_T1.cshtml" />
     <Content Include="Views\ProductCategories\Category.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\MainPageImage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pGridImageMainPage.cshtml" />
     <Content Include="Views\Products\Detail.cshtml" />
@@ -1701,7 +1688,6 @@
     <Content Include="Views\Shared\DisplayTemplates\ProductSearchItem.cshtml" />
     <Content Include="Views\Products\Tag.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
-    <Content Include="Views\Shared\_CarouselMainPageImages.cshtml" />
     <Content Include="Views\Error\BadRequest.cshtml" />
     <Content Include="Views\Error\Forbidden.cshtml" />
     <Content Include="Views\Error\Gone.cshtml" />
@@ -1716,7 +1702,6 @@
     <Content Include="Views\Shared\DisplayTemplates\StoryShort.cshtml" />
     <Content Include="Views\Stories\Detail.cshtml" />
     <Content Include="Views\Shared\_SocialMediaLinks.cshtml" />
-    <Content Include="Views\Shared\_WebSiteLogo.cshtml" />
     <Content Include="Views\Stories\Categories.cshtml" />
     <Content Include="Views\Shared\_WebSiteAddressInfo.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MainPageProductCategory.cshtml" />

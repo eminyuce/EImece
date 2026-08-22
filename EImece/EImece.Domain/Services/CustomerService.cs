@@ -125,6 +125,16 @@ namespace EImece.Domain.Services
             return item;
         }
 
+        public async Task<Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId)
+        {
+            return await CustomerRepository.GetStorefrontCustomerSummaryByUserIdAsync(userId).ConfigureAwait(false);
+        }
+
+        public async Task<Models.DTOs.CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId)
+        {
+            return await CustomerRepository.GetStorefrontCustomerProfileByUserIdAsync(userId).ConfigureAwait(false);
+        }
+
         public void DeleteByUserId(string userId)
         {
             Logger.Info($"Deleting customer by userId: {userId}");
@@ -175,12 +185,10 @@ namespace EImece.Domain.Services
         public async Task SaveCustomerTypeToNormalAsync(string userId)
         {
             Logger.Info($"Updating customer type to Normal for userId: {userId}");
-            var customer = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
-            if (customer != null)
+            // Targeted 2-column update — no full-entity load/save round trip
+            var updated = await CustomerRepository.PromoteCustomerToNormalTypeAsync(userId, (int)EImeceCustomerType.Normal).ConfigureAwait(false);
+            if (updated)
             {
-                customer.CustomerType = (int)EImeceCustomerType.Normal;
-                customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
-                await SaveOrEditEntityAsync(customer).ConfigureAwait(false);
                 Logger.Info("Customer type updated successfully.");
             }
             else

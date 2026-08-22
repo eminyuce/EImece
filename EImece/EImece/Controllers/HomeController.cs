@@ -97,13 +97,13 @@ namespace EImece.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var s = await SubsciberService.GetSingleAsync(id.Value);
-            if (s == null)
+            var email = await SubsciberService.GetSubscriberEmailByIdAsync(id.Value);
+            if (string.IsNullOrEmpty(email))
             {
                 HomeLogger.Error($"Subscriber not found for ThanksForSubscription id={id.Value}.");
                 return RedirectToAction("NotFound", "Error");
             }
-            return View(s);
+            return View("ThanksForSubscription", email);
         }
 
         // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
@@ -167,6 +167,7 @@ namespace EImece.Controllers
         }
 
         [ChildActionOnly]
+        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "lang", VaryByCustom = "User")]
         public ActionResult Navigation(string lang)
         {
             var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
@@ -176,23 +177,8 @@ namespace EImece.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ProductCategoryTree()
-        {
-            var tree = ProductCategoryService.BuildTree(true, CurrentLanguage);
-            return PartialView("_ProductCategoryTree", tree);
-        }
-
-        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
-        [ChildActionOnly]
-        public ActionResult WebSiteLogo()
-        {
-            var item = new SettingLayoutViewModel();
-            item.WebSiteLogo = SettingService.GetSettingValueDtoByKey(Constants.WebSiteLogo);
-            item.CompanyName = SettingService.GetSettingValueDtoByKey(Constants.CompanyName);
-            return PartialView("_WebSiteLogo", item);
-        }
-
-        [ChildActionOnly]
+        // No [OutputCache] here: MVC forbids cached child actions nested inside another cached
+        // child action (Crizal footer calls GetCompanyName). The data legs are service-cached.
         public ActionResult Footer(string lang)
         {
             var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
@@ -209,13 +195,30 @@ namespace EImece.Controllers
             return Content(companyName);
         }
 
+        [ChildActionOnly]
+        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "none", VaryByCustom = "User")]
+        public ActionResult JsonLdOrganization()
+        {
+            var model = new JsonLdOrganizationModel
+            {
+                CompanyName = SettingService.GetCachedSettingValueDtoByKey(Constants.CompanyName).SettingValue,
+                LogoSetting = SettingService.GetCachedSettingValueDtoByKey(Constants.WebSiteLogo).SettingValue,
+                Phone = SettingService.GetCachedSettingValueDtoByKey(Constants.WebSiteCompanyPhoneAndLocation).SettingValue,
+                Email = SettingService.GetCachedSettingValueDtoByKey(Constants.WebSiteCompanyEmailAddress).SettingValue
+            };
+            return PartialView("_JsonLdOrganization", model);
+        }
+
         // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
+        // Deliberately NOT [ChildActionOnly]: direct GETs render the partial harmlessly and the
+        // regression inventory expects HTTP 200 on /home/websiteaddressinfo.
+        [OutputCache(Duration = Constants.PartialViewOutputCachingDuration, VaryByParam = "isMobilePage", VaryByCustom = "User")]
         public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingValueDtoByKey(Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = SettingService.GetSettingValueDtoByKey(Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetCachedSettingValueDtoByKey(Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetCachedSettingValueDtoByKey(Constants.WebSiteCompanyEmailAddress);
             HomeLogger.Info("Returning _WebSiteAddressInfo partial view.");
             return PartialView("_WebSiteAddressInfo", item);
         }

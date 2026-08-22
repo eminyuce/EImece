@@ -25,6 +25,12 @@ namespace EImece.Domain.Services.IServices
         Task<List<Models.DTOs.Storefront.OrderListItemDto>> GetStorefrontOrderListByUserIdAsync(string userId, string search = "", CancellationToken cancellationToken = default(CancellationToken));
         List<Models.DTOs.Storefront.OrderListItemDto> GetStorefrontOrderListByUserId(string userId, string search = "");
 
+        Task<Models.DTOs.Storefront.StorefrontOrderConfirmationDto> GetStorefrontOrderConfirmationByIdAsync(int orderId, string restrictToUserId = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<Models.DTOs.Storefront.StorefrontOrderConfirmationDto> GetStorefrontOrderConfirmationByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken));
+
         #endregion
 
         #region Admin / Change-Tracking Methods (Full Entities)
