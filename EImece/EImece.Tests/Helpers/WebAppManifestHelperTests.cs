@@ -24,11 +24,11 @@ namespace EImece.Tests.Helpers
             Assert.AreEqual("Acme Shop", (string)obj["name"]);
             Assert.AreEqual("Acme Shop", (string)obj["short_name"]);
             Assert.AreEqual("Quality products for everyone", (string)obj["description"]);
-            Assert.AreEqual(AppConfig.ManifestStartUrl, (string)obj["start_url"]);
-            Assert.AreEqual(AppConfig.ManifestDisplay, (string)obj["display"]);
-            Assert.AreEqual(AppConfig.ManifestOrientation, (string)obj["orientation"]);
+            Assert.AreEqual(Constants.DefaultManifestStartUrl, (string)obj["start_url"]);
+            Assert.AreEqual(Constants.DefaultManifestDisplay, (string)obj["display"]);
+            Assert.AreEqual(Constants.DefaultManifestOrientation, (string)obj["orientation"]);
             Assert.AreEqual("#1789F9", (string)obj["theme_color"]);
-            Assert.AreEqual(AppConfig.ManifestBackgroundColor, (string)obj["background_color"]);
+            Assert.AreEqual(Constants.DefaultManifestBackgroundColor, (string)obj["background_color"]);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace EImece.Tests.Helpers
             Assert.AreEqual("localhost", (string)obj["name"]);
             Assert.AreEqual("localhost", (string)obj["short_name"]);
             Assert.AreEqual("localhost", (string)obj["description"]);
-            Assert.AreEqual(AppConfig.ManifestDefaultThemeColor, (string)obj["theme_color"]);
+            Assert.AreEqual(Constants.DefaultThemeColor, (string)obj["theme_color"]);
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace EImece.Tests.Helpers
         {
             Assert.AreEqual("Acme", WebAppManifestHelper.ToShortName("Acme Trading Co"));
             Assert.AreEqual("Short", WebAppManifestHelper.ToShortName("Short"));
-            Assert.AreEqual(AppConfig.ManifestFallbackName, WebAppManifestHelper.ToShortName("  "));
+            Assert.AreEqual(Constants.DefaultManifestFallbackName, WebAppManifestHelper.ToShortName("  "));
         }
 
         [TestMethod]

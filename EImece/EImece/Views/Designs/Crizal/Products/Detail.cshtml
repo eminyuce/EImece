@@ -49,7 +49,7 @@
     string productNameStr = !string.IsNullOrEmpty(product.NameShort) ? product.NameShort
         : (!string.IsNullOrEmpty(product.NameLong) ? product.NameLong : product.Name);
 
-    var shortDescriptionPreviewLength = AppConfig.ProductShortDescriptionPreviewLength;
+    var shortDescriptionPreviewLength = Constants.DefaultProductShortDescriptionPreviewLength;
     var shortDescriptionPlain = GeneralHelper.StripHtml(product.ShortDescription).Trim();
     var shortDescriptionNeedsContinue = !string.IsNullOrEmpty(shortDescriptionPlain)
         && shortDescriptionPlain.Length > shortDescriptionPreviewLength;

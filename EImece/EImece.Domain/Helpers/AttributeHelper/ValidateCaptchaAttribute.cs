@@ -41,7 +41,7 @@ namespace EImece.Domain.Helpers.AttributeHelper
                 return;
             }
 
-            if (AppConfig.CaptchaProvider == CaptchaProviderType.None)
+            if (CaptchaSettings.Provider == CaptchaProviderType.None)
             {
                 base.OnActionExecuting(filterContext);
                 return;

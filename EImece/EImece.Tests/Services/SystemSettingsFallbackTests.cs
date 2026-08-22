@@ -4,8 +4,10 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Infrastructure.Designs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -17,6 +19,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace EImece.Tests.Services
 {
@@ -33,12 +36,13 @@ namespace EImece.Tests.Services
             _settingService = new SettingService(_repository);
             _settingService.DataCachingProvider = new MemoryCacheProvider();
             _settingService.ClearCache();
+            DependencyResolver.SetResolver(new SimpleTestDependencyResolver(_settingService));
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            AppConfig.SettingResolver = null;
+            DependencyResolver.SetResolver(new SimpleTestDependencyResolver(null));
             _settingService?.ClearCache();
         }
 
@@ -114,35 +118,6 @@ namespace EImece.Tests.Services
 
             // Assert
             Assert.AreEqual("true", value);
-        }
-
-        [TestMethod]
-        public void AppConfig_WithSettingResolver_PrefersDatabaseOverWebConfig()
-        {
-            // Arrange
-            _repository.InMemSettings.Add(new Setting
-            {
-                Id = 4,
-                SettingKey = Constants.ImageUploadJpegQuality,
-                SettingValue = "92",
-                IsActive = true,
-                Description = Constants.SystemSettings
-            });
-
-            AppConfig.SettingResolver = key => _settingService.GetSettingByKey(key);
-
-            // Act & Assert
-            Assert.AreEqual(92, AppConfig.ImageUploadJpegQuality);
-        }
-
-        [TestMethod]
-        public void AppConfig_WithSettingResolver_FallsBackToWebConfigWhenDbMissing()
-        {
-            // Arrange
-            AppConfig.SettingResolver = key => _settingService.GetSettingByKey(key);
-
-            // Act & Assert (GridPageSizeNumber in Web.config is 100)
-            Assert.AreEqual(100, AppConfig.GridPageSizeNumber);
         }
 
         [TestMethod]
@@ -235,13 +210,64 @@ namespace EImece.Tests.Services
                 Description = Constants.SystemSettings
             });
 
-            AppConfig.SettingResolver = key => _settingService.GetSettingByKey(key);
             var designProvider = new ConfigDesignProvider();
 
             // Act & Assert
             Assert.IsTrue(SeoSettings.AllowIndexing);
             Assert.AreEqual("Modern", designProvider.GetActiveDesign());
-            Assert.IsTrue(AppConfig.IsSiteUnderConstruction);
+            Assert.IsTrue(_settingService.GetSettingByKey(Constants.IsSiteUnderConstruction).ToBool(false));
+        }
+
+        [TestMethod]
+        public void CaptchaSettings_ReflectsDynamicDbChanges()
+        {
+            // Arrange
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 13,
+                SettingKey = Constants.CaptchaProvider,
+                SettingValue = "Recaptcha",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+            _repository.InMemSettings.Add(new Setting
+            {
+                Id = 14,
+                SettingKey = Constants.RecaptchaSiteKey,
+                SettingValue = "site-key-123",
+                IsActive = true,
+                Description = Constants.SystemSettings
+            });
+
+            // Act & Assert
+            Assert.AreEqual(CaptchaProviderType.Recaptcha, CaptchaSettings.Provider);
+            Assert.AreEqual("site-key-123", CaptchaSettings.RecaptchaSiteKey);
+            Assert.IsTrue(CaptchaSettings.RecaptchaEnabled);
+            Assert.IsFalse(CaptchaSettings.IsLegacyCaptchaEnabled);
+        }
+
+        private class SimpleTestDependencyResolver : IDependencyResolver
+        {
+            private readonly ISettingService _service;
+
+            public SimpleTestDependencyResolver(ISettingService service)
+            {
+                _service = service;
+            }
+
+            public object GetService(Type serviceType)
+            {
+                if (serviceType == typeof(ISettingService))
+                {
+                    return _service;
+                }
+                return null;
+            }
+
+            public IEnumerable<object> GetServices(Type serviceType)
+            {
+                return Enumerable.Empty<object>();
+            }
         }
 
         private class FakeDbContextProxy : RealProxy

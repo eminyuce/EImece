@@ -733,7 +733,7 @@ namespace EImece.Domain.Helpers
                     ImageUploadOptimizeOptions.ForThumbnail(fileName, contentType, thumbTarget.Width, thumbTarget.Height, fullOpt.Extension));
                 SaveBytesToFilePath(thumbOpt.Bytes, candidatePathThb);
 
-                if (AppConfig.ImageUploadSaveWebPSidecar && !fullOpt.IsWebP)
+                if (GetSettingBool(Constants.ImageUploadSaveWebPSidecar, Constants.DefaultImageUploadSaveWebPSidecar) && !fullOpt.IsWebP)
                 {
                     try
                     {
@@ -775,6 +775,20 @@ namespace EImece.Domain.Helpers
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
         }
 
+        private static int GetSettingInt(string key, int defaultValue)
+        {
+            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var val = settingService?.GetSettingByKey(key);
+            return !string.IsNullOrWhiteSpace(val) ? val.ToInt(defaultValue) : defaultValue;
+        }
+
+        private static bool GetSettingBool(string key, bool defaultValue)
+        {
+            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var val = settingService?.GetSettingByKey(key);
+            return !string.IsNullOrWhiteSpace(val) ? val.ToBool(defaultValue) : defaultValue;
+        }
+
         /// <summary>
         /// Resize/compress source bytes for primary storage. Public signatures of SaveImageByte are unchanged.
         /// </summary>
@@ -789,10 +803,10 @@ namespace EImece.Domain.Helpers
                 Logger.Error(ex, "Image optimization failed for {0}; storing a best-effort re-encode.", fileName);
                 var fallback = new ImageUploadOptimizeOptions
                 {
-                    MaxWidth = AppConfig.ImageUploadMaxWidth,
-                    MaxHeight = AppConfig.ImageUploadMaxHeight,
-                    JpegQuality = AppConfig.ImageUploadJpegQuality,
-                    WebPQuality = AppConfig.ImageUploadWebPQuality,
+                    MaxWidth = GetSettingInt(Constants.ImageUploadMaxWidth, Constants.DefaultImageUploadMaxWidth),
+                    MaxHeight = GetSettingInt(Constants.ImageUploadMaxHeight, Constants.DefaultImageUploadMaxHeight),
+                    JpegQuality = GetSettingInt(Constants.ImageUploadJpegQuality, Constants.DefaultImageUploadJpegQuality),
+                    WebPQuality = GetSettingInt(Constants.ImageUploadWebPQuality, Constants.DefaultImageUploadWebPQuality),
                     PreferWebP = false,
                     KeepOriginalIfSmaller = true,
                     SourceExtension = Path.GetExtension(fileName),
@@ -804,6 +818,9 @@ namespace EImece.Domain.Helpers
 
         private static Size ResolveThumbnailTargetSize(int requestedWidth, int requestedHeight, int originalWidth, int originalHeight)
         {
+            int thumbMaxW = GetSettingInt(Constants.ImageUploadThumbMaxWidth, Constants.DefaultImageUploadThumbMaxWidth);
+            int thumbMaxH = GetSettingInt(Constants.ImageUploadThumbMaxHeight, Constants.DefaultImageUploadThumbMaxHeight);
+
             Size fromRequest;
             if (requestedWidth > 0 || requestedHeight > 0)
             {
@@ -816,15 +833,15 @@ namespace EImece.Domain.Helpers
                 fromRequest = ImageUploadOptimizer.FitWithin(
                     originalWidth,
                     originalHeight,
-                    AppConfig.ImageUploadThumbMaxWidth,
-                    AppConfig.ImageUploadThumbMaxHeight);
+                    thumbMaxW,
+                    thumbMaxH);
             }
 
             return ImageUploadOptimizer.FitWithin(
                 fromRequest.Width,
                 fromRequest.Height,
-                AppConfig.ImageUploadThumbMaxWidth,
-                AppConfig.ImageUploadThumbMaxHeight);
+                thumbMaxW,
+                thumbMaxH);
         }
 
         private static void SaveBytesToFilePath(byte[] bytes, string filePath)
@@ -858,7 +875,8 @@ namespace EImece.Domain.Helpers
             EnsureDirectoryExists(webPImagePath);
             using (FileStream webPFileStream = new FileStream(webPImagePath, FileMode.Create))
             {
-                ISupportedImageFormat lg_format = new WebPFormat { Quality = AppConfig.ImageUploadWebPQuality };
+                int webPQuality = GetSettingInt(Constants.ImageUploadWebPQuality, Constants.DefaultImageUploadWebPQuality);
+                ISupportedImageFormat lg_format = new WebPFormat { Quality = webPQuality };
                 using (ImageFactory imageFactory = new ImageFactory(preserveExifData: false))
                 {
                     imageFactory.Load(byteArrayIn)

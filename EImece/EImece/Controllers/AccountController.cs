@@ -1,3 +1,4 @@
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Services;
@@ -166,7 +167,9 @@ namespace EImece.Controllers
             // Custom TOTP authenticator (Otp.NET) — do not sign in until code is verified.
             // The Admin → System Settings master switch (RequireAdminAuthenticator Setting row)
             // can disable 2FA for the entire app: enrolled admins then sign in with password only.
-            if (Domain.AppConfig.RequireAdminAuthenticator
+            bool requireAdminAuth = SettingService?.GetSettingByKey(Domain.Constants.RequireAdminAuthenticator).ToBool(Domain.Constants.DefaultRequireAdminAuthenticator)
+                                   ?? Domain.Constants.DefaultRequireAdminAuthenticator;
+            if (requireAdminAuth
                 && user.TwoFactorAuthenticatorEnabled
                 && !string.IsNullOrEmpty(user.AuthenticatorKey))
             {

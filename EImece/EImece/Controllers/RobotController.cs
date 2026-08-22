@@ -1,6 +1,8 @@
 using EImece.Domain;
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Services.IServices;
 using NLog;
 using System;
 using System.Net.Mime;
@@ -14,6 +16,18 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        [Inject]
+        public ISettingService SettingService { get; set; }
+
+        public RobotController()
+        {
+        }
+
+        public RobotController(ISettingService settingService)
+        {
+            SettingService = settingService;
+        }
+
         // GET: Robots
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public async Task<FileContentResult> RobotsText()
@@ -22,13 +36,30 @@ namespace EImece.Controllers
 
             var sb = new StringBuilder(512);
 
+            ISettingService settingService = SettingService;
+            if (settingService == null)
+            {
+                try
+                {
+                    settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                }
+                catch
+                {
+                    settingService = null;
+                }
+            }
+
+            var isUnderConstruction = settingService != null
+                ? (await settingService.GetSettingByKeyAsync(Constants.IsSiteUnderConstruction)).ToBool(false)
+                : false;
+
             if (!SeoSettings.AllowIndexing)
             {
                 Logger.Info("Search engine indexing is disabled. Setting robots.txt to disallow all.");
                 sb.AppendLine(Constants.RobotsUserAgentAll)
                   .AppendLine("Disallow: /");
             }
-            else if (AppConfig.IsSiteUnderConstruction || AppConfig.IsSiteUnderDevelopment)
+            else if (isUnderConstruction || AppConfig.IsSiteUnderDevelopment)
             {
                 Logger.Info("Site is under construction or development. Setting robots.txt to disallow all.");
                 sb.AppendLine(Constants.RobotsUserAgentAll)

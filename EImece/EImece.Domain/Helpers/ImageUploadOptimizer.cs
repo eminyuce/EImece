@@ -569,16 +569,30 @@ namespace EImece.Domain.Helpers
         /// </summary>
         public string ForceExtension { get; set; }
 
+        private static int GetSettingInt(string key, int defaultValue)
+        {
+            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var val = settingService?.GetSettingByKey(key);
+            return !string.IsNullOrWhiteSpace(val) ? val.ToInt(defaultValue) : defaultValue;
+        }
+
+        private static bool GetSettingBool(string key, bool defaultValue)
+        {
+            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var val = settingService?.GetSettingByKey(key);
+            return !string.IsNullOrWhiteSpace(val) ? val.ToBool(defaultValue) : defaultValue;
+        }
+
         public static ImageUploadOptimizeOptions ForFullImage(string fileName, string contentType)
         {
             return new ImageUploadOptimizeOptions
             {
-                MaxWidth = AppConfig.ImageUploadMaxWidth,
-                MaxHeight = AppConfig.ImageUploadMaxHeight,
-                JpegQuality = AppConfig.ImageUploadJpegQuality,
-                WebPQuality = AppConfig.ImageUploadWebPQuality,
-                PreferWebP = AppConfig.ImageUploadPreferWebP,
-                KeepOriginalIfSmaller = AppConfig.ImageUploadKeepOriginalIfSmaller,
+                MaxWidth = GetSettingInt(Constants.ImageUploadMaxWidth, Constants.DefaultImageUploadMaxWidth),
+                MaxHeight = GetSettingInt(Constants.ImageUploadMaxHeight, Constants.DefaultImageUploadMaxHeight),
+                JpegQuality = ImageUploadOptimizer.ClampQuality(GetSettingInt(Constants.ImageUploadJpegQuality, Constants.DefaultImageUploadJpegQuality), Constants.DefaultImageUploadJpegQuality),
+                WebPQuality = ImageUploadOptimizer.ClampQuality(GetSettingInt(Constants.ImageUploadWebPQuality, Constants.DefaultImageUploadWebPQuality), Constants.DefaultImageUploadWebPQuality),
+                PreferWebP = GetSettingBool(Constants.ImageUploadPreferWebP, Constants.DefaultImageUploadPreferWebP),
+                KeepOriginalIfSmaller = GetSettingBool(Constants.ImageUploadKeepOriginalIfSmaller, Constants.DefaultImageUploadKeepOriginalIfSmaller),
                 SourceExtension = Path.GetExtension(fileName),
                 SourceMimeType = contentType
             };
@@ -590,8 +604,8 @@ namespace EImece.Domain.Helpers
             {
                 MaxWidth = maxWidth,
                 MaxHeight = maxHeight,
-                JpegQuality = AppConfig.ImageUploadThumbJpegQuality,
-                WebPQuality = AppConfig.ImageUploadWebPQuality,
+                JpegQuality = ImageUploadOptimizer.ClampQuality(GetSettingInt(Constants.ImageUploadThumbJpegQuality, Constants.DefaultImageUploadThumbJpegQuality), Constants.DefaultImageUploadThumbJpegQuality),
+                WebPQuality = ImageUploadOptimizer.ClampQuality(GetSettingInt(Constants.ImageUploadWebPQuality, Constants.DefaultImageUploadWebPQuality), Constants.DefaultImageUploadWebPQuality),
                 PreferWebP = string.Equals(forceExtension, ".webp", StringComparison.OrdinalIgnoreCase),
                 KeepOriginalIfSmaller = false,
                 SourceExtension = Path.GetExtension(fileName),

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.props" Condition="Exists('..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.props')" />
   <Import Project="..\packages\Microsoft.SourceLink.Common.10.0.301\build\Microsoft.SourceLink.Common.props" Condition="Exists('..\packages\Microsoft.SourceLink.Common.10.0.301\build\Microsoft.SourceLink.Common.props')" />
@@ -655,6 +655,7 @@
     <Compile Include="Helpers\RazorCustomRssTemplate\VBCustomTemplateBase.cs" />
     <Compile Include="Helpers\ReportUiHelper.cs" />
     <Compile Include="Helpers\RssHelper.cs" />
+    <Compile Include="Helpers\CaptchaSettings.cs" />
     <Compile Include="Helpers\SeoSettings.cs" />
     <Compile Include="Helpers\SeoUrlHelper.cs" />
     <Compile Include="Helpers\SiteMap\ISitemapGenerator.cs" />

@@ -64,20 +64,6 @@ namespace EImece.App_Start
             DependencyResolver.SetResolver(new MsDiDependencyResolver(ServiceProvider));
             GlobalConfiguration.Configuration.DependencyResolver =
                 new MsDiWebApiDependencyResolver(ServiceProvider);
-
-            // Hook AppConfig setting resolver to database-first via ISettingService
-            AppConfig.SettingResolver = key =>
-            {
-                try
-                {
-                    var settingService = DependencyResolver.Current?.GetService<ISettingService>();
-                    return settingService?.GetSettingByKey(key);
-                }
-                catch
-                {
-                    return null;
-                }
-            };
         }
 
         /// <summary>
@@ -318,7 +304,8 @@ namespace EImece.App_Start
             services.AddScoped<IPaymentStrategy>(sp =>
             {
                 // Default / blank / Iyzico → keep current live payment process.
-                var provider = AppConfig.PaymentProvider;
+                var settingService = sp.GetService<ISettingService>();
+                var provider = settingService?.GetSettingByKey(Domain.Constants.PaymentProvider) ?? Domain.Constants.DefaultPaymentProvider;
                 if (string.IsNullOrWhiteSpace(provider)
                     || string.Equals(provider, "Iyzico", StringComparison.OrdinalIgnoreCase))
                 {

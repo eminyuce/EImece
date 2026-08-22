@@ -241,7 +241,9 @@ namespace EImece.Areas.Admin.Controllers
         /// </summary>
         private bool MustRedirectToEnableAuthenticator(ActionExecutingContext filterContext)
         {
-            if (!AppConfig.RequireAdminAuthenticator || AppConfig.BypassAdminAuth)
+            bool requireAuth = SettingService?.GetSettingByKey(Domain.Constants.RequireAdminAuthenticator).ToBool(Domain.Constants.DefaultRequireAdminAuthenticator)
+                               ?? Domain.Constants.DefaultRequireAdminAuthenticator;
+            if (!requireAuth || AppConfig.BypassAdminAuth)
             {
                 return false;
             }

@@ -1,4 +1,5 @@
 using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Services;
@@ -20,7 +21,11 @@ namespace EImece.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (AppConfig.IsSiteUnderConstruction)
+            var isUnderConstruction = SettingService != null
+                ? (await SettingService.GetSettingByKeyAsync(Constants.IsSiteUnderConstruction)).ToBool(false)
+                : false;
+
+            if (isUnderConstruction)
             {
                 return File(Encoding.UTF8.GetBytes(""), MediaTypeNames.Text.Plain);
             }

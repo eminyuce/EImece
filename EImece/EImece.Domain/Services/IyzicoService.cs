@@ -100,7 +100,7 @@ namespace EImece.Domain.Services
                 BasketId = shoppingCart.OrderGuid,
                 PaymentGroup = PaymentGroup.PRODUCT.ToString(),
                 CallbackUrl = callbackUrl,
-                EnabledInstallments = AppConfig.IyzicoEnabledInstallments
+                EnabledInstallments = GetEnabledInstallments()
             };
 
             // Populate buyer details
@@ -249,7 +249,7 @@ namespace EImece.Domain.Services
                 BasketId = buyNowModel.OrderGuid,
                 PaymentGroup = PaymentGroup.PRODUCT.ToString(),
                 CallbackUrl = callbackUrl,
-                EnabledInstallments = AppConfig.IyzicoEnabledInstallments
+                EnabledInstallments = GetEnabledInstallments()
             };
 
             Logger.Debug("CheckoutFormInitializeRequest object populated");
@@ -353,6 +353,23 @@ namespace EImece.Domain.Services
             };
             Logger.Debug("Iyzico API options fetched successfully.");
             return options;
+        }
+
+        private static List<int> GetEnabledInstallments()
+        {
+            var settingService = DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var raw = settingService?.GetSettingByKey(Constants.IyzicoEnabledInstallments);
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                raw = Constants.DefaultIyzicoEnabledInstallments;
+            }
+
+            var enabledInstallments = new List<int>();
+            foreach (var item in raw.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                enabledInstallments.Add(item.Trim().ToInt());
+            }
+            return enabledInstallments.Count > 0 ? enabledInstallments : new List<int> { 1, 2, 4, 6, 9 };
         }
 
         private static Activity StartPaymentActivity(string operation)

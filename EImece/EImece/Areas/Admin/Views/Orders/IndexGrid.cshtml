@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities
+@using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Models.Enums
@@ -8,7 +8,7 @@
 @{
     Layout = null;
     var gridName = "OrdersGrid";
-    int pageSizeNumber = AppConfig.GridPageSizeNumber;
+    int pageSizeNumber = Constants.DefaultGridPageSizeNumber;
     int rowNum = 0;
     int startIndex = 0;
 

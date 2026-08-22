@@ -1,3 +1,4 @@
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using NLog;
 using Resources;
@@ -40,7 +41,7 @@ namespace EImece.Domain.Services
         {
             try
             {
-                if (AppConfig.CaptchaProvider == CaptchaProviderType.Recaptcha)
+                if (CaptchaSettings.Provider == CaptchaProviderType.Recaptcha)
                 {
                     return Resource.RecaptchaValidationFailed;
                 }
@@ -59,7 +60,7 @@ namespace EImece.Domain.Services
         }
 
         /// <summary>
-        /// Validates the current request according to <see cref="AppConfig.CaptchaProvider"/>.
+        /// Validates the current request according to <see cref="CaptchaSettings.Provider"/>.
         /// </summary>
         public static bool ValidateRequest(HttpContextBase httpContext, string legacyPrefix)
         {
@@ -68,7 +69,7 @@ namespace EImece.Domain.Services
                 return false;
             }
 
-            switch (AppConfig.CaptchaProvider)
+            switch (CaptchaSettings.Provider)
             {
                 case CaptchaProviderType.None:
                     Logger.Debug("Captcha validation skipped (CaptchaProvider=None).");

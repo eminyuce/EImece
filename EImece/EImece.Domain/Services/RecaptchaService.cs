@@ -1,3 +1,4 @@
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using Newtonsoft.Json;
 using NLog;
@@ -34,7 +35,7 @@ namespace EImece.Domain.Services
 
         public static bool ValidateRequest(HttpRequestBase request)
         {
-            if (AppConfig.CaptchaProvider != CaptchaProviderType.Recaptcha)
+            if (CaptchaSettings.Provider != CaptchaProviderType.Recaptcha)
             {
                 Logger.Debug("reCAPTCHA validation skipped because CaptchaProvider is not Recaptcha.");
                 return true;

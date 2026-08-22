@@ -27,7 +27,7 @@
     var productPriceEnabled = Model.IsProductPriceEnabled;
     var productReviewEnabled = Model.IsProductReviewEnabled;
     var hasAnySoldProducts = Model.HasAnySoldProducts;
-    var shortDescriptionPreviewLength = AppConfig.ProductShortDescriptionPreviewLength;
+    var shortDescriptionPreviewLength = Constants.DefaultProductShortDescriptionPreviewLength;
     var shortDescriptionPlain = GeneralHelper.StripHtml(category.ShortDescription).Trim();
     var shortDescriptionNeedsContinue = !string.IsNullOrEmpty(shortDescriptionPlain)
         && shortDescriptionPlain.Length > shortDescriptionPreviewLength;

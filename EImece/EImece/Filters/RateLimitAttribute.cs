@@ -1,4 +1,5 @@
 using EImece.Domain;
+using EImece.Domain.Helpers;
 using NLog;
 using System;
 using System.Net;
@@ -45,7 +46,11 @@ namespace EImece.Filters
             if (filterContext == null) return;
 
             // 1. Check if rate limiting is globally enabled (e.g. disable for local testing)
-            bool isEnabled = AppConfig.GetConfigBool("RateLimit:Enabled", true);
+            var settingService = DependencyResolver.Current?.GetService<EImece.Domain.Services.IServices.ISettingService>();
+            bool isEnabled = settingService != null
+                ? settingService.GetSettingByKey(Constants.RateLimit_Enabled).ToBool(true)
+                : true;
+
             if (!isEnabled)
             {
                 base.OnActionExecuting(filterContext);
@@ -71,9 +76,12 @@ namespace EImece.Filters
             // 3. Resolve Client IP safely (handling X-Forwarded-For)
             string clientIp = ResolveClientIp(request);
 
-            // 4. Resolve Limit and Window from Web.config or Attribute Defaults
-            int limit = AppConfig.GetConfigInt($"RateLimit:{FeatureKey}:Limit", DefaultLimit);
-            int windowMinutes = AppConfig.GetConfigInt($"RateLimit:{FeatureKey}:WindowMinutes", DefaultWindowMinutes);
+            // 4. Resolve Limit and Window from database or Attribute Defaults
+            var limitStr = settingService?.GetSettingByKey($"RateLimit:{FeatureKey}:Limit");
+            int limit = !string.IsNullOrWhiteSpace(limitStr) ? limitStr.ToInt(DefaultLimit) : DefaultLimit;
+
+            var windowStr = settingService?.GetSettingByKey($"RateLimit:{FeatureKey}:WindowMinutes");
+            int windowMinutes = !string.IsNullOrWhiteSpace(windowStr) ? windowStr.ToInt(DefaultWindowMinutes) : DefaultWindowMinutes;
             if (windowMinutes <= 0) windowMinutes = 1;
             var window = TimeSpan.FromMinutes(windowMinutes);
 
