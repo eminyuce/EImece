@@ -15,6 +15,7 @@
     var isPriceActive = Model.IsProductPriceEnable;
 
     var activeTheme = string.IsNullOrWhiteSpace(Model.ActiveDesign) ? "Crizal" : Model.ActiveDesign;
+    var showThemeSelection = AppConfig.ShowThemeSelectionInAdmin;
 
     var availableDesigns = new List<string>();
     try
@@ -517,50 +518,57 @@
                     <!-- 2. APPEARANCE & PWA TAB -->
                     <!-- ========================================================================= -->
                     <div id="tab-appearance" class="tab-pane fade" role="tabpanel">
-                        <!-- Section: Storefront Theme -->
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Vitrin Teması">
-                            <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-paint-brush text-primary me-2"></i>Aktif Vitrin Teması</h5>
-                                <small class="text-muted">Müşterilerinize sunulan mağaza ön yüz tasarım şablonu.</small>
-                            </div>
-                            <div class="card-body setting-item" data-setting-name="ActiveDesign" data-setting-label="Aktif Tema" data-setting-desc="Ön yüz vitrin teması seçimi" data-keywords="tema tasarım crizal modern görünüm theme active design şablon template dropdown">
-                                <div class="row align-items-center g-3">
-                                    <div class="col-md-6 col-lg-5">
-                                        <label for="ActiveDesign" class="form-label fw-semibold">
-                                            <i class="fa fa-th-large text-primary me-1"></i>Mağaza Ön Yüz Tasarım Şablonu
-                                        </label>
-                                        @Html.DropDownListFor(model => model.ActiveDesign, themeSelectItems, new { @class = "form-select form-select-lg shadow-sm", id = "ActiveDesign" })
-                                        <div class="form-text small mt-1">
-                                            Müşterilerinize sunulacak aktif vitrin temasını listeden seçiniz. Gelecekte eklenen tüm şablonlar bu listede yer alır.
-                                        </div>
-                                        @Html.ValidationMessageFor(model => model.ActiveDesign, "", new { @class = "text-danger small mt-1 d-block" })
-                                    </div>
-                                    <div class="col-md-6 col-lg-7">
-                                        <div class="p-3 bg-light rounded border" id="themePreviewBox">
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <span class="fw-bold text-dark" id="themePreviewTitle">
-                                                    <i class="fa fa-desktop text-primary me-1"></i>Seçili Tema: <span id="themeDisplayName">@activeTheme</span>
-                                                </span>
-                                                <span class="badge bg-success" id="themeActiveBadge">
-                                                    <i class="fa fa-check me-1"></i>Aktif Şablon
-                                                </span>
+                        @if (showThemeSelection)
+                        {
+                            <!-- Section: Storefront Theme -->
+                            <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Vitrin Teması">
+                                <div class="card-header bg-white py-3 border-bottom">
+                                    <h5 class="mb-0 fw-bold"><i class="fa fa-paint-brush text-primary me-2"></i>Aktif Vitrin Teması</h5>
+                                    <small class="text-muted">Müşterilerinize sunulan mağaza ön yüz tasarım şablonu.</small>
+                                </div>
+                                <div class="card-body setting-item" data-setting-name="ActiveDesign" data-setting-label="Aktif Tema" data-setting-desc="Ön yüz vitrin teması seçimi" data-keywords="tema tasarım crizal modern görünüm theme active design şablon template dropdown">
+                                    <div class="row align-items-center g-3">
+                                        <div class="col-md-6 col-lg-5">
+                                            <label for="ActiveDesign" class="form-label fw-semibold">
+                                                <i class="fa fa-th-large text-primary me-1"></i>Mağaza Ön Yüz Tasarım Şablonu
+                                            </label>
+                                            @Html.DropDownListFor(model => model.ActiveDesign, themeSelectItems, new { @class = "form-select form-select-lg shadow-sm", id = "ActiveDesign" })
+                                            <div class="form-text small mt-1">
+                                                Müşterilerinize sunulacak aktif vitrin temasını listeden seçiniz. Gelecekte eklenen tüm şablonlar bu listede yer alır.
                                             </div>
-                                            <p class="text-muted small mb-2" id="themePreviewDesc">
-                                                Tasarım şablonu kaydedildiğinde tüm vitrin ve kategori sayfaları seçilen temanın arayüzü ile sunulur.
-                                            </p>
-                                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                <span class="badge bg-white text-secondary border">
-                                                    <i class="fa fa-folder-open-o me-1"></i>Klasör: <code>/Views/Designs/<span id="themeFolderName">@activeTheme</span>/</code>
-                                                </span>
-                                                <a href="@Url.Action("Index", "Home", new { area = "" })" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.8rem;">
-                                                    <i class="fa fa-external-link me-1"></i>Mağazayı Önizle
-                                                </a>
+                                            @Html.ValidationMessageFor(model => model.ActiveDesign, "", new { @class = "text-danger small mt-1 d-block" })
+                                        </div>
+                                        <div class="col-md-6 col-lg-7">
+                                            <div class="p-3 bg-light rounded border" id="themePreviewBox">
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <span class="fw-bold text-dark" id="themePreviewTitle">
+                                                        <i class="fa fa-desktop text-primary me-1"></i>Seçili Tema: <span id="themeDisplayName">@activeTheme</span>
+                                                    </span>
+                                                    <span class="badge bg-success" id="themeActiveBadge">
+                                                        <i class="fa fa-check me-1"></i>Aktif Şablon
+                                                    </span>
+                                                </div>
+                                                <p class="text-muted small mb-2" id="themePreviewDesc">
+                                                    Tasarım şablonu kaydedildiğinde tüm vitrin ve kategori sayfaları seçilen temanın arayüzü ile sunulur.
+                                                </p>
+                                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                    <span class="badge bg-white text-secondary border">
+                                                        <i class="fa fa-folder-open-o me-1"></i>Klasör: <code>/Views/Designs/<span id="themeFolderName">@activeTheme</span>/</code>
+                                                    </span>
+                                                    <a href="@Url.Action("Index", "Home", new { area = "" })" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.8rem;">
+                                                        <i class="fa fa-external-link me-1"></i>Mağazayı Önizle
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.ActiveDesign)
+                        }
 
                         <!-- Section: PWA & Web App Manifest -->
                         <div class="card shadow-sm mb-4 setting-section-card" data-section-name="PWA & Web App Manifest">

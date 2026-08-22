@@ -189,6 +189,14 @@ namespace EImece.Domain
             }
         }
 
+        public static bool ShowThemeSelectionInAdmin
+        {
+            get
+            {
+                return GetConfigBool("ShowThemeSelectionInAdmin", true);
+            }
+        }
+
         public static int HomePageMainProductCountRandomLimit
         {
             get

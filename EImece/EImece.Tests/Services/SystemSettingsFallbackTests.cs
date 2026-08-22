@@ -272,6 +272,23 @@ namespace EImece.Tests.Services
             Assert.AreEqual(250, AdminSettings.ProductShortDescriptionPreviewLength);
         }
 
+        [TestMethod]
+        public void AppConfig_ShowThemeSelectionInAdmin_DefaultsToTrue_WhenNotSet()
+        {
+            ConfigurationManager.AppSettings["ShowThemeSelectionInAdmin"] = null;
+            Assert.IsTrue(AppConfig.ShowThemeSelectionInAdmin);
+        }
+
+        [TestMethod]
+        public void AppConfig_ShowThemeSelectionInAdmin_ReturnsConfiguredValue()
+        {
+            ConfigurationManager.AppSettings["ShowThemeSelectionInAdmin"] = "false";
+            Assert.IsFalse(AppConfig.ShowThemeSelectionInAdmin);
+
+            ConfigurationManager.AppSettings["ShowThemeSelectionInAdmin"] = "true";
+            Assert.IsTrue(AppConfig.ShowThemeSelectionInAdmin);
+        }
+
         private class SimpleTestDependencyResolver : IDependencyResolver
         {
             private readonly ISettingService _service;
