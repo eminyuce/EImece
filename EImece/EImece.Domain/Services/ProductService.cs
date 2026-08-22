@@ -266,7 +266,7 @@ namespace EImece.Domain.Services
                 {
                     var result = new ProductIndexViewModel();
                     int pageSize = AppConfig.RecordPerPage;
-                    result.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
+                    result.CompanyName = SettingService.GetSettingValueDtoByKey(Constants.CompanyName);
                     var menus = MenuService.GetActiveBaseContentsFromCache(true, lang);
                     var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
                     var productMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.ProductsIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
@@ -296,7 +296,7 @@ namespace EImece.Domain.Services
             var result = new ProductIndexViewModel();
             int pageSize = AppConfig.RecordPerPage;
 
-            result.CompanyName = await SettingService.GetSettingDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            result.CompanyName = await SettingService.GetSettingValueDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
 
             var menus = await MenuService.GetActiveBaseContentsFromCacheAsync(true, lang).ConfigureAwait(false);
             var mainPageMenu = menus.FirstOrDefault(r1 => r1.MenuLink.Equals(Constants.HomeIndexMenuLink, StringComparison.InvariantCultureIgnoreCase));
@@ -371,14 +371,14 @@ namespace EImece.Domain.Services
                 return result;
             }
             result.ProductDto = productDto;
-            result.IsProductPriceEnable = SettingService.GetSettingDtoByKey(Constants.IsProductPriceEnable);
-            result.IsProductReviewEnable = SettingService.GetSettingDtoByKey(Constants.IsProductReviewEnable);
-            result.PaymentDetailHtml = SettingService.GetSettingDtoByKey(Constants.PaymentDetailHtml);
-            result.WhatsAppCommunicationLink = SettingService.GetSettingDtoByKey(Constants.WhatsAppCommunicationLink);
-            result.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
+            result.IsProductPriceEnable = SettingService.GetSettingValueDtoByKey(Constants.IsProductPriceEnable);
+            result.IsProductReviewEnable = SettingService.GetSettingValueDtoByKey(Constants.IsProductReviewEnable);
+            result.PaymentDetailHtml = SettingService.GetSettingValueDtoByKey(Constants.PaymentDetailHtml);
+            result.WhatsAppCommunicationLink = SettingService.GetSettingValueDtoByKey(Constants.WhatsAppCommunicationLink);
+            result.CompanyName = SettingService.GetSettingValueDtoByKey(Constants.CompanyName);
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
-            result.CargoDescription = SettingService.GetSettingDtoByKey(Constants.CargoDescription, productDto.Lang);
-            result.CargoPrice = SettingService.GetSettingDtoByKey(Constants.CargoPrice, productDto.Lang);
+            result.CargoDescription = SettingService.GetSettingValueDtoByKey(Constants.CargoDescription, productDto.Lang);
+            result.CargoPrice = SettingService.GetSettingValueDtoByKey(Constants.CargoPrice, productDto.Lang);
             var mainPageDto = MenuService.GetStorefrontPageByMenuLink(Constants.HomeIndexMenuLink, productDto.Lang);
             if (mainPageDto != null)
             {
@@ -392,10 +392,10 @@ namespace EImece.Domain.Services
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(productDto.DetailPageAbsoluteUrl, productDto.NameLong, productDto.ImageFullPath(1000, 0));
             if (productDto.ProductCategoryTemplateId.HasValue)
             {
-                var tmpl = TemplateService.GetTemplate(productDto.ProductCategoryTemplateId.Value);
-                if (tmpl != null)
+                var tmplXml = TemplateService.GetTemplateXml(productDto.ProductCategoryTemplateId.Value);
+                if (!string.IsNullOrWhiteSpace(tmplXml))
                 {
-                    result.Template = new Models.DTOs.TemplateDto { Id = tmpl.Id, Name = tmpl.Name, TemplateXml = tmpl.TemplateXml };
+                    result.Template = new Models.DTOs.Storefront.TemplateXmlDto { TemplateXml = tmplXml };
                 }
             }
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(productDto.ProductCategoryId, productDto.Lang);
@@ -435,14 +435,14 @@ namespace EImece.Domain.Services
                 return result;
             }
             result.ProductDto = productDto;
-            result.IsProductPriceEnable = await SettingService.GetSettingDtoByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
-            result.IsProductReviewEnable = await SettingService.GetSettingDtoByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
-            result.PaymentDetailHtml = await SettingService.GetSettingDtoByKeyAsync(Constants.PaymentDetailHtml).ConfigureAwait(false);
-            result.WhatsAppCommunicationLink = await SettingService.GetSettingDtoByKeyAsync(Constants.WhatsAppCommunicationLink).ConfigureAwait(false);
-            result.CompanyName = await SettingService.GetSettingDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            result.IsProductPriceEnable = await SettingService.GetSettingValueDtoByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
+            result.IsProductReviewEnable = await SettingService.GetSettingValueDtoByKeyAsync(Constants.IsProductReviewEnable).ConfigureAwait(false);
+            result.PaymentDetailHtml = await SettingService.GetSettingValueDtoByKeyAsync(Constants.PaymentDetailHtml).ConfigureAwait(false);
+            result.WhatsAppCommunicationLink = await SettingService.GetSettingValueDtoByKeyAsync(Constants.WhatsAppCommunicationLink).ConfigureAwait(false);
+            result.CompanyName = await SettingService.GetSettingValueDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             result.Contact = ContactUsFormViewModel.CreateContactUsFormViewModel("productDetail", id, EImeceItemType.Product);
-            result.CargoDescription = await SettingService.GetSettingDtoByKeyAsync(Constants.CargoDescription, productDto.Lang).ConfigureAwait(false);
-            result.CargoPrice = await SettingService.GetSettingDtoByKeyAsync(Constants.CargoPrice, productDto.Lang).ConfigureAwait(false);
+            result.CargoDescription = await SettingService.GetSettingValueDtoByKeyAsync(Constants.CargoDescription, productDto.Lang).ConfigureAwait(false);
+            result.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Constants.CargoPrice, productDto.Lang).ConfigureAwait(false);
             var mainPageDtoAsync = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.HomeIndexMenuLink, productDto.Lang, cancellationToken).ConfigureAwait(false);
             if (mainPageDtoAsync != null)
             {
@@ -456,10 +456,10 @@ namespace EImece.Domain.Services
             result.SocialMediaLinks = SettingService.CreateShareableSocialMediaLinks(productDto.DetailPageAbsoluteUrl, productDto.NameLong, productDto.ImageFullPath(1000, 0));
             if (productDto.ProductCategoryTemplateId.HasValue)
             {
-                var tmpl = await TemplateService.GetTemplateAsync(productDto.ProductCategoryTemplateId.Value, cancellationToken).ConfigureAwait(false);
-                if (tmpl != null)
+                var tmplXmlAsync = await TemplateService.GetTemplateXmlAsync(productDto.ProductCategoryTemplateId.Value, cancellationToken).ConfigureAwait(false);
+                if (!string.IsNullOrWhiteSpace(tmplXmlAsync))
                 {
-                    result.Template = new Models.DTOs.TemplateDto { Id = tmpl.Id, Name = tmpl.Name, TemplateXml = tmpl.TemplateXml };
+                    result.Template = new Models.DTOs.Storefront.TemplateXmlDto { TemplateXml = tmplXmlAsync };
                 }
             }
             result.BreadCrumb = await ProductCategoryService.GetBreadCrumbAsync(productDto.ProductCategoryId, productDto.Lang).ConfigureAwait(false);

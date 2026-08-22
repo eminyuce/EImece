@@ -22,6 +22,8 @@ namespace EImece.Domain.Services.IServices
 
         Task<List<OrderDto>> GetStorefrontOrdersByUserIdAsync(string userId, string search = "", CancellationToken cancellationToken = default(CancellationToken));
         List<OrderDto> GetStorefrontOrdersByUserId(string userId, string search = "");
+        Task<List<Models.DTOs.Storefront.OrderListItemDto>> GetStorefrontOrderListByUserIdAsync(string userId, string search = "", CancellationToken cancellationToken = default(CancellationToken));
+        List<Models.DTOs.Storefront.OrderListItemDto> GetStorefrontOrderListByUserId(string userId, string search = "");
 
         #endregion
 

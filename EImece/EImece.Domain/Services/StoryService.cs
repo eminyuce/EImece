@@ -529,7 +529,7 @@ namespace EImece.Domain.Services
             var storyCards = storyTags.Select(st => StorefrontStoryCardDto.FromEntity(st.Story)).ToList();
             result.StoryTags = new PaginatedList<StorefrontStoryCardDto>(storyCards, storyTags.PageIndex, storyTags.PageSize, storyTags.TotalCount);
 
-            result.CompanyName = SettingService.GetSettingDtoByKey(Constants.CompanyName);
+            result.CompanyName = SettingService.GetSettingValueDtoByKey(Constants.CompanyName);
             return result;
         }
 
@@ -547,7 +547,7 @@ namespace EImece.Domain.Services
             var storyCards = storyTags.Select(st => StorefrontStoryCardDto.FromEntity(st.Story)).ToList();
             result.StoryTags = new PaginatedList<StorefrontStoryCardDto>(storyCards, storyTags.PageIndex, storyTags.PageSize, storyTags.TotalCount);
 
-            result.CompanyName = await SettingService.GetSettingDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
+            result.CompanyName = await SettingService.GetSettingValueDtoByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             return result;
         }
 

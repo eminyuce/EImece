@@ -1,4 +1,3 @@
-using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ namespace EImece.Domain.Models.FrontModels
     {
         public StorefrontMenuDto Menu { get; set; }
 
-        public SettingDto CompanyName
+        public SettingKeyValueDto CompanyName
         {
             get
             {
@@ -18,7 +17,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public SettingDto CompanyAddress
+        public SettingKeyValueDto CompanyAddress
         {
             get
             {
@@ -26,7 +25,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public SettingDto WebSiteCompanyPhoneAndLocation
+        public SettingKeyValueDto WebSiteCompanyPhoneAndLocation
         {
             get
             {
@@ -34,7 +33,7 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public SettingDto WebSiteCompanyEmailAddress
+        public SettingKeyValueDto WebSiteCompanyEmailAddress
         {
             get
             {
@@ -42,10 +41,10 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        private SettingDto GetSetting(string key)
+        private SettingKeyValueDto GetSetting(string key)
         {
-            if (ApplicationSettings == null) return new SettingDto();
-            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase)) ?? new SettingDto();
+            if (ApplicationSettings == null) return new SettingKeyValueDto { SettingKey = key, SettingValue = string.Empty };
+            return ApplicationSettings.FirstOrDefault(t => t.SettingKey.Equals(key, StringComparison.InvariantCultureIgnoreCase)) ?? new SettingKeyValueDto { SettingKey = key, SettingValue = string.Empty };
         }
 
         public StorefrontMenuDto MainPageMenu { get; set; }
@@ -56,18 +55,18 @@ namespace EImece.Domain.Models.FrontModels
         public List<StorefrontMenuDto> SideMenus { get; set; }
 
         public ContactUsFormViewModel Contact { get; set; }
-        public List<SettingDto> ApplicationSettings { get; set; }
+        public List<SettingKeyValueDto> ApplicationSettings { get; set; }
 
         public Dictionary<string, string> SocialMediaLinks { get; set; }
 
-        public SettingDto GoogleMapScript
+        public SettingKeyValueDto GoogleMapScript
         {
             get
             {
                 var result = GetSetting(Constants.GoogleMapScript);
                 if (result == null)
                 {
-                    result = new SettingDto();
+                    result = new SettingKeyValueDto { SettingKey = Constants.GoogleMapScript, SettingValue = string.Empty };
                 }
                 return result;
             }
@@ -76,7 +75,7 @@ namespace EImece.Domain.Models.FrontModels
         public MenuPageViewModel()
         {
             SideMenus = new List<StorefrontMenuDto>();
-            ApplicationSettings = new List<SettingDto>();
+            ApplicationSettings = new List<SettingKeyValueDto>();
             SocialMediaLinks = new Dictionary<string, string>();
         }
     }

@@ -1,10 +1,11 @@
-@using EImece.Domain.Entities;
+﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Models.DTOs;
+@using EImece.Domain.Models.DTOs.Storefront;
 @model SendMessageToSellerViewModel
 
 @{
@@ -12,13 +13,13 @@
 }
 
 <div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
-    @Html.Partial("_CustomerDetails", Model.Customer)
+    @Html.Partial("_CustomerSummaryDetails", Model.Customer)
 
     <div class="customer-panel">
         <section class="customer-panel__section customer-panel__section--last">
             <header class="customer-panel__section-head">
                 <h2 class="customer-panel__section-title">@Resource.FrequentlyAskedQuestions</h2>
-                <p class="customer-panel__section-lead">Sipariş, teslimat ve hesap işlemleri hakkında sık sorulan sorular.</p>
+                <p class="customer-panel__section-lead">SipariÅŸ, teslimat ve hesap iÅŸlemleri hakkÄ±nda sÄ±k sorulan sorular.</p>
             </header>
 
             @if (!string.IsNullOrWhiteSpace(Resource.QuestionAboutItemForCustomer))
@@ -32,7 +33,7 @@
             {
                 <div class="customer-faq accordion" id="faqAccordion">
                     @{ int index = 1; }
-                    @foreach (FaqDto faq in Model.Faqs)
+                    @foreach (FaqSummaryDto faq in Model.Faqs)
                     {
                         <div class="customer-faq__item card">
                             <div class="customer-faq__header card-header" id="heading-@faq.Id">
@@ -65,8 +66,8 @@
                     <div class="customer-orders-empty__icon" aria-hidden="true">
                         <i class="fas fa-question"></i>
                     </div>
-                    <h3 class="customer-orders-empty__title h5 mb-2">Henüz SSS eklenmemiş</h3>
-                    <p class="customer-orders-empty__text text-muted mb-0">Sorularınız için satıcıya mesaj gönderebilirsiniz.</p>
+                    <h3 class="customer-orders-empty__title h5 mb-2">HenÃ¼z SSS eklenmemiÅŸ</h3>
+                    <p class="customer-orders-empty__text text-muted mb-0">SorularÄ±nÄ±z iÃ§in satÄ±cÄ±ya mesaj gÃ¶nderebilirsiniz.</p>
                 </output>
             }
         </section>
@@ -85,3 +86,4 @@
         });
     </script>
 }
+

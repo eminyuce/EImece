@@ -1,4 +1,4 @@
-@model EImece.Domain.Entities.Customer
+﻿@model EImece.Domain.Models.DTOs.CustomerDto
 @using Resources;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
@@ -6,10 +6,10 @@
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
 @{
-    List<Order> orders = Model.Orders;
+    List<EImece.Domain.Models.DTOs.OrderDto> orders = Model.Orders;
     if (orders.IsEmpty())
     {
-        orders = new List<Order>();
+        orders = new List<EImece.Domain.Models.DTOs.OrderDto>();
     }
 
 }

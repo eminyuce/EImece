@@ -24,7 +24,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public List<ProductCategoryTreeModel> BreadCrumb { get; set; }
 
-        public TemplateDto Template { get; set; }
+        public TemplateXmlDto Template { get; set; }
 
         public List<StorefrontStoryCardDto> RelatedStories { get; set; }
 
@@ -32,13 +32,13 @@ namespace EImece.Domain.Models.FrontModels
 
         public ContactUsFormViewModel Contact { get; set; }
 
-        public SettingDto CargoDescription { get; set; }
-        public SettingDto CargoPrice { get; set; }
-        public SettingDto PaymentDetailHtml { get; set; }
-        public SettingDto IsProductPriceEnable { get; set; }
-        public SettingDto IsProductReviewEnable { get; set; }
-        public SettingDto WhatsAppCommunicationLink { get; set; }
-        public SettingDto CompanyName { get; set; }
+        public SettingValueDto CargoDescription { get; set; }
+        public SettingValueDto CargoPrice { get; set; }
+        public SettingValueDto PaymentDetailHtml { get; set; }
+        public SettingValueDto IsProductPriceEnable { get; set; }
+        public SettingValueDto IsProductReviewEnable { get; set; }
+        public SettingValueDto WhatsAppCommunicationLink { get; set; }
+        public SettingValueDto CompanyName { get; set; }
         public string SeoId { get; set; }
 
         public ProductDetailViewModel()

@@ -30,13 +30,7 @@ namespace EImece.Domain.Repositories
                 return b => new StorefrontBrandDto
                 {
                     Id = b.Id,
-                    Name = b.Name,
-                    ShortDescription = b.Description,
-                    MainImageId = b.MainImageId,
-                    Position = b.Position,
-                    Lang = b.Lang,
-                    IsActive = b.IsActive,
-                    ProductCount = b.Products.Count(p => p.IsActive)
+                    Name = b.Name
                 };
             }
         }

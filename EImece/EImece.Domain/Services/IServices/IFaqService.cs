@@ -12,6 +12,8 @@ namespace EImece.Domain.Services.IServices
 
         Task<List<FaqDto>> GetStorefrontFaqsAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
         List<FaqDto> GetStorefrontFaqs(int language);
+        Task<List<Models.DTOs.Storefront.FaqSummaryDto>> GetStorefrontFaqSummariesAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+        List<Models.DTOs.Storefront.FaqSummaryDto> GetStorefrontFaqSummaries(int language);
 
         #endregion
     }

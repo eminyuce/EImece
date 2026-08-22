@@ -31,14 +31,9 @@ namespace EImece.Domain.Repositories
                 {
                     Id = b.Id,
                     Name = b.Name,
-                    Title = b.Name,
                     Description = b.Description,
-                    ShortDescription = b.Description,
                     Url = b.Link,
-                    MainImageId = b.MainImageId,
-                    Position = b.Position,
-                    Lang = b.Lang,
-                    IsActive = b.IsActive
+                    MainImageId = b.MainImageId
                 };
             }
         }

@@ -5,13 +5,13 @@
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
-@using EImece.Domain.Models.DTOs;
+@using EImece.Domain.Models.DTOs.Storefront;
 @using System.Resources;
 @model CustomerOrdersViewModel
 
 @{
     var myOrders = Model.Orders;
-    var paginatedOrders = new PaginatedModelList<OrderDto>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
+    var paginatedOrders = new PaginatedModelList<OrderListItemDto>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
 }
 
 <!-- Page Content-->
@@ -30,7 +30,7 @@
         <!-- Main content-->
         <!-- Main content-->
         <div class="col-lg-12">
-            @Html.Partial("_CustomerDetails", Model.Customer)
+            @Html.Partial("_CustomerSummaryDetails", Model.Customer)
 
             <!-- Orders table-->
             <div class="table-responsive font-size-sm">
@@ -89,7 +89,7 @@
     </div>
 </div>
 
-@helper createOrderStatus(OrderDto o)
+@helper createOrderStatus(OrderListItemDto o)
 {
 
     var os = (EImeceOrderStatus)o.OrderStatus;

@@ -11,14 +11,9 @@ namespace EImece.Domain.Models.DTOs.Storefront
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Title { get; set; }
         public string Description { get; set; }
-        public string ShortDescription { get; set; }
         public string Url { get; set; }
         public int? MainImageId { get; set; }
-        public int Position { get; set; }
-        public int Lang { get; set; }
-        public bool IsActive { get; set; }
 
         public string GetCroppedImageUrl(int width = 0, int height = 0, bool isFullPath = false, bool isThumb = false)
         {

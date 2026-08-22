@@ -12,5 +12,8 @@ namespace EImece.Domain.Repositories.IRepositories
         Task<List<Template>> GetAllActiveTemplatesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         List<Template> GetAllTemplates();
+
+        string GetTemplateXml(int id);
+        Task<string> GetTemplateXmlAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

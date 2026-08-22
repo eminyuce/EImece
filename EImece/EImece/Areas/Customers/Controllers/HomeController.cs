@@ -157,6 +157,7 @@ namespace EImece.Areas.Customers.Controllers
             ApplicationUser user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
             var customer = await CustomerService.GetUserIdAsync(user.Id);
             var customerDto = Mapper.Map<CustomerDto>(customer) ?? new CustomerDto();
+            // Minimal order list for header stats — 7 cols, no OrderProducts collection
             customerDto.Orders = (await OrderService.GetStorefrontOrdersByUserIdAsync(user.Id)).OrderByDescending(r => r.CreatedDate).ToList();
             if (customerDto.Gender == 0)
             {
@@ -165,13 +166,31 @@ namespace EImece.Areas.Customers.Controllers
             return customerDto;
         }
 
+        private async Task<EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto> GetCustomerSummaryAsync()
+        {
+            var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
+            var customer = await CustomerService.GetUserIdAsync(user.Id);
+            var orders = await OrderService.GetStorefrontOrderListByUserIdAsync(user.Id);
+            return new EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto
+            {
+                Id = customer?.Id ?? 0,
+                Name = customer?.Name ?? user.FirstName,
+                Surname = customer?.Surname ?? user.LastName,
+                Email = user.Email,
+                CreatedDate = customer?.CreatedDate ?? DateTime.Now,
+                UserId = user.Id,
+                TotalOrderCount = orders.Count,
+                TotalPaid = orders.Sum(o => o.PaidPriceDecimal)
+            };
+        }
+
         // Must stay synchronous: invoked via Html.Action child requests (MVC does not support async child actions).
         public ActionResult WebSiteAddressInfo(bool isMobilePage = false)
         {
             var item = new SettingLayoutViewModel();
             item.isMobilePage = isMobilePage;
-            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingDtoByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
-            item.WebSiteCompanyEmailAddress = SettingService.GetSettingDtoByKey(Domain.Constants.WebSiteCompanyEmailAddress);
+            item.WebSiteCompanyPhoneAndLocation = SettingService.GetSettingValueDtoByKey(Domain.Constants.WebSiteCompanyPhoneAndLocation);
+            item.WebSiteCompanyEmailAddress = SettingService.GetSettingValueDtoByKey(Domain.Constants.WebSiteCompanyEmailAddress);
             return PartialView("_WebSiteAddressInfo", item);
         }
 
@@ -227,8 +246,8 @@ namespace EImece.Areas.Customers.Controllers
         public async Task<ActionResult> SendMessageToSeller()
         {
             ViewBag.Title = Resource.SendMessageToSeller;
-            var customer = await GetCustomerAsync();
-            var faqs = await FaqService.GetStorefrontFaqsAsync(CurrentLanguage);
+            var customer = await GetCustomerSummaryAsync();
+            var faqs = await FaqService.GetStorefrontFaqSummariesAsync(CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
@@ -259,24 +278,24 @@ namespace EImece.Areas.Customers.Controllers
         public async Task<ActionResult> Faq()
         {
             ViewBag.Title = Resource.Faq;
-            var customer = await GetCustomerAsync();
-            var faqs = await FaqService.GetStorefrontFaqsAsync(CurrentLanguage);
+            var customer = await GetCustomerSummaryAsync();
+            var faqs = await FaqService.GetStorefrontFaqSummariesAsync(CurrentLanguage);
             return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
         }
 
         public async Task<ActionResult> CustomerOrders(string search = "")
         {
             ViewBag.Title = Resource.CustomerDetail;
-            var customer = await GetCustomerAsync();
+            var customer = await GetCustomerSummaryAsync();
             var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-            var orders = (await OrderService.GetStorefrontOrdersByUserIdAsync(user.Id, search)).OrderByDescending(r=>r.CreatedDate).ToList();
+            var orders = (await OrderService.GetStorefrontOrderListByUserIdAsync(user.Id, search)).OrderByDescending(r=>r.CreatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 
         public async Task<ActionResult> CustomerOrderDetail(int id)
         {
             ViewBag.Title = Resource.CustomerDetail;
-            var customer = await GetCustomerAsync();
+            var customer = await GetCustomerSummaryAsync();
             var order = await OrderService.GetStorefrontOrderByIdAsync(id);
             if (order == null)
             {

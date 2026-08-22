@@ -38,9 +38,9 @@ namespace EImece.Domain.Models.FrontModels
                 _selectedFilterTypes = value;
             }
         }
-        public SettingDto PriceFilterSetting { get; set; }
-        public SettingDto IsProductPriceEnable { get; set; }
-        public SettingDto IsProductReviewEnable { get; set; }
+        public SettingValueDto PriceFilterSetting { get; set; }
+        public SettingValueDto IsProductPriceEnable { get; set; }
+        public SettingValueDto IsProductReviewEnable { get; set; }
         public List<StorefrontProductCardDto> AllProducts { get; set; }
 
         public ProductCategoryViewModel()

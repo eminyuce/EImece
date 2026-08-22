@@ -1,16 +1,16 @@
-using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Collections.Generic;
 
 namespace EImece.Domain.Models.FrontModels
 {
     public class CustomerOrdersViewModel : ItemListing
     {
-        public List<OrderDto> Orders { get; set; }
-        public CustomerDto Customer { get; set; }
+        public List<OrderListItemDto> Orders { get; set; }
+        public CustomerSummaryDto Customer { get; set; }
 
         public CustomerOrdersViewModel()
         {
-            Orders = new List<OrderDto>();
+            Orders = new List<OrderListItemDto>();
         }
     }
 }

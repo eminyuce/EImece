@@ -39,6 +39,14 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<StorefrontMenuDto> GetStorefrontActiveMenus(int language);
 
+        Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language);
+
+        Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        List<StorefrontMenuNavigationDto> BuildStorefrontMenuNavigationTree(int language);
+
         Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
 
         List<StorefrontMenuDto> BuildStorefrontMenuTree(int language);

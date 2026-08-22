@@ -100,5 +100,15 @@ namespace EImece.Domain.Services
             }
             return result;
         }
+
+        public string GetTemplateXml(int id)
+        {
+            return TemplateRepository.GetTemplateXml(id);
+        }
+
+        public async Task<string> GetTemplateXmlAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await TemplateRepository.GetTemplateXmlAsync(id, cancellationToken).ConfigureAwait(false);
+        }
     }
 }

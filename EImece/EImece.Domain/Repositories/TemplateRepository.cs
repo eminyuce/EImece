@@ -29,5 +29,21 @@ namespace EImece.Domain.Repositories
         {
             return GetAll().ToList();
         }
+
+        public string GetTemplateXml(int id)
+        {
+            return EImeceDbContext.Templates.AsNoTracking()
+                .Where(t => t.Id == id && t.IsActive)
+                .Select(t => t.TemplateXml)
+                .FirstOrDefault();
+        }
+
+        public async Task<string> GetTemplateXmlAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Templates.AsNoTracking()
+                .Where(t => t.Id == id && t.IsActive)
+                .Select(t => t.TemplateXml)
+                .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        }
     }
 }

@@ -9,5 +9,8 @@ namespace EImece.Domain.Services.IServices
         Template GetTemplate(int id);
 
         Task<Template> GetTemplateAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+
+        string GetTemplateXml(int id);
+        Task<string> GetTemplateXmlAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

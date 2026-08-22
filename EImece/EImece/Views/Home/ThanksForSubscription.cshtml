@@ -1,4 +1,4 @@
-@model EImece.Domain.Entities.Subscriber
+﻿@model string
 @using Resources
 @{
     ViewBag.Title = Resource.ThanksForSubscriptionTitle;
@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
-                    @Html.Raw(string.Format(Resource.ThanksForSubscription, HttpUtility.HtmlEncode(Model.Email), HttpUtility.HtmlAttributeEncode(urlActionLink)))
+                    @Html.Raw(string.Format(Resource.ThanksForSubscription, HttpUtility.HtmlEncode(Model), HttpUtility.HtmlAttributeEncode(urlActionLink)))
                 </div>
             </div>
         </div>

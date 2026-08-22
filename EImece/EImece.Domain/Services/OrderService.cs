@@ -87,6 +87,16 @@ namespace EImece.Domain.Services
             return OrderRepository.GetStorefrontOrdersByUserId(userId, search);
         }
 
+        public async Task<List<Models.DTOs.Storefront.OrderListItemDto>> GetStorefrontOrderListByUserIdAsync(string userId, string search = "", CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await OrderRepository.GetStorefrontOrderListByUserIdAsync(userId, search, cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<Models.DTOs.Storefront.OrderListItemDto> GetStorefrontOrderListByUserId(string userId, string search = "")
+        {
+            return OrderRepository.GetStorefrontOrderListByUserId(userId, search);
+        }
+
         #endregion
 
         #region Admin / Change-Tracking Methods (Full Entities)

@@ -1,5 +1,4 @@
 using EImece.Domain.GenericRepository;
-using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 
 namespace EImece.Domain.Models.FrontModels
@@ -11,6 +10,6 @@ namespace EImece.Domain.Models.FrontModels
 
         public PaginatedList<StorefrontProductCardDto> ProductTags { get; set; }
 
-        public SettingDto CompanyName { get; set; }
+        public SettingValueDto CompanyName { get; set; }
     }
 }
