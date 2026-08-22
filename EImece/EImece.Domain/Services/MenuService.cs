@@ -143,7 +143,9 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cacheKey = $"MenuNavTree-{language}" + AsyncCacheKeySuffix;
+            // menu: family so InvalidateMenuCaches drops it (the former MenuNavTree-{lang}
+            // key escaped every menu invalidation call).
+            var cacheKey = CacheKeys.MenuPrefix + "navtree:lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => MenuRepository.BuildStorefrontMenuNavigationTreeAsync(language, cancellationToken),
@@ -152,11 +154,19 @@ namespace EImece.Domain.Services
 
         public List<StorefrontMenuNavigationDto> BuildStorefrontMenuNavigationTree(int language)
         {
-            var cacheKey = $"MenuNavTree-{language}";
+            var cacheKey = CacheKeys.MenuPrefix + "navtree:lang" + language;
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => MenuRepository.BuildStorefrontMenuNavigationTree(language),
                 AppConfig.CacheLongSeconds);
+        }
+
+        /// <summary>
+        /// Menu active-entity/content lists live under the menu: family so InvalidateMenuCaches evicts them.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.MenuPrefix; }
         }
 
         private void InvalidateMenuCaches()
@@ -297,7 +307,8 @@ namespace EImece.Domain.Services
                 return MenuRepository.BuildTree(isActive, language);
             }
 
-            var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language);
+            // menu: family so InvalidateMenuCaches drops it after menu edits.
+            var cacheKey = CacheKeys.MenuPrefix + "admintree:" + isActive + ":lang" + language;
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => MenuRepository.BuildTree(isActive, language),
@@ -311,7 +322,7 @@ namespace EImece.Domain.Services
                 return await MenuRepository.BuildTreeAsync(isActive, language, cancellationToken).ConfigureAwait(false);
             }
 
-            var cacheKey = String.Format("MenuTree-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+            var cacheKey = CacheKeys.MenuPrefix + "admintree:" + isActive + ":lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => MenuRepository.BuildTreeAsync(isActive, language, CancellationToken.None),

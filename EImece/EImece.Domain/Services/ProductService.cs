@@ -61,16 +61,44 @@ namespace EImece.Domain.Services
             ProductRepository = repository;
         }
 
+        /// <summary>
+        /// Product active-list and active-entity caches live under the product:list family so
+        /// InvalidateProductListCaches (run after every mutating admin action) evicts them.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.ProductListPrefix; }
+        }
+
+        protected override void InvalidateCachesAfterMutation()
+        {
+            // Grid state/position/main-page/campaign toggles change storefront listings.
+            InvalidateProductListCaches();
+        }
+
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
+        /// <summary>
+        /// Shared, customer-independent product-detail DTO (product + files + tags + specs +
+        /// approved comments). Cached under <c>product:detail:</c> so authenticated users and
+        /// OutputCache misses stop rebuilding the ~10-query projection on every view. Dropped by
+        /// InvalidateProductListCaches on any product mutation and by comment moderation.
+        /// Not-found/inactive products are not cached (repository returns null).
+        /// </summary>
         public async Task<StorefrontProductDetailDto> GetStorefrontProductDetailAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductRepository.GetStorefrontProductDetailByIdAsync(id, cancellationToken).ConfigureAwait(false);
+            return await DataCachingProvider.GetOrAddAsync(
+                CacheKeys.ProductDetailAsync(id),
+                () => ProductRepository.GetStorefrontProductDetailByIdAsync(id, CancellationToken.None),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public StorefrontProductDetailDto GetStorefrontProductDetail(int id)
         {
-            return ProductRepository.GetStorefrontProductDetailById(id);
+            return DataCachingProvider.GetOrAdd(
+                CacheKeys.ProductDetail(id),
+                () => ProductRepository.GetStorefrontProductDetailById(id),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
@@ -312,11 +340,16 @@ namespace EImece.Domain.Services
         public void SaveProductTags(int id, int[] tags)
         {
             ProductTagRepository.SaveProductTags(id, tags);
+            // Tag relations feed related-products and products-by-tag listings.
+            InvalidateProductListCaches();
+            TagService.InvalidateTagCaches();
         }
 
         public async Task SaveProductTagsAsync(int id, int[] tags)
         {
             await ProductTagRepository.SaveProductTagsAsync(id, tags).ConfigureAwait(false);
+            InvalidateProductListCaches();
+            TagService.InvalidateTagCaches();
         }
 
         public List<ProductTag> GetProductTagsByProductId(int productId)
@@ -357,7 +390,7 @@ namespace EImece.Domain.Services
         public ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
             var result = new ProductDetailViewModel();
-            var productDto = ProductRepository.GetStorefrontProductDetailById(id);
+            var productDto = GetStorefrontProductDetail(id);
 
             if (productDto == null)
             {
@@ -421,7 +454,7 @@ namespace EImece.Domain.Services
         public async Task<ProductDetailViewModel> GetProductDetailViewModelByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new ProductDetailViewModel();
-            var productDto = await ProductRepository.GetStorefrontProductDetailByIdAsync(id, cancellationToken).ConfigureAwait(false);
+            var productDto = await GetStorefrontProductDetailAsync(id, cancellationToken).ConfigureAwait(false);
 
             if (productDto == null)
             {
@@ -740,20 +773,25 @@ namespace EImece.Domain.Services
         }
 
         /// <summary>
-        /// Drops every product list/search MemoryCache entry after a mutating admin action so the
-        /// next storefront request rebuilds from SQL instead of serving stale AbsoluteExpiration data.
-        /// Also drops cached category detail/children DTOs because they embed active-product counts
-        /// (parent = sum of children) that would otherwise go stale until their medium TTL expires.
+        /// Drops every storefront cache entry that a product mutation can affect: list/search
+        /// pages, cached detail DTOs (embed tags/specs/comments/files), category detail/children
+        /// DTOs with their active-product counts, and tag listings (product-tag relations).
+        /// Called after product save/delete/state-change/move/tag-edit so the next storefront
+        /// request rebuilds from SQL instead of serving stale AbsoluteExpiration data.
         /// </summary>
         public void InvalidateProductListCaches()
         {
             var listRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
             var searchRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductSearchPrefix);
+            var detailRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductDetailPrefix);
+            var relatedRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductRelatedPrefix);
             var categoryRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.CategoryPrefix);
             ProductServiceLogger.Info(
-                "InvalidateProductListCaches removed {0} list + {1} search + {2} category entries",
+                "InvalidateProductListCaches removed {0} list + {1} search + {2} detail + {3} related + {4} category entries",
                 listRemoved,
                 searchRemoved,
+                detailRemoved,
+                relatedRemoved,
                 categoryRemoved);
         }
 
@@ -1063,6 +1101,8 @@ namespace EImece.Domain.Services
                     ProductRepository.Edit(product);
                 }
                 ProductRepository.Save();
+                // Category membership feeds category listings and category product counts.
+                InvalidateProductListCaches();
             }
         }
 
@@ -1078,6 +1118,7 @@ namespace EImece.Domain.Services
                     ProductRepository.Edit(product);
                 }
                 await ProductRepository.SaveAsync().ConfigureAwait(false);
+                InvalidateProductListCaches();
             }
         }
 
@@ -1207,6 +1248,8 @@ namespace EImece.Domain.Services
                 ProductRepository.Edit(product);
             }
             ProductRepository.Save();
+            // Activation/deactivation changes storefront visibility immediately.
+            InvalidateProductListCaches();
         }
 
         public async Task ChangeProductStateAsync(List<string> values, ProductState state)
@@ -1222,6 +1265,7 @@ namespace EImece.Domain.Services
                 ProductRepository.Edit(product);
             }
             await ProductRepository.SaveAsync().ConfigureAwait(false);
+            InvalidateProductListCaches();
         }
     }
 }

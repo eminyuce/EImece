@@ -73,6 +73,19 @@ namespace EImece.Domain.Services
             DataCachingProvider.ClearByPrefix(CacheKeys.MenuPrefix);
         }
 
+        /// <summary>
+        /// Story-category active lists live under the story: family so the invalidator above evicts them.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.StoryPrefix; }
+        }
+
+        protected override void InvalidateCachesAfterMutation()
+        {
+            InvalidateStoryCategoryCaches();
+        }
+
         #endregion
 
         #region Mutation & Invalidation

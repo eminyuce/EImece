@@ -60,6 +60,19 @@ namespace EImece.Domain.Services
             DataCachingProvider.ClearByPrefix(CacheKeys.BannerPrefix);
         }
 
+        /// <summary>
+        /// Banner active-content lists live under the banner: family so the invalidator above evicts them.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.BannerPrefix; }
+        }
+
+        protected override void InvalidateCachesAfterMutation()
+        {
+            InvalidateBannerCaches();
+        }
+
         #endregion
 
         #region Mutation & Invalidation

@@ -28,7 +28,13 @@ namespace EImece.Domain.Services
         {
             if (categoryId > 0)
             {
-                return await BrandRepository.GetStorefrontBrandsAsync(lang, categoryId, cancellationToken).ConfigureAwait(false);
+                // Category-page brand filters: cached under the brand: family (dropped by
+                // InvalidateBrandCaches) and keyed by category + language.
+                var catCacheKey = CacheKeys.BrandPrefix + "list:cat" + categoryId + ":lang" + lang;
+                return await DataCachingProvider.GetOrAddAsync(
+                    catCacheKey,
+                    () => BrandRepository.GetStorefrontBrandsAsync(lang, categoryId, CancellationToken.None),
+                    AppConfig.CacheMediumSeconds).ConfigureAwait(false);
             }
 
             var cacheKey = CacheKeys.BrandListAsync(lang);
@@ -42,7 +48,11 @@ namespace EImece.Domain.Services
         {
             if (categoryId > 0)
             {
-                return BrandRepository.GetStorefrontBrands(lang, categoryId);
+                var catCacheKey = CacheKeys.BrandPrefix + "list:cat" + categoryId + ":lang" + lang;
+                return DataCachingProvider.GetOrAdd(
+                    catCacheKey,
+                    () => BrandRepository.GetStorefrontBrands(lang, categoryId),
+                    AppConfig.CacheMediumSeconds);
             }
 
             var cacheKey = CacheKeys.BrandList(lang);
@@ -74,6 +84,19 @@ namespace EImece.Domain.Services
         {
             DataCachingProvider.ClearByPrefix(CacheKeys.BrandPrefix);
             DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
+        }
+
+        /// <summary>
+        /// Brand active-content lists live under the brand: family so the invalidator above evicts them.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.BrandPrefix; }
+        }
+
+        protected override void InvalidateCachesAfterMutation()
+        {
+            InvalidateBrandCaches();
         }
 
         #endregion

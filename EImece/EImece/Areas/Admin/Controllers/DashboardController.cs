@@ -1,4 +1,5 @@
 using EImece.Domain;
+using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -130,6 +132,105 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Title = AdminResource.Refresh;
             ViewBag.ReturnUrl = redirectUrl;
             return View();
+        }
+
+        /// <summary>
+        /// Targeted storefront cache invalidation. Unlike <see cref="ClearCache"/> (full wipe +
+        /// background warm-up), this evicts only the cache family the admin chooses, plus the
+        /// rendered OutputCache HTML that embeds it, so anonymous visitors see fresh pages on
+        /// their next request without a full warm-up crawl. Data caches stay warm for untouched
+        /// families.
+        /// Authorized via BaseAdminController ([AuthorizeRoles(Administrator, Editor)]) and
+        /// POST + antiforgery so the operation cannot be triggered by link/GET requests.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InvalidateCache(string target)
+        {
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            var removed = 0;
+            bool fullWipe = false;
+
+            switch (target.Trim().ToLowerInvariant())
+            {
+                case "products":
+                    // Includes pricing: price/discount values live inside the product DTO caches,
+                    // and UpdatePrices already funnels through InvalidateProductListCaches.
+                    ProductService.InvalidateProductListCaches();
+                    break;
+
+                case "categories":
+                    ProductCategoryService.InvalidateCategoryCaches();
+                    break;
+
+                case "settings":
+                    SettingService.ClearCache();
+                    break;
+
+                case "content":
+                    // Stories, menus/pages, banners, FAQ, tags and brands: everything rendered
+                    // around the catalog but not part of product/category data.
+                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.StoryPrefix);
+                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.MenuPrefix);
+                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.BannerPrefix);
+                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.FaqPrefix);
+                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.TagPrefix);
+                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.BrandPrefix);
+                    break;
+
+                case "all":
+                    // Full storefront invalidation: same flow as the top-bar Refresh button —
+                    // every provider entry + OutputCache/MemoryCache.Default + background warm-up.
+                    SettingService.ClearCache();
+                    ProductService.InvalidateProductListCaches();
+                    removed = MemoryCacheProvider.ClearAll();
+                    fullWipe = true;
+                    break;
+
+                default:
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            // Targeted purges must also drop rendered HTML: product/category/story/menu pages are
+            // OutputCached for 20 minutes for anonymous users, so without HttpRuntime eviction a
+            // data-only purge would leave stale storefront pages visible until profile expiry.
+            if (!fullWipe)
+            {
+                int htmlRemoved;
+                int memoryDefaultRemoved;
+                ApplicationCacheClearer.ClearAspNetCaches(out htmlRemoved, out memoryDefaultRemoved);
+            }
+
+            Logger.Info(
+                "InvalidateCache target={0} removed={1} in {2} ms (fullWipe={3}) by {4}",
+                target,
+                removed,
+                sw.ElapsedMilliseconds,
+                fullWipe,
+                User?.Identity?.Name ?? "unknown");
+
+            if (fullWipe)
+            {
+                var baseUrl = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
+                App_Start.CacheWarmUpJob.Queue(baseUrl, CurrentLanguage);
+            }
+
+            string redirectUrl;
+            if (!SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
+            {
+                redirectUrl = Url.Action(IndexAction, "Dashboard", new { area = AdminAreaName });
+            }
+
+            SetSuccessMessage(string.Format(
+                "Önbellek temizlendi ({0}). Storefront bir sonraki istekte güncel veriyi yükleyecek.",
+                System.Web.HttpUtility.HtmlEncode(target)));
+
+            return Redirect(redirectUrl);
         }
 
         /// <summary>

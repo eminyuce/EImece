@@ -48,5 +48,11 @@ namespace EImece.Domain.Services.IServices
         Task<List<Tag>> GetTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<List<Tag>> GetProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Drops tag listings and the product/story caches that embed tag data. Used by
+        /// ProductService after product-tag relation edits.
+        /// </summary>
+        void InvalidateTagCaches();
     }
 }

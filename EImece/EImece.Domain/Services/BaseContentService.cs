@@ -110,7 +110,9 @@ namespace EImece.Domain.Services
 
         public virtual List<T> GetActiveBaseContentsFromCache(bool? isActive, int? language)
         {
-            String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseContentsFromCache-{0}-{1}", isActive, language);
+            // Hierarchical key under the service's CacheKeys family so ClearByPrefix
+            // invalidation (menu save, product save, ...) actually evicts it.
+            String cacheKey = ActiveListCachePrefix + "activecontents:" + isActive + ":lang" + language;
 
             // Single-flight population coalesces concurrent misses onto one DB call.
             var result = DataCachingProvider.GetOrAdd(
@@ -131,7 +133,7 @@ namespace EImece.Domain.Services
 
         public virtual async Task<List<T>> GetActiveBaseContentsFromCacheAsync(bool? isActive, int? language)
         {
-            String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseContentsFromCache-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+            String cacheKey = ActiveListCachePrefix + "activecontents:" + isActive + ":lang" + language + AsyncCacheKeySuffix;
 
             // CancellationToken.None: see AsyncCacheKeySuffix - the factory result is shared by
             // every concurrent miss, so it must not be tied to one request's lifetime.

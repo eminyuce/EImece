@@ -37,7 +37,9 @@ namespace EImece.Domain.Services
 
         public virtual List<T> GetActiveBaseEntitiesFromCache(bool? isActive, int? language)
         {
-            String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseEntitiesFromCache-{0}-{1}", isActive, language);
+            // Hierarchical key under the service's CacheKeys family so ClearByPrefix
+            // invalidation (product save, category save, ...) actually evicts it.
+            String cacheKey = ActiveListCachePrefix + "activeentities:" + isActive + ":lang" + language;
 
             // Single-flight population: concurrent misses share one repository call.
             return DataCachingProvider.GetOrAdd(
@@ -53,7 +55,7 @@ namespace EImece.Domain.Services
 
         public virtual async Task<List<T>> GetActiveBaseEntitiesFromCacheAsync(bool? isActive, int? language)
         {
-            String cacheKey = String.Format(this.GetType().FullName + "-GetActiveBaseEntitiesFromCache-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+            String cacheKey = ActiveListCachePrefix + "activeentities:" + isActive + ":lang" + language + AsyncCacheKeySuffix;
 
             // Single-flight population: concurrent misses share one repository call. The caller's
             // token is intentionally not forwarded here - one request cancelling would otherwise
@@ -140,6 +142,11 @@ namespace EImece.Domain.Services
             if (isEdit)
             {
                 baseEntityRepository.Save();
+                // Grid state/position/main-page/campaign toggles bypass SaveOrEditEntity, so the
+                // per-service invalidation that runs on a normal save never fired here. Storefront
+                // caches (product lists, category trees, menus, ...) stayed stale until their TTL
+                // expired. Each service now drops its own cache family via the override below.
+                InvalidateCachesAfterMutation();
             }
         }
 
@@ -171,7 +178,17 @@ namespace EImece.Domain.Services
             if (isEdit)
             {
                 await baseEntityRepository.SaveAsync().ConfigureAwait(false);
+                InvalidateCachesAfterMutation();
             }
+        }
+
+        /// <summary>
+        /// Cache invalidation executed after a successful grid mutation (state / position /
+        /// main-page / campaign toggles). Override in storefront services to drop the cache
+        /// families affected by this entity; the base implementation does nothing.
+        /// </summary>
+        protected virtual void InvalidateCachesAfterMutation()
+        {
         }
 
         private static void ApplyCheckboxOrPosition(BaseEntity baseContent, OrderingItem item, string checkbox)

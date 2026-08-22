@@ -24,6 +24,15 @@ namespace EImece.Domain.Services
             TagRepository = repository;
         }
 
+        /// <summary>
+        /// Tag active-entity lists use the tag: family so InvalidateTagCaches evicts them;
+        /// the former TypeFullName-based keys escaped every invalidation routine.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.TagPrefix; }
+        }
+
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
         public async Task<List<StorefrontTagDto>> GetStorefrontProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
@@ -102,11 +111,20 @@ namespace EImece.Domain.Services
             return TagRepository.GetStorefrontTagById(tagId);
         }
 
-        private void InvalidateTagCaches()
+        /// <summary>
+        /// Drops tag listings plus the product/story caches that embed tag data. Public so
+        /// ProductService can invalidate after product-tag relation edits.
+        /// </summary>
+        public void InvalidateTagCaches()
         {
             DataCachingProvider.ClearByPrefix(CacheKeys.TagPrefix);
             DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
             DataCachingProvider.ClearByPrefix(CacheKeys.StoryPrefix);
+        }
+
+        protected override void InvalidateCachesAfterMutation()
+        {
+            InvalidateTagCaches();
         }
 
         #endregion
@@ -208,7 +226,7 @@ namespace EImece.Domain.Services
 
         public List<Tag> GetProductTags(int language)
         {
-            String cacheKey = String.Format(this.GetType().FullName + "-GetProductTags-{0}", language);
+            String cacheKey = CacheKeys.TagPrefix + "admintags:lang" + language;
 
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
@@ -218,7 +236,7 @@ namespace EImece.Domain.Services
 
         public async Task<List<Tag>> GetProductTagsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            String cacheKey = String.Format(this.GetType().FullName + "-GetProductTags-{0}", language) + AsyncCacheKeySuffix;
+            String cacheKey = CacheKeys.TagPrefix + "admintags:lang" + language + AsyncCacheKeySuffix;
 
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
@@ -228,10 +246,7 @@ namespace EImece.Domain.Services
 
         public List<Tag> GetTagsWithEntityCounts(int language, int minEntityCount = 1)
         {
-            String cacheKey = String.Format(
-                this.GetType().FullName + "-GetTagsWithEntityCounts-{0}-{1}",
-                language,
-                minEntityCount);
+            String cacheKey = CacheKeys.TagPrefix + "entitycounts:lang" + language + ":min" + minEntityCount;
 
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
@@ -241,10 +256,7 @@ namespace EImece.Domain.Services
 
         public List<Tag> GetTagsWithStoryCounts(int language, int minStoryCount = 1)
         {
-            String cacheKey = String.Format(
-                this.GetType().FullName + "-GetTagsWithStoryCounts-v2-{0}-{1}",
-                language,
-                minStoryCount);
+            String cacheKey = CacheKeys.TagPrefix + "storycounts:lang" + language + ":min" + minStoryCount;
 
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
@@ -254,10 +266,7 @@ namespace EImece.Domain.Services
 
         public async Task<List<Tag>> GetTagsWithStoryCountsAsync(int language, int minStoryCount = 1, CancellationToken cancellationToken = default(CancellationToken))
         {
-            String cacheKey = String.Format(
-                this.GetType().FullName + "-GetTagsWithStoryCounts-v2-{0}-{1}",
-                language,
-                minStoryCount) + AsyncCacheKeySuffix;
+            String cacheKey = CacheKeys.TagPrefix + "storycounts:lang" + language + ":min" + minStoryCount + AsyncCacheKeySuffix;
 
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,

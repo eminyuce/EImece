@@ -41,6 +41,21 @@ namespace EImece.Domain.Services
             ProductCategoryRepository = repository;
         }
 
+        /// <summary>
+        /// Category active-entity/content lists live under the category: family so
+        /// InvalidateCategoryCaches evicts them.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.CategoryPrefix; }
+        }
+
+        protected override void InvalidateCachesAfterMutation()
+        {
+            // Grid state/position/main-page toggles change the navigation tree and listings.
+            InvalidateCategoryCaches();
+        }
+
         public ProductCategoryService(IProductCategoryRepository repository, bool IsCachingActivated) : base(repository)
         {
             this.IsCachingActivated = IsCachingActivated;
@@ -69,7 +84,7 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cacheKey = $"StorefrontMainPageCategories-{language}" + AsyncCacheKeySuffix;
+            var cacheKey = CacheKeys.CategoryMainPageAsync(language);
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => ProductCategoryRepository.GetStorefrontMainPageCategoriesAsync(language, cancellationToken),
@@ -78,7 +93,7 @@ namespace EImece.Domain.Services
 
         public List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
         {
-            var cacheKey = $"StorefrontMainPageCategories-{language}";
+            var cacheKey = CacheKeys.CategoryMainPage(language);
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => ProductCategoryRepository.GetStorefrontMainPageCategories(language),
@@ -103,7 +118,7 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cacheKey = $"StorefrontNavigationTree-{language}" + AsyncCacheKeySuffix;
+            var cacheKey = CacheKeys.CategoryPrefix + "navtree:lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => ProductCategoryRepository.BuildStorefrontNavigationTreeAsync(language, cancellationToken),
@@ -112,7 +127,7 @@ namespace EImece.Domain.Services
 
         public List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
         {
-            var cacheKey = $"StorefrontNavigationTree-{language}";
+            var cacheKey = CacheKeys.CategoryPrefix + "navtree:lang" + language;
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => ProductCategoryRepository.BuildStorefrontNavigationTree(language),
@@ -226,7 +241,7 @@ namespace EImece.Domain.Services
             List<ProductCategoryTreeModel> result;
             if (IsCachingActivated)
             {
-                var cacheKey = String.Format("BuildNavigation-{0}-{1}", isActive, language);
+                var cacheKey = CacheKeys.CategoryPrefix + "adminnav:" + isActive + ":lang" + language;
                 result = DataCachingProvider.GetOrAdd(
                     cacheKey,
                     () => ProductCategoryRepository.BuildNavigation(isActive, language),
@@ -245,7 +260,7 @@ namespace EImece.Domain.Services
             List<ProductCategoryTreeModel> result;
             if (IsCachingActivated)
             {
-                var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language);
+                var cacheKey = CacheKeys.CategoryPrefix + "admintree:" + isActive + ":lang" + language;
                 result = DataCachingProvider.GetOrAdd(
                     cacheKey,
                     () => ProductCategoryRepository.BuildTree(isActive, language),
@@ -263,7 +278,7 @@ namespace EImece.Domain.Services
         {
             if (IsCachingActivated)
             {
-                var cacheKey = String.Format("ProductCategoryTree-{0}-{1}", isActive, language) + AsyncCacheKeySuffix;
+                var cacheKey = CacheKeys.CategoryPrefix + "admintree:" + isActive + ":lang" + language + AsyncCacheKeySuffix;
                 return await DataCachingProvider.GetOrAddAsync(
                     cacheKey,
                     () => ProductCategoryRepository.BuildTreeAsync(isActive, language),
@@ -339,11 +354,14 @@ namespace EImece.Domain.Services
 
         public void InvalidateCategoryCaches()
         {
+            // Legacy TypeFullName-based keys written by deployments before the canonical
+            // CacheKeys migration — kept so an in-flight cache is still dropped after upgrade.
             DataCachingProvider.ClearByPrefix("StorefrontMainPageCategories-");
             DataCachingProvider.ClearByPrefix("StorefrontNavigationTree-");
             DataCachingProvider.ClearByPrefix("ProductCategoryTree-");
             DataCachingProvider.ClearByPrefix("GetMainPageProductCategories-");
             DataCachingProvider.ClearByPrefix("Navigation-");
+            // Canonical category: family (detail/children/tree/mainpage/active lists).
             DataCachingProvider.ClearByPrefix(CacheKeys.CategoryPrefix);
             ProductService?.InvalidateProductListCaches();
         }
@@ -410,7 +428,7 @@ namespace EImece.Domain.Services
 
         public List<ProductCategory> GetMainPageProductCategories(int language)
         {
-            var cacheKey = $"GetMainPageProductCategories-{language}";
+            var cacheKey = CacheKeys.CategoryPrefix + "mainpageentities:lang" + language;
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => ProductCategoryRepository.GetMainPageProductCategories(language),
@@ -419,7 +437,7 @@ namespace EImece.Domain.Services
 
         public async Task<List<ProductCategory>> GetMainPageProductCategoriesAsync(int language)
         {
-            var cacheKey = $"GetMainPageProductCategories-{language}" + AsyncCacheKeySuffix;
+            var cacheKey = CacheKeys.CategoryPrefix + "mainpageentities:lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => ProductCategoryRepository.GetMainPageProductCategoriesAsync(language),

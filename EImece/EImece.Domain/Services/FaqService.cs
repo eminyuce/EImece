@@ -65,6 +65,19 @@ namespace EImece.Domain.Services
             DataCachingProvider.ClearByPrefix(CacheKeys.FaqPrefix);
         }
 
+        /// <summary>
+        /// FAQ active-entity lists live under the faq: family so the invalidator above evicts them.
+        /// </summary>
+        protected override string ActiveListCachePrefix
+        {
+            get { return CacheKeys.FaqPrefix; }
+        }
+
+        protected override void InvalidateCachesAfterMutation()
+        {
+            InvalidateFaqCaches();
+        }
+
         #endregion
 
         #region Mutation & Invalidation

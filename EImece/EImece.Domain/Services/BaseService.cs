@@ -34,6 +34,19 @@ namespace EImece.Domain.Services
 
         public bool IsCachingActivated { get; set; } = true;
 
+        /// <summary>
+        /// Canonical cache-key family used by the base classes' cached active entity/content
+        /// lists (<c>GetActiveBaseEntitiesFromCache</c>, <c>GetActiveBaseContentsFromCache</c>).
+        /// The former keys embedded <c>this.GetType().FullName</c>, which no ClearByPrefix
+        /// invalidation routine ever matched, so those entries stayed stale until TTL expiry.
+        /// Storefront services override this to their hierarchical CacheKeys family
+        /// (product:, category:, menu:, ...) so existing invalidators evict them.
+        /// </summary>
+        protected virtual string ActiveListCachePrefix
+        {
+            get { return "activelist:" + GetType().Name + ":"; }
+        }
+
         [Inject]
         public IEimeceCacheProvider DataCachingProvider
         {

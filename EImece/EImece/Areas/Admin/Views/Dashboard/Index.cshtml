@@ -151,6 +151,75 @@
         </section>
     }
 
+    <section class="admin-home__section" aria-labelledby="admin-home-cache">
+        <h2 id="admin-home-cache" class="admin-home__section-title">Önbellek yönetimi</h2>
+        <p class="admin-home__lead" style="margin-bottom:0.75rem;">
+            Storefront önbelleğini hedefli olarak temizleyin. Mağaza tarafı bir sonraki istekte güncel veriyi veritabanından yeniden yükler.
+        </p>
+        <div class="admin-home__grid">
+            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="target" value="products" />
+                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
+                    <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-refresh"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">Ürün ve fiyat önbelleği</span>
+                        <span class="admin-home__tile-desc">Ürün listeleri, detaylar, arama ve fiyatlar</span>
+                    </span>
+                </button>
+            }
+            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="target" value="categories" />
+                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sitemap"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">Kategori önbelleği</span>
+                        <span class="admin-home__tile-desc">Kategori ağacı ve kategori sayfaları</span>
+                    </span>
+                </button>
+            }
+            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="target" value="settings" />
+                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">Ayar önbelleği</span>
+                        <span class="admin-home__tile-desc">Mağaza ayarları ve site yapılandırması</span>
+                    </span>
+                </button>
+            }
+            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="target" value="content" />
+                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-file-text-o"></i></span>
+                    <span class="admin-home__tile-body">
+                        <span class="admin-home__tile-title">İçerik önbelleği</span>
+                        <span class="admin-home__tile-desc">Menüler, hikayeler, bannerlar, SSS, etiketler</span>
+                    </span>
+                </button>
+            }
+        </div>
+        @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post, new { style = "margin-top:1rem;" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="target" value="all" />
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-bomb" aria-hidden="true"></i>
+                Tüm storefront önbelleğini temizle
+            </button>
+            <span style="color:#829ab1;font-size:0.85rem;margin-left:0.5rem;">
+                Tam temizleme + arka planda sayfa yeniden ısınma (warm-up).
+            </span>
+        }
+    </section>
+
     <section class="admin-home__section" aria-labelledby="admin-home-system">
         <h2 id="admin-home-system" class="admin-home__section-title">Sistem</h2>
         <div class="admin-home__grid">
