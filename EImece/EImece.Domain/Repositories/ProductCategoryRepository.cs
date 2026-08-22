@@ -63,42 +63,12 @@ namespace EImece.Domain.Repositories
 
         private static List<ProductCategoryTreeModel> AssembleTreeModels(List<StorefrontCategoryDto> categories)
         {
-            var list = categories.Select(r => new ProductCategoryTreeModel()
-            {
-                ProductCategory = r,
-                // raw per-category count, captured before the tree walk accumulates children
-                ProductCountAdmin = r.ProductCount
-            }).ToList();
-            List<ProductCategoryTreeModel> returnList = new List<ProductCategoryTreeModel>();
-
-            int level = 1;
-            //find top levels items
-            var topLevels = list.Where(a => a.ProductCategory.ParentId == 0).OrderBy(r => r.ProductCategory.Position).ToList();
-            topLevels.ForEach(r => r.TreeLevel = level);
-            returnList.AddRange(topLevels);
-            foreach (var i in topLevels)
-            {
-                GetProjectedTreeview(list, i, level);
-            }
-            return returnList;
+            return ProductCategoryTreeAssembler.Assemble(categories);
         }
 
         private static void GetProjectedTreeview(List<ProductCategoryTreeModel> list, ProductCategoryTreeModel current, int level)
         {
-            //Recursion method for recursively get all child nodes
-            var childs = list.Where(a => a.ProductCategory.ParentId == current.ProductCategory.Id).OrderBy(r => r.ProductCategory.Position).ToList();
-            current.Childrens = new List<ProductCategoryTreeModel>();
-            level = level + 1;
-            childs.ForEach(r => r.TreeLevel = level);
-
-            current.Childrens.AddRange(childs);
-            foreach (var i in childs)
-            {
-                i.ProductCategory.Parent = current.ProductCategory;
-                i.Parent = current;
-                GetProjectedTreeview(list, i, level);
-                current.ProductCount += i.ProductCount;
-            }
+            ProductCategoryTreeAssembler.AttachChildren(list, current, level);
         }
 
         public List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1)
