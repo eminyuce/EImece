@@ -1,4 +1,5 @@
 using EImece.Domain.Entities;
+using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
@@ -49,12 +50,21 @@ namespace EImece.Domain.Services
 
         public async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId, cancellationToken).ConfigureAwait(false);
+            // Category pages request the category plus its parent chain on every view; cache each
+            // node briefly (medium TTL bounds product-count staleness). Invalidated by prefix in
+            // InvalidateCategoryCaches().
+            return await DataCachingProvider.GetOrAddAsync(
+                CacheKeys.CategoryDetailAsync(categoryId),
+                () => ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId, CancellationToken.None),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
         {
-            return ProductCategoryRepository.GetStorefrontCategoryById(categoryId);
+            return DataCachingProvider.GetOrAdd(
+                CacheKeys.CategoryDetail(categoryId),
+                () => ProductCategoryRepository.GetStorefrontCategoryById(categoryId),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
@@ -77,12 +87,18 @@ namespace EImece.Domain.Services
 
         public async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentCategoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductCategoryRepository.GetStorefrontChildrenCategoriesAsync(parentCategoryId, cancellationToken).ConfigureAwait(false);
+            return await DataCachingProvider.GetOrAddAsync(
+                CacheKeys.CategoryPrefix + "children:id" + parentCategoryId + AsyncCacheKeySuffix,
+                () => ProductCategoryRepository.GetStorefrontChildrenCategoriesAsync(parentCategoryId, CancellationToken.None),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         public List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentCategoryId)
         {
-            return ProductCategoryRepository.GetStorefrontChildrenCategories(parentCategoryId);
+            return DataCachingProvider.GetOrAdd(
+                CacheKeys.CategoryPrefix + "children:id" + parentCategoryId,
+                () => ProductCategoryRepository.GetStorefrontChildrenCategories(parentCategoryId),
+                AppConfig.CacheMediumSeconds);
         }
 
         public async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
@@ -328,6 +344,7 @@ namespace EImece.Domain.Services
             DataCachingProvider.ClearByPrefix("ProductCategoryTree-");
             DataCachingProvider.ClearByPrefix("GetMainPageProductCategories-");
             DataCachingProvider.ClearByPrefix("Navigation-");
+            DataCachingProvider.ClearByPrefix(CacheKeys.CategoryPrefix);
             ProductService?.InvalidateProductListCaches();
         }
 

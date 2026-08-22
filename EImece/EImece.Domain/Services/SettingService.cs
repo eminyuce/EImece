@@ -46,8 +46,9 @@ namespace EImece.Domain.Services
                 DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + AsyncCacheKeySuffix);
                 DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + "_DICT");
                 DataCachingProvider.Clear(ALL_SETTING_CACHE_KEY + "_DICT" + AsyncCacheKeySuffix);
-                DataCachingProvider.Clear(CacheKeys.WebAppManifest);
                 DataCachingProvider.ClearByPrefix("SettingValueDto:");
+                DataCachingProvider.ClearByPrefix(SettingKeyValuesCachePrefix);
+                DataCachingProvider.Clear(CacheKeys.WebAppManifest);
             }
         }
 
@@ -256,31 +257,33 @@ namespace EImece.Domain.Services
             };
         }
 
-        // Minimal projection delegates — single column, bypasses full-entity cache
+        // Single-column reads resolve from the cached ALL-settings collection/dictionary
+        // instead of issuing one TOP(1) query per key. Dedup semantics (latest UpdatedDate,
+        // then Id) and the appSettings fallback are identical to the former direct queries.
         public string GetSettingValue(string key)
         {
-            var val = SettingRepository.GetSettingValue(key);
+            var val = GetSettingObjectByKey(key)?.SettingValue;
             if (!string.IsNullOrWhiteSpace(val)) return val;
             return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
 
         public string GetSettingValue(string key, int language)
         {
-            var val = SettingRepository.GetSettingValue(key, language);
+            var val = GetSettingObjectByKey(key, language)?.SettingValue;
             if (!string.IsNullOrWhiteSpace(val)) return val;
             return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
 
         public async Task<string> GetSettingValueAsync(string key, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var val = await SettingRepository.GetSettingValueAsync(key, cancellationToken).ConfigureAwait(false);
+            var val = (await GetSettingObjectByKeyAsync(key).ConfigureAwait(false))?.SettingValue;
             if (!string.IsNullOrWhiteSpace(val)) return val;
             return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
 
         public async Task<string> GetSettingValueAsync(string key, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var val = await SettingRepository.GetSettingValueAsync(key, language, cancellationToken).ConfigureAwait(false);
+            var val = (await GetSettingObjectByKeyAsync(key, language).ConfigureAwait(false))?.SettingValue;
             if (!string.IsNullOrWhiteSpace(val)) return val;
             return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
         }
@@ -317,14 +320,30 @@ namespace EImece.Domain.Services
             return await SettingRepository.GetSettingValuesAsync(keys, cancellationToken).ConfigureAwait(false);
         }
 
+        private const string SettingKeyValuesCachePrefix = "setting:keyvalues:lang";
+
         public List<Models.DTOs.Storefront.SettingKeyValueDto> GetSettingKeyValues(int language)
         {
-            return SettingRepository.GetSettingKeyValues(language);
+            if (DataCachingProvider == null)
+            {
+                return SettingRepository.GetSettingKeyValues(language);
+            }
+            return DataCachingProvider.GetOrAdd(
+                SettingKeyValuesCachePrefix + language,
+                () => SettingRepository.GetSettingKeyValues(language),
+                AppConfig.CacheLongSeconds);
         }
 
         public async Task<List<Models.DTOs.Storefront.SettingKeyValueDto>> GetSettingKeyValuesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await SettingRepository.GetSettingKeyValuesAsync(language, cancellationToken).ConfigureAwait(false);
+            if (DataCachingProvider == null)
+            {
+                return await SettingRepository.GetSettingKeyValuesAsync(language, cancellationToken).ConfigureAwait(false);
+            }
+            return await DataCachingProvider.GetOrAddAsync(
+                SettingKeyValuesCachePrefix + language + AsyncCacheKeySuffix,
+                () => SettingRepository.GetSettingKeyValuesAsync(language, CancellationToken.None),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
         private Setting SelectSettingByKey(List<Setting> allSettings, string key)
@@ -673,6 +692,8 @@ namespace EImece.Domain.Services
                     SaveOrEditEntity(setting);
                 }
             }
+
+            ClearCache();
         }
 
         public async Task SaveSettingModelAsync(SettingModel settingModel, int lang)
@@ -713,6 +734,8 @@ namespace EImece.Domain.Services
                     await SaveOrEditEntityAsync(setting).ConfigureAwait(false);
                 }
             }
+
+            ClearCache();
         }
 
         public Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text, string imagefullPath)
