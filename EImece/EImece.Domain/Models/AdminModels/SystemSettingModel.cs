@@ -211,6 +211,16 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RecaptchaSiteKey))]
         public string RecaptchaSiteKey { get; set; }
 
+        // ========== 6b. Security / Two-Factor Authentication ==========
+        /// <summary>
+        /// Master switch for Authenticator (TOTP) two-factor authentication across the app.
+        /// Stored as the "RequireAdminAuthenticator" Setting row, so AppConfig.RequireAdminAuthenticator
+        /// resolves it through the SettingResolver before falling back to Web.config.
+        /// When false: admins are not forced to enrol and enrolled admins are not challenged at login.
+        /// </summary>
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RequireAdminAuthenticator))]
+        public bool RequireAdminAuthenticator { get; set; }
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RateLimit_Enabled))]
         public bool RateLimit_Enabled { get; set; }
 

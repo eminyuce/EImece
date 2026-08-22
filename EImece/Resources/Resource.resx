@@ -2203,6 +2203,9 @@
   <data name="RecaptchaSiteKey" xml:space="preserve">
     <value>Google reCAPTCHA Site Key (Public)</value>
   </data>
+  <data name="RequireAdminAuthenticator" xml:space="preserve">
+    <value>Authenticator 2FA Zorunlu</value>
+  </data>
   <data name="RateLimit_Enabled" xml:space="preserve">
     <value>Rate Limiting Aktif</value>
   </data>

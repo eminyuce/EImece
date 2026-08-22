@@ -164,7 +164,11 @@ namespace EImece.Controllers
             await UserManager.ResetAccessFailedCountAsync(user.Id);
 
             // Custom TOTP authenticator (Otp.NET) — do not sign in until code is verified.
-            if (user.TwoFactorAuthenticatorEnabled && !string.IsNullOrEmpty(user.AuthenticatorKey))
+            // The Admin → System Settings master switch (RequireAdminAuthenticator Setting row)
+            // can disable 2FA for the entire app: enrolled admins then sign in with password only.
+            if (Domain.AppConfig.RequireAdminAuthenticator
+                && user.TwoFactorAuthenticatorEnabled
+                && !string.IsNullOrEmpty(user.AuthenticatorKey))
             {
                 string token = await TwoFactorTokenService.CreateTokenAsync(user.Id);
                 Logger.Debug("Authenticator 2FA required. Redirecting to VerifyAuthenticator.");

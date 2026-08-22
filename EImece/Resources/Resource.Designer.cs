@@ -6105,6 +6105,15 @@ namespace Resources {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticator 2FA Zorunlu.
+        /// </summary>
+        public static string RequireAdminAuthenticator {
+            get {
+                return ResourceManager.GetString("RequireAdminAuthenticator", resourceCulture);
+            }
+        }
+        
         public static string RateLimit_Enabled {
             get {
                 return ResourceManager.GetString("RateLimit_Enabled", resourceCulture);

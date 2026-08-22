@@ -87,6 +87,10 @@ namespace EImece.Domain.Services
         /// </summary>
         public async Task<StorefrontProductDetailDto> GetStorefrontProductDetailAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (DataCachingProvider == null)
+            {
+                return await ProductRepository.GetStorefrontProductDetailByIdAsync(id, cancellationToken).ConfigureAwait(false);
+            }
             return await DataCachingProvider.GetOrAddAsync(
                 CacheKeys.ProductDetailAsync(id),
                 () => ProductRepository.GetStorefrontProductDetailByIdAsync(id, CancellationToken.None),
@@ -95,6 +99,12 @@ namespace EImece.Domain.Services
 
         public StorefrontProductDetailDto GetStorefrontProductDetail(int id)
         {
+            // Null provider (manual construction / unit tests) bypasses the cache, matching
+            // the SettingService convention.
+            if (DataCachingProvider == null)
+            {
+                return ProductRepository.GetStorefrontProductDetailById(id);
+            }
             return DataCachingProvider.GetOrAdd(
                 CacheKeys.ProductDetail(id),
                 () => ProductRepository.GetStorefrontProductDetailById(id),

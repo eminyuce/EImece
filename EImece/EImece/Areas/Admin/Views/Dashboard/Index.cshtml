@@ -151,6 +151,46 @@
         </section>
     }
 
+    <section class="admin-home__section" aria-labelledby="admin-home-system">
+        <h2 id="admin-home-system" class="admin-home__section-title">Sistem</h2>
+        <div class="admin-home__grid">
+            <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">Yönetici ayarları</span>
+                    <span class="admin-home__tile-desc">Şirket ve genel site bilgileri</span>
+                </span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-cogs"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.SystemSettings</span>
+                    <span class="admin-home__tile-desc">@(productPriceEnabled ? "Fiyat, SEO ve teknik ayarlar" : "Listeleme modu, SEO ve teknik ayarlar")</span>
+                </span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("Index", "MailTemplates", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-envelope-o"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.MailTemplates</span>
+                    <span class="admin-home__tile-desc">E-posta şablonlarını düzenleyin</span>
+                </span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+            </a>
+            <a class="admin-home__tile" href="@Url.Action("Index", "Users", new { area = "admin" })">
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-user"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.Users</span>
+                    <span class="admin-home__tile-desc">Yönetici ve panel kullanıcıları</span>
+                </span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+            </a>
+        </div>
+    </section>
+
+    <hr style="border:0;border-top:1px solid #d9e2ec;margin:2rem 0;" />
+
     <section class="admin-home__section" aria-labelledby="admin-home-cache">
         <h2 id="admin-home-cache" class="admin-home__section-title">Önbellek yönetimi</h2>
         <p class="admin-home__lead" style="margin-bottom:0.75rem;">
@@ -218,43 +258,5 @@
                 Tam temizleme + arka planda sayfa yeniden ısınma (warm-up).
             </span>
         }
-    </section>
-
-    <section class="admin-home__section" aria-labelledby="admin-home-system">
-        <h2 id="admin-home-system" class="admin-home__section-title">Sistem</h2>
-        <div class="admin-home__grid">
-            <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
-                <span class="admin-home__tile-body">
-                    <span class="admin-home__tile-title">Yönetici ayarları</span>
-                    <span class="admin-home__tile-desc">Şirket ve genel site bilgileri</span>
-                </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
-            </a>
-            <a class="admin-home__tile" href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-cogs"></i></span>
-                <span class="admin-home__tile-body">
-                    <span class="admin-home__tile-title">@AdminResource.SystemSettings</span>
-                    <span class="admin-home__tile-desc">@(productPriceEnabled ? "Fiyat, SEO ve teknik ayarlar" : "Listeleme modu, SEO ve teknik ayarlar")</span>
-                </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
-            </a>
-            <a class="admin-home__tile" href="@Url.Action("Index", "MailTemplates", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-envelope-o"></i></span>
-                <span class="admin-home__tile-body">
-                    <span class="admin-home__tile-title">@AdminResource.MailTemplates</span>
-                    <span class="admin-home__tile-desc">E-posta şablonlarını düzenleyin</span>
-                </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
-            </a>
-            <a class="admin-home__tile" href="@Url.Action("Index", "Users", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-user"></i></span>
-                <span class="admin-home__tile-body">
-                    <span class="admin-home__tile-title">@AdminResource.Users</span>
-                    <span class="admin-home__tile-desc">Yönetici ve panel kullanıcıları</span>
-                </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
-            </a>
-        </div>
     </section>
 </div>
