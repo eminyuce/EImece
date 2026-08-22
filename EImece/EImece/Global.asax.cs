@@ -3,6 +3,7 @@ using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using Microsoft.AspNet.Identity;
 using NLog;
 using System;
@@ -140,12 +141,116 @@ namespace EImece
 
         /// <summary>
         /// Occurs as the first event in the HTTP pipeline chain of execution when ASP.NET responds to a request.
-        /// Invokes canonical URL enforcement.
+        /// Invokes canonical URL enforcement and maintenance mode redirection.
         /// </summary>
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             DependencyInjectionConfig.BeginRequestScope();
             Redirect301();
+            EnforceUnderConstructionRedirect();
+        }
+
+        private void EnforceUnderConstructionRedirect()
+        {
+            try
+            {
+                if (Context == null || Context.Request == null)
+                {
+                    return;
+                }
+
+                var path = (Context.Request.AppRelativeCurrentExecutionFilePath ?? Context.Request.Path ?? "")
+                    .TrimStart('~')
+                    .ToLowerInvariant();
+
+                // Skip static assets, bundles, media, and images
+                if (path.StartsWith("/content/") ||
+                    path.StartsWith("/scripts/") ||
+                    path.StartsWith("/bundles/") ||
+                    path.StartsWith("/media/") ||
+                    path.StartsWith("/images/") ||
+                    path.StartsWith("/fonts/") ||
+                    path.StartsWith("/favicon") ||
+                    path.EndsWith(".css") ||
+                    path.EndsWith(".js") ||
+                    path.EndsWith(".png") ||
+                    path.EndsWith(".jpg") ||
+                    path.EndsWith(".jpeg") ||
+                    path.EndsWith(".gif") ||
+                    path.EndsWith(".svg") ||
+                    path.EndsWith(".ico") ||
+                    path.EndsWith(".woff") ||
+                    path.EndsWith(".woff2") ||
+                    path.EndsWith(".ttf") ||
+                    path.EndsWith(".eot") ||
+                    path.EndsWith(".map") ||
+                    path.EndsWith(".webp"))
+                {
+                    return;
+                }
+
+                // Allow UnderConstruction, Error, Health endpoints, and Admin paths
+                if (path.StartsWith("/underconstruction") ||
+                    path.StartsWith("/error") ||
+                    path.StartsWith("/health") ||
+                    path.StartsWith("/admin") ||
+                    path.StartsWith("/account/adminlogin") ||
+                    path.StartsWith("/account/logoff"))
+                {
+                    return;
+                }
+
+                ISettingService settingService = null;
+                try
+                {
+                    settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                }
+                catch
+                {
+                    settingService = null;
+                }
+
+                if (settingService == null)
+                {
+                    return;
+                }
+
+                var isUnderConstruction = settingService.GetSettingByKey(Domain.Constants.IsSiteUnderConstruction).ToBool(false);
+                if (!isUnderConstruction)
+                {
+                    return;
+                }
+
+                // Check IP whitelist if offline file exists
+                var ipAddress = Context.Request.UserHostAddress;
+                var offlineHelper = new Domain.Helpers.OfflineHelper(ipAddress, Server.MapPath);
+                if (Domain.Helpers.OfflineHelper.OfflineData != null && !offlineHelper.ThisUserShouldBeOffline)
+                {
+                    return;
+                }
+
+                // Check if user is authenticated admin/editor
+                var user = Context.User;
+                if (user != null && user.Identity != null && user.Identity.IsAuthenticated &&
+                    (user.IsInRole(Domain.Constants.AdministratorRole) || user.IsInRole(Domain.Constants.EditorRole)))
+                {
+                    return;
+                }
+
+                Response.Clear();
+                Response.StatusCode = 302;
+                Response.Status = "302 Found";
+                Response.RedirectLocation = "/underconstruction";
+                Response.End();
+            }
+            catch (ThreadAbortException)
+            {
+                // Normal ASP.NET behavior on Response.End()
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in EnforceUnderConstructionRedirect");
+            }
         }
 
         /// <summary>
