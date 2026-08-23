@@ -24,6 +24,11 @@ bld/
 
 # Visual Studio 2015 cache/options directory
 .vs/
+node_modules/
+playwright-report/
+test-results/
+admin-ui-shots/
+eimece-*.json
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 

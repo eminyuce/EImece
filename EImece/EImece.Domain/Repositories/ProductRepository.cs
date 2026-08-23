@@ -931,7 +931,9 @@ namespace EImece.Domain.Repositories
                             TagCategoryName = pt.Tag.TagCategory != null ? pt.Tag.TagCategory.Name : string.Empty,
                             Position = pt.Tag.Position,
                             Lang = pt.Tag.Lang,
-                            IsActive = pt.Tag.IsActive
+                            IsActive = pt.Tag.IsActive,
+                            CreatedDate = pt.Tag.CreatedDate,
+                            UpdatedDate = pt.Tag.UpdatedDate
                         }).ToList(),
                     ProductSpecifications = p.ProductSpecifications
                         .OrderBy(ps => ps.Position)
@@ -941,7 +943,13 @@ namespace EImece.Domain.Repositories
                             ProductId = ps.ProductId,
                             Name = ps.Name,
                             Value = ps.Value,
-                            Order = ps.Position
+                            Unit = ps.Unit,
+                            Order = ps.Position,
+                            Position = ps.Position,
+                            IsActive = ps.IsActive,
+                            Lang = ps.Lang,
+                            CreatedDate = ps.CreatedDate,
+                            UpdatedDate = ps.UpdatedDate
                         }).ToList(),
                     ProductComments = p.ProductComments
                         .Where(pc => pc.IsActive)
@@ -950,10 +958,16 @@ namespace EImece.Domain.Repositories
                         {
                             Id = pc.Id,
                             ProductId = pc.ProductId,
+                            UserId = pc.UserId,
                             Name = pc.Name,
                             Comment = pc.Review,
+                            Email = pc.Email,
+                            Subject = pc.Subject,
                             Rating = pc.Rating,
+                            Position = pc.Position,
+                            Lang = pc.Lang,
                             CreatedDate = pc.CreatedDate,
+                            UpdatedDate = pc.UpdatedDate,
                             IsActive = pc.IsActive
                         }).ToList()
                 })
@@ -1025,7 +1039,9 @@ namespace EImece.Domain.Repositories
                             TagCategoryName = pt.Tag.TagCategory != null ? pt.Tag.TagCategory.Name : string.Empty,
                             Position = pt.Tag.Position,
                             Lang = pt.Tag.Lang,
-                            IsActive = pt.Tag.IsActive
+                            IsActive = pt.Tag.IsActive,
+                            CreatedDate = pt.Tag.CreatedDate,
+                            UpdatedDate = pt.Tag.UpdatedDate
                         }).ToList(),
                     ProductSpecifications = p.ProductSpecifications
                         .OrderBy(ps => ps.Position)
@@ -1035,7 +1051,13 @@ namespace EImece.Domain.Repositories
                             ProductId = ps.ProductId,
                             Name = ps.Name,
                             Value = ps.Value,
-                            Order = ps.Position
+                            Unit = ps.Unit,
+                            Order = ps.Position,
+                            Position = ps.Position,
+                            IsActive = ps.IsActive,
+                            Lang = ps.Lang,
+                            CreatedDate = ps.CreatedDate,
+                            UpdatedDate = ps.UpdatedDate
                         }).ToList(),
                     ProductComments = p.ProductComments
                         .Where(pc => pc.IsActive)
@@ -1044,10 +1066,16 @@ namespace EImece.Domain.Repositories
                         {
                             Id = pc.Id,
                             ProductId = pc.ProductId,
+                            UserId = pc.UserId,
                             Name = pc.Name,
                             Comment = pc.Review,
+                            Email = pc.Email,
+                            Subject = pc.Subject,
                             Rating = pc.Rating,
+                            Position = pc.Position,
+                            Lang = pc.Lang,
                             CreatedDate = pc.CreatedDate,
+                            UpdatedDate = pc.UpdatedDate,
                             IsActive = pc.IsActive
                         }).ToList()
                 })

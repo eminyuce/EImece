@@ -139,16 +139,9 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                if (ProductCategory == null)
-                {
-                    return false;
-                }
-                var hasCategoryDiscount = ProductCategory.DiscountPercantage.HasValue && ProductCategory.DiscountPercantage.Value > 0;
-                if (hasCategoryDiscount || Discount > 0)
-                {
-                    return true;
-                }
-                return false;
+                var hasDirectDiscount = Discount.HasValue && Discount.Value > 0;
+                var hasCategoryDiscount = ProductCategory != null && ProductCategory.DiscountPercantage.HasValue && ProductCategory.DiscountPercantage.Value > 0;
+                return hasDirectDiscount || hasCategoryDiscount;
             }
         }
 
@@ -170,16 +163,15 @@ namespace EImece.Domain.Entities
 
         // Needed for Admin panel — admin price grid displays discount percentage alongside the price.
         [NotMapped]
-        public int DiscountPercentage
+        public double DiscountPercentage
         {
             get
             {
-                if (Price > 0)
-                {
-                    var discountedDiff = Price - PriceWithDiscount;
-                    var result = Math.Round(discountedDiff * 100 / Price, 2);
-                    return (int)result;
-                }
+                if (!HasDiscount) return 0;
+                if (Discount.HasValue && Discount.Value > 0 && Price > 0)
+                    return (double)((Discount.Value / Price) * 100);
+                if (ProductCategory != null && ProductCategory.DiscountPercantage.HasValue)
+                    return ProductCategory.DiscountPercantage.Value;
                 return 0;
             }
         }
@@ -201,7 +193,7 @@ namespace EImece.Domain.Entities
                 if (HasDiscount)
                 {
                     ProductCategory productCategory = ProductCategory;
-                    var categoryDiscount = productCategory.DiscountPercantage.HasValue ? (decimal)ProductCategory.DiscountPercantage.Value / 100 : 0;
+                    var categoryDiscount = productCategory != null && productCategory.DiscountPercantage.HasValue ? (decimal)productCategory.DiscountPercantage.Value / 100 : 0;
                     return Price - (Discount.HasValue ? Discount.Value : 0) - (Price * (categoryDiscount));
                 }
                 else
