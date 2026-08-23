@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -116,31 +116,7 @@ namespace EImece.Domain.Helpers
 
         private static List<EImeceLanguage> ConfigureLanguagesFromAppConfigs()
         {
-            var languagesText = AppConfig.ApplicationLanguages;
-            var values = Enum.GetValues(typeof(EImeceLanguage)).Cast<EImeceLanguage>().ToList();
-            if (String.IsNullOrEmpty(languagesText))
-            {
-                values.RemoveAll(r => r != EImeceLanguage.English);
-            }
-            else
-            {
-                List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
-                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
-                foreach (var lang in languages)
-                {
-                    try
-                    {
-                        var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-                        selectedLanguages.Add((EImeceLanguage)eImageLang);
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-                values = selectedLanguages;
-            }
-
-            return values;
+            return GetLanguageEnumListFromWebConfig();
         }
 
         public static string GetDisplayValue(this Enum value)
@@ -208,29 +184,47 @@ namespace EImece.Domain.Helpers
                    };
         }
 
+        private static EImeceLanguage? ParseLanguage(string lang)
+        {
+            if (string.IsNullOrWhiteSpace(lang)) return null;
+            if (int.TryParse(lang, out int langInt) && Enum.IsDefined(typeof(EImeceLanguage), langInt))
+            {
+                return (EImeceLanguage)langInt;
+            }
+            if (Enum.TryParse<EImeceLanguage>(lang, true, out var parsedEnum))
+            {
+                return parsedEnum;
+            }
+            var descVal = GetEnumFromDescription(lang, typeof(EImeceLanguage));
+            if (descVal > 0 && Enum.IsDefined(typeof(EImeceLanguage), descVal))
+            {
+                return (EImeceLanguage)descVal;
+            }
+            return null;
+        }
+
         public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
         {
             List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
 
             var languagesText = AppConfig.ApplicationLanguages;
-            if (String.IsNullOrEmpty(languagesText))
+            if (!string.IsNullOrEmpty(languagesText))
             {
-                selectedLanguages.Add((EImeceLanguage)AppConfig.MainLanguage);
-            }
-            else
-            {
-                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList();
                 foreach (var lang in languages)
                 {
-                    try
+                    var parsed = ParseLanguage(lang);
+                    if (parsed.HasValue && !selectedLanguages.Contains(parsed.Value))
                     {
-                        var eImageLang = EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
-                        selectedLanguages.Add((EImeceLanguage)eImageLang);
-                    }
-                    catch (Exception)
-                    {
+                        selectedLanguages.Add(parsed.Value);
                     }
                 }
+            }
+
+            if (selectedLanguages.Count == 0)
+            {
+                var mainLang = (EImeceLanguage)AppConfig.MainLanguage;
+                selectedLanguages.Add(Enum.IsDefined(typeof(EImeceLanguage), mainLang) ? mainLang : EImeceLanguage.Turkish);
             }
 
             return selectedLanguages;

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using Resources;
@@ -106,18 +106,6 @@ namespace EImece.Domain.Entities
             }
         }
 
-        public string ImageFullPath(int width, int height, bool isThump=false)
-        {
-            // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
-            var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
-            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true, isThump) ?? string.Empty;
-            if (!string.IsNullOrEmpty(baseurl) && !result.Contains(baseurl))
-            {
-                result = baseurl + result;
-            }
-            return result;
-        }
-
         [NotMapped]
         public string DetailPageRelativeUrl
         {
@@ -128,72 +116,15 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
-        public string BuyNowRelativeUrl
-        {
-            get
-            {
-                return this.GetDetailPageUrl("BuyNow", "Payment", ProductCategory != null ? ProductCategory.Name : "no_category");
-            }
-        }
-
-        [NotMapped]
         public bool HasDiscount
         {
             get
             {
-                if (ProductCategory == null)
-                {
-                    return false;
-                }
-                var hasCategoryDiscount = ProductCategory.DiscountPercantage.HasValue && ProductCategory.DiscountPercantage.Value > 0;
-                if (hasCategoryDiscount || Discount > 0)
-                {
-                    return true;
-                }
-                return false;
+                var hasDirectDiscount = Discount.HasValue && Discount.Value > 0;
+                var hasCategoryDiscount = ProductCategory != null && ProductCategory.DiscountPercantage.HasValue && ProductCategory.DiscountPercantage.Value > 0;
+                return hasDirectDiscount || hasCategoryDiscount;
             }
         }
-
-        // override object.Equals
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-            return ((Product)obj).Id == this.Id;
-        }
-
-        // override object.GetHashCode
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        [NotMapped]
-        public int DiscountPercentage
-        {
-            get
-            {
-                if (Price > 0)
-                {
-                    var discountedDiff = Price - PriceWithDiscount;
-                    var result = Math.Round(discountedDiff * 100 / Price, 2);
-                    return (int)result;
-                }
-                return 0;
-            }
-        }
-
-        [NotMapped]
-        public string ModifiedId
-        { get { return GeneralHelper.ModifyId(Id); } }
-
-        [NotMapped]
-        public byte[] MainImageBytes { get; set; }
-
-        [NotMapped]
-        public Tuple<string, string> MainImageSrc { get; set; }
 
         [NotMapped]
         public string ProductNameStr
@@ -220,7 +151,7 @@ namespace EImece.Domain.Entities
                 if (HasDiscount)
                 {
                     ProductCategory productCategory = ProductCategory;
-                    var categoryDiscount = productCategory.DiscountPercantage.HasValue ? (decimal)ProductCategory.DiscountPercantage.Value / 100 : 0;
+                    var categoryDiscount = productCategory != null && productCategory.DiscountPercantage.HasValue ? (decimal)productCategory.DiscountPercantage.Value / 100 : 0;
                     return Price - (Discount.HasValue ? Discount.Value : 0) - (Price * (categoryDiscount));
                 }
                 else
@@ -231,11 +162,53 @@ namespace EImece.Domain.Entities
         }
 
         [NotMapped]
+        public double DiscountPercentage
+        {
+            get
+            {
+                if (!HasDiscount)
+                {
+                    return 0;
+                }
+                if (Discount.HasValue && Discount.Value > 0 && Price > 0)
+                {
+                    return (double)((Discount.Value / Price) * 100);
+                }
+                if (ProductCategory != null && ProductCategory.DiscountPercantage.HasValue)
+                {
+                    return ProductCategory.DiscountPercantage.Value;
+                }
+                return 0;
+            }
+        }
+
+        [NotMapped]
+        public string ModifiedId
+        {
+            get
+            {
+                return GeneralHelper.ModifyId(this.Id);
+            }
+        }
+
+        [NotMapped]
         public bool IsBuyableState
         {
             get
             {
-                return this.StateEnum == ProductState.ProductInStock && this.Price > 0;
+                if (Price <= 0)
+                {
+                    return false;
+                }
+                switch (StateEnum)
+                {
+                    case ProductState.ProductInStock:
+                    case ProductState.PreOrder:
+                    case ProductState.LimitedStock:
+                        return true;
+                    default:
+                        return false;
+                }
             }
         }
 
@@ -265,6 +238,34 @@ namespace EImece.Domain.Entities
                         return false;
                 }
             }
+        }
+
+        public string ImageFullPath(int width, int height, bool isThump=false)
+        {
+            // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
+            var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
+            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true, isThump) ?? string.Empty;
+            if (!string.IsNullOrEmpty(baseurl) && !result.Contains(baseurl))
+            {
+                result = baseurl + result;
+            }
+            return result;
+        }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            return ((Product)obj).Id == this.Id;
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

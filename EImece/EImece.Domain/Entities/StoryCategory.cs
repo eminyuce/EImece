@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,8 +21,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("categories", "stories", new { id = this.GetSeoUrl() }, AppConfig.HttpProtocol);
+                return this.GetDetailPageUrl("Categories", "Stories", "", AppConfig.HttpProtocol);
             }
         }
 
@@ -31,8 +30,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("categories", "stories", new { id = this.GetSeoUrl() });
+                return this.GetDetailPageUrl("Categories", "Stories");
             }
         }
     }

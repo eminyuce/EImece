@@ -17,6 +17,8 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public int Lang { get; set; }
         public bool IsActive { get; set; }
         public int ItemCount { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime UpdatedDate { get; set; }
 
         public static StorefrontTagDto FromEntity(Tag t)
         {
@@ -29,7 +31,9 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 TagCategoryName = t.TagCategory != null ? t.TagCategory.Name : string.Empty,
                 Position = t.Position,
                 Lang = t.Lang,
-                IsActive = t.IsActive
+                IsActive = t.IsActive,
+                CreatedDate = t.CreatedDate,
+                UpdatedDate = t.UpdatedDate
             };
         }
 
@@ -58,6 +62,11 @@ namespace EImece.Domain.Models.DTOs.Storefront
         }
 
         public string DetailPageRelativeUrl
+        {
+            get { return DetailPageUrl; }
+        }
+
+        public string DetailPageRelativeUrlForProducts
         {
             get { return DetailPageUrl; }
         }

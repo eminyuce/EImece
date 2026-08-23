@@ -16,18 +16,35 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public int ParentId { get; set; }
         public string MenuLink { get; set; }
         public string Url { get; set; }
+        public string Link
+        {
+            get => Url;
+            set => Url = value;
+        }
         public bool LinkIsActive { get; set; }
         public string Target { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
+        public string MetaKeywords { get; set; }
         public int? MainImageId { get; set; }
+        public bool ImageState
+        {
+            get => MainImageId.HasValue && MainImageId.Value > 0;
+        }
         public int Position { get; set; }
         public int Lang { get; set; }
         public bool IsActive { get; set; }
+        public bool MainPage { get; set; }
         public int TreeLevel { get; set; }
         public string PageTheme { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+
+        public List<StorefrontMenuDto> Childrens
+        {
+            get => Children;
+            set => Children = value;
+        }
 
         private const string UrlPathSeparator = "/";
 
@@ -316,11 +333,6 @@ namespace EImece.Domain.Models.DTOs.Storefront
             return currentPath.Equals(candidatePath, StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool ImageState
-        {
-            get { return MainImageId.HasValue && MainImageId.Value > 0; }
-        }
-
         public List<StorefrontMenuDto> Children { get; set; }
         public List<StorefrontMenuDto> SideMenus { get; set; }
         public List<StorefrontMenuFileDto> MenuFiles { get; set; }
@@ -345,11 +357,14 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 MenuLink = m.MenuLink,
                 Url = m.Link,
                 LinkIsActive = m.LinkIsActive,
+                ShortDescription = m.Description,
                 Description = m.Description,
+                MetaKeywords = m.MetaKeywords,
                 MainImageId = m.MainImageId,
                 Position = m.Position,
                 Lang = m.Lang,
                 IsActive = m.IsActive,
+                MainPage = m.MainPage,
                 PageTheme = m.PageTheme,
                 CreatedDate = m.CreatedDate,
                 UpdatedDate = m.UpdatedDate

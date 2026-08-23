@@ -241,7 +241,6 @@ namespace EImece.Controllers
                 Subject = productComment.Subject,
                 Rating = productComment.Rating,
                 Review = productComment.Review,
-                SeoUrl = productComment.SeoUrl,
                 UserId = user == null ? "" : user.Id,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,

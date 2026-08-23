@@ -22,5 +22,21 @@ namespace EImece.Domain.Models.DTOs.Storefront
             var dummy = new FileStorage { Id = targetId, FileName = FileName, Name = Name };
             return dummy.GetCroppedImageUrl(targetId, width, height, isFullPath, isThumb);
         }
+
+        public string ImageFullPath(int width = 0, int height = 0, bool isThumb = false)
+        {
+            return GetCroppedImageUrl(FileStorageId, width, height, true, isThumb);
+        }
+
+        public string GetCroppedImageTag(int width = 0, int height = 0)
+        {
+            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(FileStorageId, width, height), System.Web.HttpUtility.HtmlAttributeEncode(Name ?? FileName));
+        }
+
+        public string GetResponsiveImageSrcSet(int width = 0, int height = 0)
+        {
+            var dummy = new FileStorage { Id = FileStorageId, FileName = FileName, Name = Name };
+            return dummy.GetResponsiveImageSrcSet(FileStorageId, width, height);
+        }
     }
 }

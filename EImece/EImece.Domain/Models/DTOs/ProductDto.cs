@@ -39,21 +39,81 @@ namespace EImece.Domain.Models.DTOs
         public string ProductCode { get; set; }
         public string VideoUrl { get; set; }
         public bool IsCampaign { get; set; }
-        public string ProductColorOptions { get; set; }
-        public ProductState StateEnum { get; set; }
+        public ProductState StateEnum
+        {
+            get => Enum.TryParse(State, true, out ProductState result) ? result : ProductState.NONE;
+            set => State = value.ToString();
+        }
         public string State { get; set; }
         public string ProductSizeOptions { get; set; }
         public double Rating { get; set; }
         public string DetailPageAbsoluteUrl { get; set; }
         public string DetailPageRelativeUrl { get; set; }
         public string BuyNowRelativeUrl { get; set; }
-        public bool HasDiscount { get; set; }
-        public int DiscountPercentage { get; set; }
-        public string ModifiedId { get; set; }
+        public bool HasDiscount
+        {
+            get => (Discount.HasValue && Discount.Value > 0);
+            set { }
+        }
+        public int DiscountPercentage
+        {
+            get
+            {
+                if (Price > 0 && Discount.HasValue && Discount.Value > 0)
+                {
+                    return (int)Math.Round((Discount.Value * 100) / Price, MidpointRounding.AwayFromZero);
+                }
+                return 0;
+            }
+            set { }
+        }
+        public string ModifiedId
+        {
+            get => EImece.Domain.Helpers.GeneralHelper.ModifyId(Id);
+            set { }
+        }
         public byte[] MainImageBytes { get; set; }
         public Tuple<string, string> MainImageSrc { get; set; }
-        public string ProductNameStr { get; set; }
-        public decimal PriceWithDiscount { get; set; }
-        public bool IsBuyableState { get; set; }
+        public string ProductNameStr
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(NameShort)) return NameShort;
+                if (!string.IsNullOrEmpty(NameLong)) return NameLong;
+                return Name;
+            }
+            set { }
+        }
+        public decimal PriceWithDiscount
+        {
+            get => HasDiscount ? Price - (Discount ?? 0) : Price;
+            set { }
+        }
+        public bool IsBuyableState
+        {
+            get => StateEnum == ProductState.ProductInStock && Price > 0;
+            set { }
+        }
+        public bool IsOnSale
+        {
+            get
+            {
+                if (Price <= 0)
+                {
+                    return false;
+                }
+
+                switch (StateEnum)
+                {
+                    case ProductState.ProductInStock:
+                    case ProductState.PreOrder:
+                    case ProductState.LimitedStock:
+                    case ProductState.ComingSoon:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
     }
 }
