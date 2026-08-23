@@ -179,57 +179,9 @@ namespace EImece.Domain.Models.DTOs.Storefront
             get => MainImageId.HasValue && MainImageId.Value > 0;
         }
 
-        /// <summary>
-        /// True when the product has a price and is available for sale
-        /// (in stock, pre-order, limited stock, or coming soon).
-        /// Used for the "Satışta" listing badge.
-        /// </summary>
-        public bool IsOnSale
-        {
-            get
-            {
-                if (Price <= 0)
-                {
-                    return false;
-                }
-
-                switch (StateEnum)
-                {
-                    case ProductState.ProductInStock:
-                    case ProductState.PreOrder:
-                    case ProductState.LimitedStock:
-                    case ProductState.ComingSoon:
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        }
-
         public string ModifiedId
         {
             get { return GeneralHelper.ModifyId(Id); }
-        }
-
-        public string ProductNameStr
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(NameShort))
-                    return NameShort;
-                if (!string.IsNullOrEmpty(NameLong))
-                    return NameLong;
-                return Name;
-            }
-        }
-
-        public string BuyNowRelativeUrl
-        {
-            get
-            {
-                var dummy = new Product { Id = Id, Name = Name };
-                return dummy.GetDetailPageUrl("BuyNow", "Payment", ProductCategoryName ?? "no_category");
-            }
         }
 
         public string SeoUrl
