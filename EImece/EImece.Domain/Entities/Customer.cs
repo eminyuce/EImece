@@ -33,9 +33,7 @@ namespace EImece.Domain.Entities
 
         public string Ip { get; set; }
 
-        [NotMapped]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsSameAsShippingAddress))]
-        public bool IsSameAsShippingAddress { get; set; }
+
 
         public string UserId { get; set; }
 
@@ -76,17 +74,15 @@ namespace EImece.Domain.Entities
 
         public int CustomerType { get; set; }
 
-        [NotMapped]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AnswerSecurityQuestion))]
-        [JsonIgnore]
-        public String Captcha { get; set; }
-
+        // Needed for Admin panel — admin customer detail/ edit screens populate transient order history.
         [NotMapped]
         public DateTime OrderLatestDate { get; set; }
 
+        // Needed for Admin panel — admin customer detail lists recent orders without persisting a separate join table.
         [NotMapped]
         public List<Order> Orders { get; set; }
 
+        // Needed for Admin panel — admin customer grids show the concatenated full name.
         [NotMapped]
         public String FullName
         {
@@ -96,6 +92,7 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // Needed for Admin panel — admin customer detail formats the on-file address for display.
         [NotMapped]
         public string Address
         {
@@ -112,6 +109,7 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // Needed for Admin panel — admin customers grid/export uses the single-line registration address summary.
         [NotMapped]
         public string RegistrationAddress
         {
@@ -125,7 +123,7 @@ namespace EImece.Domain.Entities
                              City.ToStr(),       // City
                              Country.ToStr(),    // Country
                              Description.ToStr() // Optional Description (e.g., Apt #, Floor, etc.)
-                         );
+                          );
             }
         }
 
@@ -155,7 +153,7 @@ namespace EImece.Domain.Entities
 
         public override string ToString()
         {
-            return $"{{{nameof(Surname)}={Surname}, {nameof(GsmNumber)}={GsmNumber}, {nameof(Email)}={Email}, {nameof(IdentityNumber)}={IdentityNumber}, {nameof(Ip)}={Ip}, {nameof(IsSameAsShippingAddress)}={IsSameAsShippingAddress.ToString()}, {nameof(UserId)}={UserId}, {nameof(IsPermissionGranted)}={IsPermissionGranted.ToString()}, {nameof(Gender)}={Gender.ToString()}, {nameof(Street)}={Street}, {nameof(Town)}={Town}, {nameof(District)}={District}, {nameof(City)}={City}, {nameof(Country)}={Country}, {nameof(ZipCode)}={ZipCode}, {nameof(Description)}={Description}, {nameof(Company)}={Company}, {nameof(Captcha)}={Captcha}, {nameof(Orders)}={Orders}, {nameof(FullName)}={FullName}, {nameof(Address)}={Address}, {nameof(RegistrationAddress)}={RegistrationAddress}, {nameof(Id)}={Id.ToString()}, {nameof(Name)}={Name}, {nameof(CreatedDate)}={CreatedDate.ToString()}, {nameof(UpdatedDate)}={UpdatedDate.ToString()}, {nameof(IsActive)}={IsActive.ToString()}, {nameof(Position)}={Position.ToString()}, {nameof(Lang)}={Lang.ToString()}}}";
+            return $"{{{nameof(Surname)}={Surname}, {nameof(GsmNumber)}={GsmNumber}, {nameof(Email)}={Email}, {nameof(IdentityNumber)}={IdentityNumber}, {nameof(Ip)}={Ip}, {nameof(UserId)}={UserId}, {nameof(IsPermissionGranted)}={IsPermissionGranted.ToString()}, {nameof(Gender)}={Gender.ToString()}, {nameof(Street)}={Street}, {nameof(Town)}={Town}, {nameof(District)}={District}, {nameof(City)}={City}, {nameof(Country)}={Country}, {nameof(ZipCode)}={ZipCode}, {nameof(Description)}={Description}, {nameof(Company)}={Company}, {nameof(Orders)}={Orders}, {nameof(FullName)}={FullName}, {nameof(Address)}={Address}, {nameof(RegistrationAddress)}={RegistrationAddress}, {nameof(Id)}={Id.ToString()}, {nameof(Name)}={Name}, {nameof(CreatedDate)}={CreatedDate.ToString()}, {nameof(UpdatedDate)}={UpdatedDate.ToString()}, {nameof(IsActive)}={IsActive.ToString()}, {nameof(Position)}={Position.ToString()}, {nameof(Lang)}={Lang.ToString()}}}";
         }
     }
 }

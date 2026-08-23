@@ -160,6 +160,27 @@ namespace EImece.Domain.Models.DTOs.Storefront
             get { return GeneralHelper.ModifyId(Id); }
         }
 
+        public string ProductNameStr
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(NameShort))
+                    return NameShort;
+                if (!string.IsNullOrEmpty(NameLong))
+                    return NameLong;
+                return Name;
+            }
+        }
+
+        public string BuyNowRelativeUrl
+        {
+            get
+            {
+                var dummy = new Product { Id = Id, Name = Name };
+                return dummy.GetDetailPageUrl("BuyNow", "Payment", ProductCategoryName ?? "no_category");
+            }
+        }
+
         public string SeoUrl
         {
             get { return string.Format("{0}-{1}", GeneralHelper.GetUrlSeoString(Name), ModifiedId); }

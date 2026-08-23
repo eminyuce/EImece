@@ -8,6 +8,7 @@ namespace EImece.Domain.Entities
         public string Subject { get; set; }
         public int BrowserType { get; set; }
 
+        // Needed for Admin panel — admin subscription editor binds the enum directly for the browser type dropdown.
         [NotMapped]
         public BrowserType BrowserTypeEnum
         { get { return (BrowserType)BrowserType; } set { BrowserType = (int)value; } }

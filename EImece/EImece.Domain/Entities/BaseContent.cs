@@ -24,10 +24,12 @@ namespace EImece.Domain.Entities
 
         public virtual FileStorage MainImage { get; set; }
 
+        // Needed for Admin panel — admin media form lets editors set explicit image dimensions before upload.
         [NotMapped]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ImageHeight))]
         public int ImageHeight { get; set; }
 
+        // Needed for Admin panel — admin media form lets editors set explicit image dimensions before upload.
         [NotMapped]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ImageWidth))]
         public int ImageWidth { get; set; }

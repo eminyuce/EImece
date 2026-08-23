@@ -45,10 +45,12 @@ namespace EImece.Domain.Entities
         [DataType(DataType.Currency)]
         public decimal? Discount { get; set; }
 
+        // Needed for Admin panel — admin product form inputs bind string values for price/discount parsing.
         [NotMapped]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Price))]
         public String PriceStr { get; set; }
 
+        // Needed for Admin panel — admin product form inputs bind string values for price/discount parsing.
         [NotMapped]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductDiscount))]
         public String DiscountStr { get; set; }
@@ -67,6 +69,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductColorOptions))]
         public String ProductColorOptions { get; set; }
 
+        // Needed for Admin panel — enum wrapper for State string is used by admin product state dropdowns and sorting.
         [NotMapped] // Prevents EF from mapping directly
         public ProductState StateEnum
         {
@@ -94,17 +97,9 @@ namespace EImece.Domain.Entities
         /// <summary>
         /// Total sold quantity from orders. Populated for bestseller sorting; not mapped to DB.
         /// </summary>
+        // Needed for Admin panel — admin product lists can sort/filter by bestseller sold count.
         [NotMapped]
         public int SoldCount { get; set; }
-
-        [NotMapped]
-        public string DetailPageAbsoluteUrl
-        {
-            get
-            {
-                return this.GetDetailPageUrl("Detail", "Products", ProductCategory != null ? ProductCategory.Name : "no_category", AppConfig.HttpProtocol);
-            }
-        }
 
         public string ImageFullPath(int width, int height, bool isThump=false)
         {
@@ -118,6 +113,7 @@ namespace EImece.Domain.Entities
             return result;
         }
 
+        // Needed for Admin panel — admin product-comment and order detail screens link to the storefront product page.
         [NotMapped]
         public string DetailPageRelativeUrl
         {
@@ -127,15 +123,7 @@ namespace EImece.Domain.Entities
             }
         }
 
-        [NotMapped]
-        public string BuyNowRelativeUrl
-        {
-            get
-            {
-                return this.GetDetailPageUrl("BuyNow", "Payment", ProductCategory != null ? ProductCategory.Name : "no_category");
-            }
-        }
-
+        // Needed for Admin panel — admin price grid shows discounted vs original price consistently with storefront logic.
         [NotMapped]
         public bool HasDiscount
         {
@@ -170,6 +158,7 @@ namespace EImece.Domain.Entities
             return base.GetHashCode();
         }
 
+        // Needed for Admin panel — admin price grid displays discount percentage alongside the price.
         [NotMapped]
         public int DiscountPercentage
         {
@@ -185,33 +174,15 @@ namespace EImece.Domain.Entities
             }
         }
 
-        [NotMapped]
-        public string ModifiedId
-        { get { return GeneralHelper.ModifyId(Id); } }
-
+        // Needed for Admin panel — admin product image upload stores transient bytes before persisting to FileStorage.
         [NotMapped]
         public byte[] MainImageBytes { get; set; }
 
+        // Needed for Admin panel — admin product form preview resolves the image src tuple before save.
         [NotMapped]
         public Tuple<string, string> MainImageSrc { get; set; }
 
-        [NotMapped]
-        public string ProductNameStr
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(NameShort))
-                {
-                    return NameShort;
-                }
-                if (!string.IsNullOrEmpty(NameLong))
-                {
-                    return NameLong;
-                }
-                return Name;
-            }
-        }
-
+        // Needed for Admin panel — admin price grid shows the discounted price with category discount applied.
         [NotMapped]
         public decimal PriceWithDiscount
         {
@@ -226,43 +197,6 @@ namespace EImece.Domain.Entities
                 else
                 {
                     return Price;
-                }
-            }
-        }
-
-        [NotMapped]
-        public bool IsBuyableState
-        {
-            get
-            {
-                return this.StateEnum == ProductState.ProductInStock && this.Price > 0;
-            }
-        }
-
-        /// <summary>
-        /// True when the product has a price and is available for sale
-        /// (in stock, pre-order, limited stock, or coming soon).
-        /// Used for the "Satışta" listing badge.
-        /// </summary>
-        [NotMapped]
-        public bool IsOnSale
-        {
-            get
-            {
-                if (Price <= 0)
-                {
-                    return false;
-                }
-
-                switch (StateEnum)
-                {
-                    case ProductState.ProductInStock:
-                    case ProductState.PreOrder:
-                    case ProductState.LimitedStock:
-                    case ProductState.ComingSoon:
-                        return true;
-                    default:
-                        return false;
                 }
             }
         }

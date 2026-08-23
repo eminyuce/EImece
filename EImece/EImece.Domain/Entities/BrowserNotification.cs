@@ -7,6 +7,7 @@ namespace EImece.Domain.Entities
     {
         public int NotificationType { get; set; }
 
+        // Needed for Admin panel — admin notification editor binds the enum directly for the type dropdown.
         [NotMapped]
         public NotificationType NotificationTypeEnum
         {
@@ -18,6 +19,7 @@ namespace EImece.Domain.Entities
         public string ImageUrl { get; set; }
         public string RedirectionUrl { get; set; }
 
+        // Needed for Admin panel — admin notification queue shows transient send status without persisting it.
         [NotMapped]
         public bool IsSend { get; set; }
     }

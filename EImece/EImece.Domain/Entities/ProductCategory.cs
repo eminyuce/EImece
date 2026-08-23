@@ -29,33 +29,18 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.TemplateId))]
         public int? TemplateId { get; set; }
 
+        // Needed for Admin panel — category tree building for admin management screens.
         [NotMapped]
         public List<ProductCategory> Childrens { get; set; }
 
+        // Needed for Admin panel — category tree parent reference used while building admin category hierarchy.
         [NotMapped]
         public ProductCategory Parent { get; set; }
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCategoryDiscountPercantage))]
         public double? DiscountPercantage { get; set; }
 
-        [NotMapped]
-        public string ProductCategoryLink
-        {
-            get
-            {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
-            }
-        }
 
-        [NotMapped]
-        public string DetailPageUrl
-        {
-            get
-            {
-                return this.GetDetailPageUrl("Category", "productCategories");
-            }
-        }
 
         public string ProductCategoryListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {
@@ -74,6 +59,7 @@ namespace EImece.Domain.Entities
 
         public Template Template { get; set; }
 
+        // Needed for Admin panel — renders the category tree node HTML preview in admin category management.
         [NotMapped]
         public string CreateChildDataContent
         {

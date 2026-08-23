@@ -33,6 +33,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LinkIsActive))]
         public Boolean LinkIsActive { get; set; }
 
+        // Needed for Admin panel — menu hierarchy is rendered in admin menu management.
         [NotMapped]
         public List<Menu> Childrens { get; set; }
 
@@ -66,11 +67,7 @@ namespace EImece.Domain.Entities
             return true;
         }
 
-        [NotMapped]
-        public string IsPageActived
-        {
-            get { return ComputeIsPageActived(); }
-        }
+
 
         private string ComputeIsPageActived()
         {
@@ -329,6 +326,7 @@ namespace EImece.Domain.Entities
             return currentPath.Equals(candidatePath, StringComparison.OrdinalIgnoreCase);
         }
 
+        // Needed for Admin panel — admin menu grid links to the storefront page for preview.
         [NotMapped]
         public string DetailPageLink
         {

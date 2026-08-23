@@ -23,27 +23,8 @@ namespace EImece.Domain.Entities
         /// <summary>
         /// Active product + story associations. Populated by tag listing queries; not mapped to the DB.
         /// </summary>
+        // Needed for Admin panel — tag listing grid shows associated item count.
         [NotMapped]
         public int ItemCount { get; set; }
-
-        [NotMapped]
-        public string DetailPageRelativeUrlForProducts
-        {
-            get
-            {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("Tag", "products", new { id = this.GetSeoUrl() });
-            }
-        }
-
-        [NotMapped]
-        public string DetailPageRelativeUrlForStories
-        {
-            get
-            {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("tag", "stories", new { id = this.GetSeoUrl() });
-            }
-        }
     }
 }

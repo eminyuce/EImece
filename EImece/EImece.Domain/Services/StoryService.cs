@@ -384,7 +384,8 @@ namespace EImece.Domain.Services
                 imageUrl = story.GetCroppedImageUrl(story.MainImageId, 1000, 0, true) ?? string.Empty;
             }
 
-            return SettingService.CreateShareableSocialMediaLinks(story.DetailPageUrl, story.Name, imageUrl);
+            var storyDetailUrl = story.GetDetailPageUrl("Detail", "Stories", story.StoryCategory != null ? story.StoryCategory.Name : "no_category", "", "");
+            return SettingService.CreateShareableSocialMediaLinks(storyDetailUrl, story.Name, imageUrl);
         }
 
         private Dictionary<string, string> CreateStoryDetailShareLinks(Models.DTOs.Storefront.StorefrontStoryDetailDto storyDetail)
