@@ -14,13 +14,11 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 0, State = ProductState.ProductInStock.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsFalse(product.IsOnSale);
             Assert.IsFalse(dto.IsOnSale);
 
             product.Price = -10;
             dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsFalse(product.IsOnSale);
             Assert.IsFalse(dto.IsOnSale);
         }
 
@@ -30,7 +28,6 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 100, State = ProductState.ProductInStock.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsTrue(product.IsOnSale);
             Assert.IsTrue(dto.IsOnSale);
         }
 
@@ -40,7 +37,6 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 150, State = ProductState.PreOrder.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsTrue(product.IsOnSale);
             Assert.IsTrue(dto.IsOnSale);
         }
 
@@ -50,7 +46,6 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 200, State = ProductState.LimitedStock.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsTrue(product.IsOnSale);
             Assert.IsTrue(dto.IsOnSale);
         }
 
@@ -60,7 +55,6 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 250, State = ProductState.ComingSoon.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsTrue(product.IsOnSale);
             Assert.IsTrue(dto.IsOnSale);
         }
 
@@ -70,7 +64,6 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 100, State = ProductState.ProductOutOfStock.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsFalse(product.IsOnSale);
             Assert.IsFalse(dto.IsOnSale);
         }
 
@@ -80,7 +73,6 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 100, State = ProductState.Discontinued.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsFalse(product.IsOnSale);
             Assert.IsFalse(dto.IsOnSale);
         }
 
@@ -90,7 +82,6 @@ namespace EImece.Tests.Helpers
             var product = new Product { Price = 100, State = ProductState.NotForSale.ToString() };
             var dto = StorefrontProductCardDto.FromEntity(product);
 
-            Assert.IsFalse(product.IsOnSale);
             Assert.IsFalse(dto.IsOnSale);
         }
     }

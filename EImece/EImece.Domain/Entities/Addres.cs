@@ -32,6 +32,7 @@ namespace EImece.Domain.Entities
         public string Street { get; set; }
         public string District { get; set; }
 
+        // Needed for Admin panel — admin order/customer screens show a one-line formatted address summary.
         [NotMapped]
         public String AddressInfo
         {

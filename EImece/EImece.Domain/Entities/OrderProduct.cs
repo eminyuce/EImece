@@ -30,6 +30,7 @@ namespace EImece.Domain.Entities
         public string CategoryName { get; set; }
         public string ProductSpecItems { set; get; }
 
+        // Needed for Admin panel — admin order detail shows unit price (TotalPrice / Quantity) without an extra column.
         [NotMapped]
         public decimal Price
         {
@@ -39,6 +40,7 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // Needed for Admin panel — admin order detail deserializes the spec JSON for display in the order lines grid.
         [NotMapped]
         public List<ProductSpecItem> ProductSpecObjItems
         {
@@ -48,6 +50,7 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // Needed for Admin panel — admin order detail highlights the first (color) spec item for quick preview.
         [NotMapped]
         public ProductSpecItem ProductSpecColorItem
         {

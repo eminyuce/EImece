@@ -1,4 +1,4 @@
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
@@ -33,12 +33,20 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LinkIsActive))]
         public Boolean LinkIsActive { get; set; }
 
+        // Needed for Admin panel — menu hierarchy is rendered in admin menu management.
+        [NotMapped]
+        public List<Menu> Childrens { get; set; }
+
         public ICollection<MenuFile> MenuFiles { get; set; }
 
         /// <summary>
         /// MenuLink format is "controller-action" or "controller-action_id"
         /// (e.g. home-index, info-aboutus, stories-categories_seo-url, pages-index).
         /// </summary>
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontMenuDto.IsPageActived
+        [NotMapped]
+        public string IsPageActived { get { return ComputeIsPageActived(); } }
+
         private bool TryParseMenuLink(out string controller, out string action, out string mid)
         {
             controller = null;
@@ -63,11 +71,7 @@ namespace EImece.Domain.Entities
             return true;
         }
 
-        [NotMapped]
-        public string IsPageActived
-        {
-            get { return ComputeIsPageActived(); }
-        }
+
 
         private string ComputeIsPageActived()
         {
@@ -326,6 +330,7 @@ namespace EImece.Domain.Entities
             return currentPath.Equals(candidatePath, StringComparison.OrdinalIgnoreCase);
         }
 
+        // Needed for Admin panel — admin menu grid links to the storefront page for preview.
         [NotMapped]
         public string DetailPageLink
         {

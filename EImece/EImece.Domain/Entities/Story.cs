@@ -1,4 +1,4 @@
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
@@ -32,24 +32,30 @@ namespace EImece.Domain.Entities
 
 
         public StoryCategory StoryCategory { get; set; }
-        public ICollection<StoryFile> StoryFiles { get; set; }
         public ICollection<StoryTag> StoryTags { get; set; }
+        public ICollection<StoryFile> StoryFiles { get; set; }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontStoryDetailDto.DetailPageUrl
         [NotMapped]
         public string DetailPageUrl
         {
             get
             {
-                return this.GetDetailPageUrl("Detail", "Stories", StoryCategory != null ? StoryCategory.Name : "no_category");
+                return this.GetDetailPageUrl("Detail", "Stories", StoryCategory != null ? StoryCategory.Name : "no_category", "", "");
             }
         }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontStoryCardDto.DetailPageRelativeUrl
         [NotMapped]
         public string DetailPageRelativeUrl
         {
             get
             {
-                return this.GetDetailPageUrl("Detail", "Stories", StoryCategory != null ? StoryCategory.Name : "no_category");
+                if (HttpContext.Current == null)
+                    return "";
+                var categoryName = StoryCategory != null ? StoryCategory.Name : "no_category";
+                var rc = HttpContext.Current.Request.RequestContext;
+                return new UrlHelper(rc).Action("Detail", "Stories", new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = this.GetSeoUrl(), area = "" });
             }
         }
     }

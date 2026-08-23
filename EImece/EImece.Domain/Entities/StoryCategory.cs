@@ -1,4 +1,4 @@
-using EImece.Domain.Helpers.Extensions;
+﻿using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,21 +16,27 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PageTheme))]
         public string PageTheme { get; set; }
 
+        // Kept for Razor view compatibility — canonical logic lives in StorefrontCategoryDto.DetailPageAbsoluteUrl
         [NotMapped]
         public string DetailPageAbsoluteUrl
         {
             get
             {
-                return this.GetDetailPageUrl("Categories", "Stories", "", AppConfig.HttpProtocol);
+                var rc = HttpContext.Current?.Request?.RequestContext;
+                if (rc == null) return this.GetDetailPageUrl("Categories", "Stories", "", AppConfig.HttpProtocol, "");
+                return new UrlHelper(rc).Action("categories", "stories", new { id = this.GetSeoUrl() }, AppConfig.HttpProtocol);
             }
         }
 
+        // Kept for Razor view compatibility — canonical logic lives in StorefrontCategoryDto.DetailPageRelativeUrl
         [NotMapped]
         public string DetailPageRelativeUrl
         {
             get
             {
-                return this.GetDetailPageUrl("Categories", "Stories");
+                var rc = HttpContext.Current?.Request?.RequestContext;
+                if (rc == null) return this.GetDetailPageUrl("Categories", "Stories", "", "", "");
+                return new UrlHelper(rc).Action("categories", "stories", new { id = this.GetSeoUrl() });
             }
         }
     }

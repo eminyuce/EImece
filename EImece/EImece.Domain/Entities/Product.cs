@@ -1,4 +1,4 @@
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using Resources;
@@ -45,10 +45,12 @@ namespace EImece.Domain.Entities
         [DataType(DataType.Currency)]
         public decimal? Discount { get; set; }
 
+        // Needed for Admin panel — admin product form inputs bind string values for price/discount parsing.
         [NotMapped]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Price))]
         public String PriceStr { get; set; }
 
+        // Needed for Admin panel — admin product form inputs bind string values for price/discount parsing.
         [NotMapped]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductDiscount))]
         public String DiscountStr { get; set; }
@@ -67,6 +69,7 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductColorOptions))]
         public String ProductColorOptions { get; set; }
 
+        // Needed for Admin panel — enum wrapper for State string is used by admin product state dropdowns and sorting.
         [NotMapped] // Prevents EF from mapping directly
         public ProductState StateEnum
         {
@@ -94,18 +97,33 @@ namespace EImece.Domain.Entities
         /// <summary>
         /// Total sold quantity from orders. Populated for bestseller sorting; not mapped to DB.
         /// </summary>
+        // Needed for Admin panel — admin product lists can sort/filter by bestseller sold count.
         [NotMapped]
         public int SoldCount { get; set; }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.DetailPageAbsoluteUrl
         [NotMapped]
         public string DetailPageAbsoluteUrl
         {
             get
             {
-                return this.GetDetailPageUrl("Detail", "Products", ProductCategory != null ? ProductCategory.Name : "no_category", AppConfig.HttpProtocol);
+                return this.GetDetailPageUrl("Detail", "Products", ProductCategory != null ? ProductCategory.Name : "no_category", AppConfig.HttpProtocol, "");
             }
         }
 
+        public string ImageFullPath(int width, int height, bool isThump=false)
+        {
+            // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
+            var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
+            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true, isThump) ?? string.Empty;
+            if (!string.IsNullOrEmpty(baseurl) && !result.Contains(baseurl))
+            {
+                result = baseurl + result;
+            }
+            return result;
+        }
+
+        // Needed for Admin panel — admin product-comment and order detail screens link to the storefront product page.
         [NotMapped]
         public string DetailPageRelativeUrl
         {
@@ -115,6 +133,7 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // Needed for Admin panel — admin price grid shows discounted vs original price consistently with storefront logic.
         [NotMapped]
         public bool HasDiscount
         {
@@ -126,23 +145,46 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            return ((Product)obj).Id == this.Id;
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        // Needed for Admin panel — admin price grid displays discount percentage alongside the price.
         [NotMapped]
-        public string ProductNameStr
+        public double DiscountPercentage
         {
             get
             {
-                if (!string.IsNullOrEmpty(NameShort))
-                {
-                    return NameShort;
-                }
-                if (!string.IsNullOrEmpty(NameLong))
-                {
-                    return NameLong;
-                }
-                return Name;
+                if (!HasDiscount) return 0;
+                if (Discount.HasValue && Discount.Value > 0 && Price > 0)
+                    return (double)((Discount.Value / Price) * 100);
+                if (ProductCategory != null && ProductCategory.DiscountPercantage.HasValue)
+                    return ProductCategory.DiscountPercantage.Value;
+                return 0;
             }
         }
 
+        // Needed for Admin panel — admin product image upload stores transient bytes before persisting to FileStorage.
+        [NotMapped]
+        public byte[] MainImageBytes { get; set; }
+
+        // Needed for Admin panel — admin product form preview resolves the image src tuple before save.
+        [NotMapped]
+        public Tuple<string, string> MainImageSrc { get; set; }
+
+        // Needed for Admin panel — admin price grid shows the discounted price with category discount applied.
         [NotMapped]
         public decimal PriceWithDiscount
         {
@@ -161,111 +203,55 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.BuyNowRelativeUrl
         [NotMapped]
-        public double DiscountPercentage
+        public string BuyNowRelativeUrl
         {
             get
             {
-                if (!HasDiscount)
-                {
-                    return 0;
-                }
-                if (Discount.HasValue && Discount.Value > 0 && Price > 0)
-                {
-                    return (double)((Discount.Value / Price) * 100);
-                }
-                if (ProductCategory != null && ProductCategory.DiscountPercantage.HasValue)
-                {
-                    return ProductCategory.DiscountPercantage.Value;
-                }
-                return 0;
+                return this.GetDetailPageUrl("BuyNow", "Payment", ProductCategory != null ? ProductCategory.Name : "no_category", "", "");
             }
         }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.ProductNameStr
         [NotMapped]
-        public string ModifiedId
+        public string ProductNameStr
         {
             get
             {
-                return GeneralHelper.ModifyId(this.Id);
+                if (!string.IsNullOrEmpty(NameShort)) return NameShort;
+                if (!string.IsNullOrEmpty(NameLong)) return NameLong;
+                return Name;
             }
         }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.ModifiedId
+        [NotMapped]
+        public string ModifiedId { get { return GeneralHelper.ModifyId(Id); } }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.IsBuyableState
         [NotMapped]
         public bool IsBuyableState
         {
-            get
-            {
-                if (Price <= 0)
-                {
-                    return false;
-                }
-                switch (StateEnum)
-                {
-                    case ProductState.ProductInStock:
-                    case ProductState.PreOrder:
-                    case ProductState.LimitedStock:
-                        return true;
-                    default:
-                        return false;
-                }
-            }
+            get { return this.StateEnum == ProductState.ProductInStock && this.Price > 0; }
         }
 
-        /// <summary>
-        /// True when the product has a price and is available for sale
-        /// (in stock, pre-order, limited stock, or coming soon).
-        /// Used for the "Satışta" listing badge.
-        /// </summary>
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.IsOnSale
         [NotMapped]
         public bool IsOnSale
         {
             get
             {
-                if (Price <= 0)
-                {
-                    return false;
-                }
-
+                if (Price <= 0) return false;
                 switch (StateEnum)
                 {
                     case ProductState.ProductInStock:
                     case ProductState.PreOrder:
                     case ProductState.LimitedStock:
-                    case ProductState.ComingSoon:
-                        return true;
-                    default:
-                        return false;
+                    case ProductState.ComingSoon: return true;
+                    default: return false;
                 }
             }
-        }
-
-        public string ImageFullPath(int width, int height, bool isThump=false)
-        {
-            // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
-            var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
-            var result = this.GetCroppedImageUrl(this.MainImageId, width, height, true, isThump) ?? string.Empty;
-            if (!string.IsNullOrEmpty(baseurl) && !result.Contains(baseurl))
-            {
-                result = baseurl + result;
-            }
-            return result;
-        }
-
-        // override object.Equals
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-            return ((Product)obj).Id == this.Id;
-        }
-
-        // override object.GetHashCode
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
     }
 }

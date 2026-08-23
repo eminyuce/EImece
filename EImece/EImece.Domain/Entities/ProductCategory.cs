@@ -1,4 +1,4 @@
-using EImece.Domain.Helpers.Extensions;
+﻿using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using Resources;
@@ -29,8 +29,38 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.TemplateId))]
         public int? TemplateId { get; set; }
 
+        // Needed for Admin panel — category tree building for admin management screens.
+        [NotMapped]
+        public List<ProductCategory> Childrens { get; set; }
+
+        // Needed for Admin panel — category tree parent reference used while building admin category hierarchy.
+        [NotMapped]
+        public ProductCategory Parent { get; set; }
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCategoryDiscountPercantage))]
         public double? DiscountPercantage { get; set; }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontCategoryDto.DetailPageUrl / ProductCategoryLink
+        [NotMapped]
+        public string ProductCategoryLink
+        {
+            get
+            {
+                var requestContext = HttpContext.Current?.Request?.RequestContext;
+                if (requestContext == null) return this.GetDetailPageUrl("Category", "ProductCategories", "", "", "");
+                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
+            }
+        }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontCategoryDto.DetailPageUrl
+        [NotMapped]
+        public string DetailPageUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Category", "ProductCategories", "", "", "");
+            }
+        }
 
         public string ProductCategoryListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {
@@ -49,48 +79,25 @@ namespace EImece.Domain.Entities
 
         public Template Template { get; set; }
 
-        [NotMapped]
-        public List<ProductCategory> Childrens { get; set; }
-
-        [NotMapped]
-        public ProductCategory Parent { get; set; }
-
-        [NotMapped]
-        public string ProductCategoryLink
-        {
-            get
-            {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                var urlHelp = new UrlHelper(requestContext);
-                return urlHelp.Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
-            }
-        }
-
-        [NotMapped]
-        public string DetailPageUrl
-        {
-            get
-            {
-                return this.GetDetailPageUrl("Category", "productCategories");
-            }
-        }
-
+        // Needed for Admin panel — renders the category tree node HTML preview in admin category management.
         [NotMapped]
         public string CreateChildDataContent
         {
             get
             {
-                var dataContent = "";
-                if (Childrens != null && Childrens.Count > 0)
+                if (MainImage != null)
                 {
-                    dataContent = "<ul>";
-                    foreach (var category in Childrens)
-                    {
-                        dataContent = dataContent + String.Format("<li><a href='{0}'>{1}</a></li>", category.DetailPageUrl, category.Name);
-                    }
-                    dataContent = dataContent + "</ul>";
+                    var mainImageUrl = MainImage.GetCroppedImageUrl(
+                  MainImage.Id,
+                  300, 0, false);
+                    var result = string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{1}</div>", mainImageUrl,
+                        this.Name);
+                    return HttpUtility.HtmlEncode(result);
                 }
-                return dataContent;
+                else
+                {
+                    return "";
+                }
             }
         }
     }

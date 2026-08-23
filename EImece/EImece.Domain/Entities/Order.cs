@@ -59,9 +59,11 @@ namespace EImece.Domain.Entities
         public Address BillingAddress { get; set; }
         public ICollection<OrderProduct> OrderProducts { get; set; }
 
+        // Needed for Admin panel — admin order detail transiently populates the associated customer for display.
         [NotMapped]
         public Customer Customer { get; set; }
 
+        // Needed for Admin panel — admin order detail converts string PaidPrice to decimal for calculations.
         [NotMapped]
         public decimal PaidPriceDecimal
         {
@@ -71,6 +73,7 @@ namespace EImece.Domain.Entities
             }
         }
 
+        // Needed for Admin panel — admin order detail shows installment breakdown (e.g. "3 x 1.200,00 ₺").
         [NotMapped]
         public string InstallmentDescription
         {

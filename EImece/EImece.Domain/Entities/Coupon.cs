@@ -25,12 +25,14 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.EndDate))]
         public DateTime EndDate { get; set; }
 
+        // Needed for Admin panel — admin coupon form uses string-bound date inputs for jQuery datepicker.
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.StartDate))]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
         [NotMapped]
         public string StartDateStr { get; set; }
 
+        // Needed for Admin panel — admin coupon form uses string-bound date inputs for jQuery datepicker.
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.EndDate))]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]

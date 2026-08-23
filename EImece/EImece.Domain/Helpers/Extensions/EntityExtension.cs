@@ -110,7 +110,8 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 ub.Query = rssParams.GetAnalyticsQueryString();
             }
-            var si = new SyndicationItem(product.ProductNameStr, desc, ub.Uri);
+            var productNameStr = !string.IsNullOrEmpty(product.NameShort) ? product.NameShort : (!string.IsNullOrEmpty(product.NameLong) ? product.NameLong : product.Name);
+            var si = new SyndicationItem(productNameStr, desc, ub.Uri);
             si.PublishDate = product.UpdatedDate.ToUniversalTime();
 
             if (!String.IsNullOrEmpty(product.ProductCategory.Name))

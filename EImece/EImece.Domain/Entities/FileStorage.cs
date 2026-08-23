@@ -18,6 +18,7 @@ namespace EImece.Domain.Entities
 
         public ICollection<FileStorageTag> FileStorageTags { get; set; }
 
+        // Needed for Admin panel — admin file manager preview resolves thumbnail + original src paths via FilesHelper.
         [NotMapped]
         public Tuple<string, string> FileStorageSrcPaths
         {

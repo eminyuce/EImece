@@ -1,4 +1,4 @@
-using EImece.Domain.Helpers.Extensions;
+﻿using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,24 +23,31 @@ namespace EImece.Domain.Entities
         /// <summary>
         /// Active product + story associations. Populated by tag listing queries; not mapped to the DB.
         /// </summary>
+        // Needed for Admin panel — tag listing grid shows associated item count.
         [NotMapped]
         public int ItemCount { get; set; }
 
+        // Kept for Razor view compatibility — canonical logic lives in StorefrontTagDto.DetailPageRelativeUrl / StoryTagDetailPageUrl
         [NotMapped]
         public string DetailPageRelativeUrlForProducts
         {
             get
             {
-                return this.GetDetailPageUrl("Tag", "Products");
+                var rc = HttpContext.Current?.Request?.RequestContext;
+                if (rc == null) return this.GetDetailPageUrl("Tag", "Products", "", "", "");
+                return new UrlHelper(rc).Action("Tag", "products", new { id = this.GetSeoUrl() });
             }
         }
 
+        // Kept for Razor view compatibility — canonical logic lives in StorefrontTagDto.StoryTagDetailPageUrl
         [NotMapped]
         public string DetailPageRelativeUrlForStories
         {
             get
             {
-                return this.GetDetailPageUrl("Tag", Constants.StoriesAction);
+                var rc = HttpContext.Current?.Request?.RequestContext;
+                if (rc == null) return this.GetDetailPageUrl("Tag", "Stories", "", "", "");
+                return new UrlHelper(rc).Action("tag", "stories", new { id = this.GetSeoUrl() });
             }
         }
     }
