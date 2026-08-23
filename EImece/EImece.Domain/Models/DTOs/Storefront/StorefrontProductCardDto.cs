@@ -101,8 +101,57 @@ namespace EImece.Domain.Models.DTOs.Storefront
         {
             get
             {
-                return State == ProductState.ProductInStock.ToString() ||
-                       State == ProductState.LimitedStock.ToString();
+                if (Price <= 0)
+                {
+                    return false;
+                }
+
+                if (Enum.TryParse(State, out ProductState stateEnum))
+                {
+                    switch (stateEnum)
+                    {
+                        case ProductState.ProductInStock:
+                        case ProductState.PreOrder:
+                        case ProductState.LimitedStock:
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// True when the product has a price and is available for sale
+        /// (in stock, pre-order, limited stock, or coming soon).
+        /// Used for the "Satışta" listing badge.
+        /// </summary>
+        public bool IsOnSale
+        {
+            get
+            {
+                if (Price <= 0)
+                {
+                    return false;
+                }
+
+                if (Enum.TryParse(State, out ProductState stateEnum))
+                {
+                    switch (stateEnum)
+                    {
+                        case ProductState.ProductInStock:
+                        case ProductState.PreOrder:
+                        case ProductState.LimitedStock:
+                        case ProductState.ComingSoon:
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
+                return false;
             }
         }
 

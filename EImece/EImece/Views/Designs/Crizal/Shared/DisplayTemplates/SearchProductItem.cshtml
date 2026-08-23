@@ -15,7 +15,7 @@
     var detailUrl = dto != null ? dto.DetailPageAbsoluteUrl : (product != null ? product.DetailPageAbsoluteUrl : string.Empty);
     var price = dto != null ? dto.Price : (product != null ? product.Price : 0);
     var priceWithDiscount = dto != null ? dto.PriceWithDiscount : (product != null ? product.PriceWithDiscount : 0);
-    var isOnSale = dto != null ? dto.HasDiscount : (product != null ? product.IsOnSale : false);
+    var isOnSale = dto != null ? dto.IsOnSale : (product != null ? product.IsOnSale : false);
     var isBuyable = dto != null ? dto.IsBuyableState : (product != null ? product.IsBuyableState : false);
     var modifiedId = dto != null ? dto.ModifiedId : (product != null ? product.ModifiedId : string.Empty);
 

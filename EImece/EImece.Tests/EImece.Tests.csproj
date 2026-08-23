@@ -350,6 +350,7 @@
     <Compile Include="Helpers\MailTemplateModelInspectorTests.cs" />
     <Compile Include="Helpers\InMemoryRateLimiterTests.cs" />
     <Compile Include="Helpers\StorefrontSeoAndEmptyStateTests.cs" />
+    <Compile Include="Helpers\StorefrontIsOnSaleTests.cs" />
     <Compile Include="Helpers\OrderDeleteAddressTests.cs" />
     <Compile Include="Helpers\RepositoryLifetimeTests.cs" />
     <Compile Include="Helpers\UnderConstAttributeTests.cs" />
