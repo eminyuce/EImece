@@ -65,6 +65,10 @@
                 @Html.HiddenFor(model => model.CreatedDate)
                 @Html.HiddenFor(model => model.UpdatedDate)
                 @Html.HiddenFor(model => model.Lang)
+                @{
+                    var _langForBadge = Model != null && Model.Lang != 0 ? Model.Lang : ((EImece.Areas.Admin.Controllers.BaseAdminController)ViewContext.Controller).CurrentLanguage;
+                }
+                @Html.Partial("_AdminLanguageBadge", _langForBadge)
 
                 <div class="card admin-edit-form">
                 @Html.Partial("_AdminEditFormToolbar")

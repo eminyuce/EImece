@@ -1,0 +1,22 @@
+@using EImece.Domain.Models.Enums
+@model int?
+@{
+    var langValue = Model ?? 1;
+    var isTR = langValue == 1;
+    var flag = isTR ? "🇹🇷" : langValue == 2 ? "🇬🇧" : "🏳️";
+    var code = isTR ? "tr-TR" : langValue == 2 ? "en-US" : langValue.ToString();
+    var native = isTR ? "Türkçe" : langValue == 2 ? "English" : "Lang " + langValue;
+    var english = isTR ? "Turkish" : langValue == 2 ? "İngilizce" : "";
+    var description = isTR ? "Bu içerik Türkçe dilinde oluşturulacak / This content will be created in Turkish" : "This content will be created in English / Bu içerik İngilizce dilinde oluşturulacak";
+}
+<div class="alert d-flex align-items-center gap-2 py-2 px-3 mb-3" role="alert" style="background:#f0f9ff; border:1px solid #bae6fd; color:#0c4a6e; border-radius:10px; font-size:13px;">
+    <span style="font-size:18px;" aria-hidden="true">@flag</span>
+    <div class="flex-grow-1">
+        <strong>@flag @native (@code)</strong> <span style="opacity:.7;">— @english</span>
+        <div style="font-size:11px; opacity:.8; margin-top:2px;">@description</div>
+    </div>
+    <span class="badge bg-white text-dark border" style="font-size:11px; white-space:nowrap;">Lang: @langValue</span>
+    <a href="#" onclick="document.getElementById('CookieLanguage')?.focus(); window.scrollTo({top:0, behavior:'smooth'}); return false;" class="btn btn-sm btn-outline-primary py-1 px-2" style="font-size:11px; white-space:nowrap;" title="Dili değiştirmek için üst menüdeki Dil / Language seçiciyi kullanın / Use the top bar language selector to change">
+        <i class="fa fa-globe" aria-hidden="true"></i> Değiştir / Change
+    </a>
+</div>

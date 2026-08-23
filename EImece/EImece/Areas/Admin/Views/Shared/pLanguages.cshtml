@@ -1,5 +1,4 @@
-﻿@using EImece.Domain.Entities;
-@using EImece.Domain.Helpers;
+﻿@using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
 @using System.Linq;
 @model  List<SelectListItem>
@@ -7,24 +6,53 @@
     var listItems = Model;
     var selectedLang = listItems.FirstOrDefault(l => l.Selected);
     var selectedLangText = selectedLang != null ? selectedLang.Text : "";
+    var selectedValue = selectedLang != null ? selectedLang.Value : "";
+    // Map language Value (1=TR,2=EN) to flag, code and bilingual labels
+    Func<string, string> flagFor = v => v == "1" ? "🇹🇷" : v == "2" ? "🇬🇧" : v == "3" ? "🇷🇺" : v == "4" ? "🇩🇪" : "🏳️";
+    Func<string, string> codeFor = v => v == "1" ? "tr-TR" : v == "2" ? "en-US" : v == "3" ? "ru-RU" : v == "4" ? "de-DE" : v;
+    Func<string, string> nativeFor = v => {
+        var item = listItems.FirstOrDefault(x => x.Value == v);
+        return item != null ? item.Text : v;
+    };
 }
 @if (listItems.Count() > 1)
 {
-<li class="admin-topbar-action--essential admin-topbar-lang-item">
-    <label class="visually-hidden" for="CookieLanguage">Language @selectedLangText</label>
-    <select class="form-control admin-topbar-lang" id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)" aria-label="Language @selectedLangText">
-        @foreach (var l in listItems)
-        {
-            if (l.Selected)
+<li class="admin-topbar-action--essential admin-topbar-lang-item d-flex align-items-center gap-2" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:999px; padding:4px 10px 4px 12px;">
+    <span class="admin-topbar-lang-label d-flex align-items-center gap-1" style="font-size:12px; font-weight:700; letter-spacing:.02em; color:#cbd5e1; white-space:nowrap;">
+        <i class="fa fa-globe" aria-hidden="true" style="color:#38bdf8;"></i>
+        <span class="d-none d-md-inline">Dil / Language</span>
+        <span class="d-md-none">Dil</span>
+    </span>
+    <div class="d-flex align-items-center gap-1">
+        <span class="d-none d-sm-inline" style="font-size:16px;" aria-hidden="true">@flagFor(selectedValue)</span>
+        <label class="visually-hidden" for="CookieLanguage">Dil seçimi / Language selection — Seçili: @selectedLangText (@codeFor(selectedValue))</label>
+        <select class="form-control form-select form-select-sm admin-topbar-lang" id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)" aria-label="Dil seçimi / Language selection — Seçili: @selectedLangText" title="Bu seçim admin panelinin ve oluşturacağınız içeriğin dilini belirler / This sets the admin UI and content language" style="min-width:210px; height:32px; font-size:13px; font-weight:600; border-radius:999px; background:#0f172a; color:#f1f5f9; border:1px solid #334155; padding:4px 28px 4px 10px;">
+            @foreach (var l in listItems)
             {
-        <option selected="selected" value="@l.Value">@l.Text</option>
+                var v = l.Value;
+                var isTR = v == "1";
+                var flag = flagFor(v);
+                var code = codeFor(v);
+                // Bilingual option text: flag + Native (code) — English / Türkçe
+                var display = isTR
+                    ? $"{flag} Türkçe ({code}) — Turkish"
+                    : v == "2" ? $"{flag} English ({code}) — İngilizce"
+                    : v == "3" ? $"{flag} Русский ({code}) — Russian"
+                    : v == "4" ? $"{flag} Deutsch ({code}) — German"
+                    : $"{flag} {l.Text} ({code})";
+                if (l.Selected)
+                {
+            <option selected="selected" value="@l.Value">@display</option>
+                }
+                else
+                {
+            <option value="@l.Value">@display</option>
+                }
             }
-            else
-            {
-        <option value="@l.Value">@l.Text</option>
-            }
-
-        }
-    </select>
+        </select>
+    </div>
+    <span class="d-none d-xl-inline" style="font-size:11px; color:#94a3b8; max-width:220px; line-height:1.2;" title="Seçili dilde ürün, kategori ve hikaye oluşturur/düzenlersiniz. Mağaza bu dilde içerik gösterir.">
+        Seçili: <strong style="color:#e2e8f0;">@flagFor(selectedValue) @selectedLangText</strong> <span style="opacity:.7;">(@codeFor(selectedValue))</span>
+    </span>
 </li>
 }
