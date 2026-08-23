@@ -184,7 +184,7 @@ namespace EImece.Domain.Helpers
                    };
         }
 
-        private static EImeceLanguage? ParseLanguage(string lang)
+        public static EImeceLanguage? ParseLanguage(string lang)
         {
             if (string.IsNullOrWhiteSpace(lang)) return null;
             if (int.TryParse(lang, out int langInt) && Enum.IsDefined(typeof(EImeceLanguage), langInt))

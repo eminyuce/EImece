@@ -14,8 +14,10 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -211,6 +213,12 @@ namespace EImece.Areas.Admin.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            // Set the UI culture based on AdminPanelLanguage setting (admin panel interface language)
+            // This is separate from CurrentLanguage which is the data entry language (topbar dropdown)
+            var uiLang = AdminPanelUILanguage;
+            var cultureName = uiLang == 2 ? "en-US" : "tr-TR";
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
             ViewBag.GridPageSizeNumber = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
 
@@ -377,6 +385,30 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     return AppConfig.MainLanguage;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the admin panel UI language from the system setting (AdminPanelLanguage).
+        /// This is separate from CurrentLanguage (data entry language from topbar dropdown).
+        /// </summary>
+        protected int AdminPanelUILanguage
+        {
+            get
+            {
+                // Try to get from system setting
+                var settingValue = SettingService?.GetSettingByKey(DomainConstants.AdminPanelLanguage);
+                if (!string.IsNullOrWhiteSpace(settingValue))
+                {
+                    // Parse culture code like "tr-TR" or "en-US" to EImeceLanguage enum value
+                    var langEnum = EnumHelper.ParseLanguage(settingValue);
+                    if (langEnum.HasValue)
+                    {
+                        return (int)langEnum.Value;
+                    }
+                }
+                // Fallback to default
+                return DomainConstants.DefaultAdminPanelLanguage == "en-US" ? 2 : 1;
             }
         }
 

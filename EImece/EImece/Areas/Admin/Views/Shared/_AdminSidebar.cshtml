@@ -229,9 +229,9 @@
                 </a>
                 <a class="admin-nav-item @(controllerActive("rssfeeds"))"
                    href="@Url.Action("Index", "RssFeeds", new { area = "admin" })"
-                   title="RSS Beslemeleri">
+                   title="@AdminResource.RssFeeds">
                     <i class="fa fa-rss" aria-hidden="true"></i>
-                    <span class="admin-nav-label">RSS Beslemeleri</span>
+                    <span class="admin-nav-label">@AdminResource.RssFeeds</span>
                 </a>
             </div>
         </div>
@@ -286,15 +286,15 @@
                     </a>
                     <a class="admin-nav-item @actionActive("users", "enableauthenticator")"
                        href="@Url.Action("EnableAuthenticator", "Users", new { area = "admin" })"
-                       title="Authenticator 2FA">
+                       title="@AdminResource.Authenticator2FA">
                         <i class="fa fa-shield" aria-hidden="true"></i>
-                        <span class="admin-nav-label">Authenticator 2FA</span>
+                        <span class="admin-nav-label">@AdminResource.Authenticator2FA</span>
                     </a>
                     <a class="admin-nav-item @actionActive("dashboard", "systemhealth")"
                        href="@Url.Action("SystemHealth", "Dashboard", new { area = "admin" })"
-                       title="Sistem Sağlığı">
+                       title="@AdminResource.SystemHealth">
                         <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                        <span class="admin-nav-label">Sistem Sağlığı</span>
+                        <span class="admin-nav-label">@AdminResource.SystemHealth</span>
                     </a>
                 </div>
             </div>

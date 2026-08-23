@@ -502,6 +502,21 @@
                                     </div>
                                 </div>
 
+                                <!-- Admin Panel Language -->
+                                <div class="setting-item mb-3" data-setting-name="AdminPanelLanguage" data-setting-label="Yönetim Paneli Dili" data-setting-desc="Yönetim paneli arayüzünün görüntüleneceği dil (menüler, etiketler, butonlar, mesajlar). Veri giriş dili (üst çubuk) ile bağımsızdır." data-keywords="yönetim paneli dil arayüz language ui tr en">
+                                    <label class="form-label fw-bold small" for="AdminPanelLanguage">
+                                        @Html.DisplayNameFor(model => model.AdminPanelLanguage)
+                                        @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", Resource.AdminPanelLanguageDescription } })
+                                    </label>
+                                    @Html.DropDownListFor(model => model.AdminPanelLanguage, new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "Türkçe (Turkish)", Value = "tr-TR" },
+                                        new SelectListItem { Text = "English", Value = "en-US" }
+                                    }, new { @class = "form-select", id = "AdminPanelLanguage" })
+                                    <div class="form-text small">Yönetim paneli arayüz dili (menüler, butonlar, mesajlar). Veri giriş dili (üst çubuk) ayrı bir ayardır.</div>
+                                    @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
+                                </div>
+
                                 <!-- Price Filter Setting Editor Partial -->
                                 <div class="setting-item mb-3" data-setting-name="ProductPriceFilterSetting" data-setting-label="Fiyat Filtresi Aralıkları" data-setting-desc="Kategori ve arama sayfalarında gösterilen dinamik fiyat filtre aralıkları" data-keywords="fiyat aralığı filtre kategori slider range price filter">
                                     <label class="form-label fw-bold small">
