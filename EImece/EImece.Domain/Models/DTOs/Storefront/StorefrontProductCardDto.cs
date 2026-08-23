@@ -155,6 +155,57 @@ namespace EImece.Domain.Models.DTOs.Storefront
             }
         }
 
+        public ProductState StateEnum
+        {
+            get => Enum.TryParse(State, out ProductState result) ? result : ProductState.NONE;
+            set => State = value.ToString();
+        }
+
+        public string ProductNameStr
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(NameShort)) return NameShort;
+                if (!string.IsNullOrEmpty(NameLong)) return NameLong;
+                return Name;
+            }
+        }
+
+        public string PriceStr => Price.CurrencySign();
+        public string DiscountStr => Discount.HasValue ? Discount.Value.CurrencySign() : string.Empty;
+
+        public bool ImageState
+        {
+            get => MainImageId.HasValue && MainImageId.Value > 0;
+        }
+
+        /// <summary>
+        /// True when the product has a price and is available for sale
+        /// (in stock, pre-order, limited stock, or coming soon).
+        /// Used for the "Satışta" listing badge.
+        /// </summary>
+        public bool IsOnSale
+        {
+            get
+            {
+                if (Price <= 0)
+                {
+                    return false;
+                }
+
+                switch (StateEnum)
+                {
+                    case ProductState.ProductInStock:
+                    case ProductState.PreOrder:
+                    case ProductState.LimitedStock:
+                    case ProductState.ComingSoon:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
+
         public string ModifiedId
         {
             get { return GeneralHelper.ModifyId(Id); }
@@ -195,6 +246,15 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public string DetailPageAbsoluteUrl
         {
             get { return DetailPageUrl; }
+        }
+
+        public string BuyNowRelativeUrl
+        {
+            get
+            {
+                var dummy = new Product { Id = Id, Name = Name };
+                return dummy.GetDetailPageUrl("BuyNow", "Payment", ProductCategoryName ?? "no_category");
+            }
         }
 
         public string ProductCategoryDetailPageUrl
@@ -248,9 +308,9 @@ namespace EImece.Domain.Models.DTOs.Storefront
             return dummy.GetResponsiveImageSrcSet(fileStorageId, width, height);
         }
 
-        public string ImageFullPath(int width = 0, int height = 0)
+        public string ImageFullPath(int width = 0, int height = 0, bool isThump = false)
         {
-            return GetCroppedImageUrl(MainImageId, width, height, true);
+            return GetCroppedImageUrl(MainImageId, width, height, true, isThump);
         }
     }
 }

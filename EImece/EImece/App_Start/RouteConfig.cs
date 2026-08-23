@@ -98,6 +98,14 @@ namespace EImece
                    namespaces: new[] { Constants.ControllersNamespace }
                );
 
+            // SEO: canonical Stories root /s/ mapped to StoriesController.Index
+            routes.MapRoute(
+                name: "StoriesRoot",
+                url: Constants.StoriesCategoriesControllerRoutingPrefix,
+                defaults: new { controller = Constants.StoriesRoute, action = "Index" },
+                namespaces: new[] { Constants.ControllersNamespace }
+            );
+
             // SEO: keep old /s/categories/{id} URLs working via 301 → /s/sc/{id}
             routes.MapRoute(
                    name: "StorycategoriesLegacy",
@@ -109,7 +117,7 @@ namespace EImece
             routes.MapRoute(
                    name: "StoryDetail",
                    url: Constants.StoriesCategoriesControllerRoutingPrefix + "/{categoryName}/{id}",
-                   defaults: new { controller = Constants.StoriesRoute, action = "Detail", id = UrlParameter.Optional },
+                   defaults: new { controller = Constants.StoriesRoute, action = "Detail" },
                    namespaces: new[] { Constants.ControllersNamespace }
                );
 
@@ -172,7 +180,7 @@ namespace EImece
             routes.MapRoute(
                name: "ProductDetail",
                url: Constants.ProductsControllerRoutingPrefix + "/{categoryName}/{id}",
-               defaults: new { controller = "Products", action = "Detail", id = UrlParameter.Optional },
+               defaults: new { controller = "Products", action = "Detail" },
                namespaces: new[] { Constants.ControllersNamespace }
            );
 
@@ -189,14 +197,6 @@ namespace EImece
                 name: "StoryCategoriesLegacyMvc",
                 url: "stories/categories/{id}",
                 defaults: new { controller = Constants.StoriesRoute, action = "CategoriesLegacy", id = UrlParameter.Optional },
-                namespaces: new[] { Constants.ControllersNamespace }
-            );
-
-            // SEO: canonical Stories root /s/ mapped to StoriesController.Index
-            routes.MapRoute(
-                name: "StoriesRoot",
-                url: Constants.StoriesCategoriesControllerRoutingPrefix,
-                defaults: new { controller = Constants.StoriesRoute, action = "Index" },
                 namespaces: new[] { Constants.ControllersNamespace }
             );
 

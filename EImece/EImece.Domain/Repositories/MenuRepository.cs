@@ -39,6 +39,7 @@ namespace EImece.Domain.Repositories
                     Lang = m.Lang,
                     IsActive = m.IsActive,
                     PageTheme = m.PageTheme,
+                    CreatedDate = m.CreatedDate,
                     UpdatedDate = m.UpdatedDate
                 };
             }
@@ -58,9 +59,15 @@ namespace EImece.Domain.Repositories
                     LinkIsActive = m.LinkIsActive,
                     Description = m.Description,
                     ShortDescription = m.Description,
+                    MetaKeywords = m.MetaKeywords,
                     MainImageId = m.MainImageId,
                     Position = m.Position,
-                    PageTheme = m.PageTheme
+                    Lang = m.Lang,
+                    IsActive = m.IsActive,
+                    MainPage = m.MainPage,
+                    PageTheme = m.PageTheme,
+                    CreatedDate = m.CreatedDate,
+                    UpdatedDate = m.UpdatedDate
                 };
             }
         }

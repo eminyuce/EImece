@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
@@ -32,9 +32,6 @@ namespace EImece.Domain.Entities
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LinkIsActive))]
         public Boolean LinkIsActive { get; set; }
-
-        [NotMapped]
-        public List<Menu> Childrens { get; set; }
 
         public ICollection<MenuFile> MenuFiles { get; set; }
 

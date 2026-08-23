@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
@@ -32,8 +32,8 @@ namespace EImece.Domain.Entities
 
 
         public StoryCategory StoryCategory { get; set; }
-        public ICollection<StoryTag> StoryTags { get; set; }
         public ICollection<StoryFile> StoryFiles { get; set; }
+        public ICollection<StoryTag> StoryTags { get; set; }
 
         [NotMapped]
         public string DetailPageUrl
@@ -49,17 +49,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                if (HttpContext.Current == null)
-                    return "";
-
-                var categoryName = StoryCategory != null ? StoryCategory.Name : "no_category";
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("Detail", "Stories", new
-                {
-                    categoryName = GeneralHelper.GetUrlSeoString(categoryName),
-                    id = this.GetSeoUrl(),
-                    area = ""
-                });
+                return this.GetDetailPageUrl("Detail", "Stories", StoryCategory != null ? StoryCategory.Name : "no_category");
             }
         }
     }

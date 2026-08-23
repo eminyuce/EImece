@@ -2,6 +2,7 @@ using AutoMapper;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Models.DTOs.Storefront;
 using System.Web;
 using System.Web.Mvc;
 
@@ -48,6 +49,7 @@ namespace EImece.Domain.Services
             CreateMapTag();
             CreateMapTagCategory();
             CreateMapTemplate();
+            CreateMapStorefrontDtos();
         }
 
         // Helper to safely get UrlHelper only when HttpContext is available
@@ -87,11 +89,7 @@ namespace EImece.Domain.Services
         private void CreateMapProduct()
         {
             CreateMap<Product, ProductDto>()
-                .ForMember(d => d.DiscountPercentage, o => o.MapFrom(s => s.DiscountPercentage))
-                .ForMember(d => d.ModifiedId, o => o.MapFrom(s => EImece.Domain.Helpers.GeneralHelper.ModifyId(s.Id)))
-                .ForMember(d => d.ProductNameStr, o => o.MapFrom(s => s.ProductNameStr))
-                .ForMember(d => d.PriceWithDiscount, o => o.MapFrom(s => s.PriceWithDiscount))
-                .ForMember(d => d.IsBuyableState, o => o.MapFrom(s => s.IsBuyableState));
+                .ForMember(d => d.ModifiedId, o => o.MapFrom(s => EImece.Domain.Helpers.GeneralHelper.ModifyId(s.Id)));
         }
 
         private void CreateMapProductCategory()
@@ -106,7 +104,7 @@ namespace EImece.Domain.Services
                         ? s.GetCroppedImageUrl(s.MainImageId, 100, 100, true, false)
                         : string.Empty))
                 .ForMember(d => d.DetailPageUrl,
-                    o => o.MapFrom(s => HttpContext.Current != null ? s.DetailPageUrl : string.Empty))
+                    o => o.MapFrom(s => HttpContext.Current != null ? s.GetDetailPageUrl("Category", "productCategories", "", "", "") : string.Empty))
                 .ForMember(d => d.SeoUrl,
                     o => o.MapFrom(s => s.GetSeoUrl()))
                 .ForMember(d => d.DiscountPercentage,
@@ -156,5 +154,31 @@ namespace EImece.Domain.Services
         private void CreateMapBrand() => CreateMap<Brand, BrandDto>();
         private void CreateMapAppLog() => CreateMap<AppLog, AppLogDto>();
         private void CreateMapAddress() => CreateMap<Address, AddressDto>();
+
+        private void CreateMapStorefrontDtos()
+        {
+            CreateMap<Product, StorefrontProductCardDto>()
+                .ForMember(d => d.ProductCategoryName, o => o.MapFrom(s => s.ProductCategory != null ? s.ProductCategory.Name : string.Empty))
+                .ForMember(d => d.BrandName, o => o.MapFrom(s => s.Brand != null ? s.Brand.Name : string.Empty));
+            CreateMap<Product, StorefrontProductDetailDto>()
+                .ForMember(d => d.ProductCategoryName, o => o.MapFrom(s => s.ProductCategory != null ? s.ProductCategory.Name : string.Empty))
+                .ForMember(d => d.BrandName, o => o.MapFrom(s => s.Brand != null ? s.Brand.Name : string.Empty));
+            CreateMap<ProductCategory, StorefrontCategoryDto>()
+                .ForMember(d => d.DiscountPercentage, o => o.MapFrom(s => s.DiscountPercantage.HasValue ? (int?)s.DiscountPercantage.Value : null));
+            CreateMap<Story, StorefrontStoryCardDto>()
+                .ForMember(d => d.StoryCategoryName, o => o.MapFrom(s => s.StoryCategory != null ? s.StoryCategory.Name : string.Empty));
+            CreateMap<Story, StorefrontStoryDetailDto>()
+                .ForMember(d => d.StoryCategoryName, o => o.MapFrom(s => s.StoryCategory != null ? s.StoryCategory.Name : string.Empty));
+            CreateMap<Menu, StorefrontMenuDto>()
+                .ForMember(d => d.Url, o => o.MapFrom(s => s.Link));
+            CreateMap<Menu, StorefrontPageDto>();
+            CreateMap<Brand, StorefrontBrandDto>();
+            CreateMap<Tag, StorefrontTagDto>()
+                .ForMember(d => d.TagCategoryName, o => o.MapFrom(s => s.TagCategory != null ? s.TagCategory.Name : string.Empty));
+            CreateMap<ProductSpecification, StorefrontProductSpecificationDto>()
+                .ForMember(d => d.Order, o => o.MapFrom(s => s.Position));
+            CreateMap<ProductComment, StorefrontProductCommentDto>()
+                .ForMember(d => d.Comment, o => o.MapFrom(s => s.Review));
+        }
     }
 }

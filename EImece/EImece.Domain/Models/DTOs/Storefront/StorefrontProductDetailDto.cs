@@ -15,6 +15,8 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public string ProductSizeOptions { get; set; }
         public string MetaKeywords { get; set; }
         public int? ProductCategoryTemplateId { get; set; }
+        public StorefrontCategoryDto ProductCategory { get; set; }
+        public StorefrontBrandDto Brand { get; set; }
 
         public List<StorefrontProductFileDto> ProductFiles { get; set; }
         public List<StorefrontTagDto> ProductTags { get; set; }

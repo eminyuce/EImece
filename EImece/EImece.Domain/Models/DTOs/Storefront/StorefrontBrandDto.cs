@@ -1,6 +1,9 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using System;
+using System.Web;
+using System.Web.Mvc;
 
 namespace EImece.Domain.Models.DTOs.Storefront
 {
@@ -11,6 +14,40 @@ namespace EImece.Domain.Models.DTOs.Storefront
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool MainPage { get; set; }
+        public int? MainImageId { get; set; }
+        public string Description { get; set; }
+        public string ShortDescription { get; set; }
+        public string MetaKeywords { get; set; }
+        public int Position { get; set; }
+        public int Lang { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+
+        public bool ImageState
+        {
+            get => MainImageId.HasValue && MainImageId.Value > 0;
+        }
+
+        public static StorefrontBrandDto FromEntity(Brand b)
+        {
+            if (b == null) return null;
+            return new StorefrontBrandDto
+            {
+                Id = b.Id,
+                Name = b.Name,
+                MainPage = b.MainPage,
+                MainImageId = b.MainImageId,
+                Description = b.Description,
+                MetaKeywords = b.MetaKeywords,
+                Position = b.Position,
+                Lang = b.Lang,
+                IsActive = b.IsActive,
+                CreatedDate = b.CreatedDate,
+                UpdatedDate = b.UpdatedDate
+            };
+        }
 
         public string ModifiedId
         {
@@ -30,5 +67,59 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 return dummy.GetDetailPageUrl("Detail", "Brands");
             }
         }
+
+        public string DetailPageRelativeUrl => DetailPageUrl;
+        public string DetailPageAbsoluteUrl => DetailPageUrl;
+
+        public string GetCroppedImageUrl(int? fileStorageId = null, int width = 0, int height = 0, bool isFullPath = false, bool isThumb = false)
+        {
+            int imageId = fileStorageId.HasValue ? fileStorageId.Value : (MainImageId.HasValue ? MainImageId.Value : 0);
+            var dummy = new Brand { Id = Id, Name = Name };
+            return dummy.GetCroppedImageUrl(imageId, width, height, isFullPath, isThumb);
+        }
+
+        public string GetCroppedImageTag(int width = 0, int height = 0)
+        {
+            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(null, width, height), System.Web.HttpUtility.HtmlAttributeEncode(Name));
+        }
+
+        public string GetResponsiveImageSrcSet(int width = 0, int height = 0)
+        {
+            int imageId = MainImageId.HasValue ? MainImageId.Value : 0;
+            var dummy = new Brand { Id = Id, Name = Name };
+            return dummy.GetResponsiveImageSrcSet(imageId, width, height);
+        }
+
+        public string GetProductsUrl(ProductCategory category)
+        {
+            if (Id <= 0 || string.IsNullOrWhiteSpace(Name)) return string.Empty;
+            var requestContext = HttpContext.Current?.Request?.RequestContext;
+            if (requestContext == null) return string.Empty;
+
+            var urlHelper = new UrlHelper(requestContext);
+            if (category != null)
+            {
+                return urlHelper.Action("Category", "ProductCategories", new { id = category.GetSeoUrl(), filtreler = "b" + Id });
+            }
+            return urlHelper.Action("searchproducts", "Products", new { search = Name });
+        }
+
+        public string GetProductsUrl(StorefrontCategoryDto category)
+        {
+            if (Id <= 0 || string.IsNullOrWhiteSpace(Name)) return string.Empty;
+            var requestContext = HttpContext.Current?.Request?.RequestContext;
+            if (requestContext == null) return string.Empty;
+
+            var urlHelper = new UrlHelper(requestContext);
+            if (category != null)
+            {
+                return urlHelper.Action("Category", "ProductCategories", new { id = category.GetSeoUrl(), filtreler = "b" + Id });
+            }
+            return urlHelper.Action("searchproducts", "Products", new { search = Name });
+        }
+
+        public string GetSeoTitle(int lang = 1) => Name;
+        public string GetSeoDescription(int lang = 1) => !string.IsNullOrWhiteSpace(ShortDescription) ? ShortDescription : (!string.IsNullOrWhiteSpace(Description) ? Description : Name);
+        public string GetSeoKeywords(int lang = 1) => !string.IsNullOrWhiteSpace(MetaKeywords) ? MetaKeywords : Name;
     }
 }

@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using Resources;
@@ -29,33 +29,8 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.TemplateId))]
         public int? TemplateId { get; set; }
 
-        [NotMapped]
-        public List<ProductCategory> Childrens { get; set; }
-
-        [NotMapped]
-        public ProductCategory Parent { get; set; }
-
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCategoryDiscountPercantage))]
         public double? DiscountPercantage { get; set; }
-
-        [NotMapped]
-        public string ProductCategoryLink
-        {
-            get
-            {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
-            }
-        }
-
-        [NotMapped]
-        public string DetailPageUrl
-        {
-            get
-            {
-                return this.GetDetailPageUrl("Category", "productCategories");
-            }
-        }
 
         public string ProductCategoryListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {
@@ -75,23 +50,47 @@ namespace EImece.Domain.Entities
         public Template Template { get; set; }
 
         [NotMapped]
+        public List<ProductCategory> Childrens { get; set; }
+
+        [NotMapped]
+        public ProductCategory Parent { get; set; }
+
+        [NotMapped]
+        public string ProductCategoryLink
+        {
+            get
+            {
+                var requestContext = HttpContext.Current.Request.RequestContext;
+                var urlHelp = new UrlHelper(requestContext);
+                return urlHelp.Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
+            }
+        }
+
+        [NotMapped]
+        public string DetailPageUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Category", "productCategories");
+            }
+        }
+
+        [NotMapped]
         public string CreateChildDataContent
         {
             get
             {
-                if (MainImage != null)
+                var dataContent = "";
+                if (Childrens != null && Childrens.Count > 0)
                 {
-                    var mainImageUrl = MainImage.GetCroppedImageUrl(
-                  MainImage.Id,
-                  300, 0, false);
-                    var result = string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{1}</div>", mainImageUrl,
-                        this.Name);
-                    return HttpUtility.HtmlEncode(result);
+                    dataContent = "<ul>";
+                    foreach (var category in Childrens)
+                    {
+                        dataContent = dataContent + String.Format("<li><a href='{0}'>{1}</a></li>", category.DetailPageUrl, category.Name);
+                    }
+                    dataContent = dataContent + "</ul>";
                 }
-                else
-                {
-                    return "";
-                }
+                return dataContent;
             }
         }
     }

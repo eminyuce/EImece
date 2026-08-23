@@ -20,10 +20,19 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public string Description { get; set; }
         public int? MainImageId { get; set; }
         public int? DiscountPercentage { get; set; }
+        public double? DiscountPercantage
+        {
+            get => DiscountPercentage.HasValue ? (double?)DiscountPercentage.Value : null;
+            set => DiscountPercentage = value.HasValue ? (int?)Math.Round(value.Value) : null;
+        }
         public int Position { get; set; }
         public int Lang { get; set; }
         public bool IsActive { get; set; }
         public bool MainPage { get; set; }
+        public bool ImageState
+        {
+            get => MainImageId.HasValue && MainImageId.Value > 0;
+        }
         public int? TemplateId { get; set; }
         public int ProductCount { get; set; }
         public int ItemCount { get { return ProductCount; } set { ProductCount = value; } }
@@ -39,6 +48,11 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public StorefrontCategoryDto Parent { get; set; }
 
         public List<StorefrontCategoryDto> Children { get; set; }
+        public List<StorefrontCategoryDto> Childrens
+        {
+            get => Children;
+            set => Children = value;
+        }
         public List<StorefrontStoryCardDto> Stories { get; set; }
 
         public StorefrontCategoryDto()
@@ -60,7 +74,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 ShortDescription = r.ShortDescription,
                 Description = r.Description,
                 MainImageId = r.MainImageId,
-                DiscountPercentage = (int?)r.DiscountPercantage,
+                DiscountPercentage = r.DiscountPercantage.HasValue ? (int?)Math.Round(r.DiscountPercantage.Value) : null,
                 Position = r.Position,
                 Lang = r.Lang,
                 IsActive = r.IsActive,
@@ -174,6 +188,20 @@ namespace EImece.Domain.Models.DTOs.Storefront
         {
             var dummy = new ProductCategory { Id = Id, Name = Name };
             return dummy.GetResponsiveImageSrcSet(fileStorageId, width, height);
+        }
+
+        public string CreateChildDataContent
+        {
+            get
+            {
+                if (MainImageId.HasValue && MainImageId.Value > 0)
+                {
+                    var mainImageUrl = GetCroppedImageUrl(MainImageId.Value, 300, 0, false);
+                    var result = string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{1}</div>", mainImageUrl, Name);
+                    return System.Web.HttpUtility.HtmlEncode(result);
+                }
+                return string.Empty;
+            }
         }
     }
 }
