@@ -63,7 +63,7 @@
         <div class="eg-name-sub">@order.CreatedDate.ToString("dd MMM yyyy, HH:mm")</div>
         @if (!string.IsNullOrWhiteSpace(order.OrderComments))
         {
-            <div class="eg-co-customer-comment text-muted" title="@order.OrderComments">Müşteri: @order.OrderComments</div>
+            <div class="eg-co-customer-comment text-muted" title="@order.OrderComments">@AdminResource.Customer: @order.OrderComments</div>
         }
     </div>
 }
@@ -125,7 +125,7 @@
                 data-note="@raw"
                 data-company="@(order.ShipmentCompanyName ?? "")"
                 data-tracking="@(order.ShipmentTrackingNumber ?? "")"
-                title="Yönetici notunu düzenle">
+                title="@AdminResource.Administrator notunu düzenle">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             <span>Düzenle</span>
         </button>

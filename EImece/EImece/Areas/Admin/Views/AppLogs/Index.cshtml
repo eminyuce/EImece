@@ -39,7 +39,7 @@
             <div>
                 <label for="eventLevel" class="form-label">Seviye (debug type):</label>
                 <select id="eventLevel" name="eventLevel" class="form-select">
-                    <option value="">Tümü</option>
+                    <option value="">@AdminResource.All</option>
                     @foreach (var level in eventLevels)
                     {
                         <option value="@level" @(string.Equals(level, currentEventLevel, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>@level</option>

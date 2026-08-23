@@ -15,12 +15,12 @@
     var searchValue = Request.QueryString["searchContent"].ToStr();
 }
 
-<div class="admin-home" lang="tr">
+<div class="admin-home">
     <header class="admin-home__hero">
         <div class="admin-home__hero-text">
-            <p class="admin-home__eyebrow">@(string.IsNullOrWhiteSpace(companyName) ? "Yönetim paneli" : companyName)</p>
+            <p class="admin-home__eyebrow">@(string.IsNullOrWhiteSpace(companyName) ? AdminResource.AdminPanel : companyName)</p>
             <h1 class="admin-home__title">@AdminResource.AdminPanelWelcome</h1>
-            <p class="admin-home__lead">Katalog ve içerik işlemlerine buradan hızlıca geçin.</p>
+            <p class="admin-home__lead">@AdminResource.AdminPanelHeroLead</p>
         </div>
         <div class="admin-home__hero-aside">
             <a class="admin-home__guide-link" href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })">
@@ -39,13 +39,13 @@
                    value="@searchValue"
                    id="searchTxt"
                    data-provide="typehead"
-                   title="Aramaya başlamak için en az 2 karakter yazmalısınız"
+                   title="@AdminResource.SearchMin2Chars"
                    class="form-control admin-home__search-input"
                    placeholder="@AdminResource.AdminMainSeachPlaceHolder"
                    autocomplete="off" />
-            <button type="submit" class="btn btn-primary admin-home__search-btn" title="Ara" aria-label="Ara">
+            <button type="submit" class="btn btn-primary admin-home__search-btn" title="@AdminResource.Search" aria-label="@AdminResource.Search">
                 <i class="fa fa-search admin-home__search-btn-icon" aria-hidden="true"></i>
-                <span class="admin-home__search-btn-label">Ara</span>
+                <span class="admin-home__search-btn-label">@AdminResource.Search</span>
             </button>
         </div>
     </form>
@@ -59,13 +59,13 @@
     }
 
     <section class="admin-home__section" aria-labelledby="admin-home-content">
-        <h2 id="admin-home-content" class="admin-home__section-title">İçerik ve vitrin</h2>
+        <h2 id="admin-home-content" class="admin-home__section-title">@AdminResource.ContentAndShowcase</h2>
         <div class="admin-home__grid">
             <a class="admin-home__tile" href="@Url.Action("Index", "MainPageImages", new { area = "admin" })">
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-picture-o"></i></span>
                 <span class="admin-home__tile-body">
-                    <span class="admin-home__tile-title">Ana sayfa görselleri</span>
-                    <span class="admin-home__tile-desc">Kayan banner ve vitrin görselleri</span>
+                    <span class="admin-home__tile-title">@AdminResource.MainPageImages</span>
+                    <span class="admin-home__tile-desc">@AdminResource.MainPageImagesDesc</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -73,7 +73,7 @@
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-bars"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Menus</span>
-                    <span class="admin-home__tile-desc">Hakkımızda, iletişim ve diğer sayfalar</span>
+                    <span class="admin-home__tile-desc">@AdminResource.MenusDesc</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -87,7 +87,7 @@
                 <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-cube"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Products</span>
-                    <span class="admin-home__tile-desc">@(productPriceEnabled ? "Ürün ekle, düzenle ve fiyatlandır" : "Ürünleri listeleyin ve düzenleyin")</span>
+                    <span class="admin-home__tile-desc">@(productPriceEnabled ? AdminResource.ProductsDesc : AdminResource.ProductsDescNoPrice)</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -95,7 +95,7 @@
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sitemap"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.ProductCategories</span>
-                    <span class="admin-home__tile-desc">Kategori ağacı ve sıralama</span>
+                    <span class="admin-home__tile-desc">@AdminResource.ProductCategoriesDesc</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -103,7 +103,7 @@
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-tags"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Brands</span>
-                    <span class="admin-home__tile-desc">Marka listesi ve görselleri</span>
+                    <span class="admin-home__tile-desc">@AdminResource.BrandsDesc</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -119,7 +119,7 @@
                     <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-shopping-bag"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.Orders</span>
-                        <span class="admin-home__tile-desc">Sipariş durumu ve kargo takibi</span>
+                        <span class="admin-home__tile-desc">@AdminResource.OrdersDesc</span>
                     </span>
                     <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                 </a>
@@ -127,15 +127,15 @@
                     <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-users"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.Customers</span>
-                        <span class="admin-home__tile-desc">Üye ve müşteri kayıtları</span>
+                        <span class="admin-home__tile-desc">@AdminResource.CustomersDesc</span>
                     </span>
                     <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                 </a>
                 <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
                     <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-truck"></i></span>
                     <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">Kargo ve mağaza</span>
-                        <span class="admin-home__tile-desc">Kargo açıklaması ve mağaza bilgileri</span>
+                        <span class="admin-home__tile-title">@AdminResource.ShippingAndStore</span>
+                        <span class="admin-home__tile-desc">@AdminResource.ShippingAndStoreDesc</span>
                     </span>
                     <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                 </a>
@@ -143,7 +143,7 @@
                     <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-credit-card"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">iyzico</span>
-                        <span class="admin-home__tile-desc">Ödeme paneli (yeni sekme)</span>
+                        <span class="admin-home__tile-desc">@AdminResource.IyzicoPanelDesc</span>
                     </span>
                     <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                 </a>
@@ -152,13 +152,13 @@
     }
 
     <section class="admin-home__section" aria-labelledby="admin-home-system">
-        <h2 id="admin-home-system" class="admin-home__section-title">Sistem</h2>
+        <h2 id="admin-home-system" class="admin-home__section-title">@AdminResource.System</h2>
         <div class="admin-home__grid">
             <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
                 <span class="admin-home__tile-body">
-                    <span class="admin-home__tile-title">Yönetici ayarları</span>
-                    <span class="admin-home__tile-desc">Şirket ve genel site bilgileri</span>
+                    <span class="admin-home__tile-title">@AdminResource.AdminSettingsTitle</span>
+                    <span class="admin-home__tile-desc">@AdminResource.AdminSettingsDesc</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -166,7 +166,7 @@
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-cogs"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.SystemSettings</span>
-                    <span class="admin-home__tile-desc">@(productPriceEnabled ? "Fiyat, SEO ve teknik ayarlar" : "Listeleme modu, SEO ve teknik ayarlar")</span>
+                    <span class="admin-home__tile-desc">@(productPriceEnabled ? AdminResource.SystemSettingsDesc : AdminResource.SystemSettingsDescNoPrice)</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -174,7 +174,7 @@
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-envelope-o"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.MailTemplates</span>
-                    <span class="admin-home__tile-desc">E-posta şablonlarını düzenleyin</span>
+                    <span class="admin-home__tile-desc">@AdminResource.MailTemplatesDesc</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -182,7 +182,7 @@
                 <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-user"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Users</span>
-                    <span class="admin-home__tile-desc">Yönetici ve panel kullanıcıları</span>
+                    <span class="admin-home__tile-desc">@AdminResource.UsersDesc</span>
                 </span>
                 <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
             </a>
@@ -192,9 +192,9 @@
     <hr style="border:0;border-top:1px solid #d9e2ec;margin:2rem 0;" />
 
     <section class="admin-home__section" aria-labelledby="admin-home-cache">
-        <h2 id="admin-home-cache" class="admin-home__section-title">Önbellek yönetimi</h2>
+        <h2 id="admin-home-cache" class="admin-home__section-title">@AdminResource.CacheManagement</h2>
         <p class="admin-home__lead" style="margin-bottom:0.75rem;">
-            Storefront önbelleğini hedefli olarak temizleyin. Mağaza tarafı bir sonraki istekte güncel veriyi veritabanından yeniden yükler.
+            @AdminResource.CacheManagementLead
         </p>
         <div class="admin-home__grid">
             @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
@@ -204,8 +204,8 @@
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
                     <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-refresh"></i></span>
                     <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">Ürün ve fiyat önbelleği</span>
-                        <span class="admin-home__tile-desc">Ürün listeleri, detaylar, arama ve fiyatlar</span>
+                        <span class="admin-home__tile-title">@AdminResource.ProductPriceCache</span>
+                        <span class="admin-home__tile-desc">@AdminResource.ProductPriceCacheDesc</span>
                     </span>
                 </button>
             }
@@ -216,8 +216,8 @@
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
                     <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sitemap"></i></span>
                     <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">Kategori önbelleği</span>
-                        <span class="admin-home__tile-desc">Kategori ağacı ve kategori sayfaları</span>
+                        <span class="admin-home__tile-title">@AdminResource.CategoryCache</span>
+                        <span class="admin-home__tile-desc">@AdminResource.CategoryCacheDesc</span>
                     </span>
                 </button>
             }
@@ -228,8 +228,8 @@
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
                     <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
                     <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">Ayar önbelleği</span>
-                        <span class="admin-home__tile-desc">Mağaza ayarları ve site yapılandırması</span>
+                        <span class="admin-home__tile-title">@AdminResource.SettingCache</span>
+                        <span class="admin-home__tile-desc">@AdminResource.SettingCacheDesc</span>
                     </span>
                 </button>
             }
@@ -240,8 +240,8 @@
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
                     <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-file-text-o"></i></span>
                     <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">İçerik önbelleği</span>
-                        <span class="admin-home__tile-desc">Menüler, hikayeler, bannerlar, SSS, etiketler</span>
+                        <span class="admin-home__tile-title">@AdminResource.ContentCache</span>
+                        <span class="admin-home__tile-desc">@AdminResource.ContentCacheDesc</span>
                     </span>
                 </button>
             }
@@ -252,10 +252,10 @@
             <input type="hidden" name="target" value="all" />
             <button type="submit" class="btn btn-danger">
                 <i class="fa fa-bomb" aria-hidden="true"></i>
-                Tüm storefront önbelleğini temizle
+                @AdminResource.ClearAllStorefrontCache
             </button>
             <span style="color:#829ab1;font-size:0.85rem;margin-left:0.5rem;">
-                Tam temizleme + arka planda sayfa yeniden ısınma (warm-up).
+                @AdminResource.ClearAllStorefrontCacheHint
             </span>
         }
     </section>

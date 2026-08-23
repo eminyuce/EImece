@@ -1,6 +1,7 @@
+@using Resources;
 @{
     var helpId = (ViewData["HelpId"] as string) ?? "adminHelp";
-    var helpTitle = (ViewData["HelpTitle"] as string) ?? "Nasıl kullanılır?";
+    var helpTitle = (ViewData["HelpTitle"] as string) ?? AdminResource.HowToUse;
     var accordionId = helpId + "Accordion";
     var collapseId = helpId + "Collapse";
 }
@@ -10,7 +11,7 @@
             <h4 class="card-title">
                 <a data-bs-toggle="collapse" data-bs-parent="#@accordionId" href="#@collapseId" class="collapsed" aria-expanded="false">
                     <span class="fa fa-question-circle"></span>
-                    @helpTitle <small>(açmak / kapatmak için tıklayın)</small>
+                    @helpTitle <small>(@AdminResource.ClickToToggle)</small>
                 </a>
             </h4>
         </div>

@@ -1,4 +1,4 @@
-﻿@*
+@*
     * GriddlyFilter form renderer using Bootstrap html and styles
     * http://griddly.com
     * Copyright 2013-2025 Chris Hynes and Data Research Group, Inc.
@@ -8,7 +8,7 @@
     *          Use the static properties on GriddlySettings to make config changes.
     *
 *@
-
+@using Resources
 @model List<GriddlyFilter>
 
 @{ 
@@ -99,7 +99,7 @@
                                 @:</div>
                             }
                         </div>
-                        <div class="col-sm-2 col-form-label" style="text-align:center">to</div>
+                        <div class="col-sm-2 col-form-label" style="text-align:center">@AdminResource.To</div>
                         <div class="col-sm-5">
                             @if (filter.DataType == FilterDataType.Currency || filter.DataType == FilterDataType.Date)
                             {

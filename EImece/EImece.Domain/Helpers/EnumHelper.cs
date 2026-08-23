@@ -187,18 +187,42 @@ namespace EImece.Domain.Helpers
         public static EImeceLanguage? ParseLanguage(string lang)
         {
             if (string.IsNullOrWhiteSpace(lang)) return null;
-            if (int.TryParse(lang, out int langInt) && Enum.IsDefined(typeof(EImeceLanguage), langInt))
+            var trimmed = lang.Trim();
+            if (string.Equals(trimmed, "tr-TR", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "tr", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "Turkish", StringComparison.OrdinalIgnoreCase) ||
+                trimmed == "1")
+            {
+                return EImeceLanguage.Turkish;
+            }
+            if (string.Equals(trimmed, "en-US", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "en", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "English", StringComparison.OrdinalIgnoreCase) ||
+                trimmed == "2")
+            {
+                return EImeceLanguage.English;
+            }
+            if (string.Equals(trimmed, "ru-RU", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "ru", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "Russian", StringComparison.OrdinalIgnoreCase) ||
+                trimmed == "3")
+            {
+                return EImeceLanguage.Russian;
+            }
+            if (string.Equals(trimmed, "de-DE", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "de", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(trimmed, "German", StringComparison.OrdinalIgnoreCase) ||
+                trimmed == "4")
+            {
+                return EImeceLanguage.German;
+            }
+            if (int.TryParse(trimmed, out int langInt) && Enum.IsDefined(typeof(EImeceLanguage), langInt))
             {
                 return (EImeceLanguage)langInt;
             }
-            if (Enum.TryParse<EImeceLanguage>(lang, true, out var parsedEnum))
+            if (Enum.TryParse<EImeceLanguage>(trimmed, true, out var parsedEnum))
             {
                 return parsedEnum;
-            }
-            var descVal = GetEnumFromDescription(lang, typeof(EImeceLanguage));
-            if (descVal > 0 && Enum.IsDefined(typeof(EImeceLanguage), descVal))
-            {
-                return (EImeceLanguage)descVal;
             }
             return null;
         }

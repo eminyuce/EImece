@@ -1,4 +1,4 @@
-﻿@using EImece.Domain;
+@using EImece.Domain;
 @using EImece.Domain.Helpers;
 @using Resources;
 @{
@@ -35,13 +35,13 @@
         <span class="eg-search-icon" aria-hidden="true">
             <i class="fa fa-search"></i>
         </span>
-        <label class="visually-hidden" for="searchTxtInput">Ara</label>
+        <label class="visually-hidden" for="searchTxtInput">@AdminResource.Search</label>
         <input type="text"
                class="form-control"
                id="searchTxtInput"
                name="search"
                value="@search"
-               placeholder="Ara"
+               placeholder="@AdminResource.Search"
                autocomplete="off" />
         <div class="eg-search-actions">
             @if (!String.IsNullOrEmpty(search))

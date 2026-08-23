@@ -80,11 +80,11 @@
                 <summary class="eg-ops-more-summary">
                     <span class="eg-ops-more-summary-main">
                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                        <span>Toplu işlemler</span>
+                        <span>@AdminResource.BulkOperations</span>
                     </span>
-                    <span class="eg-ops-more-hint">Seç, yayınla, sil…</span>
+                    <span class="eg-ops-more-hint">@AdminResource.BulkOperationsHint</span>
                 </summary>
-                <div class="admin-grid-toolbar eg-ops-toolbar" role="toolbar" aria-label="Toplu işlemler">
+                <div class="admin-grid-toolbar eg-ops-toolbar" role="toolbar" aria-label="@AdminResource.BulkOperations">
 
                     @if (selectAll)
                     {
@@ -92,11 +92,11 @@
                             <legend class="visually-hidden">@GridSelectAllButtonText</legend>
                             <button type="button" class="btn btn-secondary btn-sm eg-ops-btn" id="SelectAll" title="@GridSelectAllButtonText">
                                 <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                                <span>Tümü</span>
+                                <span>@AdminResource.All</span>
                             </button>
                             <button type="button" class="btn btn-secondary btn-sm eg-ops-btn" id="DeselectAll" title="@GridDeSelectAllButtonText">
                                 <i class="fa fa-square-o" aria-hidden="true"></i>
-                                <span>Temizle</span>
+                                <span>@AdminResource.Clear</span>
                             </button>
                         </fieldset>
                     }
@@ -137,11 +137,11 @@
 
                             <button type="button" class="btn btn-success btn-sm eg-ops-btn eg-ops-btn-success" id="SetStateOnAll" title="@GridActiveSelectedButtonText">
                                 <i class="fa fa-check" aria-hidden="true"></i>
-                                <span>Yayınla</span>
+                                <span>@AdminResource.Publish</span>
                             </button>
                             <button type="button" class="btn btn-warning btn-sm eg-ops-btn eg-ops-btn-warning" id="SetStateOffAll" title="@GridDeActiveSelectedButtonText">
                                 <i class="fa fa-times" aria-hidden="true"></i>
-                                <span>Kaldır</span>
+                                <span>@AdminResource.Unpublish</span>
                             </button>
                         </fieldset>
                     }
@@ -156,7 +156,7 @@
                             <legend class="visually-hidden">@GridOrderingAllButtonText</legend>
                             <button type="button" class="btn btn-secondary btn-sm eg-ops-btn" id="OrderingAll" title="@GridOrderingAllButtonText">
                                 <i class="fa fa-sort" aria-hidden="true"></i>
-                                <span>Sıra</span>
+                                <span>@AdminResource.Order</span>
                             </button>
                         </fieldset>
                     }
@@ -174,7 +174,7 @@
                             </select>
                             <button type="button" class="btn btn-info btn-sm eg-ops-btn eg-ops-btn-info" id="ProductStateChanged" title="@ProductStateChangeText">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
-                                <span>Güncelle</span>
+                                <span>@AdminResource.Update</span>
                             </button>
                         </fieldset>
                     }
@@ -185,7 +185,7 @@
                             <legend class="visually-hidden">@GridDeleteSelectedButtonText</legend>
                             <button type="button" class="btn btn-danger btn-sm eg-ops-btn eg-ops-btn-danger" id="DeleteAll" title="@GridDeleteSelectedButtonText">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
-                                <span>Sil</span>
+                                <span>@AdminResource.Delete</span>
                             </button>
                         </fieldset>
                     }

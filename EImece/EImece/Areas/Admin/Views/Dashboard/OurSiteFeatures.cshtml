@@ -185,12 +185,12 @@
                         <header class="osf-guide__section-head">
                             <span class="osf-guide__icon" aria-hidden="true"><i class="fa fa-list-alt"></i></span>
                             <div>
-                                <h2 id="osf-orders-title">Müşteri ve sipariş</h2>
+                                <h2 id="osf-orders-title">@AdminResource.Customer ve sipariş</h2>
                                 <p>Satış sonrası işlemler.</p>
                             </div>
                         </header>
                         <ul class="osf-guide__list">
-                            <li>Müşterileri yönetim panelinden yönetin</li>
+                            <li>customers yönetim panelinden yönetin</li>
                             <li>Siparişe kargo numarası ekleyin</li>
                             <li>Sipariş durumunu değiştirin</li>
                             <li>Ürün için sık sorulan sorular (SSS) ekleyin</li>
@@ -199,7 +199,7 @@
                             Yönetim:
                             <a href="@Url.Action("Index", "Orders", new { area = "admin" })">Siparişler</a>
                             |
-                            <a href="@Url.Action("Index", "Customers", new { area = "admin" })">Müşteriler</a>
+                            <a href="@Url.Action("Index", "Customers", new { area = "admin" })">customers</a>
                         </p>
                     </section>
                 }
@@ -212,7 +212,7 @@
                             <h2 id="osf-contact-title">İletişim ve sosyal medya</h2>
                             @if (productPriceEnabled)
                             {
-                                <p>Müşteriyle nasıl bağlantı kurarsınız?</p>
+                                <p>customer nasıl bağlantı kurarsınız?</p>
                             }
                             else
                             {
@@ -303,10 +303,10 @@
                     </header>
                     <ul class="osf-guide__list">
                         <li>Normal kullanıcı oluşturun</li>
-                        <li>Yönetici (admin) kullanıcı oluşturun</li>
+                        <li>@AdminResource.Administrator (admin) kullanıcı oluşturun</li>
                     </ul>
                     <aside class="osf-guide__callout osf-guide__callout--tip" role="note" aria-label="İpucu">
-                        <strong>İpucu:</strong> Yönetici yetkisini az kişiye verin.
+                        <strong>İpucu:</strong> @AdminResource.Administrator yetkisini az kişiye verin.
                         Günlük işler için normal kullanıcı yeterli olabilir.
                     </aside>
                     <p class="osf-guide__where">

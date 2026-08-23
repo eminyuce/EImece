@@ -1,68 +1,69 @@
-﻿@{
-    ViewBag.Title = "Raporlar";
+@using Resources
+@{
+    ViewBag.Title = AdminResource.Reports;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
-    // Display metadata: Title + short user-friendly description (Turkish)
+    // Display metadata: Title + short user-friendly description
     var reportMeta = new Dictionary<string, Tuple<string, string>>(StringComparer.OrdinalIgnoreCase)
     {
-        { "SalesByDateRange", Tuple.Create("Tarihe Göre Satışlar", "Seçtiğiniz tarih aralığındaki sipariş ve satış özetini görüntüleyin.") },
-        { "GetRegionalSalesReport", Tuple.Create("Bölgesel Satışlar", "Satışların bölgelere ve illere göre dağılımını inceleyin.") },
-        { "OrderVolumeReport", Tuple.Create("Sipariş Hacmi", "Belirli bir dönemde kaç sipariş alındığını ve hacim trendini görün.") },
-        { "PaymentMethod", Tuple.Create("Ödeme Yöntemleri", "Hangi ödeme yöntemlerinin ne kadar kullanıldığını karşılaştırın.") },
-        { "PaymentStatus", Tuple.Create("Ödeme Durumları", "Başarılı, bekleyen ve başarısız ödemelerin dağılımını görün.") },
-        { "PaymentTransactionReport", Tuple.Create("Ödeme İşlemleri", "Tarih aralığına göre ödeme işlemlerinin ayrıntılı listesini alın.") },
-        { "ProductSummary", Tuple.Create("Ürün Özeti", "Ürünlerin genel durumunu, satış ve stok özetini tek bakışta görün.") },
-        { "ProductStatsByDateRange", Tuple.Create("Ürün İstatistikleri", "Seçilen dönemde ürün bazında satış ve performans rakamlarını inceleyin.") },
-        { "PriceAnalysis", Tuple.Create("Fiyat Analizi", "Fiyat aralıklarına ve kategorilere göre ürün dağılımını analiz edin.") },
-        { "ProductInventory", Tuple.Create("Stok Durumu", "Düşük stok, tükenen ve kampanyalı ürünleri hızlıca kontrol edin.") },
-        { "FraudAnalysis", Tuple.Create("Dolandırıcılık Analizi", "Şüpheli sipariş ve risk sinyallerini genel hatlarıyla görün.") },
-        { "FraudRiskReport", Tuple.Create("Dolandırıcılık Riski", "Tarih aralığına göre risk skorlarını ve uyarıları inceleyin.") },
-        { "PerformanceSystemReport", Tuple.Create("Sistem Performansı", "Son dönemdeki sistem ve işlem performans özetini görüntüleyin.") },
-        { "CouponUsage", Tuple.Create("Kupon Kullanımı", "Kuponların ne kadar kullanıldığını ve etkisini takip edin.") },
-        { "ShipmentCompany", Tuple.Create("Kargo Firmaları", "Kargo firmalarına göre gönderi dağılımını görün.") },
-        { "FinancialReport", Tuple.Create("Finansal Özet", "Gelir ve finansal göstergeleri seçilen dönem için inceleyin.") }
+        { "SalesByDateRange", Tuple.Create(AdminResource.ReportSalesByDateRangeTitle, AdminResource.ReportSalesByDateRangeDesc) },
+        { "GetRegionalSalesReport", Tuple.Create(AdminResource.ReportGetRegionalSalesReportTitle, AdminResource.ReportGetRegionalSalesReportDesc) },
+        { "OrderVolumeReport", Tuple.Create(AdminResource.ReportOrderVolumeReportTitle, AdminResource.ReportOrderVolumeReportDesc) },
+        { "PaymentMethod", Tuple.Create(AdminResource.ReportPaymentMethodTitle, AdminResource.ReportPaymentMethodDesc) },
+        { "PaymentStatus", Tuple.Create(AdminResource.ReportPaymentStatusTitle, AdminResource.ReportPaymentStatusDesc) },
+        { "PaymentTransactionReport", Tuple.Create(AdminResource.ReportPaymentTransactionReportTitle, AdminResource.ReportPaymentTransactionReportDesc) },
+        { "ProductSummary", Tuple.Create(AdminResource.ReportProductSummaryTitle, AdminResource.ReportProductSummaryDesc) },
+        { "ProductStatsByDateRange", Tuple.Create(AdminResource.ReportProductStatsByDateRangeTitle, AdminResource.ReportProductStatsByDateRangeDesc) },
+        { "PriceAnalysis", Tuple.Create(AdminResource.ReportPriceAnalysisTitle, AdminResource.ReportPriceAnalysisDesc) },
+        { "ProductInventory", Tuple.Create(AdminResource.ReportProductInventoryTitle, AdminResource.ReportProductInventoryDesc) },
+        { "FraudAnalysis", Tuple.Create(AdminResource.ReportFraudAnalysisTitle, AdminResource.ReportFraudAnalysisDesc) },
+        { "FraudRiskReport", Tuple.Create(AdminResource.ReportFraudRiskReportTitle, AdminResource.ReportFraudRiskReportDesc) },
+        { "PerformanceSystemReport", Tuple.Create(AdminResource.ReportPerformanceSystemReportTitle, AdminResource.ReportPerformanceSystemReportDesc) },
+        { "CouponUsage", Tuple.Create(AdminResource.ReportCouponUsageTitle, AdminResource.ReportCouponUsageDesc) },
+        { "ShipmentCompany", Tuple.Create(AdminResource.ReportShipmentCompanyTitle, AdminResource.ReportShipmentCompanyDesc) },
+        { "FinancialReport", Tuple.Create(AdminResource.ReportFinancialReportTitle, AdminResource.ReportFinancialReportDesc) }
     };
 
     var reportCategories = new Dictionary<string, List<string>>
     {
-        { "Satış Raporları", new List<string> {
+        { AdminResource.ReportCatSales, new List<string> {
             "SalesByDateRange",
             "GetRegionalSalesReport",
             "OrderVolumeReport"
         }},
-        { "Ödeme Raporları", new List<string> {
+        { AdminResource.ReportCatPayment, new List<string> {
             "PaymentMethod",
             "PaymentStatus",
             "PaymentTransactionReport"
         }},
-        { "Ürün Raporları", new List<string> {
+        { AdminResource.ReportCatProduct, new List<string> {
             "ProductSummary",
             "ProductStatsByDateRange",
             "PriceAnalysis",
             "ProductInventory"
         }},
-        { "Risk ve Analiz", new List<string> {
+        { AdminResource.ReportCatRisk, new List<string> {
             "FraudAnalysis",
             "FraudRiskReport",
             "PerformanceSystemReport"
         }},
-        { "Pazarlama ve Lojistik", new List<string> {
+        { AdminResource.ReportCatMarketing, new List<string> {
             "CouponUsage",
             "ShipmentCompany"
         }},
-        { "Finansal Raporlar", new List<string> {
+        { AdminResource.ReportCatFinance, new List<string> {
             "FinancialReport"
         }}
     };
 
     var categoryIcons = new Dictionary<string, string>
     {
-        { "Satış Raporları", "fa fa-bar-chart" },
-        { "Ödeme Raporları", "fa fa-credit-card" },
-        { "Ürün Raporları", "fa fa-tags" },
-        { "Risk ve Analiz", "fa fa-exclamation-triangle" },
-        { "Pazarlama ve Lojistik", "fa fa-paper-plane" },
-        { "Finansal Raporlar", "fa fa-briefcase" }
+        { AdminResource.ReportCatSales, "fa fa-bar-chart" },
+        { AdminResource.ReportCatPayment, "fa fa-credit-card" },
+        { AdminResource.ReportCatProduct, "fa fa-tags" },
+        { AdminResource.ReportCatRisk, "fa fa-exclamation-triangle" },
+        { AdminResource.ReportCatMarketing, "fa fa-paper-plane" },
+        { AdminResource.ReportCatFinance, "fa fa-briefcase" }
     };
 
     var allActions = new List<string> {
@@ -279,14 +280,14 @@
 <div class="report-index">
     <div class="report-index-header">
         <h2 class="admin-page-title">@ViewBag.Title</h2>
-        <p>Aşağıdaki kategorilerden bir rapor seçerek satış, ödeme, stok ve risk özetlerine ulaşabilirsiniz.</p>
+        <p>@AdminResource.ReportLeadText</p>
     </div>
 
     <!-- Mobile navigation -->
     <div class="d-sm-none report-mobile-menu">
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="mobileReportMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Rapor Seçin
+                @AdminResource.SelectReport
             </button>
             <ul class="dropdown-menu" aria-labelledby="mobileReportMenu">
                 @foreach (var category in reportCategories)
@@ -345,14 +346,14 @@
                                 {
                                     <h4>@title</h4>
                                     <p>@description</p>
-                                    <button type="submit" class="btn btn-primary btn-sm">Raporu Aç</button>
+                                    <button type="submit" class="btn btn-primary btn-sm">@AdminResource.OpenReport</button>
                                 }
                             }
                             else
                             {
                                 <h4>@title</h4>
                                 <p>@description</p>
-                                @Html.ActionLink("Raporu Aç", action, "Report", new { area = "Admin" }, new { @class = "btn btn-primary btn-sm" })
+                                @Html.ActionLink(AdminResource.OpenReport, action, "Report", new { area = "Admin" }, new { @class = "btn btn-primary btn-sm" })
                             }
                         </div>
                     }
@@ -363,14 +364,14 @@
 
     <!-- Quick Reports -->
     <div class="card report-quick-panel">
-        <div class="card-header">Hızlı Raporlar</div>
+        <div class="card-header">@AdminResource.QuickReports</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    <h4>Satış (tarih)</h4>
+                    <h4>@AdminResource.SalesByDate</h4>
                     <ul class="list-unstyled">
                         <li>
-                            @Html.ActionLink("Bugünün satışları", "SalesByDateRange", "Report",
+                            @Html.ActionLink(AdminResource.TodaysSales, "SalesByDateRange", "Report",
                                 new
                                 {
                                     area = "Admin",
@@ -379,7 +380,7 @@
                                 }, null)
                         </li>
                         <li>
-                            @Html.ActionLink("Dünün satışları", "SalesByDateRange", "Report",
+                            @Html.ActionLink(AdminResource.YesterdaysSales, "SalesByDateRange", "Report",
                                 new
                                 {
                                     area = "Admin",
@@ -388,7 +389,7 @@
                                 }, null)
                         </li>
                         <li>
-                            @Html.ActionLink("Bu hafta", "SalesByDateRange", "Report",
+                            @Html.ActionLink(AdminResource.ThisWeek, "SalesByDateRange", "Report",
                                 new
                                 {
                                     area = "Admin",
@@ -397,7 +398,7 @@
                                 }, null)
                         </li>
                         <li>
-                            @Html.ActionLink("Bu ay", "SalesByDateRange", "Report",
+                            @Html.ActionLink(AdminResource.ThisMonth, "SalesByDateRange", "Report",
                                 new
                                 {
                                     area = "Admin",
@@ -408,22 +409,22 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h4>Stok</h4>
+                    <h4>@AdminResource.Stock</h4>
                     <ul class="list-unstyled">
-                        <li>@Html.ActionLink("Düşük stoklu ürünler", "ProductInventory", "Report", new { area = "Admin", state = "Low" }, null)</li>
-                        <li>@Html.ActionLink("Tükenen ürünler", "ProductInventory", "Report", new { area = "Admin", state = "Out" }, null)</li>
-                        <li>@Html.ActionLink("Kampanyalı ürünler", "ProductInventory", "Report", new { area = "Admin", isCampaign = true }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.LowStockProducts, "ProductInventory", "Report", new { area = "Admin", state = "Low" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.OutOfStockProducts, "ProductInventory", "Report", new { area = "Admin", state = "Out" }, null)</li>
+                        <li>@Html.ActionLink(AdminResource.CampaignProducts, "ProductInventory", "Report", new { area = "Admin", isCampaign = true }, null)</li>
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h4>Finans ve performans</h4>
+                    <h4>@AdminResource.FinanceAndPerformance</h4>
                     <ul class="list-unstyled">
                         <li>
                             @using (Html.BeginForm("FinancialReport", "Report", new { area = "Admin" }, FormMethod.Post))
                             {
                                 @Html.Hidden("StartDate", new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("yyyy-MM-dd"))
                                 @Html.Hidden("EndDate", DateTime.Today.ToString("yyyy-MM-dd"))
-                                <button type="submit" class="btn btn-link">Bu ayın finansal özeti</button>
+                                <button type="submit" class="btn btn-link">@AdminResource.ThisMonthsFinancialSummary</button>
                             }
                         </li>
                         <li>
@@ -431,7 +432,7 @@
                             {
                                 @Html.Hidden("StartDate", DateTime.Today.AddDays(-30).ToString("yyyy-MM-dd"))
                                 @Html.Hidden("EndDate", DateTime.Today.ToString("yyyy-MM-dd"))
-                                <button type="submit" class="btn btn-link">Son 30 gün performans</button>
+                                <button type="submit" class="btn btn-link">@AdminResource.Last30DaysPerformance</button>
                             }
                         </li>
                     </ul>

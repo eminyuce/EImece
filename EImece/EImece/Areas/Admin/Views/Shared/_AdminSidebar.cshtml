@@ -54,27 +54,27 @@
 
         <!-- Small Admin Menu Search Box -->
         <div class="admin-sidebar-search" id="adminSidebarSearchContainer">
-            <div class="admin-sidebar-search-inner" title="Menüde ara">
+            <div class="admin-sidebar-search-inner" title="@AdminResource.SearchMenu">
                 <i class="fa fa-search admin-sidebar-search-icon" aria-hidden="true"></i>
                 <input type="text"
                        id="adminSidebarSearchInput"
                        class="admin-sidebar-search-input"
-                       placeholder="Menüde ara..."
+                       placeholder="@AdminResource.SearchMenu..."
                        autocomplete="off"
                        spellcheck="false"
-                       aria-label="Menüde ara" />
+                       aria-label="@AdminResource.SearchMenu" />
                 <button type="button"
                         id="adminSidebarSearchClear"
                         class="admin-sidebar-search-clear"
-                        title="Temizle"
-                        aria-label="Aramayı Temizle"
+                        title="@AdminResource.Clear"
+                        aria-label="@AdminResource.Clear"
                         style="display: none;">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
         <div id="adminSidebarSearchEmpty" class="admin-sidebar-search-empty" style="display: none;">
-            <i class="fa fa-info-circle" aria-hidden="true"></i> Eşleşen menü bulunamadı
+            <i class="fa fa-info-circle" aria-hidden="true"></i> @AdminResource.NoMatchingMenuFound
         </div>
 
         <div class="admin-nav-group @(catalogOpen ? "is-open" : "")" data-group="catalog">

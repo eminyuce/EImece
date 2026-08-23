@@ -148,7 +148,9 @@ namespace EImece.Domain.Services
         private void CreateMapFileStorageTag() => CreateMap<FileStorageTag, FileStorageTagDto>();
         private void CreateMapFileStorage() => CreateMap<FileStorage, FileStorageDto>();
         private void CreateMapFaq() => CreateMap<Faq, FaqDto>();
-        private void CreateMapCustomer() => CreateMap<Customer, CustomerDto>();
+        private void CreateMapCustomer() => CreateMap<Customer, CustomerDto>()
+            .ForMember(d => d.IsSameAsShippingAddress, opt => opt.Ignore())
+            .ForMember(d => d.Captcha, opt => opt.Ignore());
         private void CreateMapCoupon() => CreateMap<Coupon, CouponDto>();
         private void CreateMapBrowserSubscription() => CreateMap<BrowserSubscription, BrowserSubscriptionDto>();
         private void CreateMapBrowserSubscriber() => CreateMap<BrowserSubscriber, BrowserSubscriberDto>();

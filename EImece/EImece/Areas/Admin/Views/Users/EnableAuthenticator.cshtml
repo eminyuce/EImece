@@ -1,19 +1,19 @@
 @model EImece.Models.EnableAuthenticatorViewModel
 @using Resources;
 @{
-    ViewBag.Title = "Authenticator etkinleştir";
+    ViewBag.Title = "@AdminResource.EnableAuthenticator";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row justify-content-center">
     <div class="col-lg-8 col-xl-7 mx-auto">
         <h2 class="admin-page-title">@ViewBag.Title</h2>
-        <p class="text-muted mb-4">Google Authenticator veya Microsoft Authenticator uygulamasını telefonunuza yükleyip QR kodu tarayın. 6 haneli kodu girerek iki faktörlü doğrulamayı etkinleştirin.</p>
+        <p class="text-muted mb-4">@AdminResource.EnableAuthenticatorLead</p>
         <div class="card shadow-sm">
             <div class="card-header">
                 <h3 class="card-title mb-0">
                     <i class="fa fa-qrcode me-1" aria-hidden="true"></i>
-                    Authenticator uygulamasını kurun
+                    @AdminResource.SetupAuthenticatorApp
                 </h3>
             </div>
             @using (Html.BeginForm("EnableAuthenticator", "Users", FormMethod.Post, new { @class = "enable-authenticator-form", role = "form", id = "enableAuthenticatorForm" }))
@@ -31,18 +31,18 @@
                             Yardım
                         </div>
                         <ul class="mb-0 ps-3">
-                            <li>Google Authenticator veya Microsoft Authenticator uygulamasını telefonunuza yükleyin.</li>
-                            <li>Aşağıdaki QR kodu tarayın (veya manuel anahtarı girin).</li>
-                            <li>Uygulamadaki 6 haneli kodu girerek etkinleştirmeyi tamamlayın.</li>
-                            <li>Bundan sonra yönetici girişi şifreden sonra bu kodu isteyecektir.</li>
+                            <li>@AdminResource.InstallAuthenticatorStep1</li>
+                            <li>@AdminResource.InstallAuthenticatorStep2</li>
+                            <li>@AdminResource.InstallAuthenticatorStep3</li>
+                            <li>@AdminResource.InstallAuthenticatorStep4</li>
                         </ul>
                     </div>
 
                     @Html.ValidationSummary(true, "", new { @class = "alert alert-danger text-start" })
 
-                    <p class="mb-2">Google Authenticator veya Microsoft Authenticator ile aşağıdaki QR kodu tarayın:</p>
+                    <p class="mb-2">@AdminResource.ScanQrCodePrompt</p>
                     <p class="text-muted">
-                        Uygulamada görünecek ad: <strong>@Model.DisplayName</strong>
+                        @AdminResource.DisplayNameInApp <strong>@Model.DisplayName</strong>
                     </p>
 
                     @if (!string.IsNullOrEmpty(Model.QrCodeImage))
@@ -53,14 +53,14 @@
                     }
 
                     <p class="mb-4">
-                        QR kodu tarayamıyorsanız manuel olarak bu anahtarı girin:<br />
+                        @AdminResource.EnterKeyManuallyPrompt<br />
                         <strong class="d-inline-block mt-1" style="font-size: 1.15rem; letter-spacing: 1px;">@Model.SharedKey</strong>
                     </p>
 
                     <hr class="my-4" />
 
                     <div class="mb-0">
-                        <label for="Code" class="form-label fw-semibold">Doğrulama kodu (6 haneli)</label>
+                        <label for="Code" class="form-label fw-semibold">@AdminResource.VerificationCode6Digits</label>
                         @Html.TextBoxFor(m => m.Code, new
                         {
                             @class = "form-control form-control-lg text-center mx-auto",
@@ -85,7 +85,7 @@
                 }
                 <button type="submit" form="enableAuthenticatorForm" class="btn btn-primary">
                     <i class="fa fa-check me-1" aria-hidden="true"></i>
-                    Etkinleştir
+                    @AdminResource.Activate
                 </button>
             </div>
         </div>

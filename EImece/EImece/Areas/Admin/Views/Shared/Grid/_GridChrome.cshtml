@@ -1,16 +1,17 @@
+@using Resources
 @* Density + selected-count chrome for modern Griddly lists *@
 <div class="eg-grid-chrome" data-eg-grid-chrome="1">
     <div class="eg-grid-chrome-left">
         <span class="eg-selected-count" data-eg-selected-count hidden>
-            <strong data-eg-selected-number>0</strong> seçili
+            <strong data-eg-selected-number>0</strong> @AdminResource.Selected
         </span>
     </div>
     <fieldset class="eg-grid-chrome-right" style="border:0;padding:0;margin:0;min-width:0">
-        <legend class="visually-hidden">Tablo yoğunluğu</legend>
-        <span class="eg-density-label">Yoğunluk</span>
+        <legend class="visually-hidden">@AdminResource.GridDensity</legend>
+        <span class="eg-density-label">@AdminResource.Density</span>
         <div class="btn-group eg-density-toggle" data-eg-density-toggle="1">
-            <button type="button" class="btn btn-secondary btn-sm" data-eg-density="comfortable" aria-pressed="true">Rahat</button>
-            <button type="button" class="btn btn-secondary btn-sm" data-eg-density="compact" aria-pressed="false">Kompakt</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-eg-density="comfortable" aria-pressed="true">@AdminResource.DensityComfortable</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-eg-density="compact" aria-pressed="false">@AdminResource.DensityCompact</button>
         </div>
     </fieldset>
 </div>

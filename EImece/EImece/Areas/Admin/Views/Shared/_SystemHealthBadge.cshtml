@@ -9,9 +9,9 @@
 }
 
 <li class="admin-topbar-health admin-topbar-action--essential" id="adminSystemHealthContainer">
-    <a href="@Url.Action("SystemHealth", "Dashboard", new { area = "admin" })" id="systemHealthBadgeBtn" title="Sistem durumu kontrol ediliyor..." class="admin-health-badge-link">
+    <a href="@Url.Action("SystemHealth", "Dashboard", new { area = "admin" })" id="systemHealthBadgeBtn" title="@AdminResource.Checking" class="admin-health-badge-link">
         <span class="health-status-dot health-status-dot--pending" id="healthStatusDot" aria-hidden="true"></span>
-        <span class="admin-topbar-label" id="healthStatusLabel">Sistem Kontrol...</span>
+        <span class="admin-topbar-label" id="healthStatusLabel">@AdminResource.Checking</span>
     </a>
 </li>
 
@@ -62,11 +62,13 @@
         var lastCheckTimestamp = null;
         var pollingIntervalMs = 60000;
         var healthEndpoint = '/health';
+        var txtSecondsAgo = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.SecondsAgo))';
+        var txtLastChecked = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.LastChecked))';
 
         function updateRelativeTime() {
             if (!lastCheckTimestamp) return;
             var elapsedSec = Math.max(0, Math.round((new Date().getTime() - lastCheckTimestamp.getTime()) / 1000));
-            var timeText = "Son kontrol: " + elapsedSec + " saniye önce (Ayrıntılar için tıklayın)";
+            var timeText = txtLastChecked + ": " + elapsedSec + " " + txtSecondsAgo;
             $('#systemHealthBadgeBtn').attr('title', timeText);
         }
 
@@ -94,11 +96,11 @@
                 dashDot.removeClass('health-status-dot--pending health-status-dot--ok health-status-dot--issue');
                 if (isHealthy) {
                     dashDot.addClass('health-status-dot--ok');
-                    dashText.text("Sistem Durumu: Sağlıklı (System OK)");
+                    dashText.text("System OK");
                     dashBadge.removeClass('text-bg-danger text-bg-secondary').addClass('text-bg-success').text("UP");
                 } else {
                     dashDot.addClass('health-status-dot--issue');
-                    dashText.text("Sistem Durumu: Sorun Tespit Edildi (System Issue)");
+                    dashText.text("System Issue Detected");
                     dashBadge.removeClass('text-bg-success text-bg-secondary').addClass('text-bg-danger').text("DOWN");
                 }
             }

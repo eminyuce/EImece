@@ -1,4 +1,4 @@
-﻿using Resources;
+using Resources;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -6,36 +6,36 @@ namespace EImece.Domain.Models.AdminModels
 {
     public class SettingModel
     {
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SiteIndexMetaTitle))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SiteIndexMetaTitle))]
         public string SiteIndexMetaTitle { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SiteIndexMetaDescription))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SiteIndexMetaDescription))]
         public string SiteIndexMetaDescription { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.SiteIndexMetaKeywords))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SiteIndexMetaKeywords))]
         public string SiteIndexMetaKeywords { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FooterDescription))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterDescription))]
         public string FooterDescription { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FooterEmailListDescription))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterEmailListDescription))]
         public string FooterEmailListDescription { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FooterHtmlDescription))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterHtmlDescription))]
         [AllowHtml]
         public string FooterHtmlDescription { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CargoCompany))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoCompany))]
         public string CargoCompany { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CargoPrice))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoPrice))]
         public int CargoPrice { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CargoDescription))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoDescription))]
         [AllowHtml]
         public string CargoDescription { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.BasketMinTotalPriceForCargo))]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BasketMinTotalPriceForCargo))]
         public int BasketMinTotalPriceForCargo { get; set; }
     }
 }

@@ -1722,4 +1722,2626 @@
   <data name="BackToCustomers" xml:space="preserve">
     <value>Müşterilere Dön</value>
   </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>Yönetim Paneli</value>
+  </data>
+  <data name="AdminPanelTitleFormat" xml:space="preserve">
+    <value>{0} Yönetim Paneli</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Yönetim</value>
+  </data>
+  <data name="OtherLinks" xml:space="preserve">
+    <value>Diğer bağlantılar</value>
+  </data>
+  <data name="SearchMenu" xml:space="preserve">
+    <value>Menüde ara</value>
+  </data>
+  <data name="NoMatchingMenuFound" xml:space="preserve">
+    <value>Eşleşen menü bulunamadı</value>
+  </data>
+  <data name="BulkOperations" xml:space="preserve">
+    <value>Toplu işlemler</value>
+  </data>
+  <data name="BulkOperationsHint" xml:space="preserve">
+    <value>Seç, yayınla, sil…</value>
+  </data>
+  <data name="Density" xml:space="preserve">
+    <value>Yoğunluk</value>
+  </data>
+  <data name="GridDensity" xml:space="preserve">
+    <value>Tablo yoğunluğu</value>
+  </data>
+  <data name="DensityComfortable" xml:space="preserve">
+    <value>Rahat</value>
+  </data>
+  <data name="DensityCompact" xml:space="preserve">
+    <value>Kompakt</value>
+  </data>
+  <data name="PublishedShort" xml:space="preserve">
+    <value>Yayında</value>
+  </data>
+  <data name="MainPageShort" xml:space="preserve">
+    <value>Vitrin</value>
+  </data>
+  <data name="CampaignShort" xml:space="preserve">
+    <value>Kampanya</value>
+  </data>
+  <data name="ImageShort" xml:space="preserve">
+    <value>Resim</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Yükleniyor…</value>
+  </data>
+  <data name="GridLoadError" xml:space="preserve">
+    <value>Grid yüklenemedi.</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Yorumlar</value>
+  </data>
+  <data name="SaveNoteAndShipment" xml:space="preserve">
+    <value>Not ve kargoyu kaydet</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tümü</value>
+  </data>
+  <data name="Publish" xml:space="preserve">
+    <value>Yayınla</value>
+  </data>
+  <data name="Unpublish" xml:space="preserve">
+    <value>Kaldır</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>İle</value>
+  </data>
+  <data name="ShowingAll" xml:space="preserve">
+    <value>Tümü gösteriliyor</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Tümünü Göster</value>
+  </data>
+  <data name="ShowDefault" xml:space="preserve">
+    <value>Varsayılanı Göster</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Sistem Varsayılanı</value>
+  </data>
+  <data name="ClearShowAll" xml:space="preserve">
+    <value>Temizle (Tümünü Göster)</value>
+  </data>
+  <data name="Records" xml:space="preserve">
+    <value>Kayıtlar</value>
+  </data>
+  <data name="Through" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>/</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Önceki</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Sonraki</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Sayfa</value>
+  </data>
+  <data name="Rows" xml:space="preserve">
+    <value>satır</value>
+  </data>
+  <data name="Row" xml:space="preserve">
+    <value>satır</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>seçili</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Gösterge Paneli</value>
+  </data>
+  <data name="CatalogAndContentQuickAccess" xml:space="preserve">
+    <value>Katalog ve içerik işlemlerine buradan hızlıca geçin.</value>
+  </data>
+  <data name="ContentAndShowcase" xml:space="preserve">
+    <value>İçerik ve vitrin</value>
+  </data>
+  <data name="MainPageImagesDesc" xml:space="preserve">
+    <value>Kayan banner ve vitrin görselleri</value>
+  </data>
+  <data name="MenusDesc" xml:space="preserve">
+    <value>Hakkımızda, iletişim ve diğer sayfalar</value>
+  </data>
+  <data name="ProductsDesc" xml:space="preserve">
+    <value>Ürün ekle, düzenle ve fiyatlandır</value>
+  </data>
+  <data name="ProductsDescNoPrice" xml:space="preserve">
+    <value>Ürünleri listeleyin ve düzenleyin</value>
+  </data>
+  <data name="ProductCategoriesDesc" xml:space="preserve">
+    <value>Kategori ağacı ve sıralama</value>
+  </data>
+  <data name="BrandsDesc" xml:space="preserve">
+    <value>Marka listesi ve görselleri</value>
+  </data>
+  <data name="OrdersDesc" xml:space="preserve">
+    <value>Sipariş durumu ve kargo takibi</value>
+  </data>
+  <data name="CustomersDesc" xml:space="preserve">
+    <value>Üye ve müşteri kayıtları</value>
+  </data>
+  <data name="ShippingAndStore" xml:space="preserve">
+    <value>Kargo ve mağaza</value>
+  </data>
+  <data name="ShippingAndStoreDesc" xml:space="preserve">
+    <value>Kargo açıklaması ve mağaza bilgileri</value>
+  </data>
+  <data name="IyzicoPanelDesc" xml:space="preserve">
+    <value>Ödeme paneli (yeni sekme)</value>
+  </data>
+  <data name="SearchMin2Chars" xml:space="preserve">
+    <value>Aramaya başlamak için en az 2 karakter yazmalısınız</value>
+  </data>
+  <data name="AdminPanelHeroLead" xml:space="preserve">
+    <value>Katalog ve içerik işlemlerine buradan hızlıca geçin.</value>
+  </data>
+  <data name="AdminSettingsTitle" xml:space="preserve">
+    <value>Yönetici ayarları</value>
+  </data>
+  <data name="AdminSettingsDesc" xml:space="preserve">
+    <value>Şirket ve genel site bilgileri</value>
+  </data>
+  <data name="SystemSettingsDesc" xml:space="preserve">
+    <value>Fiyat, SEO ve teknik ayarlar</value>
+  </data>
+  <data name="SystemSettingsDescNoPrice" xml:space="preserve">
+    <value>Listeleme modu, SEO ve teknik ayarlar</value>
+  </data>
+  <data name="MailTemplatesDesc" xml:space="preserve">
+    <value>E-posta şablonlarını düzenleyin</value>
+  </data>
+  <data name="UsersDesc" xml:space="preserve">
+    <value>Yönetici ve panel kullanıcıları</value>
+  </data>
+  <data name="CacheManagement" xml:space="preserve">
+    <value>Önbellek yönetimi</value>
+  </data>
+  <data name="CacheManagementLead" xml:space="preserve">
+    <value>Storefront önbelleğini hedefli olarak temizleyin. Mağaza tarafı bir sonraki istekte güncel veriyi veritabanından yeniden yükler.</value>
+  </data>
+  <data name="ProductPriceCache" xml:space="preserve">
+    <value>Ürün ve fiyat önbelleği</value>
+  </data>
+  <data name="ProductPriceCacheDesc" xml:space="preserve">
+    <value>Ürün listeleri, detaylar, arama ve fiyatlar</value>
+  </data>
+  <data name="CategoryCache" xml:space="preserve">
+    <value>Kategori önbelleği</value>
+  </data>
+  <data name="CategoryCacheDesc" xml:space="preserve">
+    <value>Kategori ağacı ve kategori sayfaları</value>
+  </data>
+  <data name="SettingCache" xml:space="preserve">
+    <value>Ayar önbelleği</value>
+  </data>
+  <data name="SettingCacheDesc" xml:space="preserve">
+    <value>Mağaza ayarları ve site yapılandırması</value>
+  </data>
+  <data name="ContentCache" xml:space="preserve">
+    <value>İçerik önbelleği</value>
+  </data>
+  <data name="ContentCacheDesc" xml:space="preserve">
+    <value>Menüler, hikayeler, bannerlar, SSS, etiketler</value>
+  </data>
+  <data name="ClearAllStorefrontCache" xml:space="preserve">
+    <value>Tüm storefront önbelleğini temizle</value>
+  </data>
+  <data name="ClearAllStorefrontCacheHint" xml:space="preserve">
+    <value>Tam temizleme + arka planda sayfa yeniden ısınma (warm-up).</value>
+  </data>
+  <data name="PaymentAndCard" xml:space="preserve">
+    <value>Ödeme / kart</value>
+  </data>
+  <data name="Shipment" xml:space="preserve">
+    <value>Kargo</value>
+  </data>
+  <data name="NotAssignedYet" xml:space="preserve">
+    <value>Henüz atanmadı</value>
+  </data>
+  <data name="CustomerAndAddressInfo" xml:space="preserve">
+    <value>Müşteri ve adres bilgileri</value>
+  </data>
+  <data name="DeliveryAddress" xml:space="preserve">
+    <value>Teslimat adresi</value>
+  </data>
+  <data name="NoDeliveryAddress" xml:space="preserve">
+    <value>Teslimat adresi yok.</value>
+  </data>
+  <data name="NoBillingAddress" xml:space="preserve">
+    <value>Fatura adresi yok.</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Toplam</value>
+  </data>
+  <data name="PaymentAndCardInfo" xml:space="preserve">
+    <value>Ödeme ve kart bilgileri</value>
+  </data>
+  <data name="ShowTechDetails" xml:space="preserve">
+    <value>Teknik detayları göster</value>
+  </data>
+  <data name="CardBrand" xml:space="preserve">
+    <value>Kart markası</value>
+  </data>
+  <data name="CardFamily" xml:space="preserve">
+    <value>Kart ailesi</value>
+  </data>
+  <data name="PaymentId" xml:space="preserve">
+    <value>Ödeme no</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Para birimi</value>
+  </data>
+  <data name="TechDetailsNote" xml:space="preserve">
+    <value>Bu alan teknik destek ve ödeme sağlayıcı kontrolleri içindir.</value>
+  </data>
+  <data name="AdminNotePlaceholder" xml:space="preserve">
+    <value>Sadece admin panelinde görünür...</value>
+  </data>
+  <data name="OpenTracking" xml:space="preserve">
+    <value>Takibi aç</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Oluşturma</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Ara</value>
+  </data>
+  <data name="HowToUse" xml:space="preserve">
+    <value>Nasıl kullanılır?</value>
+  </data>
+  <data name="ClickToToggle" xml:space="preserve">
+    <value>açmak / kapatmak için tıklayın</value>
+  </data>
+  <data name="GeneralSystemStatus" xml:space="preserve">
+    <value>Genel Sistem Durumu</value>
+  </data>
+  <data name="Checking" xml:space="preserve">
+    <value>Kontrol ediliyor...</value>
+  </data>
+  <data name="ComponentCount" xml:space="preserve">
+    <value>Bileşen Sayısı</value>
+  </data>
+  <data name="LastChecked" xml:space="preserve">
+    <value>Son Kontrol</value>
+  </data>
+  <data name="NeverChecked" xml:space="preserve">
+    <value>Henüz yapılmadı</value>
+  </data>
+  <data name="RefreshNow" xml:space="preserve">
+    <value>Şimdi Yenile</value>
+  </data>
+  <data name="SystemComponentsAndHealthChecks" xml:space="preserve">
+    <value>Sistem Bileşenleri &amp; Sağlık Kontrolleri</value>
+  </data>
+  <data name="Component" xml:space="preserve">
+    <value>Bileşen</value>
+  </data>
+  <data name="ResponseTime" xml:space="preserve">
+    <value>Yanıt Süresi</value>
+  </data>
+  <data name="DiagnosticDescription" xml:space="preserve">
+    <value>Açıklama / Teşhis</value>
+  </data>
+  <data name="QueryingHealthChecks" xml:space="preserve">
+    <value>Sistem sağlık kontrolleri sorgulanıyor...</value>
+  </data>
+  <data name="ComponentNormal" xml:space="preserve">
+    <value>Bileşen normal çalışıyor</value>
+  </data>
+  <data name="ConnectionOrResponseError" xml:space="preserve">
+    <value>Bağlantı veya yanıt hatası</value>
+  </data>
+  <data name="SystemHealthyAllUp" xml:space="preserve">
+    <value>UP (Tüm Sistemler Sağlıklı ve Çalışır Durumda)</value>
+  </data>
+  <data name="SystemIssueDetected" xml:space="preserve">
+    <value>DOWN (Sistem Sorunu Tespit Edildi)</value>
+  </data>
+  <data name="JustNow" xml:space="preserve">
+    <value>Az önce</value>
+  </data>
+  <data name="SecondsAgo" xml:space="preserve">
+    <value>saniye önce</value>
+  </data>
+  <data name="AdminGeneralSettingsHelpLead" xml:space="preserve">
+    <value>Bu sayfada sitenizin Kargo, SEO ve Alt Bilgi (Footer) ayarlarını yönetebilirsiniz.</value>
+  </data>
+  <data name="AdminGeneralSettingsCargoHelp" xml:space="preserve">
+    <value>Kargo firması adı, sabit kargo ücreti, ücretsiz kargo için minimum sepet tutarı ve kargo açıklama metnini buradan belirleyebilirsiniz.</value>
+  </data>
+  <data name="AdminGeneralSettingsSeoHelp" xml:space="preserve">
+    <value>Arama motorları için sitenizin ana sayfa başlığı (Title), anahtar kelimeleri (Keywords) ve açıklama (Description) metnini içerir. SEO performansınız için önemlidir.</value>
+  </data>
+  <data name="AdminGeneralSettingsFooterHelp" xml:space="preserve">
+    <value>Sitenin en alt kısmında yer alan genel açıklamaları, e-posta bülteni açıklamasını ve varsa özel HTML destekli footer alanını buradan düzenleyebilirsiniz.</value>
+  </data>
+  <data name="AdminGeneralSettingsSaveWarning" xml:space="preserve">
+    <value>Yaptığınız değişikliklerin geçerli olması için kaydet butonuna tıklamayı unutmayın.</value>
+  </data>
+  <data name="ReportSalesByDateRangeTitle" xml:space="preserve">
+    <value>Tarihe Göre Satışlar</value>
+  </data>
+  <data name="ReportSalesByDateRangeDesc" xml:space="preserve">
+    <value>Seçtiğiniz tarih aralığındaki sipariş ve satış özetini görüntüleyin.</value>
+  </data>
+  <data name="ReportGetRegionalSalesReportTitle" xml:space="preserve">
+    <value>Bölgesel Satışlar</value>
+  </data>
+  <data name="ReportGetRegionalSalesReportDesc" xml:space="preserve">
+    <value>Satışların bölgelere ve illere göre dağılımını inceleyin.</value>
+  </data>
+  <data name="ReportOrderVolumeReportTitle" xml:space="preserve">
+    <value>Sipariş Hacmi</value>
+  </data>
+  <data name="ReportOrderVolumeReportDesc" xml:space="preserve">
+    <value>Belirli bir dönemde kaç sipariş alındığını ve hacim trendini görün.</value>
+  </data>
+  <data name="ReportPaymentMethodTitle" xml:space="preserve">
+    <value>Ödeme Yöntemleri</value>
+  </data>
+  <data name="ReportPaymentMethodDesc" xml:space="preserve">
+    <value>Hangi ödeme yöntemlerinin ne kadar kullanıldığını karşılaştırın.</value>
+  </data>
+  <data name="ReportPaymentStatusTitle" xml:space="preserve">
+    <value>Ödeme Durumları</value>
+  </data>
+  <data name="ReportPaymentStatusDesc" xml:space="preserve">
+    <value>Başarılı, bekleyen ve başarısız ödemelerin dağılımını görün.</value>
+  </data>
+  <data name="ReportPaymentTransactionReportTitle" xml:space="preserve">
+    <value>Ödeme İşlemleri</value>
+  </data>
+  <data name="ReportPaymentTransactionReportDesc" xml:space="preserve">
+    <value>Tarih aralığına göre ödeme işlemlerinin ayrıntılı listesini alın.</value>
+  </data>
+  <data name="ReportProductSummaryTitle" xml:space="preserve">
+    <value>Ürün Özeti</value>
+  </data>
+  <data name="ReportProductSummaryDesc" xml:space="preserve">
+    <value>Ürünlerin genel durumunu, satış ve stok özetini tek bakışta görün.</value>
+  </data>
+  <data name="ReportProductStatsByDateRangeTitle" xml:space="preserve">
+    <value>Ürün İstatistikleri</value>
+  </data>
+  <data name="ReportProductStatsByDateRangeDesc" xml:space="preserve">
+    <value>Seçilen dönemde ürün bazında satış ve performans rakamlarını inceleyin.</value>
+  </data>
+  <data name="ReportPriceAnalysisTitle" xml:space="preserve">
+    <value>Fiyat Analizi</value>
+  </data>
+  <data name="ReportPriceAnalysisDesc" xml:space="preserve">
+    <value>Fiyat aralıklarına ve kategorilere göre ürün dağılımını analiz edin.</value>
+  </data>
+  <data name="ReportProductInventoryTitle" xml:space="preserve">
+    <value>Stok Durumu</value>
+  </data>
+  <data name="ReportProductInventoryDesc" xml:space="preserve">
+    <value>Düşük stok, tükenen ve kampanyalı ürünleri hızlıca kontrol edin.</value>
+  </data>
+  <data name="ReportFraudAnalysisTitle" xml:space="preserve">
+    <value>Dolandırıcılık Analizi</value>
+  </data>
+  <data name="ReportFraudAnalysisDesc" xml:space="preserve">
+    <value>Şüpheli sipariş ve risk sinyallerini genel hatlarıyla görün.</value>
+  </data>
+  <data name="ReportFraudRiskReportTitle" xml:space="preserve">
+    <value>Dolandırıcılık Riski</value>
+  </data>
+  <data name="ReportFraudRiskReportDesc" xml:space="preserve">
+    <value>Tarih aralığına göre risk skorlarını ve uyarıları inceleyin.</value>
+  </data>
+  <data name="ReportPerformanceSystemReportTitle" xml:space="preserve">
+    <value>Sistem Performansı</value>
+  </data>
+  <data name="ReportPerformanceSystemReportDesc" xml:space="preserve">
+    <value>Son dönemdeki sistem ve işlem performans özetini görüntüleyin.</value>
+  </data>
+  <data name="ReportCouponUsageTitle" xml:space="preserve">
+    <value>Kupon Kullanımı</value>
+  </data>
+  <data name="ReportCouponUsageDesc" xml:space="preserve">
+    <value>Kuponların ne kadar kullanıldığını ve etkisini takip edin.</value>
+  </data>
+  <data name="ReportShipmentCompanyTitle" xml:space="preserve">
+    <value>Kargo Firmaları</value>
+  </data>
+  <data name="ReportShipmentCompanyDesc" xml:space="preserve">
+    <value>Kargo firmalarına göre gönderi dağılımını görün.</value>
+  </data>
+  <data name="ReportFinancialReportTitle" xml:space="preserve">
+    <value>Finansal Özet</value>
+  </data>
+  <data name="ReportFinancialReportDesc" xml:space="preserve">
+    <value>Gelir ve finansal göstergeleri seçilen dönem için inceleyin.</value>
+  </data>
+  <data name="ReportCatSales" xml:space="preserve">
+    <value>Satış Raporları</value>
+  </data>
+  <data name="ReportCatPayment" xml:space="preserve">
+    <value>Ödeme Raporları</value>
+  </data>
+  <data name="ReportCatProduct" xml:space="preserve">
+    <value>Ürün Raporları</value>
+  </data>
+  <data name="ReportCatRisk" xml:space="preserve">
+    <value>Risk ve Analiz</value>
+  </data>
+  <data name="ReportCatMarketing" xml:space="preserve">
+    <value>Pazarlama ve Lojistik</value>
+  </data>
+  <data name="ReportCatFinance" xml:space="preserve">
+    <value>Finansal Raporlar</value>
+  </data>
+  <data name="ReportLeadText" xml:space="preserve">
+    <value>Aşağıdaki kategorilerden bir rapor seçerek satış, ödeme, stok ve risk özetlerine ulaşabilirsiniz.</value>
+  </data>
+  <data name="SelectReport" xml:space="preserve">
+    <value>Rapor Seçin</value>
+  </data>
+  <data name="OpenReport" xml:space="preserve">
+    <value>Raporu Aç</value>
+  </data>
+  <data name="QuickReports" xml:space="preserve">
+    <value>Hızlı Raporlar</value>
+  </data>
+  <data name="SalesByDate" xml:space="preserve">
+    <value>Satış (tarih)</value>
+  </data>
+  <data name="TodaysSales" xml:space="preserve">
+    <value>Bugünün satışları</value>
+  </data>
+  <data name="YesterdaysSales" xml:space="preserve">
+    <value>Dünün satışları</value>
+  </data>
+  <data name="ThisWeek" xml:space="preserve">
+    <value>Bu hafta</value>
+  </data>
+  <data name="ThisMonth" xml:space="preserve">
+    <value>Bu ay</value>
+  </data>
+  <data name="LowStockProducts" xml:space="preserve">
+    <value>Düşük stoklu ürünler</value>
+  </data>
+  <data name="OutOfStockProducts" xml:space="preserve">
+    <value>Tükenen ürünler</value>
+  </data>
+  <data name="CampaignProducts" xml:space="preserve">
+    <value>Kampanyalı ürünler</value>
+  </data>
+  <data name="FinanceAndPerformance" xml:space="preserve">
+    <value>Finans ve performans</value>
+  </data>
+  <data name="ThisMonthsFinancialSummary" xml:space="preserve">
+    <value>Bu ayın finansal özeti</value>
+  </data>
+  <data name="Last30DaysPerformance" xml:space="preserve">
+    <value>Son 30 gün performans</value>
+  </data>
+  <data name="Important" xml:space="preserve">
+    <value>Önemli</value>
+  </data>
+  <data name="Stock" xml:space="preserve">
+    <value>Stok</value>
+  </data>
+  <data name="SettingsUpToDate" xml:space="preserve">
+    <value>Ayarlar Güncel</value>
+  </data>
+  <data name="UnsavedChangesExist" xml:space="preserve">
+    <value>Kaydedilmemiş Değişiklikler Var</value>
+  </data>
+  <data name="ResetChanges" xml:space="preserve">
+    <value>Değişiklikleri Sıfırla</value>
+  </data>
+  <data name="SettingCategories" xml:space="preserve">
+    <value>Ayar Kategorileri</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>Genel Bakış</value>
+  </data>
+  <data name="DomainStore" xml:space="preserve">
+    <value>Mağaza</value>
+  </data>
+  <data name="GeneralAndStorefront" xml:space="preserve">
+    <value>Genel &amp; Vitrin</value>
+  </data>
+  <data name="AppearanceAndPwa" xml:space="preserve">
+    <value>Görünüm &amp; PWA</value>
+  </data>
+  <data name="MediaAndUpload" xml:space="preserve">
+    <value>Medya &amp; Yükleme</value>
+  </data>
+  <data name="DomainBusiness" xml:space="preserve">
+    <value>İşletme</value>
+  </data>
+  <data name="SalesAndPayments" xml:space="preserve">
+    <value>Satış &amp; Ödemeler</value>
+  </data>
+  <data name="DomainSystem" xml:space="preserve">
+    <value>Sistem</value>
+  </data>
+  <data name="SecurityAndRequestProtection" xml:space="preserve">
+    <value>Güvenlik &amp; İstek Koruması</value>
+  </data>
+  <data name="IntegrationsAndServices" xml:space="preserve">
+    <value>Entegrasyonlar &amp; Servisler</value>
+  </data>
+  <data name="SystemToolsAndMaintenance" xml:space="preserve">
+    <value>Sistem Araçları &amp; Bakım</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="Explain" xml:space="preserve">
+    <value>Açıkla</value>
+  </data>
+  <data name="MetricName" xml:space="preserve">
+    <value>Metrik Adı</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Adet</value>
+  </data>
+  <data name="AvgDurationMs" xml:space="preserve">
+    <value>Ort. süre (ms)</value>
+  </data>
+  <data name="FailedCallsCount" xml:space="preserve">
+    <value>Başarısız çağrı sayısı</value>
+  </data>
+  <data name="Metric" xml:space="preserve">
+    <value>metrik</value>
+  </data>
+  <data name="Metrics" xml:space="preserve">
+    <value>Metrikler</value>
+  </data>
+  <data name="ScrollTableLeftRight" xml:space="preserve">
+    <value>Tabloyu Sağa/Sola Kaydır</value>
+  </data>
+  <data name="ScrollLeft" xml:space="preserve">
+    <value>Sola Kaydır</value>
+  </data>
+  <data name="ScrollRight" xml:space="preserve">
+    <value>Sağa Kaydır</value>
+  </data>
+  <data name="SecurityStatusDashboard" xml:space="preserve">
+    <value>Güvenlik Durumu Gösterge Paneli</value>
+  </data>
+  <data name="GeneralProtection" xml:space="preserve">
+    <value>Genel Koruma</value>
+  </data>
+  <data name="Admin2Fa" xml:space="preserve">
+    <value>Yönetici 2FA</value>
+  </data>
+  <data name="SpamCaptcha" xml:space="preserve">
+    <value>Spam / CAPTCHA</value>
+  </data>
+  <data name="RateLimiting" xml:space="preserve">
+    <value>İstek Sınırlama (Rate Limiting)</value>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>Başarısız</value>
+  </data>
+  <data name="Strong" xml:space="preserve">
+    <value>Güçlü</value>
+  </data>
+  <data name="MediumLevel" xml:space="preserve">
+    <value>Orta Düzey</value>
+  </data>
+  <data name="Critical" xml:space="preserve">
+    <value>Kritik</value>
+  </data>
+  <data name="Weak" xml:space="preserve">
+    <value>Zayıf</value>
+  </data>
+  <data name="Good" xml:space="preserve">
+    <value>İyi</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Hazır</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Gerekli</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Kilitli</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Bakım</value>
+  </data>
+  <data name="MaintenanceModeActive" xml:space="preserve">
+    <value>Bakım modu aktif</value>
+  </data>
+  <data name="ApplicationMetrics" xml:space="preserve">
+    <value>Uygulama Metrikleri</value>
+  </data>
+  <data name="WhatIsThisPageFor" xml:space="preserve">
+    <value>Bu sayfa ne işe yarar?</value>
+  </data>
+  <data name="MetricsHelpLead" xml:space="preserve">
+    <value>Site ve admin panelindeki işlemlerin ne kadar hızlı / yavaş çalıştığını gösterir. Amaç yavaş sayfaları, servisleri veya dış bağlantıları bulmaktır. Satış / sipariş raporları için Raporlar menüsünü kullanın.</value>
+  </data>
+  <data name="MetricsHelpBullet1" xml:space="preserve">
+    <value>Veriler sunucu belleğinde tutulur; uygulama yeniden başlayınca sıfırlanır.</value>
+  </data>
+  <data name="MetricsHelpBullet2" xml:space="preserve">
+    <value>Süreler milisaniye (ms) cinsindendir. 1000 ms = 1 saniye.</value>
+  </data>
+  <data name="MetricsHelpBullet3" xml:space="preserve">
+    <value>Her satırdaki Açıkla düğmesi, o metriğin sayılarını düz metinle yorumlar.</value>
+  </data>
+  <data name="MetricsHelpBullet4" xml:space="preserve">
+    <value>Karar verirken ortalamaya değil P50 → P99 yüzdeliklerine bakın.</value>
+  </data>
+  <data name="WhatColumnsMean" xml:space="preserve">
+    <value>Sütunlar ne anlama gelir?</value>
+  </data>
+  <data name="MetricNameHelp" xml:space="preserve">
+    <value>Ölçülen işlem. Önek türe göre değişir (controller:, service:, …).</value>
+  </data>
+  <data name="CountHelp" xml:space="preserve">
+    <value>Uygulama açıldığından beri bu işlemin kaç kez çağrıldığı.</value>
+  </data>
+  <data name="ErrorHelp" xml:space="preserve">
+    <value>Bu çağrıların kaçının başarısız olduğu.</value>
+  </data>
+  <data name="AvgDurationHelp" xml:space="preserve">
+    <value>Tüm çağrıların ortalama süresi. Tek başına yanıltıcı olabilir.</value>
+  </data>
+  <data name="P50Help" xml:space="preserve">
+    <value>%50 yüzdelik. Çağrıların yarısı bu süreden hızlı, yarısı daha yavaş. Tipik / “ortalama kullanıcı” deneyimine yakındır.</value>
+  </data>
+  <data name="P75Help" xml:space="preserve">
+    <value>%75 yüzdelik. Çağrıların %75’i bu süreden daha hızlı; en yavaş %25’i bundan uzun.</value>
+  </data>
+  <data name="P90P95P99Help" xml:space="preserve">
+    <value>Daha yüksek kuyruk: çağrıların sırasıyla %90 / %95 / %99’u bu süreden hızlı bitmiş. P95 günlük takip için; P99 nadir ama çok yavaş istekler için kullanılır.</value>
+  </data>
+  <data name="PercentilesShortExample" xml:space="preserve">
+    <value>Yüzdelikler — kısa örnek (100 çağrı)</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Değer</value>
+  </data>
+  <data name="Meaning" xml:space="preserve">
+    <value>Anlamı</value>
+  </data>
+  <data name="PercentileExplanationNote" xml:space="preserve">
+    <value>“P” = percentile (yüzdelik dilim). Sayı bir puan değildir; çağrıların yüzde kaçının o süreden daha hızlı olduğunu gösterir.</value>
+  </data>
+  <data name="HowToInterpret" xml:space="preserve">
+    <value>Nasıl yorumlanır?</value>
+  </data>
+  <data name="InterpretBullet1" xml:space="preserve">
+    <value>P50 düşük, P99 çok yüksek → çoğu hızlı; ara sıra spike var.</value>
+  </data>
+  <data name="InterpretBullet2" xml:space="preserve">
+    <value>P50 / P95 / P99 hepsi yüksek → işlem genel olarak yavaş.</value>
+  </data>
+  <data name="InterpretBullet3" xml:space="preserve">
+    <value>Hata &gt; 0 → önce hatalara bakın.</value>
+  </data>
+  <data name="InterpretBullet4" xml:space="preserve">
+    <value>Adet çok düşük → yüzdelikler henüz güvenilir değil.</value>
+  </data>
+  <data name="InterpretBullet5" xml:space="preserve">
+    <value>Satırdaki Açıkla ile bu satıra özel yorumu okuyun.</value>
+  </data>
+  <data name="MetricNamePrefixes" xml:space="preserve">
+    <value>Metrik adı önekleri</value>
+  </data>
+  <data name="PrefixOrExample" xml:space="preserve">
+    <value>Önek / örnek</value>
+  </data>
+  <data name="WhatDoesItMeasure" xml:space="preserve">
+    <value>Ne ölçer?</value>
+  </data>
+  <data name="WhenToInspect" xml:space="preserve">
+    <value>Ne zaman bakılır?</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Toplam</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>filtre</value>
+  </data>
+  <data name="NoMetricsRecordedYet" xml:space="preserve">
+    <value>Henüz metrik kaydı yok. Site veya admin sayfalarında gezinince burada dolmaya başlar.</value>
+  </data>
+  <data name="LiveMeasurements" xml:space="preserve">
+    <value>Canlı ölçümler</value>
+  </data>
+  <data name="HoverColumnHeaderTooltip" xml:space="preserve">
+    <value>Sütun başlıklarına gelerek kısa ipucu görebilirsiniz. Satırdaki Açıkla ile ayrıntı açılır.</value>
+  </data>
+  <data name="MetricDescriptionModal" xml:space="preserve">
+    <value>Metrik açıklaması</value>
+  </data>
+  <data name="SelectExplainFromRow" xml:space="preserve">
+    <value>Bir satırdan Açıkla seçin.</value>
+  </data>
+  <data name="SearchMetric" xml:space="preserve">
+    <value>Metrik ara:</value>
+  </data>
+  <data name="SearchMetricPlaceholder" xml:space="preserve">
+    <value>örn. controller:, service:, db:, Products</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Temizle</value>
+  </data>
+  <data name="FilterHint" xml:space="preserve">
+    <value>İpucu: controller: / service: ile filtreleyin. Her satırdaki Açıkla o metriğin ayrıntılı yorumunu açar.</value>
+  </data>
+  <data name="ExplainTooltip" xml:space="preserve">
+    <value>Bu satırın sayılarını düz metinle yorumlar.</value>
+  </data>
+  <data name="SettingsCenterSubtitle" xml:space="preserve">
+    <value>Mağazanızın görünüm, satış, güvenlik, entegrasyon ve sistem operasyonlarını tek merkezden yapılandırın.</value>
+  </data>
+  <data name="SearchInSettingsPlaceholder" xml:space="preserve">
+    <value>Ayarlarda ara... (örn: SMTP, 2FA, WebP, Fiyat)</value>
+  </data>
+  <data name="ClearSearch" xml:space="preserve">
+    <value>Aramayı temizle</value>
+  </data>
+  <data name="StoreConfiguration" xml:space="preserve">
+    <value>Mağaza Yapılandırması</value>
+  </data>
+  <data name="StoreConfigHelp1" xml:space="preserve">
+    <value>Bakım modu, Google indeksleme izni ve ürün katalog modu.</value>
+  </data>
+  <data name="StoreConfigHelp2" xml:space="preserve">
+    <value>Vitrin teması seçimi, PWA renk ve açılış ayarları.</value>
+  </data>
+  <data name="StoreConfigHelp3" xml:space="preserve">
+    <value>Görsel boyutlandırma, JPEG/WebP sıkıştırma ve Sidecar.</value>
+  </data>
+  <data name="BusinessAndCommerce" xml:space="preserve">
+    <value>İşletme &amp; Ticaret</value>
+  </data>
+  <data name="BusinessConfigHelp1" xml:space="preserve">
+    <value>Resmi unvan, iletişim kanalları ve ücretsiz kargo limiti.</value>
+  </data>
+  <data name="BusinessConfigHelp2" xml:space="preserve">
+    <value>Ödeme sağlayıcı (İyzico), taksit seçenekleri ve kimlik bilgileri.</value>
+  </data>
+  <data name="SystemAndSecurity" xml:space="preserve">
+    <value>Sistem &amp; Güvenlik</value>
+  </data>
+  <data name="SystemConfigHelp1" xml:space="preserve">
+    <value>Yönetici 2FA, Captcha bot koruması ve istek sınırlama (Rate Limiting).</value>
+  </data>
+  <data name="SystemConfigHelp2" xml:space="preserve">
+    <value>SMTP sunucusu yapılandırması ve canlı test e-postası.</value>
+  </data>
+  <data name="SystemConfigHelp3" xml:space="preserve">
+    <value>Sosyal medya, harici scriptler, metrikler ve veri yedekleme.</value>
+  </data>
+  <data name="LiveConfiguration" xml:space="preserve">
+    <value>Canlı Yapılandırma</value>
+  </data>
+  <data name="LiveOnSite" xml:space="preserve">
+    <value>Canlı Yayında</value>
+  </data>
+  <data name="InMaintenanceMode" xml:space="preserve">
+    <value>Bakım Modunda</value>
+  </data>
+  <data name="StoreAndShowcase" xml:space="preserve">
+    <value>Mağaza &amp; Vitrin</value>
+  </data>
+  <data name="StoreAndShowcaseDesc" xml:space="preserve">
+    <value>Tema, SEO ve ürün satış davranışları.</value>
+  </data>
+  <data name="PriceAndSales" xml:space="preserve">
+    <value>Fiyat &amp; Satış</value>
+  </data>
+  <data name="CatalogMode" xml:space="preserve">
+    <value>Katalog Modu</value>
+  </data>
+  <data name="SeoIndexing" xml:space="preserve">
+    <value>SEO İndeksleme</value>
+  </data>
+  <data name="ActiveThemeLabel" xml:space="preserve">
+    <value>Aktif Tema</value>
+  </data>
+  <data name="OpenGeneralSettings" xml:space="preserve">
+    <value>Genel Ayarları Aç</value>
+  </data>
+  <data name="SecurityScore" xml:space="preserve">
+    <value>Güvenlik Skoru</value>
+  </data>
+  <data name="SecurityAndProtection" xml:space="preserve">
+    <value>Güvenlik &amp; Koruma</value>
+  </data>
+  <data name="SecurityAndProtectionDesc" xml:space="preserve">
+    <value>Yönetici hesapları ve istek korumaları.</value>
+  </data>
+  <data name="Mandatory" xml:space="preserve">
+    <value>Zorunlu</value>
+  </data>
+  <data name="GoToSecurityPanel" xml:space="preserve">
+    <value>Güvenlik Paneline Git</value>
+  </data>
+  <data name="EmailAndSmtp" xml:space="preserve">
+    <value>E-Posta &amp; SMTP</value>
+  </data>
+  <data name="EmailAndSmtpDesc" xml:space="preserve">
+    <value>Giden bildirim ve sipariş e-postaları.</value>
+  </data>
+  <data name="SmtpConfigured" xml:space="preserve">
+    <value>SMTP Yapılandırıldı</value>
+  </data>
+  <data name="ConfigRequired" xml:space="preserve">
+    <value>Yapılandırma Gerekli</value>
+  </data>
+  <data name="ServerHost" xml:space="preserve">
+    <value>Sunucu</value>
+  </data>
+  <data name="Undefined" xml:space="preserve">
+    <value>Tanımsız</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Gönderen</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Güvenlik</value>
+  </data>
+  <data name="SslTlsActive" xml:space="preserve">
+    <value>SSL/TLS Aktif</value>
+  </data>
+  <data name="PlainConnection" xml:space="preserve">
+    <value>Düz Bağlantı</value>
+  </data>
+  <data name="OpenEmailSettings" xml:space="preserve">
+    <value>E-Posta Ayarlarını Aç</value>
+  </data>
+  <data name="MediaAndOptimization" xml:space="preserve">
+    <value>Medya &amp; Optimizasyon</value>
+  </data>
+  <data name="MediaAndOptimizationDesc" xml:space="preserve">
+    <value>Görsel boyutları ve sıkıştırma kalitesi.</value>
+  </data>
+  <data name="WebPActive" xml:space="preserve">
+    <value>WebP Aktif</value>
+  </data>
+  <data name="JpegQuality" xml:space="preserve">
+    <value>JPEG Kalitesi</value>
+  </data>
+  <data name="WebPQuality" xml:space="preserve">
+    <value>WebP Kalitesi</value>
+  </data>
+  <data name="OpenMediaSettings" xml:space="preserve">
+    <value>Medya Ayarlarını Aç</value>
+  </data>
+  <data name="BusinessProfile" xml:space="preserve">
+    <value>İşletme Profili</value>
+  </data>
+  <data name="CompanyAndContact" xml:space="preserve">
+    <value>Firma &amp; İletişim</value>
+  </data>
+  <data name="CompanyAndContactDesc" xml:space="preserve">
+    <value>Firma unvanı, adres ve kargo eşikleri.</value>
+  </data>
+  <data name="FreeShippingThreshold" xml:space="preserve">
+    <value>Ücretsiz Kargo</value>
+  </data>
+  <data name="OpenCompanySettings" xml:space="preserve">
+    <value>Firma Ayarlarını Aç</value>
+  </data>
+  <data name="OnlinePaymentGateway" xml:space="preserve">
+    <value>Online Ödeme Altyapısı</value>
+  </data>
+  <data name="SalesAndPaymentConfigDesc" xml:space="preserve">
+    <value>İyzico API anahtarları ve taksit tablosu.</value>
+  </data>
+  <data name="PaymentDisabledNotice" xml:space="preserve">
+    <value>Fiyat/Satış kapalı olduğu için ödeme sistemi devre dışı.</value>
+  </data>
+  <data name="DefaultInstallment" xml:space="preserve">
+    <value>Varsayılan Taksit</value>
+  </data>
+  <data name="SinglePayment" xml:space="preserve">
+    <value>Tek Çekim</value>
+  </data>
+  <data name="InstallmentTable" xml:space="preserve">
+    <value>Taksit Tablosu</value>
+  </data>
+  <data name="OpenPaymentSettings" xml:space="preserve">
+    <value>Ödeme Ayarlarını Aç</value>
+  </data>
+  <data name="SystemDiagnosticsAndHealth" xml:space="preserve">
+    <value>Sistem Tanılama &amp; Sağlık</value>
+  </data>
+  <data name="LiveArchitectureHealth" xml:space="preserve">
+    <value>Canlı Mimari Sağlığı</value>
+  </data>
+  <data name="DbConnection" xml:space="preserve">
+    <value>Veritabanı (SQL Server)</value>
+  </data>
+  <data name="DbConnectionDesc" xml:space="preserve">
+    <value>Ana veri deposu ve Entity Framework bağlantısı.</value>
+  </data>
+  <data name="FileStorageAndMedia" xml:space="preserve">
+    <value>Dosya Depolama &amp; Medya</value>
+  </data>
+  <data name="FileStorageAndMediaDesc" xml:space="preserve">
+    <value>Yüklenen ürün görselleri ve önbellek.</value>
+  </data>
+  <data name="SidecarImageEngine" xml:space="preserve">
+    <value>Görsel İşleme Motoru (Sidecar)</value>
+  </data>
+  <data name="SidecarEngineDesc" xml:space="preserve">
+    <value>WebP / JPEG asenkron sıkıştırma servisi.</value>
+  </data>
+  <data name="OpenSystemHealthPage" xml:space="preserve">
+    <value>Sistem Sağlık Sayfasını Aç</value>
+  </data>
+  <data name="OpenMetricsPage" xml:space="preserve">
+    <value>Uygulama Metriklerini Gör</value>
+  </data>
+  <data name="ServerLabel" xml:space="preserve">
+    <value>Sunucu:</value>
+  </data>
+  <data name="SenderLabel" xml:space="preserve">
+    <value>Gönderen:</value>
+  </data>
+  <data name="SecurityLabel" xml:space="preserve">
+    <value>Güvenlik:</value>
+  </data>
+  <data name="JpegQualityLabel" xml:space="preserve">
+    <value>JPEG Kalitesi:</value>
+  </data>
+  <data name="WebPQualityLabel" xml:space="preserve">
+    <value>WebP Kalitesi:</value>
+  </data>
+  <data name="SidecarLabel" xml:space="preserve">
+    <value>Sidecar:</value>
+  </data>
+  <data name="FreeShippingThresholdLabel" xml:space="preserve">
+    <value>Ücretsiz Kargo:</value>
+  </data>
+  <data name="DefaultInstallmentLabel" xml:space="preserve">
+    <value>Varsayılan Taksit:</value>
+  </data>
+  <data name="InstallmentTableLabel" xml:space="preserve">
+    <value>Taksit Tablosu:</value>
+  </data>
+  <data name="StorefrontBehaviorAndCatalogPreferences" xml:space="preserve">
+    <value>Mağaza Davranışı &amp; Katalog Tercihleri</value>
+  </data>
+  <data name="StorefrontBehaviorHelp" xml:space="preserve">
+    <value>Sitenin genel yayın durumu, arama motoru görünürlüğü ve ürün fiyatlama davranışlarını belirleyin.</value>
+  </data>
+  <data name="MaintenanceModeSiteOffline" xml:space="preserve">
+    <value>Bakım Modu (Site Kapalı)</value>
+  </data>
+  <data name="MaintenanceModeHelp" xml:space="preserve">
+    <value>Ziyaretçilere bakım mesajı gösterilir, yönetici paneli çalışmaya devam eder.</value>
+  </data>
+  <data name="SearchEngineIndexingGooglebot" xml:space="preserve">
+    <value>Arama Motoru İndeksleme (Googlebot vb.)</value>
+  </data>
+  <data name="SearchEngineIndexingHelp" xml:space="preserve">
+    <value>Kapalı olduğunda robots meta etiketi noindex, nofollow olarak ayarlanır.</value>
+  </data>
+  <data name="ProductPricingAndCheckout" xml:space="preserve">
+    <value>Ürün Fiyatlama &amp; Satış İşlemleri</value>
+  </data>
+  <data name="ProductPricingAndCheckoutHelp" xml:space="preserve">
+    <value>Kapatıldığında site sadece katalog modunda çalışır, sepete ekleme ve fiyatlar gizlenir.</value>
+  </data>
+  <data name="ProductReviewsAndRatings" xml:space="preserve">
+    <value>Ürün Yorumları &amp; Değerlendirmeler</value>
+  </data>
+  <data name="ProductReviewsAndRatingsHelp" xml:space="preserve">
+    <value>Ziyaretçilerin ve üyelerin ürünlere yorum yapmasına izin verir.</value>
+  </data>
+  <data name="AdminPanelInterfaceLanguage" xml:space="preserve">
+    <value>Yönetici Paneli Arayüz Dili</value>
+  </data>
+  <data name="AdminPanelInterfaceLanguageHelp" xml:space="preserve">
+    <value>Admin panelinin menü, buton ve etiket dili. Üst bardaki dil seçimi sadece veri giriş dilidir.</value>
+  </data>
+  <data name="GridPageSizeLabel" xml:space="preserve">
+    <value>Tablo Sayfa Boyutu (Grid Page Size)</value>
+  </data>
+  <data name="GridPageSizeHelp" xml:space="preserve">
+    <value>Ürün, sipariş ve müşteri listelerinde tek sayfada gösterilecek kayıt sayısı.</value>
+  </data>
+  <data name="ProductShortDescLengthLabel" xml:space="preserve">
+    <value>Ürün Kısa Açıklama Önizleme Uzunluğu</value>
+  </data>
+  <data name="ProductShortDescLengthHelp" xml:space="preserve">
+    <value>Vitrin ve listeleme kartlarında gösterilecek maksimum karakter sayısı.</value>
+  </data>
+  <data name="CustomMaintenanceModeHtml" xml:space="preserve">
+    <value>Özel Bakım Modu HTML Sayfası</value>
+  </data>
+  <data name="CustomMaintenanceModeHtmlHelp" xml:space="preserve">
+    <value>Bakım modunda ziyaretçilere gösterilecek özel HTML/CSS tasarımı (boş bırakılırsa varsayılan şablon kullanılır).</value>
+  </data>
+  <data name="CustomPriceFilterRangesJson" xml:space="preserve">
+    <value>Özel Fiyat Filtre Aralıkları (JSON)</value>
+  </data>
+  <data name="CustomPriceFilterRangesJsonHelp" xml:space="preserve">
+    <value>Kategori sayfalarında sol filtrede gösterilecek fiyat aralıkları JSON formatında.</value>
+  </data>
+  <data name="AppearanceBrandingAndPwaSettings" xml:space="preserve">
+    <value>Görünüm, Marka &amp; PWA Ayarları</value>
+  </data>
+  <data name="AppearanceBrandingAndPwaHelp" xml:space="preserve">
+    <value>Vitrin temasını, ana renk paletini ve Progressive Web App (PWA) manifest yapılandırmasını yönetin.</value>
+  </data>
+  <data name="StorefrontTheme" xml:space="preserve">
+    <value>Vitrin Teması</value>
+  </data>
+  <data name="StorefrontThemeHelp" xml:space="preserve">
+    <value>Sitenin genel görsel temasını seçin.</value>
+  </data>
+  <data name="ThemePrimaryColorHex" xml:space="preserve">
+    <value>Tema Ana Rengi (Hex)</value>
+  </data>
+  <data name="ThemePrimaryColorHexHelp" xml:space="preserve">
+    <value>Vitrin butonları, vurgular ve tarayıcı adres çubuğu için ana tema rengi.</value>
+  </data>
+  <data name="PwaBackgroundColor" xml:space="preserve">
+    <value>PWA Arka Plan Rengi</value>
+  </data>
+  <data name="PwaBackgroundColorHelp" xml:space="preserve">
+    <value>PWA açılış ekranı (splash screen) için arka plan rengi.</value>
+  </data>
+  <data name="PwaStartUrl" xml:space="preserve">
+    <value>PWA Başlangıç URL</value>
+  </data>
+  <data name="PwaStartUrlHelp" xml:space="preserve">
+    <value>Uygulama ana ekrandan açıldığında yüklenecek başlangıç adresi.</value>
+  </data>
+  <data name="PwaDisplayMode" xml:space="preserve">
+    <value>PWA Ekran Modu (Display Mode)</value>
+  </data>
+  <data name="PwaDisplayModeHelp" xml:space="preserve">
+    <value>Mobil cihazlarda uygulamanın nasıl görüntüleneceği.</value>
+  </data>
+  <data name="PwaOrientation" xml:space="preserve">
+    <value>PWA Ekran Yönü (Orientation)</value>
+  </data>
+  <data name="PwaOrientationHelp" xml:space="preserve">
+    <value>Varsayılan ekran yönelimi.</value>
+  </data>
+  <data name="PwaFallbackAppName" xml:space="preserve">
+    <value>PWA Yedek Uygulama Adı</value>
+  </data>
+  <data name="PwaFallbackAppNameHelp" xml:space="preserve">
+    <value>Firma unvanı tanımlı değilse kullanılacak yedek uygulama adı.</value>
+  </data>
+  <data name="PwaShortNameMaxLength" xml:space="preserve">
+    <value>PWA Kısa Ad Maksimum Karakter</value>
+  </data>
+  <data name="PwaShortNameMaxLengthHelp" xml:space="preserve">
+    <value>Mobil ana ekran simgesi altında gösterilecek maksimum karakter uzunluğu.</value>
+  </data>
+  <data name="ImageResizingAndCompressionPipeline" xml:space="preserve">
+    <value>Görsel Boyutlandırma &amp; Sıkıştırma Pipeline</value>
+  </data>
+  <data name="ImageResizingAndCompressionHelp" xml:space="preserve">
+    <value>Ürün ve vitrin görsellerinin yükleme boyutlarını, WebP dönüşümünü ve Sidecar optimizasyon servisini yapılandırın.</value>
+  </data>
+  <data name="DefaultImageWidthPx" xml:space="preserve">
+    <value>Varsayılan Görsel Genişliği (px)</value>
+  </data>
+  <data name="DefaultImageWidthPxHelp" xml:space="preserve">
+    <value>Katalog listelerinde varsayılan render genişliği.</value>
+  </data>
+  <data name="DefaultImageHeightPx" xml:space="preserve">
+    <value>Varsayılan Görsel Yüksekliği (px)</value>
+  </data>
+  <data name="DefaultImageHeightPxHelp" xml:space="preserve">
+    <value>Katalog listelerinde varsayılan render yüksekliği.</value>
+  </data>
+  <data name="MaxUploadWidthPx" xml:space="preserve">
+    <value>Maksimum Yükleme Genişliği (px)</value>
+  </data>
+  <data name="MaxUploadWidthPxHelp" xml:space="preserve">
+    <value>Yüklenen görseller bu genişliğe orantılı olarak küçültülür.</value>
+  </data>
+  <data name="MaxUploadHeightPx" xml:space="preserve">
+    <value>Maksimum Yükleme Yüksekliği (px)</value>
+  </data>
+  <data name="MaxUploadHeightPxHelp" xml:space="preserve">
+    <value>Yüklenen görseller bu yüksekliğe orantılı olarak küçültülür.</value>
+  </data>
+  <data name="JpegCompressionQuality" xml:space="preserve">
+    <value>JPEG Sıkıştırma Kalitesi (1-100)</value>
+  </data>
+  <data name="JpegCompressionQualityHelp" xml:space="preserve">
+    <value>JPEG çıktısı için kalite faktörü (Önerilen: 75-85).</value>
+  </data>
+  <data name="WebPCompressionQuality" xml:space="preserve">
+    <value>WebP Sıkıştırma Kalitesi (1-100)</value>
+  </data>
+  <data name="WebPCompressionQualityHelp" xml:space="preserve">
+    <value>WebP çıktısı için kalite faktörü (Önerilen: 75-85).</value>
+  </data>
+  <data name="PreferWebPFormat" xml:space="preserve">
+    <value>WebP Formatını Tercih Et</value>
+  </data>
+  <data name="PreferWebPFormatHelp" xml:space="preserve">
+    <value>Yüklenen görseller otomatik olarak modern WebP formatına dönüştürülür.</value>
+  </data>
+  <data name="PreserveOriginalFormat" xml:space="preserve">
+    <value>Orijinal Formatı Koru</value>
+  </data>
+  <data name="PreserveOriginalFormatHelp" xml:space="preserve">
+    <value>PNG şeffaflık veya özel formatları dönüştürmeden saklar.</value>
+  </data>
+  <data name="AsyncCompressionPipeline" xml:space="preserve">
+    <value>Asenkron Sıkıştırma Pipeline</value>
+  </data>
+  <data name="AsyncCompressionPipelineHelp" xml:space="preserve">
+    <value>Görsel optimizasyonunu arka planda kuyruğa alarak yükleme süresini hızlandırır.</value>
+  </data>
+  <data name="DeleteSourceFileAfterCompression" xml:space="preserve">
+    <value>Sıkıştırma Sonrası Kaynak Dosyayı Sil</value>
+  </data>
+  <data name="DeleteSourceFileAfterCompressionHelp" xml:space="preserve">
+    <value>Optimize edilmiş dosya oluştuktan sonra orijinal ham dosyayı diskten temizler.</value>
+  </data>
+  <data name="KeepBackupInFileStorage" xml:space="preserve">
+    <value>Orijinal Yedeği Dosya Depolamasında Sakla</value>
+  </data>
+  <data name="KeepBackupInFileStorageHelp" xml:space="preserve">
+    <value>Ham görselleri yedek klasöründe güvenle arşivler.</value>
+  </data>
+  <data name="ImageProcessingSidecarService" xml:space="preserve">
+    <value>Görsel İşleme Sidecar Servisi</value>
+  </data>
+  <data name="ImageProcessingSidecarServiceHelp" xml:space="preserve">
+    <value>Yüksek performanslı yerel görsel işleme modülünü etkinleştirir.</value>
+  </data>
+  <data name="CompanyInfoAndContactDetails" xml:space="preserve">
+    <value>Firma Bilgileri &amp; İletişim Kanalları</value>
+  </data>
+  <data name="CompanyInfoAndContactHelp" xml:space="preserve">
+    <value>Sitenin resmi unvanını, iletişim adreslerini ve sepet alt limitlerini buradan yönetin.</value>
+  </data>
+  <data name="CompanyOfficialTitleBrand" xml:space="preserve">
+    <value>Firma Resmi Unvanı / Marka Adı</value>
+  </data>
+  <data name="CompanyOfficialTitleBrandHelp" xml:space="preserve">
+    <value>Faturalarda, e-postalarda ve sayfa başlıklarında görünen resmi şirket adı.</value>
+  </data>
+  <data name="CompanyEmailAddressLabel" xml:space="preserve">
+    <value>Firma E-Posta Adresi</value>
+  </data>
+  <data name="CompanyEmailAddressLabelHelp" xml:space="preserve">
+    <value>İletişim formlarının ve bildirimlerin yönlendirileceği ana e-posta.</value>
+  </data>
+  <data name="CompanyPhoneAndLocation" xml:space="preserve">
+    <value>Firma Telefonu ve Konum Bilgisi</value>
+  </data>
+  <data name="CompanyPhoneAndLocationHelp" xml:space="preserve">
+    <value>Müşteri hizmetleri telefon numarası veya çalışma saatleri.</value>
+  </data>
+  <data name="CompanyPhysicalAddress" xml:space="preserve">
+    <value>Firma Açık Adresi</value>
+  </data>
+  <data name="CompanyPhysicalAddressHelp" xml:space="preserve">
+    <value>İletişim sayfasında ve fatura şablonlarında gösterilecek fiziksel adres.</value>
+  </data>
+  <data name="MinimumCartOrderAmount" xml:space="preserve">
+    <value>Minimum Sepet Sipariş Tutarı</value>
+  </data>
+  <data name="MinimumCartOrderAmountHelp" xml:space="preserve">
+    <value>Sipariş verilebilmesi için gereken minimum sepet toplamı.</value>
+  </data>
+  <data name="PaymentGatewaysAndIyzicoConfig" xml:space="preserve">
+    <value>Ödeme Sağlayıcıları &amp; İyzico Yapılandırması</value>
+  </data>
+  <data name="PaymentGatewaysAndIyzicoHelp" xml:space="preserve">
+    <value>Kredi kartı ve banka kartı ödemeleri için İyzico API bağlantısını, taksit oranlarını ve 3D Secure ayarlarını yapılandırın.</value>
+  </data>
+  <data name="ActivePaymentGateway" xml:space="preserve">
+    <value>Aktif Ödeme Sağlayıcı</value>
+  </data>
+  <data name="ActivePaymentGatewayHelp" xml:space="preserve">
+    <value>Online ödemeleri işleyecek ana ödeme altyapısı.</value>
+  </data>
+  <data name="IyzicoApiKeyLabel" xml:space="preserve">
+    <value>İyzico API Anahtarı (API Key)</value>
+  </data>
+  <data name="IyzicoApiKeyLabelHelp" xml:space="preserve">
+    <value>İyzico yönetim panelinden alınan genel API anahtarı.</value>
+  </data>
+  <data name="IyzicoSecretKeyLabel" xml:space="preserve">
+    <value>İyzico Gizli Anahtar (Secret Key)</value>
+  </data>
+  <data name="IyzicoSecretKeyLabelHelp" xml:space="preserve">
+    <value>İyzico yönetim panelinden alınan gizli anahtar.</value>
+  </data>
+  <data name="IyzicoBaseUrlLabel" xml:space="preserve">
+    <value>İyzico API Temel URL (Base URL)</value>
+  </data>
+  <data name="IyzicoBaseUrlLabelHelp" xml:space="preserve">
+    <value>Canlı: https://api.iyzipay.com veya Test: https://sandbox-api.iyzipay.com</value>
+  </data>
+  <data name="EnabledInstallmentsLabel" xml:space="preserve">
+    <value>Etkin Taksit Seçenekleri</value>
+  </data>
+  <data name="EnabledInstallmentsHelp" xml:space="preserve">
+    <value>Müşterilere sunulacak taksit seçenekleri (virgülle ayırarak yazın, örn: 2,3,6,9,12).</value>
+  </data>
+  <data name="DefaultInstallmentOptionLabel" xml:space="preserve">
+    <value>Varsayılan Taksit Seçeneği</value>
+  </data>
+  <data name="DefaultInstallmentOptionHelp" xml:space="preserve">
+    <value>Ödeme formunda önceden seçili gelecek taksit sayısı.</value>
+  </data>
+  <data name="ShowInstallmentTableOnProductPage" xml:space="preserve">
+    <value>Ürün Sayfasında Taksit Tablosunu Göster</value>
+  </data>
+  <data name="ShowInstallmentTableOnProductPageHelp" xml:space="preserve">
+    <value>Ürün detayında banka taksit oranları tablosunu ziyaretçilere gösterir.</value>
+  </data>
+  <data name="Enforce3DSecureVerification" xml:space="preserve">
+    <value>3D Secure Doğrulamasını Zorunlu Kıl</value>
+  </data>
+  <data name="Enforce3DSecureVerificationHelp" xml:space="preserve">
+    <value>Tüm kartlı ödemelerde SMS doğrulama adımı zorunlu tutulur.</value>
+  </data>
+  <data name="CustomProductDetailPaymentHtml" xml:space="preserve">
+    <value>Ürün Detay Özel Ödeme HTML Bilgisi</value>
+  </data>
+  <data name="CustomProductDetailPaymentHtmlHelp" xml:space="preserve">
+    <value>Ürün detayında Ödeme Seçenekleri sekmesinde gösterilecek özel HTML metin.</value>
+  </data>
+  <data name="Security2FaAndRateLimiting" xml:space="preserve">
+    <value>Güvenlik, İki Faktörlü Doğrulama &amp; Rate Limiting</value>
+  </data>
+  <data name="Security2FaAndRateLimitingHelp" xml:space="preserve">
+    <value>Yönetici güvenliğini, bot korumasını ve API istek sınırlandırmalarını tek merkezden yapılandırın.</value>
+  </data>
+  <data name="Enforce2FaForAdmins" xml:space="preserve">
+    <value>Yöneticiler İçin İki Faktörlü Doğrulama (2FA) Zorunlu</value>
+  </data>
+  <data name="Enforce2FaForAdminsHelp" xml:space="preserve">
+    <value>Tüm yönetici ve editör hesapları giriş yaparken Authenticator 6 haneli kod girmek zorunda olur.</value>
+  </data>
+  <data name="CaptchaProviderLabel" xml:space="preserve">
+    <value>CAPTCHA Bot Koruma Sağlayıcısı</value>
+  </data>
+  <data name="CaptchaProviderHelp" xml:space="preserve">
+    <value>Giriş, kayıt ve iletişim formlarında spam botları engellemek için aktif sağlayıcı.</value>
+  </data>
+  <data name="CaptchaSiteKeyLabel" xml:space="preserve">
+    <value>CAPTCHA Site Anahtarı (Site Key)</value>
+  </data>
+  <data name="CaptchaSiteKeyHelp" xml:space="preserve">
+    <value>Google reCAPTCHA / Cloudflare Turnstile genel anahtarı.</value>
+  </data>
+  <data name="CaptchaSecretKeyLabel" xml:space="preserve">
+    <value>CAPTCHA Gizli Anahtarı (Secret Key)</value>
+  </data>
+  <data name="CaptchaSecretKeyHelp" xml:space="preserve">
+    <value>Google reCAPTCHA / Cloudflare Turnstile gizli sunucu anahtarı.</value>
+  </data>
+  <data name="RecaptchaV3MinScore" xml:space="preserve">
+    <value>reCAPTCHA v3 Minimum Geçme Skoru (0.0 - 1.0)</value>
+  </data>
+  <data name="RecaptchaV3MinScoreHelp" xml:space="preserve">
+    <value>v3 puanı bu değerin altında olan istekler robot olarak değerlendirilir (Önerilen: 0.5).</value>
+  </data>
+  <data name="RateLimitingInfrastructure" xml:space="preserve">
+    <value>İstek Sınırlama (Rate Limiting) Altyapısı</value>
+  </data>
+  <data name="RateLimitingInfrastructureHelp" xml:space="preserve">
+    <value>Brute-force ve DDoS saldırılarını engellemek için IP bazlı istek sınırlandırma sistemini açar.</value>
+  </data>
+  <data name="GlobalRequestLimit" xml:space="preserve">
+    <value>Genel İstek Limiti (Global Requests)</value>
+  </data>
+  <data name="GlobalRequestLimitHelp" xml:space="preserve">
+    <value>Tüm sitede bir IP adresinin belirlenen pencerede yapabileceği maksimum istek sayısı.</value>
+  </data>
+  <data name="GlobalTimeWindowMinutes" xml:space="preserve">
+    <value>Genel Zaman Penceresi (Dakika)</value>
+  </data>
+  <data name="GlobalTimeWindowMinutesHelp" xml:space="preserve">
+    <value>Genel limit için geçerli zaman dilimi (dakika).</value>
+  </data>
+  <data name="AuthRequestLimit" xml:space="preserve">
+    <value>Giriş &amp; Kimlik Doğrulama Limiti</value>
+  </data>
+  <data name="AuthRequestLimitHelp" xml:space="preserve">
+    <value>Giriş ve şifre sıfırlama formları için maksimum deneme sayısı.</value>
+  </data>
+  <data name="AuthTimeWindowMinutes" xml:space="preserve">
+    <value>Giriş Zaman Penceresi (Dakika)</value>
+  </data>
+  <data name="AuthTimeWindowMinutesHelp" xml:space="preserve">
+    <value>Giriş denemeleri için geçerli zaman dilimi (dakika).</value>
+  </data>
+  <data name="SearchRequestLimit" xml:space="preserve">
+    <value>Arama Limiti (Search Limit)</value>
+  </data>
+  <data name="SearchRequestLimitHelp" xml:space="preserve">
+    <value>Arama motorunu tarayıcı botlarından korumak için maksimum istek sayısı.</value>
+  </data>
+  <data name="SearchTimeWindowMinutes" xml:space="preserve">
+    <value>Arama Zaman Penceresi (Dakika)</value>
+  </data>
+  <data name="SearchTimeWindowMinutesHelp" xml:space="preserve">
+    <value>Arama limiti için geçerli zaman dilimi (dakika).</value>
+  </data>
+  <data name="ApiRequestLimit" xml:space="preserve">
+    <value>API İstek Limiti (API Limit)</value>
+  </data>
+  <data name="ApiRequestLimitHelp" xml:space="preserve">
+    <value>Ajax ve API uç noktaları için maksimum çağrı sayısı.</value>
+  </data>
+  <data name="ApiTimeWindowMinutes" xml:space="preserve">
+    <value>API Zaman Penceresi (Dakika)</value>
+  </data>
+  <data name="ApiTimeWindowMinutesHelp" xml:space="preserve">
+    <value>API limiti için geçerli zaman dilimi (dakika).</value>
+  </data>
+  <data name="SmtpMailServerPreferences" xml:space="preserve">
+    <value>SMTP E-Posta Sunucusu &amp; Gönderim Tercihleri</value>
+  </data>
+  <data name="SmtpMailServerHelp" xml:space="preserve">
+    <value>Sipariş teyitleri, şifre sıfırlama ve sistem bildirimlerinin gönderileceği SMTP e-posta sunucusunu yapılandırın.</value>
+  </data>
+  <data name="SmtpServerHost" xml:space="preserve">
+    <value>SMTP Sunucu Adresi (Host)</value>
+  </data>
+  <data name="SmtpServerHostHelp" xml:space="preserve">
+    <value>Örnek: smtp.gmail.com, mail.siteniz.com veya smtp.office365.com</value>
+  </data>
+  <data name="SmtpPortNumber" xml:space="preserve">
+    <value>SMTP Port Numarası</value>
+  </data>
+  <data name="SmtpPortNumberHelp" xml:space="preserve">
+    <value>SSL/TLS için genellikle 587 veya 465, düz bağlantı için 25.</value>
+  </data>
+  <data name="SmtpUsernameLabel" xml:space="preserve">
+    <value>SMTP Kullanıcı Adı</value>
+  </data>
+  <data name="SmtpUsernameHelp" xml:space="preserve">
+    <value>SMTP sunucusuna bağlanmak için kullanıcı adı (genellikle tam e-posta adresi).</value>
+  </data>
+  <data name="SmtpPasswordLabel" xml:space="preserve">
+    <value>SMTP Şifresi</value>
+  </data>
+  <data name="SmtpPasswordHelp" xml:space="preserve">
+    <value>SMTP e-posta hesabı veya uygulama parolası.</value>
+  </data>
+  <data name="EmailSenderDisplayName" xml:space="preserve">
+    <value>E-Posta Gönderici Adı (Display Name)</value>
+  </data>
+  <data name="EmailSenderDisplayNameHelp" xml:space="preserve">
+    <value>Giden e-postaların 'Kimden' kısmında görünecek ad (örn: Erayweb Müşteri Hizmetleri).</value>
+  </data>
+  <data name="AdminFromEmailAddress" xml:space="preserve">
+    <value>Yönetici E-Posta Adresi (From Email)</value>
+  </data>
+  <data name="AdminFromEmailAddressHelp" xml:space="preserve">
+    <value>E-postaların gönderileceği ve yanıtların iletileceği e-posta adresi.</value>
+  </data>
+  <data name="EnableSslTlsEncryption" xml:space="preserve">
+    <value>SSL / TLS Şifrelemeyi Etkinleştir</value>
+  </data>
+  <data name="EnableSslTlsEncryptionHelp" xml:space="preserve">
+    <value>Sunucu ile bağlantıyı güvenli SSL/TLS kanalı üzerinden kurar (Önerilen: Açık).</value>
+  </data>
+  <data name="UseDefaultWindowsCredentials" xml:space="preserve">
+    <value>Varsayılan Windows Kimlik Bilgilerini Kullan</value>
+  </data>
+  <data name="UseDefaultWindowsCredentialsHelp" xml:space="preserve">
+    <value>Yerel IIS sunucusunda entegre Windows kimliği kullanılıyorsa açın.</value>
+  </data>
+  <data name="SendLiveTestEmail" xml:space="preserve">
+    <value>Canlı SMTP Test E-Postası Gönder</value>
+  </data>
+  <data name="SendLiveTestEmailHelp" xml:space="preserve">
+    <value>Ayarları kaydettikten sonra buraya bir e-posta adresi yazıp test gönderimi yapabilirsiniz.</value>
+  </data>
+  <data name="TargetTestEmailPlaceholder" xml:space="preserve">
+    <value>Hedef test e-postası (örn: test@alanadiniz.com)</value>
+  </data>
+  <data name="SendTestEmailBtn" xml:space="preserve">
+    <value>Test E-Postası Gönder</value>
+  </data>
+  <data name="SocialMediaAndExternalIntegrations" xml:space="preserve">
+    <value>Sosyal Medya &amp; Harici Hizmet Entegrasyonları</value>
+  </data>
+  <data name="SocialMediaAndExternalHelp" xml:space="preserve">
+    <value>Sosyal medya profil bağlantılarını, Google Analytics, Harita ve Canlı Destek scriptlerini buradan yönetin.</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingCode" xml:space="preserve">
+    <value>Google Analytics İzleme Kodu (Script)</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingCodeHelp" xml:space="preserve">
+    <value>Google Analytics / Tag Manager izleme kodunu buraya yapıştırın.</value>
+  </data>
+  <data name="WhatsAppWidgetScript" xml:space="preserve">
+    <value>WhatsApp İletişim Widget Scripti</value>
+  </data>
+  <data name="WhatsAppWidgetScriptHelp" xml:space="preserve">
+    <value>Özel WhatsApp sohbet widget'ı JavaScript kodu.</value>
+  </data>
+  <data name="WhatsAppDirectChatUrl" xml:space="preserve">
+    <value>WhatsApp Doğrudan Sohbet Bağlantısı</value>
+  </data>
+  <data name="WhatsAppDirectChatUrlHelp" xml:space="preserve">
+    <value>Örnek: https://wa.me/905551234567</value>
+  </data>
+  <data name="GoogleMapsEmbedHtml" xml:space="preserve">
+    <value>Google Haritalar Embed HTML</value>
+  </data>
+  <data name="GoogleMapsEmbedHtmlHelp" xml:space="preserve">
+    <value>İletişim sayfasında gösterilecek Google Maps &lt;iframe&gt; kodu.</value>
+  </data>
+  <data name="LiveChatZopimScript" xml:space="preserve">
+    <value>Canlı Destek / Zopim Scripti</value>
+  </data>
+  <data name="LiveChatZopimScriptHelp" xml:space="preserve">
+    <value>Zopim, Tawk.to vb. canlı sohbet eklentisi embed kodu.</value>
+  </data>
+  <data name="SystemMaintenanceToolsAndOperations" xml:space="preserve">
+    <value>Sistem Bakım Araçları &amp; Operasyonlar</value>
+  </data>
+  <data name="SystemMaintenanceToolsHelp" xml:space="preserve">
+    <value>Önbellek temizleme, veritabanı yedeği ve sistem tanılama işlemlerini buradan yürütün.</value>
+  </data>
+  <data name="PurgeApplicationCache" xml:space="preserve">
+    <value>Uygulama Önbelleğini Temizle</value>
+  </data>
+  <data name="PurgeApplicationCacheHelp" xml:space="preserve">
+    <value>Katalog, ayarlar ve sayfa önbelleğini anında sıfırlar.</value>
+  </data>
+  <data name="ClearCacheBtn" xml:space="preserve">
+    <value>Önbelleği Boşalt</value>
+  </data>
+  <data name="ExportDatabaseBackup" xml:space="preserve">
+    <value>Veritabanı Yedeğini Dışa Aktar</value>
+  </data>
+  <data name="ExportDatabaseBackupHelp" xml:space="preserve">
+    <value>Tüm sistem ve katalog verilerini JSON/SQL formatında indirir.</value>
+  </data>
+  <data name="DownloadBackupBtn" xml:space="preserve">
+    <value>Yedeği İndir</value>
+  </data>
+  <data name="UserEditHelp1" xml:space="preserve">
+    <value>Bu sayfada kullanıcının temel profil bilgilerini güncelleyebilirsiniz.</value>
+  </data>
+  <data name="UserEditHelp2" xml:space="preserve">
+    <value>İsim, Soyisim ve E-posta adresi sistemdeki bildirimler ve giriş işlemleri için kullanılmaktadır, lütfen güncel tutmaya özen gösterin.</value>
+  </data>
+  <data name="ChangePasswordHelp1" xml:space="preserve">
+    <value>Bu sayfada şifrenizi güvenli bir şekilde güncelleyebilirsiniz.</value>
+  </data>
+  <data name="ChangePasswordHelp2" xml:space="preserve">
+    <value>Güvenliğiniz için yeni şifrenizin en az 8 karakter, büyük harf, küçük harf ve rakam içermesine dikkat edin.</value>
+  </data>
+  <data name="TemplatesSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada ürün şablonlarını ve özel alan yapılandırmalarını yönetebilirsiniz.</value>
+  </data>
+  <data name="TemplatesSaveHelp2" xml:space="preserve">
+    <value>Farklı ürün türleri (örn: Giyim, Elektronik) için özel özellikler tanımlayarak ürün girişini hızlandırabilirsiniz.</value>
+  </data>
+  <data name="TagsSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada ürün etiketlerini (tag) ekleyebilir veya düzenleyebilirsiniz.</value>
+  </data>
+  <data name="TagsSaveHelp2" xml:space="preserve">
+    <value>Etiketler, müşterilerin benzer ürünleri filtrelemesine ve arama motorlarının içeriğinizi daha iyi anlamasına yardımcı olur.</value>
+  </data>
+  <data name="TagCategoriesSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada etiket kategorilerini yönetebilirsiniz.</value>
+  </data>
+  <data name="TagCategoriesSaveHelp2" xml:space="preserve">
+    <value>Etiketleri gruplayarak vitrin filtrelerinde daha düzenli bir görünüm sağlayabilirsiniz.</value>
+  </data>
+  <data name="StoriesSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada hikaye (story) içeriklerini ekleyebilir veya güncelleyebilirsiniz.</value>
+  </data>
+  <data name="StoriesSaveHelp2" xml:space="preserve">
+    <value>Hikayeler, mobil vitrinde ziyaretçilerin dikkatini çekmek ve kampanyaları duyurmak için idealdir.</value>
+  </data>
+  <data name="StoryCategoriesSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada hikaye kategorilerini yönetebilirsiniz.</value>
+  </data>
+  <data name="StoryCategoriesSaveHelp2" xml:space="preserve">
+    <value>Hikayeleri kategorilere ayırarak farklı kampanyaları veya ürün gruplarını ayrı ayrı sergileyebilirsiniz.</value>
+  </data>
+  <data name="WebSiteLogoHelp1" xml:space="preserve">
+    <value>Bu sayfada web sitenizin logosunu yükleyebilir veya güncelleyebilirsiniz.</value>
+  </data>
+  <data name="WebSiteLogoHelp2" xml:space="preserve">
+    <value>Şeffaf arka planlı PNG veya SVG formatında yüksek çözünürlüklü bir görsel kullanmanız önerilir.</value>
+  </data>
+  <data name="ProductSpecsHelp1" xml:space="preserve">
+    <value>Bu sayfada ürünün teknik özelliklerini ve dinamik alanlarını belirleyebilirsiniz.</value>
+  </data>
+  <data name="ProductSpecsHelp2" xml:space="preserve">
+    <value>Ürün şablonundan gelen alanları doldurarak vitrinde zengin ürün detayları sunabilirsiniz.</value>
+  </data>
+  <data name="ProductsSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada yeni bir ürün ekleyebilir veya mevcut ürünü düzenleyebilirsiniz.</value>
+  </data>
+  <data name="ProductsSaveHelp2" xml:space="preserve">
+    <value>Ürün adı, fiyatı, stok durumu, kategorisi ve görselleri gibi tüm temel bilgileri eksiksiz doldurmaya özen gösterin.</value>
+  </data>
+  <data name="MoveProductsHelp1" xml:space="preserve">
+    <value>Bu sayfada ürünleri kategoriler arasında toplu olarak taşıyabilir veya kopyalayabilirsiniz.</value>
+  </data>
+  <data name="MoveProductsHelp2" xml:space="preserve">
+    <value>Kategori ağacından hedef kategoriyi seçip ürünleri kolayca yeni konumlarına aktarabilirsiniz.</value>
+  </data>
+  <data name="MoveCategoryHelp1" xml:space="preserve">
+    <value>Bu sayfada kategori ağacı yapısını düzenleyebilir ve kategorilerin hiyerarşik sırasını değiştirebilirsiniz.</value>
+  </data>
+  <data name="MoveCategoryHelp2" xml:space="preserve">
+    <value>Sürükle-bırak veya seçim araçlarını kullanarak alt kategorilerin üst kategorilerini kolayca güncelleyebilirsiniz.</value>
+  </data>
+  <data name="ProductCategoriesSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada ürün kategorisi ekleyebilir veya düzenleyebilirsiniz.</value>
+  </data>
+  <data name="ProductCategoriesSaveHelp2" xml:space="preserve">
+    <value>Kategori adı, SEO başlığı, açıklaması ve vitrin görseli ekleyerek müşterilerin ürünlere daha kolay ulaşmasını sağlayın.</value>
+  </data>
+  <data name="MenusSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada web sitenizin navigasyon menülerini ve bağlantılarını yönetebilirsiniz.</value>
+  </data>
+  <data name="MenusSaveHelp2" xml:space="preserve">
+    <value>Üst menü, alt menü veya yan menü için bağlantı başlığı, URL ve hedef pencere ayarlarını yapılandırın.</value>
+  </data>
+  <data name="MoveMenuHelp1" xml:space="preserve">
+    <value>Bu sayfada menü öğelerinin hiyerarşik sırasını ve konumunu değiştirebilirsiniz.</value>
+  </data>
+  <data name="MoveMenuHelp2" xml:space="preserve">
+    <value>Menü öğelerini sürükleyerek alt menü oluşturabilir veya sıralamasını güncelleyebilirsiniz.</value>
+  </data>
+  <data name="MainPageImagesSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada ana sayfa slider ve banner görsellerini ekleyebilir veya düzenleyebilirsiniz.</value>
+  </data>
+  <data name="MainPageImagesSaveHelp2" xml:space="preserve">
+    <value>Görsel, başlık, açıklama ve yönlendirme bağlantısı (URL) ekleyerek vitrininizi dinamik tutun.</value>
+  </data>
+  <data name="MailTemplatesSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada sistem e-posta şablonlarını (sipariş teyidi, şifre sıfırlama vb.) özelleştirebilirsiniz.</value>
+  </data>
+  <data name="MailTemplatesSaveHelp2" xml:space="preserve">
+    <value>Dinamik etiketleri ({UserName}, {OrderNumber} vb.) kullanarak e-postaları kişiselleştirebilir ve test gönderimi yapabilirsiniz.</value>
+  </data>
+  <data name="ListsSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada ürün listeleri (Öne Çıkanlar, Çok Satanlar, Yeni Ürünler vb.) oluşturabilirsiniz.</value>
+  </data>
+  <data name="ListsSaveHelp2" xml:space="preserve">
+    <value>Oluşturduğunuz listeleri ana sayfada veya vitrin bloklarında özel şablonlarla sergileyebilirsiniz.</value>
+  </data>
+  <data name="FaqSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada Sıkça Sorulan Sorular (SSS) maddelerini ekleyebilir veya düzenleyebilirsiniz.</value>
+  </data>
+  <data name="FaqSaveHelp2" xml:space="preserve">
+    <value>Müşterilerin kargo, iade, ödeme ve üyelik süreçleri hakkındaki sorularını net yanıtlarla aydınlatın.</value>
+  </data>
+  <data name="BrandsSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada ürün markalarını (üreticileri) ekleyebilir veya düzenleyebilirsiniz.</value>
+  </data>
+  <data name="BrandsSaveHelp2" xml:space="preserve">
+    <value>Marka logosu, web sitesi ve açıklaması ekleyerek müşterilerin markalara göre filtreleme yapmasını sağlayın.</value>
+  </data>
+  <data name="CouponsSaveHelp1" xml:space="preserve">
+    <value>Bu sayfada indirim kuponları ve promosyon kodları tanımlayabilirsiniz.</value>
+  </data>
+  <data name="CouponsSaveHelp2" xml:space="preserve">
+    <value>Kupon kodu, indirim türü (yüzde veya tutar), kullanım limiti ve son geçerlilik tarihini belirleyin.</value>
+  </data>
+  <data name="EditCompanyInfo" xml:space="preserve">
+    <value>Firma Bilgilerini Düzenle</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Araçlar</value>
+  </data>
+  <data name="SystemMetricsLogsDesc" xml:space="preserve">
+    <value>Sistem metrikleri, günlükler ve veri ihracı.</value>
+  </data>
+  <data name="OpenSystemTools" xml:space="preserve">
+    <value>Sistem Araçlarını Aç</value>
+  </data>
+  <data name="SiteStatusAndIndexing" xml:space="preserve">
+    <value>Site Durumu &amp; Arama Motoru İndeksleme</value>
+  </data>
+  <data name="ManageStorefrontVisibility" xml:space="preserve">
+    <value>Mağazanızın ziyaretçi erişimi ve arama motorlarındaki görünürlüğünü yönetin.</value>
+  </data>
+  <data name="MaintenanceModeSiteStatus" xml:space="preserve">
+    <value>Bakım Modu (Site Durumu)</value>
+  </data>
+  <data name="MaintenanceModeSiteStatusDesc" xml:space="preserve">
+    <value>Aktif edildiğinde ziyaretçilere bakım sayfası gösterilir ve arama motorlarına otomatik &lt;code&gt;noindex&lt;/code&gt; sinyali iletilir.</value>
+  </data>
+  <data name="MaintenanceCustomMessageHtml" xml:space="preserve">
+    <value>Bakım Sayfası Özel Mesaj / HTML</value>
+  </data>
+  <data name="MaintenanceCustomMessageHtmlDesc" xml:space="preserve">
+    <value>Bakım sayfası yayındayken ziyaretçilerinize gösterilecek özel duyuru, bilgilendirme metni veya HTML kodu girebilirsiniz. Boş bırakılırsa standart bakım mesajı gösterilir.</value>
+  </data>
+  <data name="AllowSearchEngineIndexing" xml:space="preserve">
+    <value>Arama Motoru İndekslemesine İzin Ver</value>
+  </data>
+  <data name="AllowSearchEngineIndexingDesc" xml:space="preserve">
+    <value>Açık olduğunda &lt;code&gt;robots.txt&lt;/code&gt; ve meta etiketleri üzerinden Google ve Bing botlarına tam tarama ve dizin izni verilir.</value>
+  </data>
+  <data name="ProductPricesAndAddToCart" xml:space="preserve">
+    <value>Ürün Fiyatları ve Sepete Ekleme</value>
+  </data>
+  <data name="CatalogShowcaseModeDesc" xml:space="preserve">
+    <value>Kapalı olduğunda mağaza &lt;strong&gt;Katalog / Tanıtım Modunda&lt;/strong&gt; çalışır; fiyatlar gizlenir ve ödeme adımları devre dışı bırakılır.</value>
+  </data>
+  <data name="ProductReviewsAndRatingsTitle" xml:space="preserve">
+    <value>Ürün Yorumları ve Puanlama</value>
+  </data>
+  <data name="ProductReviewsAndRatingsDesc" xml:space="preserve">
+    <value>Ziyaretçilerin ve kayıtlı müşterilerin ürün detay sayfalarında yorum ve yıldızlı puan bırakmasına izin verin.</value>
+  </data>
+  <data name="AdminGridPageSizeDesc" xml:space="preserve">
+    <value>Yönetim paneli listelerinde sayfa başına gösterilecek kayıt adedi (Örn: 100).</value>
+  </data>
+  <data name="ProductShortDescLengthDesc" xml:space="preserve">
+    <value>Vitrin ürün detayında "Devamını Gör" öncesi metin uzunluğu (Karakter).</value>
+  </data>
+  <data name="UserRolesHelpLead" xml:space="preserve">
+    <value>Bu kullanıcının yetkilerini işaretleyin. Değişikliklerin uygulanması için kaydetmeyi unutmayın.</value>
+  </data>
+  <data name="PermissionsSelected" xml:space="preserve">
+    <value>yetki seçili</value>
+  </data>
+  <data name="TogglePermissionsByRoles" xml:space="preserve">
+    <value>Rolleri işaretleyerek yetkileri açıp kapatabilirsiniz.</value>
+  </data>
+  <data name="AdminUsersIndexLead" xml:space="preserve">
+    <value>Yönetici ve editör hesaplarını arayın, role / 2FA durumuna göre filtreleyin ve işlem menüsünden düzenleyin.</value>
+  </data>
+  <data name="CustomersWithAccounts" xml:space="preserve">
+    <value>Sitede hesabı olan müşteriler</value>
+  </data>
+  <data name="FilterByNameEmailRole2Fa" xml:space="preserve">
+    <value>Ad / e-posta, rol ve 2FA ile daraltın</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Yönetici</value>
+  </data>
+  <data name="Editor" xml:space="preserve">
+    <value>Editör</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Müşteri</value>
+  </data>
+  <data name="EnableAuthenticator" xml:space="preserve">
+    <value>Authenticator etkinleştir</value>
+  </data>
+  <data name="EnableAuthenticatorLead" xml:space="preserve">
+    <value>Google Authenticator veya Microsoft Authenticator uygulamasını telefonunuza yükleyip QR kodu tarayın. 6 haneli kodu girerek iki faktörlü doğrulamayı etkinleştirin.</value>
+  </data>
+  <data name="SetupAuthenticatorApp" xml:space="preserve">
+    <value>Authenticator uygulamasını kurun</value>
+  </data>
+  <data name="InstallAuthenticatorStep1" xml:space="preserve">
+    <value>Google Authenticator veya Microsoft Authenticator uygulamasını telefonunuza yükleyin.</value>
+  </data>
+  <data name="InstallAuthenticatorStep2" xml:space="preserve">
+    <value>Aşağıdaki QR kodu tarayın (veya manuel anahtarı girin).</value>
+  </data>
+  <data name="InstallAuthenticatorStep3" xml:space="preserve">
+    <value>Uygulamadaki 6 haneli kodu girerek etkinleştirmeyi tamamlayın.</value>
+  </data>
+  <data name="InstallAuthenticatorStep4" xml:space="preserve">
+    <value>Bundan sonra yönetici girişi şifreden sonra bu kodu isteyecektir.</value>
+  </data>
+  <data name="ScanQrCodePrompt" xml:space="preserve">
+    <value>Google Authenticator veya Microsoft Authenticator ile aşağıdaki QR kodu tarayın:</value>
+  </data>
+  <data name="DisplayNameInApp" xml:space="preserve">
+    <value>Uygulamada görünecek ad:</value>
+  </data>
+  <data name="EnterKeyManuallyPrompt" xml:space="preserve">
+    <value>QR kodu tarayamıyorsanız manuel olarak bu anahtarı girin:</value>
+  </data>
+  <data name="VerificationCode6Digits" xml:space="preserve">
+    <value>Doğrulama kodu (6 haneli)</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Etkinleştir</value>
+  </data>
+  <data name="ForgotPasswordLead" xml:space="preserve">
+    <value>Kullanıcıya şifre sıfırlama bağlantısı e-posta ile gönderilir. Bağlantıdaki adımları tamamlayarak yeni şifre belirlenebilir.</value>
+  </data>
+  <data name="CheckSpamFolderHint" xml:space="preserve">
+    <value>E-posta gelmezse spam / junk klasörünü kontrol edin.</value>
+  </data>
+  <data name="EmergencyAdminOption" xml:space="preserve">
+    <value>Acil durumda yönetici olarak</value>
+  </data>
+  <data name="GeneratePasswordInstantlyOption" xml:space="preserve">
+    <value>seçeneği ile anında yeni şifre oluşturabilirsiniz.</value>
+  </data>
+  <data name="EmailAutoPopulatedFromUser" xml:space="preserve">
+    <value>E-posta adresi seçilen kullanıcıdan otomatik dolduruldu.</value>
+  </data>
+  <data name="GeneratePasswordLead" xml:space="preserve">
+    <value>Bu işlem kullanıcının mevcut şifresini hemen geçersiz kılar. Yeni şifreyi güvenli bir şekilde kullanıcıya iletin.</value>
+  </data>
+  <data name="GeneratePasswordWarning" xml:space="preserve">
+    <value>Mevcut şifre hemen geçersiz olur. Oluşturulan şifreyi bu ekrandan kopyalayıp kullanıcıya iletin; sayfayı kapattıktan sonra tekrar göremezsiniz.</value>
+  </data>
+  <data name="PasswordGeneratedSuccessNotice" xml:space="preserve">
+    <value>Yeni şifre oluşturuldu. Bu şifreyi kopyalayıp kullanıcıya iletin. Sayfayı kapattıktan sonra şifreyi tekrar göremezsiniz.</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>Kopyalandı</value>
+  </data>
+  <data name="CopyPassword" xml:space="preserve">
+    <value>Şifreyi kopyala</value>
+  </data>
+  <data name="PasswordGenerateFailed" xml:space="preserve">
+    <value>Yeni şifre oluşturulamadı. Lütfen tekrar deneyin.</value>
+  </data>
+  <data name="PasswordCopiedToClipboard" xml:space="preserve">
+    <value>Şifre panoya kopyalandı.</value>
+  </data>
+  <data name="CopyFailedSelectManually" xml:space="preserve">
+    <value>Kopyalama başarısız. Şifreyi elle seçip kopyalayın.</value>
+  </data>
+  <data name="CustomerFullname" xml:space="preserve">
+    <value>Müşteri Ad Soyad</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="TcIdentificationNumber" xml:space="preserve">
+    <value>T.C. Kimlik No</value>
+  </data>
+  <data name="SubTotal" xml:space="preserve">
+    <value>Ara Toplam</value>
+  </data>
+  <data name="PaymentStatusLabel" xml:space="preserve">
+    <value>Ödeme Durumu</value>
+  </data>
+  <data name="ToolsTitle" xml:space="preserve">
+    <value>Araçlar</value>
+  </data>
+  <data name="AdminPanelInterfaceLanguageDesc" xml:space="preserve">
+    <value>Yönetim paneli arayüz dili (menüler, butonlar, mesajlar). Veri giriş dili (üst çubuk) ayrı bir ayardır.</value>
+  </data>
+  <data name="PaymentDetailTabHelpDesc" xml:space="preserve">
+    <value>Ürün detay sayfasındaki "Ödeme &amp; Taksit Bilgisi" sekmesinde doğrudan müşteriye sunulur.</value>
+  </data>
+  <data name="PaymentDetailTabHelpDescAmp" xml:space="preserve">
+    <value>Ürün detay sayfasındaki "Ödeme &amp; Taksit Bilgisi" sekmesinde doğrudan müşteriye sunulur.</value>
+  </data>
+  <data name="AppearanceThemePwaManifest" xml:space="preserve">
+    <value>Görünüm, Tema &amp; PWA Manifest</value>
+  </data>
+  <data name="AppearanceThemePwaManifestDesc" xml:space="preserve">
+    <value>Sitenizin genel görsel temasını, ana renk paletini ve mobil Progressive Web App (PWA) manifest yapılandırmasını belirleyin.</value>
+  </data>
+  <data name="StorefrontAndInterfaceTheme" xml:space="preserve">
+    <value>Vitrin &amp; Arayüz Teması</value>
+  </data>
+  <data name="StorefrontThemeSelectDesc" xml:space="preserve">
+    <value>Mağazanızın vitrininde kullanılacak hazır tema şablonunu seçin.</value>
+  </data>
+  <data name="ThemePrimaryBrandColor" xml:space="preserve">
+    <value>Tema Ana Rengi (Primary Brand Color)</value>
+  </data>
+  <data name="ThemePrimaryBrandColorDesc" xml:space="preserve">
+    <value>Butonlar, bağlantılar ve önemli arayüz vurgularında kullanılan ana kurumsal renk kodu (Hex formatında).</value>
+  </data>
+  <data name="PwaBackgroundColorSplash" xml:space="preserve">
+    <value>PWA Arka Plan Rengi (Splash Screen)</value>
+  </data>
+  <data name="PwaBackgroundColorSplashDesc" xml:space="preserve">
+    <value>Mobil cihazlarda uygulama ilk başlatılırken açılış ekranında gösterilecek arka plan rengi.</value>
+  </data>
+  <data name="PwaStartUrlTitle" xml:space="preserve">
+    <value>PWA Açılış Başlangıç Adresi (Start URL)</value>
+  </data>
+  <data name="PwaStartUrlDesc" xml:space="preserve">
+    <value>Uygulama simgesine tıklandığında yüklenecek ilk sayfa (Genellikle ana sayfa &lt;code&gt;/&lt;/code&gt; olarak bırakılır).</value>
+  </data>
+  <data name="PwaDisplayModeTitle" xml:space="preserve">
+    <value>PWA Ekran Görüntüleme Modu (Display)</value>
+  </data>
+  <data name="PwaDisplayModeDesc" xml:space="preserve">
+    <value>Uygulamanın mobil cihazlarda nasıl görüntüleneceği (Önerilen: Standalone - Tarayıcı çubukları olmadan tam ekran uygulama deneyimi).</value>
+  </data>
+  <data name="PwaOrientationTitle" xml:space="preserve">
+    <value>PWA Varsayılan Ekran Yönelimi (Orientation)</value>
+  </data>
+  <data name="PwaOrientationDesc" xml:space="preserve">
+    <value>Uygulama açıldığında tercih edilen ekran yönü (Önerilen: Any / Otomatik).</value>
+  </data>
+  <data name="PwaShortNameMaxLengthTitle" xml:space="preserve">
+    <value>PWA Kısa Uygulama Adı Maksimum Karakter</value>
+  </data>
+  <data name="PwaShortNameMaxLengthDesc" xml:space="preserve">
+    <value>Mobil ana ekran simgesi altında gösterilecek kısa uygulama adının maksimum karakter uzunluğu (Önerilen: 12).</value>
+  </data>
+  <data name="PwaFallbackAppNameTitle" xml:space="preserve">
+    <value>PWA Yedek Uygulama Adı (Fallback)</value>
+  </data>
+  <data name="PwaFallbackAppNameDesc" xml:space="preserve">
+    <value>Firma unvanı boş olduğunda PWA manifest dosyasında kullanılacak varsayılan uygulama adı.</value>
+  </data>
+  <data name="DefaultImageDimensions" xml:space="preserve">
+    <value>Varsayılan Görsel Boyutları</value>
+  </data>
+  <data name="DefaultImageDimensionsDesc" xml:space="preserve">
+    <value>Fotoğraf yüklemelerinde kullanılan standart boyut oranları.</value>
+  </data>
+  <data name="StandardImageWidthDesc" xml:space="preserve">
+    <value>Standart görsel yükleme genişliği (Varsayılan: 1200px).</value>
+  </data>
+  <data name="StandardImageHeightDesc" xml:space="preserve">
+    <value>Standart görsel yükleme yüksekliği (Varsayılan: 900px).</value>
+  </data>
+  <data name="FullSizeImagePoliciesAndJpegQuality" xml:space="preserve">
+    <value>Tam Boyut Görsel Politikaları &amp; JPEG Kalitesi</value>
+  </data>
+  <data name="FullSizeImagesAndCompression" xml:space="preserve">
+    <value>Tam Boyut Görseller &amp; Sıkıştırma</value>
+  </data>
+  <data name="FullSizeImagesAndCompressionDesc" xml:space="preserve">
+    <value>Orijinal yüklenen fotoğrafların maksimum boyutlandırılması ve sıkıştırma oranı.</value>
+  </data>
+  <data name="ZeroNoLimitDesc" xml:space="preserve">
+    <value>0 = sınır yok. Daha büyükse orantılı küçültülür.</value>
+  </data>
+  <data name="WebpOptimizationPipelineTitle" xml:space="preserve">
+    <value>WebP Optimizasyon Pipeline</value>
+  </data>
+  <data name="WebpOptimizationPipelineDesc" xml:space="preserve">
+    <value>Modern WebP formatı dönüşümü ve yedekleme politikaları.</value>
+  </data>
+  <data name="AutoConvertToWebp" xml:space="preserve">
+    <value>Görselleri Otomatik WebP'ye Dönüştür</value>
+  </data>
+  <data name="AutoConvertToWebpDesc" xml:space="preserve">
+    <value>Yüklenen fotoğraflar modern WebP formatına dönüştürülerek sayfa yükleme hızları %30-80 oranında artırılır.</value>
+  </data>
+  <data name="PreserveOriginalFileFormat" xml:space="preserve">
+    <value>Orijinal Dosya Formatını Koru</value>
+  </data>
+  <data name="PreserveOriginalFileFormatDesc" xml:space="preserve">
+    <value>Yüklenen orijinal formatı (JPEG, PNG vb.) saklar; dönüştürme sadece ek türev olarak üretilir.</value>
+  </data>
+  <data name="WebpCompressionQualityTitle" xml:space="preserve">
+    <value>WebP Sıkıştırma Kalitesi (1-100)</value>
+  </data>
+  <data name="WebpCompressionQualityDesc" xml:space="preserve">
+    <value>WebP formatında sıkıştırma kalitesi (Önerilen: 80).</value>
+  </data>
+  <data name="JpegCompressionQualityTitle" xml:space="preserve">
+    <value>JPEG Sıkıştırma Kalitesi (1-100)</value>
+  </data>
+  <data name="JpegCompressionQualityDesc" xml:space="preserve">
+    <value>JPEG formatında sıkıştırma kalitesi (Önerilen: 85).</value>
+  </data>
+  <data name="ImageEngineAdvancedPipeline" xml:space="preserve">
+    <value>Görsel İşleme Motoru &amp; Gelişmiş Pipeline</value>
+  </data>
+  <data name="ImageProcessingAndPipeline" xml:space="preserve">
+    <value>Görsel İşleme &amp; Pipeline</value>
+  </data>
+  <data name="AsyncProcessingAndSidecarDesc" xml:space="preserve">
+    <value>Asenkron arka plan işleme ve Sidecar optimizasyon servisi.</value>
+  </data>
+  <data name="AsyncBackgroundQueue" xml:space="preserve">
+    <value>Asenkron Arka Plan Kuyruğu</value>
+  </data>
+  <data name="AsyncBackgroundQueueDesc" xml:space="preserve">
+    <value>Görsel sıkıştırma işlemlerini arka planda yaparak dosya yükleme süresini hızlandırır.</value>
+  </data>
+  <data name="SaveWebpSidecarFile" xml:space="preserve">
+    <value>WebP Sidecar Dosyasını Sakla</value>
+  </data>
+  <data name="SaveWebpSidecarFileDesc" xml:space="preserve">
+    <value>Orijinal dosyanın yanında &lt;code&gt;.webp&lt;/code&gt; uzantılı yan dosya oluşturur.</value>
+  </data>
+  <data name="DeleteOriginalAfterCompression" xml:space="preserve">
+    <value>Sıkıştırma Sonrası Orijinal Dosyayı Sil</value>
+  </data>
+  <data name="DeleteOriginalAfterCompressionDesc" xml:space="preserve">
+    <value>Disk alanından tasarruf etmek için optimize edilmiş sürüm oluştuktan sonra ham dosyayı siler.</value>
+  </data>
+  <data name="KeepOriginalInFileStorage" xml:space="preserve">
+    <value>Orijinal Dosyayı FileStorage'da Sakla</value>
+  </data>
+  <data name="KeepOriginalInFileStorageDesc" xml:space="preserve">
+    <value>Ham fotoğrafları güvenli bir şekilde arşiv depolama klasöründe tutar.</value>
+  </data>
+  <data name="UseImageSidecarService" xml:space="preserve">
+    <value>Görsel İşleme Sidecar Servisini Kullan</value>
+  </data>
+  <data name="UseImageSidecarServiceDesc" xml:space="preserve">
+    <value>Sunucudaki yerel yüksek performanslı C/Rust tabanlı Sidecar servisi üzerinden sıkıştırma yapar.</value>
+  </data>
+  <data name="CompanyAndContactInfo" xml:space="preserve">
+    <value>Firma &amp; İletişim Bilgileri</value>
+  </data>
+  <data name="CompanyAndContactInfoDesc" xml:space="preserve">
+    <value>Şirketinizin fatura, iletişim sayfası, e-posta şablonları ve vitrinde görünen kurumsal bilgilerini yönetin.</value>
+  </data>
+  <data name="OfficialCompanyStoreTitle" xml:space="preserve">
+    <value>Resmi Firma / Mağaza Unvanı</value>
+  </data>
+  <data name="OfficialCompanyNameDesc" xml:space="preserve">
+    <value>Faturalarda, e-posta bildirimlerinde ve sayfa başlıklarında görünen resmi şirket adı.</value>
+  </data>
+  <data name="OfficialContactEmailAddress" xml:space="preserve">
+    <value>Resmi İletişim E-Posta Adresi</value>
+  </data>
+  <data name="OfficialContactEmailDesc" xml:space="preserve">
+    <value>Müşterilerinize gösterilecek ve iletişim formlarının iletileceği ana e-posta adresi.</value>
+  </data>
+  <data name="PhoneNumberAndCallCenter" xml:space="preserve">
+    <value>Telefon Numarası &amp; Çağrı Merkezi</value>
+  </data>
+  <data name="CustomerSupportPhoneDesc" xml:space="preserve">
+    <value>Müşteri hizmetleri telefon numarası (Örn: +90 850 123 45 67).</value>
+  </data>
+  <data name="CompanyAddressAndLocation" xml:space="preserve">
+    <value>Firma Açık Adresi &amp; Konum</value>
+  </data>
+  <data name="FullPhysicalPostalAddressDesc" xml:space="preserve">
+    <value>İletişim sayfasında, faturalarda ve altbilgide gösterilecek tam fiziksel posta adresi.</value>
+  </data>
+  <data name="OrderMinimumsAndShippingThresholds" xml:space="preserve">
+    <value>Sipariş Alt Limitleri &amp; Kargo Eşikleri</value>
+  </data>
+  <data name="OrdersAndShipping" xml:space="preserve">
+    <value>Sipariş &amp; Kargo</value>
+  </data>
+  <data name="OrderMinimumsAndShippingDesc" xml:space="preserve">
+    <value>Minimum sepet tutarı ve ücretsiz kargo kurallarını belirleyin.</value>
+  </data>
+  <data name="MinimumCartOrderAmountTl" xml:space="preserve">
+    <value>Minimum Sepet Sipariş Tutarı (TL)</value>
+  </data>
+  <data name="MinimumCartSubtotalDesc" xml:space="preserve">
+    <value>Müşterinin siparişi tamamlayabilmesi için sepetinde olması gereken minimum ürün toplam tutarı (0 = Alt limit yok).</value>
+  </data>
+  <data name="FreeShippingSubtotalThresholdTl" xml:space="preserve">
+    <value>Ücretsiz Kargo Sepet Tutarı Eşiği (TL)</value>
+  </data>
+  <data name="FreeShippingSubtotalDesc" xml:space="preserve">
+    <value>Sepet bu tutara ulaştığında müşteriye kargo ücretsiz sunulur (0 = Otomatik ücretsiz kargo yok).</value>
+  </data>
+  <data name="PaymentInfrastructureIyzicoIntegration" xml:space="preserve">
+    <value>Ödeme Altyapısı &amp; İyzico Entegrasyonu</value>
+  </data>
+  <data name="PaymentInfrastructureIyzicoDesc" xml:space="preserve">
+    <value>Kredi kartı, banka kartı ve taksitli alışverişler için İyzico API bağlantısını, test modunu ve 3D Secure ayarlarını yapılandırın.</value>
+  </data>
+  <data name="ActivePaymentGatewayInfra" xml:space="preserve">
+    <value>Aktif Ödeme Sağlayıcı Altyapısı</value>
+  </data>
+  <data name="SelectPrimaryPaymentGatewayDesc" xml:space="preserve">
+    <value>Sitenizde kredi kartı ve online ödemeleri işleyecek ana ödeme ağ geçidini seçin.</value>
+  </data>
+  <data name="IyzicoApiKeysAndConnection" xml:space="preserve">
+    <value>İyzico API Anahtarları &amp; Bağlantı</value>
+  </data>
+  <data name="IyzicoApiAndSecurity" xml:space="preserve">
+    <value>İyzico API &amp; Güvenlik</value>
+  </data>
+  <data name="EnterIyzicoApiCredentialsDesc" xml:space="preserve">
+    <value>İyzico satıcı portalından temin ettiğiniz API Key ve Secret Key bilgilerini girin.</value>
+  </data>
+  <data name="IyzicoApiKeyPublic" xml:space="preserve">
+    <value>İyzico API Key (Genel Anahtar)</value>
+  </data>
+  <data name="MerchantApiKeyDesc" xml:space="preserve">
+    <value>İyzico üye işyeri panelinden alınan API anahtarı (apiKey).</value>
+  </data>
+  <data name="IyzicoSecretKeyPrivate" xml:space="preserve">
+    <value>İyzico Secret Key (Gizli Anahtar)</value>
+  </data>
+  <data name="MerchantSecretKeyDesc" xml:space="preserve">
+    <value>İyzico üye işyeri panelinden alınan gizli anahtar (secretKey). Bu bilgi güvenli olarak saklanır.</value>
+  </data>
+  <data name="IyzicoApiBaseUrlTitle" xml:space="preserve">
+    <value>İyzico API Sunucu Adresi (Base URL)</value>
+  </data>
+  <data name="IyzicoBaseUrlHelpText" xml:space="preserve">
+    <value>Canlı ortam için: &lt;code&gt;https://api.iyzipay.com&lt;/code&gt; | Test/Sandbox için: &lt;code&gt;https://sandbox-api.iyzipay.com&lt;/code&gt;</value>
+  </data>
+  <data name="InstallmentAndPaymentRules" xml:space="preserve">
+    <value>Taksitlendirme &amp; Ödeme Kuralları</value>
+  </data>
+  <data name="InstallmentOptionsTitle" xml:space="preserve">
+    <value>Taksit Seçenekleri</value>
+  </data>
+  <data name="InstallmentOptionsDesc" xml:space="preserve">
+    <value>Banka kartlarına sunulacak taksit seçenekleri ve ürün sayfası taksit tablosu.</value>
+  </data>
+  <data name="ActiveInstallmentOptionsTitle" xml:space="preserve">
+    <value>Aktif Taksit Seçenekleri</value>
+  </data>
+  <data name="ActiveInstallmentsCommaSeparatedDesc" xml:space="preserve">
+    <value>Müşterilere sunulacak taksit adetleri (Virgülle ayırarak yazın, örn: &lt;code&gt;2,3,6,9,12&lt;/code&gt;).</value>
+  </data>
+  <data name="DefaultSelectedInstallment" xml:space="preserve">
+    <value>Varsayılan Taksit Seçimi</value>
+  </data>
+  <data name="DefaultInstallmentFormDesc" xml:space="preserve">
+    <value>Ödeme formunda varsayılan olarak seçili gelecek taksit adedi (1 = Tek Çekim).</value>
+  </data>
+  <data name="ShowInstallmentTableProductPageTitle" xml:space="preserve">
+    <value>Ürün Detayında Taksit Tablosunu Göster</value>
+  </data>
+  <data name="ShowInstallmentTableProductPageDesc" xml:space="preserve">
+    <value>Ürün detay sayfalarında banka kredi kartı taksit oranları tablosunu müşterilere gösterir.</value>
+  </data>
+  <data name="Enforce3dSecureVerificationTitle" xml:space="preserve">
+    <value>3D Secure Doğrulamasını Zorunlu Tut</value>
+  </data>
+  <data name="Enforce3dSecureVerificationDesc" xml:space="preserve">
+    <value>Tüm kartlı ödemelerde banka SMS doğrulama adımını zorunlu tutarak sahtecilik ve chargeback riskini minimize eder.</value>
+  </data>
+  <data name="SecurityTotp2faRateLimiting" xml:space="preserve">
+    <value>Güvenlik, TOTP 2FA &amp; Rate Limiting</value>
+  </data>
+  <data name="SecurityTotp2faRateLimitingDesc" xml:space="preserve">
+    <value>Yönetici paneli güvenliği, bot koruması ve brute-force / DDoS saldırılarına karşı istek sınırlama kurallarını yönetin.</value>
+  </data>
+  <data name="AdminTwoFactorAuthTotp" xml:space="preserve">
+    <value>Yönetici İki Faktörlü Doğrulama (TOTP 2FA)</value>
+  </data>
+  <data name="Admin2faSecurity" xml:space="preserve">
+    <value>Yönetici 2FA Güvenliği</value>
+  </data>
+  <data name="Admin2faSecurityPoliciesDesc" xml:space="preserve">
+    <value>Yönetici ve editör hesapları için Authenticator tabanlı güvenlik politikaları.</value>
+  </data>
+  <data name="Enforce2faForAllAdmins" xml:space="preserve">
+    <value>Tüm Yöneticiler İçin 2FA Zorunlu</value>
+  </data>
+  <data name="Enforce2faForAllAdminsDesc" xml:space="preserve">
+    <value>Açıldığında tüm Yönetici ve Editör hesapları giriş yaparken Authenticator (Google / Microsoft) uygulamasından 6 haneli kod girmek zorunda kalır.</value>
+  </data>
+  <data name="Admin2faStatusLabel" xml:space="preserve">
+    <value>Yönetici 2FA Durumu:</value>
+  </data>
+  <data name="Protected2faEnforced" xml:space="preserve">
+    <value>Korumalı (2FA Zorunlu)</value>
+  </data>
+  <data name="AtRisk2faOptional" xml:space="preserve">
+    <value>Riskli (2FA İsteğe Bağlı)</value>
+  </data>
+  <data name="Setup2faFromUserManagement" xml:space="preserve">
+    <value>Kullanıcı Yönetiminden 2FA Kur</value>
+  </data>
+  <data name="BotProtectionAntiSpamCaptcha" xml:space="preserve">
+    <value>Bot Koruması &amp; Spam Engelleme (CAPTCHA)</value>
+  </data>
+  <data name="SpamAndBotProtection" xml:space="preserve">
+    <value>Spam &amp; Bot Koruması</value>
+  </data>
+  <data name="CaptchaProviderFormDesc" xml:space="preserve">
+    <value>Giriş, kayıt ve iletişim formlarında otomatik botları engellemek için CAPTCHA sağlayıcısı.</value>
+  </data>
+  <data name="ActiveCaptchaProviderTitle" xml:space="preserve">
+    <value>Aktif CAPTCHA Sağlayıcısı</value>
+  </data>
+  <data name="SelectCaptchaTechDesc" xml:space="preserve">
+    <value>Sitede kullanılacak bot engelleme teknolojisi (reCAPTCHA v3 / Cloudflare Turnstile).</value>
+  </data>
+  <data name="RecaptchaV3ScoreThresholdTitle" xml:space="preserve">
+    <value>reCAPTCHA v3 Minimum Başarı Skoru (0.0 - 1.0)</value>
+  </data>
+  <data name="RecaptchaV3ScoreThresholdDesc" xml:space="preserve">
+    <value>Google reCAPTCHA v3 kullanıcı davranış puanı bu değerin altındaysa istek bot olarak engellenir (Önerilen: 0.5).</value>
+  </data>
+  <data name="CaptchaSiteKeyPublic" xml:space="preserve">
+    <value>CAPTCHA Site Key (Genel Anahtar)</value>
+  </data>
+  <data name="PublicSiteKeyDesc" xml:space="preserve">
+    <value>Google veya Cloudflare panelinden alınan genel site anahtarı.</value>
+  </data>
+  <data name="CaptchaSecretKeyPrivate" xml:space="preserve">
+    <value>CAPTCHA Secret Key (Gizli Anahtar)</value>
+  </data>
+  <data name="ServerSecretKeyDesc" xml:space="preserve">
+    <value>Google veya Cloudflare panelinden alınan gizli sunucu anahtarı.</value>
+  </data>
+  <data name="RequestRateLimitingInfra" xml:space="preserve">
+    <value>İstek Sınırlama (Rate Limiting) Altyapısı</value>
+  </data>
+  <data name="RateLimitingAndDdos" xml:space="preserve">
+    <value>Rate Limiting &amp; DDoS</value>
+  </data>
+  <data name="RateLimitingAndDdosDesc" xml:space="preserve">
+    <value>Brute-force şifre denemeleri, bot taramaları ve DDoS saldırılarını IP bazında sınırlandırarak engelleyin.</value>
+  </data>
+  <data name="EnableIpRateLimitingTitle" xml:space="preserve">
+    <value>IP Bazlı İstek Sınırlamayı (Rate Limiting) Etkinleştir</value>
+  </data>
+  <data name="EnableIpRateLimitingDesc" xml:space="preserve">
+    <value>Açık olduğunda belirlenen limitleri aşan IP adresleri geçici olarak 429 (Too Many Requests) yanıtı ile engellenir.</value>
+  </data>
+  <data name="GlobalRequestLimitAndWindow" xml:space="preserve">
+    <value>Genel İstek Limiti &amp; Penceresi</value>
+  </data>
+  <data name="AuthRequestLimitAndWindow" xml:space="preserve">
+    <value>Giriş (Auth) İstek Limiti &amp; Penceresi</value>
+  </data>
+  <data name="SearchRequestLimitAndWindow" xml:space="preserve">
+    <value>Arama İstek Limiti &amp; Penceresi</value>
+  </data>
+  <data name="ApiAjaxRequestLimitAndWindow" xml:space="preserve">
+    <value>API / Ajax İstek Limiti &amp; Penceresi</value>
+  </data>
+  <data name="MaxRequestsCountLabel" xml:space="preserve">
+    <value>Maks. İstek (Adet)</value>
+  </data>
+  <data name="TimeWindowMinutesLabel" xml:space="preserve">
+    <value>Zaman Penceresi (Dk)</value>
+  </data>
+  <data name="SmtpMailServerSettingsTitle" xml:space="preserve">
+    <value>SMTP E-Posta Sunucu Ayarları</value>
+  </data>
+  <data name="SmtpMailServerSettingsDesc" xml:space="preserve">
+    <value>Sipariş bildirimleri, şifre sıfırlama e-postaları ve sistem uyarılarının gönderileceği SMTP sunucusunu yapılandırın.</value>
+  </data>
+  <data name="SmtpServerConnectionDetails" xml:space="preserve">
+    <value>SMTP Sunucu Bağlantı Bilgileri</value>
+  </data>
+  <data name="ServerConnection" xml:space="preserve">
+    <value>Sunucu Bağlantısı</value>
+  </data>
+  <data name="SmtpHostAndPortDesc" xml:space="preserve">
+    <value>E-posta servis sağlayıcınızın (Gmail, Yandex, Office365, cPanel vb.) SMTP sunucu adres ve portu.</value>
+  </data>
+  <data name="SmtpServerHostAddressTitle" xml:space="preserve">
+    <value>SMTP Sunucu Host Adresi</value>
+  </data>
+  <data name="SmtpHostExampleDesc" xml:space="preserve">
+    <value>Örnek: &lt;code&gt;smtp.gmail.com&lt;/code&gt; veya &lt;code&gt;mail.siteniz.com&lt;/code&gt;</value>
+  </data>
+  <data name="SmtpPortNumberTitle" xml:space="preserve">
+    <value>SMTP Port Numarası</value>
+  </data>
+  <data name="SmtpPortHelperDesc" xml:space="preserve">
+    <value>SSL için &lt;code&gt;465&lt;/code&gt;, TLS/STARTTLS için &lt;code&gt;587&lt;/code&gt;, düz bağlantı için &lt;code&gt;25&lt;/code&gt;.</value>
+  </data>
+  <data name="SmtpAuthCredentialsTitle" xml:space="preserve">
+    <value>SMTP Kimlik Doğrulama Bilgileri</value>
+  </data>
+  <data name="Authentication" xml:space="preserve">
+    <value>Kimlik Doğrulama</value>
+  </data>
+  <data name="MailServerCredentialsDesc" xml:space="preserve">
+    <value>E-posta sunucusuna oturum açmak için kullanılan hesap bilgileri.</value>
+  </data>
+  <data name="SmtpUsernameEmailTitle" xml:space="preserve">
+    <value>SMTP Kullanıcı Adı (E-Posta)</value>
+  </data>
+  <data name="FullEmailUsernameDesc" xml:space="preserve">
+    <value>Genellikle tam e-posta adresinizdir (Örn: &lt;code&gt;bilgi@siteniz.com&lt;/code&gt;).</value>
+  </data>
+  <data name="SmtpPasswordAppPasswordTitle" xml:space="preserve">
+    <value>SMTP Parolası / Uygulama Şifresi</value>
+  </data>
+  <data name="AppPasswordGuidanceDesc" xml:space="preserve">
+    <value>Gmail / Office365 kullanıyorsanız iki adımlı doğrulama 'Uygulama Şifresi' giriniz.</value>
+  </data>
+  <data name="EmailSenderAndSecurityConfig" xml:space="preserve">
+    <value>E-Posta Gönderici (From) &amp; Güvenlik Yapılandırması</value>
+  </data>
+  <data name="SenderAndSecurity" xml:space="preserve">
+    <value>Gönderici &amp; Güvenlik</value>
+  </data>
+  <data name="SenderAndSecurityDesc" xml:space="preserve">
+    <value>Giden e-postalarda görünecek gönderici adı, adresi ve şifreleme protokolü.</value>
+  </data>
+  <data name="SenderDisplayNameTitle" xml:space="preserve">
+    <value>Gönderici Adı (Display Name)</value>
+  </data>
+  <data name="SenderDisplayNameExampleDesc" xml:space="preserve">
+    <value>Müşterilerin gelen kutusunda 'Kimden' olarak göreceği ad (Örn: &lt;code&gt;EImece Mağaza&lt;/code&gt;).</value>
+  </data>
+  <data name="SenderEmailAddressTitle" xml:space="preserve">
+    <value>Gönderici E-Posta Adresi (From Email)</value>
+  </data>
+  <data name="SenderFromAndReplyToDesc" xml:space="preserve">
+    <value>Giden e-postaların gönderici adresi ve yanıtların iletileceği adres (Reply-To).</value>
+  </data>
+  <data name="EnableSslTlsEncryptionTitle" xml:space="preserve">
+    <value>SSL / TLS Şifrelemeyi Etkinleştir (Enable SSL)</value>
+  </data>
+  <data name="EnableSslTlsEncryptionDesc" xml:space="preserve">
+    <value>E-posta sunucusu ile bağlantıyı güvenli şifrelenmiş kanal üzerinden kurar (Önerilen: Açık).</value>
+  </data>
+  <data name="UseDefaultWindowsCredentialsTitle" xml:space="preserve">
+    <value>Varsayılan Windows Kimlik Bilgilerini Kullan</value>
+  </data>
+  <data name="UseDefaultWindowsCredentialsDesc" xml:space="preserve">
+    <value>Yerel IIS SMTP sunucusu için Windows entegre kimlik doğrulaması kullanır (Genellikle Kapalı).</value>
+  </data>
+  <data name="SendLiveTestEmailTitle" xml:space="preserve">
+    <value>Canlı SMTP Test E-Postası Gönder</value>
+  </data>
+  <data name="SmtpTestToolTitle" xml:space="preserve">
+    <value>SMTP Test Aracı</value>
+  </data>
+  <data name="SmtpTestToolDesc" xml:space="preserve">
+    <value>Ayarlarınızı kaydettikten sonra buraya bir e-posta adresi girerek yapılandırmanın çalıştığını doğrulayın.</value>
+  </data>
+  <data name="DestinationTestEmailAddress" xml:space="preserve">
+    <value>Hedef Test E-Posta Adresi</value>
+  </data>
+  <data name="SendTestEmailButton" xml:space="preserve">
+    <value>Test E-Postası Gönder</value>
+  </data>
+  <data name="ThirdPartyIntegrationsExternalScripts" xml:space="preserve">
+    <value>Üçüncü Parti Entegrasyonlar &amp; Harici Scriptler</value>
+  </data>
+  <data name="ThirdPartyIntegrationsExternalScriptsDesc" xml:space="preserve">
+    <value>Google Analytics, Haritalar, WhatsApp iletişim butonu ve Canlı Destek (Zopim vb.) eklentilerini yönetin.</value>
+  </data>
+  <data name="GoogleAnalyticsTagManagerCode" xml:space="preserve">
+    <value>Google Analytics / Tag Manager Takip Kodu</value>
+  </data>
+  <data name="GoogleAnalyticsTitle" xml:space="preserve">
+    <value>Google Analytics</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingSnippetDesc" xml:space="preserve">
+    <value>Sitenizin tüm sayfalarına eklenecek &lt;code&gt;&lt;script&gt;&lt;/code&gt; veya GA4 / GTM izleme kodunu buraya yapıştırın.</value>
+  </data>
+  <data name="WhatsAppContactLiveChatWidget" xml:space="preserve">
+    <value>WhatsApp İletişim &amp; Canlı Destek Widget'ı</value>
+  </data>
+  <data name="WhatsAppAndSupport" xml:space="preserve">
+    <value>WhatsApp &amp; Destek</value>
+  </data>
+  <data name="WhatsAppAndSupportDesc" xml:space="preserve">
+    <value>Müşterilerinizin doğrudan WhatsApp veya canlı destek üzerinden sizinle iletişime geçmesini sağlayın.</value>
+  </data>
+  <data name="WhatsAppDirectChatUrlTitle" xml:space="preserve">
+    <value>WhatsApp Doğrudan Sohbet Bağlantısı (URL)</value>
+  </data>
+  <data name="WhatsAppUrlExampleDesc" xml:space="preserve">
+    <value>Örnek: &lt;code&gt;https://wa.me/905551234567&lt;/code&gt; (Uluslararası formatta numara ile).</value>
+  </data>
+  <data name="WhatsAppWidgetCustomJsTitle" xml:space="preserve">
+    <value>WhatsApp Widget Özel JavaScript Kodu</value>
+  </data>
+  <data name="WhatsAppWidgetCustomJsDesc" xml:space="preserve">
+    <value>Özel WhatsApp açılır pencere (popup) veya widget scripti.</value>
+  </data>
+  <data name="LiveChatScriptTitle" xml:space="preserve">
+    <value>Canlı Destek Scripti (Zopim, Tawk.to vb.)</value>
+  </data>
+  <data name="LiveChatScriptDesc" xml:space="preserve">
+    <value>Tawk.to, JivoChat, Zopim vb. canlı sohbet servislerinin entegrasyon JavaScript kodu.</value>
+  </data>
+  <data name="GoogleMapsEmbedCodeTitle" xml:space="preserve">
+    <value>Google Haritalar (Maps) Embed Kodu</value>
+  </data>
+  <data name="GoogleMapsTitle" xml:space="preserve">
+    <value>Google Haritalar</value>
+  </data>
+  <data name="GoogleMapsEmbedCodeDesc" xml:space="preserve">
+    <value>İletişim sayfasında mağazanızın konumunu göstermek için Google Maps &lt;code&gt;&lt;iframe&gt;&lt;/code&gt; embed kodunu buraya yapıştırın.</value>
+  </data>
+  <data name="SystemToolsAndMaintenanceCommands" xml:space="preserve">
+    <value>Sistem Araçları &amp; Bakım Komutları</value>
+  </data>
+  <data name="SystemToolsAndMaintenanceDesc" xml:space="preserve">
+    <value>Önbellek temizleme, veritabanı yedeği indirme ve sistem mimari tanılamalarını yürütün.</value>
+  </data>
+  <data name="PurgeApplicationCacheTitle" xml:space="preserve">
+    <value>Uygulama Önbelleğini Boşalt (Clear Cache)</value>
+  </data>
+  <data name="CacheManagementDesc" xml:space="preserve">
+    <value>Katalog, kategoriler, ayarlar ve menü verileri sunucu RAM önbelleğinde tutulur. Veritabanında doğrudan yaptığınız değişikliklerin anında yansıması için önbelleği boşaltın.</value>
+  </data>
+  <data name="PurgeAllCacheBtn" xml:space="preserve">
+    <value>Tüm Önbelleği Temizle</value>
+  </data>
+  <data name="ExportDatabaseBackupTitle" xml:space="preserve">
+    <value>Veritabanı Yedeğini Dışa Aktar (Export Database)</value>
+  </data>
+  <data name="DataBackup" xml:space="preserve">
+    <value>Veri Yedekleme</value>
+  </data>
+  <data name="DataBackupExportDesc" xml:space="preserve">
+    <value>Tüm ürünleri, kategorileri, siparişleri, müşterileri ve sistem ayarlarını JSON formatında tek dosya olarak dışa aktarır.</value>
+  </data>
+  <data name="DownloadCompleteJsonBackupBtn" xml:space="preserve">
+    <value>Tüm Verileri JSON Olarak İndir</value>
+  </data>
+  <data name="SystemArchitectureLiveHealth" xml:space="preserve">
+    <value>Sistem Mimarisi &amp; Canlı Sağlık Durumu</value>
+  </data>
+  <data name="SystemDiagnostics" xml:space="preserve">
+    <value>Sistem Tanılama</value>
+  </data>
+  <data name="SystemArchitectureLiveHealthDesc" xml:space="preserve">
+    <value>Veritabanı, dosya depolama, metrikler ve görsel işleme servislerinin canlı çalışma durumunu denetleyin.</value>
+  </data>
+  <data name="GoToSystemHealthDashboard" xml:space="preserve">
+    <value>Sistem Sağlık Paneline Git</value>
+  </data>
+  <data name="InspectApplicationMetrics" xml:space="preserve">
+    <value>Uygulama Metriklerini İncele</value>
+  </data>
+  <data name="DefaultImageDimensionsDesc" xml:space="preserve">
+    <value>Fotoğraf yüklemelerinde kullanılan standart boyut oranları.</value>
+  </data>
+  <data name="SettingsCenterOverview" xml:space="preserve">
+    <value>Ayarlar Merkezi Genel Bakış</value>
+  </data>
+  <data name="LiveSummaryOfStoreAndSystem" xml:space="preserve">
+    <value>Mağaza ve sistem durumunun anlık özeti</value>
+  </data>
+  <data name="SystemToolsAndOperationsSec" xml:space="preserve">
+    <value>Sistem @AdminResource.To &amp; Operasyonlar</value>
+  </data>
+  <data name="SystemToolsHealthBackupSec" xml:space="preserve">
+    <value>Sistem @AdminResource.To, Sağlık Kontrolü &amp; Yedekleme</value>
+  </data>
+  <data name="SystemToolsHealthBackupSecDesc" xml:space="preserve">
+    <value>Performans metrikleri, günlükler ve tam sistem verisi dışa aktarma operasyonları.</value>
+  </data>
+  <data name="SystemMonitoringDescText" xml:space="preserve">
+    <value>Sistem kaynak kullanımını, veritabanı yanıt sürelerini ve sağlık durumunu inceleyin.</value>
+  </data>
+  <data name="HealthLiveStatusText" xml:space="preserve">
+    <value>@AdminResource.Health (Canlı Durum)</value>
+  </data>
+  <data name="AppLogsAndMaintenanceText" xml:space="preserve">
+    <value>@AdminResource.AppLogs &amp; Bakım</value>
+  </data>
+  <data name="AppLogsAndMaintenanceDescText" xml:space="preserve">
+    <value>Uygulama hata kayıtlarını izleyin veya optimize edilmiş medya arşivini indirin.</value>
+  </data>
+  <data name="CompressedImagesZipText" xml:space="preserve">
+    <value>Sıkıştırılmış Görseller (ZIP)</value>
+  </data>
+  <data name="JsonBackupRelationalDescText" xml:space="preserve">
+    <value>Tüm katalog, sipariş ve ayar verilerini ilişkileri korumalı versiyonlu JSON formatında yedekleyin.</value>
+  </data>
+  <data name="RelationalPreservedBadge" xml:space="preserve">
+    <value>İlişki Korumalı</value>
+  </data>
+  <data name="ZipPackageBadge" xml:space="preserve">
+    <value>ZIP Paket</value>
+  </data>
+  <data name="ExportAllDataZipTitle" xml:space="preserve">
+    <value>Tüm sistem verilerini JSON ZIP olarak dışa aktar</value>
+  </data>
+  <data name="ExportDataZipBtn" xml:space="preserve">
+    <value>Verileri Dışa Aktar (ZIP)</value>
+  </data>
+  <data name="BackupSecurityNoticeText" xml:space="preserve">
+    <value>Şifreler ve kart bilgileri güvenlik nedeniyle yedek paketine dahil edilmez.</value>
+  </data>
+  <data name="SslTlsEncryptionLabel" xml:space="preserve">
+    <value>SSL / TLS Şifrelemesi</value>
+  </data>
+  <data name="SmtpTlsProtocolDesc" xml:space="preserve">
+    <value>SMTP bağlantısında güvenli TLS protokolü kullanılsın.</value>
+  </data>
+  <data name="DefaultCredentialsLabel" xml:space="preserve">
+    <value>Varsayılan Kimlik Bilgileri</value>
+  </data>
+  <data name="SmtpWindowsAuthDesc" xml:space="preserve">
+    <value>SMTP için sunucunun varsayılan Windows kimlik bilgilerini kullanır</value>
+  </data>
+  <data name="SmtpLocalSystemCredDesc" xml:space="preserve">
+    <value>SMTP sunucusu için yerel sistem kimliğini kullanır.</value>
+  </data>
+  <data name="LiveEmailDispatchTest" xml:space="preserve">
+    <value>Canlı E-Posta Testi</value>
+  </data>
+  <data name="CompanyEmailPlaceholder" xml:space="preserve">
+    <value>Firma E-postası</value>
+  </data>
+  <data name="SocialMediaAccountsSec" xml:space="preserve">
+    <value>Sosyal Medya Hesapları</value>
+  </data>
+  <data name="SocialMediaProfilesDesc" xml:space="preserve">
+    <value>Mağazanızı temsil eden resmi sosyal medya profil ve kanal linkleri.</value>
+  </data>
+  <data name="LinkedInProfileLabel" xml:space="preserve">
+    <value>LinkedIn Profili</value>
+  </data>
+  <data name="LinkedInProfileDesc" xml:space="preserve">
+    <value>Resmi LinkedIn şirket veya profil linki</value>
+  </data>
+  <data name="YouTubeChannelLabel" xml:space="preserve">
+    <value>YouTube Kanalı</value>
+  </data>
+  <data name="YouTubeChannelDesc" xml:space="preserve">
+    <value>Resmi YouTube video kanalı linki</value>
+  </data>
+  <data name="LiveChatAndWhatsAppSec" xml:space="preserve">
+    <value>Canlı Destek &amp; WhatsApp</value>
+  </data>
+  <data name="InstantMessagingAndLiveChatSec" xml:space="preserve">
+    <value>Anlık İletişim &amp; Canlı Destek Servisleri</value>
+  </data>
+  <data name="WhatsAppDirectMsgDesc" xml:space="preserve">
+    <value>WhatsApp doğrudan mesaj linki ve üçüncü parti canlı destek widget'ları.</value>
+  </data>
+  <data name="WhatsAppContactLinkLabel" xml:space="preserve">
+    <value>WhatsApp İletişim Linki</value>
+  </data>
+  <data name="WhatsAppWidgetScriptLabel" xml:space="preserve">
+    <value>WhatsApp Eklenti Scripti</value>
+  </data>
+  <data name="WhatsAppChatWidgetDesc" xml:space="preserve">
+    <value>Özel WhatsApp sohbet widget'ı veya buton scripti</value>
+  </data>
+  <data name="ZopimZendeskChatScriptLabel" xml:space="preserve">
+    <value>Zopim / Zendesk Canlı Destek Scripti</value>
+  </data>
+  <data name="ZopimZendeskChatScriptDesc" xml:space="preserve">
+    <value>Zopim veya Zendesk Chat canlı destek eklenti kodu</value>
+  </data>
+  <data name="LiveChatScriptSuffix" xml:space="preserve">
+    <value>(Canlı Destek Scripti)</value>
+  </data>
+  <data name="ZopimChatIntegrationSnippetDesc" xml:space="preserve">
+    <value>Zopim / Zendesk Chat gibi harici canlı destek platformlarının entegrasyon scripti.</value>
+  </data>
+  <data name="SecurityNoticePrefix" xml:space="preserve">
+    <value>Güvenlik Uyarısı:</value>
+  </data>
+  <data name="ThirdPartyScriptSecurityWarning" xml:space="preserve">
+    <value>Buraya eklenen scriptler doğrudan mağaza sayfalarında çalıştırılır. Yalnızca güvendiğiniz üçüncü parti servislerin kodlarını ekleyin.</value>
+  </data>
+  <data name="ExecutedInHeadTagDesc" xml:space="preserve">
+    <value>(Sayfa &lt;code&gt;&lt;head&gt;&lt;/code&gt; alanında çalıştırılır).</value>
+  </data>
+  <data name="GoogleMapsEmbedIframeLabel" xml:space="preserve">
+    <value>Google Harita Yerleştirme (Iframe)</value>
+  </data>
+  <data name="DisplayedInMapContainerDesc" xml:space="preserve">
+    <value>(İletişim sayfasında harita kutusunda gösterilir).</value>
+  </data>
+  <data name="NoMatchingSettingsFound" xml:space="preserve">
+    <value>Eşleşen ayar bulunamadı</value>
+  </data>
+  <data name="DiscardUnsavedChangesPrompt" xml:space="preserve">
+    <value>Yapılan kaydedilmemiş tüm değişiklikler geri alınsın mı?</value>
+  </data>
+  <data name="UnsavedChangesLeavePrompt" xml:space="preserve">
+    <value>Kaydedilmemiş değişiklikleriniz var. Sayfadan ayrılmak istediğinize emin misiniz?</value>
+  </data>
+  <data name="EnableRateLimitingProtection" xml:space="preserve">
+    <value>İstek Sınırlandırma Korumasını Aktif Et</value>
+  </data>
+  <data name="EnableRateLimitingProtectionDesc" xml:space="preserve">
+    <value>Aktif olduğunda belirli zaman pencerelerinde sınırları aşan IP adresleri geçici olarak engellenir (HTTP 429 Too Many Requests).</value>
+  </data>
+  <data name="EndpointSpecificRequestLimits" xml:space="preserve">
+    <value>Özellik Bazlı İstek Sınırları &amp; Zaman Pencereleri</value>
+  </data>
+  <data name="LoginPageRequestLimit" xml:space="preserve">
+    <value>Giriş Sayfası İstek Limiti</value>
+  </data>
+  <data name="LoginPageRequestLimitDesc" xml:space="preserve">
+    <value>Giriş sayfası için IP başına izin verilen istek sayısı ve süresi</value>
+  </data>
+  <data name="LoginAuthLabel" xml:space="preserve">
+    <value>Giriş (Login)</value>
+  </data>
+  <data name="MaxRequestsLabel" xml:space="preserve">
+    <value>Maks. İstek</value>
+  </data>
+  <data name="DurationMinutesLabel" xml:space="preserve">
+    <value>Süre (Dakika)</value>
+  </data>
+  <data name="ContactFormRequestLimit" xml:space="preserve">
+    <value>İletişim Formu İstek Limiti</value>
+  </data>
+  <data name="ContactFormRequestLimitDesc" xml:space="preserve">
+    <value>İletişim formu için IP başına izin verilen istek sayısı ve süresi</value>
+  </data>
+  <data name="ContactFormLabel" xml:space="preserve">
+    <value>İletişim (Contact)</value>
+  </data>
+  <data name="CheckoutRequestLimit" xml:space="preserve">
+    <value>Ödeme İsteği Limiti</value>
+  </data>
+  <data name="CheckoutRequestLimitDesc" xml:space="preserve">
+    <value>Ödeme adımı için IP başına izin verilen istek sayısı ve süresi</value>
+  </data>
+  <data name="CheckoutLabel" xml:space="preserve">
+    <value>Ödeme (Checkout)</value>
+  </data>
+  <data name="SearchQueryRequestLimit" xml:space="preserve">
+    <value>Arama İstek Limiti</value>
+  </data>
+  <data name="SearchQueryRequestLimitDesc" xml:space="preserve">
+    <value>Arama sorguları için IP başına izin verilen istek sayısı ve süresi</value>
+  </data>
+  <data name="EmailAndSmtpConfiguration" xml:space="preserve">
+    <value>E-Posta &amp; SMTP Yapılandırması</value>
+  </data>
+  <data name="EmailAndSmtpConfigurationDesc" xml:space="preserve">
+    <value>Sipariş onayları, şifre sıfırlama ve sistem bildirim e-postalarını ileten SMTP sunucusu.</value>
+  </data>
+  <data name="ConfigurationPending" xml:space="preserve">
+    <value>Yapılandırma Bekleniyor</value>
+  </data>
+  <data name="SenderEmailAddressLabel" xml:space="preserve">
+    <value>Gönderen E-Posta Adresi</value>
+  </data>
+  <data name="SenderEmailAddressDesc" xml:space="preserve">
+    <value>E-postaların From alanında görünecek sistem e-posta adresi</value>
+  </data>
+  <data name="EmailSenderNameLabel" xml:space="preserve">
+    <value>E-Posta Gönderen Adı</value>
+  </data>
+  <data name="EmailSenderNameDesc" xml:space="preserve">
+    <value>Gelen kutusunda görünecek firma veya mağaza adı</value>
+  </data>
+  <data name="SmtpHostIpDesc" xml:space="preserve">
+    <value>SMTP sunucu ana bilgisayar adresi veya IP'si (örn: smtp.example.com)</value>
+  </data>
+  <data name="SmtpPortChoiceDesc" xml:space="preserve">
+    <value>SMTP bağlantı portu (587 TLS, 465 SSL, 25 Düz)</value>
+  </data>
+  <data name="StandardTlsSslPortsDesc" xml:space="preserve">
+    <value>Standart TLS için 587, SSL için 465.</value>
+  </data>
+  <data name="SmtpAuthUsernameDesc" xml:space="preserve">
+    <value>SMTP kimlik doğrulaması için hesap kullanıcı adı</value>
+  </data>
+  <data name="SmtpServerLoginPassDesc" xml:space="preserve">
+    <value>SMTP sunucusu hesap giriş parolası</value>
+  </data>
+  <data name="ShowHidePassword" xml:space="preserve">
+    <value>Şifreyi Göster/Gizle</value>
+  </data>
+  <data name="SslTlsSecureConnection" xml:space="preserve">
+    <value>SSL/TLS Güvenli Bağlantı</value>
+  </data>
+  <data name="SslTlsSmtpConnectionDesc" xml:space="preserve">
+    <value>SMTP sunucusuna bağlanırken SSL/TLS şifrelemesi kullanır</value>
+  </data>
+  <data name="SendTestEmailToOfficialAddressLead" xml:space="preserve">
+    <value>Yapılandırdığınız SMTP ayarlarıyla resmi firma e-posta adresinize</value>
+  </data>
+  <data name="SendTestEmailInstantDeliverability" xml:space="preserve">
+    <value>anında test e-maili gönderin.</value>
+  </data>
+  <data name="WhatsAppOneClickChatDesc" xml:space="preserve">
+    <value>customers tek tıkla mesaj atmasını sağlayan WhatsApp linki (örn: https://wa.me/90555...)</value>
+  </data>
+  <data name="AnalyticsAndMapsSnippetsDesc" xml:space="preserve">
+    <value>takip kodları ve Google Harita yerleştirme (iframe) kodları.</value>
+  </data>
+  <data name="GoogleMapsEmbedContactAboutLead" xml:space="preserve">
+    <value>İletişim ve hakkımızda sayfalarında gösterilecek</value>
+  </data>
+  <data name="IframeEmbedCodeSuffix" xml:space="preserve">
+    <value>iframe yerleştirme kodu</value>
+  </data>
+  <data name="DiscardAllUnsavedChangesPrompt" xml:space="preserve">
+    <value>Yapılan kaydedilmemiş tüm değişiklikler geri alınsın mı?</value>
+  </data>
+  <data name="UnsavedChangesConfirmLeavePrompt" xml:space="preserve">
+    <value>Kaydedilmemiş değişiklikleriniz var. Sayfadan ayrılmak istediğinize emin misiniz?</value>
+  </data>
 </root>
