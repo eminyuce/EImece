@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -527,6 +527,8 @@
     <Content Include="App_Data\xmlEditorConfiguration.txt" />
     <Content Include="App_Data\usefulSql.txt" />
     <Content Include="App_Data\xmlEditorRazor.txt" />
+    <Content Include="App_Data\01_CreateDatabase.sql" />
+    <Content Include="App_Data\02_SeedAdminUsers.sql" />
     <Content Include="Areas\Admin\Content\main\excel.jpg" />
     <Content Include="Areas\Admin\Content\PageThemes\tema-07.gif" />
     <Content Include="Areas\Admin\Content\PageThemes\tema-08.gif" />
