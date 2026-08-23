@@ -40,7 +40,27 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCategoryDiscountPercantage))]
         public double? DiscountPercantage { get; set; }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontCategoryDto.DetailPageUrl / ProductCategoryLink
+        [NotMapped]
+        public string ProductCategoryLink
+        {
+            get
+            {
+                var requestContext = HttpContext.Current?.Request?.RequestContext;
+                if (requestContext == null) return this.GetDetailPageUrl("Category", "ProductCategories", "", "", "");
+                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
+            }
+        }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontCategoryDto.DetailPageUrl
+        [NotMapped]
+        public string DetailPageUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Category", "ProductCategories", "", "", "");
+            }
+        }
 
         public string ProductCategoryListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {

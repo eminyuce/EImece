@@ -101,6 +101,16 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public int SoldCount { get; set; }
 
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.DetailPageAbsoluteUrl
+        [NotMapped]
+        public string DetailPageAbsoluteUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("Detail", "Products", ProductCategory != null ? ProductCategory.Name : "no_category", AppConfig.HttpProtocol, "");
+            }
+        }
+
         public string ImageFullPath(int width, int height, bool isThump=false)
         {
             // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
@@ -197,6 +207,57 @@ namespace EImece.Domain.Entities
                 else
                 {
                     return Price;
+                }
+            }
+        }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.BuyNowRelativeUrl
+        [NotMapped]
+        public string BuyNowRelativeUrl
+        {
+            get
+            {
+                return this.GetDetailPageUrl("BuyNow", "Payment", ProductCategory != null ? ProductCategory.Name : "no_category", "", "");
+            }
+        }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.ProductNameStr
+        [NotMapped]
+        public string ProductNameStr
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(NameShort)) return NameShort;
+                if (!string.IsNullOrEmpty(NameLong)) return NameLong;
+                return Name;
+            }
+        }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.ModifiedId
+        [NotMapped]
+        public string ModifiedId { get { return GeneralHelper.ModifyId(Id); } }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.IsBuyableState
+        [NotMapped]
+        public bool IsBuyableState
+        {
+            get { return this.StateEnum == ProductState.ProductInStock && this.Price > 0; }
+        }
+
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.IsOnSale
+        [NotMapped]
+        public bool IsOnSale
+        {
+            get
+            {
+                if (Price <= 0) return false;
+                switch (StateEnum)
+                {
+                    case ProductState.ProductInStock:
+                    case ProductState.PreOrder:
+                    case ProductState.LimitedStock:
+                    case ProductState.ComingSoon: return true;
+                    default: return false;
                 }
             }
         }

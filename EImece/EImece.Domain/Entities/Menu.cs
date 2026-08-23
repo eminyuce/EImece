@@ -43,6 +43,10 @@ namespace EImece.Domain.Entities
         /// MenuLink format is "controller-action" or "controller-action_id"
         /// (e.g. home-index, info-aboutus, stories-categories_seo-url, pages-index).
         /// </summary>
+        // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontMenuDto.IsPageActived
+        [NotMapped]
+        public string IsPageActived { get { return ComputeIsPageActived(); } }
+
         private bool TryParseMenuLink(out string controller, out string action, out string mid)
         {
             controller = null;
