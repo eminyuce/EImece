@@ -122,6 +122,7 @@ namespace EImece.Areas.Admin.Controllers
 
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
             ViewBag.GridPageSizeNumber = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
+            ViewBag.CurrentLanguage = CurrentLanguage;
 
             if (!IsProductPriceEnabled)
             {
@@ -228,9 +229,9 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        protected EImeceLanguage GetCurrentLanguage => (EImeceLanguage)CurrentLanguage;
+        public EImeceLanguage GetCurrentLanguage => (EImeceLanguage)CurrentLanguage;
 
-        protected int CurrentLanguage
+        public int CurrentLanguage
         {
             get
             {
