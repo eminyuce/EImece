@@ -68,7 +68,7 @@
                 @{
                     var _langForBadge = Model != null && Model.Lang != 0
                         ? Model.Lang
-                        : (ViewContext.Controller as EImece.Areas.Admin.Controllers.BaseAdminController)?.CurrentLanguage ?? AppConfig.MainLanguage;
+                        : (ViewBag.CurrentLanguage as int? ?? AppConfig.MainLanguage);
                 }
                 @Html.Partial("_AdminLanguageBadge", _langForBadge)
 
