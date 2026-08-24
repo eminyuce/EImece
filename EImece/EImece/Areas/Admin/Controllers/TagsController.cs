@@ -15,11 +15,30 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class TagsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected ITagService TagService { get; }
+        protected ITagCategoryService TagCategoryService { get; }
+        protected IEntityFactory EntityFactory { get; }
+
+        public TagsController(
+            ISettingService settingService,
+            ITagService tagService,
+            ITagCategoryService tagCategoryService,
+            IEntityFactory entityFactory)
+            : base(settingService)
+        {
+            TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
+            TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

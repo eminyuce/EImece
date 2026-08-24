@@ -11,11 +11,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class ProductCommentsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IProductCommentService ProductCommentService { get; }
+        protected IProductService ProductService { get; }
+
+        public ProductCommentsController(
+            ISettingService settingService,
+            IProductCommentService productCommentService,
+            IProductService productService)
+            : base(settingService)
+        {
+            ProductCommentService = productCommentService ?? throw new ArgumentNullException(nameof(productCommentService));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int? id, String search = "")

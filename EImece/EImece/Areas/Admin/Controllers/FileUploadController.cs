@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.HelperModels;
@@ -6,15 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+using System;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class FileUploadController : BaseAdminController
     {
         public FilesHelper filesHelper { get; set; }
 
-        public FileUploadController(FilesHelper fh)
+        public FileUploadController(
+            ISettingService settingService,
+            FilesHelper fh)
+            : base(settingService)
         {
-            filesHelper = fh;
+            filesHelper = fh ?? throw new ArgumentNullException(nameof(fh));
             filesHelper.InitFilesMediaFolder(Constants.FileUploadDeleteURL);
         }
 

@@ -15,11 +15,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class CouponsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected ICouponService CouponService { get; }
+        protected IEntityFactory EntityFactory { get; }
+
+        public CouponsController(
+            ISettingService settingService,
+            ICouponService couponService,
+            IEntityFactory entityFactory)
+            : base(settingService)
+        {
+            CouponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

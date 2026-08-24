@@ -15,11 +15,30 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class BrandsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IBrandService BrandService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected FilesHelper FilesHelper { get; }
+
+        public BrandsController(
+            ISettingService settingService,
+            IBrandService brandService,
+            IEntityFactory entityFactory,
+            FilesHelper filesHelper)
+            : base(settingService)
+        {
+            BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

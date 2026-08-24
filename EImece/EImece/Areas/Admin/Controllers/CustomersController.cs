@@ -17,26 +17,20 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class CustomersController : BaseAdminController
     {
-        [Inject]
-        public IUsersService UsersService { get; set; }
+        protected ICustomerService CustomerService { get; }
+        protected IOrderService OrderService { get; }
+        protected IShoppingCartService ShoppingCartService { get; }
 
-        [Inject]
-        public ApplicationSignInManager SignInManager { get; set; }
-
-        [Inject]
-        public new ApplicationUserManager UserManager { get; set; }
-
-        [Inject]
-        public IIdentityManager IdentityManager { get; set; }
-
-        public ICustomerService CustomerService { get; set; }
-
-        [Inject]
-        public IShoppingCartService ShoppingCartService { get; set; }
-
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(
+            ISettingService settingService,
+            ICustomerService customerService,
+            IOrderService orderService,
+            IShoppingCartService shoppingCartService)
+            : base(settingService)
         {
-            this.CustomerService = customerService;
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
         }
 
         [HttpGet]

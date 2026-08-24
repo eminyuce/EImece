@@ -4,10 +4,14 @@ using EImece.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Services.IServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
+using System.Runtime.Remoting.Proxies;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -17,10 +21,38 @@ namespace EImece.Tests.Controllers
     [TestClass]
     public class RssFeedsControllerTests
     {
+        private class InterfaceMockProxy<T> : RealProxy
+        {
+            public InterfaceMockProxy() : base(typeof(T))
+            {
+            }
+
+            public override IMessage Invoke(IMessage msg)
+            {
+                var call = (IMethodCallMessage)msg;
+                object defaultResult = null;
+                if (call.MethodBase is MethodInfo mi && mi.ReturnType != typeof(void))
+                {
+                    if (mi.ReturnType.IsValueType)
+                    {
+                        defaultResult = Activator.CreateInstance(mi.ReturnType);
+                    }
+                }
+                return new ReturnMessage(defaultResult, null, 0, call.LogicalCallContext, call);
+            }
+
+            public T Service => (T)GetTransparentProxy();
+        }
+
+        private static T Mock<T>() => new InterfaceMockProxy<T>().Service;
+
         [TestMethod]
         public void RssFeedsController_ShouldInheritFromBaseAdminController()
         {
-            var controller = new RssFeedsController();
+            var controller = new RssFeedsController(
+                Mock<ISettingService>(),
+                Mock<IStoryCategoryService>(),
+                Mock<IProductCategoryService>());
             Assert.IsInstanceOfType(controller, typeof(BaseAdminController));
         }
 
@@ -36,7 +68,10 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public async Task RssFeedsController_Index_ShouldReturnViewWithFeedsAndMetadata()
         {
-            var controller = new RssFeedsController();
+            var controller = new RssFeedsController(
+                Mock<ISettingService>(),
+                Mock<IStoryCategoryService>(),
+                Mock<IProductCategoryService>());
 
             var result = await controller.Index(CancellationToken.None) as ViewResult;
 

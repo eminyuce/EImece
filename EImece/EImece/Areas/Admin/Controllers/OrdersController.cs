@@ -10,11 +10,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class OrdersController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IOrderService OrderService { get; }
+
+        public OrdersController(
+            ISettingService settingService,
+            IOrderService orderService)
+            : base(settingService)
+        {
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+        }
 
         // GET: Admin/BuyNowOrders
         [HttpGet]

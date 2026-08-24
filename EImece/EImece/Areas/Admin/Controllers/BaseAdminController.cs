@@ -1,15 +1,14 @@
 using EImece.Domain;
 using EImece.Domain.Caching;
-using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services;
-using EImece.Domain.Services.ExportImport;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -22,99 +21,28 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DomainConstants = EImece.Domain.Constants;
-using NLog;
-using EImece.Domain.Observability.Logging;
 
 namespace EImece.Areas.Admin.Controllers
 {
+    /// <summary>
+    /// Lightweight base controller for all Admin controllers.
+    /// Provides shared MVC lifecycle handling (exception logging, action filters,
+    /// localization, 2FA enforcement, and view/grid helpers) without acting as a "god object".
+    /// Pure constructor injection is enforced; no optional parameters or ServiceLocator fallbacks.
+    /// </summary>
     [AuthorizeRoles(DomainConstants.AdministratorRole, DomainConstants.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IEntityFactory EntityFactory { get; set; }
+        protected ISettingService SettingService { get; }
 
-        [Inject]
-        public ICouponService CouponService { get; set; }
-
-        [Inject]
-        public IMainPageImageService MainPageImageService { get; set; }
-
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        [Inject]
-        public IProductService ProductService { get; set; }
-
-        [Inject]
-        public IProductCommentService ProductCommentService { get; set; }
-
-        [Inject]
-        public IProductCategoryService ProductCategoryService { get; set; }
-
-        [Inject]
-        public IMenuService MenuService { get; set; }
-
-        [Inject]
-        public IStoryService StoryService { get; set; }
-
-        [Inject]
-        public IBrandService BrandService { get; set; }
-
-        [Inject]
-        public IStoryCategoryService StoryCategoryService { get; set; }
-
-        [Inject]
-        public ITagService TagService { get; set; }
-
-        [Inject]
-        public ITagCategoryService TagCategoryService { get; set; }
-
-        [Inject]
-        public ISubscriberService SubscriberService { get; set; }
-
-        [Inject]
-        public IFileStorageService FileStorageService { get; set; }
-
-        [Inject]
-        public ITemplateService TemplateService { get; set; }
-
-        [Inject]
-        public IListService ListService { get; set; }
-
-        [Inject]
-        public IListItemService ListItemService { get; set; }
-
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
-
-        [Inject]
-        public IEimeceCacheProvider MemoryCacheProvider { get; set; }
-
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
-
-        [Inject]
-        public IOrderService OrderService { get; set; }
-
-        [Inject]
-        public IOrderProductService OrderProductService { get; set; }
-
-        [Inject]
-        public IFaqService FaqService { get; set; }
-
-        [Inject]
-        public ApplicationUserManager UserManager { get; set; }
- 
-        [Inject]
-        public IDataExportService DataExportService { get; set; }
-
-        private FilesHelper _filesHelper { get; set; }
-
-        public BaseAdminController()
+        protected BaseAdminController(ISettingService settingService)
         {
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
         }
+
+        #region Exception & Lifecycle Filters
 
         protected override void OnException(ExceptionContext filterContext)
         {
@@ -168,32 +96,6 @@ namespace EImece.Areas.Admin.Controllers
             base.OnException(filterContext);
         }
 
-        protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
-        {
-            var IsCachingActivated = false;
-            FileStorageService.IsCachingActivated = IsCachingActivated;
-            ListItemService.IsCachingActivated = IsCachingActivated;
-            ListService.IsCachingActivated = IsCachingActivated;
-            MailTemplateService.IsCachingActivated = IsCachingActivated;
-            MainPageImageService.IsCachingActivated = IsCachingActivated;
-            MenuService.IsCachingActivated = IsCachingActivated;
-            ProductCategoryService.IsCachingActivated = IsCachingActivated;
-            ProductService.IsCachingActivated = IsCachingActivated;
-            SettingService.IsCachingActivated = IsCachingActivated;
-            StoryCategoryService.IsCachingActivated = IsCachingActivated;
-            StoryService.IsCachingActivated = IsCachingActivated;
-            SubscriberService.IsCachingActivated = IsCachingActivated;
-            TagCategoryService.IsCachingActivated = IsCachingActivated;
-            TagService.IsCachingActivated = IsCachingActivated;
-            TemplateService.IsCachingActivated = IsCachingActivated;
-            OrderService.IsCachingActivated = IsCachingActivated;
-            OrderProductService.IsCachingActivated = IsCachingActivated;
-            FaqService.IsCachingActivated = IsCachingActivated;
-            ProductCommentService.IsCachingActivated = IsCachingActivated;
-            BrandService.IsCachingActivated = IsCachingActivated;
-            return base.BeginExecute(requestContext, callback, state);
-        }
-
         private static readonly HashSet<string> PriceRelatedAdminControllers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "Coupons",
@@ -203,18 +105,11 @@ namespace EImece.Areas.Admin.Controllers
             "Report"
         };
 
-        protected bool IsProductPriceEnabled
-        {
-            get
-            {
-                return SettingService.GetSettingByKey(DomainConstants.IsProductPriceEnable).ToBool(true);
-            }
-        }
+        protected bool IsProductPriceEnabled =>
+            SettingService.GetSettingByKey(DomainConstants.IsProductPriceEnable).ToBool(true);
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Set the UI culture based on AdminPanelLanguage setting (admin panel interface language)
-            // This is separate from CurrentLanguage which is the data entry language (topbar dropdown)
             var uiLang = AdminPanelUILanguage;
             var cultureName = uiLang == 2 ? "en-US" : "tr-TR";
             var culture = CultureInfo.GetCultureInfo(cultureName);
@@ -250,26 +145,27 @@ namespace EImece.Areas.Admin.Controllers
             base.OnActionExecuting(filterContext);
         }
 
-        /// <summary>
-        /// Forces Authenticator setup for admin/editor users when required by System Settings.
-        /// </summary>
         private bool MustRedirectToEnableAuthenticator(ActionExecutingContext filterContext)
         {
-            bool requireAuth = SettingService?.GetSettingByKey(Domain.Constants.RequireAdminAuthenticator).ToBool(Domain.Constants.DefaultRequireAdminAuthenticator)
-                               ?? Domain.Constants.DefaultRequireAdminAuthenticator;
+            bool requireAuth = SettingService.GetSettingByKey(DomainConstants.RequireAdminAuthenticator).ToBool(DomainConstants.DefaultRequireAdminAuthenticator);
             if (!requireAuth)
             {
                 return false;
             }
 
-            // Child actions (e.g. Html.Action in _AdminTopbar) cannot redirect.
             if (filterContext.IsChildAction)
             {
                 return false;
             }
 
             var httpContext = filterContext.HttpContext;
-            if (httpContext == null)
+            if (httpContext?.User?.Identity == null || !httpContext.User.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var userManager = httpContext.GetOwinContext()?.GetUserManager<ApplicationUserManager>();
+            if (userManager == null)
             {
                 return false;
             }
@@ -282,23 +178,13 @@ namespace EImece.Areas.Admin.Controllers
                 return false;
             }
 
-            if (httpContext.User == null || httpContext.User.Identity == null || !httpContext.User.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
-            if (UserManager == null)
-            {
-                return false;
-            }
-
             var userId = httpContext.User.Identity.GetUserId();
             if (string.IsNullOrEmpty(userId))
             {
                 return false;
             }
 
-            var user = UserManager.FindById(userId);
+            var user = userManager.FindById(userId);
             if (user == null)
             {
                 return false;
@@ -319,56 +205,37 @@ namespace EImece.Areas.Admin.Controllers
                     || string.Equals(actionName, "DisableAuthenticator", StringComparison.OrdinalIgnoreCase));
         }
 
-        [Inject]
-        public FilesHelper FilesHelper
-        {
-            get
-            {
-                _filesHelper.InitFilesMediaFolder();
-                return _filesHelper;
-            }
-            set
-            {
-                _filesHelper = value;
-            }
-        }
+        #endregion
 
-        [Inject]
-        public IRazorEngineHelper RazorEngineHelper { get; set; }
+        #region Language & Localization
 
         protected int SelectedLanguage
         {
             get
             {
-                if (Session[DomainConstants.SelectedLanguage] != null)
+                if (Session?[DomainConstants.SelectedLanguage] != null)
                 {
                     return Session[DomainConstants.SelectedLanguage].ToInt(1);
                 }
-                else
-                {
-                    return AppConfig.MainLanguage;
-                }
+                return AppConfig.MainLanguage;
             }
             set
             {
-                Session[DomainConstants.SelectedLanguage] = value;
+                if (Session != null)
+                {
+                    Session[DomainConstants.SelectedLanguage] = value;
+                }
             }
         }
 
-        protected EImeceLanguage GetCurrentLanguage
-        {
-            get
-            {
-                return (EImeceLanguage)CurrentLanguage;
-            }
-        }
+        protected EImeceLanguage GetCurrentLanguage => (EImeceLanguage)CurrentLanguage;
 
         protected int CurrentLanguage
         {
             get
             {
                 var languagesText = AppConfig.ApplicationLanguages;
-                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList();
                 if (languages.Count > 1)
                 {
                     HttpCookie cultureCookie = Request?.Cookies != null ? Request.Cookies[DomainConstants.AdminCultureCookieName] : null;
@@ -376,54 +243,45 @@ namespace EImece.Areas.Admin.Controllers
                     {
                         return cultureCookie.Values[DomainConstants.ELanguage].ToInt();
                     }
-                    else
-                    {
-                        return AppConfig.MainLanguage;
-                    }
-                }
-                else
-                {
                     return AppConfig.MainLanguage;
                 }
+                return AppConfig.MainLanguage;
             }
         }
 
-        /// <summary>
-        /// Gets the admin panel UI language from the system setting (AdminPanelLanguage).
-        /// This is separate from CurrentLanguage (data entry language from topbar dropdown).
-        /// </summary>
         protected int AdminPanelUILanguage
         {
             get
             {
-                // Try to get from system setting
-                var settingValue = SettingService?.GetSettingByKey(DomainConstants.AdminPanelLanguage);
+                var settingValue = SettingService.GetSettingByKey(DomainConstants.AdminPanelLanguage);
                 if (!string.IsNullOrWhiteSpace(settingValue))
                 {
-                    // Parse culture code like "tr-TR" or "en-US" to EImeceLanguage enum value
                     var langEnum = EnumHelper.ParseLanguage(settingValue);
                     if (langEnum.HasValue)
                     {
                         return (int)langEnum.Value;
                     }
                 }
-                // Fallback to default
                 return DomainConstants.DefaultAdminPanelLanguage == "en-US" ? 2 : 1;
             }
         }
 
+        #endregion
+
+        #region Shared Action Helpers & Results
+
         protected bool CanRenderGrid()
         {
             if (ControllerContext != null && ControllerContext.IsChildAction) return true;
-            if (Request.IsAjaxRequest()) return true;
-            if (Request.Headers != null && !string.IsNullOrEmpty(Request.Headers["X-Requested-With"])) return true;
-            return string.Equals(Request["gridembed"], "1", StringComparison.OrdinalIgnoreCase);
+            if (Request != null && Request.IsAjaxRequest()) return true;
+            if (Request?.Headers != null && !string.IsNullOrEmpty(Request.Headers["X-Requested-With"])) return true;
+            return string.Equals(Request?["gridembed"], "1", StringComparison.OrdinalIgnoreCase);
         }
 
         protected ActionResult RequestReturn(RedirectToRouteResult returnDefault)
         {
             string redirectUrl;
-            if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
+            if (SecurityHelper.TryGetSafeReferrerRedirect(Request?.UrlReferrer, Request?.Url, out redirectUrl))
             {
                 return Redirect(redirectUrl);
             }
@@ -438,14 +296,14 @@ namespace EImece.Areas.Admin.Controllers
             return DownloadFileDataTable(dt, fileName, format);
         }
 
-        protected ActionResult ReturnIndexIfNotUrlReferrer(String action)
+        protected ActionResult ReturnIndexIfNotUrlReferrer(string action)
         {
             string redirectUrl;
-            if (Request.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLowerInvariant().Contains("saveoredit"))
+            if (Request?.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLowerInvariant().Contains("saveoredit"))
             {
                 return RedirectToAction(action);
             }
-            else if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
+            if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
                 return Redirect(redirectUrl);
             }
@@ -453,14 +311,14 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction(action);
         }
 
-        protected ActionResult ReturnIndexIfNotUrlReferrer(String action, object routeValues)
+        protected ActionResult ReturnIndexIfNotUrlReferrer(string action, object routeValues)
         {
             string redirectUrl;
-            if (Request.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLowerInvariant().Contains("saveoredit"))
+            if (Request?.UrlReferrer == null || Request.UrlReferrer.ToStr().ToLowerInvariant().Contains("saveoredit"))
             {
                 return RedirectToAction(action, routeValues);
             }
-            else if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
+            if (SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
                 return Redirect(redirectUrl);
             }
@@ -470,14 +328,13 @@ namespace EImece.Areas.Admin.Controllers
 
         protected ActionResult DownloadFileDataTable(DataTable result, string fileName, string format = "excel")
         {
-            if (result == null || String.IsNullOrEmpty(fileName))
+            if (result == null || string.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentException("Result or fileName cannot be empty.");
             }
             fileName = string.Format("{1}-{0}", DateTime.Now.ToString("yyyy-MM-dd"), fileName);
 
             var isCsv = string.Equals(format, "csv", StringComparison.OrdinalIgnoreCase);
-            // HSSF (.xls) supports at most 65536 rows; fall back to CSV when Excel cannot fit the data.
             var useCsv = isCsv || result.Rows.Count >= 65534;
 
             if (useCsv)
@@ -527,5 +384,7 @@ namespace EImece.Areas.Admin.Controllers
                 ModelState.Remove(key);
             }
         }
+
+        #endregion
     }
 }

@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class DashboardController : BaseAdminController
@@ -29,8 +31,30 @@ namespace EImece.Areas.Admin.Controllers
         private const string IndexAction = "Index";
         private const string AdminAreaName = "admin";
 
-        [Inject]
-        public IAuthenticationManager AuthenticationManager { get; set; }
+        protected IProductService ProductService { get; }
+        protected IProductCategoryService ProductCategoryService { get; }
+        protected IStoryService StoryService { get; }
+        protected IStoryCategoryService StoryCategoryService { get; }
+        protected IMenuService MenuService { get; }
+        protected IEimeceCacheProvider MemoryCacheProvider { get; }
+
+        public DashboardController(
+            ISettingService settingService,
+            IProductService productService,
+            IProductCategoryService productCategoryService,
+            IStoryService storyService,
+            IStoryCategoryService storyCategoryService,
+            IMenuService menuService,
+            IEimeceCacheProvider memoryCacheProvider)
+            : base(settingService)
+        {
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+            MemoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
+        }
 
         // GET: Admin/Dashboard
         public ActionResult Index()
@@ -278,7 +302,7 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             MemoryCacheProvider.ClearAll();
             return RedirectToAction("Index", "Home", new { @area = "" });
         }

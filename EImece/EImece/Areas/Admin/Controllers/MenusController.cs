@@ -20,12 +20,31 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class MenusController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
+
+        protected IMenuService MenuService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected FilesHelper FilesHelper { get; }
+
+        public MenusController(
+            ISettingService settingService,
+            IMenuService menuService,
+            IEntityFactory entityFactory,
+            FilesHelper filesHelper)
+            : base(settingService)
+        {
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

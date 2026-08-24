@@ -1,6 +1,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
@@ -36,9 +37,15 @@ namespace EImece.Areas.Admin.Controllers
         private const string PaymentTransactionReportTitle = "Payment Transaction Report";
         private const string IsoDateFormat = "yyyy-MM-dd";
         private const string StartDateAfterEndDateMessage = "Start date cannot be after end date";
+        private readonly ReportService _reportService;
 
-        [Inject]
-        public ReportService _reportService { get; set; }
+        public ReportController(
+            ISettingService settingService,
+            ReportService reportService)
+            : base(settingService)
+        {
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+        }
 
         [HttpGet]
         public ActionResult Index()

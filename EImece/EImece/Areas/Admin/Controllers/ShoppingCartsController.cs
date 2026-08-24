@@ -20,8 +20,15 @@ namespace EImece.Areas.Admin.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IShoppingCartService ShoppingCartService { get; set; }
+        protected IShoppingCartService ShoppingCartService { get; }
+
+        public ShoppingCartsController(
+            ISettingService settingService,
+            IShoppingCartService shoppingCartService)
+            : base(settingService)
+        {
+            ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

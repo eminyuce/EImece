@@ -15,11 +15,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class FaqController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IFaqService FaqService { get; }
+        protected IEntityFactory EntityFactory { get; }
+
+        public FaqController(
+            ISettingService settingService,
+            IFaqService faqService,
+            IEntityFactory entityFactory)
+            : base(settingService)
+        {
+            FaqService = faqService ?? throw new ArgumentNullException(nameof(faqService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using NLog;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Areas.Admin.Controllers
 {
     [ValidateJsonAntiForgeryToken]
@@ -28,20 +30,83 @@ namespace EImece.Areas.Admin.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private AppLogRepository AppLogRepository { get; set; }
+        protected AppLogRepository AppLogRepository { get; }
+        protected IShoppingCartService ShoppingCartService { get; }
+        protected IUsersService UsersService { get; }
+        protected ICustomerService CustomerService { get; }
+        protected ICouponService CouponService { get; }
+        protected IProductService ProductService { get; }
+        protected IProductCategoryService ProductCategoryService { get; }
+        protected IMenuService MenuService { get; }
+        protected IStoryService StoryService { get; }
+        protected IBrandService BrandService { get; }
+        protected IStoryCategoryService StoryCategoryService { get; }
+        protected ITagService TagService { get; }
+        protected ITagCategoryService TagCategoryService { get; }
+        protected ISubscriberService SubscriberService { get; }
+        protected IFileStorageService FileStorageService { get; }
+        protected ITemplateService TemplateService { get; }
+        protected IListService ListService { get; }
+        protected IListItemService ListItemService { get; }
+        protected IMailTemplateService MailTemplateService { get; }
+        protected IOrderService OrderService { get; }
+        protected IFaqService FaqService { get; }
+        protected IProductCommentService ProductCommentService { get; }
+        protected IMainPageImageService MainPageImageService { get; }
+        protected IEntityFactory EntityFactory { get; }
 
-        [Inject]
-        public IShoppingCartService ShoppingCartService { get; set; }
-
-        [Inject]
-        public IUsersService UsersService { get; set; }
-
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-        public AjaxController(AppLogRepository AppLogRepository)
+        public AjaxController(
+            ISettingService settingService,
+            AppLogRepository appLogRepository,
+            IShoppingCartService shoppingCartService,
+            IUsersService usersService,
+            ICustomerService customerService,
+            ICouponService couponService,
+            IProductService productService,
+            IProductCategoryService productCategoryService,
+            IMenuService menuService,
+            IStoryService storyService,
+            IBrandService brandService,
+            IStoryCategoryService storyCategoryService,
+            ITagService tagService,
+            ITagCategoryService tagCategoryService,
+            ISubscriberService subscriberService,
+            IFileStorageService fileStorageService,
+            ITemplateService templateService,
+            IListService listService,
+            IListItemService listItemService,
+            IMailTemplateService mailTemplateService,
+            IOrderService orderService,
+            IFaqService faqService,
+            IProductCommentService productCommentService,
+            IMainPageImageService mainPageImageService,
+            IEntityFactory entityFactory)
+            : base(settingService)
         {
-            this.AppLogRepository = AppLogRepository;
+            AppLogRepository = appLogRepository ?? throw new ArgumentNullException(nameof(appLogRepository));
+            ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
+            UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            CouponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+            StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
+            BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
+            TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
+            TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
+            SubscriberService = subscriberService ?? throw new ArgumentNullException(nameof(subscriberService));
+            FileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
+            TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
+            ListService = listService ?? throw new ArgumentNullException(nameof(listService));
+            ListItemService = listItemService ?? throw new ArgumentNullException(nameof(listItemService));
+            MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            FaqService = faqService ?? throw new ArgumentNullException(nameof(faqService));
+            ProductCommentService = productCommentService ?? throw new ArgumentNullException(nameof(productCommentService));
+            MainPageImageService = mainPageImageService ?? throw new ArgumentNullException(nameof(mainPageImageService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
         }
 
         protected override void OnException(ExceptionContext filterContext)

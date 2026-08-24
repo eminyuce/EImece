@@ -12,11 +12,30 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class ListsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IListService ListService { get; }
+        protected IListItemService ListItemService { get; }
+        protected IEntityFactory EntityFactory { get; }
+
+        public ListsController(
+            ISettingService settingService,
+            IListService listService,
+            IListItemService listItemService,
+            IEntityFactory entityFactory)
+            : base(settingService)
+        {
+            ListService = listService ?? throw new ArgumentNullException(nameof(listService));
+            ListItemService = listItemService ?? throw new ArgumentNullException(nameof(listItemService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

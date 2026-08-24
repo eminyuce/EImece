@@ -17,12 +17,49 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class ProductsController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
+
+        protected IProductService ProductService { get; }
+        protected IProductCategoryService ProductCategoryService { get; }
+        protected IBrandService BrandService { get; }
+        protected ITagService TagService { get; }
+        protected ITagCategoryService TagCategoryService { get; }
+        protected ITemplateService TemplateService { get; }
+        protected IFileStorageService FileStorageService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected FilesHelper FilesHelper { get; }
+
+        public ProductsController(
+            ISettingService settingService,
+            IProductService productService,
+            IProductCategoryService productCategoryService,
+            IBrandService brandService,
+            ITagService tagService,
+            ITagCategoryService tagCategoryService,
+            ITemplateService templateService,
+            IFileStorageService fileStorageService,
+            IEntityFactory entityFactory,
+            FilesHelper filesHelper)
+            : base(settingService)
+        {
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
+            TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
+            TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
+            TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
+            FileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+        }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public async Task<ActionResult> IndexGrid(

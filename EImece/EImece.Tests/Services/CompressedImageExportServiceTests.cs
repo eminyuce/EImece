@@ -1,5 +1,6 @@
 using EImece.Areas.Admin.Controllers;
 using EImece.Domain.DbContext;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
@@ -223,14 +224,37 @@ namespace EImece.Tests.Services
             }
         }
 
+        private class FakeSettingServiceProxy : RealProxy
+        {
+            public FakeSettingServiceProxy() : base(typeof(ISettingService))
+            {
+            }
+
+            public override IMessage Invoke(IMessage msg)
+            {
+                var call = (IMethodCallMessage)msg;
+                object defaultResult = null;
+                if (call.MethodBase is MethodInfo mi && mi.ReturnType != typeof(void))
+                {
+                    if (mi.ReturnType.IsValueType)
+                    {
+                        defaultResult = Activator.CreateInstance(mi.ReturnType);
+                    }
+                }
+                return new ReturnMessage(defaultResult, null, 0, call.LogicalCallContext, call);
+            }
+
+            public ISettingService Service => (ISettingService)GetTransparentProxy();
+        }
+
         [TestMethod]
         public async Task ImagesController_DownloadCompressedImages_ReturnsFileContentResult()
         {
             // Arrange
-            var controller = new ImagesController
-            {
-                CompressedImageExportService = new FakeImageExportService()
-            };
+            var controller = new ImagesController(
+                new FakeSettingServiceProxy().Service,
+                new FakeImageExportService(),
+                new FilesHelper());
 
             // Act
             var actionResult = await controller.DownloadCompressedImages(CancellationToken.None);

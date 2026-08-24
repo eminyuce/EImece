@@ -16,11 +16,33 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class StoryCategoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IStoryCategoryService StoryCategoryService { get; }
+        protected IMenuService MenuService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected FilesHelper FilesHelper { get; }
+
+        public StoryCategoriesController(
+            ISettingService settingService,
+            IStoryCategoryService storyCategoryService,
+            IMenuService menuService,
+            IEntityFactory entityFactory,
+            FilesHelper filesHelper)
+            : base(settingService)
+        {
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

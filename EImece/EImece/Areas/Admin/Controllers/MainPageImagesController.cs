@@ -15,11 +15,30 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class MainPageImagesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IMainPageImageService MainPageImageService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected FilesHelper FilesHelper { get; }
+
+        public MainPageImagesController(
+            ISettingService settingService,
+            IMainPageImageService mainPageImageService,
+            IEntityFactory entityFactory,
+            FilesHelper filesHelper)
+            : base(settingService)
+        {
+            MainPageImageService = mainPageImageService ?? throw new ArgumentNullException(nameof(mainPageImageService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+        }
 
         // GET: Admin/MainPageImages
         [HttpGet]

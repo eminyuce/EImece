@@ -17,6 +17,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class MediaController : BaseAdminController
@@ -26,6 +28,11 @@ namespace EImece.Areas.Admin.Controllers
         private const string ContentIdKey = "contentId";
         private const string ImageTypeKey = "imageType";
         private FilesHelper filesHelper;
+
+        protected IFileStorageService FileStorageService { get; }
+        protected IStoryService StoryService { get; }
+        protected IProductService ProductService { get; }
+        protected IMenuService MenuService { get; }
 
         private Dictionary<string, string> CurrentSelectedModul
         {
@@ -39,10 +46,21 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        public MediaController(FilesHelper filesHelper)
+        public MediaController(
+            ISettingService settingService,
+            FilesHelper filesHelper,
+            IFileStorageService fileStorageService,
+            IStoryService storyService,
+            IProductService productService,
+            IMenuService menuService)
+            : base(settingService)
         {
-            this.filesHelper = filesHelper;
+            this.filesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
             this.filesHelper.InitFilesMediaFolder();
+            FileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
+            StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
         }
 
         // GET: Admin/Media

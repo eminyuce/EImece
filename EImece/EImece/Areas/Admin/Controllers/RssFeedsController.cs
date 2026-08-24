@@ -10,11 +10,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class RssFeedsController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IStoryCategoryService StoryCategoryService { get; }
+        protected IProductCategoryService ProductCategoryService { get; }
+
+        public RssFeedsController(
+            ISettingService settingService,
+            IStoryCategoryService storyCategoryService,
+            IProductCategoryService productCategoryService)
+            : base(settingService)
+        {
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken)

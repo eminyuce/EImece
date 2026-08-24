@@ -14,11 +14,30 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using DomainConstants = EImece.Domain.Constants;
 
+using EImece.Domain.Caching;
+using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class AdminSettingsController : BaseAdminController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private readonly ISettingService _settingService;
+        private readonly IEmailSender _emailSender;
+        private readonly IEimeceCacheProvider _memoryCacheProvider;
+
+        public AdminSettingsController(
+            ISettingService settingService,
+            IEmailSender emailSender,
+            IEimeceCacheProvider memoryCacheProvider)
+            : base(settingService)
+        {
+            _settingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            _memoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
+        }
 
         // GET: Admin/AdminSettings
         public async Task<ActionResult> Index(CancellationToken cancellationToken)
@@ -90,7 +109,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 string fromAddress = string.IsNullOrEmpty(emailAccount.Email) ? emailAccount.Username : emailAccount.Email;
 
-                EmailSender.SendEmail(emailAccount,
+                _emailSender.SendEmail(emailAccount,
                   subject: "Test Subject",
                   body: "Test Email Body",
                   fromAddress: fromAddress,
@@ -140,7 +159,7 @@ namespace EImece.Areas.Admin.Controllers
 
             await SettingService.SaveOrEditEntityAsync(setting).ConfigureAwait(false);
             SettingService.ClearCache();
-            MemoryCacheProvider?.ClearAll();
+            _memoryCacheProvider?.ClearAll();
 
             return Json(new { success = true, language = langValue, message = AdminResource.SuccessfullySavedCompleted });
         }

@@ -9,10 +9,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class SubscribersController : BaseAdminController
     {
+        protected ISubscriberService SubscriberService { get; }
+
+        public SubscribersController(
+            ISettingService settingService,
+            ISubscriberService subscriberService)
+            : base(settingService)
+        {
+            SubscriberService = subscriberService ?? throw new ArgumentNullException(nameof(subscriberService));
+        }
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {

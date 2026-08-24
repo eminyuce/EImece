@@ -7,15 +7,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class MetricsController : BaseAdminController
     {
         private readonly IApplicationMetrics _applicationMetrics;
 
-        public MetricsController(IApplicationMetrics applicationMetrics)
+        public MetricsController(
+            ISettingService settingService,
+            IApplicationMetrics applicationMetrics)
+            : base(settingService)
         {
-            _applicationMetrics = applicationMetrics;
+            _applicationMetrics = applicationMetrics ?? throw new ArgumentNullException(nameof(applicationMetrics));
         }
 
         // GET: Admin/Metrics

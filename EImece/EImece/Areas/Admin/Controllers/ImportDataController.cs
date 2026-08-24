@@ -11,10 +11,21 @@ using System.Web;
 using System.Web.Mvc;
 using Resources;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class ImportDataController : BaseAdminController
     {
+        protected IProductCategoryService ProductCategoryService { get; }
+
+        public ImportDataController(
+            ISettingService settingService,
+            IProductCategoryService productCategoryService)
+            : base(settingService)
+        {
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+        }
         public ActionResult Index()
         {
             String path = "~/App_Data/";

@@ -25,20 +25,28 @@ namespace EImece.Areas.Admin.Controllers
     public class UsersController : BaseAdminController
     {
         private const string IndexAction = "Index";
-        [Inject]
-        public IUsersService UsersService { get; set; }
 
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
+        protected IUsersService UsersService { get; }
+        protected ICustomerService CustomerService { get; }
+        protected ApplicationSignInManager SignInManager { get; }
+        protected ApplicationUserManager UserManager { get; }
+        protected IIdentityManager IdentityManager { get; }
 
-        [Inject]
-        public ApplicationSignInManager SignInManager { get; set; }
-
-        [Inject]
-        public new ApplicationUserManager UserManager { get; set; }
-
-        [Inject]
-        public IIdentityManager IdentityManager { get; set; }
+        public UsersController(
+            ISettingService settingService,
+            IUsersService usersService,
+            ICustomerService customerService,
+            ApplicationSignInManager signInManager,
+            ApplicationUserManager userManager,
+            IIdentityManager identityManager)
+            : base(settingService)
+        {
+            UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            IdentityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "")

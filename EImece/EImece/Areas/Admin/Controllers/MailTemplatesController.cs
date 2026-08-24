@@ -1,6 +1,7 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -21,6 +22,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Areas.Admin.Controllers
 {
     [AuthorizeRoles(Domain.Constants.AdministratorRole)]
@@ -29,8 +32,24 @@ namespace EImece.Areas.Admin.Controllers
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
 
-        [Inject]
-        public IMailTemplateTestService MailTemplateTestService { get; set; }
+        protected IMailTemplateService MailTemplateService { get; }
+        protected IMailTemplateTestService MailTemplateTestService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected IRazorEngineHelper RazorEngineHelper { get; }
+
+        public MailTemplatesController(
+            ISettingService settingService,
+            IMailTemplateService mailTemplateService,
+            IMailTemplateTestService mailTemplateTestService,
+            IEntityFactory entityFactory,
+            IRazorEngineHelper razorEngineHelper)
+            : base(settingService)
+        {
+            MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
+            MailTemplateTestService = mailTemplateTestService ?? throw new ArgumentNullException(nameof(mailTemplateTestService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            RazorEngineHelper = razorEngineHelper ?? throw new ArgumentNullException(nameof(razorEngineHelper));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

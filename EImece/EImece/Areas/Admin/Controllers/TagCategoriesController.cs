@@ -14,11 +14,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class TagCategoriesController : BaseAdminController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected ITagCategoryService TagCategoryService { get; }
+        protected IEntityFactory EntityFactory { get; }
+
+        public TagCategoriesController(
+            ISettingService settingService,
+            ITagCategoryService tagCategoryService,
+            IEntityFactory entityFactory)
+            : base(settingService)
+        {
+            TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

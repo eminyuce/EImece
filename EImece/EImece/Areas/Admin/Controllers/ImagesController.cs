@@ -13,8 +13,18 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ImagesController : BaseAdminController
     {
-        [Inject]
-        public ICompressedImageExportService CompressedImageExportService { get; set; }
+        public ICompressedImageExportService CompressedImageExportService { get; }
+        public FilesHelper FilesHelper { get; }
+
+        public ImagesController(
+            ISettingService settingService,
+            ICompressedImageExportService compressedImageExportService,
+            FilesHelper filesHelper)
+            : base(settingService)
+        {
+            CompressedImageExportService = compressedImageExportService ?? throw new ArgumentNullException(nameof(compressedImageExportService));
+            FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+        }
 
         // Get method to resize and display image
         [AcceptVerbs(HttpVerbs.Get)]

@@ -18,16 +18,35 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using ListEntity = EImece.Domain.Entities.List;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     [AuthorizeRoles(Domain.Constants.AdministratorRole)]
     public class TemplatesController : BaseAdminController
     {
-        [Inject]
-        public XmlEditorHelper XmlEditorHelper { get; set; }
+        protected ITemplateService TemplateService { get; }
+        protected IListService ListService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected XmlEditorHelper XmlEditorHelper { get; }
 
         private const string ProductSpescUrl = "ProductSpescUrl";
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public TemplatesController(
+            ISettingService settingService,
+            ITemplateService templateService,
+            IListService listService,
+            IEntityFactory entityFactory,
+            XmlEditorHelper xmlEditorHelper)
+            : base(settingService)
+        {
+            TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
+            ListService = listService ?? throw new ArgumentNullException(nameof(listService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            XmlEditorHelper = xmlEditorHelper ?? throw new ArgumentNullException(nameof(xmlEditorHelper));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")

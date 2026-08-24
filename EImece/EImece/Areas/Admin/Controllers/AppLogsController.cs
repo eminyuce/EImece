@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class AppLogsController : BaseAdminController
@@ -23,9 +25,12 @@ namespace EImece.Areas.Admin.Controllers
         private AppLogRepository AppLogRepository;
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public AppLogsController(AppLogRepository repository)
+        public AppLogsController(
+            ISettingService settingService,
+            AppLogRepository repository)
+            : base(settingService)
         {
-            this.AppLogRepository = repository;
+            this.AppLogRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]

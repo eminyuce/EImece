@@ -18,12 +18,34 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Areas.Admin.Controllers
 {
     public class ProductCategoriesController : BaseAdminController
     {
         // GET: Admin/ProductCategories
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        protected IProductCategoryService ProductCategoryService { get; }
+        protected ITemplateService TemplateService { get; }
+        protected IEntityFactory EntityFactory { get; }
+        protected FilesHelper FilesHelper { get; }
+
+        public ProductCategoriesController(
+            ISettingService settingService,
+            IProductCategoryService productCategoryService,
+            ITemplateService templateService,
+            IEntityFactory entityFactory,
+            FilesHelper filesHelper)
+            : base(settingService)
+        {
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
+            EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+            FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+        }
 
         [HttpGet]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
