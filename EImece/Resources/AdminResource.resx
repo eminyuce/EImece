@@ -4093,10 +4093,10 @@
     <value>Mağaza ve sistem durumunun anlık özeti</value>
   </data>
   <data name="SystemToolsAndOperationsSec" xml:space="preserve">
-    <value>Sistem @AdminResource.To &amp; Operasyonlar</value>
+    <value>Sistem Araçları &amp; Operasyonlar</value>
   </data>
   <data name="SystemToolsHealthBackupSec" xml:space="preserve">
-    <value>Sistem @AdminResource.To, Sağlık Kontrolü &amp; Yedekleme</value>
+    <value>Sistem Araçları, Sağlık Kontrolü &amp; Yedekleme</value>
   </data>
   <data name="SystemToolsHealthBackupSecDesc" xml:space="preserve">
     <value>Performans metrikleri, günlükler ve tam sistem verisi dışa aktarma operasyonları.</value>
@@ -4105,10 +4105,10 @@
     <value>Sistem kaynak kullanımını, veritabanı yanıt sürelerini ve sağlık durumunu inceleyin.</value>
   </data>
   <data name="HealthLiveStatusText" xml:space="preserve">
-    <value>@AdminResource.Health (Canlı Durum)</value>
+    <value>Sistem Sağlığı (Canlı Durum)</value>
   </data>
   <data name="AppLogsAndMaintenanceText" xml:space="preserve">
-    <value>@AdminResource.AppLogs &amp; Bakım</value>
+    <value>Uygulama Günlükleri &amp; Bakım</value>
   </data>
   <data name="AppLogsAndMaintenanceDescText" xml:space="preserve">
     <value>Uygulama hata kayıtlarını izleyin veya optimize edilmiş medya arşivini indirin.</value>
@@ -4358,5 +4358,68 @@
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>İptal</value>
+  </data>
+  <data name="ApplyAndRefresh" xml:space="preserve">
+    <value>Uygula ve Yenile</value>
+  </data>
+  <data name="SecureAdminLogin" xml:space="preserve">
+    <value>Güvenli Yönetici Girişi</value>
+  </data>
+  <data name="AdminLoginLead" xml:space="preserve">
+    <value>Bu sayfa yalnızca yetkili yöneticiler içindir. Müşteri hesabı ile buradan giriş yapılamaz.</value>
+  </data>
+  <data name="AdminCredentialsStepTitle" xml:space="preserve">
+    <value>Yönetici bilgileri</value>
+  </data>
+  <data name="AdminCredentialsStepDesc" xml:space="preserve">
+    <value>Yönetici e-posta ve şifrenizi girin.</value>
+  </data>
+  <data name="SecurityVerificationStepTitle" xml:space="preserve">
+    <value>Güvenlik doğrulaması</value>
+  </data>
+  <data name="AdminLoginRecaptchaGuideText" xml:space="preserve">
+    <value>Google reCAPTCHA kutusunu işaretleyerek robot olmadığınızı doğrulayın.</value>
+  </data>
+  <data name="AdminLoginNoCaptchaGuideText" xml:space="preserve">
+    <value>Bu ortamda ekstra captcha adımı kapalıdır; doğrudan giriş yapabilirsiniz.</value>
+  </data>
+  <data name="AdminLoginMathCaptchaGuideText" xml:space="preserve">
+    <value>Görseldeki iki sayının toplamını yazın; sonuç güvenlik doğrulamasıdır.</value>
+  </data>
+  <data name="TwoFactorStepTitle" xml:space="preserve">
+    <value>İki faktörlü doğrulama</value>
+  </data>
+  <data name="TwoFactorStepDesc" xml:space="preserve">
+    <value>Hesabınızda açıksa authenticator kodu istenir.</value>
+  </data>
+  <data name="AdminPanelStepTitle" xml:space="preserve">
+    <value>Yönetim paneli</value>
+  </data>
+  <data name="AdminPanelStepDesc" xml:space="preserve">
+    <value>Doğrulama sonrası admin paneline yönlendirilirsiniz.</value>
+  </data>
+  <data name="AdminLoginEncryptedNote" xml:space="preserve">
+    <value>Oturum bilgileriniz şifreli olarak işlenir. Başarısız denemeler hesap kilidine yol açabilir.</value>
+  </data>
+  <data name="SignInHeading" xml:space="preserve">
+    <value>Oturum açın</value>
+  </data>
+  <data name="AdminSignInSub" xml:space="preserve">
+    <value>Yönetici hesabınızla devam edin.</value>
+  </data>
+  <data name="CustomerLoginHint" xml:space="preserve">
+    <value>Müşteri girişi için site üzerindeki normal giriş sayfasını kullanın.</value>
+  </data>
+  <data name="BackToSite" xml:space="preserve">
+    <value>Siteye dön</value>
+  </data>
+  <data name="ShowPassword" xml:space="preserve">
+    <value>Şifreyi göster</value>
+  </data>
+  <data name="HidePassword" xml:space="preserve">
+    <value>Şifreyi gizle</value>
+  </data>
+  <data name="EnterAnswerHere" xml:space="preserve">
+    <value>Buraya Yazınız.</value>
   </data>
 </root>

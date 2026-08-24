@@ -10,24 +10,25 @@
     ViewBag.Title = Resource.AdminPanelLoginPage;
     Layout = null;
     var remoteIp = EImece.Domain.Helpers.GeneralHelper.GetRemoteIP(Request.ServerVariables);
-    var loginStamp = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm");
+    var currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+    var loginStamp = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm", currentCulture);
     string securityStepText;
     switch (CaptchaSettings.Provider)
     {
         case CaptchaProviderType.Recaptcha:
-            securityStepText = "Google reCAPTCHA kutusunu işaretleyerek robot olmadığınızı doğrulayın.";
+            securityStepText = AdminResource.AdminLoginRecaptchaGuideText;
             break;
         case CaptchaProviderType.None:
-            securityStepText = "Bu ortamda ekstra captcha adımı kapalıdır; doğrudan giriş yapabilirsiniz.";
+            securityStepText = AdminResource.AdminLoginNoCaptchaGuideText;
             break;
         default:
-            securityStepText = "Görseldeki iki sayının toplamını yazın; sonuç güvenlik doğrulamasıdır.";
+            securityStepText = AdminResource.AdminLoginMathCaptchaGuideText;
             break;
     }
 }
 
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="@currentCulture.TwoLetterISOLanguageName">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -541,57 +542,57 @@
             <aside class="admin-login__guide" aria-labelledby="admin-login-brand">
                 <div class="admin-login__badge">
                     <i class="fas fa-shield-alt" aria-hidden="true"></i>
-                    Güvenli Yönetici Girişi
+                    @AdminResource.SecureAdminLogin
                 </div>
                 <h1 class="admin-login__brand" id="admin-login-brand">@Resource.AdminPanelLoginPage</h1>
                 <p class="admin-login__lead">
-                    Bu sayfa yalnızca yetkili yöneticiler içindir. Müşteri hesabı ile buradan giriş yapılamaz.
+                    @AdminResource.AdminLoginLead
                 </p>
 
                 <ol class="admin-login__steps">
                     <li>
                         <span class="admin-login__step-num" aria-hidden="true">1</span>
                         <div>
-                            <span class="admin-login__step-title">Yönetici bilgileri</span>
-                            <span class="admin-login__step-text">Yönetici e-posta ve şifrenizi girin.</span>
+                            <span class="admin-login__step-title">@AdminResource.AdminCredentialsStepTitle</span>
+                            <span class="admin-login__step-text">@AdminResource.AdminCredentialsStepDesc</span>
                         </div>
                     </li>
                     <li>
                         <span class="admin-login__step-num" aria-hidden="true">2</span>
                         <div>
-                            <span class="admin-login__step-title">Güvenlik doğrulaması</span>
+                            <span class="admin-login__step-title">@AdminResource.SecurityVerificationStepTitle</span>
                             <span class="admin-login__step-text">@securityStepText</span>
                         </div>
                     </li>
                     <li>
                         <span class="admin-login__step-num" aria-hidden="true">3</span>
                         <div>
-                            <span class="admin-login__step-title">İki faktörlü doğrulama</span>
-                            <span class="admin-login__step-text">Hesabınızda açıksa authenticator kodu istenir.</span>
+                            <span class="admin-login__step-title">@AdminResource.TwoFactorStepTitle</span>
+                            <span class="admin-login__step-text">@AdminResource.TwoFactorStepDesc</span>
                         </div>
                     </li>
                     <li>
                         <span class="admin-login__step-num" aria-hidden="true">4</span>
                         <div>
-                            <span class="admin-login__step-title">Yönetim paneli</span>
-                            <span class="admin-login__step-text">Doğrulama sonrası admin paneline yönlendirilirsiniz.</span>
+                            <span class="admin-login__step-title">@AdminResource.AdminPanelStepTitle</span>
+                            <span class="admin-login__step-text">@AdminResource.AdminPanelStepDesc</span>
                         </div>
                     </li>
                 </ol>
 
                 <p class="admin-login__guide-note">
                     <i class="fas fa-lock mr-1" aria-hidden="true"></i>
-                    Oturum bilgileriniz şifreli olarak işlenir. Başarısız denemeler hesap kilidine yol açabilir.
+                    @AdminResource.AdminLoginEncryptedNote
                 </p>
             </aside>
 
             <section class="admin-login__panel" aria-labelledby="admin-login-form-title">
-                <h2 class="admin-login__panel-title" id="admin-login-form-title">Oturum açın</h2>
-                <p class="admin-login__panel-sub">Yönetici hesabınızla devam edin.</p>
+                <h2 class="admin-login__panel-title" id="admin-login-form-title">@AdminResource.SignInHeading</h2>
+                <p class="admin-login__panel-sub">@AdminResource.AdminSignInSub</p>
 
                 <div class="admin-login__alert" role="note">
                     <i class="fas fa-info-circle" aria-hidden="true"></i>
-                    <div>@AdminResource.JustOpenForAdmin Müşteri girişi için site üzerindeki normal giriş sayfasını kullanın.</div>
+                    <div>@AdminResource.JustOpenForAdmin @AdminResource.CustomerLoginHint</div>
                 </div>
 
                 @using (Html.BeginForm("AdminLogin", "Account", FormMethod.Post, new { @class = "needs-validation admin-login__form", novalidate = "novalidate", autocomplete = "on" }))
@@ -606,7 +607,7 @@
                             @Html.TextBoxFor(m => m.Email, new
                             {
                                 @class = "form-control",
-                                placeholder = "ornek@sirket.com",
+                                placeholder = "admin@example.com",
                                 required = "required",
                                 autocomplete = "username",
                                 inputmode = "email"
@@ -626,7 +627,7 @@
                                 required = "required",
                                 autocomplete = "current-password"
                             })
-                            <button type="button" class="admin-login__toggle-password" id="togglePassword" aria-label="Şifreyi göster" title="Şifreyi göster">
+                            <button type="button" class="admin-login__toggle-password" id="togglePassword" aria-label="@AdminResource.ShowPassword" title="@AdminResource.ShowPassword" data-show-title="@AdminResource.ShowPassword" data-hide-title="@AdminResource.HidePassword">
                                 <i class="fas fa-eye" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -641,7 +642,7 @@
                     if (CaptchaSettings.Provider != CaptchaProviderType.None)
                     {
                         <div class="admin-login__captcha-block">
-                            @Html.CaptchaWidget("AdminLogin", "invalid-feedback d-block text-danger", "Buraya Yaziniz.")
+                            @Html.CaptchaWidget("AdminLogin", "invalid-feedback d-block text-danger", AdminResource.EnterAnswerHere)
                             <p class="admin-login__captcha-note">
                                 <i class="fas fa-info-circle" aria-hidden="true"></i>
                                 <span>@securityStepText</span>
@@ -669,7 +670,7 @@
                 <div class="admin-login__back">
                     <a href="@Url.Action("Index", "Home", new { area = "" })">
                         <i class="fas fa-arrow-left mr-1" aria-hidden="true"></i>
-                        Siteye dön
+                        @AdminResource.BackToSite
                     </a>
                 </div>
             </section>
@@ -690,6 +691,8 @@
             var toggle = document.getElementById('togglePassword');
             var password = document.getElementById('Password');
             if (toggle && password) {
+                var showTitle = toggle.getAttribute('data-show-title') || 'Show password';
+                var hideTitle = toggle.getAttribute('data-hide-title') || 'Hide password';
                 toggle.addEventListener('click', function () {
                     var show = password.getAttribute('type') === 'password';
                     password.setAttribute('type', show ? 'text' : 'password');
@@ -698,8 +701,8 @@
                         icon.classList.toggle('fa-eye', !show);
                         icon.classList.toggle('fa-eye-slash', show);
                     }
-                    toggle.setAttribute('aria-label', show ? 'Şifreyi gizle' : 'Şifreyi göster');
-                    toggle.setAttribute('title', show ? 'Şifreyi gizle' : 'Şifreyi göster');
+                    toggle.setAttribute('aria-label', show ? hideTitle : showTitle);
+                    toggle.setAttribute('title', show ? hideTitle : showTitle);
                 });
             }
 

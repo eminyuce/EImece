@@ -156,5 +156,41 @@ namespace EImece.Areas.Admin.Controllers
                 return RedirectToAction("SystemSettings");
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeAdminPanelLanguage(string language, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(language))
+            {
+                return Json(new { success = false, message = "Language cannot be empty." });
+            }
+
+            var parsed = EnumHelper.ParseLanguage(language);
+            var langValue = parsed.HasValue ? EnumHelper.GetEnumDescription(parsed.Value) : (language.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? "en-US" : "tr-TR");
+
+            var setting = await SettingService.GetSettingObjectByKeyAsync(DomainConstants.AdminPanelLanguage).ConfigureAwait(false);
+            if (setting == null)
+            {
+                setting = new EImece.Domain.Entities.Setting
+                {
+                    Name = DomainConstants.AdminPanelLanguage,
+                    SettingKey = DomainConstants.AdminPanelLanguage,
+                    Description = DomainConstants.SystemSettings,
+                    IsActive = true,
+                    SettingValue = langValue
+                };
+            }
+            else
+            {
+                setting.SettingValue = langValue;
+            }
+
+            await SettingService.SaveOrEditEntityAsync(setting).ConfigureAwait(false);
+            SettingService.ClearCache();
+            MemoryCacheProvider?.ClearAll();
+
+            return Json(new { success = true, language = langValue, message = AdminResource.SuccessfullySavedCompleted });
+        }
     }
 }

@@ -124,9 +124,8 @@ namespace EImece.Controllers
                 product.Page = page;
                 product.RecordPerPage = AppConfig.ProductCommentsRecordPerPage;
                 product.SeoId = product.ProductDto.SeoUrl;
-                SetCurrentCulture(product.ProductDto.Lang);
 
-                Logger.Info($"Set culture and SEO ID: {ViewBag.SeoId} for product ID: {productId}");
+                Logger.Info($"Set SEO ID: {ViewBag.SeoId} for product ID: {productId}");
                 Logger.Info("Returning Detail view.");
                 return View(product);
             }
@@ -166,9 +165,6 @@ namespace EImece.Controllers
             products.TagId = id;
             ViewBag.SeoId = products.Tag.GetSeoUrl();
             Logger.Info($"Set model properties: Page={page}, RecordPerPage={pageSize}, Sorting={(SortingType)sorting}, TagId={id}, SeoId={ViewBag.SeoId}");
-
-            SetCurrentCulture(products.Tag.Lang);
-            Logger.Info("Set current culture based on tag.");
             Logger.Info("Returning Tag view.");
             return View(products);
         }

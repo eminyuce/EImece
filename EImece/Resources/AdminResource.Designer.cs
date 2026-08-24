@@ -10009,5 +10009,134 @@ namespace Resources {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Uygula ve Yenile.
+        /// </summary>
+        public static string ApplyAndRefresh {
+            get {
+                return ResourceManager.GetString("ApplyAndRefresh", resourceCulture);
+            }
+        }
+
+        public static string SecureAdminLogin {
+            get {
+                return ResourceManager.GetString("SecureAdminLogin", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginLead {
+            get {
+                return ResourceManager.GetString("AdminLoginLead", resourceCulture);
+            }
+        }
+
+        public static string AdminCredentialsStepTitle {
+            get {
+                return ResourceManager.GetString("AdminCredentialsStepTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminCredentialsStepDesc {
+            get {
+                return ResourceManager.GetString("AdminCredentialsStepDesc", resourceCulture);
+            }
+        }
+
+        public static string SecurityVerificationStepTitle {
+            get {
+                return ResourceManager.GetString("SecurityVerificationStepTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginRecaptchaGuideText {
+            get {
+                return ResourceManager.GetString("AdminLoginRecaptchaGuideText", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginNoCaptchaGuideText {
+            get {
+                return ResourceManager.GetString("AdminLoginNoCaptchaGuideText", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginMathCaptchaGuideText {
+            get {
+                return ResourceManager.GetString("AdminLoginMathCaptchaGuideText", resourceCulture);
+            }
+        }
+
+        public static string TwoFactorStepTitle {
+            get {
+                return ResourceManager.GetString("TwoFactorStepTitle", resourceCulture);
+            }
+        }
+
+        public static string TwoFactorStepDesc {
+            get {
+                return ResourceManager.GetString("TwoFactorStepDesc", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelStepTitle {
+            get {
+                return ResourceManager.GetString("AdminPanelStepTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelStepDesc {
+            get {
+                return ResourceManager.GetString("AdminPanelStepDesc", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginEncryptedNote {
+            get {
+                return ResourceManager.GetString("AdminLoginEncryptedNote", resourceCulture);
+            }
+        }
+
+        public static string SignInHeading {
+            get {
+                return ResourceManager.GetString("SignInHeading", resourceCulture);
+            }
+        }
+
+        public static string AdminSignInSub {
+            get {
+                return ResourceManager.GetString("AdminSignInSub", resourceCulture);
+            }
+        }
+
+        public static string CustomerLoginHint {
+            get {
+                return ResourceManager.GetString("CustomerLoginHint", resourceCulture);
+            }
+        }
+
+        public static string BackToSite {
+            get {
+                return ResourceManager.GetString("BackToSite", resourceCulture);
+            }
+        }
+
+        public static string ShowPassword {
+            get {
+                return ResourceManager.GetString("ShowPassword", resourceCulture);
+            }
+        }
+
+        public static string HidePassword {
+            get {
+                return ResourceManager.GetString("HidePassword", resourceCulture);
+            }
+        }
+
+        public static string EnterAnswerHere {
+            get {
+                return ResourceManager.GetString("EnterAnswerHere", resourceCulture);
+            }
+        }
     }
 }

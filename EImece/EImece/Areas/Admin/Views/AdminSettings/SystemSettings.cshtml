@@ -250,13 +250,13 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-primary-subtle text-primary rounded p-2"><i class="fa fa-shopping-bag fa-lg"></i></span>
                                                     <span class="badge @(isSiteLive ? "bg-success" : "bg-warning text-dark")">
-                                                        @(isSiteLive ? "@AdminResource.LiveOnSite" : "@AdminResource.InMaintenanceMode")
+                                                        @(isSiteLive ? AdminResource.LiveOnSite : AdminResource.InMaintenanceMode)
                                                     </span>
                                                 </div>
                                                 <h6 class="fw-bold mb-1">@AdminResource.StoreAndShowcase</h6>
                                                 <p class="text-muted small mb-2">@AdminResource.StoreAndShowcaseDesc</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li><i class="fa fa-circle @(isPriceActive ? "text-success" : "text-secondary") me-1 small"></i> @AdminResource.PriceAndSales: <strong>@(isPriceActive ? "Aktif" : "@AdminResource.CatalogMode")</strong></li>
+                                                    <li><i class="fa fa-circle @(isPriceActive ? "text-success" : "text-secondary") me-1 small"></i> @AdminResource.PriceAndSales: <strong>@(isPriceActive ? "Aktif" : AdminResource.CatalogMode)</strong></li>
                                                     <li><i class="fa fa-circle @(isSearchIndexing ? "text-success" : "text-danger") me-1 small"></i> @AdminResource.SeoIndexing: <strong>@(isSearchIndexing ? "Açık" : "Kapalı")</strong></li>
                                                     <li><i class="fa fa-circle text-primary me-1 small"></i> @AdminResource.ActiveThemeLabel: <strong>@activeTheme</strong></li>
                                                 </ul>
@@ -280,7 +280,7 @@
                                                 <h6 class="fw-bold mb-1">@AdminResource.SecurityAndProtection</h6>
                                                 <p class="text-muted small mb-2">@AdminResource.SecurityAndProtectionDesc</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li><i class="fa @(is2FaActive ? "fa-check text-success" : "fa-times text-danger") me-1"></i> @AdminResource.Administrator 2FA: <strong>@(is2FaActive ? "@AdminResource.Mandatory" : "Kapalı")</strong></li>
+                                                    <li><i class="fa @(is2FaActive ? "fa-check text-success" : "fa-times text-danger") me-1"></i> @AdminResource.Administrator 2FA: <strong>@(is2FaActive ? AdminResource.Mandatory : "Kapalı")</strong></li>
                                                     <li><i class="fa @(isCaptchaActive ? "fa-check text-success" : "fa-times text-warning") me-1"></i> Spam Captcha: <strong>@Model.CaptchaProvider</strong></li>
                                                     <li><i class="fa @(isRateLimitActive ? "fa-check text-success" : "fa-times text-danger") me-1"></i> Rate Limiting: <strong>@(isRateLimitActive ? "Aktif" : "Devre Dışı")</strong></li>
                                                 </ul>
@@ -298,15 +298,15 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-warning-subtle text-warning rounded p-2"><i class="fa fa-envelope-o fa-lg"></i></span>
                                                     <span class="badge @(isSmtpConfigured ? "bg-success" : "bg-danger")">
-                                                        @(isSmtpConfigured ? "@AdminResource.SmtpConfigured" : "@AdminResource.ConfigRequired")
+                                                        @(isSmtpConfigured ? AdminResource.SmtpConfigured : AdminResource.ConfigRequired)
                                                     </span>
                                                 </div>
                                                 <h6 class="fw-bold mb-1">@AdminResource.EmailAndSmtp</h6>
                                                 <p class="text-muted small mb-2">@AdminResource.EmailAndSmtpDesc</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li class="text-truncate"><i class="fa fa-server text-muted me-1"></i> @AdminResource.ServerLabel <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmailHost) ? "@AdminResource.Undefined" : Model.AdminEmailHost)</strong></li>
-                                                    <li class="text-truncate"><i class="fa fa-at text-muted me-1"></i> @AdminResource.SenderLabel <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmail) ? "@AdminResource.Undefined" : Model.AdminEmail)</strong></li>
-                                                    <li><i class="fa fa-lock text-muted me-1"></i> @AdminResource.SecurityLabel <strong>@(Model.AdminEmailEnableSsl ? "@AdminResource.SslTlsActive" : "@AdminResource.PlainConnection")</strong></li>
+                                                    <li class="text-truncate"><i class="fa fa-server text-muted me-1"></i> @AdminResource.ServerLabel <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmailHost) ? AdminResource.Undefined : Model.AdminEmailHost)</strong></li>
+                                                    <li class="text-truncate"><i class="fa fa-at text-muted me-1"></i> @AdminResource.SenderLabel <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmail) ? AdminResource.Undefined : Model.AdminEmail)</strong></li>
+                                                    <li><i class="fa fa-lock text-muted me-1"></i> @AdminResource.SecurityLabel <strong>@(Model.AdminEmailEnableSsl ? AdminResource.SslTlsActive : AdminResource.PlainConnection)</strong></li>
                                                 </ul>
                                             </div>
                                             <button type="button" class="btn btn-outline-warning btn-sm w-100 mt-3 text-dark" onclick="navigateToTab('#tab-smtp')">
@@ -322,7 +322,7 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-info-subtle text-info rounded p-2"><i class="fa fa-picture-o fa-lg"></i></span>
                                                     <span class="badge bg-info-subtle text-info border border-info-subtle">
-                                                        @(isWebPActive ? "@AdminResource.WebPActive" : "JPEG/PNG")
+                                                        @(isWebPActive ? AdminResource.WebPActive : "JPEG/PNG")
                                                     </span>
                                                 </div>
                                                 <h6 class="fw-bold mb-1">@AdminResource.MediaAndOptimization</h6>
@@ -508,11 +508,16 @@
                                         @Html.DisplayNameFor(model => model.AdminPanelLanguage)
                                         @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", Resource.AdminPanelLanguageDescription } })
                                     </label>
-                                    @Html.DropDownListFor(model => model.AdminPanelLanguage, new List<SelectListItem>
-                                    {
-                                        new SelectListItem { Text = "Türkçe (Turkish)", Value = "tr-TR" },
-                                        new SelectListItem { Text = "English", Value = "en-US" }
-                                    }, new { @class = "form-select", id = "AdminPanelLanguage" })
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(model => model.AdminPanelLanguage, new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Text = "🇹🇷 Türkçe (Turkish)", Value = "tr-TR" },
+                                            new SelectListItem { Text = "🇬🇧 English", Value = "en-US" }
+                                        }, new { @class = "form-select", id = "AdminPanelLanguage" })
+                                        <button type="button" class="btn btn-primary" id="btnChangeAdminLanguage" title="@AdminResource.ApplyAndRefresh">
+                                            <i class="fa fa-refresh me-1" aria-hidden="true"></i> @AdminResource.ApplyAndRefresh
+                                        </button>
+                                    </div>
                                     <div class="form-text small">@AdminResource.AdminPanelInterfaceLanguageDesc</div>
                                     @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
                                 </div>
@@ -1249,7 +1254,7 @@
                                 </div>
                                 <span class="badge @(isSmtpConfigured ? "bg-success" : "bg-warning text-dark") px-3 py-2">
                                     <i class="fa @(isSmtpConfigured ? "fa-check-circle" : "fa-exclamation-circle") me-1"></i>
-                                    @(isSmtpConfigured ? "@AdminResource.SmtpConfigured" : "@AdminResource.ConfigurationPending")
+                                    @(isSmtpConfigured ? AdminResource.SmtpConfigured : AdminResource.ConfigurationPending)
                                 </span>
                             </div>
                             <div class="card-body">
@@ -1365,7 +1370,7 @@
                                         <div class="p-3 rounded border border-info bg-info-subtle d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
                                             <div>
                                                 <h6 class="fw-bold text-dark mb-1"><i class="fa fa-paper-plane text-primary me-1"></i> @AdminResource.LiveEmailDispatchTest</h6>
-                                                <p class="text-muted small mb-0">@AdminResource.SendTestEmailToOfficialAddressLead (<code>@(string.IsNullOrWhiteSpace(Model.WebSiteCompanyEmailAddress) ? "@AdminResource.CompanyEmailPlaceholder" : Model.WebSiteCompanyEmailAddress)</code>) @AdminResource.SendTestEmailInstantDeliverability</p>
+                                                <p class="text-muted small mb-0">@AdminResource.SendTestEmailToOfficialAddressLead (<code>@(string.IsNullOrWhiteSpace(Model.WebSiteCompanyEmailAddress) ? AdminResource.CompanyEmailPlaceholder : Model.WebSiteCompanyEmailAddress)</code>) @AdminResource.SendTestEmailInstantDeliverability</p>
                                             </div>
                                             <a href="@Url.Action("SendSampleEmail", "AdminSettings")" class="btn btn-primary px-3 text-nowrap shadow-sm" id="btnSendSampleEmail">
                                                 <i class="fa fa-send me-1"></i> @AdminResource.SendTestEmailBtn
@@ -1971,6 +1976,42 @@
                 if (confirm("@AdminResource.DiscardUnsavedChangesPrompt")) {
                     window.location.reload();
                 }
+            });
+
+            // Quick change Admin Panel Language button
+            $('#btnChangeAdminLanguage').on('click', function () {
+                var selectedLang = $('#AdminPanelLanguage').val();
+                if (!selectedLang) return;
+
+                var $btn = $(this);
+                var originalHtml = $btn.html();
+                $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-1"></i> @AdminResource.Processing');
+
+                var token = $('#__AjaxAntiForgeryForm input[name="__RequestVerificationToken"]').val()
+                    || $('#systemSettingsForm input[name="__RequestVerificationToken"]').val()
+                    || $('input[name="__RequestVerificationToken"]').first().val();
+
+                $.ajax({
+                    url: '@Url.Action("ChangeAdminPanelLanguage", "AdminSettings", new { area = "admin" })',
+                    type: 'POST',
+                    data: {
+                        language: selectedLang,
+                        __RequestVerificationToken: token
+                    },
+                    success: function (res) {
+                        if (res && res.success) {
+                            isFormDirty = false;
+                            window.location.reload();
+                        } else {
+                            alert(res && res.message ? res.message : 'Error updating language.');
+                            $btn.prop('disabled', false).html(originalHtml);
+                        }
+                    },
+                    error: function () {
+                        alert('Error updating language.');
+                        $btn.prop('disabled', false).html(originalHtml);
+                    }
+                });
             });
 
             // Warn on unload if dirty

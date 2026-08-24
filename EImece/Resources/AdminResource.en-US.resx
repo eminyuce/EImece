@@ -4359,4 +4359,67 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ApplyAndRefresh" xml:space="preserve">
+    <value>Apply &amp; Refresh</value>
+  </data>
+  <data name="SecureAdminLogin" xml:space="preserve">
+    <value>Secure Admin Login</value>
+  </data>
+  <data name="AdminLoginLead" xml:space="preserve">
+    <value>This page is strictly for authorized administrators. Customer accounts cannot log in here.</value>
+  </data>
+  <data name="AdminCredentialsStepTitle" xml:space="preserve">
+    <value>Administrator credentials</value>
+  </data>
+  <data name="AdminCredentialsStepDesc" xml:space="preserve">
+    <value>Enter your admin email address and password.</value>
+  </data>
+  <data name="SecurityVerificationStepTitle" xml:space="preserve">
+    <value>Security verification</value>
+  </data>
+  <data name="AdminLoginRecaptchaGuideText" xml:space="preserve">
+    <value>Complete the Google reCAPTCHA verification to prove you are human.</value>
+  </data>
+  <data name="AdminLoginNoCaptchaGuideText" xml:space="preserve">
+    <value>Additional captcha verification is disabled in this environment; you may sign in directly.</value>
+  </data>
+  <data name="AdminLoginMathCaptchaGuideText" xml:space="preserve">
+    <value>Enter the sum of the two numbers in the image to verify security.</value>
+  </data>
+  <data name="TwoFactorStepTitle" xml:space="preserve">
+    <value>Two-Factor Authentication</value>
+  </data>
+  <data name="TwoFactorStepDesc" xml:space="preserve">
+    <value>If enabled on your account, an authenticator security code will be requested.</value>
+  </data>
+  <data name="AdminPanelStepTitle" xml:space="preserve">
+    <value>Administration Panel</value>
+  </data>
+  <data name="AdminPanelStepDesc" xml:space="preserve">
+    <value>You will be securely redirected to the admin panel upon successful verification.</value>
+  </data>
+  <data name="AdminLoginEncryptedNote" xml:space="preserve">
+    <value>Your session credentials are encrypted in transit. Repeated failed attempts may lead to account lockout.</value>
+  </data>
+  <data name="SignInHeading" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="AdminSignInSub" xml:space="preserve">
+    <value>Continue with your administrator account.</value>
+  </data>
+  <data name="CustomerLoginHint" xml:space="preserve">
+    <value>For customer account access, please use the standard storefront login page.</value>
+  </data>
+  <data name="BackToSite" xml:space="preserve">
+    <value>Back to store</value>
+  </data>
+  <data name="ShowPassword" xml:space="preserve">
+    <value>Show password</value>
+  </data>
+  <data name="HidePassword" xml:space="preserve">
+    <value>Hide password</value>
+  </data>
+  <data name="EnterAnswerHere" xml:space="preserve">
+    <value>Enter answer here.</value>
+  </data>
 </root>

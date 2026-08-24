@@ -1,5 +1,7 @@
 # EImece — Open-Source E-Commerce Platform
 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support%20Development-yellow.svg?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/eminyuce)
+
 **EImece** is a full-featured, open-source e-commerce web application for product catalogs, content, checkout, and store operations. It is built with **ASP.NET MVC 5**, **Entity Framework 6**, and **Microsoft.Extensions.DependencyInjection**, using a clear **Repository + Service Layer** architecture.
 
 | | |
@@ -10,14 +12,28 @@
 | **Admin lists** | **Griddly 3.8** (`Griddly.Core`) — Grid.Mvc has been removed |
 | **Payments** | [Iyzico](https://www.iyzico.com/en) (Strategy pattern) |
 | **Storefront designs** | Interchangeable Razor designs (**Crizal**, **Modern**) |
+| **Support / Sponsor** | [buymeacoffee.com/eminyuce](https://buymeacoffee.com/eminyuce) |
 | **License** | [Apache License 2.0](LICENSE) |
 
 > **Platform note:** The solution **compiles on Linux** (CI / `scripts/build.sh`). The web app **runs on Windows** with IIS or IIS Express and a reachable SQL Server database.
 
 ---
 
+## Support & Sponsorship
+
+If you find this project useful, consider supporting its continued development with a small contribution through Buy Me a Coffee — your support helps keep the project open source, actively maintained, and improving for everyone.
+
+<a href="https://buymeacoffee.com/eminyuce" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="200" />
+</a>
+
+👉 **[Support development on Buy Me a Coffee](https://buymeacoffee.com/eminyuce)**
+
+---
+
 ## Table of contents
 
+- [Support & Sponsorship](#support--sponsorship)
 - [Why EImece](#why-eimece)
 - [Key features](#key-features)
 - [Admin grids (Griddly)](#admin-grids-griddly)

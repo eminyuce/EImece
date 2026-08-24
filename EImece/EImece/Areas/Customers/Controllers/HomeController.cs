@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
@@ -75,11 +75,42 @@ namespace EImece.Areas.Customers.Controllers
         }
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
-            var languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
-            if (languageCookie != null)
+            var languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"]
+                ?? System.Web.HttpContext.Current.Request.Cookies[Domain.Constants.CultureCookieName];
+
+            if (languageCookie != null && !string.IsNullOrWhiteSpace(languageCookie.Value))
             {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(languageCookie.Value);
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(languageCookie.Value);
+                var cultureName = languageCookie.Value.Trim();
+                int langId;
+                if (int.TryParse(cultureName, out langId) && Enum.IsDefined(typeof(EImeceLanguage), langId))
+                {
+                    cultureName = EnumHelper.GetEnumDescription((EImeceLanguage)langId);
+                }
+                else if (!cultureName.Contains("-"))
+                {
+                    var langEnum = EnumHelper.ParseLanguage(cultureName);
+                    if (langEnum.HasValue)
+                    {
+                        cultureName = EnumHelper.GetEnumDescription(langEnum.Value);
+                    }
+                }
+
+                CultureInfo culture;
+                try
+                {
+                    culture = CultureInfo.GetCultureInfo(cultureName);
+                }
+                catch
+                {
+                    culture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
+                }
+
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+                Resource.Culture = culture;
+                AdminResource.Culture = culture;
             }
             base.Initialize(requestContext);
         }

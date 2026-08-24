@@ -6,6 +6,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
+using Resources;
 using System;
 using System.Globalization;
 using System.Text;
@@ -29,8 +30,13 @@ namespace EImece.Controllers
         public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
         {
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            Resource.Culture = culture;
+            AdminResource.Culture = culture;
         }
 
         protected int CurrentLanguage
@@ -192,14 +198,16 @@ namespace EImece.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
-            HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
-            if (languageCookie != null)
+            var cookie = requestContext?.HttpContext?.Request?.Cookies["Language"]
+                ?? requestContext?.HttpContext?.Request?.Cookies[Constants.CultureCookieName];
+
+            if (cookie != null && !string.IsNullOrWhiteSpace(cookie.Value))
             {
-                SetCurrentCulture(languageCookie.Value);
+                SetCurrentCulture(cookie.Value);
             }
             else
             {
-                //other code here
+                SetCurrentCulture(Constants.TR);
             }
 
             base.Initialize(requestContext);
@@ -285,15 +293,45 @@ namespace EImece.Controllers
         {
             if (language == 0)
                 return;
-            SetLanguage(language + "");
+            SetCurrentCulture(language + "");
         }
 
         protected void SetCurrentCulture(String language)
         {
             if (String.IsNullOrEmpty(language))
                 return;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+
+            var cultureName = language.Trim();
+            int langId;
+            if (int.TryParse(cultureName, out langId) && Enum.IsDefined(typeof(EImeceLanguage), langId))
+            {
+                cultureName = EnumHelper.GetEnumDescription((EImeceLanguage)langId);
+            }
+            else if (!cultureName.Contains("-"))
+            {
+                var langEnum = EnumHelper.ParseLanguage(cultureName);
+                if (langEnum.HasValue)
+                {
+                    cultureName = EnumHelper.GetEnumDescription(langEnum.Value);
+                }
+            }
+
+            CultureInfo culture;
+            try
+            {
+                culture = CultureInfo.GetCultureInfo(cultureName);
+            }
+            catch
+            {
+                culture = CultureInfo.GetCultureInfo(Constants.TR);
+            }
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            Resource.Culture = culture;
+            AdminResource.Culture = culture;
         }
 
         protected void SetLanguage(string id)
@@ -311,8 +349,13 @@ namespace EImece.Controllers
             }
 
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            Resource.Culture = culture;
+            AdminResource.Culture = culture;
 
             CreateLanguageCookie(selectedLanguage, Constants.CultureCookieName);
 
