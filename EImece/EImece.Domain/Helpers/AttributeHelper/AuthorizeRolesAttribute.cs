@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.AttributeHelper
@@ -10,24 +10,10 @@ namespace EImece.Domain.Helpers.AttributeHelper
             Roles = string.Join(",", roles);
         }
 
-        protected override bool AuthorizeCore(HttpContextBase httpContext)
-        {
-            // TEMPORARY: allow unauthenticated admin browsing while BypassAdminAuth is enabled.
-            // AppConfig.BypassAdminAuth is hard-disabled when SiteStatus is live.
-            if (EImece.Domain.AppConfig.BypassAdminAuth
-                && httpContext != null
-                && httpContext.Request.IsLocal)
-            {
-                return true;
-            }
-
-            return base.AuthorizeCore(httpContext);
-        }
-
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             // When AdminLogin is disabled, do not send users to the login page — redirect home.
-            if (!EImece.Domain.AppConfig.AdminLoginEnabled && !EImece.Domain.AppConfig.BypassAdminAuth)
+            if (!EImece.Domain.AppConfig.AdminLoginEnabled)
             {
                 filterContext.Result = new RedirectResult("~/");
                 return;

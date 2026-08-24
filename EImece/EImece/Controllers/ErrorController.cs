@@ -58,7 +58,7 @@ namespace EImece.Controllers
         public ActionResult InternalServerError()
         {
             Logger.Info("Entering InternalServerError action.");
-            if (AppConfig.ExposeDetailedErrors || HttpContext.IsDebuggingEnabled)
+            if (HttpContext.IsDebuggingEnabled)
             {
                 ViewBag.ExceptionDetail = TempData["LastException"] as Exception ?? Server.GetLastError();
             }

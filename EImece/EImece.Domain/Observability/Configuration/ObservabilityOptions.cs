@@ -68,8 +68,6 @@ namespace EImece.Domain.Observability.Configuration
         /// </summary>
         public bool EnableEfTelemetry { get; set; } = true;
 
-        public bool ExposeDetailedErrors { get; set; }
-
         public bool HasOtlpExporter
         {
             get { return !string.IsNullOrWhiteSpace(OtlpEndpoint); }
@@ -109,8 +107,7 @@ namespace EImece.Domain.Observability.Configuration
                     "OtelDeploymentEnvironment",
                     AppConfig.GetConfigString("SiteStatus", "dev")),
                 EnableEfSqlLogging = AppConfig.GetConfigBool("EnableEfSqlLogging", AppConfig.IsSiteUnderDevelopment),
-                EnableEfTelemetry = AppConfig.GetConfigBool("EnableEfTelemetry", true),
-                ExposeDetailedErrors = AppConfig.ExposeDetailedErrors
+                EnableEfTelemetry = AppConfig.GetConfigBool("EnableEfTelemetry", true)
             };
         }
 

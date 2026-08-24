@@ -1,4 +1,4 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
+@model System.Web.Mvc.HandleErrorInfo
 @using EImece.Domain.Helpers
 @using EImece.Domain
 @using System.Web
@@ -50,7 +50,7 @@
             <p class="text-muted mb-3">@exception.Message</p>
         }
 
-        @if ((AppConfig.ExposeDetailedErrors || HttpContext.Current.IsDebuggingEnabled) && exception != null && Model != null)
+        @if (HttpContext.Current.IsDebuggingEnabled && exception != null && Model != null)
         {
             <div class="panel panel-danger text-left" style="margin-top: 20px;">
                 <div class="panel-heading"><strong>Detailed error</strong></div>

@@ -45,11 +45,25 @@
     </div>
 
     <nav class="admin-sidebar-nav">
-        <a class="admin-nav-item @(controllerActive("dashboard"))"
+        <a class="admin-nav-item @(actionActive("dashboard", "index"))"
            href="@Url.Action("Index", "Dashboard", new { area = "admin" })"
            title="@AdminResource.AdminHome">
             <i class="fa fa-home" aria-hidden="true"></i>
             <span class="admin-nav-label">@AdminResource.AdminHome</span>
+        </a>
+        <a class="admin-nav-item @(actionActive("dashboard", "oursitefeatures"))"
+           href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })"
+           title="@AdminResource.OurSiteFeatures">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span class="admin-nav-label">@AdminResource.OurSiteFeatures</span>
+        </a>
+        <a class="admin-nav-item"
+           href="/"
+           target="_blank"
+           rel="noopener noreferrer"
+           title="@AdminResource.WebSite">
+            <i class="fa fa-globe" aria-hidden="true"></i>
+            <span class="admin-nav-label">@AdminResource.WebSite</span>
         </a>
 
         <!-- Small Admin Menu Search Box -->

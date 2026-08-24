@@ -33,10 +33,6 @@
             {
                 <span class="admin-topbar-page">@pageTitle</span>
             }
-            @if (AppConfig.BypassAdminAuth)
-            {
-                <span class="admin-topbar-page admin-topbar-bypass">TEMP: Admin auth bypass ON</span>
-            }
         </div>
     </div>
 
@@ -55,30 +51,12 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end admin-topbar-overflow-menu">
                     <li>
-                        <a class="dropdown-item" href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })">
-                            <i class="fa fa-book" aria-hidden="true"></i>
-                            @AdminResource.OurSiteFeatures
-                        </a>
-                    </li>
-                    <li>
                         <a class="dropdown-item" href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
                             @AdminResource.Refresh
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" href="/" target="_blank" rel="noopener noreferrer">
-                            <i class="fa fa-globe" aria-hidden="true"></i>
-                            @AdminResource.WebSite
-                        </a>
-                    </li>
                 </ul>
-            </li>
-            <li class="admin-topbar-action--secondary">
-                <a href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })" title="@AdminResource.OurSiteFeatures">
-                    <i class="fa fa-book" aria-hidden="true"></i>
-                    <span class="admin-topbar-label">@AdminResource.OurSiteFeatures</span>
-                </a>
             </li>
             <li class="admin-topbar-action--secondary">
                 <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })" title="@AdminResource.Refresh">
@@ -86,13 +64,6 @@
                     <span class="admin-topbar-label">@AdminResource.Refresh</span>
                 </a>
             </li>
-            <li class="admin-topbar-action--secondary">
-                <a href="/" target="_blank" rel="noopener noreferrer" title="@AdminResource.WebSite">
-                    <i class="fa fa-globe" aria-hidden="true"></i>
-                    <span class="admin-topbar-label">@AdminResource.WebSite</span>
-                </a>
-            </li>
-            @Html.Partial("_SystemHealthBadge")
             <li class="admin-topbar-user admin-topbar-action--essential">
                 <a href="@Url.Action("changepassword", "Users", new { area = "admin" })" title="Manage">
                     <i class="fa fa-user" aria-hidden="true"></i>

@@ -1,4 +1,4 @@
-﻿-- ============================================================================
+-- ============================================================================
 -- EImece Admin User Seed Script
 -- ============================================================================
 -- Database: eimece
@@ -30,12 +30,10 @@
 --                All passwords meet Identity PasswordValidator:
 --                  RequiredLength=6, RequireDigit=true, RequireLowercase=true,
 --                  RequireUppercase=true.  Example: Admin123!
---           5) If RequireAdminAuthenticator (AppConfig / Settings) is true, you
+--           5) If RequireAdminAuthenticator (Settings) is true, you
 --              may need to set up an authenticator app after first login.
---              To skip 2FA for local dev, set either:
---                - Web.config: <add key="RequireAdminAuthenticator" value="false" />
---                - Or run: UPDATE dbo.Settings SET SettingValue='false' WHERE SettingKey='RequireAdminAuthenticator';
---                - Or set BypassAdminAuth=true (dev only, hard-disabled when SiteStatus=live).
+--              To configure 2FA, adjust the System Settings (RequireAdminAuthenticator) or run:
+--                UPDATE dbo.Settings SET SettingValue='false' WHERE SettingKey='RequireAdminAuthenticator';
 --
 -- Notes   : - Roles are created if missing: Admin (full), NormalUser (editor),
 --             Customer (storefront). Admin accounts are added to Admin.

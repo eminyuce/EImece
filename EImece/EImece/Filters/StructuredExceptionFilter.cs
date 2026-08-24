@@ -34,7 +34,7 @@ namespace EImece.Filters
                 statusCode,
                 "An unexpected error occurred.",
                 CorrelationIdContext.Ensure(),
-                _options.ExposeDetailedErrors ? filterContext.Exception.Message : null);
+                filterContext.HttpContext.IsDebuggingEnabled ? filterContext.Exception.Message : null);
 
             filterContext.Result = new ContentResult
             {

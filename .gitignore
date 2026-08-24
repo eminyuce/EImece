@@ -408,3 +408,8 @@ ModelManifest.xml
 # Local NuGet extract markers from scripts/restore-packages.py
 **/.nupkg_extracted
 /EImece/EImece/SqlScripts/ledampulburada-SQLQuery2.sql
+**/__pycache__/
+*.pyc
+commit-msg.txt
+pr-body.md
+/EImece/scripts/check-schema.ps1

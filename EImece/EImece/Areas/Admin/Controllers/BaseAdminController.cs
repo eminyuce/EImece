@@ -251,14 +251,13 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         /// <summary>
-        /// Forces Authenticator setup for admin/editor users when required.
-        /// Skipped for: compilation debug, BypassAdminAuth, config off, bypass users, or the setup actions themselves.
+        /// Forces Authenticator setup for admin/editor users when required by System Settings.
         /// </summary>
         private bool MustRedirectToEnableAuthenticator(ActionExecutingContext filterContext)
         {
             bool requireAuth = SettingService?.GetSettingByKey(Domain.Constants.RequireAdminAuthenticator).ToBool(Domain.Constants.DefaultRequireAdminAuthenticator)
                                ?? Domain.Constants.DefaultRequireAdminAuthenticator;
-            if (!requireAuth || AppConfig.BypassAdminAuth)
+            if (!requireAuth)
             {
                 return false;
             }
@@ -270,7 +269,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var httpContext = filterContext.HttpContext;
-            if (httpContext == null || httpContext.IsDebuggingEnabled)
+            if (httpContext == null)
             {
                 return false;
             }
@@ -301,11 +300,6 @@ namespace EImece.Areas.Admin.Controllers
 
             var user = UserManager.FindById(userId);
             if (user == null)
-            {
-                return false;
-            }
-
-            if (AppConfig.IsTwoFactorBypassUser(user.Email) || AppConfig.IsTwoFactorBypassUser(user.UserName))
             {
                 return false;
             }

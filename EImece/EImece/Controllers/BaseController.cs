@@ -157,11 +157,6 @@ namespace EImece.Controllers
 
         protected static bool ShouldExposeDetailedErrors(HttpContextBase httpContext)
         {
-            if (AppConfig.ExposeDetailedErrors)
-            {
-                return true;
-            }
-
             // compilation debug="true" in Web.config
             return httpContext != null && httpContext.IsDebuggingEnabled;
         }

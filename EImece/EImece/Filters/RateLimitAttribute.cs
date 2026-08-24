@@ -63,7 +63,7 @@ namespace EImece.Filters
             if (filterContext.HttpContext.User != null
                 && filterContext.HttpContext.User.Identity != null
                 && filterContext.HttpContext.User.Identity.IsAuthenticated
-                && (filterContext.HttpContext.User.IsInRole(Domain.Constants.AdministratorRole) || AppConfig.BypassAdminAuth))
+                && filterContext.HttpContext.User.IsInRole(Domain.Constants.AdministratorRole))
             {
                 var area = filterContext.RouteData.DataTokens["area"] as string;
                 if (string.Equals(area, "Admin", StringComparison.OrdinalIgnoreCase))

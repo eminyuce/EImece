@@ -67,22 +67,10 @@ namespace EImece.Controllers
         {
             Logger.Info($"Entering AdminLogin with returnUrl: {returnUrl}");
 
-            if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)
+            if (!Domain.AppConfig.AdminLoginEnabled)
             {
                 Logger.Info("AdminLoginEnabled is false. Redirecting AdminLogin to home.");
                 return RedirectToAction(IndexAction, "Home", new { area = "" });
-            }
-
-            // TEMPORARY: skip the admin login panel while BypassAdminAuth is enabled.
-            if (Domain.AppConfig.BypassAdminAuth)
-            {
-                Logger.Info("BypassAdminAuth enabled. Redirecting AdminLogin to Dashboard.");
-                if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
-                {
-                    return Redirect(returnUrl);
-                }
-
-                return RedirectToAction(IndexAction, DashboardAction, new { area = AdminAreaName });
             }
 
             ViewBag.ReturnUrl = returnUrl;
@@ -135,7 +123,7 @@ namespace EImece.Controllers
             ApplyAdminCulture();
             Logger.Info($"Entering AdminLogin POST with email: {model?.Email}, returnUrl: {returnUrl}");
 
-            if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)
+            if (!Domain.AppConfig.AdminLoginEnabled)
             {
                 Logger.Debug("AdminLoginEnabled is false. Rejecting AdminLogin POST.");
                 return RedirectToAction(IndexAction, "Home", new { area = "" });

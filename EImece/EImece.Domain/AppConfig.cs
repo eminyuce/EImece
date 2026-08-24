@@ -354,52 +354,6 @@ namespace EImece.Domain
         }
 
         /// <summary>
-        /// When true, unhandled exceptions show full stack traces instead of the generic friendly 500 page.
-        /// Defaults to true in non-live environments.
-        /// </summary>
-        public static bool ExposeDetailedErrors
-        {
-            get
-            {
-                if (ConfigurationManager.AppSettings["ExposeDetailedErrors"] != null)
-                {
-                    return GetConfigBool("ExposeDetailedErrors", false);
-                }
-
-                return IsSiteUnderDevelopment;
-            }
-        }
-
-        private static bool _bypassAdminAuthIgnoredWarningLogged;
-
-        /// <summary>
-        /// TEMPORARY debug switch: when true, admin auth/login is bypassed and a debug Admin principal is injected.
-        /// Keep false in production (Web.Release.config forces false).
-        /// Hard-disabled whenever SiteStatus indicates a live environment.
-        /// </summary>
-        public static bool BypassAdminAuth
-        {
-            get
-            {
-                var configured = GetConfigBool("BypassAdminAuth", false);
-                if (IsSiteLive)
-                {
-                    if (configured && !_bypassAdminAuthIgnoredWarningLogged)
-                    {
-                        _bypassAdminAuthIgnoredWarningLogged = true;
-                        Logger.Warn(
-                            "BypassAdminAuth=true is ignored because SiteStatus is live. " +
-                            "Admin auth bypass is hard-disabled in production; set SiteStatus to a non-live value (e.g. dev) only for local debugging.");
-                    }
-
-                    return false;
-                }
-
-                return configured;
-            }
-        }
-
-        /// <summary>
         /// When false, AdminLogin is unavailable and unauthenticated /admin requests redirect to the site home.
         /// </summary>
         public static bool AdminLoginEnabled
@@ -410,34 +364,6 @@ namespace EImece.Domain
             }
         }
 
-        /// <summary>
-        /// Comma-separated emails/usernames that may use the admin panel without authenticator 2FA.
-        /// </summary>
-        public static string TwoFactorBypassUsers
-        {
-            get
-            {
-                return GetConfigString("TwoFactorBypassUsers", string.Empty);
-            }
-        }
-
-        public static bool IsTwoFactorBypassUser(string emailOrUserName)
-        {
-            if (string.IsNullOrWhiteSpace(emailOrUserName))
-            {
-                return false;
-            }
-
-            var raw = TwoFactorBypassUsers;
-            if (string.IsNullOrWhiteSpace(raw))
-            {
-                return false;
-            }
-
-            var needle = emailOrUserName.Trim();
-            return raw.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
-                .Any(part => string.Equals(part.Trim(), needle, StringComparison.OrdinalIgnoreCase));
-        }
 
         public static string DummyIdentityNumber
         {

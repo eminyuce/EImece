@@ -49,7 +49,7 @@ else
     </p>
 }
 
-@if ((AppConfig.ExposeDetailedErrors || HttpContext.Current.IsDebuggingEnabled) && exception != null && Model != null)
+@if (HttpContext.Current.IsDebuggingEnabled && exception != null && Model != null)
 {
     <div class="panel panel-danger" style="margin-top: 20px; text-align: left;">
         <div class="panel-heading"><strong>Detailed error</strong></div>

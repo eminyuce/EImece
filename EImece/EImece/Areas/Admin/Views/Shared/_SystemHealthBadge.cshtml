@@ -1,7 +1,7 @@
 @using EImece.Domain
 @using Resources
 @{
-    var isAdmin = User != null && User.Identity.IsAuthenticated && (User.IsInRole(Constants.AdministratorRole) || AppConfig.BypassAdminAuth);
+    var isAdmin = User != null && User.Identity.IsAuthenticated && User.IsInRole(Constants.AdministratorRole);
     if (!isAdmin)
     {
         return;

@@ -13,7 +13,7 @@
     <p class="error-desc">@ViewBag.Description</p>
     <a class="error-btn" href="/">@Resource.ContinueShopping</a>
 
-    @if ((AppConfig.ExposeDetailedErrors || HttpContext.Current.IsDebuggingEnabled) && detail != null)
+    @if (HttpContext.Current.IsDebuggingEnabled && detail != null)
     {
         <div class="error-details-box">
             <p><strong>Type:</strong> @detail.GetType().FullName</p>

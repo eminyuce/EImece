@@ -51,7 +51,7 @@ namespace EImece
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // Required for AntiForgeryToken with claims-based auth (including BypassAdminAuth debug principal).
+            // Required for AntiForgeryToken with claims-based auth.
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
 
             MvcHandler.DisableMvcResponseHeader = true;
@@ -253,49 +253,6 @@ namespace EImece
             }
         }
 
-        /// <summary>
-        /// TEMPORARY: when BypassAdminAuth is enabled (non-live + local only), inject a debug Admin principal
-        /// so the admin sidebar/layout and role-gated menus can be smoke-tested without AdminLogin.
-        /// Only applies to /admin requests so storefront logout/home stay anonymous.
-        /// </summary>
-        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
-        {
-            if (!AppConfig.BypassAdminAuth)
-            {
-                return;
-            }
-
-            // Never inject a privileged principal for non-local requests.
-            if (Context == null || !Context.Request.IsLocal)
-            {
-                return;
-            }
-
-            var path = (Context.Request.AppRelativeCurrentExecutionFilePath ?? Context.Request.Path ?? "")
-                .TrimStart('~')
-                .ToLowerInvariant();
-            if (!path.StartsWith("/admin", StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                return;
-            }
-
-            var identity = new ClaimsIdentity(DefaultAuthenticationTypes.ApplicationCookie);
-            identity.AddClaim(new Claim(ClaimTypes.Name, "debug-admin"));
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "debug-admin"));
-            identity.AddClaim(new Claim(
-                "http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider",
-                "LocalDebug"));
-            identity.AddClaim(new Claim(ClaimTypes.Role, Domain.Constants.AdministratorRole));
-            var principal = new ClaimsPrincipal(identity);
-            Context.User = principal;
-            Thread.CurrentPrincipal = principal;
-        }
-
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             DependencyInjectionConfig.EndRequestScope();
@@ -368,8 +325,7 @@ namespace EImece
 
         private static bool ShouldUseCustomErrorPage()
         {
-            // When detailed errors are explicitly configured, leave the exception for ASP.NET / detailed output.
-            return !AppConfig.ExposeDetailedErrors;
+            return HttpContext.Current == null || !HttpContext.Current.IsDebuggingEnabled;
         }
 
         private static void TryGetRouteControllerAndAction(HttpContext httpContext, out string currentController, out string currentAction)
