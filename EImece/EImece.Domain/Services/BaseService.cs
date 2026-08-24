@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EImece.Domain.Caching;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.GenericRepository;
@@ -97,13 +97,13 @@ namespace EImece.Domain.Services
         public virtual bool DeleteEntity(T entity)
         {
             var result = this.baseRepository.DeleteItem(entity);
-            return result == 1;
+            return result > 0;
         }
 
         public virtual async Task<bool> DeleteEntityAsync(T entity)
         {
             var result = await this.baseRepository.DeleteItemAsync(entity).ConfigureAwait(false);
-            return result == 1;
+            return result > 0;
         }
 
         public virtual bool DeleteById(int id)

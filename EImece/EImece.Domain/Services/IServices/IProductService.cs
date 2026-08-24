@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.DTOs.Storefront;
@@ -154,5 +154,9 @@ namespace EImece.Domain.Services.IServices
         void ChangeProductState(List<string> values, ProductState state);
 
         Task ChangeProductStateAsync(List<string> values, ProductState state);
+
+        void DecreaseStock(int productId, int quantity);
+
+        Task DecreaseStockAsync(int productId, int quantity, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

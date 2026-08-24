@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Caching;
+using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -1274,6 +1274,48 @@ namespace EImece.Domain.Services
                 product.StateEnum = state;
                 ProductRepository.Edit(product);
             }
+            await ProductRepository.SaveAsync().ConfigureAwait(false);
+            InvalidateProductListCaches();
+        }
+
+        public virtual void DecreaseStock(int productId, int quantity)
+        {
+            if (productId <= 0 || quantity <= 0)
+            {
+                return;
+            }
+
+            var product = ProductRepository.GetProduct(productId);
+            if (product == null)
+            {
+                ProductServiceLogger.Warn($"DecreaseStock: Product with Id {productId} not found.");
+                return;
+            }
+
+            ProductServiceLogger.Info($"DecreaseStock: ProductId: {productId}, ProductName: {product.Name}, Quantity: {quantity}, State: {product.State}");
+            product.UpdatedDate = DateTime.Now;
+            ProductRepository.Edit(product);
+            ProductRepository.Save();
+            InvalidateProductListCaches();
+        }
+
+        public virtual async Task DecreaseStockAsync(int productId, int quantity, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (productId <= 0 || quantity <= 0)
+            {
+                return;
+            }
+
+            var product = await ProductRepository.GetProductAsync(productId, cancellationToken).ConfigureAwait(false);
+            if (product == null)
+            {
+                ProductServiceLogger.Warn($"DecreaseStockAsync: Product with Id {productId} not found.");
+                return;
+            }
+
+            ProductServiceLogger.Info($"DecreaseStockAsync: ProductId: {productId}, ProductName: {product.Name}, Quantity: {quantity}, State: {product.State}");
+            product.UpdatedDate = DateTime.Now;
+            ProductRepository.Edit(product);
             await ProductRepository.SaveAsync().ConfigureAwait(false);
             InvalidateProductListCaches();
         }

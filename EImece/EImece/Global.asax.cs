@@ -261,6 +261,14 @@ namespace EImece
         protected void Application_End()
         {
             ObservabilityBootstrap.Shutdown();
+            try
+            {
+                LogManager.Shutdown();
+            }
+            catch
+            {
+                // Suppress shutdown errors
+            }
         }
 
         /// <summary>

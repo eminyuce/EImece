@@ -165,7 +165,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public void SaveCustomerTypeToNormal(string userId)
+        public virtual void SaveCustomerTypeToNormal(string userId)
         {
             Logger.Info($"Updating customer type to Normal for userId: {userId}");
             var customer = CustomerRepository.GetUserId(userId);
@@ -182,7 +182,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task SaveCustomerTypeToNormalAsync(string userId)
+        public virtual async Task SaveCustomerTypeToNormalAsync(string userId)
         {
             Logger.Info($"Updating customer type to Normal for userId: {userId}");
             // Targeted 2-column update — no full-entity load/save round trip

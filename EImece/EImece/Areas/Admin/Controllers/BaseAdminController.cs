@@ -371,7 +371,7 @@ namespace EImece.Areas.Admin.Controllers
                 var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
                 if (languages.Count > 1)
                 {
-                    HttpCookie cultureCookie = Request.Cookies[DomainConstants.AdminCultureCookieName];
+                    HttpCookie cultureCookie = Request?.Cookies != null ? Request.Cookies[DomainConstants.AdminCultureCookieName] : null;
                     if (cultureCookie != null)
                     {
                         return cultureCookie.Values[DomainConstants.ELanguage].ToInt();

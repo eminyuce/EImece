@@ -54,13 +54,13 @@ namespace EImece.Domain.Repositories
         public virtual bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda)
         {
             var isResult = false;
-            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 // Re-Initialise Repository
                 try
                 {
                     this.Delete(whereLambda);
-                    isResult = this.Save() == 1;
+                    isResult = this.Save() > 0;
                     transactionResult.Commit();
                 }
                 catch (Exception ex)
@@ -76,7 +76,7 @@ namespace EImece.Domain.Repositories
         public virtual async Task<bool> DeleteByWhereConditionAsync(Expression<Func<T, bool>> whereLambda)
         {
             var isResult = false;
-            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -85,7 +85,7 @@ namespace EImece.Domain.Repositories
                     {
                         GetDbContext().Set<T>().Remove(obj);
                     }
-                    isResult = await this.SaveAsync().ConfigureAwait(false) == 1;
+                    isResult = await this.SaveAsync().ConfigureAwait(false) > 0;
                     transactionResult.Commit();
                 }
                 catch (Exception ex)
@@ -152,7 +152,7 @@ namespace EImece.Domain.Repositories
         public virtual int DeleteItem(T item)
         {
             int r = 0;
-            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 // Re-Initialise Repository
                 try
@@ -174,7 +174,7 @@ namespace EImece.Domain.Repositories
         public virtual async Task<int> DeleteItemAsync(T item)
         {
             int r = 0;
-            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (var transactionResult = this.GetDbContext().Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {

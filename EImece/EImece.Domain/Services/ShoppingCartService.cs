@@ -35,6 +35,8 @@ namespace EImece.Domain.Services
 
         private IOrderProductService OrderProductService;
 
+        private IProductService ProductService;
+
         private IShoppingCartRepository ShoppingCartRepository { get; set; }
 
         public ApplicationUserManager UserManager { get; set; }
@@ -46,7 +48,8 @@ namespace EImece.Domain.Services
             IOrderService orderService,
             ICustomerService customerService,
             IAddressService addressService,
-            IOrderProductService orderProductService) : base(repository)
+            IOrderProductService orderProductService,
+            IProductService productService = null) : base(repository)
         {
             Logger.Info("ShoppingCartService initialized");
             this._dbContext = dbContext;
@@ -56,6 +59,7 @@ namespace EImece.Domain.Services
             this.CustomerService = customerService;
             this.AddressService = addressService;
             this.OrderProductService = orderProductService;
+            this.ProductService = productService;
         }
 
         public ShoppingCartService(
@@ -64,8 +68,9 @@ namespace EImece.Domain.Services
             IOrderService orderService,
             ICustomerService customerService,
             IAddressService addressService,
-            IOrderProductService orderProductService)
-            : this(null, userManager, repository, orderService, customerService, addressService, orderProductService)
+            IOrderProductService orderProductService,
+            IProductService productService = null)
+            : this(null, userManager, repository, orderService, customerService, addressService, orderProductService, productService)
         {
         }
 
@@ -78,10 +83,17 @@ namespace EImece.Domain.Services
 
             if (ShoppingCartRepository is BaseRepository<ShoppingCart> baseRepo)
             {
-                return baseRepo.GetDbContext();
+                try
+                {
+                    return baseRepo.GetDbContext();
+                }
+                catch (InvalidCastException)
+                {
+                    return null;
+                }
             }
 
-            throw new InvalidOperationException("DbContext is not available for transaction management in ShoppingCartService.");
+            return null;
         }
 
         public void SaveOrEditShoppingCart(ShoppingCart item)
@@ -179,7 +191,7 @@ namespace EImece.Domain.Services
             }
 
             var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -225,14 +237,14 @@ namespace EImece.Domain.Services
                     SaveOrderProduct(shoppingCart, savedOrder);
                     Logger.Info($"Order products saved successfully for OrderId: {savedOrder.Id}");
 
-                    transaction.Commit();
+                    transaction?.Commit();
 
                     Logger.Info($"SaveShoppingCart completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    transaction?.Rollback();
                     Logger.Error(ex, $"SaveShoppingCart failed and rolled back for OrderGuid: {shoppingCart.OrderGuid}");
                     throw;
                 }
@@ -260,7 +272,7 @@ namespace EImece.Domain.Services
             }
 
             var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -300,14 +312,14 @@ namespace EImece.Domain.Services
                     await SaveOrderProductAsync(shoppingCart, savedOrder).ConfigureAwait(false);
                     Logger.Debug($"Order products saved successfully for OrderId: {savedOrder.Id}");
 
-                    transaction.Commit();
+                    transaction?.Commit();
 
                     Logger.Info($"SaveShoppingCartAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    transaction?.Rollback();
                     Logger.Error(ex, $"SaveShoppingCartAsync failed and rolled back for OrderGuid: {shoppingCart.OrderGuid}");
                     throw;
                 }
@@ -728,7 +740,7 @@ namespace EImece.Domain.Services
             }
 
             var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -757,14 +769,14 @@ namespace EImece.Domain.Services
                     SaveOrderProduct(buyWithNoAccountCreation.ShoppingCartItems, savedOrder);
                     Logger.Info($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
 
-                    transaction.Commit();
+                    transaction?.Commit();
 
                     Logger.Info($"SaveBuyWithNoAccountCreation completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    transaction?.Rollback();
                     Logger.Error(ex, $"SaveBuyWithNoAccountCreation failed and rolled back for OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
                     throw;
                 }
@@ -787,7 +799,7 @@ namespace EImece.Domain.Services
             }
 
             var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -826,14 +838,14 @@ namespace EImece.Domain.Services
                     SaveOrderProduct(buyNowSession, savedOrder);
                     Logger.Info($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
 
-                    transaction.Commit();
+                    transaction?.Commit();
 
                     Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    transaction?.Rollback();
                     Logger.Error(ex, $"SaveBuyNow failed and rolled back for OrderGuid: {buyNowSession.OrderGuid}");
                     throw;
                 }
@@ -856,7 +868,7 @@ namespace EImece.Domain.Services
             }
 
             var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -885,14 +897,14 @@ namespace EImece.Domain.Services
                     await SaveOrderProductAsync(buyWithNoAccountCreation.ShoppingCartItems, savedOrder).ConfigureAwait(false);
                     Logger.Debug($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
 
-                    transaction.Commit();
+                    transaction?.Commit();
 
                     Logger.Info($"SaveBuyWithNoAccountCreationAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    transaction?.Rollback();
                     Logger.Error(ex, $"SaveBuyWithNoAccountCreationAsync failed and rolled back for OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
                     throw;
                 }
@@ -915,7 +927,7 @@ namespace EImece.Domain.Services
             }
 
             var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -949,14 +961,14 @@ namespace EImece.Domain.Services
                     await SaveOrderProductAsync(buyNowSession, savedOrder).ConfigureAwait(false);
                     Logger.Debug($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
 
-                    transaction.Commit();
+                    transaction?.Commit();
 
                     Logger.Info($"SaveBuyNowAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    transaction?.Rollback();
                     Logger.Error(ex, $"SaveBuyNowAsync failed and rolled back for OrderGuid: {buyNowSession.OrderGuid}");
                     throw;
                 }
@@ -990,6 +1002,11 @@ namespace EImece.Domain.Services
                     ProductSpecItems = JsonConvert.SerializeObject(product.ProductSpecItems)
                 });
 
+                if (ProductService != null && product.Id > 0)
+                {
+                    ProductService.DecreaseStock(product.Id, shoppingCartItem.Quantity);
+                }
+
                 Logger.Info($"Order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}");
             }
 
@@ -1015,6 +1032,12 @@ namespace EImece.Domain.Services
             };
 
             var savedOrderProduct = OrderProductService.SaveOrEditEntity(entity);
+
+            if (ProductService != null && product.Id > 0)
+            {
+                ProductService.DecreaseStock(product.Id, 1);
+            }
+
             Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
 
@@ -1045,6 +1068,11 @@ namespace EImece.Domain.Services
                     ProductSpecItems = JsonConvert.SerializeObject(product.ProductSpecItems)
                 }).ConfigureAwait(false);
 
+                if (ProductService != null && product.Id > 0)
+                {
+                    await ProductService.DecreaseStockAsync(product.Id, shoppingCartItem.Quantity).ConfigureAwait(false);
+                }
+
                 Logger.Info($"Order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}");
             }
 
@@ -1070,6 +1098,12 @@ namespace EImece.Domain.Services
             };
 
             var savedOrderProduct = await OrderProductService.SaveOrEditEntityAsync(entity).ConfigureAwait(false);
+
+            if (ProductService != null && product.Id > 0)
+            {
+                await ProductService.DecreaseStockAsync(product.Id, 1).ConfigureAwait(false);
+            }
+
             Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
 

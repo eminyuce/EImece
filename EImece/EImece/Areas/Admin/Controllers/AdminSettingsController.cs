@@ -109,54 +109,6 @@ namespace EImece.Areas.Admin.Controllers
             return View("SystemSettings", await SettingService.GetSystemSettingModelAsync(cancellationToken));
         }
 
-        /// <summary>
-        /// Generates and streams a versioned JSON backup ZIP package of all business application data.
-        /// Restricted to Administrator role.
-        /// </summary>
-        [HttpGet]
-        [AuthorizeRoles(DomainConstants.AdministratorRole)]
-        public async Task<ActionResult> ExportBackup(CancellationToken cancellationToken)
-        {
-            var correlationId = CorrelationIdContext.Current ?? CorrelationIdContext.Ensure();
-            var user = User?.Identity?.Name ?? "Admin";
-            Logger.Info("Admin JSON data export initiated by {0} (CorrelationId: {1})", user, correlationId);
-
-            try
-            {
-                var memoryStream = new MemoryStream();
-                var exportRequest = new DataExportRequest
-                {
-                    ExportedBy = user,
-                    BatchSize = 500
-                };
-
-                var exportResult = await DataExportService.ExportDataAsync(exportRequest, memoryStream, cancellationToken).ConfigureAwait(false);
-
-                if (!exportResult.Success)
-                {
-                    Logger.Error("ExportBackup failed: {0} (CorrelationId: {1})", exportResult.ErrorMessage, correlationId);
-                    TempData[DomainConstants.StatusMessageKey] = "Veri dışa aktarımı sırasında bir hata oluştu: " + exportResult.ErrorMessage;
-                    TempData["StatusMessageType"] = "danger";
-                    return RedirectToAction("SystemSettings");
-                }
-
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                var fileName = string.Format("eimece-export-{0:yyyy-MM-ddTHHmmssZ}.zip", DateTime.UtcNow);
-
-                Logger.Info("Admin JSON data export completed. File={0}, TotalRecords={1}, SizeBytes={2} (CorrelationId: {3})",
-                    fileName, exportResult.TotalRecords, exportResult.CompressedSizeBytes, correlationId);
-
-                return File(memoryStream, MediaTypeNames.Application.Zip, fileName);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Unhandled exception during ExportBackup (CorrelationId: {0})", correlationId);
-                TempData[DomainConstants.StatusMessageKey] = "Veri dışa aktarma işlemi başarısız oldu: " + ex.Message;
-                TempData["StatusMessageType"] = "danger";
-                return RedirectToAction("SystemSettings");
-            }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeAdminPanelLanguage(string language, CancellationToken cancellationToken)

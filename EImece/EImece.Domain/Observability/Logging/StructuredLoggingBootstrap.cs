@@ -85,6 +85,10 @@ namespace EImece.Domain.Observability.Logging
 
             // NLog scope properties for layouts that read ${scopeproperty:item=...}
             ScopeContext.PushProperty(CorrelationIdProperty, correlationId);
+            ScopeContext.PushProperty("RequestPath", context.Request.Url?.AbsolutePath);
+            ScopeContext.PushProperty("HttpMethod", context.Request.HttpMethod);
+            ScopeContext.PushProperty("ClientIp", context.Request.UserHostAddress);
+
             if (!string.IsNullOrEmpty(traceId))
             {
                 ScopeContext.PushProperty(TraceIdProperty, traceId);
@@ -98,6 +102,7 @@ namespace EImece.Domain.Observability.Logging
             if (context.User?.Identity?.IsAuthenticated == true)
             {
                 LogContext.PushProperty("UserId", context.User.Identity.Name);
+                ScopeContext.PushProperty("UserId", context.User.Identity.Name);
             }
         }
 

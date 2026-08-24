@@ -536,31 +536,10 @@ namespace EImece.Tests.Services
         }
 
         [TestMethod]
-        public void AdminSettingsController_ExportBackup_HasAdministratorRoleAttribute()
+        public void AdminSettingsController_ExportBackup_EndpointRemoved()
         {
-            var method = typeof(AdminSettingsController).GetMethod(nameof(AdminSettingsController.ExportBackup));
-            Assert.IsNotNull(method, "ExportBackup method must exist on AdminSettingsController");
-
-            var authAttr = method.GetCustomAttribute<AuthorizeRolesAttribute>();
-            Assert.IsNotNull(authAttr, "ExportBackup must be decorated with AuthorizeRolesAttribute");
-            Assert.IsTrue(authAttr.Roles.Contains(DomainConstants.AdministratorRole), "ExportBackup must require Administrator role");
-        }
-
-        [TestMethod]
-        public async Task AdminSettingsController_ExportBackup_ReturnsFileResultWithZipMimeType()
-        {
-            var controller = new AdminSettingsController();
-            var fakeExportService = new FakeDataExportService();
-            fakeExportService.MockSettings.Add(new SettingExportDto { Id = 1, Name = "TestSetting" });
-            controller.DataExportService = fakeExportService;
-
-            var actionResult = await controller.ExportBackup(CancellationToken.None);
-
-            Assert.IsInstanceOfType(actionResult, typeof(FileResult));
-            var fileResult = (FileResult)actionResult;
-            Assert.AreEqual("application/zip", fileResult.ContentType);
-            Assert.IsTrue(fileResult.FileDownloadName.StartsWith("eimece-export-"));
-            Assert.IsTrue(fileResult.FileDownloadName.EndsWith(".zip"));
+            var method = typeof(AdminSettingsController).GetMethod("ExportBackup");
+            Assert.IsNull(method, "ExportBackup HTTP endpoint must not be exposed on AdminSettingsController.");
         }
     }
 }
