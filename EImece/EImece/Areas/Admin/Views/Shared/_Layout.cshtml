@@ -95,7 +95,7 @@
                 }
                 var sep = url.indexOf("?") >= 0 ? "&" : "?";
                 var embedUrl = url + sep + "gridembed=1";
-                $el.addClass("is-loading").html('<div class="eg-grid-embed-loading" style="padding:16px;color:#607487">Yükleniyor…</div>');
+                $el.addClass("is-loading").html('<div class="eg-grid-embed-loading" style="padding:16px;color:#607487">@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.Loading))</div>');
                 $.ajax({
                     url: embedUrl,
                     type: "GET",
@@ -118,7 +118,7 @@
                         }
                     },
                     error: function () {
-                        $el.removeClass("is-loading").html('<div class="eg-grid-embed-loading" style="padding:16px;color:#b42318">Grid yüklenemedi.</div>');
+                        $el.removeClass("is-loading").html('<div class="eg-grid-embed-loading" style="padding:16px;color:#b42318">@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.GridLoadError))</div>');
                     }
                 });
             });

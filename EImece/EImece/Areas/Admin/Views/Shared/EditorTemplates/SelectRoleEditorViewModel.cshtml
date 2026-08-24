@@ -11,12 +11,12 @@
 
     if (isAdmin)
     {
-        roleTitle = "Yönetici (Admin)";
+        roleTitle = $"{AdminResource.Administrator} (Admin)";
         roleDescription = AdminResource.AdminUserRoleDescription;
     }
     else if (isEditor)
     {
-        roleTitle = "Editör (NormalUser)";
+        roleTitle = $"{AdminResource.Editor} (NormalUser)";
         roleDescription = AdminResource.EditorUserRoleDescription;
     }
     else

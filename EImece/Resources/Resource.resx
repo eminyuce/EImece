@@ -2263,4 +2263,10 @@
   <data name="Range40To100ErrorMessage" xml:space="preserve">
     <value>40 ile 100 arasında bir kalite değeri giriniz.</value>
   </data>
+  <data name="AdminPanelLanguage" xml:space="preserve">
+    <value>Yönetim Paneli Dili</value>
+  </data>
+  <data name="AdminPanelLanguageDescription" xml:space="preserve">
+    <value>Yönetim paneli arayüzünün görüntüleneceği dil (menüler, etiketler, butonlar, mesajlar). Veri giriş dili (üst çubuk) ile bağımsızdır.</value>
+  </data>
 </root>

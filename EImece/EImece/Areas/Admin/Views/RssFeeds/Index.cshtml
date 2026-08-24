@@ -453,7 +453,7 @@
             if ($btn && $btn.length) {
                 var origHtml = $btn.html();
                 $btn.addClass('btn-success').removeClass('btn-primary btn-default');
-                $btn.html('<i class="fa fa-check"></i> Kopyalandı!');
+                $btn.html('<i class="fa fa-check"></i> @AdminResource.Copied!');
                 setTimeout(function () {
                     $btn.html(origHtml).removeClass('btn-success');
                     if ($btn.hasClass('js-copy-builder-btn')) {

@@ -10,6 +10,7 @@
 *@
 
 @using Griddly.Mvc
+@using Resources
 @model GriddlyResultPage
 
 @{
@@ -239,8 +240,8 @@
                     @if (settings.ShowRowSelectCount)
                     {
                         <span class="griddly-selection" style="display:none;">
-                            <span><span class="griddly-selection-count">0</span> <span class="griddly-selection-singular" style="display:none">row</span><span class="griddly-selection-plural">rows</span> selected</span>
-                            <span><a class="griddly-selection-clear" href="javascript:;">Clear</a></span>
+                            <span><span class="griddly-selection-count">0</span> <span class="griddly-selection-singular" style="display:none">@AdminResource.Row</span><span class="griddly-selection-plural">@AdminResource.Rows</span> @AdminResource.Selected</span>
+                            <span><a class="griddly-selection-clear" href="javascript:;">@AdminResource.Clear</a></span>
                         </span>
                     }
 
@@ -377,16 +378,16 @@
     <div class="griddly-footer @settings.FooterClassName">
         @if (settings.FooterTemplate == null || simple)
         {
-            <span class="griddly-summary"><span class="@(settings.Css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "d-none d-sm-inline" : "hidden-xs")">Records</span>
+            <span class="griddly-summary"><span class="@(settings.Css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "d-none d-sm-inline" : "hidden-xs")">@AdminResource.Records</span>
                 <span class="griddly-recordstart">@(Model.PageNumber * Model.PageSize + (Model.Total > 0 ? 1 : 0))</span>
-                <span class="@(settings.Css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "d-none d-sm-inline" : "hidden-xs")">through</span><span class="@(settings.Css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "d-inline d-sm-none" : "visible-xs-inline")">-</span>
+                <span class="@(settings.Css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "d-none d-sm-inline" : "hidden-xs")">@AdminResource.Through</span><span class="@(settings.Css.Is(CssFramework.Bootstrap4, CssFramework.Bootstrap5) ? "d-inline d-sm-none" : "visible-xs-inline")">-</span>
                 <span class="griddly-recordend">@(Model.PageNumber * Model.PageSize + Model.Count)</span>
-                of <span class="griddly-recordtotal">@Model.Total</span>
+                @AdminResource.Of <span class="griddly-recordtotal">@Model.Total</span>
             </span>
             <span class="griddly-pager" style="@(Model.Total <= Model.PageSize ? "display:none" : null)">
-                <a class="prev" href="javascript:;" style="@(Model.PageNumber == 0 ? "display:none" : null)">&lt;&lt; Previous</a>Page
-                <input type="text" class="pageNumber" value="@(Model.Total > 0 ? (Model.PageNumber + 1) : 0)"> of <span class="pageCount">@(Model.Total > 0 ? (Model.Total / Model.PageSize + 1) : 0)</span>
-                <a class="next" style="@(Model.Total < Model.PageSize ? "display:none" : null)" href="javascript:;">Next &gt;&gt;</a>
+                <a class="prev" href="javascript:;" style="@(Model.PageNumber == 0 ? "display:none" : null)">&lt;&lt; @AdminResource.Previous</a>@AdminResource.Page
+                <input type="text" class="pageNumber" value="@(Model.Total > 0 ? (Model.PageNumber + 1) : 0)"> @AdminResource.Of <span class="pageCount">@(Model.Total > 0 ? (Model.Total / Model.PageSize + 1) : 0)</span>
+                <a class="next" style="@(Model.Total < Model.PageSize ? "display:none" : null)" href="javascript:;">@AdminResource.Next &gt;&gt;</a>
             </span>
         }
         else
@@ -428,9 +429,9 @@
 
         <div class="form-group form-group-sm">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Search</button>
-                <button type="reset" class="@settings.Css.ButtonDefault griddly-search-reset">Reset</button>
-                <button type="reset" class="@settings.Css.ButtonDefault griddly-search-clear">Clear</button>
+                <button type="submit" class="btn btn-primary">@AdminResource.Search</button>
+                <button type="reset" class="@settings.Css.ButtonDefault griddly-search-reset">@AdminResource.Reset</button>
+                <button type="reset" class="@settings.Css.ButtonDefault griddly-search-clear">@AdminResource.Clear</button>
             </div>
         </div>
     </form>

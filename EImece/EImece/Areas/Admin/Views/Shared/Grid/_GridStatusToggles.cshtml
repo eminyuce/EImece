@@ -16,18 +16,18 @@
 @Html.GridStatusToggleGroupOpen()
 @if (showState)
 {
-    @Html.GridStatusToggle(itemId, isActive, "State", AdminResource.IsActive, "Yayında")
+    @Html.GridStatusToggle(itemId, isActive, "State", AdminResource.IsActive, AdminResource.PublishedShort)
 }
 @if (showMainPage)
 {
-    @Html.GridStatusToggle(itemId, mainPage, "MainPage", AdminResource.MainPage, "Vitrin")
+    @Html.GridStatusToggle(itemId, mainPage, "MainPage", AdminResource.MainPage, AdminResource.MainPageShort)
 }
 @if (showIsCampaign)
 {
-    @Html.GridStatusToggle(itemId, isCampaign, "IsCampaign", AdminResource.IsCampaign, "Kampanya")
+    @Html.GridStatusToggle(itemId, isCampaign, "IsCampaign", AdminResource.IsCampaign, AdminResource.CampaignShort)
 }
 @if (showImageState)
 {
-    @Html.GridStatusToggle(itemId, imageState, "ImageState", AdminResource.ImageState, "Resim")
+    @Html.GridStatusToggle(itemId, imageState, "ImageState", AdminResource.ImageState, AdminResource.ImageShort)
 }
 @Html.GridStatusToggleGroupClose()

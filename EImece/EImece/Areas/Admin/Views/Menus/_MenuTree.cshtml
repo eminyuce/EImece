@@ -1,3 +1,4 @@
+@using Resources
 ﻿@using System.Web;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -35,7 +36,7 @@
         </div>
         @if (showAllLink && !string.IsNullOrEmpty(urlPattern))
         {
-            <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm menüler">Tümü</a>
+            <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm menüler">@AdminResource.All</a>
         }
     </div>
     @if (showPickHint)

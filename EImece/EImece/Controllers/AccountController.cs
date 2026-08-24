@@ -86,11 +86,43 @@ namespace EImece.Controllers
             }
 
             ViewBag.ReturnUrl = returnUrl;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Domain.Constants.TR);
-            Logger.Info("Set culture to Turkish (TR).");
+            ApplyAdminCulture();
             Logger.Info("Returning AdminLogin view.");
             return View();
+        }
+
+        private void ApplyAdminCulture()
+        {
+            var settingService = SettingService;
+            if (settingService == null)
+            {
+                try
+                {
+                    settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                }
+                catch
+                {
+                    settingService = null;
+                }
+            }
+
+            var adminPanelLang = settingService?.GetSettingByKey(Domain.Constants.AdminPanelLanguage);
+            if (!string.IsNullOrWhiteSpace(adminPanelLang))
+            {
+                SetCurrentCulture(adminPanelLang);
+            }
+            else
+            {
+                var cookie = Request?.Cookies["Language"] ?? Request?.Cookies[Domain.Constants.CultureCookieName];
+                if (cookie != null && !string.IsNullOrWhiteSpace(cookie.Value))
+                {
+                    SetCurrentCulture(cookie.Value);
+                }
+                else
+                {
+                    SetCurrentCulture(Domain.Constants.TR);
+                }
+            }
         }
 
         [HttpPost]
@@ -100,6 +132,7 @@ namespace EImece.Controllers
         [RateLimit("login", DefaultLimit = 5, DefaultWindowMinutes = 15)]
         public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl = "")
         {
+            ApplyAdminCulture();
             Logger.Info($"Entering AdminLogin POST with email: {model?.Email}, returnUrl: {returnUrl}");
 
             if (!Domain.AppConfig.AdminLoginEnabled && !Domain.AppConfig.BypassAdminAuth)

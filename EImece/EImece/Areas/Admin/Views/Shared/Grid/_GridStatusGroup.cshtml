@@ -5,7 +5,7 @@
     var o = Model;
 }
 @Html.GridStatusToggleGroupOpen()
-@Html.GridStatusToggle(o.Id, o.IsActive, "State", AdminResource.IsActive, "Yayında")
-@Html.GridStatusToggle(o.Id, o.MainPage, "MainPage", AdminResource.MainPage, "Vitrin")
-@Html.GridStatusToggle(o.Id, o.IsCampaign, "IsCampaign", AdminResource.IsCampaign, "Kampanya")
+@Html.GridStatusToggle(o.Id, o.IsActive, "State", AdminResource.IsActive, AdminResource.PublishedShort)
+@Html.GridStatusToggle(o.Id, o.MainPage, "MainPage", AdminResource.MainPage, AdminResource.MainPageShort)
+@Html.GridStatusToggle(o.Id, o.IsCampaign, "IsCampaign", AdminResource.IsCampaign, AdminResource.CampaignShort)
 @Html.GridStatusToggleGroupClose()

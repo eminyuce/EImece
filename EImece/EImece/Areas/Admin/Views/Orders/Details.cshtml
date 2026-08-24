@@ -1,4 +1,4 @@
-﻿@using System.Globalization
+@using System.Globalization
 @using System.Web
 @using EImece.Domain
 @using EImece.Domain.Entities
@@ -20,6 +20,24 @@
     var productCount = Model.OrderProducts != null ? Model.OrderProducts.Count : 0;
     var subtotal = Model.Price.ToDecimal() - Model.CargoPrice;
     var couponDiscount = Model.CouponDiscount.ToDecimal();
+}
+
+@functions {
+    string GetOrderStatusText(EImeceOrderStatus status)
+    {
+        switch (status)
+        {
+            case EImeceOrderStatus.NewlyOrder: return AdminResource.OrderStatusNewlyOrder;
+            case EImeceOrderStatus.PaymentPending: return AdminResource.OrderStatusPaymentPending;
+            case EImeceOrderStatus.InProgress: return AdminResource.OrderStatusInProgress;
+            case EImeceOrderStatus.Shipped: return AdminResource.OrderStatusShipped;
+            case EImeceOrderStatus.Delivered: return AdminResource.OrderStatusDelivered;
+            case EImeceOrderStatus.Cancelled: return AdminResource.OrderStatusCancelled;
+            case EImeceOrderStatus.Returned: return AdminResource.OrderStatusReturned;
+            case EImeceOrderStatus.Refunded: return AdminResource.OrderStatusRefunded;
+            default: return status.ToDescription();
+        }
+    }
 }
 
 @helper OrderStatusLabel(EImeceOrderStatus status)
@@ -46,7 +64,7 @@
             css = "text-bg-danger";
             break;
     }
-    <span class="label @css order-status-badge">@status.ToDescription()</span>
+    <span class="label @css order-status-badge">@GetOrderStatusText(status)</span>
 }
 
 @helper PaymentStatusLabel(string paymentStatus)
@@ -56,15 +74,15 @@
     string text = paymentStatus;
     if (string.Equals(paymentStatus, "SUCCESS", StringComparison.OrdinalIgnoreCase))
     {
-        text = "Ödeme başarılı";
+        text = AdminResource.PaymentSuccess;
     }
     else if (string.Equals(paymentStatus, "FAILURE", StringComparison.OrdinalIgnoreCase))
     {
-        text = "Ödeme başarısız";
+        text = AdminResource.PaymentFailed;
     }
     else if (string.IsNullOrWhiteSpace(paymentStatus))
     {
-        text = "Ödeme durumu yok";
+        text = AdminResource.PaymentNoStatus;
         css = "text-bg-secondary";
     }
     <span class="label @css order-status-badge">@text</span>
@@ -74,15 +92,15 @@
     <div class="clearfix order-details-header">
         <div class="float-end">
             <a href="@Url.Action("Index", "Orders", new { area = "Admin" })" class="btn btn-secondary btn-sm">
-                <i class="fa fa-arrow-left"></i> Siparişlere Dön
+                <i class="fa fa-arrow-left"></i> @AdminResource.BackToOrders
             </a>
         </div>
         <h2>
-            Sipariş Detayı
+            @AdminResource.OrderDetail
             <small class="text-muted">#@Model.OrderNumber</small>
         </h2>
         <p class="order-details-lead">
-            Müşteri, ürün, ödeme ve kargo bilgilerini buradan inceleyebilir; durum, not ve kargo bilgisini güncelleyebilirsiniz.
+            @AdminResource.ViewOrderInfo
         </p>
         <div class="order-details-badges">
             @OrderStatusLabel(orderStatus)
@@ -93,19 +111,19 @@
     <div class="row order-kpi-row">
         <div class="col-sm-3">
             <div class="order-kpi">
-                <div class="order-kpi-label">Sipariş tarihi</div>
-                <div class="order-kpi-value">@Model.CreatedDate.ToString("dd.MM.yyyy HH:mm", tr)</div>
+                <div class="order-kpi-label">@AdminResource.OrderDate</div>
+                <div class="order-kpi-value">@Model.CreatedDate.ToString("dd.MM.yyyy HH:mm")</div>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="order-kpi">
-                <div class="order-kpi-label">Ödenen tutar</div>
+                <div class="order-kpi-label">@AdminResource.PaidAmount</div>
                 <div class="order-kpi-value">@Model.PaidPriceDecimal.CurrencySign()</div>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="order-kpi">
-                <div class="order-kpi-label">Ödeme / kart</div>
+                <div class="order-kpi-label">@AdminResource.PaymentAndCard</div>
                 <div class="order-kpi-value">
                     @(string.IsNullOrWhiteSpace(Model.CardAssociation) ? "-" : Model.CardAssociation)
                     @if (!string.IsNullOrWhiteSpace(Model.LastFourDigits))
@@ -117,9 +135,9 @@
         </div>
         <div class="col-sm-3">
             <div class="order-kpi">
-                <div class="order-kpi-label">Kargo</div>
+                <div class="order-kpi-label">@AdminResource.Shipment</div>
                 <div class="order-kpi-value">
-                    @(string.IsNullOrWhiteSpace(Model.ShipmentCompanyName) ? "Henüz atanmadı" : Model.ShipmentCompanyName)
+                    @(string.IsNullOrWhiteSpace(Model.ShipmentCompanyName) ? AdminResource.NotAssignedYet : Model.ShipmentCompanyName)
                 </div>
             </div>
         </div>
@@ -128,17 +146,17 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><strong>Müşteri ve adres bilgileri</strong></div>
+                <div class="card-header"><strong>@AdminResource.CustomerAndAddressInfo</strong></div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h5 class="order-section-title">Müşteri</h5>
+                            <h5 class="order-section-title">@AdminResource.Customer</h5>
                             @if (Model.Customer != null)
                             {
                                 <dl class="dl-horizontal order-dl">
-                                    <dt>Ad Soyad</dt>
+                                    <dt>@AdminResource.CustomerFullname</dt>
                                     <dd>@(Model.Customer.FullName ?? "-")</dd>
-                                    <dt>E-posta</dt>
+                                    <dt>@AdminResource.Email</dt>
                                     <dd>
                                         @if (!string.IsNullOrWhiteSpace(Model.Customer.Email))
                                         {
@@ -149,27 +167,27 @@
                                             <text>-</text>
                                         }
                                     </dd>
-                                    <dt>Telefon</dt>
+                                    <dt>@AdminResource.Phone</dt>
                                     <dd>@(Model.Customer.GsmNumber ?? "-")</dd>
                                     @if (!string.IsNullOrWhiteSpace(Model.Customer.IdentityNumber))
                                     {
-                                        <dt>TC Kimlik No</dt>
+                                        <dt>@AdminResource.TcIdentificationNumber</dt>
                                         <dd>@Model.Customer.IdentityNumber</dd>
                                     }
                                     @if (!string.IsNullOrWhiteSpace(Model.Customer.Company))
                                     {
-                                        <dt>Firma</dt>
+                                        <dt>@AdminResource.Company</dt>
                                         <dd>@Model.Customer.Company</dd>
                                     }
                                 </dl>
                             }
                             else
                             {
-                                <p class="text-muted">Müşteri kaydı bulunamadı.</p>
+                                <p class="text-muted">@AdminResource.NoCustomerRecord</p>
                             }
                         </div>
                         <div class="col-sm-6">
-                            <h5 class="order-section-title">Teslimat adresi</h5>
+                            <h5 class="order-section-title">@AdminResource.DeliveryAddress</h5>
                             @if (Model.ShippingAddress != null)
                             {
                                 <address class="order-address">
@@ -191,13 +209,13 @@
                             }
                             else
                             {
-                                <p class="text-muted">Teslimat adresi yok.</p>
+                                <p class="text-muted">@AdminResource.NoDeliveryAddress</p>
                             }
 
-                            <h5 class="order-section-title">Fatura adresi</h5>
+                            <h5 class="order-section-title">@AdminResource.BillingAddress</h5>
                             @if (Model.BillingAddress != null && Model.ShippingAddress != null && Model.BillingAddress.EqualsAddress(Model.ShippingAddress))
                             {
-                                <p class="text-muted">Teslimat adresi ile aynı.</p>
+                                <p class="text-muted">@AdminResource.ShippingAddressSame</p>
                             }
                             else if (Model.BillingAddress != null)
                             {
@@ -216,7 +234,7 @@
                             }
                             else
                             {
-                                <p class="text-muted">Fatura adresi yok.</p>
+                                <p class="text-muted">@AdminResource.NoBillingAddress</p>
                             }
                         </div>
                     </div>
@@ -225,7 +243,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <strong>Sipariş ürünleri</strong>
+                    <strong>@AdminResource.OrderProducts</strong>
                     <span class="badge">@productCount</span>
                 </div>
                 <div class="card-body" style="padding:0;">
@@ -233,10 +251,10 @@
                         <table class="table table-striped table-bordered table-hover mb-0 order-products-table">
                             <thead>
                                 <tr>
-                                    <th>Ürün</th>
-                                    <th class="text-center" style="width:80px;">Adet</th>
-                                    <th class="text-end" style="width:110px;">Birim fiyat</th>
-                                    <th class="text-end" style="width:110px;">Toplam</th>
+                                    <th>@AdminResource.Product</th>
+                                    <th class="text-center" style="width:80px;">@AdminResource.Quantity</th>
+                                    <th class="text-end" style="width:110px;">@AdminResource.UnitPrice</th>
+                                    <th class="text-end" style="width:110px;">@AdminResource.Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -249,7 +267,7 @@
                                                 <strong>@product.ProductName</strong>
                                                 @if (!string.IsNullOrWhiteSpace(product.ProductCode))
                                                 {
-                                                    <br /><small class="text-muted">Kod: @product.ProductCode</small>
+                                                    <br /><small class="text-muted">@AdminResource.Code: @product.ProductCode</small>
                                                 }
                                             </td>
                                             <td class="text-center">@product.Quantity</td>
@@ -261,28 +279,28 @@
                                 else
                                 {
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Bu siparişte ürün kaydı yok.</td>
+                                        <td colspan="4" class="text-center text-muted">@AdminResource.NoOrderProducts</td>
                                     </tr>
                                 }
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3" class="text-end">Ara toplam</td>
+                                    <td colspan="3" class="text-end">@AdminResource.SubTotal</td>
                                     <td class="text-end">@subtotal.CurrencySign()</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3" class="text-end">Kargo</td>
+                                    <td colspan="3" class="text-end">@AdminResource.Shipment</td>
                                     <td class="text-end">@Model.CargoPrice.CurrencySign()</td>
                                 </tr>
                                 @if (!string.IsNullOrWhiteSpace(Model.Coupon))
                                 {
                                     <tr>
-                                        <td colspan="3" class="text-end">Kupon (@Model.Coupon)</td>
+                                        <td colspan="3" class="text-end">@AdminResource.Coupon (@Model.Coupon)</td>
                                         <td class="text-end text-danger">-@couponDiscount.CurrencySign()</td>
                                     </tr>
                                 }
                                 <tr class="order-total-row">
-                                    <td colspan="3" class="text-end"><strong>Ödenen toplam</strong></td>
+                                    <td colspan="3" class="text-end"><strong>@AdminResource.TotalPaidPrice</strong></td>
                                     <td class="text-end"><strong>@Model.PaidPriceDecimal.CurrencySign()</strong></td>
                                 </tr>
                             </tfoot>
@@ -293,39 +311,39 @@
 
             <div class="card">
                 <div class="card-header">
-                    <strong>Ödeme ve kart bilgileri</strong>
-                    <a class="btn btn-link btn-sm float-end" role="button" data-bs-toggle="collapse" href="#paymentTechDetails">Teknik detayları göster</a>
+                    <strong>@AdminResource.PaymentAndCardInfo</strong>
+                    <a class="btn btn-link btn-sm float-end" role="button" data-bs-toggle="collapse" href="#paymentTechDetails">@AdminResource.ShowTechDetails</a>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
                             <dl class="dl-horizontal order-dl">
-                                <dt>Ödeme durumu</dt>
+                                <dt>@AdminResource.PaymentStatusLabel</dt>
                                 <dd>@PaymentStatusLabel(Model.PaymentStatus)</dd>
-                                <dt>Kart tipi</dt>
+                                <dt>@AdminResource.CardType</dt>
                                 <dd>@(Model.CardType ?? "-")</dd>
-                                <dt>Kart markası</dt>
+                                <dt>@AdminResource.CardBrand</dt>
                                 <dd>@(Model.CardAssociation ?? "-")</dd>
-                                <dt>Kart ailesi</dt>
+                                <dt>@AdminResource.CardFamily</dt>
                                 <dd>@(Model.CardFamily ?? "-")</dd>
-                                <dt>Son 4 hane</dt>
+                                <dt>@AdminResource.LastFourDigits</dt>
                                 <dd>@(Model.LastFourDigits ?? "-")</dd>
                                 @if (!string.IsNullOrWhiteSpace(Model.Installment) && Model.Installment != "1")
                                 {
-                                    <dt>Taksit</dt>
+                                    <dt>@AdminResource.Installment</dt>
                                     <dd>@Model.InstallmentDescription</dd>
                                 }
                             </dl>
                         </div>
                         <div class="col-sm-6">
                             <dl class="dl-horizontal order-dl">
-                                <dt>Ödeme no</dt>
+                                <dt>@AdminResource.PaymentId</dt>
                                 <dd><code>@(Model.PaymentId ?? "-")</code></dd>
-                                <dt>Para birimi</dt>
+                                <dt>@AdminResource.Currency</dt>
                                 <dd>@(Model.Currency ?? "-")</dd>
                                 @if (!string.IsNullOrWhiteSpace(Model.ErrorCode) || !string.IsNullOrWhiteSpace(Model.ErrorMessage))
                                 {
-                                    <dt>Hata</dt>
+                                    <dt>@AdminResource.Error</dt>
                                     <dd class="text-danger">
                                         @Model.ErrorCode
                                         @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
@@ -340,7 +358,7 @@
 
                     <div id="paymentTechDetails" class="collapse">
                         <hr />
-                        <p class="text-muted"><small>Bu alan teknik destek ve ödeme sağlayıcı kontrolleri içindir.</small></p>
+                        <p class="text-muted"><small>@AdminResource.TechDetailsNote</small></p>
                         <div class="row">
                             <div class="col-sm-6">
                                 <dl class="dl-horizontal order-dl">
@@ -374,36 +392,36 @@
 
         <div class="col-md-4">
             <div class="card border-primary">
-                <div class="card-header"><strong>Siparişi yönet</strong></div>
+                <div class="card-header"><strong>@AdminResource.OrderManagement</strong></div>
                 <div class="card-body">
                     <div class="form-group row mb-3">
-                        <label for="orderStatusSelect">Sipariş durumu</label>
+                        <label for="orderStatusSelect">@AdminResource.OrderStatusLabel</label>
                         @Html.DropDownList("orderStatusSelectList",
                             new SelectList(orderStatusList, "Value", "Text", orderStatus.ToString()),
                             new { @class = "form-control", id = "orderStatusSelect", @data_change_order_status = Model.Id })
-                        <span class="form-text">Durum değişince otomatik kaydedilir.</span>
+                        <span class="form-text">@AdminResource.StatusChangeAutoSave</span>
                     </div>
 
                     <div class="form-group row mb-3">
-                        <label for="adminOrderNote">Yönetici notu</label>
+                        <label for="adminOrderNote">@AdminResource.AdminNote</label>
                         <textarea id="adminOrderNote" class="form-control" rows="3"
-                                  placeholder="Sadece admin panelinde görünür..."
+                                  placeholder="@AdminResource.AdminNotePlaceholder"
                                   data-textarea-admin-order-note="@Model.Id">@Model.AdminOrderNote</textarea>
                     </div>
 
                     <div class="form-group row mb-3">
-                        <label for="shipmentCompany">Kargo firması</label>
+                        <label for="shipmentCompany">@AdminResource.ShippingCompany</label>
                         <input id="shipmentCompany" class="form-control" type="text"
-                               placeholder="Örn. Yurtiçi Kargo"
+                               placeholder="@AdminResource.ShippingCompanyPlaceholder"
                                data-order-shipment-company-name="@Model.Id"
                                value="@Model.ShipmentCompanyName" />
                     </div>
 
                     <div class="form-group row mb-3">
-                        <label for="shipmentTracking">Takip numarası</label>
+                        <label for="shipmentTracking">@AdminResource.TrackingNumber</label>
                         <div class="input-group">
                             <input id="shipmentTracking" class="form-control" type="text"
-                                   placeholder="Kargo takip no"
+                                   placeholder="@AdminResource.TrackingNumberPlaceholder"
                                    data-order-shipment-tracking-number="@Model.Id"
                                    value="@Model.ShipmentTrackingNumber" />
                             @if (!string.IsNullOrWhiteSpace(Model.ShipmentTrackingNumber))
@@ -411,7 +429,7 @@
                                 <span class="input-group">
                                     <a class="btn btn-secondary"
                                        href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.UrlEncode(Model.ShipmentTrackingNumber.ToStr()))"
-                                       target="_blank" title="Takibi aç">
+                                       target="_blank" title="@AdminResource.OpenTracking">
                                         <i class="fa fa-external-link"></i>
                                     </a>
                                 </span>
@@ -420,14 +438,14 @@
                     </div>
 
                     <button type="button" class="btn btn-success w-100" data-save-admin-order-note="@Model.Id">
-                        <i class="fa fa-save"></i> Not ve kargoyu kaydet
+                        <i class="fa fa-save"></i> @AdminResource.SaveNoteAndShipment
                     </button>
                     <p class="text-success" style="margin-top:8px;" data-changed-order-result="@Model.Id"></p>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header"><strong>Müşteri notu</strong></div>
+                <div class="card-header"><strong>@AdminResource.CustomerNote</strong></div>
                 <div class="card-body">
                     @if (!string.IsNullOrWhiteSpace(Model.OrderComments))
                     {
@@ -435,24 +453,24 @@
                     }
                     else
                     {
-                        <p class="text-muted" style="margin:0;">Müşteri sipariş notu bırakmamış.</p>
+                        <p class="text-muted" style="margin:0;">@AdminResource.NoCustomerNote</p>
                     }
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header"><strong>Özet</strong></div>
+                <div class="card-header"><strong>@AdminResource.OrderSummary</strong></div>
                 <div class="card-body">
                     <dl class="dl-horizontal order-dl">
-                        <dt>Sipariş no</dt>
+                        <dt>@AdminResource.OrderNumber</dt>
                         <dd>@Model.OrderNumber</dd>
-                        <dt>Oluşturma</dt>
-                        <dd>@Model.CreatedDate.ToString("dd.MM.yyyy HH:mm", tr)</dd>
-                        <dt>Ürün tutarı</dt>
+                        <dt>@AdminResource.CreationDate</dt>
+                        <dd>@Model.CreatedDate.ToString("dd.MM.yyyy HH:mm")</dd>
+                        <dt>@AdminResource.ProductAmount</dt>
                         <dd>@subtotal.CurrencySign()</dd>
-                        <dt>Kargo</dt>
+                        <dt>@AdminResource.Shipment</dt>
                         <dd>@Model.CargoPrice.CurrencySign()</dd>
-                        <dt>Ödenen</dt>
+                        <dt>@AdminResource.PaidAmount</dt>
                         <dd><strong>@Model.PaidPriceDecimal.CurrencySign()</strong></dd>
                     </dl>
                 </div>

@@ -35,7 +35,7 @@ namespace EImece.Areas.Admin.Controllers
         // GET: Admin/Dashboard
         public ActionResult Index()
         {
-            ViewBag.Title = "Gösterge Paneli";
+            ViewBag.Title = Resources.AdminResource.Dashboard;
             var paymentProvider = SettingService?.GetSettingByKey(Domain.Constants.PaymentProvider) ?? Domain.Constants.DefaultPaymentProvider;
             ViewBag.IyzicoCredentialsMissing = string.Equals(paymentProvider, "Iyzico", StringComparison.OrdinalIgnoreCase)
                 && !AppConfig.HasConfiguredIyzicoCredentials;
@@ -46,7 +46,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SystemHealth()
         {
-            ViewBag.Title = "Sistem Sağlık Durumu";
+            ViewBag.Title = Resources.AdminResource.SystemHealth;
             return View();
         }
 

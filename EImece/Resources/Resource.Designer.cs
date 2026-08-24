@@ -151,6 +151,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yönetim Paneli Dili.
+        /// </summary>
+        public static string AdminPanelLanguage {
+            get {
+                return ResourceManager.GetString("AdminPanelLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yönetim paneli arayüzünün görüntüleneceği dil (menüler, etiketler, butonlar, mesajlar). Veri giriş dili (üst çubuk) ile bağımsızdır..
+        /// </summary>
+        public static string AdminPanelLanguageDescription {
+            get {
+                return ResourceManager.GetString("AdminPanelLanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yönetici E-postasını SSL Etkinleştir .
         /// </summary>
         public static string AdminEmailEnableSsl {

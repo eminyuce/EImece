@@ -1,3 +1,4 @@
+@using Resources
 @using EImece.Areas.Admin.Models
 @using EImece.Domain
 @using EImece.Domain.Helpers
@@ -28,13 +29,13 @@
         <output class="card-header grid-record-count" style="display:block" aria-live="polite">
             <div class="grid-record-count-inner">
                 <span class="grid-record-count-badge griddly-recordtotal"></span>
-                <span class="grid-record-count-label">metrik</span>
+                <span class="grid-record-count-label">@AdminResource.Metric</span>
             </div>
-            <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
-                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
+            <div class="eg-grid-scroll-controls" title="@AdminResource.ScrollTableLeftRight">
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="@AdminResource.ScrollLeft" aria-label="@AdminResource.ScrollLeft">
                     <i class="fa fa-chevron-left"></i>
                 </button>
-                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="@AdminResource.ScrollRight" aria-label="@AdminResource.ScrollRight">
                     <i class="fa fa-chevron-right"></i>
                 </button>
             </div>
@@ -43,7 +44,7 @@
 
     settings
         .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
-        .Column(caption: "Açıkla", template: @<text>
+        .Column(caption: AdminResource.Explain, template: @<text>
             <button type="button" class="btn btn-sm btn-info metrics-explain-btn"
                     data-name="@item.Name"
                     data-count="@item.Count"
@@ -57,15 +58,15 @@
                     data-p90="@item.P90DurationMs"
                     data-p95="@item.P95DurationMs"
                     data-p99="@item.P99DurationMs">
-                <span class="fa fa-question-circle"></span> Açıkla
+                <span class="fa fa-question-circle"></span> @AdminResource.Explain
             </button>
         </text>, className: "eg-col-explain", width: "90px")
-        .Column(x => x.Name, caption: "Metrik Adı", className: "metric-name eg-col-name", width: "280px")
-        .Column(x => x.Count, caption: "Adet", className: "eg-col-count", width: "80px")
-        .Column(x => x.ErrorCount, caption: "Hata", template: @<text>
-            <span class="badge @(item.ErrorCount > 0 ? "text-bg-danger" : "text-bg-success")" title="Başarısız çağrı sayısı">@item.ErrorCount.ToString("N0")</span>
+        .Column(x => x.Name, caption: AdminResource.MetricName, className: "metric-name eg-col-name", width: "280px")
+        .Column(x => x.Count, caption: AdminResource.Count, className: "eg-col-count", width: "80px")
+        .Column(x => x.ErrorCount, caption: AdminResource.Error, template: @<text>
+            <span class="badge @(item.ErrorCount > 0 ? "text-bg-danger" : "text-bg-success")" title="@AdminResource.FailedCallsCount">@item.ErrorCount.ToString("N0")</span>
         </text>, className: "eg-col-errors", width: "80px")
-        .Column(x => x.AverageDurationMs, caption: "Ort. süre (ms)", className: "eg-col-avg", width: "120px")
+        .Column(x => x.AverageDurationMs, caption: AdminResource.AvgDurationMs, className: "eg-col-avg", width: "120px")
         .Column(x => x.P50DurationMs, caption: "P50 (ms)", width: "90px")
         .Column(x => x.P75DurationMs, caption: "P75 (ms)", width: "90px")
         .Column(x => x.P90DurationMs, caption: "P90 (ms)", width: "90px")

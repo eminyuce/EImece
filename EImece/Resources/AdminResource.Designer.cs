@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class AdminResource {
@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to İşlemler.
+        /// </summary>
+        public static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resimler ekle.
         /// </summary>
         public static string AddImages {
@@ -97,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seçilenleri silmeyi onayliyor musunuz?.
+        ///   Looks up a localized string similar to Seçilenleri silmeyi onaylıyor musunuz?.
         /// </summary>
         public static string AdminDeleteConfirmMessage {
             get {
@@ -124,11 +133,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giden e-postalarda alıcının göreceği gönderen adıdır (ör. Mağaza Adı veya Müşteri Hizmetleri)..
+        /// </summary>
+        public static string AdminEmailDisplayNameTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailDisplayNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yönetici E-postasını SSL Etkinleştir .
         /// </summary>
         public static string AdminEmailEnableSsl {
             get {
                 return ResourceManager.GetString("AdminEmailEnableSsl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusu ile web uygulaması arasındaki e-posta iletişiminin SSL/TLS ile şifrelenmesini sağlar. Güvenli e-posta gönderimi için genellikle açık tutulmalıdır..
+        /// </summary>
+        public static string AdminEmailEnableSslTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailEnableSslTooltip", resourceCulture);
             }
         }
         
@@ -142,11 +169,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E-postaların iletileceği SMTP sunucusunun adresi veya alan adıdır (ör. smtp.gmail.com, mail.siteniz.com veya smtp.office365.com)..
+        /// </summary>
+        public static string AdminEmailHostTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yönetici E-posta Parolası.
         /// </summary>
         public static string AdminEmailPassword {
             get {
                 return ResourceManager.GetString("AdminEmailPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak e-posta şifresi veya uygulama özel şifresidir (App Password)..
+        /// </summary>
+        public static string AdminEmailPasswordTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailPasswordTooltip", resourceCulture);
             }
         }
         
@@ -160,11 +205,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusunun e-posta gönderimi için dinlediği port numarasıdır. Genellikle SSL için 465, TLS/STARTTLS için 587, şifresiz için 25 kullanılır..
+        /// </summary>
+        public static string AdminEmailPortTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sistem tarafından gönderilen e-postaların (sipariş onayları, şifre sıfırlama, bildirimler) gönderen kısmında (From) görünecek e-posta adresidir..
+        /// </summary>
+        public static string AdminEmailTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yönetici E-postası Varsayılan Kimlik Bilgilerini Kullan.
         /// </summary>
         public static string AdminEmailUseDefaultCredentials {
             get {
                 return ResourceManager.GetString("AdminEmailUseDefaultCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP kimlik doğrulaması için sunucunun varsayılan Windows/IIS kimlik bilgilerinin kullanılıp kullanılmayacağını belirler. Özel kullanıcı adı ve şifre girildiğinde kapalı (false) olmalıdır..
+        /// </summary>
+        public static string AdminEmailUseDefaultCredentialsTooltip {
+            get {
+                return ResourceManager.GetString("AdminEmailUseDefaultCredentialsTooltip", resourceCulture);
             }
         }
         
@@ -194,13 +266,22 @@ namespace Resources {
                 return ResourceManager.GetString("AdminMainSeachPlaceHolder", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Yönetim menüsü.
         /// </summary>
         public static string AdminNavigation {
             get {
                 return ResourceManager.GetString("AdminNavigation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yönetici notu.
+        /// </summary>
+        public static string AdminNote {
+            get {
+                return ResourceManager.GetString("AdminNote", resourceCulture);
             }
         }
         
@@ -232,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yönetici Ayarlari.
+        ///   Looks up a localized string similar to Yönetici Ayarları.
         /// </summary>
         public static string AdminSettings {
             get {
@@ -259,11 +340,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak kullanıcı adı veya tam e-posta adresidir..
+        /// </summary>
+        public static string AdminUserNameTooltip {
+            get {
+                return ResourceManager.GetString("AdminUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Her türlü veri ekleme / silme / güncelleme yetkisi vardır..
         /// </summary>
         public static string AdminUserRoleDescription {
             get {
                 return ResourceManager.GetString("AdminUserRoleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gelişmiş Ödeme Bilgileri.
+        /// </summary>
+        public static string AdvancedPaymentInfo {
+            get {
+                return ResourceManager.GetString("AdvancedPaymentInfo", resourceCulture);
             }
         }
         
@@ -295,7 +394,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uygulama Loglari.
+        ///   Looks up a localized string similar to Uygulama Logları.
         /// </summary>
         public static string AppLogs {
             get {
@@ -313,11 +412,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authenticator 2FA.
+        /// </summary>
+        public static string Authenticator2FA {
+            get {
+                return ResourceManager.GetString("Authenticator2FA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin..
+        /// </summary>
+        public static string AuthenticatorKeyNotFound {
+            get {
+                return ResourceManager.GetString("AuthenticatorKeyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yazarın İsmi.
         /// </summary>
         public static string AuthorName {
             get {
                 return ResourceManager.GetString("AuthorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşterilere Dön.
+        /// </summary>
+        public static string BackToCustomers {
+            get {
+                return ResourceManager.GetString("BackToCustomers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Düzenlemeye Dön.
+        /// </summary>
+        public static string BackToEditor {
+            get {
+                return ResourceManager.GetString("BackToEditor", resourceCulture);
             }
         }
         
@@ -331,11 +466,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Düzenlemeye Dön.
+        ///   Looks up a localized string similar to Siparişlere Dön.
         /// </summary>
-        public static string BackToEditor {
+        public static string BackToOrders {
             get {
-                return ResourceManager.GetString("BackToEditor", resourceCulture);
+                return ResourceManager.GetString("BackToOrders", resourceCulture);
             }
         }
         
@@ -421,6 +556,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hesaplanıyor....
+        /// </summary>
+        public static string Calculating {
+            get {
+                return ResourceManager.GetString("Calculating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CALLBACK_PECCO.
         /// </summary>
         public static string CALLBACK_PECCO {
@@ -439,6 +583,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to İptal.
+        /// </summary>
+        public static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yüklemeyi İptal Et.
         /// </summary>
         public static string CancelUpload {
@@ -453,6 +606,24 @@ namespace Resources {
         public static string CancelUploading {
             get {
                 return ResourceManager.GetString("CancelUploading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kart Kuruluşu.
+        /// </summary>
+        public static string CardAssociation {
+            get {
+                return ResourceManager.GetString("CardAssociation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kart Türü.
+        /// </summary>
+        public static string CardType {
+            get {
+                return ResourceManager.GetString("CardType", resourceCulture);
             }
         }
         
@@ -491,13 +662,31 @@ namespace Resources {
                 return ResourceManager.GetString("CargoSettings", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Katalog.
         /// </summary>
         public static string Catalog {
             get {
                 return ResourceManager.GetString("Catalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Silinemez.
+        /// </summary>
+        public static string CategoryCannotDelete {
+            get {
+                return ResourceManager.GetString("CategoryCannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün mevcut.
+        /// </summary>
+        public static string CategoryHasProducts {
+            get {
+                return ResourceManager.GetString("CategoryHasProducts", resourceCulture);
             }
         }
         
@@ -538,6 +727,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tümünü Temizle.
+        /// </summary>
+        public static string ClearAll {
+            get {
+                return ResourceManager.GetString("ClearAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kapat.
         /// </summary>
         public static string Close {
@@ -545,7 +743,7 @@ namespace Resources {
                 return ResourceManager.GetString("Close", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Menüyü kapat.
         /// </summary>
@@ -554,7 +752,7 @@ namespace Resources {
                 return ResourceManager.GetString("CloseMenu", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Kenar çubuğunu kapat.
         /// </summary>
@@ -635,7 +833,7 @@ namespace Resources {
                 return ResourceManager.GetString("ContactForm", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to İçerik.
         /// </summary>
@@ -673,11 +871,56 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kupon Kodu.
+        ///   Looks up a localized string similar to Yayında mı: İşaretliyse kupon kullanılabilir..
+        /// </summary>
+        public static string CouponActiveHelp {
+            get {
+                return ResourceManager.GetString("CouponActiveHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kod.
         /// </summary>
         public static string CouponCode {
             get {
                 return ResourceManager.GetString("CouponCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kod: Müşterinin yazacağı kupon kodu (ör. YAZ2026)..
+        /// </summary>
+        public static string CouponCodeHelp {
+            get {
+                return ResourceManager.GetString("CouponCodeHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu sayfada müşterilerin sepette kullanacağı indirim kuponu oluşturur veya düzenlersiniz..
+        /// </summary>
+        public static string CouponCreateHelp {
+            get {
+                return ResourceManager.GetString("CouponCreateHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Başlangıç / Bitiş tarihi: Biçim gg/aa/yy (ör. 01/08/26). Bitiş tarihi başlangıçtan sonra olmalıdır..
+        /// </summary>
+        public static string CouponDateHelp {
+            get {
+                return ResourceManager.GetString("CouponDateHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sabit indirim ve yüzde indirim alanlarından yalnızca birini doldurun. Sabit tutar doluysa yüzde yok sayılır..
+        /// </summary>
+        public static string CouponDiscountHelp {
+            get {
+                return ResourceManager.GetString("CouponDiscountHelp", resourceCulture);
             }
         }
         
@@ -691,11 +934,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Örnek 1 — Sabit tutar indirimi:.
+        /// </summary>
+        public static string CouponExampleFixed {
+            get {
+                return ResourceManager.GetString("CouponExampleFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kupon Adı.
         /// </summary>
         public static string CouponName {
             get {
                 return ResourceManager.GetString("CouponName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon adı: Yönetim panelinde görünen isim (müşteriye gösterilmez)..
+        /// </summary>
+        public static string CouponNameHelp {
+            get {
+                return ResourceManager.GetString("CouponNameHelp", resourceCulture);
             }
         }
         
@@ -754,6 +1015,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşteri ve Adres.
+        /// </summary>
+        public static string CustomerAndAddress {
+            get {
+                return ResourceManager.GetString("CustomerAndAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gelen Siparişler.
         /// </summary>
         public static string CustomerComingOrders {
@@ -781,11 +1051,65 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşteri Notu.
+        /// </summary>
+        public static string CustomerNote {
+            get {
+                return ResourceManager.GetString("CustomerNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sadece yöneticiler görür..
+        /// </summary>
+        public static string CustomerNoteModalDescription {
+            get {
+                return ResourceManager.GetString("CustomerNoteModalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yönetici Notu.
+        /// </summary>
+        public static string CustomerNoteModalTitle {
+            get {
+                return ResourceManager.GetString("CustomerNoteModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş hakkında iç not.
+        /// </summary>
+        public static string CustomerNotePlaceholder {
+            get {
+                return ResourceManager.GetString("CustomerNotePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Açık Adres / Kargo Firmasına Notunuz.
         /// </summary>
         public static string CustomerOpenAddress {
             get {
                 return ResourceManager.GetString("CustomerOpenAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siparişler.
+        /// </summary>
+        public static string CustomerOrders {
+            get {
+                return ResourceManager.GetString("CustomerOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu kullanıcının yetkilerini işaretleyin. Değişikliklerin uygulanması için kaydetmeyi unutmayın..
+        /// </summary>
+        public static string CustomerPermissionsHelp {
+            get {
+                return ResourceManager.GetString("CustomerPermissionsHelp", resourceCulture);
             }
         }
         
@@ -817,7 +1141,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Varsayılan Resim Yüksekliği.
+        ///   Looks up a localized string similar to Varsayılan yükleme görsel yüksekliği.
         /// </summary>
         public static string DefaultImageHeight {
             get {
@@ -826,7 +1150,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Varsayılan Resim Genişliği.
+        ///   Looks up a localized string similar to Varsayılan yükleme görsel genişliği.
         /// </summary>
         public static string DefaultImageWidth {
             get {
@@ -840,6 +1164,51 @@ namespace Resources {
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eksik Dosyaları Temizle (Diskte Olmayan Kayıtları Sil).
+        /// </summary>
+        public static string DeleteMissingFilesButtonText {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diskte fiziksel dosyası bulunmayan tüm veritabanı kayıtları silinecektir. Devam etmek istiyor musunuz?.
+        /// </summary>
+        public static string DeleteMissingFilesConfirmMessage {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eksik dosya kaydı bulunamadı. Tüm resim kayıtlarının diskte fiziksel dosyası mevcut..
+        /// </summary>
+        public static string DeleteMissingFilesNoneFound {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesNoneFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diskte bulunmayan {0} adet resim kaydı veritabanından temizlendi..
+        /// </summary>
+        public static string DeleteMissingFilesSuccessFormat {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesSuccessFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diskte fiziksel dosyası olmayan veritabanı kayıtlarını temizler.
+        /// </summary>
+        public static string DeleteMissingFilesTooltip {
+            get {
+                return ResourceManager.GetString("DeleteMissingFilesTooltip", resourceCulture);
             }
         }
         
@@ -907,11 +1276,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fotoğrafları buraya sürükleyip bırakın.
+        /// </summary>
+        public static string DragDropPhotos {
+            get {
+                return ResourceManager.GetString("DragDropPhotos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Düzenle.
         /// </summary>
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Düzenle.
+        /// </summary>
+        public static string EditAction {
+            get {
+                return ResourceManager.GetString("EditAction", resourceCulture);
             }
         }
         
@@ -934,7 +1321,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to E-posta alani zorunlu..
+        ///   Looks up a localized string similar to E-posta alanı zorunlu..
         /// </summary>
         public static string EmailRequired {
             get {
@@ -952,7 +1339,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bitiş tarihi.
+        ///   Looks up a localized string similar to Bitiş.
         /// </summary>
         public static string EndDate {
             get {
@@ -979,7 +1366,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kurtarmak için E-postanızı Girin.
+        ///   Looks up a localized string similar to Kurtarmak için e-postanızı girin.
         /// </summary>
         public static string EnterYourEmailToRecover {
             get {
@@ -1006,6 +1393,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hata.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Excel.
         /// </summary>
         public static string Excel {
@@ -1015,20 +1411,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excel dosyası.
+        /// </summary>
+        public static string ExcelFile {
+            get {
+                return ResourceManager.GetString("ExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sadece .xls veya .xlsx uzantılı dosyalar geçerlidir..
+        /// </summary>
+        public static string ExcelFileAllowedOnly {
+            get {
+                return ResourceManager.GetString("ExcelFileAllowedOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel dosyası zorunludur..
+        /// </summary>
+        public static string ExcelFileRequired {
+            get {
+                return ResourceManager.GetString("ExcelFileRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel Yükle.
+        /// </summary>
+        public static string ExcelUpload {
+            get {
+                return ResourceManager.GetString("ExcelUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mevcut Ana Resim.
         /// </summary>
         public static string ExistingMainImageText {
             get {
                 return ResourceManager.GetString("ExistingMainImageText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hata.
-        /// </summary>
-        public static string Error {
-            get {
-                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -1069,11 +1492,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dosya Yok.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dosya türüne izin verilmiyor.
         /// </summary>
         public static string FileUploadAcceptFileTypes {
             get {
                 return ResourceManager.GetString("FileUploadAcceptFileTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resim Yükleme Sayfası.
+        /// </summary>
+        public static string FileUploadingPage {
+            get {
+                return ResourceManager.GetString("FileUploadingPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resim Yükleme Bölümü.
+        /// </summary>
+        public static string FileUploadingSection {
+            get {
+                return ResourceManager.GetString("FileUploadingSection", resourceCulture);
             }
         }
         
@@ -1105,20 +1555,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim Yükleme Sayfası.
+        ///   Looks up a localized string similar to Dosya Yükleme Bölümü.
         /// </summary>
-        public static string FileUploadingPage {
+        public static string FileUploadSection {
             get {
-                return ResourceManager.GetString("FileUploadingPage", resourceCulture);
+                return ResourceManager.GetString("FileUploadSection", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim Yükleme Bölümü.
+        ///   Looks up a localized string similar to Dosya Yükle.
         /// </summary>
-        public static string FileUploadingSection {
+        public static string FileUploadTitle {
             get {
-                return ResourceManager.GetString("FileUploadingSection", resourceCulture);
+                return ResourceManager.GetString("FileUploadTitle", resourceCulture);
             }
         }
         
@@ -1132,7 +1582,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Taşımak İstenilen Ürün Kategorisi.
+        ///   Looks up a localized string similar to Yeni üst kategori.
         /// </summary>
         public static string FirstCategoryId {
             get {
@@ -1141,7 +1591,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Taşımak İstenilen Menu Kategorisi.
+        ///   Looks up a localized string similar to Yeni üst menü.
         /// </summary>
         public static string FirstMenuCategoryId {
             get {
@@ -1159,11 +1609,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tam Resim.
+        ///   Looks up a localized string similar to Sabit indirim.
         /// </summary>
-        public static string FullImage {
+        public static string FixedDiscount {
             get {
-                return ResourceManager.GetString("FullImage", resourceCulture);
+                return ResourceManager.GetString("FixedDiscount", resourceCulture);
             }
         }
         
@@ -1177,6 +1627,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Web sitesinin alt bilgi (footer) alanında veya e-bülten kutusunun altında gösterilen kısa bilgilendirme ve slogan metnidir..
+        /// </summary>
+        public static string FooterDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("FooterDescriptionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Footer E-posta Listesi Açıklaması.
         /// </summary>
         public static string FooterEmailListDescription {
@@ -1186,11 +1645,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Footer alanındaki e-bülten (abone ol) formunun üzerinde yer alan teşvik edici davet metnidir..
+        /// </summary>
+        public static string FooterEmailListDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("FooterEmailListDescriptionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Footer Html İçerik.
         /// </summary>
         public static string FooterHtmlDescription {
             get {
                 return ResourceManager.GetString("FooterHtmlDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sitenin en alt (footer) kısmında gösterilecek özel HTML içeriğidir (ör. telif hakkı / copyright bilgisi, güvenli ödeme logoları, sertifikalar veya ek bağlantılar)..
+        /// </summary>
+        public static string FooterHtmlDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("FooterHtmlDescriptionTooltip", resourceCulture);
             }
         }
         
@@ -1209,6 +1686,15 @@ namespace Resources {
         public static string ForgotPassword {
             get {
                 return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tam Resim.
+        /// </summary>
+        public static string FullImage {
+            get {
+                return ResourceManager.GetString("FullImage", resourceCulture);
             }
         }
         
@@ -1249,11 +1735,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Google Analytics veya Google Tag Manager izleme kodunu (&lt;script&gt;...&lt;/script&gt;) buraya ekleyin. Bu kod, site genelinde ziyaretçi trafiğini ve sayfa analizlerini takip etmek için tüm sayfalara otomatik olarak eklenir..
+        /// </summary>
+        public static string GoogleAnalyticsTrackingScriptTooltip {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTrackingScriptTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Google Harita Script.
         /// </summary>
         public static string GoogleMapScript {
             get {
                 return ResourceManager.GetString("GoogleMapScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İletişim ve hakkımızda sayfalarında şirketinizin veya mağazanızın konumunu harita üzerinde göstermek için Google Haritalar&apos;dan alınan &lt;iframe&gt;...&lt;/iframe&gt; gömme (embed) kodudur..
+        /// </summary>
+        public static string GoogleMapScriptTooltip {
+            get {
+                return ResourceManager.GetString("GoogleMapScriptTooltip", resourceCulture);
             }
         }
         
@@ -1375,7 +1879,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toplam Kayit.
+        ///   Looks up a localized string similar to Toplam Kayıt.
         /// </summary>
         public static string GridResultRecordNumber {
             get {
@@ -1400,7 +1904,7 @@ namespace Resources {
                 return ResourceManager.GetString("GridSelectAllButtonText", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sağlık.
         /// </summary>
@@ -1438,7 +1942,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim Boy (Tavsiye: 800 Px).
+        ///   Looks up a localized string similar to Resim boyu (tavsiye: 800 px).
         /// </summary>
         public static string ImageHeight {
             get {
@@ -1456,6 +1960,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resim Seçildi.
+        /// </summary>
+        public static string ImagesSelected {
+            get {
+                return ResourceManager.GetString("ImagesSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resmi Göster.
         /// </summary>
         public static string ImageState {
@@ -1465,11 +1978,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resim En (Tavsiye: 800 Px).
+        ///   Looks up a localized string similar to Resim eni (tavsiye: 800 px).
         /// </summary>
         public static string ImageWidth {
             get {
                 return ResourceManager.GetString("ImageWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Veri İçe Aktar.
+        /// </summary>
+        public static string ImportData {
+            get {
+                return ResourceManager.GetString("ImportData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bu sayfada Excel dosyalarını yükleyerek toplu veri içe aktarımı yapabilirsiniz..
+        /// </summary>
+        public static string ImportDataHelp {
+            get {
+                return ResourceManager.GetString("ImportDataHelp", resourceCulture);
             }
         }
         
@@ -1501,6 +2032,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geçersiz doğrulama kodu..
+        /// </summary>
+        public static string InvalidVerificationCode {
+            get {
+                return ResourceManager.GetString("InvalidVerificationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IP Adresiniz : {0}.
         /// </summary>
         public static string IPAddressForAdmin {
@@ -1510,7 +2050,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yayında mı?.
+        ///   Looks up a localized string similar to Yayında mı.
         /// </summary>
         public static string IsActive {
             get {
@@ -1528,7 +2068,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Öne Çıkan Blog Yazisi.
+        ///   Looks up a localized string similar to Öne Çıkan Blog Yazısı.
         /// </summary>
         public static string IsFeaturedStory {
             get {
@@ -1537,7 +2077,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Önemli kampanyalardan eposta ile haberdar olmak istiyorum..
+        ///   Looks up a localized string similar to Önemli kampanyalardan e-posta ile haberdar olmak istiyorum..
         /// </summary>
         public static string IsPermissionGrantedDescription {
             get {
@@ -1555,7 +2095,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Teslimat adresleri ile Fatura adresi aynı oldugunu bilmenizi isteriz..
+        ///   Looks up a localized string similar to Teslimat adresi ile fatura adresinin aynı olduğunu bilmenizi isteriz..
         /// </summary>
         public static string IsSameAsShippingAddress {
             get {
@@ -1564,7 +2104,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsServices.
+        ///   Looks up a localized string similar to Hizmet listesi.
         /// </summary>
         public static string IsService {
             get {
@@ -1573,7 +2113,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Değer Listesi mi?.
+        ///   Looks up a localized string similar to Şablon değer listesi.
         /// </summary>
         public static string IsValues {
             get {
@@ -1587,6 +2127,15 @@ namespace Resources {
         public static string IyzicoInfo {
             get {
                 return ResourceManager.GetString("IyzicoInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iyzi Komisyon Ücreti.
+        /// </summary>
+        public static string IyziCommissionFee {
+            get {
+                return ResourceManager.GetString("IyziCommissionFee", resourceCulture);
             }
         }
         
@@ -1618,7 +2167,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Soyisim.
+        ///   Looks up a localized string similar to Son Dört Hane.
+        /// </summary>
+        public static string LastFourDigits {
+            get {
+                return ResourceManager.GetString("LastFourDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soyadı.
         /// </summary>
         public static string LastName {
             get {
@@ -1654,7 +2212,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lists.
+        ///   Looks up a localized string similar to Listeler.
         /// </summary>
         public static string Lists {
             get {
@@ -1787,7 +2345,7 @@ namespace Resources {
                 return ResourceManager.GetString("ManGender", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Medya.
         /// </summary>
@@ -1807,7 +2365,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Menu.
+        ///   Looks up a localized string similar to Menü.
         /// </summary>
         public static string Menu {
             get {
@@ -1816,7 +2374,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hazir Menu Sayfalari.
+        ///   Looks up a localized string similar to Alt menüsü olduğu için silinemez.
+        /// </summary>
+        public static string MenuCannotDeleteHasChildren {
+            get {
+                return ResourceManager.GetString("MenuCannotDeleteHasChildren", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hazır Menü Sayfaları.
         /// </summary>
         public static string MenuLink {
             get {
@@ -1825,7 +2392,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Menu Ana Kategori.
+        ///   Looks up a localized string similar to Menü linki seçimi yapınız..
+        /// </summary>
+        public static string MenuLinkSelectRequired {
+            get {
+                return ResourceManager.GetString("MenuLinkSelectRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menü Ana Kategori.
         /// </summary>
         public static string MenuParentId {
             get {
@@ -1834,7 +2410,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Menuler.
+        ///   Looks up a localized string similar to Menüler.
         /// </summary>
         public static string Menus {
             get {
@@ -1843,7 +2419,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ebeveyn için aynı menüyü seçemezsiniz.
+        ///   Looks up a localized string similar to Üst menü olarak aynı menüyü seçemezsiniz.
         /// </summary>
         public static string MenuSameSelectionErrorMessage {
             get {
@@ -1857,6 +2433,15 @@ namespace Resources {
         public static string MenuTreeName {
             get {
                 return ResourceManager.GetString("MenuTreeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tüccar Komisyon Oranı.
+        /// </summary>
+        public static string MerchantCommissionRate {
+            get {
+                return ResourceManager.GetString("MerchantCommissionRate", resourceCulture);
             }
         }
         
@@ -1877,7 +2462,7 @@ namespace Resources {
                 return ResourceManager.GetString("MetaKeywords", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Metrikler.
         /// </summary>
@@ -1888,7 +2473,43 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ürün Kategorileri Başka Kategoriye Taşımak.
+        ///   Looks up a localized string similar to Minimum fiyat maksimum fiyattan büyük olamaz..
+        /// </summary>
+        public static string MinPriceCannotBeGreaterThanMaxPrice {
+            get {
+                return ResourceManager.GetString("MinPriceCannotBeGreaterThanMaxPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eksik Dosya.
+        /// </summary>
+        public static string MissingFile {
+            get {
+                return ResourceManager.GetString("MissingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Diskte bulunamadı).
+        /// </summary>
+        public static string MissingFileNotFoundOnDisk {
+            get {
+                return ResourceManager.GetString("MissingFileNotFoundOnDisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Veritabanında kayıt var fakat fiziksel resim dosyası diskte yok.
+        /// </summary>
+        public static string MissingFileTooltip {
+            get {
+                return ResourceManager.GetString("MissingFileTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün kategorisini taşı.
         /// </summary>
         public static string MoveProductCategory {
             get {
@@ -1897,7 +2518,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Menu Kategorileri Başka Kategoriye Taşımak.
+        ///   Looks up a localized string similar to Menü kategorilerini başka kategoriye taşı.
         /// </summary>
         public static string MoveProductMenu {
             get {
@@ -1911,6 +2532,15 @@ namespace Resources {
         public static string MoveProductsInTrees {
             get {
                 return ResourceManager.GetString("MoveProductsInTrees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Çoklu Seçim &amp; Sıralama.
+        /// </summary>
+        public static string MultiSelectSorting {
+            get {
+                return ResourceManager.GetString("MultiSelectSorting", resourceCulture);
             }
         }
         
@@ -1951,7 +2581,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to İsim Zorunlu.
+        ///   Looks up a localized string similar to İsim zorunlu.
         /// </summary>
         public static string NamePropertyRequiredErrorMessage {
             get {
@@ -2005,6 +2635,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşteri sipariş notu bırakmamış..
+        /// </summary>
+        public static string NoCustomerNote {
+            get {
+                return ResourceManager.GetString("NoCustomerNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteri kaydı bulunamadı..
+        /// </summary>
+        public static string NoCustomerRecord {
+            get {
+                return ResourceManager.GetString("NoCustomerRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Henüz yüklenmiş bir Excel dosyası yok..
+        /// </summary>
+        public static string NoExcelFileUploaded {
+            get {
+                return ResourceManager.GetString("NoExcelFileUploaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resim Yok.
         /// </summary>
         public static string NoImage {
@@ -2012,34 +2669,16 @@ namespace Resources {
                 return ResourceManager.GetString("NoImage", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Ürün mevcut.
+        ///   Looks up a localized string similar to Bu siparişte ürün kaydı yok..
         /// </summary>
-        public static string CategoryHasProducts {
+        public static string NoOrderProducts {
             get {
-                return ResourceManager.GetString("CategoryHasProducts", resourceCulture);
+                return ResourceManager.GetString("NoOrderProducts", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Silinemez.
-        /// </summary>
-        public static string CategoryCannotDelete {
-            get {
-                return ResourceManager.GetString("CategoryCannotDelete", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Alt menüsü olduğu için silinemez.
-        /// </summary>
-        public static string MenuCannotDeleteHasChildren {
-            get {
-                return ResourceManager.GetString("MenuCannotDeleteHasChildren", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Normal Ayarlar.
         /// </summary>
@@ -2084,13 +2723,22 @@ namespace Resources {
                 return ResourceManager.GetString("NotValidEmailAddress", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Menüyü aç.
         /// </summary>
         public static string OpenMenu {
             get {
                 return ResourceManager.GetString("OpenMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to veya Dosyalara Göz Atın.
+        /// </summary>
+        public static string OrBrowseFiles {
+            get {
+                return ResourceManager.GetString("OrBrowseFiles", resourceCulture);
             }
         }
         
@@ -2104,11 +2752,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sipariş yorumları.
+        ///   Looks up a localized string similar to Sipariş Yorumları.
         /// </summary>
         public static string OrderComments {
             get {
                 return ResourceManager.GetString("OrderComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş Tarihi.
+        /// </summary>
+        public static string OrderDate {
+            get {
+                return ResourceManager.GetString("OrderDate", resourceCulture);
             }
         }
         
@@ -2122,6 +2779,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sipariş Detayı.
+        /// </summary>
+        public static string OrderDetail {
+            get {
+                return ResourceManager.GetString("OrderDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sipariş detayları.
         /// </summary>
         public static string OrderDetails {
@@ -2131,11 +2797,38 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sipariş Numarası.
+        ///   Looks up a localized string similar to Siparişi Yönet.
+        /// </summary>
+        public static string OrderManagement {
+            get {
+                return ResourceManager.GetString("OrderManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş No.
         /// </summary>
         public static string OrderNumber {
             get {
                 return ResourceManager.GetString("OrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş Genel Bakış.
+        /// </summary>
+        public static string OrderOverview {
+            get {
+                return ResourceManager.GetString("OrderOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş Edilen Ürünler.
+        /// </summary>
+        public static string OrderProducts {
+            get {
+                return ResourceManager.GetString("OrderProducts", resourceCulture);
             }
         }
         
@@ -2158,20 +2851,110 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Orijinal Genişlik={0} Yükseklik={1}.
+        ///   Looks up a localized string similar to Sipariş Durumu.
         /// </summary>
-        public static string OriginalWidthHeightFormat {
+        public static string OrderStatus {
             get {
-                return ResourceManager.GetString("OriginalWidthHeightFormat", resourceCulture);
+                return ResourceManager.GetString("OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İptal.
+        /// </summary>
+        public static string OrderStatusCancelled {
+            get {
+                return ResourceManager.GetString("OrderStatusCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teslim edildi.
+        /// </summary>
+        public static string OrderStatusDelivered {
+            get {
+                return ResourceManager.GetString("OrderStatusDelivered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hazırlanmakta.
+        /// </summary>
+        public static string OrderStatusInProgress {
+            get {
+                return ResourceManager.GetString("OrderStatusInProgress", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Sipariş Durumu.
         /// </summary>
-        public static string OrderStatus {
+        public static string OrderStatusLabel {
             get {
-                return ResourceManager.GetString("OrderStatus", resourceCulture);
+                return ResourceManager.GetString("OrderStatusLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yeni sipariş.
+        /// </summary>
+        public static string OrderStatusNewlyOrder {
+            get {
+                return ResourceManager.GetString("OrderStatusNewlyOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ödeme bekleniyor.
+        /// </summary>
+        public static string OrderStatusPaymentPending {
+            get {
+                return ResourceManager.GetString("OrderStatusPaymentPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İade tamamlandı.
+        /// </summary>
+        public static string OrderStatusRefunded {
+            get {
+                return ResourceManager.GetString("OrderStatusRefunded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İade.
+        /// </summary>
+        public static string OrderStatusReturned {
+            get {
+                return ResourceManager.GetString("OrderStatusReturned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargoya verildi.
+        /// </summary>
+        public static string OrderStatusShipped {
+            get {
+                return ResourceManager.GetString("OrderStatusShipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Özet.
+        /// </summary>
+        public static string OrderSummary {
+            get {
+                return ResourceManager.GetString("OrderSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Orijinal Genişlik={0} Yükseklik={1}.
+        /// </summary>
+        public static string OriginalWidthHeightFormat {
+            get {
+                return ResourceManager.GetString("OriginalWidthHeightFormat", resourceCulture);
             }
         }
         
@@ -2194,6 +2977,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sayfa teması seçimi yapınız..
+        /// </summary>
+        public static string PageThemeSelectRequired {
+            get {
+                return ResourceManager.GetString("PageThemeSelectRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ödenen Tutar.
+        /// </summary>
+        public static string PaidAmount {
+            get {
+                return ResourceManager.GetString("PaidAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Şifre.
         /// </summary>
         public static string Password {
@@ -2212,7 +3013,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Şifre en az 6 karakterden oluşmalı, büyük, küçük harf ve sayı içermelidir..
+        ///   Looks up a localized string similar to Şifre en az 6 karakterden oluşmalı; büyük harf, küçük harf ve sayı içermelidir..
         /// </summary>
         public static string PasswordInfoMessage {
             get {
@@ -2248,11 +3049,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BKM POS seçildi.
+        /// </summary>
+        public static string PaymentBkmPos {
+            get {
+                return ResourceManager.GetString("PaymentBkmPos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürün Detay Ödeme HTML.
         /// </summary>
         public static string PaymentDetailHtml {
             get {
                 return ResourceManager.GetString("PaymentDetailHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ödeme Detayları.
+        /// </summary>
+        public static string PaymentDetails {
+            get {
+                return ResourceManager.GetString("PaymentDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Başarısız.
+        /// </summary>
+        public static string PaymentFailed {
+            get {
+                return ResourceManager.GetString("PaymentFailed", resourceCulture);
             }
         }
         
@@ -2275,6 +3103,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ödeme durumu yok.
+        /// </summary>
+        public static string PaymentNoStatus {
+            get {
+                return ResourceManager.GetString("PaymentNoStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pecco dönüşü.
+        /// </summary>
+        public static string PaymentPecco {
+            get {
+                return ResourceManager.GetString("PaymentPecco", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ödeme Durumu.
         /// </summary>
         public static string PaymentStatus {
@@ -2284,11 +3130,74 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Başarılı.
+        /// </summary>
+        public static string PaymentSuccess {
+            get {
+                return ResourceManager.GetString("PaymentSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yüzde indirim.
+        /// </summary>
+        public static string PercentageDiscount {
+            get {
+                return ResourceManager.GetString("PercentageDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rolleri işaretleyerek yetkileri açıp kapatabilirsiniz..
+        /// </summary>
+        public static string PermissionManagementHelp {
+            get {
+                return ResourceManager.GetString("PermissionManagementHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cep Telefonu.
         /// </summary>
         public static string PhoneNumber {
             get {
                 return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fotoğraf yüklendi.
+        /// </summary>
+        public static string PhotosUploadedCount {
+            get {
+                return ResourceManager.GetString("PhotosUploadedCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fotoğraf sunucuya yüklendi ve veritabanına kaydedildi..
+        /// </summary>
+        public static string PhotosUploadedDesc {
+            get {
+                return ResourceManager.GetString("PhotosUploadedDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fotoğraflar yükleniyor.
+        /// </summary>
+        public static string PhotosUploading {
+            get {
+                return ResourceManager.GetString("PhotosUploading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fotoğraflar Başarıyla Yüklendi!.
+        /// </summary>
+        public static string PhotosUploadSuccess {
+            get {
+                return ResourceManager.GetString("PhotosUploadSuccess", resourceCulture);
             }
         }
         
@@ -2311,7 +3220,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lütfen Menü Kategorinizi Ağaçtan Seçin.
+        ///   Looks up a localized string similar to Lütfen menü kategorinizi ağaçtan seçin.
         /// </summary>
         public static string PleaseSelectYourMenuCategoryFromTree {
             get {
@@ -2347,7 +3256,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fiyat alani Zorunlu.
+        ///   Looks up a localized string similar to Fiyat alanı zorunlu..
         /// </summary>
         public static string PriceErrorMessage {
             get {
@@ -2379,6 +3288,15 @@ namespace Resources {
         public static string Product {
             get {
                 return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Tutarı.
+        /// </summary>
+        public static string ProductAmount {
+            get {
+                return ResourceManager.GetString("ProductAmount", resourceCulture);
             }
         }
         
@@ -2491,6 +3409,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ürün Detayları.
+        /// </summary>
+        public static string ProductDetails {
+            get {
+                return ResourceManager.GetString("ProductDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ürüne özel ek TL indirimi.
         /// </summary>
         public static string ProductDiscount {
@@ -2505,6 +3432,15 @@ namespace Resources {
         public static string ProductDynamicTemplates {
             get {
                 return ResourceManager.GetString("ProductDynamicTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Resmi.
+        /// </summary>
+        public static string ProductImage {
+            get {
+                return ResourceManager.GetString("ProductImage", resourceCulture);
             }
         }
         
@@ -2581,7 +3517,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Şablonlarin Deger Listesi.
+        ///   Looks up a localized string similar to Değer listeleri.
         /// </summary>
         public static string ProductSpecTemplateItemList {
             get {
@@ -2750,7 +3686,16 @@ namespace Resources {
                 return ResourceManager.GetString("Roles", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RSS Beslemeleri.
+        /// </summary>
+        public static string RssFeeds {
+            get {
+                return ResourceManager.GetString("RssFeeds", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Satışlar.
         /// </summary>
@@ -2761,7 +3706,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kayit Et ve Kapat.
+        ///   Looks up a localized string similar to Kaydet.
+        /// </summary>
+        public static string SaveButton {
+            get {
+                return ResourceManager.GetString("SaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kaydet ve Kapat.
         /// </summary>
         public static string SaveButtonAndCloseText {
             get {
@@ -2770,11 +3724,38 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kayit Et.
+        ///   Looks up a localized string similar to Kaydet.
         /// </summary>
         public static string SaveButtonText {
             get {
                 return ResourceManager.GetString("SaveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sola Kaydır.
+        /// </summary>
+        public static string ScrollLeft {
+            get {
+                return ResourceManager.GetString("ScrollLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sağa Kaydır.
+        /// </summary>
+        public static string ScrollRight {
+            get {
+                return ResourceManager.GetString("ScrollRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tabloyu Sağa/Sola Kaydır.
+        /// </summary>
+        public static string ScrollTable {
+            get {
+                return ResourceManager.GetString("ScrollTable", resourceCulture);
             }
         }
         
@@ -2797,7 +3778,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gideceği Yeni Kategori.
+        ///   Looks up a localized string similar to Taşınacak ürün kategorisi.
         /// </summary>
         public static string SecondCategoryId {
             get {
@@ -2806,7 +3787,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gideceği Yeni Menu Kategori.
+        ///   Looks up a localized string similar to Taşınacak menü.
         /// </summary>
         public static string SecondMenuCategoryId {
             get {
@@ -2838,6 +3819,15 @@ namespace Resources {
         public static string SelectedCategory {
             get {
                 return ResourceManager.GetString("SelectedCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to yetki seçili.
+        /// </summary>
+        public static string SelectedPermissions {
+            get {
+                return ResourceManager.GetString("SelectedPermissions", resourceCulture);
             }
         }
         
@@ -2887,6 +3877,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın..
+        /// </summary>
+        public static string SessionTimedOutPleaseLoginAgain {
+            get {
+                return ResourceManager.GetString("SessionTimedOutPleaseLoginAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ayar Anahtar Kelimesi.
         /// </summary>
         public static string SettingKey {
@@ -2914,7 +3913,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kargo Firmasi ismi.
+        ///   Looks up a localized string similar to Kargo Firması Adı.
         /// </summary>
         public static string ShipmentCompanyName {
             get {
@@ -2941,6 +3940,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Teslimat adresi ile aynı..
+        /// </summary>
+        public static string ShippingAddressSame {
+            get {
+                return ResourceManager.GetString("ShippingAddressSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo firması.
+        /// </summary>
+        public static string ShippingCompany {
+            get {
+                return ResourceManager.GetString("ShippingCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo firması.
+        /// </summary>
+        public static string ShippingCompanyPlaceholder {
+            get {
+                return ResourceManager.GetString("ShippingCompanyPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kargo Detayları.
+        /// </summary>
+        public static string ShippingDetails {
+            get {
+                return ResourceManager.GetString("ShippingDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kargo Bilgisi.
         /// </summary>
         public static string ShippingOptions {
@@ -2948,7 +3983,7 @@ namespace Resources {
                 return ResourceManager.GetString("ShippingOptions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Alışveriş Sepetleri.
         /// </summary>
@@ -2986,11 +4021,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ana sayfanın meta açıklama (description) etiketidir. Google ve diğer arama motorlarında arama sonuçlarının altında özet olarak gösterilen tanıtım metnidir (120-160 karakter önerilir)..
+        /// </summary>
+        public static string SiteIndexMetaDescriptionTooltip {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaDescriptionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Site Dizini Meta Anahtar Kelimeleri.
         /// </summary>
         public static string SiteIndexMetaKeywords {
             get {
                 return ResourceManager.GetString("SiteIndexMetaKeywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ana sayfanın meta anahtar kelimeleridir. Sitenizin içeriğini ve sunduğunuz ürün veya hizmetleri tanımlayan virgülle ayrılmış anahtar sözcüklerdir (ör. e-ticaret, led aydınlatma, toptan satış)..
+        /// </summary>
+        public static string SiteIndexMetaKeywordsTooltip {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaKeywordsTooltip", resourceCulture);
             }
         }
         
@@ -3004,6 +4057,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ana sayfanın başlık (title) etiketidir. Arama motoru sonuç sayfalarında ve tarayıcı sekmesinde görünen ana başlıktır. Markanızı ve ana faaliyet alanınızı içerecek şekilde 50-60 karakter önerilir..
+        /// </summary>
+        public static string SiteIndexMetaTitleTooltip {
+            get {
+                return ResourceManager.GetString("SiteIndexMetaTitleTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-Posta Ayarları.
         /// </summary>
         public static string SmtpEmailSettings {
@@ -3013,7 +4075,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sosyal Media Linkleri.
+        ///   Looks up a localized string similar to Sosyal Medya Linkleri.
         /// </summary>
         public static string SocialMediaSetttings {
             get {
@@ -3022,11 +4084,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Başlangıç tarihi.
+        ///   Looks up a localized string similar to Başlangıç.
         /// </summary>
         public static string StartDate {
             get {
                 return ResourceManager.GetString("StartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Başlangıç tarihi bitiş tarihinden önce olmalıdır..
+        /// </summary>
+        public static string StartDateMustBeBeforeEndDate {
+            get {
+                return ResourceManager.GetString("StartDateMustBeBeforeEndDate", resourceCulture);
             }
         }
         
@@ -3040,7 +4111,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yüklemeye başla ve Kayıt Et.
+        ///   Looks up a localized string similar to Yüklemeye başla ve Kaydet.
         /// </summary>
         public static string StartUploadingAndSave {
             get {
@@ -3063,6 +4134,15 @@ namespace Resources {
         public static string Static {
             get {
                 return ResourceManager.GetString("Static", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Durum değişince otomatik kaydedilir..
+        /// </summary>
+        public static string StatusChangeAutoSave {
+            get {
+                return ResourceManager.GetString("StatusChangeAutoSave", resourceCulture);
             }
         }
         
@@ -3182,13 +4262,22 @@ namespace Resources {
                 return ResourceManager.GetString("SuccessfullySavedCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sistem.
         /// </summary>
         public static string System {
             get {
                 return ResourceManager.GetString("System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sistem Sağlığı.
+        /// </summary>
+        public static string SystemHealth {
+            get {
+                return ResourceManager.GetString("SystemHealth", resourceCulture);
             }
         }
         
@@ -3200,7 +4289,7 @@ namespace Resources {
                 return ResourceManager.GetString("SystemMonitoring", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sistem ayarları.
         /// </summary>
@@ -3247,7 +4336,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Etiket Kategori İsim.
+        ///   Looks up a localized string similar to Etiket Kategori Adı.
         /// </summary>
         public static string TagCategoryName {
             get {
@@ -3256,7 +4345,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Etiket İsim.
+        ///   Looks up a localized string similar to Etiket Adı.
         /// </summary>
         public static string TagName {
             get {
@@ -3274,7 +4363,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Şablon adı.
+        ///   Looks up a localized string similar to Şablon Adı.
         /// </summary>
         public static string TemplateId {
             get {
@@ -3299,7 +4388,16 @@ namespace Resources {
                 return ResourceManager.GetString("TemplateXml", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Şartlar ve Koşullar.
+        /// </summary>
+        public static string TermsConditions {
+            get {
+                return ResourceManager.GetString("TermsConditions", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Küçük Resim.
         /// </summary>
@@ -3308,22 +4406,13 @@ namespace Resources {
                 return ResourceManager.GetString("ThumbsImage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Küçük Resim Genişlik={0} Yükseklik={1}.
         /// </summary>
         public static string ThumbsWidthHeightFormat {
             get {
                 return ResourceManager.GetString("ThumbsWidthHeightFormat", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Şartlar ve Koşullar.
-        /// </summary>
-        public static string TermsConditions {
-            get {
-                return ResourceManager.GetString("TermsConditions", resourceCulture);
             }
         }
         
@@ -3335,7 +4424,7 @@ namespace Resources {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Kenar çubuğunu aç/kapat.
         /// </summary>
@@ -3351,6 +4440,15 @@ namespace Resources {
         public static string TotalOrderNumber {
             get {
                 return ResourceManager.GetString("TotalOrderNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toplam Ödenen Fiyat.
+        /// </summary>
+        public static string TotalPaidPrice {
+            get {
+                return ResourceManager.GetString("TotalPaidPrice", resourceCulture);
             }
         }
         
@@ -3373,11 +4471,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Takip numarası.
+        /// </summary>
+        public static string TrackingNumber {
+            get {
+                return ResourceManager.GetString("TrackingNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Takip numarası.
+        /// </summary>
+        public static string TrackingNumberPlaceholder {
+            get {
+                return ResourceManager.GetString("TrackingNumberPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Twitter Link.
         /// </summary>
         public static string TwitterWebSiteLink {
             get {
                 return ResourceManager.GetString("TwitterWebSiteLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to İki faktörlü doğrulama başarıyla etkinleştirildi..
+        /// </summary>
+        public static string TwoFactorEnabledSuccess {
+            get {
+                return ResourceManager.GetString("TwoFactorEnabledSuccess", resourceCulture);
             }
         }
         
@@ -3409,6 +4534,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yükle.
+        /// </summary>
+        public static string UploadButton {
+            get {
+                return ResourceManager.GetString("UploadButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yükleme Tamamlandı.
+        /// </summary>
+        public static string UploadComplete {
+            get {
+                return ResourceManager.GetString("UploadComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yüklenen Resimler Bölümü.
         /// </summary>
         public static string UploadedFilesSection {
@@ -3416,16 +4559,34 @@ namespace Resources {
                 return ResourceManager.GetString("UploadedFilesSection", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Yükleme hatası.
+        ///   Looks up a localized string similar to Yükleme Hatası.
         /// </summary>
         public static string UploadError {
             get {
                 return ResourceManager.GetString("UploadError", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yeni Resimler Yükle.
+        /// </summary>
+        public static string UploadNewImages {
+            get {
+                return ResourceManager.GetString("UploadNewImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yükleme İlerlemesi.
+        /// </summary>
+        public static string UploadProgress {
+            get {
+                return ResourceManager.GetString("UploadProgress", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Kullanıcılar.
         /// </summary>
@@ -3450,6 +4611,24 @@ namespace Resources {
         public static string VideoUrl {
             get {
                 return ResourceManager.GetString("VideoUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteri, ürün, ödeme ve kargo bilgilerini buradan inceleyebilir; durum, not ve kargo bilgisini güncelleyebilirsiniz..
+        /// </summary>
+        public static string ViewOrderInfo {
+            get {
+                return ResourceManager.GetString("ViewOrderInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yüklenen Resimleri Tabloda Göster.
+        /// </summary>
+        public static string ViewUploadedImages {
+            get {
+                return ResourceManager.GetString("ViewUploadedImages", resourceCulture);
             }
         }
         
@@ -3481,7 +4660,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Web Sitesi Şirketi E-posta Adresi uygun bir email adresi yaziniz. Zorunlu Alan..
+        ///   Looks up a localized string similar to Lütfen geçerli bir web sitesi şirket e-posta adresi yazınız. Zorunlu alan..
         /// </summary>
         public static string WebSiteCompanyEmailAddressRequired {
             get {
@@ -3508,11 +4687,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Müşterilerinizin doğrudan WhatsApp üzerinden mesaj gönderebilmesi için kullanılacak bağlantıdır (ör. https://wa.me/905551234567). Sitedeki WhatsApp butonlarında ve doğrudan iletişim linklerinde kullanılır..
+        /// </summary>
+        public static string WhatsAppCommunicationLinkTooltip {
+            get {
+                return ResourceManager.GetString("WhatsAppCommunicationLinkTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WhatsApp Script.
         /// </summary>
         public static string WhatsAppCommunicationScript {
             get {
                 return ResourceManager.GetString("WhatsAppCommunicationScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web sitenizde yüzen (floating) WhatsApp canlı destek veya sohbet eklentisi (widget) çalıştırmak için kullanılan JavaScript kodudur. Eklenti sağlayıcınızdan aldığınız script kodunu buraya yapıştırın..
+        /// </summary>
+        public static string WhatsAppCommunicationScriptTooltip {
+            get {
+                return ResourceManager.GetString("WhatsAppCommunicationScriptTooltip", resourceCulture);
             }
         }
         
@@ -3578,337 +4775,5397 @@ namespace Resources {
                 return ResourceManager.GetString("Zopim", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Geçersiz doğrulama kodu..
-        /// </summary>
-        public static string InvalidVerificationCode {
+
+        public static string AdminPanel {
             get {
-                return ResourceManager.GetString("InvalidVerificationCode", resourceCulture);
+                return ResourceManager.GetString("AdminPanel", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın..
-        /// </summary>
-        public static string SessionTimedOutPleaseLoginAgain {
+
+        public static string AdminPanelTitleFormat {
             get {
-                return ResourceManager.GetString("SessionTimedOutPleaseLoginAgain", resourceCulture);
+                return ResourceManager.GetString("AdminPanelTitleFormat", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Authenticator anahtarı bulunamadı. Lütfen sayfayı yenileyin..
-        /// </summary>
-        public static string AuthenticatorKeyNotFound {
+
+        public static string Admin {
             get {
-                return ResourceManager.GetString("AuthenticatorKeyNotFound", resourceCulture);
+                return ResourceManager.GetString("Admin", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to İki faktörlü doğrulama başarıyla etkinleştirildi..
-        /// </summary>
-        public static string TwoFactorEnabledSuccess {
+
+        public static string OtherLinks {
             get {
-                return ResourceManager.GetString("TwoFactorEnabledSuccess", resourceCulture);
+                return ResourceManager.GetString("OtherLinks", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Excel dosyası zorunludur..
-        /// </summary>
-        public static string ExcelFileRequired {
+
+        public static string SearchMenu {
             get {
-                return ResourceManager.GetString("ExcelFileRequired", resourceCulture);
+                return ResourceManager.GetString("SearchMenu", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sadece .xls veya .xlsx uzantılı dosyalar geçerlidir..
-        /// </summary>
-        public static string ExcelFileAllowedOnly {
+
+        public static string NoMatchingMenuFound {
             get {
-                return ResourceManager.GetString("ExcelFileAllowedOnly", resourceCulture);
+                return ResourceManager.GetString("NoMatchingMenuFound", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Menü linki seçimi yapınız..
-        /// </summary>
-        public static string MenuLinkSelectRequired {
+
+        public static string BulkOperations {
             get {
-                return ResourceManager.GetString("MenuLinkSelectRequired", resourceCulture);
+                return ResourceManager.GetString("BulkOperations", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sayfa teması seçimi yapınız..
-        /// </summary>
-        public static string PageThemeSelectRequired {
+
+        public static string BulkOperationsHint {
             get {
-                return ResourceManager.GetString("PageThemeSelectRequired", resourceCulture);
+                return ResourceManager.GetString("BulkOperationsHint", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Minimum fiyat maksimum fiyattan büyük olamaz..
-        /// </summary>
-        public static string MinPriceCannotBeGreaterThanMaxPrice {
+
+        public static string Density {
             get {
-                return ResourceManager.GetString("MinPriceCannotBeGreaterThanMaxPrice", resourceCulture);
+                return ResourceManager.GetString("Density", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Başlangıç tarihi bitiş tarihinden önce olmalıdır..
-        /// </summary>
-        public static string StartDateMustBeBeforeEndDate {
+
+        public static string GridDensity {
             get {
-                return ResourceManager.GetString("StartDateMustBeBeforeEndDate", resourceCulture);
+                return ResourceManager.GetString("GridDensity", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Eksik Dosyaları Temizle (Diskte Olmayan Kayıtları Sil).
-        /// </summary>
-        public static string DeleteMissingFilesButtonText {
+
+        public static string DensityComfortable {
             get {
-                return ResourceManager.GetString("DeleteMissingFilesButtonText", resourceCulture);
+                return ResourceManager.GetString("DensityComfortable", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Diskte fiziksel dosyası bulunmayan tüm veritabanı kayıtları silinecektir. Devam etmek istiyor musunuz?.
-        /// </summary>
-        public static string DeleteMissingFilesConfirmMessage {
+
+        public static string DensityCompact {
             get {
-                return ResourceManager.GetString("DeleteMissingFilesConfirmMessage", resourceCulture);
+                return ResourceManager.GetString("DensityCompact", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Diskte fiziksel dosyası olmayan veritabanı kayıtlarını temizler.
-        /// </summary>
-        public static string DeleteMissingFilesTooltip {
+
+        public static string PublishedShort {
             get {
-                return ResourceManager.GetString("DeleteMissingFilesTooltip", resourceCulture);
+                return ResourceManager.GetString("PublishedShort", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Diskte bulunmayan {0} adet resim kaydı veritabanından temizlendi..
-        /// </summary>
-        public static string DeleteMissingFilesSuccessFormat {
+
+        public static string MainPageShort {
             get {
-                return ResourceManager.GetString("DeleteMissingFilesSuccessFormat", resourceCulture);
+                return ResourceManager.GetString("MainPageShort", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Eksik dosya kaydı bulunamadı. Tüm resim kayıtlarının diskte fiziksel dosyası mevcut..
-        /// </summary>
-        public static string DeleteMissingFilesNoneFound {
+
+        public static string CampaignShort {
             get {
-                return ResourceManager.GetString("DeleteMissingFilesNoneFound", resourceCulture);
+                return ResourceManager.GetString("CampaignShort", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dosya Yok.
-        /// </summary>
-        public static string FileNotFound {
+
+        public static string ImageShort {
             get {
-                return ResourceManager.GetString("FileNotFound", resourceCulture);
+                return ResourceManager.GetString("ImageShort", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to (Diskte bulunamadı).
-        /// </summary>
-        public static string MissingFileNotFoundOnDisk {
+
+        public static string Loading {
             get {
-                return ResourceManager.GetString("MissingFileNotFoundOnDisk", resourceCulture);
+                return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Eksik Dosya.
-        /// </summary>
-        public static string MissingFile {
+
+        public static string GridLoadError {
             get {
-                return ResourceManager.GetString("MissingFile", resourceCulture);
+                return ResourceManager.GetString("GridLoadError", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Veritabanında kayıt var fakat fiziksel resim dosyası diskte yok.
-        /// </summary>
-        public static string MissingFileTooltip {
+
+        public static string Comments {
             get {
-                return ResourceManager.GetString("MissingFileTooltip", resourceCulture);
+                return ResourceManager.GetString("Comments", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Google Analytics veya Google Tag Manager izleme kodunu (&lt;script&gt;...&lt;/script&gt;) buraya ekleyin. Bu kod, site genelinde ziyaretçi trafiğini ve sayfa analizlerini takip etmek için tüm sayfalara otomatik olarak eklenir..
-        /// </summary>
-        public static string GoogleAnalyticsTrackingScriptTooltip {
+
+        public static string SaveNoteAndShipment {
             get {
-                return ResourceManager.GetString("GoogleAnalyticsTrackingScriptTooltip", resourceCulture);
+                return ResourceManager.GetString("SaveNoteAndShipment", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Müşterilerinizin doğrudan WhatsApp üzerinden mesaj gönderebilmesi için kullanılacak bağlantıdır (ör. https://wa.me/905551234567). Sitedeki WhatsApp butonlarında ve doğrudan iletişim linklerinde kullanılır..
-        /// </summary>
-        public static string WhatsAppCommunicationLinkTooltip {
+
+        public static string All {
             get {
-                return ResourceManager.GetString("WhatsAppCommunicationLinkTooltip", resourceCulture);
+                return ResourceManager.GetString("All", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web sitenizde yüzen (floating) WhatsApp canlı destek veya sohbet eklentisi (widget) çalıştırmak için kullanılan JavaScript kodudur. Eklenti sağlayıcınızdan aldığınız script kodunu buraya yapıştırın..
-        /// </summary>
-        public static string WhatsAppCommunicationScriptTooltip {
+
+        public static string Publish {
             get {
-                return ResourceManager.GetString("WhatsAppCommunicationScriptTooltip", resourceCulture);
+                return ResourceManager.GetString("Publish", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to İletişim ve hakkımızda sayfalarında şirketinizin veya mağazanızın konumunu harita üzerinde göstermek için Google Haritalar'dan alınan &lt;iframe&gt;...&lt;/iframe&gt; gömme (embed) kodudur..
-        /// </summary>
-        public static string GoogleMapScriptTooltip {
+
+        public static string Unpublish {
             get {
-                return ResourceManager.GetString("GoogleMapScriptTooltip", resourceCulture);
+                return ResourceManager.GetString("Unpublish", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sistem tarafından gönderilen e-postaların (sipariş onayları, şifre sıfırlama, bildirimler) gönderen kısmında (From) görünecek e-posta adresidir..
-        /// </summary>
-        public static string AdminEmailTooltip {
+
+        public static string To {
             get {
-                return ResourceManager.GetString("AdminEmailTooltip", resourceCulture);
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to E-postaların iletileceği SMTP sunucusunun adresi veya alan adıdır (ör. smtp.gmail.com, mail.siteniz.com veya smtp.office365.com)..
-        /// </summary>
-        public static string AdminEmailHostTooltip {
+
+        public static string ShowingAll {
             get {
-                return ResourceManager.GetString("AdminEmailHostTooltip", resourceCulture);
+                return ResourceManager.GetString("ShowingAll", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMTP sunucusunun e-posta gönderimi için dinlediği port numarasıdır. Genellikle SSL için 465, TLS/STARTTLS için 587, şifresiz için 25 kullanılır..
-        /// </summary>
-        public static string AdminEmailPortTooltip {
+
+        public static string ShowAll {
             get {
-                return ResourceManager.GetString("AdminEmailPortTooltip", resourceCulture);
+                return ResourceManager.GetString("ShowAll", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Giden e-postalarda alıcının göreceği gönderen adıdır (ör. Mağaza Adı veya Müşteri Hizmetleri)..
-        /// </summary>
-        public static string AdminEmailDisplayNameTooltip {
+
+        public static string ShowDefault {
             get {
-                return ResourceManager.GetString("AdminEmailDisplayNameTooltip", resourceCulture);
+                return ResourceManager.GetString("ShowDefault", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak kullanıcı adı veya tam e-posta adresidir..
-        /// </summary>
-        public static string AdminUserNameTooltip {
+
+        public static string SystemDefault {
             get {
-                return ResourceManager.GetString("AdminUserNameTooltip", resourceCulture);
+                return ResourceManager.GetString("SystemDefault", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMTP sunucusuna bağlanırken kimlik doğrulaması için kullanılacak e-posta şifresi veya uygulama özel şifresidir (App Password)..
-        /// </summary>
-        public static string AdminEmailPasswordTooltip {
+
+        public static string ClearShowAll {
             get {
-                return ResourceManager.GetString("AdminEmailPasswordTooltip", resourceCulture);
+                return ResourceManager.GetString("ClearShowAll", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMTP sunucusu ile web uygulaması arasındaki e-posta iletişiminin SSL/TLS ile şifrelenmesini sağlar. Güvenli e-posta gönderimi için genellikle açık tutulmalıdır..
-        /// </summary>
-        public static string AdminEmailEnableSslTooltip {
+
+        public static string Records {
             get {
-                return ResourceManager.GetString("AdminEmailEnableSslTooltip", resourceCulture);
+                return ResourceManager.GetString("Records", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMTP kimlik doğrulaması için sunucunun varsayılan Windows/IIS kimlik bilgilerinin kullanılıp kullanılmayacağını belirler. Özel kullanıcı adı ve şifre girildiğinde kapalı (false) olmalıdır..
-        /// </summary>
-        public static string AdminEmailUseDefaultCredentialsTooltip {
+
+        public static string Through {
             get {
-                return ResourceManager.GetString("AdminEmailUseDefaultCredentialsTooltip", resourceCulture);
+                return ResourceManager.GetString("Through", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ana sayfanın başlık (title) etiketidir. Arama motoru sonuç sayfalarında ve tarayıcı sekmesinde görünen ana başlıktır. Markanızı ve ana faaliyet alanınızı içerecek şekilde 50-60 karakter önerilir..
-        /// </summary>
-        public static string SiteIndexMetaTitleTooltip {
+
+        public static string Of {
             get {
-                return ResourceManager.GetString("SiteIndexMetaTitleTooltip", resourceCulture);
+                return ResourceManager.GetString("Of", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ana sayfanın meta anahtar kelimeleridir. Sitenizin içeriğini ve sunduğunuz ürün veya hizmetleri tanımlayan virgülle ayrılmış anahtar sözcüklerdir (ör. e-ticaret, led aydınlatma, toptan satış)..
-        /// </summary>
-        public static string SiteIndexMetaKeywordsTooltip {
+
+        public static string Previous {
             get {
-                return ResourceManager.GetString("SiteIndexMetaKeywordsTooltip", resourceCulture);
+                return ResourceManager.GetString("Previous", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ana sayfanın meta açıklama (description) etiketidir. Google ve diğer arama motorlarında arama sonuçlarının altında özet olarak gösterilen tanıtım metnidir (120-160 karakter önerilir)..
-        /// </summary>
-        public static string SiteIndexMetaDescriptionTooltip {
+
+        public static string Next {
             get {
-                return ResourceManager.GetString("SiteIndexMetaDescriptionTooltip", resourceCulture);
+                return ResourceManager.GetString("Next", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web sitesinin alt bilgi (footer) alanında veya e-bülten kutusunun altında gösterilen kısa bilgilendirme ve slogan metnidir..
-        /// </summary>
-        public static string FooterDescriptionTooltip {
+
+        public static string Page {
             get {
-                return ResourceManager.GetString("FooterDescriptionTooltip", resourceCulture);
+                return ResourceManager.GetString("Page", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Footer alanındaki e-bülten (abone ol) formunun üzerinde yer alan teşvik edici davet metnidir..
-        /// </summary>
-        public static string FooterEmailListDescriptionTooltip {
+
+        public static string Rows {
             get {
-                return ResourceManager.GetString("FooterEmailListDescriptionTooltip", resourceCulture);
+                return ResourceManager.GetString("Rows", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sitenin en alt (footer) kısmında gösterilecek özel HTML içeriğidir (ör. telif hakkı / copyright bilgisi, güvenli ödeme logoları, sertifikalar veya ek bağlantılar)..
-        /// </summary>
-        public static string FooterHtmlDescriptionTooltip {
+
+        public static string Row {
             get {
-                return ResourceManager.GetString("FooterHtmlDescriptionTooltip", resourceCulture);
+                return ResourceManager.GetString("Row", resourceCulture);
+            }
+        }
+
+        public static string Selected {
+            get {
+                return ResourceManager.GetString("Selected", resourceCulture);
+            }
+        }
+
+        public static string Dashboard {
+            get {
+                return ResourceManager.GetString("Dashboard", resourceCulture);
+            }
+        }
+
+        public static string CatalogAndContentQuickAccess {
+            get {
+                return ResourceManager.GetString("CatalogAndContentQuickAccess", resourceCulture);
+            }
+        }
+
+        public static string ContentAndShowcase {
+            get {
+                return ResourceManager.GetString("ContentAndShowcase", resourceCulture);
+            }
+        }
+
+        public static string MainPageImagesDesc {
+            get {
+                return ResourceManager.GetString("MainPageImagesDesc", resourceCulture);
+            }
+        }
+
+        public static string MenusDesc {
+            get {
+                return ResourceManager.GetString("MenusDesc", resourceCulture);
+            }
+        }
+
+        public static string ProductsDesc {
+            get {
+                return ResourceManager.GetString("ProductsDesc", resourceCulture);
+            }
+        }
+
+        public static string ProductsDescNoPrice {
+            get {
+                return ResourceManager.GetString("ProductsDescNoPrice", resourceCulture);
+            }
+        }
+
+        public static string ProductCategoriesDesc {
+            get {
+                return ResourceManager.GetString("ProductCategoriesDesc", resourceCulture);
+            }
+        }
+
+        public static string BrandsDesc {
+            get {
+                return ResourceManager.GetString("BrandsDesc", resourceCulture);
+            }
+        }
+
+        public static string OrdersDesc {
+            get {
+                return ResourceManager.GetString("OrdersDesc", resourceCulture);
+            }
+        }
+
+        public static string CustomersDesc {
+            get {
+                return ResourceManager.GetString("CustomersDesc", resourceCulture);
+            }
+        }
+
+        public static string ShippingAndStore {
+            get {
+                return ResourceManager.GetString("ShippingAndStore", resourceCulture);
+            }
+        }
+
+        public static string ShippingAndStoreDesc {
+            get {
+                return ResourceManager.GetString("ShippingAndStoreDesc", resourceCulture);
+            }
+        }
+
+        public static string IyzicoPanelDesc {
+            get {
+                return ResourceManager.GetString("IyzicoPanelDesc", resourceCulture);
+            }
+        }
+
+        public static string SearchMin2Chars {
+            get {
+                return ResourceManager.GetString("SearchMin2Chars", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelHeroLead {
+            get {
+                return ResourceManager.GetString("AdminPanelHeroLead", resourceCulture);
+            }
+        }
+
+        public static string AdminSettingsTitle {
+            get {
+                return ResourceManager.GetString("AdminSettingsTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminSettingsDesc {
+            get {
+                return ResourceManager.GetString("AdminSettingsDesc", resourceCulture);
+            }
+        }
+
+        public static string SystemSettingsDesc {
+            get {
+                return ResourceManager.GetString("SystemSettingsDesc", resourceCulture);
+            }
+        }
+
+        public static string SystemSettingsDescNoPrice {
+            get {
+                return ResourceManager.GetString("SystemSettingsDescNoPrice", resourceCulture);
+            }
+        }
+
+        public static string MailTemplatesDesc {
+            get {
+                return ResourceManager.GetString("MailTemplatesDesc", resourceCulture);
+            }
+        }
+
+        public static string UsersDesc {
+            get {
+                return ResourceManager.GetString("UsersDesc", resourceCulture);
+            }
+        }
+
+        public static string CacheManagement {
+            get {
+                return ResourceManager.GetString("CacheManagement", resourceCulture);
+            }
+        }
+
+        public static string CacheManagementLead {
+            get {
+                return ResourceManager.GetString("CacheManagementLead", resourceCulture);
+            }
+        }
+
+        public static string ProductPriceCache {
+            get {
+                return ResourceManager.GetString("ProductPriceCache", resourceCulture);
+            }
+        }
+
+        public static string ProductPriceCacheDesc {
+            get {
+                return ResourceManager.GetString("ProductPriceCacheDesc", resourceCulture);
+            }
+        }
+
+        public static string CategoryCache {
+            get {
+                return ResourceManager.GetString("CategoryCache", resourceCulture);
+            }
+        }
+
+        public static string CategoryCacheDesc {
+            get {
+                return ResourceManager.GetString("CategoryCacheDesc", resourceCulture);
+            }
+        }
+
+        public static string SettingCache {
+            get {
+                return ResourceManager.GetString("SettingCache", resourceCulture);
+            }
+        }
+
+        public static string SettingCacheDesc {
+            get {
+                return ResourceManager.GetString("SettingCacheDesc", resourceCulture);
+            }
+        }
+
+        public static string ContentCache {
+            get {
+                return ResourceManager.GetString("ContentCache", resourceCulture);
+            }
+        }
+
+        public static string ContentCacheDesc {
+            get {
+                return ResourceManager.GetString("ContentCacheDesc", resourceCulture);
+            }
+        }
+
+        public static string ClearAllStorefrontCache {
+            get {
+                return ResourceManager.GetString("ClearAllStorefrontCache", resourceCulture);
+            }
+        }
+
+        public static string ClearAllStorefrontCacheHint {
+            get {
+                return ResourceManager.GetString("ClearAllStorefrontCacheHint", resourceCulture);
+            }
+        }
+
+        public static string PaymentAndCard {
+            get {
+                return ResourceManager.GetString("PaymentAndCard", resourceCulture);
+            }
+        }
+
+        public static string Shipment {
+            get {
+                return ResourceManager.GetString("Shipment", resourceCulture);
+            }
+        }
+
+        public static string NotAssignedYet {
+            get {
+                return ResourceManager.GetString("NotAssignedYet", resourceCulture);
+            }
+        }
+
+        public static string CustomerAndAddressInfo {
+            get {
+                return ResourceManager.GetString("CustomerAndAddressInfo", resourceCulture);
+            }
+        }
+
+        public static string DeliveryAddress {
+            get {
+                return ResourceManager.GetString("DeliveryAddress", resourceCulture);
+            }
+        }
+
+        public static string NoDeliveryAddress {
+            get {
+                return ResourceManager.GetString("NoDeliveryAddress", resourceCulture);
+            }
+        }
+
+        public static string NoBillingAddress {
+            get {
+                return ResourceManager.GetString("NoBillingAddress", resourceCulture);
+            }
+        }
+
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+
+        public static string PaymentAndCardInfo {
+            get {
+                return ResourceManager.GetString("PaymentAndCardInfo", resourceCulture);
+            }
+        }
+
+        public static string ShowTechDetails {
+            get {
+                return ResourceManager.GetString("ShowTechDetails", resourceCulture);
+            }
+        }
+
+        public static string CardBrand {
+            get {
+                return ResourceManager.GetString("CardBrand", resourceCulture);
+            }
+        }
+
+        public static string CardFamily {
+            get {
+                return ResourceManager.GetString("CardFamily", resourceCulture);
+            }
+        }
+
+        public static string PaymentId {
+            get {
+                return ResourceManager.GetString("PaymentId", resourceCulture);
+            }
+        }
+
+        public static string Currency {
+            get {
+                return ResourceManager.GetString("Currency", resourceCulture);
+            }
+        }
+
+        public static string TechDetailsNote {
+            get {
+                return ResourceManager.GetString("TechDetailsNote", resourceCulture);
+            }
+        }
+
+        public static string AdminNotePlaceholder {
+            get {
+                return ResourceManager.GetString("AdminNotePlaceholder", resourceCulture);
+            }
+        }
+
+        public static string OpenTracking {
+            get {
+                return ResourceManager.GetString("OpenTracking", resourceCulture);
+            }
+        }
+
+        public static string CreationDate {
+            get {
+                return ResourceManager.GetString("CreationDate", resourceCulture);
+            }
+        }
+
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+
+        public static string HowToUse {
+            get {
+                return ResourceManager.GetString("HowToUse", resourceCulture);
+            }
+        }
+
+        public static string ClickToToggle {
+            get {
+                return ResourceManager.GetString("ClickToToggle", resourceCulture);
+            }
+        }
+
+        public static string GeneralSystemStatus {
+            get {
+                return ResourceManager.GetString("GeneralSystemStatus", resourceCulture);
+            }
+        }
+
+        public static string Checking {
+            get {
+                return ResourceManager.GetString("Checking", resourceCulture);
+            }
+        }
+
+        public static string ComponentCount {
+            get {
+                return ResourceManager.GetString("ComponentCount", resourceCulture);
+            }
+        }
+
+        public static string LastChecked {
+            get {
+                return ResourceManager.GetString("LastChecked", resourceCulture);
+            }
+        }
+
+        public static string NeverChecked {
+            get {
+                return ResourceManager.GetString("NeverChecked", resourceCulture);
+            }
+        }
+
+        public static string RefreshNow {
+            get {
+                return ResourceManager.GetString("RefreshNow", resourceCulture);
+            }
+        }
+
+        public static string SystemComponentsAndHealthChecks {
+            get {
+                return ResourceManager.GetString("SystemComponentsAndHealthChecks", resourceCulture);
+            }
+        }
+
+        public static string Component {
+            get {
+                return ResourceManager.GetString("Component", resourceCulture);
+            }
+        }
+
+        public static string ResponseTime {
+            get {
+                return ResourceManager.GetString("ResponseTime", resourceCulture);
+            }
+        }
+
+        public static string DiagnosticDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticDescription", resourceCulture);
+            }
+        }
+
+        public static string QueryingHealthChecks {
+            get {
+                return ResourceManager.GetString("QueryingHealthChecks", resourceCulture);
+            }
+        }
+
+        public static string ComponentNormal {
+            get {
+                return ResourceManager.GetString("ComponentNormal", resourceCulture);
+            }
+        }
+
+        public static string ConnectionOrResponseError {
+            get {
+                return ResourceManager.GetString("ConnectionOrResponseError", resourceCulture);
+            }
+        }
+
+        public static string SystemHealthyAllUp {
+            get {
+                return ResourceManager.GetString("SystemHealthyAllUp", resourceCulture);
+            }
+        }
+
+        public static string SystemIssueDetected {
+            get {
+                return ResourceManager.GetString("SystemIssueDetected", resourceCulture);
+            }
+        }
+
+        public static string JustNow {
+            get {
+                return ResourceManager.GetString("JustNow", resourceCulture);
+            }
+        }
+
+        public static string SecondsAgo {
+            get {
+                return ResourceManager.GetString("SecondsAgo", resourceCulture);
+            }
+        }
+
+        public static string AdminGeneralSettingsHelpLead {
+            get {
+                return ResourceManager.GetString("AdminGeneralSettingsHelpLead", resourceCulture);
+            }
+        }
+
+        public static string AdminGeneralSettingsCargoHelp {
+            get {
+                return ResourceManager.GetString("AdminGeneralSettingsCargoHelp", resourceCulture);
+            }
+        }
+
+        public static string AdminGeneralSettingsSeoHelp {
+            get {
+                return ResourceManager.GetString("AdminGeneralSettingsSeoHelp", resourceCulture);
+            }
+        }
+
+        public static string AdminGeneralSettingsFooterHelp {
+            get {
+                return ResourceManager.GetString("AdminGeneralSettingsFooterHelp", resourceCulture);
+            }
+        }
+
+        public static string AdminGeneralSettingsSaveWarning {
+            get {
+                return ResourceManager.GetString("AdminGeneralSettingsSaveWarning", resourceCulture);
+            }
+        }
+
+        public static string ReportSalesByDateRangeTitle {
+            get {
+                return ResourceManager.GetString("ReportSalesByDateRangeTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportSalesByDateRangeDesc {
+            get {
+                return ResourceManager.GetString("ReportSalesByDateRangeDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportGetRegionalSalesReportTitle {
+            get {
+                return ResourceManager.GetString("ReportGetRegionalSalesReportTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportGetRegionalSalesReportDesc {
+            get {
+                return ResourceManager.GetString("ReportGetRegionalSalesReportDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportOrderVolumeReportTitle {
+            get {
+                return ResourceManager.GetString("ReportOrderVolumeReportTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportOrderVolumeReportDesc {
+            get {
+                return ResourceManager.GetString("ReportOrderVolumeReportDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportPaymentMethodTitle {
+            get {
+                return ResourceManager.GetString("ReportPaymentMethodTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportPaymentMethodDesc {
+            get {
+                return ResourceManager.GetString("ReportPaymentMethodDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportPaymentStatusTitle {
+            get {
+                return ResourceManager.GetString("ReportPaymentStatusTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportPaymentStatusDesc {
+            get {
+                return ResourceManager.GetString("ReportPaymentStatusDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportPaymentTransactionReportTitle {
+            get {
+                return ResourceManager.GetString("ReportPaymentTransactionReportTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportPaymentTransactionReportDesc {
+            get {
+                return ResourceManager.GetString("ReportPaymentTransactionReportDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportProductSummaryTitle {
+            get {
+                return ResourceManager.GetString("ReportProductSummaryTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportProductSummaryDesc {
+            get {
+                return ResourceManager.GetString("ReportProductSummaryDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportProductStatsByDateRangeTitle {
+            get {
+                return ResourceManager.GetString("ReportProductStatsByDateRangeTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportProductStatsByDateRangeDesc {
+            get {
+                return ResourceManager.GetString("ReportProductStatsByDateRangeDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportPriceAnalysisTitle {
+            get {
+                return ResourceManager.GetString("ReportPriceAnalysisTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportPriceAnalysisDesc {
+            get {
+                return ResourceManager.GetString("ReportPriceAnalysisDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportProductInventoryTitle {
+            get {
+                return ResourceManager.GetString("ReportProductInventoryTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportProductInventoryDesc {
+            get {
+                return ResourceManager.GetString("ReportProductInventoryDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportFraudAnalysisTitle {
+            get {
+                return ResourceManager.GetString("ReportFraudAnalysisTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportFraudAnalysisDesc {
+            get {
+                return ResourceManager.GetString("ReportFraudAnalysisDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportFraudRiskReportTitle {
+            get {
+                return ResourceManager.GetString("ReportFraudRiskReportTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportFraudRiskReportDesc {
+            get {
+                return ResourceManager.GetString("ReportFraudRiskReportDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportPerformanceSystemReportTitle {
+            get {
+                return ResourceManager.GetString("ReportPerformanceSystemReportTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportPerformanceSystemReportDesc {
+            get {
+                return ResourceManager.GetString("ReportPerformanceSystemReportDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportCouponUsageTitle {
+            get {
+                return ResourceManager.GetString("ReportCouponUsageTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportCouponUsageDesc {
+            get {
+                return ResourceManager.GetString("ReportCouponUsageDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportShipmentCompanyTitle {
+            get {
+                return ResourceManager.GetString("ReportShipmentCompanyTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportShipmentCompanyDesc {
+            get {
+                return ResourceManager.GetString("ReportShipmentCompanyDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportFinancialReportTitle {
+            get {
+                return ResourceManager.GetString("ReportFinancialReportTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportFinancialReportDesc {
+            get {
+                return ResourceManager.GetString("ReportFinancialReportDesc", resourceCulture);
+            }
+        }
+
+        public static string ReportCatSales {
+            get {
+                return ResourceManager.GetString("ReportCatSales", resourceCulture);
+            }
+        }
+
+        public static string ReportCatPayment {
+            get {
+                return ResourceManager.GetString("ReportCatPayment", resourceCulture);
+            }
+        }
+
+        public static string ReportCatProduct {
+            get {
+                return ResourceManager.GetString("ReportCatProduct", resourceCulture);
+            }
+        }
+
+        public static string ReportCatRisk {
+            get {
+                return ResourceManager.GetString("ReportCatRisk", resourceCulture);
+            }
+        }
+
+        public static string ReportCatMarketing {
+            get {
+                return ResourceManager.GetString("ReportCatMarketing", resourceCulture);
+            }
+        }
+
+        public static string ReportCatFinance {
+            get {
+                return ResourceManager.GetString("ReportCatFinance", resourceCulture);
+            }
+        }
+
+        public static string ReportLeadText {
+            get {
+                return ResourceManager.GetString("ReportLeadText", resourceCulture);
+            }
+        }
+
+        public static string SelectReport {
+            get {
+                return ResourceManager.GetString("SelectReport", resourceCulture);
+            }
+        }
+
+        public static string OpenReport {
+            get {
+                return ResourceManager.GetString("OpenReport", resourceCulture);
+            }
+        }
+
+        public static string QuickReports {
+            get {
+                return ResourceManager.GetString("QuickReports", resourceCulture);
+            }
+        }
+
+        public static string SalesByDate {
+            get {
+                return ResourceManager.GetString("SalesByDate", resourceCulture);
+            }
+        }
+
+        public static string TodaysSales {
+            get {
+                return ResourceManager.GetString("TodaysSales", resourceCulture);
+            }
+        }
+
+        public static string YesterdaysSales {
+            get {
+                return ResourceManager.GetString("YesterdaysSales", resourceCulture);
+            }
+        }
+
+        public static string ThisWeek {
+            get {
+                return ResourceManager.GetString("ThisWeek", resourceCulture);
+            }
+        }
+
+        public static string ThisMonth {
+            get {
+                return ResourceManager.GetString("ThisMonth", resourceCulture);
+            }
+        }
+
+        public static string LowStockProducts {
+            get {
+                return ResourceManager.GetString("LowStockProducts", resourceCulture);
+            }
+        }
+
+        public static string OutOfStockProducts {
+            get {
+                return ResourceManager.GetString("OutOfStockProducts", resourceCulture);
+            }
+        }
+
+        public static string CampaignProducts {
+            get {
+                return ResourceManager.GetString("CampaignProducts", resourceCulture);
+            }
+        }
+
+        public static string FinanceAndPerformance {
+            get {
+                return ResourceManager.GetString("FinanceAndPerformance", resourceCulture);
+            }
+        }
+
+        public static string ThisMonthsFinancialSummary {
+            get {
+                return ResourceManager.GetString("ThisMonthsFinancialSummary", resourceCulture);
+            }
+        }
+
+        public static string Last30DaysPerformance {
+            get {
+                return ResourceManager.GetString("Last30DaysPerformance", resourceCulture);
+            }
+        }
+
+        public static string Important {
+            get {
+                return ResourceManager.GetString("Important", resourceCulture);
+            }
+        }
+
+        public static string Stock {
+            get {
+                return ResourceManager.GetString("Stock", resourceCulture);
+            }
+        }
+
+        public static string SettingsUpToDate {
+            get {
+                return ResourceManager.GetString("SettingsUpToDate", resourceCulture);
+            }
+        }
+
+        public static string UnsavedChangesExist {
+            get {
+                return ResourceManager.GetString("UnsavedChangesExist", resourceCulture);
+            }
+        }
+
+        public static string ResetChanges {
+            get {
+                return ResourceManager.GetString("ResetChanges", resourceCulture);
+            }
+        }
+
+        public static string SettingCategories {
+            get {
+                return ResourceManager.GetString("SettingCategories", resourceCulture);
+            }
+        }
+
+        public static string Overview {
+            get {
+                return ResourceManager.GetString("Overview", resourceCulture);
+            }
+        }
+
+        public static string DomainStore {
+            get {
+                return ResourceManager.GetString("DomainStore", resourceCulture);
+            }
+        }
+
+        public static string GeneralAndStorefront {
+            get {
+                return ResourceManager.GetString("GeneralAndStorefront", resourceCulture);
+            }
+        }
+
+        public static string AppearanceAndPwa {
+            get {
+                return ResourceManager.GetString("AppearanceAndPwa", resourceCulture);
+            }
+        }
+
+        public static string MediaAndUpload {
+            get {
+                return ResourceManager.GetString("MediaAndUpload", resourceCulture);
+            }
+        }
+
+        public static string DomainBusiness {
+            get {
+                return ResourceManager.GetString("DomainBusiness", resourceCulture);
+            }
+        }
+
+        public static string SalesAndPayments {
+            get {
+                return ResourceManager.GetString("SalesAndPayments", resourceCulture);
+            }
+        }
+
+        public static string DomainSystem {
+            get {
+                return ResourceManager.GetString("DomainSystem", resourceCulture);
+            }
+        }
+
+        public static string SecurityAndRequestProtection {
+            get {
+                return ResourceManager.GetString("SecurityAndRequestProtection", resourceCulture);
+            }
+        }
+
+        public static string IntegrationsAndServices {
+            get {
+                return ResourceManager.GetString("IntegrationsAndServices", resourceCulture);
+            }
+        }
+
+        public static string SystemToolsAndMaintenance {
+            get {
+                return ResourceManager.GetString("SystemToolsAndMaintenance", resourceCulture);
+            }
+        }
+
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+
+        public static string Explain {
+            get {
+                return ResourceManager.GetString("Explain", resourceCulture);
+            }
+        }
+
+        public static string MetricName {
+            get {
+                return ResourceManager.GetString("MetricName", resourceCulture);
+            }
+        }
+
+        public static string Count {
+            get {
+                return ResourceManager.GetString("Count", resourceCulture);
+            }
+        }
+
+        public static string AvgDurationMs {
+            get {
+                return ResourceManager.GetString("AvgDurationMs", resourceCulture);
+            }
+        }
+
+        public static string FailedCallsCount {
+            get {
+                return ResourceManager.GetString("FailedCallsCount", resourceCulture);
+            }
+        }
+
+        public static string Metric {
+            get {
+                return ResourceManager.GetString("Metric", resourceCulture);
+            }
+        }
+
+        public static string ScrollTableLeftRight {
+            get {
+                return ResourceManager.GetString("ScrollTableLeftRight", resourceCulture);
+            }
+        }
+
+        public static string SecurityStatusDashboard {
+            get {
+                return ResourceManager.GetString("SecurityStatusDashboard", resourceCulture);
+            }
+        }
+
+        public static string GeneralProtection {
+            get {
+                return ResourceManager.GetString("GeneralProtection", resourceCulture);
+            }
+        }
+
+        public static string Admin2Fa {
+            get {
+                return ResourceManager.GetString("Admin2Fa", resourceCulture);
+            }
+        }
+
+        public static string SpamCaptcha {
+            get {
+                return ResourceManager.GetString("SpamCaptcha", resourceCulture);
+            }
+        }
+
+        public static string RateLimiting {
+            get {
+                return ResourceManager.GetString("RateLimiting", resourceCulture);
+            }
+        }
+
+        public static string Failed {
+            get {
+                return ResourceManager.GetString("Failed", resourceCulture);
+            }
+        }
+
+        public static string Strong {
+            get {
+                return ResourceManager.GetString("Strong", resourceCulture);
+            }
+        }
+
+        public static string MediumLevel {
+            get {
+                return ResourceManager.GetString("MediumLevel", resourceCulture);
+            }
+        }
+
+        public static string Critical {
+            get {
+                return ResourceManager.GetString("Critical", resourceCulture);
+            }
+        }
+
+        public static string Weak {
+            get {
+                return ResourceManager.GetString("Weak", resourceCulture);
+            }
+        }
+
+        public static string Good {
+            get {
+                return ResourceManager.GetString("Good", resourceCulture);
+            }
+        }
+
+        public static string Ready {
+            get {
+                return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+
+        public static string Locked {
+            get {
+                return ResourceManager.GetString("Locked", resourceCulture);
+            }
+        }
+
+        public static string Maintenance {
+            get {
+                return ResourceManager.GetString("Maintenance", resourceCulture);
+            }
+        }
+
+        public static string MaintenanceModeActive {
+            get {
+                return ResourceManager.GetString("MaintenanceModeActive", resourceCulture);
+            }
+        }
+
+        public static string ApplicationMetrics {
+            get {
+                return ResourceManager.GetString("ApplicationMetrics", resourceCulture);
+            }
+        }
+
+        public static string WhatIsThisPageFor {
+            get {
+                return ResourceManager.GetString("WhatIsThisPageFor", resourceCulture);
+            }
+        }
+
+        public static string MetricsHelpLead {
+            get {
+                return ResourceManager.GetString("MetricsHelpLead", resourceCulture);
+            }
+        }
+
+        public static string MetricsHelpBullet1 {
+            get {
+                return ResourceManager.GetString("MetricsHelpBullet1", resourceCulture);
+            }
+        }
+
+        public static string MetricsHelpBullet2 {
+            get {
+                return ResourceManager.GetString("MetricsHelpBullet2", resourceCulture);
+            }
+        }
+
+        public static string MetricsHelpBullet3 {
+            get {
+                return ResourceManager.GetString("MetricsHelpBullet3", resourceCulture);
+            }
+        }
+
+        public static string MetricsHelpBullet4 {
+            get {
+                return ResourceManager.GetString("MetricsHelpBullet4", resourceCulture);
+            }
+        }
+
+        public static string WhatColumnsMean {
+            get {
+                return ResourceManager.GetString("WhatColumnsMean", resourceCulture);
+            }
+        }
+
+        public static string MetricNameHelp {
+            get {
+                return ResourceManager.GetString("MetricNameHelp", resourceCulture);
+            }
+        }
+
+        public static string CountHelp {
+            get {
+                return ResourceManager.GetString("CountHelp", resourceCulture);
+            }
+        }
+
+        public static string ErrorHelp {
+            get {
+                return ResourceManager.GetString("ErrorHelp", resourceCulture);
+            }
+        }
+
+        public static string AvgDurationHelp {
+            get {
+                return ResourceManager.GetString("AvgDurationHelp", resourceCulture);
+            }
+        }
+
+        public static string P50Help {
+            get {
+                return ResourceManager.GetString("P50Help", resourceCulture);
+            }
+        }
+
+        public static string P75Help {
+            get {
+                return ResourceManager.GetString("P75Help", resourceCulture);
+            }
+        }
+
+        public static string P90P95P99Help {
+            get {
+                return ResourceManager.GetString("P90P95P99Help", resourceCulture);
+            }
+        }
+
+        public static string PercentilesShortExample {
+            get {
+                return ResourceManager.GetString("PercentilesShortExample", resourceCulture);
+            }
+        }
+
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+
+        public static string Meaning {
+            get {
+                return ResourceManager.GetString("Meaning", resourceCulture);
+            }
+        }
+
+        public static string PercentileExplanationNote {
+            get {
+                return ResourceManager.GetString("PercentileExplanationNote", resourceCulture);
+            }
+        }
+
+        public static string HowToInterpret {
+            get {
+                return ResourceManager.GetString("HowToInterpret", resourceCulture);
+            }
+        }
+
+        public static string InterpretBullet1 {
+            get {
+                return ResourceManager.GetString("InterpretBullet1", resourceCulture);
+            }
+        }
+
+        public static string InterpretBullet2 {
+            get {
+                return ResourceManager.GetString("InterpretBullet2", resourceCulture);
+            }
+        }
+
+        public static string InterpretBullet3 {
+            get {
+                return ResourceManager.GetString("InterpretBullet3", resourceCulture);
+            }
+        }
+
+        public static string InterpretBullet4 {
+            get {
+                return ResourceManager.GetString("InterpretBullet4", resourceCulture);
+            }
+        }
+
+        public static string InterpretBullet5 {
+            get {
+                return ResourceManager.GetString("InterpretBullet5", resourceCulture);
+            }
+        }
+
+        public static string MetricNamePrefixes {
+            get {
+                return ResourceManager.GetString("MetricNamePrefixes", resourceCulture);
+            }
+        }
+
+        public static string PrefixOrExample {
+            get {
+                return ResourceManager.GetString("PrefixOrExample", resourceCulture);
+            }
+        }
+
+        public static string WhatDoesItMeasure {
+            get {
+                return ResourceManager.GetString("WhatDoesItMeasure", resourceCulture);
+            }
+        }
+
+        public static string WhenToInspect {
+            get {
+                return ResourceManager.GetString("WhenToInspect", resourceCulture);
+            }
+        }
+
+        public static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+
+        public static string NoMetricsRecordedYet {
+            get {
+                return ResourceManager.GetString("NoMetricsRecordedYet", resourceCulture);
+            }
+        }
+
+        public static string LiveMeasurements {
+            get {
+                return ResourceManager.GetString("LiveMeasurements", resourceCulture);
+            }
+        }
+
+        public static string HoverColumnHeaderTooltip {
+            get {
+                return ResourceManager.GetString("HoverColumnHeaderTooltip", resourceCulture);
+            }
+        }
+
+        public static string MetricDescriptionModal {
+            get {
+                return ResourceManager.GetString("MetricDescriptionModal", resourceCulture);
+            }
+        }
+
+        public static string SelectExplainFromRow {
+            get {
+                return ResourceManager.GetString("SelectExplainFromRow", resourceCulture);
+            }
+        }
+
+        public static string SearchMetric {
+            get {
+                return ResourceManager.GetString("SearchMetric", resourceCulture);
+            }
+        }
+
+        public static string SearchMetricPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchMetricPlaceholder", resourceCulture);
+            }
+        }
+
+        public static string FilterHint {
+            get {
+                return ResourceManager.GetString("FilterHint", resourceCulture);
+            }
+        }
+
+        public static string ExplainTooltip {
+            get {
+                return ResourceManager.GetString("ExplainTooltip", resourceCulture);
+            }
+        }
+            public static string SettingsCenterSubtitle {
+            get {
+                return ResourceManager.GetString("SettingsCenterSubtitle", resourceCulture);
+            }
+        }
+
+        public static string SearchInSettingsPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchInSettingsPlaceholder", resourceCulture);
+            }
+        }
+
+        public static string ClearSearch {
+            get {
+                return ResourceManager.GetString("ClearSearch", resourceCulture);
+            }
+        }
+
+        public static string StoreConfiguration {
+            get {
+                return ResourceManager.GetString("StoreConfiguration", resourceCulture);
+            }
+        }
+
+        public static string StoreConfigHelp1 {
+            get {
+                return ResourceManager.GetString("StoreConfigHelp1", resourceCulture);
+            }
+        }
+
+        public static string StoreConfigHelp2 {
+            get {
+                return ResourceManager.GetString("StoreConfigHelp2", resourceCulture);
+            }
+        }
+
+        public static string StoreConfigHelp3 {
+            get {
+                return ResourceManager.GetString("StoreConfigHelp3", resourceCulture);
+            }
+        }
+
+        public static string BusinessAndCommerce {
+            get {
+                return ResourceManager.GetString("BusinessAndCommerce", resourceCulture);
+            }
+        }
+
+        public static string BusinessConfigHelp1 {
+            get {
+                return ResourceManager.GetString("BusinessConfigHelp1", resourceCulture);
+            }
+        }
+
+        public static string BusinessConfigHelp2 {
+            get {
+                return ResourceManager.GetString("BusinessConfigHelp2", resourceCulture);
+            }
+        }
+
+        public static string SystemAndSecurity {
+            get {
+                return ResourceManager.GetString("SystemAndSecurity", resourceCulture);
+            }
+        }
+
+        public static string SystemConfigHelp1 {
+            get {
+                return ResourceManager.GetString("SystemConfigHelp1", resourceCulture);
+            }
+        }
+
+        public static string SystemConfigHelp2 {
+            get {
+                return ResourceManager.GetString("SystemConfigHelp2", resourceCulture);
+            }
+        }
+
+        public static string SystemConfigHelp3 {
+            get {
+                return ResourceManager.GetString("SystemConfigHelp3", resourceCulture);
+            }
+        }
+
+        public static string LiveConfiguration {
+            get {
+                return ResourceManager.GetString("LiveConfiguration", resourceCulture);
+            }
+        }
+
+        public static string LiveOnSite {
+            get {
+                return ResourceManager.GetString("LiveOnSite", resourceCulture);
+            }
+        }
+
+        public static string InMaintenanceMode {
+            get {
+                return ResourceManager.GetString("InMaintenanceMode", resourceCulture);
+            }
+        }
+
+        public static string StoreAndShowcase {
+            get {
+                return ResourceManager.GetString("StoreAndShowcase", resourceCulture);
+            }
+        }
+
+        public static string StoreAndShowcaseDesc {
+            get {
+                return ResourceManager.GetString("StoreAndShowcaseDesc", resourceCulture);
+            }
+        }
+
+        public static string PriceAndSales {
+            get {
+                return ResourceManager.GetString("PriceAndSales", resourceCulture);
+            }
+        }
+
+        public static string CatalogMode {
+            get {
+                return ResourceManager.GetString("CatalogMode", resourceCulture);
+            }
+        }
+
+        public static string SeoIndexing {
+            get {
+                return ResourceManager.GetString("SeoIndexing", resourceCulture);
+            }
+        }
+
+        public static string ActiveThemeLabel {
+            get {
+                return ResourceManager.GetString("ActiveThemeLabel", resourceCulture);
+            }
+        }
+
+        public static string OpenGeneralSettings {
+            get {
+                return ResourceManager.GetString("OpenGeneralSettings", resourceCulture);
+            }
+        }
+
+        public static string SecurityScore {
+            get {
+                return ResourceManager.GetString("SecurityScore", resourceCulture);
+            }
+        }
+
+        public static string SecurityAndProtection {
+            get {
+                return ResourceManager.GetString("SecurityAndProtection", resourceCulture);
+            }
+        }
+
+        public static string SecurityAndProtectionDesc {
+            get {
+                return ResourceManager.GetString("SecurityAndProtectionDesc", resourceCulture);
+            }
+        }
+
+        public static string GoToSecurityPanel {
+            get {
+                return ResourceManager.GetString("GoToSecurityPanel", resourceCulture);
+            }
+        }
+
+        public static string EmailAndSmtp {
+            get {
+                return ResourceManager.GetString("EmailAndSmtp", resourceCulture);
+            }
+        }
+
+        public static string EmailAndSmtpDesc {
+            get {
+                return ResourceManager.GetString("EmailAndSmtpDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpConfigured {
+            get {
+                return ResourceManager.GetString("SmtpConfigured", resourceCulture);
+            }
+        }
+
+        public static string ConfigRequired {
+            get {
+                return ResourceManager.GetString("ConfigRequired", resourceCulture);
+            }
+        }
+
+        public static string ServerHost {
+            get {
+                return ResourceManager.GetString("ServerHost", resourceCulture);
+            }
+        }
+
+        public static string Undefined {
+            get {
+                return ResourceManager.GetString("Undefined", resourceCulture);
+            }
+        }
+
+        public static string Sender {
+            get {
+                return ResourceManager.GetString("Sender", resourceCulture);
+            }
+        }
+
+        public static string SslTlsActive {
+            get {
+                return ResourceManager.GetString("SslTlsActive", resourceCulture);
+            }
+        }
+
+        public static string PlainConnection {
+            get {
+                return ResourceManager.GetString("PlainConnection", resourceCulture);
+            }
+        }
+
+        public static string OpenEmailSettings {
+            get {
+                return ResourceManager.GetString("OpenEmailSettings", resourceCulture);
+            }
+        }
+
+        public static string MediaAndOptimization {
+            get {
+                return ResourceManager.GetString("MediaAndOptimization", resourceCulture);
+            }
+        }
+
+        public static string MediaAndOptimizationDesc {
+            get {
+                return ResourceManager.GetString("MediaAndOptimizationDesc", resourceCulture);
+            }
+        }
+
+        public static string WebPActive {
+            get {
+                return ResourceManager.GetString("WebPActive", resourceCulture);
+            }
+        }
+
+        public static string JpegQuality {
+            get {
+                return ResourceManager.GetString("JpegQuality", resourceCulture);
+            }
+        }
+
+        public static string WebPQuality {
+            get {
+                return ResourceManager.GetString("WebPQuality", resourceCulture);
+            }
+        }
+
+        public static string OpenMediaSettings {
+            get {
+                return ResourceManager.GetString("OpenMediaSettings", resourceCulture);
+            }
+        }
+
+        public static string BusinessProfile {
+            get {
+                return ResourceManager.GetString("BusinessProfile", resourceCulture);
+            }
+        }
+
+        public static string CompanyAndContact {
+            get {
+                return ResourceManager.GetString("CompanyAndContact", resourceCulture);
+            }
+        }
+
+        public static string CompanyAndContactDesc {
+            get {
+                return ResourceManager.GetString("CompanyAndContactDesc", resourceCulture);
+            }
+        }
+
+        public static string FreeShippingThreshold {
+            get {
+                return ResourceManager.GetString("FreeShippingThreshold", resourceCulture);
+            }
+        }
+
+        public static string OpenCompanySettings {
+            get {
+                return ResourceManager.GetString("OpenCompanySettings", resourceCulture);
+            }
+        }
+
+        public static string OnlinePaymentGateway {
+            get {
+                return ResourceManager.GetString("OnlinePaymentGateway", resourceCulture);
+            }
+        }
+
+        public static string SalesAndPaymentConfigDesc {
+            get {
+                return ResourceManager.GetString("SalesAndPaymentConfigDesc", resourceCulture);
+            }
+        }
+
+        public static string PaymentDisabledNotice {
+            get {
+                return ResourceManager.GetString("PaymentDisabledNotice", resourceCulture);
+            }
+        }
+
+        public static string DefaultInstallment {
+            get {
+                return ResourceManager.GetString("DefaultInstallment", resourceCulture);
+            }
+        }
+
+        public static string SinglePayment {
+            get {
+                return ResourceManager.GetString("SinglePayment", resourceCulture);
+            }
+        }
+
+        public static string InstallmentTable {
+            get {
+                return ResourceManager.GetString("InstallmentTable", resourceCulture);
+            }
+        }
+
+        public static string OpenPaymentSettings {
+            get {
+                return ResourceManager.GetString("OpenPaymentSettings", resourceCulture);
+            }
+        }
+
+        public static string SystemDiagnosticsAndHealth {
+            get {
+                return ResourceManager.GetString("SystemDiagnosticsAndHealth", resourceCulture);
+            }
+        }
+
+        public static string LiveArchitectureHealth {
+            get {
+                return ResourceManager.GetString("LiveArchitectureHealth", resourceCulture);
+            }
+        }
+
+        public static string DbConnection {
+            get {
+                return ResourceManager.GetString("DbConnection", resourceCulture);
+            }
+        }
+
+        public static string DbConnectionDesc {
+            get {
+                return ResourceManager.GetString("DbConnectionDesc", resourceCulture);
+            }
+        }
+
+        public static string FileStorageAndMedia {
+            get {
+                return ResourceManager.GetString("FileStorageAndMedia", resourceCulture);
+            }
+        }
+
+        public static string FileStorageAndMediaDesc {
+            get {
+                return ResourceManager.GetString("FileStorageAndMediaDesc", resourceCulture);
+            }
+        }
+
+        public static string SidecarImageEngine {
+            get {
+                return ResourceManager.GetString("SidecarImageEngine", resourceCulture);
+            }
+        }
+
+        public static string SidecarEngineDesc {
+            get {
+                return ResourceManager.GetString("SidecarEngineDesc", resourceCulture);
+            }
+        }
+
+        public static string OpenSystemHealthPage {
+            get {
+                return ResourceManager.GetString("OpenSystemHealthPage", resourceCulture);
+            }
+        }
+
+        public static string OpenMetricsPage {
+            get {
+                return ResourceManager.GetString("OpenMetricsPage", resourceCulture);
+            }
+        }
+            public static string ServerLabel {
+            get {
+                return ResourceManager.GetString("ServerLabel", resourceCulture);
+            }
+        }
+
+        public static string SenderLabel {
+            get {
+                return ResourceManager.GetString("SenderLabel", resourceCulture);
+            }
+        }
+
+        public static string SecurityLabel {
+            get {
+                return ResourceManager.GetString("SecurityLabel", resourceCulture);
+            }
+        }
+
+        public static string JpegQualityLabel {
+            get {
+                return ResourceManager.GetString("JpegQualityLabel", resourceCulture);
+            }
+        }
+
+        public static string WebPQualityLabel {
+            get {
+                return ResourceManager.GetString("WebPQualityLabel", resourceCulture);
+            }
+        }
+
+        public static string SidecarLabel {
+            get {
+                return ResourceManager.GetString("SidecarLabel", resourceCulture);
+            }
+        }
+
+        public static string FreeShippingThresholdLabel {
+            get {
+                return ResourceManager.GetString("FreeShippingThresholdLabel", resourceCulture);
+            }
+        }
+
+        public static string DefaultInstallmentLabel {
+            get {
+                return ResourceManager.GetString("DefaultInstallmentLabel", resourceCulture);
+            }
+        }
+
+        public static string InstallmentTableLabel {
+            get {
+                return ResourceManager.GetString("InstallmentTableLabel", resourceCulture);
+            }
+        }
+
+        public static string StorefrontBehaviorAndCatalogPreferences {
+            get {
+                return ResourceManager.GetString("StorefrontBehaviorAndCatalogPreferences", resourceCulture);
+            }
+        }
+
+        public static string StorefrontBehaviorHelp {
+            get {
+                return ResourceManager.GetString("StorefrontBehaviorHelp", resourceCulture);
+            }
+        }
+
+        public static string MaintenanceModeSiteOffline {
+            get {
+                return ResourceManager.GetString("MaintenanceModeSiteOffline", resourceCulture);
+            }
+        }
+
+        public static string MaintenanceModeHelp {
+            get {
+                return ResourceManager.GetString("MaintenanceModeHelp", resourceCulture);
+            }
+        }
+
+        public static string SearchEngineIndexingGooglebot {
+            get {
+                return ResourceManager.GetString("SearchEngineIndexingGooglebot", resourceCulture);
+            }
+        }
+
+        public static string SearchEngineIndexingHelp {
+            get {
+                return ResourceManager.GetString("SearchEngineIndexingHelp", resourceCulture);
+            }
+        }
+
+        public static string ProductPricingAndCheckout {
+            get {
+                return ResourceManager.GetString("ProductPricingAndCheckout", resourceCulture);
+            }
+        }
+
+        public static string ProductPricingAndCheckoutHelp {
+            get {
+                return ResourceManager.GetString("ProductPricingAndCheckoutHelp", resourceCulture);
+            }
+        }
+
+        public static string ProductReviewsAndRatings {
+            get {
+                return ResourceManager.GetString("ProductReviewsAndRatings", resourceCulture);
+            }
+        }
+
+        public static string ProductReviewsAndRatingsHelp {
+            get {
+                return ResourceManager.GetString("ProductReviewsAndRatingsHelp", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelInterfaceLanguage {
+            get {
+                return ResourceManager.GetString("AdminPanelInterfaceLanguage", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelInterfaceLanguageHelp {
+            get {
+                return ResourceManager.GetString("AdminPanelInterfaceLanguageHelp", resourceCulture);
+            }
+        }
+
+        public static string GridPageSizeLabel {
+            get {
+                return ResourceManager.GetString("GridPageSizeLabel", resourceCulture);
+            }
+        }
+
+        public static string GridPageSizeHelp {
+            get {
+                return ResourceManager.GetString("GridPageSizeHelp", resourceCulture);
+            }
+        }
+
+        public static string ProductShortDescLengthLabel {
+            get {
+                return ResourceManager.GetString("ProductShortDescLengthLabel", resourceCulture);
+            }
+        }
+
+        public static string ProductShortDescLengthHelp {
+            get {
+                return ResourceManager.GetString("ProductShortDescLengthHelp", resourceCulture);
+            }
+        }
+
+        public static string CustomMaintenanceModeHtml {
+            get {
+                return ResourceManager.GetString("CustomMaintenanceModeHtml", resourceCulture);
+            }
+        }
+
+        public static string CustomMaintenanceModeHtmlHelp {
+            get {
+                return ResourceManager.GetString("CustomMaintenanceModeHtmlHelp", resourceCulture);
+            }
+        }
+
+        public static string CustomPriceFilterRangesJson {
+            get {
+                return ResourceManager.GetString("CustomPriceFilterRangesJson", resourceCulture);
+            }
+        }
+
+        public static string CustomPriceFilterRangesJsonHelp {
+            get {
+                return ResourceManager.GetString("CustomPriceFilterRangesJsonHelp", resourceCulture);
+            }
+        }
+
+        public static string AppearanceBrandingAndPwaSettings {
+            get {
+                return ResourceManager.GetString("AppearanceBrandingAndPwaSettings", resourceCulture);
+            }
+        }
+
+        public static string AppearanceBrandingAndPwaHelp {
+            get {
+                return ResourceManager.GetString("AppearanceBrandingAndPwaHelp", resourceCulture);
+            }
+        }
+
+        public static string StorefrontTheme {
+            get {
+                return ResourceManager.GetString("StorefrontTheme", resourceCulture);
+            }
+        }
+
+        public static string StorefrontThemeHelp {
+            get {
+                return ResourceManager.GetString("StorefrontThemeHelp", resourceCulture);
+            }
+        }
+
+        public static string ThemePrimaryColorHex {
+            get {
+                return ResourceManager.GetString("ThemePrimaryColorHex", resourceCulture);
+            }
+        }
+
+        public static string ThemePrimaryColorHexHelp {
+            get {
+                return ResourceManager.GetString("ThemePrimaryColorHexHelp", resourceCulture);
+            }
+        }
+
+        public static string PwaBackgroundColor {
+            get {
+                return ResourceManager.GetString("PwaBackgroundColor", resourceCulture);
+            }
+        }
+
+        public static string PwaBackgroundColorHelp {
+            get {
+                return ResourceManager.GetString("PwaBackgroundColorHelp", resourceCulture);
+            }
+        }
+
+        public static string PwaStartUrl {
+            get {
+                return ResourceManager.GetString("PwaStartUrl", resourceCulture);
+            }
+        }
+
+        public static string PwaStartUrlHelp {
+            get {
+                return ResourceManager.GetString("PwaStartUrlHelp", resourceCulture);
+            }
+        }
+
+        public static string PwaDisplayMode {
+            get {
+                return ResourceManager.GetString("PwaDisplayMode", resourceCulture);
+            }
+        }
+
+        public static string PwaDisplayModeHelp {
+            get {
+                return ResourceManager.GetString("PwaDisplayModeHelp", resourceCulture);
+            }
+        }
+
+        public static string PwaOrientation {
+            get {
+                return ResourceManager.GetString("PwaOrientation", resourceCulture);
+            }
+        }
+
+        public static string PwaOrientationHelp {
+            get {
+                return ResourceManager.GetString("PwaOrientationHelp", resourceCulture);
+            }
+        }
+
+        public static string PwaFallbackAppName {
+            get {
+                return ResourceManager.GetString("PwaFallbackAppName", resourceCulture);
+            }
+        }
+
+        public static string PwaFallbackAppNameHelp {
+            get {
+                return ResourceManager.GetString("PwaFallbackAppNameHelp", resourceCulture);
+            }
+        }
+
+        public static string PwaShortNameMaxLength {
+            get {
+                return ResourceManager.GetString("PwaShortNameMaxLength", resourceCulture);
+            }
+        }
+
+        public static string PwaShortNameMaxLengthHelp {
+            get {
+                return ResourceManager.GetString("PwaShortNameMaxLengthHelp", resourceCulture);
+            }
+        }
+
+        public static string ImageResizingAndCompressionPipeline {
+            get {
+                return ResourceManager.GetString("ImageResizingAndCompressionPipeline", resourceCulture);
+            }
+        }
+
+        public static string ImageResizingAndCompressionHelp {
+            get {
+                return ResourceManager.GetString("ImageResizingAndCompressionHelp", resourceCulture);
+            }
+        }
+
+        public static string DefaultImageWidthPx {
+            get {
+                return ResourceManager.GetString("DefaultImageWidthPx", resourceCulture);
+            }
+        }
+
+        public static string DefaultImageWidthPxHelp {
+            get {
+                return ResourceManager.GetString("DefaultImageWidthPxHelp", resourceCulture);
+            }
+        }
+
+        public static string DefaultImageHeightPx {
+            get {
+                return ResourceManager.GetString("DefaultImageHeightPx", resourceCulture);
+            }
+        }
+
+        public static string DefaultImageHeightPxHelp {
+            get {
+                return ResourceManager.GetString("DefaultImageHeightPxHelp", resourceCulture);
+            }
+        }
+
+        public static string MaxUploadWidthPx {
+            get {
+                return ResourceManager.GetString("MaxUploadWidthPx", resourceCulture);
+            }
+        }
+
+        public static string MaxUploadWidthPxHelp {
+            get {
+                return ResourceManager.GetString("MaxUploadWidthPxHelp", resourceCulture);
+            }
+        }
+
+        public static string MaxUploadHeightPx {
+            get {
+                return ResourceManager.GetString("MaxUploadHeightPx", resourceCulture);
+            }
+        }
+
+        public static string MaxUploadHeightPxHelp {
+            get {
+                return ResourceManager.GetString("MaxUploadHeightPxHelp", resourceCulture);
+            }
+        }
+
+        public static string JpegCompressionQuality {
+            get {
+                return ResourceManager.GetString("JpegCompressionQuality", resourceCulture);
+            }
+        }
+
+        public static string JpegCompressionQualityHelp {
+            get {
+                return ResourceManager.GetString("JpegCompressionQualityHelp", resourceCulture);
+            }
+        }
+
+        public static string WebPCompressionQuality {
+            get {
+                return ResourceManager.GetString("WebPCompressionQuality", resourceCulture);
+            }
+        }
+
+        public static string WebPCompressionQualityHelp {
+            get {
+                return ResourceManager.GetString("WebPCompressionQualityHelp", resourceCulture);
+            }
+        }
+
+        public static string PreferWebPFormat {
+            get {
+                return ResourceManager.GetString("PreferWebPFormat", resourceCulture);
+            }
+        }
+
+        public static string PreferWebPFormatHelp {
+            get {
+                return ResourceManager.GetString("PreferWebPFormatHelp", resourceCulture);
+            }
+        }
+
+        public static string PreserveOriginalFormat {
+            get {
+                return ResourceManager.GetString("PreserveOriginalFormat", resourceCulture);
+            }
+        }
+
+        public static string PreserveOriginalFormatHelp {
+            get {
+                return ResourceManager.GetString("PreserveOriginalFormatHelp", resourceCulture);
+            }
+        }
+
+        public static string AsyncCompressionPipeline {
+            get {
+                return ResourceManager.GetString("AsyncCompressionPipeline", resourceCulture);
+            }
+        }
+
+        public static string AsyncCompressionPipelineHelp {
+            get {
+                return ResourceManager.GetString("AsyncCompressionPipelineHelp", resourceCulture);
+            }
+        }
+
+        public static string DeleteSourceFileAfterCompression {
+            get {
+                return ResourceManager.GetString("DeleteSourceFileAfterCompression", resourceCulture);
+            }
+        }
+
+        public static string DeleteSourceFileAfterCompressionHelp {
+            get {
+                return ResourceManager.GetString("DeleteSourceFileAfterCompressionHelp", resourceCulture);
+            }
+        }
+
+        public static string KeepBackupInFileStorage {
+            get {
+                return ResourceManager.GetString("KeepBackupInFileStorage", resourceCulture);
+            }
+        }
+
+        public static string KeepBackupInFileStorageHelp {
+            get {
+                return ResourceManager.GetString("KeepBackupInFileStorageHelp", resourceCulture);
+            }
+        }
+
+        public static string ImageProcessingSidecarService {
+            get {
+                return ResourceManager.GetString("ImageProcessingSidecarService", resourceCulture);
+            }
+        }
+
+        public static string ImageProcessingSidecarServiceHelp {
+            get {
+                return ResourceManager.GetString("ImageProcessingSidecarServiceHelp", resourceCulture);
+            }
+        }
+
+        public static string CompanyInfoAndContactDetails {
+            get {
+                return ResourceManager.GetString("CompanyInfoAndContactDetails", resourceCulture);
+            }
+        }
+
+        public static string CompanyInfoAndContactHelp {
+            get {
+                return ResourceManager.GetString("CompanyInfoAndContactHelp", resourceCulture);
+            }
+        }
+
+        public static string CompanyOfficialTitleBrand {
+            get {
+                return ResourceManager.GetString("CompanyOfficialTitleBrand", resourceCulture);
+            }
+        }
+
+        public static string CompanyOfficialTitleBrandHelp {
+            get {
+                return ResourceManager.GetString("CompanyOfficialTitleBrandHelp", resourceCulture);
+            }
+        }
+
+        public static string CompanyEmailAddressLabel {
+            get {
+                return ResourceManager.GetString("CompanyEmailAddressLabel", resourceCulture);
+            }
+        }
+
+        public static string CompanyEmailAddressLabelHelp {
+            get {
+                return ResourceManager.GetString("CompanyEmailAddressLabelHelp", resourceCulture);
+            }
+        }
+
+        public static string CompanyPhoneAndLocation {
+            get {
+                return ResourceManager.GetString("CompanyPhoneAndLocation", resourceCulture);
+            }
+        }
+
+        public static string CompanyPhoneAndLocationHelp {
+            get {
+                return ResourceManager.GetString("CompanyPhoneAndLocationHelp", resourceCulture);
+            }
+        }
+
+        public static string CompanyPhysicalAddress {
+            get {
+                return ResourceManager.GetString("CompanyPhysicalAddress", resourceCulture);
+            }
+        }
+
+        public static string CompanyPhysicalAddressHelp {
+            get {
+                return ResourceManager.GetString("CompanyPhysicalAddressHelp", resourceCulture);
+            }
+        }
+
+        public static string MinimumCartOrderAmount {
+            get {
+                return ResourceManager.GetString("MinimumCartOrderAmount", resourceCulture);
+            }
+        }
+
+        public static string MinimumCartOrderAmountHelp {
+            get {
+                return ResourceManager.GetString("MinimumCartOrderAmountHelp", resourceCulture);
+            }
+        }
+
+        public static string PaymentGatewaysAndIyzicoConfig {
+            get {
+                return ResourceManager.GetString("PaymentGatewaysAndIyzicoConfig", resourceCulture);
+            }
+        }
+
+        public static string PaymentGatewaysAndIyzicoHelp {
+            get {
+                return ResourceManager.GetString("PaymentGatewaysAndIyzicoHelp", resourceCulture);
+            }
+        }
+
+        public static string ActivePaymentGateway {
+            get {
+                return ResourceManager.GetString("ActivePaymentGateway", resourceCulture);
+            }
+        }
+
+        public static string ActivePaymentGatewayHelp {
+            get {
+                return ResourceManager.GetString("ActivePaymentGatewayHelp", resourceCulture);
+            }
+        }
+
+        public static string IyzicoApiKeyLabel {
+            get {
+                return ResourceManager.GetString("IyzicoApiKeyLabel", resourceCulture);
+            }
+        }
+
+        public static string IyzicoApiKeyLabelHelp {
+            get {
+                return ResourceManager.GetString("IyzicoApiKeyLabelHelp", resourceCulture);
+            }
+        }
+
+        public static string IyzicoSecretKeyLabel {
+            get {
+                return ResourceManager.GetString("IyzicoSecretKeyLabel", resourceCulture);
+            }
+        }
+
+        public static string IyzicoSecretKeyLabelHelp {
+            get {
+                return ResourceManager.GetString("IyzicoSecretKeyLabelHelp", resourceCulture);
+            }
+        }
+
+        public static string IyzicoBaseUrlLabel {
+            get {
+                return ResourceManager.GetString("IyzicoBaseUrlLabel", resourceCulture);
+            }
+        }
+
+        public static string IyzicoBaseUrlLabelHelp {
+            get {
+                return ResourceManager.GetString("IyzicoBaseUrlLabelHelp", resourceCulture);
+            }
+        }
+
+        public static string EnabledInstallmentsLabel {
+            get {
+                return ResourceManager.GetString("EnabledInstallmentsLabel", resourceCulture);
+            }
+        }
+
+        public static string EnabledInstallmentsHelp {
+            get {
+                return ResourceManager.GetString("EnabledInstallmentsHelp", resourceCulture);
+            }
+        }
+
+        public static string DefaultInstallmentOptionLabel {
+            get {
+                return ResourceManager.GetString("DefaultInstallmentOptionLabel", resourceCulture);
+            }
+        }
+
+        public static string DefaultInstallmentOptionHelp {
+            get {
+                return ResourceManager.GetString("DefaultInstallmentOptionHelp", resourceCulture);
+            }
+        }
+
+        public static string ShowInstallmentTableOnProductPage {
+            get {
+                return ResourceManager.GetString("ShowInstallmentTableOnProductPage", resourceCulture);
+            }
+        }
+
+        public static string ShowInstallmentTableOnProductPageHelp {
+            get {
+                return ResourceManager.GetString("ShowInstallmentTableOnProductPageHelp", resourceCulture);
+            }
+        }
+
+        public static string Enforce3DSecureVerification {
+            get {
+                return ResourceManager.GetString("Enforce3DSecureVerification", resourceCulture);
+            }
+        }
+
+        public static string Enforce3DSecureVerificationHelp {
+            get {
+                return ResourceManager.GetString("Enforce3DSecureVerificationHelp", resourceCulture);
+            }
+        }
+
+        public static string CustomProductDetailPaymentHtml {
+            get {
+                return ResourceManager.GetString("CustomProductDetailPaymentHtml", resourceCulture);
+            }
+        }
+
+        public static string CustomProductDetailPaymentHtmlHelp {
+            get {
+                return ResourceManager.GetString("CustomProductDetailPaymentHtmlHelp", resourceCulture);
+            }
+        }
+
+        public static string Security2FaAndRateLimiting {
+            get {
+                return ResourceManager.GetString("Security2FaAndRateLimiting", resourceCulture);
+            }
+        }
+
+        public static string Security2FaAndRateLimitingHelp {
+            get {
+                return ResourceManager.GetString("Security2FaAndRateLimitingHelp", resourceCulture);
+            }
+        }
+
+        public static string Enforce2FaForAdmins {
+            get {
+                return ResourceManager.GetString("Enforce2FaForAdmins", resourceCulture);
+            }
+        }
+
+        public static string Enforce2FaForAdminsHelp {
+            get {
+                return ResourceManager.GetString("Enforce2FaForAdminsHelp", resourceCulture);
+            }
+        }
+
+        public static string CaptchaProviderLabel {
+            get {
+                return ResourceManager.GetString("CaptchaProviderLabel", resourceCulture);
+            }
+        }
+
+        public static string CaptchaProviderHelp {
+            get {
+                return ResourceManager.GetString("CaptchaProviderHelp", resourceCulture);
+            }
+        }
+
+        public static string CaptchaSiteKeyLabel {
+            get {
+                return ResourceManager.GetString("CaptchaSiteKeyLabel", resourceCulture);
+            }
+        }
+
+        public static string CaptchaSiteKeyHelp {
+            get {
+                return ResourceManager.GetString("CaptchaSiteKeyHelp", resourceCulture);
+            }
+        }
+
+        public static string CaptchaSecretKeyLabel {
+            get {
+                return ResourceManager.GetString("CaptchaSecretKeyLabel", resourceCulture);
+            }
+        }
+
+        public static string CaptchaSecretKeyHelp {
+            get {
+                return ResourceManager.GetString("CaptchaSecretKeyHelp", resourceCulture);
+            }
+        }
+
+        public static string RecaptchaV3MinScore {
+            get {
+                return ResourceManager.GetString("RecaptchaV3MinScore", resourceCulture);
+            }
+        }
+
+        public static string RecaptchaV3MinScoreHelp {
+            get {
+                return ResourceManager.GetString("RecaptchaV3MinScoreHelp", resourceCulture);
+            }
+        }
+
+        public static string RateLimitingInfrastructure {
+            get {
+                return ResourceManager.GetString("RateLimitingInfrastructure", resourceCulture);
+            }
+        }
+
+        public static string RateLimitingInfrastructureHelp {
+            get {
+                return ResourceManager.GetString("RateLimitingInfrastructureHelp", resourceCulture);
+            }
+        }
+
+        public static string GlobalRequestLimit {
+            get {
+                return ResourceManager.GetString("GlobalRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string GlobalRequestLimitHelp {
+            get {
+                return ResourceManager.GetString("GlobalRequestLimitHelp", resourceCulture);
+            }
+        }
+
+        public static string GlobalTimeWindowMinutes {
+            get {
+                return ResourceManager.GetString("GlobalTimeWindowMinutes", resourceCulture);
+            }
+        }
+
+        public static string GlobalTimeWindowMinutesHelp {
+            get {
+                return ResourceManager.GetString("GlobalTimeWindowMinutesHelp", resourceCulture);
+            }
+        }
+
+        public static string AuthRequestLimit {
+            get {
+                return ResourceManager.GetString("AuthRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string AuthRequestLimitHelp {
+            get {
+                return ResourceManager.GetString("AuthRequestLimitHelp", resourceCulture);
+            }
+        }
+
+        public static string AuthTimeWindowMinutes {
+            get {
+                return ResourceManager.GetString("AuthTimeWindowMinutes", resourceCulture);
+            }
+        }
+
+        public static string AuthTimeWindowMinutesHelp {
+            get {
+                return ResourceManager.GetString("AuthTimeWindowMinutesHelp", resourceCulture);
+            }
+        }
+
+        public static string SearchRequestLimit {
+            get {
+                return ResourceManager.GetString("SearchRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string SearchRequestLimitHelp {
+            get {
+                return ResourceManager.GetString("SearchRequestLimitHelp", resourceCulture);
+            }
+        }
+
+        public static string SearchTimeWindowMinutes {
+            get {
+                return ResourceManager.GetString("SearchTimeWindowMinutes", resourceCulture);
+            }
+        }
+
+        public static string SearchTimeWindowMinutesHelp {
+            get {
+                return ResourceManager.GetString("SearchTimeWindowMinutesHelp", resourceCulture);
+            }
+        }
+
+        public static string ApiRequestLimit {
+            get {
+                return ResourceManager.GetString("ApiRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string ApiRequestLimitHelp {
+            get {
+                return ResourceManager.GetString("ApiRequestLimitHelp", resourceCulture);
+            }
+        }
+
+        public static string ApiTimeWindowMinutes {
+            get {
+                return ResourceManager.GetString("ApiTimeWindowMinutes", resourceCulture);
+            }
+        }
+
+        public static string ApiTimeWindowMinutesHelp {
+            get {
+                return ResourceManager.GetString("ApiTimeWindowMinutesHelp", resourceCulture);
+            }
+        }
+
+        public static string SmtpMailServerPreferences {
+            get {
+                return ResourceManager.GetString("SmtpMailServerPreferences", resourceCulture);
+            }
+        }
+
+        public static string SmtpMailServerHelp {
+            get {
+                return ResourceManager.GetString("SmtpMailServerHelp", resourceCulture);
+            }
+        }
+
+        public static string SmtpServerHost {
+            get {
+                return ResourceManager.GetString("SmtpServerHost", resourceCulture);
+            }
+        }
+
+        public static string SmtpServerHostHelp {
+            get {
+                return ResourceManager.GetString("SmtpServerHostHelp", resourceCulture);
+            }
+        }
+
+        public static string SmtpPortNumber {
+            get {
+                return ResourceManager.GetString("SmtpPortNumber", resourceCulture);
+            }
+        }
+
+        public static string SmtpPortNumberHelp {
+            get {
+                return ResourceManager.GetString("SmtpPortNumberHelp", resourceCulture);
+            }
+        }
+
+        public static string SmtpUsernameLabel {
+            get {
+                return ResourceManager.GetString("SmtpUsernameLabel", resourceCulture);
+            }
+        }
+
+        public static string SmtpUsernameHelp {
+            get {
+                return ResourceManager.GetString("SmtpUsernameHelp", resourceCulture);
+            }
+        }
+
+        public static string SmtpPasswordLabel {
+            get {
+                return ResourceManager.GetString("SmtpPasswordLabel", resourceCulture);
+            }
+        }
+
+        public static string SmtpPasswordHelp {
+            get {
+                return ResourceManager.GetString("SmtpPasswordHelp", resourceCulture);
+            }
+        }
+
+        public static string EmailSenderDisplayName {
+            get {
+                return ResourceManager.GetString("EmailSenderDisplayName", resourceCulture);
+            }
+        }
+
+        public static string EmailSenderDisplayNameHelp {
+            get {
+                return ResourceManager.GetString("EmailSenderDisplayNameHelp", resourceCulture);
+            }
+        }
+
+        public static string AdminFromEmailAddress {
+            get {
+                return ResourceManager.GetString("AdminFromEmailAddress", resourceCulture);
+            }
+        }
+
+        public static string AdminFromEmailAddressHelp {
+            get {
+                return ResourceManager.GetString("AdminFromEmailAddressHelp", resourceCulture);
+            }
+        }
+
+        public static string EnableSslTlsEncryption {
+            get {
+                return ResourceManager.GetString("EnableSslTlsEncryption", resourceCulture);
+            }
+        }
+
+        public static string EnableSslTlsEncryptionHelp {
+            get {
+                return ResourceManager.GetString("EnableSslTlsEncryptionHelp", resourceCulture);
+            }
+        }
+
+        public static string UseDefaultWindowsCredentials {
+            get {
+                return ResourceManager.GetString("UseDefaultWindowsCredentials", resourceCulture);
+            }
+        }
+
+        public static string UseDefaultWindowsCredentialsHelp {
+            get {
+                return ResourceManager.GetString("UseDefaultWindowsCredentialsHelp", resourceCulture);
+            }
+        }
+
+        public static string SendLiveTestEmail {
+            get {
+                return ResourceManager.GetString("SendLiveTestEmail", resourceCulture);
+            }
+        }
+
+        public static string SendLiveTestEmailHelp {
+            get {
+                return ResourceManager.GetString("SendLiveTestEmailHelp", resourceCulture);
+            }
+        }
+
+        public static string TargetTestEmailPlaceholder {
+            get {
+                return ResourceManager.GetString("TargetTestEmailPlaceholder", resourceCulture);
+            }
+        }
+
+        public static string SendTestEmailBtn {
+            get {
+                return ResourceManager.GetString("SendTestEmailBtn", resourceCulture);
+            }
+        }
+
+        public static string SocialMediaAndExternalIntegrations {
+            get {
+                return ResourceManager.GetString("SocialMediaAndExternalIntegrations", resourceCulture);
+            }
+        }
+
+        public static string SocialMediaAndExternalHelp {
+            get {
+                return ResourceManager.GetString("SocialMediaAndExternalHelp", resourceCulture);
+            }
+        }
+
+        public static string GoogleAnalyticsTrackingCode {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTrackingCode", resourceCulture);
+            }
+        }
+
+        public static string GoogleAnalyticsTrackingCodeHelp {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTrackingCodeHelp", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppWidgetScript {
+            get {
+                return ResourceManager.GetString("WhatsAppWidgetScript", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppWidgetScriptHelp {
+            get {
+                return ResourceManager.GetString("WhatsAppWidgetScriptHelp", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppDirectChatUrl {
+            get {
+                return ResourceManager.GetString("WhatsAppDirectChatUrl", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppDirectChatUrlHelp {
+            get {
+                return ResourceManager.GetString("WhatsAppDirectChatUrlHelp", resourceCulture);
+            }
+        }
+
+        public static string GoogleMapsEmbedHtml {
+            get {
+                return ResourceManager.GetString("GoogleMapsEmbedHtml", resourceCulture);
+            }
+        }
+
+        public static string GoogleMapsEmbedHtmlHelp {
+            get {
+                return ResourceManager.GetString("GoogleMapsEmbedHtmlHelp", resourceCulture);
+            }
+        }
+
+        public static string LiveChatZopimScript {
+            get {
+                return ResourceManager.GetString("LiveChatZopimScript", resourceCulture);
+            }
+        }
+
+        public static string LiveChatZopimScriptHelp {
+            get {
+                return ResourceManager.GetString("LiveChatZopimScriptHelp", resourceCulture);
+            }
+        }
+
+        public static string SystemMaintenanceToolsAndOperations {
+            get {
+                return ResourceManager.GetString("SystemMaintenanceToolsAndOperations", resourceCulture);
+            }
+        }
+
+        public static string SystemMaintenanceToolsHelp {
+            get {
+                return ResourceManager.GetString("SystemMaintenanceToolsHelp", resourceCulture);
+            }
+        }
+
+        public static string PurgeApplicationCache {
+            get {
+                return ResourceManager.GetString("PurgeApplicationCache", resourceCulture);
+            }
+        }
+
+        public static string PurgeApplicationCacheHelp {
+            get {
+                return ResourceManager.GetString("PurgeApplicationCacheHelp", resourceCulture);
+            }
+        }
+
+        public static string ClearCacheBtn {
+            get {
+                return ResourceManager.GetString("ClearCacheBtn", resourceCulture);
+            }
+        }
+
+        public static string ExportDatabaseBackup {
+            get {
+                return ResourceManager.GetString("ExportDatabaseBackup", resourceCulture);
+            }
+        }
+
+        public static string ExportDatabaseBackupHelp {
+            get {
+                return ResourceManager.GetString("ExportDatabaseBackupHelp", resourceCulture);
+            }
+        }
+
+        public static string DownloadBackupBtn {
+            get {
+                return ResourceManager.GetString("DownloadBackupBtn", resourceCulture);
+            }
+        }
+            public static string UserEditHelp1 {
+            get {
+                return ResourceManager.GetString("UserEditHelp1", resourceCulture);
+            }
+        }
+
+        public static string UserEditHelp2 {
+            get {
+                return ResourceManager.GetString("UserEditHelp2", resourceCulture);
+            }
+        }
+
+        public static string ChangePasswordHelp1 {
+            get {
+                return ResourceManager.GetString("ChangePasswordHelp1", resourceCulture);
+            }
+        }
+
+        public static string ChangePasswordHelp2 {
+            get {
+                return ResourceManager.GetString("ChangePasswordHelp2", resourceCulture);
+            }
+        }
+
+        public static string TemplatesSaveHelp1 {
+            get {
+                return ResourceManager.GetString("TemplatesSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string TemplatesSaveHelp2 {
+            get {
+                return ResourceManager.GetString("TemplatesSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string TagsSaveHelp1 {
+            get {
+                return ResourceManager.GetString("TagsSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string TagsSaveHelp2 {
+            get {
+                return ResourceManager.GetString("TagsSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string TagCategoriesSaveHelp1 {
+            get {
+                return ResourceManager.GetString("TagCategoriesSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string TagCategoriesSaveHelp2 {
+            get {
+                return ResourceManager.GetString("TagCategoriesSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string StoriesSaveHelp1 {
+            get {
+                return ResourceManager.GetString("StoriesSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string StoriesSaveHelp2 {
+            get {
+                return ResourceManager.GetString("StoriesSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string StoryCategoriesSaveHelp1 {
+            get {
+                return ResourceManager.GetString("StoryCategoriesSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string StoryCategoriesSaveHelp2 {
+            get {
+                return ResourceManager.GetString("StoryCategoriesSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string WebSiteLogoHelp1 {
+            get {
+                return ResourceManager.GetString("WebSiteLogoHelp1", resourceCulture);
+            }
+        }
+
+        public static string WebSiteLogoHelp2 {
+            get {
+                return ResourceManager.GetString("WebSiteLogoHelp2", resourceCulture);
+            }
+        }
+
+        public static string ProductSpecsHelp1 {
+            get {
+                return ResourceManager.GetString("ProductSpecsHelp1", resourceCulture);
+            }
+        }
+
+        public static string ProductSpecsHelp2 {
+            get {
+                return ResourceManager.GetString("ProductSpecsHelp2", resourceCulture);
+            }
+        }
+
+        public static string ProductsSaveHelp1 {
+            get {
+                return ResourceManager.GetString("ProductsSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string ProductsSaveHelp2 {
+            get {
+                return ResourceManager.GetString("ProductsSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string MoveProductsHelp1 {
+            get {
+                return ResourceManager.GetString("MoveProductsHelp1", resourceCulture);
+            }
+        }
+
+        public static string MoveProductsHelp2 {
+            get {
+                return ResourceManager.GetString("MoveProductsHelp2", resourceCulture);
+            }
+        }
+
+        public static string MoveCategoryHelp1 {
+            get {
+                return ResourceManager.GetString("MoveCategoryHelp1", resourceCulture);
+            }
+        }
+
+        public static string MoveCategoryHelp2 {
+            get {
+                return ResourceManager.GetString("MoveCategoryHelp2", resourceCulture);
+            }
+        }
+
+        public static string ProductCategoriesSaveHelp1 {
+            get {
+                return ResourceManager.GetString("ProductCategoriesSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string ProductCategoriesSaveHelp2 {
+            get {
+                return ResourceManager.GetString("ProductCategoriesSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string MenusSaveHelp1 {
+            get {
+                return ResourceManager.GetString("MenusSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string MenusSaveHelp2 {
+            get {
+                return ResourceManager.GetString("MenusSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string MoveMenuHelp1 {
+            get {
+                return ResourceManager.GetString("MoveMenuHelp1", resourceCulture);
+            }
+        }
+
+        public static string MoveMenuHelp2 {
+            get {
+                return ResourceManager.GetString("MoveMenuHelp2", resourceCulture);
+            }
+        }
+
+        public static string MainPageImagesSaveHelp1 {
+            get {
+                return ResourceManager.GetString("MainPageImagesSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string MainPageImagesSaveHelp2 {
+            get {
+                return ResourceManager.GetString("MainPageImagesSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string MailTemplatesSaveHelp1 {
+            get {
+                return ResourceManager.GetString("MailTemplatesSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string MailTemplatesSaveHelp2 {
+            get {
+                return ResourceManager.GetString("MailTemplatesSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string ListsSaveHelp1 {
+            get {
+                return ResourceManager.GetString("ListsSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string ListsSaveHelp2 {
+            get {
+                return ResourceManager.GetString("ListsSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string FaqSaveHelp1 {
+            get {
+                return ResourceManager.GetString("FaqSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string FaqSaveHelp2 {
+            get {
+                return ResourceManager.GetString("FaqSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string BrandsSaveHelp1 {
+            get {
+                return ResourceManager.GetString("BrandsSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string BrandsSaveHelp2 {
+            get {
+                return ResourceManager.GetString("BrandsSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string CouponsSaveHelp1 {
+            get {
+                return ResourceManager.GetString("CouponsSaveHelp1", resourceCulture);
+            }
+        }
+
+        public static string CouponsSaveHelp2 {
+            get {
+                return ResourceManager.GetString("CouponsSaveHelp2", resourceCulture);
+            }
+        }
+
+        public static string EditCompanyInfo {
+            get {
+                return ResourceManager.GetString("EditCompanyInfo", resourceCulture);
+            }
+        }
+
+        public static string Tools {
+            get {
+                return ResourceManager.GetString("Tools", resourceCulture);
+            }
+        }
+
+        public static string SystemMetricsLogsDesc {
+            get {
+                return ResourceManager.GetString("SystemMetricsLogsDesc", resourceCulture);
+            }
+        }
+
+        public static string OpenSystemTools {
+            get {
+                return ResourceManager.GetString("OpenSystemTools", resourceCulture);
+            }
+        }
+
+        public static string SiteStatusAndIndexing {
+            get {
+                return ResourceManager.GetString("SiteStatusAndIndexing", resourceCulture);
+            }
+        }
+
+        public static string ManageStorefrontVisibility {
+            get {
+                return ResourceManager.GetString("ManageStorefrontVisibility", resourceCulture);
+            }
+        }
+
+        public static string MaintenanceModeSiteStatus {
+            get {
+                return ResourceManager.GetString("MaintenanceModeSiteStatus", resourceCulture);
+            }
+        }
+
+        public static string MaintenanceModeSiteStatusDesc {
+            get {
+                return ResourceManager.GetString("MaintenanceModeSiteStatusDesc", resourceCulture);
+            }
+        }
+
+        public static string MaintenanceCustomMessageHtml {
+            get {
+                return ResourceManager.GetString("MaintenanceCustomMessageHtml", resourceCulture);
+            }
+        }
+
+        public static string MaintenanceCustomMessageHtmlDesc {
+            get {
+                return ResourceManager.GetString("MaintenanceCustomMessageHtmlDesc", resourceCulture);
+            }
+        }
+
+        public static string AllowSearchEngineIndexing {
+            get {
+                return ResourceManager.GetString("AllowSearchEngineIndexing", resourceCulture);
+            }
+        }
+
+        public static string AllowSearchEngineIndexingDesc {
+            get {
+                return ResourceManager.GetString("AllowSearchEngineIndexingDesc", resourceCulture);
+            }
+        }
+
+        public static string ProductPricesAndAddToCart {
+            get {
+                return ResourceManager.GetString("ProductPricesAndAddToCart", resourceCulture);
+            }
+        }
+
+        public static string CatalogShowcaseModeDesc {
+            get {
+                return ResourceManager.GetString("CatalogShowcaseModeDesc", resourceCulture);
+            }
+        }
+
+        public static string ProductReviewsAndRatingsTitle {
+            get {
+                return ResourceManager.GetString("ProductReviewsAndRatingsTitle", resourceCulture);
+            }
+        }
+
+        public static string ProductReviewsAndRatingsDesc {
+            get {
+                return ResourceManager.GetString("ProductReviewsAndRatingsDesc", resourceCulture);
+            }
+        }
+
+        public static string AdminGridPageSizeDesc {
+            get {
+                return ResourceManager.GetString("AdminGridPageSizeDesc", resourceCulture);
+            }
+        }
+
+        public static string ProductShortDescLengthDesc {
+            get {
+                return ResourceManager.GetString("ProductShortDescLengthDesc", resourceCulture);
+            }
+        }
+
+        public static string UserRolesHelpLead {
+            get {
+                return ResourceManager.GetString("UserRolesHelpLead", resourceCulture);
+            }
+        }
+
+        public static string PermissionsSelected {
+            get {
+                return ResourceManager.GetString("PermissionsSelected", resourceCulture);
+            }
+        }
+
+        public static string TogglePermissionsByRoles {
+            get {
+                return ResourceManager.GetString("TogglePermissionsByRoles", resourceCulture);
+            }
+        }
+
+        public static string AdminUsersIndexLead {
+            get {
+                return ResourceManager.GetString("AdminUsersIndexLead", resourceCulture);
+            }
+        }
+
+        public static string CustomersWithAccounts {
+            get {
+                return ResourceManager.GetString("CustomersWithAccounts", resourceCulture);
+            }
+        }
+
+        public static string FilterByNameEmailRole2Fa {
+            get {
+                return ResourceManager.GetString("FilterByNameEmailRole2Fa", resourceCulture);
+            }
+        }
+
+        public static string Administrator {
+            get {
+                return ResourceManager.GetString("Administrator", resourceCulture);
+            }
+        }
+
+        public static string EnableAuthenticator {
+            get {
+                return ResourceManager.GetString("EnableAuthenticator", resourceCulture);
+            }
+        }
+
+        public static string EnableAuthenticatorLead {
+            get {
+                return ResourceManager.GetString("EnableAuthenticatorLead", resourceCulture);
+            }
+        }
+
+        public static string SetupAuthenticatorApp {
+            get {
+                return ResourceManager.GetString("SetupAuthenticatorApp", resourceCulture);
+            }
+        }
+
+        public static string InstallAuthenticatorStep1 {
+            get {
+                return ResourceManager.GetString("InstallAuthenticatorStep1", resourceCulture);
+            }
+        }
+
+        public static string InstallAuthenticatorStep2 {
+            get {
+                return ResourceManager.GetString("InstallAuthenticatorStep2", resourceCulture);
+            }
+        }
+
+        public static string InstallAuthenticatorStep3 {
+            get {
+                return ResourceManager.GetString("InstallAuthenticatorStep3", resourceCulture);
+            }
+        }
+
+        public static string InstallAuthenticatorStep4 {
+            get {
+                return ResourceManager.GetString("InstallAuthenticatorStep4", resourceCulture);
+            }
+        }
+
+        public static string ScanQrCodePrompt {
+            get {
+                return ResourceManager.GetString("ScanQrCodePrompt", resourceCulture);
+            }
+        }
+
+        public static string DisplayNameInApp {
+            get {
+                return ResourceManager.GetString("DisplayNameInApp", resourceCulture);
+            }
+        }
+
+        public static string EnterKeyManuallyPrompt {
+            get {
+                return ResourceManager.GetString("EnterKeyManuallyPrompt", resourceCulture);
+            }
+        }
+
+        public static string VerificationCode6Digits {
+            get {
+                return ResourceManager.GetString("VerificationCode6Digits", resourceCulture);
+            }
+        }
+
+        public static string Activate {
+            get {
+                return ResourceManager.GetString("Activate", resourceCulture);
+            }
+        }
+
+        public static string ForgotPasswordLead {
+            get {
+                return ResourceManager.GetString("ForgotPasswordLead", resourceCulture);
+            }
+        }
+
+        public static string CheckSpamFolderHint {
+            get {
+                return ResourceManager.GetString("CheckSpamFolderHint", resourceCulture);
+            }
+        }
+
+        public static string EmergencyAdminOption {
+            get {
+                return ResourceManager.GetString("EmergencyAdminOption", resourceCulture);
+            }
+        }
+
+        public static string GeneratePasswordInstantlyOption {
+            get {
+                return ResourceManager.GetString("GeneratePasswordInstantlyOption", resourceCulture);
+            }
+        }
+
+        public static string EmailAutoPopulatedFromUser {
+            get {
+                return ResourceManager.GetString("EmailAutoPopulatedFromUser", resourceCulture);
+            }
+        }
+
+        public static string GeneratePasswordLead {
+            get {
+                return ResourceManager.GetString("GeneratePasswordLead", resourceCulture);
+            }
+        }
+
+        public static string GeneratePasswordWarning {
+            get {
+                return ResourceManager.GetString("GeneratePasswordWarning", resourceCulture);
+            }
+        }
+
+        public static string PasswordGeneratedSuccessNotice {
+            get {
+                return ResourceManager.GetString("PasswordGeneratedSuccessNotice", resourceCulture);
+            }
+        }
+
+        public static string Copied {
+            get {
+                return ResourceManager.GetString("Copied", resourceCulture);
+            }
+        }
+
+        public static string CopyPassword {
+            get {
+                return ResourceManager.GetString("CopyPassword", resourceCulture);
+            }
+        }
+
+        public static string PasswordGenerateFailed {
+            get {
+                return ResourceManager.GetString("PasswordGenerateFailed", resourceCulture);
+            }
+        }
+
+        public static string PasswordCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("PasswordCopiedToClipboard", resourceCulture);
+            }
+        }
+
+        public static string CopyFailedSelectManually {
+            get {
+                return ResourceManager.GetString("CopyFailedSelectManually", resourceCulture);
+            }
+        }
+            public static string CustomerFullname {
+            get {
+                return ResourceManager.GetString("CustomerFullname", resourceCulture);
+            }
+        }
+
+        public static string TcIdentificationNumber {
+            get {
+                return ResourceManager.GetString("TcIdentificationNumber", resourceCulture);
+            }
+        }
+
+        public static string SubTotal {
+            get {
+                return ResourceManager.GetString("SubTotal", resourceCulture);
+            }
+        }
+
+        public static string PaymentStatusLabel {
+            get {
+                return ResourceManager.GetString("PaymentStatusLabel", resourceCulture);
+            }
+        }
+
+        public static string Customer {
+            get {
+                return ResourceManager.GetString("Customer", resourceCulture);
+            }
+        }
+
+        public static string Editor {
+            get {
+                return ResourceManager.GetString("Editor", resourceCulture);
+            }
+        }
+
+        public static string Mandatory {
+            get {
+                return ResourceManager.GetString("Mandatory", resourceCulture);
+            }
+        }
+
+        public static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+            public static string ToolsTitle {
+            get {
+                return ResourceManager.GetString("ToolsTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelInterfaceLanguageDesc {
+            get {
+                return ResourceManager.GetString("AdminPanelInterfaceLanguageDesc", resourceCulture);
+            }
+        }
+
+        public static string PaymentDetailTabHelpDesc {
+            get {
+                return ResourceManager.GetString("PaymentDetailTabHelpDesc", resourceCulture);
+            }
+        }
+
+        public static string PaymentDetailTabHelpDescAmp {
+            get {
+                return ResourceManager.GetString("PaymentDetailTabHelpDescAmp", resourceCulture);
+            }
+        }
+
+        public static string AppearanceThemePwaManifest {
+            get {
+                return ResourceManager.GetString("AppearanceThemePwaManifest", resourceCulture);
+            }
+        }
+
+        public static string AppearanceThemePwaManifestDesc {
+            get {
+                return ResourceManager.GetString("AppearanceThemePwaManifestDesc", resourceCulture);
+            }
+        }
+
+        public static string StorefrontAndInterfaceTheme {
+            get {
+                return ResourceManager.GetString("StorefrontAndInterfaceTheme", resourceCulture);
+            }
+        }
+
+        public static string StorefrontThemeSelectDesc {
+            get {
+                return ResourceManager.GetString("StorefrontThemeSelectDesc", resourceCulture);
+            }
+        }
+
+        public static string ThemePrimaryBrandColor {
+            get {
+                return ResourceManager.GetString("ThemePrimaryBrandColor", resourceCulture);
+            }
+        }
+
+        public static string ThemePrimaryBrandColorDesc {
+            get {
+                return ResourceManager.GetString("ThemePrimaryBrandColorDesc", resourceCulture);
+            }
+        }
+
+        public static string PwaBackgroundColorSplash {
+            get {
+                return ResourceManager.GetString("PwaBackgroundColorSplash", resourceCulture);
+            }
+        }
+
+        public static string PwaBackgroundColorSplashDesc {
+            get {
+                return ResourceManager.GetString("PwaBackgroundColorSplashDesc", resourceCulture);
+            }
+        }
+
+        public static string PwaStartUrlTitle {
+            get {
+                return ResourceManager.GetString("PwaStartUrlTitle", resourceCulture);
+            }
+        }
+
+        public static string PwaStartUrlDesc {
+            get {
+                return ResourceManager.GetString("PwaStartUrlDesc", resourceCulture);
+            }
+        }
+
+        public static string PwaDisplayModeTitle {
+            get {
+                return ResourceManager.GetString("PwaDisplayModeTitle", resourceCulture);
+            }
+        }
+
+        public static string PwaDisplayModeDesc {
+            get {
+                return ResourceManager.GetString("PwaDisplayModeDesc", resourceCulture);
+            }
+        }
+
+        public static string PwaOrientationTitle {
+            get {
+                return ResourceManager.GetString("PwaOrientationTitle", resourceCulture);
+            }
+        }
+
+        public static string PwaOrientationDesc {
+            get {
+                return ResourceManager.GetString("PwaOrientationDesc", resourceCulture);
+            }
+        }
+
+        public static string PwaShortNameMaxLengthTitle {
+            get {
+                return ResourceManager.GetString("PwaShortNameMaxLengthTitle", resourceCulture);
+            }
+        }
+
+        public static string PwaShortNameMaxLengthDesc {
+            get {
+                return ResourceManager.GetString("PwaShortNameMaxLengthDesc", resourceCulture);
+            }
+        }
+
+        public static string PwaFallbackAppNameTitle {
+            get {
+                return ResourceManager.GetString("PwaFallbackAppNameTitle", resourceCulture);
+            }
+        }
+
+        public static string PwaFallbackAppNameDesc {
+            get {
+                return ResourceManager.GetString("PwaFallbackAppNameDesc", resourceCulture);
+            }
+        }
+
+        public static string DefaultImageDimensions {
+            get {
+                return ResourceManager.GetString("DefaultImageDimensions", resourceCulture);
+            }
+        }
+
+        public static string DefaultImageDimensionsDesc {
+            get {
+                return ResourceManager.GetString("DefaultImageDimensionsDesc", resourceCulture);
+            }
+        }
+
+        public static string StandardImageWidthDesc {
+            get {
+                return ResourceManager.GetString("StandardImageWidthDesc", resourceCulture);
+            }
+        }
+
+        public static string StandardImageHeightDesc {
+            get {
+                return ResourceManager.GetString("StandardImageHeightDesc", resourceCulture);
+            }
+        }
+
+        public static string FullSizeImagePoliciesAndJpegQuality {
+            get {
+                return ResourceManager.GetString("FullSizeImagePoliciesAndJpegQuality", resourceCulture);
+            }
+        }
+
+        public static string FullSizeImagesAndCompression {
+            get {
+                return ResourceManager.GetString("FullSizeImagesAndCompression", resourceCulture);
+            }
+        }
+
+        public static string FullSizeImagesAndCompressionDesc {
+            get {
+                return ResourceManager.GetString("FullSizeImagesAndCompressionDesc", resourceCulture);
+            }
+        }
+
+        public static string ZeroNoLimitDesc {
+            get {
+                return ResourceManager.GetString("ZeroNoLimitDesc", resourceCulture);
+            }
+        }
+
+        public static string WebpOptimizationPipelineTitle {
+            get {
+                return ResourceManager.GetString("WebpOptimizationPipelineTitle", resourceCulture);
+            }
+        }
+
+        public static string WebpOptimizationPipelineDesc {
+            get {
+                return ResourceManager.GetString("WebpOptimizationPipelineDesc", resourceCulture);
+            }
+        }
+
+        public static string AutoConvertToWebp {
+            get {
+                return ResourceManager.GetString("AutoConvertToWebp", resourceCulture);
+            }
+        }
+
+        public static string AutoConvertToWebpDesc {
+            get {
+                return ResourceManager.GetString("AutoConvertToWebpDesc", resourceCulture);
+            }
+        }
+
+        public static string PreserveOriginalFileFormat {
+            get {
+                return ResourceManager.GetString("PreserveOriginalFileFormat", resourceCulture);
+            }
+        }
+
+        public static string PreserveOriginalFileFormatDesc {
+            get {
+                return ResourceManager.GetString("PreserveOriginalFileFormatDesc", resourceCulture);
+            }
+        }
+
+        public static string WebpCompressionQualityTitle {
+            get {
+                return ResourceManager.GetString("WebpCompressionQualityTitle", resourceCulture);
+            }
+        }
+
+        public static string WebpCompressionQualityDesc {
+            get {
+                return ResourceManager.GetString("WebpCompressionQualityDesc", resourceCulture);
+            }
+        }
+
+        public static string JpegCompressionQualityTitle {
+            get {
+                return ResourceManager.GetString("JpegCompressionQualityTitle", resourceCulture);
+            }
+        }
+
+        public static string JpegCompressionQualityDesc {
+            get {
+                return ResourceManager.GetString("JpegCompressionQualityDesc", resourceCulture);
+            }
+        }
+
+        public static string ImageEngineAdvancedPipeline {
+            get {
+                return ResourceManager.GetString("ImageEngineAdvancedPipeline", resourceCulture);
+            }
+        }
+
+        public static string ImageProcessingAndPipeline {
+            get {
+                return ResourceManager.GetString("ImageProcessingAndPipeline", resourceCulture);
+            }
+        }
+
+        public static string AsyncProcessingAndSidecarDesc {
+            get {
+                return ResourceManager.GetString("AsyncProcessingAndSidecarDesc", resourceCulture);
+            }
+        }
+
+        public static string AsyncBackgroundQueue {
+            get {
+                return ResourceManager.GetString("AsyncBackgroundQueue", resourceCulture);
+            }
+        }
+
+        public static string AsyncBackgroundQueueDesc {
+            get {
+                return ResourceManager.GetString("AsyncBackgroundQueueDesc", resourceCulture);
+            }
+        }
+
+        public static string SaveWebpSidecarFile {
+            get {
+                return ResourceManager.GetString("SaveWebpSidecarFile", resourceCulture);
+            }
+        }
+
+        public static string SaveWebpSidecarFileDesc {
+            get {
+                return ResourceManager.GetString("SaveWebpSidecarFileDesc", resourceCulture);
+            }
+        }
+
+        public static string DeleteOriginalAfterCompression {
+            get {
+                return ResourceManager.GetString("DeleteOriginalAfterCompression", resourceCulture);
+            }
+        }
+
+        public static string DeleteOriginalAfterCompressionDesc {
+            get {
+                return ResourceManager.GetString("DeleteOriginalAfterCompressionDesc", resourceCulture);
+            }
+        }
+
+        public static string KeepOriginalInFileStorage {
+            get {
+                return ResourceManager.GetString("KeepOriginalInFileStorage", resourceCulture);
+            }
+        }
+
+        public static string KeepOriginalInFileStorageDesc {
+            get {
+                return ResourceManager.GetString("KeepOriginalInFileStorageDesc", resourceCulture);
+            }
+        }
+
+        public static string UseImageSidecarService {
+            get {
+                return ResourceManager.GetString("UseImageSidecarService", resourceCulture);
+            }
+        }
+
+        public static string UseImageSidecarServiceDesc {
+            get {
+                return ResourceManager.GetString("UseImageSidecarServiceDesc", resourceCulture);
+            }
+        }
+
+        public static string CompanyAndContactInfo {
+            get {
+                return ResourceManager.GetString("CompanyAndContactInfo", resourceCulture);
+            }
+        }
+
+        public static string CompanyAndContactInfoDesc {
+            get {
+                return ResourceManager.GetString("CompanyAndContactInfoDesc", resourceCulture);
+            }
+        }
+
+        public static string OfficialCompanyStoreTitle {
+            get {
+                return ResourceManager.GetString("OfficialCompanyStoreTitle", resourceCulture);
+            }
+        }
+
+        public static string OfficialCompanyNameDesc {
+            get {
+                return ResourceManager.GetString("OfficialCompanyNameDesc", resourceCulture);
+            }
+        }
+
+        public static string OfficialContactEmailAddress {
+            get {
+                return ResourceManager.GetString("OfficialContactEmailAddress", resourceCulture);
+            }
+        }
+
+        public static string OfficialContactEmailDesc {
+            get {
+                return ResourceManager.GetString("OfficialContactEmailDesc", resourceCulture);
+            }
+        }
+
+        public static string PhoneNumberAndCallCenter {
+            get {
+                return ResourceManager.GetString("PhoneNumberAndCallCenter", resourceCulture);
+            }
+        }
+
+        public static string CustomerSupportPhoneDesc {
+            get {
+                return ResourceManager.GetString("CustomerSupportPhoneDesc", resourceCulture);
+            }
+        }
+
+        public static string CompanyAddressAndLocation {
+            get {
+                return ResourceManager.GetString("CompanyAddressAndLocation", resourceCulture);
+            }
+        }
+
+        public static string FullPhysicalPostalAddressDesc {
+            get {
+                return ResourceManager.GetString("FullPhysicalPostalAddressDesc", resourceCulture);
+            }
+        }
+
+        public static string OrderMinimumsAndShippingThresholds {
+            get {
+                return ResourceManager.GetString("OrderMinimumsAndShippingThresholds", resourceCulture);
+            }
+        }
+
+        public static string OrdersAndShipping {
+            get {
+                return ResourceManager.GetString("OrdersAndShipping", resourceCulture);
+            }
+        }
+
+        public static string OrderMinimumsAndShippingDesc {
+            get {
+                return ResourceManager.GetString("OrderMinimumsAndShippingDesc", resourceCulture);
+            }
+        }
+
+        public static string MinimumCartOrderAmountTl {
+            get {
+                return ResourceManager.GetString("MinimumCartOrderAmountTl", resourceCulture);
+            }
+        }
+
+        public static string MinimumCartSubtotalDesc {
+            get {
+                return ResourceManager.GetString("MinimumCartSubtotalDesc", resourceCulture);
+            }
+        }
+
+        public static string FreeShippingSubtotalThresholdTl {
+            get {
+                return ResourceManager.GetString("FreeShippingSubtotalThresholdTl", resourceCulture);
+            }
+        }
+
+        public static string FreeShippingSubtotalDesc {
+            get {
+                return ResourceManager.GetString("FreeShippingSubtotalDesc", resourceCulture);
+            }
+        }
+
+        public static string PaymentInfrastructureIyzicoIntegration {
+            get {
+                return ResourceManager.GetString("PaymentInfrastructureIyzicoIntegration", resourceCulture);
+            }
+        }
+
+        public static string PaymentInfrastructureIyzicoDesc {
+            get {
+                return ResourceManager.GetString("PaymentInfrastructureIyzicoDesc", resourceCulture);
+            }
+        }
+
+        public static string ActivePaymentGatewayInfra {
+            get {
+                return ResourceManager.GetString("ActivePaymentGatewayInfra", resourceCulture);
+            }
+        }
+
+        public static string SelectPrimaryPaymentGatewayDesc {
+            get {
+                return ResourceManager.GetString("SelectPrimaryPaymentGatewayDesc", resourceCulture);
+            }
+        }
+
+        public static string IyzicoApiKeysAndConnection {
+            get {
+                return ResourceManager.GetString("IyzicoApiKeysAndConnection", resourceCulture);
+            }
+        }
+
+        public static string IyzicoApiAndSecurity {
+            get {
+                return ResourceManager.GetString("IyzicoApiAndSecurity", resourceCulture);
+            }
+        }
+
+        public static string EnterIyzicoApiCredentialsDesc {
+            get {
+                return ResourceManager.GetString("EnterIyzicoApiCredentialsDesc", resourceCulture);
+            }
+        }
+
+        public static string IyzicoApiKeyPublic {
+            get {
+                return ResourceManager.GetString("IyzicoApiKeyPublic", resourceCulture);
+            }
+        }
+
+        public static string MerchantApiKeyDesc {
+            get {
+                return ResourceManager.GetString("MerchantApiKeyDesc", resourceCulture);
+            }
+        }
+
+        public static string IyzicoSecretKeyPrivate {
+            get {
+                return ResourceManager.GetString("IyzicoSecretKeyPrivate", resourceCulture);
+            }
+        }
+
+        public static string MerchantSecretKeyDesc {
+            get {
+                return ResourceManager.GetString("MerchantSecretKeyDesc", resourceCulture);
+            }
+        }
+
+        public static string IyzicoApiBaseUrlTitle {
+            get {
+                return ResourceManager.GetString("IyzicoApiBaseUrlTitle", resourceCulture);
+            }
+        }
+
+        public static string IyzicoBaseUrlHelpText {
+            get {
+                return ResourceManager.GetString("IyzicoBaseUrlHelpText", resourceCulture);
+            }
+        }
+
+        public static string InstallmentAndPaymentRules {
+            get {
+                return ResourceManager.GetString("InstallmentAndPaymentRules", resourceCulture);
+            }
+        }
+
+        public static string InstallmentOptionsTitle {
+            get {
+                return ResourceManager.GetString("InstallmentOptionsTitle", resourceCulture);
+            }
+        }
+
+        public static string InstallmentOptionsDesc {
+            get {
+                return ResourceManager.GetString("InstallmentOptionsDesc", resourceCulture);
+            }
+        }
+
+        public static string ActiveInstallmentOptionsTitle {
+            get {
+                return ResourceManager.GetString("ActiveInstallmentOptionsTitle", resourceCulture);
+            }
+        }
+
+        public static string ActiveInstallmentsCommaSeparatedDesc {
+            get {
+                return ResourceManager.GetString("ActiveInstallmentsCommaSeparatedDesc", resourceCulture);
+            }
+        }
+
+        public static string DefaultSelectedInstallment {
+            get {
+                return ResourceManager.GetString("DefaultSelectedInstallment", resourceCulture);
+            }
+        }
+
+        public static string DefaultInstallmentFormDesc {
+            get {
+                return ResourceManager.GetString("DefaultInstallmentFormDesc", resourceCulture);
+            }
+        }
+
+        public static string ShowInstallmentTableProductPageTitle {
+            get {
+                return ResourceManager.GetString("ShowInstallmentTableProductPageTitle", resourceCulture);
+            }
+        }
+
+        public static string ShowInstallmentTableProductPageDesc {
+            get {
+                return ResourceManager.GetString("ShowInstallmentTableProductPageDesc", resourceCulture);
+            }
+        }
+
+        public static string Enforce3dSecureVerificationTitle {
+            get {
+                return ResourceManager.GetString("Enforce3dSecureVerificationTitle", resourceCulture);
+            }
+        }
+
+        public static string Enforce3dSecureVerificationDesc {
+            get {
+                return ResourceManager.GetString("Enforce3dSecureVerificationDesc", resourceCulture);
+            }
+        }
+
+        public static string SecurityTotp2faRateLimiting {
+            get {
+                return ResourceManager.GetString("SecurityTotp2faRateLimiting", resourceCulture);
+            }
+        }
+
+        public static string SecurityTotp2faRateLimitingDesc {
+            get {
+                return ResourceManager.GetString("SecurityTotp2faRateLimitingDesc", resourceCulture);
+            }
+        }
+
+        public static string AdminTwoFactorAuthTotp {
+            get {
+                return ResourceManager.GetString("AdminTwoFactorAuthTotp", resourceCulture);
+            }
+        }
+
+        public static string Admin2faSecurity {
+            get {
+                return ResourceManager.GetString("Admin2faSecurity", resourceCulture);
+            }
+        }
+
+        public static string Admin2faSecurityPoliciesDesc {
+            get {
+                return ResourceManager.GetString("Admin2faSecurityPoliciesDesc", resourceCulture);
+            }
+        }
+
+        public static string Enforce2faForAllAdmins {
+            get {
+                return ResourceManager.GetString("Enforce2faForAllAdmins", resourceCulture);
+            }
+        }
+
+        public static string Enforce2faForAllAdminsDesc {
+            get {
+                return ResourceManager.GetString("Enforce2faForAllAdminsDesc", resourceCulture);
+            }
+        }
+
+        public static string Admin2faStatusLabel {
+            get {
+                return ResourceManager.GetString("Admin2faStatusLabel", resourceCulture);
+            }
+        }
+
+        public static string Protected2faEnforced {
+            get {
+                return ResourceManager.GetString("Protected2faEnforced", resourceCulture);
+            }
+        }
+
+        public static string AtRisk2faOptional {
+            get {
+                return ResourceManager.GetString("AtRisk2faOptional", resourceCulture);
+            }
+        }
+
+        public static string Setup2faFromUserManagement {
+            get {
+                return ResourceManager.GetString("Setup2faFromUserManagement", resourceCulture);
+            }
+        }
+
+        public static string BotProtectionAntiSpamCaptcha {
+            get {
+                return ResourceManager.GetString("BotProtectionAntiSpamCaptcha", resourceCulture);
+            }
+        }
+
+        public static string SpamAndBotProtection {
+            get {
+                return ResourceManager.GetString("SpamAndBotProtection", resourceCulture);
+            }
+        }
+
+        public static string CaptchaProviderFormDesc {
+            get {
+                return ResourceManager.GetString("CaptchaProviderFormDesc", resourceCulture);
+            }
+        }
+
+        public static string ActiveCaptchaProviderTitle {
+            get {
+                return ResourceManager.GetString("ActiveCaptchaProviderTitle", resourceCulture);
+            }
+        }
+
+        public static string SelectCaptchaTechDesc {
+            get {
+                return ResourceManager.GetString("SelectCaptchaTechDesc", resourceCulture);
+            }
+        }
+
+        public static string RecaptchaV3ScoreThresholdTitle {
+            get {
+                return ResourceManager.GetString("RecaptchaV3ScoreThresholdTitle", resourceCulture);
+            }
+        }
+
+        public static string RecaptchaV3ScoreThresholdDesc {
+            get {
+                return ResourceManager.GetString("RecaptchaV3ScoreThresholdDesc", resourceCulture);
+            }
+        }
+
+        public static string CaptchaSiteKeyPublic {
+            get {
+                return ResourceManager.GetString("CaptchaSiteKeyPublic", resourceCulture);
+            }
+        }
+
+        public static string PublicSiteKeyDesc {
+            get {
+                return ResourceManager.GetString("PublicSiteKeyDesc", resourceCulture);
+            }
+        }
+
+        public static string CaptchaSecretKeyPrivate {
+            get {
+                return ResourceManager.GetString("CaptchaSecretKeyPrivate", resourceCulture);
+            }
+        }
+
+        public static string ServerSecretKeyDesc {
+            get {
+                return ResourceManager.GetString("ServerSecretKeyDesc", resourceCulture);
+            }
+        }
+
+        public static string RequestRateLimitingInfra {
+            get {
+                return ResourceManager.GetString("RequestRateLimitingInfra", resourceCulture);
+            }
+        }
+
+        public static string RateLimitingAndDdos {
+            get {
+                return ResourceManager.GetString("RateLimitingAndDdos", resourceCulture);
+            }
+        }
+
+        public static string RateLimitingAndDdosDesc {
+            get {
+                return ResourceManager.GetString("RateLimitingAndDdosDesc", resourceCulture);
+            }
+        }
+
+        public static string EnableIpRateLimitingTitle {
+            get {
+                return ResourceManager.GetString("EnableIpRateLimitingTitle", resourceCulture);
+            }
+        }
+
+        public static string EnableIpRateLimitingDesc {
+            get {
+                return ResourceManager.GetString("EnableIpRateLimitingDesc", resourceCulture);
+            }
+        }
+
+        public static string GlobalRequestLimitAndWindow {
+            get {
+                return ResourceManager.GetString("GlobalRequestLimitAndWindow", resourceCulture);
+            }
+        }
+
+        public static string AuthRequestLimitAndWindow {
+            get {
+                return ResourceManager.GetString("AuthRequestLimitAndWindow", resourceCulture);
+            }
+        }
+
+        public static string SearchRequestLimitAndWindow {
+            get {
+                return ResourceManager.GetString("SearchRequestLimitAndWindow", resourceCulture);
+            }
+        }
+
+        public static string ApiAjaxRequestLimitAndWindow {
+            get {
+                return ResourceManager.GetString("ApiAjaxRequestLimitAndWindow", resourceCulture);
+            }
+        }
+
+        public static string MaxRequestsCountLabel {
+            get {
+                return ResourceManager.GetString("MaxRequestsCountLabel", resourceCulture);
+            }
+        }
+
+        public static string TimeWindowMinutesLabel {
+            get {
+                return ResourceManager.GetString("TimeWindowMinutesLabel", resourceCulture);
+            }
+        }
+
+        public static string SmtpMailServerSettingsTitle {
+            get {
+                return ResourceManager.GetString("SmtpMailServerSettingsTitle", resourceCulture);
+            }
+        }
+
+        public static string SmtpMailServerSettingsDesc {
+            get {
+                return ResourceManager.GetString("SmtpMailServerSettingsDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpServerConnectionDetails {
+            get {
+                return ResourceManager.GetString("SmtpServerConnectionDetails", resourceCulture);
+            }
+        }
+
+        public static string ServerConnection {
+            get {
+                return ResourceManager.GetString("ServerConnection", resourceCulture);
+            }
+        }
+
+        public static string SmtpHostAndPortDesc {
+            get {
+                return ResourceManager.GetString("SmtpHostAndPortDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpServerHostAddressTitle {
+            get {
+                return ResourceManager.GetString("SmtpServerHostAddressTitle", resourceCulture);
+            }
+        }
+
+        public static string SmtpHostExampleDesc {
+            get {
+                return ResourceManager.GetString("SmtpHostExampleDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpPortNumberTitle {
+            get {
+                return ResourceManager.GetString("SmtpPortNumberTitle", resourceCulture);
+            }
+        }
+
+        public static string SmtpPortHelperDesc {
+            get {
+                return ResourceManager.GetString("SmtpPortHelperDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpAuthCredentialsTitle {
+            get {
+                return ResourceManager.GetString("SmtpAuthCredentialsTitle", resourceCulture);
+            }
+        }
+
+        public static string Authentication {
+            get {
+                return ResourceManager.GetString("Authentication", resourceCulture);
+            }
+        }
+
+        public static string MailServerCredentialsDesc {
+            get {
+                return ResourceManager.GetString("MailServerCredentialsDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpUsernameEmailTitle {
+            get {
+                return ResourceManager.GetString("SmtpUsernameEmailTitle", resourceCulture);
+            }
+        }
+
+        public static string FullEmailUsernameDesc {
+            get {
+                return ResourceManager.GetString("FullEmailUsernameDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpPasswordAppPasswordTitle {
+            get {
+                return ResourceManager.GetString("SmtpPasswordAppPasswordTitle", resourceCulture);
+            }
+        }
+
+        public static string AppPasswordGuidanceDesc {
+            get {
+                return ResourceManager.GetString("AppPasswordGuidanceDesc", resourceCulture);
+            }
+        }
+
+        public static string EmailSenderAndSecurityConfig {
+            get {
+                return ResourceManager.GetString("EmailSenderAndSecurityConfig", resourceCulture);
+            }
+        }
+
+        public static string SenderAndSecurity {
+            get {
+                return ResourceManager.GetString("SenderAndSecurity", resourceCulture);
+            }
+        }
+
+        public static string SenderAndSecurityDesc {
+            get {
+                return ResourceManager.GetString("SenderAndSecurityDesc", resourceCulture);
+            }
+        }
+
+        public static string SenderDisplayNameTitle {
+            get {
+                return ResourceManager.GetString("SenderDisplayNameTitle", resourceCulture);
+            }
+        }
+
+        public static string SenderDisplayNameExampleDesc {
+            get {
+                return ResourceManager.GetString("SenderDisplayNameExampleDesc", resourceCulture);
+            }
+        }
+
+        public static string SenderEmailAddressTitle {
+            get {
+                return ResourceManager.GetString("SenderEmailAddressTitle", resourceCulture);
+            }
+        }
+
+        public static string SenderFromAndReplyToDesc {
+            get {
+                return ResourceManager.GetString("SenderFromAndReplyToDesc", resourceCulture);
+            }
+        }
+
+        public static string EnableSslTlsEncryptionTitle {
+            get {
+                return ResourceManager.GetString("EnableSslTlsEncryptionTitle", resourceCulture);
+            }
+        }
+
+        public static string EnableSslTlsEncryptionDesc {
+            get {
+                return ResourceManager.GetString("EnableSslTlsEncryptionDesc", resourceCulture);
+            }
+        }
+
+        public static string UseDefaultWindowsCredentialsTitle {
+            get {
+                return ResourceManager.GetString("UseDefaultWindowsCredentialsTitle", resourceCulture);
+            }
+        }
+
+        public static string UseDefaultWindowsCredentialsDesc {
+            get {
+                return ResourceManager.GetString("UseDefaultWindowsCredentialsDesc", resourceCulture);
+            }
+        }
+
+        public static string SendLiveTestEmailTitle {
+            get {
+                return ResourceManager.GetString("SendLiveTestEmailTitle", resourceCulture);
+            }
+        }
+
+        public static string SmtpTestToolTitle {
+            get {
+                return ResourceManager.GetString("SmtpTestToolTitle", resourceCulture);
+            }
+        }
+
+        public static string SmtpTestToolDesc {
+            get {
+                return ResourceManager.GetString("SmtpTestToolDesc", resourceCulture);
+            }
+        }
+
+        public static string DestinationTestEmailAddress {
+            get {
+                return ResourceManager.GetString("DestinationTestEmailAddress", resourceCulture);
+            }
+        }
+
+        public static string SendTestEmailButton {
+            get {
+                return ResourceManager.GetString("SendTestEmailButton", resourceCulture);
+            }
+        }
+
+        public static string ThirdPartyIntegrationsExternalScripts {
+            get {
+                return ResourceManager.GetString("ThirdPartyIntegrationsExternalScripts", resourceCulture);
+            }
+        }
+
+        public static string ThirdPartyIntegrationsExternalScriptsDesc {
+            get {
+                return ResourceManager.GetString("ThirdPartyIntegrationsExternalScriptsDesc", resourceCulture);
+            }
+        }
+
+        public static string GoogleAnalyticsTagManagerCode {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTagManagerCode", resourceCulture);
+            }
+        }
+
+        public static string GoogleAnalyticsTitle {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTitle", resourceCulture);
+            }
+        }
+
+        public static string GoogleAnalyticsTrackingSnippetDesc {
+            get {
+                return ResourceManager.GetString("GoogleAnalyticsTrackingSnippetDesc", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppContactLiveChatWidget {
+            get {
+                return ResourceManager.GetString("WhatsAppContactLiveChatWidget", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppAndSupport {
+            get {
+                return ResourceManager.GetString("WhatsAppAndSupport", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppAndSupportDesc {
+            get {
+                return ResourceManager.GetString("WhatsAppAndSupportDesc", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppDirectChatUrlTitle {
+            get {
+                return ResourceManager.GetString("WhatsAppDirectChatUrlTitle", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppUrlExampleDesc {
+            get {
+                return ResourceManager.GetString("WhatsAppUrlExampleDesc", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppWidgetCustomJsTitle {
+            get {
+                return ResourceManager.GetString("WhatsAppWidgetCustomJsTitle", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppWidgetCustomJsDesc {
+            get {
+                return ResourceManager.GetString("WhatsAppWidgetCustomJsDesc", resourceCulture);
+            }
+        }
+
+        public static string LiveChatScriptTitle {
+            get {
+                return ResourceManager.GetString("LiveChatScriptTitle", resourceCulture);
+            }
+        }
+
+        public static string LiveChatScriptDesc {
+            get {
+                return ResourceManager.GetString("LiveChatScriptDesc", resourceCulture);
+            }
+        }
+
+        public static string GoogleMapsEmbedCodeTitle {
+            get {
+                return ResourceManager.GetString("GoogleMapsEmbedCodeTitle", resourceCulture);
+            }
+        }
+
+        public static string GoogleMapsTitle {
+            get {
+                return ResourceManager.GetString("GoogleMapsTitle", resourceCulture);
+            }
+        }
+
+        public static string GoogleMapsEmbedCodeDesc {
+            get {
+                return ResourceManager.GetString("GoogleMapsEmbedCodeDesc", resourceCulture);
+            }
+        }
+
+        public static string SystemToolsAndMaintenanceCommands {
+            get {
+                return ResourceManager.GetString("SystemToolsAndMaintenanceCommands", resourceCulture);
+            }
+        }
+
+        public static string SystemToolsAndMaintenanceDesc {
+            get {
+                return ResourceManager.GetString("SystemToolsAndMaintenanceDesc", resourceCulture);
+            }
+        }
+
+        public static string PurgeApplicationCacheTitle {
+            get {
+                return ResourceManager.GetString("PurgeApplicationCacheTitle", resourceCulture);
+            }
+        }
+
+        public static string CacheManagementDesc {
+            get {
+                return ResourceManager.GetString("CacheManagementDesc", resourceCulture);
+            }
+        }
+
+        public static string PurgeAllCacheBtn {
+            get {
+                return ResourceManager.GetString("PurgeAllCacheBtn", resourceCulture);
+            }
+        }
+
+        public static string ExportDatabaseBackupTitle {
+            get {
+                return ResourceManager.GetString("ExportDatabaseBackupTitle", resourceCulture);
+            }
+        }
+
+        public static string DataBackup {
+            get {
+                return ResourceManager.GetString("DataBackup", resourceCulture);
+            }
+        }
+
+        public static string DataBackupExportDesc {
+            get {
+                return ResourceManager.GetString("DataBackupExportDesc", resourceCulture);
+            }
+        }
+
+        public static string DownloadCompleteJsonBackupBtn {
+            get {
+                return ResourceManager.GetString("DownloadCompleteJsonBackupBtn", resourceCulture);
+            }
+        }
+
+        public static string SystemArchitectureLiveHealth {
+            get {
+                return ResourceManager.GetString("SystemArchitectureLiveHealth", resourceCulture);
+            }
+        }
+
+        public static string SystemArchitectureLiveHealthDesc {
+            get {
+                return ResourceManager.GetString("SystemArchitectureLiveHealthDesc", resourceCulture);
+            }
+        }
+
+        public static string GoToSystemHealthDashboard {
+            get {
+                return ResourceManager.GetString("GoToSystemHealthDashboard", resourceCulture);
+            }
+        }
+
+        public static string InspectApplicationMetrics {
+            get {
+                return ResourceManager.GetString("InspectApplicationMetrics", resourceCulture);
+            }
+        }
+
+        public static string SettingsCenterOverview {
+            get {
+                return ResourceManager.GetString("SettingsCenterOverview", resourceCulture);
+            }
+        }
+
+        public static string LiveSummaryOfStoreAndSystem {
+            get {
+                return ResourceManager.GetString("LiveSummaryOfStoreAndSystem", resourceCulture);
+            }
+        }
+            public static string SystemToolsAndOperationsSec {
+            get {
+                return ResourceManager.GetString("SystemToolsAndOperationsSec", resourceCulture);
+            }
+        }
+
+        public static string SystemToolsHealthBackupSec {
+            get {
+                return ResourceManager.GetString("SystemToolsHealthBackupSec", resourceCulture);
+            }
+        }
+
+        public static string SystemToolsHealthBackupSecDesc {
+            get {
+                return ResourceManager.GetString("SystemToolsHealthBackupSecDesc", resourceCulture);
+            }
+        }
+
+        public static string SystemMonitoringDescText {
+            get {
+                return ResourceManager.GetString("SystemMonitoringDescText", resourceCulture);
+            }
+        }
+
+        public static string HealthLiveStatusText {
+            get {
+                return ResourceManager.GetString("HealthLiveStatusText", resourceCulture);
+            }
+        }
+
+        public static string AppLogsAndMaintenanceText {
+            get {
+                return ResourceManager.GetString("AppLogsAndMaintenanceText", resourceCulture);
+            }
+        }
+
+        public static string AppLogsAndMaintenanceDescText {
+            get {
+                return ResourceManager.GetString("AppLogsAndMaintenanceDescText", resourceCulture);
+            }
+        }
+
+        public static string CompressedImagesZipText {
+            get {
+                return ResourceManager.GetString("CompressedImagesZipText", resourceCulture);
+            }
+        }
+
+        public static string JsonBackupRelationalDescText {
+            get {
+                return ResourceManager.GetString("JsonBackupRelationalDescText", resourceCulture);
+            }
+        }
+
+        public static string RelationalPreservedBadge {
+            get {
+                return ResourceManager.GetString("RelationalPreservedBadge", resourceCulture);
+            }
+        }
+
+        public static string ZipPackageBadge {
+            get {
+                return ResourceManager.GetString("ZipPackageBadge", resourceCulture);
+            }
+        }
+
+        public static string ExportAllDataZipTitle {
+            get {
+                return ResourceManager.GetString("ExportAllDataZipTitle", resourceCulture);
+            }
+        }
+
+        public static string ExportDataZipBtn {
+            get {
+                return ResourceManager.GetString("ExportDataZipBtn", resourceCulture);
+            }
+        }
+
+        public static string BackupSecurityNoticeText {
+            get {
+                return ResourceManager.GetString("BackupSecurityNoticeText", resourceCulture);
+            }
+        }
+
+        public static string SslTlsEncryptionLabel {
+            get {
+                return ResourceManager.GetString("SslTlsEncryptionLabel", resourceCulture);
+            }
+        }
+
+        public static string SmtpTlsProtocolDesc {
+            get {
+                return ResourceManager.GetString("SmtpTlsProtocolDesc", resourceCulture);
+            }
+        }
+
+        public static string DefaultCredentialsLabel {
+            get {
+                return ResourceManager.GetString("DefaultCredentialsLabel", resourceCulture);
+            }
+        }
+
+        public static string SmtpWindowsAuthDesc {
+            get {
+                return ResourceManager.GetString("SmtpWindowsAuthDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpLocalSystemCredDesc {
+            get {
+                return ResourceManager.GetString("SmtpLocalSystemCredDesc", resourceCulture);
+            }
+        }
+
+        public static string LiveEmailDispatchTest {
+            get {
+                return ResourceManager.GetString("LiveEmailDispatchTest", resourceCulture);
+            }
+        }
+
+        public static string CompanyEmailPlaceholder {
+            get {
+                return ResourceManager.GetString("CompanyEmailPlaceholder", resourceCulture);
+            }
+        }
+
+        public static string SocialMediaAccountsSec {
+            get {
+                return ResourceManager.GetString("SocialMediaAccountsSec", resourceCulture);
+            }
+        }
+
+        public static string SocialMediaProfilesDesc {
+            get {
+                return ResourceManager.GetString("SocialMediaProfilesDesc", resourceCulture);
+            }
+        }
+
+        public static string LinkedInProfileLabel {
+            get {
+                return ResourceManager.GetString("LinkedInProfileLabel", resourceCulture);
+            }
+        }
+
+        public static string LinkedInProfileDesc {
+            get {
+                return ResourceManager.GetString("LinkedInProfileDesc", resourceCulture);
+            }
+        }
+
+        public static string YouTubeChannelLabel {
+            get {
+                return ResourceManager.GetString("YouTubeChannelLabel", resourceCulture);
+            }
+        }
+
+        public static string YouTubeChannelDesc {
+            get {
+                return ResourceManager.GetString("YouTubeChannelDesc", resourceCulture);
+            }
+        }
+
+        public static string LiveChatAndWhatsAppSec {
+            get {
+                return ResourceManager.GetString("LiveChatAndWhatsAppSec", resourceCulture);
+            }
+        }
+
+        public static string InstantMessagingAndLiveChatSec {
+            get {
+                return ResourceManager.GetString("InstantMessagingAndLiveChatSec", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppDirectMsgDesc {
+            get {
+                return ResourceManager.GetString("WhatsAppDirectMsgDesc", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppContactLinkLabel {
+            get {
+                return ResourceManager.GetString("WhatsAppContactLinkLabel", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppWidgetScriptLabel {
+            get {
+                return ResourceManager.GetString("WhatsAppWidgetScriptLabel", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppChatWidgetDesc {
+            get {
+                return ResourceManager.GetString("WhatsAppChatWidgetDesc", resourceCulture);
+            }
+        }
+
+        public static string ZopimZendeskChatScriptLabel {
+            get {
+                return ResourceManager.GetString("ZopimZendeskChatScriptLabel", resourceCulture);
+            }
+        }
+
+        public static string ZopimZendeskChatScriptDesc {
+            get {
+                return ResourceManager.GetString("ZopimZendeskChatScriptDesc", resourceCulture);
+            }
+        }
+
+        public static string LiveChatScriptSuffix {
+            get {
+                return ResourceManager.GetString("LiveChatScriptSuffix", resourceCulture);
+            }
+        }
+
+        public static string ZopimChatIntegrationSnippetDesc {
+            get {
+                return ResourceManager.GetString("ZopimChatIntegrationSnippetDesc", resourceCulture);
+            }
+        }
+
+        public static string SecurityNoticePrefix {
+            get {
+                return ResourceManager.GetString("SecurityNoticePrefix", resourceCulture);
+            }
+        }
+
+        public static string ThirdPartyScriptSecurityWarning {
+            get {
+                return ResourceManager.GetString("ThirdPartyScriptSecurityWarning", resourceCulture);
+            }
+        }
+
+        public static string ExecutedInHeadTagDesc {
+            get {
+                return ResourceManager.GetString("ExecutedInHeadTagDesc", resourceCulture);
+            }
+        }
+
+        public static string GoogleMapsEmbedIframeLabel {
+            get {
+                return ResourceManager.GetString("GoogleMapsEmbedIframeLabel", resourceCulture);
+            }
+        }
+
+        public static string DisplayedInMapContainerDesc {
+            get {
+                return ResourceManager.GetString("DisplayedInMapContainerDesc", resourceCulture);
+            }
+        }
+
+        public static string NoMatchingSettingsFound {
+            get {
+                return ResourceManager.GetString("NoMatchingSettingsFound", resourceCulture);
+            }
+        }
+
+        public static string DiscardUnsavedChangesPrompt {
+            get {
+                return ResourceManager.GetString("DiscardUnsavedChangesPrompt", resourceCulture);
+            }
+        }
+
+        public static string UnsavedChangesLeavePrompt {
+            get {
+                return ResourceManager.GetString("UnsavedChangesLeavePrompt", resourceCulture);
+            }
+        }
+            public static string EnableRateLimitingProtection {
+            get {
+                return ResourceManager.GetString("EnableRateLimitingProtection", resourceCulture);
+            }
+        }
+
+        public static string EnableRateLimitingProtectionDesc {
+            get {
+                return ResourceManager.GetString("EnableRateLimitingProtectionDesc", resourceCulture);
+            }
+        }
+
+        public static string EndpointSpecificRequestLimits {
+            get {
+                return ResourceManager.GetString("EndpointSpecificRequestLimits", resourceCulture);
+            }
+        }
+
+        public static string LoginPageRequestLimit {
+            get {
+                return ResourceManager.GetString("LoginPageRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string LoginPageRequestLimitDesc {
+            get {
+                return ResourceManager.GetString("LoginPageRequestLimitDesc", resourceCulture);
+            }
+        }
+
+        public static string LoginAuthLabel {
+            get {
+                return ResourceManager.GetString("LoginAuthLabel", resourceCulture);
+            }
+        }
+
+        public static string MaxRequestsLabel {
+            get {
+                return ResourceManager.GetString("MaxRequestsLabel", resourceCulture);
+            }
+        }
+
+        public static string DurationMinutesLabel {
+            get {
+                return ResourceManager.GetString("DurationMinutesLabel", resourceCulture);
+            }
+        }
+
+        public static string ContactFormRequestLimit {
+            get {
+                return ResourceManager.GetString("ContactFormRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string ContactFormRequestLimitDesc {
+            get {
+                return ResourceManager.GetString("ContactFormRequestLimitDesc", resourceCulture);
+            }
+        }
+
+        public static string ContactFormLabel {
+            get {
+                return ResourceManager.GetString("ContactFormLabel", resourceCulture);
+            }
+        }
+
+        public static string CheckoutRequestLimit {
+            get {
+                return ResourceManager.GetString("CheckoutRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string CheckoutRequestLimitDesc {
+            get {
+                return ResourceManager.GetString("CheckoutRequestLimitDesc", resourceCulture);
+            }
+        }
+
+        public static string CheckoutLabel {
+            get {
+                return ResourceManager.GetString("CheckoutLabel", resourceCulture);
+            }
+        }
+
+        public static string SearchQueryRequestLimit {
+            get {
+                return ResourceManager.GetString("SearchQueryRequestLimit", resourceCulture);
+            }
+        }
+
+        public static string SearchQueryRequestLimitDesc {
+            get {
+                return ResourceManager.GetString("SearchQueryRequestLimitDesc", resourceCulture);
+            }
+        }
+
+        public static string EmailAndSmtpConfiguration {
+            get {
+                return ResourceManager.GetString("EmailAndSmtpConfiguration", resourceCulture);
+            }
+        }
+
+        public static string EmailAndSmtpConfigurationDesc {
+            get {
+                return ResourceManager.GetString("EmailAndSmtpConfigurationDesc", resourceCulture);
+            }
+        }
+
+        public static string ConfigurationPending {
+            get {
+                return ResourceManager.GetString("ConfigurationPending", resourceCulture);
+            }
+        }
+
+        public static string SenderEmailAddressLabel {
+            get {
+                return ResourceManager.GetString("SenderEmailAddressLabel", resourceCulture);
+            }
+        }
+
+        public static string SenderEmailAddressDesc {
+            get {
+                return ResourceManager.GetString("SenderEmailAddressDesc", resourceCulture);
+            }
+        }
+
+        public static string EmailSenderNameLabel {
+            get {
+                return ResourceManager.GetString("EmailSenderNameLabel", resourceCulture);
+            }
+        }
+
+        public static string EmailSenderNameDesc {
+            get {
+                return ResourceManager.GetString("EmailSenderNameDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpHostIpDesc {
+            get {
+                return ResourceManager.GetString("SmtpHostIpDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpPortChoiceDesc {
+            get {
+                return ResourceManager.GetString("SmtpPortChoiceDesc", resourceCulture);
+            }
+        }
+
+        public static string StandardTlsSslPortsDesc {
+            get {
+                return ResourceManager.GetString("StandardTlsSslPortsDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpAuthUsernameDesc {
+            get {
+                return ResourceManager.GetString("SmtpAuthUsernameDesc", resourceCulture);
+            }
+        }
+
+        public static string SmtpServerLoginPassDesc {
+            get {
+                return ResourceManager.GetString("SmtpServerLoginPassDesc", resourceCulture);
+            }
+        }
+
+        public static string ShowHidePassword {
+            get {
+                return ResourceManager.GetString("ShowHidePassword", resourceCulture);
+            }
+        }
+
+        public static string SslTlsSecureConnection {
+            get {
+                return ResourceManager.GetString("SslTlsSecureConnection", resourceCulture);
+            }
+        }
+
+        public static string SslTlsSmtpConnectionDesc {
+            get {
+                return ResourceManager.GetString("SslTlsSmtpConnectionDesc", resourceCulture);
+            }
+        }
+
+        public static string SendTestEmailToOfficialAddressLead {
+            get {
+                return ResourceManager.GetString("SendTestEmailToOfficialAddressLead", resourceCulture);
+            }
+        }
+
+        public static string SendTestEmailInstantDeliverability {
+            get {
+                return ResourceManager.GetString("SendTestEmailInstantDeliverability", resourceCulture);
+            }
+        }
+
+        public static string WhatsAppOneClickChatDesc {
+            get {
+                return ResourceManager.GetString("WhatsAppOneClickChatDesc", resourceCulture);
+            }
+        }
+
+        public static string AnalyticsAndMapsSnippetsDesc {
+            get {
+                return ResourceManager.GetString("AnalyticsAndMapsSnippetsDesc", resourceCulture);
+            }
+        }
+
+        public static string GoogleMapsEmbedContactAboutLead {
+            get {
+                return ResourceManager.GetString("GoogleMapsEmbedContactAboutLead", resourceCulture);
+            }
+        }
+
+        public static string IframeEmbedCodeSuffix {
+            get {
+                return ResourceManager.GetString("IframeEmbedCodeSuffix", resourceCulture);
+            }
+        }
+
+        public static string DiscardAllUnsavedChangesPrompt {
+            get {
+                return ResourceManager.GetString("DiscardAllUnsavedChangesPrompt", resourceCulture);
+            }
+        }
+
+        public static string UnsavedChangesConfirmLeavePrompt {
+            get {
+                return ResourceManager.GetString("UnsavedChangesConfirmLeavePrompt", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dil.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dil Seçin.
+        /// </summary>
+        public static string SelectLanguage {
+            get {
+                return ResourceManager.GetString("SelectLanguage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yönetim paneli dilini değiştir.
+        /// </summary>
+        public static string SwitchAdminLanguage {
+            get {
+                return ResourceManager.GetString("SwitchAdminLanguage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sıfırla.
+        /// </summary>
+        public static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to İptal.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Uygula ve Yenile.
+        /// </summary>
+        public static string ApplyAndRefresh {
+            get {
+                return ResourceManager.GetString("ApplyAndRefresh", resourceCulture);
+            }
+        }
+
+        public static string SecureAdminLogin {
+            get {
+                return ResourceManager.GetString("SecureAdminLogin", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginLead {
+            get {
+                return ResourceManager.GetString("AdminLoginLead", resourceCulture);
+            }
+        }
+
+        public static string AdminCredentialsStepTitle {
+            get {
+                return ResourceManager.GetString("AdminCredentialsStepTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminCredentialsStepDesc {
+            get {
+                return ResourceManager.GetString("AdminCredentialsStepDesc", resourceCulture);
+            }
+        }
+
+        public static string SecurityVerificationStepTitle {
+            get {
+                return ResourceManager.GetString("SecurityVerificationStepTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginRecaptchaGuideText {
+            get {
+                return ResourceManager.GetString("AdminLoginRecaptchaGuideText", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginNoCaptchaGuideText {
+            get {
+                return ResourceManager.GetString("AdminLoginNoCaptchaGuideText", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginMathCaptchaGuideText {
+            get {
+                return ResourceManager.GetString("AdminLoginMathCaptchaGuideText", resourceCulture);
+            }
+        }
+
+        public static string TwoFactorStepTitle {
+            get {
+                return ResourceManager.GetString("TwoFactorStepTitle", resourceCulture);
+            }
+        }
+
+        public static string TwoFactorStepDesc {
+            get {
+                return ResourceManager.GetString("TwoFactorStepDesc", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelStepTitle {
+            get {
+                return ResourceManager.GetString("AdminPanelStepTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelStepDesc {
+            get {
+                return ResourceManager.GetString("AdminPanelStepDesc", resourceCulture);
+            }
+        }
+
+        public static string AdminLoginEncryptedNote {
+            get {
+                return ResourceManager.GetString("AdminLoginEncryptedNote", resourceCulture);
+            }
+        }
+
+        public static string SignInHeading {
+            get {
+                return ResourceManager.GetString("SignInHeading", resourceCulture);
+            }
+        }
+
+        public static string AdminSignInSub {
+            get {
+                return ResourceManager.GetString("AdminSignInSub", resourceCulture);
+            }
+        }
+
+        public static string CustomerLoginHint {
+            get {
+                return ResourceManager.GetString("CustomerLoginHint", resourceCulture);
+            }
+        }
+
+        public static string BackToSite {
+            get {
+                return ResourceManager.GetString("BackToSite", resourceCulture);
+            }
+        }
+
+        public static string ShowPassword {
+            get {
+                return ResourceManager.GetString("ShowPassword", resourceCulture);
+            }
+        }
+
+        public static string HidePassword {
+            get {
+                return ResourceManager.GetString("HidePassword", resourceCulture);
+            }
+        }
+
+        public static string EnterAnswerHere {
+            get {
+                return ResourceManager.GetString("EnterAnswerHere", resourceCulture);
+            }
+        }
+
+        public static string DataEntryLanguage {
+            get {
+                return ResourceManager.GetString("DataEntryLanguage", resourceCulture);
+            }
+        }
+
+        public static string DataEntryLanguageShort {
+            get {
+                return ResourceManager.GetString("DataEntryLanguageShort", resourceCulture);
+            }
+        }
+
+        public static string DataEntryLanguageTooltip {
+            get {
+                return ResourceManager.GetString("DataEntryLanguageTooltip", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelUILanguageTitle {
+            get {
+                return ResourceManager.GetString("AdminPanelUILanguageTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelUILanguageHelp {
+            get {
+                return ResourceManager.GetString("AdminPanelUILanguageHelp", resourceCulture);
             }
         }
     }

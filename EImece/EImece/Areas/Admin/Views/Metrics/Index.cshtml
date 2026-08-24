@@ -1,124 +1,113 @@
-﻿@model EImece.Areas.Admin.Models.MetricsIndexViewModel
+@model EImece.Areas.Admin.Models.MetricsIndexViewModel
 @using EImece.Domain
 @using EImece.Domain.Helpers
 @using Griddly.Mvc
+@using Resources
 
 @{
-    ViewBag.Title = "Metrikler";
+    ViewBag.Title = AdminResource.Metrics;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     var contents = Model.Metrics;
 }
 
-<h2 class="admin-page-title">Uygulama Metrikleri</h2>
+<h2 class="admin-page-title">@AdminResource.ApplicationMetrics</h2>
 <hr class="adminLine" />
 
 @{
     ViewData["HelpId"] = "metricsHelp";
-    ViewData["HelpTitle"] = "Bu sayfa ne işe yarar?";
+    ViewData["HelpTitle"] = AdminResource.WhatIsThisPageFor;
 }
 @Html.Partial("_AdminHelpAccordionStart")
         <p>
-            Site ve admin panelindeki işlemlerin <strong>ne kadar hızlı / yavaş</strong> çalıştığını gösterir.
-            Amaç yavaş sayfaları, servisleri veya dış bağlantıları bulmaktır.
-            Satış / sipariş raporları için <em>Raporlar</em> menüsünü kullanın.
+            @AdminResource.MetricsHelpLead
         </p>
         <ul class="metrics-help-bullets">
-            <li>Veriler sunucu <strong>belleğinde</strong> tutulur; uygulama yeniden başlayınca sıfırlanır.</li>
-            <li>Süreler <strong>milisaniye (ms)</strong> cinsindendir. <strong>1000 ms = 1 saniye</strong>.</li>
-            <li>Her satırdaki <strong>Açıkla</strong> düğmesi, o metriğin sayılarını düz metinle yorumlar.</li>
-            <li>Karar verirken ortalamaya değil <strong>P50 → P99</strong> yüzdeliklerine bakın.</li>
+            <li>@AdminResource.MetricsHelpBullet1</li>
+            <li>@AdminResource.MetricsHelpBullet2</li>
+            <li>@AdminResource.MetricsHelpBullet3</li>
+            <li>@AdminResource.MetricsHelpBullet4</li>
         </ul>
 
         <div class="row metrics-help-cards" style="margin-top: 16px;">
             <div class="col-md-6">
                 <div class="card" style="margin-bottom: 15px;">
-                    <div class="card-header"><strong>Sütunlar ne anlama gelir?</strong></div>
+                    <div class="card-header"><strong>@AdminResource.WhatColumnsMean</strong></div>
                     <div class="card-body">
                         <dl class="metrics-dl">
-                            <dt>Metrik Adı</dt>
-                            <dd>Ölçülen işlem. Önek türe göre değişir (<code>controller:</code>, <code>service:</code>, …).</dd>
+                            <dt>@AdminResource.MetricName</dt>
+                            <dd>@AdminResource.MetricNameHelp</dd>
 
-                            <dt>Adet</dt>
-                            <dd>Uygulama açıldığından beri bu işlemin <strong>kaç kez</strong> çağrıldığı.</dd>
+                            <dt>@AdminResource.Count</dt>
+                            <dd>@AdminResource.CountHelp</dd>
 
-                            <dt>Hata</dt>
-                            <dd>Bu çağrıların kaçının başarısız olduğu.</dd>
+                            <dt>@AdminResource.Error</dt>
+                            <dd>@AdminResource.ErrorHelp</dd>
 
-                            <dt>Ort. süre (ms)</dt>
-                            <dd>Tüm çağrıların ortalama süresi. Tek başına yanıltıcı olabilir.</dd>
+                            <dt>@AdminResource.AvgDurationMs</dt>
+                            <dd>@AdminResource.AvgDurationHelp</dd>
 
-                            <dt>P50 (ms) — medyan</dt>
-                            <dd>
-                                <strong>%50 yüzdelik.</strong>
-                                Çağrıların yarısı bu süreden hızlı, yarısı daha yavaş. Tipik / “ortalama kullanıcı” deneyimine yakındır.
-                            </dd>
+                            <dt>P50 (ms)</dt>
+                            <dd>@AdminResource.P50Help</dd>
 
                             <dt>P75 (ms)</dt>
-                            <dd>
-                                <strong>%75 yüzdelik.</strong>
-                                Çağrıların <strong>%75’i bu süreden daha hızlı</strong>; en yavaş %25’i bundan uzun.
-                            </dd>
+                            <dd>@AdminResource.P75Help</dd>
 
                             <dt>P90 / P95 / P99 (ms)</dt>
-                            <dd>
-                                Daha yüksek kuyruk: çağrıların sırasıyla %90 / %95 / %99’u bu süreden hızlı bitmiş.
-                                P95 günlük takip için; P99 nadir ama çok yavaş istekler için kullanılır.
-                            </dd>
+                            <dd>@AdminResource.P90P95P99Help</dd>
                         </dl>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card" style="margin-bottom: 15px;">
-                    <div class="card-header"><strong>Yüzdelikler — kısa örnek (100 çağrı)</strong></div>
+                    <div class="card-header"><strong>@AdminResource.PercentilesShortExample</strong></div>
                     <div class="card-body">
                         <table class="table table-sm table-bordered metrics-example-table">
                             <thead>
                                 <tr>
-                                    <th>Değer</th>
-                                    <th>Anlamı</th>
+                                    <th>@AdminResource.Value</th>
+                                    <th>@AdminResource.Meaning</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td><strong>P50 = 40 ms</strong></td>
-                                    <td>Yarıdan fazlası ≤ 40 ms (medyan).</td>
+                                    <td>50% ≤ 40 ms</td>
                                 </tr>
                                 <tr>
                                     <td><strong>P75 = 70 ms</strong></td>
-                                    <td>100 çağrıdan 75’i ≤ 70 ms.</td>
+                                    <td>75% ≤ 70 ms</td>
                                 </tr>
                                 <tr>
                                     <td><strong>P90 = 120 ms</strong></td>
-                                    <td>100 çağrıdan 90’ı ≤ 120 ms.</td>
+                                    <td>90% ≤ 120 ms</td>
                                 </tr>
                                 <tr>
                                     <td><strong>P95 = 200 ms</strong></td>
-                                    <td>100 çağrıdan 95’i ≤ 200 ms.</td>
+                                    <td>95% ≤ 200 ms</td>
                                 </tr>
                                 <tr>
                                     <td><strong>P99 = 800 ms</strong></td>
-                                    <td>100 çağrıdan 99’u ≤ 800 ms; 1’i daha yavaş.</td>
+                                    <td>99% ≤ 800 ms</td>
                                 </tr>
                             </tbody>
                         </table>
                         <p class="text-muted" style="margin-bottom: 0;">
-                            “P” = <em>percentile</em> (yüzdelik dilim). Sayı bir puan değildir;
-                            çağrıların yüzde kaçının <strong>o süreden daha hızlı</strong> olduğunu gösterir.
+                            @AdminResource.PercentileExplanationNote
                         </p>
                     </div>
                 </div>
 
                 <div class="card" style="margin-bottom: 15px;">
-                    <div class="card-header"><strong>Nasıl yorumlanır?</strong></div>
+                    <div class="card-header"><strong>@AdminResource.HowToInterpret</strong></div>
                     <div class="card-body">
                         <ul class="metrics-help-bullets" style="margin-bottom: 0;">
-                            <li><strong>P50 düşük, P99 çok yüksek</strong> → çoğu hızlı; ara sıra spike var.</li>
-                            <li><strong>P50 / P95 / P99 hepsi yüksek</strong> → işlem genel olarak yavaş.</li>
-                            <li><strong>Hata &gt; 0</strong> → önce hatalara bakın.</li>
-                            <li><strong>Adet çok düşük</strong> → yüzdelikler henüz güvenilir değil.</li>
-                            <li>Satırdaki <strong>Açıkla</strong> ile bu satıra özel yorumu okuyun.</li>
+                            <li>@AdminResource.InterpretBullet1</li>
+                            <li>@AdminResource.InterpretBullet2</li>
+                            <li>@AdminResource.InterpretBullet3</li>
+                            <li>@AdminResource.InterpretBullet4</li>
+                            <li>@AdminResource.InterpretBullet5</li>
                         </ul>
                     </div>
                 </div>
@@ -126,50 +115,46 @@
         </div>
 
         <div class="card" style="margin-bottom: 0;">
-            <div class="card-header"><strong>Metrik adı önekleri</strong></div>
+            <div class="card-header"><strong>@AdminResource.MetricNamePrefixes</strong></div>
             <div class="card-body" style="padding: 0;">
                 <div class="table-responsive">
                     <table class="table table-striped metrics-prefix-table" style="margin-bottom: 0;">
                         <thead>
                             <tr>
-                                <th style="width: 28%;">Önek / örnek</th>
-                                <th>Ne ölçer?</th>
-                                <th style="width: 30%;">Ne zaman bakılır?</th>
+                                <th style="width: 28%;">@AdminResource.PrefixOrExample</th>
+                                <th>@AdminResource.WhatDoesItMeasure</th>
+                                <th style="width: 30%;">@AdminResource.WhenToInspect</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><code>controller:Products.Index</code></td>
-                                <td>MVC sayfa / aksiyon süresi.</td>
-                                <td>Yavaş açılan sayfa.</td>
+                                <td>MVC Action Duration</td>
+                                <td>Slow Page Loads</td>
                             </tr>
                             <tr>
                                 <td><code>request:Products.Index</code></td>
-                                <td>Aynı aksiyonun genel istek serisi.</td>
-                                <td><code>controller:</code> ile birlikte.</td>
+                                <td>Total Request Duration</td>
+                                <td>With controller:</td>
                             </tr>
                             <tr>
                                 <td><code>service:IProductService.…</code></td>
-                                <td>İş mantığı (Service) metot süresi.</td>
-                                <td>Controller içinde hangi servisin yavaşladığı.</td>
+                                <td>Service Layer Duration</td>
+                                <td>Slow Service Calls</td>
                             </tr>
                             <tr>
                                 <td><code>http:GET:200</code></td>
-                                <td>Dış HTTP çağrıları.</td>
-                                <td>CDN / ödeme / API gecikmesi.</td>
+                                <td>External HTTP Calls</td>
+                                <td>API / CDN Latency</td>
                             </tr>
                             <tr>
                                 <td><code>db:...</code></td>
-                                <td>Veritabanı işlemleri.</td>
-                                <td>SQL / EF yavaşlığı.</td>
+                                <td>Database Query Duration</td>
+                                <td>Slow Queries / EF</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="text-muted" style="padding: 10px 15px; margin: 0;">
-                    Yüzdelikler son yaklaşık <strong>2048</strong> ölçüm üzerinden hesaplanır;
-                    <em>Adet</em> uygulama ömrü boyunca toplam çağrı sayısıdır.
-                </p>
             </div>
         </div>
 @Html.Partial("_AdminHelpAccordionEnd")
@@ -178,47 +163,45 @@
     <div class="card-body">
         <form method="get" class="d-flex flex-wrap align-items-end gap-2">
             <div>
-                <label for="search" class="form-label">Metrik ara:</label>
+                <label for="search" class="form-label">@AdminResource.SearchMetric</label>
                 <input type="text" id="search" name="search" class="form-control"
-                       placeholder="örn. controller:, service:, db:, Products"
+                       placeholder="@AdminResource.SearchMetricPlaceholder"
                        value="@Model.SearchTerm" />
             </div>
             <button type="submit" class="btn btn-primary">
-                <span class="fa fa-search"></span> Ara
+                <span class="fa fa-search"></span> @AdminResource.Search
             </button>
             <a href="@Url.Action("Index", "Metrics", new { area = "Admin" })" class="btn btn-secondary">
-                <span class="fa fa-refresh"></span> Temizle
+                <span class="fa fa-refresh"></span> @AdminResource.Clear
             </a>
         </form>
         <p class="form-text" style="margin: 8px 0 0;">
-            İpucu: <code>controller:</code> / <code>service:</code> ile filtreleyin.
-            Her satırdaki <strong>Açıkla</strong> o metriğin ayrıntılı yorumunu açar.
+            @AdminResource.FilterHint
         </p>
     </div>
 </div>
 
 <div class="alert alert-success" style="padding: 8px 12px;">
-    Toplam <strong>@Model.TotalCount</strong> metrik
+    @AdminResource.Total <strong>@Model.TotalCount</strong> @AdminResource.Metric
     @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
     {
-        <span>(filtre: <code>@Model.SearchTerm</code>)</span>
+        <span>(@AdminResource.Filter: <code>@Model.SearchTerm</code>)</span>
     }
 </div>
 
 @if (contents == null || !contents.Any())
 {
     <div class="alert alert-warning">
-        Henüz metrik kaydı yok. Site veya admin sayfalarında gezinince burada dolmaya başlar
-        (<code>EnableMetrics=true</code> olmalı).
+        @AdminResource.NoMetricsRecordedYet
     </div>
 }
 else
 {
     <div class="card border-primary">
         <div class="card-header">
-            Canlı ölçümler
+            @AdminResource.LiveMeasurements
             <span class="small" style="font-weight: normal; margin-left: 8px;">
-                Sütun başlıklarına gelerek kısa ipucu görebilirsiniz. Satırdaki <strong>Açıkla</strong> ile ayrıntı açılır.
+                @AdminResource.HoverColumnHeaderTooltip
             </span>
         </div>
         <div class="table-responsive" style="border: 1px solid #ddd; padding: 10px;">
@@ -233,14 +216,14 @@ else
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="metricExplainModalLabel">Metrik açıklaması</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                <h4 class="modal-title" id="metricExplainModalLabel">@AdminResource.MetricDescriptionModal</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@AdminResource.Close"></button>
             </div>
             <div class="modal-body" id="metricExplainBody">
-                <p class="text-muted">Bir satırdan <strong>Açıkla</strong> seçin.</p>
+                <p class="text-muted">@AdminResource.SelectExplainFromRow</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@AdminResource.Close</button>
             </div>
         </div>
     </div>
@@ -331,18 +314,17 @@ else
 
 <script>
     (function () {
-        var tips = {
-            "Açıkla": "Bu satırın sayılarını düz metinle yorumlar.",
-            "Metrik Adı": "Ölçülen işlem (controller, service, http veya db).",
-            "Adet": "Uygulama açıldığından beri toplam çağrı sayısı.",
-            "Hata": "Başarısız çağrı sayısı.",
-            "Ort. süre (ms)": "Tüm çağrıların ortalama süresi (milisaniye).",
-            "P50 (ms)": "%50 yüzdelik (medyan): çağrıların yarısı bu süreden hızlı.",
-            "P75 (ms)": "%75 yüzdelik: çağrıların %75’i bu süreden hızlı.",
-            "P90 (ms)": "%90 yüzdelik: çağrıların %90’ı bu süreden hızlı.",
-            "P95 (ms)": "%95 yüzdelik: çağrıların %95’i bu süreden hızlı.",
-            "P99 (ms)": "%99 yüzdelik: çağrıların %99’u bu süreden hızlı; en kötü %1 daha yavaş."
-        };
+        var tips = {};
+        tips["@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.Explain))"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.ExplainTooltip))";
+        tips["@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.MetricName))"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.MetricNameHelp))";
+        tips["@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.Count))"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.CountHelp))";
+        tips["@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.Error))"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.FailedCallsCount))";
+        tips["@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.AvgDurationMs))"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.AvgDurationHelp))";
+        tips["P50 (ms)"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.P50Help))";
+        tips["P75 (ms)"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.P75Help))";
+        tips["P90 (ms)"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.P90P95P99Help))";
+        tips["P95 (ms)"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.P90P95P99Help))";
+        tips["P99 (ms)"] = "@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.P90P95P99Help))";
 
         function applyHeaderTips() {
             var headers = document.querySelectorAll("table th");

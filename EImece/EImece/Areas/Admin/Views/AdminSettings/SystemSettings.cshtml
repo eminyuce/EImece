@@ -67,21 +67,21 @@
                 <h1 class="settings-main-title mb-1">
                     <i class="fa fa-sliders text-primary me-2"></i>@AdminResource.AdminSystemSettings
                 </h1>
-                <p class="text-muted mb-0">Mağazanızın görünüm, satış, güvenlik, entegrasyon ve sistem operasyonlarını tek merkezden yapılandırın.</p>
+                <p class="text-muted mb-0">@AdminResource.SettingsCenterSubtitle</p>
             </div>
             
             <!-- Global Search Box -->
             <div class="settings-search-wrapper position-relative">
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="fa fa-search text-muted"></i></span>
-                    <input type="text" id="globalSettingsSearch" class="form-control border-start-0" placeholder="Ayarlarda ara... (örn: SMTP, 2FA, WebP, Fiyat)" autocomplete="off" spellcheck="false" />
-                    <button type="button" class="btn btn-outline-secondary border-start-0 d-none" id="btnClearSettingsSearch" title="Aramayı temizle">
+                    <input type="text" id="globalSettingsSearch" class="form-control border-start-0" placeholder="@AdminResource.SearchInSettingsPlaceholder" autocomplete="off" spellcheck="false" />
+                    <button type="button" class="btn btn-outline-secondary border-start-0 d-none" id="btnClearSettingsSearch" title="@AdminResource.ClearSearch">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div id="settingsSearchResults" class="settings-search-dropdown shadow-lg rounded" style="display: none;">
                     <div class="p-2 border-bottom text-muted small fw-bold text-uppercase d-flex justify-content-between align-items-center">
-                        <span>Arama Sonuçları</span>
+                        <span>@AdminResource.SearchResults</span>
                         <span id="searchResultCount" class="badge bg-secondary">0</span>
                     </div>
                     <div id="searchResultsList" class="list-group list-group-flush" style="max-height: 360px; overflow-y: auto;"></div>
@@ -96,26 +96,26 @@
         @Html.Partial("_AdminHelpAccordionStart")
         <div class="row">
             <div class="col-md-4">
-                <h6 class="fw-bold text-primary"><i class="fa fa-shopping-bag me-1"></i> Mağaza Yapılandırması</h6>
+                <h6 class="fw-bold text-primary"><i class="fa fa-shopping-bag me-1"></i> @AdminResource.StoreConfiguration</h6>
                 <ul class="small ps-3 mb-0">
-                    <li><strong>Genel & SEO:</strong> Bakım modu, Google indeksleme izni ve ürün katalog modu.</li>
-                    <li><strong>Görünüm & PWA:</strong> Vitrin teması seçimi, PWA renk ve açılış ayarları.</li>
-                    <li><strong>Medya Politikaları:</strong> Görsel boyutlandırma, JPEG/WebP sıkıştırma ve Sidecar.</li>
+                    <li><strong>Genel & SEO:</strong> @AdminResource.StoreConfigHelp1</li>
+                    <li><strong>Görünüm & PWA:</strong> @AdminResource.StoreConfigHelp2</li>
+                    <li><strong>Medya Politikaları:</strong> @AdminResource.StoreConfigHelp3</li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <h6 class="fw-bold text-success"><i class="fa fa-briefcase me-1"></i> İşletme & Ticaret</h6>
+                <h6 class="fw-bold text-success"><i class="fa fa-briefcase me-1"></i> @AdminResource.BusinessAndCommerce</h6>
                 <ul class="small ps-3 mb-0">
-                    <li><strong>Firma Bilgileri:</strong> Resmi unvan, iletişim kanalları ve ücretsiz kargo limiti.</li>
-                    <li><strong>Satış & Ödemeler:</strong> Ödeme sağlayıcı (İyzico), taksit seçenekleri ve kimlik bilgileri.</li>
+                    <li><strong>Firma Bilgileri:</strong> @AdminResource.BusinessConfigHelp1</li>
+                    <li><strong>Satış & Ödemeler:</strong> @AdminResource.BusinessConfigHelp2</li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <h6 class="fw-bold text-danger"><i class="fa fa-shield me-1"></i> Sistem & Güvenlik</h6>
+                <h6 class="fw-bold text-danger"><i class="fa fa-shield me-1"></i> @AdminResource.SystemAndSecurity</h6>
                 <ul class="small ps-3 mb-0">
-                    <li><strong>Güvenlik:</strong> Yönetici 2FA, Captcha bot koruması ve istek sınırlama (Rate Limiting).</li>
-                    <li><strong>E-Posta:</strong> SMTP sunucusu yapılandırması ve canlı test e-postası.</li>
-                    <li><strong>Entegrasyonlar & Araçlar:</strong> Sosyal medya, harici scriptler, metrikler ve veri yedekleme.</li>
+                    <li><strong>@AdminResource.SecurityLabel</strong> @AdminResource.SystemConfigHelp1</li>
+                    <li><strong>E-Posta:</strong> @AdminResource.SystemConfigHelp2</li>
+                    <li><strong>Entegrasyonlar & @AdminResource.Tools:</strong> @AdminResource.SystemConfigHelp3</li>
                 </ul>
             </div>
         </div>
@@ -137,15 +137,15 @@
             <div class="card-body py-2 px-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
                 <div class="d-flex align-items-center gap-2">
                     <span id="saveStatusIndicator" class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
-                        <i class="fa fa-check-circle me-1"></i> Ayarlar Güncel
+                        <i class="fa fa-check-circle me-1"></i> @AdminResource.SettingsUpToDate
                     </span>
                     <span id="unsavedChangesBadge" class="badge bg-warning text-dark px-2 py-1 d-none">
-                        <i class="fa fa-pencil me-1"></i> Kaydedilmemiş Değişiklikler Var
+                        <i class="fa fa-pencil me-1"></i> @AdminResource.UnsavedChangesExist
                     </span>
                 </div>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDiscardChanges" disabled>
-                        <i class="fa fa-undo me-1"></i> Değişiklikleri Sıfırla
+                        <i class="fa fa-undo me-1"></i> @AdminResource.ResetChanges
                     </button>
                     <button type="submit" class="btn btn-success btn-sm px-4 fw-bold shadow-sm" id="btnSaveSystemSettings">
                         <i class="fa fa-save me-1"></i> @AdminResource.SaveButtonText
@@ -159,65 +159,65 @@
             <div class="col-lg-3 col-md-4">
                 <div class="settings-nav-card card shadow-sm sticky-lg-top" style="top: 20px; z-index: 10;">
                     <div class="card-header bg-light py-2 px-3 border-bottom">
-                        <span class="fw-bold text-uppercase small text-muted"><i class="fa fa-compass me-1"></i> Ayar Kategorileri</span>
+                        <span class="fw-bold text-uppercase small text-muted"><i class="fa fa-compass me-1"></i> @AdminResource.SettingCategories</span>
                     </div>
                     <div class="list-group list-group-flush settings-tab-menu" id="settingsTabs" role="tablist">
                         <!-- Overview -->
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between active" data-bs-toggle="pill" href="#overview" role="tab">
-                            <span><i class="fa fa-dashboard text-primary me-2"></i><strong>Genel Bakış</strong></span>
+                            <span><i class="fa fa-dashboard text-primary me-2"></i><strong>@AdminResource.Overview</strong></span>
                             <span class="badge bg-primary rounded-pill"><i class="fa fa-home"></i></span>
                         </a>
 
                         <!-- STORE Domain -->
                         <div class="settings-nav-domain-header text-uppercase">
-                            <i class="fa fa-shopping-cart text-muted me-1"></i> Mağaza (Store)
+                            <i class="fa fa-shopping-cart text-muted me-1"></i> @AdminResource.DomainStore
                         </div>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-general" role="tab">
-                            <span><i class="fa fa-cog text-secondary me-2"></i> Genel &amp; Vitrin</span>
-                            @if (!isSiteLive) { <span class="badge bg-warning text-dark small" title="Bakım modu aktif">Bakım</span> }
+                            <span><i class="fa fa-cog text-secondary me-2"></i> @AdminResource.GeneralAndStorefront</span>
+                            @if (!isSiteLive) { <span class="badge bg-warning text-dark small" title="Maintenance mode active">Maintenance</span> }
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-appearance" role="tab">
-                            <span><i class="fa fa-paint-brush text-secondary me-2"></i> Görünüm &amp; PWA</span>
+                            <span><i class="fa fa-paint-brush text-secondary me-2"></i> @AdminResource.AppearanceAndPwa</span>
                             <span class="badge bg-light text-dark border small">@activeTheme</span>
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-media" role="tab">
-                            <span><i class="fa fa-picture-o text-secondary me-2"></i> Medya &amp; Yükleme</span>
+                            <span><i class="fa fa-picture-o text-secondary me-2"></i> @AdminResource.MediaAndUpload</span>
                             @if (isWebPActive) { <span class="badge bg-info-subtle text-info border border-info-subtle small">WebP</span> }
                         </a>
 
                         <!-- BUSINESS Domain -->
                         <div class="settings-nav-domain-header text-uppercase">
-                            <i class="fa fa-briefcase text-muted me-1"></i> İşletme (Business)
+                            <i class="fa fa-briefcase text-muted me-1"></i> @AdminResource.DomainBusiness
                         </div>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-company" role="tab">
                             <span><i class="fa fa-building-o text-secondary me-2"></i> @AdminResource.CompanyAdminSettings</span>
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-payments" role="tab" id="nav-tab-payments">
-                            <span><i class="fa fa-credit-card text-secondary me-2"></i> Satış &amp; Ödemeler</span>
-                            <span class="badge bg-secondary payment-disabled-badge d-none small">Kilitli</span>
+                            <span><i class="fa fa-credit-card text-secondary me-2"></i> @AdminResource.SalesAndPayments</span>
+                            <span class="badge bg-secondary payment-disabled-badge d-none small">Locked</span>
                         </a>
 
                         <!-- SYSTEM Domain -->
                         <div class="settings-nav-domain-header text-uppercase">
-                            <i class="fa fa-server text-muted me-1"></i> Sistem (System)
+                            <i class="fa fa-server text-muted me-1"></i> @AdminResource.DomainSystem
                         </div>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-security" role="tab">
-                            <span><i class="fa fa-shield text-secondary me-2"></i> Güvenlik &amp; İstek Koruması</span>
+                            <span><i class="fa fa-shield text-secondary me-2"></i> @AdminResource.SecurityAndRequestProtection</span>
                             <span class="badge @(securityScore >= 70 ? "bg-success" : (securityScore >= 35 ? "bg-warning text-dark" : "bg-danger")) small">
-                                @(securityScore >= 70 ? "İyi" : (securityScore >= 35 ? "Orta" : "Zayıf"))
+                                @(securityScore >= 70 ? "Good" : (securityScore >= 35 ? "Medium" : "Weak"))
                             </span>
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-smtp" role="tab">
                             <span><i class="fa fa-envelope-o text-secondary me-2"></i> @AdminResource.SmtpEmailSettings</span>
                             <span class="badge @(isSmtpConfigured ? "bg-success" : "bg-warning text-dark") small">
-                                @(isSmtpConfigured ? "Hazır" : "Gerekli")
+                                @(isSmtpConfigured ? "Ready" : "Required")
                             </span>
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-integrations" role="tab">
-                            <span><i class="fa fa-plug text-secondary me-2"></i> Entegrasyonlar &amp; Servisler</span>
+                            <span><i class="fa fa-plug text-secondary me-2"></i> @AdminResource.IntegrationsAndServices</span>
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-tools" role="tab">
-                            <span><i class="fa fa-wrench text-secondary me-2"></i> Sistem Araçları &amp; Bakım</span>
+                            <span><i class="fa fa-wrench text-secondary me-2"></i> @AdminResource.SystemToolsAndMaintenance</span>
                         </a>
                     </div>
                 </div>
@@ -234,11 +234,11 @@
                         <div class="card shadow-sm mb-4 border-0">
                             <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
                                 <div>
-                                    <h4 class="mb-0 fw-bold text-dark"><i class="fa fa-tachometer text-primary me-2"></i>Ayarlar Merkezi Genel Bakış</h4>
-                                    <small class="text-muted">Mağaza ve sistem durumunun anlık özeti</small>
+                                    <h4 class="mb-0 fw-bold text-dark"><i class="fa fa-tachometer text-primary me-2"></i>@AdminResource.SettingsCenterOverview</h4>
+                                    <small class="text-muted">@AdminResource.LiveSummaryOfStoreAndSystem</small>
                                 </div>
                                 <span class="badge bg-light text-secondary border px-3 py-2">
-                                    <i class="fa fa-clock-o me-1"></i> Canlı Yapılandırma
+                                    <i class="fa fa-clock-o me-1"></i> @AdminResource.LiveConfiguration
                                 </span>
                             </div>
                             <div class="card-body">
@@ -250,19 +250,19 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-primary-subtle text-primary rounded p-2"><i class="fa fa-shopping-bag fa-lg"></i></span>
                                                     <span class="badge @(isSiteLive ? "bg-success" : "bg-warning text-dark")">
-                                                        @(isSiteLive ? "Canlı Yayında" : "Bakım Modunda")
+                                                        @(isSiteLive ? AdminResource.LiveOnSite : AdminResource.InMaintenanceMode)
                                                     </span>
                                                 </div>
-                                                <h6 class="fw-bold mb-1">Mağaza &amp; Vitrin</h6>
-                                                <p class="text-muted small mb-2">Tema, SEO ve ürün satış davranışları.</p>
+                                                <h6 class="fw-bold mb-1">@AdminResource.StoreAndShowcase</h6>
+                                                <p class="text-muted small mb-2">@AdminResource.StoreAndShowcaseDesc</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li><i class="fa fa-circle @(isPriceActive ? "text-success" : "text-secondary") me-1 small"></i> Fiyat &amp; Satış: <strong>@(isPriceActive ? "Aktif" : "Katalog Modu")</strong></li>
-                                                    <li><i class="fa fa-circle @(isSearchIndexing ? "text-success" : "text-danger") me-1 small"></i> SEO İndeksleme: <strong>@(isSearchIndexing ? "Açık" : "Kapalı")</strong></li>
-                                                    <li><i class="fa fa-circle text-primary me-1 small"></i> Aktif Tema: <strong>@activeTheme</strong></li>
+                                                    <li><i class="fa fa-circle @(isPriceActive ? "text-success" : "text-secondary") me-1 small"></i> @AdminResource.PriceAndSales: <strong>@(isPriceActive ? "Aktif" : AdminResource.CatalogMode)</strong></li>
+                                                    <li><i class="fa fa-circle @(isSearchIndexing ? "text-success" : "text-danger") me-1 small"></i> @AdminResource.SeoIndexing: <strong>@(isSearchIndexing ? "Açık" : "Kapalı")</strong></li>
+                                                    <li><i class="fa fa-circle text-primary me-1 small"></i> @AdminResource.ActiveThemeLabel: <strong>@activeTheme</strong></li>
                                                 </ul>
                                             </div>
                                             <button type="button" class="btn btn-outline-primary btn-sm w-100 mt-3" onclick="navigateToTab('#tab-general')">
-                                                <i class="fa fa-arrow-right me-1"></i> Genel Ayarları Aç
+                                                <i class="fa fa-arrow-right me-1"></i> @AdminResource.OpenGeneralSettings
                                             </button>
                                         </div>
                                     </div>
@@ -274,19 +274,19 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-danger-subtle text-danger rounded p-2"><i class="fa fa-shield fa-lg"></i></span>
                                                     <span class="badge @(securityScore >= 70 ? "bg-success" : (securityScore >= 35 ? "bg-warning text-dark" : "bg-danger"))">
-                                                        Güvenlik Skoru: %@securityScore
+                                                        @AdminResource.SecurityScore: %@securityScore
                                                     </span>
                                                 </div>
-                                                <h6 class="fw-bold mb-1">Güvenlik &amp; Koruma</h6>
-                                                <p class="text-muted small mb-2">Yönetici hesapları ve istek korumaları.</p>
+                                                <h6 class="fw-bold mb-1">@AdminResource.SecurityAndProtection</h6>
+                                                <p class="text-muted small mb-2">@AdminResource.SecurityAndProtectionDesc</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li><i class="fa @(is2FaActive ? "fa-check text-success" : "fa-times text-danger") me-1"></i> Yönetici 2FA: <strong>@(is2FaActive ? "Zorunlu" : "Kapalı")</strong></li>
+                                                    <li><i class="fa @(is2FaActive ? "fa-check text-success" : "fa-times text-danger") me-1"></i> @AdminResource.Administrator 2FA: <strong>@(is2FaActive ? AdminResource.Mandatory : "Kapalı")</strong></li>
                                                     <li><i class="fa @(isCaptchaActive ? "fa-check text-success" : "fa-times text-warning") me-1"></i> Spam Captcha: <strong>@Model.CaptchaProvider</strong></li>
                                                     <li><i class="fa @(isRateLimitActive ? "fa-check text-success" : "fa-times text-danger") me-1"></i> Rate Limiting: <strong>@(isRateLimitActive ? "Aktif" : "Devre Dışı")</strong></li>
                                                 </ul>
                                             </div>
                                             <button type="button" class="btn btn-outline-danger btn-sm w-100 mt-3" onclick="navigateToTab('#tab-security')">
-                                                <i class="fa fa-arrow-right me-1"></i> Güvenlik Paneline Git
+                                                <i class="fa fa-arrow-right me-1"></i> @AdminResource.GoToSecurityPanel
                                             </button>
                                         </div>
                                     </div>
@@ -298,19 +298,19 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-warning-subtle text-warning rounded p-2"><i class="fa fa-envelope-o fa-lg"></i></span>
                                                     <span class="badge @(isSmtpConfigured ? "bg-success" : "bg-danger")">
-                                                        @(isSmtpConfigured ? "SMTP Yapılandırıldı" : "Yapılandırma Gerekli")
+                                                        @(isSmtpConfigured ? AdminResource.SmtpConfigured : AdminResource.ConfigRequired)
                                                     </span>
                                                 </div>
-                                                <h6 class="fw-bold mb-1">E-Posta &amp; SMTP</h6>
-                                                <p class="text-muted small mb-2">Giden bildirim ve sipariş e-postaları.</p>
+                                                <h6 class="fw-bold mb-1">@AdminResource.EmailAndSmtp</h6>
+                                                <p class="text-muted small mb-2">@AdminResource.EmailAndSmtpDesc</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li class="text-truncate"><i class="fa fa-server text-muted me-1"></i> Sunucu: <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmailHost) ? "Tanımsız" : Model.AdminEmailHost)</strong></li>
-                                                    <li class="text-truncate"><i class="fa fa-at text-muted me-1"></i> Gönderen: <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmail) ? "Tanımsız" : Model.AdminEmail)</strong></li>
-                                                    <li><i class="fa fa-lock text-muted me-1"></i> Güvenlik: <strong>@(Model.AdminEmailEnableSsl ? "SSL/TLS Aktif" : "Düz Bağlantı")</strong></li>
+                                                    <li class="text-truncate"><i class="fa fa-server text-muted me-1"></i> @AdminResource.ServerLabel <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmailHost) ? AdminResource.Undefined : Model.AdminEmailHost)</strong></li>
+                                                    <li class="text-truncate"><i class="fa fa-at text-muted me-1"></i> @AdminResource.SenderLabel <strong>@(string.IsNullOrWhiteSpace(Model.AdminEmail) ? AdminResource.Undefined : Model.AdminEmail)</strong></li>
+                                                    <li><i class="fa fa-lock text-muted me-1"></i> @AdminResource.SecurityLabel <strong>@(Model.AdminEmailEnableSsl ? AdminResource.SslTlsActive : AdminResource.PlainConnection)</strong></li>
                                                 </ul>
                                             </div>
                                             <button type="button" class="btn btn-outline-warning btn-sm w-100 mt-3 text-dark" onclick="navigateToTab('#tab-smtp')">
-                                                <i class="fa fa-arrow-right me-1"></i> E-Posta Ayarlarını Aç
+                                                <i class="fa fa-arrow-right me-1"></i> @AdminResource.OpenEmailSettings
                                             </button>
                                         </div>
                                     </div>
@@ -322,19 +322,19 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-info-subtle text-info rounded p-2"><i class="fa fa-picture-o fa-lg"></i></span>
                                                     <span class="badge bg-info-subtle text-info border border-info-subtle">
-                                                        @(isWebPActive ? "WebP Aktif" : "JPEG/PNG")
+                                                        @(isWebPActive ? AdminResource.WebPActive : "JPEG/PNG")
                                                     </span>
                                                 </div>
-                                                <h6 class="fw-bold mb-1">Medya &amp; Optimizasyon</h6>
-                                                <p class="text-muted small mb-2">Görsel boyutları ve sıkıştırma kalitesi.</p>
+                                                <h6 class="fw-bold mb-1">@AdminResource.MediaAndOptimization</h6>
+                                                <p class="text-muted small mb-2">@AdminResource.MediaAndOptimizationDesc</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li><i class="fa fa-compress text-muted me-1"></i> JPEG Kalitesi: <strong>%@Model.ImageUploadJpegQuality</strong></li>
-                                                    <li><i class="fa fa-file-image-o text-muted me-1"></i> WebP Kalitesi: <strong>%@Model.ImageUploadWebPQuality</strong></li>
-                                                    <li><i class="fa fa-clone text-muted me-1"></i> Sidecar: <strong>@(Model.ImageUploadSaveWebPSidecar ? "Açık" : "Kapalı")</strong></li>
+                                                    <li><i class="fa fa-compress text-muted me-1"></i> @AdminResource.JpegQualityLabel <strong>%@Model.ImageUploadJpegQuality</strong></li>
+                                                    <li><i class="fa fa-file-image-o text-muted me-1"></i> @AdminResource.WebPQualityLabel <strong>%@Model.ImageUploadWebPQuality</strong></li>
+                                                    <li><i class="fa fa-clone text-muted me-1"></i> @AdminResource.SidecarLabel <strong>@(Model.ImageUploadSaveWebPSidecar ? "Açık" : "Kapalı")</strong></li>
                                                 </ul>
                                             </div>
                                             <button type="button" class="btn btn-outline-info btn-sm w-100 mt-3" onclick="navigateToTab('#tab-media')">
-                                                <i class="fa fa-arrow-right me-1"></i> Medya Ayarlarını Aç
+                                                <i class="fa fa-arrow-right me-1"></i> @AdminResource.OpenMediaSettings
                                             </button>
                                         </div>
                                     </div>
@@ -345,18 +345,18 @@
                                             <div>
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-success-subtle text-success rounded p-2"><i class="fa fa-building-o fa-lg"></i></span>
-                                                    <span class="badge bg-success-subtle text-success border border-success-subtle">İşletme Profili</span>
+                                                    <span class="badge bg-success-subtle text-success border border-success-subtle">@AdminResource.BusinessProfile</span>
                                                 </div>
-                                                <h6 class="fw-bold mb-1">Firma &amp; İletişim</h6>
+                                                <h6 class="fw-bold mb-1">@AdminResource.CompanyAndContact</h6>
                                                 <p class="text-muted small mb-2">Firma unvanı ve iletişim detayları.</p>
                                                 <ul class="list-unstyled small mb-0">
                                                     <li class="text-truncate"><i class="fa fa-id-card-o text-muted me-1"></i> Unvan: <strong>@(string.IsNullOrWhiteSpace(Model.CompanyName) ? "Belirtilmemiş" : Model.CompanyName)</strong></li>
-                                                    <li class="text-truncate"><i class="fa fa-truck text-muted me-1"></i> Ücretsiz Kargo: <strong>@Model.BasketMinTotalPriceForCargo.ToString("N0") ₺</strong></li>
+                                                    <li class="text-truncate"><i class="fa fa-truck text-muted me-1"></i> @AdminResource.FreeShippingThresholdLabel <strong>@Model.BasketMinTotalPriceForCargo.ToString("N0") ₺</strong></li>
                                                     <li class="text-truncate"><i class="fa fa-phone text-muted me-1"></i> İletişim: <strong>@(string.IsNullOrWhiteSpace(Model.WebSiteCompanyPhoneAndLocation) ? "-" : Model.WebSiteCompanyPhoneAndLocation)</strong></li>
                                                 </ul>
                                             </div>
                                             <button type="button" class="btn btn-outline-success btn-sm w-100 mt-3" onclick="navigateToTab('#tab-company')">
-                                                <i class="fa fa-arrow-right me-1"></i> Firma Bilgilerini Düzenle
+                                                <i class="fa fa-arrow-right me-1"></i> @AdminResource.EditCompanyInfo
                                             </button>
                                         </div>
                                     </div>
@@ -367,10 +367,10 @@
                                             <div>
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <span class="metric-icon-box bg-secondary-subtle text-secondary rounded p-2"><i class="fa fa-wrench fa-lg"></i></span>
-                                                    <span class="badge bg-secondary">Araçlar</span>
+                                                    <span class="badge bg-secondary">@AdminResource.Tools</span>
                                                 </div>
                                                 <h6 class="fw-bold mb-1">Sistem &amp; Yedekleme</h6>
-                                                <p class="text-muted small mb-2">Sistem metrikleri, günlükler ve veri ihracı.</p>
+                                                <p class="text-muted small mb-2">@AdminResource.SystemMetricsLogsDesc</p>
                                                 <div class="d-flex flex-wrap gap-1 mt-2">
                                                     <span class="badge bg-light text-dark border"><i class="fa fa-database text-success me-1"></i> JSON ZIP</span>
                                                     <span class="badge bg-light text-dark border"><i class="fa fa-heartbeat text-danger me-1"></i> Health</span>
@@ -378,7 +378,7 @@
                                                 </div>
                                             </div>
                                             <button type="button" class="btn btn-outline-secondary btn-sm w-100 mt-3" onclick="navigateToTab('#tab-tools')">
-                                                <i class="fa fa-arrow-right me-1"></i> Sistem Araçlarını Aç
+                                                <i class="fa fa-arrow-right me-1"></i> Sistem @AdminResource.OpenSystemTools Aç
                                             </button>
                                         </div>
                                     </div>
@@ -394,8 +394,8 @@
                         <!-- Section: Site Durumu & SEO -->
                         <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Site Durumu & SEO">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-globe text-primary me-2"></i>Site Durumu &amp; Arama Motoru İndeksleme</h5>
-                                <small class="text-muted">Mağazanızın ziyaretçi erişimi ve arama motorlarındaki görünürlüğünü yönetin.</small>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-globe text-primary me-2"></i>@AdminResource.SiteStatusAndIndexing</h5>
+                                <small class="text-muted">@AdminResource.ManageStorefrontVisibility</small>
                             </div>
                             <div class="card-body">
                                 <!-- Maintenance Mode -->
@@ -403,9 +403,9 @@
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                                         <div>
                                             <label class="fw-bold mb-1 d-block" for="IsSiteUnderConstruction">
-                                                <i class="fa fa-wrench text-warning me-1"></i> Bakım Modu (Site Durumu)
+                                                <i class="fa fa-wrench text-warning me-1"></i> @AdminResource.MaintenanceModeSiteStatus
                                             </label>
-                                            <p class="text-muted small mb-0">Aktif edildiğinde ziyaretçilere bakım sayfası gösterilir ve arama motorlarına otomatik <code>noindex</code> sinyali iletilir.</p>
+                                            <p class="text-muted small mb-0">@AdminResource.MaintenanceModeSiteStatusDesc</p>
                                         </div>
                                         <div class="form-check form-switch fs-5 mb-0">
                                             @Html.CheckBoxFor(model => model.IsSiteUnderConstruction, new { @class = "form-check-input", role = "switch" })
@@ -415,11 +415,11 @@
                                 </div>
 
                                 <!-- Under Construction Custom HTML Message -->
-                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="UnderConstructionHtml" data-setting-label="Bakım Sayfası Özel Mesaj / HTML" data-setting-desc="Bakım modu aktifken ziyaretçilere gösterilecek özel duyuru veya HTML metni" data-keywords="bakım modu html duyuru mesaj özel under construction custom html message">
+                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="UnderConstructionHtml" data-setting-label="@AdminResource.MaintenanceCustomMessageHtml" data-setting-desc="Bakım modu aktifken ziyaretçilere gösterilecek özel duyuru veya HTML metni" data-keywords="bakım modu html duyuru mesaj özel under construction custom html message">
                                     <label class="fw-bold mb-1 d-block" for="UnderConstructionHtml">
-                                        <i class="fa fa-code text-info me-1"></i> Bakım Sayfası Özel Mesaj / HTML
+                                        <i class="fa fa-code text-info me-1"></i> @AdminResource.MaintenanceCustomMessageHtml
                                     </label>
-                                    <p class="text-muted small mb-2">Bakım sayfası yayındayken ziyaretçilerinize gösterilecek özel duyuru, bilgilendirme metni veya HTML kodu girebilirsiniz. Boş bırakılırsa standart bakım mesajı gösterilir.</p>
+                                    <p class="text-muted small mb-2">@AdminResource.MaintenanceCustomMessageHtmlDesc</p>
                                     @Html.TextAreaFor(model => model.UnderConstructionHtml, new { @class = "form-control font-monospace", rows = 4, placeholder = "Örn: <p>Sistemlerimizde planlı altyapı yükseltmesi yapılmaktadır. Saat 02:00 itibarıyla yeniden hizmetinizdeyiz.</p>" })
                                     @Html.ValidationMessageFor(model => model.UnderConstructionHtml, "", new { @class = "text-danger small mt-1 d-block" })
                                 </div>
@@ -429,9 +429,9 @@
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                                         <div>
                                             <label class="fw-bold mb-1 d-block" for="AllowSearchEngineIndexing">
-                                                <i class="fa fa-search text-success me-1"></i> Arama Motoru İndekslemesine İzin Ver
+                                                <i class="fa fa-search text-success me-1"></i> @AdminResource.AllowSearchEngineIndexing
                                             </label>
-                                            <p class="text-muted small mb-0">Açık olduğunda <code>robots.txt</code> ve meta etiketleri üzerinden Google ve Bing botlarına tam tarama ve dizin izni verilir.</p>
+                                            <p class="text-muted small mb-0">@AdminResource.AllowSearchEngineIndexingDesc</p>
                                         </div>
                                         <div class="form-check form-switch fs-5 mb-0">
                                             @Html.CheckBoxFor(model => model.AllowSearchEngineIndexing, new { @class = "form-check-input", role = "switch" })
@@ -445,7 +445,7 @@
                         <!-- Section: Mağaza & Ürün Davranışları -->
                         <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Mağaza Davranışı">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-shopping-bag text-primary me-2"></i>Mağaza Davranışı &amp; Katalog Tercihleri</h5>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-shopping-bag text-primary me-2"></i>@AdminResource.StorefrontBehaviorAndCatalogPreferences</h5>
                                 <small class="text-muted">Ürün fiyatlandırması, yorumlar ve liste sayfalarının işleyişi.</small>
                             </div>
                             <div class="card-body">
@@ -454,9 +454,9 @@
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                                         <div>
                                             <label class="fw-bold mb-1 d-block" for="IsProductPriceEnable">
-                                                <i class="fa fa-tag text-primary me-1"></i> Ürün Fiyatları ve Sepete Ekleme
+                                                <i class="fa fa-tag text-primary me-1"></i> @AdminResource.ProductPricesAndAddToCart
                                             </label>
-                                            <p class="text-muted small mb-0">Kapalı olduğunda mağaza <strong>Katalog / Tanıtım Modunda</strong> çalışır; fiyatlar gizlenir ve ödeme adımları devre dışı bırakılır.</p>
+                                            <p class="text-muted small mb-0">@AdminResource.CatalogShowcaseModeDesc</p>
                                         </div>
                                         <div class="form-check form-switch fs-5 mb-0">
                                             @Html.CheckBoxFor(model => model.IsProductPriceEnable, new { @class = "form-check-input", role = "switch" })
@@ -470,9 +470,9 @@
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                                         <div>
                                             <label class="fw-bold mb-1 d-block" for="IsProductReviewEnable">
-                                                <i class="fa fa-comments-o text-info me-1"></i> Ürün Yorumları ve Puanlama
+                                                <i class="fa fa-comments-o text-info me-1"></i> @AdminResource.ProductReviewsAndRatingsTitle
                                             </label>
-                                            <p class="text-muted small mb-0">Ziyaretçilerin ve kayıtlı müşterilerin ürün detay sayfalarında yorum ve yıldızlı puan bırakmasına izin verin.</p>
+                                            <p class="text-muted small mb-0">@AdminResource.ProductReviewsAndRatingsDesc</p>
                                         </div>
                                         <div class="form-check form-switch fs-5 mb-0">
                                             @Html.CheckBoxFor(model => model.IsProductReviewEnable, new { @class = "form-check-input", role = "switch" })
@@ -488,7 +488,7 @@
                                             @Html.DisplayNameFor(model => model.GridPageSizeNumber)
                                         </label>
                                         @Html.EditorFor(model => model.GridPageSizeNumber, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1", max = "1000", placeholder = "100" } })
-                                        <div class="form-text small">Yönetim paneli listelerinde sayfa başına gösterilecek kayıt adedi (Örn: 100).</div>
+                                        <div class="form-text small">@AdminResource.AdminGridPageSizeDesc</div>
                                         @Html.ValidationMessageFor(model => model.GridPageSizeNumber, "", new { @class = "text-danger small" })
                                     </div>
 
@@ -497,9 +497,34 @@
                                             @Html.DisplayNameFor(model => model.ProductShortDescriptionPreviewLength)
                                         </label>
                                         @Html.EditorFor(model => model.ProductShortDescriptionPreviewLength, new { htmlAttributes = new { @class = "form-control", type = "number", min = "10", max = "5000", placeholder = "180" } })
-                                        <div class="form-text small">Vitrin ürün detayında "Devamını Gör" öncesi metin uzunluğu (Karakter).</div>
+                                        <div class="form-text small">@AdminResource.ProductShortDescLengthDesc</div>
                                         @Html.ValidationMessageFor(model => model.ProductShortDescriptionPreviewLength, "", new { @class = "text-danger small" })
                                     </div>
+                                </div>
+
+                                <!-- Admin Panel UI Language -->
+                                <div class="setting-item mb-3 p-3 border rounded bg-light" data-setting-name="AdminPanelLanguage" data-setting-label="@AdminResource.AdminPanelUILanguageTitle" data-setting-desc="@AdminResource.AdminPanelUILanguageHelp" data-keywords="yönetim paneli dil arayüz language ui tr en">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <label class="form-label fw-bold small m-0 d-flex align-items-center gap-2" for="AdminPanelLanguage">
+                                            <span class="badge bg-primary text-uppercase"><i class="fa fa-desktop me-1"></i>UI</span>
+                                            <span>@AdminResource.AdminPanelUILanguageTitle</span>
+                                            @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminPanelUILanguageHelp } })
+                                        </label>
+                                    </div>
+                                    <div class="input-group mb-1">
+                                        @Html.DropDownListFor(model => model.AdminPanelLanguage, new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Text = "🇹🇷 Türkçe (Turkish)", Value = "tr-TR" },
+                                            new SelectListItem { Text = "🇬🇧 English", Value = "en-US" }
+                                        }, new { @class = "form-select", id = "AdminPanelLanguage" })
+                                        <button type="button" class="btn btn-primary" id="btnChangeAdminLanguage" title="@AdminResource.ApplyAndRefresh">
+                                            <i class="fa fa-refresh me-1" aria-hidden="true"></i> @AdminResource.ApplyAndRefresh
+                                        </button>
+                                    </div>
+                                    <div class="form-text small text-muted">
+                                        <i class="fa fa-info-circle me-1 text-primary"></i>@AdminResource.AdminPanelUILanguageHelp
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
                                 </div>
 
                                 <!-- Price Filter Setting Editor Partial -->
@@ -517,7 +542,7 @@
                                         @Html.DisplayNameFor(model => model.PaymentDetailHtml)
                                     </label>
                                     @Html.TextAreaFor(model => model.PaymentDetailHtml, 6, 50, new { @class = "form-control font-monospace", placeholder = "<p>Tüm kredi kartlarına 12 aya varan taksit imkanı...</p>" })
-                                    <div class="form-text small">Ürün detay sayfasındaki "Ödeme &amp; Taksit Bilgisi" sekmesinde doğrudan müşteriye sunulur.</div>
+                                    <div class="form-text small">@AdminResource.PaymentDetailTabHelpDescAmp</div>
                                     @Html.ValidationMessageFor(model => model.PaymentDetailHtml, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -531,12 +556,12 @@
                         @if (showThemeSelection)
                         {
                             <!-- Section: Storefront Theme -->
-                            <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Vitrin Teması">
+                            <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.StorefrontTheme">
                                 <div class="card-header bg-white py-3 border-bottom">
-                                    <h5 class="mb-0 fw-bold"><i class="fa fa-paint-brush text-primary me-2"></i>Aktif Vitrin Teması</h5>
-                                    <small class="text-muted">Müşterilerinize sunulan mağaza ön yüz tasarım şablonu.</small>
+                                    <h5 class="mb-0 fw-bold"><i class="fa fa-paint-brush text-primary me-2"></i>Aktif @AdminResource.StorefrontTheme</h5>
+                                    <small class="text-muted">customers sunulan mağaza ön yüz tasarım şablonu.</small>
                                 </div>
-                                <div class="card-body setting-item" data-setting-name="ActiveDesign" data-setting-label="Aktif Tema" data-setting-desc="Ön yüz vitrin teması seçimi" data-keywords="tema tasarım crizal modern görünüm theme active design şablon template dropdown">
+                                <div class="card-body setting-item" data-setting-name="ActiveDesign" data-setting-label="@AdminResource.ActiveThemeLabel" data-setting-desc="Ön yüz vitrin teması seçimi" data-keywords="tema tasarım crizal modern görünüm theme active design şablon template dropdown">
                                     <div class="row align-items-center g-3">
                                         <div class="col-md-6 col-lg-5">
                                             <label for="ActiveDesign" class="form-label fw-semibold">
@@ -544,7 +569,7 @@
                                             </label>
                                             @Html.DropDownListFor(model => model.ActiveDesign, themeSelectItems, new { @class = "form-select form-select-lg shadow-sm", id = "ActiveDesign" })
                                             <div class="form-text small mt-1">
-                                                Müşterilerinize sunulacak aktif vitrin temasını listeden seçiniz. Gelecekte eklenen tüm şablonlar bu listede yer alır.
+                                                customers sunulacak aktif vitrin temasını listeden seçiniz. Gelecekte eklenen tüm şablonlar bu listede yer alır.
                                             </div>
                                             @Html.ValidationMessageFor(model => model.ActiveDesign, "", new { @class = "text-danger small mt-1 d-block" })
                                         </div>
@@ -660,7 +685,7 @@
                                     </div>
 
                                     <!-- Manifest Start Url -->
-                                    <div class="col-md-4 setting-item" data-setting-name="ManifestStartUrl" data-setting-label="PWA Başlangıç URL'si" data-setting-desc="Uygulama simgesine tıklandığında açılacak ilk sayfa adresi" data-keywords="başlangıç adresi start url pwa açılış">
+                                    <div class="col-md-4 setting-item" data-setting-name="ManifestStartUrl" data-setting-label="@AdminResource.PwaStartUrl'si" data-setting-desc="Uygulama simgesine tıklandığında açılacak ilk sayfa adresi" data-keywords="başlangıç adresi start url pwa açılış">
                                         <label class="form-label fw-bold small" for="ManifestStartUrl">@Html.DisplayNameFor(model => model.ManifestStartUrl)</label>
                                         @Html.EditorFor(model => model.ManifestStartUrl, new { htmlAttributes = new { @class = "form-control", placeholder = "/" } })
                                         <div class="form-text small">Uygulama açılış yolu (Varsayılan: /).</div>
@@ -668,7 +693,7 @@
                                     </div>
 
                                     <!-- Manifest Fallback Name -->
-                                    <div class="col-md-4 setting-item" data-setting-name="ManifestFallbackName" data-setting-label="PWA Yedek Uygulama Adı" data-setting-desc="Firma adı boş olduğunda kullanılan PWA adı" data-keywords="yedek ad fallback name pwa app name">
+                                    <div class="col-md-4 setting-item" data-setting-name="ManifestFallbackName" data-setting-label="@AdminResource.PwaFallbackAppName" data-setting-desc="Firma adı boş olduğunda kullanılan PWA adı" data-keywords="yedek ad fallback name pwa app name">
                                         <label class="form-label fw-bold small" for="ManifestFallbackName">@Html.DisplayNameFor(model => model.ManifestFallbackName)</label>
                                         @Html.EditorFor(model => model.ManifestFallbackName, new { htmlAttributes = new { @class = "form-control", placeholder = "Web App" } })
                                         <div class="form-text small">Firma unvanı tanımlanmadığında kullanılır.</div>
@@ -692,10 +717,10 @@
                     <!-- ========================================================================= -->
                     <div id="tab-media" class="tab-pane fade" role="tabpanel">
                         <!-- Section: Varsayılan Boyutlar -->
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Varsayılan Görsel Boyutları">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.DefaultImageDimensions">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-arrows-alt text-primary me-2"></i>Varsayılan Görsel Boyutları</h5>
-                                <small class="text-muted">Fotoğraf yüklemelerinde kullanılan standart boyut oranları.</small>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-arrows-alt text-primary me-2"></i>@AdminResource.DefaultImageDimensions</h5>
+                                <small class="text-muted">@AdminResource.DefaultImageDimensionsDesc</small>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
@@ -705,7 +730,7 @@
                                             @Html.EditorFor(model => model.DefaultImageWidth, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", placeholder = "1200" } })
                                             <span class="input-group-text">px</span>
                                         </div>
-                                        <div class="form-text small">Standart görsel yükleme genişliği (Varsayılan: 1200px).</div>
+                                        <div class="form-text small">@AdminResource.StandardImageWidthDesc</div>
                                         @Html.ValidationMessageFor(model => model.DefaultImageWidth, "", new { @class = "text-danger small" })
                                     </div>
 
@@ -715,7 +740,7 @@
                                             @Html.EditorFor(model => model.DefaultImageHeight, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", placeholder = "900" } })
                                             <span class="input-group-text">px</span>
                                         </div>
-                                        <div class="form-text small">Standart görsel yükleme yüksekliği (Varsayılan: 900px).</div>
+                                        <div class="form-text small">@AdminResource.StandardImageHeightDesc</div>
                                         @Html.ValidationMessageFor(model => model.DefaultImageHeight, "", new { @class = "text-danger small" })
                                     </div>
                                 </div>
@@ -723,10 +748,10 @@
                         </div>
 
                         <!-- Section: Tam Boyut Görsel Politikaları & JPEG -->
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Tam Boyut Görseller & Sıkıştırma">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.FullSizeImagesAndCompression">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-compress text-primary me-2"></i>Tam Boyut Görsel Politikaları &amp; JPEG Kalitesi</h5>
-                                <small class="text-muted">Orijinal yüklenen fotoğrafların maksimum boyutlandırılması ve sıkıştırma oranı.</small>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-compress text-primary me-2"></i>@AdminResource.FullSizeImagePoliciesAndJpegQuality</h5>
+                                <small class="text-muted">@AdminResource.FullSizeImagesAndCompressionDesc</small>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3 mb-3">
@@ -736,7 +761,7 @@
                                             @Html.EditorFor(model => model.ImageUploadMaxWidth, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", max = "10000", placeholder = "2560" } })
                                             <span class="input-group-text">px</span>
                                         </div>
-                                        <div class="form-text small">0 = sınır yok. Daha büyükse orantılı küçültülür.</div>
+                                        <div class="form-text small">@AdminResource.ZeroNoLimitDesc</div>
                                         @Html.ValidationMessageFor(model => model.ImageUploadMaxWidth, "", new { @class = "text-danger small" })
                                     </div>
 
@@ -746,7 +771,7 @@
                                             @Html.EditorFor(model => model.ImageUploadMaxHeight, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", max = "10000", placeholder = "1440" } })
                                             <span class="input-group-text">px</span>
                                         </div>
-                                        <div class="form-text small">0 = sınır yok. Daha büyükse orantılı küçültülür.</div>
+                                        <div class="form-text small">@AdminResource.ZeroNoLimitDesc</div>
                                         @Html.ValidationMessageFor(model => model.ImageUploadMaxHeight, "", new { @class = "text-danger small" })
                                     </div>
 
@@ -787,7 +812,7 @@
                             </div>
                             <div class="card-body">
                                 <!-- Prefer WebP -->
-                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="ImageUploadPreferWebP" data-setting-label="WebP Formatını Tercih Et" data-setting-desc="Yüklenen görselleri otomatik modern WebP formatına dönüştürür" data-keywords="webp dönüştürme web performance format">
+                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="ImageUploadPreferWebP" data-setting-label="@AdminResource.PreferWebPFormat" data-setting-desc="Yüklenen görselleri otomatik modern WebP formatına dönüştürür" data-keywords="webp dönüştürme web performance format">
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                                         <div>
                                             <label class="fw-bold mb-1 d-block" for="ImageUploadPreferWebP">
@@ -879,7 +904,7 @@
                     <!-- 4. COMPANY SETTINGS TAB -->
                     <!-- ========================================================================= -->
                     <div id="tab-company" class="tab-pane fade" role="tabpanel">
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Firma & İletişim Bilgileri">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.CompanyAndContactInfo">
                             <div class="card-header bg-white py-3 border-bottom">
                                 <h5 class="mb-0 fw-bold"><i class="fa fa-building-o text-primary me-2"></i>@AdminResource.CompanyAdminSettings</h5>
                                 <small class="text-muted">Faturada, e-postalarda ve site altbilgisinde (footer) gösterilecek resmi firma bilgileri.</small>
@@ -895,7 +920,7 @@
                                     </div>
 
                                     <!-- Company Official Email -->
-                                    <div class="col-md-6 setting-item" data-setting-name="WebSiteCompanyEmailAddress" data-setting-label="Firma İletişim E-Postası" data-setting-desc="Müşterilerin size ulaşacağı resmi iletişim e-posta adresi" data-keywords="iletişim eposta resmi mail company email">
+                                    <div class="col-md-6 setting-item" data-setting-name="WebSiteCompanyEmailAddress" data-setting-label="Firma İletişim E-Postası" data-setting-desc="customers size ulaşacağı resmi iletişim e-posta adresi" data-keywords="iletişim eposta resmi mail company email">
                                         <label class="form-label fw-bold small" for="WebSiteCompanyEmailAddress">@Html.DisplayNameFor(model => model.WebSiteCompanyEmailAddress)</label>
                                         @Html.EditorFor(model => model.WebSiteCompanyEmailAddress, new { htmlAttributes = new { @class = "form-control", type = "email", placeholder = "info@eimece.test" } })
                                         <div class="form-text small">İletişim formlarının yönlendirileceği ve sitede gösterilen e-posta adresi.</div>
@@ -903,7 +928,7 @@
                                     </div>
 
                                     <!-- Phone and Location -->
-                                    <div class="col-md-6 setting-item" data-setting-name="WebSiteCompanyPhoneAndLocation" data-setting-label="Telefon ve Konum" data-setting-desc="Müşteri hizmetleri telefon numarası ve şehir/bölge bilgisi" data-keywords="telefon gsm konum şehir phone location">
+                                    <div class="col-md-6 setting-item" data-setting-name="WebSiteCompanyPhoneAndLocation" data-setting-label="Telefon ve Konum" data-setting-desc="@AdminResource.Customer hizmetleri telefon numarası ve şehir/bölge bilgisi" data-keywords="telefon gsm konum şehir phone location">
                                         <label class="form-label fw-bold small" for="WebSiteCompanyPhoneAndLocation">@Html.DisplayNameFor(model => model.WebSiteCompanyPhoneAndLocation)</label>
                                         @Html.EditorFor(model => model.WebSiteCompanyPhoneAndLocation, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 216 555 01 23 | Kadıköy / İstanbul" } })
                                         <div class="form-text small">Üst menüde ve iletişim sayfasında yer alır.</div>
@@ -911,7 +936,7 @@
                                     </div>
 
                                     <!-- Free Cargo Basket Threshold -->
-                                    <div class="col-md-6 setting-item" data-setting-name="BasketMinTotalPriceForCargo" data-setting-label="Ücretsiz Kargo Sepet Tutarı" data-setting-desc="Müşteriye ücretsiz kargo tanımlanması için gereken minimum sepet toplamı" data-keywords="ücretsiz kargo sepet tutarı kargo limiti free shipping basket total">
+                                    <div class="col-md-6 setting-item" data-setting-name="BasketMinTotalPriceForCargo" data-setting-label="Ücretsiz Kargo Sepet Tutarı" data-setting-desc="customer ücretsiz kargo tanımlanması için gereken minimum sepet toplamı" data-keywords="ücretsiz kargo sepet tutarı kargo limiti free shipping basket total">
                                         <label class="form-label fw-bold small" for="BasketMinTotalPriceForCargo">@Html.DisplayNameFor(model => model.BasketMinTotalPriceForCargo)</label>
                                         <div class="input-group">
                                             @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", placeholder = "500" } })
@@ -922,7 +947,7 @@
                                     </div>
 
                                     <!-- Company Address -->
-                                    <div class="col-12 setting-item" data-setting-name="CompanyAddress" data-setting-label="Firma Açık Adresi" data-setting-desc="Resmi tebligat ve mağaza açık adresi" data-keywords="adres fatura adresi açık adres company address">
+                                    <div class="col-12 setting-item" data-setting-name="CompanyAddress" data-setting-label="@AdminResource.CompanyPhysicalAddress" data-setting-desc="Resmi tebligat ve mağaza açık adresi" data-keywords="adres fatura adresi açık adres company address">
                                         <label class="form-label fw-bold small" for="CompanyAddress">@Html.DisplayNameFor(model => model.CompanyAddress)</label>
                                         @Html.EditorFor(model => model.CompanyAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Caferağa Mah. Moda Cad. No:42 Kadıköy / İstanbul" } })
                                         <div class="form-text small">Fatura, iletişim sayfası ve altbilgide yer alan resmi şirket adresi.</div>
@@ -944,7 +969,7 @@
                                     <small class="text-muted">Sanal POS, ödeme formu, taksitlendirme ve alıcı kimlik ayarları.</small>
                                 </div>
                                 <span class="badge bg-warning text-dark payment-disabled-badge d-none">
-                                    <i class="fa fa-lock me-1"></i> Fiyat &amp; Satış Aktif Olmalıdır
+                                    <i class="fa fa-lock me-1"></i> @AdminResource.PriceAndSales Aktif Olmalıdır
                                 </span>
                             </div>
                             <div class="card-body">
@@ -952,7 +977,7 @@
                                 <div id="payment-disabled-alert" class="alert alert-warning d-flex align-items-center mb-4 p-3 rounded shadow-sm" style="display:none;">
                                     <i class="fa fa-exclamation-triangle fa-2x me-3 text-warning"></i>
                                     <div>
-                                        <strong class="d-block">Ödeme Ayarları Kilitli (Katalog Modu):</strong>
+                                        <strong class="d-block">Ödeme Ayarları Kilitli (@AdminResource.CatalogMode):</strong>
                                         Ödeme altyapısını ve parametrelerini yapılandırabilmek için <strong>Genel &amp; Vitrin</strong> sekmesindeki 
                                         <em>"Ürün fiyatları ve sepete ekleme aktif"</em> seçeneğinin açık olması gerekmektedir.
                                         <button type="button" class="btn btn-sm btn-outline-dark ms-2 mt-1" onclick="navigateToTab('#tab-general')">
@@ -979,7 +1004,7 @@
                                         </div>
 
                                         <!-- Enabled Installments -->
-                                        <div class="col-md-6 setting-item" data-setting-name="IyzicoEnabledInstallments" data-setting-label="İyzico Taksit Seçenekleri" data-setting-desc="Müşteriye sunulacak taksit seçenekleri (virgülle ayrılmış: 1,2,4,6,9)" data-keywords="taksit taksitler installment iyzico vade">
+                                        <div class="col-md-6 setting-item" data-setting-name="IyzicoEnabledInstallments" data-setting-label="İyzico @AdminResource.InstallmentOptionsTitle" data-setting-desc="customer sunulacak taksit seçenekleri (virgülle ayrılmış: 1,2,4,6,9)" data-keywords="taksit taksitler installment iyzico vade">
                                             <label class="form-label fw-bold small" for="IyzicoEnabledInstallments">@Html.DisplayNameFor(model => model.IyzicoEnabledInstallments)</label>
                                             @Html.EditorFor(model => model.IyzicoEnabledInstallments, new { htmlAttributes = new { @class = "form-control payment-input", placeholder = "1,2,4,6,9" } })
                                             <div class="form-text small">Ödeme ekranında izin verilen taksitler (Virgülle ayrılmış, örn: 1,2,4,6,9).</div>
@@ -990,7 +1015,7 @@
                                         <div class="col-md-6 setting-item" data-setting-name="BuyerIdentityNumber" data-setting-label="Varsayılan Alıcı TCKN" data-setting-desc="Kullanıcı TCKN belirtmediğinde kullanılan varsayılan kimlik numarası" data-keywords="tckn kimlik no buyer identity alıcı kimlik">
                                             <label class="form-label fw-bold small" for="BuyerIdentityNumber">@Html.DisplayNameFor(model => model.BuyerIdentityNumber)</label>
                                             @Html.EditorFor(model => model.BuyerIdentityNumber, new { htmlAttributes = new { @class = "form-control payment-input", placeholder = "10000000000" } })
-                                            <div class="form-text small">Müşteri TCKN girmediğinde fatura/ödeme entegrasyonuna iletilen yedek kimlik no.</div>
+                                            <div class="form-text small">@AdminResource.Customer TCKN girmediğinde fatura/ödeme entegrasyonuna iletilen yedek kimlik no.</div>
                                             @Html.ValidationMessageFor(model => model.BuyerIdentityNumber, "", new { @class = "text-danger small" })
                                         </div>
                                     </div>
@@ -1006,9 +1031,9 @@
                         <!-- Security Health Dashboard -->
                         <div class="card shadow-sm mb-4 border-0">
                             <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-shield text-danger me-2"></i>Güvenlik Durumu Gösterge Paneli</h5>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-shield text-danger me-2"></i>@AdminResource.SecurityStatusDashboard</h5>
                                 <span class="badge @(securityScore >= 70 ? "bg-success" : (securityScore >= 35 ? "bg-warning text-dark" : "bg-danger")) px-3 py-2">
-                                    Genel Koruma: @(securityScore >= 70 ? "Güçlü" : (securityScore >= 35 ? "Orta Düzey" : "Kritik"))
+                                    @AdminResource.GeneralProtection: @(securityScore >= 70 ? AdminResource.Strong : (securityScore >= 35 ? AdminResource.MediumLevel : AdminResource.Critical))
                                 </span>
                             </div>
                             <div class="card-body">
@@ -1017,9 +1042,9 @@
                                         <div class="p-3 rounded border @(is2FaActive ? "bg-success-subtle border-success-subtle" : "bg-warning-subtle border-warning-subtle")">
                                             <div class="d-flex align-items-center gap-2 mb-1">
                                                 <i class="fa @(is2FaActive ? "fa-check-circle text-success" : "fa-exclamation-circle text-warning") fs-5"></i>
-                                                <strong class="small">Yönetici 2FA</strong>
+                                                <strong class="small">@AdminResource.Administrator 2FA</strong>
                                             </div>
-                                            <div class="small text-muted">@(is2FaActive ? "Tüm yöneticiler için TOTP zorunlu." : "Yöneticiler şifre ile giriş yapabilir.")</div>
+                                            <div class="small text-muted">@(is2FaActive ? "Tüm yöneticiler için TOTP zorunlu." : "administrators şifre ile giriş yapabilir.")</div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -1045,17 +1070,17 @@
                         </div>
 
                         <!-- 1. Administrator 2FA -->
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Yönetici 2FA Güvenliği">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.Administrator 2FA Güvenliği">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-mobile text-primary me-2"></i>Yönetici İki Adımlı Doğrulama (TOTP 2FA)</h5>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-mobile text-primary me-2"></i>@AdminResource.Administrator İki Adımlı Doğrulama (TOTP 2FA)</h5>
                                 <small class="text-muted">Google Authenticator, Microsoft Authenticator veya 1Password entegrasyonu.</small>
                             </div>
                             <div class="card-body">
-                                <div class="setting-item p-3 rounded border bg-light" data-setting-name="RequireAdminAuthenticator" data-setting-label="Yönetici Authenticator 2FA" data-setting-desc="Yöneticilerin panel girişinde Authenticator TOTP kodu girmesini zorunlu kılar" data-keywords="2fa totp iki adımlı doğrulama authenticator güvenlik şifre admin login">
+                                <div class="setting-item p-3 rounded border bg-light" data-setting-name="RequireAdminAuthenticator" data-setting-label="@AdminResource.Administrator Authenticator 2FA" data-setting-desc="administratorsin panel girişinde Authenticator TOTP kodu girmesini zorunlu kılar" data-keywords="2fa totp iki adımlı doğrulama authenticator güvenlik şifre admin login">
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                                         <div>
                                             <label class="fw-bold mb-1 d-block" for="RequireAdminAuthenticator">
-                                                <i class="fa fa-key text-primary me-1"></i> İki Adımlı Doğrulama (2FA) Zorunluluğu
+                                                <i class="fa fa-key text-primary me-1"></i> İki Adımlı Doğrulama (2FA) @AdminResource.Enforce3DSecureVerification
                                             </label>
                                             <p class="text-muted small mb-0">
                                                 Açık olduğunda tüm yöneticiler sisteme giriş yaparken mobil Authenticator uygulamasındaki 6 haneli kodu girmek zorundadır.
@@ -1114,9 +1139,9 @@
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                                         <div>
                                             <label class="fw-bold mb-1 d-block" for="RateLimit_Enabled">
-                                                <i class="fa fa-shield text-danger me-1"></i> İstek Sınırlandırma Korumasını Aktif Et
+                                                <i class="fa fa-shield text-danger me-1"></i> @AdminResource.EnableRateLimitingProtection
                                             </label>
-                                            <p class="text-muted small mb-0">Aktif olduğunda belirli zaman pencerelerinde sınırları aşan IP adresleri geçici olarak engellenir (HTTP 429 Too Many Requests).</p>
+                                            <p class="text-muted small mb-0">@AdminResource.EnableRateLimitingProtectionDesc</p>
                                         </div>
                                         <div class="form-check form-switch fs-5 mb-0">
                                             @Html.CheckBoxFor(model => model.RateLimit_Enabled, new { @class = "form-check-input", role = "switch", id = "RateLimit_Enabled" })
@@ -1127,23 +1152,23 @@
 
                                 <!-- Feature Limits Grid -->
                                 <div id="rateLimitConfigContainer" style="@(Model.RateLimit_Enabled ? "" : "opacity: 0.5; pointer-events: none;")">
-                                    <h6 class="fw-bold text-secondary mb-3"><i class="fa fa-sliders me-1"></i> Özellik Bazlı İstek Sınırları &amp; Zaman Pencereleri</h6>
+                                    <h6 class="fw-bold text-secondary mb-3"><i class="fa fa-sliders me-1"></i> @AdminResource.EndpointSpecificRequestLimits</h6>
                                     <div class="row g-3">
                                         <!-- Login Limit -->
-                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Login_Limit" data-setting-label="Giriş Sayfası İstek Limiti" data-setting-desc="Giriş sayfası için IP başına izin verilen istek sayısı ve süresi" data-keywords="login limit giriş brute force rate limit">
+                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Login_Limit" data-setting-label="@AdminResource.LoginPageRequestLimit" data-setting-desc="@AdminResource.LoginPageRequestLimitDesc" data-keywords="login limit giriş brute force rate limit">
                                             <div class="card h-100 border bg-white shadow-none">
                                                 <div class="card-body p-3">
                                                     <div class="d-flex align-items-center gap-2 mb-2">
                                                         <i class="fa fa-sign-in text-primary fs-5"></i>
-                                                        <strong class="small">Giriş (Login)</strong>
+                                                        <strong class="small">@AdminResource.LoginAuthLabel</strong>
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label small mb-1" for="RateLimit_Login_Limit">Maks. İstek</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Login_Limit">@AdminResource.MaxRequestsLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Login_Limit, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1000", placeholder = "5" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Login_Limit, "", new { @class = "text-danger small" })
                                                     </div>
                                                     <div>
-                                                        <label class="form-label small mb-1" for="RateLimit_Login_WindowMinutes">Süre (Dakika)</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Login_WindowMinutes">@AdminResource.DurationMinutesLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Login_WindowMinutes, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1440", placeholder = "1" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Login_WindowMinutes, "", new { @class = "text-danger small" })
                                                     </div>
@@ -1152,20 +1177,20 @@
                                         </div>
 
                                         <!-- Contact Limit -->
-                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Contact_Limit" data-setting-label="İletişim Formu İstek Limiti" data-setting-desc="İletişim formu için IP başına izin verilen istek sayısı ve süresi" data-keywords="iletişim contact form spam rate limit">
+                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Contact_Limit" data-setting-label="@AdminResource.ContactFormRequestLimit" data-setting-desc="@AdminResource.ContactFormRequestLimitDesc" data-keywords="iletişim contact form spam rate limit">
                                             <div class="card h-100 border bg-white shadow-none">
                                                 <div class="card-body p-3">
                                                     <div class="d-flex align-items-center gap-2 mb-2">
                                                         <i class="fa fa-envelope text-info fs-5"></i>
-                                                        <strong class="small">İletişim (Contact)</strong>
+                                                        <strong class="small">@AdminResource.ContactFormLabel</strong>
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label small mb-1" for="RateLimit_Contact_Limit">Maks. İstek</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Contact_Limit">@AdminResource.MaxRequestsLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Contact_Limit, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1000", placeholder = "3" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Contact_Limit, "", new { @class = "text-danger small" })
                                                     </div>
                                                     <div>
-                                                        <label class="form-label small mb-1" for="RateLimit_Contact_WindowMinutes">Süre (Dakika)</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Contact_WindowMinutes">@AdminResource.DurationMinutesLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Contact_WindowMinutes, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1440", placeholder = "1" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Contact_WindowMinutes, "", new { @class = "text-danger small" })
                                                     </div>
@@ -1174,20 +1199,20 @@
                                         </div>
 
                                         <!-- Checkout Limit -->
-                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Checkout_Limit" data-setting-label="Ödeme İsteği Limiti" data-setting-desc="Ödeme adımı için IP başına izin verilen istek sayısı ve süresi" data-keywords="checkout ödeme fraud rate limit">
+                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Checkout_Limit" data-setting-label="@AdminResource.CheckoutRequestLimit" data-setting-desc="@AdminResource.CheckoutRequestLimitDesc" data-keywords="checkout ödeme fraud rate limit">
                                             <div class="card h-100 border bg-white shadow-none">
                                                 <div class="card-body p-3">
                                                     <div class="d-flex align-items-center gap-2 mb-2">
                                                         <i class="fa fa-shopping-cart text-success fs-5"></i>
-                                                        <strong class="small">Ödeme (Checkout)</strong>
+                                                        <strong class="small">@AdminResource.CheckoutLabel</strong>
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label small mb-1" for="RateLimit_Checkout_Limit">Maks. İstek</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Checkout_Limit">@AdminResource.MaxRequestsLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Checkout_Limit, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1000", placeholder = "5" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Checkout_Limit, "", new { @class = "text-danger small" })
                                                     </div>
                                                     <div>
-                                                        <label class="form-label small mb-1" for="RateLimit_Checkout_WindowMinutes">Süre (Dakika)</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Checkout_WindowMinutes">@AdminResource.DurationMinutesLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Checkout_WindowMinutes, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1440", placeholder = "5" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Checkout_WindowMinutes, "", new { @class = "text-danger small" })
                                                     </div>
@@ -1196,7 +1221,7 @@
                                         </div>
 
                                         <!-- Search Limit -->
-                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Search_Limit" data-setting-label="Arama İstek Limiti" data-setting-desc="Arama sorguları için IP başına izin verilen istek sayısı ve süresi" data-keywords="arama search crawler scraper rate limit">
+                                        <div class="col-md-6 col-xl-3 setting-item" data-setting-name="RateLimit_Search_Limit" data-setting-label="@AdminResource.SearchQueryRequestLimit" data-setting-desc="@AdminResource.SearchQueryRequestLimitDesc" data-keywords="arama search crawler scraper rate limit">
                                             <div class="card h-100 border bg-white shadow-none">
                                                 <div class="card-body p-3">
                                                     <div class="d-flex align-items-center gap-2 mb-2">
@@ -1204,12 +1229,12 @@
                                                         <strong class="small">Arama (Search)</strong>
                                                     </div>
                                                     <div class="mb-2">
-                                                        <label class="form-label small mb-1" for="RateLimit_Search_Limit">Maks. İstek</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Search_Limit">@AdminResource.MaxRequestsLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Search_Limit, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1000", placeholder = "30" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Search_Limit, "", new { @class = "text-danger small" })
                                                     </div>
                                                     <div>
-                                                        <label class="form-label small mb-1" for="RateLimit_Search_WindowMinutes">Süre (Dakika)</label>
+                                                        <label class="form-label small mb-1" for="RateLimit_Search_WindowMinutes">@AdminResource.DurationMinutesLabel</label>
                                                         @Html.EditorFor(model => model.RateLimit_Search_WindowMinutes, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", min = "1", max = "1440", placeholder = "1" } })
                                                         @Html.ValidationMessageFor(model => model.RateLimit_Search_WindowMinutes, "", new { @class = "text-danger small" })
                                                     </div>
@@ -1226,21 +1251,21 @@
                     <!-- 7. EMAIL & SMTP TAB -->
                     <!-- ========================================================================= -->
                     <div id="tab-smtp" class="tab-pane fade" role="tabpanel">
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="E-Posta & SMTP Yapılandırması">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.EmailAndSmtpConfiguration">
                             <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
                                 <div>
                                     <h5 class="mb-0 fw-bold"><i class="fa fa-envelope text-primary me-2"></i>@AdminResource.SmtpEmailSettings</h5>
-                                    <small class="text-muted">Sipariş onayları, şifre sıfırlama ve sistem bildirim e-postalarını ileten SMTP sunucusu.</small>
+                                    <small class="text-muted">@AdminResource.EmailAndSmtpConfigurationDesc</small>
                                 </div>
                                 <span class="badge @(isSmtpConfigured ? "bg-success" : "bg-warning text-dark") px-3 py-2">
                                     <i class="fa @(isSmtpConfigured ? "fa-check-circle" : "fa-exclamation-circle") me-1"></i>
-                                    @(isSmtpConfigured ? "SMTP Yapılandırıldı" : "Yapılandırma Bekleniyor")
+                                    @(isSmtpConfigured ? AdminResource.SmtpConfigured : AdminResource.ConfigurationPending)
                                 </span>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
                                     <!-- Sender Email -->
-                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmail" data-setting-label="Gönderen E-Posta Adresi" data-setting-desc="E-postaların From alanında görünecek sistem e-posta adresi" data-keywords="gönderen email mail admin email smtp from">
+                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmail" data-setting-label="@AdminResource.SenderEmailAddressLabel" data-setting-desc="@AdminResource.SenderEmailAddressDesc" data-keywords="gönderen email mail admin email smtp from">
                                         <label class="form-label fw-bold small" for="AdminEmail">
                                             @Html.DisplayNameFor(model => model.AdminEmail)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailTooltip } })
@@ -1251,18 +1276,18 @@
                                     </div>
 
                                     <!-- Display Name -->
-                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailDisplayName" data-setting-label="E-Posta Gönderen Adı" data-setting-desc="Gelen kutusunda görünecek firma veya mağaza adı" data-keywords="gönderen adı display name firma mail başlık">
+                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailDisplayName" data-setting-label="@AdminResource.EmailSenderNameLabel" data-setting-desc="@AdminResource.EmailSenderNameDesc" data-keywords="gönderen adı display name firma mail başlık">
                                         <label class="form-label fw-bold small" for="AdminEmailDisplayName">
                                             @Html.DisplayNameFor(model => model.AdminEmailDisplayName)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailDisplayNameTooltip } })
                                         </label>
-                                        @Html.EditorFor(model => model.AdminEmailDisplayName, new { htmlAttributes = new { @class = "form-control", placeholder = "EImece Müşteri Hizmetleri", title = AdminResource.AdminEmailDisplayNameTooltip } })
+                                        @Html.EditorFor(model => model.AdminEmailDisplayName, new { htmlAttributes = new { @class = "form-control", placeholder = "EImece @AdminResource.Customer Hizmetleri", title = AdminResource.AdminEmailDisplayNameTooltip } })
                                         <div class="form-text small">@AdminResource.AdminEmailDisplayNameTooltip</div>
                                         @Html.ValidationMessageFor(model => model.AdminEmailDisplayName, "", new { @class = "text-danger small" })
                                     </div>
 
                                     <!-- Host -->
-                                    <div class="col-md-8 setting-item" data-setting-name="AdminEmailHost" data-setting-label="SMTP Sunucu Adresi (Host)" data-setting-desc="SMTP sunucu ana bilgisayar adresi veya IP'si (örn: smtp.example.com)" data-keywords="smtp host sunucu mail server">
+                                    <div class="col-md-8 setting-item" data-setting-name="AdminEmailHost" data-setting-label="@AdminResource.SmtpServerHost" data-setting-desc="@AdminResource.SmtpHostIpDesc" data-keywords="smtp host sunucu mail server">
                                         <label class="form-label fw-bold small" for="AdminEmailHost">
                                             @Html.DisplayNameFor(model => model.AdminEmailHost)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailHostTooltip } })
@@ -1273,18 +1298,18 @@
                                     </div>
 
                                     <!-- Port -->
-                                    <div class="col-md-4 setting-item" data-setting-name="AdminEmailPort" data-setting-label="SMTP Port Numarası" data-setting-desc="SMTP bağlantı portu (587 TLS, 465 SSL, 25 Düz)" data-keywords="port smtp port 587 465 25">
+                                    <div class="col-md-4 setting-item" data-setting-name="AdminEmailPort" data-setting-label="@AdminResource.SmtpPortNumber" data-setting-desc="@AdminResource.SmtpPortChoiceDesc" data-keywords="port smtp port 587 465 25">
                                         <label class="form-label fw-bold small" for="AdminEmailPort">
                                             @Html.DisplayNameFor(model => model.AdminEmailPort)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailPortTooltip } })
                                         </label>
                                         @Html.EditorFor(model => model.AdminEmailPort, new { htmlAttributes = new { @class = "form-control", type = "number", placeholder = "587", title = AdminResource.AdminEmailPortTooltip } })
-                                        <div class="form-text small">Standart TLS için 587, SSL için 465.</div>
+                                        <div class="form-text small">@AdminResource.StandardTlsSslPortsDesc</div>
                                         @Html.ValidationMessageFor(model => model.AdminEmailPort, "", new { @class = "text-danger small" })
                                     </div>
 
                                     <!-- Username -->
-                                    <div class="col-md-6 setting-item" data-setting-name="AdminUserName" data-setting-label="SMTP Kullanıcı Adı" data-setting-desc="SMTP kimlik doğrulaması için hesap kullanıcı adı" data-keywords="kullanıcı adı username smtp auth">
+                                    <div class="col-md-6 setting-item" data-setting-name="AdminUserName" data-setting-label="@AdminResource.SmtpUsernameLabel" data-setting-desc="@AdminResource.SmtpAuthUsernameDesc" data-keywords="kullanıcı adı username smtp auth">
                                         <label class="form-label fw-bold small" for="AdminUserName">
                                             @Html.DisplayNameFor(model => model.AdminUserName)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminUserNameTooltip } })
@@ -1295,14 +1320,14 @@
                                     </div>
 
                                     <!-- Password with Toggle -->
-                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailPassword" data-setting-label="SMTP Şifresi" data-setting-desc="SMTP sunucusu hesap giriş parolası" data-keywords="şifre parola password smtp pass">
+                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailPassword" data-setting-label="@AdminResource.SmtpPasswordLabel" data-setting-desc="@AdminResource.SmtpServerLoginPassDesc" data-keywords="şifre parola password smtp pass">
                                         <label class="form-label fw-bold small" for="AdminEmailPassword">
                                             @Html.DisplayNameFor(model => model.AdminEmailPassword)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminEmailPasswordTooltip } })
                                         </label>
                                         <div class="input-group">
                                             @Html.EditorFor(model => model.AdminEmailPassword, new { htmlAttributes = new { @class = "form-control", type = "password", id = "txtAdminEmailPassword", placeholder = "••••••••", title = AdminResource.AdminEmailPasswordTooltip } })
-                                            <button type="button" class="btn btn-outline-secondary" id="btnToggleSmtpPassword" title="Şifreyi Göster/Gizle">
+                                            <button type="button" class="btn btn-outline-secondary" id="btnToggleSmtpPassword" title="@AdminResource.ShowHidePassword">
                                                 <i class="fa fa-eye"></i>
                                             </button>
                                         </div>
@@ -1311,14 +1336,14 @@
                                     </div>
 
                                     <!-- SSL & Default Credentials Switches -->
-                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailEnableSsl" data-setting-label="SSL/TLS Güvenli Bağlantı" data-setting-desc="SMTP sunucusuna bağlanırken SSL/TLS şifrelemesi kullanır" data-keywords="ssl tls ssl enable ssl şifreleme">
+                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailEnableSsl" data-setting-label="@AdminResource.SslTlsSecureConnection" data-setting-desc="@AdminResource.SslTlsSmtpConnectionDesc" data-keywords="ssl tls ssl enable ssl şifreleme">
                                         <div class="p-3 rounded border bg-light h-100 d-flex flex-column justify-content-between">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
                                                     <label class="fw-bold mb-1 d-block" for="AdminEmailEnableSsl">
-                                                        <i class="fa fa-lock text-success me-1"></i> SSL / TLS Şifrelemesi
+                                                        <i class="fa fa-lock text-success me-1"></i> @AdminResource.SslTlsEncryptionLabel
                                                     </label>
-                                                    <p class="text-muted small mb-0">SMTP bağlantısında güvenli TLS protokolü kullanılsın.</p>
+                                                    <p class="text-muted small mb-0">@AdminResource.SmtpTlsProtocolDesc</p>
                                                 </div>
                                                 <div class="form-check form-switch fs-5 mb-0">
                                                     @Html.CheckBoxFor(model => model.AdminEmailEnableSsl, new { @class = "form-check-input", role = "switch" })
@@ -1328,14 +1353,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailUseDefaultCredentials" data-setting-label="Varsayılan Kimlik Bilgileri" data-setting-desc="SMTP için sunucunun varsayılan Windows kimlik bilgilerini kullanır" data-keywords="default credentials kimlik bilgisi windows auth">
+                                    <div class="col-md-6 setting-item" data-setting-name="AdminEmailUseDefaultCredentials" data-setting-label="@AdminResource.DefaultCredentialsLabel" data-setting-desc="@AdminResource.SmtpWindowsAuthDesc" data-keywords="default credentials kimlik bilgisi windows auth">
                                         <div class="p-3 rounded border bg-light h-100 d-flex flex-column justify-content-between">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
                                                     <label class="fw-bold mb-1 d-block" for="AdminEmailUseDefaultCredentials">
-                                                        <i class="fa fa-id-badge text-secondary me-1"></i> Varsayılan Kimlik Bilgileri
+                                                        <i class="fa fa-id-badge text-secondary me-1"></i> @AdminResource.DefaultCredentialsLabel
                                                     </label>
-                                                    <p class="text-muted small mb-0">SMTP sunucusu için yerel sistem kimliğini kullanır.</p>
+                                                    <p class="text-muted small mb-0">@AdminResource.SmtpLocalSystemCredDesc</p>
                                                 </div>
                                                 <div class="form-check form-switch fs-5 mb-0">
                                                     @Html.CheckBoxFor(model => model.AdminEmailUseDefaultCredentials, new { @class = "form-check-input", role = "switch" })
@@ -1349,11 +1374,11 @@
                                     <div class="col-12 mt-4">
                                         <div class="p-3 rounded border border-info bg-info-subtle d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
                                             <div>
-                                                <h6 class="fw-bold text-dark mb-1"><i class="fa fa-paper-plane text-primary me-1"></i> Canlı E-Posta Testi</h6>
-                                                <p class="text-muted small mb-0">Yapılandırdığınız SMTP ayarlarıyla resmi firma e-posta adresinize (<code>@(string.IsNullOrWhiteSpace(Model.WebSiteCompanyEmailAddress) ? "Firma E-postası" : Model.WebSiteCompanyEmailAddress)</code>) anında test e-maili gönderin.</p>
+                                                <h6 class="fw-bold text-dark mb-1"><i class="fa fa-paper-plane text-primary me-1"></i> @AdminResource.LiveEmailDispatchTest</h6>
+                                                <p class="text-muted small mb-0">@AdminResource.SendTestEmailToOfficialAddressLead (<code>@(string.IsNullOrWhiteSpace(Model.WebSiteCompanyEmailAddress) ? AdminResource.CompanyEmailPlaceholder : Model.WebSiteCompanyEmailAddress)</code>) @AdminResource.SendTestEmailInstantDeliverability</p>
                                             </div>
                                             <a href="@Url.Action("SendSampleEmail", "AdminSettings")" class="btn btn-primary px-3 text-nowrap shadow-sm" id="btnSendSampleEmail">
-                                                <i class="fa fa-send me-1"></i> Test E-Postası Gönder
+                                                <i class="fa fa-send me-1"></i> @AdminResource.SendTestEmailBtn
                                             </a>
                                         </div>
                                     </div>
@@ -1367,10 +1392,10 @@
                     <!-- ========================================================================= -->
                     <div id="tab-integrations" class="tab-pane fade" role="tabpanel">
                         <!-- Social Media Links -->
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Sosyal Medya Hesapları">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.SocialMediaAccountsSec">
                             <div class="card-header bg-white py-3 border-bottom">
                                 <h5 class="mb-0 fw-bold"><i class="fa fa-share-alt text-primary me-2"></i>@AdminResource.SocialMediaSetttings</h5>
-                                <small class="text-muted">Mağazanızı temsil eden resmi sosyal medya profil ve kanal linkleri.</small>
+                                <small class="text-muted">@AdminResource.SocialMediaProfilesDesc</small>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
@@ -1396,14 +1421,14 @@
                                     </div>
 
                                     <!-- LinkedIn -->
-                                    <div class="col-md-6 setting-item" data-setting-name="LinkedinWebSiteLink" data-setting-label="LinkedIn Profili" data-setting-desc="Resmi LinkedIn şirket veya profil linki" data-keywords="linkedin şirket kariyer sosyal medya link">
+                                    <div class="col-md-6 setting-item" data-setting-name="LinkedinWebSiteLink" data-setting-label="@AdminResource.LinkedInProfileLabel" data-setting-desc="@AdminResource.LinkedInProfileDesc" data-keywords="linkedin şirket kariyer sosyal medya link">
                                         <label class="form-label fw-bold small" for="LinkedinWebSiteLink"><i class="fa fa-linkedin-square text-primary me-1"></i> LinkedIn</label>
                                         @Html.EditorFor(model => model.LinkedinWebSiteLink, new { htmlAttributes = new { @class = "form-control", placeholder = "https://linkedin.com/company/eimece" } })
                                         @Html.ValidationMessageFor(model => model.LinkedinWebSiteLink, "", new { @class = "text-danger small" })
                                     </div>
 
                                     <!-- YouTube -->
-                                    <div class="col-md-6 setting-item" data-setting-name="YotubeWebSiteLink" data-setting-label="YouTube Kanalı" data-setting-desc="Resmi YouTube video kanalı linki" data-keywords="youtube video kanal link yotube">
+                                    <div class="col-md-6 setting-item" data-setting-name="YotubeWebSiteLink" data-setting-label="@AdminResource.YouTubeChannelLabel" data-setting-desc="@AdminResource.YouTubeChannelDesc" data-keywords="youtube video kanal link yotube">
                                         <label class="form-label fw-bold small" for="YotubeWebSiteLink"><i class="fa fa-youtube-play text-danger me-1"></i> YouTube</label>
                                         @Html.EditorFor(model => model.YotubeWebSiteLink, new { htmlAttributes = new { @class = "form-control", placeholder = "https://youtube.com/@eimece" } })
                                         @Html.ValidationMessageFor(model => model.YotubeWebSiteLink, "", new { @class = "text-danger small" })
@@ -1420,15 +1445,15 @@
                         </div>
 
                         <!-- Direct Communication & Live Support -->
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Canlı Destek & WhatsApp">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.LiveChatAndWhatsAppSec">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-comments text-primary me-2"></i>Anlık İletişim &amp; Canlı Destek Servisleri</h5>
-                                <small class="text-muted">WhatsApp doğrudan mesaj linki ve üçüncü parti canlı destek widget'ları.</small>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-comments text-primary me-2"></i>@AdminResource.InstantMessagingAndLiveChatSec</h5>
+                                <small class="text-muted">@AdminResource.WhatsAppDirectMsgDesc</small>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
                                     <!-- WhatsApp Direct Link -->
-                                    <div class="col-md-6 setting-item" data-setting-name="WhatsAppCommunicationLink" data-setting-label="WhatsApp İletişim Linki" data-setting-desc="Müşterilerin tek tıkla mesaj atmasını sağlayan WhatsApp linki (örn: https://wa.me/90555...)" data-keywords="whatsapp wa.me direkt mesaj link iletişim">
+                                    <div class="col-md-6 setting-item" data-setting-name="WhatsAppCommunicationLink" data-setting-label="@AdminResource.WhatsAppContactLinkLabel" data-setting-desc="@AdminResource.WhatsAppOneClickChatDesc" data-keywords="whatsapp wa.me direkt mesaj link iletişim">
                                         <label class="form-label fw-bold small" for="WhatsAppCommunicationLink">
                                             <i class="fa fa-whatsapp text-success me-1"></i> @Html.DisplayNameFor(model => model.WhatsAppCommunicationLink)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.WhatsAppCommunicationLinkTooltip } })
@@ -1439,7 +1464,7 @@
                                     </div>
 
                                     <!-- WhatsApp Script -->
-                                    <div class="col-md-6 setting-item" data-setting-name="WhatsAppCommunicationScript" data-setting-label="WhatsApp Eklenti Scripti" data-setting-desc="Özel WhatsApp sohbet widget'ı veya buton scripti" data-keywords="whatsapp script widget eklenti kod">
+                                    <div class="col-md-6 setting-item" data-setting-name="WhatsAppCommunicationScript" data-setting-label="@AdminResource.WhatsAppWidgetScriptLabel" data-setting-desc="@AdminResource.WhatsAppChatWidgetDesc" data-keywords="whatsapp script widget eklenti kod">
                                         <label class="form-label fw-bold small" for="WhatsAppCommunicationScript">
                                             <i class="fa fa-code text-secondary me-1"></i> @Html.DisplayNameFor(model => model.WhatsAppCommunicationScript)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.WhatsAppCommunicationScriptTooltip } })
@@ -1450,10 +1475,10 @@
                                     </div>
 
                                     <!-- Zopim / Zendesk Live Chat -->
-                                    <div class="col-12 setting-item" data-setting-name="Zopim" data-setting-label="Zopim / Zendesk Canlı Destek Scripti" data-setting-desc="Zopim veya Zendesk Chat canlı destek eklenti kodu" data-keywords="zopim zendesk canlı destek chat widget script">
-                                        <label class="form-label fw-bold small" for="Zopim"><i class="fa fa-commenting text-primary me-1"></i> @Html.DisplayNameFor(model => model.Zopim) (Canlı Destek Scripti)</label>
+                                    <div class="col-12 setting-item" data-setting-name="Zopim" data-setting-label="@AdminResource.ZopimZendeskChatScriptLabel" data-setting-desc="@AdminResource.ZopimZendeskChatScriptDesc" data-keywords="zopim zendesk canlı destek chat widget script">
+                                        <label class="form-label fw-bold small" for="Zopim"><i class="fa fa-commenting text-primary me-1"></i> @Html.DisplayNameFor(model => model.Zopim) @AdminResource.LiveChatScriptSuffix</label>
                                         @Html.TextAreaFor(model => model.Zopim, 3, 50, new { @class = "form-control font-monospace", placeholder = "window.$zopim||(function(d,s){...})(document,'script');" })
-                                        <div class="form-text small">Zopim / Zendesk Chat gibi harici canlı destek platformlarının entegrasyon scripti.</div>
+                                        <div class="form-text small">@AdminResource.ZopimChatIntegrationSnippetDesc</div>
                                         @Html.ValidationMessageFor(model => model.Zopim, "", new { @class = "text-danger small" })
                                     </div>
                                 </div>
@@ -1464,32 +1489,32 @@
                         <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Analitik & Harita Servisleri">
                             <div class="card-header bg-white py-3 border-bottom">
                                 <h5 class="mb-0 fw-bold"><i class="fa fa-line-chart text-primary me-2"></i>Analitik &amp; Harita Scriptleri</h5>
-                                <small class="text-muted">Google Analytics takip kodları ve Google Harita yerleştirme (iframe) kodları.</small>
+                                <small class="text-muted">@AdminResource.GoogleAnalyticsTitle @AdminResource.AnalyticsAndMapsSnippetsDesc</small>
                             </div>
                             <div class="card-body">
                                 <div class="alert alert-warning py-2 px-3 mb-3 small">
-                                    <i class="fa fa-exclamation-triangle me-1"></i> <strong>Güvenlik Uyarısı:</strong> Buraya eklenen scriptler doğrudan mağaza sayfalarında çalıştırılır. Yalnızca güvendiğiniz üçüncü parti servislerin kodlarını ekleyin.
+                                    <i class="fa fa-exclamation-triangle me-1"></i> <strong>@AdminResource.SecurityNoticePrefix</strong> @AdminResource.ThirdPartyScriptSecurityWarning
                                 </div>
                                 <div class="row g-3">
-                                    <!-- Google Analytics -->
-                                    <div class="col-md-6 setting-item" data-setting-name="GoogleAnalyticsTrackingScript" data-setting-label="Google Analytics Takip Kodu" data-setting-desc="Google Analytics (GA4 / GTM) global site etiketi (gtag.js)" data-keywords="google analytics ga4 gtag gtm analiz tracking script">
+                                    <!-- @AdminResource.GoogleAnalyticsTitle -->
+                                    <div class="col-md-6 setting-item" data-setting-name="GoogleAnalyticsTrackingScript" data-setting-label="@AdminResource.GoogleAnalyticsTitle Takip Kodu" data-setting-desc="@AdminResource.GoogleAnalyticsTitle (GA4 / GTM) global site etiketi (gtag.js)" data-keywords="google analytics ga4 gtag gtm analiz tracking script">
                                         <label class="form-label fw-bold small" for="GoogleAnalyticsTrackingScript">
                                             @Html.DisplayNameFor(model => model.GoogleAnalyticsTrackingScript)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.GoogleAnalyticsTrackingScriptTooltip } })
                                         </label>
                                         @Html.TextAreaFor(model => model.GoogleAnalyticsTrackingScript, 6, 50, new { @class = "form-control font-monospace", placeholder = "<script async src='https://www.googletagmanager.com/gtag/js?id=G-...'></script>\n<script>...</script>", title = AdminResource.GoogleAnalyticsTrackingScriptTooltip })
-                                        <div class="form-text small">@AdminResource.GoogleAnalyticsTrackingScriptTooltip (Sayfa <code>&lt;head&gt;</code> alanında çalıştırılır).</div>
+                                        <div class="form-text small">@AdminResource.GoogleAnalyticsTrackingScriptTooltip @AdminResource.ExecutedInHeadTagDesc</div>
                                         @Html.ValidationMessageFor(model => model.GoogleAnalyticsTrackingScript, "", new { @class = "text-danger small" })
                                     </div>
 
                                     <!-- Google Maps -->
-                                    <div class="col-md-6 setting-item" data-setting-name="GoogleMapScript" data-setting-label="Google Harita Yerleştirme (Iframe)" data-setting-desc="İletişim ve hakkımızda sayfalarında gösterilecek Google Haritalar iframe yerleştirme kodu" data-keywords="google map harita iframe konum google maps script">
+                                    <div class="col-md-6 setting-item" data-setting-name="GoogleMapScript" data-setting-label="@AdminResource.GoogleMapsEmbedIframeLabel" data-setting-desc="@AdminResource.GoogleMapsEmbedContactAboutLead @AdminResource.GoogleMapsTitle @AdminResource.IframeEmbedCodeSuffix" data-keywords="google map harita iframe konum google maps script">
                                         <label class="form-label fw-bold small" for="GoogleMapScript">
                                             @Html.DisplayNameFor(model => model.GoogleMapScript)
                                             @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.GoogleMapScriptTooltip } })
                                         </label>
                                         @Html.TextAreaFor(model => model.GoogleMapScript, 6, 50, new { @class = "form-control font-monospace", placeholder = "<iframe src='https://www.google.com/maps/embed?...' width='600' height='450' style='border:0;' allowfullscreen='' loading='lazy'></iframe>", title = AdminResource.GoogleMapScriptTooltip })
-                                        <div class="form-text small">@AdminResource.GoogleMapScriptTooltip (İletişim sayfasında harita kutusunda gösterilir).</div>
+                                        <div class="form-text small">@AdminResource.GoogleMapScriptTooltip @AdminResource.DisplayedInMapContainerDesc</div>
                                         @Html.ValidationMessageFor(model => model.GoogleMapScript, "", new { @class = "text-danger small" })
                                     </div>
                                 </div>
@@ -1501,10 +1526,10 @@
                     <!-- 9. MAINTENANCE & SYSTEM TOOLS TAB -->
                     <!-- ========================================================================= -->
                     <div id="tab-tools" class="tab-pane fade" role="tabpanel">
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Sistem Araçları & Operasyonlar">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.SystemToolsAndOperationsSec">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-wrench text-primary me-2"></i>Sistem Araçları, Sağlık Kontrolü &amp; Yedekleme</h5>
-                                <small class="text-muted">Performans metrikleri, günlükler ve tam sistem verisi dışa aktarma operasyonları.</small>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-wrench text-primary me-2"></i>@AdminResource.SystemToolsHealthBackupSec</h5>
+                                <small class="text-muted">@AdminResource.SystemToolsHealthBackupSecDesc</small>
                             </div>
                             <div class="card-body">
                                 <div class="row g-4">
@@ -1516,14 +1541,14 @@
                                                     <span class="p-2 bg-primary-subtle text-primary rounded"><i class="fa fa-dashboard fa-lg"></i></span>
                                                     <h6 class="fw-bold mb-0">@AdminResource.SystemMonitoring</h6>
                                                 </div>
-                                                <p class="text-muted small mb-3">Sistem kaynak kullanımını, veritabanı yanıt sürelerini ve sağlık durumunu inceleyin.</p>
+                                                <p class="text-muted small mb-3">@AdminResource.SystemMonitoringDescText</p>
                                             </div>
                                             <div class="d-flex flex-column gap-2">
                                                 <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-primary btn-sm w-100">
                                                     <i class="fa fa-line-chart me-1"></i> @AdminResource.Metrics
                                                 </a>
                                                 <a href="@Url.Action("Index", "Health", new { area = "" })" class="btn btn-outline-secondary btn-sm w-100" target="_blank" rel="noopener noreferrer">
-                                                    <i class="fa fa-heartbeat text-danger me-1"></i> @AdminResource.Health (Canlı Durum)
+                                                    <i class="fa fa-heartbeat text-danger me-1"></i> @AdminResource.HealthLiveStatusText
                                                 </a>
                                             </div>
                                         </div>
@@ -1535,14 +1560,14 @@
                                             <div>
                                                 <div class="d-flex align-items-center gap-2 mb-2">
                                                     <span class="p-2 bg-warning-subtle text-warning rounded"><i class="fa fa-cogs fa-lg"></i></span>
-                                                    <h6 class="fw-bold mb-0">@AdminResource.AppLogs &amp; Bakım</h6>
+                                                    <h6 class="fw-bold mb-0">@AdminResource.AppLogsAndMaintenanceText</h6>
                                                 </div>
-                                                <p class="text-muted small mb-3">Uygulama hata kayıtlarını izleyin veya optimize edilmiş medya arşivini indirin.</p>
+                                                <p class="text-muted small mb-3">@AdminResource.AppLogsAndMaintenanceDescText</p>
                                             </div>
                                             <div class="d-flex flex-column gap-2">
                                                 @Html.ActionLink(AdminResource.AppLogs, "Index", "AppLogs", null, new { @class = "btn btn-warning btn-sm w-100 text-dark fw-bold" })
                                                 <a href="@Url.Action("DownloadCompressedImages", "Images", new { area = "admin" })" class="btn btn-outline-primary btn-sm w-100">
-                                                    <i class="fa fa-file-archive-o me-1"></i> Sıkıştırılmış Görseller (ZIP)
+                                                    <i class="fa fa-file-archive-o me-1"></i> @AdminResource.CompressedImagesZipText
                                                 </a>
                                             </div>
                                         </div>
@@ -1555,22 +1580,22 @@
                                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                                     <div class="d-flex align-items-center gap-2">
                                                         <span class="p-2 bg-success-subtle text-success rounded"><i class="fa fa-database fa-lg"></i></span>
-                                                        <h6 class="fw-bold mb-0 text-success">Veri Yedekleme (JSON)</h6>
+                                                        <h6 class="fw-bold mb-0 text-success">@AdminResource.DataBackup (JSON)</h6>
                                                     </div>
                                                 </div>
-                                                <p class="text-muted small mb-2">Tüm katalog, sipariş ve ayar verilerini ilişkileri korumalı versiyonlu JSON formatında yedekleyin.</p>
+                                                <p class="text-muted small mb-2">@AdminResource.JsonBackupRelationalDescText</p>
                                                 <div class="d-flex flex-wrap gap-1 mb-3">
                                                     <span class="badge bg-success small">v1.0 JSON</span>
-                                                    <span class="badge bg-info-subtle text-info border border-info-subtle small">İlişki Korumalı</span>
-                                                    <span class="badge bg-secondary-subtle text-secondary small">ZIP Paket</span>
+                                                    <span class="badge bg-info-subtle text-info border border-info-subtle small">@AdminResource.RelationalPreservedBadge</span>
+                                                    <span class="badge bg-secondary-subtle text-secondary small">@AdminResource.ZipPackageBadge</span>
                                                 </div>
                                             </div>
                                             <div>
-                                                <a href="@Url.Action("ExportBackup", "AdminSettings", new { area = "admin" })" class="btn btn-success btn-sm w-100 fw-bold btn-export-backup shadow-sm" id="btnExportBackup" title="Tüm sistem verilerini JSON ZIP olarak dışa aktar">
-                                                    <i class="fa fa-download me-1"></i> Verileri Dışa Aktar (ZIP)
+                                                <a href="@Url.Action("ExportBackup", "AdminSettings", new { area = "admin" })" class="btn btn-success btn-sm w-100 fw-bold btn-export-backup shadow-sm" id="btnExportBackup" title="@AdminResource.ExportAllDataZipTitle">
+                                                    <i class="fa fa-download me-1"></i> @AdminResource.ExportDataZipBtn
                                                 </a>
                                                 <p class="text-muted mt-2 mb-0" style="font-size: 11px;">
-                                                    <i class="fa fa-lock text-success me-1"></i> Şifreler ve kart bilgileri güvenlik nedeniyle yedek paketine dahil edilmez.
+                                                    <i class="fa fa-lock text-success me-1"></i> @AdminResource.BackupSecurityNoticeText
                                                 </p>
                                             </div>
                                         </div>
@@ -1825,7 +1850,7 @@
                 $resultsList.empty();
 
                 if (matches.length === 0) {
-                    $resultsList.html('<div class="p-3 text-center text-muted small"><i class="fa fa-info-circle me-1"></i> Eşleşen ayar bulunamadı</div>');
+                    $resultsList.html('<div class="p-3 text-center text-muted small"><i class="fa fa-info-circle me-1"></i> @AdminResource.NoMatchingSettingsFound</div>');
                 } else {
                     matches.forEach(function (m) {
                         var $row = $('<div class="search-result-item border-bottom">' +
@@ -1953,16 +1978,52 @@
 
             // Discard changes button
             $('#btnDiscardChanges').on('click', function () {
-                if (confirm("Yapılan kaydedilmemiş tüm değişiklikler geri alınsın mı?")) {
+                if (confirm("@AdminResource.DiscardUnsavedChangesPrompt")) {
                     window.location.reload();
                 }
+            });
+
+            // Quick change Admin Panel Language button
+            $('#btnChangeAdminLanguage').on('click', function () {
+                var selectedLang = $('#AdminPanelLanguage').val();
+                if (!selectedLang) return;
+
+                var $btn = $(this);
+                var originalHtml = $btn.html();
+                $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-1"></i> @AdminResource.Processing');
+
+                var token = $('#__AjaxAntiForgeryForm input[name="__RequestVerificationToken"]').val()
+                    || $('#systemSettingsForm input[name="__RequestVerificationToken"]').val()
+                    || $('input[name="__RequestVerificationToken"]').first().val();
+
+                $.ajax({
+                    url: '@Url.Action("ChangeAdminPanelLanguage", "AdminSettings", new { area = "admin" })',
+                    type: 'POST',
+                    data: {
+                        language: selectedLang,
+                        __RequestVerificationToken: token
+                    },
+                    success: function (res) {
+                        if (res && res.success) {
+                            isFormDirty = false;
+                            window.location.reload();
+                        } else {
+                            alert(res && res.message ? res.message : 'Error updating language.');
+                            $btn.prop('disabled', false).html(originalHtml);
+                        }
+                    },
+                    error: function () {
+                        alert('Error updating language.');
+                        $btn.prop('disabled', false).html(originalHtml);
+                    }
+                });
             });
 
             // Warn on unload if dirty
             window.addEventListener('beforeunload', function (e) {
                 if (isFormDirty) {
                     e.preventDefault();
-                    e.returnValue = 'Kaydedilmemiş değişiklikleriniz var. Sayfadan ayrılmak istediğinize emin misiniz?';
+                    e.returnValue = '@AdminResource.UnsavedChangesLeavePrompt';
                     return e.returnValue;
                 }
             });

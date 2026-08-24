@@ -18,7 +18,7 @@
 <div class="row justify-content-center">
     <div class="col-lg-8 mx-auto">
         <h2 class="admin-page-title">@AdminResource.Roles</h2>
-        <p class="text-muted mb-4">Bu kullanıcının yetkilerini işaretleyin. Değişikliklerin uygulanması için kaydetmeyi unutmayın.</p>
+        <p class="text-muted mb-4">@AdminResource.UserRolesHelpLead</p>
         <div class="card shadow-sm">
             <div class="card-header">
                 <h3 class="card-title mb-0">
@@ -46,7 +46,7 @@
                             </div>
                             <div class="user-roles-user-status mt-2">
                                 <span class="badge @(selectedCount > 0 ? "text-bg-primary" : "text-bg-secondary")">
-                                    @selectedCount yetki seçili
+                                    @selectedCount @AdminResource.PermissionsSelected
                                 </span>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                     <div class="alert alert-info" role="alert">
                         <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
                         <strong>@AdminResource.SelectRoleAssignments</strong>
-                        Rolleri işaretleyerek yetkileri açıp kapatabilirsiniz.
+                        @AdminResource.TogglePermissionsByRoles
                     </div>
 
                     @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
@@ -99,7 +99,7 @@
             }
 
             if (statusLabel) {
-                statusLabel.textContent = selectedCount + " yetki seçili";
+                statusLabel.textContent = selectedCount + " @AdminResource.PermissionsSelected";
                 statusLabel.className = "badge " + (selectedCount > 0 ? "text-bg-primary" : "text-bg-secondary");
             }
         }

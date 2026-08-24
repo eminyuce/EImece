@@ -1,7 +1,7 @@
 @using EImece.Domain
 @using Resources
 @{
-    ViewBag.Title = "Sistem Sağlık Durumu";
+    ViewBag.Title = AdminResource.SystemHealth;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,21 +12,21 @@
             <ol class="breadcrumb" style="background: transparent; padding: 0; margin-bottom: 6px; font-size: 13px;">
                 <li><a href="@Url.Action("Index", "Dashboard", new { area = "admin" })"><i class="fa fa-home"></i> @AdminResource.AdminHome</a></li>
                 <li><a href="#">@AdminResource.System</a></li>
-                <li class="active" style="color: #627d98;">Sistem Sağlığı</li>
+                <li class="active" style="color: #627d98;">@AdminResource.SystemHealth</li>
             </ol>
             <h1 style="font-size: 24px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 10px;">
-                <i class="fa fa-heartbeat text-danger" aria-hidden="true"></i> Sistem Sağlık Durumu
+                <i class="fa fa-heartbeat text-danger" aria-hidden="true"></i> @AdminResource.SystemHealth
             </h1>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
-            <a href="/health" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" title="Ham JSON Çıktısı">
+            <a href="/health" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" title="JSON (/health)">
                 <i class="fa fa-code"></i> JSON (/health)
             </a>
-            <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-secondary btn-sm" title="Metrikler">
-                <i class="fa fa-line-chart"></i> Metrikler
+            <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-secondary btn-sm" title="@AdminResource.Metrics">
+                <i class="fa fa-line-chart"></i> @AdminResource.Metrics
             </a>
             <button type="button" class="btn btn-primary btn-sm" id="btnPageRefreshHealth" style="font-weight: 600;">
-                <i class="fa fa-refresh" id="pageRefreshIcon"></i> Şimdi Yenile
+                <i class="fa fa-refresh" id="pageRefreshIcon"></i> @AdminResource.RefreshNow
             </button>
         </div>
     </div>
@@ -39,18 +39,18 @@
                     <i class="fa fa-circle-o-notch fa-spin text-muted" id="pageOverallStatusIcon"></i>
                 </div>
                 <div>
-                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #829ab1;">Genel Sistem Durumu</div>
-                    <div id="pageOverallStatusTitle" style="font-size: 20px; font-weight: 700; color: #102a43;">Kontrol ediliyor...</div>
+                    <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #829ab1;">@AdminResource.GeneralSystemStatus</div>
+                    <div id="pageOverallStatusTitle" style="font-size: 20px; font-weight: 700; color: #102a43;">@AdminResource.Checking</div>
                 </div>
             </div>
             <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
                 <div>
-                    <div style="font-size: 11px; color: #829ab1; text-transform: uppercase; font-weight: 600;">Bileşen Sayısı</div>
+                    <div style="font-size: 11px; color: #829ab1; text-transform: uppercase; font-weight: 600;">@AdminResource.ComponentCount</div>
                     <div id="pageTotalComponentsCount" style="font-size: 18px; font-weight: 700; color: #334e68;">-</div>
                 </div>
                 <div>
-                    <div style="font-size: 11px; color: #829ab1; text-transform: uppercase; font-weight: 600;">Son Kontrol</div>
-                    <div id="pageLastCheckedRelative" style="font-size: 14px; font-weight: 600; color: #334e68;">Henüz yapılmadı</div>
+                    <div style="font-size: 11px; color: #829ab1; text-transform: uppercase; font-weight: 600;">@AdminResource.LastChecked</div>
+                    <div id="pageLastCheckedRelative" style="font-size: 14px; font-weight: 600; color: #334e68;">@AdminResource.NeverChecked</div>
                 </div>
             </div>
         </div>
@@ -59,22 +59,22 @@
     <!-- Component Details Table -->
     <div class="card" style="border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 2px 6px rgba(16,42,67,0.06);">
         <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #d9e2ec; padding: 14px 20px; font-weight: 700; font-size: 14px; color: #334e68;">
-            <i class="fa fa-server" aria-hidden="true"></i> Sistem Bileşenleri & Sağlık Kontrolleri
+            <i class="fa fa-server" aria-hidden="true"></i> @AdminResource.SystemComponentsAndHealthChecks
         </div>
         <div class="table-responsive">
             <table class="table table-hover table-striped" style="margin-bottom: 0;">
                 <thead>
                     <tr style="background: #f0f4f8; color: #486581; font-size: 12px; text-transform: uppercase;">
-                        <th style="padding: 12px 20px;">Bileşen</th>
-                        <th style="padding: 12px 20px;">Durum</th>
-                        <th style="padding: 12px 20px;">Yanıt Süresi</th>
-                        <th style="padding: 12px 20px;">Açıklama / Teşhis</th>
+                        <th style="padding: 12px 20px;">@AdminResource.Component</th>
+                        <th style="padding: 12px 20px;">@AdminResource.Status</th>
+                        <th style="padding: 12px 20px;">@AdminResource.ResponseTime</th>
+                        <th style="padding: 12px 20px;">@AdminResource.DiagnosticDescription</th>
                     </tr>
                 </thead>
                 <tbody id="pageHealthComponentsTableBody" style="font-size: 13px;">
                     <tr>
                         <td colspan="4" class="text-center text-muted" style="padding: 24px;">
-                            <i class="fa fa-spinner fa-spin"></i> Sistem sağlık kontrolleri sorgulanıyor...
+                            <i class="fa fa-spinner fa-spin"></i> @AdminResource.QueryingHealthChecks
                         </td>
                     </tr>
                 </tbody>
@@ -113,11 +113,17 @@
 
         var lastCheckTimestamp = null;
         var healthEndpoint = '/health';
+        var txtJustNow = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.JustNow))';
+        var txtSecondsAgo = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.SecondsAgo))';
+        var txtHealthy = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.SystemHealthyAllUp))';
+        var txtIssue = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.SystemIssueDetected))';
+        var txtNormal = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.ComponentNormal))';
+        var txtConnError = '@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.ConnectionOrResponseError))';
 
         function updateRelativeTime() {
             if (!lastCheckTimestamp) return;
             var elapsedSec = Math.max(0, Math.round((new Date().getTime() - lastCheckTimestamp.getTime()) / 1000));
-            var timeText = elapsedSec === 0 ? "Az önce" : elapsedSec + " saniye önce";
+            var timeText = elapsedSec === 0 ? txtJustNow : elapsedSec + " " + txtSecondsAgo;
             $('#pageLastCheckedRelative').text(timeText);
         }
 
@@ -133,11 +139,11 @@
             if (isHealthy) {
                 iconContainer.css('background', '#e3f9e5');
                 statusIcon.addClass('fa-check').css('color', '#27ab83');
-                statusTitle.text("UP (Tüm Sistemler Sağlıklı ve Çalışır Durumda)").css('color', '#27ab83');
+                statusTitle.text(txtHealthy).css('color', '#27ab83');
             } else {
                 iconContainer.css('background', '#ffe3e3');
                 statusIcon.addClass('fa-exclamation-triangle').css('color', '#e12d39');
-                statusTitle.text("DOWN (Sistem Sorunu Tespit Edildi)").css('color', '#e12d39');
+                statusTitle.text(txtIssue).css('color', '#e12d39');
             }
 
             var tbody = $('#pageHealthComponentsTableBody');
@@ -154,7 +160,7 @@
                         ? '<span class="label text-bg-success" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa fa-check"></i> UP</span>'
                         : '<span class="label text-bg-danger" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa fa-times"></i> DOWN</span>';
                     var duration = (typeof comp.DurationMs === 'number') ? comp.DurationMs.toFixed(1) + ' ms' : '-';
-                    var desc = comp.Description || (compUp ? 'Bileşen normal çalışıyor' : 'Bağlantı veya yanıt hatası');
+                    var desc = comp.Description || (compUp ? txtNormal : txtConnError);
 
                     var row = $('<tr></tr>');
                     row.append('<td style="padding: 14px 20px;"><strong><i class="fa fa-cube text-primary" style="margin-right: 6px;"></i> ' + $('<div>').text(key).html() + '</strong></td>');

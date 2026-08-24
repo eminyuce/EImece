@@ -155,9 +155,6 @@ namespace EImece.Controllers
                 productCategory.SeoId = id;
                 ViewBag.SeoId = productCategory.CategoryDto.GetSeoUrl();
 
-                SetCurrentCulture(productCategory.CategoryDto.Lang);
-                Logger.Info("Set current culture based on product category.");
-
                 Logger.Info("Returning Category view.");
                 return View(productCategory);
             }

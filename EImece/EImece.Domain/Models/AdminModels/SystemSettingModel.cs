@@ -152,6 +152,9 @@ namespace EImece.Domain.Models.AdminModels
         public int ManifestShortNameMaxLength { get; set; }
 
         // ========== 3. Admin & Content UI Preferences ==========
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AdminPanelLanguage))]
+        public string AdminPanelLanguage { get; set; }
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.GridPageSizeNumber))]
         [Range(1, 1000, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.Range1To1000ErrorMessage))]
         public int GridPageSizeNumber { get; set; }

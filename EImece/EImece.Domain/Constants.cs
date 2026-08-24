@@ -106,6 +106,7 @@ namespace EImece.Domain
         public const string ManifestShortNameMaxLength = "ManifestShortNameMaxLength";
 
         // Admin & Content UI Preferences Setting Keys
+        public const string AdminPanelLanguage = "AdminPanelLanguage";
         public const string GridPageSizeNumber = "GridPageSizeNumber";
         public const string ProductShortDescriptionPreviewLength = "ProductShortDescriptionPreviewLength";
         public const string IsEditLinkEnable = "IsEditLinkEnable";
@@ -170,6 +171,7 @@ namespace EImece.Domain
         public const string DefaultBuyerIdentityNumber = "11111111111";
         public const bool DefaultRequireAdminAuthenticator = true;
         public const string DefaultCaptchaProvider = "Legacy";
+        public const string DefaultAdminPanelLanguage = "tr-TR";
 
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string DbConnectionEnvironmentVariable = "EIMECE_DB_CONNECTION_STRING";

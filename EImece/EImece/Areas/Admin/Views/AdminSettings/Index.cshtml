@@ -17,15 +17,15 @@
 @{ ViewData["HelpId"] = "generalSettingsHelp"; }
 @Html.Partial("_AdminHelpAccordionStart")
 <ul style="margin-top: 0;">
-    <li>Bu sayfada sitenizin <strong>Kargo, SEO ve Alt Bilgi (Footer)</strong> ayarlarını yönetebilirsiniz.</li>
+    <li>@AdminResource.AdminGeneralSettingsHelpLead</li>
     @if (productPriceEnabled)
     {
-        <li><strong>@AdminResource.CargoSettings:</strong> Kargo firması adı, sabit kargo ücreti, ücretsiz kargo için minimum sepet tutarı ve kargo açıklama metnini buradan belirleyebilirsiniz.</li>
+        <li><strong>@AdminResource.CargoSettings:</strong> @AdminResource.AdminGeneralSettingsCargoHelp</li>
     }
-    <li><strong>@AdminResource.SeoSettings:</strong> Arama motorları için sitenizin ana sayfa başlığı (Title), anahtar kelimeleri (Keywords) ve açıklama (Description) metnini içerir. SEO performansınız için önemlidir.</li>
-    <li><strong>@AdminResource.FooterSettings:</strong> Sitenin en alt kısmında yer alan genel açıklamaları, e-posta bülteni açıklamasını ve varsa özel HTML destekli footer alanını buradan düzenleyebilirsiniz.</li>
+    <li><strong>@AdminResource.SeoSettings:</strong> @AdminResource.AdminGeneralSettingsSeoHelp</li>
+    <li><strong>@AdminResource.FooterSettings:</strong> @AdminResource.AdminGeneralSettingsFooterHelp</li>
 </ul>
-<p style="margin-top: 12px; margin-bottom: 0;"><strong>Önemli:</strong> Yaptığınız değişikliklerin geçerli olması için kaydet butonuna tıklamayı unutmayın.</p>
+<p style="margin-top: 12px; margin-bottom: 0;"><strong>@AdminResource.Important:</strong> @AdminResource.AdminGeneralSettingsSaveWarning</p>
 @Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm("Index", "AdminSettings"))

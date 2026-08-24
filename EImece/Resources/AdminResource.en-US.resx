@@ -1,0 +1,4440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GridActiveSelectedButtonText" xml:space="preserve">
+    <value>Publish Selected</value>
+  </data>
+  <data name="GridDeActiveSelectedButtonText" xml:space="preserve">
+    <value>Unpublish Selected</value>
+  </data>
+  <data name="GridDeleteSelectedButtonText" xml:space="preserve">
+    <value>Delete Selected Records</value>
+  </data>
+  <data name="GridDeleteText" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="GridDeSelectAllButtonText" xml:space="preserve">
+    <value>Deselect All</value>
+  </data>
+  <data name="GridDetailText" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="GridEditText" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="GridImagesText" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="GridMainPageImageText" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="GridOrderingAllButtonText" xml:space="preserve">
+    <value>Update Order</value>
+  </data>
+  <data name="GridPagingDropDownText" xml:space="preserve">
+    <value>Pagination</value>
+  </data>
+  <data name="GridResultRecordNumber" xml:space="preserve">
+    <value>Total Records</value>
+  </data>
+  <data name="GridSearchButtonText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="GridSelectAllButtonText" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="NewRecordText" xml:space="preserve">
+    <value>New Entry</value>
+  </data>
+  <data name="SaveButtonText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="GridNoMainPageImageText" xml:space="preserve">
+    <value>No Image</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ExistingMainImageText" xml:space="preserve">
+    <value>Current Main Image</value>
+  </data>
+  <data name="ImageState" xml:space="preserve">
+    <value>Show Image</value>
+  </data>
+  <data name="MainPage" xml:space="preserve">
+    <value>Show on Homepage?</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Export to Excel</value>
+  </data>
+  <data name="AdminDeleteConfirmMessage" xml:space="preserve">
+    <value>Are you sure you want to delete the selected items?</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="PleaseSelectYourProductCategoryFromTree" xml:space="preserve">
+    <value>Please select your product category from the tree</value>
+  </data>
+  <data name="PleaseSelectYourMenuCategoryFromTree" xml:space="preserve">
+    <value>Please select your menu category from the tree</value>
+  </data>
+  <data name="MainImageId" xml:space="preserve">
+    <value>Featured Image</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Published?</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ProductCategoryParentId" xml:space="preserve">
+    <value>Product Category</value>
+  </data>
+  <data name="TemplateId" xml:space="preserve">
+    <value>Template Name</value>
+  </data>
+  <data name="ProductCategoryDiscountPercantage" xml:space="preserve">
+    <value>Product Category Discount Percentage</value>
+  </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="NamePropertyErrorMessage" xml:space="preserve">
+    <value>Name cannot exceed 500 characters</value>
+  </data>
+  <data name="NamePropertyRequiredErrorMessage" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="ProductCategoryId" xml:space="preserve">
+    <value>Category Name</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="ProductCategoryIdErrorMessage" xml:space="preserve">
+    <value>You must select a category from the category tree.</value>
+  </data>
+  <data name="VideoUrl" xml:space="preserve">
+    <value>Video URL</value>
+  </data>
+  <data name="MenuParentId" xml:space="preserve">
+    <value>Parent Menu Category</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Page Link</value>
+  </data>
+  <data name="LinkIsActive" xml:space="preserve">
+    <value>Is External Link Active?</value>
+  </data>
+  <data name="MenuLink" xml:space="preserve">
+    <value>Predefined Menu Pages</value>
+  </data>
+  <data name="PageTheme" xml:space="preserve">
+    <value>Page Theme</value>
+  </data>
+  <data name="Static" xml:space="preserve">
+    <value>Constants</value>
+  </data>
+  <data name="SettingValue" xml:space="preserve">
+    <value>Setting Value</value>
+  </data>
+  <data name="SettingKey" xml:space="preserve">
+    <value>Setting Key</value>
+  </data>
+  <data name="StoryCategoryId" xml:space="preserve">
+    <value>Blog Category</value>
+  </data>
+  <data name="StoryCategoryIdErrorMessage" xml:space="preserve">
+    <value>Please select a Blog Category</value>
+  </data>
+  <data name="TemplateXml" xml:space="preserve">
+    <value>XML Template</value>
+  </data>
+  <data name="TagCategoryId" xml:space="preserve">
+    <value>Tag Category</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="UpdatedDate" xml:space="preserve">
+    <value>Updated Date</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="IsService" xml:space="preserve">
+    <value>Service List</value>
+  </data>
+  <data name="IsValues" xml:space="preserve">
+    <value>Template Value List</value>
+  </data>
+  <data name="EntityDescriptionPage" xml:space="preserve">
+    <value>General Description</value>
+  </data>
+  <data name="EntityShortFields" xml:space="preserve">
+    <value>Short Attributes</value>
+  </data>
+  <data name="ProductPageTitle" xml:space="preserve">
+    <value>Product Page</value>
+  </data>
+  <data name="AllProductLinkText" xml:space="preserve">
+    <value>All Products Link</value>
+  </data>
+  <data name="IsCampaign" xml:space="preserve">
+    <value>On Campaign</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ButtonOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MenuSameSelectionErrorMessage" xml:space="preserve">
+    <value>You cannot select the same menu as parent menu</value>
+  </data>
+  <data name="ProductSameSelectionErrorMessage" xml:space="preserve">
+    <value>Product cannot be selected as its own parent</value>
+  </data>
+  <data name="MenuTreeName" xml:space="preserve">
+    <value>Menu Tree Name</value>
+  </data>
+  <data name="ProductCategoryTreeName" xml:space="preserve">
+    <value>Product Category Tree Name</value>
+  </data>
+  <data name="SelectedCategory" xml:space="preserve">
+    <value>Selected Category:</value>
+  </data>
+  <data name="Story" xml:space="preserve">
+    <value>Blog Post</value>
+  </data>
+  <data name="StoryCategory" xml:space="preserve">
+    <value>Blog Category</value>
+  </data>
+  <data name="Tag" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="TagCategory" xml:space="preserve">
+    <value>Tag Category</value>
+  </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>Product Category</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="MainPageImages" xml:space="preserve">
+    <value>Homepage Slider Images</value>
+  </data>
+  <data name="Subscribers" xml:space="preserve">
+    <value>Newsletter Subscribers</value>
+  </data>
+  <data name="MailTemplates" xml:space="preserve">
+    <value>Email Templates</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="SearchResultsText" xml:space="preserve">
+    <value>Search results:</value>
+  </data>
+  <data name="NoSearchResultsText" xml:space="preserve">
+    <value>No results found.</value>
+  </data>
+  <data name="AdminMainSeachPlaceHolder" xml:space="preserve">
+    <value>Search products, categories or blog posts</value>
+  </data>
+  <data name="AdminGeneralSettings" xml:space="preserve">
+    <value>General Admin Settings</value>
+  </data>
+  <data name="Excel" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="Csv" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="FileUploadingPage" xml:space="preserve">
+    <value>Image Upload Page</value>
+  </data>
+  <data name="ProductSpecs" xml:space="preserve">
+    <value>Additional Product Specifications</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="MailBody" xml:space="preserve">
+    <value>Email Body</value>
+  </data>
+  <data name="MailBodyPropertyRequiredErrorMessage" xml:space="preserve">
+    <value>Content is required</value>
+  </data>
+  <data name="MailSubject" xml:space="preserve">
+    <value>Email Subject</value>
+  </data>
+  <data name="MailSubjectPropertyErrorMessage" xml:space="preserve">
+    <value>Email subject is invalid</value>
+  </data>
+  <data name="MailSubjectPropertyRequiredErrorMessage" xml:space="preserve">
+    <value>Email Subject is required</value>
+  </data>
+  <data name="SaveButtonAndCloseText" xml:space="preserve">
+    <value>Save and Close</value>
+  </data>
+  <data name="AdminHome" xml:space="preserve">
+    <value>Admin Dashboard</value>
+  </data>
+  <data name="AdminSettings" xml:space="preserve">
+    <value>Admin Settings</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="Lists" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log Out</value>
+  </data>
+  <data name="Menus" xml:space="preserve">
+    <value>Menus</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="NormalSettings" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="Privacypolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="ProductCategories" xml:space="preserve">
+    <value>Product Categories</value>
+  </data>
+  <data name="ProductDynamicTemplates" xml:space="preserve">
+    <value>Product XML Templates</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Stories" xml:space="preserve">
+    <value>Blog Posts</value>
+  </data>
+  <data name="StoryCategories" xml:space="preserve">
+    <value>Blog Categories</value>
+  </data>
+  <data name="TagCategories" xml:space="preserve">
+    <value>Tag Categories</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="TermsConditions" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="WebSite" xml:space="preserve">
+    <value>View Website</value>
+  </data>
+  <data name="WebSiteLogo" xml:space="preserve">
+    <value>Website Logo</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="StoryPageTitle" xml:space="preserve">
+    <value>Blog Page</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Back to List</value>
+  </data>
+  <data name="BackToEditor" xml:space="preserve">
+    <value>Back to Editor</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot Password</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>User Roles</value>
+  </data>
+  <data name="NewUserInsert" xml:space="preserve">
+    <value>Create New User</value>
+  </data>
+  <data name="DeletePopupDescription" xml:space="preserve">
+    <value>Are you sure you want to delete these records? This action cannot be undone.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Mobile Phone</value>
+  </data>
+  <data name="TagCategoryName" xml:space="preserve">
+    <value>Tag Category Name</value>
+  </data>
+  <data name="TagName" xml:space="preserve">
+    <value>Tag Name</value>
+  </data>
+  <data name="ActionOptionsOfSelectedItems" xml:space="preserve">
+    <value>Bulk Actions for Selected Items</value>
+  </data>
+  <data name="ProductSpecTemplateItemList" xml:space="preserve">
+    <value>Value Lists</value>
+  </data>
+  <data name="MakeItRootCategory" xml:space="preserve">
+    <value>Make Root Category</value>
+  </data>
+  <data name="ImageHeight" xml:space="preserve">
+    <value>Image Height (recommended: 800 px)</value>
+  </data>
+  <data name="ImageWidth" xml:space="preserve">
+    <value>Image Width (recommended: 800 px)</value>
+  </data>
+  <data name="MetaKeywords" xml:space="preserve">
+    <value>SEO Keywords</value>
+  </data>
+  <data name="NameShort" xml:space="preserve">
+    <value>Short Name</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingScript" xml:space="preserve">
+    <value>Google Analytics Script</value>
+  </data>
+  <data name="SmtpEmailSettings" xml:space="preserve">
+    <value>Email Settings</value>
+  </data>
+  <data name="AdminEmail" xml:space="preserve">
+    <value>Admin Email</value>
+  </data>
+  <data name="AdminEmailDisplayName" xml:space="preserve">
+    <value>Admin Email Display Name</value>
+  </data>
+  <data name="AdminEmailEnableSsl" xml:space="preserve">
+    <value>Enable SSL for Admin Email </value>
+  </data>
+  <data name="AdminEmailHost" xml:space="preserve">
+    <value>Admin Email Host</value>
+  </data>
+  <data name="AdminEmailPassword" xml:space="preserve">
+    <value>Admin Email Password</value>
+  </data>
+  <data name="AdminEmailPort" xml:space="preserve">
+    <value>Admin Email Port</value>
+  </data>
+  <data name="AdminEmailUseDefaultCredentials" xml:space="preserve">
+    <value>Use Default Credentials for Admin Email</value>
+  </data>
+  <data name="AdminUserName" xml:space="preserve">
+    <value>Admin Username</value>
+  </data>
+  <data name="CompanyAddress" xml:space="preserve">
+    <value>Company Address</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="DefaultImageHeight" xml:space="preserve">
+    <value>Default Image Height</value>
+  </data>
+  <data name="DefaultImageWidth" xml:space="preserve">
+    <value>Default Image Width</value>
+  </data>
+  <data name="FacebookWebSiteLink" xml:space="preserve">
+    <value>Facebook Link</value>
+  </data>
+  <data name="FooterDescription" xml:space="preserve">
+    <value>Footer Description</value>
+  </data>
+  <data name="FooterEmailListDescription" xml:space="preserve">
+    <value>Footer Newsletter Description</value>
+  </data>
+  <data name="GooglePlusWebSiteLink" xml:space="preserve">
+    <value>Google Plus Link</value>
+  </data>
+  <data name="InstagramWebSiteLink" xml:space="preserve">
+    <value>Instagram Link</value>
+  </data>
+  <data name="IsProductPriceEnable" xml:space="preserve">
+    <value>Is Product Price Enabled?</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="LinkedinWebSiteLink" xml:space="preserve">
+    <value>LinkedIn Link</value>
+  </data>
+  <data name="SiteIndexMetaDescription" xml:space="preserve">
+    <value>Site Index Meta Description</value>
+  </data>
+  <data name="SiteIndexMetaKeywords" xml:space="preserve">
+    <value>Site Index Meta Keywords</value>
+  </data>
+  <data name="SiteIndexMetaTitle" xml:space="preserve">
+    <value>Site Index Meta Title</value>
+  </data>
+  <data name="TwitterWebSiteLink" xml:space="preserve">
+    <value>Twitter Link</value>
+  </data>
+  <data name="WebSiteCompanyEmailAddress" xml:space="preserve">
+    <value>Company Email Address</value>
+  </data>
+  <data name="WebSiteCompanyPhoneAndLocation" xml:space="preserve">
+    <value>Company Phone and Address</value>
+  </data>
+  <data name="YoutubeWebSiteLink" xml:space="preserve">
+    <value>YouTube Link</value>
+  </data>
+  <data name="Zopim" xml:space="preserve">
+    <value>Zopim</value>
+  </data>
+  <data name="AnswerSecurityQuestion" xml:space="preserve">
+    <value>Please answer the security question (Hint: sum of two numbers)</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordAndConfirmationPasswordDoNotMatch" xml:space="preserve">
+    <value>Password and confirmation password do not match.</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me?</value>
+  </data>
+  <data name="RememberThisBrowser" xml:space="preserve">
+    <value>Remember this browser?</value>
+  </data>
+  <data name="SendEmailLink" xml:space="preserve">
+    <value>Send Email Link</value>
+  </data>
+  <data name="EnterYourEmailToRecover" xml:space="preserve">
+    <value>Enter your email to recover your account</value>
+  </data>
+  <data name="CreateNewAccount" xml:space="preserve">
+    <value>Create a new account</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="GenerateNewPasswordforUser" xml:space="preserve">
+    <value>Generate New Password for User</value>
+  </data>
+  <data name="SelectRoleAssignments" xml:space="preserve">
+    <value>Select admin panel role assignments</value>
+  </data>
+  <data name="GeneralSaveErrorMessage" xml:space="preserve">
+    <value>Changes could not be saved. Please try again and contact your system administrator if the problem persists.</value>
+  </data>
+  <data name="SuccessfullySavedCompleted" xml:space="preserve">
+    <value>Your changes have been saved successfully.</value>
+  </data>
+  <data name="ProductDeleteBlockedByOrders" xml:space="preserve">
+    <value>This product cannot be deleted because it is used in orders. You can deactivate it to preserve order history.</value>
+  </data>
+  <data name="SelectTemplate" xml:space="preserve">
+    <value>Select Template</value>
+  </data>
+  <data name="ShortDescription" xml:space="preserve">
+    <value>Short Description</value>
+  </data>
+  <data name="CompanyAdminSettings" xml:space="preserve">
+    <value>Company Information</value>
+  </data>
+  <data name="SeoSettings" xml:space="preserve">
+    <value>SEO Settings</value>
+  </data>
+  <data name="SocialMediaSetttings" xml:space="preserve">
+    <value>Social Media Links</value>
+  </data>
+  <data name="WhatsAppCommunicationScript" xml:space="preserve">
+    <value>WhatsApp Script</value>
+  </data>
+  <data name="FooterSettings" xml:space="preserve">
+    <value>Footer Settings</value>
+  </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="PasswordStringLength" xml:space="preserve">
+    <value>The {0} must be at least {2} characters long.</value>
+  </data>
+  <data name="RequestIsNotValid" xml:space="preserve">
+    <value>Invalid Request</value>
+  </data>
+  <data name="PasswordInfoMessage" xml:space="preserve">
+    <value>Password must be at least 6 characters and contain uppercase, lowercase and numeric characters.</value>
+  </data>
+  <data name="AdminPanelWelcome" xml:space="preserve">
+    <value>Welcome to the Admin Panel</value>
+  </data>
+  <data name="WrongSum" xml:space="preserve">
+    <value>Incorrect sum, please try again.</value>
+  </data>
+  <data name="ProductCodeErrorMessage" xml:space="preserve">
+    <value>Product Code is required.</value>
+  </data>
+  <data name="MandatoryField" xml:space="preserve">
+    <value>Required field {0}. Please do not leave empty.</value>
+  </data>
+  <data name="MoveProductsInTrees" xml:space="preserve">
+    <value>Move Products from One Category to Another</value>
+  </data>
+  <data name="CheckboxesDataTableDoesNotSelected" xml:space="preserve">
+    <value>No checkboxes selected in the data table</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="EmailSubject" xml:space="preserve">
+    <value>Email Subject</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Customers</value>
+  </data>
+  <data name="Faq" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="MyOrder" xml:space="preserve">
+    <value>My Orders</value>
+  </data>
+  <data name="MyAccount" xml:space="preserve">
+    <value>My Account</value>
+  </data>
+  <data name="SendMessageToSeller" xml:space="preserve">
+    <value>Send Message to Seller</value>
+  </data>
+  <data name="IsPermissionGrantedDescription" xml:space="preserve">
+    <value>I want to receive email notifications about important campaigns.</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="BirthDate" xml:space="preserve">
+    <value>Date of Birth</value>
+  </data>
+  <data name="ManGender" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="WomanGender" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="CustomerOpenAddress" xml:space="preserve">
+    <value>Street Address / Note to Shipping Company</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>District</value>
+  </data>
+  <data name="IdentityNumber" xml:space="preserve">
+    <value>National ID Number</value>
+  </data>
+  <data name="PinterestWebSiteLink" xml:space="preserve">
+    <value>Pinterest Link</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="ZipCode" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="ReviewYourOrder" xml:space="preserve">
+    <value>Review Your Order</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="IsSameAsShippingAddress" xml:space="preserve">
+    <value>Billing address is the same as shipping address.</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="OrderDetails" xml:space="preserve">
+    <value>Order Details</value>
+  </data>
+  <data name="DeliveryInfo" xml:space="preserve">
+    <value>Return &amp; Delivery Information</value>
+  </data>
+  <data name="YourProfileUpdatedSuccessfully" xml:space="preserve">
+    <value>Your profile has been updated successfully.</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Email is required.</value>
+  </data>
+  <data name="NotValidEmailAddress" xml:space="preserve">
+    <value>Email is not a valid email address.</value>
+  </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="NotMatchesPassword" xml:space="preserve">
+    <value>New password and confirmation do not match.</value>
+  </data>
+  <data name="NewPasswordMinCharLength" xml:space="preserve">
+    <value>The {0} must be at least {2} characters long.</value>
+  </data>
+  <data name="WrongAccountLoginAttempt" xml:space="preserve">
+    <value>Login attempt failed. </value>
+  </data>
+  <data name="CustomerLoginPage" xml:space="preserve">
+    <value>Customer Login</value>
+  </data>
+  <data name="Brands" xml:space="preserve">
+    <value>Brands</value>
+  </data>
+  <data name="SelectBrand" xml:space="preserve">
+    <value>Select Brand</value>
+  </data>
+  <data name="SelectCategory" xml:space="preserve">
+    <value>Select Category</value>
+  </data>
+  <data name="SignInOrUp" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="ContinueShopping" xml:space="preserve">
+    <value>Continue Shopping</value>
+  </data>
+  <data name="Answer" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="ProductComments" xml:space="preserve">
+    <value>Product Reviews</value>
+  </data>
+  <data name="Review" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="ReviewSubject" xml:space="preserve">
+    <value>Review Title</value>
+  </data>
+  <data name="AuthorName" xml:space="preserve">
+    <value>Author Name</value>
+  </data>
+  <data name="StorySubject" xml:space="preserve">
+    <value>Blog Title</value>
+  </data>
+  <data name="IsFeaturedStory" xml:space="preserve">
+    <value>Featured Blog Post</value>
+  </data>
+  <data name="GoogleMapScript" xml:space="preserve">
+    <value>Google Map Script</value>
+  </data>
+  <data name="PaymentDetailHtml" xml:space="preserve">
+    <value>Product Detail Payment HTML</value>
+  </data>
+  <data name="CargoSettings" xml:space="preserve">
+    <value>Shipping Settings</value>
+  </data>
+  <data name="BasketMinTotalPrice" xml:space="preserve">
+    <value>Minimum Basket Total</value>
+  </data>
+  <data name="CargoCompany" xml:space="preserve">
+    <value>Shipping Company</value>
+  </data>
+  <data name="CargoPrice" xml:space="preserve">
+    <value>Shipping Fee</value>
+  </data>
+  <data name="BecomeMember" xml:space="preserve">
+    <value>Become a Member</value>
+  </data>
+  <data name="PriceErrorMessage" xml:space="preserve">
+    <value>Price is required.</value>
+  </data>
+  <data name="AppLogs" xml:space="preserve">
+    <value>Application Logs</value>
+  </data>
+  <data name="WebSiteCompanyEmailAddressRequired" xml:space="preserve">
+    <value>Please enter a valid company email address. This field is required.</value>
+  </data>
+  <data name="AddImages" xml:space="preserve">
+    <value>Add Images</value>
+  </data>
+  <data name="CancelUpload" xml:space="preserve">
+    <value>Cancel Upload</value>
+  </data>
+  <data name="FileUploadingSection" xml:space="preserve">
+    <value>Image Upload Section</value>
+  </data>
+  <data name="StartUpload" xml:space="preserve">
+    <value>Start Upload</value>
+  </data>
+  <data name="UploadedFilesSection" xml:space="preserve">
+    <value>Uploaded Images Section</value>
+  </data>
+  <data name="CancelUploading" xml:space="preserve">
+    <value>Cancel Uploading</value>
+  </data>
+  <data name="CargoDescription" xml:space="preserve">
+    <value>Shipping Description</value>
+  </data>
+  <data name="StartUploadingAndSave" xml:space="preserve">
+    <value>Start Upload and Save</value>
+  </data>
+  <data name="ShippingOptions" xml:space="preserve">
+    <value>Shipping Information</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Order Number</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
+  <data name="OrderComments" xml:space="preserve">
+    <value>Order Comments</value>
+  </data>
+  <data name="Filtrele" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Town" xml:space="preserve">
+    <value>Town</value>
+  </data>
+  <data name="BillingAddress" xml:space="preserve">
+    <value>Billing Address</value>
+  </data>
+  <data name="CustomerDetail" xml:space="preserve">
+    <value>Customer Details</value>
+  </data>
+  <data name="ShippingAddress" xml:space="preserve">
+    <value>Shipping Address</value>
+  </data>
+  <data name="TotalPrice" xml:space="preserve">
+    <value>Total Price</value>
+  </data>
+  <data name="CustomerRegistrationDate" xml:space="preserve">
+    <value>Registration Date</value>
+  </data>
+  <data name="CustomerRegistrationAddress" xml:space="preserve">
+    <value>Customer Address</value>
+  </data>
+  <data name="BKM_POS_SELECTED" xml:space="preserve">
+    <value>BKM_POS_SELECTED</value>
+  </data>
+  <data name="CALLBACK_PECCO" xml:space="preserve">
+    <value>CALLBACK_PECCO</value>
+  </data>
+  <data name="CALLBACK_THREEDS" xml:space="preserve">
+    <value>CALLBACK_THREEDS</value>
+  </data>
+  <data name="FAILURE" xml:space="preserve">
+    <value>FAILED</value>
+  </data>
+  <data name="INIT_THREEDS" xml:space="preserve">
+    <value>INIT_THREEDS</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
+  <data name="PieceOfProductSold" xml:space="preserve">
+    <value>products sold</value>
+  </data>
+  <data name="OrdersBelongCustomer" xml:space="preserve">
+    <value>orders belonging to</value>
+  </data>
+  <data name="PaymentIyzicoNumber" xml:space="preserve">
+    <value>Iyzico Payment Number</value>
+  </data>
+  <data name="PaymentIyzicoMerchantBasketId" xml:space="preserve">
+    <value>Merchant Basket ID</value>
+  </data>
+  <data name="OrderDatePurchased" xml:space="preserve">
+    <value>Payment Date</value>
+  </data>
+  <data name="IyzicoInfo" xml:space="preserve">
+    <value>Iyzico payment gateway information</value>
+  </data>
+  <data name="IyziCommissionRateAmount" xml:space="preserve">
+    <value>Iyzi Commission Amount</value>
+  </data>
+  <data name="MerchantCommissionRateAmount" xml:space="preserve">
+    <value>Merchant Commission Amount</value>
+  </data>
+  <data name="Installment" xml:space="preserve">
+    <value>Installment</value>
+  </data>
+  <data name="TotalOrderNumber" xml:space="preserve">
+    <value>Order #</value>
+  </data>
+  <data name="ProductDiscount" xml:space="preserve">
+    <value>Additional Product Discount (TL)</value>
+  </data>
+  <data name="AdminSystemSettings" xml:space="preserve">
+    <value>Application System Settings</value>
+  </data>
+  <data name="SystemSettings" xml:space="preserve">
+    <value>System Settings</value>
+  </data>
+  <data name="ImageGallery" xml:space="preserve">
+    <value>Photo Gallery</value>
+  </data>
+  <data name="ContactForm" xml:space="preserve">
+    <value>Contact Form</value>
+  </data>
+  <data name="MoveProductCategory" xml:space="preserve">
+    <value>Move Product Category</value>
+  </data>
+  <data name="FirstCategoryId" xml:space="preserve">
+    <value>New Parent Category</value>
+  </data>
+  <data name="SecondCategoryId" xml:space="preserve">
+    <value>Category to Move</value>
+  </data>
+  <data name="MoveProductMenu" xml:space="preserve">
+    <value>Move Menu Categories to Another Category</value>
+  </data>
+  <data name="FirstMenuCategoryId" xml:space="preserve">
+    <value>New Parent Menu</value>
+  </data>
+  <data name="SecondMenuCategoryId" xml:space="preserve">
+    <value>Menu to Move</value>
+  </data>
+  <data name="NoImage" xml:space="preserve">
+    <value>No Image</value>
+  </data>
+  <data name="ProductNameLong" xml:space="preserve">
+    <value>Product Name (Long)</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="ProductShortDescription" xml:space="preserve">
+    <value>Promotional Text</value>
+  </data>
+  <data name="AdminUserRoleDescription" xml:space="preserve">
+    <value>Has full permission to create, delete and update all data.</value>
+  </data>
+  <data name="EditorUserRoleDescription" xml:space="preserve">
+    <value>Has all permissions except delete.</value>
+  </data>
+  <data name="FooterHtmlDescription" xml:space="preserve">
+    <value>Footer HTML Content</value>
+  </data>
+  <data name="ProductColorOptions" xml:space="preserve">
+    <value>Product Color Options</value>
+  </data>
+  <data name="ProductSizeOptions" xml:space="preserve">
+    <value>Product Size Options</value>
+  </data>
+  <data name="OrderStatus" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
+  <data name="CustomerComingOrders" xml:space="preserve">
+    <value>Incoming Orders</value>
+  </data>
+  <data name="Admin Order Note" xml:space="preserve">
+    <value>Admin Order Note</value>
+  </data>
+  <data name="AdminOrderNote" xml:space="preserve">
+    <value>Admin Order Note</value>
+  </data>
+  <data name="ShipmentCompanyName" xml:space="preserve">
+    <value>Shipping Company Name</value>
+  </data>
+  <data name="ShipmentTrackingNumber" xml:space="preserve">
+    <value>Shipment Tracking Number</value>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="RemoveJustImage" xml:space="preserve">
+    <value>Remove Image</value>
+  </data>
+  <data name="RemoveMainImageConfirmationText" xml:space="preserve">
+    <value>Are you sure you want to delete the main image?</value>
+  </data>
+  <data name="BasketMinTotalPriceForCargo" xml:space="preserve">
+    <value>Minimum Order Amount for Shipping</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="AdminPanelLoginPage" xml:space="preserve">
+    <value>Admin Panel Login Page</value>
+  </data>
+  <data name="EnterDateForAdmin" xml:space="preserve">
+    <value>Login Date: {0}</value>
+  </data>
+  <data name="IPAddressForAdmin" xml:space="preserve">
+    <value>Your IP Address: {0}</value>
+  </data>
+  <data name="JustOpenForAdmin" xml:space="preserve">
+    <value>This section is for administrators only</value>
+  </data>
+  <data name="Coupon" xml:space="preserve">
+    <value>Coupon</value>
+  </data>
+  <data name="Coupons" xml:space="preserve">
+    <value>Coupons</value>
+  </data>
+  <data name="CouponName" xml:space="preserve">
+    <value>Coupon Name</value>
+  </data>
+  <data name="CouponEndDate" xml:space="preserve">
+    <value>Coupon End Date</value>
+  </data>
+  <data name="CouponStartDate" xml:space="preserve">
+    <value>Coupon Start Date</value>
+  </data>
+  <data name="DiscountPercentage" xml:space="preserve">
+    <value>Discount Percentage</value>
+  </data>
+  <data name="DiscountQuantity" xml:space="preserve">
+    <value>Discount Amount</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="CouponCode" xml:space="preserve">
+    <value>Coupon Code</value>
+  </data>
+  <data name="EndDateBiggerThanStartDateText" xml:space="preserve">
+    <value>Please ensure the end date is not before the start date</value>
+  </data>
+  <data name="ProductState" xml:space="preserve">
+    <value>Product Status</value>
+  </data>
+  <data name="WarningForDesign" xml:space="preserve">
+    <value>Warning! More than 5 images may degrade your design.</value>
+  </data>
+  <data name="OurSiteFeatures" xml:space="preserve">
+    <value>Our Site Features</value>
+  </data>
+  <data name="ProductStateChangeText" xml:space="preserve">
+    <value>Update Product Status</value>
+  </data>
+  <data name="OriginalWidthHeightFormat" xml:space="preserve">
+    <value>Original Width={0} Height={1}</value>
+  </data>
+  <data name="FullImage" xml:space="preserve">
+    <value>Full Image</value>
+  </data>
+  <data name="ThumbsWidthHeightFormat" xml:space="preserve">
+    <value>Thumbnail Width={0} Height={1}</value>
+  </data>
+  <data name="ThumbsImage" xml:space="preserve">
+    <value>Thumbnail</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing...</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="UploadError" xml:space="preserve">
+    <value>Upload Error</value>
+  </data>
+  <data name="FileUploadMaxNumberOfFiles" xml:space="preserve">
+    <value>Maximum number of files exceeded</value>
+  </data>
+  <data name="FileUploadAcceptFileTypes" xml:space="preserve">
+    <value>File type not allowed</value>
+  </data>
+  <data name="FileUploadMaxFileSize" xml:space="preserve">
+    <value>File is too large</value>
+  </data>
+  <data name="FileUploadMinFileSize" xml:space="preserve">
+    <value>File is too small</value>
+  </data>
+  <data name="Medias" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="AdminNavigation" xml:space="preserve">
+    <value>Admin Navigation</value>
+  </data>
+  <data name="Catalog" xml:space="preserve">
+    <value>Catalog</value>
+  </data>
+  <data name="CloseSidebar" xml:space="preserve">
+    <value>Close Sidebar</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Health</value>
+  </data>
+  <data name="Media" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="Metrics" xml:space="preserve">
+    <value>Metrics</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="ShoppingCarts" xml:space="preserve">
+    <value>Shopping Carts</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="SystemMonitoring" xml:space="preserve">
+    <value>System Monitoring</value>
+  </data>
+  <data name="OpenMenu" xml:space="preserve">
+    <value>Open Menu</value>
+  </data>
+  <data name="CloseMenu" xml:space="preserve">
+    <value>Close Menu</value>
+  </data>
+  <data name="ToggleSidebar" xml:space="preserve">
+    <value>Toggle Sidebar</value>
+  </data>
+  <data name="CategoryHasProducts" xml:space="preserve">
+    <value>Contains Products</value>
+  </data>
+  <data name="CategoryCannotDelete" xml:space="preserve">
+    <value>Cannot Be Deleted</value>
+  </data>
+  <data name="MenuCannotDeleteHasChildren" xml:space="preserve">
+    <value>Cannot be deleted because it has submenus</value>
+  </data>
+  <data name="InvalidVerificationCode" xml:space="preserve">
+    <value>Invalid verification code.</value>
+  </data>
+  <data name="SessionTimedOutPleaseLoginAgain" xml:space="preserve">
+    <value>Session timed out. Please log in again.</value>
+  </data>
+  <data name="AuthenticatorKeyNotFound" xml:space="preserve">
+    <value>Authenticator key not found. Please refresh the page.</value>
+  </data>
+  <data name="TwoFactorEnabledSuccess" xml:space="preserve">
+    <value>Two-factor authentication has been successfully enabled.</value>
+  </data>
+  <data name="ExcelFileRequired" xml:space="preserve">
+    <value>Excel file is required.</value>
+  </data>
+  <data name="ExcelFileAllowedOnly" xml:space="preserve">
+    <value>Only .xls or .xlsx files are allowed.</value>
+  </data>
+  <data name="MenuLinkSelectRequired" xml:space="preserve">
+    <value>Please select a menu link.</value>
+  </data>
+  <data name="PageThemeSelectRequired" xml:space="preserve">
+    <value>Please select a page theme.</value>
+  </data>
+  <data name="MinPriceCannotBeGreaterThanMaxPrice" xml:space="preserve">
+    <value>Minimum price cannot be greater than maximum price.</value>
+  </data>
+  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+    <value>Start date must be before end date.</value>
+  </data>
+  <data name="DeleteMissingFilesButtonText" xml:space="preserve">
+    <value>Clean Up Missing Files (Delete Records Without Files on Disk)</value>
+  </data>
+  <data name="DeleteMissingFilesConfirmMessage" xml:space="preserve">
+    <value>All database records without a physical file on disk will be deleted. Do you want to continue?</value>
+  </data>
+  <data name="DeleteMissingFilesTooltip" xml:space="preserve">
+    <value>Cleans up database records without physical files on disk</value>
+  </data>
+  <data name="DeleteMissingFilesSuccessFormat" xml:space="preserve">
+    <value>{0} image record(s) without files on disk were removed from the database.</value>
+  </data>
+  <data name="DeleteMissingFilesNoneFound" xml:space="preserve">
+    <value>No missing file records found. All image records have physical files on disk.</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>File Not Found</value>
+  </data>
+  <data name="MissingFileNotFoundOnDisk" xml:space="preserve">
+    <value>(Not found on disk)</value>
+  </data>
+  <data name="MissingFile" xml:space="preserve">
+    <value>Missing File</value>
+  </data>
+  <data name="MissingFileTooltip" xml:space="preserve">
+    <value>Record exists in database but physical image file is missing on disk</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingScriptTooltip" xml:space="preserve">
+    <value>Paste your Google Analytics or Google Tag Manager tracking code (&lt;script&gt;...&lt;/script&gt;) here. This code is automatically added to all pages to track visitor traffic and page analytics site-wide.</value>
+  </data>
+  <data name="WhatsAppCommunicationLinkTooltip" xml:space="preserve">
+    <value>The link customers use to send messages directly via WhatsApp (e.g., https://wa.me/905551234567). Used for WhatsApp buttons and direct contact links on the site.</value>
+  </data>
+  <data name="WhatsAppCommunicationScriptTooltip" xml:space="preserve">
+    <value>JavaScript code for a floating WhatsApp live support or chat widget on your website. Paste the script code you received from your widget provider here.</value>
+  </data>
+  <data name="GoogleMapScriptTooltip" xml:space="preserve">
+    <value>The &lt;iframe&gt;...&lt;/iframe&gt; embed code from Google Maps to display your company or store location on the contact and about pages.</value>
+  </data>
+  <data name="AdminEmailTooltip" xml:space="preserve">
+    <value>The email address that appears in the From field of system-generated emails (order confirmations, password resets, notifications).</value>
+  </data>
+  <data name="AdminEmailHostTooltip" xml:space="preserve">
+    <value>The address or domain of the SMTP server used to deliver emails (e.g., smtp.gmail.com, mail.yourdomain.com or smtp.office365.com).</value>
+  </data>
+  <data name="AdminEmailPortTooltip" xml:space="preserve">
+    <value>The port number the SMTP server listens on for sending email. Typically 465 for SSL, 587 for TLS/STARTTLS, 25 for unencrypted.</value>
+  </data>
+  <data name="AdminEmailDisplayNameTooltip" xml:space="preserve">
+    <value>The sender name recipients will see on outgoing emails (e.g., Store Name or Customer Support).</value>
+  </data>
+  <data name="AdminUserNameTooltip" xml:space="preserve">
+    <value>The username or full email address used to authenticate with the SMTP server.</value>
+  </data>
+  <data name="AdminEmailPasswordTooltip" xml:space="preserve">
+    <value>The email password or app-specific password (App Password) used to authenticate with the SMTP server.</value>
+  </data>
+  <data name="AdminEmailEnableSslTooltip" xml:space="preserve">
+    <value>Enables SSL/TLS encryption for email communication between the SMTP server and the web application. Should generally remain enabled for secure email delivery.</value>
+  </data>
+  <data name="AdminEmailUseDefaultCredentialsTooltip" xml:space="preserve">
+    <value>Determines whether the server&apos;s default Windows/IIS credentials are used for SMTP authentication. Should be disabled (false) when a custom username and password are provided.</value>
+  </data>
+  <data name="SiteIndexMetaTitleTooltip" xml:space="preserve">
+    <value>The title tag for the homepage. The main heading shown in search engine results and browser tabs. Include your brand and core business area; 50-60 characters recommended.</value>
+  </data>
+  <data name="SiteIndexMetaKeywordsTooltip" xml:space="preserve">
+    <value>The homepage meta keywords. Comma-separated keywords describing your site content and products/services (e.g., e-commerce, LED lighting, wholesale).</value>
+  </data>
+  <data name="SiteIndexMetaDescriptionTooltip" xml:space="preserve">
+    <value>The homepage meta description tag. The summary text shown under search results in Google and other search engines (120-160 characters recommended).</value>
+  </data>
+  <data name="FooterDescriptionTooltip" xml:space="preserve">
+    <value>The short informational or tagline text displayed in the website footer or below the newsletter subscription box.</value>
+  </data>
+  <data name="FooterEmailListDescriptionTooltip" xml:space="preserve">
+    <value>The persuasive invitation text displayed above the newsletter subscription form in the footer area.</value>
+  </data>
+  <data name="FooterHtmlDescriptionTooltip" xml:space="preserve">
+    <value>Custom HTML content to display in the site footer (e.g., copyright information, secure payment logos, certificates or additional links).</value>
+  </data>
+  <data name="RssFeeds" xml:space="preserve">
+    <value>RSS Feeds</value>
+  </data>
+  <data name="Authenticator2FA" xml:space="preserve">
+    <value>Authenticator 2FA</value>
+  </data>
+  <data name="SystemHealth" xml:space="preserve">
+    <value>System Health</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="OrderStatus" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
+  <data name="OrderStatusNewlyOrder" xml:space="preserve">
+    <value>New Order</value>
+  </data>
+  <data name="OrderStatusPaymentPending" xml:space="preserve">
+    <value>Payment Pending</value>
+  </data>
+  <data name="OrderStatusInProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="OrderStatusCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="OrderStatusReturned" xml:space="preserve">
+    <value>Returned</value>
+  </data>
+  <data name="OrderStatusRefunded" xml:space="preserve">
+    <value>Refunded</value>
+  </data>
+  <data name="OrderStatusShipped" xml:space="preserve">
+    <value>Shipped</value>
+  </data>
+  <data name="OrderStatusDelivered" xml:space="preserve">
+    <value>Delivered</value>
+  </data>
+  <data name="AdminNote" xml:space="preserve">
+    <value>Admin Note</value>
+  </data>
+  <data name="ShippingCompany" xml:space="preserve">
+    <value>Shipping Company</value>
+  </data>
+  <data name="TrackingNumber" xml:space="preserve">
+    <value>Tracking Number</value>
+  </data>
+  <data name="EditAction" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="UploadButton" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Back to List</value>
+  </data>
+  <data name="ImportData" xml:space="preserve">
+    <value>Import Data</value>
+  </data>
+  <data name="ExcelUpload" xml:space="preserve">
+    <value>Excel Upload</value>
+  </data>
+  <data name="ExcelFile" xml:space="preserve">
+    <value>Excel File</value>
+  </data>
+  <data name="NoExcelFileUploaded" xml:space="preserve">
+    <value>No Excel file has been uploaded yet.</value>
+  </data>
+  <data name="CustomerOrders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="CustomerDetail" xml:space="preserve">
+    <value>Customer Detail</value>
+  </data>
+  <data name="OrderOverview" xml:space="preserve">
+    <value>Order Overview</value>
+  </data>
+  <data name="CustomerAndAddress" xml:space="preserve">
+    <value>Customer &amp; Address</value>
+  </data>
+  <data name="OrderProducts" xml:space="preserve">
+    <value>Ordered Products</value>
+  </data>
+  <data name="ProductImage" xml:space="preserve">
+    <value>Product Image</value>
+  </data>
+  <data name="ProductDetails" xml:space="preserve">
+    <value>Product Details</value>
+  </data>
+  <data name="PaymentDetails" xml:space="preserve">
+    <value>Payment Details</value>
+  </data>
+  <data name="CardType" xml:space="preserve">
+    <value>Card Type</value>
+  </data>
+  <data name="CardAssociation" xml:space="preserve">
+    <value>Card Association</value>
+  </data>
+  <data name="LastFourDigits" xml:space="preserve">
+    <value>Last Four Digits</value>
+  </data>
+  <data name="TotalPaidPrice" xml:space="preserve">
+    <value>Total Paid Price</value>
+  </data>
+  <data name="ShippingDetails" xml:space="preserve">
+    <value>Shipping Details</value>
+  </data>
+  <data name="AdvancedPaymentInfo" xml:space="preserve">
+    <value>Advanced Payment Info</value>
+  </data>
+  <data name="MerchantCommissionRate" xml:space="preserve">
+    <value>Merchant Commission Rate</value>
+  </data>
+  <data name="IyziCommissionFee" xml:space="preserve">
+    <value>Iyzi Commission Fee</value>
+  </data>
+  <data name="ShippingAddressSame" xml:space="preserve">
+    <value>Same as shipping address.</value>
+  </data>
+  <data name="NoCustomerRecord" xml:space="preserve">
+    <value>No customer record found.</value>
+  </data>
+  <data name="NoOrderProducts" xml:space="preserve">
+    <value>No products in this order.</value>
+  </data>
+  <data name="OrderSummary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Order #</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Order Date</value>
+  </data>
+  <data name="ProductAmount" xml:space="preserve">
+    <value>Product Amount</value>
+  </data>
+  <data name="PaidAmount" xml:space="preserve">
+    <value>Paid Amount</value>
+  </data>
+  <data name="CustomerNote" xml:space="preserve">
+    <value>Customer Note</value>
+  </data>
+  <data name="NoCustomerNote" xml:space="preserve">
+    <value>Customer did not leave a note.</value>
+  </data>
+  <data name="OrderManagement" xml:space="preserve">
+    <value>Manage Order</value>
+  </data>
+  <data name="OrderStatusLabel" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
+  <data name="StatusChangeAutoSave" xml:space="preserve">
+    <value>Status changes are saved automatically.</value>
+  </data>
+  <data name="CustomerNoteModalTitle" xml:space="preserve">
+    <value>Admin Note</value>
+  </data>
+  <data name="CustomerNoteModalDescription" xml:space="preserve">
+    <value>Only visible to admins.</value>
+  </data>
+  <data name="CustomerNotePlaceholder" xml:space="preserve">
+    <value>Internal note about the order</value>
+  </data>
+  <data name="ShippingCompanyPlaceholder" xml:space="preserve">
+    <value>Shipping company</value>
+  </data>
+  <data name="TrackingNumberPlaceholder" xml:space="preserve">
+    <value>Tracking number</value>
+  </data>
+  <data name="ScrollLeft" xml:space="preserve">
+    <value>Scroll Left</value>
+  </data>
+  <data name="ScrollRight" xml:space="preserve">
+    <value>Scroll Right</value>
+  </data>
+  <data name="ScrollTable" xml:space="preserve">
+    <value>Scroll Table Horizontally</value>
+  </data>
+  <data name="PaymentSuccess" xml:space="preserve">
+    <value>Successful</value>
+  </data>
+  <data name="PaymentFailed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="PaymentBkmPos" xml:space="preserve">
+    <value>BKM POS Selected</value>
+  </data>
+  <data name="PaymentPecco" xml:space="preserve">
+    <value>Pecco Callback</value>
+  </data>
+  <data name="PaymentNoStatus" xml:space="preserve">
+    <value>No Payment Status</value>
+  </data>
+  <data name="BackToOrders" xml:space="preserve">
+    <value>Back to Orders</value>
+  </data>
+  <data name="OrderDetail" xml:space="preserve">
+    <value>Order Detail</value>
+  </data>
+  <data name="ViewOrderInfo" xml:space="preserve">
+    <value>View customer, product, payment and shipping details; update status, notes and shipping info.</value>
+  </data>
+  <data name="CustomerPermissionsHelp" xml:space="preserve">
+    <value>Select permissions for this user. Remember to save changes to apply them.</value>
+  </data>
+  <data name="SelectedPermissions" xml:space="preserve">
+    <value>permissions selected</value>
+  </data>
+  <data name="PermissionManagementHelp" xml:space="preserve">
+    <value>Check/uncheck roles to grant or revoke permissions.</value>
+  </data>
+  <data name="ImportDataHelp" xml:space="preserve">
+    <value>Upload Excel files to bulk import data.</value>
+  </data>
+  <data name="FileUploadTitle" xml:space="preserve">
+    <value>File Upload</value>
+  </data>
+  <data name="PhotosUploading" xml:space="preserve">
+    <value>Photos Uploading</value>
+  </data>
+  <data name="PhotosUploadedCount" xml:space="preserve">
+    <value>photos uploaded</value>
+  </data>
+  <data name="Calculating" xml:space="preserve">
+    <value>Calculating...</value>
+  </data>
+  <data name="PhotosUploadSuccess" xml:space="preserve">
+    <value>Photos Uploaded Successfully!</value>
+  </data>
+  <data name="PhotosUploadedDesc" xml:space="preserve">
+    <value>photos uploaded to server and saved to database.</value>
+  </data>
+  <data name="ViewUploadedImages" xml:space="preserve">
+    <value>View Uploaded Images in Grid</value>
+  </data>
+  <data name="UploadNewImages" xml:space="preserve">
+    <value>Upload New Images</value>
+  </data>
+  <data name="ImagesSelected" xml:space="preserve">
+    <value>Images Selected</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="DragDropPhotos" xml:space="preserve">
+    <value>Drag and drop photos here</value>
+  </data>
+  <data name="OrBrowseFiles" xml:space="preserve">
+    <value>or Browse Files</value>
+  </data>
+  <data name="MultiSelectSorting" xml:space="preserve">
+    <value>Multi-Select &amp; Sorting</value>
+  </data>
+  <data name="CouponCreateHelp" xml:space="preserve">
+    <value>Create or edit discount coupons for customers to use at checkout.</value>
+  </data>
+  <data name="CouponNameHelp" xml:space="preserve">
+    <value>Coupon Name: Display name in admin panel (not shown to customers).</value>
+  </data>
+  <data name="CouponCodeHelp" xml:space="preserve">
+    <value>Code: The code customers will enter at checkout (e.g., SUMMER2026).</value>
+  </data>
+  <data name="CouponDiscountHelp" xml:space="preserve">
+    <value>Fill in only one of Fixed Discount or Percentage Discount. If Fixed is set, Percentage is ignored.</value>
+  </data>
+  <data name="CouponDateHelp" xml:space="preserve">
+    <value>Start / End Date: Format dd/mm/yy (e.g., 01/08/26). End date must be after start date.</value>
+  </data>
+  <data name="CouponActiveHelp" xml:space="preserve">
+    <value>Active: Check to make the coupon usable.</value>
+  </data>
+  <data name="CouponExampleFixed" xml:space="preserve">
+    <value>Example 1 — Fixed Amount Discount:</value>
+  </data>
+  <data name="CouponCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="FixedDiscount" xml:space="preserve">
+    <value>Fixed Discount</value>
+  </data>
+  <data name="PercentageDiscount" xml:space="preserve">
+    <value>Percentage Discount</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Active?</value>
+  </data>
+  <data name="FileUploadSection" xml:space="preserve">
+    <value>File Upload Section</value>
+  </data>
+  <data name="UploadProgress" xml:space="preserve">
+    <value>Upload Progress</value>
+  </data>
+  <data name="UploadComplete" xml:space="preserve">
+    <value>Upload Complete</value>
+  </data>
+  <data name="UploadError" xml:space="preserve">
+    <value>Upload Error</value>
+  </data>
+  <data name="BackToCustomers" xml:space="preserve">
+    <value>Back to Customers</value>
+  </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>Admin Panel</value>
+  </data>
+  <data name="AdminPanelTitleFormat" xml:space="preserve">
+    <value>{0} Admin Panel</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="OtherLinks" xml:space="preserve">
+    <value>Other links</value>
+  </data>
+  <data name="SearchMenu" xml:space="preserve">
+    <value>Search menu</value>
+  </data>
+  <data name="NoMatchingMenuFound" xml:space="preserve">
+    <value>No matching menu found</value>
+  </data>
+  <data name="BulkOperations" xml:space="preserve">
+    <value>Bulk Operations</value>
+  </data>
+  <data name="BulkOperationsHint" xml:space="preserve">
+    <value>Select, publish, delete…</value>
+  </data>
+  <data name="Density" xml:space="preserve">
+    <value>Density</value>
+  </data>
+  <data name="GridDensity" xml:space="preserve">
+    <value>Grid density</value>
+  </data>
+  <data name="DensityComfortable" xml:space="preserve">
+    <value>Comfortable</value>
+  </data>
+  <data name="DensityCompact" xml:space="preserve">
+    <value>Compact</value>
+  </data>
+  <data name="PublishedShort" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="MainPageShort" xml:space="preserve">
+    <value>Featured</value>
+  </data>
+  <data name="CampaignShort" xml:space="preserve">
+    <value>Campaign</value>
+  </data>
+  <data name="ImageShort" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading…</value>
+  </data>
+  <data name="GridLoadError" xml:space="preserve">
+    <value>Failed to load grid.</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="SaveNoteAndShipment" xml:space="preserve">
+    <value>Save note and shipping</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Publish" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="Unpublish" xml:space="preserve">
+    <value>Unpublish</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="ShowingAll" xml:space="preserve">
+    <value>Showing all</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+  <data name="ShowDefault" xml:space="preserve">
+    <value>Show Default</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>System Default</value>
+  </data>
+  <data name="ClearShowAll" xml:space="preserve">
+    <value>Clear (Show All)</value>
+  </data>
+  <data name="Records" xml:space="preserve">
+    <value>Records</value>
+  </data>
+  <data name="Through" xml:space="preserve">
+    <value>through</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="Rows" xml:space="preserve">
+    <value>rows</value>
+  </data>
+  <data name="Row" xml:space="preserve">
+    <value>row</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>selected</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="CatalogAndContentQuickAccess" xml:space="preserve">
+    <value>Quick access to catalog and content management.</value>
+  </data>
+  <data name="ContentAndShowcase" xml:space="preserve">
+    <value>Content &amp; Showcase</value>
+  </data>
+  <data name="MainPageImagesDesc" xml:space="preserve">
+    <value>Sliding banners and showcase images</value>
+  </data>
+  <data name="MenusDesc" xml:space="preserve">
+    <value>About us, contact and other pages</value>
+  </data>
+  <data name="ProductsDesc" xml:space="preserve">
+    <value>Add, edit and price products</value>
+  </data>
+  <data name="ProductsDescNoPrice" xml:space="preserve">
+    <value>List and edit products</value>
+  </data>
+  <data name="ProductCategoriesDesc" xml:space="preserve">
+    <value>Category tree and ordering</value>
+  </data>
+  <data name="BrandsDesc" xml:space="preserve">
+    <value>Brand list and logos</value>
+  </data>
+  <data name="OrdersDesc" xml:space="preserve">
+    <value>Order status and shipment tracking</value>
+  </data>
+  <data name="CustomersDesc" xml:space="preserve">
+    <value>Member and customer accounts</value>
+  </data>
+  <data name="ShippingAndStore" xml:space="preserve">
+    <value>Shipping &amp; Store</value>
+  </data>
+  <data name="ShippingAndStoreDesc" xml:space="preserve">
+    <value>Shipping details and store information</value>
+  </data>
+  <data name="IyzicoPanelDesc" xml:space="preserve">
+    <value>Payment portal (new tab)</value>
+  </data>
+  <data name="SearchMin2Chars" xml:space="preserve">
+    <value>Type at least 2 characters to search</value>
+  </data>
+  <data name="AdminPanelHeroLead" xml:space="preserve">
+    <value>Quick access to catalog and content management.</value>
+  </data>
+  <data name="AdminSettingsTitle" xml:space="preserve">
+    <value>Admin Settings</value>
+  </data>
+  <data name="AdminSettingsDesc" xml:space="preserve">
+    <value>Company and general site information</value>
+  </data>
+  <data name="SystemSettingsDesc" xml:space="preserve">
+    <value>Price, SEO and technical settings</value>
+  </data>
+  <data name="SystemSettingsDescNoPrice" xml:space="preserve">
+    <value>Listing mode, SEO and technical settings</value>
+  </data>
+  <data name="MailTemplatesDesc" xml:space="preserve">
+    <value>Edit email templates</value>
+  </data>
+  <data name="UsersDesc" xml:space="preserve">
+    <value>Administrator and panel users</value>
+  </data>
+  <data name="CacheManagement" xml:space="preserve">
+    <value>Cache Management</value>
+  </data>
+  <data name="CacheManagementLead" xml:space="preserve">
+    <value>Clear storefront cache specifically. The store side will reload fresh data from the database on next request.</value>
+  </data>
+  <data name="ProductPriceCache" xml:space="preserve">
+    <value>Product &amp; price cache</value>
+  </data>
+  <data name="ProductPriceCacheDesc" xml:space="preserve">
+    <value>Product listings, details, search and prices</value>
+  </data>
+  <data name="CategoryCache" xml:space="preserve">
+    <value>Category cache</value>
+  </data>
+  <data name="CategoryCacheDesc" xml:space="preserve">
+    <value>Category tree and category pages</value>
+  </data>
+  <data name="SettingCache" xml:space="preserve">
+    <value>Settings cache</value>
+  </data>
+  <data name="SettingCacheDesc" xml:space="preserve">
+    <value>Store settings and site configuration</value>
+  </data>
+  <data name="ContentCache" xml:space="preserve">
+    <value>Content cache</value>
+  </data>
+  <data name="ContentCacheDesc" xml:space="preserve">
+    <value>Menus, stories, banners, FAQ, tags</value>
+  </data>
+  <data name="ClearAllStorefrontCache" xml:space="preserve">
+    <value>Clear all storefront cache</value>
+  </data>
+  <data name="ClearAllStorefrontCacheHint" xml:space="preserve">
+    <value>Full purge + background page warm-up.</value>
+  </data>
+  <data name="PaymentAndCard" xml:space="preserve">
+    <value>Payment / Card</value>
+  </data>
+  <data name="Shipment" xml:space="preserve">
+    <value>Shipment</value>
+  </data>
+  <data name="NotAssignedYet" xml:space="preserve">
+    <value>Not assigned yet</value>
+  </data>
+  <data name="CustomerAndAddressInfo" xml:space="preserve">
+    <value>Customer &amp; Address Information</value>
+  </data>
+  <data name="DeliveryAddress" xml:space="preserve">
+    <value>Delivery Address</value>
+  </data>
+  <data name="NoDeliveryAddress" xml:space="preserve">
+    <value>No delivery address.</value>
+  </data>
+  <data name="NoBillingAddress" xml:space="preserve">
+    <value>No billing address.</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="PaymentAndCardInfo" xml:space="preserve">
+    <value>Payment &amp; Card Information</value>
+  </data>
+  <data name="ShowTechDetails" xml:space="preserve">
+    <value>Show technical details</value>
+  </data>
+  <data name="CardBrand" xml:space="preserve">
+    <value>Card Brand</value>
+  </data>
+  <data name="CardFamily" xml:space="preserve">
+    <value>Card Family</value>
+  </data>
+  <data name="PaymentId" xml:space="preserve">
+    <value>Payment ID</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="TechDetailsNote" xml:space="preserve">
+    <value>This area is for technical support and payment gateway checks.</value>
+  </data>
+  <data name="AdminNotePlaceholder" xml:space="preserve">
+    <value>Visible only in admin panel...</value>
+  </data>
+  <data name="OpenTracking" xml:space="preserve">
+    <value>Open tracking</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="HowToUse" xml:space="preserve">
+    <value>How to use?</value>
+  </data>
+  <data name="ClickToToggle" xml:space="preserve">
+    <value>click to expand / collapse</value>
+  </data>
+  <data name="GeneralSystemStatus" xml:space="preserve">
+    <value>Overall System Status</value>
+  </data>
+  <data name="Checking" xml:space="preserve">
+    <value>Checking...</value>
+  </data>
+  <data name="ComponentCount" xml:space="preserve">
+    <value>Component Count</value>
+  </data>
+  <data name="LastChecked" xml:space="preserve">
+    <value>Last Checked</value>
+  </data>
+  <data name="NeverChecked" xml:space="preserve">
+    <value>Not checked yet</value>
+  </data>
+  <data name="RefreshNow" xml:space="preserve">
+    <value>Refresh Now</value>
+  </data>
+  <data name="SystemComponentsAndHealthChecks" xml:space="preserve">
+    <value>System Components &amp; Health Checks</value>
+  </data>
+  <data name="Component" xml:space="preserve">
+    <value>Component</value>
+  </data>
+  <data name="ResponseTime" xml:space="preserve">
+    <value>Response Time</value>
+  </data>
+  <data name="DiagnosticDescription" xml:space="preserve">
+    <value>Description / Diagnostics</value>
+  </data>
+  <data name="QueryingHealthChecks" xml:space="preserve">
+    <value>Querying system health checks...</value>
+  </data>
+  <data name="ComponentNormal" xml:space="preserve">
+    <value>Component is operating normally</value>
+  </data>
+  <data name="ConnectionOrResponseError" xml:space="preserve">
+    <value>Connection or response error</value>
+  </data>
+  <data name="SystemHealthyAllUp" xml:space="preserve">
+    <value>UP (All Systems Healthy and Operational)</value>
+  </data>
+  <data name="SystemIssueDetected" xml:space="preserve">
+    <value>DOWN (System Issue Detected)</value>
+  </data>
+  <data name="JustNow" xml:space="preserve">
+    <value>Just now</value>
+  </data>
+  <data name="SecondsAgo" xml:space="preserve">
+    <value>seconds ago</value>
+  </data>
+  <data name="AdminGeneralSettingsHelpLead" xml:space="preserve">
+    <value>On this page, you can manage your website's Shipping, SEO, and Footer settings.</value>
+  </data>
+  <data name="AdminGeneralSettingsCargoHelp" xml:space="preserve">
+    <value>Specify carrier company name, fixed shipping rate, minimum cart amount for free shipping, and shipping description text.</value>
+  </data>
+  <data name="AdminGeneralSettingsSeoHelp" xml:space="preserve">
+    <value>Manage home page title, meta keywords, and meta description for search engines.</value>
+  </data>
+  <data name="AdminGeneralSettingsFooterHelp" xml:space="preserve">
+    <value>Configure general footer text, newsletter subscription note, and custom HTML footer area.</value>
+  </data>
+  <data name="AdminGeneralSettingsSaveWarning" xml:space="preserve">
+    <value>Remember to click the save button for your changes to take effect.</value>
+  </data>
+  <data name="ReportSalesByDateRangeTitle" xml:space="preserve">
+    <value>Sales by Date Range</value>
+  </data>
+  <data name="ReportSalesByDateRangeDesc" xml:space="preserve">
+    <value>View order and sales summary for your chosen date range.</value>
+  </data>
+  <data name="ReportGetRegionalSalesReportTitle" xml:space="preserve">
+    <value>Regional Sales</value>
+  </data>
+  <data name="ReportGetRegionalSalesReportDesc" xml:space="preserve">
+    <value>Analyze the distribution of sales across regions and cities.</value>
+  </data>
+  <data name="ReportOrderVolumeReportTitle" xml:space="preserve">
+    <value>Order Volume</value>
+  </data>
+  <data name="ReportOrderVolumeReportDesc" xml:space="preserve">
+    <value>See order volumes and trends over specific time periods.</value>
+  </data>
+  <data name="ReportPaymentMethodTitle" xml:space="preserve">
+    <value>Payment Methods</value>
+  </data>
+  <data name="ReportPaymentMethodDesc" xml:space="preserve">
+    <value>Compare how frequently different payment methods are used.</value>
+  </data>
+  <data name="ReportPaymentStatusTitle" xml:space="preserve">
+    <value>Payment Statuses</value>
+  </data>
+  <data name="ReportPaymentStatusDesc" xml:space="preserve">
+    <value>View the breakdown of successful, pending, and failed payments.</value>
+  </data>
+  <data name="ReportPaymentTransactionReportTitle" xml:space="preserve">
+    <value>Payment Transactions</value>
+  </data>
+  <data name="ReportPaymentTransactionReportDesc" xml:space="preserve">
+    <value>Get detailed records of payment transactions by date range.</value>
+  </data>
+  <data name="ReportProductSummaryTitle" xml:space="preserve">
+    <value>Product Summary</value>
+  </data>
+  <data name="ReportProductSummaryDesc" xml:space="preserve">
+    <value>View overall product status, sales, and stock at a glance.</value>
+  </data>
+  <data name="ReportProductStatsByDateRangeTitle" xml:space="preserve">
+    <value>Product Statistics</value>
+  </data>
+  <data name="ReportProductStatsByDateRangeDesc" xml:space="preserve">
+    <value>Inspect sales and performance metrics per product for selected period.</value>
+  </data>
+  <data name="ReportPriceAnalysisTitle" xml:space="preserve">
+    <value>Price Analysis</value>
+  </data>
+  <data name="ReportPriceAnalysisDesc" xml:space="preserve">
+    <value>Analyze product distributions across price ranges and categories.</value>
+  </data>
+  <data name="ReportProductInventoryTitle" xml:space="preserve">
+    <value>Inventory Status</value>
+  </data>
+  <data name="ReportProductInventoryDesc" xml:space="preserve">
+    <value>Quickly check low stock, out of stock, and promotional items.</value>
+  </data>
+  <data name="ReportFraudAnalysisTitle" xml:space="preserve">
+    <value>Fraud Analysis</value>
+  </data>
+  <data name="ReportFraudAnalysisDesc" xml:space="preserve">
+    <value>Overview of suspicious orders and fraud risk signals.</value>
+  </data>
+  <data name="ReportFraudRiskReportTitle" xml:space="preserve">
+    <value>Fraud Risk</value>
+  </data>
+  <data name="ReportFraudRiskReportDesc" xml:space="preserve">
+    <value>Review risk scores and fraud alerts by date range.</value>
+  </data>
+  <data name="ReportPerformanceSystemReportTitle" xml:space="preserve">
+    <value>System Performance</value>
+  </data>
+  <data name="ReportPerformanceSystemReportDesc" xml:space="preserve">
+    <value>View recent system and transaction performance summaries.</value>
+  </data>
+  <data name="ReportCouponUsageTitle" xml:space="preserve">
+    <value>Coupon Usage</value>
+  </data>
+  <data name="ReportCouponUsageDesc" xml:space="preserve">
+    <value>Track coupon usage frequency and revenue impact.</value>
+  </data>
+  <data name="ReportShipmentCompanyTitle" xml:space="preserve">
+    <value>Shipping Companies</value>
+  </data>
+  <data name="ReportShipmentCompanyDesc" xml:space="preserve">
+    <value>View shipment distribution across carrier companies.</value>
+  </data>
+  <data name="ReportFinancialReportTitle" xml:space="preserve">
+    <value>Financial Summary</value>
+  </data>
+  <data name="ReportFinancialReportDesc" xml:space="preserve">
+    <value>Inspect revenue and financial metrics for the selected period.</value>
+  </data>
+  <data name="ReportCatSales" xml:space="preserve">
+    <value>Sales Reports</value>
+  </data>
+  <data name="ReportCatPayment" xml:space="preserve">
+    <value>Payment Reports</value>
+  </data>
+  <data name="ReportCatProduct" xml:space="preserve">
+    <value>Product Reports</value>
+  </data>
+  <data name="ReportCatRisk" xml:space="preserve">
+    <value>Risk &amp; Analysis</value>
+  </data>
+  <data name="ReportCatMarketing" xml:space="preserve">
+    <value>Marketing &amp; Logistics</value>
+  </data>
+  <data name="ReportCatFinance" xml:space="preserve">
+    <value>Financial Reports</value>
+  </data>
+  <data name="ReportLeadText" xml:space="preserve">
+    <value>Select a report from the categories below to view sales, payment, inventory, and risk summaries.</value>
+  </data>
+  <data name="SelectReport" xml:space="preserve">
+    <value>Select Report</value>
+  </data>
+  <data name="OpenReport" xml:space="preserve">
+    <value>Open Report</value>
+  </data>
+  <data name="QuickReports" xml:space="preserve">
+    <value>Quick Reports</value>
+  </data>
+  <data name="SalesByDate" xml:space="preserve">
+    <value>Sales (date)</value>
+  </data>
+  <data name="TodaysSales" xml:space="preserve">
+    <value>Today's sales</value>
+  </data>
+  <data name="YesterdaysSales" xml:space="preserve">
+    <value>Yesterday's sales</value>
+  </data>
+  <data name="ThisWeek" xml:space="preserve">
+    <value>This week</value>
+  </data>
+  <data name="ThisMonth" xml:space="preserve">
+    <value>This month</value>
+  </data>
+  <data name="LowStockProducts" xml:space="preserve">
+    <value>Low stock products</value>
+  </data>
+  <data name="OutOfStockProducts" xml:space="preserve">
+    <value>Out of stock products</value>
+  </data>
+  <data name="CampaignProducts" xml:space="preserve">
+    <value>Campaign products</value>
+  </data>
+  <data name="FinanceAndPerformance" xml:space="preserve">
+    <value>Finance &amp; Performance</value>
+  </data>
+  <data name="ThisMonthsFinancialSummary" xml:space="preserve">
+    <value>This month's financial summary</value>
+  </data>
+  <data name="Last30DaysPerformance" xml:space="preserve">
+    <value>Last 30 days performance</value>
+  </data>
+  <data name="Important" xml:space="preserve">
+    <value>Important</value>
+  </data>
+  <data name="Stock" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="SettingsUpToDate" xml:space="preserve">
+    <value>Settings Up to Date</value>
+  </data>
+  <data name="UnsavedChangesExist" xml:space="preserve">
+    <value>Unsaved Changes Pending</value>
+  </data>
+  <data name="ResetChanges" xml:space="preserve">
+    <value>Discard Changes</value>
+  </data>
+  <data name="SettingCategories" xml:space="preserve">
+    <value>Setting Categories</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="DomainStore" xml:space="preserve">
+    <value>Store</value>
+  </data>
+  <data name="GeneralAndStorefront" xml:space="preserve">
+    <value>General &amp; Storefront</value>
+  </data>
+  <data name="AppearanceAndPwa" xml:space="preserve">
+    <value>Appearance &amp; PWA</value>
+  </data>
+  <data name="MediaAndUpload" xml:space="preserve">
+    <value>Media &amp; Uploads</value>
+  </data>
+  <data name="DomainBusiness" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="SalesAndPayments" xml:space="preserve">
+    <value>Sales &amp; Payments</value>
+  </data>
+  <data name="DomainSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="SecurityAndRequestProtection" xml:space="preserve">
+    <value>Security &amp; Request Protection</value>
+  </data>
+  <data name="IntegrationsAndServices" xml:space="preserve">
+    <value>Integrations &amp; Services</value>
+  </data>
+  <data name="SystemToolsAndMaintenance" xml:space="preserve">
+    <value>System Tools &amp; Maintenance</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Explain" xml:space="preserve">
+    <value>Explain</value>
+  </data>
+  <data name="MetricName" xml:space="preserve">
+    <value>Metric Name</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="AvgDurationMs" xml:space="preserve">
+    <value>Avg. duration (ms)</value>
+  </data>
+  <data name="FailedCallsCount" xml:space="preserve">
+    <value>Failed call count</value>
+  </data>
+  <data name="Metric" xml:space="preserve">
+    <value>metric</value>
+  </data>
+  <data name="Metrics" xml:space="preserve">
+    <value>Metrics</value>
+  </data>
+  <data name="ScrollTableLeftRight" xml:space="preserve">
+    <value>Scroll Table Left/Right</value>
+  </data>
+  <data name="ScrollLeft" xml:space="preserve">
+    <value>Scroll Left</value>
+  </data>
+  <data name="ScrollRight" xml:space="preserve">
+    <value>Scroll Right</value>
+  </data>
+  <data name="SecurityStatusDashboard" xml:space="preserve">
+    <value>Security Health Dashboard</value>
+  </data>
+  <data name="GeneralProtection" xml:space="preserve">
+    <value>Overall Protection</value>
+  </data>
+  <data name="Admin2Fa" xml:space="preserve">
+    <value>Admin 2FA</value>
+  </data>
+  <data name="SpamCaptcha" xml:space="preserve">
+    <value>Spam / CAPTCHA</value>
+  </data>
+  <data name="RateLimiting" xml:space="preserve">
+    <value>Rate Limiting</value>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="Strong" xml:space="preserve">
+    <value>Strong</value>
+  </data>
+  <data name="MediumLevel" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="Critical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="Weak" xml:space="preserve">
+    <value>Weak</value>
+  </data>
+  <data name="Good" xml:space="preserve">
+    <value>Good</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="MaintenanceModeActive" xml:space="preserve">
+    <value>Maintenance mode active</value>
+  </data>
+  <data name="ApplicationMetrics" xml:space="preserve">
+    <value>Application Metrics</value>
+  </data>
+  <data name="WhatIsThisPageFor" xml:space="preserve">
+    <value>What is this page for?</value>
+  </data>
+  <data name="MetricsHelpLead" xml:space="preserve">
+    <value>Shows how fast or slow operations are running across the website and admin panel. Use this to identify slow pages, services, or external integrations. For business and order data, check the Reports menu.</value>
+  </data>
+  <data name="MetricsHelpBullet1" xml:space="preserve">
+    <value>Data is stored in-memory on the server and resets when the application restarts.</value>
+  </data>
+  <data name="MetricsHelpBullet2" xml:space="preserve">
+    <value>Durations are in milliseconds (ms). 1000 ms = 1 second.</value>
+  </data>
+  <data name="MetricsHelpBullet3" xml:space="preserve">
+    <value>The Explain button on each row translates the numbers into a plain text summary.</value>
+  </data>
+  <data name="MetricsHelpBullet4" xml:space="preserve">
+    <value>When evaluating performance, focus on percentiles (P50 → P99) rather than simple averages.</value>
+  </data>
+  <data name="WhatColumnsMean" xml:space="preserve">
+    <value>What do the columns mean?</value>
+  </data>
+  <data name="MetricNameHelp" xml:space="preserve">
+    <value>The measured operation. Prefixes vary by type (controller:, service:, http:, db:).</value>
+  </data>
+  <data name="CountHelp" xml:space="preserve">
+    <value>How many times this operation has been invoked since application start.</value>
+  </data>
+  <data name="ErrorHelp" xml:space="preserve">
+    <value>How many of these calls resulted in an error.</value>
+  </data>
+  <data name="AvgDurationHelp" xml:space="preserve">
+    <value>Average duration of all calls. Can be skewed by outliers.</value>
+  </data>
+  <data name="P50Help" xml:space="preserve">
+    <value>50th percentile (median). Half of calls were faster than this duration.</value>
+  </data>
+  <data name="P75Help" xml:space="preserve">
+    <value>75th percentile. 75% of calls completed faster than this duration.</value>
+  </data>
+  <data name="P90P95P99Help" xml:space="preserve">
+    <value>Higher percentiles: 90% / 95% / 99% of calls finished faster than this duration. P95 is used for regular tracking; P99 for rare slow spikes.</value>
+  </data>
+  <data name="PercentilesShortExample" xml:space="preserve">
+    <value>Percentiles — short example (100 calls)</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Meaning" xml:space="preserve">
+    <value>Meaning</value>
+  </data>
+  <data name="PercentileExplanationNote" xml:space="preserve">
+    <value>“P” stands for percentile. It indicates what percentage of requests were faster than that threshold.</value>
+  </data>
+  <data name="HowToInterpret" xml:space="preserve">
+    <value>How to interpret?</value>
+  </data>
+  <data name="InterpretBullet1" xml:space="preserve">
+    <value>Low P50, high P99 → mostly fast with occasional spikes.</value>
+  </data>
+  <data name="InterpretBullet2" xml:space="preserve">
+    <value>High P50 / P95 / P99 → operation is universally slow.</value>
+  </data>
+  <data name="InterpretBullet3" xml:space="preserve">
+    <value>Error &gt; 0 → check error details first.</value>
+  </data>
+  <data name="InterpretBullet4" xml:space="preserve">
+    <value>Low count → sample size too small for reliable percentiles.</value>
+  </data>
+  <data name="InterpretBullet5" xml:space="preserve">
+    <value>Click Explain on each row to read a tailored performance summary.</value>
+  </data>
+  <data name="MetricNamePrefixes" xml:space="preserve">
+    <value>Metric name prefixes</value>
+  </data>
+  <data name="PrefixOrExample" xml:space="preserve">
+    <value>Prefix / example</value>
+  </data>
+  <data name="WhatDoesItMeasure" xml:space="preserve">
+    <value>What does it measure?</value>
+  </data>
+  <data name="WhenToInspect" xml:space="preserve">
+    <value>When to check?</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>filter</value>
+  </data>
+  <data name="NoMetricsRecordedYet" xml:space="preserve">
+    <value>No metric records yet. Metrics will populate as site or admin pages are visited.</value>
+  </data>
+  <data name="LiveMeasurements" xml:space="preserve">
+    <value>Live measurements</value>
+  </data>
+  <data name="HoverColumnHeaderTooltip" xml:space="preserve">
+    <value>Hover over column headers to see tooltips. Click Explain on any row for detailed insights.</value>
+  </data>
+  <data name="MetricDescriptionModal" xml:space="preserve">
+    <value>Metric explanation</value>
+  </data>
+  <data name="SelectExplainFromRow" xml:space="preserve">
+    <value>Select Explain from any table row.</value>
+  </data>
+  <data name="SearchMetric" xml:space="preserve">
+    <value>Search metric:</value>
+  </data>
+  <data name="SearchMetricPlaceholder" xml:space="preserve">
+    <value>e.g. controller:, service:, db:, Products</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="FilterHint" xml:space="preserve">
+    <value>Hint: Filter by controller: or service:. Click Explain on each row to inspect performance.</value>
+  </data>
+  <data name="ExplainTooltip" xml:space="preserve">
+    <value>Translates the numbers of this row into a plain text summary.</value>
+  </data>
+  <data name="SettingsCenterSubtitle" xml:space="preserve">
+    <value>Configure your store appearance, sales, security, integrations, and system operations from a single center.</value>
+  </data>
+  <data name="SearchInSettingsPlaceholder" xml:space="preserve">
+    <value>Search settings... (e.g. SMTP, 2FA, WebP, Price)</value>
+  </data>
+  <data name="ClearSearch" xml:space="preserve">
+    <value>Clear search</value>
+  </data>
+  <data name="StoreConfiguration" xml:space="preserve">
+    <value>Store Configuration</value>
+  </data>
+  <data name="StoreConfigHelp1" xml:space="preserve">
+    <value>Maintenance mode, Google indexing permission, and product catalog mode.</value>
+  </data>
+  <data name="StoreConfigHelp2" xml:space="preserve">
+    <value>Storefront theme selection, PWA color and startup settings.</value>
+  </data>
+  <data name="StoreConfigHelp3" xml:space="preserve">
+    <value>Image resizing, JPEG/WebP compression, and Sidecar.</value>
+  </data>
+  <data name="BusinessAndCommerce" xml:space="preserve">
+    <value>Business &amp; Commerce</value>
+  </data>
+  <data name="BusinessConfigHelp1" xml:space="preserve">
+    <value>Official title, communication channels, and free shipping threshold.</value>
+  </data>
+  <data name="BusinessConfigHelp2" xml:space="preserve">
+    <value>Payment gateway (İyzico), installment options, and credentials.</value>
+  </data>
+  <data name="SystemAndSecurity" xml:space="preserve">
+    <value>System &amp; Security</value>
+  </data>
+  <data name="SystemConfigHelp1" xml:space="preserve">
+    <value>Admin 2FA, Captcha bot protection, and Rate Limiting.</value>
+  </data>
+  <data name="SystemConfigHelp2" xml:space="preserve">
+    <value>SMTP server configuration and live test email.</value>
+  </data>
+  <data name="SystemConfigHelp3" xml:space="preserve">
+    <value>Social media, external scripts, metrics, and data backup.</value>
+  </data>
+  <data name="LiveConfiguration" xml:space="preserve">
+    <value>Live Configuration</value>
+  </data>
+  <data name="LiveOnSite" xml:space="preserve">
+    <value>Live on Site</value>
+  </data>
+  <data name="InMaintenanceMode" xml:space="preserve">
+    <value>In Maintenance Mode</value>
+  </data>
+  <data name="StoreAndShowcase" xml:space="preserve">
+    <value>Store &amp; Storefront</value>
+  </data>
+  <data name="StoreAndShowcaseDesc" xml:space="preserve">
+    <value>Theme, SEO, and product sales behavior.</value>
+  </data>
+  <data name="PriceAndSales" xml:space="preserve">
+    <value>Pricing &amp; Sales</value>
+  </data>
+  <data name="CatalogMode" xml:space="preserve">
+    <value>Catalog Mode</value>
+  </data>
+  <data name="SeoIndexing" xml:space="preserve">
+    <value>SEO Indexing</value>
+  </data>
+  <data name="ActiveThemeLabel" xml:space="preserve">
+    <value>Active Theme</value>
+  </data>
+  <data name="OpenGeneralSettings" xml:space="preserve">
+    <value>Open General Settings</value>
+  </data>
+  <data name="SecurityScore" xml:space="preserve">
+    <value>Security Score</value>
+  </data>
+  <data name="SecurityAndProtection" xml:space="preserve">
+    <value>Security &amp; Protection</value>
+  </data>
+  <data name="SecurityAndProtectionDesc" xml:space="preserve">
+    <value>Admin accounts and request protection.</value>
+  </data>
+  <data name="Mandatory" xml:space="preserve">
+    <value>Mandatory</value>
+  </data>
+  <data name="GoToSecurityPanel" xml:space="preserve">
+    <value>Go to Security Panel</value>
+  </data>
+  <data name="EmailAndSmtp" xml:space="preserve">
+    <value>Email &amp; SMTP</value>
+  </data>
+  <data name="EmailAndSmtpDesc" xml:space="preserve">
+    <value>Outgoing notifications and order emails.</value>
+  </data>
+  <data name="SmtpConfigured" xml:space="preserve">
+    <value>SMTP Configured</value>
+  </data>
+  <data name="ConfigRequired" xml:space="preserve">
+    <value>Configuration Required</value>
+  </data>
+  <data name="ServerHost" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="Undefined" xml:space="preserve">
+    <value>Undefined</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Sender</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SslTlsActive" xml:space="preserve">
+    <value>SSL/TLS Active</value>
+  </data>
+  <data name="PlainConnection" xml:space="preserve">
+    <value>Plain Connection</value>
+  </data>
+  <data name="OpenEmailSettings" xml:space="preserve">
+    <value>Open Email Settings</value>
+  </data>
+  <data name="MediaAndOptimization" xml:space="preserve">
+    <value>Media &amp; Optimization</value>
+  </data>
+  <data name="MediaAndOptimizationDesc" xml:space="preserve">
+    <value>Image dimensions and compression quality.</value>
+  </data>
+  <data name="WebPActive" xml:space="preserve">
+    <value>WebP Active</value>
+  </data>
+  <data name="JpegQuality" xml:space="preserve">
+    <value>JPEG Quality</value>
+  </data>
+  <data name="WebPQuality" xml:space="preserve">
+    <value>WebP Quality</value>
+  </data>
+  <data name="OpenMediaSettings" xml:space="preserve">
+    <value>Open Media Settings</value>
+  </data>
+  <data name="BusinessProfile" xml:space="preserve">
+    <value>Business Profile</value>
+  </data>
+  <data name="CompanyAndContact" xml:space="preserve">
+    <value>Company &amp; Contact</value>
+  </data>
+  <data name="CompanyAndContactDesc" xml:space="preserve">
+    <value>Company title, address, and shipping thresholds.</value>
+  </data>
+  <data name="FreeShippingThreshold" xml:space="preserve">
+    <value>Free Shipping</value>
+  </data>
+  <data name="OpenCompanySettings" xml:space="preserve">
+    <value>Open Company Settings</value>
+  </data>
+  <data name="OnlinePaymentGateway" xml:space="preserve">
+    <value>Online Payment Gateway</value>
+  </data>
+  <data name="SalesAndPaymentConfigDesc" xml:space="preserve">
+    <value>İyzico API keys and installment table.</value>
+  </data>
+  <data name="PaymentDisabledNotice" xml:space="preserve">
+    <value>Payment system disabled because pricing/sales is turned off.</value>
+  </data>
+  <data name="DefaultInstallment" xml:space="preserve">
+    <value>Default Installment</value>
+  </data>
+  <data name="SinglePayment" xml:space="preserve">
+    <value>Single Payment</value>
+  </data>
+  <data name="InstallmentTable" xml:space="preserve">
+    <value>Installment Table</value>
+  </data>
+  <data name="OpenPaymentSettings" xml:space="preserve">
+    <value>Open Payment Settings</value>
+  </data>
+  <data name="SystemDiagnosticsAndHealth" xml:space="preserve">
+    <value>System Diagnostics &amp; Health</value>
+  </data>
+  <data name="LiveArchitectureHealth" xml:space="preserve">
+    <value>Live Architecture Health</value>
+  </data>
+  <data name="DbConnection" xml:space="preserve">
+    <value>Database (SQL Server)</value>
+  </data>
+  <data name="DbConnectionDesc" xml:space="preserve">
+    <value>Primary datastore and Entity Framework connection.</value>
+  </data>
+  <data name="FileStorageAndMedia" xml:space="preserve">
+    <value>File Storage &amp; Media</value>
+  </data>
+  <data name="FileStorageAndMediaDesc" xml:space="preserve">
+    <value>Uploaded product images and cache.</value>
+  </data>
+  <data name="SidecarImageEngine" xml:space="preserve">
+    <value>Image Processing Engine (Sidecar)</value>
+  </data>
+  <data name="SidecarEngineDesc" xml:space="preserve">
+    <value>WebP / JPEG asynchronous compression service.</value>
+  </data>
+  <data name="OpenSystemHealthPage" xml:space="preserve">
+    <value>Open System Health Page</value>
+  </data>
+  <data name="OpenMetricsPage" xml:space="preserve">
+    <value>View Application Metrics</value>
+  </data>
+  <data name="ServerLabel" xml:space="preserve">
+    <value>Server:</value>
+  </data>
+  <data name="SenderLabel" xml:space="preserve">
+    <value>Sender:</value>
+  </data>
+  <data name="SecurityLabel" xml:space="preserve">
+    <value>Security:</value>
+  </data>
+  <data name="JpegQualityLabel" xml:space="preserve">
+    <value>JPEG Quality:</value>
+  </data>
+  <data name="WebPQualityLabel" xml:space="preserve">
+    <value>WebP Quality:</value>
+  </data>
+  <data name="SidecarLabel" xml:space="preserve">
+    <value>Sidecar:</value>
+  </data>
+  <data name="FreeShippingThresholdLabel" xml:space="preserve">
+    <value>Free Shipping:</value>
+  </data>
+  <data name="DefaultInstallmentLabel" xml:space="preserve">
+    <value>Default Installment:</value>
+  </data>
+  <data name="InstallmentTableLabel" xml:space="preserve">
+    <value>Installment Table:</value>
+  </data>
+  <data name="StorefrontBehaviorAndCatalogPreferences" xml:space="preserve">
+    <value>Storefront Behavior &amp; Catalog Preferences</value>
+  </data>
+  <data name="StorefrontBehaviorHelp" xml:space="preserve">
+    <value>Configure website publishing status, search engine visibility, and product pricing behaviors.</value>
+  </data>
+  <data name="MaintenanceModeSiteOffline" xml:space="preserve">
+    <value>Maintenance Mode (Site Offline)</value>
+  </data>
+  <data name="MaintenanceModeHelp" xml:space="preserve">
+    <value>Displays maintenance notice to visitors; admin panel remains operational.</value>
+  </data>
+  <data name="SearchEngineIndexingGooglebot" xml:space="preserve">
+    <value>Search Engine Indexing (Googlebot etc.)</value>
+  </data>
+  <data name="SearchEngineIndexingHelp" xml:space="preserve">
+    <value>When disabled, robots meta tag is set to noindex, nofollow.</value>
+  </data>
+  <data name="ProductPricingAndCheckout" xml:space="preserve">
+    <value>Product Pricing &amp; Checkout</value>
+  </data>
+  <data name="ProductPricingAndCheckoutHelp" xml:space="preserve">
+    <value>When disabled, site operates in catalog-only mode; add-to-cart and prices are hidden.</value>
+  </data>
+  <data name="ProductReviewsAndRatings" xml:space="preserve">
+    <value>Product Reviews &amp; Ratings</value>
+  </data>
+  <data name="ProductReviewsAndRatingsHelp" xml:space="preserve">
+    <value>Allows visitors and registered customers to review products.</value>
+  </data>
+  <data name="AdminPanelInterfaceLanguage" xml:space="preserve">
+    <value>Admin Panel Interface Language</value>
+  </data>
+  <data name="AdminPanelInterfaceLanguageHelp" xml:space="preserve">
+    <value>Interface language for admin menus, buttons, and labels. Topbar language only changes data entry.</value>
+  </data>
+  <data name="GridPageSizeLabel" xml:space="preserve">
+    <value>Data Table Page Size (Grid Page Size)</value>
+  </data>
+  <data name="GridPageSizeHelp" xml:space="preserve">
+    <value>Number of rows per page displayed in product, order, and customer grids.</value>
+  </data>
+  <data name="ProductShortDescLengthLabel" xml:space="preserve">
+    <value>Product Short Description Preview Length</value>
+  </data>
+  <data name="ProductShortDescLengthHelp" xml:space="preserve">
+    <value>Maximum character length displayed on catalog cards and showcase tiles.</value>
+  </data>
+  <data name="CustomMaintenanceModeHtml" xml:space="preserve">
+    <value>Custom Maintenance Mode HTML</value>
+  </data>
+  <data name="CustomMaintenanceModeHtmlHelp" xml:space="preserve">
+    <value>Custom HTML/CSS displayed to visitors during maintenance (leave empty for default template).</value>
+  </data>
+  <data name="CustomPriceFilterRangesJson" xml:space="preserve">
+    <value>Custom Price Filter Ranges (JSON)</value>
+  </data>
+  <data name="CustomPriceFilterRangesJsonHelp" xml:space="preserve">
+    <value>Price facet filter ranges displayed on category sidebars in JSON format.</value>
+  </data>
+  <data name="AppearanceBrandingAndPwaSettings" xml:space="preserve">
+    <value>Appearance, Branding &amp; PWA Settings</value>
+  </data>
+  <data name="AppearanceBrandingAndPwaHelp" xml:space="preserve">
+    <value>Manage storefront theme, primary color palette, and Progressive Web App (PWA) manifest configuration.</value>
+  </data>
+  <data name="StorefrontTheme" xml:space="preserve">
+    <value>Storefront Theme</value>
+  </data>
+  <data name="StorefrontThemeHelp" xml:space="preserve">
+    <value>Select primary visual layout and style for the website.</value>
+  </data>
+  <data name="ThemePrimaryColorHex" xml:space="preserve">
+    <value>Theme Primary Color (Hex)</value>
+  </data>
+  <data name="ThemePrimaryColorHexHelp" xml:space="preserve">
+    <value>Accent color for buttons, highlights, and browser navigation bar.</value>
+  </data>
+  <data name="PwaBackgroundColor" xml:space="preserve">
+    <value>PWA Background Color</value>
+  </data>
+  <data name="PwaBackgroundColorHelp" xml:space="preserve">
+    <value>Splash screen background color when launching mobile PWA.</value>
+  </data>
+  <data name="PwaStartUrl" xml:space="preserve">
+    <value>PWA Start URL</value>
+  </data>
+  <data name="PwaStartUrlHelp" xml:space="preserve">
+    <value>Initial URL loaded when opened from user home screen.</value>
+  </data>
+  <data name="PwaDisplayMode" xml:space="preserve">
+    <value>PWA Display Mode</value>
+  </data>
+  <data name="PwaDisplayModeHelp" xml:space="preserve">
+    <value>Display layout style on mobile and tablet devices.</value>
+  </data>
+  <data name="PwaOrientation" xml:space="preserve">
+    <value>PWA Orientation</value>
+  </data>
+  <data name="PwaOrientationHelp" xml:space="preserve">
+    <value>Default screen orientation on handheld devices.</value>
+  </data>
+  <data name="PwaFallbackAppName" xml:space="preserve">
+    <value>PWA Fallback App Name</value>
+  </data>
+  <data name="PwaFallbackAppNameHelp" xml:space="preserve">
+    <value>Fallback application name used if company title is empty.</value>
+  </data>
+  <data name="PwaShortNameMaxLength" xml:space="preserve">
+    <value>PWA Short Name Max Length</value>
+  </data>
+  <data name="PwaShortNameMaxLengthHelp" xml:space="preserve">
+    <value>Maximum character limit under home screen app icon.</value>
+  </data>
+  <data name="ImageResizingAndCompressionPipeline" xml:space="preserve">
+    <value>Image Resizing &amp; Compression Pipeline</value>
+  </data>
+  <data name="ImageResizingAndCompressionHelp" xml:space="preserve">
+    <value>Configure product image dimensions, WebP transformation, and Sidecar optimization services.</value>
+  </data>
+  <data name="DefaultImageWidthPx" xml:space="preserve">
+    <value>Default Image Width (px)</value>
+  </data>
+  <data name="DefaultImageWidthPxHelp" xml:space="preserve">
+    <value>Default render width for catalog cards and thumbnails.</value>
+  </data>
+  <data name="DefaultImageHeightPx" xml:space="preserve">
+    <value>Default Image Height (px)</value>
+  </data>
+  <data name="DefaultImageHeightPxHelp" xml:space="preserve">
+    <value>Default render height for catalog cards and thumbnails.</value>
+  </data>
+  <data name="MaxUploadWidthPx" xml:space="preserve">
+    <value>Max Upload Width (px)</value>
+  </data>
+  <data name="MaxUploadWidthPxHelp" xml:space="preserve">
+    <value>Uploaded images are downscaled proportionally to this width.</value>
+  </data>
+  <data name="MaxUploadHeightPx" xml:space="preserve">
+    <value>Max Upload Height (px)</value>
+  </data>
+  <data name="MaxUploadHeightPxHelp" xml:space="preserve">
+    <value>Uploaded images are downscaled proportionally to this height.</value>
+  </data>
+  <data name="JpegCompressionQuality" xml:space="preserve">
+    <value>JPEG Compression Quality (1-100)</value>
+  </data>
+  <data name="JpegCompressionQualityHelp" xml:space="preserve">
+    <value>Quality factor for JPEG output (Recommended: 75-85).</value>
+  </data>
+  <data name="WebPCompressionQuality" xml:space="preserve">
+    <value>WebP Compression Quality (1-100)</value>
+  </data>
+  <data name="WebPCompressionQualityHelp" xml:space="preserve">
+    <value>Quality factor for WebP output (Recommended: 75-85).</value>
+  </data>
+  <data name="PreferWebPFormat" xml:space="preserve">
+    <value>Prefer WebP Format</value>
+  </data>
+  <data name="PreferWebPFormatHelp" xml:space="preserve">
+    <value>Uploaded images are automatically converted to modern WebP format.</value>
+  </data>
+  <data name="PreserveOriginalFormat" xml:space="preserve">
+    <value>Preserve Original Format</value>
+  </data>
+  <data name="PreserveOriginalFormatHelp" xml:space="preserve">
+    <value>Preserves PNG alpha transparency or specific formats without alteration.</value>
+  </data>
+  <data name="AsyncCompressionPipeline" xml:space="preserve">
+    <value>Asynchronous Compression Pipeline</value>
+  </data>
+  <data name="AsyncCompressionPipelineHelp" xml:space="preserve">
+    <value>Queues image optimization in background to speed up upload latency.</value>
+  </data>
+  <data name="DeleteSourceFileAfterCompression" xml:space="preserve">
+    <value>Delete Source File After Compression</value>
+  </data>
+  <data name="DeleteSourceFileAfterCompressionHelp" xml:space="preserve">
+    <value>Removes original raw file from disk once optimized version is generated.</value>
+  </data>
+  <data name="KeepBackupInFileStorage" xml:space="preserve">
+    <value>Keep Backup in File Storage</value>
+  </data>
+  <data name="KeepBackupInFileStorageHelp" xml:space="preserve">
+    <value>Safely archives raw source images in dedicated backup directory.</value>
+  </data>
+  <data name="ImageProcessingSidecarService" xml:space="preserve">
+    <value>Image Processing Sidecar Service</value>
+  </data>
+  <data name="ImageProcessingSidecarServiceHelp" xml:space="preserve">
+    <value>Enables native high-performance image processing engine.</value>
+  </data>
+  <data name="CompanyInfoAndContactDetails" xml:space="preserve">
+    <value>Company Information &amp; Contact Details</value>
+  </data>
+  <data name="CompanyInfoAndContactHelp" xml:space="preserve">
+    <value>Manage official company name, address, and shopping cart thresholds.</value>
+  </data>
+  <data name="CompanyOfficialTitleBrand" xml:space="preserve">
+    <value>Company Official Title / Brand Name</value>
+  </data>
+  <data name="CompanyOfficialTitleBrandHelp" xml:space="preserve">
+    <value>Company title displayed on invoices, automated emails, and title tags.</value>
+  </data>
+  <data name="CompanyEmailAddressLabel" xml:space="preserve">
+    <value>Company Email Address</value>
+  </data>
+  <data name="CompanyEmailAddressLabelHelp" xml:space="preserve">
+    <value>Primary email address for customer inquiries and notifications.</value>
+  </data>
+  <data name="CompanyPhoneAndLocation" xml:space="preserve">
+    <value>Company Phone &amp; Location</value>
+  </data>
+  <data name="CompanyPhoneAndLocationHelp" xml:space="preserve">
+    <value>Customer service telephone number or working hours.</value>
+  </data>
+  <data name="CompanyPhysicalAddress" xml:space="preserve">
+    <value>Company Physical Address</value>
+  </data>
+  <data name="CompanyPhysicalAddressHelp" xml:space="preserve">
+    <value>Full street address displayed on contact page and invoices.</value>
+  </data>
+  <data name="MinimumCartOrderAmount" xml:space="preserve">
+    <value>Minimum Cart Order Amount</value>
+  </data>
+  <data name="MinimumCartOrderAmountHelp" xml:space="preserve">
+    <value>Minimum cart subtotal required to proceed to checkout.</value>
+  </data>
+  <data name="PaymentGatewaysAndIyzicoConfig" xml:space="preserve">
+    <value>Payment Gateways &amp; İyzico Configuration</value>
+  </data>
+  <data name="PaymentGatewaysAndIyzicoHelp" xml:space="preserve">
+    <value>Configure İyzico API credentials, installment options, and 3D Secure verification for credit cards.</value>
+  </data>
+  <data name="ActivePaymentGateway" xml:space="preserve">
+    <value>Active Payment Gateway</value>
+  </data>
+  <data name="ActivePaymentGatewayHelp" xml:space="preserve">
+    <value>Primary payment gateway handling checkout transactions.</value>
+  </data>
+  <data name="IyzicoApiKeyLabel" xml:space="preserve">
+    <value>İyzico API Key</value>
+  </data>
+  <data name="IyzicoApiKeyLabelHelp" xml:space="preserve">
+    <value>Public API key obtained from İyzico merchant portal.</value>
+  </data>
+  <data name="IyzicoSecretKeyLabel" xml:space="preserve">
+    <value>İyzico Secret Key</value>
+  </data>
+  <data name="IyzicoSecretKeyLabelHelp" xml:space="preserve">
+    <value>Secret key obtained from İyzico merchant portal.</value>
+  </data>
+  <data name="IyzicoBaseUrlLabel" xml:space="preserve">
+    <value>İyzico API Base URL</value>
+  </data>
+  <data name="IyzicoBaseUrlLabelHelp" xml:space="preserve">
+    <value>Live: https://api.iyzipay.com or Test: https://sandbox-api.iyzipay.com</value>
+  </data>
+  <data name="EnabledInstallmentsLabel" xml:space="preserve">
+    <value>Enabled Installments</value>
+  </data>
+  <data name="EnabledInstallmentsHelp" xml:space="preserve">
+    <value>Comma-separated installment options available to customers (e.g. 2,3,6,9,12).</value>
+  </data>
+  <data name="DefaultInstallmentOptionLabel" xml:space="preserve">
+    <value>Default Installment Option</value>
+  </data>
+  <data name="DefaultInstallmentOptionHelp" xml:space="preserve">
+    <value>Pre-selected installment option on checkout form.</value>
+  </data>
+  <data name="ShowInstallmentTableOnProductPage" xml:space="preserve">
+    <value>Show Installment Table on Product Page</value>
+  </data>
+  <data name="ShowInstallmentTableOnProductPageHelp" xml:space="preserve">
+    <value>Displays bank installment rates table on product detail pages.</value>
+  </data>
+  <data name="Enforce3DSecureVerification" xml:space="preserve">
+    <value>Enforce 3D Secure Verification</value>
+  </data>
+  <data name="Enforce3DSecureVerificationHelp" xml:space="preserve">
+    <value>Requires SMS OTP verification step for all card payments.</value>
+  </data>
+  <data name="CustomProductDetailPaymentHtml" xml:space="preserve">
+    <value>Custom Product Detail Payment HTML</value>
+  </data>
+  <data name="CustomProductDetailPaymentHtmlHelp" xml:space="preserve">
+    <value>Custom HTML displayed under the Payment Information tab on product pages.</value>
+  </data>
+  <data name="Security2FaAndRateLimiting" xml:space="preserve">
+    <value>Security, Two-Factor Authentication &amp; Rate Limiting</value>
+  </data>
+  <data name="Security2FaAndRateLimitingHelp" xml:space="preserve">
+    <value>Manage administrator security policies, bot protection, and API rate limiting.</value>
+  </data>
+  <data name="Enforce2FaForAdmins" xml:space="preserve">
+    <value>Enforce Two-Factor Authentication (2FA) for Admins</value>
+  </data>
+  <data name="Enforce2FaForAdminsHelp" xml:space="preserve">
+    <value>Requires 6-digit TOTP Authenticator code for all admin and editor logins.</value>
+  </data>
+  <data name="CaptchaProviderLabel" xml:space="preserve">
+    <value>CAPTCHA Bot Protection Provider</value>
+  </data>
+  <data name="CaptchaProviderHelp" xml:space="preserve">
+    <value>Active provider to prevent automated spam on login, registration, and contact forms.</value>
+  </data>
+  <data name="CaptchaSiteKeyLabel" xml:space="preserve">
+    <value>CAPTCHA Site Key</value>
+  </data>
+  <data name="CaptchaSiteKeyHelp" xml:space="preserve">
+    <value>Google reCAPTCHA or Cloudflare Turnstile public site key.</value>
+  </data>
+  <data name="CaptchaSecretKeyLabel" xml:space="preserve">
+    <value>CAPTCHA Secret Key</value>
+  </data>
+  <data name="CaptchaSecretKeyHelp" xml:space="preserve">
+    <value>Google reCAPTCHA or Cloudflare Turnstile server secret key.</value>
+  </data>
+  <data name="RecaptchaV3MinScore" xml:space="preserve">
+    <value>reCAPTCHA v3 Minimum Passing Score (0.0 - 1.0)</value>
+  </data>
+  <data name="RecaptchaV3MinScoreHelp" xml:space="preserve">
+    <value>Requests scoring below this threshold are rejected as bots (Recommended: 0.5).</value>
+  </data>
+  <data name="RateLimitingInfrastructure" xml:space="preserve">
+    <value>Rate Limiting Infrastructure</value>
+  </data>
+  <data name="RateLimitingInfrastructureHelp" xml:space="preserve">
+    <value>Enables IP-based request rate limiting to prevent brute-force and DDoS abuse.</value>
+  </data>
+  <data name="GlobalRequestLimit" xml:space="preserve">
+    <value>Global Request Limit</value>
+  </data>
+  <data name="GlobalRequestLimitHelp" xml:space="preserve">
+    <value>Maximum allowed requests per IP address across entire site within window.</value>
+  </data>
+  <data name="GlobalTimeWindowMinutes" xml:space="preserve">
+    <value>Global Time Window (Minutes)</value>
+  </data>
+  <data name="GlobalTimeWindowMinutesHelp" xml:space="preserve">
+    <value>Duration in minutes for global rate limit window.</value>
+  </data>
+  <data name="AuthRequestLimit" xml:space="preserve">
+    <value>Authentication Request Limit</value>
+  </data>
+  <data name="AuthRequestLimitHelp" xml:space="preserve">
+    <value>Maximum allowed login and password reset attempts within window.</value>
+  </data>
+  <data name="AuthTimeWindowMinutes" xml:space="preserve">
+    <value>Authentication Time Window (Minutes)</value>
+  </data>
+  <data name="AuthTimeWindowMinutesHelp" xml:space="preserve">
+    <value>Duration in minutes for authentication rate limit window.</value>
+  </data>
+  <data name="SearchRequestLimit" xml:space="preserve">
+    <value>Search Request Limit</value>
+  </data>
+  <data name="SearchRequestLimitHelp" xml:space="preserve">
+    <value>Maximum search queries allowed per IP to prevent scraper exhaustion.</value>
+  </data>
+  <data name="SearchTimeWindowMinutes" xml:space="preserve">
+    <value>Search Time Window (Minutes)</value>
+  </data>
+  <data name="SearchTimeWindowMinutesHelp" xml:space="preserve">
+    <value>Duration in minutes for search rate limit window.</value>
+  </data>
+  <data name="ApiRequestLimit" xml:space="preserve">
+    <value>API Request Limit</value>
+  </data>
+  <data name="ApiRequestLimitHelp" xml:space="preserve">
+    <value>Maximum allowed requests per IP for AJAX and REST endpoints.</value>
+  </data>
+  <data name="ApiTimeWindowMinutes" xml:space="preserve">
+    <value>API Time Window (Minutes)</value>
+  </data>
+  <data name="ApiTimeWindowMinutesHelp" xml:space="preserve">
+    <value>Duration in minutes for API rate limit window.</value>
+  </data>
+  <data name="SmtpMailServerPreferences" xml:space="preserve">
+    <value>SMTP Mail Server &amp; Dispatch Preferences</value>
+  </data>
+  <data name="SmtpMailServerHelp" xml:space="preserve">
+    <value>Configure SMTP server for transactional order confirmations, password resets, and notifications.</value>
+  </data>
+  <data name="SmtpServerHost" xml:space="preserve">
+    <value>SMTP Server Host</value>
+  </data>
+  <data name="SmtpServerHostHelp" xml:space="preserve">
+    <value>Example: smtp.gmail.com, mail.yourdomain.com, or smtp.office365.com</value>
+  </data>
+  <data name="SmtpPortNumber" xml:space="preserve">
+    <value>SMTP Port Number</value>
+  </data>
+  <data name="SmtpPortNumberHelp" xml:space="preserve">
+    <value>Commonly 587 or 465 for SSL/TLS, 25 for plain connections.</value>
+  </data>
+  <data name="SmtpUsernameLabel" xml:space="preserve">
+    <value>SMTP Username</value>
+  </data>
+  <data name="SmtpUsernameHelp" xml:space="preserve">
+    <value>Username for SMTP authentication (typically your full email address).</value>
+  </data>
+  <data name="SmtpPasswordLabel" xml:space="preserve">
+    <value>SMTP Password</value>
+  </data>
+  <data name="SmtpPasswordHelp" xml:space="preserve">
+    <value>SMTP account password or secure app-specific password.</value>
+  </data>
+  <data name="EmailSenderDisplayName" xml:space="preserve">
+    <value>Email Sender Name (Display Name)</value>
+  </data>
+  <data name="EmailSenderDisplayNameHelp" xml:space="preserve">
+    <value>Sender name appearing in email 'From' field (e.g. Erayweb Support).</value>
+  </data>
+  <data name="AdminFromEmailAddress" xml:space="preserve">
+    <value>Admin Email Address (From Email)</value>
+  </data>
+  <data name="AdminFromEmailAddressHelp" xml:space="preserve">
+    <value>From address for outgoing transactional emails and reply-to.</value>
+  </data>
+  <data name="EnableSslTlsEncryption" xml:space="preserve">
+    <value>Enable SSL / TLS Encryption</value>
+  </data>
+  <data name="EnableSslTlsEncryptionHelp" xml:space="preserve">
+    <value>Establishes encrypted SSL/TLS connection with mail server (Recommended: Enabled).</value>
+  </data>
+  <data name="UseDefaultWindowsCredentials" xml:space="preserve">
+    <value>Use Default Windows Credentials</value>
+  </data>
+  <data name="UseDefaultWindowsCredentialsHelp" xml:space="preserve">
+    <value>Enable if your local IIS server relies on integrated Windows authentication.</value>
+  </data>
+  <data name="SendLiveTestEmail" xml:space="preserve">
+    <value>Send Live Test Email</value>
+  </data>
+  <data name="SendLiveTestEmailHelp" xml:space="preserve">
+    <value>Enter a destination email address to verify delivery after saving settings.</value>
+  </data>
+  <data name="TargetTestEmailPlaceholder" xml:space="preserve">
+    <value>Target test email (e.g. test@yourdomain.com)</value>
+  </data>
+  <data name="SendTestEmailBtn" xml:space="preserve">
+    <value>Send Test Email</value>
+  </data>
+  <data name="SocialMediaAndExternalIntegrations" xml:space="preserve">
+    <value>Social Media &amp; External Integrations</value>
+  </data>
+  <data name="SocialMediaAndExternalHelp" xml:space="preserve">
+    <value>Manage social profile URLs, Google Analytics tracking, Maps embed, and Live Chat scripts.</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingCode" xml:space="preserve">
+    <value>Google Analytics Tracking Code</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingCodeHelp" xml:space="preserve">
+    <value>Paste your Google Analytics or Tag Manager snippet here.</value>
+  </data>
+  <data name="WhatsAppWidgetScript" xml:space="preserve">
+    <value>WhatsApp Widget Script</value>
+  </data>
+  <data name="WhatsAppWidgetScriptHelp" xml:space="preserve">
+    <value>Custom WhatsApp chat widget JavaScript snippet.</value>
+  </data>
+  <data name="WhatsAppDirectChatUrl" xml:space="preserve">
+    <value>WhatsApp Direct Chat URL</value>
+  </data>
+  <data name="WhatsAppDirectChatUrlHelp" xml:space="preserve">
+    <value>Example: https://wa.me/905551234567</value>
+  </data>
+  <data name="GoogleMapsEmbedHtml" xml:space="preserve">
+    <value>Google Maps Embed HTML</value>
+  </data>
+  <data name="GoogleMapsEmbedHtmlHelp" xml:space="preserve">
+    <value>Google Maps &lt;iframe&gt; embed code displayed on contact page.</value>
+  </data>
+  <data name="LiveChatZopimScript" xml:space="preserve">
+    <value>Live Chat / Zopim Script</value>
+  </data>
+  <data name="LiveChatZopimScriptHelp" xml:space="preserve">
+    <value>Zopim, Tawk.to, or third-party live chat embed snippet.</value>
+  </data>
+  <data name="SystemMaintenanceToolsAndOperations" xml:space="preserve">
+    <value>System Maintenance Tools &amp; Operations</value>
+  </data>
+  <data name="SystemMaintenanceToolsHelp" xml:space="preserve">
+    <value>Perform cache invalidation, database backup export, and system diagnostics.</value>
+  </data>
+  <data name="PurgeApplicationCache" xml:space="preserve">
+    <value>Purge Application Cache</value>
+  </data>
+  <data name="PurgeApplicationCacheHelp" xml:space="preserve">
+    <value>Instantly flushes memory cache for catalog, settings, and navigation.</value>
+  </data>
+  <data name="ClearCacheBtn" xml:space="preserve">
+    <value>Clear Cache</value>
+  </data>
+  <data name="ExportDatabaseBackup" xml:space="preserve">
+    <value>Export Database Backup</value>
+  </data>
+  <data name="ExportDatabaseBackupHelp" xml:space="preserve">
+    <value>Downloads full system and catalog data export.</value>
+  </data>
+  <data name="DownloadBackupBtn" xml:space="preserve">
+    <value>Download Backup</value>
+  </data>
+  <data name="UserEditHelp1" xml:space="preserve">
+    <value>On this page, you can update the user's basic profile details.</value>
+  </data>
+  <data name="UserEditHelp2" xml:space="preserve">
+    <value>First name, last name, and email address are used for system notifications and authentication; please keep them up to date.</value>
+  </data>
+  <data name="ChangePasswordHelp1" xml:space="preserve">
+    <value>On this page, you can securely change your account password.</value>
+  </data>
+  <data name="ChangePasswordHelp2" xml:space="preserve">
+    <value>For security, ensure your new password contains at least 8 characters, uppercase, lowercase, and digits.</value>
+  </data>
+  <data name="TemplatesSaveHelp1" xml:space="preserve">
+    <value>On this page, you can manage product templates and custom specification fields.</value>
+  </data>
+  <data name="TemplatesSaveHelp2" xml:space="preserve">
+    <value>Define custom specification sets for different product categories (e.g. Apparel, Electronics) to streamline catalog entry.</value>
+  </data>
+  <data name="TagsSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create or edit product tags.</value>
+  </data>
+  <data name="TagsSaveHelp2" xml:space="preserve">
+    <value>Tags help customers filter related products and allow search engines to better index your catalog.</value>
+  </data>
+  <data name="TagCategoriesSaveHelp1" xml:space="preserve">
+    <value>On this page, you can organize tag groups and categories.</value>
+  </data>
+  <data name="TagCategoriesSaveHelp2" xml:space="preserve">
+    <value>Grouping tags provides a structured facet filter experience on storefront listings.</value>
+  </data>
+  <data name="StoriesSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create or edit Instagram-style story moments.</value>
+  </data>
+  <data name="StoriesSaveHelp2" xml:space="preserve">
+    <value>Stories are ideal for engaging mobile shoppers and highlighting promotional campaigns.</value>
+  </data>
+  <data name="StoryCategoriesSaveHelp1" xml:space="preserve">
+    <value>On this page, you can manage story collections and categories.</value>
+  </data>
+  <data name="StoryCategoriesSaveHelp2" xml:space="preserve">
+    <value>Categorizing stories enables distinct showcases for seasonal campaigns or product lines.</value>
+  </data>
+  <data name="WebSiteLogoHelp1" xml:space="preserve">
+    <value>On this page, you can upload or update your website header logo.</value>
+  </data>
+  <data name="WebSiteLogoHelp2" xml:space="preserve">
+    <value>Using a high-resolution PNG with alpha transparency or SVG is recommended.</value>
+  </data>
+  <data name="ProductSpecsHelp1" xml:space="preserve">
+    <value>On this page, you can configure technical specifications and dynamic attributes for this product.</value>
+  </data>
+  <data name="ProductSpecsHelp2" xml:space="preserve">
+    <value>Populating template specifications enriches the storefront product display with comprehensive filters.</value>
+  </data>
+  <data name="ProductsSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create a new product or modify an existing catalog item.</value>
+  </data>
+  <data name="ProductsSaveHelp2" xml:space="preserve">
+    <value>Ensure all core details such as product name, pricing, stock levels, categories, and images are accurately configured.</value>
+  </data>
+  <data name="MoveProductsHelp1" xml:space="preserve">
+    <value>On this page, you can batch move or reassign products across category trees.</value>
+  </data>
+  <data name="MoveProductsHelp2" xml:space="preserve">
+    <value>Select a target category from the tree hierarchy to seamlessly relocate products.</value>
+  </data>
+  <data name="MoveCategoryHelp1" xml:space="preserve">
+    <value>On this page, you can restructure category hierarchies and reorder display positions.</value>
+  </data>
+  <data name="MoveCategoryHelp2" xml:space="preserve">
+    <value>Use hierarchical controls to reorganize parent and child category relationships.</value>
+  </data>
+  <data name="ProductCategoriesSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create or edit product categories.</value>
+  </data>
+  <data name="ProductCategoriesSaveHelp2" xml:space="preserve">
+    <value>Add category titles, SEO meta tags, descriptions, and banner images to help customers discover products.</value>
+  </data>
+  <data name="MenusSaveHelp1" xml:space="preserve">
+    <value>On this page, you can manage header navigation menus, footer links, and custom routing.</value>
+  </data>
+  <data name="MenusSaveHelp2" xml:space="preserve">
+    <value>Configure link titles, target URLs, and window behaviors for header, dropdown, and footer navigation.</value>
+  </data>
+  <data name="MoveMenuHelp1" xml:space="preserve">
+    <value>On this page, you can adjust the hierarchical order and position of menu items.</value>
+  </data>
+  <data name="MoveMenuHelp2" xml:space="preserve">
+    <value>Reorder navigation items or nest child items to build multi-level dropdown menus.</value>
+  </data>
+  <data name="MainPageImagesSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create or edit homepage carousel sliders and promotional banners.</value>
+  </data>
+  <data name="MainPageImagesSaveHelp2" xml:space="preserve">
+    <value>Add banners with titles, subheadings, call-to-action buttons, and redirect URLs to engage visitors.</value>
+  </data>
+  <data name="MailTemplatesSaveHelp1" xml:space="preserve">
+    <value>On this page, you can customize automated transactional email templates (order confirmations, password resets, etc.).</value>
+  </data>
+  <data name="MailTemplatesSaveHelp2" xml:space="preserve">
+    <value>Use dynamic placeholder tags ({UserName}, {OrderNumber}, etc.) to personalize emails and send test previews.</value>
+  </data>
+  <data name="ListsSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create curated product collections (Featured, Best Sellers, New Arrivals, etc.).</value>
+  </data>
+  <data name="ListsSaveHelp2" xml:space="preserve">
+    <value>Display curated product collections on the homepage or landing pages with custom presentation layouts.</value>
+  </data>
+  <data name="FaqSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create or modify Frequently Asked Questions (FAQ) items.</value>
+  </data>
+  <data name="FaqSaveHelp2" xml:space="preserve">
+    <value>Provide clear answers to customer inquiries regarding shipping, returns, payment, and account policies.</value>
+  </data>
+  <data name="BrandsSaveHelp1" xml:space="preserve">
+    <value>On this page, you can create or edit product brand profiles and manufacturers.</value>
+  </data>
+  <data name="BrandsSaveHelp2" xml:space="preserve">
+    <value>Upload brand logos, website links, and descriptions to enable brand-specific catalog filtering.</value>
+  </data>
+  <data name="CouponsSaveHelp1" xml:space="preserve">
+    <value>On this page, you can define promotional discount coupons and voucher codes.</value>
+  </data>
+  <data name="CouponsSaveHelp2" xml:space="preserve">
+    <value>Configure coupon codes, discount types (percentage or fixed amount), usage limits, and expiration dates.</value>
+  </data>
+  <data name="EditCompanyInfo" xml:space="preserve">
+    <value>Edit Company Information</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="SystemMetricsLogsDesc" xml:space="preserve">
+    <value>System metrics, activity logs, and data exports.</value>
+  </data>
+  <data name="OpenSystemTools" xml:space="preserve">
+    <value>Open System Tools</value>
+  </data>
+  <data name="SiteStatusAndIndexing" xml:space="preserve">
+    <value>Site Status &amp; Search Engine Indexing</value>
+  </data>
+  <data name="ManageStorefrontVisibility" xml:space="preserve">
+    <value>Manage visitor access and search engine discovery for your store.</value>
+  </data>
+  <data name="MaintenanceModeSiteStatus" xml:space="preserve">
+    <value>Maintenance Mode (Site Status)</value>
+  </data>
+  <data name="MaintenanceModeSiteStatusDesc" xml:space="preserve">
+    <value>When enabled, visitors see a maintenance page and search engines receive an automatic &lt;code&gt;noindex&lt;/code&gt; header.</value>
+  </data>
+  <data name="MaintenanceCustomMessageHtml" xml:space="preserve">
+    <value>Maintenance Custom Message / HTML</value>
+  </data>
+  <data name="MaintenanceCustomMessageHtmlDesc" xml:space="preserve">
+    <value>Custom announcement, message, or HTML displayed to visitors during maintenance. Defaults to standard template if empty.</value>
+  </data>
+  <data name="AllowSearchEngineIndexing" xml:space="preserve">
+    <value>Allow Search Engine Indexing</value>
+  </data>
+  <data name="AllowSearchEngineIndexingDesc" xml:space="preserve">
+    <value>When enabled, Google and Bing bots are granted full crawling and indexing access via &lt;code&gt;robots.txt&lt;/code&gt; and meta tags.</value>
+  </data>
+  <data name="ProductPricesAndAddToCart" xml:space="preserve">
+    <value>Product Prices &amp; Add to Cart</value>
+  </data>
+  <data name="CatalogShowcaseModeDesc" xml:space="preserve">
+    <value>When disabled, store runs in &lt;strong&gt;Catalog Showcase Mode&lt;/strong&gt;; prices are hidden and checkout is disabled.</value>
+  </data>
+  <data name="ProductReviewsAndRatingsTitle" xml:space="preserve">
+    <value>Product Reviews &amp; Ratings</value>
+  </data>
+  <data name="ProductReviewsAndRatingsDesc" xml:space="preserve">
+    <value>Allow visitors and registered customers to submit product reviews and star ratings.</value>
+  </data>
+  <data name="AdminGridPageSizeDesc" xml:space="preserve">
+    <value>Number of rows per page displayed in admin data tables (e.g. 100).</value>
+  </data>
+  <data name="ProductShortDescLengthDesc" xml:space="preserve">
+    <value>Character length displayed before 'Read More' expander on product pages.</value>
+  </data>
+  <data name="UserRolesHelpLead" xml:space="preserve">
+    <value>Check permissions for this user. Save changes to apply.</value>
+  </data>
+  <data name="PermissionsSelected" xml:space="preserve">
+    <value>permissions selected</value>
+  </data>
+  <data name="TogglePermissionsByRoles" xml:space="preserve">
+    <value>Toggle permissions by checking role assignments.</value>
+  </data>
+  <data name="AdminUsersIndexLead" xml:space="preserve">
+    <value>Search admin and editor accounts, filter by role / 2FA status, and manage from the action menu.</value>
+  </data>
+  <data name="CustomersWithAccounts" xml:space="preserve">
+    <value>Customers with registered accounts</value>
+  </data>
+  <data name="FilterByNameEmailRole2Fa" xml:space="preserve">
+    <value>Filter by name / email, role, and 2FA</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="Editor" xml:space="preserve">
+    <value>Editor</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="EnableAuthenticator" xml:space="preserve">
+    <value>Enable Authenticator</value>
+  </data>
+  <data name="EnableAuthenticatorLead" xml:space="preserve">
+    <value>Install Google Authenticator or Microsoft Authenticator on your mobile device and scan the QR code. Enter the 6-digit code to activate two-factor authentication.</value>
+  </data>
+  <data name="SetupAuthenticatorApp" xml:space="preserve">
+    <value>Set up Authenticator App</value>
+  </data>
+  <data name="InstallAuthenticatorStep1" xml:space="preserve">
+    <value>Install Google Authenticator or Microsoft Authenticator on your phone.</value>
+  </data>
+  <data name="InstallAuthenticatorStep2" xml:space="preserve">
+    <value>Scan the QR code below (or enter the key manually).</value>
+  </data>
+  <data name="InstallAuthenticatorStep3" xml:space="preserve">
+    <value>Enter the 6-digit verification code from your app to complete setup.</value>
+  </data>
+  <data name="InstallAuthenticatorStep4" xml:space="preserve">
+    <value>Future administrator logins will require this TOTP code after your password.</value>
+  </data>
+  <data name="ScanQrCodePrompt" xml:space="preserve">
+    <value>Scan the QR code below with Google Authenticator or Microsoft Authenticator:</value>
+  </data>
+  <data name="DisplayNameInApp" xml:space="preserve">
+    <value>Display name in app:</value>
+  </data>
+  <data name="EnterKeyManuallyPrompt" xml:space="preserve">
+    <value>If you cannot scan the QR code, enter this key manually:</value>
+  </data>
+  <data name="VerificationCode6Digits" xml:space="preserve">
+    <value>Verification code (6 digits)</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="ForgotPasswordLead" xml:space="preserve">
+    <value>A password reset link will be sent to the user via email.</value>
+  </data>
+  <data name="CheckSpamFolderHint" xml:space="preserve">
+    <value>If the email does not arrive, check your spam/junk folder.</value>
+  </data>
+  <data name="EmergencyAdminOption" xml:space="preserve">
+    <value>In emergency situations, as administrator</value>
+  </data>
+  <data name="GeneratePasswordInstantlyOption" xml:space="preserve">
+    <value>you can generate a new password instantly.</value>
+  </data>
+  <data name="EmailAutoPopulatedFromUser" xml:space="preserve">
+    <value>Email address was auto-populated from selected user.</value>
+  </data>
+  <data name="GeneratePasswordLead" xml:space="preserve">
+    <value>This action immediately invalidates the user's current password. Share the new temporary password securely.</value>
+  </data>
+  <data name="GeneratePasswordWarning" xml:space="preserve">
+    <value>Current password will be revoked immediately. Copy the generated password now; it will not be displayed again.</value>
+  </data>
+  <data name="PasswordGeneratedSuccessNotice" xml:space="preserve">
+    <value>New password generated. Copy and send it to the user. It cannot be retrieved after leaving this page.</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>Copied</value>
+  </data>
+  <data name="CopyPassword" xml:space="preserve">
+    <value>Copy password</value>
+  </data>
+  <data name="PasswordGenerateFailed" xml:space="preserve">
+    <value>Could not generate new password. Please try again.</value>
+  </data>
+  <data name="PasswordCopiedToClipboard" xml:space="preserve">
+    <value>Password copied to clipboard.</value>
+  </data>
+  <data name="CopyFailedSelectManually" xml:space="preserve">
+    <value>Copy failed. Please select and copy manually.</value>
+  </data>
+  <data name="CustomerFullname" xml:space="preserve">
+    <value>Customer Full Name</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="TcIdentificationNumber" xml:space="preserve">
+    <value>National ID Number</value>
+  </data>
+  <data name="SubTotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="PaymentStatusLabel" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
+  <data name="ToolsTitle" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="AdminPanelInterfaceLanguageDesc" xml:space="preserve">
+    <value>Admin panel interface language (menus, buttons, messages). Data entry language (top bar) is separate.</value>
+  </data>
+  <data name="PaymentDetailTabHelpDesc" xml:space="preserve">
+    <value>Displayed directly to customers under the 'Payment &amp; Installment Information' tab on product pages.</value>
+  </data>
+  <data name="PaymentDetailTabHelpDescAmp" xml:space="preserve">
+    <value>Displayed directly to customers under the 'Payment &amp; Installment Information' tab on product pages.</value>
+  </data>
+  <data name="AppearanceThemePwaManifest" xml:space="preserve">
+    <value>Appearance, Theme &amp; PWA Manifest</value>
+  </data>
+  <data name="AppearanceThemePwaManifestDesc" xml:space="preserve">
+    <value>Configure your site's visual theme, primary color palette, and mobile Progressive Web App (PWA) manifest.</value>
+  </data>
+  <data name="StorefrontAndInterfaceTheme" xml:space="preserve">
+    <value>Storefront &amp; Interface Theme</value>
+  </data>
+  <data name="StorefrontThemeSelectDesc" xml:space="preserve">
+    <value>Select the ready-to-use theme layout template for your storefront.</value>
+  </data>
+  <data name="ThemePrimaryBrandColor" xml:space="preserve">
+    <value>Theme Primary Brand Color</value>
+  </data>
+  <data name="ThemePrimaryBrandColorDesc" xml:space="preserve">
+    <value>Primary brand hex color code used for buttons, links, and interface highlights.</value>
+  </data>
+  <data name="PwaBackgroundColorSplash" xml:space="preserve">
+    <value>PWA Background Color (Splash Screen)</value>
+  </data>
+  <data name="PwaBackgroundColorSplashDesc" xml:space="preserve">
+    <value>Background color displayed on splash screen when app launches on mobile devices.</value>
+  </data>
+  <data name="PwaStartUrlTitle" xml:space="preserve">
+    <value>PWA Start URL</value>
+  </data>
+  <data name="PwaStartUrlDesc" xml:space="preserve">
+    <value>Initial URL loaded when app icon is clicked (typically root &lt;code&gt;/&lt;/code&gt;).</value>
+  </data>
+  <data name="PwaDisplayModeTitle" xml:space="preserve">
+    <value>PWA Display Mode</value>
+  </data>
+  <data name="PwaDisplayModeDesc" xml:space="preserve">
+    <value>Display style on mobile devices (Recommended: Standalone - Full screen app experience without browser chrome).</value>
+  </data>
+  <data name="PwaOrientationTitle" xml:space="preserve">
+    <value>PWA Orientation</value>
+  </data>
+  <data name="PwaOrientationDesc" xml:space="preserve">
+    <value>Preferred screen orientation when app opens (Recommended: Any / Automatic).</value>
+  </data>
+  <data name="PwaShortNameMaxLengthTitle" xml:space="preserve">
+    <value>PWA Short Name Max Length</value>
+  </data>
+  <data name="PwaShortNameMaxLengthDesc" xml:space="preserve">
+    <value>Maximum character length for short app name under mobile home screen icons (Recommended: 12).</value>
+  </data>
+  <data name="PwaFallbackAppNameTitle" xml:space="preserve">
+    <value>PWA Fallback App Name</value>
+  </data>
+  <data name="PwaFallbackAppNameDesc" xml:space="preserve">
+    <value>Default application name used in PWA manifest if company name is empty.</value>
+  </data>
+  <data name="DefaultImageDimensions" xml:space="preserve">
+    <value>Default Image Dimensions</value>
+  </data>
+  <data name="DefaultImageDimensionsDesc" xml:space="preserve">
+    <value>Standard dimension ratios used for photo uploads.</value>
+  </data>
+  <data name="StandardImageWidthDesc" xml:space="preserve">
+    <value>Standard image upload width (Default: 1200px).</value>
+  </data>
+  <data name="StandardImageHeightDesc" xml:space="preserve">
+    <value>Standard image upload height (Default: 900px).</value>
+  </data>
+  <data name="FullSizeImagePoliciesAndJpegQuality" xml:space="preserve">
+    <value>Full-Size Image Policies &amp; JPEG Quality</value>
+  </data>
+  <data name="FullSizeImagesAndCompression" xml:space="preserve">
+    <value>Full-Size Images &amp; Compression</value>
+  </data>
+  <data name="FullSizeImagesAndCompressionDesc" xml:space="preserve">
+    <value>Maximum resizing and compression ratio for original uploaded photos.</value>
+  </data>
+  <data name="ZeroNoLimitDesc" xml:space="preserve">
+    <value>0 = no limit. Larger images are downscaled proportionally.</value>
+  </data>
+  <data name="WebpOptimizationPipelineTitle" xml:space="preserve">
+    <value>WebP Optimization Pipeline</value>
+  </data>
+  <data name="WebpOptimizationPipelineDesc" xml:space="preserve">
+    <value>Modern WebP format transformation and backup policies.</value>
+  </data>
+  <data name="AutoConvertToWebp" xml:space="preserve">
+    <value>Automatically Convert Images to WebP</value>
+  </data>
+  <data name="AutoConvertToWebpDesc" xml:space="preserve">
+    <value>Uploaded photos are converted to modern WebP format, improving page load speed by 30-80%.</value>
+  </data>
+  <data name="PreserveOriginalFileFormat" xml:space="preserve">
+    <value>Preserve Original File Format</value>
+  </data>
+  <data name="PreserveOriginalFileFormatDesc" xml:space="preserve">
+    <value>Preserves the original uploaded format (JPEG, PNG, etc.); conversion is generated as an additional variant.</value>
+  </data>
+  <data name="WebpCompressionQualityTitle" xml:space="preserve">
+    <value>WebP Compression Quality (1-100)</value>
+  </data>
+  <data name="WebpCompressionQualityDesc" xml:space="preserve">
+    <value>Compression quality for WebP format (Recommended: 80).</value>
+  </data>
+  <data name="JpegCompressionQualityTitle" xml:space="preserve">
+    <value>JPEG Compression Quality (1-100)</value>
+  </data>
+  <data name="JpegCompressionQualityDesc" xml:space="preserve">
+    <value>Compression quality for JPEG format (Recommended: 85).</value>
+  </data>
+  <data name="ImageEngineAdvancedPipeline" xml:space="preserve">
+    <value>Image Processing Engine &amp; Advanced Pipeline</value>
+  </data>
+  <data name="ImageProcessingAndPipeline" xml:space="preserve">
+    <value>Image Processing &amp; Pipeline</value>
+  </data>
+  <data name="AsyncProcessingAndSidecarDesc" xml:space="preserve">
+    <value>Asynchronous background processing and Sidecar optimization service.</value>
+  </data>
+  <data name="AsyncBackgroundQueue" xml:space="preserve">
+    <value>Asynchronous Background Queue</value>
+  </data>
+  <data name="AsyncBackgroundQueueDesc" xml:space="preserve">
+    <value>Executes image compression in the background to speed up file upload responsiveness.</value>
+  </data>
+  <data name="SaveWebpSidecarFile" xml:space="preserve">
+    <value>Save WebP Sidecar File</value>
+  </data>
+  <data name="SaveWebpSidecarFileDesc" xml:space="preserve">
+    <value>Generates an accompanying &lt;code&gt;.webp&lt;/code&gt; sidecar file alongside the original.</value>
+  </data>
+  <data name="DeleteOriginalAfterCompression" xml:space="preserve">
+    <value>Delete Original File After Compression</value>
+  </data>
+  <data name="DeleteOriginalAfterCompressionDesc" xml:space="preserve">
+    <value>Deletes the raw source file after generating the optimized version to save disk space.</value>
+  </data>
+  <data name="KeepOriginalInFileStorage" xml:space="preserve">
+    <value>Keep Original in FileStorage</value>
+  </data>
+  <data name="KeepOriginalInFileStorageDesc" xml:space="preserve">
+    <value>Safely archives raw photos in a secure storage directory.</value>
+  </data>
+  <data name="UseImageSidecarService" xml:space="preserve">
+    <value>Use Image Processing Sidecar Service</value>
+  </data>
+  <data name="UseImageSidecarServiceDesc" xml:space="preserve">
+    <value>Executes high-performance compression via the local native Sidecar service.</value>
+  </data>
+  <data name="CompanyAndContactInfo" xml:space="preserve">
+    <value>Company &amp; Contact Information</value>
+  </data>
+  <data name="CompanyAndContactInfoDesc" xml:space="preserve">
+    <value>Manage corporate details displayed on invoices, contact pages, email templates, and storefronts.</value>
+  </data>
+  <data name="OfficialCompanyStoreTitle" xml:space="preserve">
+    <value>Official Company / Store Title</value>
+  </data>
+  <data name="OfficialCompanyNameDesc" xml:space="preserve">
+    <value>Official corporate name appearing on invoices, email notifications, and page titles.</value>
+  </data>
+  <data name="OfficialContactEmailAddress" xml:space="preserve">
+    <value>Official Contact Email Address</value>
+  </data>
+  <data name="OfficialContactEmailDesc" xml:space="preserve">
+    <value>Primary email address displayed to customers and receiving contact form inquiries.</value>
+  </data>
+  <data name="PhoneNumberAndCallCenter" xml:space="preserve">
+    <value>Phone Number &amp; Call Center</value>
+  </data>
+  <data name="CustomerSupportPhoneDesc" xml:space="preserve">
+    <value>Customer support telephone number (e.g. +90 850 123 45 67).</value>
+  </data>
+  <data name="CompanyAddressAndLocation" xml:space="preserve">
+    <value>Company Physical Address &amp; Location</value>
+  </data>
+  <data name="FullPhysicalPostalAddressDesc" xml:space="preserve">
+    <value>Full physical postal address displayed on contact pages, invoices, and footers.</value>
+  </data>
+  <data name="OrderMinimumsAndShippingThresholds" xml:space="preserve">
+    <value>Order Minimums &amp; Shipping Thresholds</value>
+  </data>
+  <data name="OrdersAndShipping" xml:space="preserve">
+    <value>Orders &amp; Shipping</value>
+  </data>
+  <data name="OrderMinimumsAndShippingDesc" xml:space="preserve">
+    <value>Set minimum cart subtotals and free shipping qualification thresholds.</value>
+  </data>
+  <data name="MinimumCartOrderAmountTl" xml:space="preserve">
+    <value>Minimum Cart Order Amount</value>
+  </data>
+  <data name="MinimumCartSubtotalDesc" xml:space="preserve">
+    <value>Minimum cart subtotal required to proceed to checkout (0 = No limit).</value>
+  </data>
+  <data name="FreeShippingSubtotalThresholdTl" xml:space="preserve">
+    <value>Free Shipping Subtotal Threshold</value>
+  </data>
+  <data name="FreeShippingSubtotalDesc" xml:space="preserve">
+    <value>Free shipping is offered when cart reaches this subtotal (0 = No automatic free shipping).</value>
+  </data>
+  <data name="PaymentInfrastructureIyzicoIntegration" xml:space="preserve">
+    <value>Payment Infrastructure &amp; İyzico Integration</value>
+  </data>
+  <data name="PaymentInfrastructureIyzicoDesc" xml:space="preserve">
+    <value>Configure İyzico API credentials, sandbox/test mode, and 3D Secure verification for card payments.</value>
+  </data>
+  <data name="ActivePaymentGatewayInfra" xml:space="preserve">
+    <value>Active Payment Gateway Infrastructure</value>
+  </data>
+  <data name="SelectPrimaryPaymentGatewayDesc" xml:space="preserve">
+    <value>Select the primary payment gateway handling credit card and online checkout transactions.</value>
+  </data>
+  <data name="IyzicoApiKeysAndConnection" xml:space="preserve">
+    <value>İyzico API Keys &amp; Connection</value>
+  </data>
+  <data name="IyzicoApiAndSecurity" xml:space="preserve">
+    <value>İyzico API &amp; Security</value>
+  </data>
+  <data name="EnterIyzicoApiCredentialsDesc" xml:space="preserve">
+    <value>Enter the API Key and Secret Key obtained from your İyzico merchant dashboard.</value>
+  </data>
+  <data name="IyzicoApiKeyPublic" xml:space="preserve">
+    <value>İyzico API Key (Public Key)</value>
+  </data>
+  <data name="MerchantApiKeyDesc" xml:space="preserve">
+    <value>Merchant API key obtained from İyzico merchant portal (apiKey).</value>
+  </data>
+  <data name="IyzicoSecretKeyPrivate" xml:space="preserve">
+    <value>İyzico Secret Key (Private Key)</value>
+  </data>
+  <data name="MerchantSecretKeyDesc" xml:space="preserve">
+    <value>Merchant secret key obtained from İyzico portal (secretKey). Stored securely.</value>
+  </data>
+  <data name="IyzicoApiBaseUrlTitle" xml:space="preserve">
+    <value>İyzico API Base URL</value>
+  </data>
+  <data name="IyzicoBaseUrlHelpText" xml:space="preserve">
+    <value>Live production: &lt;code&gt;https://api.iyzipay.com&lt;/code&gt; | Test/Sandbox: &lt;code&gt;https://sandbox-api.iyzipay.com&lt;/code&gt;</value>
+  </data>
+  <data name="InstallmentAndPaymentRules" xml:space="preserve">
+    <value>Installment &amp; Payment Rules</value>
+  </data>
+  <data name="InstallmentOptionsTitle" xml:space="preserve">
+    <value>Installment Options</value>
+  </data>
+  <data name="InstallmentOptionsDesc" xml:space="preserve">
+    <value>Installment options available for credit cards and product page rate tables.</value>
+  </data>
+  <data name="ActiveInstallmentOptionsTitle" xml:space="preserve">
+    <value>Active Installment Options</value>
+  </data>
+  <data name="ActiveInstallmentsCommaSeparatedDesc" xml:space="preserve">
+    <value>Installment counts offered to customers (Comma-separated, e.g. &lt;code&gt;2,3,6,9,12&lt;/code&gt;).</value>
+  </data>
+  <data name="DefaultSelectedInstallment" xml:space="preserve">
+    <value>Default Selected Installment</value>
+  </data>
+  <data name="DefaultInstallmentFormDesc" xml:space="preserve">
+    <value>Pre-selected installment count on checkout forms (1 = Single Payment).</value>
+  </data>
+  <data name="ShowInstallmentTableProductPageTitle" xml:space="preserve">
+    <value>Show Installment Table on Product Page</value>
+  </data>
+  <data name="ShowInstallmentTableProductPageDesc" xml:space="preserve">
+    <value>Displays bank credit card installment rate tables on product detail pages.</value>
+  </data>
+  <data name="Enforce3dSecureVerificationTitle" xml:space="preserve">
+    <value>Enforce 3D Secure Verification</value>
+  </data>
+  <data name="Enforce3dSecureVerificationDesc" xml:space="preserve">
+    <value>Requires SMS OTP verification step for all card transactions, minimizing fraud and chargeback risk.</value>
+  </data>
+  <data name="SecurityTotp2faRateLimiting" xml:space="preserve">
+    <value>Security, TOTP 2FA &amp; Rate Limiting</value>
+  </data>
+  <data name="SecurityTotp2faRateLimitingDesc" xml:space="preserve">
+    <value>Manage admin security policies, bot protection, and request rate limiting against brute-force and DDoS attacks.</value>
+  </data>
+  <data name="AdminTwoFactorAuthTotp" xml:space="preserve">
+    <value>Administrator Two-Factor Authentication (TOTP 2FA)</value>
+  </data>
+  <data name="Admin2faSecurity" xml:space="preserve">
+    <value>Admin 2FA Security</value>
+  </data>
+  <data name="Admin2faSecurityPoliciesDesc" xml:space="preserve">
+    <value>Authenticator-based security policies for admin and editor accounts.</value>
+  </data>
+  <data name="Enforce2faForAllAdmins" xml:space="preserve">
+    <value>Enforce 2FA for All Administrators</value>
+  </data>
+  <data name="Enforce2faForAllAdminsDesc" xml:space="preserve">
+    <value>When enabled, all Admin and Editor accounts must enter a 6-digit Authenticator code upon login.</value>
+  </data>
+  <data name="Admin2faStatusLabel" xml:space="preserve">
+    <value>Admin 2FA Status:</value>
+  </data>
+  <data name="Protected2faEnforced" xml:space="preserve">
+    <value>Protected (2FA Enforced)</value>
+  </data>
+  <data name="AtRisk2faOptional" xml:space="preserve">
+    <value>At Risk (2FA Optional)</value>
+  </data>
+  <data name="Setup2faFromUserManagement" xml:space="preserve">
+    <value>Setup 2FA from User Management</value>
+  </data>
+  <data name="BotProtectionAntiSpamCaptcha" xml:space="preserve">
+    <value>Bot Protection &amp; Anti-Spam (CAPTCHA)</value>
+  </data>
+  <data name="SpamAndBotProtection" xml:space="preserve">
+    <value>Spam &amp; Bot Protection</value>
+  </data>
+  <data name="CaptchaProviderFormDesc" xml:space="preserve">
+    <value>CAPTCHA provider to prevent automated bot abuse on login, registration, and contact forms.</value>
+  </data>
+  <data name="ActiveCaptchaProviderTitle" xml:space="preserve">
+    <value>Active CAPTCHA Provider</value>
+  </data>
+  <data name="SelectCaptchaTechDesc" xml:space="preserve">
+    <value>Bot mitigation technology used across the website (reCAPTCHA v3 / Cloudflare Turnstile).</value>
+  </data>
+  <data name="RecaptchaV3ScoreThresholdTitle" xml:space="preserve">
+    <value>reCAPTCHA v3 Minimum Score Threshold (0.0 - 1.0)</value>
+  </data>
+  <data name="RecaptchaV3ScoreThresholdDesc" xml:space="preserve">
+    <value>Requests scoring below this threshold are blocked as bot traffic (Recommended: 0.5).</value>
+  </data>
+  <data name="CaptchaSiteKeyPublic" xml:space="preserve">
+    <value>CAPTCHA Site Key (Public Key)</value>
+  </data>
+  <data name="PublicSiteKeyDesc" xml:space="preserve">
+    <value>Public site key obtained from Google or Cloudflare console.</value>
+  </data>
+  <data name="CaptchaSecretKeyPrivate" xml:space="preserve">
+    <value>CAPTCHA Secret Key (Private Key)</value>
+  </data>
+  <data name="ServerSecretKeyDesc" xml:space="preserve">
+    <value>Server secret key obtained from Google or Cloudflare console.</value>
+  </data>
+  <data name="RequestRateLimitingInfra" xml:space="preserve">
+    <value>Request Rate Limiting Infrastructure</value>
+  </data>
+  <data name="RateLimitingAndDdos" xml:space="preserve">
+    <value>Rate Limiting &amp; DDoS</value>
+  </data>
+  <data name="RateLimitingAndDdosDesc" xml:space="preserve">
+    <value>Block brute-force password guessing, scraper bots, and DDoS attacks with IP-based request throttling.</value>
+  </data>
+  <data name="EnableIpRateLimitingTitle" xml:space="preserve">
+    <value>Enable IP-Based Rate Limiting</value>
+  </data>
+  <data name="EnableIpRateLimitingDesc" xml:space="preserve">
+    <value>When enabled, IP addresses exceeding defined thresholds receive temporary 429 (Too Many Requests) blocks.</value>
+  </data>
+  <data name="GlobalRequestLimitAndWindow" xml:space="preserve">
+    <value>Global Request Limit &amp; Window</value>
+  </data>
+  <data name="AuthRequestLimitAndWindow" xml:space="preserve">
+    <value>Authentication Request Limit &amp; Window</value>
+  </data>
+  <data name="SearchRequestLimitAndWindow" xml:space="preserve">
+    <value>Search Request Limit &amp; Window</value>
+  </data>
+  <data name="ApiAjaxRequestLimitAndWindow" xml:space="preserve">
+    <value>API / AJAX Request Limit &amp; Window</value>
+  </data>
+  <data name="MaxRequestsCountLabel" xml:space="preserve">
+    <value>Max Requests (Count)</value>
+  </data>
+  <data name="TimeWindowMinutesLabel" xml:space="preserve">
+    <value>Time Window (Min)</value>
+  </data>
+  <data name="SmtpMailServerSettingsTitle" xml:space="preserve">
+    <value>SMTP Mail Server Settings</value>
+  </data>
+  <data name="SmtpMailServerSettingsDesc" xml:space="preserve">
+    <value>Configure the SMTP mail server for transactional order updates, password resets, and notifications.</value>
+  </data>
+  <data name="SmtpServerConnectionDetails" xml:space="preserve">
+    <value>SMTP Server Connection Details</value>
+  </data>
+  <data name="ServerConnection" xml:space="preserve">
+    <value>Server Connection</value>
+  </data>
+  <data name="SmtpHostAndPortDesc" xml:space="preserve">
+    <value>SMTP host address and port for your mail service provider (Gmail, Microsoft 365, SendGrid, etc.).</value>
+  </data>
+  <data name="SmtpServerHostAddressTitle" xml:space="preserve">
+    <value>SMTP Server Host Address</value>
+  </data>
+  <data name="SmtpHostExampleDesc" xml:space="preserve">
+    <value>Example: &lt;code&gt;smtp.gmail.com&lt;/code&gt; or &lt;code&gt;mail.yourdomain.com&lt;/code&gt;</value>
+  </data>
+  <data name="SmtpPortNumberTitle" xml:space="preserve">
+    <value>SMTP Port Number</value>
+  </data>
+  <data name="SmtpPortHelperDesc" xml:space="preserve">
+    <value>&lt;code&gt;465&lt;/code&gt; for SSL, &lt;code&gt;587&lt;/code&gt; for TLS/STARTTLS, &lt;code&gt;25&lt;/code&gt; for unencrypted connections.</value>
+  </data>
+  <data name="SmtpAuthCredentialsTitle" xml:space="preserve">
+    <value>SMTP Authentication Credentials</value>
+  </data>
+  <data name="Authentication" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="MailServerCredentialsDesc" xml:space="preserve">
+    <value>Account credentials used to authenticate with the mail server.</value>
+  </data>
+  <data name="SmtpUsernameEmailTitle" xml:space="preserve">
+    <value>SMTP Username (Email)</value>
+  </data>
+  <data name="FullEmailUsernameDesc" xml:space="preserve">
+    <value>Typically your full email address (e.g. &lt;code&gt;info@yourdomain.com&lt;/code&gt;).</value>
+  </data>
+  <data name="SmtpPasswordAppPasswordTitle" xml:space="preserve">
+    <value>SMTP Password / App Password</value>
+  </data>
+  <data name="AppPasswordGuidanceDesc" xml:space="preserve">
+    <value>If using Gmail or Microsoft 365, generate and enter a dedicated 'App Password'.</value>
+  </data>
+  <data name="EmailSenderAndSecurityConfig" xml:space="preserve">
+    <value>Email Sender (From) &amp; Security Configuration</value>
+  </data>
+  <data name="SenderAndSecurity" xml:space="preserve">
+    <value>Sender &amp; Security</value>
+  </data>
+  <data name="SenderAndSecurityDesc" xml:space="preserve">
+    <value>Sender display name, from address, and transport layer security encryption.</value>
+  </data>
+  <data name="SenderDisplayNameTitle" xml:space="preserve">
+    <value>Sender Display Name</value>
+  </data>
+  <data name="SenderDisplayNameExampleDesc" xml:space="preserve">
+    <value>Name displayed to customers in their inbox 'From' field (e.g. &lt;code&gt;EImece Store&lt;/code&gt;).</value>
+  </data>
+  <data name="SenderEmailAddressTitle" xml:space="preserve">
+    <value>Sender Email Address (From Email)</value>
+  </data>
+  <data name="SenderFromAndReplyToDesc" xml:space="preserve">
+    <value>From address for outgoing transactional messages and recipient replies (Reply-To).</value>
+  </data>
+  <data name="EnableSslTlsEncryptionTitle" xml:space="preserve">
+    <value>Enable SSL / TLS Encryption</value>
+  </data>
+  <data name="EnableSslTlsEncryptionDesc" xml:space="preserve">
+    <value>Establishes secure encrypted communication with mail server (Recommended: Enabled).</value>
+  </data>
+  <data name="UseDefaultWindowsCredentialsTitle" xml:space="preserve">
+    <value>Use Default Windows Credentials</value>
+  </data>
+  <data name="UseDefaultWindowsCredentialsDesc" xml:space="preserve">
+    <value>Uses integrated Windows authentication for local IIS SMTP service (Usually Disabled).</value>
+  </data>
+  <data name="SendLiveTestEmailTitle" xml:space="preserve">
+    <value>Send Live Test Email</value>
+  </data>
+  <data name="SmtpTestToolTitle" xml:space="preserve">
+    <value>SMTP Test Tool</value>
+  </data>
+  <data name="SmtpTestToolDesc" xml:space="preserve">
+    <value>After saving settings, enter an email address here to verify delivery and diagnose configuration.</value>
+  </data>
+  <data name="DestinationTestEmailAddress" xml:space="preserve">
+    <value>Destination Test Email Address</value>
+  </data>
+  <data name="SendTestEmailButton" xml:space="preserve">
+    <value>Send Test Email</value>
+  </data>
+  <data name="ThirdPartyIntegrationsExternalScripts" xml:space="preserve">
+    <value>Third-Party Integrations &amp; External Scripts</value>
+  </data>
+  <data name="ThirdPartyIntegrationsExternalScriptsDesc" xml:space="preserve">
+    <value>Manage Google Analytics tracking, Google Maps embed, WhatsApp chat widget, and Live Chat scripts.</value>
+  </data>
+  <data name="GoogleAnalyticsTagManagerCode" xml:space="preserve">
+    <value>Google Analytics / Tag Manager Tracking Code</value>
+  </data>
+  <data name="GoogleAnalyticsTitle" xml:space="preserve">
+    <value>Google Analytics</value>
+  </data>
+  <data name="GoogleAnalyticsTrackingSnippetDesc" xml:space="preserve">
+    <value>Paste your GA4 or Google Tag Manager tracking snippet here to be included across all pages.</value>
+  </data>
+  <data name="WhatsAppContactLiveChatWidget" xml:space="preserve">
+    <value>WhatsApp Contact &amp; Live Chat Widget</value>
+  </data>
+  <data name="WhatsAppAndSupport" xml:space="preserve">
+    <value>WhatsApp &amp; Support</value>
+  </data>
+  <data name="WhatsAppAndSupportDesc" xml:space="preserve">
+    <value>Enable customers to instantly contact support via WhatsApp or live chat overlay.</value>
+  </data>
+  <data name="WhatsAppDirectChatUrlTitle" xml:space="preserve">
+    <value>WhatsApp Direct Chat URL</value>
+  </data>
+  <data name="WhatsAppUrlExampleDesc" xml:space="preserve">
+    <value>Example: &lt;code&gt;https://wa.me/905551234567&lt;/code&gt; (with international country code).</value>
+  </data>
+  <data name="WhatsAppWidgetCustomJsTitle" xml:space="preserve">
+    <value>WhatsApp Widget Custom JavaScript</value>
+  </data>
+  <data name="WhatsAppWidgetCustomJsDesc" xml:space="preserve">
+    <value>Custom WhatsApp popup or third-party floating widget snippet.</value>
+  </data>
+  <data name="LiveChatScriptTitle" xml:space="preserve">
+    <value>Live Chat Script (Zopim, Tawk.to, etc.)</value>
+  </data>
+  <data name="LiveChatScriptDesc" xml:space="preserve">
+    <value>Embed JavaScript snippet for Tawk.to, JivoChat, Crisp, or Zendesk chat.</value>
+  </data>
+  <data name="GoogleMapsEmbedCodeTitle" xml:space="preserve">
+    <value>Google Maps Embed Code</value>
+  </data>
+  <data name="GoogleMapsTitle" xml:space="preserve">
+    <value>Google Maps</value>
+  </data>
+  <data name="GoogleMapsEmbedCodeDesc" xml:space="preserve">
+    <value>Paste Google Maps &lt;code&gt;&lt;iframe&gt;&lt;/code&gt; embed code to display store location on contact page.</value>
+  </data>
+  <data name="SystemToolsAndMaintenanceCommands" xml:space="preserve">
+    <value>System Tools &amp; Maintenance Commands</value>
+  </data>
+  <data name="SystemToolsAndMaintenanceDesc" xml:space="preserve">
+    <value>Purge cache stores, export database backup archives, and inspect system architecture health.</value>
+  </data>
+  <data name="PurgeApplicationCacheTitle" xml:space="preserve">
+    <value>Purge Application Cache</value>
+  </data>
+  <data name="CacheManagementDesc" xml:space="preserve">
+    <value>Catalog, settings, and navigation trees are cached in server RAM. Purge cache to apply direct database modifications immediately.</value>
+  </data>
+  <data name="PurgeAllCacheBtn" xml:space="preserve">
+    <value>Purge All Cache</value>
+  </data>
+  <data name="ExportDatabaseBackupTitle" xml:space="preserve">
+    <value>Export Database Backup</value>
+  </data>
+  <data name="DataBackup" xml:space="preserve">
+    <value>Data Backup</value>
+  </data>
+  <data name="DataBackupExportDesc" xml:space="preserve">
+    <value>Exports all catalog items, categories, orders, customers, and system settings as a JSON archive.</value>
+  </data>
+  <data name="DownloadCompleteJsonBackupBtn" xml:space="preserve">
+    <value>Download Complete JSON Backup</value>
+  </data>
+  <data name="SystemArchitectureLiveHealth" xml:space="preserve">
+    <value>System Architecture &amp; Live Health Status</value>
+  </data>
+  <data name="SystemDiagnostics" xml:space="preserve">
+    <value>System Diagnostics</value>
+  </data>
+  <data name="SystemArchitectureLiveHealthDesc" xml:space="preserve">
+    <value>Inspect live operating status for database, file storage, performance metrics, and image processors.</value>
+  </data>
+  <data name="GoToSystemHealthDashboard" xml:space="preserve">
+    <value>Go to System Health Dashboard</value>
+  </data>
+  <data name="InspectApplicationMetrics" xml:space="preserve">
+    <value>Inspect Application Metrics</value>
+  </data>
+  <data name="DefaultImageDimensionsDesc" xml:space="preserve">
+    <value>Standard dimension ratios used for photo uploads.</value>
+  </data>
+  <data name="SettingsCenterOverview" xml:space="preserve">
+    <value>Settings Center Overview</value>
+  </data>
+  <data name="LiveSummaryOfStoreAndSystem" xml:space="preserve">
+    <value>Live summary of store and system operations</value>
+  </data>
+  <data name="SystemToolsAndOperationsSec" xml:space="preserve">
+    <value>System Tools &amp; Operations</value>
+  </data>
+  <data name="SystemToolsHealthBackupSec" xml:space="preserve">
+    <value>System Tools, Health Monitoring &amp; Backup</value>
+  </data>
+  <data name="SystemToolsHealthBackupSecDesc" xml:space="preserve">
+    <value>Performance metrics, logs, and complete system data export operations.</value>
+  </data>
+  <data name="SystemMonitoringDescText" xml:space="preserve">
+    <value>Inspect system resource utilization, database response times, and health status.</value>
+  </data>
+  <data name="HealthLiveStatusText" xml:space="preserve">
+    <value>Health (Live Status)</value>
+  </data>
+  <data name="AppLogsAndMaintenanceText" xml:space="preserve">
+    <value>Application Logs &amp; Maintenance</value>
+  </data>
+  <data name="AppLogsAndMaintenanceDescText" xml:space="preserve">
+    <value>Monitor application error logs or download optimized media archives.</value>
+  </data>
+  <data name="CompressedImagesZipText" xml:space="preserve">
+    <value>Compressed Images (ZIP)</value>
+  </data>
+  <data name="JsonBackupRelationalDescText" xml:space="preserve">
+    <value>Backup all catalog, order, and setting data in relational versioned JSON format.</value>
+  </data>
+  <data name="RelationalPreservedBadge" xml:space="preserve">
+    <value>Relational Preserved</value>
+  </data>
+  <data name="ZipPackageBadge" xml:space="preserve">
+    <value>ZIP Package</value>
+  </data>
+  <data name="ExportAllDataZipTitle" xml:space="preserve">
+    <value>Export all system data as a JSON ZIP archive</value>
+  </data>
+  <data name="ExportDataZipBtn" xml:space="preserve">
+    <value>Export Data (ZIP)</value>
+  </data>
+  <data name="BackupSecurityNoticeText" xml:space="preserve">
+    <value>Passwords and payment credentials are excluded from backup archives for security.</value>
+  </data>
+  <data name="SslTlsEncryptionLabel" xml:space="preserve">
+    <value>SSL / TLS Encryption</value>
+  </data>
+  <data name="SmtpTlsProtocolDesc" xml:space="preserve">
+    <value>Use secure TLS protocol for SMTP communication.</value>
+  </data>
+  <data name="DefaultCredentialsLabel" xml:space="preserve">
+    <value>Default Credentials</value>
+  </data>
+  <data name="SmtpWindowsAuthDesc" xml:space="preserve">
+    <value>Uses server default Windows authentication credentials for SMTP</value>
+  </data>
+  <data name="SmtpLocalSystemCredDesc" xml:space="preserve">
+    <value>Uses local system credentials for SMTP server.</value>
+  </data>
+  <data name="LiveEmailDispatchTest" xml:space="preserve">
+    <value>Live Email Dispatch Test</value>
+  </data>
+  <data name="CompanyEmailPlaceholder" xml:space="preserve">
+    <value>Company Email</value>
+  </data>
+  <data name="SocialMediaAccountsSec" xml:space="preserve">
+    <value>Social Media Accounts</value>
+  </data>
+  <data name="SocialMediaProfilesDesc" xml:space="preserve">
+    <value>Official social media profiles and channels representing your brand.</value>
+  </data>
+  <data name="LinkedInProfileLabel" xml:space="preserve">
+    <value>LinkedIn Profile</value>
+  </data>
+  <data name="LinkedInProfileDesc" xml:space="preserve">
+    <value>Official LinkedIn company or profile link</value>
+  </data>
+  <data name="YouTubeChannelLabel" xml:space="preserve">
+    <value>YouTube Channel</value>
+  </data>
+  <data name="YouTubeChannelDesc" xml:space="preserve">
+    <value>Official YouTube channel link</value>
+  </data>
+  <data name="LiveChatAndWhatsAppSec" xml:space="preserve">
+    <value>Live Chat &amp; WhatsApp</value>
+  </data>
+  <data name="InstantMessagingAndLiveChatSec" xml:space="preserve">
+    <value>Instant Messaging &amp; Live Support Services</value>
+  </data>
+  <data name="WhatsAppDirectMsgDesc" xml:space="preserve">
+    <value>WhatsApp direct message link and third-party live chat widgets.</value>
+  </data>
+  <data name="WhatsAppContactLinkLabel" xml:space="preserve">
+    <value>WhatsApp Contact Link</value>
+  </data>
+  <data name="WhatsAppWidgetScriptLabel" xml:space="preserve">
+    <value>WhatsApp Widget Script</value>
+  </data>
+  <data name="WhatsAppChatWidgetDesc" xml:space="preserve">
+    <value>Custom WhatsApp chat widget or button script</value>
+  </data>
+  <data name="ZopimZendeskChatScriptLabel" xml:space="preserve">
+    <value>Zopim / Zendesk Live Chat Script</value>
+  </data>
+  <data name="ZopimZendeskChatScriptDesc" xml:space="preserve">
+    <value>Embed script code for Zopim or Zendesk Chat</value>
+  </data>
+  <data name="LiveChatScriptSuffix" xml:space="preserve">
+    <value>(Live Chat Script)</value>
+  </data>
+  <data name="ZopimChatIntegrationSnippetDesc" xml:space="preserve">
+    <value>Integration snippet for external live chat providers such as Zopim / Zendesk Chat.</value>
+  </data>
+  <data name="SecurityNoticePrefix" xml:space="preserve">
+    <value>Security Notice:</value>
+  </data>
+  <data name="ThirdPartyScriptSecurityWarning" xml:space="preserve">
+    <value>Scripts added here execute directly on storefront pages. Only embed code from trusted third-party providers.</value>
+  </data>
+  <data name="ExecutedInHeadTagDesc" xml:space="preserve">
+    <value>(Executed inside the page &lt;code&gt;&lt;head&gt;&lt;/code&gt; tag).</value>
+  </data>
+  <data name="GoogleMapsEmbedIframeLabel" xml:space="preserve">
+    <value>Google Maps Embed (Iframe)</value>
+  </data>
+  <data name="DisplayedInMapContainerDesc" xml:space="preserve">
+    <value>(Displayed in the map container on the contact page).</value>
+  </data>
+  <data name="NoMatchingSettingsFound" xml:space="preserve">
+    <value>No matching settings found</value>
+  </data>
+  <data name="DiscardUnsavedChangesPrompt" xml:space="preserve">
+    <value>Discard all unsaved changes and reset settings?</value>
+  </data>
+  <data name="UnsavedChangesLeavePrompt" xml:space="preserve">
+    <value>You have unsaved changes. Are you sure you want to leave this page?</value>
+  </data>
+  <data name="EnableRateLimitingProtection" xml:space="preserve">
+    <value>Enable Request Rate Limiting Protection</value>
+  </data>
+  <data name="EnableRateLimitingProtectionDesc" xml:space="preserve">
+    <value>When enabled, IP addresses exceeding thresholds within defined time windows receive temporary blocks (HTTP 429 Too Many Requests).</value>
+  </data>
+  <data name="EndpointSpecificRequestLimits" xml:space="preserve">
+    <value>Endpoint-Specific Request Limits &amp; Time Windows</value>
+  </data>
+  <data name="LoginPageRequestLimit" xml:space="preserve">
+    <value>Login Page Request Limit</value>
+  </data>
+  <data name="LoginPageRequestLimitDesc" xml:space="preserve">
+    <value>Allowed request count and duration per IP for login attempts</value>
+  </data>
+  <data name="LoginAuthLabel" xml:space="preserve">
+    <value>Login (Auth)</value>
+  </data>
+  <data name="MaxRequestsLabel" xml:space="preserve">
+    <value>Max Requests</value>
+  </data>
+  <data name="DurationMinutesLabel" xml:space="preserve">
+    <value>Duration (Minutes)</value>
+  </data>
+  <data name="ContactFormRequestLimit" xml:space="preserve">
+    <value>Contact Form Request Limit</value>
+  </data>
+  <data name="ContactFormRequestLimitDesc" xml:space="preserve">
+    <value>Allowed request count and duration per IP for contact submissions</value>
+  </data>
+  <data name="ContactFormLabel" xml:space="preserve">
+    <value>Contact Form</value>
+  </data>
+  <data name="CheckoutRequestLimit" xml:space="preserve">
+    <value>Checkout Request Limit</value>
+  </data>
+  <data name="CheckoutRequestLimitDesc" xml:space="preserve">
+    <value>Allowed request count and duration per IP for checkout transactions</value>
+  </data>
+  <data name="CheckoutLabel" xml:space="preserve">
+    <value>Checkout</value>
+  </data>
+  <data name="SearchQueryRequestLimit" xml:space="preserve">
+    <value>Search Query Request Limit</value>
+  </data>
+  <data name="SearchQueryRequestLimitDesc" xml:space="preserve">
+    <value>Allowed request count and duration per IP for search queries</value>
+  </data>
+  <data name="EmailAndSmtpConfiguration" xml:space="preserve">
+    <value>Email &amp; SMTP Configuration</value>
+  </data>
+  <data name="EmailAndSmtpConfigurationDesc" xml:space="preserve">
+    <value>SMTP server delivering transactional order confirmations, password resets, and notifications.</value>
+  </data>
+  <data name="ConfigurationPending" xml:space="preserve">
+    <value>Configuration Pending</value>
+  </data>
+  <data name="SenderEmailAddressLabel" xml:space="preserve">
+    <value>Sender Email Address</value>
+  </data>
+  <data name="SenderEmailAddressDesc" xml:space="preserve">
+    <value>System email address appearing in the From header of outgoing messages</value>
+  </data>
+  <data name="EmailSenderNameLabel" xml:space="preserve">
+    <value>Email Sender Name</value>
+  </data>
+  <data name="EmailSenderNameDesc" xml:space="preserve">
+    <value>Company or store brand name displayed in recipients' inboxes</value>
+  </data>
+  <data name="SmtpHostIpDesc" xml:space="preserve">
+    <value>SMTP server host address or IP (e.g. smtp.example.com)</value>
+  </data>
+  <data name="SmtpPortChoiceDesc" xml:space="preserve">
+    <value>SMTP port (587 TLS, 465 SSL, 25 Plain)</value>
+  </data>
+  <data name="StandardTlsSslPortsDesc" xml:space="preserve">
+    <value>587 for standard TLS, 465 for SSL.</value>
+  </data>
+  <data name="SmtpAuthUsernameDesc" xml:space="preserve">
+    <value>Account username for SMTP server authentication</value>
+  </data>
+  <data name="SmtpServerLoginPassDesc" xml:space="preserve">
+    <value>Account login password for SMTP server</value>
+  </data>
+  <data name="ShowHidePassword" xml:space="preserve">
+    <value>Show/Hide Password</value>
+  </data>
+  <data name="SslTlsSecureConnection" xml:space="preserve">
+    <value>SSL/TLS Secure Connection</value>
+  </data>
+  <data name="SslTlsSmtpConnectionDesc" xml:space="preserve">
+    <value>Establishes encrypted SSL/TLS connection with SMTP server</value>
+  </data>
+  <data name="SendTestEmailToOfficialAddressLead" xml:space="preserve">
+    <value>Send an instant test email with your SMTP configuration to your official address</value>
+  </data>
+  <data name="SendTestEmailInstantDeliverability" xml:space="preserve">
+    <value>to verify deliverability.</value>
+  </data>
+  <data name="WhatsAppOneClickChatDesc" xml:space="preserve">
+    <value>Direct WhatsApp link enabling customers to chat in one click (e.g. https://wa.me/90555...)</value>
+  </data>
+  <data name="AnalyticsAndMapsSnippetsDesc" xml:space="preserve">
+    <value>tracking codes and Google Maps embed (iframe) snippets.</value>
+  </data>
+  <data name="GoogleMapsEmbedContactAboutLead" xml:space="preserve">
+    <value>Embed iframe code displayed on contact and about pages for</value>
+  </data>
+  <data name="IframeEmbedCodeSuffix" xml:space="preserve">
+    <value>iframe embed code</value>
+  </data>
+  <data name="DiscardAllUnsavedChangesPrompt" xml:space="preserve">
+    <value>Discard all unsaved changes and revert to saved settings?</value>
+  </data>
+  <data name="UnsavedChangesConfirmLeavePrompt" xml:space="preserve">
+    <value>You have unsaved changes. Are you sure you want to leave this page?</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Select language</value>
+  </data>
+  <data name="SwitchAdminLanguage" xml:space="preserve">
+    <value>Switch admin language</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ApplyAndRefresh" xml:space="preserve">
+    <value>Apply &amp; Refresh</value>
+  </data>
+  <data name="SecureAdminLogin" xml:space="preserve">
+    <value>Secure Admin Login</value>
+  </data>
+  <data name="AdminLoginLead" xml:space="preserve">
+    <value>This page is strictly for authorized administrators. Customer accounts cannot log in here.</value>
+  </data>
+  <data name="AdminCredentialsStepTitle" xml:space="preserve">
+    <value>Administrator credentials</value>
+  </data>
+  <data name="AdminCredentialsStepDesc" xml:space="preserve">
+    <value>Enter your admin email address and password.</value>
+  </data>
+  <data name="SecurityVerificationStepTitle" xml:space="preserve">
+    <value>Security verification</value>
+  </data>
+  <data name="AdminLoginRecaptchaGuideText" xml:space="preserve">
+    <value>Complete the Google reCAPTCHA verification to prove you are human.</value>
+  </data>
+  <data name="AdminLoginNoCaptchaGuideText" xml:space="preserve">
+    <value>Additional captcha verification is disabled in this environment; you may sign in directly.</value>
+  </data>
+  <data name="AdminLoginMathCaptchaGuideText" xml:space="preserve">
+    <value>Enter the sum of the two numbers in the image to verify security.</value>
+  </data>
+  <data name="TwoFactorStepTitle" xml:space="preserve">
+    <value>Two-Factor Authentication</value>
+  </data>
+  <data name="TwoFactorStepDesc" xml:space="preserve">
+    <value>If enabled on your account, an authenticator security code will be requested.</value>
+  </data>
+  <data name="AdminPanelStepTitle" xml:space="preserve">
+    <value>Administration Panel</value>
+  </data>
+  <data name="AdminPanelStepDesc" xml:space="preserve">
+    <value>You will be securely redirected to the admin panel upon successful verification.</value>
+  </data>
+  <data name="AdminLoginEncryptedNote" xml:space="preserve">
+    <value>Your session credentials are encrypted in transit. Repeated failed attempts may lead to account lockout.</value>
+  </data>
+  <data name="SignInHeading" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="AdminSignInSub" xml:space="preserve">
+    <value>Continue with your administrator account.</value>
+  </data>
+  <data name="CustomerLoginHint" xml:space="preserve">
+    <value>For customer account access, please use the standard storefront login page.</value>
+  </data>
+  <data name="BackToSite" xml:space="preserve">
+    <value>Back to store</value>
+  </data>
+  <data name="ShowPassword" xml:space="preserve">
+    <value>Show password</value>
+  </data>
+  <data name="HidePassword" xml:space="preserve">
+    <value>Hide password</value>
+  </data>
+  <data name="EnterAnswerHere" xml:space="preserve">
+    <value>Enter answer here.</value>
+  </data>
+  <data name="DataEntryLanguage" xml:space="preserve">
+    <value>Content &amp; Data Entry Language</value>
+  </data>
+  <data name="DataEntryLanguageShort" xml:space="preserve">
+    <value>Data Language</value>
+  </data>
+  <data name="DataEntryLanguageTooltip" xml:space="preserve">
+    <value>The active language for entering and editing products, categories, and articles. Does not change the Admin Panel UI language.</value>
+  </data>
+  <data name="AdminPanelUILanguageTitle" xml:space="preserve">
+    <value>Admin Panel UI Language</value>
+  </data>
+  <data name="AdminPanelUILanguageHelp" xml:space="preserve">
+    <value>The language used for the admin interface (menus, labels, buttons, messages). Independent from the topbar data-entry language.</value>
+  </data>
+</root>

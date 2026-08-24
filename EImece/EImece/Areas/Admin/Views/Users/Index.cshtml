@@ -20,15 +20,15 @@
     {
         if (string.Equals(roleName, Constants.AdministratorRole, StringComparison.OrdinalIgnoreCase))
         {
-            return "Yönetici";
+            return AdminResource.Administrator;
         }
         if (string.Equals(roleName, Constants.EditorRole, StringComparison.OrdinalIgnoreCase))
         {
-            return "Editör";
+            return AdminResource.Editor;
         }
         if (string.Equals(roleName, Constants.CustomerRole, StringComparison.OrdinalIgnoreCase))
         {
-            return "Müşteri";
+            return AdminResource.Customer;
         }
         return roleName ?? string.Empty;
     };
@@ -64,16 +64,16 @@
     if (string.Equals(role, Constants.AdministratorRole, StringComparison.OrdinalIgnoreCase))
     {
         css = "eg-state-badge eg-role-admin";
-        label = "Yönetici";
+        label = AdminResource.Administrator;
     }
     else if (string.Equals(role, Constants.EditorRole, StringComparison.OrdinalIgnoreCase))
     {
         css = "eg-state-badge eg-role-editor";
-        label = "Editör";
+        label = AdminResource.Editor;
     }
     else if (string.Equals(role, Constants.CustomerRole, StringComparison.OrdinalIgnoreCase))
     {
-        label = "Müşteri";
+        label = AdminResource.Customer;
     }
     <span class="@css">@label</span>
 }
@@ -83,13 +83,13 @@
         <div class="users-admin-header-main">
             <h2 class="admin-page-title">@AdminResource.Users</h2>
             <p class="users-admin-lead">
-                Yönetici ve editör hesaplarını arayın, role / 2FA durumuna göre filtreleyin ve işlem menüsünden düzenleyin.
+                @AdminResource.AdminUsersIndexLead
             </p>
         </div>
         <div class="users-admin-header-actions">
             <a href="@Url.Action("CustomerRoles", controllerName)" class="btn btn-secondary btn-sm">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                Sitede hesabı olan müşteriler
+                @AdminResource.CustomersWithAccounts
             </a>
             <a href="@Url.Action("Register", controllerName)" class="btn btn-primary btn-sm">
                 <i class="fa fa-plus" aria-hidden="true"></i>
@@ -119,7 +119,7 @@
                 }
                 else
                 {
-                    <span class="users-admin-filters-hint">Ad / e-posta, rol ve 2FA ile daraltın</span>
+                    <span class="users-admin-filters-hint">@AdminResource.FilterByNameEmailRole2Fa</span>
                 }
             </div>
         </div>
@@ -140,7 +140,7 @@
                     <div class="form-group row mb-3">
                         <label for="usersRole">@AdminResource.Roles</label>
                         <select class="form-select form-select-sm" id="usersRole" name="role">
-                            <option value="">Tümü</option>
+                            <option value="">@AdminResource.All</option>
                             @foreach (var roleOption in availableRoles)
                             {
                                 <option value="@roleOption" @(string.Equals(selectedRole, roleOption, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>
@@ -152,7 +152,7 @@
                     <div class="form-group row mb-3">
                         <label for="usersTwoFactor">2FA</label>
                         <select class="form-select form-select-sm" id="usersTwoFactor" name="twoFactor">
-                            <option value="">Tümü</option>
+                            <option value="">@AdminResource.All</option>
                             <option value="yes" @(string.Equals(selectedTwoFactor, "yes", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "1" ? "selected=\"selected\"" : null)>Aktif</option>
                             <option value="no" @(string.Equals(selectedTwoFactor, "no", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "0" ? "selected=\"selected\"" : null)>Yok</option>
                         </select>

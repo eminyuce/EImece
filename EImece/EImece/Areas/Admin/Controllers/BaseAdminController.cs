@@ -14,8 +14,10 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -158,7 +160,7 @@ namespace EImece.Areas.Admin.Controllers
                     filterContext.Result = new ContentResult
                     {
                         ContentType = "text/html; charset=utf-8",
-                        Content = $"<!DOCTYPE html><html><head><title>Admin Error</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:32px;background:#f8f9fa;color:#212529}}h1{{color:#dc3545;font-size:22px;margin-top:0}}.card{{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:24px;max-width:600px;margin:20px 0;box-shadow:0 2px 4px rgba(0,0,0,0.05)}}.ref{{font-family:monospace;color:#6c757d;font-size:13px;margin-top:12px}}</style></head><body><div class=\"card\"><h1>Admin Error</h1><p>An unexpected error occurred in the administration panel.</p><p class=\"ref\">Correlation ID: {HttpUtility.HtmlEncode(correlationId)}</p><a href=\"/admin\" style=\"display:inline-block;margin-top:16px;color:#0d6efd;text-decoration:none\">&larr; Return to Admin Dashboard</a></div></body></html>"
+                        Content = $"<!DOCTYPE html><html><head><title>Admin Error</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:32px;background:#f8f9fa;color:#212529}}h1{{color:#dc3545;font-size:22px;margin-top:0}}.card{{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:24px;max-width:800px;margin:20px 0;box-shadow:0 2px 4px rgba(0,0,0,0.05)}}.ref{{font-family:monospace;color:#6c757d;font-size:13px;margin-top:12px}}pre{{background:#f1f1f1;padding:10px;overflow:auto;}}</style></head><body><div class=\"card\"><h1>Admin Error</h1><p>An unexpected error occurred in the administration panel.</p><p class=\"ref\">Correlation ID: {HttpUtility.HtmlEncode(correlationId)}</p><p><strong>Exception:</strong> {HttpUtility.HtmlEncode(ex.Message)}</p><pre>{HttpUtility.HtmlEncode(ex.ToString())}</pre><a href=\"/admin\" style=\"display:inline-block;margin-top:16px;color:#0d6efd;text-decoration:none\">&larr; Return to Admin Dashboard</a></div></body></html>"
                     };
                 }
             }
@@ -211,6 +213,18 @@ namespace EImece.Areas.Admin.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            // Set the UI culture based on AdminPanelLanguage setting (admin panel interface language)
+            // This is separate from CurrentLanguage which is the data entry language (topbar dropdown)
+            var uiLang = AdminPanelUILanguage;
+            var cultureName = uiLang == 2 ? "en-US" : "tr-TR";
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            AdminResource.Culture = culture;
+            Resource.Culture = culture;
+
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
             ViewBag.GridPageSizeNumber = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
 
@@ -377,6 +391,30 @@ namespace EImece.Areas.Admin.Controllers
                 {
                     return AppConfig.MainLanguage;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the admin panel UI language from the system setting (AdminPanelLanguage).
+        /// This is separate from CurrentLanguage (data entry language from topbar dropdown).
+        /// </summary>
+        protected int AdminPanelUILanguage
+        {
+            get
+            {
+                // Try to get from system setting
+                var settingValue = SettingService?.GetSettingByKey(DomainConstants.AdminPanelLanguage);
+                if (!string.IsNullOrWhiteSpace(settingValue))
+                {
+                    // Parse culture code like "tr-TR" or "en-US" to EImeceLanguage enum value
+                    var langEnum = EnumHelper.ParseLanguage(settingValue);
+                    if (langEnum.HasValue)
+                    {
+                        return (int)langEnum.Value;
+                    }
+                }
+                // Fallback to default
+                return DomainConstants.DefaultAdminPanelLanguage == "en-US" ? 2 : 1;
             }
         }
 

@@ -76,7 +76,7 @@ if (!isSingleAction)
             aria-haspopup="true"
             aria-expanded="false">
         <i class="fa fa-cog" aria-hidden="true"></i>
-        <span>İşlemler</span>
+        <span>@AdminResource.Actions</span>
     </button>
     <ul class="dropdown-menu dropdown-menu-end eg-actions-menu">
         @if (!string.IsNullOrEmpty(detailUrl))
@@ -116,7 +116,7 @@ if (!isSingleAction)
             <li>
                 <a class="dropdown-item" href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
                    title="@AdminResource.ProductSpecs">
-                    <i class="fa fa-plus"></i> Özellikler
+                    <i class="fa fa-plus"></i> @AdminResource.ProductSpecs
                 </a>
             </li>
         }
@@ -124,7 +124,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@Url.Action("Index", "ProductComments", new { Id = itemId })">
-                    <i class="fa fa-user"></i> Yorumlar
+                    <i class="fa fa-user"></i> @AdminResource.Comments
                 </a>
             </li>
         }
@@ -206,7 +206,7 @@ if (!isSingleAction)
     @if (hasComments)
     {
         <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })"
-           class="btn btn-secondary btn-sm" title="Yorumlar">
+           class="btn btn-secondary btn-sm" title="@AdminResource.Comments">
             <i class="fa fa-user"></i>
         </a>
     }
