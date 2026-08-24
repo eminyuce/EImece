@@ -10138,5 +10138,35 @@ namespace Resources {
                 return ResourceManager.GetString("EnterAnswerHere", resourceCulture);
             }
         }
+
+        public static string DataEntryLanguage {
+            get {
+                return ResourceManager.GetString("DataEntryLanguage", resourceCulture);
+            }
+        }
+
+        public static string DataEntryLanguageShort {
+            get {
+                return ResourceManager.GetString("DataEntryLanguageShort", resourceCulture);
+            }
+        }
+
+        public static string DataEntryLanguageTooltip {
+            get {
+                return ResourceManager.GetString("DataEntryLanguageTooltip", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelUILanguageTitle {
+            get {
+                return ResourceManager.GetString("AdminPanelUILanguageTitle", resourceCulture);
+            }
+        }
+
+        public static string AdminPanelUILanguageHelp {
+            get {
+                return ResourceManager.GetString("AdminPanelUILanguageHelp", resourceCulture);
+            }
+        }
     }
 }

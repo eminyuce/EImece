@@ -4422,4 +4422,19 @@
   <data name="EnterAnswerHere" xml:space="preserve">
     <value>Enter answer here.</value>
   </data>
+  <data name="DataEntryLanguage" xml:space="preserve">
+    <value>Content &amp; Data Entry Language</value>
+  </data>
+  <data name="DataEntryLanguageShort" xml:space="preserve">
+    <value>Data Language</value>
+  </data>
+  <data name="DataEntryLanguageTooltip" xml:space="preserve">
+    <value>The active language for entering and editing products, categories, and articles. Does not change the Admin Panel UI language.</value>
+  </data>
+  <data name="AdminPanelUILanguageTitle" xml:space="preserve">
+    <value>Admin Panel UI Language</value>
+  </data>
+  <data name="AdminPanelUILanguageHelp" xml:space="preserve">
+    <value>The language used for the admin interface (menus, labels, buttons, messages). Independent from the topbar data-entry language.</value>
+  </data>
 </root>

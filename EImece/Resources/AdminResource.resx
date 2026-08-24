@@ -4422,4 +4422,19 @@
   <data name="EnterAnswerHere" xml:space="preserve">
     <value>Buraya Yazınız.</value>
   </data>
+  <data name="DataEntryLanguage" xml:space="preserve">
+    <value>İçerik &amp; Veri Giriş Dili</value>
+  </data>
+  <data name="DataEntryLanguageShort" xml:space="preserve">
+    <value>İçerik Dili</value>
+  </data>
+  <data name="DataEntryLanguageTooltip" xml:space="preserve">
+    <value>Ürün, kategori ve sayfa içeriklerini girdiğiniz ve düzenlediğiniz aktif veri dilidir. Yönetim paneli arayüz dilini (menüler, butonlar vb.) etkilemez.</value>
+  </data>
+  <data name="AdminPanelUILanguageTitle" xml:space="preserve">
+    <value>Yönetim Paneli Arayüz Dili</value>
+  </data>
+  <data name="AdminPanelUILanguageHelp" xml:space="preserve">
+    <value>Yönetim paneli arayüz dili (menüler, butonlar, sistem mesajları). Veri giriş dili (üst çubuk) ayrı bir ayardır.</value>
+  </data>
 </root>

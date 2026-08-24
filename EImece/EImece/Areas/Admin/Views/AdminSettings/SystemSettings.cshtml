@@ -502,13 +502,16 @@
                                     </div>
                                 </div>
 
-                                <!-- Admin Panel Language -->
-                                <div class="setting-item mb-3" data-setting-name="AdminPanelLanguage" data-setting-label="Yönetim Paneli Dili" data-setting-desc="Yönetim paneli arayüzünün görüntüleneceği dil (menüler, etiketler, butonlar, mesajlar). Veri giriş dili (üst çubuk) ile bağımsızdır." data-keywords="yönetim paneli dil arayüz language ui tr en">
-                                    <label class="form-label fw-bold small" for="AdminPanelLanguage">
-                                        @Html.DisplayNameFor(model => model.AdminPanelLanguage)
-                                        @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", Resource.AdminPanelLanguageDescription } })
-                                    </label>
-                                    <div class="input-group">
+                                <!-- Admin Panel UI Language -->
+                                <div class="setting-item mb-3 p-3 border rounded bg-light" data-setting-name="AdminPanelLanguage" data-setting-label="@AdminResource.AdminPanelUILanguageTitle" data-setting-desc="@AdminResource.AdminPanelUILanguageHelp" data-keywords="yönetim paneli dil arayüz language ui tr en">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <label class="form-label fw-bold small m-0 d-flex align-items-center gap-2" for="AdminPanelLanguage">
+                                            <span class="badge bg-primary text-uppercase"><i class="fa fa-desktop me-1"></i>UI</span>
+                                            <span>@AdminResource.AdminPanelUILanguageTitle</span>
+                                            @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.AdminPanelUILanguageHelp } })
+                                        </label>
+                                    </div>
+                                    <div class="input-group mb-1">
                                         @Html.DropDownListFor(model => model.AdminPanelLanguage, new List<SelectListItem>
                                         {
                                             new SelectListItem { Text = "🇹🇷 Türkçe (Turkish)", Value = "tr-TR" },
@@ -518,7 +521,9 @@
                                             <i class="fa fa-refresh me-1" aria-hidden="true"></i> @AdminResource.ApplyAndRefresh
                                         </button>
                                     </div>
-                                    <div class="form-text small">@AdminResource.AdminPanelInterfaceLanguageDesc</div>
+                                    <div class="form-text small text-muted">
+                                        <i class="fa fa-info-circle me-1 text-primary"></i>@AdminResource.AdminPanelUILanguageHelp
+                                    </div>
                                     @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
                                 </div>
 
