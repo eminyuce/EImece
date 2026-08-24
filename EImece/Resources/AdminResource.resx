@@ -4344,4 +4344,19 @@
   <data name="UnsavedChangesConfirmLeavePrompt" xml:space="preserve">
     <value>Kaydedilmemiş değişiklikleriniz var. Sayfadan ayrılmak istediğinize emin misiniz?</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Dil Seçin</value>
+  </data>
+  <data name="SwitchAdminLanguage" xml:space="preserve">
+    <value>Yönetim paneli dilini değiştir</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Sıfırla</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>İptal</value>
+  </data>
 </root>

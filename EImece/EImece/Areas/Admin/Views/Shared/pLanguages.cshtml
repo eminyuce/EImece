@@ -12,18 +12,18 @@
 <li class="admin-topbar-lang" style="display:flex; align-items:center; gap:8px;">
     <label for="CookieLanguage" class="admin-topbar-lang__label" style="display:flex; align-items:center; gap:6px; margin:0; font-size:12px; font-weight:600; color:#64748b; letter-spacing:.04em; text-transform:uppercase;">
         <i class="fa fa-globe" aria-hidden="true" style="color:#94a3b8;"></i>
-        <span>Language</span>
+        <span>@AdminResource.Language</span>
     </label>
     <div class="admin-topbar-lang__control" style="position:relative;">
         <select id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)"
-                aria-label="Select language"
-                title="Switch admin language"
+                aria-label="@AdminResource.SelectLanguage"
+                title="@AdminResource.SwitchAdminLanguage"
                 style="appearance:none; -webkit-appearance:none; height:32px; min-width:148px; padding:6px 32px 6px 10px; font-size:13px; font-weight:600; color:#0f172a; background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; box-shadow:0 1px 2px rgba(15,23,42,.06); cursor:pointer;">
             @foreach (var l in listItems)
             {
                 var v = l.Value;
-                var flag = v == "1" ? "🇹🇷" : v == "2" ? "🇬🇧" : "🏳️";
-                var name = v == "1" ? "Türkçe" : v == "2" ? "English" : l.Text;
+                var flag = v == "1" ? "🇹🇷" : v == "2" ? "🇬🇧" : v == "3" ? "🇷🇺" : v == "4" ? "🇩🇪" : "🏳️";
+                var name = string.IsNullOrWhiteSpace(l.Text) ? (v == "1" ? "Türkçe" : v == "2" ? "English" : v) : l.Text;
                 if (l.Selected)
                 {
             <option selected="selected" value="@l.Value">@flag @name</option>
