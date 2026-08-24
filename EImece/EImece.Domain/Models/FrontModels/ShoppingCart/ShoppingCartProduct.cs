@@ -47,7 +47,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         public ShoppingCartProduct(Product product, List<ProductSpecItem> productSpecItems) : this()
         {
             this.Id = product.Id;
-            this.Name = product.NameLong;
+            this.Name = string.IsNullOrEmpty(product.NameLong) ? product.Name : product.NameLong;
             this.Price = product.PriceWithDiscount;
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategory != null ? product.ProductCategory.Name : "";
@@ -66,7 +66,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
         public ShoppingCartProduct(StorefrontProductDetailDto product, List<ProductSpecItem> productSpecItems) : this()
         {
             this.Id = product.Id;
-            this.Name = product.NameLong;
+            this.Name = string.IsNullOrEmpty(product.NameLong) ? product.Name : product.NameLong;
             this.Price = product.PriceWithDiscount;
             this.ProductCode = product.ProductCode;
             this.CategoryName = product.ProductCategoryName ?? "";

@@ -1162,7 +1162,8 @@ namespace EImece.Domain.Services.ExportImport
                     ProductName = x.ProductName,
                     ProductCode = x.ProductCode,
                     CategoryName = x.CategoryName,
-                    ProductSpecItems = x.ProductSpecItems
+                    ProductSpecItems = x.ProductSpecItems,
+                    ProductImageUrl = x.ProductImageUrl
                 }).ToList();
             }).ConfigureAwait(false);
         }

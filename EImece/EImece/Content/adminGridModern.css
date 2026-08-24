@@ -2675,14 +2675,14 @@ body.admin-app .eg-grid .grid-wrap {
 }
 
 @media (max-width: 991px) {
-    /* Collapse low-priority columns on phones + tablets (shared across all grids) */
+    /* Ensure all data columns remain visible and scrollable across phones and tablets */
     body.admin-app .eg-grid .grid-table > thead > tr > th.gridDateClass,
     body.admin-app .eg-grid .grid-table > tbody > tr > td.gridDateClass,
     body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-secondary,
     body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-secondary,
-    body.admin-app .eg-grid .grid-table > thead > tr > th.smallGridColumn:not(.eg-col-status):not(.eg-col-state):not(.eg-col-price):not(.eg-col-actions),
-    body.admin-app .eg-grid .grid-table > tbody > tr > td.smallGridColumn:not(.eg-col-status):not(.eg-col-state):not(.eg-col-price):not(.eg-col-actions) {
-        display: none !important;
+    body.admin-app .eg-grid .grid-table > thead > tr > th.smallGridColumn,
+    body.admin-app .eg-grid .grid-table > tbody > tr > td.smallGridColumn {
+        display: table-cell !important;
     }
 
     /* Legacy checkBoxStyle.css draws a 17px box via label::before and also leaves
@@ -3295,10 +3295,10 @@ body.admin-app .eg-grid .grid-wrap {
         font-weight: 600;
     }
 
-    /* Hide secondary order fields in the card (details page covers the rest) */
+    /* Show all order fields on mobile/tablets with horizontal scroll */
     body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-secondary,
     body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.gridDateClass {
-        display: none !important;
+        display: table-cell !important;
     }
 
     body.admin-app .eg-orders-grid .eg-order-status-badge,
@@ -5018,11 +5018,9 @@ body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]
     body.admin-app .griddly table > tbody > tr > td.eg-col-secondary,
     body.admin-app .griddly table > thead > tr > th.gridDateClass,
     body.admin-app .griddly table > tbody > tr > td.gridDateClass {
-        display: none !important;
-        min-width: 0 !important;
-        width: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
+        display: table-cell !important;
+        width: auto !important;
+        min-width: 100px !important;
     }
 }
 

@@ -1,4 +1,4 @@
-﻿-- ============================================================================
+-- ============================================================================
 -- EImece Database Creation Script
 -- ============================================================================
 -- Database: eimece
@@ -682,7 +682,7 @@ GO
 CREATE TABLE [dbo].[OrderProducts](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[OrderId] [int] NOT NULL,
-	[ProductId] [int] NOT NULL,
+	[ProductId] [int] NULL,
 	[Quantity] [int] NOT NULL,
 	[TotalPrice] [money] NOT NULL,
 	[ProductSpecItems] [nvarchar](4000) NULL,
@@ -690,6 +690,7 @@ CREATE TABLE [dbo].[OrderProducts](
 	[ProductName] [nvarchar](500) NULL,
 	[ProductCode] [nvarchar](500) NULL,
 	[CategoryName] [nvarchar](500) NULL,
+	[ProductImageUrl] [nvarchar](1000) NULL,
  CONSTRAINT [PK_Order_Products] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -1660,6 +1661,7 @@ ALTER TABLE [dbo].[ListItems] CHECK CONSTRAINT [FK_ListItems_Lists]
 GO
 ALTER TABLE [dbo].[OrderProducts]  WITH CHECK ADD  CONSTRAINT [FK_Order_Products_Products] FOREIGN KEY([ProductId])
 REFERENCES [dbo].[Products] ([Id])
+ON DELETE SET NULL
 ON UPDATE CASCADE
 GO
 ALTER TABLE [dbo].[OrderProducts] CHECK CONSTRAINT [FK_Order_Products_Products]

@@ -7,7 +7,7 @@ namespace EImece.Domain.Models.DTOs
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
         public decimal ProductSalePrice { get; set; }
@@ -15,9 +15,10 @@ namespace EImece.Domain.Models.DTOs
         public string ProductCode { get; set; }
         public string CategoryName { get; set; }
         public string ProductSpecItems { get; set; }
+        public string ProductImageUrl { get; set; }
         public decimal Price
         {
-            get { return Quantity == 0 ? 0 : TotalPrice / Quantity; }
+            get { return Quantity == 0 ? ProductSalePrice : TotalPrice / Quantity; }
         }
         public List<ProductSpecItem> ProductSpecObjItems { get; set; }
         public ProductSpecItem ProductSpecColorItem { get; set; }

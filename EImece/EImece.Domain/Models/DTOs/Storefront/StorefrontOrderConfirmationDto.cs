@@ -66,6 +66,8 @@ namespace EImece.Domain.Models.DTOs.Storefront
     public class StorefrontOrderConfirmationItemDto
     {
         public string ProductName { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductImageUrl { get; set; }
         public int Quantity { get; set; }
         public decimal ProductSalePrice { get; set; }
         public decimal TotalPrice { get; set; }

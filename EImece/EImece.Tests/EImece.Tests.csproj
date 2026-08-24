@@ -319,6 +319,7 @@
     <Compile Include="Infrastructure\ResilientHttpClientLifetimeTests.cs" />
     <Compile Include="Services\CompressedImageExportServiceTests.cs" />
     <Compile Include="Services\DataExportServiceTests.cs" />
+    <Compile Include="Services\ProductDeletionAndHistoricalOrderTests.cs" />
     <Compile Include="Services\ShoppingCartTransactionTests.cs" />
     <Compile Include="Services\SystemSettingsFallbackTests.cs" />
     <Compile Include="Services\UsersServiceTests.cs" />

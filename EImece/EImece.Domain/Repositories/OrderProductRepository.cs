@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using System.Collections.Generic;
@@ -21,8 +21,8 @@ namespace EImece.Domain.Repositories
             }
 
             return GetAll()
-                .Where(op => ids.Contains(op.ProductId))
-                .GroupBy(op => op.ProductId)
+                .Where(op => op.ProductId.HasValue && ids.Contains(op.ProductId.Value))
+                .GroupBy(op => op.ProductId.Value)
                 .Select(g => new { ProductId = g.Key, Quantity = g.Sum(x => x.Quantity) })
                 .ToDictionary(x => x.ProductId, x => x.Quantity);
         }

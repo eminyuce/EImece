@@ -1,4 +1,4 @@
-﻿@model Order
+@model Order
 @using Iyzipay.Model;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
@@ -86,23 +86,41 @@
                     @foreach (var orderProduct in orderProducts)
                     {
                         var productSpecItems = orderProduct.ProductSpecObjItems;
-                        var imgTag = orderProduct.Product.GetCroppedImageUrl(orderProduct.Product.MainImageId, 75, 0);
+                        var product = orderProduct.Product;
+                        var productName = !string.IsNullOrWhiteSpace(orderProduct.ProductName) ? orderProduct.ProductName : (product != null ? product.Name : "-");
+                        var categoryName = !string.IsNullOrWhiteSpace(orderProduct.CategoryName) ? orderProduct.CategoryName : (product != null && product.ProductCategory != null ? product.ProductCategory.Name : "-");
+                        var imgTag = !string.IsNullOrWhiteSpace(orderProduct.ProductImageUrl) 
+                            ? orderProduct.ProductImageUrl 
+                            : (product != null ? product.GetCroppedImageUrl(product.MainImageId, 75, 0) : AppConfig.GetDefaultImage(75, 0));
+                        var detailUrl = (product != null && orderProduct.ProductId.HasValue) ? product.DetailPageRelativeUrl : null;
                         <tr>
                             <td class="text-center">
-                                <a href="@orderProduct.Product.DetailPageRelativeUrl" target="_blank">
-                                    <img src="@imgTag" alt="Ürün" class="img-fluid" style="max-width: 100px;" />
-                                </a>
+                                @if (!string.IsNullOrEmpty(detailUrl))
+                                {
+                                    <a href="@detailUrl" target="_blank">
+                                        <img src="@imgTag" alt="@productName" class="img-fluid" style="max-width: 100px;" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <img src="@imgTag" alt="@productName" class="img-fluid" style="max-width: 100px;" />
+                                }
                             </td>
                             <td>
-                                @Html.ActionLink(orderProduct.Product.Name, "Detail", "Products",
-                                    new
-                                    {
-                                        area = "",
-                                        categoryName = GeneralHelper.GetUrlSeoString(orderProduct.Product.ProductCategory.Name),
-                                        id = orderProduct.Product.GetSeoUrl()
-                                    }, new { @class = "btn btn-link", @target = "_blank" })
+                                @if (!string.IsNullOrEmpty(detailUrl))
+                                {
+                                    <a href="@detailUrl" class="btn btn-link" target="_blank">@productName</a>
+                                }
+                                else
+                                {
+                                    <strong>@productName</strong>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(orderProduct.ProductCode))
+                                {
+                                    <br /><small class="text-muted">@AdminResource.Code: @orderProduct.ProductCode</small>
+                                }
                                 <br />
-                                <small>@AdminResource.ProductCategory: @orderProduct.Product.ProductCategory.Name</small>
+                                <small>@AdminResource.ProductCategory: @categoryName</small>
                                 @if (productSpecItems.IsNotEmpty())
                                 {
                                     foreach (var psi in productSpecItems)

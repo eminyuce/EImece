@@ -597,13 +597,6 @@ namespace EImece.Domain.Services
 
         public ProductDeleteResult DeleteProductById(int id)
         {
-            var isAnyProductSold = OrderProductRepository.FindBy(r => r.ProductId == id).Any();
-            if (isAnyProductSold)
-            {
-                ProductServiceLogger.Info("Product cannot be deleted because it has order history. ProductId: " + id);
-                return ProductDeleteResult.BlockedByOrders;
-            }
-
             try
             {
                 var product = ProductRepository.GetProduct(id);
@@ -612,13 +605,27 @@ namespace EImece.Domain.Services
                     return ProductDeleteResult.Failed;
                 }
 
-                ProductCommentRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                ProductSpecificationRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                ProductTagRepository.DeleteByWhereCondition(r => r.ProductId == id);
-                FileStorageService.DeleteGalleryImages(id, MediaModType.Products);
-                if (product.MainImageId.HasValue)
+                // Preserve historical order data: unlink ProductId from existing OrderProducts
+                var relatedOrderProducts = OrderProductRepository.FindBy(r => r.ProductId == id).ToList();
+                bool hasOrderHistory = relatedOrderProducts.Count > 0;
+                foreach (var op in relatedOrderProducts)
                 {
-                    FileStorageService.DeleteFileStorage(product.MainImageId.Value);
+                    op.ProductId = null;
+                    OrderProductRepository.SaveOrEdit(op);
+                }
+
+                ProductCommentRepository?.DeleteByWhereCondition(r => r.ProductId == id);
+                ProductSpecificationRepository?.DeleteByWhereCondition(r => r.ProductId == id);
+                ProductTagRepository?.DeleteByWhereCondition(r => r.ProductId == id);
+
+                // Preserve media image files if product was ordered so historical order views can render them
+                if (!hasOrderHistory)
+                {
+                    FileStorageService?.DeleteGalleryImages(id, MediaModType.Products);
+                    if (product.MainImageId.HasValue && FileStorageService != null)
+                    {
+                        FileStorageService.DeleteFileStorage(product.MainImageId.Value);
+                    }
                 }
                 DeleteEntity(product);
                 InvalidateProductListCaches();
@@ -626,6 +633,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception e)
             {
+                System.Diagnostics.Trace.WriteLine("DeleteProductById exception: " + e);
                 ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
                 return ProductDeleteResult.Failed;
             }
@@ -633,13 +641,6 @@ namespace EImece.Domain.Services
 
         public async Task<ProductDeleteResult> DeleteProductByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var isAnyProductSold = await OrderProductRepository.FindBy(r => r.ProductId == id).AnyAsync(cancellationToken).ConfigureAwait(false);
-            if (isAnyProductSold)
-            {
-                ProductServiceLogger.Info("Product cannot be deleted because it has order history. ProductId: " + id);
-                return ProductDeleteResult.BlockedByOrders;
-            }
-
             try
             {
                 var product = await ProductRepository.GetProductAsync(id, cancellationToken).ConfigureAwait(false);
@@ -648,13 +649,41 @@ namespace EImece.Domain.Services
                     return ProductDeleteResult.Failed;
                 }
 
-                await ProductCommentRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
-                await ProductSpecificationRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
-                await ProductTagRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
-                await FileStorageService.DeleteGalleryImagesAsync(id, MediaModType.Products).ConfigureAwait(false);
-                if (product.MainImageId.HasValue)
+                // Preserve historical order data: unlink ProductId from existing OrderProducts
+                var relatedQuery = OrderProductRepository.FindBy(r => r.ProductId == id);
+                List<OrderProduct> relatedOrderProducts;
+                if (relatedQuery is System.Data.Entity.Infrastructure.IDbAsyncEnumerable<OrderProduct>)
                 {
-                    await FileStorageService.DeleteFileStorageAsync(product.MainImageId.Value).ConfigureAwait(false);
+                    relatedOrderProducts = await relatedQuery.ToListAsync(cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    relatedOrderProducts = relatedQuery.ToList();
+                }
+
+                bool hasOrderHistory = relatedOrderProducts.Count > 0;
+                foreach (var op in relatedOrderProducts)
+                {
+                    op.ProductId = null;
+                    await OrderProductRepository.SaveOrEditAsync(op).ConfigureAwait(false);
+                }
+
+                if (ProductCommentRepository != null)
+                    await ProductCommentRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+                if (ProductSpecificationRepository != null)
+                    await ProductSpecificationRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+                if (ProductTagRepository != null)
+                    await ProductTagRepository.DeleteByWhereConditionAsync(r => r.ProductId == id).ConfigureAwait(false);
+
+                // Preserve media image files if product was ordered so historical order views can render them
+                if (!hasOrderHistory)
+                {
+                    if (FileStorageService != null)
+                        await FileStorageService.DeleteGalleryImagesAsync(id, MediaModType.Products).ConfigureAwait(false);
+                    if (product.MainImageId.HasValue && FileStorageService != null)
+                    {
+                        await FileStorageService.DeleteFileStorageAsync(product.MainImageId.Value).ConfigureAwait(false);
+                    }
                 }
                 await DeleteEntityAsync(product).ConfigureAwait(false);
                 InvalidateProductListCaches();
@@ -662,6 +691,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception e)
             {
+                System.Diagnostics.Trace.WriteLine("DeleteProductByIdAsync exception: " + e);
                 ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
                 return ProductDeleteResult.Failed;
             }
@@ -791,6 +821,10 @@ namespace EImece.Domain.Services
         /// </summary>
         public void InvalidateProductListCaches()
         {
+            if (DataCachingProvider == null)
+            {
+                return;
+            }
             var listRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
             var searchRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductSearchPrefix);
             var detailRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductDetailPrefix);

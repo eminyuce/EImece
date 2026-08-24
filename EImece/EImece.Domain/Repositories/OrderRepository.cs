@@ -68,7 +68,8 @@ namespace EImece.Domain.Repositories
                         Quantity = op.Quantity,
                         TotalPrice = op.TotalPrice,
                         ProductSalePrice = op.ProductSalePrice,
-                        ProductSpecItems = op.ProductSpecItems
+                        ProductSpecItems = op.ProductSpecItems,
+                        ProductImageUrl = op.ProductImageUrl
                     }).ToList()
                 };
             }
@@ -124,6 +125,7 @@ namespace EImece.Domain.Repositories
                         TotalPrice = op.TotalPrice,
                         ProductSalePrice = op.ProductSalePrice,
                         ProductSpecItems = op.ProductSpecItems,
+                        ProductImageUrl = op.ProductImageUrl,
                         Product = op.Product != null ? new EImece.Domain.Models.DTOs.Storefront.StorefrontProductCardDto
                         {
                             Id = op.Product.Id,
@@ -399,6 +401,8 @@ namespace EImece.Domain.Repositories
                     OrderProducts = o.OrderProducts.Select(op => new Models.DTOs.Storefront.StorefrontOrderConfirmationItemDto
                     {
                         ProductName = op.ProductName,
+                        ProductCode = op.ProductCode,
+                        ProductImageUrl = op.ProductImageUrl,
                         Quantity = op.Quantity,
                         ProductSalePrice = op.ProductSalePrice,
                         TotalPrice = op.TotalPrice

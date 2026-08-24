@@ -539,7 +539,7 @@ namespace EImece.Domain.Services.ExportImport
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
         public decimal ProductSalePrice { get; set; }
@@ -547,6 +547,7 @@ namespace EImece.Domain.Services.ExportImport
         public string ProductCode { get; set; }
         public string CategoryName { get; set; }
         public string ProductSpecItems { get; set; }
+        public string ProductImageUrl { get; set; }
     }
 
     public class ShoppingCartExportDto

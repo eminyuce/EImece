@@ -992,14 +992,15 @@ namespace EImece.Domain.Services
                 OrderProductService.SaveOrEditEntity(new OrderProduct()
                 {
                     OrderId = savedOrder.Id,
-                    ProductId = product.Id,
+                    ProductId = product.Id > 0 ? (int?)product.Id : null,
                     ProductSalePrice = product.Price,
                     ProductName = product.Name,
                     ProductCode = product.ProductCode,
                     CategoryName = product.CategoryName,
                     Quantity = shoppingCartItem.Quantity,
                     TotalPrice = shoppingCartItem.TotalPrice,
-                    ProductSpecItems = JsonConvert.SerializeObject(product.ProductSpecItems)
+                    ProductSpecItems = JsonConvert.SerializeObject(product.ProductSpecItems),
+                    ProductImageUrl = product.CroppedImageUrl
                 });
 
                 if (ProductService != null && product.Id > 0)
@@ -1021,14 +1022,15 @@ namespace EImece.Domain.Services
             var entity = new OrderProduct()
             {
                 OrderId = savedOrder.Id,
-                ProductId = product.Id,
+                ProductId = product.Id > 0 ? (int?)product.Id : null,
                 ProductSalePrice = buyNowModel.TotalPrice,
                 ProductName = product.Name,
                 ProductCode = product.ProductCode,
                 CategoryName = product.CategoryName,
                 Quantity = 1,
                 TotalPrice = buyNowModel.TotalPrice,
-                ProductSpecItems = ""
+                ProductSpecItems = "",
+                ProductImageUrl = product.CroppedImageUrl
             };
 
             var savedOrderProduct = OrderProductService.SaveOrEditEntity(entity);
@@ -1058,14 +1060,15 @@ namespace EImece.Domain.Services
                 await OrderProductService.SaveOrEditEntityAsync(new OrderProduct()
                 {
                     OrderId = savedOrder.Id,
-                    ProductId = product.Id,
+                    ProductId = product.Id > 0 ? (int?)product.Id : null,
                     ProductSalePrice = product.Price,
                     ProductName = product.Name,
                     ProductCode = product.ProductCode,
                     CategoryName = product.CategoryName,
                     Quantity = shoppingCartItem.Quantity,
                     TotalPrice = shoppingCartItem.TotalPrice,
-                    ProductSpecItems = JsonConvert.SerializeObject(product.ProductSpecItems)
+                    ProductSpecItems = JsonConvert.SerializeObject(product.ProductSpecItems),
+                    ProductImageUrl = product.CroppedImageUrl
                 }).ConfigureAwait(false);
 
                 if (ProductService != null && product.Id > 0)
@@ -1087,14 +1090,15 @@ namespace EImece.Domain.Services
             var entity = new OrderProduct()
             {
                 OrderId = savedOrder.Id,
-                ProductId = product.Id,
+                ProductId = product.Id > 0 ? (int?)product.Id : null,
                 ProductSalePrice = buyNowModel.TotalPrice,
                 ProductName = product.Name,
                 ProductCode = product.ProductCode,
                 CategoryName = product.CategoryName,
                 Quantity = 1,
                 TotalPrice = buyNowModel.TotalPrice,
-                ProductSpecItems = ""
+                ProductSpecItems = "",
+                ProductImageUrl = product.CroppedImageUrl
             };
 
             var savedOrderProduct = await OrderProductService.SaveOrEditEntityAsync(entity).ConfigureAwait(false);

@@ -55,16 +55,22 @@
                     {
                         var ProductSpecItems = JsonConvert.DeserializeObject<List<EImece.Domain.Models.DTOs.ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
                         var product = orderProduct.Product;
-                        var productName = product != null ? product.Name : orderProduct.ProductName;
-                        var categoryName = product != null ? product.ProductCategoryName : orderProduct.CategoryName;
-                        var detailUrl = product != null ? product.DetailPageAbsoluteUrl : "#";
-                        var imgTag = product != null ? product.GetCroppedImageUrl(product.MainImageId, 160, 0) : string.Empty;
+                        var productName = !string.IsNullOrWhiteSpace(orderProduct.ProductName) ? orderProduct.ProductName : (product != null ? product.Name : "-");
+                        var categoryName = !string.IsNullOrWhiteSpace(orderProduct.CategoryName) ? orderProduct.CategoryName : (product != null ? product.ProductCategoryName : "-");
+                        var detailUrl = (product != null && orderProduct.ProductId.HasValue && orderProduct.ProductId.Value > 0) ? product.DetailPageAbsoluteUrl : "#";
+                        var imgTag = !string.IsNullOrWhiteSpace(orderProduct.ProductImageUrl)
+                            ? orderProduct.ProductImageUrl
+                            : (product != null ? product.GetCroppedImageUrl(product.MainImageId, 160, 0) : AppConfig.GetDefaultImage(160, 0));
                         <!-- Item-->
                         <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
                             <div class="media d-block d-sm-flex text-center text-sm-left">
-                                <a class="cart-item-thumb mx-auto mr-sm-4" target="_blank" href="@detailUrl"><img src="@imgTag" alt="Product"></a>
+                                <a class="cart-item-thumb mx-auto mr-sm-4" target="_blank" href="@detailUrl"><img src="@imgTag" alt="@productName"></a>
                                 <div class="media-body pt-3">
                                     <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a target="_blank" href="@detailUrl">@productName</a></h3>
+                                    @if (!string.IsNullOrWhiteSpace(orderProduct.ProductCode))
+                                    {
+                                        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Code:</span>@orderProduct.ProductCode</div>
+                                    }
                                     <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
                                     <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@categoryName</div>
                                     @if (ProductSpecItems.IsNotEmpty())
@@ -96,7 +102,7 @@
                             <div class="font-weight-semibold">@order.OrderProducts.Sum(r => r.Quantity) @Resource.PieceOfProductPurchased</div>
                         </div>
                         <div class="pt-2 pt-sm-3 pl-sm-3 mx-auto mx-sm-0 text-center">
-                            <div class="font-weight-semibold">@Resource.Total: @order.OrderProducts.Sum(r => r.Price).CurrencySign()</div>
+                            <div class="font-weight-semibold">@Resource.Total: @order.OrderProducts.Sum(r => r.TotalPrice).CurrencySign()</div>
                         </div>
                     </div>
 
