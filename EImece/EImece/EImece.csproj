@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -1840,6 +1840,18 @@
     <Content Include="Views\Error\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\UnderConstruction\Index.cshtml" />
+    <Content Include="Content\adminGridModern.css" />
+    <Content Include="Content\adminGriddlyCompat.css" />
+    <Content Include="Content\adminMobile.css" />
+    <Content Include="Content\adminReports.css" />
+    <Content Include="Content\adminSearchResult.css" />
+    <Content Include="Content\adminShell.css" />
+    <Content Include="Content\adminSite.css" />
+    <Content Include="Content\griddly.css" />
+    <Content Include="Content\checkBoxStyle.css" />
+    <Content Include="Content\deleteStyle.css" />
+    <Content Include="Content\pageThemes.css" />
+    <Content Include="Content\Site.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customers\Data\" />
