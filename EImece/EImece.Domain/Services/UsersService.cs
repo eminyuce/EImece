@@ -1,13 +1,13 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
+using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
@@ -16,11 +16,11 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
 
-        public UsersService(ApplicationDbContext dbContext)
+        public UsersService(IUserRepository userRepository)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
         [Inject]
@@ -45,7 +45,7 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId should have value");
             }
 
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+            var user = _userRepository.GetById(id);
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -60,7 +60,7 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId should have value");
             }
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
+            var user = await _userRepository.GetByIdAsync(id).ConfigureAwait(false);
             if (user == null)
             {
                 Logger.Debug("User is null for userId " + id);
@@ -75,8 +75,7 @@ namespace EImece.Domain.Services
                 return null;
             }
 
-            var key = email.Trim();
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == key || u.Email == key).ConfigureAwait(false);
+            return await _userRepository.GetByEmailOrUserNameAsync(email).ConfigureAwait(false);
         }
 
         public async Task<ApplicationUser> GetUserByEmailOrUserNameAsync(string emailOrUserName)
@@ -86,38 +85,29 @@ namespace EImece.Domain.Services
                 return null;
             }
 
-            var key = emailOrUserName.Trim();
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == key || u.Email == key).ConfigureAwait(false);
+            return await _userRepository.GetByEmailOrUserNameAsync(emailOrUserName).ConfigureAwait(false);
         }
 
         public async Task<ApplicationUser> GetUserByIdAsync(string id)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
+            var user = await _userRepository.GetByIdAsync(id).ConfigureAwait(false);
             return user;
         }
 
         public ApplicationUser GetUserById(string id)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+            var user = _userRepository.GetById(id);
             return user;
         }
 
-        public async Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
+        public Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
         {
             if (string.IsNullOrWhiteSpace(emailOrUserName) || string.IsNullOrWhiteSpace(roleName))
             {
-                return false;
+                return Task.FromResult(false);
             }
 
-            var login = emailOrUserName.Trim();
-            var query = from u in _dbContext.Users
-                        from ur in u.Roles
-                        join r in _dbContext.Roles on ur.RoleId equals r.Id
-                        where (u.UserName == login || u.Email == login)
-                              && r.Name == roleName
-                        select r.Id;
-
-            return await query.AnyAsync().ConfigureAwait(false);
+            return _userRepository.IsUserInRoleAsync(emailOrUserName, roleName);
         }
 
         public bool IsUserInRole(string emailOrUserName, string roleName)
@@ -127,81 +117,27 @@ namespace EImece.Domain.Services
                 return false;
             }
 
-            var login = emailOrUserName.Trim();
-            var query = from u in _dbContext.Users
-                        from ur in u.Roles
-                        join r in _dbContext.Roles on ur.RoleId equals r.Id
-                        where (u.UserName == login || u.Email == login)
-                              && r.Name == roleName
-                        select r.Id;
-
-            return query.Any();
+            return _userRepository.IsUserInRole(emailOrUserName, roleName);
         }
 
         public List<EditUserViewModel> GetUsers(string search)
         {
-            var users = _dbContext.Users.AsQueryable();
-
-            var users2 = from u in _dbContext.Users
-                         from ur in u.Roles
-                         join r in _dbContext.Roles on ur.RoleId equals r.Id
-                         select new
-                         {
-                             u.Id,
-                             Email = u.UserName,
-                             FirstName = u.FirstName,
-                             LastName = u.LastName,
-                             Role = r.Name,
-                         };
-
-            if (!String.IsNullOrEmpty(search))
-            {
-                search = search.ToLower().Trim();
-                users = users.Where(r => r.Email.ToLower().Contains(search) || r.FirstName.ToLower().Contains(search) || r.LastName.ToLower().Contains(search));
-            }
-
-            //ViewModel will be posted at the end of the answer
-            var model = new List<EditUserViewModel>();
-            foreach (var user in users.ToList())
-            {
-                var u = new EditUserViewModel();
-                u.FirstName = user.FirstName;
-                u.LastName = user.LastName;
-                u.Email = user.Email;
-                u.Id = user.Id;
-                u.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
-                var p = users2.FirstOrDefault(r => r.Id.Equals(u.Id, StringComparison.InvariantCultureIgnoreCase));
-                u.Role = p == null ? String.Empty : p.Role.ToStr();
-                model.Add(u);
-            }
-
-            return model;
+            var users = _userRepository.GetUsersFiltered(search);
+            var roleNameByUserId = _userRepository.GetFirstRoleNameByUserId();
+            return BuildEditUserViewModels(users, roleNameByUserId);
         }
 
         public async Task<List<EditUserViewModel>> GetUsersAsync(string search)
         {
-            var users = _dbContext.Users.AsQueryable();
+            var users = await _userRepository.GetUsersFilteredAsync(search).ConfigureAwait(false);
+            var roleNameByUserId = await _userRepository.GetFirstRoleNameByUserIdAsync().ConfigureAwait(false);
+            return BuildEditUserViewModels(users, roleNameByUserId);
+        }
 
-            var users2 = from u in _dbContext.Users
-                         from ur in u.Roles
-                         join r in _dbContext.Roles on ur.RoleId equals r.Id
-                         select new
-                         {
-                             u.Id,
-                             Email = u.UserName,
-                             FirstName = u.FirstName,
-                             LastName = u.LastName,
-                             Role = r.Name,
-                         };
-
-            if (!String.IsNullOrEmpty(search))
-            {
-                search = search.ToLower().Trim();
-                users = users.Where(r => r.Email.ToLower().Contains(search) || r.FirstName.ToLower().Contains(search) || r.LastName.ToLower().Contains(search));
-            }
-
+        private static List<EditUserViewModel> BuildEditUserViewModels(List<ApplicationUser> users, Dictionary<string, string> roleNameByUserId)
+        {
             var model = new List<EditUserViewModel>();
-            foreach (var user in await users.ToListAsync().ConfigureAwait(false))
+            foreach (var user in users)
             {
                 var u = new EditUserViewModel();
                 u.FirstName = user.FirstName;
@@ -209,26 +145,17 @@ namespace EImece.Domain.Services
                 u.Email = user.Email;
                 u.Id = user.Id;
                 u.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
-                var p = users2.FirstOrDefault(r => r.Id.Equals(u.Id, StringComparison.InvariantCultureIgnoreCase));
-                u.Role = p == null ? String.Empty : p.Role.ToStr();
+                string role;
+                u.Role = roleNameByUserId.TryGetValue(user.Id, out role) ? role.ToStr() : String.Empty;
                 model.Add(u);
             }
 
             return model;
         }
 
-        public async Task<List<string>> SearchUserEmailsAsync(string searchKey)
+        public Task<List<string>> SearchUserEmailsAsync(string searchKey)
         {
-            var users = _dbContext.Users.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(searchKey))
-            {
-                searchKey = searchKey.ToLower().Trim();
-                users = users.Where(r => r.Email.ToLower().Contains(searchKey)
-                                      || r.FirstName.ToLower().Contains(searchKey)
-                                      || r.LastName.ToLower().Contains(searchKey));
-            }
-
-            return await users.Select(r => r.Email).ToListAsync().ConfigureAwait(false);
+            return _userRepository.SearchUserEmailsAsync(searchKey);
         }
 
         public void DeleteUser(string id)
@@ -236,8 +163,7 @@ namespace EImece.Domain.Services
             var user = GetUser(id);
             if (user != null)
             {
-                _dbContext.Users.Remove(user);
-                _dbContext.SaveChanges();
+                _userRepository.Delete(user);
             }
         }
 
@@ -246,8 +172,7 @@ namespace EImece.Domain.Services
             var user = await GetUserAsync(id).ConfigureAwait(false);
             if (user != null)
             {
-                _dbContext.Users.Remove(user);
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                await _userRepository.DeleteAsync(user).ConfigureAwait(false);
             }
         }
 
@@ -268,7 +193,7 @@ namespace EImece.Domain.Services
                     continue;
                 }
 
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
+                var user = await _userRepository.GetByIdAsync(userId).ConfigureAwait(false);
                 if (user == null)
                 {
                     continue;
@@ -306,14 +231,18 @@ namespace EImece.Domain.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var user = await _dbContext.Users.FirstAsync(u => u.Id == model.Id).ConfigureAwait(false);
+            var user = await _userRepository.GetByIdAsync(model.Id).ConfigureAwait(false);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User '{model.Id}' was not found.");
+            }
+
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Email = model.Email;
             user.UserName = model.Email;
 
-            _dbContext.Entry(user).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            await _userRepository.UpdateAsync(user).ConfigureAwait(false);
         }
 
         public async Task<SelectUserRolesViewModel> GetAdminUserRolesViewModelAsync(string userId)
@@ -323,8 +252,13 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId cannot be empty", nameof(userId));
             }
 
-            var user = await _dbContext.Users.FirstAsync(u => u.Id == userId).ConfigureAwait(false);
-            var allRoles = await _dbContext.Roles.ToListAsync().ConfigureAwait(false);
+            var user = await _userRepository.GetByIdAsync(userId).ConfigureAwait(false);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User '{userId}' was not found.");
+            }
+
+            var allRoles = await _userRepository.GetAllRolesAsync().ConfigureAwait(false);
             var model = new SelectUserRolesViewModel(user);
             model.PopulateAdminRoles(user, allRoles);
             return model;
@@ -337,27 +271,31 @@ namespace EImece.Domain.Services
                 throw new ArgumentException("userId cannot be empty", nameof(userId));
             }
 
-            var user = await _dbContext.Users.FirstAsync(u => u.Id == userId).ConfigureAwait(false);
-            var allRoles = await _dbContext.Roles.ToListAsync().ConfigureAwait(false);
+            var user = await _userRepository.GetByIdAsync(userId).ConfigureAwait(false);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User '{userId}' was not found.");
+            }
+
+            var allRoles = await _userRepository.GetAllRolesAsync().ConfigureAwait(false);
             var model = new SelectUserRolesViewModel(user);
             model.PopulateRoles(user, allRoles);
             return model;
         }
 
-        public async Task<int> GetUsersCountAsync(System.Threading.CancellationToken ct = default)
+        public Task<int> GetUsersCountAsync(System.Threading.CancellationToken ct = default(CancellationToken))
         {
-            return await _dbContext.Users.CountAsync(ct).ConfigureAwait(false);
+            return _userRepository.GetUsersCountAsync(ct);
         }
 
-        public async Task<int> GetRolesCountAsync(System.Threading.CancellationToken ct = default)
+        public Task<int> GetRolesCountAsync(System.Threading.CancellationToken ct = default(CancellationToken))
         {
-            return await _dbContext.Roles.CountAsync(ct).ConfigureAwait(false);
+            return _userRepository.GetRolesCountAsync(ct);
         }
 
-        public async Task<List<EImece.Domain.Services.ExportImport.UserExportDto>> GetUsersForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default)
+        public async Task<List<EImece.Domain.Services.ExportImport.UserExportDto>> GetUsersForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default(CancellationToken))
         {
-            var query = _dbContext.Users.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-            var items = await query.ToListAsync(ct).ConfigureAwait(false);
+            var items = await _userRepository.GetUsersPagedAsync(skip, take, ct).ConfigureAwait(false);
 
             var userDtos = new List<EImece.Domain.Services.ExportImport.UserExportDto>();
             foreach (var user in items)
@@ -380,12 +318,7 @@ namespace EImece.Domain.Services
                 if (user.Roles != null && user.Roles.Count > 0)
                 {
                     var roleIds = user.Roles.Select(r => r.RoleId).ToList();
-                    var roleNames = await _dbContext.Roles
-                        .Where(r => roleIds.Contains(r.Id))
-                        .Select(r => r.Name)
-                        .ToListAsync(ct)
-                        .ConfigureAwait(false);
-                    dto.Roles = roleNames;
+                    dto.Roles = await _userRepository.GetRoleNamesByIdsAsync(roleIds, ct).ConfigureAwait(false);
                 }
 
                 userDtos.Add(dto);
@@ -394,10 +327,9 @@ namespace EImece.Domain.Services
             return userDtos;
         }
 
-        public async Task<List<EImece.Domain.Services.ExportImport.RoleExportDto>> GetRolesForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default)
+        public async Task<List<EImece.Domain.Services.ExportImport.RoleExportDto>> GetRolesForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default(CancellationToken))
         {
-            var query = _dbContext.Roles.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-            var items = await query.ToListAsync(ct).ConfigureAwait(false);
+            var items = await _userRepository.GetRolesPagedAsync(skip, take, ct).ConfigureAwait(false);
             return items.Select(x => new EImece.Domain.Services.ExportImport.RoleExportDto
             {
                 Id = x.Id,

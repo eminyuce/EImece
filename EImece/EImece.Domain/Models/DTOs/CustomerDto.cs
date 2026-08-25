@@ -38,6 +38,7 @@ namespace EImece.Domain.Models.DTOs
         public int CustomerType { get; set; }
         public string Captcha { get; set; }
         public DateTime OrderLatestDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         private string _fullName;
         public string FullName
@@ -130,6 +131,7 @@ namespace EImece.Domain.Models.DTOs
                 Ip = Ip,
                 UserId = UserId,
                 CustomerType = CustomerType,
+                BirthDate = BirthDate,
                 Position = Position,
                 Lang = Lang,
                 IsActive = IsActive,

@@ -1,13 +1,12 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Observability.Logging;
+using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -24,7 +23,7 @@ namespace EImece.Domain.Services.ExportImport
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [Inject]
-        public IEImeceContext Context { get; set; }
+        public IDataExportRepository Repository { get; set; }
 
         [Inject]
         public IUsersService UsersService { get; set; }
@@ -419,28 +418,13 @@ namespace EImece.Domain.Services.ExportImport
                 DatabaseProvider = DetectDatabaseProvider()
             };
 
-            if (Context != null)
+            if (Repository != null)
             {
-                summary.EstimatedCounts["Settings"] = await Context.Settings.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["MailTemplates"] = await Context.MailTemplates.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Faqs"] = await Context.Faqs.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Subscribers"] = await Context.Subscribers.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["FileStorages"] = await Context.FileStorages.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["ProductCategories"] = await Context.ProductCategories.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Brands"] = await Context.Brands.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Products"] = await Context.Products.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["ProductSpecifications"] = await Context.ProductSpecifications.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["ProductFiles"] = await Context.ProductFiles.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["ProductTags"] = await Context.ProductTags.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["ProductComments"] = await Context.ProductComments.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Coupons"] = await Context.Coupons.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["StoryCategories"] = await Context.StoryCategories.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Stories"] = await Context.Stories.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Menus"] = await Context.Menus.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Customers"] = await Context.Customers.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Addresses"] = await Context.Addresses.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["Orders"] = await Context.Orders.CountAsync(cancellationToken).ConfigureAwait(false);
-                summary.EstimatedCounts["OrderProducts"] = await Context.OrderProducts.CountAsync(cancellationToken).ConfigureAwait(false);
+                var counts = await Repository.GetEntityCountsAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var countEntry in counts)
+                {
+                    summary.EstimatedCounts[countEntry.Key] = countEntry.Value;
+                }
             }
 
             if (UsersService != null)
@@ -459,8 +443,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "settings.json", "Setting", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Settings.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Setting>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new SettingExportDto
                 {
                     Id = x.Id,
@@ -481,8 +464,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "mail-templates.json", "MailTemplate", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.MailTemplates.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<MailTemplate>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new MailTemplateExportDto
                 {
                     Id = x.Id,
@@ -504,8 +486,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "faqs.json", "Faq", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Faqs.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Faq>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new FaqExportDto
                 {
                     Id = x.Id,
@@ -525,8 +506,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "subscribers.json", "Subscriber", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Subscribers.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Subscriber>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new SubscriberExportDto
                 {
                     Id = x.Id,
@@ -546,8 +526,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "file-storages.json", "FileStorage", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.FileStorages.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<FileStorage>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new FileStorageExportDto
                 {
                     Id = x.Id,
@@ -573,8 +552,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "file-storage-tags.json", "FileStorageTag", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.FileStorageTags.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<FileStorageTag>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new FileStorageTagExportDto
                 {
                     Id = x.Id,
@@ -588,8 +566,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "tag-categories.json", "TagCategory", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.TagCategories.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<TagCategory>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new TagCategoryExportDto
                 {
                     Id = x.Id,
@@ -607,8 +584,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "tags.json", "Tag", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Tags.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Tag>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new TagExportDto
                 {
                     Id = x.Id,
@@ -627,8 +603,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "templates.json", "Template", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Templates.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Template>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new TemplateExportDto
                 {
                     Id = x.Id,
@@ -647,8 +622,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "lists.json", "List", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Lists.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<List>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ListExportDto
                 {
                     Id = x.Id,
@@ -668,8 +642,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "list-items.json", "ListItem", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.ListItems.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<ListItem>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ListItemExportDto
                 {
                     Id = x.Id,
@@ -689,8 +662,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "product-categories.json", "ProductCategory", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.ProductCategories.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<ProductCategory>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ProductCategoryExportDto
                 {
                     Id = x.Id,
@@ -717,8 +689,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "brands.json", "Brand", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Brands.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Brand>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new BrandExportDto
                 {
                     Id = x.Id,
@@ -741,8 +712,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "products.json", "Product", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Products.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Product>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ProductExportDto
                 {
                     Id = x.Id,
@@ -779,8 +749,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "product-specifications.json", "ProductSpecification", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.ProductSpecifications.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<ProductSpecification>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ProductSpecificationExportDto
                 {
                     Id = x.Id,
@@ -801,8 +770,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "product-files.json", "ProductFile", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.ProductFiles.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<ProductFile>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ProductFileExportDto
                 {
                     Id = x.Id,
@@ -822,8 +790,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "product-tags.json", "ProductTag", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.ProductTags.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<ProductTag>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ProductTagExportDto
                 {
                     Id = x.Id,
@@ -837,8 +804,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "product-comments.json", "ProductComment", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.ProductComments.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<ProductComment>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ProductCommentExportDto
                 {
                     Id = x.Id,
@@ -862,8 +828,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "coupons.json", "Coupon", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Coupons.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Coupon>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new CouponExportDto
                 {
                     Id = x.Id,
@@ -886,8 +851,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "story-categories.json", "StoryCategory", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.StoryCategories.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<StoryCategory>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new StoryCategoryExportDto
                 {
                     Id = x.Id,
@@ -910,8 +874,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "stories.json", "Story", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Stories.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Story>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new StoryExportDto
                 {
                     Id = x.Id,
@@ -938,8 +901,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "story-files.json", "StoryFile", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.StoryFiles.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<StoryFile>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new StoryFileExportDto
                 {
                     Id = x.Id,
@@ -959,8 +921,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "story-tags.json", "StoryTag", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.StoryTags.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<StoryTag>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new StoryTagExportDto
                 {
                     Id = x.Id,
@@ -974,8 +935,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "menus.json", "Menu", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Menus.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Menu>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new MenuExportDto
                 {
                     Id = x.Id,
@@ -1003,8 +963,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "menu-files.json", "MenuFile", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.MenuFiles.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<MenuFile>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new MenuFileExportDto
                 {
                     Id = x.Id,
@@ -1024,8 +983,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "main-page-images.json", "MainPageImage", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.MainPageImages.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<MainPageImage>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new MainPageImageExportDto
                 {
                     Id = x.Id,
@@ -1048,8 +1006,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "customers.json", "Customer", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Customers.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Customer>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new CustomerExportDto
                 {
                     Id = x.Id,
@@ -1083,8 +1040,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "addresses.json", "Address", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Addresses.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Address>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new AddressExportDto
                 {
                     Id = x.Id,
@@ -1109,8 +1065,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "orders.json", "Order", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.Orders.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<Order>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new OrderExportDto
                 {
                     Id = x.Id,
@@ -1149,8 +1104,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "order-products.json", "OrderProduct", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.OrderProducts.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<OrderProduct>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new OrderProductExportDto
                 {
                     Id = x.Id,
@@ -1172,8 +1126,7 @@ namespace EImece.Domain.Services.ExportImport
         {
             return await StreamEntityExportAsync(archive, "shopping-carts.json", "ShoppingCart", batchSize, ct, async (skip, take) =>
             {
-                var query = Context.ShoppingCarts.AsNoTracking().OrderBy(x => x.Id).Skip(skip).Take(take);
-                var items = await query.ToListAsync(ct).ConfigureAwait(false);
+                var items = await Repository.GetPageAsync<ShoppingCart>(skip, take, ct).ConfigureAwait(false);
                 return items.Select(x => new ShoppingCartExportDto
                 {
                     Id = x.Id,

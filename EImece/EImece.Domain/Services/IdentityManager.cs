@@ -1,4 +1,3 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.Services.IServices;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -16,17 +15,6 @@ namespace EImece.Domain.Services
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-        }
-
-        public IdentityManager(ApplicationDbContext dbContext)
-        {
-            if (dbContext == null)
-            {
-                throw new ArgumentNullException(nameof(dbContext));
-            }
-
-            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbContext));
-            _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
         }
 
         public bool RoleExists(string name)

@@ -225,6 +225,9 @@ namespace EImece.App_Start
         private static void RegisterRepositories(IServiceCollection services)
         {
             services.AddScopedWithProps<ICouponRepository, CouponRepository>();
+            services.AddScopedWithProps<ICouponRedemptionRepository, CouponRedemptionRepository>();
+            services.AddScopedWithProps<ICouponProductRepository, CouponProductRepository>();
+            services.AddScopedWithProps<ICouponCategoryRepository, CouponCategoryRepository>();
             services.AddScopedWithProps<IFileStorageRepository, FileStorageRepository>();
             services.AddScopedWithProps<IFileStorageTagRepository, FileStorageTagRepository>();
             services.AddScopedWithProps<IListItemRepository, ListItemRepository>();
@@ -264,6 +267,7 @@ namespace EImece.App_Start
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddScopedWithProps<ICompressedImageExportService, CompressedImageExportService>();
+            services.AddScopedWithProps<IImageExportRepository, ImageExportRepository>();
             services.AddScopedWithProps<IFileStorageService, FileStorageService>();
             services.AddScopedWithProps<IListItemService, ListItemService>();
             services.AddScopedWithProps<IListService, ListService>();
@@ -290,7 +294,11 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IProductCommentService, ProductCommentService>();
             services.AddScopedWithProps<IBrandService, BrandService>();
             services.AddScopedWithProps<ICouponService, CouponService>();
+            services.AddScopedWithProps<ICouponValidationService, CouponValidationService>();
+            services.AddScopedWithProps<IAppLogService, AppLogService>();
+            services.AddScopedWithProps<IShortUrlService, ShortUrlService>();
             services.AddScopedWithProps<IDataExportService, DataExportService>();
+            services.AddScopedWithProps<IDataExportRepository, DataExportRepository>();
 
             services.AddScopedWithProps<IEmailSender, EmailSender>();
             services.AddScopedWithProps<AdresService>();
@@ -342,6 +350,8 @@ namespace EImece.App_Start
             services.AddScopedWithProps<IIdentityManager, IdentityManager>();
             services.AddScopedWithProps<ApplicationUserManager>();
             services.AddScopedWithProps<ApplicationSignInManager>();
+            services.AddScopedWithProps<ITwoFactorTokenRepository, TwoFactorTokenRepository>();
+            services.AddScopedWithProps<IUserRepository, UserRepository>();
             services.AddScopedWithProps<TwoFactorTokenService>();
 
             // Former named Ninject bindings for IIdentityMessageService ("Email"/"Sms"):

@@ -16,7 +16,10 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderGuid { get; set; }
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
         public CouponDto Coupon { get; set; }
-        public string CouponStr    { get { return Coupon == null ? "" : Coupon.Name; } }
+        public string CouponStr    { get { return Coupon == null ? "" : Coupon.Code; } }
+        public decimal CouponValidatedDiscount { get; set; }
+        public decimal CouponShippingDiscount { get; set; }
+        public decimal CouponEligibleAmount { get; set; }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
         public AddressDto ShippingAddress { get; set; }
@@ -103,7 +106,22 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 var result = TotalPrice + CargoPriceValue;
-                result -= CalculateCouponDiscount(result);
+                if (Coupon != null)
+                {
+                    decimal couponDisc = CouponValidatedDiscount;
+                    if (couponDisc == 0)
+                    {
+                        couponDisc = CalculateCouponDiscount(result);
+                        if (Coupon.DiscountType == Models.Enums.CouponDiscountType.Percentage && Coupon.MaximumDiscountAmount.HasValue && couponDisc > Coupon.MaximumDiscountAmount.Value)
+                            couponDisc = Coupon.MaximumDiscountAmount.Value;
+                    }
+                    result -= couponDisc;
+                    result -= CouponShippingDiscount;
+                }
+                else
+                {
+                    result -= CalculateCouponDiscount(result);
+                }
                 if (result < 0)
                 {
                     return 0;
@@ -128,6 +146,17 @@ namespace EImece.Domain.Models.FrontModels
         {
             if (Coupon != null)
             {
+                if (CouponValidatedDiscount > 0) return CouponValidatedDiscount;
+                if (Coupon.IsFreeShipping) return 0;
+                if (Coupon.DiscountType == Models.Enums.CouponDiscountType.Percentage && Coupon.DiscountPercentage > 0)
+                {
+                    decimal per = (decimal)Coupon.DiscountPercentage / 100;
+                    var disc = result * per;
+                    if (Coupon.MaximumDiscountAmount.HasValue && disc > Coupon.MaximumDiscountAmount.Value)
+                        disc = Coupon.MaximumDiscountAmount.Value;
+                    if (disc > result) disc = result;
+                    return disc;
+                }
                 if (Coupon.Discount > 0)
                 {
                     if (result >= Coupon.Discount)
@@ -142,11 +171,28 @@ namespace EImece.Domain.Models.FrontModels
                 else if (Coupon.DiscountPercentage > 0)
                 {
                     decimal per = (decimal)Coupon.DiscountPercentage / 100;
-                    return result * per;
+                    var disc = result * per;
+                    if (Coupon.MaximumDiscountAmount.HasValue && disc > Coupon.MaximumDiscountAmount.Value)
+                        disc = Coupon.MaximumDiscountAmount.Value;
+                    return disc;
                 }
             }
 
             return 0;
+        }
+
+        public void SetValidatedCouponDiscount(decimal discount, decimal shippingDiscount, decimal eligibleAmount)
+        {
+            CouponValidatedDiscount = discount;
+            CouponShippingDiscount = shippingDiscount;
+            CouponEligibleAmount = eligibleAmount;
+        }
+        public void ClearValidatedCoupon()
+        {
+            Coupon = null;
+            CouponValidatedDiscount = 0;
+            CouponShippingDiscount = 0;
+            CouponEligibleAmount = 0;
         }
 
         public decimal SubTotalPrice

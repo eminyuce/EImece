@@ -1,4 +1,5 @@
 using System;
+using EImece.Domain.Models.Enums;
 
 namespace EImece.Domain.Models.DTOs
 {
@@ -21,5 +22,22 @@ namespace EImece.Domain.Models.DTOs
         public DateTime EndDate { get; set; }
         public string StartDateStr { get; set; }
         public string EndDateStr { get; set; }
+        public string AssignedUserId { get; set; }
+        public int? AssignedCustomerId { get; set; }
+
+        public CouponDiscountType DiscountType { get; set; }
+        public decimal? MaximumDiscountAmount { get; set; }
+        public int? GlobalUsageLimit { get; set; }
+        public int? PerCustomerUsageLimit { get; set; }
+        public decimal? MinimumOrderAmount { get; set; }
+        public bool ExcludeSaleItems { get; set; }
+        public bool IsFreeShipping { get; set; }
+        public bool AllowStacking { get; set; }
+        public bool RequireLogin { get; set; }
+        public bool IsFirstOrderOnly { get; set; }
+        public bool IsNewCustomerOnly { get; set; }
+        public bool IsBirthdayCoupon { get; set; }
+        public CouponBirthdayWindow? BirthdayWindow { get; set; }
+        public string Currency { get; set; }
     }
 }

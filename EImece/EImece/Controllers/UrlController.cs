@@ -1,8 +1,7 @@
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Repositories.IRepositories;
-using EImece.Domain.DependencyInjection;
+using EImece.Domain.Services.IServices;
 using NLog;
 using System;
 using System.Net;
@@ -16,8 +15,12 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IShortUrlRepository ShortUrlRepository { get; set; }
+        private readonly IShortUrlService _shortUrlService;
+
+        public UrlController(IShortUrlService shortUrlService)
+        {
+            _shortUrlService = shortUrlService ?? throw new ArgumentNullException(nameof(shortUrlService));
+        }
 
         [HttpGet]
         [Route("{key}")]
@@ -25,7 +28,7 @@ namespace EImece.Controllers
         {
             Logger.Info("Get key:" + key);
             var response = Request.CreateResponse(HttpStatusCode.Moved);
-            var shortUrlObj = ShortUrlRepository.GetShortUrlByKey(key);
+            var shortUrlObj = _shortUrlService.GetShortUrlByKey(key);
             if (shortUrlObj != null)
             {
                 Uri safeUri;
@@ -47,7 +50,7 @@ namespace EImece.Controllers
         public HttpResponseMessage Post([FromBody] String url, [FromBody] String email = "", [FromBody] String groupName = "")
         {
             Logger.Info("Post Short:" + url);
-            return Request.CreateResponse(HttpStatusCode.OK, ShortUrlRepository.GenerateShortUrl(url, email, groupName));
+            return Request.CreateResponse(HttpStatusCode.OK, _shortUrlService.GenerateShortUrl(url, email, groupName));
         }
     }
 }

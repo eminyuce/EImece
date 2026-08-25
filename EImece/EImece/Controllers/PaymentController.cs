@@ -52,6 +52,9 @@ namespace EImece.Controllers
         public ICouponService CouponService { get; set; }
 
         [Inject]
+        public ICouponValidationService CouponValidationService { get; set; }
+
+        [Inject]
         public IRazorEngineHelper RazorEngineHelper { get; set; }
 
         [Inject]
@@ -175,6 +178,8 @@ namespace EImece.Controllers
                 PaymentLogger.Info($"Created shopping cart item with ID: {item.ShoppingCartItemId}");
                 shoppingCart.Add(item);
                 PaymentLogger.Info("Added item to shopping cart.");
+                // Revalidate coupon after cart change per spec 13
+                await RevalidateCouponAsync(shoppingCart);
                 await SaveShoppingCartAsync(shoppingCart);
                 PaymentLogger.Info("Returning success JSON response.");
                 return Json("success", JsonRequestBehavior.AllowGet);
@@ -561,6 +566,7 @@ namespace EImece.Controllers
             {
                 PaymentLogger.Info($"Found item with ID: {shoppingItemId}. Updating quantity to: {quantity}");
                 item.Quantity = quantity;
+                await RevalidateCouponAsync(shoppingCart);
                 await SaveShoppingCartAsync(shoppingCart);
                 PaymentLogger.Info("Shopping cart saved with updated quantity.");
                 PaymentLogger.Info("Returning success JSON response.");
@@ -585,7 +591,11 @@ namespace EImece.Controllers
                 if (shoppingCart.ShoppingCartItems.IsEmpty())
                 {
                     PaymentLogger.Info("Shopping cart is now empty. Clearing coupon.");
-                    shoppingCart.Coupon = null;
+                    shoppingCart.ClearValidatedCoupon();
+                }
+                else
+                {
+                    await RevalidateCouponAsync(shoppingCart);
                 }
                 await SaveShoppingCartAsync(shoppingCart);
                 return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
@@ -949,11 +959,127 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ApplyCoupon(String couponCode)
         {
-            var couponDto = await CouponService.GetStorefrontCouponByCodeAsync(couponCode, CurrentLanguage);
+            if (string.IsNullOrWhiteSpace(couponCode))
+            {
+                TempData["CouponMessage"] = "Coupon code required";
+                TempData["CouponMessageType"] = "danger";
+                return RedirectToAction(ShoppingCartAction);
+            }
             var shoppingCart = await GetShoppingCartFromDataSourceAsync();
-            shoppingCart.Coupon = couponDto;
+            var userId = User.Identity.IsAuthenticated ? User.Identity.GetUserId() : null;
+
+            // Prevent stacking: only one coupon per order unless AllowStacking
+            if (shoppingCart.Coupon != null && !string.IsNullOrWhiteSpace(shoppingCart.Coupon.Code))
+            {
+                if (!string.Equals(shoppingCart.Coupon.Code, couponCode, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Need to check stacking via validation service; for now block if existing not allow stacking
+                    TempData["CouponMessage"] = "Only one coupon per order is allowed. Remove existing coupon first.";
+                    TempData["CouponMessageType"] = "danger";
+                    return RedirectToAction(ShoppingCartAction);
+                }
+            }
+
+            // Use central validation
+            if (CouponValidationService != null)
+            {
+                try
+                {
+                    var ctx = await BuildCouponValidationContextAsync(shoppingCart, userId).ConfigureAwait(false);
+                    var validation = await CouponValidationService.ValidateCouponAsync(couponCode, shoppingCart, ctx).ConfigureAwait(false);
+                    if (!validation.IsValid)
+                    {
+                        TempData["CouponMessage"] = validation.Message ?? validation.Reason.ToString();
+                        TempData["CouponMessageType"] = "danger";
+                        // Do not apply coupon
+                        shoppingCart.ClearValidatedCoupon();
+                        await SaveShoppingCartAsync(shoppingCart);
+                        return RedirectToAction(ShoppingCartAction);
+                    }
+                    // Fetch coupon DTO for storage (includes all fields)
+                    CouponDto couponDto = null;
+                    try { couponDto = await CouponService.GetStorefrontCouponByCodeAsync(couponCode, CurrentLanguage); } catch { }
+                    if (couponDto == null)
+                    {
+                        // Fallback: minimal DTO from validation
+                        couponDto = new CouponDto { Code = couponCode, Name = couponCode };
+                    }
+                    shoppingCart.Coupon = couponDto;
+                    shoppingCart.SetValidatedCouponDiscount(validation.DiscountAmount, validation.ShippingDiscount, validation.EligibleAmount);
+                    await SaveShoppingCartAsync(shoppingCart);
+                    TempData["CouponMessage"] = validation.Message ?? "Coupon applied successfully.";
+                    TempData["CouponMessageType"] = "success";
+                    return RedirectToAction(ShoppingCartAction);
+                }
+                catch (Exception ex)
+                {
+                    PaymentLogger.Error(ex, "ApplyCoupon validation failed");
+                    TempData["CouponMessage"] = "Coupon validation failed: " + ex.Message;
+                    TempData["CouponMessageType"] = "danger";
+                    return RedirectToAction(ShoppingCartAction);
+                }
+            }
+            // Fallback minimal logic if validation service not available
+            var fallbackDto = await CouponService.GetStorefrontCouponByCodeAsync(couponCode, CurrentLanguage);
+            if (fallbackDto == null)
+            {
+                TempData["CouponMessage"] = "Coupon not found or expired";
+                TempData["CouponMessageType"] = "danger";
+                shoppingCart.ClearValidatedCoupon();
+                await SaveShoppingCartAsync(shoppingCart);
+                return RedirectToAction(ShoppingCartAction);
+            }
+            shoppingCart.Coupon = fallbackDto;
             await SaveShoppingCartAsync(shoppingCart);
+            TempData["CouponMessage"] = "Coupon applied successfully.";
+            TempData["CouponMessageType"] = "success";
             return RedirectToAction(ShoppingCartAction);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveCoupon()
+        {
+            var shoppingCart = await GetShoppingCartFromDataSourceAsync();
+            shoppingCart.ClearValidatedCoupon();
+            await SaveShoppingCartAsync(shoppingCart);
+            TempData["CouponMessage"] = "Coupon removed.";
+            TempData["CouponMessageType"] = "info";
+            return RedirectToAction(ShoppingCartAction);
+        }
+
+        private async Task<Domain.Models.CouponValidationContext> BuildCouponValidationContextAsync(ShoppingCartSession shoppingCart, string userId)
+        {
+            var isAuth = !string.IsNullOrEmpty(userId) && User.Identity.IsAuthenticated;
+            var ctx = new Domain.Models.CouponValidationContext
+            {
+                UserId = userId,
+                IsAuthenticated = isAuth,
+                Language = CurrentLanguage,
+                Currency = null, // Currency check deferred to order creation when payment currency known
+                CargoPrice = shoppingCart.CargoPriceValue,
+                HasExistingCoupon = shoppingCart.Coupon != null && !string.IsNullOrWhiteSpace(shoppingCart.Coupon.Code),
+                ExistingCouponCode = shoppingCart.Coupon?.Code
+            };
+            try
+            {
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    var cust = await CustomerService.GetUserIdAsync(userId).ConfigureAwait(false);
+                    if (cust != null)
+                    {
+                        ctx.CustomerId = cust.Id;
+                        ctx.BirthDate = cust.BirthDate;
+                        ctx.CustomerCreatedDate = cust.CreatedDate;
+                    }
+                    else
+                    {
+                        // Try via UserManager lookup for birthdate from customer? fallback
+                    }
+                }
+            }
+            catch (Exception ex) { PaymentLogger.Warn(ex, "Failed to build coupon validation context"); }
+            return ctx;
         }
 
         private async Task ClearBuyNowAsync(BuyNowModel buyNowModel)
@@ -1311,19 +1437,56 @@ namespace EImece.Controllers
             {
                 if (shoppingCart != null)
                 {
-                    shoppingCart.Coupon = null;
+                    shoppingCart.ClearValidatedCoupon();
+                }
+                return;
+            }
+
+            if (CouponValidationService == null)
+            {
+                try
+                {
+                    shoppingCart.Coupon = await CouponService.GetStorefrontCouponByCodeAsync(shoppingCart.Coupon.Code, CurrentLanguage);
+                    if (shoppingCart.Coupon == null) shoppingCart.ClearValidatedCoupon();
+                }
+                catch (Exception ex)
+                {
+                    PaymentLogger.Warn(ex, "Coupon revalidation failed; clearing coupon from cart.");
+                    shoppingCart.ClearValidatedCoupon();
                 }
                 return;
             }
 
             try
             {
-                shoppingCart.Coupon = await CouponService.GetStorefrontCouponByCodeAsync(shoppingCart.Coupon.Code, CurrentLanguage);
+                var userId = User.Identity.IsAuthenticated ? User.Identity.GetUserId() : null;
+                var ctx = await BuildCouponValidationContextAsync(shoppingCart, userId).ConfigureAwait(false);
+                // Use RevalidateActiveCoupon which ignores stacking for same coupon
+                var result = await CouponValidationService.RevalidateActiveCouponAsync(shoppingCart, ctx).ConfigureAwait(false);
+                if (!result.IsValid)
+                {
+                    PaymentLogger.Warn($"Coupon revalidation failed: {result.Reason} - {result.Message}. Removing coupon.");
+                    shoppingCart.ClearValidatedCoupon();
+                    TempData["CouponMessage"] = $"Coupon removed: {result.Message}";
+                    TempData["CouponMessageType"] = "warning";
+                }
+                else
+                {
+                    // Update validated amounts (covers price changes, sale status changes, etc.)
+                    shoppingCart.SetValidatedCouponDiscount(result.DiscountAmount, result.ShippingDiscount, result.EligibleAmount);
+                    // Refresh coupon DTO to latest (e.g., discount values may have changed)
+                    try
+                    {
+                        var freshDto = await CouponService.GetStorefrontCouponByCodeAsync(shoppingCart.Coupon.Code, CurrentLanguage);
+                        if (freshDto != null) shoppingCart.Coupon = freshDto;
+                    }
+                    catch { }
+                }
             }
             catch (Exception ex)
             {
                 PaymentLogger.Warn(ex, "Coupon revalidation failed; clearing coupon from cart.");
-                shoppingCart.Coupon = null;
+                shoppingCart.ClearValidatedCoupon();
             }
         }
 

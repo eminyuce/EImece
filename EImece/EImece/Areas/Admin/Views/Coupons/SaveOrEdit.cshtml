@@ -6,9 +6,28 @@
     var saveButtonText = AdminResource.SaveButtonText;
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     ViewBag.Title = AdminResource.Coupon;
+
+    // Initial discount type selection: honor explicit value, otherwise infer from legacy fields
+    var initialDiscountType = Model.IsFreeShipping
+        ? CouponDiscountType.FreeShipping
+        : (Model.DiscountType != CouponDiscountType.FixedAmount || (int)Model.DiscountType != 0
+            ? Model.DiscountType
+            : (Model.DiscountPercentage > 0 && Model.Discount == 0 ? CouponDiscountType.Percentage : CouponDiscountType.FixedAmount));
+
+    var allProducts = ViewBag.AllProducts as IEnumerable<object> ?? new object[0];
+    var allCategories = ViewBag.AllCategories as IEnumerable<object> ?? new object[0];
+    var allCustomers = ViewBag.AllCustomers as IEnumerable<EImece.Domain.Entities.Customer> ?? new EImece.Domain.Entities.Customer[0];
+
+    var selectedProductIds = new System.Collections.Generic.HashSet<string>(
+        (Model.ProductIdsCsv ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()),
+        StringComparer.OrdinalIgnoreCase);
+    var selectedCategoryIds = new System.Collections.Generic.HashSet<string>(
+        (Model.CategoryIdsCsv ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()),
+        StringComparer.OrdinalIgnoreCase);
 }
 
 <h2>@AdminResource.Coupon</h2>
+<p class="text-muted">@AdminResource.CouponPageIntro</p>
 <hr class="adminLine" />
 
 @{ ViewData["HelpId"] = "couponsHelp"; }
@@ -21,92 +40,348 @@
     <li><strong>Başlangıç / Bitiş tarihi</strong>: Biçim <code>gg/aa/yy</code> (ör. <code>01/08/26</code>). Bitiş tarihi başlangıçtan sonra olmalıdır.</li>
     <li><strong>Yayında mı</strong>: İşaretliyse kupon kullanılabilir.</li>
 </ul>
-<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Sabit tutar indirimi:</strong></p>
-<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:12px; white-space:pre-wrap;">Kod: 50TLINDIRIM
-Sabit indirim: 50
-Yüzde indirim: 0
-Başlangıç: 01/08/26
-Bitiş: 31/08/26</pre>
-<p style="margin-bottom: 6px;"><strong>Örnek 2 — Yüzde indirim:</strong></p>
-<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:0; white-space:pre-wrap;">Kod: YUZDE20
-Sabit indirim: 0
-Yüzde indirim: 20
-Başlangıç: 01/09/26
-Bitiş: 30/09/26</pre>
 @Html.Partial("_AdminHelpAccordionEnd")
+
+@if (ViewBag.TotalRedemptions != null)
+{
+    <div class="alert alert-info py-2 d-flex flex-wrap align-items-center">
+        <span><i class="fa fa-bar-chart" aria-hidden="true"></i> @AdminResource.TotalRedemptions: <strong>@ViewBag.TotalRedemptions</strong></span>
+        @if (ViewBag.RemainingRedemptions != null)
+        {
+            <span class="ml-3">| @AdminResource.RemainingRedemptions: <strong>@ViewBag.RemainingRedemptions</strong></span>
+        }
+        @if (Model.Id > 0)
+        {
+            <a class="btn btn-sm btn-outline-primary ml-auto" href="@Url.Action("Redemptions", new { id = Model.Id })"><i class="fa fa-list" aria-hidden="true"></i> @AdminResource.ViewRedemptions</a>
+        }
+    </div>
+}
+
+<style>
+    .coupon-edit .nav-tabs { border-bottom: 1px solid #dee2e6; }
+    .coupon-edit .nav-tabs .nav-link { color: #495057; }
+    .coupon-edit .nav-tabs .nav-link.active { font-weight: 600; }
+    .coupon-edit .admin-coupon-header { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; justify-content: space-between; }
+    .coupon-edit .admin-coupon-tabs-wrap { flex: 1 1 auto; min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .coupon-edit .admin-coupon-tabs-wrap .nav-tabs { flex-wrap: nowrap; margin-bottom: 0; white-space: nowrap; }
+    .coupon-edit .tab-pane { padding-top: 1rem; }
+    .coupon-edit .section-intro { background: #f8f9fa; border-left: 3px solid #0d6efd; padding: .5rem .75rem; border-radius: .25rem; font-size: .875rem; }
+    .coupon-edit .req::after { content: " *"; color: #dc3545; font-weight: 700; }
+    .coupon-edit .discount-type-card { position: relative; display: block; height: 100%; border: 1px solid #dee2e6; border-radius: .375rem; padding: .75rem .75rem .5rem 2.4rem; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+    .coupon-edit .discount-type-card:hover { border-color: #86b7fe; }
+    .coupon-edit .discount-type-card.active { border-color: #0d6efd; box-shadow: 0 0 0 .15rem rgba(13,110,253,.12); background: #f8faff; }
+    .coupon-edit .discount-type-card input { position: absolute; left: .75rem; top: .85rem; }
+    .coupon-edit .discount-type-card .dtt-title { display: block; font-weight: 600; }
+    .coupon-edit .discount-type-card .dtt-desc { display: block; font-size: .8rem; color: #6c757d; }
+    .coupon-edit .ms-box { border: 1px solid #ced4da; border-radius: .375rem; background: #fff; }
+    .coupon-edit .ms-search { border: none; border-bottom: 1px solid #ced4da; border-radius: .375rem .375rem 0 0; }
+    .coupon-edit .ms-search:focus { outline: none; box-shadow: none; border-color: #86b7fe; }
+    .coupon-edit .ms-chips { display: flex; flex-wrap: wrap; gap: .35rem; padding: .5rem .6rem; }
+    .coupon-edit .ms-chip { display: inline-flex; align-items: center; gap: .35rem; background: #e8f1ff; border: 1px solid #b6d4fe; color: #084298; border-radius: 1rem; padding: .1rem .55rem; font-size: .82rem; }
+    .coupon-edit .ms-chip button { border: none; background: transparent; color: #084298; font-weight: 700; line-height: 1; padding: 0 .1rem; cursor: pointer; }
+    .coupon-edit .ms-list { max-height: 220px; overflow-y: auto; padding: .25rem 0; }
+    .coupon-edit .ms-item { display: flex; align-items: center; gap: .5rem; padding: .3rem .75rem; margin: 0; cursor: pointer; font-weight: 400; }
+    .coupon-edit .ms-item:hover { background: #f8f9fa; }
+    .coupon-edit .ms-empty { padding: .6rem .75rem; color: #6c757d; font-size: .85rem; font-style: italic; }
+    .coupon-edit .ms-count { font-size: .8rem; color: #6c757d; }
+    @@media (max-width: 767.98px) {
+        .coupon-edit .admin-coupon-header { flex-direction: column; align-items: stretch; }
+        .coupon-edit .admin-coupon-tabs-wrap .nav-tabs { overflow-x: auto; }
+        .coupon-edit .discount-type-card { margin-bottom: .5rem; }
+    }
+</style>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div class="coupon-edit">
         @Html.AdminValidationSummary()
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.UpdatedDate)
+        @Html.HiddenFor(model => model.ProductIdsCsv, new { id = "ProductIdsCsv" })
+        @Html.HiddenFor(model => model.CategoryIdsCsv, new { id = "CategoryIdsCsv" })
+        @Html.HiddenFor(model => model.AssignedUserId, new { id = "AssignedUserId" })
+        @Html.HiddenFor(model => model.AssignedCustomerId, new { id = "AssignedCustomerId" })
+        @* Kept as a hidden field: the Discount Type card drives it, but the server-side rules depend on it being posted *@
+        @Html.HiddenFor(model => model.IsFreeShipping, new { id = "IsFreeShipping" })
 
-        <div class="card admin-edit-form">
-            @Html.Partial("_AdminEditSimpleToolbar")
+        <div class="card with-nav-tabs admin-coupon-card">
+            <div class="card-header admin-coupon-header">
+                <div class="admin-coupon-tabs-wrap">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" id="tab-general-link" href="#tab-general" data-bs-toggle="tab" role="tab" aria-controls="tab-general" aria-selected="true"><i class="fa fa-info-circle" aria-hidden="true"></i> @AdminResource.CouponTabGeneral</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" id="tab-discount-link" href="#tab-discount" data-bs-toggle="tab" role="tab" aria-controls="tab-discount" aria-selected="false"><i class="fa fa-percent" aria-hidden="true"></i> @AdminResource.CouponTabDiscount</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" id="tab-audience-link" href="#tab-audience" data-bs-toggle="tab" role="tab" aria-controls="tab-audience" aria-selected="false"><i class="fa fa-users" aria-hidden="true"></i> @AdminResource.CouponTabAudience</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" id="tab-advanced-link" href="#tab-advanced" data-bs-toggle="tab" role="tab" aria-controls="tab-advanced" aria-selected="false"><i class="fa fa-sliders" aria-hidden="true"></i> @AdminResource.CouponTabAdvanced</a></li>
+                    </ul>
+                </div>
+                @Html.Partial("_AdminEditToolbarActions")
+            </div>
             <div class="card-body">
-                <div class="form-group row mb-3">
-                    <label class="col-form-label col-md-2" for="@AdminResource.CouponName">@AdminResource.CouponName</label>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group row mb-3">
-                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "col-form-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group row mb-3">
-                    @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "col-form-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group row mb-3">
-                    @Html.LabelFor(model => model.DiscountPercentage, htmlAttributes: new { @class = "col-form-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.DiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.DiscountPercentage, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group row mb-3">
-                    @Html.LabelFor(model => model.StartDateStr, htmlAttributes: new { @class = "col-form-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.StartDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "1" } })
-                        @Html.ValidationMessageFor(model => model.StartDateStr, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group row mb-3">
-                    @Html.LabelFor(model => model.EndDateStr, htmlAttributes: new { @class = "col-form-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.EndDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "2" } })
-                        @Html.ValidationMessageFor(model => model.EndDateStr, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                <div class="tab-content">
 
-                <div class="form-group row mb-3">
-                    <div class="col-md-3">
+                    @* ============================ GENERAL ============================ *@
+                    <div class="tab-pane fade show active" id="tab-general" role="tabpanel" aria-labelledby="tab-general">
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label req" for="Name">@AdminResource.CouponName</label>
+                            <div class="col-sm-9">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.CouponNameHelp } })
+                                <small class="form-text text-muted">@AdminResource.CouponNameHelp</small>
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label req" for="Code">@AdminResource.CouponCode</label>
+                            <div class="col-sm-6">
+                                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", id = "CouponCode", placeholder = "YAZ2026" } })
+                                <small class="form-text text-muted">@AdminResource.CouponCodeHelp</small>
+                                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-outline-secondary w-100" onclick="document.getElementById('CouponCode').value='CPN'+Math.random().toString(36).substring(2,8).toUpperCase()">
+                                    <i class="fa fa-magic" aria-hidden="true"></i> @AdminResource.GenerateCode
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label req" for="StartDateStr">@AdminResource.CouponStartDate</label>
+                            <div class="col-sm-3">
+                                @Html.EditorFor(model => model.StartDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "1", autocomplete = "off" } })
+                                <small class="form-text text-muted">@AdminResource.CouponStartDateHelp</small>
+                                @Html.ValidationMessageFor(model => model.StartDateStr, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-sm-3 col-form-label req" for="EndDateStr">@AdminResource.CouponEndDate</label>
+                            <div class="col-sm-3">
+                                @Html.EditorFor(model => model.EndDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "2", autocomplete = "off" } })
+                                <small class="form-text text-muted">@AdminResource.CouponEndDateHelp</small>
+                                @Html.ValidationMessageFor(model => model.EndDateStr, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-3 offset-sm-3">
+                                <div class="form-check">
+                                    @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-check-input" } })
+                                    @Html.LabelFor(model => model.IsActive, new { @class = "form-check-label" })
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.CouponIsActiveHelp</small>
+                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" for="Position">@AdminResource.Position</label>
+                            <div class="col-sm-3">
+                                @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
+                                <small class="form-text text-muted">@AdminResource.CouponPositionHelp</small>
+                                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        @Html.LabelFor(model => model.IsActive)
-                        @Html.EditorFor(model => model.IsActive)
-                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
-                <div class="form-group row mb-3">
-                    @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                    @* ============================ DISCOUNT RULES ============================ *@
+                    <div class="tab-pane fade" id="tab-discount" role="tabpanel" aria-labelledby="tab-discount">
+                        <p class="section-intro">@AdminResource.DiscountRulesIntro</p>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="discount-type-card @(initialDiscountType == CouponDiscountType.FixedAmount ? "active" : "")">
+                                    @Html.RadioButton("DiscountType", CouponDiscountType.FixedAmount, initialDiscountType == CouponDiscountType.FixedAmount, new { id = "dt-fixed", @class = "form-check-input discount-type-radio" })
+                                    <span class="dtt-title"><i class="fa fa-money" aria-hidden="true"></i> @AdminResource.DiscountTypeFixedAmount</span>
+                                    <span class="dtt-desc">@AdminResource.DiscountTypeFixedDesc</span>
+                                </label>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="discount-type-card @(initialDiscountType == CouponDiscountType.Percentage ? "active" : "")">
+                                    @Html.RadioButton("DiscountType", CouponDiscountType.Percentage, initialDiscountType == CouponDiscountType.Percentage, new { id = "dt-percentage", @class = "form-check-input discount-type-radio" })
+                                    <span class="dtt-title"><i class="fa fa-percent" aria-hidden="true"></i> @AdminResource.DiscountTypePercentage</span>
+                                    <span class="dtt-desc">@AdminResource.DiscountTypePercentageDesc</span>
+                                </label>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="discount-type-card @(initialDiscountType == CouponDiscountType.FreeShipping ? "active" : "")">
+                                    @Html.RadioButton("DiscountType", CouponDiscountType.FreeShipping, initialDiscountType == CouponDiscountType.FreeShipping, new { id = "dt-freeship", @class = "form-check-input discount-type-radio" })
+                                    <span class="dtt-title"><i class="fa fa-truck" aria-hidden="true"></i> @AdminResource.IsFreeShipping</span>
+                                    <span class="dtt-desc">@AdminResource.DiscountTypeFreeShippingDesc</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3" id="fixed-amount-group">
+                            <label class="col-sm-3 col-form-label" for="Discount">@AdminResource.FixedDiscountAmountLabel</label>
+                            <div class="col-sm-6">
+                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control", placeholder = "50" } })
+                                <small class="form-text text-muted">@AdminResource.DiscountAmountHelp</small>
+                                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3" id="percentage-group">
+                            <label class="col-sm-3 col-form-label" for="DiscountPercentage">@AdminResource.DiscountPercentage</label>
+                            <div class="col-sm-3">
+                                @Html.EditorFor(model => model.DiscountPercentage, new { htmlAttributes = new { @class = "form-control", placeholder = "20" } })
+                                <small class="form-text text-muted">@AdminResource.DiscountPercentageHelp</small>
+                                @Html.ValidationMessageFor(model => model.DiscountPercentage, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-sm-3 col-form-label" for="MaximumDiscountAmount">@AdminResource.MaxDiscountAmount</label>
+                            <div class="col-sm-3">
+                                @Html.EditorFor(model => model.MaximumDiscountAmount, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.MaxDiscountPlaceholder } })
+                                <small class="form-text text-muted">@AdminResource.MaximumDiscountAmountHelp</small>
+                                @Html.ValidationMessageFor(model => model.MaximumDiscountAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" for="MinimumOrderAmount">@AdminResource.MinimumOrderAmount</label>
+                            <div class="col-sm-6">
+                                @Html.EditorFor(model => model.MinimumOrderAmount, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.MinOrderAmountPlaceholder } })
+                                <small class="form-text text-muted">@AdminResource.MinimumOrderAmountHelp</small>
+                                @Html.ValidationMessageFor(model => model.MinimumOrderAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-9 offset-sm-3">
+                                <div class="form-check">
+                                    @Html.EditorFor(model => model.ExcludeSaleItems, new { htmlAttributes = new { @class = "form-check-input" } })
+                                    @Html.LabelFor(model => model.ExcludeSaleItems, new { @class = "form-check-label" })
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.ExcludeSaleItemsHelp</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" for="Currency">@AdminResource.Currency</label>
+                            <div class="col-sm-6">
+                                @Html.EditorFor(model => model.Currency, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.CurrencyPlaceholder } })
+                                <small class="form-text text-muted">@AdminResource.CurrencyHelp</small>
+                                @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                     </div>
+
+                    @* ============================ TARGET AUDIENCE ============================ *@
+                    <div class="tab-pane fade" id="tab-audience" role="tabpanel" aria-labelledby="tab-audience">
+                        <p class="section-intro"><i class="fa fa-users" aria-hidden="true"></i> @AdminResource.AudienceIntro</p>
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    @Html.EditorFor(model => model.RequireLogin, new { htmlAttributes = new { @class = "form-check-input" } })
+                                    @Html.LabelFor(model => model.RequireLogin, new { @class = "form-check-label" })
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.RequireLoginHelp</small>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    @Html.EditorFor(model => model.IsFirstOrderOnly, new { htmlAttributes = new { @class = "form-check-input" } })
+                                    @Html.LabelFor(model => model.IsFirstOrderOnly, new { @class = "form-check-label" })
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.IsFirstOrderOnlyHelp</small>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    @Html.EditorFor(model => model.IsNewCustomerOnly, new { htmlAttributes = new { @class = "form-check-input" } })
+                                    @Html.LabelFor(model => model.IsNewCustomerOnly, new { @class = "form-check-label" })
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.IsNewCustomerOnlyHelp</small>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" for="assignedCustomerSelect">@AdminResource.SpecificCustomerLabel</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <select id="assignedCustomerSelect" class="form-select" aria-label="@AdminResource.SpecificCustomerLabel">
+                                        <option value="">@AdminResource.SpecificCustomerPlaceholder</option>
+                                        @foreach (var c in allCustomers.Take(500))
+                                        {
+                                            var isSelected = (!String.IsNullOrEmpty(Model.AssignedUserId) && c.UserId == Model.AssignedUserId)
+                                                          || (Model.AssignedCustomerId.HasValue && c.Id == Model.AssignedCustomerId.Value);
+                                            <option value="@c.UserId|@c.Id" @(isSelected ? "selected" : "")>@c.FullName (@c.Email)</option>
+                                        }
+                                    </select>
+                                    <button type="button" class="btn btn-outline-secondary" id="clearAssignedCustomer" title="@AdminResource.ClearSelection">@AdminResource.ClearSelection</button>
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.SpecificCustomerHelp</small>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group mb-3">
+                            <label class="form-label fw-bold">@AdminResource.ProductsSelectorLabel</label>
+                            <small class="form-text text-muted d-block mb-1">@AdminResource.ProductsSelectorHelp</small>
+                            <div class="ms-box" data-target="#ProductIdsCsv" data-empty-all="@AdminResource.NothingSelectedText" data-empty-none="@AdminResource.NoItemsFoundText">
+                                <input type="text" class="form-control ms-search" aria-label="@AdminResource.SearchItemsPlaceholder" placeholder="@AdminResource.SearchItemsPlaceholder" />
+                                <div class="ms-chips" aria-live="polite"></div>
+                                <div class="ms-list">
+                                    @foreach (var p in allProducts)
+                                    {
+                                        var pid = Convert.ToString(p.GetType().GetProperty("Id").GetValue(p));
+                                        var pname = Convert.ToString(p.GetType().GetProperty("Name").GetValue(p));
+                                        <label class="ms-item"><input type="checkbox" class="form-check-input ms-option" value="@pid" data-name="@pname" @(selectedProductIds.Contains(pid) ? "checked" : "") /><span>@pname</span></label>
+                                    }
+                                </div>
+                                <div class="ms-empty d-none">@AdminResource.NoItemsFoundText</div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label fw-bold">@AdminResource.CategoriesSelectorLabel</label>
+                            <small class="form-text text-muted d-block mb-1">@AdminResource.CategoriesSelectorHelp</small>
+                            <div class="ms-box" data-target="#CategoryIdsCsv" data-empty-all="@AdminResource.NothingSelectedText" data-empty-none="@AdminResource.NoItemsFoundText">
+                                <input type="text" class="form-control ms-search" aria-label="@AdminResource.SearchItemsPlaceholder" placeholder="@AdminResource.SearchItemsPlaceholder" />
+                                <div class="ms-chips" aria-live="polite"></div>
+                                <div class="ms-list">
+                                    @foreach (var c in allCategories)
+                                    {
+                                        var cid = Convert.ToString(c.GetType().GetProperty("Id").GetValue(c));
+                                        var cname = Convert.ToString(c.GetType().GetProperty("Name").GetValue(c));
+                                        <label class="ms-item"><input type="checkbox" class="form-check-input ms-option" value="@cid" data-name="@cname" @(selectedCategoryIds.Contains(cid) ? "checked" : "") /><span>@cname</span></label>
+                                    }
+                                </div>
+                                <div class="ms-empty d-none">@AdminResource.NoItemsFoundText</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* ============================ ADVANCED ============================ *@
+                    <div class="tab-pane fade" id="tab-advanced" role="tabpanel" aria-labelledby="tab-advanced">
+                        <p class="section-intro">@AdminResource.UsageLimitsIntro</p>
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" for="GlobalUsageLimit">@AdminResource.GlobalUsageLimit</label>
+                            <div class="col-sm-3">
+                                @Html.EditorFor(model => model.GlobalUsageLimit, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.GlobalLimitPlaceholder } })
+                                <small class="form-text text-muted">@AdminResource.GlobalUsageLimitHelp</small>
+                                @Html.ValidationMessageFor(model => model.GlobalUsageLimit, "", new { @class = "text-danger" })
+                            </div>
+                            <label class="col-sm-3 col-form-label" for="PerCustomerUsageLimit">@AdminResource.PerCustomerUsageLimit</label>
+                            <div class="col-sm-3">
+                                @Html.EditorFor(model => model.PerCustomerUsageLimit, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.PerCustomerLimitPlaceholder } })
+                                <small class="form-text text-muted">@AdminResource.PerCustomerUsageLimitHelp</small>
+                                @Html.ValidationMessageFor(model => model.PerCustomerUsageLimit, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-6">
+                                <div class="form-check">
+                                    @Html.EditorFor(model => model.AllowStacking, new { htmlAttributes = new { @class = "form-check-input" } })
+                                    @Html.LabelFor(model => model.AllowStacking, new { @class = "form-check-label" })
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.AllowStackingHelp</small>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-6">
+                                <div class="form-check">
+                                    @Html.EditorFor(model => model.IsBirthdayCoupon, new { htmlAttributes = new { @class = "form-check-input" } })
+                                    @Html.LabelFor(model => model.IsBirthdayCoupon, new { @class = "form-check-label" })
+                                </div>
+                                <small class="form-text text-muted">@AdminResource.IsBirthdayCouponHelp</small>
+                            </div>
+                            <div class="col-sm-6" id="birthday-window-group" style="@(Model.IsBirthdayCoupon ? "" : "display:none;")">
+                                <label class="form-label" for="BirthdayWindow">@AdminResource.BirthdayWindow</label>
+                                @Html.EnumDropDownListFor(model => model.BirthdayWindow, AdminResource.NoBirthdayOption, new { @class = "form-select" })
+                                <small class="form-text text-muted">@AdminResource.BirthdayWindowHelp</small>
+                                @Html.ValidationMessageFor(model => model.BirthdayWindow, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -124,5 +399,145 @@ Bitiş: 30/09/26</pre>
             defaultDate: ""
         });
 
+        // ---------- Discount type cards ----------
+        function applyDiscountUi(clearUnusedField) {
+            var val = $('input[name="DiscountType"]:checked').val();
+            var isFixed = val === 'FixedAmount' || val === '0';
+            var isPct = val === 'Percentage' || val === '1';
+            var isFreeShip = val === 'FreeShipping' || val === '2';
+            $('#fixed-amount-group').toggle(isFixed);
+            $('#percentage-group').toggle(isPct);
+            $('.discount-type-card').removeClass('active');
+            $('input[name="DiscountType"]:checked').closest('.discount-type-card').addClass('active');
+            // Keep legacy bool in sync so the server-side rules keep working
+            $('#IsFreeShipping').val(isFreeShip);
+            // Only clear the unused legacy field on an explicit user choice,
+            // so loading an existing coupon never alters its stored values.
+            if (!clearUnusedField) return;
+            if (isFixed) { $('#DiscountPercentage').val(0); }
+            if (isPct) { $('#Discount').val(0); }
+            if (isFreeShip) { $('#Discount').val(0); $('#DiscountPercentage').val(0); }
+        }
+        $('input[name="DiscountType"]').on('change', function () { applyDiscountUi(true); });
+        applyDiscountUi(false);
+
+        // ---------- Birthday window conditional ----------
+        $('#IsBirthdayCoupon').on('change', function () {
+            $('#birthday-window-group').toggle(this.checked);
+        });
+
+        // ---------- Customer assignment ----------
+        function syncAssignedCustomer() {
+            var v = $('#assignedCustomerSelect').val();
+            if (v) {
+                var parts = v.split('|');
+                $('#AssignedUserId').val(parts[0] || '');
+                $('#AssignedCustomerId').val(parts[1] || '');
+            } else {
+                $('#AssignedUserId').val('');
+                $('#AssignedCustomerId').val('');
+            }
+        }
+        // NOTE: never sync on page load - if an existing assignment is not present
+        // in the dropdown (e.g. staff user without a customer record), wiping it on
+        // init would silently delete it on save. Only user actions may change it.
+        $('#assignedCustomerSelect').on('change', syncAssignedCustomer);
+        $('#clearAssignedCustomer').on('click', function () {
+            $('#assignedCustomerSelect').val('');
+            syncAssignedCustomer();
+            resetCustomerSearch();
+        });
+        // Type-to-search on the customer select (native selects cannot filter large lists well)
+        function resetCustomerSearch() {
+            var select = document.getElementById('assignedCustomerSelect');
+            if (!select) return;
+            for (var i = 1; i < select.options.length; i++) {
+                select.options[i].style.display = '';
+            }
+            select.size = 0;
+            var search = document.getElementById('assignedCustomerSearch');
+            if (search) search.value = '';
+        }
+        (function () {
+            var select = document.getElementById('assignedCustomerSelect');
+            if (!select || select.options.length < 20) return;
+            var wrapper = select.closest('.input-group') || select.parentElement;
+            var search = document.createElement('input');
+            search.type = 'text';
+            search.id = 'assignedCustomerSearch';
+            search.className = 'form-control mb-1';
+            search.placeholder = '@AdminResource.SearchItemsPlaceholder';
+            search.setAttribute('aria-label', '@AdminResource.SpecificCustomerPlaceholder');
+            wrapper.insertBefore(search, select);
+            search.addEventListener('input', function () {
+                var q = this.value.toLowerCase();
+                var found = false;
+                for (var i = 1; i < select.options.length; i++) {
+                    var opt = select.options[i];
+                    var hit = !q || opt.text.toLowerCase().indexOf(q) !== -1;
+                    opt.style.display = hit ? '' : 'none';
+                    if (hit) found = true;
+                }
+                select.size = found && q ? Math.min(10, select.options.length) : 0;
+                if (!q) select.size = 0;
+            });
+        })();
+
+        // ---------- Searchable checkbox multi-selects ----------
+        $('.ms-box').each(function () {
+            var box = $(this);
+            var target = $(box.data('target'));
+            var list = box.find('.ms-list');
+            var search = box.find('.ms-search');
+            var chips = box.find('.ms-chips');
+            var emptyBox = box.find('.ms-empty');
+            var removeTemplate = '@AdminResource.RemoveItemAria';
+
+            function selectedOptions() { return list.find('.ms-option:checked'); }
+
+            function renderChips() {
+                chips.empty();
+                selectedOptions().each(function () {
+                    var cb = $(this);
+                    var name = cb.data('name');
+                    var chip = $('<span class="ms-chip"></span>').append($('<span></span>').text(name));
+                    var removeBtn = $('<button type="button"></button>')
+                        .attr('aria-label', removeTemplate.replace('{0}', name))
+                        .html('&times;')
+                        .on('click', function () { cb.prop('checked', false); update(); });
+                    chip.append(removeBtn);
+                    chips.append(chip);
+                });
+                var count = selectedOptions().length;
+                if (count === 0) {
+                    chips.append($('<span class="ms-count"></span>').text(box.attr('data-empty-all')));
+                } else {
+                    chips.append($('<span class="ms-count"></span>').text(count));
+                }
+            }
+
+            function persist() {
+                var ids = selectedOptions().map(function () { return this.value; }).get();
+                target.val(ids.join(','));
+            }
+
+            function update() { renderChips(); persist(); }
+
+            list.on('change', '.ms-option', update);
+
+            search.on('input', function () {
+                var q = search.val().toLowerCase();
+                var any = false;
+                list.find('.ms-item').each(function () {
+                    var text = $(this).find('span').first().text().toLowerCase();
+                    var hit = !q || text.indexOf(q) !== -1;
+                    $(this).toggle(hit);
+                    if (hit) any = true;
+                });
+                emptyBox.toggleClass('d-none', any);
+            });
+
+            update();
+        });
     });
 </script>

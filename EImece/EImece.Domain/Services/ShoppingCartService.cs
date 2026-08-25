@@ -1,7 +1,8 @@
-using EImece.Domain.DbContext;
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
@@ -14,6 +15,7 @@ using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
@@ -24,8 +26,6 @@ namespace EImece.Domain.Services
     public class ShoppingCartService : BaseEntityService<ShoppingCart>, IShoppingCartService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private readonly IEImeceContext _dbContext;
 
         private IOrderService OrderService;
 
@@ -41,8 +41,13 @@ namespace EImece.Domain.Services
 
         public ApplicationUserManager UserManager { get; set; }
 
+        [Inject]
+        public ICouponValidationService CouponValidationService { get; set; }
+
+        [Inject]
+        public ICouponRedemptionRepository CouponRedemptionRepository { get; set; }
+
         public ShoppingCartService(
-            IEImeceContext dbContext,
             ApplicationUserManager userManager,
             IShoppingCartRepository repository,
             IOrderService orderService,
@@ -52,7 +57,6 @@ namespace EImece.Domain.Services
             IProductService productService = null) : base(repository)
         {
             Logger.Info("ShoppingCartService initialized");
-            this._dbContext = dbContext;
             this.ShoppingCartRepository = repository;
             this.UserManager = userManager;
             this.OrderService = orderService;
@@ -60,40 +64,6 @@ namespace EImece.Domain.Services
             this.AddressService = addressService;
             this.OrderProductService = orderProductService;
             this.ProductService = productService;
-        }
-
-        public ShoppingCartService(
-            ApplicationUserManager userManager,
-            IShoppingCartRepository repository,
-            IOrderService orderService,
-            ICustomerService customerService,
-            IAddressService addressService,
-            IOrderProductService orderProductService,
-            IProductService productService = null)
-            : this(null, userManager, repository, orderService, customerService, addressService, orderProductService, productService)
-        {
-        }
-
-        private EntitiesContext GetEntitiesContext()
-        {
-            if (_dbContext is EntitiesContext entitiesContext)
-            {
-                return entitiesContext;
-            }
-
-            if (ShoppingCartRepository is BaseRepository<ShoppingCart> baseRepo)
-            {
-                try
-                {
-                    return baseRepo.GetDbContext();
-                }
-                catch (InvalidCastException)
-                {
-                    return null;
-                }
-            }
-
-            return null;
         }
 
         public void SaveOrEditShoppingCart(ShoppingCart item)
@@ -189,9 +159,9 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveShoppingCart failed: userId is null or empty");
                 throw new ArgumentNullException(nameof(userId), "userId is null");
             }
-
-            var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            CouponValidationResult couponValidationResult = null;
+            // Use Serializable for coupon redemption race safety
+            using (var transaction = ShoppingCartRepository.BeginTransaction(System.Data.IsolationLevel.Serializable))
             {
                 try
                 {
@@ -229,13 +199,23 @@ namespace EImece.Domain.Services
                     Logger.Info($"Saving customer type to normal for userId: {userId}");
                     CustomerService.SaveCustomerTypeToNormal(userId);
 
+                    // Central coupon validation (must happen inside transaction before order creation)
+                    couponValidationResult = ValidateCouponForOrderSync(shoppingCart, userId, paymentResult.Currency);
+
                     Logger.Info($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
-                    Order savedOrder = SaveOrder(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId);
+                    Order savedOrder = SaveOrder(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId, couponValidationResult);
                     Logger.Info($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
                     Logger.Info($"Saving order products for OrderId: {savedOrder.Id}");
                     SaveOrderProduct(shoppingCart, savedOrder);
                     Logger.Info($"Order products saved successfully for OrderId: {savedOrder.Id}");
+
+                    // Record coupon redemption transactionally (after order and products)
+                    if (couponValidationResult != null && couponValidationResult.IsValid && couponValidationResult.CouponId.HasValue)
+                    {
+                        RecordCouponRedemptionSync(couponValidationResult, savedOrder, userId, shoppingCart);
+                        Logger.Info($"Coupon redemption recorded for CouponId: {couponValidationResult.CouponId}, OrderId: {savedOrder.Id}");
+                    }
 
                     transaction?.Commit();
 
@@ -270,9 +250,8 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveShoppingCartAsync failed: userId is null or empty");
                 throw new ArgumentNullException(nameof(userId), "userId is null");
             }
-
-            var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            CouponValidationResult couponValidationResultAsync = null;
+            using (var transaction = ShoppingCartRepository.BeginTransaction(System.Data.IsolationLevel.Serializable))
             {
                 try
                 {
@@ -305,12 +284,20 @@ namespace EImece.Domain.Services
 
                     await CustomerService.SaveCustomerTypeToNormalAsync(userId).ConfigureAwait(false);
 
+                    couponValidationResultAsync = await ValidateCouponForOrderAsync(shoppingCart, userId, paymentResult.Currency).ConfigureAwait(false);
+
                     Logger.Debug($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
-                    Order savedOrder = await SaveOrderAsync(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId).ConfigureAwait(false);
+                    Order savedOrder = await SaveOrderAsync(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId, couponValidationResultAsync).ConfigureAwait(false);
                     Logger.Debug($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
                     await SaveOrderProductAsync(shoppingCart, savedOrder).ConfigureAwait(false);
                     Logger.Debug($"Order products saved successfully for OrderId: {savedOrder.Id}");
+
+                    if (couponValidationResultAsync != null && couponValidationResultAsync.IsValid && couponValidationResultAsync.CouponId.HasValue)
+                    {
+                        await RecordCouponRedemptionAsync(couponValidationResultAsync, savedOrder, userId, shoppingCart).ConfigureAwait(false);
+                        Logger.Info($"Coupon redemption recorded for CouponId: {couponValidationResultAsync.CouponId}, OrderId: {savedOrder.Id}");
+                    }
 
                     transaction?.Commit();
 
@@ -328,7 +315,7 @@ namespace EImece.Domain.Services
 
         private Order SaveOrder(string orderNumber, String userId, ShoppingCartSession shoppingCart, PaymentResult paymentResult,
             int shippingAddressId,
-           int billingAddressId)
+           int billingAddressId, CouponValidationResult couponValidation = null)
         {
             Logger.Info($"SaveOrder started - UserId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
 
@@ -352,7 +339,25 @@ namespace EImece.Domain.Services
             item.OrderGuid = shoppingCart.OrderGuid;
             item.OrderType = (int)EImeceOrderType.NormalOrder;
             item.OrderNumber = orderNumber;
-            item.CargoPrice = shoppingCart.CargoPriceValue;
+            // Apply coupon validated shipping discount (free shipping) before order cargo
+            decimal validatedCouponDiscount = 0;
+            decimal validatedShippingDiscount = 0;
+            string validatedCouponCode = "";
+            if (couponValidation != null && couponValidation.IsValid)
+            {
+                validatedCouponDiscount = couponValidation.DiscountAmount;
+                validatedShippingDiscount = couponValidation.ShippingDiscount;
+                validatedCouponCode = couponValidation.CouponCode;
+            }
+            else if (shoppingCart.Coupon != null)
+            {
+                validatedCouponCode = shoppingCart.Coupon.Code;
+                validatedCouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice);
+            }
+            // Cargo price with free shipping discount applied never negative
+            decimal cargoVal = shoppingCart.CargoPriceValue;
+            if (validatedShippingDiscount > 0) cargoVal = 0;
+            item.CargoPrice = cargoVal;
             item.UserId = userId;
             item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
             item.CreatedDate = DateTime.Now;
@@ -360,8 +365,9 @@ namespace EImece.Domain.Services
             item.IsActive = true;
             item.Position = 1;
             item.Lang = AppConfig.MainLanguage;
-            item.Coupon = shoppingCart.Coupon != null ? shoppingCart.Coupon.Name : "";
-            item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice).CurrencySignForIyizo();
+            item.Coupon = validatedCouponCode;
+            item.CouponDiscount = validatedCouponDiscount.CurrencySignForIyizo();
+            if (validatedCouponDiscount > 0) item.AdminOrderNote = (item.AdminOrderNote ?? "") + $" Coupon:{validatedCouponCode} Discount:{validatedCouponDiscount} ";
             item.Token = paymentResult.Token;
             item.Price = paymentResult.Price;
             item.PaidPrice = paymentResult.PaidPrice;
@@ -401,7 +407,7 @@ namespace EImece.Domain.Services
         }
 
         private Order SaveOrder(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult,
-          int shippingAddressId)
+          int shippingAddressId, CouponValidationResult couponValidation = null)
         {
             Logger.Info($"SaveOrder (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
 
@@ -412,7 +418,23 @@ namespace EImece.Domain.Services
             item.OrderGuid = buyWithNoAccountCreation.OrderGuid;
             item.OrderType = (int)EImeceOrderType.BuyWithNoAccountCreation;
             item.OrderNumber = orderNumber;
-            item.CargoPrice = buyWithNoAccountCreation.CargoPriceValue;
+            decimal guestCouponDisc = 0;
+            decimal guestShippingDisc = 0;
+            string guestCouponCode = "";
+            if (couponValidation != null && couponValidation.IsValid)
+            {
+                guestCouponDisc = couponValidation.DiscountAmount;
+                guestShippingDisc = couponValidation.ShippingDiscount;
+                guestCouponCode = couponValidation.CouponCode;
+            }
+            else if (buyWithNoAccountCreation.Coupon != null)
+            {
+                guestCouponCode = buyWithNoAccountCreation.Coupon.Code;
+                guestCouponDisc = buyWithNoAccountCreation.CalculateCouponDiscount(buyWithNoAccountCreation.TotalPrice);
+            }
+            decimal cargoG = buyWithNoAccountCreation.CargoPriceValue;
+            if (guestShippingDisc > 0) cargoG = 0;
+            item.CargoPrice = cargoG;
             item.UserId = buyWithNoAccountCreation.Customer.UserId;
             item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
             item.CreatedDate = DateTime.Now;
@@ -420,8 +442,8 @@ namespace EImece.Domain.Services
             item.IsActive = true;
             item.Position = 1;
             item.Lang = AppConfig.MainLanguage;
-            item.Coupon = buyWithNoAccountCreation.CouponStr;
-            item.CouponDiscount = buyWithNoAccountCreation.CalculateCouponDiscount(buyWithNoAccountCreation.TotalPrice).CurrencySignForIyizo();
+            item.Coupon = guestCouponCode;
+            item.CouponDiscount = guestCouponDisc.CurrencySignForIyizo();
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = shippingAddressId; // Billing currently shares the shipping address id.
@@ -527,7 +549,7 @@ namespace EImece.Domain.Services
 
         private async Task<Order> SaveOrderAsync(string orderNumber, String userId, ShoppingCartSession shoppingCart, PaymentResult paymentResult,
             int shippingAddressId,
-           int billingAddressId)
+           int billingAddressId, CouponValidationResult couponValidation = null)
         {
             Logger.Info($"SaveOrderAsync started - UserId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
 
@@ -551,7 +573,23 @@ namespace EImece.Domain.Services
             item.OrderGuid = shoppingCart.OrderGuid;
             item.OrderType = (int)EImeceOrderType.NormalOrder;
             item.OrderNumber = orderNumber;
-            item.CargoPrice = shoppingCart.CargoPriceValue;
+            decimal validatedCouponDiscountAsync = 0;
+            decimal validatedShippingDiscountAsync = 0;
+            string validatedCouponCodeAsync = "";
+            if (couponValidation != null && couponValidation.IsValid)
+            {
+                validatedCouponDiscountAsync = couponValidation.DiscountAmount;
+                validatedShippingDiscountAsync = couponValidation.ShippingDiscount;
+                validatedCouponCodeAsync = couponValidation.CouponCode;
+            }
+            else if (shoppingCart.Coupon != null)
+            {
+                validatedCouponCodeAsync = shoppingCart.Coupon.Code;
+                validatedCouponDiscountAsync = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice);
+            }
+            decimal cargoValAsync = shoppingCart.CargoPriceValue;
+            if (validatedShippingDiscountAsync > 0) cargoValAsync = 0;
+            item.CargoPrice = cargoValAsync;
             item.UserId = userId;
             item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
             item.CreatedDate = DateTime.Now;
@@ -559,8 +597,9 @@ namespace EImece.Domain.Services
             item.IsActive = true;
             item.Position = 1;
             item.Lang = AppConfig.MainLanguage;
-            item.Coupon = shoppingCart.Coupon != null ? shoppingCart.Coupon.Name : "";
-            item.CouponDiscount = shoppingCart.CalculateCouponDiscount(shoppingCart.TotalPrice).CurrencySignForIyizo();
+            item.Coupon = validatedCouponCodeAsync;
+            item.CouponDiscount = validatedCouponDiscountAsync.CurrencySignForIyizo();
+            if (validatedCouponDiscountAsync > 0) item.AdminOrderNote = (item.AdminOrderNote ?? "") + $" Coupon:{validatedCouponCodeAsync} Discount:{validatedCouponDiscountAsync} ";
             item.Token = paymentResult.Token;
             item.Price = paymentResult.Price;
             item.PaidPrice = paymentResult.PaidPrice;
@@ -600,7 +639,7 @@ namespace EImece.Domain.Services
         }
 
         private async Task<Order> SaveOrderAsync(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult,
-          int shippingAddressId)
+          int shippingAddressId, CouponValidationResult couponValidation = null)
         {
             Logger.Info($"SaveOrderAsync (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
 
@@ -611,7 +650,23 @@ namespace EImece.Domain.Services
             item.OrderGuid = buyWithNoAccountCreation.OrderGuid;
             item.OrderType = (int)EImeceOrderType.BuyWithNoAccountCreation;
             item.OrderNumber = orderNumber;
-            item.CargoPrice = buyWithNoAccountCreation.CargoPriceValue;
+            decimal guestDiscAsync = 0;
+            decimal guestShipAsync = 0;
+            string guestCodeAsync = "";
+            if (couponValidation != null && couponValidation.IsValid)
+            {
+                guestDiscAsync = couponValidation.DiscountAmount;
+                guestShipAsync = couponValidation.ShippingDiscount;
+                guestCodeAsync = couponValidation.CouponCode;
+            }
+            else if (buyWithNoAccountCreation.Coupon != null)
+            {
+                guestCodeAsync = buyWithNoAccountCreation.Coupon.Code;
+                guestDiscAsync = buyWithNoAccountCreation.CalculateCouponDiscount(buyWithNoAccountCreation.TotalPrice);
+            }
+            decimal cargoGAsync = buyWithNoAccountCreation.CargoPriceValue;
+            if (guestShipAsync > 0) cargoGAsync = 0;
+            item.CargoPrice = cargoGAsync;
             item.UserId = buyWithNoAccountCreation.Customer.UserId;
             item.OrderStatus = (int)EImeceOrderStatus.NewlyOrder;
             item.CreatedDate = DateTime.Now;
@@ -619,8 +674,8 @@ namespace EImece.Domain.Services
             item.IsActive = true;
             item.Position = 1;
             item.Lang = AppConfig.MainLanguage;
-            item.Coupon = buyWithNoAccountCreation.CouponStr;
-            item.CouponDiscount = buyWithNoAccountCreation.CalculateCouponDiscount(buyWithNoAccountCreation.TotalPrice).CurrencySignForIyizo();
+            item.Coupon = guestCodeAsync;
+            item.CouponDiscount = guestDiscAsync.CurrencySignForIyizo();
             item.DeliveryDate = DateTime.Now;
             item.ShippingAddressId = shippingAddressId;
             item.BillingAddressId = shippingAddressId; // Billing currently shares the shipping address id.
@@ -738,9 +793,8 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveBuyWithNoAccountCreation failed: " + Constants.PaymentResultIsNullMessage);
                 throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
-
-            var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            CouponValidationResult guestValidation = null;
+            using (var transaction = ShoppingCartRepository.BeginTransaction(System.Data.IsolationLevel.Serializable))
             {
                 try
                 {
@@ -761,13 +815,62 @@ namespace EImece.Domain.Services
                         Logger.Info($"New shipping address created with Id: {shippingAddressId}");
                     }
 
+                    // Guest coupon validation (must enforce login-required, usage limits etc.)
+                    if (buyWithNoAccountCreation.Coupon != null && !string.IsNullOrWhiteSpace(buyWithNoAccountCreation.Coupon.Code) && CouponValidationService != null)
+                    {
+                        try
+                        {
+                            var ctxGuest = new CouponValidationContext
+                            {
+                                UserId = buyWithNoAccountCreation.Customer.UserId,
+                                IsAuthenticated = false,
+                                Language = AppConfig.MainLanguage,
+                                Currency = paymentResult.Currency,
+                                CargoPrice = buyWithNoAccountCreation.CargoPriceValue,
+                                HasExistingCoupon = false
+                            };
+                            guestValidation = CouponValidationService.ValidateCouponAsync(buyWithNoAccountCreation.Coupon.Code, buyWithNoAccountCreation, ctxGuest).ConfigureAwait(false).GetAwaiter().GetResult();
+                            if (!guestValidation.IsValid)
+                            {
+                                Logger.Warn($"Guest coupon validation failed: {guestValidation.Reason} - {guestValidation.Message}");
+                                throw new InvalidOperationException($"{guestValidation.Reason}: {guestValidation.Message}");
+                            }
+                            buyWithNoAccountCreation.SetValidatedCouponDiscount(guestValidation.DiscountAmount, guestValidation.ShippingDiscount, guestValidation.EligibleAmount);
+                        }
+                        catch (InvalidOperationException) { throw; }
+                        catch (Exception ex) { Logger.Error(ex, "Guest coupon validation failed"); throw new InvalidOperationException("Coupon validation failed: " + ex.Message, ex); }
+                    }
+
                     Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-                    Order savedOrder = SaveOrder(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId);
+                    Order savedOrder = SaveOrder(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId, guestValidation);
                     Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
                     Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
                     SaveOrderProduct(buyWithNoAccountCreation.ShoppingCartItems, savedOrder);
                     Logger.Info($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+
+                    if (guestValidation != null && guestValidation.IsValid && guestValidation.CouponId.HasValue)
+                    {
+                        // Record redemption for guest (use generated UserId as identifier, CustomerId null for guest)
+                        var redemptionG = new CouponRedemption
+                        {
+                            Name = guestValidation.CouponCode,
+                            CouponId = guestValidation.CouponId.Value,
+                            OrderId = savedOrder.Id,
+                            CustomerId = null,
+                            UserId = buyWithNoAccountCreation.Customer.UserId,
+                            CouponCode = guestValidation.CouponCode,
+                            DiscountAmount = guestValidation.DiscountAmount,
+                            OrderTotalBeforeDiscount = guestValidation.EligibleAmount,
+                            Currency = savedOrder.Currency,
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now,
+                            IsActive = true,
+                            Position = 0,
+                            Lang = AppConfig.MainLanguage
+                        };
+                        if (CouponRedemptionRepository != null) CouponRedemptionRepository.SaveOrEdit(redemptionG);
+                    }
 
                     transaction?.Commit();
 
@@ -797,9 +900,7 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveBuyNow failed: " + Constants.PaymentResultIsNullMessage);
                 throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
-
-            var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = ShoppingCartRepository.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -866,9 +967,8 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveBuyWithNoAccountCreationAsync failed: " + Constants.PaymentResultIsNullMessage);
                 throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
-
-            var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            CouponValidationResult guestValidationAsync = null;
+            using (var transaction = ShoppingCartRepository.BeginTransaction(System.Data.IsolationLevel.Serializable))
             {
                 try
                 {
@@ -889,13 +989,55 @@ namespace EImece.Domain.Services
                         Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
                     }
 
+                    if (buyWithNoAccountCreation.Coupon != null && !string.IsNullOrWhiteSpace(buyWithNoAccountCreation.Coupon.Code) && CouponValidationService != null)
+                    {
+                        var ctxGuestAsync = new CouponValidationContext
+                        {
+                            UserId = buyWithNoAccountCreation.Customer.UserId,
+                            IsAuthenticated = false,
+                            Language = AppConfig.MainLanguage,
+                            Currency = paymentResult.Currency,
+                            CargoPrice = buyWithNoAccountCreation.CargoPriceValue,
+                            HasExistingCoupon = false
+                        };
+                        guestValidationAsync = await CouponValidationService.ValidateCouponAsync(buyWithNoAccountCreation.Coupon.Code, buyWithNoAccountCreation, ctxGuestAsync).ConfigureAwait(false);
+                        if (!guestValidationAsync.IsValid)
+                        {
+                            Logger.Warn($"Guest async coupon validation failed: {guestValidationAsync.Reason} - {guestValidationAsync.Message}");
+                            throw new InvalidOperationException($"{guestValidationAsync.Reason}: {guestValidationAsync.Message}");
+                        }
+                        buyWithNoAccountCreation.SetValidatedCouponDiscount(guestValidationAsync.DiscountAmount, guestValidationAsync.ShippingDiscount, guestValidationAsync.EligibleAmount);
+                    }
+
                     Logger.Debug($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
-                    Order savedOrder = await SaveOrderAsync(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId).ConfigureAwait(false);
+                    Order savedOrder = await SaveOrderAsync(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId, guestValidationAsync).ConfigureAwait(false);
                     Logger.Debug($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
                     Logger.Debug($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
                     await SaveOrderProductAsync(buyWithNoAccountCreation.ShoppingCartItems, savedOrder).ConfigureAwait(false);
                     Logger.Debug($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+
+                    if (guestValidationAsync != null && guestValidationAsync.IsValid && guestValidationAsync.CouponId.HasValue)
+                    {
+                        var redemptionGAsync = new CouponRedemption
+                        {
+                            Name = guestValidationAsync.CouponCode,
+                            CouponId = guestValidationAsync.CouponId.Value,
+                            OrderId = savedOrder.Id,
+                            CustomerId = null,
+                            UserId = buyWithNoAccountCreation.Customer.UserId,
+                            CouponCode = guestValidationAsync.CouponCode,
+                            DiscountAmount = guestValidationAsync.DiscountAmount,
+                            OrderTotalBeforeDiscount = guestValidationAsync.EligibleAmount,
+                            Currency = savedOrder.Currency,
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now,
+                            IsActive = true,
+                            Position = 0,
+                            Lang = AppConfig.MainLanguage
+                        };
+                        if (CouponRedemptionRepository != null) await CouponRedemptionRepository.SaveOrEditAsync(redemptionGAsync).ConfigureAwait(false);
+                    }
 
                     transaction?.Commit();
 
@@ -925,9 +1067,7 @@ namespace EImece.Domain.Services
                 Logger.Error("SaveBuyNowAsync failed: " + Constants.PaymentResultIsNullMessage);
                 throw new ArgumentNullException(nameof(paymentResult), Constants.PaymentResultIsNullMessage);
             }
-
-            var dbContext = GetEntitiesContext();
-            using (var transaction = dbContext?.Database?.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+            using (var transaction = ShoppingCartRepository.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
             {
                 try
                 {
@@ -1147,6 +1287,167 @@ namespace EImece.Domain.Services
             int count = await ShoppingCartRepository.DeleteExpiredShoppingCartsAsync(cutoffDate, 500, cancellationToken).ConfigureAwait(false);
             Logger.Info($"ClearExpiredShoppingCartsAsync completed. Deleted {count} expired carts.");
             return count;
+        }
+
+        private CouponValidationResult ValidateCouponForOrderSync(ShoppingCartSession shoppingCart, string userId, string currency)
+        {
+            if (shoppingCart?.Coupon == null || string.IsNullOrWhiteSpace(shoppingCart.Coupon.Code)) return null;
+            if (CouponValidationService == null) return null;
+            try
+            {
+                var ctx = BuildCouponValidationContextSync(userId, shoppingCart, currency);
+                var task = CouponValidationService.ValidateCouponAsync(shoppingCart.Coupon.Code, shoppingCart, ctx);
+                // Use GetAwaiter().GetResult to avoid deadlock in sync path; ConfigureAwait false
+                var result = task.ConfigureAwait(false).GetAwaiter().GetResult();
+                if (!result.IsValid)
+                {
+                    Logger.Warn($"Coupon validation failed at order creation: {result.Reason} - {result.Message}");
+                    throw new InvalidOperationException($"{result.Reason}: {result.Message}");
+                }
+                return result;
+            }
+            catch (InvalidOperationException) { throw; }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Coupon validation sync failed");
+                throw new InvalidOperationException("Coupon validation failed: " + ex.Message, ex);
+            }
+        }
+
+        private async Task<CouponValidationResult> ValidateCouponForOrderAsync(ShoppingCartSession shoppingCart, string userId, string currency)
+        {
+            if (shoppingCart?.Coupon == null || string.IsNullOrWhiteSpace(shoppingCart.Coupon.Code)) return null;
+            if (CouponValidationService == null) return null;
+            var ctx = await BuildCouponValidationContextAsync(userId, shoppingCart, currency).ConfigureAwait(false);
+            var result = await CouponValidationService.ValidateCouponAsync(shoppingCart.Coupon.Code, shoppingCart, ctx).ConfigureAwait(false);
+            if (!result.IsValid)
+            {
+                Logger.Warn($"Coupon validation failed at order creation: {result.Reason} - {result.Message}");
+                throw new InvalidOperationException($"{result.Reason}: {result.Message}");
+            }
+            return result;
+        }
+
+        private CouponValidationContext BuildCouponValidationContextSync(string userId, ShoppingCartSession shoppingCart, string currency)
+        {
+            var ctx = new CouponValidationContext
+            {
+                UserId = userId,
+                IsAuthenticated = !string.IsNullOrEmpty(userId),
+                Currency = currency,
+                Language = shoppingCart.CurrentLanguage != 0 ? shoppingCart.CurrentLanguage : AppConfig.MainLanguage,
+                CargoPrice = shoppingCart.CargoPriceValue,
+                HasExistingCoupon = false
+            };
+            try
+            {
+                if (!string.IsNullOrEmpty(userId) && CustomerService != null)
+                {
+                    var cust = CustomerService.GetUserId(userId);
+                    if (cust != null)
+                    {
+                        ctx.CustomerId = cust.Id;
+                        ctx.BirthDate = cust.BirthDate;
+                        ctx.CustomerCreatedDate = cust.CreatedDate;
+                    }
+                }
+            }
+            catch (Exception ex) { Logger.Warn(ex, "Failed to build coupon validation context sync"); }
+            return ctx;
+        }
+
+        private async Task<CouponValidationContext> BuildCouponValidationContextAsync(string userId, ShoppingCartSession shoppingCart, string currency)
+        {
+            var ctx = new CouponValidationContext
+            {
+                UserId = userId,
+                IsAuthenticated = !string.IsNullOrEmpty(userId),
+                Currency = currency,
+                Language = shoppingCart.CurrentLanguage != 0 ? shoppingCart.CurrentLanguage : AppConfig.MainLanguage,
+                CargoPrice = shoppingCart.CargoPriceValue,
+                HasExistingCoupon = false
+            };
+            try
+            {
+                if (!string.IsNullOrEmpty(userId) && CustomerService != null)
+                {
+                    var cust = await CustomerService.GetUserIdAsync(userId).ConfigureAwait(false);
+                    if (cust != null)
+                    {
+                        ctx.CustomerId = cust.Id;
+                        ctx.BirthDate = cust.BirthDate;
+                        ctx.CustomerCreatedDate = cust.CreatedDate;
+                    }
+                }
+            }
+            catch (Exception ex) { Logger.Warn(ex, "Failed to build coupon validation context async"); }
+            return ctx;
+        }
+
+        private void RecordCouponRedemptionSync(CouponValidationResult validation, Order order, string userId, ShoppingCartSession cart)
+        {
+            if (CouponRedemptionRepository == null) return;
+            int? custId = null;
+            try
+            {
+                if (!string.IsNullOrEmpty(userId) && CustomerService != null)
+                {
+                    var cust = CustomerService.GetUserId(userId);
+                    custId = cust?.Id;
+                }
+            }
+            catch { }
+            var redemption = new CouponRedemption
+            {
+                Name = validation.CouponCode,
+                CouponId = validation.CouponId.Value,
+                OrderId = order.Id,
+                CustomerId = custId,
+                UserId = userId,
+                CouponCode = validation.CouponCode,
+                DiscountAmount = validation.DiscountAmount,
+                OrderTotalBeforeDiscount = validation.EligibleAmount,
+                Currency = order.Currency,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                IsActive = true,
+                Position = 0,
+                Lang = AppConfig.MainLanguage
+            };
+            CouponRedemptionRepository.SaveOrEdit(redemption);
+        }
+
+        private async Task RecordCouponRedemptionAsync(CouponValidationResult validation, Order order, string userId, ShoppingCartSession cart)
+        {
+            if (CouponRedemptionRepository == null) return;
+            int? custId = null;
+            try
+            {
+                if (!string.IsNullOrEmpty(userId) && CustomerService != null)
+                {
+                    var cust = await CustomerService.GetUserIdAsync(userId).ConfigureAwait(false);
+                    custId = cust?.Id;
+                }
+            }
+            catch { }
+            var redemption = new CouponRedemption
+            {
+                Name = validation.CouponCode,
+                CouponId = validation.CouponId.Value,
+                OrderId = order.Id,
+                CustomerId = custId,
+                UserId = userId,
+                CouponCode = validation.CouponCode,
+                DiscountAmount = validation.DiscountAmount,
+                OrderTotalBeforeDiscount = validation.EligibleAmount,
+                Currency = order.Currency,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                IsActive = true,
+                Position = 0,
+                Lang = AppConfig.MainLanguage
+            };
+            await CouponRedemptionRepository.SaveOrEditAsync(redemption).ConfigureAwait(false);
         }
     }
 }

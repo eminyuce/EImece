@@ -74,6 +74,9 @@ namespace EImece.Domain.Entities
 
         public int CustomerType { get; set; }
 
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.BirthDate))]
+        public DateTime? BirthDate { get; set; }
+
         // Needed for Admin panel — admin customer detail/ edit screens populate transient order history.
         [NotMapped]
         public DateTime OrderLatestDate { get; set; }

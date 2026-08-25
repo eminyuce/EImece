@@ -1,13 +1,12 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -22,16 +21,16 @@ namespace EImece.Domain.Services
     public class CompressedImageExportService : ICompressedImageExportService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly IEImeceContext _dbContext;
+        private readonly IImageExportRepository _imageExportRepository;
 
         private static readonly HashSet<string> AllowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"
         };
 
-        public CompressedImageExportService(IEImeceContext dbContext)
+        public CompressedImageExportService(IImageExportRepository imageExportRepository)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _imageExportRepository = imageExportRepository ?? throw new ArgumentNullException(nameof(imageExportRepository));
         }
 
         public async Task<ImageExportPackageResult> ExportCompressedImagesAsync(
@@ -260,262 +259,183 @@ namespace EImece.Domain.Services
             try
             {
                 // FileStorages
-                if (_dbContext.FileStorages != null)
-                {
-                    var fileStorages = await _dbContext.FileStorages
-                        .AsNoTracking()
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
+                var fileStorages = await _imageExportRepository.GetFileStoragesAsync(cancellationToken).ConfigureAwait(false);
+                lookups.FileStoragesByFileName = fileStorages
+                    .Where(f => !string.IsNullOrWhiteSpace(f.FileName))
+                    .GroupBy(f => f.FileName.Trim(), StringComparer.OrdinalIgnoreCase)
+                    .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
-                    lookups.FileStoragesByFileName = fileStorages
-                        .Where(f => !string.IsNullOrWhiteSpace(f.FileName))
-                        .GroupBy(f => f.FileName.Trim(), StringComparer.OrdinalIgnoreCase)
-                        .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
-
-                    lookups.FileStoragesById = fileStorages
-                        .ToDictionary(f => f.Id, f => f);
-                }
+                lookups.FileStoragesById = fileStorages
+                    .ToDictionary(f => f.Id, f => f);
 
                 // Products (MainImageId & ProductFiles)
-                if (_dbContext.Products != null)
+                var products = await _imageExportRepository.GetProductImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var p in products)
                 {
-                    var products = await _dbContext.Products
-                        .AsNoTracking()
-                        .Select(p => new { p.Id, p.Name, p.ProductCode, p.MainImageId, p.ProductCategoryId })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var p in products)
+                    if (p.MainImageId.HasValue && p.MainImageId.Value > 0)
                     {
-                        if (p.MainImageId.HasValue && p.MainImageId.Value > 0)
+                        lookups.AddRelation(p.MainImageId.Value, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(p.MainImageId.Value, new ImageRelatedRecordRef
+                            TableName = "Products",
+                            RecordId = p.Id,
+                            RelationType = "MainImage",
+                            RecordTitle = p.Name,
+                            AdditionalReferenceData = new Dictionary<string, object>
                             {
-                                TableName = "Products",
-                                RecordId = p.Id,
-                                RelationType = "MainImage",
-                                RecordTitle = p.Name,
-                                AdditionalReferenceData = new Dictionary<string, object>
-                                {
-                                    { "ProductCode", p.ProductCode },
-                                    { "ProductCategoryId", p.ProductCategoryId }
-                                }
-                            });
-                        }
+                                { "ProductCode", p.ProductCode },
+                                { "ProductCategoryId", p.ProductCategoryId }
+                            }
+                        });
                     }
                 }
 
-                if (_dbContext.ProductFiles != null)
+                var productFiles = await _imageExportRepository.GetProductFileImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var pf in productFiles)
                 {
-                    var productFiles = await _dbContext.ProductFiles
-                        .AsNoTracking()
-                        .Select(pf => new { pf.Id, pf.ProductId, pf.FileStorageId, ProductName = pf.Product != null ? pf.Product.Name : null, ProductCode = pf.Product != null ? pf.Product.ProductCode : null })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var pf in productFiles)
+                    if (pf.FileStorageId > 0)
                     {
-                        if (pf.FileStorageId > 0)
+                        lookups.AddRelation(pf.FileStorageId, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(pf.FileStorageId, new ImageRelatedRecordRef
+                            TableName = "Products",
+                            RecordId = pf.ProductId,
+                            RelationType = "ProductFile",
+                            RecordTitle = pf.ProductName,
+                            AdditionalReferenceData = new Dictionary<string, object>
                             {
-                                TableName = "Products",
-                                RecordId = pf.ProductId,
-                                RelationType = "ProductFile",
-                                RecordTitle = pf.ProductName,
-                                AdditionalReferenceData = new Dictionary<string, object>
-                                {
-                                    { "ProductFileId", pf.Id },
-                                    { "ProductCode", pf.ProductCode }
-                                }
-                            });
-                        }
+                                { "ProductFileId", pf.Id },
+                                { "ProductCode", pf.ProductCode }
+                            }
+                        });
                     }
                 }
 
                 // ProductCategories (MainImageId)
-                if (_dbContext.ProductCategories != null)
+                var productCategories = await _imageExportRepository.GetProductCategoryImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var pc in productCategories)
                 {
-                    var productCategories = await _dbContext.ProductCategories
-                        .AsNoTracking()
-                        .Select(pc => new { pc.Id, pc.Name, pc.MainImageId, pc.ParentId })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var pc in productCategories)
+                    if (pc.MainImageId.HasValue && pc.MainImageId.Value > 0)
                     {
-                        if (pc.MainImageId.HasValue && pc.MainImageId.Value > 0)
+                        lookups.AddRelation(pc.MainImageId.Value, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(pc.MainImageId.Value, new ImageRelatedRecordRef
+                            TableName = "ProductCategories",
+                            RecordId = pc.Id,
+                            RelationType = "MainImage",
+                            RecordTitle = pc.Name,
+                            AdditionalReferenceData = new Dictionary<string, object>
                             {
-                                TableName = "ProductCategories",
-                                RecordId = pc.Id,
-                                RelationType = "MainImage",
-                                RecordTitle = pc.Name,
-                                AdditionalReferenceData = new Dictionary<string, object>
-                                {
-                                    { "ParentId", pc.ParentId }
-                                }
-                            });
-                        }
+                                { "ParentId", pc.ParentId }
+                            }
+                        });
                     }
                 }
 
                 // Menus (MainImageId & MenuFiles)
-                if (_dbContext.Menus != null)
+                var menus = await _imageExportRepository.GetMenuImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var m in menus)
                 {
-                    var menus = await _dbContext.Menus
-                        .AsNoTracking()
-                        .Select(m => new { m.Id, m.Name, m.MainImageId, m.MenuLink, m.Link })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var m in menus)
+                    if (m.MainImageId.HasValue && m.MainImageId.Value > 0)
                     {
-                        if (m.MainImageId.HasValue && m.MainImageId.Value > 0)
+                        lookups.AddRelation(m.MainImageId.Value, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(m.MainImageId.Value, new ImageRelatedRecordRef
+                            TableName = "Menus",
+                            RecordId = m.Id,
+                            RelationType = "MainImage",
+                            RecordTitle = m.Name,
+                            AdditionalReferenceData = new Dictionary<string, object>
                             {
-                                TableName = "Menus",
-                                RecordId = m.Id,
-                                RelationType = "MainImage",
-                                RecordTitle = m.Name,
-                                AdditionalReferenceData = new Dictionary<string, object>
-                                {
-                                    { "MenuLink", m.MenuLink },
-                                    { "Link", m.Link }
-                                }
-                            });
-                        }
+                                { "MenuLink", m.MenuLink },
+                                { "Link", m.Link }
+                            }
+                        });
                     }
                 }
 
-                if (_dbContext.MenuFiles != null)
+                var menuFiles = await _imageExportRepository.GetMenuFileImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var mf in menuFiles)
                 {
-                    var menuFiles = await _dbContext.MenuFiles
-                        .AsNoTracking()
-                        .Select(mf => new { mf.Id, mf.MenuId, mf.FileStorageId, MenuName = mf.Menu != null ? mf.Menu.Name : null })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var mf in menuFiles)
+                    if (mf.FileStorageId > 0)
                     {
-                        if (mf.FileStorageId > 0)
+                        lookups.AddRelation(mf.FileStorageId, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(mf.FileStorageId, new ImageRelatedRecordRef
+                            TableName = "Menus",
+                            RecordId = mf.MenuId,
+                            RelationType = "MenuFile",
+                            RecordTitle = mf.MenuName,
+                            AdditionalReferenceData = new Dictionary<string, object>
                             {
-                                TableName = "Menus",
-                                RecordId = mf.MenuId,
-                                RelationType = "MenuFile",
-                                RecordTitle = mf.MenuName,
-                                AdditionalReferenceData = new Dictionary<string, object>
-                                {
-                                    { "MenuFileId", mf.Id }
-                                }
-                            });
-                        }
+                                { "MenuFileId", mf.Id }
+                            }
+                        });
                     }
                 }
 
                 // Stories (MainImageId & StoryFiles)
-                if (_dbContext.Stories != null)
+                var stories = await _imageExportRepository.GetStoryImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var s in stories)
                 {
-                    var stories = await _dbContext.Stories
-                        .AsNoTracking()
-                        .Select(s => new { s.Id, s.Name, s.MainImageId, s.StoryCategoryId })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var s in stories)
+                    if (s.MainImageId.HasValue && s.MainImageId.Value > 0)
                     {
-                        if (s.MainImageId.HasValue && s.MainImageId.Value > 0)
+                        lookups.AddRelation(s.MainImageId.Value, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(s.MainImageId.Value, new ImageRelatedRecordRef
+                            TableName = "Stories",
+                            RecordId = s.Id,
+                            RelationType = "MainImage",
+                            RecordTitle = s.Name,
+                            AdditionalReferenceData = new Dictionary<string, object>
                             {
-                                TableName = "Stories",
-                                RecordId = s.Id,
-                                RelationType = "MainImage",
-                                RecordTitle = s.Name,
-                                AdditionalReferenceData = new Dictionary<string, object>
-                                {
-                                    { "StoryCategoryId", s.StoryCategoryId }
-                                }
-                            });
-                        }
+                                { "StoryCategoryId", s.StoryCategoryId }
+                            }
+                        });
                     }
                 }
 
-                if (_dbContext.StoryFiles != null)
+                var storyFiles = await _imageExportRepository.GetStoryFileImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var sf in storyFiles)
                 {
-                    var storyFiles = await _dbContext.StoryFiles
-                        .AsNoTracking()
-                        .Select(sf => new { sf.Id, sf.StoryId, sf.FileStorageId })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var sf in storyFiles)
+                    if (sf.FileStorageId > 0)
                     {
-                        if (sf.FileStorageId > 0)
+                        lookups.AddRelation(sf.FileStorageId, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(sf.FileStorageId, new ImageRelatedRecordRef
+                            TableName = "Stories",
+                            RecordId = sf.StoryId,
+                            RelationType = "StoryFile",
+                            AdditionalReferenceData = new Dictionary<string, object>
                             {
-                                TableName = "Stories",
-                                RecordId = sf.StoryId,
-                                RelationType = "StoryFile",
-                                AdditionalReferenceData = new Dictionary<string, object>
-                                {
-                                    { "StoryFileId", sf.Id }
-                                }
-                            });
-                        }
+                                { "StoryFileId", sf.Id }
+                            }
+                        });
                     }
                 }
 
                 // StoryCategories (MainImageId)
-                if (_dbContext.StoryCategories != null)
+                var storyCategories = await _imageExportRepository.GetStoryCategoryImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var sc in storyCategories)
                 {
-                    var storyCategories = await _dbContext.StoryCategories
-                        .AsNoTracking()
-                        .Select(sc => new { sc.Id, sc.Name, sc.MainImageId })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var sc in storyCategories)
+                    if (sc.MainImageId.HasValue && sc.MainImageId.Value > 0)
                     {
-                        if (sc.MainImageId.HasValue && sc.MainImageId.Value > 0)
+                        lookups.AddRelation(sc.MainImageId.Value, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(sc.MainImageId.Value, new ImageRelatedRecordRef
-                            {
-                                TableName = "StoryCategories",
-                                RecordId = sc.Id,
-                                RelationType = "MainImage",
-                                RecordTitle = sc.Name
-                            });
-                        }
+                            TableName = "StoryCategories",
+                            RecordId = sc.Id,
+                            RelationType = "MainImage",
+                            RecordTitle = sc.Name
+                        });
                     }
                 }
 
                 // Brands (MainImageId)
-                if (_dbContext.Brands != null)
+                var brands = await _imageExportRepository.GetBrandImageInfosAsync(cancellationToken).ConfigureAwait(false);
+                foreach (var b in brands)
                 {
-                    var brands = await _dbContext.Brands
-                        .AsNoTracking()
-                        .Select(b => new { b.Id, b.Name, b.MainImageId })
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false);
-
-                    foreach (var b in brands)
+                    if (b.MainImageId.HasValue && b.MainImageId.Value > 0)
                     {
-                        if (b.MainImageId.HasValue && b.MainImageId.Value > 0)
+                        lookups.AddRelation(b.MainImageId.Value, new ImageRelatedRecordRef
                         {
-                            lookups.AddRelation(b.MainImageId.Value, new ImageRelatedRecordRef
-                            {
-                                TableName = "Brands",
-                                RecordId = b.Id,
-                                RelationType = "MainImage",
-                                RecordTitle = b.Name
-                            });
-                        }
+                            TableName = "Brands",
+                            RecordId = b.Id,
+                            RelationType = "MainImage",
+                            RecordTitle = b.Name
+                        });
                     }
                 }
             }

@@ -21,6 +21,10 @@ namespace EImece.Domain.Models.FrontModels
 
         public string OrderGuid { get; set; }
         public CouponDto Coupon { get; set; }
+        // Validated coupon amounts persisted with cart (set by CouponValidationService)
+        public decimal CouponValidatedDiscount { get; set; }
+        public decimal CouponShippingDiscount { get; set; }
+        public decimal CouponEligibleAmount { get; set; }
         public string UrlReferrer { get; set; }
         public string OrderComments { get; set; }
 
@@ -166,7 +170,30 @@ namespace EImece.Domain.Models.FrontModels
             get
             {
                 var result = TotalPrice + CargoPriceValue;
-                result -= CalculateCouponDiscount(result);
+                if (Coupon != null)
+                {
+                    // Prefer validated discount (covers max cap, eligible-only, free shipping via separate field)
+                    decimal couponDisc = CouponValidatedDiscount;
+                    if (couponDisc == 0)
+                    {
+                        // Backward compat fallback when validation not yet run (e.g., legacy cart)
+                        // For free-shipping coupons without validated amount, fallback also checks IsFreeShipping
+                        if (Coupon.IsFreeShipping)
+                        {
+                            couponDisc = 0;
+                        }
+                        else
+                        {
+                            // Use eligible-aware fallback? Old logic used total price; keep until revalidation updates validated fields
+                            couponDisc = CalculateCouponDiscount(result);
+                            // For percentage with max cap, apply cap if present
+                            if (Coupon.DiscountType == CouponDiscountType.Percentage && Coupon.MaximumDiscountAmount.HasValue && Coupon.MaximumDiscountAmount.Value > 0 && couponDisc > Coupon.MaximumDiscountAmount.Value)
+                                couponDisc = Coupon.MaximumDiscountAmount.Value;
+                        }
+                    }
+                    result -= couponDisc;
+                    result -= CouponShippingDiscount;
+                }
                 if (result < 0)
                 {
                     return 0;
@@ -191,25 +218,60 @@ namespace EImece.Domain.Models.FrontModels
         {
             if (Coupon != null)
             {
-                if (Coupon.Discount > 0)
+                // Use validated amount if already computed (covers product restrictions, max cap)
+                if (CouponValidatedDiscount > 0) return CouponValidatedDiscount;
+                if (Coupon.IsFreeShipping) return 0;
+                // Respect DiscountType
+                if (Coupon.DiscountType == CouponDiscountType.Percentage && Coupon.DiscountPercentage > 0)
                 {
-                    if (result >= Coupon.Discount)
+                    decimal per = (decimal)Coupon.DiscountPercentage / 100;
+                    var disc = result * per;
+                    if (Coupon.MaximumDiscountAmount.HasValue && Coupon.MaximumDiscountAmount.Value > 0 && disc > Coupon.MaximumDiscountAmount.Value)
+                        disc = Coupon.MaximumDiscountAmount.Value;
+                    // Also cap to result (never negative)
+                    if (disc > result) disc = result;
+                    return disc;
+                }
+                if (Coupon.DiscountType == CouponDiscountType.FixedAmount || Coupon.Discount > 0)
+                {
+                    if (Coupon.Discount > 0)
                     {
-                        return Coupon.Discount;
-                    }
-                    else
-                    {
-                        return result;
+                        if (result >= Coupon.Discount)
+                        {
+                            return Coupon.Discount;
+                        }
+                        else
+                        {
+                            return result;
+                        }
                     }
                 }
                 else if (Coupon.DiscountPercentage > 0)
                 {
                     decimal per = (decimal)Coupon.DiscountPercentage / 100;
-                    return result * per;
+                    var disc = result * per;
+                    if (Coupon.MaximumDiscountAmount.HasValue && disc > Coupon.MaximumDiscountAmount.Value)
+                        disc = Coupon.MaximumDiscountAmount.Value;
+                    return disc;
                 }
             }
 
             return 0;
+        }
+
+        public void SetValidatedCouponDiscount(decimal discount, decimal shippingDiscount, decimal eligibleAmount)
+        {
+            CouponValidatedDiscount = discount;
+            CouponShippingDiscount = shippingDiscount;
+            CouponEligibleAmount = eligibleAmount;
+        }
+
+        public void ClearValidatedCoupon()
+        {
+            Coupon = null;
+            CouponValidatedDiscount = 0;
+            CouponShippingDiscount = 0;
+            CouponEligibleAmount = 0;
         }
 
         public decimal SubTotalPrice

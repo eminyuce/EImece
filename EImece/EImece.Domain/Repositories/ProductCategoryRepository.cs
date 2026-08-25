@@ -531,5 +531,15 @@ namespace EImece.Domain.Repositories
         }
 
         #endregion
+
+        public async Task<List<ProductCategory>> GetProductCategoriesForImageExportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.ProductCategories.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<ProductCategory> GetProductCategoriesForImageExport()
+        {
+            return EImeceDbContext.ProductCategories.AsNoTracking().ToList();
+        }
     }
 }

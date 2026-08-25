@@ -6,6 +6,7 @@ using EImece.Domain.Helpers.Extensions;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
@@ -101,6 +102,16 @@ namespace EImece.Domain.Repositories
         public virtual EntitiesContext GetDbContext()
         {
             return EImeceDbContext;
+        }
+
+        public virtual DbContextTransaction BeginTransaction(IsolationLevel isolationLevel)
+        {
+            return GetDbContext().Database.BeginTransaction(isolationLevel);
+        }
+
+        public virtual DbContextTransaction BeginTransaction()
+        {
+            return GetDbContext().Database.BeginTransaction();
         }
 
         public virtual int SaveOrEdit(T item)

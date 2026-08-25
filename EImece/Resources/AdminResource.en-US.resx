@@ -1689,10 +1689,7 @@
   <data name="CouponExampleFixed" xml:space="preserve">
     <value>Example 1 — Fixed Amount Discount:</value>
   </data>
-  <data name="CouponCode" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="FixedDiscount" xml:space="preserve">
+    <data name="FixedDiscount" xml:space="preserve">
     <value>Fixed Discount</value>
   </data>
   <data name="PercentageDiscount" xml:space="preserve">
@@ -4436,5 +4433,310 @@
   </data>
   <data name="AdminPanelUILanguageHelp" xml:space="preserve">
     <value>The language used for the admin interface (menus, labels, buttons, messages). Independent from the topbar data-entry language.</value>
+  </data>
+  <data name="AssignedUserId" xml:space="preserve">
+    <value>Assigned User Id</value>
+  </data>
+  <data name="AssignedCustomerId" xml:space="preserve">
+    <value>Assigned Customer Id</value>
+  </data>
+  <data name="DiscountType" xml:space="preserve">
+    <value>Discount Type</value>
+  </data>
+  <data name="MaxDiscountAmount" xml:space="preserve">
+    <value>Maximum Discount Amount</value>
+  </data>
+  <data name="GlobalUsageLimit" xml:space="preserve">
+    <value>Global Usage Limit</value>
+  </data>
+  <data name="PerCustomerUsageLimit" xml:space="preserve">
+    <value>Per-Customer Usage Limit</value>
+  </data>
+  <data name="MinimumOrderAmount" xml:space="preserve">
+    <value>Minimum Order Amount</value>
+  </data>
+  <data name="ExcludeSaleItems" xml:space="preserve">
+    <value>Exclude Sale Items</value>
+  </data>
+  <data name="IsFreeShipping" xml:space="preserve">
+    <value>Free Shipping</value>
+  </data>
+  <data name="AllowStacking" xml:space="preserve">
+    <value>Allow Stacking</value>
+  </data>
+  <data name="AllowStackingHint" xml:space="preserve">
+    <value>Allow stacking (default single coupon)</value>
+  </data>
+  <data name="RequireLogin" xml:space="preserve">
+    <value>Login Required</value>
+  </data>
+  <data name="IsFirstOrderOnly" xml:space="preserve">
+    <value>First Order Only</value>
+  </data>
+  <data name="IsNewCustomerOnly" xml:space="preserve">
+    <value>New Customer Only</value>
+  </data>
+  <data name="IsBirthdayCoupon" xml:space="preserve">
+    <value>Birthday Coupon</value>
+  </data>
+  <data name="BirthdayWindow" xml:space="preserve">
+    <value>Birthday Window</value>
+  </data>
+  <data name="DiscountTypeFixedAmount" xml:space="preserve">
+    <value>Fixed Amount</value>
+  </data>
+  <data name="DiscountTypePercentage" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="DiscountTypeFreeShipping" xml:space="preserve">
+    <value>Free Shipping</value>
+  </data>
+  <data name="BirthdayWindowWeek" xml:space="preserve">
+    <value>Week</value>
+  </data>
+  <data name="BirthdayWindowMonth" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="GenerateCode" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="CustomerSpecific" xml:space="preserve">
+    <value>Customer Specific</value>
+  </data>
+  <data name="AssignedUserIdHint" xml:space="preserve">
+    <value>UserId (AspNetUsers Id) or leave empty for global</value>
+  </data>
+  <data name="AssignedUserHint" xml:space="preserve">
+    <value>Leave empty for global coupon, or enter UserId for per-customer</value>
+  </data>
+  <data name="DiscountTypeHint" xml:space="preserve">
+    <value>Fixed = use Discount, Percentage = use DiscountPercentage, FreeShipping = shipping becomes 0</value>
+  </data>
+  <data name="MaxDiscountPlaceholder" xml:space="preserve">
+    <value>e.g., 200 for max 200 TRY cap</value>
+  </data>
+  <data name="CurrencyPlaceholder" xml:space="preserve">
+    <value>TRY, USD or empty for any</value>
+  </data>
+  <data name="UsageLimits" xml:space="preserve">
+    <value>Usage Limits</value>
+  </data>
+  <data name="GlobalLimitPlaceholder" xml:space="preserve">
+    <value>e.g., 100 or empty unlimited</value>
+  </data>
+  <data name="PerCustomerLimitPlaceholder" xml:space="preserve">
+    <value>e.g., 1 for one-time</value>
+  </data>
+  <data name="TotalRedemptions" xml:space="preserve">
+    <value>Total redemptions</value>
+  </data>
+  <data name="RemainingRedemptions" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+  <data name="ViewRedemptions" xml:space="preserve">
+    <value>View redemptions</value>
+  </data>
+  <data name="CartRules" xml:space="preserve">
+    <value>Cart Rules</value>
+  </data>
+  <data name="MinimumOrderAmountHint" xml:space="preserve">
+    <value>Minimum eligible subtotal (excl. shipping)</value>
+  </data>
+  <data name="MinOrderAmountPlaceholder" xml:space="preserve">
+    <value>e.g., 500</value>
+  </data>
+  <data name="ProductIdsCsvLabel" xml:space="preserve">
+    <value>Product IDs (csv)</value>
+  </data>
+  <data name="ProductIdsCsvHint" xml:space="preserve">
+    <value>Only these products eligible (empty = all). OR logic with categories.</value>
+  </data>
+  <data name="ProductIdsCsvPlaceholder" xml:space="preserve">
+    <value>e.g., 1,5,20</value>
+  </data>
+  <data name="CategoryIdsCsvLabel" xml:space="preserve">
+    <value>Category IDs (csv)</value>
+  </data>
+  <data name="CategoryIdsCsvPlaceholder" xml:space="preserve">
+    <value>e.g., 3,7</value>
+  </data>
+  <data name="Audience" xml:space="preserve">
+    <value>Audience</value>
+  </data>
+  <data name="NoBirthdayOption" xml:space="preserve">
+    <value>No birthday</value>
+  </data>
+  <data name="GenerateCustomerCouponTitle" xml:space="preserve">
+    <value>Generate Customer Coupon</value>
+  </data>
+  <data name="GenerateCustomerCouponDesc" xml:space="preserve">
+    <value>Generate a coupon assigned to a specific customer. Leave customer empty for global coupon.</value>
+  </data>
+  <data name="BaseCode" xml:space="preserve">
+    <value>Base Code</value>
+  </data>
+  <data name="BaseCodePlaceholder" xml:space="preserve">
+    <value>Leave empty to auto-generate</value>
+  </data>
+  <data name="CustomersPick" xml:space="preserve">
+    <value>Customers (pick)</value>
+  </data>
+  <data name="SelectCustomerToFill" xml:space="preserve">
+    <value>-- Select customer to fill --</value>
+  </data>
+  <data name="CouponRedemptionsTitle" xml:space="preserve">
+    <value>Coupon Redemptions</value>
+  </data>
+  <data name="RedemptionsFor" xml:space="preserve">
+    <value>Redemptions for {0}</value>
+  </data>
+  <data name="OrderId" xml:space="preserve">
+    <value>Order Id</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="UserId" xml:space="preserve">
+    <value>User Id</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="BackToCoupon" xml:space="preserve">
+    <value>Back to Coupon</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>  <data name="CouponTabGeneral" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="CouponTabDiscount" xml:space="preserve">
+    <value>Discount Rules</value>
+  </data>
+  <data name="CouponTabAudience" xml:space="preserve">
+    <value>Target Audience</value>
+  </data>
+  <data name="CouponTabAdvanced" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="CouponPageIntro" xml:space="preserve">
+    <value>Create or edit a discount coupon. The tabs guide you left to right: what the coupon is, what discount it gives, who can use it, and what restrictions apply.</value>
+  </data>
+  <data name="CouponStartDateHelp" xml:space="preserve">
+    <value>Date the coupon becomes valid (dd/mm/yyyy).</value>
+  </data>
+  <data name="CouponEndDateHelp" xml:space="preserve">
+    <value>Last day the coupon is valid (dd/mm/yyyy). Must be after the start date.</value>
+  </data>
+  <data name="CouponIsActiveHelp" xml:space="preserve">
+    <value>When checked, customers can use this coupon.</value>
+  </data>
+  <data name="CouponPositionHelp" xml:space="preserve">
+    <value>Display order in the coupon list.</value>
+  </data>
+  <data name="DiscountTypeFixedDesc" xml:space="preserve">
+    <value>Subtracts a fixed amount from the cart. Example: 50 off.</value>
+  </data>
+  <data name="DiscountTypePercentageDesc" xml:space="preserve">
+    <value>Discounts a percentage of the cart. Example: 20% off.</value>
+  </data>
+  <data name="DiscountTypeFreeShippingDesc" xml:space="preserve">
+    <value>Removes the shipping cost of the order entirely.</value>
+  </data>
+  <data name="FixedDiscountAmountLabel" xml:space="preserve">
+    <value>Fixed Discount Amount</value>
+  </data>
+  <data name="DiscountAmountHelp" xml:space="preserve">
+    <value>Amount subtracted from the cart. Example: 50.</value>
+  </data>
+  <data name="DiscountPercentageHelp" xml:space="preserve">
+    <value>Percent taken off the cart subtotal. Example: 20 means 20% off.</value>
+  </data>
+  <data name="MaximumDiscountAmountHelp" xml:space="preserve">
+    <value>Cap for percentage discounts. Example: 200 means the discount never exceeds 200.</value>
+  </data>
+  <data name="MinimumOrderAmountHelp" xml:space="preserve">
+    <value>The customer must spend at least this amount before the coupon can be applied.</value>
+  </data>
+  <data name="ExcludeSaleItemsHelp" xml:space="preserve">
+    <value>When checked, products already on sale are excluded from the discount calculation.</value>
+  </data>
+  <data name="CurrencyHelp" xml:space="preserve">
+    <value>Currency this coupon applies to. Leave empty to allow any currency.</value>
+  </data>
+  <data name="AudienceIntro" xml:space="preserve">
+    <value>Who can use this coupon? If nothing below is selected the coupon is available to all customers.</value>
+  </data>
+  <data name="RequireLoginHelp" xml:space="preserve">
+    <value>Only signed-in customers can use this coupon.</value>
+  </data>
+  <data name="IsFirstOrderOnlyHelp" xml:space="preserve">
+    <value>Only customers placing their very first order can use it.</value>
+  </data>
+  <data name="IsNewCustomerOnlyHelp" xml:space="preserve">
+    <value>Only newly registered customers can use it.</value>
+  </data>
+  <data name="SpecificCustomerLabel" xml:space="preserve">
+    <value>Assign to a Specific Customer</value>
+  </data>
+  <data name="SpecificCustomerHelp" xml:space="preserve">
+    <value>If selected, only this customer can use the coupon. Leave empty for a general coupon.</value>
+  </data>
+  <data name="SpecificCustomerPlaceholder" xml:space="preserve">
+    <value>Search customer by name or email...</value>
+  </data>
+  <data name="SpecificCustomerEmpty" xml:space="preserve">
+    <value>No matching customer found</value>
+  </data>
+  <data name="ClearSelection" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ProductsSelectorLabel" xml:space="preserve">
+    <value>Eligible Products</value>
+  </data>
+  <data name="CategoriesSelectorLabel" xml:space="preserve">
+    <value>Eligible Categories</value>
+  </data>
+  <data name="ProductsSelectorHelp" xml:space="preserve">
+    <value>The coupon applies only to the selected products. Select none to apply to all products.</value>
+  </data>
+  <data name="CategoriesSelectorHelp" xml:space="preserve">
+    <value>The coupon applies only to products inside the selected categories. Works together with product selection (either one matches).</value>
+  </data>
+  <data name="SearchItemsPlaceholder" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <data name="SelectedItemsCount" xml:space="preserve">
+    <value>{0} item(s) selected</value>
+  </data>
+  <data name="NothingSelectedText" xml:space="preserve">
+    <value>Nothing selected - all apply</value>
+  </data>
+  <data name="NoItemsFoundText" xml:space="preserve">
+    <value>No matches found</value>
+  </data>
+  <data name="UsageLimitsIntro" xml:space="preserve">
+    <value>Limit how many times the coupon can be used. Leave empty for unlimited use.</value>
+  </data>
+  <data name="GlobalUsageLimitHelp" xml:space="preserve">
+    <value>Maximum total uses across all customers. Example: 100 stops working after the 100th use.</value>
+  </data>
+  <data name="PerCustomerUsageLimitHelp" xml:space="preserve">
+    <value>How many times a single customer may use it. Example: 1 = single-use coupon.</value>
+  </data>
+  <data name="AllowStackingHelp" xml:space="preserve">
+    <value>Determines whether this coupon can be combined with other discounts or coupons.</value>
+  </data>
+  <data name="IsBirthdayCouponHelp" xml:space="preserve">
+    <value>Special coupon automatically valid during the customer&apos;s birthday period.</value>
+  </data>
+  <data name="BirthdayWindowHelp" xml:space="preserve">
+    <value>When the birthday coupon becomes valid around the customer&apos;s birthday.</value>
+  </data>
+  <data name="RemoveItemAria" xml:space="preserve">
+    <value>Remove: {0}</value>
+  </data>
+  <data name="DiscountRulesIntro" xml:space="preserve">
+    <value>Choose what this discount does. Pick a type first; only the fields relevant to that type are shown.</value>
   </data>
 </root>

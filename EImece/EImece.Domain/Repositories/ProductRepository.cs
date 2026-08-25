@@ -1602,5 +1602,67 @@ namespace EImece.Domain.Repositories
         }
 
         #endregion
+
+        public async Task<List<Product>> GetProductsForImageExportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Products.AsNoTracking()
+                .Select(p => new Product { Id = p.Id, Name = p.Name, ProductCode = p.ProductCode, MainImageId = p.MainImageId, ProductCategoryId = p.ProductCategoryId })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public List<Product> GetProductsForImageExport()
+        {
+            return EImeceDbContext.Products.AsNoTracking()
+                .Select(p => new Product { Id = p.Id, Name = p.Name, ProductCode = p.ProductCode, MainImageId = p.MainImageId, ProductCategoryId = p.ProductCategoryId })
+                .ToList();
+        }
+
+        public string UpdateProductPrices(UpdatePriceRequest request)
+        {
+            if (request == null || request.PercentageOfIncreaseOrDecrease == null)
+            {
+                return "hata";
+            }
+            var connectionString = this.EImeceDbContext.Database.Connection.ConnectionString;
+            var commandText = @"[dbo].[UpdateProductPrices]";
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("PercentageOfIncreaseOrDecrease", request.PercentageOfIncreaseOrDecrease, SqlDbType.Decimal));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", (object)request.ProductId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("CategoryId", (object)request.CategoryId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("BrandId", (object)request.BrandId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("TagId", (object)request.TagId ?? DBNull.Value, SqlDbType.Int));
+            var commandType = CommandType.StoredProcedure;
+            var result = DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray()).ToStr();
+            return result;
+        }
+
+        public async Task<string> UpdateProductPricesAsync(UpdatePriceRequest request, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (request == null || request.PercentageOfIncreaseOrDecrease == null)
+            {
+                return "hata";
+            }
+            var connectionString = this.EImeceDbContext.Database.Connection.ConnectionString;
+            var commandText = @"[dbo].[UpdateProductPrices]";
+            var parameterList = new List<SqlParameter>();
+            parameterList.Add(DatabaseUtility.GetSqlParameter("PercentageOfIncreaseOrDecrease", request.PercentageOfIncreaseOrDecrease, SqlDbType.Decimal));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", (object)request.ProductId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("CategoryId", (object)request.CategoryId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("BrandId", (object)request.BrandId ?? DBNull.Value, SqlDbType.Int));
+            parameterList.Add(DatabaseUtility.GetSqlParameter("TagId", (object)request.TagId ?? DBNull.Value, SqlDbType.Int));
+            var commandType = CommandType.StoredProcedure;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    command.CommandType = commandType;
+                    command.Parameters.AddRange(parameterList.ToArray());
+                    var scalar = await command.ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
+                    return scalar.ToStr();
+                }
+            }
+        }
     }
 }

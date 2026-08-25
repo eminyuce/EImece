@@ -74,7 +74,23 @@ namespace EImece.Domain.Repositories
                     Code = r.Code,
                     Name = r.Name,
                     Discount = r.Discount,
-                    DiscountPercentage = r.DiscountPercentage
+                    DiscountPercentage = r.DiscountPercentage,
+                    AssignedUserId = r.AssignedUserId,
+                    AssignedCustomerId = r.AssignedCustomerId,
+                    DiscountType = r.DiscountType,
+                    MaximumDiscountAmount = r.MaximumDiscountAmount,
+                    GlobalUsageLimit = r.GlobalUsageLimit,
+                    PerCustomerUsageLimit = r.PerCustomerUsageLimit,
+                    MinimumOrderAmount = r.MinimumOrderAmount,
+                    ExcludeSaleItems = r.ExcludeSaleItems,
+                    IsFreeShipping = r.IsFreeShipping,
+                    AllowStacking = r.AllowStacking,
+                    RequireLogin = r.RequireLogin,
+                    IsFirstOrderOnly = r.IsFirstOrderOnly,
+                    IsNewCustomerOnly = r.IsNewCustomerOnly,
+                    IsBirthdayCoupon = r.IsBirthdayCoupon,
+                    BirthdayWindow = r.BirthdayWindow,
+                    Currency = r.Currency
                 })
                 .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);

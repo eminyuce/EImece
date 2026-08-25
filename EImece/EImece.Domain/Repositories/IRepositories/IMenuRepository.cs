@@ -25,6 +25,10 @@ namespace EImece.Domain.Repositories.IRepositories
 
         Task<List<Menu>> GetMenusAsync();
 
+        Task<List<Menu>> GetMenusForImageExportAsync(CancellationToken cancellationToken = default(CancellationToken));
+
+        List<Menu> GetMenusForImageExport();
+
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
         Task<StorefrontPageDto> GetStorefrontPageByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken));
