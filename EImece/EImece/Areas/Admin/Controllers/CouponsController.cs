@@ -106,6 +106,15 @@ namespace EImece.Areas.Admin.Controllers
                 ViewBag.AllCategories = categories.OrderBy(c => c.Name).Select(c => new { c.Id, c.Name }).Take(500).ToList();
             }
             catch (Exception ex) { Logger.Warn(ex, "Failed to load product/category lookups"); ViewBag.AllProducts = new object[0]; ViewBag.AllCategories = new object[0]; }
+            try
+            {
+                ViewBag.AllCustomers = await CustomerService.GetAllAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to load customer lookup");
+                ViewBag.AllCustomers = new EImece.Domain.Entities.Customer[0];
+            }
             return View(content);
         }
 
@@ -175,6 +184,15 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
             catch { }
+            try
+            {
+                ViewBag.AllCustomers = await CustomerService.GetAllAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to load customer lookup");
+                ViewBag.AllCustomers = new EImece.Domain.Entities.Customer[0];
+            }
             RemoveModelState();
             return View(coupon);
         }
