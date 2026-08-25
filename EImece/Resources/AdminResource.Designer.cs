@@ -10168,5 +10168,527 @@ namespace Resources {
                 return ResourceManager.GetString("AdminPanelUILanguageHelp", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Atanan Kullanıcı Id.
+        /// </summary>
+        public static string AssignedUserId {
+            get {
+                return ResourceManager.GetString("AssignedUserId", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Atanan Müşteri Id.
+        /// </summary>
+        public static string AssignedCustomerId {
+            get {
+                return ResourceManager.GetString("AssignedCustomerId", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to İndirim Tipi.
+        /// </summary>
+        public static string DiscountType {
+            get {
+                return ResourceManager.GetString("DiscountType", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Maksimum İndirim Tutarı.
+        /// </summary>
+        public static string MaxDiscountAmount {
+            get {
+                return ResourceManager.GetString("MaxDiscountAmount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Genel Kullanım Limiti.
+        /// </summary>
+        public static string GlobalUsageLimit {
+            get {
+                return ResourceManager.GetString("GlobalUsageLimit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteri Başına Kullanım Limiti.
+        /// </summary>
+        public static string PerCustomerUsageLimit {
+            get {
+                return ResourceManager.GetString("PerCustomerUsageLimit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Sipariş Tutarı.
+        /// </summary>
+        public static string MinimumOrderAmount {
+            get {
+                return ResourceManager.GetString("MinimumOrderAmount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to İndirimli Ürünleri Hariç Tut.
+        /// </summary>
+        public static string ExcludeSaleItems {
+            get {
+                return ResourceManager.GetString("ExcludeSaleItems", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ücretsiz Kargo.
+        /// </summary>
+        public static string IsFreeShipping {
+            get {
+                return ResourceManager.GetString("IsFreeShipping", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon Birleştirmeye İzin Ver.
+        /// </summary>
+        public static string AllowStacking {
+            get {
+                return ResourceManager.GetString("AllowStacking", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon birleştirme (varsayılan tek kupon).
+        /// </summary>
+        public static string AllowStackingHint {
+            get {
+                return ResourceManager.GetString("AllowStackingHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Üye Girişi Zorunlu.
+        /// </summary>
+        public static string RequireLogin {
+            get {
+                return ResourceManager.GetString("RequireLogin", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yalnızca İlk Sipariş.
+        /// </summary>
+        public static string IsFirstOrderOnly {
+            get {
+                return ResourceManager.GetString("IsFirstOrderOnly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yalnızca Yeni Müşteri.
+        /// </summary>
+        public static string IsNewCustomerOnly {
+            get {
+                return ResourceManager.GetString("IsNewCustomerOnly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Doğum Günü Kuponu.
+        /// </summary>
+        public static string IsBirthdayCoupon {
+            get {
+                return ResourceManager.GetString("IsBirthdayCoupon", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Doğum Günü Penceresi.
+        /// </summary>
+        public static string BirthdayWindow {
+            get {
+                return ResourceManager.GetString("BirthdayWindow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sabit Tutar.
+        /// </summary>
+        public static string DiscountTypeFixedAmount {
+            get {
+                return ResourceManager.GetString("DiscountTypeFixedAmount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yüzde.
+        /// </summary>
+        public static string DiscountTypePercentage {
+            get {
+                return ResourceManager.GetString("DiscountTypePercentage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ücretsiz Kargo.
+        /// </summary>
+        public static string DiscountTypeFreeShipping {
+            get {
+                return ResourceManager.GetString("DiscountTypeFreeShipping", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hafta.
+        /// </summary>
+        public static string BirthdayWindowWeek {
+            get {
+                return ResourceManager.GetString("BirthdayWindowWeek", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ay.
+        /// </summary>
+        public static string BirthdayWindowMonth {
+            get {
+                return ResourceManager.GetString("BirthdayWindowMonth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kod Üret.
+        /// </summary>
+        public static string GenerateCode {
+            get {
+                return ResourceManager.GetString("GenerateCode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteriye Özel.
+        /// </summary>
+        public static string CustomerSpecific {
+            get {
+                return ResourceManager.GetString("CustomerSpecific", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kullanıcı Id (AspNetUsers Id); global kupon için boş bırakın.
+        /// </summary>
+        public static string AssignedUserIdHint {
+            get {
+                return ResourceManager.GetString("AssignedUserIdHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Global kupon için boş bırakın; müşteriye özel kupon için UserId girin.
+        /// </summary>
+        public static string AssignedUserHint {
+            get {
+                return ResourceManager.GetString("AssignedUserHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sabit: İndirim alanı kullanılır; Yüzde: İndirim Yüzdesi alanı kullanılır; Ücretsiz Kargo: kargo tutarı 0 olur.
+        /// </summary>
+        public static string DiscountTypeHint {
+            get {
+                return ResourceManager.GetString("DiscountTypeHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to örn. 200 TRY üst sınır için 200.
+        /// </summary>
+        public static string MaxDiscountPlaceholder {
+            get {
+                return ResourceManager.GetString("MaxDiscountPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to TRY, USD veya herhangi biri için boş.
+        /// </summary>
+        public static string CurrencyPlaceholder {
+            get {
+                return ResourceManager.GetString("CurrencyPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kullanım Limitleri.
+        /// </summary>
+        public static string UsageLimits {
+            get {
+                return ResourceManager.GetString("UsageLimits", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to örn. 100 veya boş = sınırsız.
+        /// </summary>
+        public static string GlobalLimitPlaceholder {
+            get {
+                return ResourceManager.GetString("GlobalLimitPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to örn. 1 (tek kullanım).
+        /// </summary>
+        public static string PerCustomerLimitPlaceholder {
+            get {
+                return ResourceManager.GetString("PerCustomerLimitPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Toplam kullanım.
+        /// </summary>
+        public static string TotalRedemptions {
+            get {
+                return ResourceManager.GetString("TotalRedemptions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kalan.
+        /// </summary>
+        public static string RemainingRedemptions {
+            get {
+                return ResourceManager.GetString("RemainingRedemptions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kullanımları Görüntüle.
+        /// </summary>
+        public static string ViewRedemptions {
+            get {
+                return ResourceManager.GetString("ViewRedemptions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sepet Kuralları.
+        /// </summary>
+        public static string CartRules {
+            get {
+                return ResourceManager.GetString("CartRules", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Uygun ara toplam alt sınırı (kargo hariç).
+        /// </summary>
+        public static string MinimumOrderAmountHint {
+            get {
+                return ResourceManager.GetString("MinimumOrderAmountHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to örn. 500.
+        /// </summary>
+        public static string MinOrderAmountPlaceholder {
+            get {
+                return ResourceManager.GetString("MinOrderAmountPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ürün Id&apos;leri (virgülle).
+        /// </summary>
+        public static string ProductIdsCsvLabel {
+            get {
+                return ResourceManager.GetString("ProductIdsCsvLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yalnızca bu ürünler uygundur (boş = tümü). Kategorilerle VEYA mantığı ile birleşir..
+        /// </summary>
+        public static string ProductIdsCsvHint {
+            get {
+                return ResourceManager.GetString("ProductIdsCsvHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to örn. 1,5,20.
+        /// </summary>
+        public static string ProductIdsCsvPlaceholder {
+            get {
+                return ResourceManager.GetString("ProductIdsCsvPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kategori Id&apos;leri (virgülle).
+        /// </summary>
+        public static string CategoryIdsCsvLabel {
+            get {
+                return ResourceManager.GetString("CategoryIdsCsvLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to örn. 3,7.
+        /// </summary>
+        public static string CategoryIdsCsvPlaceholder {
+            get {
+                return ResourceManager.GetString("CategoryIdsCsvPlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hedef Kitle.
+        /// </summary>
+        public static string Audience {
+            get {
+                return ResourceManager.GetString("Audience", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Doğum günü yok.
+        /// </summary>
+        public static string NoBirthdayOption {
+            get {
+                return ResourceManager.GetString("NoBirthdayOption", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteriye Özel Kupon Üret.
+        /// </summary>
+        public static string GenerateCustomerCouponTitle {
+            get {
+                return ResourceManager.GetString("GenerateCustomerCouponTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Belirli bir müşteriye atanmış kupon üretir. Global kupon için müşteri seçimini boş bırakın..
+        /// </summary>
+        public static string GenerateCustomerCouponDesc {
+            get {
+                return ResourceManager.GetString("GenerateCustomerCouponDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Temel Kod.
+        /// </summary>
+        public static string BaseCode {
+            get {
+                return ResourceManager.GetString("BaseCode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Otomatik üretilmesi için boş bırakın.
+        /// </summary>
+        public static string BaseCodePlaceholder {
+            get {
+                return ResourceManager.GetString("BaseCodePlaceholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Müşteriler (seçim).
+        /// </summary>
+        public static string CustomersPick {
+            get {
+                return ResourceManager.GetString("CustomersPick", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to -- Doldurmak için müşteri seçin --.
+        /// </summary>
+        public static string SelectCustomerToFill {
+            get {
+                return ResourceManager.GetString("SelectCustomerToFill", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kupon Kullanımları.
+        /// </summary>
+        public static string CouponRedemptionsTitle {
+            get {
+                return ResourceManager.GetString("CouponRedemptionsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} kuponunun kullanımları.
+        /// </summary>
+        public static string RedemptionsFor {
+            get {
+                return ResourceManager.GetString("RedemptionsFor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sipariş Id.
+        /// </summary>
+        public static string OrderId {
+            get {
+                return ResourceManager.GetString("OrderId", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tarih.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kullanıcı Id.
+        /// </summary>
+        public static string UserId {
+            get {
+                return ResourceManager.GetString("UserId", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kupona Dön.
+        /// </summary>
+        public static string BackToCoupon {
+            get {
+                return ResourceManager.GetString("BackToCoupon", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Geri.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
     }
 }

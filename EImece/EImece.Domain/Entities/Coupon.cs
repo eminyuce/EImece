@@ -48,57 +48,57 @@ namespace EImece.Domain.Entities
         public string EndDateStr { get; set; }
 
         // Per-customer coupon assignment (null = global)
-        [Display(Name = "AssignedUserId")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AssignedUserId))]
         [MaxLength(128)]
         public string AssignedUserId { get; set; }
 
-        [Display(Name = "AssignedCustomerId")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AssignedCustomerId))]
         public int? AssignedCustomerId { get; set; }
 
         [NotMapped]
         public string AssignedCustomerDisplay { get; set; }
 
         // Advanced coupon fields
-        [Display(Name = "DiscountType")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.DiscountType))]
         public CouponDiscountType DiscountType { get; set; }
 
-        [Display(Name = "MaxDiscountAmount")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MaxDiscountAmount))]
         public decimal? MaximumDiscountAmount { get; set; }
 
-        [Display(Name = "GlobalUsageLimit")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.GlobalUsageLimit))]
         public int? GlobalUsageLimit { get; set; }
 
-        [Display(Name = "PerCustomerUsageLimit")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PerCustomerUsageLimit))]
         public int? PerCustomerUsageLimit { get; set; }
 
-        [Display(Name = "MinimumOrderAmount")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.MinimumOrderAmount))]
         public decimal? MinimumOrderAmount { get; set; }
 
-        [Display(Name = "ExcludeSaleItems")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ExcludeSaleItems))]
         public bool ExcludeSaleItems { get; set; }
 
-        [Display(Name = "IsFreeShipping")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsFreeShipping))]
         public bool IsFreeShipping { get; set; }
 
-        [Display(Name = "AllowStacking")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.AllowStacking))]
         public bool AllowStacking { get; set; }
 
-        [Display(Name = "RequireLogin")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.RequireLogin))]
         public bool RequireLogin { get; set; }
 
-        [Display(Name = "IsFirstOrderOnly")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsFirstOrderOnly))]
         public bool IsFirstOrderOnly { get; set; }
 
-        [Display(Name = "IsNewCustomerOnly")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsNewCustomerOnly))]
         public bool IsNewCustomerOnly { get; set; }
 
-        [Display(Name = "IsBirthdayCoupon")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.IsBirthdayCoupon))]
         public bool IsBirthdayCoupon { get; set; }
 
-        [Display(Name = "BirthdayWindow")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BirthdayWindow))]
         public CouponBirthdayWindow? BirthdayWindow { get; set; }
 
-        [Display(Name = "Currency")]
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.Currency))]
         [MaxLength(10)]
         public string Currency { get; set; }
 

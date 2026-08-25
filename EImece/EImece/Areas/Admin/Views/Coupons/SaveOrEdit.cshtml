@@ -62,18 +62,18 @@ Bitiş: 30/09/26</pre>
                         @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-outline-secondary btn-sm w-100" onclick="document.getElementById('CouponCode').value='CPN'+Math.random().toString(36).substring(2,8).toUpperCase()">Generate</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm w-100" onclick="document.getElementById('CouponCode').value='CPN'+Math.random().toString(36).substring(2,8).toUpperCase()">@AdminResource.GenerateCode</button>
                     </div>
                 </div>
                 <div class="form-group row mb-3">
-                    <label class="col-form-label col-md-2">Customer Specific</label>
+                    <label class="col-form-label col-md-2">@AdminResource.CustomerSpecific</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.AssignedUserId, new { htmlAttributes = new { @class = "form-control", placeholder = "UserId (AspNetUsers Id) or leave empty for global" } })
-                        <small class="text-muted">Leave empty for global coupon, or enter UserId for per-customer</small>
+                        @Html.EditorFor(model => model.AssignedUserId, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.AssignedUserIdHint } })
+                        <small class="text-muted">@AdminResource.AssignedUserHint</small>
                     </div>
-                    <label class="col-form-label col-md-2">CustomerId</label>
+                    <label class="col-form-label col-md-2">@AdminResource.AssignedCustomerId</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.AssignedCustomerId, new { htmlAttributes = new { @class = "form-control", placeholder = "Customer Id" } })
+                        @Html.EditorFor(model => model.AssignedCustomerId, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.AssignedCustomerId } })
                     </div>
                 </div>
                 <div class="form-group row mb-3">
@@ -94,29 +94,29 @@ Bitiş: 30/09/26</pre>
                     @Html.LabelFor(model => model.DiscountType, htmlAttributes: new { @class = "col-form-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EnumDropDownListFor(model => model.DiscountType, new { @class = "form-control" })
-                        <small class="text-muted">Fixed = use Discount, Percentage = use DiscountPercentage, FreeShipping = shipping becomes 0</small>
+                        <small class="text-muted">@AdminResource.DiscountTypeHint</small>
                     </div>
                 </div>
                 <div class="form-group row mb-3">
-                    <label class="col-form-label col-md-2">Max Discount (for %)</label>
+                    <label class="col-form-label col-md-2">@AdminResource.MaxDiscountAmount</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.MaximumDiscountAmount, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g., 200 for max 200 TRY cap" } })
+                        @Html.EditorFor(model => model.MaximumDiscountAmount, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.MaxDiscountPlaceholder } })
                     </div>
-                    <label class="col-form-label col-md-2">Currency</label>
+                    <label class="col-form-label col-md-2">@AdminResource.Currency</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.Currency, new { htmlAttributes = new { @class = "form-control", placeholder = "TRY, USD or empty for any" } })
+                        @Html.EditorFor(model => model.Currency, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.CurrencyPlaceholder } })
                     </div>
                 </div>
                 <hr />
-                <h5>Usage Limits</h5>
+                <h5>@AdminResource.UsageLimits</h5>
                 <div class="form-group row mb-3">
-                    <label class="col-form-label col-md-2">Global Limit</label>
+                    <label class="col-form-label col-md-2">@AdminResource.GlobalUsageLimit</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.GlobalUsageLimit, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g., 100 or empty unlimited" } })
+                        @Html.EditorFor(model => model.GlobalUsageLimit, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.GlobalLimitPlaceholder } })
                     </div>
-                    <label class="col-form-label col-md-2">Per-Customer Limit</label>
+                    <label class="col-form-label col-md-2">@AdminResource.PerCustomerUsageLimit</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.PerCustomerUsageLimit, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g., 1 for one-time" } })
+                        @Html.EditorFor(model => model.PerCustomerUsageLimit, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.PerCustomerLimitPlaceholder } })
                     </div>
                 </div>
                 <div class="form-group row mb-3">
@@ -128,24 +128,24 @@ Bitiş: 30/09/26</pre>
                     </div>
                     <div class="col-md-3">
                         @Html.LabelFor(model => model.AllowStacking) @Html.EditorFor(model => model.AllowStacking)
-                        <small class="text-muted d-block">Allow stacking (default single coupon)</small>
+                        <small class="text-muted d-block">@AdminResource.AllowStackingHint</small>
                     </div>
                 </div>
                 @if (ViewBag.TotalRedemptions != null)
                 {
                     <div class="alert alert-info py-2">
-                        Total redemptions: @ViewBag.TotalRedemptions
-                        @if (ViewBag.RemainingRedemptions != null) { <span> | Remaining: @ViewBag.RemainingRedemptions</span> }
-                        @if (Model.Id > 0) { <a class="btn btn-sm btn-outline-primary ml-2" href="@Url.Action("Redemptions", new { id = Model.Id })">View redemptions</a> }
+                        @AdminResource.TotalRedemptions: @ViewBag.TotalRedemptions
+                        @if (ViewBag.RemainingRedemptions != null) { <span> | @AdminResource.RemainingRedemptions: @ViewBag.RemainingRedemptions</span> }
+                        @if (Model.Id > 0) { <a class="btn btn-sm btn-outline-primary ml-2" href="@Url.Action("Redemptions", new { id = Model.Id })">@AdminResource.ViewRedemptions</a> }
                     </div>
                 }
                 <hr />
-                <h5>Cart Rules</h5>
+                <h5>@AdminResource.CartRules</h5>
                 <div class="form-group row mb-3">
-                    <label class="col-form-label col-md-2">Min Order Amount</label>
+                    <label class="col-form-label col-md-2">@AdminResource.MinimumOrderAmount</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.MinimumOrderAmount, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g., 500" } })
-                        <small class="text-muted">Minimum eligible subtotal (excl. shipping)</small>
+                        @Html.EditorFor(model => model.MinimumOrderAmount, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.MinOrderAmountPlaceholder } })
+                        <small class="text-muted">@AdminResource.MinimumOrderAmountHint</small>
                     </div>
                     <div class="col-md-3">
                         @Html.LabelFor(model => model.ExcludeSaleItems) @Html.EditorFor(model => model.ExcludeSaleItems)
@@ -155,18 +155,18 @@ Bitiş: 30/09/26</pre>
                     </div>
                 </div>
                 <div class="form-group row mb-3">
-                    <label class="col-form-label col-md-2">Product IDs (csv)</label>
+                    <label class="col-form-label col-md-2">@AdminResource.ProductIdsCsvLabel</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.ProductIdsCsv, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g., 1,5,20" } })
-                        <small class="text-muted">Only these products eligible (empty = all). OR logic with categories.</small>
+                        @Html.EditorFor(model => model.ProductIdsCsv, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.ProductIdsCsvPlaceholder } })
+                        <small class="text-muted">@AdminResource.ProductIdsCsvHint</small>
                     </div>
-                    <label class="col-form-label col-md-2">Category IDs (csv)</label>
+                    <label class="col-form-label col-md-2">@AdminResource.CategoryIdsCsvLabel</label>
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.CategoryIdsCsv, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g., 3,7" } })
+                        @Html.EditorFor(model => model.CategoryIdsCsv, new { htmlAttributes = new { @class = "form-control", placeholder = AdminResource.CategoryIdsCsvPlaceholder } })
                     </div>
                 </div>
                 <hr />
-                <h5>Audience</h5>
+                <h5>@AdminResource.Audience</h5>
                 <div class="form-group row mb-3">
                     <div class="col-md-3">
                         @Html.LabelFor(model => model.RequireLogin) @Html.EditorFor(model => model.RequireLogin)
@@ -175,7 +175,7 @@ Bitiş: 30/09/26</pre>
                         @Html.LabelFor(model => model.IsBirthdayCoupon) @Html.EditorFor(model => model.IsBirthdayCoupon)
                     </div>
                     <div class="col-md-3">
-                        @Html.LabelFor(model => model.BirthdayWindow) @Html.EnumDropDownListFor(model => model.BirthdayWindow, "No birthday", new { @class = "form-control" })
+                        @Html.LabelFor(model => model.BirthdayWindow) @Html.EnumDropDownListFor(model => model.BirthdayWindow, AdminResource.NoBirthdayOption, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group row mb-3">

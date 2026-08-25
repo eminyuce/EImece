@@ -1689,10 +1689,7 @@
   <data name="CouponExampleFixed" xml:space="preserve">
     <value>Örnek 1 — Sabit tutar indirimi:</value>
   </data>
-  <data name="CouponCode" xml:space="preserve">
-    <value>Kod</value>
-  </data>
-  <data name="FixedDiscount" xml:space="preserve">
+    <data name="FixedDiscount" xml:space="preserve">
     <value>Sabit indirim</value>
   </data>
   <data name="PercentageDiscount" xml:space="preserve">
@@ -4436,5 +4433,179 @@
   </data>
   <data name="AdminPanelUILanguageHelp" xml:space="preserve">
     <value>Yönetim paneli arayüz dili (menüler, butonlar, sistem mesajları). Veri giriş dili (üst çubuk) ayrı bir ayardır.</value>
+  </data>
+  <data name="AssignedUserId" xml:space="preserve">
+    <value>Atanan Kullanıcı Id</value>
+  </data>
+  <data name="AssignedCustomerId" xml:space="preserve">
+    <value>Atanan Müşteri Id</value>
+  </data>
+  <data name="DiscountType" xml:space="preserve">
+    <value>İndirim Tipi</value>
+  </data>
+  <data name="MaxDiscountAmount" xml:space="preserve">
+    <value>Maksimum İndirim Tutarı</value>
+  </data>
+  <data name="GlobalUsageLimit" xml:space="preserve">
+    <value>Genel Kullanım Limiti</value>
+  </data>
+  <data name="PerCustomerUsageLimit" xml:space="preserve">
+    <value>Müşteri Başına Kullanım Limiti</value>
+  </data>
+  <data name="MinimumOrderAmount" xml:space="preserve">
+    <value>Minimum Sipariş Tutarı</value>
+  </data>
+  <data name="ExcludeSaleItems" xml:space="preserve">
+    <value>İndirimli Ürünleri Hariç Tut</value>
+  </data>
+  <data name="IsFreeShipping" xml:space="preserve">
+    <value>Ücretsiz Kargo</value>
+  </data>
+  <data name="AllowStacking" xml:space="preserve">
+    <value>Kupon Birleştirmeye İzin Ver</value>
+  </data>
+  <data name="AllowStackingHint" xml:space="preserve">
+    <value>Kupon birleştirme (varsayılan tek kupon)</value>
+  </data>
+  <data name="RequireLogin" xml:space="preserve">
+    <value>Üye Girişi Zorunlu</value>
+  </data>
+  <data name="IsFirstOrderOnly" xml:space="preserve">
+    <value>Yalnızca İlk Sipariş</value>
+  </data>
+  <data name="IsNewCustomerOnly" xml:space="preserve">
+    <value>Yalnızca Yeni Müşteri</value>
+  </data>
+  <data name="IsBirthdayCoupon" xml:space="preserve">
+    <value>Doğum Günü Kuponu</value>
+  </data>
+  <data name="BirthdayWindow" xml:space="preserve">
+    <value>Doğum Günü Penceresi</value>
+  </data>
+  <data name="DiscountTypeFixedAmount" xml:space="preserve">
+    <value>Sabit Tutar</value>
+  </data>
+  <data name="DiscountTypePercentage" xml:space="preserve">
+    <value>Yüzde</value>
+  </data>
+  <data name="DiscountTypeFreeShipping" xml:space="preserve">
+    <value>Ücretsiz Kargo</value>
+  </data>
+  <data name="BirthdayWindowWeek" xml:space="preserve">
+    <value>Hafta</value>
+  </data>
+  <data name="BirthdayWindowMonth" xml:space="preserve">
+    <value>Ay</value>
+  </data>
+  <data name="GenerateCode" xml:space="preserve">
+    <value>Kod Üret</value>
+  </data>
+  <data name="CustomerSpecific" xml:space="preserve">
+    <value>Müşteriye Özel</value>
+  </data>
+  <data name="AssignedUserIdHint" xml:space="preserve">
+    <value>Kullanıcı Id (AspNetUsers Id); global kupon için boş bırakın</value>
+  </data>
+  <data name="AssignedUserHint" xml:space="preserve">
+    <value>Global kupon için boş bırakın; müşteriye özel kupon için UserId girin</value>
+  </data>
+  <data name="DiscountTypeHint" xml:space="preserve">
+    <value>Sabit: İndirim alanı kullanılır; Yüzde: İndirim Yüzdesi alanı kullanılır; Ücretsiz Kargo: kargo tutarı 0 olur</value>
+  </data>
+  <data name="MaxDiscountPlaceholder" xml:space="preserve">
+    <value>örn. 200 TRY üst sınır için 200</value>
+  </data>
+  <data name="CurrencyPlaceholder" xml:space="preserve">
+    <value>TRY, USD veya herhangi biri için boş</value>
+  </data>
+  <data name="UsageLimits" xml:space="preserve">
+    <value>Kullanım Limitleri</value>
+  </data>
+  <data name="GlobalLimitPlaceholder" xml:space="preserve">
+    <value>örn. 100 veya boş = sınırsız</value>
+  </data>
+  <data name="PerCustomerLimitPlaceholder" xml:space="preserve">
+    <value>örn. 1 (tek kullanım)</value>
+  </data>
+  <data name="TotalRedemptions" xml:space="preserve">
+    <value>Toplam kullanım</value>
+  </data>
+  <data name="RemainingRedemptions" xml:space="preserve">
+    <value>Kalan</value>
+  </data>
+  <data name="ViewRedemptions" xml:space="preserve">
+    <value>Kullanımları Görüntüle</value>
+  </data>
+  <data name="CartRules" xml:space="preserve">
+    <value>Sepet Kuralları</value>
+  </data>
+  <data name="MinimumOrderAmountHint" xml:space="preserve">
+    <value>Uygun ara toplam alt sınırı (kargo hariç)</value>
+  </data>
+  <data name="MinOrderAmountPlaceholder" xml:space="preserve">
+    <value>örn. 500</value>
+  </data>
+  <data name="ProductIdsCsvLabel" xml:space="preserve">
+    <value>Ürün Id&apos;leri (virgülle)</value>
+  </data>
+  <data name="ProductIdsCsvHint" xml:space="preserve">
+    <value>Yalnızca bu ürünler uygundur (boş = tümü). Kategorilerle VEYA mantığı ile birleşir.</value>
+  </data>
+  <data name="ProductIdsCsvPlaceholder" xml:space="preserve">
+    <value>örn. 1,5,20</value>
+  </data>
+  <data name="CategoryIdsCsvLabel" xml:space="preserve">
+    <value>Kategori Id&apos;leri (virgülle)</value>
+  </data>
+  <data name="CategoryIdsCsvPlaceholder" xml:space="preserve">
+    <value>örn. 3,7</value>
+  </data>
+  <data name="Audience" xml:space="preserve">
+    <value>Hedef Kitle</value>
+  </data>
+  <data name="NoBirthdayOption" xml:space="preserve">
+    <value>Doğum günü yok</value>
+  </data>
+  <data name="GenerateCustomerCouponTitle" xml:space="preserve">
+    <value>Müşteriye Özel Kupon Üret</value>
+  </data>
+  <data name="GenerateCustomerCouponDesc" xml:space="preserve">
+    <value>Belirli bir müşteriye atanmış kupon üretir. Global kupon için müşteri seçimini boş bırakın.</value>
+  </data>
+  <data name="BaseCode" xml:space="preserve">
+    <value>Temel Kod</value>
+  </data>
+  <data name="BaseCodePlaceholder" xml:space="preserve">
+    <value>Otomatik üretilmesi için boş bırakın</value>
+  </data>
+  <data name="CustomersPick" xml:space="preserve">
+    <value>Müşteriler (seçim)</value>
+  </data>
+  <data name="SelectCustomerToFill" xml:space="preserve">
+    <value>-- Doldurmak için müşteri seçin --</value>
+  </data>
+  <data name="CouponRedemptionsTitle" xml:space="preserve">
+    <value>Kupon Kullanımları</value>
+  </data>
+  <data name="RedemptionsFor" xml:space="preserve">
+    <value>{0} kuponunun kullanımları</value>
+  </data>
+  <data name="OrderId" xml:space="preserve">
+    <value>Sipariş Id</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Tarih</value>
+  </data>
+  <data name="UserId" xml:space="preserve">
+    <value>Kullanıcı Id</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="BackToCoupon" xml:space="preserve">
+    <value>Kupona Dön</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Geri</value>
   </data>
 </root>

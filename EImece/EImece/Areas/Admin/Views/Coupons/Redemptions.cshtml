@@ -1,13 +1,13 @@
 @model IEnumerable<EImece.Domain.Models.DTOs.CouponRedemptionDetailDto>
 @using Resources
 @{
-    ViewBag.Title = "Coupon Redemptions";
+    ViewBag.Title = AdminResource.CouponRedemptionsTitle;
     var coupon = ViewBag.Coupon as EImece.Domain.Entities.Coupon;
 }
-<h2>Redemptions for @coupon.Code (@coupon.Name)</h2>
+<h2>@string.Format(AdminResource.RedemptionsFor, coupon.Code + " (" + coupon.Name + ")")</h2>
 <table class="table table-striped table-bordered">
 <thead>
-<tr><th>Id</th><th>CouponCode</th><th>OrderId</th><th>OrderNumber</th><th>Customer</th><th>UserId</th><th>Discount</th><th>Date</th></tr>
+<tr><th>@AdminResource.Id</th><th>@AdminResource.CouponCode</th><th>@AdminResource.OrderId</th><th>@AdminResource.OrderNumber</th><th>@AdminResource.Customer</th><th>@AdminResource.UserId</th><th>@AdminResource.Discount</th><th>@AdminResource.Date</th></tr>
 </thead>
 <tbody>
 @foreach(var r in Model)
@@ -25,5 +25,5 @@
 }
 </tbody>
 </table>
-<a href="@Url.Action("SaveOrEdit", new { id = coupon.Id })" class="btn btn-secondary">Back to Coupon</a>
-<a href="@Url.Action("Index")" class="btn btn-outline-secondary">All Coupons</a>
+<a href="@Url.Action("SaveOrEdit", new { id = coupon.Id })" class="btn btn-secondary">@AdminResource.BackToCoupon</a>
+<a href="@Url.Action("Index")" class="btn btn-outline-secondary">@AdminResource.Coupons</a>
