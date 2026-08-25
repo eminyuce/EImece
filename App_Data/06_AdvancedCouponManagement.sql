@@ -218,6 +218,46 @@ BEGIN
 END
 GO
 
+-- 5b) CouponRedemptions: heal older table shapes created by earlier iterations.
+-- If the table already existed with a minimal column set, add whatever is missing
+-- so the CouponRedemption entity can always be queried.
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo.CouponRedemptions') AND name = 'Name')
+BEGIN
+    PRINT N'Adding CouponRedemptions.Name...';
+    ALTER TABLE dbo.CouponRedemptions ADD Name NVARCHAR(500) NOT NULL CONSTRAINT DF_CouponRedemptions_Name DEFAULT ('');
+END
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo.CouponRedemptions') AND name = 'OrderTotalBeforeDiscount')
+BEGIN
+    PRINT N'Adding CouponRedemptions.OrderTotalBeforeDiscount...';
+    ALTER TABLE dbo.CouponRedemptions ADD OrderTotalBeforeDiscount DECIMAL(18,2) NOT NULL CONSTRAINT DF_CouponRedemptions_OrderTotal DEFAULT (0);
+END
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo.CouponRedemptions') AND name = 'Currency')
+BEGIN
+    PRINT N'Adding CouponRedemptions.Currency...';
+    ALTER TABLE dbo.CouponRedemptions ADD Currency NVARCHAR(10) NULL;
+END
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo.CouponRedemptions') AND name = 'UpdatedDate')
+BEGIN
+    PRINT N'Adding CouponRedemptions.UpdatedDate...';
+    ALTER TABLE dbo.CouponRedemptions ADD UpdatedDate DATETIME NOT NULL CONSTRAINT DF_CouponRedemptions_UpdatedDate DEFAULT (GETDATE());
+END
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo.CouponRedemptions') AND name = 'IsActive')
+BEGIN
+    PRINT N'Adding CouponRedemptions.IsActive...';
+    ALTER TABLE dbo.CouponRedemptions ADD IsActive BIT NOT NULL CONSTRAINT DF_CouponRedemptions_IsActive DEFAULT (1);
+END
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo.CouponRedemptions') AND name = 'Position')
+BEGIN
+    PRINT N'Adding CouponRedemptions.Position...';
+    ALTER TABLE dbo.CouponRedemptions ADD Position INT NOT NULL CONSTRAINT DF_CouponRedemptions_Position DEFAULT (0);
+END
+GO
+
 -- Ensure indexes for Orders coupon lookups (usage limit checks)
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_Orders_Coupon_CreatedDate' AND object_id = OBJECT_ID(N'dbo.Orders'))
 BEGIN

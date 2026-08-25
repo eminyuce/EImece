@@ -1492,6 +1492,8 @@
     <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Coupons\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Coupons\SaveOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Coupons\Redemptions.cshtml" />
+    <Content Include="Areas\Admin\Views\Coupons\GenerateForCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\pPriceUpdates.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
