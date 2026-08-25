@@ -129,5 +129,13 @@ namespace EImece.Domain.Repositories.IRepositories
         PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int language, SortingType sorting);
 
         #endregion
+
+        Task<List<Product>> GetProductsForImageExportAsync(CancellationToken cancellationToken = default(CancellationToken));
+
+        List<Product> GetProductsForImageExport();
+
+        string UpdateProductPrices(UpdatePriceRequest request);
+
+        Task<string> UpdateProductPricesAsync(UpdatePriceRequest request, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -5,14 +5,11 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
-using EImece.Domain.Repositories;
-using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -30,7 +27,7 @@ namespace EImece.Areas.Admin.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected AppLogRepository AppLogRepository { get; }
+        protected IAppLogService AppLogService { get; }
         protected IShoppingCartService ShoppingCartService { get; }
         protected IUsersService UsersService { get; }
         protected ICustomerService CustomerService { get; }
@@ -57,7 +54,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public AjaxController(
             ISettingService settingService,
-            AppLogRepository appLogRepository,
+            IAppLogService appLogService,
             IShoppingCartService shoppingCartService,
             IUsersService usersService,
             ICustomerService customerService,
@@ -83,7 +80,7 @@ namespace EImece.Areas.Admin.Controllers
             IEntityFactory entityFactory)
             : base(settingService)
         {
-            AppLogRepository = appLogRepository ?? throw new ArgumentNullException(nameof(appLogRepository));
+            AppLogService = appLogService ?? throw new ArgumentNullException(nameof(appLogService));
             ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
             UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
             CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
@@ -518,7 +515,7 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteAppLogGridItem(List<String> values)
         {
-            await AppLogRepository.DeleteAppLogsAsync(values);
+            await AppLogService.DeleteAppLogsAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
         }
 

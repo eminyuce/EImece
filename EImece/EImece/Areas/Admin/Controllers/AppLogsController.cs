@@ -1,6 +1,5 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Repositories;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using NLog;
@@ -10,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
 using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
@@ -22,15 +20,15 @@ namespace EImece.Areas.Admin.Controllers
             "Trace", "Debug", "Info", "Warn", "Error", "Fatal"
         };
 
-        private AppLogRepository AppLogRepository;
+        private readonly IAppLogService AppLogService;
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public AppLogsController(
             ISettingService settingService,
-            AppLogRepository repository)
+            IAppLogService appLogService)
             : base(settingService)
         {
-            this.AppLogRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this.AppLogService = appLogService ?? throw new ArgumentNullException(nameof(appLogService));
         }
 
         [HttpGet]
@@ -40,7 +38,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Search = search ?? string.Empty;
             ViewBag.EventLevel = eventLevel;
             ViewBag.EventLevels = KnownEventLevels;
-            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
+            var logs = await AppLogService.GetAppLogsAsync(search, eventLevel, cancellationToken);
             return View(logs);
         }
 
@@ -53,7 +51,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             eventLevel = NormalizeEventLevel(eventLevel);
-            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
+            var logs = await AppLogService.GetAppLogsAsync(search, eventLevel, cancellationToken);
             return new QueryableResult<AppLog>(logs.AsQueryable());
         }
 
@@ -61,7 +59,7 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> Download(CancellationToken cancellationToken, string search = "", string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
-            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
+            var logs = await AppLogService.GetAppLogsAsync(search, eventLevel, cancellationToken);
             var sb = new StringBuilder(Math.Max(256, logs.Count * 128));
             foreach (var log in logs)
             {
@@ -79,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> ExportExcel(CancellationToken cancellationToken, string format = "excel", string search = "", string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
-            var logs = await AppLogRepository.GetAppLogsAsync(search, eventLevel, cancellationToken);
+            var logs = await AppLogService.GetAppLogsAsync(search, eventLevel, cancellationToken);
             var levelPart = string.IsNullOrEmpty(eventLevel) ? "all" : eventLevel;
             return DownloadFile(logs, string.Format("AppLogs-{0}", levelPart), format);
         }
@@ -89,7 +87,7 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
-            await AppLogRepository.DeleteAppLogAsync(id);
+            await AppLogService.DeleteAppLogAsync(id);
             SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer("Index");
         }
@@ -98,7 +96,7 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> RemoveAll(CancellationToken cancellationToken, string eventLevel = "")
         {
             eventLevel = NormalizeEventLevel(eventLevel);
-            await AppLogRepository.RemoveAllAsync(eventLevel, cancellationToken);
+            await AppLogService.RemoveAllAsync(eventLevel, cancellationToken);
             SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer("Index");
         }

@@ -1,0 +1,75 @@
+@model EImece.Domain.Entities.Coupon
+@using Resources
+@{
+    ViewBag.Title = "Generate Customer Coupon";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var customers = ViewBag.Customers as List<EImece.Domain.Entities.Customer> ?? new List<EImece.Domain.Entities.Customer>();
+}
+<h2>Generate Customer Coupon</h2>
+<hr class="adminLine" />
+<p>Generate a coupon assigned to a specific customer. Leave customer empty for global coupon.</p>
+
+@using (Html.BeginForm("GenerateForCustomer", "Coupons", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group row mb-3">
+            <label class="col-form-label col-md-2">Base Code</label>
+            <div class="col-md-10">
+                <input type="text" name="baseCode" class="form-control" placeholder="Leave empty to auto-generate" />
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-form-label col-md-2">Discount (Fixed)</label>
+            <div class="col-md-4">
+                <input type="number" name="discount" class="form-control" value="0" />
+            </div>
+            <label class="col-form-label col-md-2">Discount %</label>
+            <div class="col-md-4">
+                <input type="number" name="discountPercentage" class="form-control" value="10" />
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-form-label col-md-2">Assigned UserId</label>
+            <div class="col-md-10">
+                <input type="text" name="assignedUserId" class="form-control" placeholder="AspNetUsers Id (e.g., seed-admin-...)" />
+                <small class="text-muted">Find UserId in Customers or AspNetUsers. Leave empty for global.</small>
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-form-label col-md-2">Assigned CustomerId</label>
+            <div class="col-md-10">
+                <input type="number" name="assignedCustomerId" class="form-control" placeholder="Customer Id" />
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-form-label col-md-2">Customers (pick)</label>
+            <div class="col-md-10">
+                <select class="form-select" onchange="var v=this.value; var parts=v.split('|'); document.querySelector('input[name=assignedUserId]').value=parts[0]||''; document.querySelector('input[name=assignedCustomerId]').value=parts[1]||'';">
+                    <option value="">-- Select customer to fill --</option>
+                    @foreach (var c in customers.Take(100))
+                    {
+                        <option value="@c.UserId|@c.Id">@c.FullName (@c.Email) - UserId:@c.UserId</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label class="col-form-label col-md-2">Start</label>
+            <div class="col-md-4">
+                <input type="date" name="startDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+            <label class="col-form-label col-md-2">End</label>
+            <div class="col-md-4">
+                <input type="date" name="endDate" class="form-control" value="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Generate" class="btn btn-primary" />
+                <a href="@Url.Action("Index")" class="btn btn-secondary">Back</a>
+            </div>
+        </div>
+    </div>
+}

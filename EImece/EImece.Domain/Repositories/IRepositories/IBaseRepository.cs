@@ -2,6 +2,8 @@
 using EImece.Domain.GenericRepository.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -18,6 +20,10 @@ namespace EImece.Domain.Repositories.IRepositories
         Task<int> DeleteItemAsync(T item);
 
         EntitiesContext GetDbContext();
+
+        DbContextTransaction BeginTransaction(IsolationLevel isolationLevel);
+
+        DbContextTransaction BeginTransaction();
 
         bool DeleteByWhereCondition(Expression<Func<T, bool>> whereLambda);
 

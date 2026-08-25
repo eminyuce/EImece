@@ -58,5 +58,8 @@ namespace EImece.Domain.DbContext
         public IDbSet<ProductComment> ProductComments { get; set; }
         public IDbSet<Brand> Brands { get; set; }
         public IDbSet<Coupon> Coupons { get; set; }
+        public IDbSet<CouponProduct> CouponProducts { get; set; }
+        public IDbSet<CouponCategory> CouponCategories { get; set; }
+        public IDbSet<CouponRedemption> CouponRedemptions { get; set; }
     }
 }

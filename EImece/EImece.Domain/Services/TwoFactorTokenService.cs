@@ -1,8 +1,6 @@
-using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Repositories.IRepositories;
 using System;
-using System.Data.Entity;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -15,18 +13,16 @@ namespace EImece.Domain.Services
     {
         private static readonly TimeSpan TokenLifetime = TimeSpan.FromMinutes(8);
 
-        private readonly ApplicationDbContext _db;
+        private readonly ITwoFactorTokenRepository _tokenRepository;
 
-        public TwoFactorTokenService(ApplicationDbContext db)
+        public TwoFactorTokenService(ITwoFactorTokenRepository tokenRepository)
         {
-            _db = db;
+            _tokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
         }
 
         public async Task<string> CreateTokenAsync(string userId)
         {
-            var oldTokens = _db.TwoFactorTokens
-                .Where(t => t.UserId == userId && !t.IsUsed);
-            _db.TwoFactorTokens.RemoveRange(oldTokens);
+            await _tokenRepository.RemoveUnusedByUserIdAsync(userId).ConfigureAwait(false);
 
             var tokenBytes = new byte[32];
             using (var rng = RandomNumberGenerator.Create())
@@ -47,8 +43,7 @@ namespace EImece.Domain.Services
                 IsUsed = false
             };
 
-            _db.TwoFactorTokens.Add(entity);
-            await _db.SaveChangesAsync();
+            await _tokenRepository.AddAsync(entity).ConfigureAwait(false);
 
             return token;
         }
@@ -63,8 +58,7 @@ namespace EImece.Domain.Services
                 return null;
             }
 
-            var entity = await _db.TwoFactorTokens
-                .FirstOrDefaultAsync(t => t.Token == token && !t.IsUsed);
+            var entity = await _tokenRepository.FindUnusedByTokenAsync(token).ConfigureAwait(false);
 
             if (entity == null)
             {
@@ -73,23 +67,19 @@ namespace EImece.Domain.Services
 
             if (entity.ExpiresUtc < DateTime.UtcNow)
             {
-                _db.TwoFactorTokens.Remove(entity);
-                await _db.SaveChangesAsync();
+                await _tokenRepository.DeleteAsync(entity).ConfigureAwait(false);
                 return null;
             }
 
             entity.IsUsed = true;
-            await _db.SaveChangesAsync();
+            await _tokenRepository.SaveChangesAsync().ConfigureAwait(false);
 
             return entity.UserId;
         }
 
         public async Task CleanupExpiredTokensAsync()
         {
-            var expired = _db.TwoFactorTokens
-                .Where(t => t.ExpiresUtc < DateTime.UtcNow || t.IsUsed);
-            _db.TwoFactorTokens.RemoveRange(expired);
-            await _db.SaveChangesAsync();
+            await _tokenRepository.DeleteExpiredAndUsedAsync().ConfigureAwait(false);
         }
     }
 }

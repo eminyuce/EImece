@@ -21,11 +21,34 @@
     }
 
     <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
+    @if (TempData["CouponMessage"] != null)
+    {
+        var t = (TempData["CouponMessageType"] as string) ?? "info";
+        <div class="alert alert-@t py-2">@TempData["CouponMessage"]</div>
+    }
     <div class="font-size-sm border-bottom pt-2 pb-3">
         <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
         @if (Model.Coupon != null)
         {
-            <div class="d-flex justify-content-between mb-2"><span>@Resource.CouponCode:</span><span id="CouponName">@Model.CouponName</span></div>
+            <div class="d-flex justify-content-between mb-2"><span>@Resource.CouponCode:</span><span id="CouponName">@Model.CouponName (@Model.CouponCode)</span></div>
+            var _disc = Model.CouponValidatedDiscount > 0 ? Model.CouponValidatedDiscount : Model.CalculateCouponDiscount(Model.TotalPrice + (Model.CargoPrice != null ? Model.CargoPrice.SettingValue.ToDecimal() : 0));
+            if (_disc > 0)
+            {
+                <div class="d-flex justify-content-between mb-2 text-success"><span>Coupon Discount:</span><span>-@_disc.CurrencySign()</span></div>
+            }
+            if (Model.CouponShippingDiscount > 0)
+            {
+                <div class="d-flex justify-content-between mb-2 text-success"><span>Shipping Discount:</span><span>-@Model.CouponShippingDiscount.CurrencySign()</span></div>
+            }
+            else if (Model.Coupon.IsFreeShipping)
+            {
+                <div class="d-flex justify-content-between mb-2 text-success"><span>Free Shipping</span><span>0</span></div>
+            }
+            using (Html.BeginForm("RemoveCoupon", "Payment", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <button class="btn btn-sm btn-outline-danger btn-block mt-2" type="submit">Remove Coupon</button>
+            }
         }
         <div id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
             @if (Model.BasketMinTotalPriceForCargoInt > 0)

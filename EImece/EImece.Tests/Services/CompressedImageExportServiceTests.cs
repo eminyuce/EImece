@@ -1,7 +1,7 @@
 using EImece.Areas.Admin.Controllers;
-using EImece.Domain.DbContext;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,9 +24,9 @@ namespace EImece.Tests.Services
     [TestClass]
     public class CompressedImageExportServiceTests
     {
-        private class FakeDbContextProxy : RealProxy
+        private class FakeImageExportRepositoryProxy : RealProxy
         {
-            public FakeDbContextProxy() : base(typeof(IEImeceContext))
+            public FakeImageExportRepositoryProxy() : base(typeof(IImageExportRepository))
             {
             }
 
@@ -40,11 +40,27 @@ namespace EImece.Tests.Services
                     {
                         defaultResult = Activator.CreateInstance(mi.ReturnType);
                     }
+                    else if (typeof(System.Threading.Tasks.Task).IsAssignableFrom(mi.ReturnType))
+                    {
+                        var itemType = mi.ReturnType.IsGenericType
+                            ? mi.ReturnType.GetGenericArguments()[0]
+                            : typeof(object);
+                        if (itemType.IsGenericType && itemType.GetGenericTypeDefinition() == typeof(List<>))
+                        {
+                            var emptyList = Activator.CreateInstance(itemType);
+                            var taskType = typeof(System.Threading.Tasks.Task<>).MakeGenericType(itemType);
+                            defaultResult = Activator.CreateInstance(taskType, emptyList);
+                        }
+                        else
+                        {
+                            defaultResult = Activator.CreateInstance(mi.ReturnType);
+                        }
+                    }
                 }
                 return new ReturnMessage(defaultResult, null, 0, call.LogicalCallContext, call);
             }
 
-            public IEImeceContext Context => (IEImeceContext)GetTransparentProxy();
+            public IImageExportRepository Repository => (IImageExportRepository)GetTransparentProxy();
         }
 
         private class FakeImageExportService : ICompressedImageExportService
@@ -115,8 +131,8 @@ namespace EImece.Tests.Services
                 bmp.Save(pngPath, ImageFormat.Png);
             }
 
-            var proxy = new FakeDbContextProxy();
-            var service = new CompressedImageExportService(proxy.Context);
+            var proxy = new FakeImageExportRepositoryProxy();
+            var service = new CompressedImageExportService(proxy.Repository);
 
             // Act
             var result = await service.ExportCompressedImagesAsync(_tempDirectory, 70L, CancellationToken.None);
@@ -181,8 +197,8 @@ namespace EImece.Tests.Services
                 bmp.Save(Path.Combine(subDir, "thumb.jpg"), ImageFormat.Jpeg);
             }
 
-            var proxy = new FakeDbContextProxy();
-            var service = new CompressedImageExportService(proxy.Context);
+            var proxy = new FakeImageExportRepositoryProxy();
+            var service = new CompressedImageExportService(proxy.Repository);
 
             // Act
             var result = await service.ExportCompressedImagesAsync(_tempDirectory, 70L, CancellationToken.None);
@@ -205,8 +221,8 @@ namespace EImece.Tests.Services
         {
             // Arrange
             string nonExistentPath = Path.Combine(_tempDirectory, "non_existent_folder");
-            var proxy = new FakeDbContextProxy();
-            var service = new CompressedImageExportService(proxy.Context);
+            var proxy = new FakeImageExportRepositoryProxy();
+            var service = new CompressedImageExportService(proxy.Repository);
 
             // Act
             var result = await service.ExportCompressedImagesAsync(nonExistentPath, 70L, CancellationToken.None);

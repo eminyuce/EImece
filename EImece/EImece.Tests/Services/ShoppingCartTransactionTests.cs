@@ -159,6 +159,10 @@ namespace EImece.Tests.Services
             public FakeShoppingCartRepository() : base(new FakeDbContextProxy().Context) { }
 
             public override EImece.Domain.GenericRepository.EntityFramework.EntitiesContext GetDbContext() => null;
+
+            public override System.Data.Entity.DbContextTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel) => null;
+
+            public override System.Data.Entity.DbContextTransaction BeginTransaction() => null;
         }
 
         [TestMethod]
@@ -172,9 +176,7 @@ namespace EImece.Tests.Services
             var productService = new FakeProductService();
             var repository = new FakeShoppingCartRepository();
 
-            var shoppingCartService = new ShoppingCartService(
-                null,
-                null,
+            var shoppingCartService = new ShoppingCartService(null,
                 repository,
                 orderService,
                 customerService,
@@ -239,9 +241,7 @@ namespace EImece.Tests.Services
             var productService = new FakeProductService();
             var repository = new FakeShoppingCartRepository();
 
-            var shoppingCartService = new ShoppingCartService(
-                null,
-                null,
+            var shoppingCartService = new ShoppingCartService(null,
                 repository,
                 orderService,
                 customerService,
@@ -290,9 +290,7 @@ namespace EImece.Tests.Services
             var productService = new FakeProductService();
             var repository = new FakeShoppingCartRepository();
 
-            var shoppingCartService = new ShoppingCartService(
-                null,
-                null,
+            var shoppingCartService = new ShoppingCartService(null,
                 repository,
                 orderService,
                 customerService,
@@ -332,3 +330,4 @@ namespace EImece.Tests.Services
         }
     }
 }
+

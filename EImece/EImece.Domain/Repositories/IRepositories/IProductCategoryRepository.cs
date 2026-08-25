@@ -36,6 +36,10 @@ namespace EImece.Domain.Repositories.IRepositories
 
         List<ProductCategoryTreeModel> BuildNavigation(bool? isActive, int language = 1);
 
+        Task<List<ProductCategory>> GetProductCategoriesForImageExportAsync(CancellationToken cancellationToken = default(CancellationToken));
+
+        List<ProductCategory> GetProductCategoriesForImageExport();
+
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
         Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken));

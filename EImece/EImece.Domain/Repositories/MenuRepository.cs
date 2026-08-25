@@ -424,5 +424,15 @@ namespace EImece.Domain.Repositories
             var menus = await GetActiveBaseContentsAsync(isActive, language, cancellationToken).ConfigureAwait(false);
             return menus.Where(m => !menus.Any(r => r.ParentId == m.Id)).ToList();
         }
+
+        public async Task<List<Menu>> GetMenusForImageExportAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await EImeceDbContext.Menus.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        public List<Menu> GetMenusForImageExport()
+        {
+            return EImeceDbContext.Menus.AsNoTracking().ToList();
+        }
     }
 }

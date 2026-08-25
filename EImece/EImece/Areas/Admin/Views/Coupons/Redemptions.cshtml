@@ -1,0 +1,29 @@
+@model IEnumerable<EImece.Domain.Models.DTOs.CouponRedemptionDetailDto>
+@using Resources
+@{
+    ViewBag.Title = "Coupon Redemptions";
+    var coupon = ViewBag.Coupon as EImece.Domain.Entities.Coupon;
+}
+<h2>Redemptions for @coupon.Code (@coupon.Name)</h2>
+<table class="table table-striped table-bordered">
+<thead>
+<tr><th>Id</th><th>CouponCode</th><th>OrderId</th><th>OrderNumber</th><th>Customer</th><th>UserId</th><th>Discount</th><th>Date</th></tr>
+</thead>
+<tbody>
+@foreach(var r in Model)
+{
+    <tr>
+        <td>@r.Id</td>
+        <td>@r.CouponCode</td>
+        <td>@r.OrderId</td>
+        <td><a href="@Url.Action("Detail","Orders", new { id = r.OrderId })">@r.OrderNumber</a></td>
+        <td>@r.CustomerName</td>
+        <td>@r.UserId</td>
+        <td>@r.DiscountAmount</td>
+        <td>@r.CreatedDate</td>
+    </tr>
+}
+</tbody>
+</table>
+<a href="@Url.Action("SaveOrEdit", new { id = coupon.Id })" class="btn btn-secondary">Back to Coupon</a>
+<a href="@Url.Action("Index")" class="btn btn-outline-secondary">All Coupons</a>

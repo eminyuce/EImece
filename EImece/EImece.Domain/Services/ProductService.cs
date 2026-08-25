@@ -245,51 +245,22 @@ namespace EImece.Domain.Services
 
         public string UpdatePrices(UpdatePriceRequest request)
         {
-            if (request == null || request.PercentageOfIncreaseOrDecrease == null)
+            var result = ProductRepository.UpdateProductPrices(request);
+            if (!"hata".Equals(result, StringComparison.Ordinal))
             {
-                return "hata";
+                InvalidateProductListCaches();
             }
-            var connectionString = this.ProductRepository.GetDbContext().Database.Connection.ConnectionString;
-            var commandText = @"[dbo].[UpdateProductPrices]";
-            var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("PercentageOfIncreaseOrDecrease", request.PercentageOfIncreaseOrDecrease, SqlDbType.Decimal));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", (object)request.ProductId ?? DBNull.Value, SqlDbType.Int));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("CategoryId", (object)request.CategoryId ?? DBNull.Value, SqlDbType.Int));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("BrandId", (object)request.BrandId ?? DBNull.Value, SqlDbType.Int));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("TagId", (object)request.TagId ?? DBNull.Value, SqlDbType.Int));
-            var commandType = CommandType.StoredProcedure;
-            var result = DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, commandType, parameterList.ToArray()).ToStr();
-            InvalidateProductListCaches();
             return result;
         }
 
         public async Task<string> UpdatePricesAsync(UpdatePriceRequest request)
         {
-            if (request == null || request.PercentageOfIncreaseOrDecrease == null)
+            var result = await ProductRepository.UpdateProductPricesAsync(request).ConfigureAwait(false);
+            if (!"hata".Equals(result, StringComparison.Ordinal))
             {
-                return "hata";
+                InvalidateProductListCaches();
             }
-            var connectionString = this.ProductRepository.GetDbContext().Database.Connection.ConnectionString;
-            var commandText = @"[dbo].[UpdateProductPrices]";
-            var parameterList = new List<SqlParameter>();
-            parameterList.Add(DatabaseUtility.GetSqlParameter("PercentageOfIncreaseOrDecrease", request.PercentageOfIncreaseOrDecrease, SqlDbType.Decimal));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("ProductId", (object)request.ProductId ?? DBNull.Value, SqlDbType.Int));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("CategoryId", (object)request.CategoryId ?? DBNull.Value, SqlDbType.Int));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("BrandId", (object)request.BrandId ?? DBNull.Value, SqlDbType.Int));
-            parameterList.Add(DatabaseUtility.GetSqlParameter("TagId", (object)request.TagId ?? DBNull.Value, SqlDbType.Int));
-            var commandType = CommandType.StoredProcedure;
-            using (var connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync().ConfigureAwait(false);
-                using (var command = new SqlCommand(commandText, connection))
-                {
-                    command.CommandType = commandType;
-                    command.Parameters.AddRange(parameterList.ToArray());
-                    var scalar = await command.ExecuteScalarAsync().ConfigureAwait(false);
-                    InvalidateProductListCaches();
-                    return scalar.ToStr();
-                }
-            }
+            return result;
         }
 
         public ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
