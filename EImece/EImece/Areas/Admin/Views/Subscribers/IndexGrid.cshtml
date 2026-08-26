@@ -49,7 +49,7 @@
         .Column(x => x.Note, caption: AdminResource.Note, template: @<text>@NoteCell(item)</text>, className: "eg-col-review", width: "280px")
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusToggles", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "IsActive", item.IsActive }, { "ShowState", true }, { "ShowMainPage", false }, { "ShowImageState", false } })</text>, className: "smallGridColumn eg-col-status", width: "170px")
         .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px")
-        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
+        .Column(caption: AdminResource.Actions, template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
 }
 
 @helper NoteCell(Subscriber subscriber)

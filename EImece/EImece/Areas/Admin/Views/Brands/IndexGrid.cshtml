@@ -54,10 +54,10 @@
 
     if (productPriceEnabled)
     {
-        settings.Column(caption: "Fiyat Güncellemesi", template: @<text>@Html.Partial("pPriceUpdates", new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemType", "Brand" } })</text>, className: "smallGridColumn", width: "130px");
+        settings.Column(caption: AdminResource.PriceUpdate, template: @<text>@Html.Partial("pPriceUpdates", new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemType", "Brand" } })</text>, className: "smallGridColumn", width: "130px");
     }
 
-    settings.Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", "brands" }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
+    settings.Column(caption: AdminResource.Actions, template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", "brands" }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "132px");
 }
 
 @Html.Griddly(settings)

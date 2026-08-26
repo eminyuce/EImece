@@ -4739,4 +4739,46 @@
   <data name="DiscountRulesIntro" xml:space="preserve">
     <value>Choose what this discount does. Pick a type first; only the fields relevant to that type are shown.</value>
   </data>
+  <data name="PriceUpdate" xml:space="preserve">
+    <value>Price Update</value>
+  </data>
+  <data name="ImageInfo" xml:space="preserve">
+    <value>Image Info</value>
+  </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>Delivery Date</value>
+  </data>
+  <data name="PaymentMethod" xml:space="preserve">
+    <value>Payment Method</value>
+  </data>
+  <data name="OrderGuid" xml:space="preserve">
+    <value>Order GUID</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="InnerErrorMessage" xml:space="preserve">
+    <value>Inner Error Message</value>
+  </data>
+  <data name="HtmlDownloadBtn" xml:space="preserve">
+    <value>Download HTML</value>
+  </data>
+  <data name="CreateBackupBtn" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
 </root>

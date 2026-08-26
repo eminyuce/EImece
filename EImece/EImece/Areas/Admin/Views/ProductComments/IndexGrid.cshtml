@@ -53,7 +53,7 @@
 
     if (UserRoleHelper.IsDeletedEnableRoles())
     {
-        settings.Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Subject + " " + item.Review }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+        settings.Column(caption: AdminResource.Actions, template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Subject + " " + item.Review }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", false }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
     }
 }
 

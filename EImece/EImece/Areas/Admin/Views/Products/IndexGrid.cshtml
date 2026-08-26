@@ -63,7 +63,7 @@
         .Column(x => x.State, caption: AdminResource.ProductState, template: @<text><div class="eg-state-badge eg-state-@item.StateEnum" Product-State-Id="@item.Id" name="ProductState" title="@GetProductStateResourceText(item.StateEnum)">@GetProductStateResourceText(item.StateEnum)</div></text>, className: "smallGridColumn eg-col-state", width: "150px")
         .Column(x => x.Position, caption: AdminResource.Position, template: @<text><input gridkey-id="@item.Id" value="@item.Position" class="GridOrderingTextbox input-xs" name="gridOrdering" type="text" /></text>, className: "smallGridColumn eg-col-position", width: "90px")
         .Column(x => x.IsActive, caption: AdminResource.IsActive, template: @<text>@Html.Partial("Grid/_GridStatusGroup", item)</text>, className: "smallGridColumn eg-col-status", width: "180px")
-        .Column(caption: "İşlemler", template: @<text>@Html.Partial("Grid/_GridActionsMenu", item, new ViewDataDictionary(ViewData) { { "controllerName", controllerName } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
+        .Column(caption: AdminResource.Actions, template: @<text>@Html.Partial("Grid/_GridActionsMenu", item, new ViewDataDictionary(ViewData) { { "controllerName", controllerName } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
 }
 
 @Html.Griddly(settings)

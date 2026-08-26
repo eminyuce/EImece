@@ -4739,4 +4739,46 @@
   <data name="DiscountRulesIntro" xml:space="preserve">
     <value>Bu kuponun saglayacagi indirimi belirleyin. Once indirim turunu secin; yalnizca sectiginiz ture ait alanlar goruntulenir.</value>
   </data>
+  <data name="PriceUpdate" xml:space="preserve">
+    <value>Fiyat Güncellemesi</value>
+  </data>
+  <data name="ImageInfo" xml:space="preserve">
+    <value>Resim Bilgisi</value>
+  </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>Teslimat Tarihi</value>
+  </data>
+  <data name="PaymentMethod" xml:space="preserve">
+    <value>Ödeme Yöntemi</value>
+  </data>
+  <data name="OrderGuid" xml:space="preserve">
+    <value>Sipariş GUID</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Kullanıcı</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Tutar</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Seviye</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Mesaj</value>
+  </data>
+  <data name="InnerErrorMessage" xml:space="preserve">
+    <value>İç Hata Mesajı</value>
+  </data>
+  <data name="HtmlDownloadBtn" xml:space="preserve">
+    <value>HTML İndir</value>
+  </data>
+  <data name="CreateBackupBtn" xml:space="preserve">
+    <value>Yedekle</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktif</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Yok</value>
+  </data>
 </root>
