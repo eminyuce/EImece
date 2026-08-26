@@ -2269,4 +2269,19 @@
   <data name="AdminPanelLanguageDescription" xml:space="preserve">
     <value>Yönetim paneli arayüzünün görüntüleneceği dil (menüler, etiketler, butonlar, mesajlar). Veri giriş dili (üst çubuk) ile bağımsızdır.</value>
   </data>
+  <data name="ShippingDiscount" xml:space="preserve">
+    <value>Kargo İndirimi</value>
+  </data>
+  <data name="FreeShipping" xml:space="preserve">
+    <value>Kargo Ücretsiz</value>
+  </data>
+  <data name="RemoveCoupon" xml:space="preserve">
+    <value>Kuponu Kaldır</value>
+  </data>
+  <data name="PersonalInfo" xml:space="preserve">
+    <value>Kişisel Bilgiler</value>
+  </data>
+  <data name="DeliveryAddress" xml:space="preserve">
+    <value>Teslimat Adresi</value>
+  </data>
 </root>

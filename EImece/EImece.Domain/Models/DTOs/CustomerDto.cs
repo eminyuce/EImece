@@ -1,7 +1,9 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using Resources;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace EImece.Domain.Models.DTOs
 {
@@ -10,7 +12,10 @@ namespace EImece.Domain.Models.DTOs
     {
         // from BaseEntity
         public int Id { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Name))]
         public string Name { get; set; }
+
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public bool IsActive { get; set; }
@@ -18,23 +23,51 @@ namespace EImece.Domain.Models.DTOs
         public int Lang { get; set; }
 
         // from Customer
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName))]
         public string Surname { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PhoneNumber))]
         public string GsmNumber { get; set; }
+
+        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
         public string Email { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IdentityNumber))]
         public string IdentityNumber { get; set; }
+
         public string Ip { get; set; }
         public bool IsSameAsShippingAddress { get; set; }
         public string UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Gender))]
         public int Gender { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Street))]
         public string Street { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Town))]
         public string Town { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.District))]
         public string District { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.City))]
         public string City { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Country))]
         public string Country { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ZipCode))]
         public string ZipCode { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CustomerOpenAddress))]
         public string Description { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Company))]
         public string Company { get; set; }
+
         public int CustomerType { get; set; }
         public string Captcha { get; set; }
         public DateTime OrderLatestDate { get; set; }

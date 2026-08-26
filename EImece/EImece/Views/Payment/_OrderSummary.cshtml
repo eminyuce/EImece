@@ -13,93 +13,110 @@
 }
 <!-- Sidebar-->
 <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
-    @if (Model.BasketMinTotalPriceForCargoInt > 0)
-    {
-        <span class="badge badge-pill badge-danger mr-2 mb-2">
-            @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
-        </span>
-    }
-
-    <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
-    @if (TempData["CouponMessage"] != null)
-    {
-        var t = (TempData["CouponMessageType"] as string) ?? "info";
-        <div class="alert alert-@t py-2">@TempData["CouponMessage"]</div>
-    }
-    <div class="font-size-sm border-bottom pt-2 pb-3">
-        <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice">@Model.TotalPrice.CurrencySign()</span></div>
-        @if (Model.Coupon != null)
-        {
-            <div class="d-flex justify-content-between mb-2"><span>@Resource.CouponCode:</span><span id="CouponName">@Model.CouponName (@Model.CouponCode)</span></div>
-            var _disc = Model.CouponValidatedDiscount > 0 ? Model.CouponValidatedDiscount : Model.CalculateCouponDiscount(Model.TotalPrice + (Model.CargoPrice != null ? Model.CargoPrice.SettingValue.ToDecimal() : 0));
-            if (_disc > 0)
-            {
-                <div class="d-flex justify-content-between mb-2 text-success"><span>Coupon Discount:</span><span>-@_disc.CurrencySign()</span></div>
-            }
-            if (Model.CouponShippingDiscount > 0)
-            {
-                <div class="d-flex justify-content-between mb-2 text-success"><span>Shipping Discount:</span><span>-@Model.CouponShippingDiscount.CurrencySign()</span></div>
-            }
-            else if (Model.Coupon.IsFreeShipping)
-            {
-                <div class="d-flex justify-content-between mb-2 text-success"><span>Free Shipping</span><span>0</span></div>
-            }
-            using (Html.BeginForm("RemoveCoupon", "Payment", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <button class="btn btn-sm btn-outline-danger btn-block mt-2" type="submit">Remove Coupon</button>
-            }
-        }
-        <div id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
+    <div class="card shadow-sm border-0 mb-4">
+        <h2 class="h6 px-4 py-3 bg-secondary text-center mb-0">@Resource.OrderSummary</h2>
+        <div class="card-body">
             @if (Model.BasketMinTotalPriceForCargoInt > 0)
             {
-                if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                <div class="alert alert-success text-center px-2 py-2 mb-3 free-cargo-banner" role="alert">
+                    <i class="fas fa-truck mr-1" aria-hidden="true"></i>
+                    <strong>@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</strong>
+                </div>
+            }
+            @if (TempData["CouponMessage"] != null)
+            {
+                var t = (TempData["CouponMessageType"] as string) ?? "info";
+                <div class="alert alert-@t py-2">@TempData["CouponMessage"]</div>
+            }
+            <div class="font-size-sm border-bottom pb-3 mb-3">
+                <div class="d-flex justify-content-between mb-2"><span>@Resource.MyBasket:</span><span id="TotalPrice"><strong>@Model.TotalPrice.CurrencySign()</strong></span></div>
+                @if (Model.Coupon != null)
                 {
-                    <span class="badge badge-pill badge-danger mr-2 mb-2">
-                        @Resource.CargoFreeTextInfo
-                    </span>
+                    <div class="d-flex justify-content-between mb-2"><span>@Resource.CouponCode:</span><span id="CouponName">@Model.CouponName (@Model.CouponCode)</span></div>
+                    var _disc = Model.CouponValidatedDiscount > 0 ? Model.CouponValidatedDiscount : Model.CalculateCouponDiscount(Model.TotalPrice + (Model.CargoPrice != null ? Model.CargoPrice.SettingValue.ToDecimal() : 0));
+                    if (_disc > 0)
+                    {
+                        <div class="d-flex justify-content-between mb-2 text-success"><span>@Resource.CouponDiscount:</span><span>-@_disc.CurrencySign()</span></div>
+                    }
+                    if (Model.CouponShippingDiscount > 0)
+                    {
+                        <div class="d-flex justify-content-between mb-2 text-success"><span>@Resource.ShippingDiscount:</span><span>-@Model.CouponShippingDiscount.CurrencySign()</span></div>
+                    }
+                    else if (Model.Coupon.IsFreeShipping)
+                    {
+                        <div class="d-flex justify-content-between mb-2 text-success"><span>@Resource.FreeShipping</span><span>0</span></div>
+                    }
+                    using (Html.BeginForm("RemoveCoupon", "Payment", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-sm btn-outline-danger btn-block mt-2" type="submit"><i class="fas fa-times mr-1" aria-hidden="true"></i>@Resource.RemoveCoupon</button>
+                    }
                 }
-                else
-                {
-                    <span>@Resource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
-                }
+                <div id="CargoFreeTextInfo" class="mb-0">
+                    @if (Model.BasketMinTotalPriceForCargoInt > 0)
+                    {
+                        if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                        {
+                            <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
+                                <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
+                                <strong>@Resource.CargoFreeTextInfo</strong>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-between mb-0"><span>@Resource.CargoPrice:</span><span><strong>@Model.CargoPriceValue.CurrencySign()</strong></span></div>
+                        }
+                    }
+                    else if (Model.CargoPriceValue > 0)
+                    {
+                        <div class="d-flex justify-content-between mb-0"><span>@Resource.CargoPrice:</span><span><strong>@Model.CargoPriceValue.CurrencySign()</strong></span></div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
+                            <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
+                            <strong>@Resource.CargoFreeTextInfo</strong>
+                        </div>
+                    }
+                </div>
+            </div>
 
-            }
-            else if (Model.CargoPriceValue > 0)
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <span class="h5 font-weight-semibold mb-0">@Resource.Total:</span>
+                <span class="h4 font-weight-semibold text-primary mb-0" id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span>
+            </div>
+            @if (IsAdditionalComment && anyProducts)
             {
-                <span>@Resource.CargoPrice:</span><span>@Model.CargoPriceValue.CurrencySign()</span>
-            }
-            else
-            {
-                <span class="badge badge-pill badge-danger mr-2 mb-2">
-                    @Resource.CargoFreeTextInfo
-                </span>
+                using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation", @novalidate = "" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label class="font-size-sm text-muted" for="cart-promocode">@Resource.CouponCode</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="submit"><i class="fas fa-tag mr-1" aria-hidden="true"></i>@Resource.ApplyCoupon</button>
+                            </div>
+                            <div class="invalid-feedback w-100">@Resource.ValidPromoCode</div>
+                        </div>
+                    </div>
+                }
+                <hr>
+                <h3 class="h6 pt-2 font-weight-semibold"><span class="badge badge-success mr-2 align-middle">@Resource.Note</span>@Resource.AdditionalComments</h3>
+                <textarea class="form-control mb-3"
+                          data-shopping-order-guid="@Model.OrderGuid"
+                          id="orderComments" rows="4" aria-label="@Resource.AdditionalComments">@Model.OrderComments</textarea>
+                <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
+                    <i class="fas fa-user mr-2" aria-hidden="true"></i>@Resource.ContinueWithMembership
+                </a>
+                <a class="btn btn-secondary btn-block mt-2" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
+                    <i class="fas fa-user-lock mr-2" aria-hidden="true"></i>@Resource.ContinueWithoutMembership
+                </a>
             }
         </div>
     </div>
-
-    <div class="h3 font-weight-semibold text-center py-3"><span>@Resource.Total:  </span><span id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></div>
-    @if (IsAdditionalComment && anyProducts)
-    {
-        using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation", @novalidate = "" }))
-        {
-            @Html.AntiForgeryToken()
-            <div class="form-group">
-                <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
-                <div class="invalid-feedback">@Resource.ValidPromoCode</div>
-            </div>
-            <button class="btn btn-outline-primary btn-block" type="submit">@Resource.ApplyCoupon</button>
-        }
-        <hr>
-        <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
-        <textarea class="form-control mb-3"
-                  data-shopping-order-guid="@Model.OrderGuid"
-                  id="orderComments" rows="5">@Model.OrderComments</textarea>
-        <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
-            <i class="mr-2" data-feather="credit-card"></i>@Resource.ContinueWithMembership
-        </a>
-        <a class="btn btn-secondary btn-block" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
-            <i class="mr-2" data-feather="credit-card"></i>  @Resource.ContinueWithoutMembership   
-        </a>
-    }
 </div>
+
+<style>
+    .free-cargo-banner { white-space: normal; line-height: 1.4; border-radius: .25rem; font-size: .8125rem; }
+</style>

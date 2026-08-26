@@ -6245,5 +6245,35 @@ namespace Resources {
                 return ResourceManager.GetString("Range40To100ErrorMessage", resourceCulture);
             }
         }
+        
+        public static string ShippingDiscount {
+            get {
+                return ResourceManager.GetString("ShippingDiscount", resourceCulture);
+            }
+        }
+        
+        public static string FreeShipping {
+            get {
+                return ResourceManager.GetString("FreeShipping", resourceCulture);
+            }
+        }
+        
+        public static string RemoveCoupon {
+            get {
+                return ResourceManager.GetString("RemoveCoupon", resourceCulture);
+            }
+        }
+        
+        public static string PersonalInfo {
+            get {
+                return ResourceManager.GetString("PersonalInfo", resourceCulture);
+            }
+        }
+        
+        public static string DeliveryAddress {
+            get {
+                return ResourceManager.GetString("DeliveryAddress", resourceCulture);
+            }
+        }
     }
 }

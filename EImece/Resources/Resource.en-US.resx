@@ -419,13 +419,13 @@
     <value>Ana Sayfa</value>
   </data>
   <data name="AdditionalComments" xml:space="preserve">
-    <value>Siparişiniz için notunuz</value>
+    <value>Note for your order</value>
   </data>
   <data name="Note" xml:space="preserve">
     <value>Note</value>
   </data>
   <data name="OrderSummary" xml:space="preserve">
-    <value>Summary</value>
+    <value>Order Summary</value>
   </data>
   <data name="UnitPrice" xml:space="preserve">
     <value>Unit Price</value>
@@ -434,10 +434,10 @@
     <value>Product Category</value>
   </data>
   <data name="BillingAdress" xml:space="preserve">
-    <value>Fatura Adresi</value>
+    <value>Billing Address</value>
   </data>
   <data name="CargoFreeText" xml:space="preserve">
-    <value>ve üzeri alışverişlerde KARGO ÜCRETSİZ!</value>
+    <value>and above: FREE SHIPPING!</value>
   </data>
   <data name="Review" xml:space="preserve">
     <value>Review</value>
@@ -488,7 +488,7 @@
             &lt;/div&gt;</value>
   </data>
   <data name="WhyNeedIdentityNumber" xml:space="preserve">
-    <value>Fatura kesimi için lütfen TC Kimlik Numaranızı giriniz. (Zorunlu değildir.)</value>
+    <value>Required for invoice issuance. Please enter your TR Identity Number. (Optional)</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
@@ -1526,28 +1526,28 @@
     <value>Maalesef bu sayfa kimlik doğrulaması gerektiriyor.</value>
   </data>
   <data name="CargoFreeTextInfo" xml:space="preserve">
-    <value>KARGO ÜCRETSİZ!</value>
+    <value>FREE SHIPPING!</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>
   <data name="Updated" xml:space="preserve">
-    <value>Güncellendi</value>
+    <value>Updated</value>
   </data>
   <data name="CustomerBillingDetailsNotFilledOut" xml:space="preserve">
-    <value>Değerli müşterimiz, faturanız için bilgilerinizin ve teslimat adres bilgilerinizin doldurulması gereklidir.</value>
+    <value>Dear customer, your billing details and delivery address must be filled in to issue your invoice.</value>
   </data>
   <data name="PleaseFillOutMandatoryBelowFields" xml:space="preserve">
-    <value>Lütfen Aşağıdaki Zorunlu Alanları Doldurun</value>
+    <value>Please Fill Out the Mandatory Fields Below</value>
   </data>
   <data name="BuyNow" xml:space="preserve">
-    <value>Hemen Al</value>
+    <value>Buy Now</value>
   </data>
   <data name="GoToPayment" xml:space="preserve">
-    <value>Ödemeye Geç</value>
+    <value>Go to Payment</value>
   </data>
   <data name="WhyNeedGsmNumber" xml:space="preserve">
-    <value>Siparişin gönderimi ve takibi için talep edilir.</value>
+    <value>Required for the delivery and tracking of your order.</value>
   </data>
   <data name="PleaseEnterYourAddress" xml:space="preserve">
     <value>Lütfen adresi giriniz.</value>
@@ -1637,13 +1637,13 @@
     <value>Soy isim</value>
   </data>
   <data name="ApplyCoupon" xml:space="preserve">
-    <value>Kupon Kodu Kullan</value>
+    <value>Apply Coupon Code</value>
   </data>
   <data name="CouponCode" xml:space="preserve">
     <value>Code</value>
   </data>
   <data name="ValidPromoCode" xml:space="preserve">
-    <value>Lütfen geçerli bir kupon kodu girin!</value>
+    <value>Please enter a valid coupon code!</value>
   </data>
   <data name="TotalOrderNumber" xml:space="preserve">
     <value>Order #</value>
@@ -1652,14 +1652,14 @@
     <value>Subtotal</value>
   </data>
   <data name="CustomerOpenAddressDescription" xml:space="preserve">
-    <value>Siparişinizin size en çabuk şekilde ulaşması için lütfen adres bilgilerinizi mümkün olduğu kadar açık yazınız. &lt;br /&gt;
-                            Hatta varsa adresinizin tarif bilgilerini de {0} bölümüne yazabilirsiniz. &lt;br /&gt; (Örnek: Postanenin yanından girince üçüncü sokak vs.)</value>
+    <value>For the fastest possible delivery, please describe your address as clearly as you can. &lt;br /&gt;
+                            You can also add directions in the {0} field. &lt;br /&gt; (e.g. enter from the post office, third street...)</value>
   </data>
   <data name="Coupon" xml:space="preserve">
     <value>Coupon</value>
   </data>
   <data name="DeliveryInformation" xml:space="preserve">
-    <value>Teslimat Bilgisi</value>
+    <value>Delivery Information</value>
   </data>
   <data name="EImeceOrderStatus_Cancelled" xml:space="preserve">
     <value>İptal edilmiş sipariş</value>
@@ -1725,7 +1725,7 @@
     <value>Sipariş Öğeleri</value>
   </data>
   <data name="CouponDiscount" xml:space="preserve">
-    <value>Kupon İndirimi</value>
+    <value>Coupon Discount</value>
   </data>
   <data name="EndingIn" xml:space="preserve">
     <value>Son 4 hane</value>
@@ -1809,16 +1809,16 @@
     <value>Bilinmeyen Durum</value>
   </data>
   <data name="ContinueWithMembership" xml:space="preserve">
-    <value>Üyelikle Devam Et</value>
+    <value>Continue with Membership</value>
   </data>
   <data name="ContinueWithoutMembership" xml:space="preserve">
-    <value>Üyeliksiz Devam Et</value>
+    <value>Continue without Membership</value>
   </data>
   <data name="ContinueShoppingWithoutAccount" xml:space="preserve">
-    <value>Hesap Olmadan Alışverişe Devam Et</value>
+    <value>Continue Shopping Without an Account</value>
   </data>
   <data name="NoInstallment" xml:space="preserve">
-    <value>Tek Çekim</value>
+    <value>Single Payment</value>
   </data>
   <data name="EnterOrderNumber" xml:space="preserve">
     <value>Sipariş Numarasını Girin</value>
@@ -2164,5 +2164,20 @@
   </data>
   <data name="YourPaymentAmountinInstallments" xml:space="preserve">
     <value>Installment Payment Amount</value>
+  </data>
+  <data name="ShippingDiscount" xml:space="preserve">
+    <value>Shipping Discount</value>
+  </data>
+  <data name="FreeShipping" xml:space="preserve">
+    <value>Free Shipping</value>
+  </data>
+  <data name="RemoveCoupon" xml:space="preserve">
+    <value>Remove Coupon</value>
+  </data>
+  <data name="PersonalInfo" xml:space="preserve">
+    <value>Personal Information</value>
+  </data>
+  <data name="DeliveryAddress" xml:space="preserve">
+    <value>Delivery Address</value>
   </data>
 </root>
