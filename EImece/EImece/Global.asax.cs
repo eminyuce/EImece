@@ -54,6 +54,8 @@ namespace EImece
             // Required for AntiForgeryToken with claims-based auth.
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
 
+            Griddly.Mvc.GriddlySettings.DefaultPageSize = EImece.Domain.Constants.DefaultGridPageSizeNumber;
+
             MvcHandler.DisableMvcResponseHeader = true;
 
             ObservabilityBootstrap.Configure();

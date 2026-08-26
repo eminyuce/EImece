@@ -275,6 +275,13 @@ namespace EImece.Tests.Services
         }
 
         [TestMethod]
+        public void AdminSettings_WhenSettingsMissing_FallsBackToConstants()
+        {
+            Assert.AreEqual(Constants.DefaultGridPageSizeNumber, AdminSettings.GridPageSizeNumber);
+            Assert.AreEqual(Constants.DefaultProductShortDescriptionPreviewLength, AdminSettings.ProductShortDescriptionPreviewLength);
+        }
+
+        [TestMethod]
         public void AppConfig_ShowThemeSelectionInAdmin_DefaultsToTrue_WhenNotSet()
         {
             ConfigurationManager.AppSettings["ShowThemeSelectionInAdmin"] = null;

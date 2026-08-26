@@ -20,6 +20,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Griddly.Mvc;
 using DomainConstants = EImece.Domain.Constants;
 
 namespace EImece.Areas.Admin.Controllers
@@ -121,7 +122,9 @@ namespace EImece.Areas.Admin.Controllers
             Resource.Culture = culture;
 
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
-            ViewBag.GridPageSizeNumber = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
+            int gridPageSize = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
+            ViewBag.GridPageSizeNumber = gridPageSize;
+            GriddlySettings.DefaultPageSize = gridPageSize;
             ViewBag.CurrentLanguage = CurrentLanguage;
 
             if (!IsProductPriceEnabled)
