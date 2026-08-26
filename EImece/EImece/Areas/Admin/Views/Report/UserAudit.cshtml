@@ -244,7 +244,7 @@
         </div>
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-download" aria-hidden="true"></i> @Resource.Export
+                <i class="fa fa-download" aria-hidden="true"></i> @AdminResource.ExportToExcel
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><h6 class="dropdown-header">@AdminResource.ReportByUser</h6></li>
@@ -293,7 +293,7 @@
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.ActiveTab, new { id = "activeTabInput" })
 
-            @if (!ViewData.ModelState.IsValid)
+            if (!ViewData.ModelState.IsValid)
             {
                 <div class="alert alert-danger py-2">
                     @Html.ValidationSummary(false, "", new { @class = "mb-0" })
@@ -428,27 +428,7 @@
 
                                     <tr>
                                         <td>
-                                            <div class="user-pill">
-                                                <i class="fa fa-user-circle-o"></i>
-                                                <span>
-                                                    @if (!string.IsNullOrWhiteSpace(fullName) && fullName != "Unknown")
-                                                    {
-                                                        <strong>@fullName</strong>
-                                                        if (!string.IsNullOrWhiteSpace(userName) && userName != fullName)
-                                                        {
-                                                            <small class="text-muted">(@userName)</small>
-                                                        }
-                                                    }
-                                                    else if (!string.IsNullOrWhiteSpace(userName))
-                                                    {
-                                                        <strong>@userName</strong>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="unknown-user">@AdminResource.UnknownUser</span>
-                                                    }
-                                                </span>
-                                            </div>
+                                            @RenderUserPill(fullName, userName)
                                         </td>
                                         <td class="text-center">
                                             <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">@createdCount</span>
@@ -500,7 +480,7 @@
                     <table class="table audit-table">
                         <thead>
                             <tr>
-                                <th style="width: 140px;">@Resource.Month / @Resource.Year</th>
+                                <th style="width: 140px;">@AdminResource.MonthlyBreakdown</th>
                                 <th>@AdminResource.User</th>
                                 <th class="text-center" style="width: 140px;">@AdminResource.CreatedCount</th>
                                 <th class="text-center" style="width: 140px;">@AdminResource.UpdatedCount</th>
@@ -524,27 +504,7 @@
                                             <span class="badge bg-secondary px-2 py-1 font-monospace">@yearMonth</span>
                                         </td>
                                         <td>
-                                            <div class="user-pill">
-                                                <i class="fa fa-user-circle-o"></i>
-                                                <span>
-                                                    @if (!string.IsNullOrWhiteSpace(fullName) && fullName != "Unknown")
-                                                    {
-                                                        <strong>@fullName</strong>
-                                                        if (!string.IsNullOrWhiteSpace(userName) && userName != fullName)
-                                                        {
-                                                            <small class="text-muted">(@userName)</small>
-                                                        }
-                                                    }
-                                                    else if (!string.IsNullOrWhiteSpace(userName))
-                                                    {
-                                                        <strong>@userName</strong>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="unknown-user">@AdminResource.UnknownUser</span>
-                                                    }
-                                                </span>
-                                            </div>
+                                            @RenderUserPill(fullName, userName)
                                         </td>
                                         <td class="text-center">
                                             <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">@createdCount</span>
@@ -685,3 +645,28 @@
         });
     });
 </script>
+
+@helper RenderUserPill(string fullName, string userName)
+{
+    var hasName = !string.IsNullOrWhiteSpace(fullName) && fullName != "Unknown";
+    var hasUser = !string.IsNullOrWhiteSpace(userName);
+    var showSub = hasName && hasUser && userName != fullName;
+    var primaryName = hasName ? fullName : (hasUser ? userName : null);
+    <div class="user-pill">
+        <i class="fa fa-user-circle-o"></i>
+        <span>
+            @if (primaryName != null && showSub)
+            {
+                <strong>@primaryName</strong> <small class="text-muted">(@userName)</small>
+            }
+            else if (primaryName != null)
+            {
+                <strong>@primaryName</strong>
+            }
+            else
+            {
+                <span class="unknown-user">@AdminResource.UnknownUser</span>
+            }
+        </span>
+    </div>
+}

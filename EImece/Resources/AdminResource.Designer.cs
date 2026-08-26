@@ -11368,5 +11368,23 @@ namespace Resources {
                 return ResourceManager.GetString("UpdatedBy", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tablo Adı.
+        /// </summary>
+        public static string TableName {
+            get {
+                return ResourceManager.GetString("TableName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kayıt bulunamadı..
+        /// </summary>
+        public static string EmptyTable {
+            get {
+                return ResourceManager.GetString("EmptyTable", resourceCulture);
+            }
+        }
     }
 }

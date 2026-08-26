@@ -4856,4 +4856,10 @@
   <data name="UpdatedBy" xml:space="preserve">
     <value>Updated By</value>
   </data>
+  <data name="TableName" xml:space="preserve">
+    <value>Table Name</value>
+  </data>
+  <data name="EmptyTable" xml:space="preserve">
+    <value>No records found.</value>
+  </data>
 </root>

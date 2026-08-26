@@ -4856,4 +4856,10 @@
   <data name="UpdatedBy" xml:space="preserve">
     <value>Güncelleyen</value>
   </data>
+  <data name="TableName" xml:space="preserve">
+    <value>Tablo Adı</value>
+  </data>
+  <data name="EmptyTable" xml:space="preserve">
+    <value>Kayıt bulunamadı.</value>
+  </data>
 </root>
