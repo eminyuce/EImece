@@ -11368,14 +11368,5 @@ namespace Resources {
                 return ResourceManager.GetString("UpdatedBy", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Bilinmeyen.
-        /// </summary>
-        public static string UnknownUser {
-            get {
-                return ResourceManager.GetString("UnknownUser", resourceCulture);
-            }
-        }
     }
 }

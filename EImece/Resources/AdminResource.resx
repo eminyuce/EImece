@@ -4856,7 +4856,4 @@
   <data name="UpdatedBy" xml:space="preserve">
     <value>Güncelleyen</value>
   </data>
-  <data name="UnknownUser" xml:space="preserve">
-    <value>Bilinmeyen</value>
-  </data>
 </root>
