@@ -536,10 +536,10 @@ namespace EImece.Tests.Services
         }
 
         [TestMethod]
-        public void AdminSettingsController_ExportBackup_EndpointRemoved()
+        public void AdminSettingsController_ExportBackup_EndpointExposed()
         {
             var method = typeof(AdminSettingsController).GetMethod("ExportBackup");
-            Assert.IsNull(method, "ExportBackup HTTP endpoint must not be exposed on AdminSettingsController.");
+            Assert.IsNotNull(method, "ExportBackup HTTP endpoint must be exposed on AdminSettingsController for JSON ZIP backups.");
         }
     }
 }

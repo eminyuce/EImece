@@ -1,6 +1,7 @@
 @model List<Brand>
 @using EImece.Domain.Entities
 @using Griddly.Mvc
+@using EImece.Domain.Helpers
 @using Resources
 
 @{
@@ -8,6 +9,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var controllerName = "brands";
 }
+@Html.AdminBreadcrumb(AdminResource.Brands)
 <h2 class="admin-page-title">@AdminResource.Brands</h2>
 <hr class="adminLine" />
 

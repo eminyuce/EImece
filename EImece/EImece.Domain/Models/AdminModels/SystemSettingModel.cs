@@ -83,16 +83,6 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Zopim))]
         public string Zopim { get; set; }
 
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CompanyAddress))]
-        public string CompanyAddress { get; set; }
-
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.WebSiteCompanyPhoneAndLocation))]
-        public string WebSiteCompanyPhoneAndLocation { get; set; }
-
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.WebSiteCompanyEmailAddress))]
-        [EmailAddress]
-        public string WebSiteCompanyEmailAddress { get; set; }
-
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsProductPriceEnable))]
         public bool IsProductPriceEnable { get; set; }
 
@@ -105,12 +95,6 @@ namespace EImece.Domain.Models.AdminModels
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductPriceFilterSetting))]
         public string ProductPriceFilterSetting { get; set; }
-
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.CompanyName))]
-        public string CompanyName { get; set; }
-
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.BasketMinTotalPrice))]
-        public int BasketMinTotalPriceForCargo { get; set; }
 
         // ========== 1. Site Maintenance & SEO ==========
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsSiteUnderConstruction))]

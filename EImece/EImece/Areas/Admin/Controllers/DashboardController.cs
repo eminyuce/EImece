@@ -68,9 +68,11 @@ namespace EImece.Areas.Admin.Controllers
 
         // GET: Admin/Dashboard/SystemHealth
         [HttpGet]
-        public ActionResult SystemHealth()
+        public async Task<ActionResult> SystemHealth()
         {
             ViewBag.Title = Resources.AdminResource.SystemHealth;
+            var underConstructionValue = await SettingService.GetSettingByKeyAsync(Domain.Constants.IsSiteUnderConstruction).ConfigureAwait(false);
+            ViewBag.IsSiteUnderConstruction = underConstructionValue.ToBool(false);
             return View();
         }
 

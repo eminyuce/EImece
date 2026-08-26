@@ -124,7 +124,8 @@
         maxPrice = priceEnabled ? maxPrice : null
     });
 }
-<h2>@AdminResource.ProductPageTitle</h2>
+@Html.AdminBreadcrumb(AdminResource.ProductPageTitle)
+<h2 class="admin-page-title">@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
 
 <div class="row eg-products-layout">

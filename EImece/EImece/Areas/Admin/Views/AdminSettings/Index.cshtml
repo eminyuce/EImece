@@ -2,15 +2,16 @@
 @using Resources;
 @using EImece.Domain.Helpers;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = AdminResource.AdminGeneralSettings;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     EImece.Domain.Entities.Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
     var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
-    var activeTab = productPriceEnabled ? "cargo" : "seo";
+    var activeTab = productPriceEnabled ? "cargo" : "company";
 }
 
+@Html.AdminBreadcrumb(AdminResource.AdminGeneralSettings)
 <h2 class="admin-page-title">@AdminResource.AdminGeneralSettings</h2>
 <hr class="adminLine" />
 
@@ -18,6 +19,7 @@
 @Html.Partial("_AdminHelpAccordionStart")
 <ul style="margin-top: 0;">
     <li>@AdminResource.AdminGeneralSettingsHelpLead</li>
+    <li><strong>@AdminResource.CompanyAndContactInfo:</strong> @AdminResource.CompanyInfoAndContactHelp</li>
     @if (productPriceEnabled)
     {
         <li><strong>@AdminResource.CargoSettings:</strong> @AdminResource.AdminGeneralSettingsCargoHelp</li>
@@ -47,6 +49,11 @@
         <!-- Vertical Tabs Menu -->
         <div class="col-md-3">
             <ul class="nav nav-pills flex-column admin-settings-pills" id="settingsTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link @(activeTab == "company" ? "active" : "")" data-bs-toggle="pill" href="#tab-company" role="tab" aria-selected="@(activeTab == "company" ? "true" : "false")">
+                        <i class="fa fa-building-o me-2" aria-hidden="true"></i> @AdminResource.CompanyAndContactInfo
+                    </a>
+                </li>
                 @if (productPriceEnabled)
                 {
                     <li class="nav-item">
@@ -71,7 +78,48 @@
         <!-- Vertical Tabs Content -->
         <div class="col-md-9">
             <div class="tab-content">
-                
+
+                <!-- Company & Contact Settings -->
+                <div id="tab-company" class="tab-pane fade @(activeTab == "company" ? "show active" : "")" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header"><h3 class="h6 mb-0">@AdminResource.CompanyAndContactInfo</h3></div>
+                        <div class="card-body">
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", placeholder = "EImece E-Ticaret A.S." } })
+                                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                                    <p class="form-text">@AdminResource.CompanyOfficialTitleBrandHelp</p>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.WebSiteCompanyEmailAddress, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.WebSiteCompanyEmailAddress, new { htmlAttributes = new { @class = "form-control", type = "email", placeholder = "info@eimece.test" } })
+                                    @Html.ValidationMessageFor(model => model.WebSiteCompanyEmailAddress, "", new { @class = "text-danger" })
+                                    <p class="form-text">@AdminResource.WebSiteCompanyEmailAddressRequired</p>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.WebSiteCompanyPhoneAndLocation, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.WebSiteCompanyPhoneAndLocation, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 216 555 01 23 | Kadikoy / Istanbul" } })
+                                    @Html.ValidationMessageFor(model => model.WebSiteCompanyPhoneAndLocation, "", new { @class = "text-danger" })
+                                    <p class="form-text">@AdminResource.PhoneNumberAndCallCenter</p>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3">
+                                @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(model => model.CompanyAddress, 2, 50, new { @class = "form-control", placeholder = "Caferaga Mah. Moda Cad. No:42 Kadikoy / Istanbul" })
+                                    @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
+                                    <p class="form-text">@AdminResource.CompanyPhysicalAddressHelp</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 @if (productPriceEnabled)
                 {
                     <!-- Cargo Settings -->

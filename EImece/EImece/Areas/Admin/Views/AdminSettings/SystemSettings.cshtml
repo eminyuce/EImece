@@ -1,4 +1,5 @@
 @model EImece.Domain.Models.AdminModels.SystemSettingModel
+@using EImece.Domain.Helpers
 @using Resources;
 @{
     ViewBag.Title = AdminResource.AdminSystemSettings;
@@ -58,12 +59,7 @@
     <div class="settings-header-banner mb-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
             <div>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-1">
-                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard", new { area = "admin" })"><i class="fa fa-home"></i> @AdminResource.AdminHome</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@AdminResource.SystemSettings</li>
-                    </ol>
-                </nav>
+                @Html.AdminBreadcrumb(AdminResource.SystemSettings)
                 <h1 class="settings-main-title mb-1">
                     <i class="fa fa-sliders text-primary me-2"></i>@AdminResource.AdminSystemSettings
                 </h1>
@@ -189,9 +185,6 @@
                         <div class="settings-nav-domain-header text-uppercase">
                             <i class="fa fa-briefcase text-muted me-1"></i> @AdminResource.DomainBusiness
                         </div>
-                        <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-company" role="tab">
-                            <span><i class="fa fa-building-o text-secondary me-2"></i> @AdminResource.CompanyAdminSettings</span>
-                        </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-payments" role="tab" id="nav-tab-payments">
                             <span><i class="fa fa-credit-card text-secondary me-2"></i> @AdminResource.SalesAndPayments</span>
                             <span class="badge bg-secondary payment-disabled-badge d-none small">Locked</span>
@@ -348,14 +341,14 @@
                                                     <span class="badge bg-success-subtle text-success border border-success-subtle">@AdminResource.BusinessProfile</span>
                                                 </div>
                                                 <h6 class="fw-bold mb-1">@AdminResource.CompanyAndContact</h6>
-                                                <p class="text-muted small mb-2">Firma unvanı ve iletişim detayları.</p>
+                                                <p class="text-muted small mb-2">@AdminResource.CompanyInfoAndContactDetails</p>
                                                 <ul class="list-unstyled small mb-0">
-                                                    <li class="text-truncate"><i class="fa fa-id-card-o text-muted me-1"></i> Unvan: <strong>@(string.IsNullOrWhiteSpace(Model.CompanyName) ? "Belirtilmemiş" : Model.CompanyName)</strong></li>
-                                                    <li class="text-truncate"><i class="fa fa-truck text-muted me-1"></i> @AdminResource.FreeShippingThresholdLabel <strong>@Model.BasketMinTotalPriceForCargo.ToString("N0") ₺</strong></li>
-                                                    <li class="text-truncate"><i class="fa fa-phone text-muted me-1"></i> İletişim: <strong>@(string.IsNullOrWhiteSpace(Model.WebSiteCompanyPhoneAndLocation) ? "-" : Model.WebSiteCompanyPhoneAndLocation)</strong></li>
+                                                    <li><i class="fa fa-id-card-o text-muted me-1"></i> @AdminResource.CompanyName</li>
+                                                    <li><i class="fa fa-envelope-o text-muted me-1"></i> @AdminResource.WebSiteCompanyEmailAddress</li>
+                                                    <li><i class="fa fa-map-marker text-muted me-1"></i> @AdminResource.CompanyAddress</li>
                                                 </ul>
                                             </div>
-                                            <button type="button" class="btn btn-outline-success btn-sm w-100 mt-3" onclick="navigateToTab('#tab-company')">
+                                            <button type="button" class="btn btn-outline-success btn-sm w-100 mt-3" onclick="window.location.href='@Url.Action("Index", "AdminSettings", new { area = "admin" })'">
                                                 <i class="fa fa-arrow-right me-1"></i> @AdminResource.EditCompanyInfo
                                             </button>
                                         </div>
@@ -528,7 +521,7 @@
                                 </div>
 
                                 <!-- Price Filter Setting Editor Partial -->
-                                <div class="setting-item mb-3" data-setting-name="ProductPriceFilterSetting" data-setting-label="Fiyat Filtresi Aralıkları" data-setting-desc="Kategori ve arama sayfalarında gösterilen dinamik fiyat filtre aralıkları" data-keywords="fiyat aralığı filtre kategori slider range price filter">
+                                <div class="setting-item mb-3 price-dependent-setting" data-setting-name="ProductPriceFilterSetting" data-setting-label="Fiyat Filtresi Aralıkları" data-setting-desc="Kategori ve arama sayfalarında gösterilen dinamik fiyat filtre aralıkları" data-keywords="fiyat aralığı filtre kategori slider range price filter">
                                     <label class="form-label fw-bold small">
                                         @Html.DisplayNameFor(model => model.ProductPriceFilterSetting)
                                     </label>
@@ -537,7 +530,7 @@
                                 </div>
 
                                 <!-- Payment Detail Tab HTML -->
-                                <div class="setting-item" data-setting-name="PaymentDetailHtml" data-setting-label="Ürün Detay Ödeme Sekmesi HTML" data-setting-desc="Ürün detay sayfasındaki Ödeme Bilgisi sekmesinde gösterilecek özel HTML veya metin" data-keywords="ödeme sekmesi html taksit detay payment detail">
+                                <div class="setting-item price-dependent-setting" data-setting-name="PaymentDetailHtml" data-setting-label="Ürün Detay Ödeme Sekmesi HTML" data-setting-desc="Ürün detay sayfasındaki Ödeme Bilgisi sekmesinde gösterilecek özel HTML veya metin" data-keywords="ödeme sekmesi html taksit detay payment detail">
                                     <label class="form-label fw-bold small" for="PaymentDetailHtml">
                                         @Html.DisplayNameFor(model => model.PaymentDetailHtml)
                                     </label>
@@ -894,64 +887,6 @@
                                         </div>
                                         <div class="form-text small">Küçük resim JPEG kalitesi (40–95).</div>
                                         @Html.ValidationMessageFor(model => model.ImageUploadThumbJpegQuality, "", new { @class = "text-danger small" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ========================================================================= -->
-                    <!-- 4. COMPANY SETTINGS TAB -->
-                    <!-- ========================================================================= -->
-                    <div id="tab-company" class="tab-pane fade" role="tabpanel">
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="@AdminResource.CompanyAndContactInfo">
-                            <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-building-o text-primary me-2"></i>@AdminResource.CompanyAdminSettings</h5>
-                                <small class="text-muted">Faturada, e-postalarda ve site altbilgisinde (footer) gösterilecek resmi firma bilgileri.</small>
-                            </div>
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <!-- Company Name -->
-                                    <div class="col-md-6 setting-item" data-setting-name="CompanyName" data-setting-label="Firma Unvanı" data-setting-desc="Resmi şirket veya mağaza unvanı" data-keywords="firma adı şirket unvan mağaza company name">
-                                        <label class="form-label fw-bold small" for="CompanyName">@Html.DisplayNameFor(model => model.CompanyName)</label>
-                                        @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", placeholder = "EImece E-Ticaret A.Ş." } })
-                                        <div class="form-text small">Sitenin genelinde, başlıklarda ve faturalarda gösterilir.</div>
-                                        @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger small" })
-                                    </div>
-
-                                    <!-- Company Official Email -->
-                                    <div class="col-md-6 setting-item" data-setting-name="WebSiteCompanyEmailAddress" data-setting-label="Firma İletişim E-Postası" data-setting-desc="customers size ulaşacağı resmi iletişim e-posta adresi" data-keywords="iletişim eposta resmi mail company email">
-                                        <label class="form-label fw-bold small" for="WebSiteCompanyEmailAddress">@Html.DisplayNameFor(model => model.WebSiteCompanyEmailAddress)</label>
-                                        @Html.EditorFor(model => model.WebSiteCompanyEmailAddress, new { htmlAttributes = new { @class = "form-control", type = "email", placeholder = "info@eimece.test" } })
-                                        <div class="form-text small">İletişim formlarının yönlendirileceği ve sitede gösterilen e-posta adresi.</div>
-                                        @Html.ValidationMessageFor(model => model.WebSiteCompanyEmailAddress, "", new { @class = "text-danger small" })
-                                    </div>
-
-                                    <!-- Phone and Location -->
-                                    <div class="col-md-6 setting-item" data-setting-name="WebSiteCompanyPhoneAndLocation" data-setting-label="Telefon ve Konum" data-setting-desc="@AdminResource.Customer hizmetleri telefon numarası ve şehir/bölge bilgisi" data-keywords="telefon gsm konum şehir phone location">
-                                        <label class="form-label fw-bold small" for="WebSiteCompanyPhoneAndLocation">@Html.DisplayNameFor(model => model.WebSiteCompanyPhoneAndLocation)</label>
-                                        @Html.EditorFor(model => model.WebSiteCompanyPhoneAndLocation, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 216 555 01 23 | Kadıköy / İstanbul" } })
-                                        <div class="form-text small">Üst menüde ve iletişim sayfasında yer alır.</div>
-                                        @Html.ValidationMessageFor(model => model.WebSiteCompanyPhoneAndLocation, "", new { @class = "text-danger small" })
-                                    </div>
-
-                                    <!-- Free Cargo Basket Threshold -->
-                                    <div class="col-md-6 setting-item" data-setting-name="BasketMinTotalPriceForCargo" data-setting-label="Ücretsiz Kargo Sepet Tutarı" data-setting-desc="customer ücretsiz kargo tanımlanması için gereken minimum sepet toplamı" data-keywords="ücretsiz kargo sepet tutarı kargo limiti free shipping basket total">
-                                        <label class="form-label fw-bold small" for="BasketMinTotalPriceForCargo">@Html.DisplayNameFor(model => model.BasketMinTotalPriceForCargo)</label>
-                                        <div class="input-group">
-                                            @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", placeholder = "500" } })
-                                            <span class="input-group-text">₺</span>
-                                        </div>
-                                        <div class="form-text small">Bu tutar ve üzerindeki sepetlerde kargo müşteriye ücretsiz sunulur.</div>
-                                        @Html.ValidationMessageFor(model => model.BasketMinTotalPriceForCargo, "", new { @class = "text-danger small" })
-                                    </div>
-
-                                    <!-- Company Address -->
-                                    <div class="col-12 setting-item" data-setting-name="CompanyAddress" data-setting-label="@AdminResource.CompanyPhysicalAddress" data-setting-desc="Resmi tebligat ve mağaza açık adresi" data-keywords="adres fatura adresi açık adres company address">
-                                        <label class="form-label fw-bold small" for="CompanyAddress">@Html.DisplayNameFor(model => model.CompanyAddress)</label>
-                                        @Html.EditorFor(model => model.CompanyAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Caferağa Mah. Moda Cad. No:42 Kadıköy / İstanbul" } })
-                                        <div class="form-text small">Fatura, iletişim sayfası ve altbilgide yer alan resmi şirket adresi.</div>
-                                        @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger small" })
                                     </div>
                                 </div>
                             </div>
@@ -1375,7 +1310,7 @@
                                         <div class="p-3 rounded border border-info bg-info-subtle d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
                                             <div>
                                                 <h6 class="fw-bold text-dark mb-1"><i class="fa fa-paper-plane text-primary me-1"></i> @AdminResource.LiveEmailDispatchTest</h6>
-                                                <p class="text-muted small mb-0">@AdminResource.SendTestEmailToOfficialAddressLead (<code>@(string.IsNullOrWhiteSpace(Model.WebSiteCompanyEmailAddress) ? AdminResource.CompanyEmailPlaceholder : Model.WebSiteCompanyEmailAddress)</code>) @AdminResource.SendTestEmailInstantDeliverability</p>
+                                                <p class="text-muted small mb-0">@AdminResource.SendTestEmailToOfficialAddressLead @AdminResource.SendTestEmailInstantDeliverability</p>
                                             </div>
                                             <a href="@Url.Action("SendSampleEmail", "AdminSettings")" class="btn btn-primary px-3 text-nowrap shadow-sm" id="btnSendSampleEmail">
                                                 <i class="fa fa-send me-1"></i> @AdminResource.SendTestEmailBtn
@@ -1533,8 +1468,25 @@
                             </div>
                             <div class="card-body">
                                 <div class="row g-4">
+                                    <!-- Data Backup (JSON ZIP) -->
+                                    <div class="col-md-4">
+                                        <div class="p-3 border rounded h-100 bg-light d-flex flex-column justify-content-between shadow-sm">
+                                            <div>
+                                                <div class="d-flex align-items-center gap-2 mb-2">
+                                                    <span class="p-2 bg-success-subtle text-success rounded"><i class="fa fa-database fa-lg"></i></span>
+                                                    <h6 class="fw-bold mb-0">@AdminResource.DataBackup</h6>
+                                                </div>
+                                                <p class="text-muted small mb-2">@AdminResource.JsonBackupRelationalDescText</p>
+                                                <p class="text-muted small mb-0"><i class="fa fa-shield text-success me-1"></i>@AdminResource.BackupSecurityNoticeText</p>
+                                            </div>
+                                            <a href="@Url.Action("ExportBackup", "AdminSettings", new { area = "admin" })" class="btn btn-success btn-sm w-100 mt-3" title="@AdminResource.ExportAllDataZipTitle">
+                                                <i class="fa fa-download me-1"></i> @AdminResource.DownloadCompleteJsonBackupBtn
+                                            </a>
+                                        </div>
+                                    </div>
+
                                     <!-- Monitoring & Health -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="p-3 border rounded h-100 bg-light d-flex flex-column justify-content-between shadow-sm">
                                             <div>
                                                 <div class="d-flex align-items-center gap-2 mb-2">
@@ -1555,7 +1507,7 @@
                                     </div>
 
                                     <!-- Logs & Asset Maintenance -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="p-3 border rounded h-100 bg-light d-flex flex-column justify-content-between shadow-sm">
                                             <div>
                                                 <div class="d-flex align-items-center gap-2 mb-2">
@@ -1719,16 +1671,21 @@
 
         function syncPaymentState() {
             var isPriceEnabled = $('#IsProductPriceEnable').is(':checked');
+            // Any price related input is fully hidden when pricing is disabled.
+            $('.price-dependent-setting').each(function () {
+                if (isPriceEnabled) { $(this).removeClass('d-none'); } else { $(this).addClass('d-none'); }
+            });
             if (isPriceEnabled) {
                 $('#payment-disabled-alert').slideUp(150);
                 $('.payment-disabled-badge').addClass('d-none');
+                $('#payment-settings-fields').removeClass('d-none');
                 $('#payment-settings-fields').css({ 'opacity': '1', 'pointer-events': 'auto' });
                 $('.payment-input').prop('disabled', false);
             } else {
                 $('#payment-disabled-alert').slideDown(150);
                 $('.payment-disabled-badge').removeClass('d-none');
-                $('#payment-settings-fields').css({ 'opacity': '0.5', 'pointer-events': 'none' });
-                $('.payment-input').prop('disabled', true);
+                $('#payment-settings-fields').css({ 'opacity': '', 'pointer-events': '' });
+                $('#payment-settings-fields').addClass('d-none');
             }
         }
 
@@ -1910,6 +1867,11 @@
                 // Map legacy aliases
                 if (hash === '#tab-design') hash = '#tab-appearance';
                 if (hash === '#tab-social' || hash === '#tab-scripts') hash = '#tab-integrations';
+                if (hash === '#tab-company') {
+                    // Company settings moved to the general settings page.
+                    window.location.href = '@Url.Action("Index", "AdminSettings", new { area = "admin" })';
+                    return;
+                }
                 
                 var $targetTab = $(".settings-tab-menu a[href='" + hash + "']");
                 if ($targetTab.length) {

@@ -1434,3 +1434,54 @@ body.admin-app .table-responsive {
         touch-action: manipulation;
     }
 }
+
+/* ==========================================================================
+   Admin breadcrumbs - rendered by @Html.AdminBreadcrumb(...) on every page.
+   Uniform compact format directly above the page title.
+   ========================================================================== */
+body.admin-app .admin-content .admin-breadcrumb {
+    margin: 0 0 6px;
+}
+
+body.admin-app .admin-content .admin-breadcrumb .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: transparent;
+    border-radius: 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+body.admin-app .admin-content .admin-breadcrumb .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    color: #627d98;
+}
+
+body.admin-app .admin-content .admin-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: "\203A";
+    color: #9fb3c8;
+    padding: 0 8px;
+    float: none;
+}
+
+body.admin-app .admin-content .admin-breadcrumb .breadcrumb-item a {
+    color: #334e68;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+}
+
+body.admin-app .admin-content .admin-breadcrumb .breadcrumb-item a:hover,
+body.admin-app .admin-content .admin-breadcrumb .breadcrumb-item a:focus {
+    color: #1f8ceb;
+    text-decoration: underline;
+}
+
+body.admin-app .admin-content .admin-breadcrumb .breadcrumb-item.active {
+    color: #486581;
+    font-weight: 600;
+}

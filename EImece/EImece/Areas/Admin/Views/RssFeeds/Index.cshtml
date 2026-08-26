@@ -1,8 +1,9 @@
 @model EImece.Areas.Admin.Models.RssFeedsIndexViewModel
 @using EImece.Areas.Admin.Models
+@using EImece.Domain.Helpers
 @using Resources
 @{
-    ViewBag.Title = "RSS Beslemeleri & Bağlantı Oluşturucu";
+    ViewBag.Title = AdminResource.RssFeeds;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var baseUrl = Model.BaseUrl ?? "";
 }
@@ -11,11 +12,7 @@
     <!-- Breadcrumb & Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <div>
-            <ol class="breadcrumb" style="background: transparent; padding: 0; margin-bottom: 6px; font-size: 13px;">
-                <li><a href="@Url.Action("Index", "Dashboard", new { area = "admin" })"><i class="fa fa-home"></i> @AdminResource.AdminHome</a></li>
-                <li><a href="#">@AdminResource.Content</a></li>
-                <li class="active" style="color: #627d98;">RSS Beslemeleri</li>
-            </ol>
+            @Html.AdminBreadcrumb(AdminResource.RssFeeds, (AdminResource.Content, ""))
             <h1 style="font-size: 24px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 10px;">
                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: #fff4e6; color: #f76707;">
                     <i class="fa fa-rss" aria-hidden="true"></i>

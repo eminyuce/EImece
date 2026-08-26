@@ -1,5 +1,6 @@
 @model List<EImece.Domain.Entities.Template>
 @using Griddly.Mvc
+@using EImece.Domain.Helpers
 @using Resources
 
 @{
@@ -8,6 +9,7 @@
     var controllerName = "Templates";
 }
 
+@Html.AdminBreadcrumb(AdminResource.Templates)
 <h2 class="admin-page-title">@AdminResource.Templates</h2>
 <hr class="adminLine" />
 

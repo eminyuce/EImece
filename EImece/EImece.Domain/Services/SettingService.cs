@@ -22,6 +22,21 @@ namespace EImece.Domain.Services
         public const string NULL_VALUE = "RETURN-NULL-VALUE";
         private static string ALL_SETTING_CACHE_KEY = "ALL_SETTING_CACHE_KEY_V3";
 
+        /// <summary>
+        /// Company &amp; contact setting keys which are edited on the general settings page
+        /// (AdminSettings/Index, persisted via <see cref="SaveSettingModelAsync"/>).
+        /// They are excluded from system-settings save and resolved with a key-only
+        /// fallback because their rows were historically stored language-invariant.
+        /// </summary>
+        private static readonly string[] GeneralSettingsManagedKeys =
+        {
+            "CompanyName",
+            "CompanyAddress",
+            "WebSiteCompanyPhoneAndLocation",
+            "WebSiteCompanyEmailAddress",
+            "BasketMinTotalPriceForCargo"
+        };
+
         public SettingService(ISettingRepository repository) : base(repository)
         {
             SettingRepository = repository;
@@ -556,6 +571,14 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
+
+                // Company & contact settings are managed by the general settings page (SettingModel).
+                // Skip them here so saving system settings never overwrites those values.
+                if (GeneralSettingsManagedKeys.Contains(name, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    continue;
+                }
+
                 string settingKey = GetSettingKeyForProperty(name);
 
                 // Get value on the target instance.
@@ -634,6 +657,12 @@ namespace EImece.Domain.Services
                 // Get value on the target instance.
 
                 var setting = Settings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting == null && GeneralSettingsManagedKeys.Contains(name, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    // Company & contact settings were historically stored by the system settings page
+                    // without a language / AdminSetting description. Fall back to a key-only lookup.
+                    setting = (await GetAllSettingsAsync().ConfigureAwait(false)).FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                }
                 if (setting != null)
                 {
                     if (propertyInfo.PropertyType == typeof(int))
@@ -715,6 +744,13 @@ namespace EImece.Domain.Services
                 // Get value on the target instance.
                 object value = propertyInfo.GetValue(settingModel, null);
                 var setting = Settings.FirstOrDefault(r => r.Lang == lang && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                if (setting == null && GeneralSettingsManagedKeys.Contains(name, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    // Company & contact settings were historically stored by the system settings page
+                    // without a language / AdminSetting description. Update those rows in place
+                    // instead of creating duplicate rows.
+                    setting = Settings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                }
                 if (setting == null)
                 {
                     var newSetting = new Setting();

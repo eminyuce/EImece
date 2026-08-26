@@ -1,5 +1,6 @@
-﻿@model List<EImece.Domain.Entities.List>
+@model List<EImece.Domain.Entities.List>
 @using Griddly.Mvc
+@using EImece.Domain.Helpers
 @using Resources
 
 @{
@@ -8,6 +9,7 @@
     var controllerName = "Lists";
 }
 
+@Html.AdminBreadcrumb(AdminResource.ProductSpecTemplateItemList)
 <h2 class="admin-page-title">@AdminResource.ProductSpecTemplateItemList</h2>
 <hr class="adminLine" />
 

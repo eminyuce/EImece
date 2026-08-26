@@ -1,5 +1,6 @@
 @model List<EImece.Domain.Entities.MainPageImage>
 @using Griddly.Mvc
+@using EImece.Domain.Helpers
 @using Resources
 
 @{
@@ -8,6 +9,7 @@
     var controllerName = "MainPageImages";
 }
 
+@Html.AdminBreadcrumb(AdminResource.MainPageImages)
 <h2 class="admin-page-title">@AdminResource.MainPageImages</h2>
 <hr class="adminLine" />
 

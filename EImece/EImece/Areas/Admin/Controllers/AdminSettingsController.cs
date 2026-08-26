@@ -24,19 +24,21 @@ namespace EImece.Areas.Admin.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ISettingService _settingService;
+ 
         private readonly IEmailSender _emailSender;
         private readonly IEimeceCacheProvider _memoryCacheProvider;
+        private readonly IDataExportService _dataExportService;
 
         public AdminSettingsController(
             ISettingService settingService,
             IEmailSender emailSender,
-            IEimeceCacheProvider memoryCacheProvider)
+            IEimeceCacheProvider memoryCacheProvider,
+            IDataExportService dataExportService)
             : base(settingService)
         {
-            _settingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             _memoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
+            _dataExportService = dataExportService ?? throw new ArgumentNullException(nameof(dataExportService));
         }
 
         // GET: Admin/AdminSettings
@@ -126,6 +128,37 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             return View("SystemSettings", await SettingService.GetSystemSettingModelAsync(cancellationToken));
+        }
+
+        /// <summary>
+        /// Streams a full database backup as a ZIP archive containing one JSON file per entity.
+        /// Triggered by the "Download Complete JSON Backup" button on the system settings tools tab.
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> ExportBackup(CancellationToken cancellationToken)
+        {
+            Logger.Info("Full database JSON backup export requested.");
+            var exportRequest = new DataExportRequest
+            {
+                ExportedBy = $"{User?.Identity?.Name ?? "Admin"}"
+            };
+
+            using (var outputStream = new MemoryStream())
+            {
+                DataExportResult result = await _dataExportService.ExportDataAsync(exportRequest, outputStream, cancellationToken).ConfigureAwait(false);
+                if (result == null || !result.Success)
+                {
+                    var errorMessage = result?.ErrorMessage ?? AdminResource.Error;
+                    Logger.Error("Database JSON backup export failed: {0}", errorMessage);
+                    ModelState.AddModelError("", errorMessage);
+                    return View("SystemSettings", await SettingService.GetSystemSettingModelAsync(cancellationToken));
+                }
+
+                Logger.Info("Database JSON backup generated: {0} records, {1} bytes.", result.TotalRecords, result.CompressedSizeBytes);
+                string fileName = $"eimece-db-backup-{DateTime.UtcNow:yyyyMMdd-HHmmss}.zip";
+                string contentType = MediaTypeNames.Application.Zip;
+                return File(outputStream.ToArray(), contentType, fileName);
+            }
         }
 
         [HttpPost]

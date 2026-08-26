@@ -1,5 +1,6 @@
-﻿@model List<EImece.Domain.Entities.ShoppingCart>
+@model List<EImece.Domain.Entities.ShoppingCart>
 @using Griddly.Mvc
+@using EImece.Domain.Helpers
 @using Resources
 
 @{
@@ -8,6 +9,7 @@
     var controllerName = "shoppingcarts";
 }
 
+@Html.AdminBreadcrumb(AdminResource.ShoppingCarts)
 <h2 class="admin-page-title">@AdminResource.ShoppingCarts</h2>
 <hr class="adminLine" />
 

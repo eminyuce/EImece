@@ -37,5 +37,18 @@ namespace EImece.Domain.Models.AdminModels
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BasketMinTotalPriceForCargo))]
         public int BasketMinTotalPriceForCargo { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CompanyName))]
+        public string CompanyName { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WebSiteCompanyEmailAddress))]
+        public string WebSiteCompanyEmailAddress { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.WebSiteCompanyPhoneAndLocation))]
+        public string WebSiteCompanyPhoneAndLocation { get; set; }
+
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CompanyAddress))]
+        [AllowHtml]
+        public string CompanyAddress { get; set; }
     }
 }

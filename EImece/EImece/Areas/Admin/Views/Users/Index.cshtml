@@ -81,7 +81,8 @@
 <div class="users-admin-page">
     <div class="users-admin-header">
         <div class="users-admin-header-main">
-            <h2 class="admin-page-title">@AdminResource.Users</h2>
+            @Html.AdminBreadcrumb(AdminResource.Users)
+<h2 class="admin-page-title">@AdminResource.Users</h2>
             <p class="users-admin-lead">
                 @AdminResource.AdminUsersIndexLead
             </p>

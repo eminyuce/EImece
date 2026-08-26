@@ -1,5 +1,6 @@
 @model List<EImece.Domain.Entities.Tag>
 @using Griddly.Mvc
+@using EImece.Domain.Helpers
 @using Resources
 
 @{
@@ -8,6 +9,7 @@
     var controllerName = "Tags";
 }
 
+@Html.AdminBreadcrumb(AdminResource.Tag)
 <h2 class="admin-page-title">@AdminResource.Tag</h2>
 <hr class="adminLine" />
 

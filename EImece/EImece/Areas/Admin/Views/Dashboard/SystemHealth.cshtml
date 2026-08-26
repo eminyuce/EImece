@@ -1,19 +1,17 @@
 @using EImece.Domain
+@using EImece.Domain.Helpers
 @using Resources
 @{
     ViewBag.Title = AdminResource.SystemHealth;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    bool isSiteUnderConstruction = ViewBag.IsSiteUnderConstruction != null && Convert.ToBoolean(ViewBag.IsSiteUnderConstruction);
 }
 
 <div class="admin-health-page" style="padding: 20px 24px;">
     <!-- Breadcrumb & Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
         <div>
-            <ol class="breadcrumb" style="background: transparent; padding: 0; margin-bottom: 6px; font-size: 13px;">
-                <li><a href="@Url.Action("Index", "Dashboard", new { area = "admin" })"><i class="fa fa-home"></i> @AdminResource.AdminHome</a></li>
-                <li><a href="#">@AdminResource.System</a></li>
-                <li class="active" style="color: #627d98;">@AdminResource.SystemHealth</li>
-            </ol>
+            @Html.AdminBreadcrumb(AdminResource.SystemHealth, (AdminResource.System, ""))
             <h1 style="font-size: 24px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 10px;">
                 <i class="fa fa-heartbeat text-danger" aria-hidden="true"></i> @AdminResource.SystemHealth
             </h1>
@@ -30,6 +28,19 @@
             </button>
         </div>
     </div>
+
+    <!-- Maintenance Mode Notice -->
+    @if (isSiteUnderConstruction)
+    {
+        <div class="alert alert-warning d-flex align-items-center" style="border-radius: 8px; border: 1px solid #f0b429; background: #fffbea; box-shadow: 0 2px 6px rgba(16,42,67,0.06); margin-bottom: 24px;">
+            <i class="fa fa-exclamation-triangle fa-2x" style="color: #f0b429; margin-right: 16px;" aria-hidden="true"></i>
+            <div>
+                <strong style="display: block; font-size: 15px; color: #822427;">@AdminResource.MaintenanceModeActive</strong>
+                <span style="color: #627d98; font-size: 13px;">@AdminResource.MaintenanceModeSiteOffline</span>
+                <a href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })" style="margin-left: 8px; font-size: 13px;">@AdminResource.GeneralAndStorefront</a>
+            </div>
+        </div>
+    }
 
     <!-- Overall Summary Banner -->
     <div class="card" style="border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 2px 6px rgba(16,42,67,0.06); margin-bottom: 24px;">

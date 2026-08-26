@@ -2,6 +2,7 @@
 @using EImece.Domain.Entities
 @using EImece.Domain.Models.FrontModels
 @using Griddly.Mvc
+@using EImece.Domain.Helpers
 @using Resources
 
 @{
@@ -11,7 +12,8 @@
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
 }
 
-<h2>@AdminResource.ProductCategory</h2>
+@Html.AdminBreadcrumb(AdminResource.ProductCategory)
+<h2 class="admin-page-title">@AdminResource.ProductCategory</h2>
 <hr class="adminLine" />
 
 <div class="row">
