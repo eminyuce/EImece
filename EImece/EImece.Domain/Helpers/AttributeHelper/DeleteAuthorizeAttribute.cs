@@ -7,20 +7,34 @@ namespace EImece.Domain.Helpers.AttributeHelper
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (filterContext.HttpContext.Request.IsAuthenticated)
+            if (!filterContext.HttpContext.Request.IsAuthenticated)
             {
-                var currentUser = filterContext.HttpContext.User;
-                var roles = UserRoleHelper.GetDeletedRoles();
-                foreach (var role in roles)
-                {
-                    if (!currentUser.IsInRole(role))
-                    {
-                        filterContext.Result = new RedirectToRouteResult(new
-                        RouteValueDictionary(new { controller = "Error", action = "BadRequest" }));
+                base.OnAuthorization(filterContext);
+                return;
+            }
 
-                        // base.OnAuthorization(filterContext); //returns to login url
-                    }
+            var currentUser = filterContext.HttpContext.User;
+            if (currentUser == null)
+            {
+                base.OnAuthorization(filterContext);
+                return;
+            }
+
+            var roles = UserRoleHelper.GetDeletedRoles();
+            bool isAllowed = false;
+            foreach (var role in roles)
+            {
+                if (currentUser.IsInRole(role))
+                {
+                    isAllowed = true;
+                    break;
                 }
+            }
+
+            if (!isAllowed)
+            {
+                filterContext.Result = new RedirectToRouteResult(new
+                    RouteValueDictionary(new { controller = "Error", action = "BadRequest" }));
             }
         }
     }

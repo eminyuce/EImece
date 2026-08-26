@@ -8,12 +8,16 @@ namespace EImece.Domain.Helpers
     {
         public static bool IsDeletedEnableRoles()
         {
-            var user = HttpContext.Current.User;
+            var user = HttpContext.Current?.User;
+            if (user == null || !user.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
             var roles = GetDeletedRoles();
             foreach (var role in roles)
             {
-                var r = user.IsInRole(Constants.AdministratorRole);
-                if (r)
+                if (user.IsInRole(role))
                 {
                     return true;
                 }

@@ -451,6 +451,7 @@
     <Compile Include="Helpers\AttributeHelper\AuthorizationAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\UnderConstAttribute.cs" />
     <Compile Include="Helpers\AttributeHelper\ValidateCaptchaAttribute.cs" />
+    <Compile Include="Helpers\AdminAuditHelper.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipher.cs" />
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />
     <Compile Include="Helpers\EncryptionSecretProvider.cs" />

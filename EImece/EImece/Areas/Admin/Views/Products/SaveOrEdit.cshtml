@@ -289,6 +289,8 @@
     </div>
 </div>
 
+@Html.Partial("_AuditFields", Model)
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -320,6 +322,7 @@
 
 @helper GridToolsDeleteColumn(Product d, String controllerName)
 {
+if (!EImece.Domain.Helpers.UserRoleHelper.IsDeletedEnableRoles()) { return; }
 if (d.Id > 0)
 {
         @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {

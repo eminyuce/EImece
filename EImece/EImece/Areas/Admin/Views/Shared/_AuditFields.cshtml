@@ -1,0 +1,94 @@
+@using System.Globalization
+@using Resources
+@using EImece.Domain.Helpers
+@model EImece.Domain.Entities.BaseEntity
+@{
+    if (Model == null)
+    {
+        return;
+    }
+
+    var culture = CultureInfo.CurrentCulture;
+    string createdDateStr = "-";
+    string updatedDateStr = "-";
+    try
+    {
+        if (Model.CreatedDate != default(DateTime))
+        {
+            createdDateStr = Model.CreatedDate.ToString("g", culture);
+        }
+        if (Model.UpdatedDate != default(DateTime))
+        {
+            updatedDateStr = Model.UpdatedDate.ToString("g", culture);
+        }
+    }
+    catch
+    {
+        createdDateStr = Model.CreatedDate.ToString();
+        updatedDateStr = Model.UpdatedDate.ToString();
+    }
+
+    string addUserId = null;
+    string updateUserId = null;
+    try
+    {
+        var t = Model.GetType();
+        var propAdd = t.GetProperty("AddUserId");
+        var propUpd = t.GetProperty("UpdateUserId");
+        if (propAdd != null)
+        {
+            addUserId = propAdd.GetValue(Model) as string;
+        }
+        if (propUpd != null)
+        {
+            updateUserId = propUpd.GetValue(Model) as string;
+        }
+    }
+    catch
+    {
+        // ignore reflection errors
+    }
+
+    string addUserName = AdminAuditHelper.GetUserDisplayName(addUserId);
+    string updateUserName = AdminAuditHelper.GetUserDisplayName(updateUserId);
+
+    // For new entities (Id == 0) show placeholder
+    bool isNew = Model.Id == 0;
+    if (isNew)
+    {
+        // Keep dates as "-" and user names as "-"
+        if (string.IsNullOrWhiteSpace(addUserId))
+        {
+            addUserName = "-";
+        }
+        if (string.IsNullOrWhiteSpace(updateUserId))
+        {
+            updateUserName = "-";
+        }
+    }
+}
+<div class="card mt-4 border-secondary audit-fields-card">
+    <div class="card-header bg-light">
+        <h5 class="mb-0"><i class="fa fa-history me-2"></i>@AdminResource.AuditInformation</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.CreatedDate</label>
+                <div class="form-control-plaintext py-1">@createdDateStr</div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.UpdatedDate</label>
+                <div class="form-control-plaintext py-1">@updatedDateStr</div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.CreatedBy</label>
+                <div class="form-control-plaintext py-1" title="@(addUserId ?? "")">@addUserName</div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.UpdatedBy</label>
+                <div class="form-control-plaintext py-1" title="@(updateUserId ?? "")">@updateUserName</div>
+            </div>
+        </div>
+    </div>
+</div>

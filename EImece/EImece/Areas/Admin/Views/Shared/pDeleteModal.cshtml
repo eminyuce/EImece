@@ -2,6 +2,10 @@
 @using EImece.Domain.Helpers;
 @using Resources;
 @{
+    if (!UserRoleHelper.IsDeletedEnableRoles())
+    {
+        return;
+    }
     string deleteIcon = ViewData["DeleteIcon"].ToStr();
     string action = ViewData["action"].ToStr("Delete");
     string controllerName = ViewData["controllerName"].ToStr();

@@ -191,6 +191,8 @@
     </div>
 </div>
 
+@Html.Partial("_AuditFields", Model)
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -209,6 +211,7 @@
 
 @helper GridToolsDeleteColumn(List<ProductCategory> productCategoryLeaves, ProductCategory d, String controllerName)
 {
+if (!EImece.Domain.Helpers.UserRoleHelper.IsDeletedEnableRoles()) { return; }
     if (d.Id > 0)
     {
         if (productCategoryLeaves.Any(r => r.Id == d.Id))

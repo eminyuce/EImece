@@ -4778,4 +4778,16 @@
   <data name="None" xml:space="preserve">
     <value>Yok</value>
   </data>
+  <data name="AuditInformation" xml:space="preserve">
+    <value>Denetim Bilgileri</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Oluşturan</value>
+  </data>
+  <data name="UpdatedBy" xml:space="preserve">
+    <value>Güncelleyen</value>
+  </data>
+  <data name="UnknownUser" xml:space="preserve">
+    <value>Bilinmeyen</value>
+  </data>
 </root>

@@ -377,6 +377,8 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
+        [DeleteAuthorize]
+
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, string id)
         {
             await UsersService.DeleteUserAsync(id);

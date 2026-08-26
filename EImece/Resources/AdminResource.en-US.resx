@@ -4778,4 +4778,16 @@
   <data name="None" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="AuditInformation" xml:space="preserve">
+    <value>Audit Information</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="UpdatedBy" xml:space="preserve">
+    <value>Updated By</value>
+  </data>
+  <data name="UnknownUser" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
 </root>

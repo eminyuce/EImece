@@ -11202,5 +11202,42 @@ namespace Resources {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
             }
-        }    }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denetim Bilgileri.
+        /// </summary>
+        public static string AuditInformation {
+            get {
+                return ResourceManager.GetString("AuditInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oluşturan.
+        /// </summary>
+        public static string CreatedBy {
+            get {
+                return ResourceManager.GetString("CreatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Güncelleyen.
+        /// </summary>
+        public static string UpdatedBy {
+            get {
+                return ResourceManager.GetString("UpdatedBy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Bilinmeyen.
+        /// </summary>
+        public static string UnknownUser {
+            get {
+                return ResourceManager.GetString("UnknownUser", resourceCulture);
+            }
+        }
+    }
 }

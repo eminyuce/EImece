@@ -325,6 +325,7 @@
     <Compile Include="Services\SystemSettingsFallbackTests.cs" />
     <Compile Include="Services\UsersServiceTests.cs" />
     <Compile Include="Controllers\ParallelPocessingTest.cs" />
+    <Compile Include="Helpers\AdminAuditHelperTests.cs" />
     <Compile Include="Helpers\DatabaseUtilityTests.cs" />
     <Compile Include="Helpers\GeneralHelperQaFixTests.cs" />
     <Compile Include="Helpers\EntityExtensionQaFixTests.cs" />

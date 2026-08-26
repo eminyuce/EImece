@@ -214,6 +214,7 @@
 
 @helper GridToolsDeleteColumn(Menu d, String controllerName)
 {
+if (!EImece.Domain.Helpers.UserRoleHelper.IsDeletedEnableRoles()) { return; }
     if (d.Id > 0)
     {
 @Html.Partial("pDeleteModal", new ViewDataDictionary(ViewData) {
@@ -225,6 +226,8 @@
     }
 
 }
+@Html.Partial("_AuditFields", Model)
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 

@@ -1,5 +1,6 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
@@ -224,6 +225,8 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [DeleteAuthorize]
+
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int? id)
         {
             if (id == null)

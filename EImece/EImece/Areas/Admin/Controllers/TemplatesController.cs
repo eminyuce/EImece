@@ -159,6 +159,8 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [DeleteAuthorize]
+
         public async Task<ActionResult> DeleteConfirmed(CancellationToken cancellationToken, int id)
         {
             Template template = await TemplateService.GetSingleAsync(id);
