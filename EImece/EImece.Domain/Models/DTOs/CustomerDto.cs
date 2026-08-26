@@ -37,7 +37,10 @@ namespace EImece.Domain.Models.DTOs
         public string IdentityNumber { get; set; }
 
         public string Ip { get; set; }
+
+        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsSameAsShippingAddress))]
         public bool IsSameAsShippingAddress { get; set; }
+
         public string UserId { get; set; }
         public bool IsPermissionGranted { get; set; }
 

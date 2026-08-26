@@ -48,9 +48,9 @@
     <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
         @if (Model.BasketMinTotalPriceForCargoInt > 0)
         {
-            <span style="color:red;" class="w-100 text-center d-block text-wrap">
+            <div class="alert alert-success text-center px-2 py-2 mb-3 free-cargo-banner" role="alert"><strong>
                 @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
-            </span>
+            </div>
         }
 
         <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
@@ -118,7 +118,7 @@
         <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id" />
         <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
 
-        <div class="media d-block d-sm-flex text-center text-sm-left">
+        <div class="media d-block d-sm-flex text-center text-sm-start">
             @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
             {
                 <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
@@ -151,7 +151,7 @@
         </div>
         </div>
 
-        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 10rem;">
             <div class="font-size-sm mb-3">
                 <span class="text-muted mr-2">@Resource.Quantity:</span>
                 <span class="font-weight-semibold">@item.Quantity</span>

@@ -8,29 +8,47 @@
 @model ShoppingCartSession
 
 @{
-    ViewBag.Title = Resources.Resource.MyBasket;
     var customer = Model.Customer;
     var products = Model.ShoppingCartItems;
+    var hasCustomerInfo = !string.IsNullOrEmpty(customer.FullName) && !string.IsNullOrEmpty(customer.Email);
+    var hasShippingAddress = Model.ShippingAddress != null && !string.IsNullOrEmpty(Model.ShippingAddress.City);
 }
 <!-- Shipping and Billing Addresses -->
-<div class="row">
-    <div class="col-md-6">
-        <h3 class="h5 mt-4">@Resource.CustomerDetails</h3>
-        <p>
-            @customer.FullName<br />
-            @customer.Email<br />
-            @customer.GsmNumber
-        </p>
+@if (hasCustomerInfo || hasShippingAddress)
+{
+    <div class="row mb-4">
+        @if (hasCustomerInfo)
+        {
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h6 font-weight-semibold mb-2"><i class="fas fa-user text-muted mr-2" aria-hidden="true"></i>@Resource.CustomerDetails</h3>
+                        <p class="mb-0 font-size-sm">
+                            @customer.FullName<br />
+                            @customer.Email<br />
+                            @customer.GsmNumber
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (hasShippingAddress)
+        {
+            <div class="col-md-6 @(hasCustomerInfo ? "" : "offset-md-6")">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h6 font-weight-semibold mb-2"><i class="fas fa-map-marker-alt text-muted mr-2" aria-hidden="true"></i>@Resource.ShippingAddress</h3>
+                        <p class="mb-0 font-size-sm">
+                            @Model.ShippingAddress.Name<br />
+                            @Model.ShippingAddress.Description<br />
+                            @Model.ShippingAddress.City, @Model.ShippingAddress.Country @Model.ShippingAddress.ZipCode
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-    <div class="col-md-6">
-        <h3 class="h5 mt-4">@Resource.ShippingAddress</h3>
-        <p>
-            @Model.ShippingAddress.Name<br />
-            @Model.ShippingAddress.Description<br />
-            @Model.ShippingAddress.City, @Model.ShippingAddress.Country @Model.ShippingAddress.ZipCode
-        </p>
-    </div>
-</div>
+}
 <div class="row">
     <!-- Main Content-->
     <div class="col-xl-9 col-md-8">
@@ -46,68 +64,75 @@
 
     <!-- Sidebar / Order Summary -->
     <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
-        @if (Model.BasketMinTotalPriceForCargoInt > 0)
-        {
-            <span style="color:red;" class="w-100 text-center d-block text-wrap">
-                @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
-            </span>
-        }
-
-        <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
-        <div class="font-size-sm border-bottom pt-3 pb-3">
-            <div class="d-flex justify-content-between mb-2">
-                <span>@Resource.MyBasket:</span>
-                <span id="TotalPrice"><strong>@Model.TotalPrice.CurrencySign()</strong></span>
+        <div class="crizal-cart-total common-block">
+            <div class="line-title">
+                <h2 class="h6 mb-0">@Resource.OrderSummary</h2>
             </div>
 
-            @if (Model.Coupon != null)
+            @if (Model.BasketMinTotalPriceForCargoInt > 0)
             {
-                <div class="d-flex justify-content-between mb-2">
-                    <span>@Resource.CouponCode:</span>
-                    <span id="CouponName"><strong>@Model.CouponName</strong></span>
+                <div class="alert alert-success text-center px-2 py-2 mb-3 free-cargo-banner" role="alert">
+                    <i class="fas fa-truck mr-1" aria-hidden="true"></i>
+                    <strong>@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</strong>
                 </div>
             }
 
-            <div id="CargoFreeTextInfo" class="d-flex justify-content-between mb-2">
-                @if (Model.BasketMinTotalPriceForCargoInt > 0)
-                {
-                    if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+            <table class="cart-sub-total table table-borderless mb-0">
+                <tbody>
+                    <tr>
+                        <th scope="row">@Resource.MyBasket</th>
+                        <td class="text-end" id="TotalPrice"><strong>@Model.TotalPrice.CurrencySign()</strong></td>
+                    </tr>
+                    @if (Model.Coupon != null)
                     {
-                        <span class="badge badge-pill badge-success text-white w-100 text-center">
-                            @Resource.CargoFreeTextInfo
-                        </span>
+                        <tr>
+                            <th scope="row">@Resource.CouponCode</th>
+                            <td class="text-end" id="CouponName">@Model.CouponName</td>
+                        </tr>
                     }
-                    else
-                    {
-                        <span>@Resource.CargoPrice:</span>
-                        <span><strong>@Model.CargoPriceValue.CurrencySign()</strong></span>
-                    }
-                }
-                else if (Model.CargoPriceValue > 0)
-                {
-                    <span>@Resource.CargoPrice:</span>
-                    <span><strong>@Model.CargoPriceValue.CurrencySign()</strong></span>
-                }
-                else
-                {
-                    <span class="badge badge-pill badge-success text-white w-100 text-center">
-                        @Resource.CargoFreeTextInfo
-                    </span>
-                }
-            </div>
-        </div>
-
-        <div class="font-weight-semibold text-center py-3">
-            <span>@Resource.Total: </span>
-            <span id="TotalPriceWithCargoPrice"><strong>@Model.TotalPriceWithCargoPrice.CurrencySign()</strong></span>
+                    <tr id="CargoFreeTextInfo">
+                        @if (Model.BasketMinTotalPriceForCargoInt > 0)
+                        {
+                            if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
+                            {
+                                <td colspan="2" class="p-0 pt-2">
+                                    <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
+                                        <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
+                                        <strong>@Resource.CargoFreeTextInfo</strong>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <th scope="row">@Resource.CargoPrice</th>
+                                <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
+                            }
+                        }
+                        else if (Model.CargoPriceValue > 0)
+                        {
+                            <th scope="row">@Resource.CargoPrice</th>
+                            <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
+                        }
+                        else
+                        {
+                            <td colspan="2" class="p-0 pt-2">
+                                <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
+                                    <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
+                                    <strong>@Resource.CargoFreeTextInfo</strong>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                    <tr class="crizal-cart-total__grand">
+                        <th scope="row"><span class="h5 font-weight-semibold">@Resource.Total</span></th>
+                        <td class="text-end"><span class="h5 font-weight-semibold text-primary" id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 <!-- Customer Information -->
-
-
-
-
 
 @helper CreateShoppingCartItem(ShoppingCartItem item, int i)
 {
@@ -118,40 +143,39 @@
         <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id" />
         <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
 
-        <div class="media d-block d-sm-flex text-center text-sm-left">
+        <div class="media d-block d-sm-flex text-center text-sm-start">
             @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
             {
-                <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
-                    <img src="@product.CroppedImageUrl" alt="Product">
+                <a class="cart-item-thumb mx-auto mr-sm-4 flex-shrink-0" href="@product.DetailPageUrl">
+                    <img src="@product.CroppedImageUrl" alt="@product.Name" width="80" height="80" loading="lazy" decoding="async" />
                 </a>
             }
 
-        <div class="media-body pt-3">
-            <h3 class="product-card-title font-weight-semibold border-0 pb-0">
-                <a href="@product.DetailPageUrl">@product.Name</a>
-            </h3>
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice:</span>@product.Price.CurrencySign()</div>
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
-            @if (!string.IsNullOrEmpty(product.BrandName))
-            {
-                <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
-            }
-
-
-            @if (product.ProductSpecItems.IsNotEmpty())
-            {
-                foreach (var productSpecs in product.ProductSpecItems)
+            <div class="media-body pt-3 text-sm-start">
+                <h3 class="h5 font-weight-semibold border-0 pb-1 mb-1">
+                    <a href="@product.DetailPageUrl">@product.Name</a>
+                </h3>
+                <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.UnitPrice:</span><strong>@product.Price.CurrencySign()</strong></div>
+                <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
+                <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
+                @if (!string.IsNullOrEmpty(product.BrandName))
                 {
-                    <div class="font-size-sm">
-                        <span class="text-muted mr-2">@productSpecs.SpecsName:</span>@productSpecs.SpecsValue
-                    </div>
+                    <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
                 }
-            }
-        </div>
+
+                @if (product.ProductSpecItems.IsNotEmpty())
+                {
+                    foreach (var productSpecs in product.ProductSpecItems)
+                    {
+                        <div class="font-size-sm mb-1">
+                            <span class="text-muted mr-2">@productSpecs.SpecsName:</span>@productSpecs.SpecsValue
+                        </div>
+                    }
+                }
+            </div>
         </div>
 
-        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-start cart-item-totals" style="max-width: 10rem;">
             <div class="font-size-sm mb-3">
                 <span class="text-muted mr-2">@Resource.Quantity:</span>
                 <span class="font-weight-semibold">@item.Quantity</span>

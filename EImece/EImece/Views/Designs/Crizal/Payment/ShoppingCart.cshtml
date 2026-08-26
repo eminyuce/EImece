@@ -90,7 +90,7 @@
 <div data-shopping-item-row="@item.ShoppingCartItemId" class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
     <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
     <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
-    <div class="media d-block d-sm-flex text-center text-sm-left">
+    <div class="media d-block d-sm-flex text-center text-sm-start">
         @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
             {
         <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
@@ -104,17 +104,17 @@
         </a>
             }
 
-    <div class="media-body pt-3">
-        <h3 class="product-card-title font-weight-semibold border-0 pb-0">
+    <div class="media-body pt-3 text-sm-start">
+        <h3 class="h5 font-weight-semibold border-0 pb-1 mb-1">
             <a href="@product.DetailPageUrl">@product.Name</a>
         </h3>
-        <span class="font-size-lg text-primary pt-2 d-inline-block" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
-        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.UnitPrice :</span>@product.Price.CurrencySign()</div>
-        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory :</span>@product.CategoryName</div>
-        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
+        <span class="font-size-lg text-primary pt-2 pb-1 d-inline-block" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
+        <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.UnitPrice :</span>@product.Price.CurrencySign()</div>
+        <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductCategory :</span>@product.CategoryName</div>
+        <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
         @if (!string.IsNullOrEmpty(product.BrandName))
         {
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
+            <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
         }
 
 
@@ -122,14 +122,14 @@
         {
             foreach (var productSpecs in product.ProductSpecItems)
             {
-                <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
+                <div class="font-size-sm mb-1"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
             }
         }
     </div>
     </div>
-    <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left cart-item-actions" style="max-width: 10rem;">
+    <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-start cart-item-actions" style="max-width: 10rem;">
 
-        <div class="form-group mb-2">
+        <div class="form-group mb-2 text-sm-start">
             <label class="font-size-sm text-muted" for="quantity-@item.ShoppingCartItemId">@Resource.Quantity</label>
             <input min="1" class="form-control form-control-sm" name=@String.Format("quantity[{0}]", i)
                    data-shopping-quantity-id="@item.ShoppingCartItemId"

@@ -30,16 +30,17 @@
 
         @if (Model.BasketMinTotalPriceForCargoInt > 0)
         {
-            <p class="crizal-cart-total__hint mb-3">
-                <span class="badge badge-pill badge-success">@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</span>
-            </p>
+            <div class="alert alert-success text-center px-2 py-2 mb-3 free-cargo-banner" role="alert">
+                <i class="fas fa-truck mr-1" aria-hidden="true"></i>
+                <strong>@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</strong>
+            </div>
         }
 
         <table class="cart-sub-total table table-borderless mb-0">
             <tbody>
                 <tr>
                     <th scope="row">@Resource.MyBasket</th>
-                    <td class="text-end" id="TotalPrice">@Model.TotalPrice.CurrencySign()</td>
+                    <td class="text-end" id="TotalPrice"><strong>@Model.TotalPrice.CurrencySign()</strong></td>
                 </tr>
                 @if (Model.Coupon != null)
                 {
@@ -53,7 +54,12 @@
                     {
                         if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
                         {
-                            <th scope="row" colspan="2"><span class="badge badge-pill badge-success">@Resource.CargoFreeTextInfo</span></th>
+                            <td colspan="2" class="p-0 pt-2">
+                                <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
+                                    <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
+                                    <strong>@Resource.CargoFreeTextInfo</strong>
+                                </div>
+                            </td>
                         }
                         else
                         {
@@ -68,12 +74,17 @@
                     }
                     else
                     {
-                        <th scope="row" colspan="2"><span class="badge badge-pill badge-success">@Resource.CargoFreeTextInfo</span></th>
+                        <td colspan="2" class="p-0 pt-2">
+                            <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
+                                <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
+                                <strong>@Resource.CargoFreeTextInfo</strong>
+                            </div>
+                        </td>
                     }
                 </tr>
                 <tr class="crizal-cart-total__grand">
-                    <th scope="row">@Resource.Total</th>
-                    <td class="text-end" id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</td>
+                    <th scope="row"><span class="h5 font-weight-semibold">@Resource.Total</span></th>
+                    <td class="text-end"><span class="h5 font-weight-semibold text-primary" id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></td>
                 </tr>
             </tbody>
         </table>
@@ -83,15 +94,17 @@
             using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation mt-3", @novalidate = "" }))
             {
                 @Html.AntiForgeryToken()
-                <div class="form-group mb-2">
+                <div class="mb-2">
                     <label class="visually-hidden" for="cart-promocode">@Resource.CouponCode</label>
-                    <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
-                    <div class="invalid-feedback">@Resource.ValidPromoCode</div>
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
+                        <button class="btn btn-outline-primary" type="submit"><i class="fas fa-tag mr-1" aria-hidden="true"></i>@Resource.ApplyCoupon</button>
+                        <div class="invalid-feedback w-100">@Resource.ValidPromoCode</div>
+                    </div>
                 </div>
-                <button class="butn-style8 outline small btn-block" type="submit">@Resource.ApplyCoupon</button>
             }
             <hr class="my-3">
-            <h3 class="h6 font-weight-semibold mb-2">@Resource.AdditionalComments</h3>
+            <h3 class="h6 font-weight-semibold mb-2"><span class="badge bg-success mr-2 align-middle">@Resource.Note</span>@Resource.AdditionalComments</h3>
             <label class="visually-hidden" for="orderComments">@Resource.AdditionalComments</label>
             <textarea class="form-control mb-3"
                       data-shopping-order-guid="@Model.OrderGuid"

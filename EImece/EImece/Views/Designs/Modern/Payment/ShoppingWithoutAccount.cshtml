@@ -46,14 +46,14 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-user"></i> @Html.LabelFor(model => customer.Name)</label>
                                     @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                                     @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-user"></i> @Html.LabelFor(model => customer.Surname)</label>
                                     @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                                     @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
@@ -63,14 +63,14 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-envelope"></i> @Html.LabelFor(model => customer.Email)</label>
                                     @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                                     @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-id-card"></i> @Html.LabelFor(model => customer.IdentityNumber)</label>
                                     @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                                     <span class="badge badge-info">@Resource.WhyNeedIdentityNumber</span>
@@ -81,7 +81,7 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-phone"></i> @Html.LabelFor(model => customer.GsmNumber)</label>
                                     @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 5XX XXX XX XX" } })
                                     <span class="badge badge-info">@Resource.WhyNeedGsmNumber</span>
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     @Html.LabelFor(model => customer.Gender, htmlAttributes: new { @class = "col-form-label" })<br />
 
                                     <label class="me-2">
@@ -107,7 +107,7 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-city"></i> @Html.LabelFor(model => customer.City)</label>
                                     <input type="hidden" id="SelectedCity" value="@customer.City" />
                                     @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-map-marker-alt"></i> @Html.LabelFor(model => customer.Town)</label>
                                     <input type="hidden" id="SelectedTown" value="@customer.Town" />
                                     @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
@@ -125,7 +125,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <input type="hidden" id="SelectedDistrict" value="@customer.District" />
                                     @Html.LabelFor(model => customer.District)
                                     @Html.DropDownListFor(model => customer.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
@@ -133,7 +133,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     @Html.LabelFor(model => customer.Street)
                                     @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
@@ -143,14 +143,14 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-globe"></i> @Html.LabelFor(model => customer.Country)</label>
                                     @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label><i class="fas fa-map-pin"></i> @Html.LabelFor(model => customer.ZipCode)</label>
                                     @Html.EditorFor(model => customer.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "" } })
                                     @Html.ValidationMessageFor(model => customer.ZipCode, "", new { @class = "text-danger" })
@@ -159,7 +159,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <div>@Html.LabelFor(model => customer.Description, htmlAttributes: new { @class = "col-form-label" }) </div>
                                     @Html.TextAreaFor(model => customer.Description, new { @class = "form-control", placeholder = "", rows = "3" })
                                     @Html.ValidationMessageFor(model => customer.Description, "", new { @class = "text-danger" })
@@ -168,7 +168,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <div class="alert alert-secondary" role="alert">
                                         @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
                                     </div>
@@ -178,7 +178,7 @@
 
                         <div class="row mt-4">
                             <div class="col-sm-12">
-                                <button type="submit" class="btn btn-info btn-block"><i class="fas fa-credit-card"></i> @Resource.GoToPayment</button>
+                                <button type="submit" class="btn btn-info w-100"><i class="fas fa-credit-card"></i> @Resource.GoToPayment</button>
                             </div>
                         </div>
                     }

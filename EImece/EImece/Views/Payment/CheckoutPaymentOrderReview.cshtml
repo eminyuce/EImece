@@ -50,14 +50,14 @@
             }
 
             <!-- Client details-->
-            <div class="bg-secondary px-4 pt-4 pb-2">
+            <div class="bg-secondary px-4 pt-4 pb-3 text-white">
                 <div class="row">
                     <div class="col-sm-12">
                         <ul class="list-unstyled">
-                            <li><span class="text-muted">@Resource.Client:&nbsp;</span>@customer.FullName</li>
-                            <li><span class="text-muted">@Resource.Email:&nbsp;</span>@customer.Email</li>
-                            <li><span class="text-muted">@Resource.PhoneNumber:&nbsp;</span>@customer.GsmNumber</li>
-                            <li><span class="text-muted">@Resource.IdentityNumber:&nbsp;</span>@customer.IdentityNumber</li>
+                            <li><span class="text-white-50">@Resource.Client:&nbsp;</span>@customer.FullName</li>
+                            <li><span class="text-white-50">@Resource.Email:&nbsp;</span>@customer.Email</li>
+                            <li><span class="text-white-50">@Resource.PhoneNumber:&nbsp;</span>@customer.GsmNumber</li>
+                            <li><span class="text-white-50">@Resource.IdentityNumber:&nbsp;</span>@customer.IdentityNumber</li>
                             <hr />
                             <li><span class="text-muted"><strong>@Resource.ShippingAddress:&nbsp;</strong></span>@Html.Partial("ShoppingCartTemplates/_AddressReview", Model)</li>
                         </ul>
@@ -83,7 +83,7 @@
 <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
     <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
     <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
-    <div class="media d-block d-sm-flex text-center text-sm-left">
+    <div class="media d-block d-sm-flex text-center text-sm-start">
         @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
             {
         <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
@@ -105,7 +105,7 @@
             }
         </div>
     </div>
-    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 10rem;">
         <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Quantity:</span><span class="font-weight-semibold">@item.Quantity</span></div>
         <div class="font-size-sm mb-3"><span class="text-muted mr-2">@Resource.Total:</span><span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span></div>
     </div>

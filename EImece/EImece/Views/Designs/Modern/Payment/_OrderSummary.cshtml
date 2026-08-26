@@ -15,9 +15,8 @@
 <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
     @if (Model.BasketMinTotalPriceForCargoInt > 0)
     {
-        <span class="badge badge-pill badge-danger mr-2 mb-2">
-            @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText
-        </span>
+        <div class="alert alert-success text-center px-2 py-2 mb-2 free-cargo-banner" role="alert"><strong>
+            @Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</strong></div>
     }
 
     <h2 class="h6 px-4 py-3 bg-secondary text-center">@Resource.OrderSummary</h2>
@@ -32,9 +31,8 @@
             {
                 if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
                 {
-                    <span class="badge badge-pill badge-danger mr-2 mb-2">
-                        @Resource.CargoFreeTextInfo
-                    </span>
+                    <div class="alert alert-success text-center px-2 py-2 mb-2 free-cargo-banner" role="alert"><strong>
+                        @Resource.CargoFreeTextInfo</strong></div>
                 }
                 else
                 {
@@ -48,9 +46,8 @@
             }
             else
             {
-                <span class="badge badge-pill badge-danger mr-2 mb-2">
-                    @Resource.CargoFreeTextInfo
-                </span>
+                <div class="alert alert-success text-center px-2 py-2 mb-2 free-cargo-banner" role="alert"><strong>
+                    @Resource.CargoFreeTextInfo</strong></div>
             }
         </div>
     </div>
@@ -65,17 +62,17 @@
                 <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
                 <div class="invalid-feedback">@Resource.ValidPromoCode</div>
             </div>
-            <button class="btn btn-outline-primary btn-block" type="submit">@Resource.ApplyCoupon</button>
+            <button class="btn btn-outline-primary w-100" type="submit">@Resource.ApplyCoupon</button>
         }
         <hr>
         <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
         <textarea class="form-control mb-3"
                   data-shopping-order-guid="@Model.OrderGuid"
                   id="orderComments" rows="5">@Model.OrderComments</textarea>
-        <a class="btn btn-primary btn-block" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
+        <a class="btn btn-primary w-100" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
             <i class="mr-2" data-feather="credit-card"></i>@Resource.ContinueWithMembership
         </a>
-        <a class="btn btn-secondary btn-block" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
+        <a class="btn btn-secondary w-100" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
             <i class="mr-2" data-feather="credit-card"></i>  @Resource.ContinueWithoutMembership   
         </a>
     }

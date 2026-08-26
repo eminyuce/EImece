@@ -4979,3 +4979,20 @@ body[data-design="crizal"] .pt-lightbox__nav-label {
         font-size: 1.4rem;
     }
 }
+
+/* ---------- Checkout buttons: disable base-theme circle decoration ---------- */
+body[data-design="crizal"] .butn-style8:before,
+body[data-design="crizal"] .butn-style8:after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Free-cargo banner inside order summary: wrap instead of overflow */
+.crizal-cart-total .free-cargo-banner,
+.free-cargo-banner {
+    white-space: normal;
+    line-height: 1.4;
+    border-radius: var(--crizal-radius, 0.25rem);
+    font-size: 0.8125rem;
+    width: 100%;
+}

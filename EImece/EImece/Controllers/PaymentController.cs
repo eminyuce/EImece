@@ -661,7 +661,10 @@ namespace EImece.Controllers
             }
             else
             {
-                return Content("RegisterCustomer");
+                // Guest contact details missing: send the customer to the billing details
+                // step (which shows the membership/registration gate) instead of raw text.
+                PaymentLogger.Info("PlaceOrder called without customer details. Redirecting to CheckoutBillingDetails.");
+                return RedirectToAction("CheckoutBillingDetails", Domain.Constants.PaymentAction);
             }
         }
         
