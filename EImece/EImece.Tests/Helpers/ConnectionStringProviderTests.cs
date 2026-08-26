@@ -52,8 +52,12 @@ namespace EImece.Tests.Helpers
         [TestMethod]
         public void EnvironmentVariableName_IsStable()
         {
+            // Intentional drift guard: both sides are compile-time constants today,
+            // but this test fails if either literal ever changes independently.
+#pragma warning disable MSTEST0032 // Assertion condition is known to be always true
             Assert.AreEqual("EIMECE_DB_CONNECTION_STRING", ConnectionStringProvider.EnvironmentVariableName);
             Assert.AreEqual("EIMECE_DB_CONNECTION_STRING", Domain.Constants.DbConnectionEnvironmentVariable);
+#pragma warning restore MSTEST0032 // Assertion condition is known to be always true
         }
 
         [TestMethod]

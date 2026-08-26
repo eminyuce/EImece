@@ -1131,9 +1131,6 @@
   <data name="ShipmentTrackingNumber" xml:space="preserve">
     <value>Shipment Tracking Number</value>
   </data>
-  <data name="Subtotal" xml:space="preserve">
-    <value>Subtotal</value>
-  </data>
   <data name="RemoveJustImage" xml:space="preserve">
     <value>Remove Image</value>
   </data>

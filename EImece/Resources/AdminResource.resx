@@ -1131,9 +1131,6 @@
   <data name="ShipmentTrackingNumber" xml:space="preserve">
     <value>Kargo Takip Numarası</value>
   </data>
-  <data name="Subtotal" xml:space="preserve">
-    <value>Ara toplam</value>
-  </data>
   <data name="RemoveJustImage" xml:space="preserve">
     <value>Resmi Sil</value>
   </data>
