@@ -1,4 +1,5 @@
-﻿@using EImece.Domain.Helpers
+﻿@using Resources;
+@using EImece.Domain.Helpers
 @using EImece.Domain.Models.FrontModels
 @{
     var pagingItems = Model as IPaginatedModelList;
@@ -17,7 +18,7 @@
                        class="@styleClassBtn"
                        aria-label="First">
                         <span aria-hidden="true">&laquo;</span>
-                        <span class="visually-hidden">First</span>
+                        <span class="visually-hidden">@Resource.First</span>
                     </a>
                 }
                 else
@@ -33,7 +34,7 @@
                        class="@styleClassBtn"
                        aria-label="Previous">
                         <span aria-hidden="true">&lsaquo;</span>
-                        <span class="visually-hidden">Previous</span>
+                        <span class="visually-hidden">@Resource.Previous</span>
                     </a>
                 }
                 else

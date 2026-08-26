@@ -1,4 +1,5 @@
-﻿@model EImece.Models.SendCodeViewModel
+@model EImece.Models.SendCodeViewModel
+@using Resources;
 @{
     ViewBag.Title = "Send";
 }
@@ -8,7 +9,7 @@
 @using (Html.BeginForm("SendCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
 @Html.AntiForgeryToken()
 @Html.Hidden("rememberMe", @Model.RememberMe)
-<h4>Send verification code</h4>
+<h4>@Resource.SendVerificationCode</h4>
 <hr />
 <div class="row">
     <div class="col-md-8">

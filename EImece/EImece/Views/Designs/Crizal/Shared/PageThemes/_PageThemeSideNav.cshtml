@@ -1,4 +1,5 @@
 @model EImece.Domain.Models.FrontModels.MenuPageViewModel
+@using Resources;
 @using EImece.Domain.Helpers.Extensions
 @using System.Collections.Generic
 @using System.Linq
@@ -9,7 +10,7 @@
         : new List<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuDto>();
 }
 <nav class="pt-sidenav" aria-label="Sayfa menüsü">
-    <div class="pt-sidenav__title">Sol menü navigasyon</div>
+    <div class="pt-sidenav__title">@Resource.SkipToMainContent</div>
     @if (items.Count > 0)
     {
         <ul class="pt-sidenav__list">

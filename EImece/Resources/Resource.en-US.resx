@@ -2180,4 +2180,190 @@
   <data name="DeliveryAddress" xml:space="preserve">
     <value>Delivery Address</value>
   </data>
+  <data name="QuickCart" xml:space="preserve">
+    <value>Quick Cart</value>
+  </data>
+  <data name="WhatsAppOrder" xml:space="preserve">
+    <value>Order via WhatsApp</value>
+  </data>
+  <data name="IyzicoSecurePaymentTitle" xml:space="preserve">
+    <value>Secure Payment with Iyzico</value>
+  </data>
+  <data name="IyzicoSecurePaymentDesc" xml:space="preserve">
+    <value>Enjoy your shopping and leave the payment security to Iyzico.</value>
+  </data>
+  <data name="IyzicoSslEncryption" xml:space="preserve">
+    <value>Your card details are encrypted with 256-bit SSL</value>
+  </data>
+  <data name="IyzicoBuyerProtection" xml:space="preserve">
+    <value>Every payment is protected by Iyzico.</value>
+  </data>
+  <data name="IyzicoEasyReturns" xml:space="preserve">
+    <value>Easy returns and cancellations</value>
+  </data>
+  <data name="IyzicoBddkLicensed" xml:space="preserve">
+    <value>A payment institution licensed by BDDK.</value>
+  </data>
+  <data name="IyzicoFastCheckout" xml:space="preserve">
+    <value>User-friendly and fast checkout experience</value>
+  </data>
+  <data name="IyzicoProtectedShopping" xml:space="preserve">
+    <value>Iyzico Protected Shopping</value>
+  </data>
+  <data name="IyzicoPeaceOfMind" xml:space="preserve">
+    <value>Rest assured:</value>
+  </data>
+  <data name="IyzicoVisitSite" xml:space="preserve">
+    <value>Visit iyzico.com for more information</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="NoValidVideoUrls" xml:space="preserve">
+    <value>No valid video URLs provided.</value>
+  </data>
+  <data name="AuthenticatorSetupTitle" xml:space="preserve">
+    <value>Set up your authenticator app</value>
+  </data>
+  <data name="AuthenticatorScanQrDesc" xml:space="preserve">
+    <value>Scan the QR code below with Google Authenticator or Microsoft Authenticator:</value>
+  </data>
+  <data name="AuthenticatorAccountNameLabel" xml:space="preserve">
+    <value>Account name shown in the app:</value>
+  </data>
+  <data name="VerificationCode6Digits" xml:space="preserve">
+    <value>Verification code (6 digits)</value>
+  </data>
+  <data name="EnableAuthenticatorBtn" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="PersonalInfoDesc" xml:space="preserve">
+    <value>Your full name used for orders and invoicing.</value>
+  </data>
+  <data name="ContactInfo" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="ContactInfoSmsDesc" xml:space="preserve">
+    <value>For order status and shipping notifications.</value>
+  </data>
+  <data name="DeliveryAddressDesc" xml:space="preserve">
+    <value>The address your orders will be shipped to.</value>
+  </data>
+  <data name="CheckoutCompleteInfo" xml:space="preserve">
+    <value>Complete the details below for delivery and invoicing.</value>
+  </data>
+  <data name="AddressWritingHint" xml:space="preserve">
+    <value>Quick tip for writing your address</value>
+  </data>
+  <data name="NotesAndPermissions" xml:space="preserve">
+    <value>Notes &amp; permissions</value>
+  </data>
+  <data name="UnknownStatus" xml:space="preserve">
+    <value>Unknown Status</value>
+  </data>
+  <data name="FaqIntroDesc" xml:space="preserve">
+    <value>Frequently asked questions about orders, delivery and account.</value>
+  </data>
+  <data name="NoFaqYet" xml:space="preserve">
+    <value>No FAQs added yet</value>
+  </data>
+  <data name="FaqContactSellerHint" xml:space="preserve">
+    <value>You can message the seller for your questions.</value>
+  </data>
+  <data name="SendMessageToSellerDesc" xml:space="preserve">
+    <value>Write to us about your order or products.</value>
+  </data>
+  <data name="CustomerStoreFooterDesc" xml:space="preserve">
+    <value>Manage your orders, address and support requests from your account.</value>
+  </data>
+  <data name="ViewCart" xml:space="preserve">
+    <value>View Cart</value>
+  </data>
+  <data name="ShoppingCartTitle" xml:space="preserve">
+    <value>Shopping Cart</value>
+  </data>
+  <data name="SiteUnderConstructionTitle" xml:space="preserve">
+    <value>Our Site is Under Construction</value>
+  </data>
+  <data name="MaintenanceModeBadge" xml:space="preserve">
+    <value>Maintenance Mode</value>
+  </data>
+  <data name="SorrySomethingWentWrong" xml:space="preserve">
+    <value>We're sorry, something went wrong.</value>
+  </data>
+  <data name="DetailedError" xml:space="preserve">
+    <value>Detailed error</value>
+  </data>
+  <data name="ReportThisError" xml:space="preserve">
+    <value>Report this error</value>
+  </data>
+  <data name="LockoutMessage" xml:space="preserve">
+    <value>This account has been locked out. Please try again later.</value>
+  </data>
+  <data name="UseAnotherService" xml:space="preserve">
+    <value>Use another service to log in.</value>
+  </data>
+  <data name="AssociationForm" xml:space="preserve">
+    <value>Association Form</value>
+  </data>
+  <data name="SendVerificationCode" xml:space="preserve">
+    <value>Send verification code</value>
+  </data>
+  <data name="EnterVerificationCode" xml:space="preserve">
+    <value>Enter verification code</value>
+  </data>
+  <data name="ExternalLoginFailureMessage" xml:space="preserve">
+    <value>Unsuccessful login with service.</value>
+  </data>
+  <data name="AllRightsReserved" xml:space="preserve">
+    <value>All rights reserved.</value>
+  </data>
+  <data name="SkipToMainContent" xml:space="preserve">
+    <value>Skip to main content</value>
+  </data>
+  <data name="ChangeAccountSettings" xml:space="preserve">
+    <value>Change your account settings</value>
+  </data>
+  <data name="ExternalLoginsLabel" xml:space="preserve">
+    <value>External Logins:</value>
+  </data>
+  <data name="AuthenticatorTotpLabel" xml:space="preserve">
+    <value>Authenticator (TOTP):</value>
+  </data>
+  <data name="StrongPasswordHint" xml:space="preserve">
+    <value>Choose a strong password to keep your account secure.</value>
+  </data>
+  <data name="CategoryInformation" xml:space="preserve">
+    <value>Category Information</value>
+  </data>
+  <data name="MainImageLabel" xml:space="preserve">
+    <value>Main Image</value>
+  </data>
+  <data name="NoMainImage" xml:space="preserve">
+    <value>No main image</value>
+  </data>
+  <data name="NoDiscount" xml:space="preserve">
+    <value>No discount</value>
+  </data>
+  <data name="DetailPageUrlLabel" xml:space="preserve">
+    <value>Detail Page URL</value>
+  </data>
+  <data name="ParentIdLabel" xml:space="preserve">
+    <value>Parent Category</value>
+  </data>
+  <data name="DiscountPercentageLabel" xml:space="preserve">
+    <value>Discount Percentage</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="TemplateIdLabel" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="SubjectLabel" xml:space="preserve">
+    <value>Subject</value>
+  </data>
 </root>

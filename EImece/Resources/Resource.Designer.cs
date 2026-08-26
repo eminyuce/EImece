@@ -6275,5 +6275,377 @@ namespace Resources {
                 return ResourceManager.GetString("DeliveryAddress", resourceCulture);
             }
         }
+        
+        public static string QuickCart {
+            get {
+                return ResourceManager.GetString("QuickCart", resourceCulture);
+            }
+        }
+        
+        public static string WhatsAppOrder {
+            get {
+                return ResourceManager.GetString("WhatsAppOrder", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoSecurePaymentTitle {
+            get {
+                return ResourceManager.GetString("IyzicoSecurePaymentTitle", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoSecurePaymentDesc {
+            get {
+                return ResourceManager.GetString("IyzicoSecurePaymentDesc", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoSslEncryption {
+            get {
+                return ResourceManager.GetString("IyzicoSslEncryption", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoBuyerProtection {
+            get {
+                return ResourceManager.GetString("IyzicoBuyerProtection", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoEasyReturns {
+            get {
+                return ResourceManager.GetString("IyzicoEasyReturns", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoBddkLicensed {
+            get {
+                return ResourceManager.GetString("IyzicoBddkLicensed", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoFastCheckout {
+            get {
+                return ResourceManager.GetString("IyzicoFastCheckout", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoProtectedShopping {
+            get {
+                return ResourceManager.GetString("IyzicoProtectedShopping", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoPeaceOfMind {
+            get {
+                return ResourceManager.GetString("IyzicoPeaceOfMind", resourceCulture);
+            }
+        }
+        
+        public static string IyzicoVisitSite {
+            get {
+                return ResourceManager.GetString("IyzicoVisitSite", resourceCulture);
+            }
+        }
+        
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        public static string First {
+            get {
+                return ResourceManager.GetString("First", resourceCulture);
+            }
+        }
+        
+        public static string NoValidVideoUrls {
+            get {
+                return ResourceManager.GetString("NoValidVideoUrls", resourceCulture);
+            }
+        }
+        
+        public static string AuthenticatorSetupTitle {
+            get {
+                return ResourceManager.GetString("AuthenticatorSetupTitle", resourceCulture);
+            }
+        }
+        
+        public static string AuthenticatorScanQrDesc {
+            get {
+                return ResourceManager.GetString("AuthenticatorScanQrDesc", resourceCulture);
+            }
+        }
+        
+        public static string AuthenticatorAccountNameLabel {
+            get {
+                return ResourceManager.GetString("AuthenticatorAccountNameLabel", resourceCulture);
+            }
+        }
+        
+        public static string VerificationCode6Digits {
+            get {
+                return ResourceManager.GetString("VerificationCode6Digits", resourceCulture);
+            }
+        }
+        
+        public static string EnableAuthenticatorBtn {
+            get {
+                return ResourceManager.GetString("EnableAuthenticatorBtn", resourceCulture);
+            }
+        }
+        
+        public static string PersonalInfoDesc {
+            get {
+                return ResourceManager.GetString("PersonalInfoDesc", resourceCulture);
+            }
+        }
+        
+        public static string ContactInfo {
+            get {
+                return ResourceManager.GetString("ContactInfo", resourceCulture);
+            }
+        }
+        
+        public static string ContactInfoSmsDesc {
+            get {
+                return ResourceManager.GetString("ContactInfoSmsDesc", resourceCulture);
+            }
+        }
+        
+        public static string DeliveryAddressDesc {
+            get {
+                return ResourceManager.GetString("DeliveryAddressDesc", resourceCulture);
+            }
+        }
+        
+        public static string CheckoutCompleteInfo {
+            get {
+                return ResourceManager.GetString("CheckoutCompleteInfo", resourceCulture);
+            }
+        }
+        
+        public static string AddressWritingHint {
+            get {
+                return ResourceManager.GetString("AddressWritingHint", resourceCulture);
+            }
+        }
+        
+        public static string NotesAndPermissions {
+            get {
+                return ResourceManager.GetString("NotesAndPermissions", resourceCulture);
+            }
+        }
+        
+        public static string UnknownStatus {
+            get {
+                return ResourceManager.GetString("UnknownStatus", resourceCulture);
+            }
+        }
+        
+        public static string FaqIntroDesc {
+            get {
+                return ResourceManager.GetString("FaqIntroDesc", resourceCulture);
+            }
+        }
+        
+        public static string NoFaqYet {
+            get {
+                return ResourceManager.GetString("NoFaqYet", resourceCulture);
+            }
+        }
+        
+        public static string FaqContactSellerHint {
+            get {
+                return ResourceManager.GetString("FaqContactSellerHint", resourceCulture);
+            }
+        }
+        
+        public static string SendMessageToSellerDesc {
+            get {
+                return ResourceManager.GetString("SendMessageToSellerDesc", resourceCulture);
+            }
+        }
+        
+        public static string CustomerStoreFooterDesc {
+            get {
+                return ResourceManager.GetString("CustomerStoreFooterDesc", resourceCulture);
+            }
+        }
+        
+        public static string ViewCart {
+            get {
+                return ResourceManager.GetString("ViewCart", resourceCulture);
+            }
+        }
+        
+        public static string ShoppingCartTitle {
+            get {
+                return ResourceManager.GetString("ShoppingCartTitle", resourceCulture);
+            }
+        }
+        
+        public static string SiteUnderConstructionTitle {
+            get {
+                return ResourceManager.GetString("SiteUnderConstructionTitle", resourceCulture);
+            }
+        }
+        
+        public static string MaintenanceModeBadge {
+            get {
+                return ResourceManager.GetString("MaintenanceModeBadge", resourceCulture);
+            }
+        }
+        
+        public static string SorrySomethingWentWrong {
+            get {
+                return ResourceManager.GetString("SorrySomethingWentWrong", resourceCulture);
+            }
+        }
+        
+        public static string DetailedError {
+            get {
+                return ResourceManager.GetString("DetailedError", resourceCulture);
+            }
+        }
+        
+        public static string ReportThisError {
+            get {
+                return ResourceManager.GetString("ReportThisError", resourceCulture);
+            }
+        }
+        
+        public static string LockoutMessage {
+            get {
+                return ResourceManager.GetString("LockoutMessage", resourceCulture);
+            }
+        }
+        
+        public static string UseAnotherService {
+            get {
+                return ResourceManager.GetString("UseAnotherService", resourceCulture);
+            }
+        }
+        
+        public static string AssociationForm {
+            get {
+                return ResourceManager.GetString("AssociationForm", resourceCulture);
+            }
+        }
+        
+        public static string SendVerificationCode {
+            get {
+                return ResourceManager.GetString("SendVerificationCode", resourceCulture);
+            }
+        }
+        
+        public static string EnterVerificationCode {
+            get {
+                return ResourceManager.GetString("EnterVerificationCode", resourceCulture);
+            }
+        }
+        
+        public static string ExternalLoginFailureMessage {
+            get {
+                return ResourceManager.GetString("ExternalLoginFailureMessage", resourceCulture);
+            }
+        }
+        
+        public static string AllRightsReserved {
+            get {
+                return ResourceManager.GetString("AllRightsReserved", resourceCulture);
+            }
+        }
+        
+        public static string SkipToMainContent {
+            get {
+                return ResourceManager.GetString("SkipToMainContent", resourceCulture);
+            }
+        }
+        
+        public static string ChangeAccountSettings {
+            get {
+                return ResourceManager.GetString("ChangeAccountSettings", resourceCulture);
+            }
+        }
+        
+        public static string ExternalLoginsLabel {
+            get {
+                return ResourceManager.GetString("ExternalLoginsLabel", resourceCulture);
+            }
+        }
+        
+        public static string AuthenticatorTotpLabel {
+            get {
+                return ResourceManager.GetString("AuthenticatorTotpLabel", resourceCulture);
+            }
+        }
+        
+        public static string StrongPasswordHint {
+            get {
+                return ResourceManager.GetString("StrongPasswordHint", resourceCulture);
+            }
+        }
+        
+        public static string CategoryInformation {
+            get {
+                return ResourceManager.GetString("CategoryInformation", resourceCulture);
+            }
+        }
+        
+        public static string MainImageLabel {
+            get {
+                return ResourceManager.GetString("MainImageLabel", resourceCulture);
+            }
+        }
+        
+        public static string NoMainImage {
+            get {
+                return ResourceManager.GetString("NoMainImage", resourceCulture);
+            }
+        }
+        
+        public static string NoDiscount {
+            get {
+                return ResourceManager.GetString("NoDiscount", resourceCulture);
+            }
+        }
+        
+        public static string DetailPageUrlLabel {
+            get {
+                return ResourceManager.GetString("DetailPageUrlLabel", resourceCulture);
+            }
+        }
+        
+        public static string ParentIdLabel {
+            get {
+                return ResourceManager.GetString("ParentIdLabel", resourceCulture);
+            }
+        }
+        
+        public static string DiscountPercentageLabel {
+            get {
+                return ResourceManager.GetString("DiscountPercentageLabel", resourceCulture);
+            }
+        }
+        
+        public static string LanguageLabel {
+            get {
+                return ResourceManager.GetString("LanguageLabel", resourceCulture);
+            }
+        }
+        
+        public static string TemplateIdLabel {
+            get {
+                return ResourceManager.GetString("TemplateIdLabel", resourceCulture);
+            }
+        }
+        
+        public static string SubjectLabel {
+            get {
+                return ResourceManager.GetString("SubjectLabel", resourceCulture);
+            }
+        }
     }
 }

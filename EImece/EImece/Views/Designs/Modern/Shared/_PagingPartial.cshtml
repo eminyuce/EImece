@@ -1,4 +1,5 @@
-﻿@using EImece.Domain.GenericRepository;
+﻿@using Resources;
+@using EImece.Domain.GenericRepository;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 
@@ -19,7 +20,7 @@
         }
         else
         {
-    <span>[Previous]</span>
+    <span>@Resource.Previous</span>
         }
 
         for (int i = 1; i < pager.TotalPageCount+1; i++)

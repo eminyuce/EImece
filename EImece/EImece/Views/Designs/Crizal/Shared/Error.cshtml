@@ -42,7 +42,7 @@
         else
         {
             <h1>@(errorCode > 0 ? errorCode.ToString() : "Error")</h1>
-            <h2>We're sorry, something went wrong.</h2>
+            <h2>@Resource.SorrySomethingWentWrong</h2>
         }
 
         @if (exception != null)
@@ -53,7 +53,7 @@
         @if (HttpContext.Current.IsDebuggingEnabled && exception != null && Model != null)
         {
             <div class="panel panel-danger text-left" style="margin-top: 20px;">
-                <div class="panel-heading"><strong>Detailed error</strong></div>
+                <div class="panel-heading"><strong>@Resource.DetailedError</strong></div>
                 <div class="panel-body">
                     <p><strong>Controller:</strong> @Model.ControllerName &nbsp; <strong>Action:</strong> @Model.ActionName</p>
                     <p><strong>Type:</strong> @exception.GetType().FullName</p>
@@ -64,7 +64,7 @@
 
         <p class="mt-3">
             <a class="butn-style8" href="@Url.Action("Index","Home")">@Resource.ContinueShopping</a>
-            <a class="butn-style8 secondary ml-2" id="hlInform" href="@link">Report this error</a>
+            <a class="butn-style8 secondary ml-2" id="hlInform" href="@link">@Resource.ReportThisError</a>
         </p>
     </div>
 </div>

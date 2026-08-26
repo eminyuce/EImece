@@ -2284,4 +2284,190 @@
   <data name="DeliveryAddress" xml:space="preserve">
     <value>Teslimat Adresi</value>
   </data>
+  <data name="QuickCart" xml:space="preserve">
+    <value>Hızlı Sepet</value>
+  </data>
+  <data name="WhatsAppOrder" xml:space="preserve">
+    <value>WhatsApp ile Sipariş</value>
+  </data>
+  <data name="IyzicoSecurePaymentTitle" xml:space="preserve">
+    <value>Iyzico ile Güvenli Ödeme</value>
+  </data>
+  <data name="IyzicoSecurePaymentDesc" xml:space="preserve">
+    <value>Alışverişin keyfini çıkarın, ödeme güvenliğini Iyzico'ya bırakın.</value>
+  </data>
+  <data name="IyzicoSslEncryption" xml:space="preserve">
+    <value>Kart bilgileriniz 256-bit SSL ile şifrelenir</value>
+  </data>
+  <data name="IyzicoBuyerProtection" xml:space="preserve">
+    <value>Her ödeme Iyzico güvencesi altındadır.</value>
+  </data>
+  <data name="IyzicoEasyReturns" xml:space="preserve">
+    <value>Kolay iade ve iptal süreçleri</value>
+  </data>
+  <data name="IyzicoBddkLicensed" xml:space="preserve">
+    <value>BDDK lisanslı bir ödeme kuruluşudur.</value>
+  </data>
+  <data name="IyzicoFastCheckout" xml:space="preserve">
+    <value>Kullanıcı dostu ve hızlı ödeme deneyimi</value>
+  </data>
+  <data name="IyzicoProtectedShopping" xml:space="preserve">
+    <value>Iyzico Korumalı Alışveriş</value>
+  </data>
+  <data name="IyzicoPeaceOfMind" xml:space="preserve">
+    <value>İçiniz rahat olsun:</value>
+  </data>
+  <data name="IyzicoVisitSite" xml:space="preserve">
+    <value>Daha fazla bilgi için iyzico.com'u ziyaret edin</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Önceki</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>İlk</value>
+  </data>
+  <data name="NoValidVideoUrls" xml:space="preserve">
+    <value>Geçerli video bağlantısı bulunamadı.</value>
+  </data>
+  <data name="AuthenticatorSetupTitle" xml:space="preserve">
+    <value>Authenticator uygulamasını kurun</value>
+  </data>
+  <data name="AuthenticatorScanQrDesc" xml:space="preserve">
+    <value>Google Authenticator veya Microsoft Authenticator ile aşağıdaki QR kodu tarayın:</value>
+  </data>
+  <data name="AuthenticatorAccountNameLabel" xml:space="preserve">
+    <value>Uygulamada görünecek ad:</value>
+  </data>
+  <data name="VerificationCode6Digits" xml:space="preserve">
+    <value>Doğrulama kodu (6 haneli)</value>
+  </data>
+  <data name="EnableAuthenticatorBtn" xml:space="preserve">
+    <value>Etkinleştir</value>
+  </data>
+  <data name="PersonalInfoDesc" xml:space="preserve">
+    <value>Sipariş ve fatura için kullanılan ad soyad bilgileriniz.</value>
+  </data>
+  <data name="ContactInfo" xml:space="preserve">
+    <value>İletişim</value>
+  </data>
+  <data name="ContactInfoSmsDesc" xml:space="preserve">
+    <value>Sipariş durumu ve kargo bildirimleri için.</value>
+  </data>
+  <data name="DeliveryAddressDesc" xml:space="preserve">
+    <value>Siparişlerinizin gönderileceği adres.</value>
+  </data>
+  <data name="CheckoutCompleteInfo" xml:space="preserve">
+    <value>Teslimat ve fatura için aşağıdaki bilgileri tamamlayın.</value>
+  </data>
+  <data name="AddressWritingHint" xml:space="preserve">
+    <value>Adres yazımı için kısa ipucu</value>
+  </data>
+  <data name="NotesAndPermissions" xml:space="preserve">
+    <value>Notlar &amp; izinler</value>
+  </data>
+  <data name="UnknownStatus" xml:space="preserve">
+    <value>Bilinmeyen Durum</value>
+  </data>
+  <data name="FaqIntroDesc" xml:space="preserve">
+    <value>Sipariş, teslimat ve hesap işlemleri hakkında sık sorulan sorular.</value>
+  </data>
+  <data name="NoFaqYet" xml:space="preserve">
+    <value>Henüz SSS eklenmemiş</value>
+  </data>
+  <data name="FaqContactSellerHint" xml:space="preserve">
+    <value>Sorularınız için satıcıya mesaj gönderebilirsiniz.</value>
+  </data>
+  <data name="SendMessageToSellerDesc" xml:space="preserve">
+    <value>Sipariş veya ürünleriniz hakkında bize yazın.</value>
+  </data>
+  <data name="CustomerStoreFooterDesc" xml:space="preserve">
+    <value>Hesabınızdan sipariş, adres ve destek işlemlerinizi yönetebilirsiniz.</value>
+  </data>
+  <data name="ViewCart" xml:space="preserve">
+    <value>Sepeti Görüntüle</value>
+  </data>
+  <data name="ShoppingCartTitle" xml:space="preserve">
+    <value>Alışveriş Sepeti</value>
+  </data>
+  <data name="SiteUnderConstructionTitle" xml:space="preserve">
+    <value>Sitemiz Yapım Aşamasında</value>
+  </data>
+  <data name="MaintenanceModeBadge" xml:space="preserve">
+    <value>Bakım Modu</value>
+  </data>
+  <data name="SorrySomethingWentWrong" xml:space="preserve">
+    <value>Üzgünüz, bir şeyler ters gitti.</value>
+  </data>
+  <data name="DetailedError" xml:space="preserve">
+    <value>Hata Detayı</value>
+  </data>
+  <data name="ReportThisError" xml:space="preserve">
+    <value>Bu hatayı bildir</value>
+  </data>
+  <data name="LockoutMessage" xml:space="preserve">
+    <value>Hesabınız geçici olarak kilitlendi. Lütfen daha sonra tekrar deneyin.</value>
+  </data>
+  <data name="UseAnotherService" xml:space="preserve">
+    <value>Başka bir servis ile giriş yapın.</value>
+  </data>
+  <data name="AssociationForm" xml:space="preserve">
+    <value>İlişkilendirme Formu</value>
+  </data>
+  <data name="SendVerificationCode" xml:space="preserve">
+    <value>Doğrulama kodu gönder</value>
+  </data>
+  <data name="EnterVerificationCode" xml:space="preserve">
+    <value>Doğrulama kodunu girin</value>
+  </data>
+  <data name="ExternalLoginFailureMessage" xml:space="preserve">
+    <value>Servis ile giriş başarısız oldu.</value>
+  </data>
+  <data name="AllRightsReserved" xml:space="preserve">
+    <value>Tüm hakları saklıdır.</value>
+  </data>
+  <data name="SkipToMainContent" xml:space="preserve">
+    <value>Ana içeriğe geç</value>
+  </data>
+  <data name="ChangeAccountSettings" xml:space="preserve">
+    <value>Hesap ayarlarınızı değiştirin</value>
+  </data>
+  <data name="ExternalLoginsLabel" xml:space="preserve">
+    <value>Dış Oturum Açma Sağlayıcıları:</value>
+  </data>
+  <data name="AuthenticatorTotpLabel" xml:space="preserve">
+    <value>Authenticator (TOTP):</value>
+  </data>
+  <data name="StrongPasswordHint" xml:space="preserve">
+    <value>Hesabınızı güvende tutmak için güçlü bir şifre seçin.</value>
+  </data>
+  <data name="CategoryInformation" xml:space="preserve">
+    <value>Kategori Bilgileri</value>
+  </data>
+  <data name="MainImageLabel" xml:space="preserve">
+    <value>Ana Görsel</value>
+  </data>
+  <data name="NoMainImage" xml:space="preserve">
+    <value>Ana görsel yok</value>
+  </data>
+  <data name="NoDiscount" xml:space="preserve">
+    <value>İndirim yok</value>
+  </data>
+  <data name="DetailPageUrlLabel" xml:space="preserve">
+    <value>Detay Sayfa URL</value>
+  </data>
+  <data name="ParentIdLabel" xml:space="preserve">
+    <value>Üst Kategori</value>
+  </data>
+  <data name="DiscountPercentageLabel" xml:space="preserve">
+    <value>İndirim Oranı</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="TemplateIdLabel" xml:space="preserve">
+    <value>Şablon</value>
+  </data>
+  <data name="SubjectLabel" xml:space="preserve">
+    <value>Konu</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 @model EImece.Models.EnableAuthenticatorViewModel
+@using Resources;
 @{
     ViewBag.Title = "Authenticator etkinleştir";
 }
@@ -9,7 +10,7 @@
 <div class="text-center">
     <h4>Authenticator uygulamasını kurun</h4>
     <p>Google Authenticator veya Microsoft Authenticator ile aşağıdaki QR kodu tarayın:</p>
-    <p class="text-muted">Uygulamada görünecek ad: <strong>@Model.DisplayName</strong></p>
+    <p class="text-muted">@Resource.AuthenticatorAccountNameLabel <strong>@Model.DisplayName</strong></p>
 
     @if (!string.IsNullOrEmpty(Model.QrCodeImage))
     {

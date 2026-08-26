@@ -1,4 +1,5 @@
 @model IEnumerable<EImece.Domain.Models.DTOs.Storefront.StorefrontMenuFileDto>
+@using Resources;
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
 @using System.Linq
@@ -62,13 +63,13 @@
                         {
                             <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev" data-bs-target="#@carouselId" data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="pt-lightbox__nav-label">Önceki</span>
-                                <span class="visually-hidden visually-hidden">Önceki</span>
+                                <span class="pt-lightbox__nav-label">@Resource.Previous</span>
+                                <span class="visually-hidden visually-hidden">@Resource.Previous</span>
                             </button>
                             <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next" data-bs-target="#@carouselId" data-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="pt-lightbox__nav-label">Sonraki</span>
-                                <span class="visually-hidden visually-hidden">Sonraki</span>
+                                <span class="pt-lightbox__nav-label">@Resource.Next</span>
+                                <span class="visually-hidden visually-hidden">@Resource.Next</span>
                             </button>
                         }
                     </div>
