@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Helpers;
 using System;
 using System.Collections.Generic;
@@ -476,6 +476,128 @@ namespace EImece.Domain.Services
             parameterList.Add(DatabaseUtility.GetSqlParameter(Constants.EndDateParam, endDate, SqlDbType.DateTime));
             return ExecuteDataSetStoredProcAsync("GetProductStatsByDateRange", parameterList.ToArray(), cancellationToken);
         }
+
+        #region User Audit Reports
+
+        public DataTable GetUserAuditSummaryReport(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null)
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+            };
+
+            return DatabaseUtility.ExecuteDataTable(
+                "sp_GetUserAuditSummaryReport",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public Task<DataTable> GetUserAuditSummaryReportAsync(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+            };
+
+            return ExecuteDataTableStoredProcAsync("sp_GetUserAuditSummaryReport", parameterList.ToArray(), cancellationToken);
+        }
+
+        public DataTable GetUserAuditMonthlyBreakdown(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null)
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+            };
+
+            return DatabaseUtility.ExecuteDataTable(
+                "sp_GetUserAuditMonthlyBreakdown",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public Task<DataTable> GetUserAuditMonthlyBreakdownAsync(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+            };
+
+            return ExecuteDataTableStoredProcAsync("sp_GetUserAuditMonthlyBreakdown", parameterList.ToArray(), cancellationToken);
+        }
+
+        public DataTable GetUserAuditDetailedRecords(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null, string actionType = null)
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@ActionType", string.IsNullOrWhiteSpace(actionType) ? (object)DBNull.Value : actionType.Trim(), SqlDbType.NVarChar)
+            };
+
+            return DatabaseUtility.ExecuteDataTable(
+                "sp_GetUserAuditDetailedRecords",
+                CommandType.StoredProcedure,
+                parameterList.ToArray()
+            );
+        }
+
+        public Task<DataTable> GetUserAuditDetailedRecordsAsync(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null, string actionType = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var parameterList = new List<SqlParameter>
+            {
+                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter("@ActionType", string.IsNullOrWhiteSpace(actionType) ? (object)DBNull.Value : actionType.Trim(), SqlDbType.NVarChar)
+            };
+
+            return ExecuteDataTableStoredProcAsync("sp_GetUserAuditDetailedRecords", parameterList.ToArray(), cancellationToken);
+        }
+
+        public DataTable GetAuditUsersList()
+        {
+            return DatabaseUtility.ExecuteDataTable(
+                "sp_GetAuditUsersList",
+                CommandType.StoredProcedure
+            );
+        }
+
+        public Task<DataTable> GetAuditUsersListAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExecuteDataTableStoredProcAsync("sp_GetAuditUsersList", null, cancellationToken);
+        }
+
+        public DataTable GetAuditTablesList()
+        {
+            return DatabaseUtility.ExecuteDataTable(
+                "sp_GetAuditTablesList",
+                CommandType.StoredProcedure
+            );
+        }
+
+        public Task<DataTable> GetAuditTablesListAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExecuteDataTableStoredProcAsync("sp_GetAuditTablesList", null, cancellationToken);
+        }
+
+        #endregion User Audit Reports
 
         private async Task<DataTable> ExecuteDataTableStoredProcAsync(string commandText, SqlParameter[] parameters, CancellationToken cancellationToken)
         {

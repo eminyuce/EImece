@@ -2175,6 +2175,75 @@
   <data name="ReportCatFinance" xml:space="preserve">
     <value>Finansal Raporlar</value>
   </data>
+  <data name="ReportCatAudit" xml:space="preserve">
+    <value>Kullanıcı ve Denetim</value>
+  </data>
+  <data name="ReportUserAuditTitle" xml:space="preserve">
+    <value>Kullanıcı Kayıt Denetimi</value>
+  </data>
+  <data name="ReportUserAuditDesc" xml:space="preserve">
+    <value>Kayıt oluşturan ve güncelleyen kullanıcıların detaylı ve aylık aktivite raporu.</value>
+  </data>
+  <data name="UserAuditReport" xml:space="preserve">
+    <value>Kullanıcı Kayıt Denetim Raporu</value>
+  </data>
+  <data name="ReportByUser" xml:space="preserve">
+    <value>Kullanıcı Bazlı Rapor</value>
+  </data>
+  <data name="MonthlyBreakdown" xml:space="preserve">
+    <value>Aylık Dağılım</value>
+  </data>
+  <data name="DetailedRecords" xml:space="preserve">
+    <value>Detaylı Kayıtlar</value>
+  </data>
+  <data name="CreatedCount" xml:space="preserve">
+    <value>Eklenen Kayıt Sayısı</value>
+  </data>
+  <data name="UpdatedCount" xml:space="preserve">
+    <value>Güncellenen Kayıt Sayısı</value>
+  </data>
+  <data name="TotalActivity" xml:space="preserve">
+    <value>Toplam İşlem</value>
+  </data>
+  <data name="TablesModified" xml:space="preserve">
+    <value>İşlem Yapılan Tablolar</value>
+  </data>
+  <data name="UnknownUser" xml:space="preserve">
+    <value>Bilinmeyen</value>
+  </data>
+  <data name="AllUsers" xml:space="preserve">
+    <value>Tüm Kullanıcılar</value>
+  </data>
+  <data name="AllTables" xml:space="preserve">
+    <value>Tüm Tablolar</value>
+  </data>
+  <data name="ActionType" xml:space="preserve">
+    <value>İşlem Türü</value>
+  </data>
+  <data name="AllActions" xml:space="preserve">
+    <value>Tüm İşlemler</value>
+  </data>
+  <data name="CreatedOnly" xml:space="preserve">
+    <value>Sadece Eklenenler</value>
+  </data>
+  <data name="UpdatedOnly" xml:space="preserve">
+    <value>Sadece Güncellenenler</value>
+  </data>
+  <data name="CreatorUser" xml:space="preserve">
+    <value>Ekleyen Kullanıcı</value>
+  </data>
+  <data name="UpdaterUser" xml:space="preserve">
+    <value>Güncelleyen Kullanıcı</value>
+  </data>
+  <data name="RecordName" xml:space="preserve">
+    <value>Kayıt Adı</value>
+  </data>
+  <data name="RecordId" xml:space="preserve">
+    <value>Kayıt No</value>
+  </data>
+  <data name="UserAuditQuickLink" xml:space="preserve">
+    <value>Kullanıcı aktivite raporu</value>
+  </data>
   <data name="ReportLeadText" xml:space="preserve">
     <value>Aşağıdaki kategorilerden bir rapor seçerek satış, ödeme, stok ve risk özetlerine ulaşabilirsiniz.</value>
   </data>

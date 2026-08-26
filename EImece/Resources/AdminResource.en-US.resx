@@ -2175,6 +2175,75 @@
   <data name="ReportCatFinance" xml:space="preserve">
     <value>Financial Reports</value>
   </data>
+  <data name="ReportCatAudit" xml:space="preserve">
+    <value>Audit &amp; Users</value>
+  </data>
+  <data name="ReportUserAuditTitle" xml:space="preserve">
+    <value>User Record Audit</value>
+  </data>
+  <data name="ReportUserAuditDesc" xml:space="preserve">
+    <value>Detailed and monthly activity report of users creating and updating records.</value>
+  </data>
+  <data name="UserAuditReport" xml:space="preserve">
+    <value>User Record Audit Report</value>
+  </data>
+  <data name="ReportByUser" xml:space="preserve">
+    <value>Report by User</value>
+  </data>
+  <data name="MonthlyBreakdown" xml:space="preserve">
+    <value>Monthly Breakdown</value>
+  </data>
+  <data name="DetailedRecords" xml:space="preserve">
+    <value>Detailed Records</value>
+  </data>
+  <data name="CreatedCount" xml:space="preserve">
+    <value>Created Records Count</value>
+  </data>
+  <data name="UpdatedCount" xml:space="preserve">
+    <value>Updated Records Count</value>
+  </data>
+  <data name="TotalActivity" xml:space="preserve">
+    <value>Total Activity</value>
+  </data>
+  <data name="TablesModified" xml:space="preserve">
+    <value>Tables Modified</value>
+  </data>
+  <data name="UnknownUser" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="AllUsers" xml:space="preserve">
+    <value>All Users</value>
+  </data>
+  <data name="AllTables" xml:space="preserve">
+    <value>All Tables</value>
+  </data>
+  <data name="ActionType" xml:space="preserve">
+    <value>Action Type</value>
+  </data>
+  <data name="AllActions" xml:space="preserve">
+    <value>All Actions</value>
+  </data>
+  <data name="CreatedOnly" xml:space="preserve">
+    <value>Created Only</value>
+  </data>
+  <data name="UpdatedOnly" xml:space="preserve">
+    <value>Updated Only</value>
+  </data>
+  <data name="CreatorUser" xml:space="preserve">
+    <value>Creator User</value>
+  </data>
+  <data name="UpdaterUser" xml:space="preserve">
+    <value>Updater User</value>
+  </data>
+  <data name="RecordName" xml:space="preserve">
+    <value>Record Name</value>
+  </data>
+  <data name="RecordId" xml:space="preserve">
+    <value>Record ID</value>
+  </data>
+  <data name="UserAuditQuickLink" xml:space="preserve">
+    <value>User activity report</value>
+  </data>
   <data name="ReportLeadText" xml:space="preserve">
     <value>Select a report from the categories below to view sales, payment, inventory, and risk summaries.</value>
   </data>

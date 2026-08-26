@@ -609,6 +609,144 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
+        #region User Audit Reports
+
+        [HttpGet]
+        public async Task<ActionResult> UserAudit(CancellationToken cancellationToken, DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null, string actionType = null, string tab = null)
+        {
+            try
+            {
+                var model = new UserAuditReportViewModel
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    UserId = userId,
+                    TableName = tableName,
+                    ActionType = actionType,
+                    ActiveTab = string.IsNullOrWhiteSpace(tab) ? "summary" : tab
+                };
+
+                await PopulateAuditReportDataAsync(model, cancellationToken);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in UserAudit GET report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UserAudit(UserAuditReportViewModel model, CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (model == null)
+                {
+                    model = new UserAuditReportViewModel();
+                }
+
+                if (model.StartDate.HasValue && model.EndDate.HasValue && model.StartDate > model.EndDate)
+                {
+                    ModelState.AddModelError("StartDate", AdminResource.StartDateMustBeBeforeEndDate);
+                }
+
+                await PopulateAuditReportDataAsync(model, cancellationToken);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error in UserAudit POST report");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        private async Task PopulateAuditReportDataAsync(UserAuditReportViewModel model, CancellationToken cancellationToken)
+        {
+            var usersTable = await _reportService.GetAuditUsersListAsync(cancellationToken);
+            model.AvailableUsers = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "", Text = AdminResource.AllUsers }
+            };
+            if (usersTable != null)
+            {
+                foreach (DataRow row in usersTable.Rows)
+                {
+                    var uId = row["UserId"]?.ToString() ?? "";
+                    var uFullName = row["FullName"]?.ToString() ?? "";
+                    var uName = row["UserName"]?.ToString() ?? "";
+                    var text = !string.IsNullOrWhiteSpace(uFullName) && uFullName != "Unknown"
+                        ? $"{uFullName} ({uName})"
+                        : uName;
+
+                    model.AvailableUsers.Add(new SelectListItem
+                    {
+                        Value = uId,
+                        Text = text,
+                        Selected = string.Equals(model.UserId, uId, StringComparison.OrdinalIgnoreCase)
+                    });
+                }
+            }
+
+            var tablesTable = await _reportService.GetAuditTablesListAsync(cancellationToken);
+            model.AvailableTables = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "", Text = AdminResource.AllTables }
+            };
+            if (tablesTable != null)
+            {
+                foreach (DataRow row in tablesTable.Rows)
+                {
+                    var tbl = row["TableName"]?.ToString() ?? "";
+                    if (!string.IsNullOrWhiteSpace(tbl))
+                    {
+                        model.AvailableTables.Add(new SelectListItem
+                        {
+                            Value = tbl,
+                            Text = tbl,
+                            Selected = string.Equals(model.TableName, tbl, StringComparison.OrdinalIgnoreCase)
+                        });
+                    }
+                }
+            }
+
+            model.AvailableActionTypes = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "", Text = AdminResource.AllActions, Selected = string.IsNullOrEmpty(model.ActionType) || model.ActionType == "All" },
+                new SelectListItem { Value = "Created", Text = AdminResource.CreatedOnly, Selected = model.ActionType == "Created" },
+                new SelectListItem { Value = "Updated", Text = AdminResource.UpdatedOnly, Selected = model.ActionType == "Updated" }
+            };
+
+            model.UserSummaryData = await _reportService.GetUserAuditSummaryReportAsync(model.StartDate, model.EndDate, model.UserId, model.TableName, cancellationToken) ?? new DataTable();
+            model.UserSummaryData.TableName = "UserAuditSummary";
+
+            model.MonthlyBreakdownData = await _reportService.GetUserAuditMonthlyBreakdownAsync(model.StartDate, model.EndDate, model.UserId, model.TableName, cancellationToken) ?? new DataTable();
+            model.MonthlyBreakdownData.TableName = "UserAuditMonthlyBreakdown";
+
+            model.DetailedRecordsData = await _reportService.GetUserAuditDetailedRecordsAsync(model.StartDate, model.EndDate, model.UserId, model.TableName, model.ActionType, cancellationToken) ?? new DataTable();
+            model.DetailedRecordsData.TableName = "UserAuditDetailed";
+
+            if (model.UserSummaryData != null && model.UserSummaryData.Rows.Count > 0)
+            {
+                model.TotalUsersCount = model.UserSummaryData.Rows.Count;
+                int totalCreated = 0;
+                int totalUpdated = 0;
+                int totalActivity = 0;
+                foreach (DataRow row in model.UserSummaryData.Rows)
+                {
+                    totalCreated += row["CreatedCount"] != DBNull.Value ? System.Convert.ToInt32(row["CreatedCount"]) : 0;
+                    totalUpdated += row["UpdatedCount"] != DBNull.Value ? System.Convert.ToInt32(row["UpdatedCount"]) : 0;
+                    totalActivity += row["TotalActivity"] != DBNull.Value ? System.Convert.ToInt32(row["TotalActivity"]) : 0;
+                }
+                model.TotalCreatedCount = totalCreated;
+                model.TotalUpdatedCount = totalUpdated;
+                model.TotalActivityCount = totalActivity;
+            }
+        }
+
+        #endregion User Audit Reports
+
         /// <summary>
         /// Filter-aware export: re-runs the same ReportService method as the page view, then returns Excel or CSV.
         /// Route: /Admin/Report/Export?reportKey=...&amp;format=excel|csv&amp;...filters
@@ -745,6 +883,16 @@ namespace EImece.Areas.Admin.Controllers
 
                 case ProductInventoryKey:
                     return await _reportService.GetProductInventoryReportAsync(filter.State, filter.IsCampaign, filter.MainPage, cancellationToken);
+
+                case "UserAudit":
+                case "UserAuditSummary":
+                    return await _reportService.GetUserAuditSummaryReportAsync(startDate, endDate, filter.UserId, filter.TableName, cancellationToken);
+
+                case "UserAuditMonthlyBreakdown":
+                    return await _reportService.GetUserAuditMonthlyBreakdownAsync(startDate, endDate, filter.UserId, filter.TableName, cancellationToken);
+
+                case "UserAuditDetailed":
+                    return await _reportService.GetUserAuditDetailedRecordsAsync(startDate, endDate, filter.UserId, filter.TableName, filter.ActionType, cancellationToken);
 
                 default:
                     return null;
@@ -922,5 +1070,8 @@ namespace EImece.Areas.Admin.Controllers
         public bool? IsCampaign { get; set; }
         public bool? MainPage { get; set; }
         public string PaymentStatus { get; set; }
+        public string UserId { get; set; }
+        public string TableName { get; set; }
+        public string ActionType { get; set; }
     }
 }

@@ -324,6 +324,7 @@
     <Compile Include="Services\CouponValidationServiceTests.cs" />
     <Compile Include="Services\SystemSettingsFallbackTests.cs" />
     <Compile Include="Services\UsersServiceTests.cs" />
+    <Compile Include="Services\UserAuditReportTests.cs" />
     <Compile Include="Controllers\ParallelPocessingTest.cs" />
     <Compile Include="Helpers\AdminAuditHelperTests.cs" />
     <Compile Include="Helpers\DatabaseUtilityTests.cs" />

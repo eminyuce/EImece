@@ -5685,6 +5685,144 @@ namespace Resources {
             }
         }
 
+        public static string ReportCatAudit {
+            get {
+                return ResourceManager.GetString("ReportCatAudit", resourceCulture);
+            }
+        }
+
+        public static string ReportUserAuditTitle {
+            get {
+                return ResourceManager.GetString("ReportUserAuditTitle", resourceCulture);
+            }
+        }
+
+        public static string ReportUserAuditDesc {
+            get {
+                return ResourceManager.GetString("ReportUserAuditDesc", resourceCulture);
+            }
+        }
+
+        public static string UserAuditReport {
+            get {
+                return ResourceManager.GetString("UserAuditReport", resourceCulture);
+            }
+        }
+
+        public static string ReportByUser {
+            get {
+                return ResourceManager.GetString("ReportByUser", resourceCulture);
+            }
+        }
+
+        public static string MonthlyBreakdown {
+            get {
+                return ResourceManager.GetString("MonthlyBreakdown", resourceCulture);
+            }
+        }
+
+        public static string DetailedRecords {
+            get {
+                return ResourceManager.GetString("DetailedRecords", resourceCulture);
+            }
+        }
+
+        public static string CreatedCount {
+            get {
+                return ResourceManager.GetString("CreatedCount", resourceCulture);
+            }
+        }
+
+        public static string UpdatedCount {
+            get {
+                return ResourceManager.GetString("UpdatedCount", resourceCulture);
+            }
+        }
+
+        public static string TotalActivity {
+            get {
+                return ResourceManager.GetString("TotalActivity", resourceCulture);
+            }
+        }
+
+        public static string TablesModified {
+            get {
+                return ResourceManager.GetString("TablesModified", resourceCulture);
+            }
+        }
+
+        public static string UnknownUser {
+            get {
+                return ResourceManager.GetString("UnknownUser", resourceCulture);
+            }
+        }
+
+        public static string AllUsers {
+            get {
+                return ResourceManager.GetString("AllUsers", resourceCulture);
+            }
+        }
+
+        public static string AllTables {
+            get {
+                return ResourceManager.GetString("AllTables", resourceCulture);
+            }
+        }
+
+        public static string ActionType {
+            get {
+                return ResourceManager.GetString("ActionType", resourceCulture);
+            }
+        }
+
+        public static string AllActions {
+            get {
+                return ResourceManager.GetString("AllActions", resourceCulture);
+            }
+        }
+
+        public static string CreatedOnly {
+            get {
+                return ResourceManager.GetString("CreatedOnly", resourceCulture);
+            }
+        }
+
+        public static string UpdatedOnly {
+            get {
+                return ResourceManager.GetString("UpdatedOnly", resourceCulture);
+            }
+        }
+
+        public static string CreatorUser {
+            get {
+                return ResourceManager.GetString("CreatorUser", resourceCulture);
+            }
+        }
+
+        public static string UpdaterUser {
+            get {
+                return ResourceManager.GetString("UpdaterUser", resourceCulture);
+            }
+        }
+
+        public static string RecordName {
+            get {
+                return ResourceManager.GetString("RecordName", resourceCulture);
+            }
+        }
+
+        public static string RecordId {
+            get {
+                return ResourceManager.GetString("RecordId", resourceCulture);
+            }
+        }
+
+        public static string UserAuditQuickLink {
+            get {
+                return ResourceManager.GetString("UserAuditQuickLink", resourceCulture);
+            }
+        }
+
         public static string ReportLeadText {
             get {
                 return ResourceManager.GetString("ReportLeadText", resourceCulture);
