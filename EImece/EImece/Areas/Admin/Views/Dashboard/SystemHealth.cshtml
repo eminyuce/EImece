@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = AdminResource.SystemHealth;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    bool isSiteUnderConstruction = ViewBag.IsSiteUnderConstruction != null && Convert.ToBoolean(ViewBag.IsSiteUnderConstruction);
+    bool isSiteUnderConstruction = ViewBag.IsSiteUnderConstruction != null && (bool)ViewBag.IsSiteUnderConstruction;
 }
 
 <div class="admin-health-page" style="padding: 20px 24px;">
