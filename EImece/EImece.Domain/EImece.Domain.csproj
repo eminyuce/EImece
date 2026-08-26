@@ -466,6 +466,7 @@
     <Compile Include="Models\AdminHelperModels\MoveMenuCategory.cs" />
     <Compile Include="Models\AdminHelperModels\MoveProductCategory.cs" />
     <Compile Include="Models\AdminModels\DataSetReportViewModel.cs" />
+    <Compile Include="Models\AdminModels\UserAuditReportViewModel.cs" />
     <Compile Include="Models\AdminModels\ImageExportModels.cs" />
     <Compile Include="Models\AdminModels\SystemSettingModel.cs" />
     <Compile Include="Models\AdminModels\UpdatePriceRequest.cs" />

@@ -21,11 +21,15 @@
         { "PerformanceSystemReport", Tuple.Create(AdminResource.ReportPerformanceSystemReportTitle, AdminResource.ReportPerformanceSystemReportDesc) },
         { "CouponUsage", Tuple.Create(AdminResource.ReportCouponUsageTitle, AdminResource.ReportCouponUsageDesc) },
         { "ShipmentCompany", Tuple.Create(AdminResource.ReportShipmentCompanyTitle, AdminResource.ReportShipmentCompanyDesc) },
-        { "FinancialReport", Tuple.Create(AdminResource.ReportFinancialReportTitle, AdminResource.ReportFinancialReportDesc) }
+        { "FinancialReport", Tuple.Create(AdminResource.ReportFinancialReportTitle, AdminResource.ReportFinancialReportDesc) },
+        { "UserAudit", Tuple.Create(AdminResource.ReportUserAuditTitle, AdminResource.ReportUserAuditDesc) }
     };
 
     var reportCategories = new Dictionary<string, List<string>>
     {
+        { AdminResource.ReportCatAudit, new List<string> {
+            "UserAudit"
+        }},
         { AdminResource.ReportCatSales, new List<string> {
             "SalesByDateRange",
             "GetRegionalSalesReport",
@@ -58,6 +62,7 @@
 
     var categoryIcons = new Dictionary<string, string>
     {
+        { AdminResource.ReportCatAudit, "fa fa-users" },
         { AdminResource.ReportCatSales, "fa fa-bar-chart" },
         { AdminResource.ReportCatPayment, "fa fa-credit-card" },
         { AdminResource.ReportCatProduct, "fa fa-tags" },
@@ -67,6 +72,7 @@
     };
 
     var allActions = new List<string> {
+        "UserAudit",
         "CouponUsage", "FraudAnalysis", "PaymentMethod", "PaymentStatus",
         "GetRegionalSalesReport", "SalesByDateRange", "ShipmentCompany",
         "PerformanceSystemReport", "FinancialReport", "FraudRiskReport",
@@ -74,7 +80,7 @@
         "PriceAnalysis", "ProductInventory", "ProductStatsByDateRange"
     };
 
-    // Date-bound DataSet reports: Index uses POST. GetRegionalSalesReport is GET-only.
+    // Date-bound DataSet reports: Index uses POST. GetRegionalSalesReport and UserAudit are GET-only navigation.
     var postActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
         "PerformanceSystemReport", "FinancialReport", "FraudRiskReport",
         "OrderVolumeReport", "PaymentTransactionReport"
@@ -434,6 +440,9 @@
                                 @Html.Hidden("EndDate", DateTime.Today.ToString("yyyy-MM-dd"))
                                 <button type="submit" class="btn btn-link">@AdminResource.Last30DaysPerformance</button>
                             }
+                        </li>
+                        <li>
+                            @Html.ActionLink(AdminResource.UserAuditQuickLink, "UserAudit", "Report", new { area = "Admin" }, null)
                         </li>
                     </ul>
                 </div>

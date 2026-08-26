@@ -1,0 +1,687 @@
+@model EImece.Domain.Models.AdminModels.UserAuditReportViewModel
+@using System.Data
+@using System.Globalization
+@using Resources
+@{
+    ViewBag.Title = AdminResource.UserAuditReport;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var currentCulture = CultureInfo.CurrentCulture;
+    var isoDateFormat = "yyyy-MM-dd";
+    var startVal = Model.StartDate.HasValue ? Model.StartDate.Value.ToString(isoDateFormat) : "";
+    var endVal = Model.EndDate.HasValue ? Model.EndDate.Value.ToString(isoDateFormat) : "";
+}
+
+<style>
+    .audit-report-container {
+        margin: 0 0 32px;
+        max-width: 1240px;
+    }
+
+    .audit-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .audit-header-title h2 {
+        margin: 0 0 6px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #102a43;
+        font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+    }
+
+    .audit-header-title p {
+        margin: 0;
+        color: #627d98;
+        font-size: 14px;
+    }
+
+    .audit-filter-card {
+        background: #ffffff;
+        border: 1px solid #d9e2ec;
+        border-radius: 10px;
+        padding: 18px 20px 14px;
+        margin-bottom: 22px;
+        box-shadow: 0 1px 3px rgba(16, 42, 67, 0.05);
+    }
+
+    .audit-filter-card .form-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #334e68;
+        margin-bottom: 4px;
+    }
+
+    .audit-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .audit-kpi-card {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid #d9e2ec;
+        border-radius: 10px;
+        padding: 16px 18px;
+        box-shadow: 0 1px 2px rgba(16, 42, 67, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .audit-kpi-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .audit-kpi-icon.blue {
+        background: #e8f2fb;
+        color: #2b6cb0;
+    }
+
+    .audit-kpi-icon.green {
+        background: #e6f7ef;
+        color: #238636;
+    }
+
+    .audit-kpi-icon.amber {
+        background: #fff8e6;
+        color: #b7791f;
+    }
+
+    .audit-kpi-icon.purple {
+        background: #f3e8ff;
+        color: #7e22ce;
+    }
+
+    .audit-kpi-info h5 {
+        margin: 0 0 2px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #627d98;
+        font-weight: 600;
+    }
+
+    .audit-kpi-info .kpi-value {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        color: #102a43;
+        font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+    }
+
+    .audit-nav-tabs {
+        border-bottom: 2px solid #e1e7ee;
+        margin-bottom: 20px;
+        gap: 8px;
+    }
+
+    .audit-nav-tabs .nav-link {
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: #627d98;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 10px 18px;
+        background: none;
+        transition: color 150ms ease, border-color 150ms ease;
+    }
+
+    .audit-nav-tabs .nav-link:hover {
+        color: #2b6cb0;
+        border-color: #cbd2d9;
+    }
+
+    .audit-nav-tabs .nav-link.active {
+        color: #2b6cb0;
+        border-color: #2b6cb0;
+        background: none;
+    }
+
+    .audit-table-card {
+        background: #ffffff;
+        border: 1px solid #d9e2ec;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(16, 42, 67, 0.05);
+        overflow: hidden;
+    }
+
+    .audit-table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e1e7ee;
+    }
+
+    .audit-table-header h4 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+        color: #243b53;
+        font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+    }
+
+    .audit-table-responsive {
+        max-height: 620px;
+        overflow-y: auto;
+    }
+
+    .table.audit-table {
+        margin: 0;
+        font-size: 13.5px;
+    }
+
+    .table.audit-table th {
+        background: #f0f4f8;
+        color: #334e68;
+        font-weight: 700;
+        border-bottom: 2px solid #d9e2ec;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        white-space: nowrap;
+    }
+
+    .table.audit-table td {
+        vertical-align: middle;
+        border-bottom: 1px solid #e1e7ee;
+    }
+
+    .table.audit-table tr:hover td {
+        background: #f8fafc;
+    }
+
+    .table-tag {
+        display: inline-block;
+        background: #e8f2fb;
+        color: #2b6cb0;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 11.5px;
+        font-weight: 600;
+        margin: 2px;
+    }
+
+    .user-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        color: #102a43;
+    }
+
+    .user-pill i {
+        color: #627d98;
+    }
+
+    .unknown-user {
+        color: #829ab1;
+        font-style: italic;
+    }
+</style>
+
+<div class="audit-report-container">
+    <!-- Header -->
+    <div class="audit-header">
+        <div class="audit-header-title">
+            <h2>@AdminResource.UserAuditReport</h2>
+            <p>@AdminResource.ReportUserAuditDesc</p>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-download" aria-hidden="true"></i> @Resource.Export
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><h6 class="dropdown-header">@AdminResource.ReportByUser</h6></li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditSummary", format = "excel", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
+                        <i class="fa fa-file-excel-o text-success me-1"></i> Excel (.xls)
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditSummary", format = "csv", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
+                        <i class="fa fa-file-text-o text-primary me-1"></i> CSV (.csv)
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">@AdminResource.MonthlyBreakdown</h6></li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditMonthlyBreakdown", format = "excel", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
+                        <i class="fa fa-file-excel-o text-success me-1"></i> Excel (.xls)
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditMonthlyBreakdown", format = "csv", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
+                        <i class="fa fa-file-text-o text-primary me-1"></i> CSV (.csv)
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">@AdminResource.DetailedRecords</h6></li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditDetailed", format = "excel", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName, actionType = Model.ActionType })">
+                        <i class="fa fa-file-excel-o text-success me-1"></i> Excel (.xls)
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditDetailed", format = "csv", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName, actionType = Model.ActionType })">
+                        <i class="fa fa-file-text-o text-primary me-1"></i> CSV (.csv)
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Filter Form -->
+    <div class="audit-filter-card">
+        @using (Html.BeginForm("UserAudit", "Report", new { area = "Admin" }, FormMethod.Post, new { id = "userAuditFilterForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ActiveTab, new { id = "activeTabInput" })
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger py-2">
+                    @Html.ValidationSummary(false, "", new { @class = "mb-0" })
+                </div>
+            }
+
+            <div class="row g-3">
+                <div class="col-md-3 col-sm-6">
+                    <label class="form-label" for="StartDate">@AdminResource.StartDate</label>
+                    @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control form-control-sm", id = "StartDate" })
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <label class="form-label" for="EndDate">@AdminResource.EndDate</label>
+                    @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control form-control-sm", id = "EndDate" })
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <label class="form-label" for="UserId">@AdminResource.CreatorUser / @AdminResource.UpdaterUser</label>
+                    @Html.DropDownListFor(m => m.UserId, Model.AvailableUsers, new { @class = "form-select form-select-sm", id = "UserId" })
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <label class="form-label" for="TableName">@AdminResource.TableName</label>
+                    @Html.DropDownListFor(m => m.TableName, Model.AvailableTables, new { @class = "form-select form-select-sm", id = "TableName" })
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <label class="form-label" for="ActionType">@AdminResource.ActionType</label>
+                    @Html.DropDownListFor(m => m.ActionType, Model.AvailableActionTypes, new { @class = "form-select form-select-sm", id = "ActionType" })
+                </div>
+                <div class="col-md-9 col-sm-6 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm px-4">
+                        <i class="fa fa-filter me-1"></i> @AdminResource.Filter
+                    </button>
+                    <a href="@Url.Action("UserAudit", "Report", new { area = "Admin" })" class="btn btn-outline-secondary btn-sm px-3">
+                        <i class="fa fa-refresh me-1"></i> @AdminResource.Clear
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- KPI Summary Grid -->
+    <div class="audit-kpi-grid">
+        <div class="audit-kpi-card">
+            <div class="audit-kpi-icon blue">
+                <i class="fa fa-users" aria-hidden="true"></i>
+            </div>
+            <div class="audit-kpi-info">
+                <h5>@AdminResource.AllUsers</h5>
+                <p class="kpi-value">@Model.TotalUsersCount</p>
+            </div>
+        </div>
+        <div class="audit-kpi-card">
+            <div class="audit-kpi-icon green">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </div>
+            <div class="audit-kpi-info">
+                <h5>@AdminResource.CreatedCount</h5>
+                <p class="kpi-value">@Model.TotalCreatedCount</p>
+            </div>
+        </div>
+        <div class="audit-kpi-card">
+            <div class="audit-kpi-icon amber">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+            </div>
+            <div class="audit-kpi-info">
+                <h5>@AdminResource.UpdatedCount</h5>
+                <p class="kpi-value">@Model.TotalUpdatedCount</p>
+            </div>
+        </div>
+        <div class="audit-kpi-card">
+            <div class="audit-kpi-icon purple">
+                <i class="fa fa-history" aria-hidden="true"></i>
+            </div>
+            <div class="audit-kpi-info">
+                <h5>@AdminResource.TotalActivity</h5>
+                <p class="kpi-value">@Model.TotalActivityCount</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs audit-nav-tabs" id="auditTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(Model.ActiveTab == "summary" || string.IsNullOrEmpty(Model.ActiveTab) ? "active" : "")" id="summary-tab" data-bs-toggle="tab" data-bs-target="#tab-summary" type="button" role="tab" aria-controls="tab-summary" aria-selected="true" data-tab-name="summary">
+                <i class="fa fa-user me-1"></i> @AdminResource.ReportByUser
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(Model.ActiveTab == "monthly" ? "active" : "")" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#tab-monthly" type="button" role="tab" aria-controls="tab-monthly" aria-selected="false" data-tab-name="monthly">
+                <i class="fa fa-calendar me-1"></i> @AdminResource.MonthlyBreakdown
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(Model.ActiveTab == "detailed" ? "active" : "")" id="detailed-tab" data-bs-toggle="tab" data-bs-target="#tab-detailed" type="button" role="tab" aria-controls="tab-detailed" aria-selected="false" data-tab-name="detailed">
+                <i class="fa fa-list-alt me-1"></i> @AdminResource.DetailedRecords
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tabs Content -->
+    <div class="tab-content" id="auditTabsContent">
+        <!-- 1. Report by User -->
+        <div class="tab-pane fade @(Model.ActiveTab == "summary" || string.IsNullOrEmpty(Model.ActiveTab) ? "show active" : "")" id="tab-summary" role="tabpanel" aria-labelledby="summary-tab">
+            <div class="audit-table-card">
+                <div class="audit-table-header">
+                    <h4>@AdminResource.ReportByUser (@(Model.UserSummaryData?.Rows.Count ?? 0))</h4>
+                    <span class="text-muted small">@AdminResource.TablesModified &amp; @AdminResource.TotalActivity</span>
+                </div>
+                <div class="audit-table-responsive table-responsive">
+                    <table class="table audit-table">
+                        <thead>
+                            <tr>
+                                <th>@AdminResource.User</th>
+                                <th class="text-center" style="width: 140px;">@AdminResource.CreatedCount</th>
+                                <th class="text-center" style="width: 140px;">@AdminResource.UpdatedCount</th>
+                                <th class="text-center" style="width: 130px;">@AdminResource.TotalActivity</th>
+                                <th>@AdminResource.TablesModified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.UserSummaryData != null && Model.UserSummaryData.Rows.Count > 0)
+                            {
+                                foreach (DataRow row in Model.UserSummaryData.Rows)
+                                {
+                                    var fullName = row["FullName"]?.ToString();
+                                    var userName = row["UserName"]?.ToString();
+                                    var userId = row["UserId"]?.ToString();
+                                    var createdCount = row["CreatedCount"] != DBNull.Value ? Convert.ToInt32(row["CreatedCount"]) : 0;
+                                    var updatedCount = row["UpdatedCount"] != DBNull.Value ? Convert.ToInt32(row["UpdatedCount"]) : 0;
+                                    var totalActivity = row["TotalActivity"] != DBNull.Value ? Convert.ToInt32(row["TotalActivity"]) : 0;
+                                    var tablesStr = row["TablesModified"]?.ToString() ?? "";
+                                    var tablesList = tablesStr.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+
+                                    <tr>
+                                        <td>
+                                            <div class="user-pill">
+                                                <i class="fa fa-user-circle-o"></i>
+                                                <span>
+                                                    @if (!string.IsNullOrWhiteSpace(fullName) && fullName != "Unknown")
+                                                    {
+                                                        <strong>@fullName</strong>
+                                                        if (!string.IsNullOrWhiteSpace(userName) && userName != fullName)
+                                                        {
+                                                            <small class="text-muted">(@userName)</small>
+                                                        }
+                                                    }
+                                                    else if (!string.IsNullOrWhiteSpace(userName))
+                                                    {
+                                                        <strong>@userName</strong>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="unknown-user">@AdminResource.UnknownUser</span>
+                                                    }
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">@createdCount</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1">@updatedCount</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <strong>@totalActivity</strong>
+                                        </td>
+                                        <td>
+                                            @if (tablesList.Length > 0)
+                                            {
+                                                foreach (var tbl in tablesList)
+                                                {
+                                                    <span class="table-tag">@tbl</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted small">-</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        <i class="fa fa-info-circle me-1"></i> @AdminResource.EmptyTable
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Monthly Breakdown -->
+        <div class="tab-pane fade @(Model.ActiveTab == "monthly" ? "show active" : "")" id="tab-monthly" role="tabpanel" aria-labelledby="monthly-tab">
+            <div class="audit-table-card">
+                <div class="audit-table-header">
+                    <h4>@AdminResource.MonthlyBreakdown (@(Model.MonthlyBreakdownData?.Rows.Count ?? 0))</h4>
+                    <span class="text-muted small">@AdminResource.MonthlyBreakdown (Newest to Oldest)</span>
+                </div>
+                <div class="audit-table-responsive table-responsive">
+                    <table class="table audit-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 140px;">@Resource.Month / @Resource.Year</th>
+                                <th>@AdminResource.User</th>
+                                <th class="text-center" style="width: 140px;">@AdminResource.CreatedCount</th>
+                                <th class="text-center" style="width: 140px;">@AdminResource.UpdatedCount</th>
+                                <th class="text-center" style="width: 130px;">@AdminResource.TotalActivity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.MonthlyBreakdownData != null && Model.MonthlyBreakdownData.Rows.Count > 0)
+                            {
+                                foreach (DataRow row in Model.MonthlyBreakdownData.Rows)
+                                {
+                                    var yearMonth = row["YearMonth"]?.ToString();
+                                    var fullName = row["FullName"]?.ToString();
+                                    var userName = row["UserName"]?.ToString();
+                                    var createdCount = row["CreatedCount"] != DBNull.Value ? Convert.ToInt32(row["CreatedCount"]) : 0;
+                                    var updatedCount = row["UpdatedCount"] != DBNull.Value ? Convert.ToInt32(row["UpdatedCount"]) : 0;
+                                    var totalCount = row["TotalCount"] != DBNull.Value ? Convert.ToInt32(row["TotalCount"]) : 0;
+
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-secondary px-2 py-1 font-monospace">@yearMonth</span>
+                                        </td>
+                                        <td>
+                                            <div class="user-pill">
+                                                <i class="fa fa-user-circle-o"></i>
+                                                <span>
+                                                    @if (!string.IsNullOrWhiteSpace(fullName) && fullName != "Unknown")
+                                                    {
+                                                        <strong>@fullName</strong>
+                                                        if (!string.IsNullOrWhiteSpace(userName) && userName != fullName)
+                                                        {
+                                                            <small class="text-muted">(@userName)</small>
+                                                        }
+                                                    }
+                                                    else if (!string.IsNullOrWhiteSpace(userName))
+                                                    {
+                                                        <strong>@userName</strong>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="unknown-user">@AdminResource.UnknownUser</span>
+                                                    }
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">@createdCount</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1">@updatedCount</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <strong>@totalCount</strong>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        <i class="fa fa-info-circle me-1"></i> @AdminResource.EmptyTable
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Detailed Records -->
+        <div class="tab-pane fade @(Model.ActiveTab == "detailed" ? "show active" : "")" id="tab-detailed" role="tabpanel" aria-labelledby="detailed-tab">
+            <div class="audit-table-card">
+                <div class="audit-table-header">
+                    <h4>@AdminResource.DetailedRecords (@(Model.DetailedRecordsData?.Rows.Count ?? 0))</h4>
+                    <span class="text-muted small">@AdminResource.CreatedDate &amp; @AdminResource.UpdatedDate</span>
+                </div>
+                <div class="audit-table-responsive table-responsive">
+                    <table class="table audit-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 140px;">@AdminResource.TableName</th>
+                                <th style="width: 90px;">@AdminResource.RecordId</th>
+                                <th>@AdminResource.RecordName</th>
+                                <th style="width: 160px;">@AdminResource.CreatedDate</th>
+                                <th>@AdminResource.CreatorUser</th>
+                                <th style="width: 160px;">@AdminResource.UpdatedDate</th>
+                                <th>@AdminResource.UpdaterUser</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DetailedRecordsData != null && Model.DetailedRecordsData.Rows.Count > 0)
+                            {
+                                foreach (DataRow row in Model.DetailedRecordsData.Rows)
+                                {
+                                    var tbl = row["TableName"]?.ToString() ?? "-";
+                                    var recId = row["RecordId"]?.ToString() ?? "-";
+                                    var recName = row["RecordName"]?.ToString() ?? "-";
+                                    var createdDateObj = row["CreatedDate"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(row["CreatedDate"]) : null;
+                                    var updatedDateObj = row["UpdatedDate"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(row["UpdatedDate"]) : null;
+                                    var creatorFullName = row["CreatorFullName"]?.ToString();
+                                    var updaterFullName = row["UpdaterFullName"]?.ToString();
+                                    var addUserId = row["AddUserId"]?.ToString();
+                                    var updateUserId = row["UpdateUserId"]?.ToString();
+
+                                    <tr>
+                                        <td>
+                                            <span class="table-tag">@tbl</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">#@recId</span>
+                                        </td>
+                                        <td>
+                                            <strong>@recName</strong>
+                                        </td>
+                                        <td>
+                                            @(createdDateObj.HasValue ? createdDateObj.Value.ToString("g", currentCulture) : "-")
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrWhiteSpace(creatorFullName) && creatorFullName != "Unknown")
+                                            {
+                                                <span class="text-success"><i class="fa fa-user me-1"></i>@creatorFullName</span>
+                                            }
+                                            else if (!string.IsNullOrWhiteSpace(addUserId))
+                                            {
+                                                <span class="unknown-user">@AdminResource.UnknownUser (@addUserId)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @(updatedDateObj.HasValue ? updatedDateObj.Value.ToString("g", currentCulture) : "-")
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrWhiteSpace(updaterFullName) && updaterFullName != "Unknown")
+                                            {
+                                                <span class="text-warning-emphasis"><i class="fa fa-pencil me-1"></i>@updaterFullName</span>
+                                            }
+                                            else if (!string.IsNullOrWhiteSpace(updateUserId))
+                                            {
+                                                <span class="unknown-user">@AdminResource.UnknownUser (@updateUserId)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">
+                                        <i class="fa fa-info-circle me-1"></i> @AdminResource.EmptyTable
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var tabButtons = document.querySelectorAll("#auditTabs .nav-link");
+        var activeTabInput = document.getElementById("activeTabInput");
+
+        tabButtons.forEach(function (btn) {
+            btn.addEventListener("shown.bs.tab", function (e) {
+                var tabName = e.target.getAttribute("data-tab-name");
+                if (activeTabInput && tabName) {
+                    activeTabInput.value = tabName;
+                }
+            });
+        });
+    });
+</script>
