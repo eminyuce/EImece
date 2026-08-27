@@ -314,7 +314,7 @@ namespace EImece.Areas.Customers.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SendSellerMessage(ContactUsFormViewModel contact)
+        public ActionResult SendSellerMessage(ContactUsFormViewModel contact)
         {
             if (contact == null)
             {
@@ -325,12 +325,42 @@ namespace EImece.Areas.Customers.Controllers
             {
                 contact.ItemType = EImeceItemType.Ticket;
                 contact.IPAddress = HttpContext.Request.UserHostAddress;
-                await RazorEngineHelper.SendMessageToSellerAsync(contact);
+
+                if (System.Web.Hosting.HostingEnvironment.IsHosted)
+                {
+                    System.Web.Hosting.HostingEnvironment.QueueBackgroundWorkItem(async ct =>
+                    {
+                        try
+                        {
+                            await RazorEngineHelper.SendMessageToSellerAsync(contact);
+                        }
+                        catch (Exception ex)
+                        {
+                            HomeLogger.Error(ex, "Background SendSellerMessage failed to send message to seller.");
+                        }
+                    });
+                }
+                else
+                {
+                    Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await RazorEngineHelper.SendMessageToSellerAsync(contact);
+                        }
+                        catch (Exception ex)
+                        {
+                            HomeLogger.Error(ex, "Async SendSellerMessage failed to send message to seller.");
+                        }
+                    });
+                }
+
                 TempData["SuccessMessage"] = Resource.YourMessageHasBeenSentToSeller;
                 return RedirectToAction("SendMessageToSeller");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                HomeLogger.Error(ex, "Error processing SendSellerMessage request.");
                 TempData["ErrorMessage"] = Resource.EmailSendingFailed;
                 TempData["ContactFormData"] = contact;
                 return RedirectToAction("SendMessageToSeller");

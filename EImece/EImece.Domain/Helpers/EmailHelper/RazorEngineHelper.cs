@@ -281,17 +281,21 @@ namespace EImece.Domain.Helpers.EmailHelper
                 throw new ArgumentException("NO email template is defined for " + Constants.SendMessageToSellerMailTemplate);
             }
 
-            string groupName = string.Format("{0} | {1} | {2}", "SendMessageToSeller", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
-            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+            if (emailTemplate.TrackWithBitly || emailTemplate.TrackWithMlnk)
+            {
+                string groupName = string.Format("{0} | {1}", "SendMessageToSeller", emailTemplate.Name);
+                emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+            }
 
             String companyname = SettingService.GetSettingByKey(Constants.CompanyName);
             var adminUserName = SettingService.GetSettingByKey(Constants.AdminUserName);
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "_" + GeneralHelper.GetHashString(template);
+            var subjectResult = RazorTemplateEngine.GetRenderOutputDynamic(emailTemplate.Subject, contact);
+            var bodyResult = RazorTemplateEngine.GetRenderOutputDynamic(template, contact);
 
-            string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
-            string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact); // Use different key for body
+            string subject = !string.IsNullOrEmpty(subjectResult.Result) ? subjectResult.Result : emailTemplate.Subject;
+            string body = !string.IsNullOrEmpty(bodyResult.Result) ? bodyResult.Result : template;
 
             EmailSender.SendEmailInBackground(SettingService.GetEmailAccount(),
                 subject,
@@ -310,17 +314,21 @@ namespace EImece.Domain.Helpers.EmailHelper
                 throw new ArgumentException("NO email template is defined for " + Constants.SendMessageToSellerMailTemplate);
             }
 
-            string groupName = string.Format("{0} | {1} | {2}", "SendMessageToSeller", emailTemplate.Name, DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
-            emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+            if (emailTemplate.TrackWithBitly || emailTemplate.TrackWithMlnk)
+            {
+                string groupName = string.Format("{0} | {1}", "SendMessageToSeller", emailTemplate.Name);
+                emailTemplate.Body = BitlyRepository.ConvertEmailBodyForTracking(emailTemplate.TrackWithBitly, emailTemplate.TrackWithMlnk, emailTemplate.Body, emailTemplate.Name, groupName);
+            }
 
             string companyname = await SettingService.GetSettingByKeyAsync(Constants.CompanyName).ConfigureAwait(false);
             var adminUserName = await SettingService.GetSettingByKeyAsync(Constants.AdminUserName).ConfigureAwait(false);
 
             string template = emailTemplate.Body;
-            string templateKey = emailTemplate.Subject + "_" + GeneralHelper.GetHashString(template);
+            var subjectResult = RazorTemplateEngine.GetRenderOutputDynamic(emailTemplate.Subject, contact);
+            var bodyResult = RazorTemplateEngine.GetRenderOutputDynamic(template, contact);
 
-            string subject = Engine.Razor.RunCompile(emailTemplate.Subject, templateKey, null, contact);
-            string body = Engine.Razor.RunCompile(template, templateKey + "_body", null, contact);
+            string subject = !string.IsNullOrEmpty(subjectResult.Result) ? subjectResult.Result : emailTemplate.Subject;
+            string body = !string.IsNullOrEmpty(bodyResult.Result) ? bodyResult.Result : template;
 
             // SendEmailInBackground queues the SMTP work; await only the settings/template I/O above.
             EmailSender.SendEmailInBackground(await SettingService.GetEmailAccountAsync().ConfigureAwait(false),
