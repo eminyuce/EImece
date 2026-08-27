@@ -301,7 +301,15 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.SendMessageToSeller;
             var customer = await BuildCustomerSummaryAsync();
             var faqs = await FaqService.GetStorefrontFaqSummariesAsync(CurrentLanguage);
-            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs });
+            var contactForm = TempData["ContactFormData"] as ContactUsFormViewModel ?? new ContactUsFormViewModel
+            {
+                Name = customer != null ? customer.FullName : null,
+                Email = customer != null ? customer.Email : null,
+                Phone = customer != null ? customer.GsmNumber : null,
+                ContactFormType = "Customer",
+                ItemType = EImeceItemType.Ticket
+            };
+            return View(new SendMessageToSellerViewModel() { Customer = customer, Faqs = faqs, ContactForm = contactForm });
         }
 
         [HttpPost]
@@ -324,6 +332,7 @@ namespace EImece.Areas.Customers.Controllers
             catch (Exception)
             {
                 TempData["ErrorMessage"] = Resource.EmailSendingFailed;
+                TempData["ContactFormData"] = contact;
                 return RedirectToAction("SendMessageToSeller");
             }
         }

@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
@@ -7,76 +7,100 @@
 @model SendMessageToSellerViewModel
 
 @{
-    var SendButtonText = Resource.SendButtonText;
+    ViewBag.Title = Resource.SendMessageToSeller;
 }
 
-<!-- Page Content-->
 <div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
-    <!-- Toast notifications-->
-    <div class="toast-container toast-bottom-center">
-        <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-success text-white">
-                <i class="fas fa-check-circle mr-2" aria-hidden="true"></i><span class="font-weight-semibold me-auto">@Resource.Updated!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
-            </div>
-            <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
-        </div>
-    </div>
-    <div class="row pt-1">
-        <!-- Main content-->
-        <div class="col-lg-12">
-            @Html.Partial("_CustomerSummaryDetails", Model.Customer)
+    @Html.Partial("_CustomerSummaryDetails", Model.Customer)
 
-            <!-- Centered Success/Error Messages -->
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                            @TempData["SuccessMessage"]
-                            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle customer-alert__icon" aria-hidden="true"></i>
+            <div class="customer-alert__content">
+                <strong class="customer-alert__title">İşlem Başarılı</strong>
+                <span>@TempData["SuccessMessage"]</span>
+            </div>
+            <button type="button" class="btn-close close" data-bs-dismiss="alert" aria-label="Kapat">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle customer-alert__icon" aria-hidden="true"></i>
+            <div class="customer-alert__content">
+                <strong class="customer-alert__title">Hata!</strong>
+                <span>@TempData["ErrorMessage"]</span>
+            </div>
+            <button type="button" class="btn-close close" data-bs-dismiss="alert" aria-label="Kapat">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <div class="customer-panel">
+        <section class="customer-panel__section customer-panel__section--last">
+            <header class="customer-panel__section-head">
+                <h2 class="customer-panel__section-title">
+                    <i class="fas fa-envelope-open-text mr-2 text-primary" aria-hidden="true"></i>
+                    @Resource.SendMessageToSeller
+                </h2>
+                <p class="customer-panel__section-lead">Siparişiniz, kargonuz veya ürünlerimiz hakkında sorularınızı doğrudan bize iletebilirsiniz.</p>
+            </header>
+
+            <!-- Quick Information Panel -->
+            <div class="customer-contact-info-panel">
+                <div class="customer-contact-info-header">
+                    <div class="customer-contact-info-heading">
+                        <span class="customer-contact-info-icon" aria-hidden="true">
+                            <i class="fas fa-info"></i>
+                        </span>
+                        <h3 class="customer-contact-info-title">Nasıl Yardımcı Olabiliriz?</h3>
+                    </div>
+                    <a href="@Url.Action("Faq", "Home", new { area = "customers" })" class="customer-contact-info-link">
+                        <i class="fas fa-question-circle" aria-hidden="true"></i>
+                        <span>Sıkça Sorulan Sorular'a Göz At</span>
+                        <i class="fas fa-arrow-right small" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="customer-contact-info-grid">
+                    <div class="customer-contact-info-item">
+                        <i class="fas fa-shipping-fast" aria-hidden="true"></i>
+                        <div>
+                            <strong>Kargo & Sipariş Takibi:</strong> Siparişinizle ilgili sorularınızda lütfen sipariş numaranızı ekleyiniz.
+                        </div>
+                    </div>
+                    <div class="customer-contact-info-item">
+                        <i class="fas fa-undo-alt" aria-hidden="true"></i>
+                        <div>
+                            <strong>İade & Değişim:</strong> İade veya değişim taleplerinizde neden alanından ilgili seçeneği seçiniz.
+                        </div>
+                    </div>
+                    <div class="customer-contact-info-item">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                        <div>
+                            <strong>Hızlı Yanıt:</strong> Mesajınız müşteri temsilcilerimize iletilir ve e-posta adresinize yanıt verilir.
                         </div>
                     </div>
                 </div>
-            }
-
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                            @TempData["ErrorMessage"]
-                            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            }
-
-            <div class="customer-panel">
-                <section class="customer-panel__section customer-panel__section--last">
-                    <header class="customer-panel__section-head">
-                        <h2 class="customer-panel__section-title">@Resource.SendMessageToSeller</h2>
-                        <p class="customer-panel__section-lead">Sipariş veya ürünleriniz hakkında bize yazın.</p>
-                    </header>
-                    @{
-                        var customer = Model.Customer;
-                        var contactForm = new ContactUsFormViewModel
-                        {
-                            Name = customer != null ? customer.FullName : null,
-                            Email = customer != null ? customer.Email : null,
-                            Phone = customer != null ? customer.GsmNumber : null,
-                            ContactFormType = "Customer",
-                            ItemType = EImeceItemType.Ticket
-                        };
-                    }
-                    @Html.Partial("_SendContactSellerForCustomer", contactForm)
-                </section>
             </div>
-        </div>
+
+            @{
+                var customer = Model.Customer;
+                var contactForm = Model.ContactForm ?? new ContactUsFormViewModel
+                {
+                    Name = customer != null ? customer.FullName : null,
+                    Email = customer != null ? customer.Email : null,
+                    Phone = customer != null ? customer.GsmNumber : null,
+                    ContactFormType = "Customer",
+                    ItemType = EImeceItemType.Ticket
+                };
+            }
+            @Html.Partial("_SendContactSellerForCustomer", contactForm)
+        </section>
     </div>
 </div>
 

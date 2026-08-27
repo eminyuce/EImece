@@ -1,7 +1,6 @@
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
-@using Newtonsoft.Json;
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
@@ -10,121 +9,202 @@
 @model CustomerOrdersViewModel
 
 @{
-    var myOrders = Model.Orders;
+    ViewBag.Title = Resource.MyOrder;
+    var myOrders = Model.Orders ?? new List<OrderListItemDto>();
     var paginatedOrders = new PaginatedModelList<OrderListItemDto>(myOrders, Model.Page, Model.RecordPerPage, myOrders.Count);
 }
 
-<!-- Page Content-->
-<div class="container pt-lg-3 pb-5 mb-sm-3">
-    <!-- Toast notifications-->
-    <div class="toast-container toast-bottom-center">
-        <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold me-auto">Updated!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
-        </div>
-    </div>
-    <div class="row pt-1">
-        <!-- Main content-->
-        <!-- Main content-->
-        <div class="col-lg-12">
-            @Html.Partial("_CustomerSummaryDetails", Model.Customer)
+<div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
+    @Html.Partial("_CustomerSummaryDetails", Model.Customer)
 
-            <!-- Orders table-->
-            <div class="table-responsive font-size-sm">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>@Resource.OrderStatus</th>
-                            <th>@Resource.OrderNumber</th>
-                            <th>@Resource.ShipmentCompanyName</th>
-                            <th>@Resource.ShipmentTrackingNumber</th>
-                            <th>@Resource.DatePurchased</th>
-                            <th>@Resource.Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var o in paginatedOrders)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.ActionLink(Resource.OrderSummary,
-                                        "CustomerOrderDetail", "Home", new { id = o.Id },
-                                        new { @class = "btn btn-pill btn-outline-success", area = "customers" })
-                                </td>
-                                <td>
-                                    <h5>@createOrderStatus(o)</h5>
-                                </td>
-                                <td>
-                                    @o.OrderNumber
-                                </td>
-                                <td>
-                                    @o.ShipmentCompanyName
-                                </td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
-                                    {
-                                        <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))" target="_blank">
-                                            @o.ShipmentTrackingNumber
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        @Resource.NoShipmentDoneYetForYourOrder
-                                    }
-                                </td>
-                                <td>@o.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</td>
-                                <td>@o.PaidPriceDecimal.CurrencySign()</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+    @if (myOrders.Count == 0)
+    {
+        <div class="customer-panel text-center py-5 px-3">
+            <div class="customer-orders-empty py-5 px-4">
+                <div class="customer-orders-empty__icon mb-3" aria-hidden="true">
+                    <i class="fas fa-shopping-bag fa-2x"></i>
+                </div>
+                <h3 class="customer-orders-empty__title h4 mb-2">Henüz siparişiniz bulunmuyor</h3>
+                <p class="customer-orders-empty__text text-muted mb-4">Verdiğiniz siparişlerin durumunu ve kargo takiplerini bu sayfadan kolayca takip edebilirsiniz.</p>
+                <a href="@Url.Action("Index", "Home", new { area = "" })" class="btn customer-btn-primary">
+                    <i class="fas fa-shopping-cart mr-2" aria-hidden="true"></i>
+                    <span>@Resource.ContinueShopping</span>
+                </a>
             </div>
-            <hr class="pb-4">
-            @Html.Partial("_PaginatedOrderList", paginatedOrders)
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="customer-panel">
+            <section class="customer-panel__section customer-panel__section--last">
+                <header class="customer-panel__section-head">
+                    <h2 class="customer-panel__section-title">
+                        <i class="fas fa-boxes mr-2 text-primary" aria-hidden="true"></i>
+                        @Resource.MyOrder
+                    </h2>
+                    <p class="customer-panel__section-lead">Tüm siparişlerinizi, kargo takip durumunu ve fatura özetlerinizi görüntüleyin.</p>
+                </header>
+
+                <!-- Desktop Table View -->
+                <div class="table-responsive d-none d-md-block">
+                    <table class="table table-hover align-middle mb-0 customer-orders-table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>@Resource.OrderNumber</th>
+                                <th>@Resource.OrderStatus</th>
+                                <th>@Resource.ShipmentCompanyName</th>
+                                <th>@Resource.ShipmentTrackingNumber</th>
+                                <th>@Resource.DatePurchased</th>
+                                <th class="text-right">@Resource.Total</th>
+                                <th class="text-center">@Resource.OrderSummary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var o in paginatedOrders)
+                            {
+                                <tr>
+                                    <td class="font-weight-bold">
+                                        <span class="text-dark">#@o.OrderNumber</span>
+                                    </td>
+                                    <td>
+                                        @renderStatusBadge(o)
+                                    </td>
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(o.ShipmentCompanyName) ? "-" : o.ShipmentCompanyName)
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
+                                        {
+                                            <a class="badge badge-light border text-primary text-decoration-none p-2"
+                                               href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))"
+                                               target="_blank" rel="noopener noreferrer" title="@Resource.TrackYourCargo">
+                                                <i class="fas fa-truck mr-1" aria-hidden="true"></i>
+                                                @o.ShipmentTrackingNumber
+                                                <i class="fas fa-external-link-alt ml-1 small" aria-hidden="true"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">@Resource.NoShipmentDoneYetForYourOrder</span>
+                                        }
+                                    </td>
+                                    <td class="text-muted small">
+                                        @o.CreatedDate.ToString("dd MMMM yyyy HH:mm")
+                                    </td>
+                                    <td class="text-right font-weight-bold text-success">
+                                        @o.PaidPriceDecimal.CurrencySign()
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("CustomerOrderDetail", "Home", new { id = o.Id, area = "customers" })"
+                                           class="btn btn-sm customer-btn-primary" title="@Resource.OrderSummary">
+                                            <i class="fas fa-eye mr-1" aria-hidden="true"></i>
+                                            <span>@Resource.OrderSummary</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Card View -->
+                <div class="d-md-none customer-orders-cards">
+                    @foreach (var o in paginatedOrders)
+                    {
+                        <div class="customer-order-card mb-3">
+                            <div class="customer-order-card__header">
+                                <div>
+                                    <span class="customer-order-card__label">Sipariş No</span>
+                                    <strong class="d-block text-dark">#@o.OrderNumber</strong>
+                                </div>
+                                <div>
+                                    @renderStatusBadge(o)
+                                </div>
+                            </div>
+                            <div class="customer-order-card__meta mb-3">
+                                <dl>
+                                    <dt>@Resource.DatePurchased</dt>
+                                    <dd>@o.CreatedDate.ToString("dd MMM yyyy HH:mm")</dd>
+                                </dl>
+                                <dl>
+                                    <dt>@Resource.Total</dt>
+                                    <dd class="font-weight-bold text-success">@o.PaidPriceDecimal.CurrencySign()</dd>
+                                </dl>
+                                <dl>
+                                    <dt>@Resource.ShipmentCompanyName</dt>
+                                    <dd>@(string.IsNullOrWhiteSpace(o.ShipmentCompanyName) ? "-" : o.ShipmentCompanyName)</dd>
+                                </dl>
+                                <dl>
+                                    <dt>@Resource.ShipmentTrackingNumber</dt>
+                                    <dd>
+                                        @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
+                                        {
+                                            <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))"
+                                               target="_blank" rel="noopener noreferrer" class="text-primary font-weight-semibold">
+                                                <i class="fas fa-truck mr-1" aria-hidden="true"></i> @o.ShipmentTrackingNumber
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">@Resource.NoShipmentDoneYetForYourOrder</span>
+                                        }
+                                    </dd>
+                                </dl>
+                            </div>
+                            <a href="@Url.Action("CustomerOrderDetail", "Home", new { id = o.Id, area = "customers" })"
+                               class="btn customer-btn-primary btn-block text-center">
+                                <i class="fas fa-eye mr-1" aria-hidden="true"></i>
+                                <span>@Resource.OrderSummary</span>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                @if (paginatedOrders.TotalPageCount > 1)
+                {
+                    <div class="mt-4 pt-2 border-top">
+                        @Html.Partial("_PaginatedOrderList", paginatedOrders)
+                    </div>
+                }
+            </section>
+        </div>
+    }
 </div>
 
-@helper createOrderStatus(OrderListItemDto o)
+@helper renderStatusBadge(OrderListItemDto o)
 {
-
     var os = (EImeceOrderStatus)o.OrderStatus;
     var rm = new ResourceManager(typeof(Resource));
-    var resourceDisplayName = rm.GetString(os.GetType().Name + "_" + os);
-    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+    var resourceDisplayName = rm.GetString(os.GetType().Name + "_" + os) ?? os.ToString();
+
     switch (os)
     {
         case EImeceOrderStatus.NewlyOrder:
-            <span class="badge badge-secondary m-0">@resourceDisplayName</span>
+            <span class="badge badge-info bg-info text-white p-2"><i class="fas fa-clock mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.PaymentPending:
-            <span class="badge badge-primary m-0">@resourceDisplayName</span>
+            <span class="badge badge-warning bg-warning text-dark p-2"><i class="fas fa-hourglass-half mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.InProgress:
-            <span class="badge badge-warning m-0">@resourceDisplayName</span>
+            <span class="badge badge-primary bg-primary text-white p-2"><i class="fas fa-cog fa-spin mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Shipped:
-            <span class="badge badge-dark m-0">@resourceDisplayName</span>
+            <span class="badge badge-dark bg-dark text-white p-2"><i class="fas fa-shipping-fast mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Delivered:
-            <span class="badge badge-success m-0">@resourceDisplayName</span>
+            <span class="badge badge-success bg-success text-white p-2"><i class="fas fa-check-circle mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Cancelled:
-            <span class="badge badge-danger m-0">@resourceDisplayName</span>
+            <span class="badge badge-danger bg-danger text-white p-2"><i class="fas fa-times-circle mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Returned:
-            <span class="badge badge-info m-0">@resourceDisplayName</span>
+            <span class="badge badge-secondary bg-secondary text-white p-2"><i class="fas fa-undo mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Refunded:
-            <span class="badge badge-light m-0">@resourceDisplayName</span>
+            <span class="badge badge-light bg-light border text-dark p-2"><i class="fas fa-money-bill-wave mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         default:
-            <span class="badge badge-secondary m-0">@Resource.UnknownStatus</span>
+            <span class="badge badge-secondary bg-secondary text-white p-2">@Resource.UnknownStatus</span>
             break;
     }
-
 }

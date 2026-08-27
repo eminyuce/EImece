@@ -7,5 +7,6 @@ namespace EImece.Domain.Models.FrontModels
     {
         public List<FaqSummaryDto> Faqs { get; set; }
         public CustomerSummaryDto Customer { get; set; }
+        public ContactUsFormViewModel ContactForm { get; set; }
     }
 }

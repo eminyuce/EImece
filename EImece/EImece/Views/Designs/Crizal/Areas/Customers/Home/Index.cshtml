@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Models.DTOs.CustomerDto
+@model EImece.Domain.Models.DTOs.CustomerDto
 @using Resources;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
@@ -22,7 +22,7 @@
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
                 <i class="fas fa-check-circle mr-2" aria-hidden="true"></i>
-                <span class="font-weight-semibold me-auto">Updated!</span>
+                <span class="font-weight-semibold me-auto">Güncellendi</span>
                 <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
@@ -37,7 +37,7 @@
             <div class="customer-banner__icon" aria-hidden="true"><i class="fas fa-exclamation-circle"></i></div>
             <div class="customer-banner__body">
                 <strong>@Resource.CustomerBillingDetailsNotFilledOut</strong>
-                <p class="mb-0">Teslimat ve fatura iÃ§in aÅŸaÄŸÄ±daki bilgileri tamamlayÄ±n.</p>
+                <p class="mb-0">Teslimat ve fatura için aşağıdaki bilgileri tamamlayın.</p>
             </div>
         </output>
     }
@@ -57,8 +57,8 @@
 
         <section class="customer-panel__section">
             <header class="customer-panel__section-head">
-                <h2 class="customer-panel__section-title">KiÅŸisel bilgiler</h2>
-                <p class="customer-panel__section-lead">SipariÅŸ ve fatura iÃ§in kullanÄ±lan ad soyad bilgileriniz.</p>
+                <h2 class="customer-panel__section-title">Kişisel Bilgiler</h2>
+                <p class="customer-panel__section-lead">Sipariş ve fatura için kullanılan ad soyad bilgileriniz.</p>
             </header>
             <div class="customer-panel__grid">
                 <div class="form-group">
@@ -82,7 +82,7 @@
                     <div class="customer-gender" role="radiogroup" aria-label="@Html.DisplayNameFor(model => model.Gender)">
                         <label class="customer-gender__option">
                             @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString(), new { @class = "customer-gender__input" })
-                            <span>KadÄ±n</span>
+                            <span>Kadın</span>
                         </label>
                         <label class="customer-gender__option">
                             @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString(), new { @class = "customer-gender__input" })
@@ -96,8 +96,8 @@
 
         <section class="customer-panel__section">
             <header class="customer-panel__section-head">
-                <h2 class="customer-panel__section-title">Ä°letiÅŸim</h2>
-                <p class="customer-panel__section-lead">SipariÅŸ durumu ve kargo bildirimleri iÃ§in.</p>
+                <h2 class="customer-panel__section-title">İletişim Bilgileri</h2>
+                <p class="customer-panel__section-lead">Sipariş durumu ve kargo bildirimleri için.</p>
             </header>
             <div class="customer-panel__grid">
                 <div class="form-group">
@@ -116,7 +116,7 @@
         <section class="customer-panel__section">
             <header class="customer-panel__section-head">
                 <h2 class="customer-panel__section-title">@Resource.DeliveryAddress</h2>
-                <p class="customer-panel__section-lead">SipariÅŸlerinizin gÃ¶nderileceÄŸi adres.</p>
+                <p class="customer-panel__section-lead">Siparişlerinizin gönderileceği adres.</p>
             </header>
             <div class="customer-panel__grid">
                 <div class="form-group">
@@ -154,7 +154,7 @@
                 </div>
             </div>
             <details class="customer-address-help mt-2">
-                <summary class="customer-address-help__summary">Adres yazÄ±mÄ± iÃ§in kÄ±sa ipucu</summary>
+                <summary class="customer-address-help__summary">Adres yazımı için kısa ipucu</summary>
                 <div class="customer-address-help__body">
                     @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
                 </div>
@@ -167,7 +167,7 @@
             </header>
             <div class="form-group mb-3">
                 @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-form-label" })
-                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", placeholder = "Teslimat notu veya ek bilgi (isteÄŸe baÄŸlÄ±)" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", placeholder = "Teslimat notu veya ek bilgi (isteğe bağlı)" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
             <div class="customer-profile-actions">
@@ -176,7 +176,8 @@
                     <label class="custom-control-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
                 </div>
                 <button class="btn customer-btn-primary customer-profile-actions__submit" type="submit" data-bs-toggle="toast" data-bs-target="#profile-toast">
-                    @Resource.Update
+                    <i class="fas fa-check mr-2" aria-hidden="true"></i>
+                    <span>@Resource.Update</span>
                 </button>
             </div>
         </section>
@@ -194,4 +195,3 @@
         });
     </script>
 }
-

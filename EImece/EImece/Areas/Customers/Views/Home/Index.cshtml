@@ -1,179 +1,187 @@
 @model EImece.Domain.Models.DTOs.CustomerDto
 @using Resources;
 @using EImece.Domain;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
-@using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Models.DTOs.Storefront;
+@{
+    ViewBag.Title = Resource.MyAccount;
 
-<!-- Page Content-->
-<div class="container pt-lg-3 pb-5 mb-sm-3">
-    <!-- Toast notifications-->
+    var billingIncomplete = string.IsNullOrWhiteSpace(Model.Name)
+        || string.IsNullOrWhiteSpace(Model.Surname)
+        || string.IsNullOrWhiteSpace(Model.GsmNumber)
+        || string.IsNullOrWhiteSpace(Model.City)
+        || string.IsNullOrWhiteSpace(Model.Town)
+        || string.IsNullOrWhiteSpace(Model.Street);
+}
+
+<div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
     <div class="toast-container toast-bottom-center">
         <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold me-auto">Updated!</span>
+                <i class="fas fa-check-circle mr-2" aria-hidden="true"></i>
+                <span class="font-weight-semibold me-auto">Güncellendi</span>
                 <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
         </div>
     </div>
-    <div class="row pt-1">
-        <!-- Main content-->
-        <div class="col-lg-12">
-            @Html.Partial("_CustomerSummaryDetails", (CustomerSummaryDto)ViewBag.CustomerSummary)
-            <div class="col-md-12">
-                <div class="alert alert-secondary">
-                    <div class="text-center">
-                        <b class="text-dark">
-                            @Resource.CustomerBillingDetailsNotFilledOut
-                        </b>
+
+    @Html.Partial("_CustomerSummaryDetails", (CustomerSummaryDto)ViewBag.CustomerSummary)
+
+    @if (billingIncomplete)
+    {
+        <output class="customer-banner customer-banner--warn">
+            <div class="customer-banner__icon" aria-hidden="true"><i class="fas fa-exclamation-circle"></i></div>
+            <div class="customer-banner__body">
+                <strong>@Resource.CustomerBillingDetailsNotFilledOut</strong>
+                <p class="mb-0">Teslimat ve fatura için aşağıdaki bilgileri tamamlayın.</p>
+            </div>
+        </output>
+    }
+
+    @using (Html.BeginForm("Index", "Home", null, FormMethod.Post, new { @class = "customer-panel" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.IsActive)
+        @Html.HiddenFor(model => model.CreatedDate)
+        @Html.HiddenFor(model => model.UpdatedDate)
+        @Html.HiddenFor(model => model.Lang)
+        @Html.HiddenFor(model => model.Ip)
+        @Html.HiddenFor(model => model.UserId)
+
+        <section class="customer-panel__section">
+            <header class="customer-panel__section-head">
+                <h2 class="customer-panel__section-title">Kişisel Bilgiler</h2>
+                <p class="customer-panel__section-lead">Sipariş ve fatura için kullanılan ad soyad bilgileriniz.</p>
+            </header>
+            <div class="customer-panel__grid">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label", @for = "account-fn" })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "account-fn", autocomplete = "given-name" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "col-form-label", @for = "account-ln" })
+                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @id = "account-ln", autocomplete = "family-name" } })
+                    @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "col-form-label" })
+                    @Html.EditorFor(model => model.IdentityNumber, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                    <small class="form-text text-muted customer-help-text">@Resource.WhyNeedIdentityNumber</small>
+                    @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <span class="col-form-label d-block">@Html.DisplayNameFor(model => model.Gender)</span>
+                    <div class="customer-gender" role="radiogroup" aria-label="@Html.DisplayNameFor(model => model.Gender)">
+                        <label class="customer-gender__option">
+                            @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString(), new { @class = "customer-gender__input" })
+                            <span>Kadın</span>
+                        </label>
+                        <label class="customer-gender__option">
+                            @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString(), new { @class = "customer-gender__input" })
+                            <span>Erkek</span>
+                        </label>
                     </div>
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                 </div>
             </div>
+        </section>
 
-            @using (Html.BeginForm("Index", "Home",
-            null,
-            FormMethod.Post, new { @class = "row" }))
-            {
-                @Html.AntiForgeryToken()
-
-                <div class="col-md-12">
-                    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+        <section class="customer-panel__section">
+            <header class="customer-panel__section-head">
+                <h2 class="customer-panel__section-title">İletişim Bilgileri</h2>
+                <p class="customer-panel__section-lead">Sipariş durumu ve kargo bildirimleri için.</p>
+            </header>
+            <div class="customer-panel__grid">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "col-form-label", @for = "account-phone" })
+                    @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone", placeholder = "+90 5XX XXX XX XX", autocomplete = "tel" } })
+                    <small class="form-text text-muted customer-help-text">@Resource.WhyNeedGsmNumber</small>
+                    @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
                 </div>
-                @Html.HiddenFor(model => model.Email)
-                @Html.HiddenFor(model => model.Id)
-                @Html.HiddenFor(model => model.IsActive)
-                @Html.HiddenFor(model => model.CreatedDate)
-                @Html.HiddenFor(model => model.UpdatedDate)
-                @Html.HiddenFor(model => model.Lang)
-                @Html.HiddenFor(model => model.Ip)
-                @Html.HiddenFor(model => model.UserId)
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label", @for = "account-fn" })
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "account-fn" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "col-form-label", @for = "account-ln" })
-                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @id = "account-ln" } })
-                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.IdentityNumber, htmlAttributes: new { @class = "col-form-label" })
-                        @Html.EditorFor(model => model.IdentityNumber, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
-                        <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
-                        @Html.ValidationMessageFor(model => model.IdentityNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.GsmNumber, htmlAttributes: new { @class = "col-form-label", @for = "account-phone" })
-                        @Html.EditorFor(model => model.GsmNumber, new { htmlAttributes = new { @class = "form-control", @id = "account-phone", placeholder = "+90 5XX XXX XX XX" } })
-                        <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
-                        @Html.ValidationMessageFor(model => model.GsmNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "col-form-label" })<br />
-
-                        <label class="me-2">
-                            @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Woman).ToString()) Kadin
-                        </label>
-
-                        <label>
-                            @Html.RadioButtonFor(model => model.Gender, ((int)GenderType.Man).ToString()) Erkek
-                        </label>
-
-                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="hidden" id="SelectedCity" value="@Model.City" />
-                        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-form-label" })
-                        @Html.DropDownListFor(model => model.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
-                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="hidden" id="SelectedTown" value="@Model.Town" />
-                        @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "col-form-label" })
-                        @Html.DropDownListFor(model => model.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
-                        @Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="hidden" id="SelectedDistrict" value="@Model.District" />
-                        @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "col-form-label" })
-                        @Html.DropDownListFor(model => model.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
-                        @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "col-form-label" })
-                        @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "col-form-label" })
-                        @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "col-form-label" })
-                        @Html.DropDownListFor(model => model.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <div>@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-form-label" }) </div>
-                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "", rows = "3" })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <div class="alert alert-secondary" role="alert">
-                            @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <hr class="mt-2 mb-3">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="custom-control custom-checkbox d-block">
-                            @Html.CheckBoxFor(model => model.IsPermissionGranted, new { @class = "custom-control-input", id = "IsPermissionGranted" })
-                            <label class="custom-control-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
-                        </div>
-                        <button class="btn btn-outline-success rounded mb-2 mr-1 btn-block" type="submit" data-bs-toggle="toast" data-bs-target="#profile-toast">@Resource.Update</button>
-                    </div>
-                </div>
-                    }
+                <div class="form-group">
+                    <label class="col-form-label" for="account-email-ro">E-posta</label>
+                    <input id="account-email-ro" class="form-control" type="email" value="@Model.Email" readonly disabled />
                 </div>
             </div>
+        </section>
+
+        <section class="customer-panel__section">
+            <header class="customer-panel__section-head">
+                <h2 class="customer-panel__section-title">@Resource.DeliveryAddress</h2>
+                <p class="customer-panel__section-lead">Siparişlerinizin gönderileceği adres.</p>
+            </header>
+            <div class="customer-panel__grid">
+                <div class="form-group">
+                    <input type="hidden" id="SelectedCity" value="@Model.City" />
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-form-label" })
+                    @Html.DropDownListFor(model => model.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <input type="hidden" id="SelectedTown" value="@Model.Town" />
+                    @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "col-form-label" })
+                    @Html.DropDownListFor(model => model.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
+                    @Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <input type="hidden" id="SelectedDistrict" value="@Model.District" />
+                    @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "col-form-label" })
+                    @Html.DropDownListFor(model => model.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
+                    @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "col-form-label" })
+                    @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control", autocomplete = "street-address" } })
+                    @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "col-form-label" })
+                    @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control", autocomplete = "postal-code" } })
+                    @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "col-form-label" })
+                    @Html.DropDownListFor(model => model.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <details class="customer-address-help mt-2">
+                <summary class="customer-address-help__summary">Adres yazımı için kısa ipucu</summary>
+                <div class="customer-address-help__body">
+                    @Html.Raw(String.Format(Resource.CustomerOpenAddressDescription, @Resource.CustomerOpenAddress))
+                </div>
+            </details>
+        </section>
+
+        <section class="customer-panel__section customer-panel__section--last">
+            <header class="customer-panel__section-head">
+                <h2 class="customer-panel__section-title">@Resource.NotesAndPermissions</h2>
+            </header>
+            <div class="form-group mb-3">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-form-label" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", placeholder = "Teslimat notu veya ek bilgi (isteğe bağlı)" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+            <div class="customer-profile-actions">
+                <div class="custom-control custom-checkbox customer-consent">
+                    @Html.CheckBoxFor(model => model.IsPermissionGranted, new { @class = "custom-control-input", id = "IsPermissionGranted" })
+                    <label class="custom-control-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
+                </div>
+                <button class="btn customer-btn-primary customer-profile-actions__submit" type="submit" data-bs-toggle="toast" data-bs-target="#profile-toast">
+                    <i class="fas fa-check mr-2" aria-hidden="true"></i>
+                    <span>@Resource.Update</span>
+                </button>
+            </div>
+        </section>
+    }
 </div>
 
 @section Scripts {
@@ -181,12 +189,9 @@
     @Scripts.Render("~/bundles/jqueryui")
     <script>
         $(function () {
-            GetIller();
-            $("#datepicker").datepicker({
-                minDate: -20,
-                maxDate: "+1M +15D",
-                dateFormat: 'mm.dd.yy'
-            });
+            if (typeof GetIller === 'function' && $('#Cities').length) {
+                GetIller();
+            }
         });
     </script>
 }

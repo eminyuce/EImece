@@ -1844,7 +1844,9 @@ body[data-design="crizal"] .customer-panel {
 }
 
 body[data-design="crizal"] .customer-panel--narrow {
-    max-width: 640px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 body[data-design="crizal"] .customer-panel__section {
@@ -1991,3 +1993,485 @@ body[data-design="crizal"] .crizal-cta-band__btn--ghost.butn-style8:hover {
         padding: 0.85rem;
     }
 }
+
+/* ==========================================================================
+   CUSTOMER FAQ MODERN STYLES
+   ========================================================================== */
+body[data-design="crizal"] .customer-faq-search-wrapper {
+    background: #f8fafc;
+    border: 1px solid var(--crizal-border);
+    border-radius: var(--crizal-radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+body[data-design="crizal"] .customer-faq-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+body[data-design="crizal"] .customer-faq-search__icon {
+    position: absolute;
+    left: 1.1rem;
+    color: #067a36;
+    font-size: 1.1rem;
+    pointer-events: none;
+    z-index: 2;
+}
+
+body[data-design="crizal"] .customer-faq-search__input {
+    width: 100%;
+    height: 52px;
+    padding: 0.75rem 2.75rem 0.75rem 3rem;
+    font-size: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--crizal-heading);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-faq-search__input:focus {
+    border-color: #067a36;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(6, 122, 54, 0.12);
+}
+
+body[data-design="crizal"] .customer-faq-search__clear {
+    position: absolute;
+    right: 0.85rem;
+    background: #e2e8f0;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.15s ease;
+    z-index: 2;
+}
+
+body[data-design="crizal"] .customer-faq-search__clear:hover {
+    background: #cbd5e1;
+    color: #1e293b;
+}
+
+body[data-design="crizal"] .customer-faq-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+}
+
+body[data-design="crizal"] .customer-faq-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.825rem;
+    font-weight: 500;
+    border-radius: 999px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+body[data-design="crizal"] .customer-faq-chip:hover {
+    border-color: #067a36;
+    color: #067a36;
+    background: #f0fdf4;
+}
+
+body[data-design="crizal"] .customer-faq-chip.is-active {
+    background: #067a36;
+    border-color: #067a36;
+    color: #fff;
+    font-weight: 600;
+}
+
+body[data-design="crizal"] .customer-faq-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+body[data-design="crizal"] .customer-faq-count {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+body[data-design="crizal"] .customer-faq-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+body[data-design="crizal"] .customer-faq-btn-toggle {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #475569;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+body[data-design="crizal"] .customer-faq-btn-toggle:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: var(--crizal-heading);
+}
+
+/* FAQ Card Item */
+body[data-design="crizal"] .customer-faq-item {
+    border: 1px solid var(--crizal-border);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-faq-item:hover {
+    border-color: #bbf7d0;
+    box-shadow: 0 4px 12px rgba(6, 122, 54, 0.06);
+}
+
+body[data-design="crizal"] .customer-faq-item.is-open {
+    border-color: #86efac;
+    box-shadow: 0 6px 16px rgba(6, 122, 54, 0.08);
+}
+
+body[data-design="crizal"] .customer-faq-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.25rem;
+    background: transparent;
+    border: none;
+    text-align: left;
+    color: var(--crizal-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none !important;
+}
+
+body[data-design="crizal"] .customer-faq-item.is-open .customer-faq-toggle {
+    background: #f0fdf4;
+}
+
+body[data-design="crizal"] .customer-faq-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+body[data-design="crizal"] .customer-faq-item.is-open .customer-faq-index {
+    background: #067a36;
+    color: #fff;
+}
+
+body[data-design="crizal"] .customer-faq-title {
+    flex-grow: 1;
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+body[data-design="crizal"] .customer-faq-chevron {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-faq-item.is-open .customer-faq-chevron {
+    transform: rotate(180deg);
+    color: #067a36;
+}
+
+body[data-design="crizal"] .customer-faq-body {
+    padding: 1.15rem 1.25rem 1.35rem 3.5rem;
+    color: #334155;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    border-top: 1px solid #f1f5f9;
+    background: #fff;
+}
+
+@media (max-width: 575.98px) {
+    body[data-design="crizal"] .customer-faq-body {
+        padding: 1rem 1rem 1.25rem 1rem;
+    }
+}
+
+body[data-design="crizal"] .customer-faq-body ul,
+body[data-design="crizal"] .customer-faq-body ol {
+    margin-bottom: 0.5rem;
+    padding-left: 1.25rem;
+}
+
+body[data-design="crizal"] .customer-faq-body li {
+    margin-bottom: 0.35rem;
+}
+
+/* FAQ Help CTA Card */
+body[data-design="crizal"] .customer-faq-help-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: var(--crizal-radius-lg);
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 1px solid #bbf7d0;
+}
+
+body[data-design="crizal"] .customer-faq-help-card__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #14532d;
+    margin-bottom: 0.25rem;
+}
+
+body[data-design="crizal"] .customer-faq-help-card__text {
+    font-size: 0.875rem;
+    color: #166534;
+    margin: 0;
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .customer-faq-help-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Contact Seller Info Panel */
+body[data-design="crizal"] .customer-contact-info-panel {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #067a36;
+    border-radius: var(--crizal-radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.75rem;
+}
+
+body[data-design="crizal"] .customer-contact-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+    flex-wrap: wrap;
+}
+
+body[data-design="crizal"] .customer-contact-info-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+body[data-design="crizal"] .customer-contact-info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #067a36;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-contact-info-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--crizal-heading);
+    margin: 0;
+}
+
+body[data-design="crizal"] .customer-contact-info-link {
+    font-size: 0.825rem;
+    color: #067a36;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+body[data-design="crizal"] .customer-contact-info-link:hover {
+    color: #056b2f;
+    text-decoration: underline;
+}
+
+body[data-design="crizal"] .customer-contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 0.85rem 1.25rem;
+}
+
+body[data-design="crizal"] .customer-contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.86rem;
+    color: #475569;
+    line-height: 1.45;
+}
+
+body[data-design="crizal"] .customer-contact-info-item i {
+    color: #067a36;
+    margin-top: 0.15rem;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+/* --- Customer Alert & Message Styling --- */
+body[data-design="crizal"] .customer-page .alert,
+body[data-design="crizal"] .customer-alert {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 1.1rem 1.35rem;
+    border-radius: var(--crizal-radius-lg, 14px);
+    font-size: 0.925rem;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+body[data-design="crizal"] .customer-page .alert-danger {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+body[data-design="crizal"] .customer-page .alert-danger .customer-alert__icon {
+    color: #dc2626;
+    font-size: 1.25rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-page .alert-success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+body[data-design="crizal"] .customer-page .alert-success .customer-alert__icon {
+    color: #16a34a;
+    font-size: 1.25rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-page .alert-warning {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #92400e;
+}
+
+body[data-design="crizal"] .customer-page .alert-warning .customer-alert__icon {
+    color: #d97706;
+    font-size: 1.25rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-page .alert-info {
+    background: #f0f9ff;
+    border-color: #bae6fd;
+    color: #0369a1;
+}
+
+body[data-design="crizal"] .customer-page .alert-info .customer-alert__icon {
+    color: #0284c7;
+    font-size: 1.25rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+body[data-design="crizal"] .customer-alert__content {
+    flex: 1;
+    padding-right: 1.75rem;
+}
+
+body[data-design="crizal"] .customer-alert__title {
+    display: block;
+    font-weight: 700;
+    font-size: 0.98rem;
+    margin-bottom: 0.2rem;
+}
+
+body[data-design="crizal"] .customer-page .alert .btn-close,
+body[data-design="crizal"] .customer-page .alert .close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    color: inherit;
+    opacity: 0.5;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    transition: opacity 0.15s ease;
+}
+
+body[data-design="crizal"] .customer-page .alert .btn-close:hover,
+body[data-design="crizal"] .customer-page .alert .close:hover {
+    opacity: 1;
+    background: transparent;
+}
+
+body[data-design="crizal"] .validation-summary-errors {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    border-radius: var(--crizal-radius-md, 10px);
+    padding: 0.85rem 1.15rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+body[data-design="crizal"] .validation-summary-errors ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+
+

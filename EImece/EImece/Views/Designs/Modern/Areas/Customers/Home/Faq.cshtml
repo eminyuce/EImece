@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
@@ -9,89 +9,266 @@
 @model SendMessageToSellerViewModel
 
 @{
-    var SendButtonText = Resource.SendButtonText;
+    ViewBag.Title = Resource.Faq;
+    var faqs = Model.Faqs ?? new List<FaqSummaryDto>();
 }
 
-<!-- Add Bootstrap Icons CDN at the top of the view -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
+    @Html.Partial("_CustomerSummaryDetails", Model.Customer)
 
-<!-- Page Content-->
-<div class="container pt-lg-3 pb-5 mb-sm-3">
-    <!-- Toast notifications-->
-    <div class="toast-container toast-bottom-center">
-        <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-success text-white">
-                <i class="mr-2" data-feather="check-circle" style="width: 1.25rem; height: 1.25rem;"></i><span class="font-weight-semibold me-auto">@Resource.Updated!</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">Ã—</span></button>
-            </div>
-            <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
-        </div>
-    </div>
-    <div class="row pt-1">
-        <!-- Main content-->
-        <div class="col-lg-12">
-            @Html.Partial("_CustomerSummaryDetails", Model.Customer)
-            <div class="row">
-                <div class="col-md-12">
-                    @Html.Raw(Resource.QuestionAboutItemForCustomer)
-                    @if (Model.Faqs.IsNotEmpty())
+    <div class="customer-panel">
+        <section class="customer-panel__section customer-panel__section--last">
+            <header class="customer-panel__section-head">
+                <h2 class="customer-panel__section-title">
+                    <i class="fas fa-question-circle mr-2 text-primary" aria-hidden="true"></i>
+                    @Resource.FrequentlyAskedQuestions
+                </h2>
+                <p class="customer-panel__section-lead">Sipariş, kargo, teslimat, iade ve hesap işlemleri hakkında sıkça sorulan sorular.</p>
+            </header>
+
+            @if (faqs.Count > 0)
+            {
+                <!-- Search & Quick Filters -->
+                <div class="customer-faq-search-wrapper">
+                    <div class="customer-faq-search">
+                        <i class="fas fa-search customer-faq-search__icon" aria-hidden="true"></i>
+                        <input type="text"
+                               id="faqSearchInput"
+                               class="customer-faq-search__input"
+                               placeholder="Sorularda ara... (örn: kargo, iade, fatura, ödeme, iptal)"
+                               autocomplete="off"
+                               aria-label="Sıkça sorulan sorularda ara" />
+                        <button type="button"
+                                id="faqSearchClear"
+                                class="customer-faq-search__clear d-none"
+                                title="Aramayı temizle"
+                                aria-label="Aramayı temizle">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div class="customer-faq-chips" id="faqCategoryChips">
+                        <button type="button" class="customer-faq-chip is-active" data-filter="">
+                            <i class="fas fa-layer-group mr-1" aria-hidden="true"></i> Tümü
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="kargo teslimat">
+                            <i class="fas fa-truck mr-1" aria-hidden="true"></i> Kargo & Teslimat
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="iade değişim">
+                            <i class="fas fa-undo mr-1" aria-hidden="true"></i> İade & Değişim
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="ödeme taksit fatura">
+                            <i class="fas fa-credit-card mr-1" aria-hidden="true"></i> Ödeme & Fatura
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="sipariş iptal">
+                            <i class="fas fa-box mr-1" aria-hidden="true"></i> Sipariş & İptal
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="şifre üyelik hesap">
+                            <i class="fas fa-user-shield mr-1" aria-hidden="true"></i> Üyelik & Güvenlik
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Toolbar: Result count & Expand/Collapse All -->
+                <div class="customer-faq-toolbar">
+                    <span class="customer-faq-count" id="faqCountLabel">
+                        Toplam <strong>@faqs.Count</strong> soru listeleniyor
+                    </span>
+                    <div class="customer-faq-actions">
+                        <button type="button" class="customer-faq-btn-toggle" id="btnExpandAll">
+                            <i class="fas fa-chevron-down mr-1" aria-hidden="true"></i> Tümünü Aç
+                        </button>
+                        <button type="button" class="customer-faq-btn-toggle" id="btnCollapseAll">
+                            <i class="fas fa-chevron-up mr-1" aria-hidden="true"></i> Tümünü Kapat
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Accordion List -->
+                <div class="customer-faq-list" id="faqList">
+                    @{ int index = 1; }
+                    @foreach (FaqSummaryDto faq in faqs)
                     {
-                        <section class="container pt-4 pb-5 mt-3">
-                            <h3 class="text-center pb-2">@Resource.FrequentlyAskedQuestions</h3>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="accordion" id="faqAccordion">
-                                        @{ int index = 1; }
-                                        @foreach (FaqSummaryDto faq in Model.Faqs)
-                                        {
-                                            <div class="card mb-3">
-                                                <div class="card-header" id="heading-@faq.Id">
-                                                    <h5 class="mb-0 d-flex align-items-center text-primary">
-                                                        <span class="toggle-indicator mr-2 text-primary">
-                                                            <span class="plus"><i class="bi bi-plus-circle"></i></span>
-                                                            <span class="minus" style="display: none;"><i class="bi bi-dash-circle"></i></span>
-                                                        </span>
-                                                        <button class="btn btn-link text-decoration-none flex-grow-1 text-left collapsed text-primary"
-                                                                type="button"
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#collapse-@faq.Id"
-                                                                aria-expanded="false"
-                                                                aria-controls="collapse-@faq.Id">
-                                                            @String.Format("{0}) {1}", index, faq.Question)
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapse-@faq.Id" class="collapse" aria-labelledby="heading-@faq.Id" data-parent="#faqAccordion">
-                                                    <div class="card-body">
-                                                        @Html.Raw(faq.Answer)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            index++;
-                                        }
-                                    </div>
+                        var searchIndexData = (faq.Question + " " + faq.Answer).ToLowerInvariant();
+                        <div class="customer-faq-item"
+                             id="faq-item-@faq.Id"
+                             data-search="@searchIndexData">
+                            <button class="customer-faq-toggle"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-@faq.Id"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-@faq.Id">
+                                <span class="customer-faq-index" aria-hidden="true">@index</span>
+                                <span class="customer-faq-title">@faq.Question</span>
+                                <i class="fas fa-chevron-down customer-faq-chevron" aria-hidden="true"></i>
+                            </button>
+                            <div id="collapse-@faq.Id" class="collapse">
+                                <div class="customer-faq-body">
+                                    @Html.Raw(faq.Answer)
                                 </div>
                             </div>
-                        </section>
+                        </div>
+                        index++;
                     }
                 </div>
-            </div>
-        </div>
+
+                <!-- Empty Search State -->
+                <div id="faqNoResults" class="customer-orders-empty text-center py-5 px-3 d-none">
+                    <div class="customer-orders-empty__icon mb-3" aria-hidden="true">
+                        <i class="fas fa-search fa-2x text-muted"></i>
+                    </div>
+                    <h3 class="customer-orders-empty__title h5 mb-2">Aramanıza uygun soru bulunamadı</h3>
+                    <p class="customer-orders-empty__text text-muted mb-3">Farklı anahtar kelimeler deneyebilir veya filtreyi temizleyebilirsiniz.</p>
+                    <button type="button" class="btn customer-btn-primary" id="btnResetSearch">
+                        <i class="fas fa-redo mr-2" aria-hidden="true"></i> Filtreyi Temizle
+                    </button>
+                </div>
+
+                <!-- Help CTA Card -->
+                <div class="customer-faq-help-card">
+                    <div>
+                        <h3 class="customer-faq-help-card__title">
+                            <i class="fas fa-headset mr-2" aria-hidden="true"></i>
+                            Aradığınız sorunun cevabını bulamadınız mı?
+                        </h3>
+                        <p class="customer-faq-help-card__text">
+                            Siparişiniz veya ürünleriniz ile ilgili doğrudan bizimle iletişime geçebilirsiniz.
+                        </p>
+                    </div>
+                    <a href="@Url.Action("SendMessageToSeller", "Home", new { area = "customers" })" class="btn customer-btn-primary text-nowrap">
+                        <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+                        <span>@Resource.SendMessageToSeller</span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="customer-orders-empty text-center py-5 px-3">
+                    <div class="customer-orders-empty__icon mb-3" aria-hidden="true">
+                        <i class="fas fa-question fa-2x"></i>
+                    </div>
+                    <h3 class="customer-orders-empty__title h5 mb-2">Henüz SSS eklenmemiş</h3>
+                    <p class="customer-orders-empty__text text-muted mb-4">Sorularınız için satıcıya doğrudan mesaj gönderebilirsiniz.</p>
+                    <a href="@Url.Action("SendMessageToSeller", "Home", new { area = "customers" })" class="btn customer-btn-primary">
+                        <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+                        <span>@Resource.SendMessageToSeller</span>
+                    </a>
+                </div>
+            }
+        </section>
     </div>
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            $('.collapse').on('show.bs.collapse', function () {
-                $(this).closest('.card').find('.toggle-indicator .plus').hide();
-                $(this).closest('.card').find('.toggle-indicator .minus').show();
+            var $searchInput = $('#faqSearchInput');
+            var $clearBtn = $('#faqSearchClear');
+            var $faqItems = $('.customer-faq-item');
+            var $countLabel = $('#faqCountLabel');
+            var $noResults = $('#faqNoResults');
+            var totalCount = $faqItems.length;
+
+            // Update item open/close visual state
+            $faqItems.find('.collapse').on('show.bs.collapse', function () {
+                $(this).closest('.customer-faq-item').addClass('is-open');
+            });
+            $faqItems.find('.collapse').on('hide.bs.collapse', function () {
+                $(this).closest('.customer-faq-item').removeClass('is-open');
             });
 
-            $('.collapse').on('hide.bs.collapse', function () {
-                $(this).closest('.card').find('.toggle-indicator .minus').hide();
-                $(this).closest('.card').find('.toggle-indicator .plus').show();
+            function filterFaqs() {
+                var query = ($searchInput.val() || '').trim().toLowerCase();
+                var activeChipFilter = ($('#faqCategoryChips .customer-faq-chip.is-active').data('filter') || '').trim().toLowerCase();
+                var visibleCount = 0;
+
+                if (query.length > 0) {
+                    $clearBtn.removeClass('d-none');
+                } else {
+                    $clearBtn.addClass('d-none');
+                }
+
+                $faqItems.each(function () {
+                    var $item = $(this);
+                    var itemData = ($item.data('search') || '').toString();
+                    var matchQuery = true;
+                    var matchCategory = true;
+
+                    if (query.length > 0) {
+                        var terms = query.split(/\s+/);
+                        for (var i = 0; i < terms.length; i++) {
+                            if (terms[i] && itemData.indexOf(terms[i]) === -1) {
+                                matchQuery = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (activeChipFilter.length > 0) {
+                        var catTerms = activeChipFilter.split(/\s+/);
+                        var anyCatMatch = false;
+                        for (var j = 0; j < catTerms.length; j++) {
+                            if (catTerms[j] && itemData.indexOf(catTerms[j]) !== -1) {
+                                anyCatMatch = true;
+                                break;
+                            }
+                        }
+                        matchCategory = anyCatMatch;
+                    }
+
+                    if (matchQuery && matchCategory) {
+                        $item.removeClass('d-none');
+                        visibleCount++;
+                        if (query.length >= 3) {
+                            $item.find('.collapse').collapse('show');
+                        }
+                    } else {
+                        $item.addClass('d-none');
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    $noResults.removeClass('d-none');
+                    $countLabel.html('Eşleşen soru bulunamadı');
+                } else {
+                    $noResults.addClass('d-none');
+                    $countLabel.html('Toplam <strong>' + visibleCount + '</strong> / ' + totalCount + ' soru listeleniyor');
+                }
+            }
+
+            // Realtime search
+            $searchInput.on('input keyup', function () {
+                filterFaqs();
+            });
+
+            // Clear search
+            $clearBtn.on('click', function () {
+                $searchInput.val('').focus();
+                filterFaqs();
+            });
+
+            $('#btnResetSearch').on('click', function () {
+                $searchInput.val('');
+                $('#faqCategoryChips .customer-faq-chip').removeClass('is-active');
+                $('#faqCategoryChips .customer-faq-chip[data-filter=""]').addClass('is-active');
+                filterFaqs();
+            });
+
+            // Chip clicks
+            $('#faqCategoryChips').on('click', '.customer-faq-chip', function () {
+                $('#faqCategoryChips .customer-faq-chip').removeClass('is-active');
+                $(this).addClass('is-active');
+                filterFaqs();
+            });
+
+            // Expand all / Collapse all
+            $('#btnExpandAll').on('click', function () {
+                $faqItems.filter(':not(.d-none)').find('.collapse').collapse('show');
+            });
+
+            $('#btnCollapseAll').on('click', function () {
+                $faqItems.filter(':not(.d-none)').find('.collapse').collapse('hide');
             });
         });
     </script>

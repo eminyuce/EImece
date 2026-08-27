@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
@@ -10,73 +10,80 @@
     var SendButtonText = Resource.SendButtonText;
 }
 
-@using (Html.BeginForm("SendSellerMessage", "Home", FormMethod.Post, new { @class = "customer-contact-form" }))
+@using (Html.BeginForm("SendSellerMessage", "Home", new { area = "customers" }, FormMethod.Post, new { @class = "customer-contact-form" }))
 {
-@Html.AntiForgeryToken()
-@Html.HiddenFor(model => model.ContactFormType)
-@Html.HiddenFor(model => model.ItemId)
-@Html.HiddenFor(model => model.ItemType)
-<div class="form-horizontal">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ContactFormType)
+    @Html.HiddenFor(model => model.ItemId)
+    @Html.HiddenFor(model => model.ItemType)
 
-    @Html.ValidationSummary(true, "", new { @class = "alert alert-success" })
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-    <div class="form-group">
-        <label class="col-form-label col-md-2" for="Reasons">@Resource.SelectReasonsLabel</label>
-        <div class="col-md-10">
+    <div class="customer-panel__grid">
+        <div class="form-group">
+            <label class="col-form-label font-weight-semibold" for="Reasons">
+                <i class="fas fa-tag mr-1 text-primary" aria-hidden="true"></i>
+                @Resource.SelectReasonsLabel
+            </label>
             @Html.DropDownListFor(model => model.Reasons,
                      GetReasonsSelectList(),
                      Resource.SelectReason,
                      new { @class = "form-control", id = "Reasons" })
             @Html.ValidationMessageFor(model => model.Reasons, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = Resource.ContactUsName } })
+        <div class="form-group">
+            <label class="col-form-label font-weight-semibold" for="OrderNumber">
+                <i class="fas fa-receipt mr-1 text-primary" aria-hidden="true"></i>
+                @Resource.OrderNumber
+            </label>
+            @Html.EditorFor(model => model.OrderNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Örn: 10425 (Varsa)", @id = "OrderNumber" } })
+            @Html.ValidationMessageFor(model => model.OrderNumber, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label class="col-form-label font-weight-semibold" for="ContactName">
+                <i class="fas fa-user mr-1 text-primary" aria-hidden="true"></i>
+                @Resource.ContactUsName
+            </label>
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = Resource.ContactUsName, @id = "ContactName" } })
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-form-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Resource.ContactUsEmail } })
+        <div class="form-group">
+            <label class="col-form-label font-weight-semibold" for="ContactEmail">
+                <i class="fas fa-envelope mr-1 text-primary" aria-hidden="true"></i>
+                @Resource.ContactUsEmail
+            </label>
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Resource.ContactUsEmail, @id = "ContactEmail" } })
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "col-form-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = Resource.ContactUsPhone } })
+        <div class="form-group">
+            <label class="col-form-label font-weight-semibold" for="ContactPhone">
+                <i class="fas fa-phone mr-1 text-primary" aria-hidden="true"></i>
+                @Resource.ContactUsPhone
+            </label>
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 5XX XXX XX XX", @id = "ContactPhone" } })
             @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-form-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.OrderNumber, new { htmlAttributes = new { @class = "form-control", placeholder = Resource.OrderNumber } })
-            @Html.ValidationMessageFor(model => model.OrderNumber, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group mt-3 mb-4">
+        <label class="col-form-label font-weight-semibold" for="ContactMessage">
+            <i class="fas fa-comment mr-1 text-primary" aria-hidden="true"></i>
+            @Resource.ContactUsMessage
+        </label>
+        @Html.TextAreaFor(model => model.Message, new { @rows = "5", @class = "form-control", placeholder = "Mesajınızı buraya yazınız...", @id = "ContactMessage" })
+        @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "col-form-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Message, new { @rows = "5", @class = "form-control", placeholder = Resource.ContactUsMessage })
-            @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
-        </div>
+    <div class="customer-profile-actions customer-profile-actions--end">
+        <button type="submit" class="btn customer-btn-primary customer-profile-actions__submit">
+            <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+            <span>@SendButtonText</span>
+        </button>
     </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn customer-btn-primary btn-block">@SendButtonText</button>
-        </div>
-    </div>
-</div>
 }
 
 @functions {

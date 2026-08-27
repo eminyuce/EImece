@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
@@ -10,6 +10,7 @@
 
 @{
     ViewBag.Title = Resource.Faq;
+    var faqs = Model.Faqs ?? new List<FaqSummaryDto>();
 }
 
 <div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
@@ -18,40 +19,92 @@
     <div class="customer-panel">
         <section class="customer-panel__section customer-panel__section--last">
             <header class="customer-panel__section-head">
-                <h2 class="customer-panel__section-title">@Resource.FrequentlyAskedQuestions</h2>
-                <p class="customer-panel__section-lead">SipariÅŸ, teslimat ve hesap iÅŸlemleri hakkÄ±nda sÄ±k sorulan sorular.</p>
+                <h2 class="customer-panel__section-title">
+                    <i class="fas fa-question-circle mr-2 text-primary" aria-hidden="true"></i>
+                    @Resource.FrequentlyAskedQuestions
+                </h2>
+                <p class="customer-panel__section-lead">Sipariş, kargo, teslimat, iade ve hesap işlemleri hakkında sıkça sorulan sorular.</p>
             </header>
 
-            @if (!string.IsNullOrWhiteSpace(Resource.QuestionAboutItemForCustomer))
+            @if (faqs.Count > 0)
             {
-                <div class="customer-faq-intro">
-                    @Html.Raw(Resource.QuestionAboutItemForCustomer)
-                </div>
-            }
+                <!-- Search & Quick Filters -->
+                <div class="customer-faq-search-wrapper">
+                    <div class="customer-faq-search">
+                        <i class="fas fa-search customer-faq-search__icon" aria-hidden="true"></i>
+                        <input type="text"
+                               id="faqSearchInput"
+                               class="customer-faq-search__input"
+                               placeholder="Sorularda ara... (örn: kargo, iade, fatura, ödeme, iptal)"
+                               autocomplete="off"
+                               aria-label="Sıkça sorulan sorularda ara" />
+                        <button type="button"
+                                id="faqSearchClear"
+                                class="customer-faq-search__clear d-none"
+                                title="Aramayı temizle"
+                                aria-label="Aramayı temizle">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
 
-            @if (Model.Faqs.IsNotEmpty())
-            {
-                <div class="customer-faq accordion" id="faqAccordion">
+                    <div class="customer-faq-chips" id="faqCategoryChips">
+                        <button type="button" class="customer-faq-chip is-active" data-filter="">
+                            <i class="fas fa-layer-group mr-1" aria-hidden="true"></i> Tümü
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="kargo teslimat">
+                            <i class="fas fa-truck mr-1" aria-hidden="true"></i> Kargo & Teslimat
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="iade değişim">
+                            <i class="fas fa-undo mr-1" aria-hidden="true"></i> İade & Değişim
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="ödeme taksit fatura">
+                            <i class="fas fa-credit-card mr-1" aria-hidden="true"></i> Ödeme & Fatura
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="sipariş iptal">
+                            <i class="fas fa-box mr-1" aria-hidden="true"></i> Sipariş & İptal
+                        </button>
+                        <button type="button" class="customer-faq-chip" data-filter="şifre üyelik hesap">
+                            <i class="fas fa-user-shield mr-1" aria-hidden="true"></i> Üyelik & Güvenlik
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Toolbar: Result count & Expand/Collapse All -->
+                <div class="customer-faq-toolbar">
+                    <span class="customer-faq-count" id="faqCountLabel">
+                        Toplam <strong>@faqs.Count</strong> soru listeleniyor
+                    </span>
+                    <div class="customer-faq-actions">
+                        <button type="button" class="customer-faq-btn-toggle" id="btnExpandAll">
+                            <i class="fas fa-chevron-down mr-1" aria-hidden="true"></i> Tümünü Aç
+                        </button>
+                        <button type="button" class="customer-faq-btn-toggle" id="btnCollapseAll">
+                            <i class="fas fa-chevron-up mr-1" aria-hidden="true"></i> Tümünü Kapat
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Accordion List -->
+                <div class="customer-faq-list" id="faqList">
                     @{ int index = 1; }
-                    @foreach (FaqSummaryDto faq in Model.Faqs)
+                    @foreach (FaqSummaryDto faq in faqs)
                     {
-                        <div class="customer-faq__item card">
-                            <div class="customer-faq__header card-header" id="heading-@faq.Id">
-                                <h3 class="customer-faq__question mb-0">
-                                    <button class="customer-faq__toggle btn btn-link collapsed"
-                                            type="button"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#collapse-@faq.Id"
-                                            aria-expanded="false"
-                                            aria-controls="collapse-@faq.Id">
-                                        <span class="customer-faq__index" aria-hidden="true">@index</span>
-                                        <span class="customer-faq__text">@faq.Question</span>
-                                        <i class="fas fa-chevron-down customer-faq__chevron" aria-hidden="true"></i>
-                                    </button>
-                                </h3>
-                            </div>
-                            <div id="collapse-@faq.Id" class="collapse" aria-labelledby="heading-@faq.Id" data-parent="#faqAccordion">
-                                <div class="customer-faq__body card-body">
+                        var searchIndexData = (faq.Question + " " + faq.Answer).ToLowerInvariant();
+                        <div class="customer-faq-item"
+                             id="faq-item-@faq.Id"
+                             data-search="@searchIndexData">
+                            <button class="customer-faq-toggle"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-@faq.Id"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-@faq.Id">
+                                <span class="customer-faq-index" aria-hidden="true">@index</span>
+                                <span class="customer-faq-title">@faq.Question</span>
+                                <i class="fas fa-chevron-down customer-faq-chevron" aria-hidden="true"></i>
+                            </button>
+                            <div id="collapse-@faq.Id" class="collapse">
+                                <div class="customer-faq-body">
                                     @Html.Raw(faq.Answer)
                                 </div>
                             </div>
@@ -59,16 +112,49 @@
                         index++;
                     }
                 </div>
+
+                <!-- Empty Search State -->
+                <div id="faqNoResults" class="customer-orders-empty text-center py-5 px-3 d-none">
+                    <div class="customer-orders-empty__icon mb-3" aria-hidden="true">
+                        <i class="fas fa-search fa-2x text-muted"></i>
+                    </div>
+                    <h3 class="customer-orders-empty__title h5 mb-2">Aramanıza uygun soru bulunamadı</h3>
+                    <p class="customer-orders-empty__text text-muted mb-3">Farklı anahtar kelimeler deneyebilir veya filtreyi temizleyebilirsiniz.</p>
+                    <button type="button" class="btn customer-btn-primary" id="btnResetSearch">
+                        <i class="fas fa-redo mr-2" aria-hidden="true"></i> Filtreyi Temizle
+                    </button>
+                </div>
+
+                <!-- Help CTA Card -->
+                <div class="customer-faq-help-card">
+                    <div>
+                        <h3 class="customer-faq-help-card__title">
+                            <i class="fas fa-headset mr-2" aria-hidden="true"></i>
+                            Aradığınız sorunun cevabını bulamadınız mı?
+                        </h3>
+                        <p class="customer-faq-help-card__text">
+                            Siparişiniz veya ürünleriniz ile ilgili doğrudan bizimle iletişime geçebilirsiniz.
+                        </p>
+                    </div>
+                    <a href="@Url.Action("SendMessageToSeller", "Home", new { area = "customers" })" class="btn customer-btn-primary text-nowrap">
+                        <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+                        <span>@Resource.SendMessageToSeller</span>
+                    </a>
+                </div>
             }
             else
             {
-                <output class="customer-orders-empty text-center py-5 px-3 d-block">
-                    <div class="customer-orders-empty__icon" aria-hidden="true">
-                        <i class="fas fa-question"></i>
+                <div class="customer-orders-empty text-center py-5 px-3">
+                    <div class="customer-orders-empty__icon mb-3" aria-hidden="true">
+                        <i class="fas fa-question fa-2x"></i>
                     </div>
-                    <h3 class="customer-orders-empty__title h5 mb-2">HenÃ¼z SSS eklenmemiÅŸ</h3>
-                    <p class="customer-orders-empty__text text-muted mb-0">SorularÄ±nÄ±z iÃ§in satÄ±cÄ±ya mesaj gÃ¶nderebilirsiniz.</p>
-                </output>
+                    <h3 class="customer-orders-empty__title h5 mb-2">Henüz SSS eklenmemiş</h3>
+                    <p class="customer-orders-empty__text text-muted mb-4">Sorularınız için satıcıya doğrudan mesaj gönderebilirsiniz.</p>
+                    <a href="@Url.Action("SendMessageToSeller", "Home", new { area = "customers" })" class="btn customer-btn-primary">
+                        <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+                        <span>@Resource.SendMessageToSeller</span>
+                    </a>
+                </div>
             }
         </section>
     </div>
@@ -77,13 +163,114 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#faqAccordion').on('show.bs.collapse', function (e) {
-                $(e.target).closest('.customer-faq__item').addClass('is-open');
+            var $searchInput = $('#faqSearchInput');
+            var $clearBtn = $('#faqSearchClear');
+            var $faqItems = $('.customer-faq-item');
+            var $countLabel = $('#faqCountLabel');
+            var $noResults = $('#faqNoResults');
+            var totalCount = $faqItems.length;
+
+            // Update item open/close visual state
+            $faqItems.find('.collapse').on('show.bs.collapse', function () {
+                $(this).closest('.customer-faq-item').addClass('is-open');
             });
-            $('#faqAccordion').on('hide.bs.collapse', function (e) {
-                $(e.target).closest('.customer-faq__item').removeClass('is-open');
+            $faqItems.find('.collapse').on('hide.bs.collapse', function () {
+                $(this).closest('.customer-faq-item').removeClass('is-open');
+            });
+
+            function filterFaqs() {
+                var query = ($searchInput.val() || '').trim().toLowerCase();
+                var activeChipFilter = ($('#faqCategoryChips .customer-faq-chip.is-active').data('filter') || '').trim().toLowerCase();
+                var visibleCount = 0;
+
+                if (query.length > 0) {
+                    $clearBtn.removeClass('d-none');
+                } else {
+                    $clearBtn.addClass('d-none');
+                }
+
+                $faqItems.each(function () {
+                    var $item = $(this);
+                    var itemData = ($item.data('search') || '').toString();
+                    var matchQuery = true;
+                    var matchCategory = true;
+
+                    if (query.length > 0) {
+                        var terms = query.split(/\s+/);
+                        for (var i = 0; i < terms.length; i++) {
+                            if (terms[i] && itemData.indexOf(terms[i]) === -1) {
+                                matchQuery = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (activeChipFilter.length > 0) {
+                        var catTerms = activeChipFilter.split(/\s+/);
+                        var anyCatMatch = false;
+                        for (var j = 0; j < catTerms.length; j++) {
+                            if (catTerms[j] && itemData.indexOf(catTerms[j]) !== -1) {
+                                anyCatMatch = true;
+                                break;
+                            }
+                        }
+                        matchCategory = anyCatMatch;
+                    }
+
+                    if (matchQuery && matchCategory) {
+                        $item.removeClass('d-none');
+                        visibleCount++;
+                        // Auto-expand if specific text query searched
+                        if (query.length >= 3) {
+                            $item.find('.collapse').collapse('show');
+                        }
+                    } else {
+                        $item.addClass('d-none');
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    $noResults.removeClass('d-none');
+                    $countLabel.html('Eşleşen soru bulunamadı');
+                } else {
+                    $noResults.addClass('d-none');
+                    $countLabel.html('Toplam <strong>' + visibleCount + '</strong> / ' + totalCount + ' soru listeleniyor');
+                }
+            }
+
+            // Realtime search
+            $searchInput.on('input keyup', function () {
+                filterFaqs();
+            });
+
+            // Clear search
+            $clearBtn.on('click', function () {
+                $searchInput.val('').focus();
+                filterFaqs();
+            });
+
+            $('#btnResetSearch').on('click', function () {
+                $searchInput.val('');
+                $('#faqCategoryChips .customer-faq-chip').removeClass('is-active');
+                $('#faqCategoryChips .customer-faq-chip[data-filter=""]').addClass('is-active');
+                filterFaqs();
+            });
+
+            // Chip clicks
+            $('#faqCategoryChips').on('click', '.customer-faq-chip', function () {
+                $('#faqCategoryChips .customer-faq-chip').removeClass('is-active');
+                $(this).addClass('is-active');
+                filterFaqs();
+            });
+
+            // Expand all / Collapse all
+            $('#btnExpandAll').on('click', function () {
+                $faqItems.filter(':not(.d-none)').find('.collapse').collapse('show');
+            });
+
+            $('#btnCollapseAll').on('click', function () {
+                $faqItems.filter(':not(.d-none)').find('.collapse').collapse('hide');
             });
         });
     </script>
 }
-
