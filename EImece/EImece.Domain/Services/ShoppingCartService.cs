@@ -27,15 +27,15 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private IOrderService OrderService;
+        private readonly IOrderService OrderService;
 
-        private ICustomerService CustomerService;
+        private readonly ICustomerService CustomerService;
 
-        private IAddressService AddressService;
+        private readonly IAddressService AddressService;
 
-        private IOrderProductService OrderProductService;
+        private readonly IOrderProductService OrderProductService;
 
-        private IProductService ProductService;
+        private readonly IProductService ProductService;
 
         private IShoppingCartRepository ShoppingCartRepository { get; set; }
 

@@ -1662,7 +1662,7 @@ namespace EImece.Domain.Helpers
         // Existing fields and properties
 
         private bool _disposed = false;
-        private List<IDisposable> _disposableResources = new List<IDisposable>();
+        private readonly List<IDisposable> _disposableResources = new List<IDisposable>();
 
         // Track resources created by this class that need disposal
         private void TrackResource(IDisposable resource)

@@ -18,7 +18,7 @@ namespace EImece.Domain.Repositories
     public class StoryRepository : BaseContentRepository<Story>, IStoryRepository
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private IEImeceContext dbContext;
+        private readonly IEImeceContext dbContext;
 
         public StoryRepository(IEImeceContext dbContext) : base(dbContext)
         {

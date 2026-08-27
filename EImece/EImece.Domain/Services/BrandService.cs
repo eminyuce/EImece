@@ -13,9 +13,7 @@ namespace EImece.Domain.Services
 {
     public class BrandService : BaseContentService<Brand>, IBrandService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private IBrandRepository BrandRepository;
+        private readonly IBrandRepository BrandRepository;
 
         public BrandService(IBrandRepository repository) : base(repository)
         {

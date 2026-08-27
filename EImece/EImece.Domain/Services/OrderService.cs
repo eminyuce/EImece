@@ -25,7 +25,7 @@ namespace EImece.Domain.Services
 
         private readonly IOrderProductService OrderProductService;
 
-        private ICustomerService CustomerService;
+        private readonly ICustomerService CustomerService;
 
         [Inject]
         public IAddressService AddressService { get; set; }

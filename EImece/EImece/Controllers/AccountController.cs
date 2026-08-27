@@ -51,7 +51,7 @@ namespace EImece.Controllers
         [Inject]
         public TwoFactorTokenService TwoFactorTokenService { get; set; }
 
-        private ICustomerService CustomerService;
+        private readonly ICustomerService CustomerService;
 
         public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager, ICustomerService customerService)

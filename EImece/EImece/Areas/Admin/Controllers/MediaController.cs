@@ -27,7 +27,7 @@ namespace EImece.Areas.Admin.Controllers
         private const string IndexAction = "Index";
         private const string ContentIdKey = "contentId";
         private const string ImageTypeKey = "imageType";
-        private FilesHelper filesHelper;
+        private readonly FilesHelper filesHelper;
 
         protected IFileStorageService FileStorageService { get; }
         protected IStoryService StoryService { get; }
