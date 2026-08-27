@@ -11,7 +11,7 @@ namespace EImece.Domain.Caching
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string PhysicalKeyPrefix = "Memory:";
-        private MemoryCache _cache = MemoryCache.Default;
+        private readonly MemoryCache _cache = MemoryCache.Default;
 
         public bool Get<T>(string key, out T value)
         {

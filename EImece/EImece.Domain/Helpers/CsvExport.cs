@@ -32,7 +32,7 @@ namespace EImece.Domain.Helpers
         /// <summary>
         /// To keep the ordered list of column names
         /// </summary>
-        private List<string> _fields = new List<string>();
+        private readonly List<string> _fields = new List<string>();
 
         /// <summary>
         /// The list of rows

@@ -11,11 +11,11 @@ namespace EImece.Domain.Helpers
 {
     public class CategoryFilterHelper
     {
-        private List<CategoryFilterType> categoryFilterTypes;
-        private List<string> selectedFilters;
-        private Setting priceFilterSetting;
-        private Models.DTOs.SettingDto priceFilterSettingDto;
-        private Models.DTOs.Storefront.SettingValueDto priceFilterSettingValueDto;
+        private readonly List<CategoryFilterType> categoryFilterTypes;
+        private readonly List<string> selectedFilters;
+        private readonly Setting priceFilterSetting;
+        private readonly Models.DTOs.SettingDto priceFilterSettingDto;
+        private readonly Models.DTOs.Storefront.SettingValueDto priceFilterSettingValueDto;
 
         public CategoryFilterHelper(Setting priceFilterSetting)
         {

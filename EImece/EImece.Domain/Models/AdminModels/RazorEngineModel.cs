@@ -5,7 +5,7 @@ namespace EImece.Domain.Models.AdminModels
 {
     public class RazorEngineModel
     {
-        private Dictionary<string, string> _params = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _params = new Dictionary<string, string>();
 
         public RazorEngineModel()
         {

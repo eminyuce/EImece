@@ -10,7 +10,7 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private IOrderProductRepository OrderProductRepository;
+        private readonly IOrderProductRepository OrderProductRepository;
 
         public OrderProductService(IOrderProductRepository repository) : base(repository)
         {

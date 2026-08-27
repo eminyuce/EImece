@@ -16,7 +16,7 @@ namespace EImece.Domain.Helpers
         /// <summary>
         /// This reader will read all of the CSV data
         /// </summary>
-        private BinaryReader reader;
+        private readonly BinaryReader reader;
 
         /// <summary>
         /// The number of rows to scan for types when building a DataTable (0 to scan the whole file)
