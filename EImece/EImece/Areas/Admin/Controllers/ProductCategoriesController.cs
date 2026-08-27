@@ -106,10 +106,29 @@ namespace EImece.Areas.Admin.Controllers
         {
             var resultListItem = new List<SelectListItem>();
             resultListItem.Add(new SelectListItem() { Text = AdminResource.MakeItRootCategory, Value = "0" });
-            foreach (var item in await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage))
+
+            var tree = await ProductCategoryService.BuildTreeAsync(null, CurrentLanguage);
+            var flat = new List<ProductCategoryTreeModel>();
+            void Flatten(ProductCategoryTreeModel node)
+            {
+                flat.Add(node);
+                if (node.Childrens != null)
+                {
+                    foreach (var child in node.Childrens) Flatten(child);
+                }
+            }
+            foreach (var top in tree) Flatten(top);
+
+            var trComparer = StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), true);
+            var sorted = flat
+                .OrderBy(m => m.ProductCategory.Position)
+                .ThenBy(m => m.ProductCategory.Name.ToStr(), trComparer)
+                .ThenBy(m => m.ProductCategory.Id)
+                .ToList();
+
+            foreach (var item in sorted)
             {
                 resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.ProductCategory.Id.ToStr() });
-                GetProductCategoryChildrenTreeDropDownList(resultListItem, item);
             }
 
             return resultListItem;
@@ -130,10 +149,11 @@ namespace EImece.Areas.Admin.Controllers
         private async Task<List<SelectListItem>> GetTemplatesDropDownAsync(CancellationToken cancellationToken)
         {
             var templates = await TemplateService.GetActiveBaseEntitiesAsync(true, CurrentLanguage, cancellationToken);
-
+            var trComparer = StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), true);
+            var sorted = templates.OrderBy(t => t.Name.ToStr(), trComparer).ThenBy(t => t.Id).ToList();
             var resultListItem = new List<SelectListItem>();
             resultListItem.Add(new SelectListItem() { Text = AdminResource.SelectTemplate, Value = "0" });
-            foreach (var item in templates)
+            foreach (var item in sorted)
             {
                 resultListItem.Add(new SelectListItem() { Text = item.Name, Value = item.Id.ToStr() });
             }

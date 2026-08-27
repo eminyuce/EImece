@@ -48,14 +48,18 @@
             <div class="form-group row mb-3">
                 @Html.LabelFor(model => model.SecondCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.SecondCategoryId, productCategoryDropDownList, new { @class = "form-select" })
+                    <div class="admin-brand-combobox" data-searchable-combobox data-placeholder="Kategori seçin" data-entity-name="kategori" data-sort="position-name">
+                        @Html.DropDownListFor(model => model.SecondCategoryId, productCategoryDropDownList, new { @class = "form-select", data_searchable_select = "true" })
+                    </div>
                     @Html.ValidationMessageFor(model => model.SecondCategoryId, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group row mb-3">
                 @Html.LabelFor(model => model.FirstCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => model.FirstCategoryId, productCategoryDropDownList, new { @class = "form-select" })
+                    <div class="admin-brand-combobox" data-searchable-combobox data-placeholder="Kategori seçin" data-entity-name="kategori" data-sort="position-name">
+                        @Html.DropDownListFor(model => model.FirstCategoryId, productCategoryDropDownList, new { @class = "form-select", data_searchable_select = "true" })
+                    </div>
                     @Html.ValidationMessageFor(model => model.FirstCategoryId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -69,3 +73,159 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            initSearchableCombobox();
+            function simpleNormalize(str) {
+                if (!str) return "";
+                return str.replace(/\u0130/g, "i").replace(/I/g, "\u0131").toLowerCase().trim();
+            }
+function initSearchableCombobox() {
+                var $combos = $("[data-brand-combobox], [data-searchable-combobox]");
+                if (!$combos.length) return;
+                $combos.each(function () {
+                    var $combo = $(this);
+                    var $select = $combo.find("select[data-brand-select], select[data-searchable-select]");
+                    if (!$select.length) $select = $combo.find("select");
+                    if (!$select.length) return;
+                    var entityName = $combo.attr("data-entity-name") || "marka";
+                    var emptyText = "Aramanızla eşleşen " + entityName + " bulunamadı.";
+                    var options = [];
+                    $select.find("option").each(function () {
+                        var $o = $(this);
+                        options.push({ value: $o.attr("value") || "", text: ($o.text() || "").trim(), isPlaceholder: ($o.attr("value") || "") === "" });
+                    });
+                    if (options.length === 0) return;
+                    var rawPlaceholder = $combo.attr("data-placeholder");
+                    var placeholder = rawPlaceholder || (options[0].isPlaceholder ? options[0].text : "Seçin");
+                    var searchPlaceholder = entityName === "marka" ? "Marka ara..." : entityName === "kategori" ? "Kategori ara..." : entityName + " ara...";
+                    var sortMode = $combo.attr("data-sort") || "name";
+                    var placeholderOpt = null;
+                    var brandOptions = [];
+                    options.forEach(function (o) { if (o.isPlaceholder) placeholderOpt = o; else brandOptions.push(o); });
+                    if (sortMode !== "position-name") {
+                        try { brandOptions.sort(function (a, b) { return a.text.localeCompare(b.text, 'tr', { sensitivity: 'base' }); }); }
+                        catch (e) { brandOptions.sort(function (a, b) { var at = simpleNormalize(a.text), bt = simpleNormalize(b.text); return at < bt ? -1 : at > bt ? 1 : 0; }); }
+                        if (brandOptions.length) {
+                            var initialSel = $select.val() || "";
+                            $select.find("option").not('[value=""]').remove();
+                            brandOptions.forEach(function (o) { $select.append($('<option></option>').attr('value', o.value).text(o.text)); });
+                            if (initialSel) $select.val(initialSel);
+                        }
+                        options = placeholderOpt ? [placeholderOpt].concat(brandOptions) : brandOptions;
+                    } else {
+                        options = placeholderOpt ? [placeholderOpt].concat(brandOptions) : brandOptions;
+                    }
+                    $select.addClass("d-none");
+                    var $control = $('<div class="admin-brand-combobox__control"></div>');
+                    var $display = $('<button type="button" class="form-select admin-brand-combobox__display d-flex justify-content-between align-items-center" aria-haspopup="listbox" aria-expanded="false"></button>');
+                    var $displayText = $('<span class="admin-brand-combobox__display-text text-truncate"></span>');
+                    var $displayIcon = $('<i class="fa fa-chevron-down ms-2 flex-shrink-0"></i>');
+                    $display.append($displayText).append($displayIcon);
+                    $control.append($display);
+                    var $dropdown = $('<div class="admin-brand-combobox__dropdown" role="listbox"></div>');
+                    var $searchWrap = $('<div class="admin-brand-combobox__search-wrap"></div>');
+                    var $search = $('<input type="text" class="form-control admin-brand-combobox__search" autocomplete="off" />');
+                    $search.attr("placeholder", searchPlaceholder); $search.attr("aria-label", searchPlaceholder);
+                    var $searchIcon = $('<i class="fa fa-search" aria-hidden="true"></i>');
+                    var $clearFilter = $('<button type="button" class="admin-brand-combobox__search-clear" tabindex="-1" aria-label="Filtreyi temizle" title="Filtreyi temizle"><i class="fa fa-times"></i></button>');
+                    $searchWrap.append($searchIcon).append($search).append($clearFilter);
+                    var $meta = $('<div class="admin-brand-combobox__meta"><span class="admin-brand-combobox__count"></span><span class="admin-brand-combobox__hint">Yazarak filtrele</span></div>');
+                    var $list = $('<div class="admin-brand-combobox__list"></div>');
+                    var $empty = $('<div class="admin-brand-combobox__empty d-none"><i class="fa fa-search"></i><div>' + emptyText + '</div></div>');
+                    $dropdown.append($searchWrap).append($meta).append($list).append($empty);
+                    $combo.append($control).append($dropdown);
+                    if (placeholderOpt) {
+                        var $phItem = $('<button type="button" class="admin-brand-combobox__item admin-brand-combobox__item--placeholder" role="option"></button>');
+                        $phItem.attr("data-value", placeholderOpt.value); $phItem.attr("data-text", placeholderOpt.text); $phItem.attr("data-norm", simpleNormalize(placeholderOpt.text));
+                        $phItem.append($('<span class="admin-brand-combobox__item-label"></span>').text(placeholderOpt.text));
+                        $phItem.append($('<i class="fa fa-times admin-brand-combobox__item-check" aria-hidden="true"></i>'));
+                        $list.append($phItem);
+                    }
+                    brandOptions.forEach(function (opt) {
+                        var $item = $('<button type="button" class="admin-brand-combobox__item" role="option"></button>');
+                        $item.attr("data-value", opt.value); $item.attr("data-text", opt.text); $item.attr("data-norm", simpleNormalize(opt.text));
+                        $item.append($('<span class="admin-brand-combobox__item-label"></span>').text(opt.text));
+                        $item.append($('<i class="fa fa-check admin-brand-combobox__item-check" aria-hidden="true"></i>'));
+                        $list.append($item);
+                    });
+                    var $items = $list.find(".admin-brand-combobox__item");
+                    var totalCount = $items.length;
+                    function getSelectedValue() { return $select.val() || ""; }
+                    function syncFromSelect() {
+                        var v = getSelectedValue();
+                        $items.removeClass("is-selected");
+                        var $sel = $items.filter('[data-value="' + v.replace(/"/g, '\\"') + '"]');
+                        if ($sel.length) { $sel.addClass("is-selected"); }
+                        var displayText = "";
+                        if (v === "" && placeholderOpt) displayText = placeholderOpt.text;
+                        else {
+                            var $o = $select.find('option[value="' + v.replace(/"/g, '\\"') + '"]');
+                            displayText = $o.length ? $o.text().trim() : (placeholderOpt ? placeholderOpt.text : placeholder);
+                        }
+                        if (!displayText) displayText = placeholder;
+                        $displayText.text(displayText);
+                        $display.attr("title", displayText);
+                        updateCount($items.filter(":not(.is-hidden)").length);
+                        if ($combo.hasClass("is-open") && $sel.length) {
+                            var listTop = $list.scrollTop(); var itemTop = $sel.position().top + listTop;
+                            if (itemTop < listTop || itemTop > listTop + $list.height() - $sel.outerHeight()) $list.scrollTop(itemTop - $list.height()/2);
+                        }
+                    }
+                    function updateCount(visible) {
+                        $meta.find(".admin-brand-combobox__count").text(visible + " / " + totalCount + " " + entityName);
+                        if (visible === 0 && totalCount > 0) { $empty.removeClass("d-none"); $meta.addClass("d-none"); } else { $empty.addClass("d-none"); $meta.removeClass("d-none"); }
+                    }
+                    function filterList(term) {
+                        var norm = simpleNormalize(term); var visible = 0;
+                        if (!norm) { $items.removeClass("is-hidden"); visible = totalCount; }
+                        else { $items.each(function () { var $it = $(this); var match = ($it.attr("data-norm") || "").indexOf(norm) !== -1; $it.toggleClass("is-hidden", !match); if (match) visible++; }); }
+                        $items.removeClass("is-highlighted"); if (visible > 0) $items.filter(":not(.is-hidden)").first().addClass("is-highlighted"); updateCount(visible);
+                    }
+                    function openDropdown() {
+                        if ($combo.hasClass("is-open")) return;
+                        $combo.addClass("is-open"); $display.attr("aria-expanded", "true");
+                        $search.trigger("focus");
+                    }
+                    function closeDropdown() {
+                        if (!$combo.hasClass("is-open")) return;
+                        $combo.removeClass("is-open"); $display.attr("aria-expanded", "false");
+                        $items.removeClass("is-highlighted");
+                    }
+                    function selectValue(val) {
+                        $select.val(val); $select.trigger("change"); if ($select.valid) { try { $select.valid(); } catch (e) { } }
+                        syncFromSelect();
+                        $search.val(""); filterList("");
+                        closeDropdown();
+                    }
+                    syncFromSelect(); filterList("");
+                    $display.on("click", function (e) { e.preventDefault(); if ($combo.hasClass("is-open")) closeDropdown(); else openDropdown(); });
+                    $search.on("input", function () { filterList($(this).val()); });
+                    $clearFilter.on("click", function (e) { e.preventDefault(); $search.val(""); filterList(""); $search.trigger("focus"); });
+                    $search.on("keydown", function (e) {
+                        if (e.key === "Escape") { e.preventDefault(); if ($combo.hasClass("is-open")) closeDropdown(); else { $search.val(""); filterList(""); } return; }
+                        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                            e.preventDefault(); var $visible = $items.filter(":not(.is-hidden)"); if (!$visible.length) return;
+                            var $cur = $visible.filter(".is-highlighted"); var idx = $visible.index($cur);
+                            if (e.key === "ArrowDown") idx = idx < $visible.length - 1 ? idx + 1 : 0; else idx = idx > 0 ? idx - 1 : $visible.length - 1;
+                            $visible.removeClass("is-highlighted"); var $next = $visible.eq(idx).addClass("is-highlighted");
+                            var listTop = $list.scrollTop(); var listH = $list.height(); var itemTop = $next.position().top + listTop; var itemH = $next.outerHeight(true);
+                            if (itemTop < listTop) $list.scrollTop(itemTop); else if (itemTop + itemH > listTop + listH) $list.scrollTop(itemTop + itemH - listH);
+                        } else if (e.key === "Enter") {
+                            var $hl = $items.filter(".is-highlighted:not(.is-hidden)");
+                            if ($hl.length) { e.preventDefault(); selectValue($hl.attr("data-value")); }
+                            else { var $vis = $items.filter(":not(.is-hidden)"); if ($vis.length === 1) { e.preventDefault(); selectValue($vis.attr("data-value")); } }
+                        }
+                    });
+                    $list.on("click", ".admin-brand-combobox__item", function (e) { e.preventDefault(); selectValue($(this).attr("data-value")); });
+                    $list.on("mousemove", ".admin-brand-combobox__item", function () { $items.removeClass("is-highlighted"); $(this).addClass("is-highlighted"); });
+                    $(document).on("mousedown.brandCombo", function (e) { if (!$combo.has(e.target).length) closeDropdown(); });
+                    $select.on("change.brandComboSync", function () { syncFromSelect(); });
+                });
+            }
+        });
+    </script>
+}

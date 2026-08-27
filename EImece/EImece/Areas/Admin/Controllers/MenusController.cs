@@ -106,10 +106,30 @@ namespace EImece.Areas.Admin.Controllers
         {
             var resultListItem = new List<SelectListItem>();
             resultListItem.Add(new SelectListItem() { Text = AdminResource.MakeItRootCategory, Value = "0" });
-            foreach (var item in await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken))
+
+            var tree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
+            // Flatten tree for searchable dropdown and sort by ordering (Position) then name (TR collation)
+            var flat = new List<MenuTreeModel>();
+            void Flatten(MenuTreeModel node)
+            {
+                flat.Add(node);
+                if (node.Childrens != null)
+                {
+                    foreach (var child in node.Childrens) Flatten(child);
+                }
+            }
+            foreach (var top in tree) Flatten(top);
+
+            var trComparer = StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), true);
+            var sorted = flat
+                .OrderBy(m => m.Menu.Position)
+                .ThenBy(m => m.Menu.Name.ToStr(), trComparer)
+                .ThenBy(m => m.Menu.Id)
+                .ToList();
+
+            foreach (var item in sorted)
             {
                 resultListItem.Add(new SelectListItem() { Text = item.TextWithArrow, Value = item.Menu.Id.ToStr() });
-                GetMenuTreeChildrenDropDownList(resultListItem, item);
             }
 
             return resultListItem;

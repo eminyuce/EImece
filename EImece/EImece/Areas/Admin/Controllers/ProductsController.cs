@@ -433,12 +433,15 @@ namespace EImece.Areas.Admin.Controllers
 
         private async Task<List<SelectListItem>> GetBrandsSelectListAsync()
         {
-            var tagCategories = (await BrandService.GetAllAsync()).Where(r => r.IsActive && r.Lang == CurrentLanguage).OrderBy(r => r.Position).ToList();
-            return tagCategories.Select(r => new SelectListItem()
-            {
-                Text = r.Name.ToStr(),
-                Value = r.Id.ToStr()
-            }).ToList();
+            var brands = (await BrandService.GetAllAsync()).Where(r => r.IsActive && r.Lang == CurrentLanguage).ToList();
+            // Sort alphabetically by name for searchable combobox; fallback to Position for stable order when names equal.
+            return brands.OrderBy(r => r.Name.ToStr(), StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), true))
+                .ThenBy(r => r.Position)
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name.ToStr(),
+                    Value = r.Id.ToStr()
+                }).ToList();
         }
 
         private static void ApplyPostedProductPrices(Product product)

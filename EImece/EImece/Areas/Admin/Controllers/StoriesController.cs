@@ -69,7 +69,11 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
         {
             var content = EntityFactory.GetBaseContentInstance<Story>();
-            ViewBag.Categories = await StoryCategoryService.GetActiveBaseContentsAsync(true, CurrentLanguage, cancellationToken);
+            var categories = await StoryCategoryService.GetActiveBaseContentsAsync(true, CurrentLanguage, cancellationToken);
+            ViewBag.Categories = categories
+                .OrderBy(c => c.Name.ToStr(), StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), true))
+                .ThenBy(c => c.Position)
+                .ToList();
 
             if (id == 0)
             {
@@ -127,7 +131,11 @@ namespace EImece.Areas.Admin.Controllers
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, story);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
-            ViewBag.Categories = await StoryCategoryService.GetActiveBaseContentsAsync(null, 1);
+            var cats = await StoryCategoryService.GetActiveBaseContentsAsync(null, CurrentLanguage);
+            ViewBag.Categories = cats
+                .OrderBy(c => c.Name.ToStr(), StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), true))
+                .ThenBy(c => c.Position)
+                .ToList();
 
             RemoveModelState();
 
