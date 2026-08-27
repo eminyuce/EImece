@@ -84,6 +84,58 @@ namespace EImece.Controllers
             return Content(JsonConvert.SerializeObject(publicPayload), "application/json");
         }
 
+        /*
+         * 
+         * 
+         * 
+         * Since SonarQube can return more than 500 issues, the best approach is to paginate the API and save everything to a JSON file.
+
+PowerShell — download all issues
+
+Run this from PowerShell:
+         * 
+         * $baseUrl = "http://localhost:9000"
+$project = "Eimece"
+$token = "YOUR_NEW_TOKEN"
+
+$allIssues = @()
+$page = 1
+$pageSize = 500
+
+do {
+    Write-Host "Fetching page $page..."
+
+    $headers = @{
+        Authorization = "Bearer $token"
+    }
+
+    $url = "$baseUrl/api/issues/search?componentKeys=$project&ps=$pageSize&p=$page"
+
+    $response = Invoke-RestMethod `
+        -Uri $url `
+        -Headers $headers `
+        -Method Get
+
+    if ($response.issues) {
+        $allIssues += $response.issues
+        Write-Host "Retrieved $($response.issues.Count) issues. Total: $($allIssues.Count)"
+    }
+
+    $page++
+}
+while ($allIssues.Count -lt $response.total)
+
+$output = "sonarqube-issues.json"
+
+$allIssues |
+    ConvertTo-Json -Depth 20 |
+    Set-Content -Path $output -Encoding UTF8
+
+Write-Host ""
+Write-Host "Downloaded $($allIssues.Count) issues."
+Write-Host "Saved to: $((Get-Location).Path)\$output"
+        */
+
         // ============================================================
         // ASP.NET MVC 5 - Precompiled Deployment / IIS Publish
         // ============================================================
