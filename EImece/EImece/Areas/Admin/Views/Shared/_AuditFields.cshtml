@@ -74,19 +74,19 @@
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-3">
-                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.CreatedDate</label>
+                <div class="form-label fw-bold small text-muted mb-1" aria-hidden="true">@AdminResource.CreatedDate</div>
                 <div class="form-control-plaintext py-1">@createdDateStr</div>
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.UpdatedDate</label>
+                <div class="form-label fw-bold small text-muted mb-1" aria-hidden="true">@AdminResource.UpdatedDate</div>
                 <div class="form-control-plaintext py-1">@updatedDateStr</div>
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.CreatedBy</label>
+                <div class="form-label fw-bold small text-muted mb-1" aria-hidden="true">@AdminResource.CreatedBy</div>
                 <div class="form-control-plaintext py-1" title="@(addUserId ?? "")">@addUserName</div>
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-bold small text-muted mb-1">@AdminResource.UpdatedBy</label>
+                <div class="form-label fw-bold small text-muted mb-1" aria-hidden="true">@AdminResource.UpdatedBy</div>
                 <div class="form-control-plaintext py-1" title="@(updateUserId ?? "")">@updateUserName</div>
             </div>
         </div>

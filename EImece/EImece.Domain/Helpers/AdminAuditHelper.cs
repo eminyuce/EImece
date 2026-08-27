@@ -22,67 +22,54 @@ namespace EImece.Domain.Helpers
                     return userIdOrName;
                 }
 
-                EImece.Domain.Services.ApplicationUser user = null;
-
-                // Try by Id first (sync)
-                try
-                {
-                    user = usersService.GetUser(userIdOrName);
-                }
-                catch
-                {
-                    // ignore
-                }
-
-                // Try by email / userName via async helper (blocking)
-                if (user == null)
-                {
-                    try
-                    {
-                        user = Task.Run(() => usersService.GetUserByEmailOrUserNameAsync(userIdOrName)).GetAwaiter().GetResult();
-                    }
-                    catch
-                    {
-                        // ignore
-                    }
-                }
-
-                // Try by Id async as fallback
-                if (user == null)
-                {
-                    try
-                    {
-                        user = Task.Run(() => usersService.GetUserAsync(userIdOrName)).GetAwaiter().GetResult();
-                    }
-                    catch
-                    {
-                        // ignore
-                    }
-                }
-
-                if (user != null)
-                {
-                    var fullName = $"{user.FirstName} {user.LastName}".Trim();
-                    if (!string.IsNullOrWhiteSpace(fullName))
-                    {
-                        return fullName;
-                    }
-                    if (!string.IsNullOrWhiteSpace(user.Email))
-                    {
-                        return user.Email;
-                    }
-                    if (!string.IsNullOrWhiteSpace(user.UserName))
-                    {
-                        return user.UserName;
-                    }
-                }
-
-                return userIdOrName;
+                var user = ResolveUser(usersService, userIdOrName);
+                var displayName = ResolveDisplayName(user);
+                return displayName ?? userIdOrName;
             }
             catch
             {
                 return string.IsNullOrWhiteSpace(userIdOrName) ? AdminResource.UnknownUser : userIdOrName;
             }
+        }
+
+        private static EImece.Domain.Services.ApplicationUser ResolveUser(EImece.Domain.Services.IServices.IUsersService usersService, string userIdOrName)
+        {
+            var user = TryGetUserById(usersService, userIdOrName);
+            if (user != null) return user;
+
+            user = TryGetUserByEmailOrUserName(usersService, userIdOrName);
+            if (user != null) return user;
+
+            return TryGetUserAsync(usersService, userIdOrName);
+        }
+
+        private static EImece.Domain.Services.ApplicationUser TryGetUserById(EImece.Domain.Services.IServices.IUsersService usersService, string userIdOrName)
+        {
+            try { return usersService.GetUser(userIdOrName); }
+            catch { return null; }
+        }
+
+        private static EImece.Domain.Services.ApplicationUser TryGetUserByEmailOrUserName(EImece.Domain.Services.IServices.IUsersService usersService, string userIdOrName)
+        {
+            try { return Task.Run(() => usersService.GetUserByEmailOrUserNameAsync(userIdOrName)).GetAwaiter().GetResult(); }
+            catch { return null; }
+        }
+
+        private static EImece.Domain.Services.ApplicationUser TryGetUserAsync(EImece.Domain.Services.IServices.IUsersService usersService, string userIdOrName)
+        {
+            try { return Task.Run(() => usersService.GetUserAsync(userIdOrName)).GetAwaiter().GetResult(); }
+            catch { return null; }
+        }
+
+        private static string ResolveDisplayName(EImece.Domain.Services.ApplicationUser user)
+        {
+            if (user == null) return null;
+
+            var fullName = $"{user.FirstName} {user.LastName}".Trim();
+            if (!string.IsNullOrWhiteSpace(fullName)) return fullName;
+            if (!string.IsNullOrWhiteSpace(user.Email)) return user.Email;
+            if (!string.IsNullOrWhiteSpace(user.UserName)) return user.UserName;
+            return null;
         }
 
         public static string FormatAuditDate(DateTime date)

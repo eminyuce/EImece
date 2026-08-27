@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace EImece.Domain.Helpers.AttributeHelper
@@ -21,15 +22,7 @@ namespace EImece.Domain.Helpers.AttributeHelper
             }
 
             var roles = UserRoleHelper.GetDeletedRoles();
-            bool isAllowed = false;
-            foreach (var role in roles)
-            {
-                if (currentUser.IsInRole(role))
-                {
-                    isAllowed = true;
-                    break;
-                }
-            }
+            bool isAllowed = roles.Any(role => currentUser.IsInRole(role));
 
             if (!isAllowed)
             {

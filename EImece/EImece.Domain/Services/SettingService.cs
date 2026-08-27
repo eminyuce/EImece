@@ -644,43 +644,33 @@ namespace EImece.Domain.Services
         public async Task<SettingModel> GetSettingModelAsync(int language)
         {
             var result = new SettingModel();
-
             Type type = result.GetType();
             List<Setting> Settings = (await GetAllSettingsAsync().ConfigureAwait(false))
                 .Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            // Loop over properties.
+            var allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
-                // Get name.
-                string name = propertyInfo.Name;
-
-                // Get value on the target instance.
-
-                var setting = Settings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-                if (setting == null && GeneralSettingsManagedKeys.Contains(name, StringComparer.InvariantCultureIgnoreCase))
-                {
-                    // Company & contact settings were historically stored by the system settings page
-                    // without a language / AdminSetting description. Fall back to a key-only lookup.
-                    setting = (await GetAllSettingsAsync().ConfigureAwait(false)).FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-                }
-                if (setting != null)
-                {
-                    if (propertyInfo.PropertyType == typeof(int))
-                    {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToInt(), null);
-                    }
-                    if (propertyInfo.PropertyType == typeof(string))
-                    {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToStr(), null);
-                    }
-                    if (propertyInfo.PropertyType == typeof(bool))
-                    {
-                        propertyInfo.SetValue(result, setting.SettingValue.ToBool(), null);
-                    }
-                }
+                var setting = ResolveSettingForModel(Settings, allSettings, propertyInfo.Name, language);
+                if (setting != null) ApplySettingValue(result, propertyInfo, setting.SettingValue);
             }
-
             return result;
+        }
+
+        private static Setting ResolveSettingForModel(List<Setting> settings, List<Setting> allSettings, string name, int language)
+        {
+            var setting = settings.FirstOrDefault(r => r.Lang == language && r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            if (setting == null && GeneralSettingsManagedKeys.Contains(name, StringComparer.InvariantCultureIgnoreCase))
+            {
+                setting = allSettings.FirstOrDefault(r => r.SettingKey.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            }
+            return setting;
+        }
+
+        private static void ApplySettingValue(object target, PropertyInfo propertyInfo, string value)
+        {
+            if (propertyInfo.PropertyType == typeof(int)) propertyInfo.SetValue(target, value.ToInt(), null);
+            else if (propertyInfo.PropertyType == typeof(string)) propertyInfo.SetValue(target, value.ToStr(), null);
+            else if (propertyInfo.PropertyType == typeof(bool)) propertyInfo.SetValue(target, value.ToBool(), null);
         }
 
         public void SaveSettingModel(SettingModel settingModel, int lang)

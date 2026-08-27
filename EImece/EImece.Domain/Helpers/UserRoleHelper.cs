@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 
 namespace EImece.Domain.Helpers
@@ -15,14 +16,7 @@ namespace EImece.Domain.Helpers
             }
 
             var roles = GetDeletedRoles();
-            foreach (var role in roles)
-            {
-                if (user.IsInRole(role))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return roles.Any(role => user.IsInRole(role));
         }
 
         public static bool IsAdminManagementRoles()

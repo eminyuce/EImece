@@ -14,6 +14,12 @@ namespace EImece.Domain.Services
         private readonly SqlConnection _connection;
         private bool _disposed = false;
 
+        private const string ParamStartDate = "@StartDate";
+        private const string ParamEndDate = "@EndDate";
+        private const string ParamUserId = "@UserId";
+        private const string ParamTableName = "@TableName";
+        private const string ParamActionType = "@ActionType";
+
         public ReportService() : this(GetConnectionStringFromConfig())
         {
         }
@@ -479,14 +485,14 @@ namespace EImece.Domain.Services
 
         #region User Audit Reports
 
-        public DataTable GetUserAuditSummaryReport(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null)
+        public static DataTable GetUserAuditSummaryReport(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null)
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+                DatabaseUtility.GetSqlParameter(ParamStartDate, (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamEndDate, (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamUserId, string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamTableName, string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
             };
 
             return DatabaseUtility.ExecuteDataTable(
@@ -500,23 +506,23 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+                DatabaseUtility.GetSqlParameter(ParamStartDate, (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamEndDate, (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamUserId, string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamTableName, string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
             };
 
             return ExecuteDataTableStoredProcAsync("sp_GetUserAuditSummaryReport", parameterList.ToArray(), cancellationToken);
         }
 
-        public DataTable GetUserAuditMonthlyBreakdown(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null)
+        public static DataTable GetUserAuditMonthlyBreakdown(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null)
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+                DatabaseUtility.GetSqlParameter(ParamStartDate, (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamEndDate, (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamUserId, string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamTableName, string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
             };
 
             return DatabaseUtility.ExecuteDataTable(
@@ -530,24 +536,24 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
+                DatabaseUtility.GetSqlParameter(ParamStartDate, (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamEndDate, (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamUserId, string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamTableName, string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar)
             };
 
             return ExecuteDataTableStoredProcAsync("sp_GetUserAuditMonthlyBreakdown", parameterList.ToArray(), cancellationToken);
         }
 
-        public DataTable GetUserAuditDetailedRecords(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null, string actionType = null)
+        public static DataTable GetUserAuditDetailedRecords(DateTime? startDate = null, DateTime? endDate = null, string userId = null, string tableName = null, string actionType = null)
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@ActionType", string.IsNullOrWhiteSpace(actionType) ? (object)DBNull.Value : actionType.Trim(), SqlDbType.NVarChar)
+                DatabaseUtility.GetSqlParameter(ParamStartDate, (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamEndDate, (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamUserId, string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamTableName, string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamActionType, string.IsNullOrWhiteSpace(actionType) ? (object)DBNull.Value : actionType.Trim(), SqlDbType.NVarChar)
             };
 
             return DatabaseUtility.ExecuteDataTable(
@@ -561,17 +567,17 @@ namespace EImece.Domain.Services
         {
             var parameterList = new List<SqlParameter>
             {
-                DatabaseUtility.GetSqlParameter("@StartDate", (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@EndDate", (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
-                DatabaseUtility.GetSqlParameter("@UserId", string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@TableName", string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar),
-                DatabaseUtility.GetSqlParameter("@ActionType", string.IsNullOrWhiteSpace(actionType) ? (object)DBNull.Value : actionType.Trim(), SqlDbType.NVarChar)
+                DatabaseUtility.GetSqlParameter(ParamStartDate, (object)startDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamEndDate, (object)endDate ?? DBNull.Value, SqlDbType.DateTime),
+                DatabaseUtility.GetSqlParameter(ParamUserId, string.IsNullOrWhiteSpace(userId) ? (object)DBNull.Value : userId.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamTableName, string.IsNullOrWhiteSpace(tableName) ? (object)DBNull.Value : tableName.Trim(), SqlDbType.NVarChar),
+                DatabaseUtility.GetSqlParameter(ParamActionType, string.IsNullOrWhiteSpace(actionType) ? (object)DBNull.Value : actionType.Trim(), SqlDbType.NVarChar)
             };
 
             return ExecuteDataTableStoredProcAsync("sp_GetUserAuditDetailedRecords", parameterList.ToArray(), cancellationToken);
         }
 
-        public DataTable GetAuditUsersList()
+        public static DataTable GetAuditUsersList()
         {
             return DatabaseUtility.ExecuteDataTable(
                 "sp_GetAuditUsersList",
@@ -584,7 +590,7 @@ namespace EImece.Domain.Services
             return ExecuteDataTableStoredProcAsync("sp_GetAuditUsersList", null, cancellationToken);
         }
 
-        public DataTable GetAuditTablesList()
+        public static DataTable GetAuditTablesList()
         {
             return DatabaseUtility.ExecuteDataTable(
                 "sp_GetAuditTablesList",

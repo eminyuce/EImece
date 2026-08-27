@@ -242,8 +242,8 @@
             <h2>@AdminResource.UserAuditReport</h2>
             <p>@AdminResource.ReportUserAuditDesc</p>
         </div>
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="@AdminResource.ExportToExcel">
                 <i class="fa fa-download" aria-hidden="true"></i> @AdminResource.ExportToExcel
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -375,19 +375,19 @@
 
     <!-- Tabs Navigation -->
     <ul class="nav nav-tabs audit-nav-tabs" id="auditTabs" role="tablist">
-        <li class="nav-item" role="presentation">
+        <li class="nav-item">
             <button class="nav-link @(Model.ActiveTab == "summary" || string.IsNullOrEmpty(Model.ActiveTab) ? "active" : "")" id="summary-tab" data-bs-toggle="tab" data-bs-target="#tab-summary" type="button" role="tab" aria-controls="tab-summary" aria-selected="true" data-tab-name="summary">
-                <i class="fa fa-user me-1"></i> @AdminResource.ReportByUser
+                <i class="fa fa-user" aria-hidden="true"></i> @AdminResource.ReportByUser
             </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item">
             <button class="nav-link @(Model.ActiveTab == "monthly" ? "active" : "")" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#tab-monthly" type="button" role="tab" aria-controls="tab-monthly" aria-selected="false" data-tab-name="monthly">
-                <i class="fa fa-calendar me-1"></i> @AdminResource.MonthlyBreakdown
+                <i class="fa fa-calendar" aria-hidden="true"></i> @AdminResource.MonthlyBreakdown
             </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item">
             <button class="nav-link @(Model.ActiveTab == "detailed" ? "active" : "")" id="detailed-tab" data-bs-toggle="tab" data-bs-target="#tab-detailed" type="button" role="tab" aria-controls="tab-detailed" aria-selected="false" data-tab-name="detailed">
-                <i class="fa fa-list-alt me-1"></i> @AdminResource.DetailedRecords
+                <i class="fa fa-list-alt" aria-hidden="true"></i> @AdminResource.DetailedRecords
             </button>
         </li>
     </ul>

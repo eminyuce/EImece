@@ -109,6 +109,17 @@ namespace EImece.Areas.Admin.Controllers
         protected bool IsProductPriceEnabled =>
             SettingService.GetSettingByKey(DomainConstants.IsProductPriceEnable).ToBool(true);
 
+        private static void SetGriddlyDefaultPageSize(int pageSize)
+        {
+            GriddlySettings.DefaultPageSize = pageSize;
+        }
+
+        private static void SetDefaultCultures(CultureInfo culture)
+        {
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var uiLang = AdminPanelUILanguage;
@@ -116,15 +127,14 @@ namespace EImece.Areas.Admin.Controllers
             var culture = CultureInfo.GetCultureInfo(cultureName);
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            SetDefaultCultures(culture);
             AdminResource.Culture = culture;
             Resource.Culture = culture;
 
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
             int gridPageSize = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
             ViewBag.GridPageSizeNumber = gridPageSize;
-            GriddlySettings.DefaultPageSize = gridPageSize;
+            SetGriddlyDefaultPageSize(gridPageSize);
             ViewBag.CurrentLanguage = CurrentLanguage;
 
             if (!IsProductPriceEnabled)
