@@ -368,7 +368,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="accordion-heading">
-                            <a href="#productInfo" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
+                            <a href="#productInfo" data-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
                                 <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                     <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
                                 </span>@Resource.ProductInformation
@@ -414,7 +414,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
+                                <a class="collapsed" href="#shippingOptions" data-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                         <i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i>
                                     </span>@Resource.ShippingOptions
@@ -436,7 +436,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
+                                <a class="collapsed" href="#tagCloud" data-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                         <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
                                     </span>@Resource.Tags
@@ -704,7 +704,7 @@
                         {
                             <div class="font-size-sm font-weight-semibold mb-2">@item.Key stars - <span class="text-muted">@item.Value.Count</span></div>
                             <div class="progress mb-3" style="height: 2px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-warning" style="width: @item.Value.Percentage%" aria-valuenow="@item.Value.Percentage" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         }
                     }
