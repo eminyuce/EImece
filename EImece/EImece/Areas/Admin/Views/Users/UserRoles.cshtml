@@ -64,7 +64,7 @@
 
                     @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-                    <div class="user-roles-list" aria-label="@AdminResource.Roles">
+                    <div class="user-roles-list" role="group" aria-label="@AdminResource.Roles">
                         @Html.EditorFor(model => model.Roles)
                     </div>
                 </div>

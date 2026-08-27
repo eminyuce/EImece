@@ -29,7 +29,7 @@
     var systemOpen = groupOpen(new[] { "mailtemplates", "settings", "adminsettings", "users" })
         || (string.Equals(currentController, "dashboard", StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "systemhealth", StringComparison.OrdinalIgnoreCase));
 }
-<aside class="admin-sidebar" id="adminSidebar" aria-label="@AdminResource.AdminNavigation" data-collapsed="false">
+<aside class="admin-sidebar" id="adminSidebar" role="navigation" aria-label="@AdminResource.AdminNavigation" data-collapsed="false">
     <div class="admin-sidebar-brand">
         <a href="@Url.Action("Index", "Dashboard", new { area = "admin" })" title="@companyNameSetting">
             <i class="fa fa-cubes" aria-hidden="true"></i>
