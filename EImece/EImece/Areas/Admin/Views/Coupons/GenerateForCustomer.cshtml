@@ -15,38 +15,38 @@
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group row mb-3">
-            <label class="col-form-label col-md-2">@AdminResource.BaseCode</label>
+            <label class="col-form-label col-md-2" for="baseCode">@AdminResource.BaseCode</label>
             <div class="col-md-10">
-                <input type="text" name="baseCode" class="form-control" placeholder="@AdminResource.BaseCodePlaceholder" />
+                <input type="text" name="baseCode" id="baseCode" class="form-control" placeholder="@AdminResource.BaseCodePlaceholder" />
             </div>
         </div>
         <div class="form-group row mb-3">
-            <label class="col-form-label col-md-2">@AdminResource.Discount</label>
+            <label class="col-form-label col-md-2" for="discount">@AdminResource.Discount</label>
             <div class="col-md-4">
-                <input type="number" name="discount" class="form-control" value="0" />
+                <input type="number" name="discount" id="discount" class="form-control" value="0" />
             </div>
-            <label class="col-form-label col-md-2">@AdminResource.DiscountPercentage</label>
+            <label class="col-form-label col-md-2" for="discountPercentage">@AdminResource.DiscountPercentage</label>
             <div class="col-md-4">
-                <input type="number" name="discountPercentage" class="form-control" value="10" />
+                <input type="number" name="discountPercentage" id="discountPercentage" class="form-control" value="10" />
             </div>
         </div>
         <div class="form-group row mb-3">
-            <label class="col-form-label col-md-2">@AdminResource.AssignedUserId</label>
+            <label class="col-form-label col-md-2" for="assignedUserId">@AdminResource.AssignedUserId</label>
             <div class="col-md-10">
-                <input type="text" name="assignedUserId" class="form-control" placeholder="@AdminResource.AssignedUserIdHint" />
+                <input type="text" name="assignedUserId" id="assignedUserId" class="form-control" placeholder="@AdminResource.AssignedUserIdHint" />
                 <small class="text-muted">@AdminResource.AssignedUserHint</small>
             </div>
         </div>
         <div class="form-group row mb-3">
-            <label class="col-form-label col-md-2">@AdminResource.AssignedCustomerId</label>
+            <label class="col-form-label col-md-2" for="assignedCustomerId">@AdminResource.AssignedCustomerId</label>
             <div class="col-md-10">
-                <input type="number" name="assignedCustomerId" class="form-control" placeholder="@AdminResource.AssignedCustomerId" />
+                <input type="number" name="assignedCustomerId" id="assignedCustomerId" class="form-control" placeholder="@AdminResource.AssignedCustomerId" />
             </div>
         </div>
         <div class="form-group row mb-3">
-            <label class="col-form-label col-md-2">@AdminResource.CustomersPick</label>
+            <label class="col-form-label col-md-2" for="customersPick">@AdminResource.CustomersPick</label>
             <div class="col-md-10">
-                <select class="form-select" onchange="var v=this.value; var parts=v.split('|'); document.querySelector('input[name=assignedUserId]').value=parts[0]||''; document.querySelector('input[name=assignedCustomerId]').value=parts[1]||'';">
+                <select class="form-select" id="customersPick" onchange="var v=this.value; var parts=v.split('|'); document.querySelector('input[name=assignedUserId]').value=parts[0]||''; document.querySelector('input[name=assignedCustomerId]').value=parts[1]||'';">
                     <option value="">@AdminResource.SelectCustomerToFill</option>
                     @foreach (var c in customers.Take(100))
                     {
@@ -56,13 +56,13 @@
             </div>
         </div>
         <div class="form-group row mb-3">
-            <label class="col-form-label col-md-2">@AdminResource.StartDate</label>
+            <label class="col-form-label col-md-2" for="startDate">@AdminResource.StartDate</label>
             <div class="col-md-4">
-                <input type="date" name="startDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <input type="date" name="startDate" id="startDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
-            <label class="col-form-label col-md-2">@AdminResource.EndDate</label>
+            <label class="col-form-label col-md-2" for="endDate">@AdminResource.EndDate</label>
             <div class="col-md-4">
-                <input type="date" name="endDate" class="form-control" value="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" />
+                <input type="date" name="endDate" id="endDate" class="form-control" value="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" />
             </div>
         </div>
         <div class="form-group row">

@@ -111,10 +111,10 @@
             <div class="card-header admin-coupon-header">
                 <div class="admin-coupon-tabs-wrap">
                     <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item" role="presentation"><a class="nav-link active" id="tab-general-link" href="#tab-general" data-bs-toggle="tab" role="tab" aria-controls="tab-general" aria-selected="true"><i class="fa fa-info-circle" aria-hidden="true"></i> @AdminResource.CouponTabGeneral</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" id="tab-discount-link" href="#tab-discount" data-bs-toggle="tab" role="tab" aria-controls="tab-discount" aria-selected="false"><i class="fa fa-percent" aria-hidden="true"></i> @AdminResource.CouponTabDiscount</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" id="tab-audience-link" href="#tab-audience" data-bs-toggle="tab" role="tab" aria-controls="tab-audience" aria-selected="false"><i class="fa fa-users" aria-hidden="true"></i> @AdminResource.CouponTabAudience</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" id="tab-advanced-link" href="#tab-advanced" data-bs-toggle="tab" role="tab" aria-controls="tab-advanced" aria-selected="false"><i class="fa fa-sliders" aria-hidden="true"></i> @AdminResource.CouponTabAdvanced</a></li>
+                        <li class="nav-item"><a class="nav-link active" id="tab-general-link" href="#tab-general" data-bs-toggle="tab" role="tab" aria-controls="tab-general" aria-selected="true"><i class="fa fa-info-circle" aria-hidden="true"></i> @AdminResource.CouponTabGeneral</a></li>
+                        <li class="nav-item"><a class="nav-link" id="tab-discount-link" href="#tab-discount" data-bs-toggle="tab" role="tab" aria-controls="tab-discount" aria-selected="false"><i class="fa fa-percent" aria-hidden="true"></i> @AdminResource.CouponTabDiscount</a></li>
+                        <li class="nav-item"><a class="nav-link" id="tab-audience-link" href="#tab-audience" data-bs-toggle="tab" role="tab" aria-controls="tab-audience" aria-selected="false"><i class="fa fa-users" aria-hidden="true"></i> @AdminResource.CouponTabAudience</a></li>
+                        <li class="nav-item"><a class="nav-link" id="tab-advanced-link" href="#tab-advanced" data-bs-toggle="tab" role="tab" aria-controls="tab-advanced" aria-selected="false"><i class="fa fa-sliders" aria-hidden="true"></i> @AdminResource.CouponTabAdvanced</a></li>
                     </ul>
                 </div>
                 @Html.Partial("_AdminEditToolbarActions")
@@ -303,9 +303,9 @@
                         </div>
                         <hr />
                         <div class="form-group mb-3">
-                            <label class="form-label fw-bold">@AdminResource.ProductsSelectorLabel</label>
+                            <div class="form-label fw-bold" id="productsSelectorLabel">@AdminResource.ProductsSelectorLabel</div>
                             <small class="form-text text-muted d-block mb-1">@AdminResource.ProductsSelectorHelp</small>
-                            <div class="ms-box" data-target="#ProductIdsCsv" data-empty-all="@AdminResource.NothingSelectedText" data-empty-none="@AdminResource.NoItemsFoundText">
+                            <div class="ms-box" data-target="#ProductIdsCsv" data-empty-all="@AdminResource.NothingSelectedText" data-empty-none="@AdminResource.NoItemsFoundText" role="group" aria-labelledby="productsSelectorLabel">
                                 <input type="text" class="form-control ms-search" aria-label="@AdminResource.SearchItemsPlaceholder" placeholder="@AdminResource.SearchItemsPlaceholder" />
                                 <div class="ms-chips" aria-live="polite"></div>
                                 <div class="ms-list">
@@ -320,9 +320,9 @@
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-label fw-bold">@AdminResource.CategoriesSelectorLabel</label>
+                            <div class="form-label fw-bold" id="categoriesSelectorLabel">@AdminResource.CategoriesSelectorLabel</div>
                             <small class="form-text text-muted d-block mb-1">@AdminResource.CategoriesSelectorHelp</small>
-                            <div class="ms-box" data-target="#CategoryIdsCsv" data-empty-all="@AdminResource.NothingSelectedText" data-empty-none="@AdminResource.NoItemsFoundText">
+                            <div class="ms-box" data-target="#CategoryIdsCsv" data-empty-all="@AdminResource.NothingSelectedText" data-empty-none="@AdminResource.NoItemsFoundText" role="group" aria-labelledby="categoriesSelectorLabel">
                                 <input type="text" class="form-control ms-search" aria-label="@AdminResource.SearchItemsPlaceholder" placeholder="@AdminResource.SearchItemsPlaceholder" />
                                 <div class="ms-chips" aria-live="polite"></div>
                                 <div class="ms-list">

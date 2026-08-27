@@ -54,7 +54,7 @@ namespace EImece
             // Required for AntiForgeryToken with claims-based auth.
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
 
-            Griddly.Mvc.GriddlySettings.DefaultPageSize = EImece.Domain.Constants.DefaultGridPageSizeNumber;
+            SetGriddlyDefaultPageSize(EImece.Domain.Constants.DefaultGridPageSizeNumber);
 
             MvcHandler.DisableMvcResponseHeader = true;
 
@@ -472,6 +472,11 @@ namespace EImece
                     // Ignore secondary output failures
                 }
             }
+        }
+
+        private static void SetGriddlyDefaultPageSize(int pageSize)
+        {
+            Griddly.Mvc.GriddlySettings.DefaultPageSize = pageSize;
         }
 
         // Checks whether the request is an AJAX or JSON-expecting request without expensive runtime reflection

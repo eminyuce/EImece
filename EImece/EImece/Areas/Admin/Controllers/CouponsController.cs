@@ -124,58 +124,75 @@ namespace EImece.Areas.Admin.Controllers
         {
             try
             {
-                if (coupon == null)
-                {
-                    return HttpNotFound();
-                }
+                if (coupon == null) return HttpNotFound();
+                if (!TryParseAndValidateDates(coupon)) return View(coupon);
 
-                coupon.StartDate = coupon.StartDateStr.ToDateTime();
-                coupon.EndDate = coupon.EndDateStr.ToDateTime();
-                if (coupon.EndDate <= coupon.StartDate)
-                {
-                    ModelState.AddModelError("EndDateStr", AdminResource.EndDateBiggerThanStartDateText);
-                    return View(coupon);
-                }
-
-                if (coupon.IsFreeShipping)
-                    coupon.DiscountType = EImece.Domain.Models.Enums.CouponDiscountType.FreeShipping;
-                else if (coupon.Discount > 0 && coupon.DiscountPercentage == 0)
-                    coupon.DiscountType = EImece.Domain.Models.Enums.CouponDiscountType.FixedAmount;
-                else if (coupon.DiscountPercentage > 0)
-                    coupon.DiscountType = EImece.Domain.Models.Enums.CouponDiscountType.Percentage;
-
-                coupon.Lang = CurrentLanguage;
-                if (coupon.Lang == 0) coupon.Lang = CurrentLanguage;
+                MapDiscountType(coupon);
+                coupon.Lang = CurrentLanguage == 0 ? CurrentLanguage : CurrentLanguage;
 
                 await CouponService.SaveOrEditEntityAsync(coupon).ConfigureAwait(false);
+                await TrySaveRestrictionsAsync(coupon);
 
-                try
-                {
-                    await CouponService.SaveCouponRestrictionsAsync(coupon.Id, coupon.ProductIdsCsv, coupon.CategoryIdsCsv).ConfigureAwait(false);
-                }
-                catch (Exception ex) { Logger.Warn(ex, "Failed to save coupon restrictions"); }
-
-                if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return RedirectToAction("Index");
-                }
+                if (ShouldRedirectToIndex(saveButton)) return RedirectToAction("Index");
 
                 ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
-                coupon.StartDateStr = coupon.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                coupon.EndDateStr = coupon.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                RefreshDateStrings(coupon);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, coupon);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
+            await PopulateCouponEditViewBagsAsync(coupon);
+            RemoveModelState();
+            return View(coupon);
+        }
+
+        private bool TryParseAndValidateDates(Coupon coupon)
+        {
+            coupon.StartDate = coupon.StartDateStr.ToDateTime();
+            coupon.EndDate = coupon.EndDateStr.ToDateTime();
+            if (coupon.EndDate <= coupon.StartDate)
+            {
+                ModelState.AddModelError("EndDateStr", AdminResource.EndDateBiggerThanStartDateText);
+                return false;
+            }
+            return true;
+        }
+
+        private static void MapDiscountType(Coupon coupon)
+        {
+            if (coupon.IsFreeShipping) coupon.DiscountType = EImece.Domain.Models.Enums.CouponDiscountType.FreeShipping;
+            else if (coupon.Discount > 0 && coupon.DiscountPercentage == 0) coupon.DiscountType = EImece.Domain.Models.Enums.CouponDiscountType.FixedAmount;
+            else if (coupon.DiscountPercentage > 0) coupon.DiscountType = EImece.Domain.Models.Enums.CouponDiscountType.Percentage;
+        }
+
+        private async Task TrySaveRestrictionsAsync(Coupon coupon)
+        {
+            try { await CouponService.SaveCouponRestrictionsAsync(coupon.Id, coupon.ProductIdsCsv, coupon.CategoryIdsCsv).ConfigureAwait(false); }
+            catch (Exception ex) { Logger.Warn(ex, "Failed to save coupon restrictions"); }
+        }
+
+        private static bool ShouldRedirectToIndex(string saveButton)
+        {
+            return !String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static void RefreshDateStrings(Coupon coupon)
+        {
+            coupon.StartDateStr = coupon.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            coupon.EndDateStr = coupon.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+        }
+
+        private async Task PopulateCouponEditViewBagsAsync(Coupon coupon)
+        {
             try
             {
                 var products = await ProductService.SearchEntitiesAsync(r => r.Name.Contains(""), "", CurrentLanguage).ConfigureAwait(false);
                 ViewBag.AllProducts = products.OrderBy(p => p.Name).Select(p => new { p.Id, p.Name }).Take(500).ToList();
                 var categories = await ProductCategoryService.SearchEntitiesAsync(r => r.Name.Contains(""), "", CurrentLanguage).ConfigureAwait(false);
                 ViewBag.AllCategories = categories.OrderBy(c => c.Name).Select(c => new { c.Id, c.Name }).Take(500).ToList();
-                if (coupon.Id > 0)
+                if (coupon != null && coupon.Id > 0)
                 {
                     var total = await CouponService.GetRedemptionCountAsync(coupon.Id).ConfigureAwait(false);
                     ViewBag.TotalRedemptions = total;
@@ -184,17 +201,8 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
             catch { }
-            try
-            {
-                ViewBag.AllCustomers = await CustomerService.GetAllAsync().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(ex, "Failed to load customer lookup");
-                ViewBag.AllCustomers = new EImece.Domain.Entities.Customer[0];
-            }
-            RemoveModelState();
-            return View(coupon);
+            try { ViewBag.AllCustomers = await CustomerService.GetAllAsync().ConfigureAwait(false); }
+            catch (Exception ex) { Logger.Warn(ex, "Failed to load customer lookup"); ViewBag.AllCustomers = new EImece.Domain.Entities.Customer[0]; }
         }
 
         [HttpGet]

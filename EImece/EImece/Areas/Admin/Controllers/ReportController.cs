@@ -664,85 +664,78 @@ namespace EImece.Areas.Admin.Controllers
 
         private async Task PopulateAuditReportDataAsync(UserAuditReportViewModel model, CancellationToken cancellationToken)
         {
+            model.AvailableUsers = await BuildAvailableUsersAsync(model, cancellationToken);
+            model.AvailableTables = await BuildAvailableTablesAsync(model, cancellationToken);
+            model.AvailableActionTypes = BuildAvailableActionTypes(model);
+
+            await PopulateAuditDataTablesAsync(model, cancellationToken);
+            PopulateAuditSummaryAggregates(model);
+        }
+
+        private async Task<List<SelectListItem>> BuildAvailableUsersAsync(UserAuditReportViewModel model, CancellationToken cancellationToken)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "", Text = AdminResource.AllUsers } };
             var usersTable = await _reportService.GetAuditUsersListAsync(cancellationToken);
-            model.AvailableUsers = new List<SelectListItem>
+            if (usersTable == null) return list;
+            foreach (DataRow row in usersTable.Rows)
             {
-                new SelectListItem { Value = "", Text = AdminResource.AllUsers }
-            };
-            if (usersTable != null)
-            {
-                foreach (DataRow row in usersTable.Rows)
-                {
-                    var uId = row["UserId"]?.ToString() ?? "";
-                    var uFullName = row["FullName"]?.ToString() ?? "";
-                    var uName = row["UserName"]?.ToString() ?? "";
-                    var text = !string.IsNullOrWhiteSpace(uFullName) && uFullName != "Unknown"
-                        ? $"{uFullName} ({uName})"
-                        : uName;
-
-                    model.AvailableUsers.Add(new SelectListItem
-                    {
-                        Value = uId,
-                        Text = text,
-                        Selected = string.Equals(model.UserId, uId, StringComparison.OrdinalIgnoreCase)
-                    });
-                }
+                var uId = row["UserId"]?.ToString() ?? "";
+                var uFullName = row["FullName"]?.ToString() ?? "";
+                var uName = row["UserName"]?.ToString() ?? "";
+                var text = !string.IsNullOrWhiteSpace(uFullName) && uFullName != "Unknown" ? $"{uFullName} ({uName})" : uName;
+                list.Add(new SelectListItem { Value = uId, Text = text, Selected = string.Equals(model.UserId, uId, StringComparison.OrdinalIgnoreCase) });
             }
+            return list;
+        }
 
+        private async Task<List<SelectListItem>> BuildAvailableTablesAsync(UserAuditReportViewModel model, CancellationToken cancellationToken)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "", Text = AdminResource.AllTables } };
             var tablesTable = await _reportService.GetAuditTablesListAsync(cancellationToken);
-            model.AvailableTables = new List<SelectListItem>
+            if (tablesTable == null) return list;
+            foreach (DataRow row in tablesTable.Rows)
             {
-                new SelectListItem { Value = "", Text = AdminResource.AllTables }
-            };
-            if (tablesTable != null)
-            {
-                foreach (DataRow row in tablesTable.Rows)
-                {
-                    var tbl = row["TableName"]?.ToString() ?? "";
-                    if (!string.IsNullOrWhiteSpace(tbl))
-                    {
-                        model.AvailableTables.Add(new SelectListItem
-                        {
-                            Value = tbl,
-                            Text = tbl,
-                            Selected = string.Equals(model.TableName, tbl, StringComparison.OrdinalIgnoreCase)
-                        });
-                    }
-                }
+                var tbl = row["TableName"]?.ToString() ?? "";
+                if (string.IsNullOrWhiteSpace(tbl)) continue;
+                list.Add(new SelectListItem { Value = tbl, Text = tbl, Selected = string.Equals(model.TableName, tbl, StringComparison.OrdinalIgnoreCase) });
             }
+            return list;
+        }
 
-            model.AvailableActionTypes = new List<SelectListItem>
+        private static List<SelectListItem> BuildAvailableActionTypes(UserAuditReportViewModel model)
+        {
+            return new List<SelectListItem>
             {
                 new SelectListItem { Value = "", Text = AdminResource.AllActions, Selected = string.IsNullOrEmpty(model.ActionType) || model.ActionType == "All" },
                 new SelectListItem { Value = "Created", Text = AdminResource.CreatedOnly, Selected = model.ActionType == "Created" },
                 new SelectListItem { Value = "Updated", Text = AdminResource.UpdatedOnly, Selected = model.ActionType == "Updated" }
             };
+        }
 
+        private async Task PopulateAuditDataTablesAsync(UserAuditReportViewModel model, CancellationToken cancellationToken)
+        {
             model.UserSummaryData = await _reportService.GetUserAuditSummaryReportAsync(model.StartDate, model.EndDate, model.UserId, model.TableName, cancellationToken) ?? new DataTable();
             model.UserSummaryData.TableName = "UserAuditSummary";
-
             model.MonthlyBreakdownData = await _reportService.GetUserAuditMonthlyBreakdownAsync(model.StartDate, model.EndDate, model.UserId, model.TableName, cancellationToken) ?? new DataTable();
             model.MonthlyBreakdownData.TableName = "UserAuditMonthlyBreakdown";
-
             model.DetailedRecordsData = await _reportService.GetUserAuditDetailedRecordsAsync(model.StartDate, model.EndDate, model.UserId, model.TableName, model.ActionType, cancellationToken) ?? new DataTable();
             model.DetailedRecordsData.TableName = "UserAuditDetailed";
+        }
 
-            if (model.UserSummaryData != null && model.UserSummaryData.Rows.Count > 0)
+        private static void PopulateAuditSummaryAggregates(UserAuditReportViewModel model)
+        {
+            if (model.UserSummaryData == null || model.UserSummaryData.Rows.Count == 0) return;
+            model.TotalUsersCount = model.UserSummaryData.Rows.Count;
+            int totalCreated = 0, totalUpdated = 0, totalActivity = 0;
+            foreach (DataRow row in model.UserSummaryData.Rows)
             {
-                model.TotalUsersCount = model.UserSummaryData.Rows.Count;
-                int totalCreated = 0;
-                int totalUpdated = 0;
-                int totalActivity = 0;
-                foreach (DataRow row in model.UserSummaryData.Rows)
-                {
-                    totalCreated += row["CreatedCount"] != DBNull.Value ? System.Convert.ToInt32(row["CreatedCount"]) : 0;
-                    totalUpdated += row["UpdatedCount"] != DBNull.Value ? System.Convert.ToInt32(row["UpdatedCount"]) : 0;
-                    totalActivity += row["TotalActivity"] != DBNull.Value ? System.Convert.ToInt32(row["TotalActivity"]) : 0;
-                }
-                model.TotalCreatedCount = totalCreated;
-                model.TotalUpdatedCount = totalUpdated;
-                model.TotalActivityCount = totalActivity;
+                totalCreated += row["CreatedCount"] != DBNull.Value ? System.Convert.ToInt32(row["CreatedCount"]) : 0;
+                totalUpdated += row["UpdatedCount"] != DBNull.Value ? System.Convert.ToInt32(row["UpdatedCount"]) : 0;
+                totalActivity += row["TotalActivity"] != DBNull.Value ? System.Convert.ToInt32(row["TotalActivity"]) : 0;
             }
+            model.TotalCreatedCount = totalCreated;
+            model.TotalUpdatedCount = totalUpdated;
+            model.TotalActivityCount = totalActivity;
         }
 
         #endregion User Audit Reports
