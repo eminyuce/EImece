@@ -137,16 +137,4 @@ namespace EImece.Filters
             return "__Timed_Stopwatch_" + effectiveName;
         }
     }
-
-    /// <summary>
-    /// Backwards-compatibility alias. Prefer <see cref="TimedActionFilterAttribute"/>.
-    /// </summary>
-    [Obsolete("Use TimedActionFilterAttribute. TimedAttribute will be removed in a future release.")]
-    public sealed class TimedAttribute : TimedActionFilterAttribute
-    {
-        public TimedAttribute(string name = null, string description = null)
-            : base(name, description)
-        {
-        }
-    }
 }
