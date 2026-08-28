@@ -1,4 +1,5 @@
 using EImece.Domain.Observability.Telemetry;
+using NLog;
 using System;
 using System.Diagnostics;
 using System.Web.Mvc;
@@ -19,6 +20,8 @@ namespace EImece.Filters
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
     public class TimedActionFilterAttribute : ActionFilterAttribute
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly string _name;
         private readonly string _description;
 
@@ -92,6 +95,21 @@ namespace EImece.Filters
                         {
                             activity.SetTag("timed.metric", effectiveName);
                             activity.SetTag("timed.duration_ms", elapsedMs);
+                        }
+
+                        // NLog duration — structured so log views can filter by metric/duration.
+                        // Never throws: wrapped; business request must not fail due to logging.
+                        try
+                        {
+                            var controller = filterContext.ActionDescriptor?.ControllerDescriptor?.ControllerName ?? "unknown";
+                            var action = filterContext.ActionDescriptor?.ActionName ?? "unknown";
+                            var statusCode = filterContext.HttpContext.Response?.StatusCode ?? 0;
+                            Logger.Info("TimedActionFilter metric={Metric} duration={DurationMs:F2}ms controller={Controller} action={Action} status={StatusCode}",
+                                effectiveName, elapsedMs, controller, action, statusCode);
+                        }
+                        catch (Exception logEx)
+                        {
+                            Debug.WriteLine($"TimedActionFilterAttribute NLog failed for '{effectiveName}': {logEx}");
                         }
                     }
                 }

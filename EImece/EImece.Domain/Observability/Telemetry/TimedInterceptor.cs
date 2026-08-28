@@ -1,4 +1,5 @@
 using Castle.DynamicProxy;
+using NLog;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -20,6 +21,8 @@ namespace EImece.Domain.Observability.Telemetry
     /// </summary>
     public sealed class TimedInterceptor : IInterceptor
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public void Intercept(IInvocation invocation)
         {
             // Fast path: no attribute -> just proceed (no timing overhead).
@@ -142,7 +145,7 @@ namespace EImece.Domain.Observability.Telemetry
             }
         }
 
-        // Central recording: OTel histogram + Activity tags. Never throws.
+        // Central recording: OTel histogram + Activity tags + NLog. Never throws.
         private static void Record(TimedAttribute timed, Stopwatch stopwatch, IInvocation invocation)
         {
             try
@@ -159,6 +162,20 @@ namespace EImece.Domain.Observability.Telemetry
                 {
                     activity.SetTag("timed.metric", timed.Name);
                     activity.SetTag("timed.duration_ms", elapsedMs);
+                }
+
+                // NLog duration — visible in file/console targets, low-cardinality tags included.
+                // Wrapped so logging failure never breaks business flow.
+                try
+                {
+                    var targetType = invocation?.TargetType?.Name ?? invocation?.InvocationTarget?.GetType().Name ?? "unknown";
+                    var methodName = invocation?.Method?.Name ?? invocation?.MethodInvocationTarget?.Name ?? "unknown";
+                    Logger.Info("Timed metric={Metric} duration={DurationMs:F2}ms target={TargetType} method={Method}",
+                        timed.Name, elapsedMs, targetType, methodName);
+                }
+                catch (Exception logEx)
+                {
+                    Debug.WriteLine($"TimedInterceptor NLog failed for '{timed?.Name ?? "unknown"}': {logEx}");
                 }
             }
             catch (Exception ex)
