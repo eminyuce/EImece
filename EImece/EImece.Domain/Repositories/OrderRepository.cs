@@ -491,7 +491,8 @@ namespace EImece.Domain.Repositories
         /// Aggregated order stats (COUNT + total paid) for a user. PaidPrice is stored as string,
         /// so the rounding/parse happens in memory over that single projected column only.
         /// </summary>
-        public async Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.orders.get_stats_by_user", "Time taken to get order stats by user from DB")]
+        public virtual async Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = EImeceDbContext.Orders.AsNoTracking().Where(o => o.UserId == userId);
             var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);

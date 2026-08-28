@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -37,7 +38,8 @@ namespace EImece.Domain.Services
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
-        public async Task<List<StorefrontBannerDto>> GetStorefrontMainPageBannersAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.main_page_image.get_banners", "Time taken to get storefront main page banners")]
+        public virtual async Task<List<StorefrontBannerDto>> GetStorefrontMainPageBannersAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.MainPageBannersAsync(language);
             return await DataCachingProvider.GetOrAddAsync(
@@ -46,7 +48,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontBannerDto> GetStorefrontMainPageBanners(int language)
+        [Timed("service.main_page_image.get_banners_sync")]
+        public virtual List<StorefrontBannerDto> GetStorefrontMainPageBanners(int language)
         {
             var cacheKey = CacheKeys.MainPageBanners(language);
             return DataCachingProvider.GetOrAdd(
@@ -127,7 +130,8 @@ namespace EImece.Domain.Services
 
         #region ViewModels
 
-        public MainPageViewModel GetMainPageViewModel(int language)
+        [Timed("service.main_page_image.get_view_model_sync")]
+        public virtual MainPageViewModel GetMainPageViewModel(int language)
         {
             var result = new MainPageViewModel();
             int limit = AppConfig.HomePageMainProductCountLimit;
@@ -160,7 +164,8 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<MainPageViewModel> GetMainPageViewModelAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.main_page_image.get_view_model", "Time taken to get main page view model")]
+        public virtual async Task<MainPageViewModel> GetMainPageViewModelAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new MainPageViewModel();
             int limit = AppConfig.HomePageMainProductCountLimit;
@@ -193,7 +198,8 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public FooterViewModel GetFooterViewModel(int language)
+        [Timed("service.main_page_image.get_footer_view_model", "Time taken to get footer view model")]
+        public virtual FooterViewModel GetFooterViewModel(int language)
         {
             var result = new FooterViewModel();
             result.Menus = MenuService.GetStorefrontMenuNavigation(language);

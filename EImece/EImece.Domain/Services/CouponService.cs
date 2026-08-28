@@ -1,8 +1,9 @@
-﻿using EImece.Domain.DependencyInjection;
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -39,36 +40,42 @@ namespace EImece.Domain.Services
             CouponRepository = repository;
         }
 
-        public Coupon GetCouponByCode(string code, int lang)
+        [Timed("service.coupons.get_by_code_sync")]
+        public virtual Coupon GetCouponByCode(string code, int lang)
         {
             return CouponRepository.GetCouponByCode(code, lang);
         }
 
-        public async Task<Coupon> GetCouponByCodeAsync(string code, int lang)
+        [Timed("service.coupons.get_by_code")]
+        public virtual async Task<Coupon> GetCouponByCodeAsync(string code, int lang)
         {
             return await CouponRepository.GetCouponByCodeAsync(code, lang).ConfigureAwait(false);
         }
 
-        public async Task<CouponDto> GetStorefrontCouponByCodeAsync(string code, int lang)
+        [Timed("service.coupons.get_storefront_by_code")]
+        public virtual async Task<CouponDto> GetStorefrontCouponByCodeAsync(string code, int lang)
         {
             return await CouponRepository.GetStorefrontCouponByCodeAsync(code, lang).ConfigureAwait(false);
         }
 
-        public async Task<List<int>> GetCouponProductIdsAsync(int couponId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.get_product_ids")]
+        public virtual async Task<List<int>> GetCouponProductIdsAsync(int couponId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (CouponProductRepository == null) return new List<int>();
             var list = await CouponProductRepository.FindBy(cp => cp.CouponId == couponId).Select(cp => cp.ProductId).ToListAsync(cancellationToken).ConfigureAwait(false);
             return list;
         }
 
-        public async Task<List<int>> GetCouponCategoryIdsAsync(int couponId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.get_category_ids")]
+        public virtual async Task<List<int>> GetCouponCategoryIdsAsync(int couponId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (CouponCategoryRepository == null) return new List<int>();
             var list = await CouponCategoryRepository.FindBy(cc => cc.CouponId == couponId).Select(cc => cc.ProductCategoryId).ToListAsync(cancellationToken).ConfigureAwait(false);
             return list;
         }
 
-        public async Task SaveCouponRestrictionsAsync(int couponId, string productIdsCsv, string categoryIdsCsv, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.save_restrictions")]
+        public virtual async Task SaveCouponRestrictionsAsync(int couponId, string productIdsCsv, string categoryIdsCsv, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (CouponProductRepository == null || CouponCategoryRepository == null)
             {
@@ -107,19 +114,22 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<int> GetRedemptionCountAsync(int couponId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.get_redemption_count")]
+        public virtual async Task<int> GetRedemptionCountAsync(int couponId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (CouponRedemptionRepository == null) return 0;
             return await CouponRedemptionRepository.FindBy(r => r.CouponId == couponId).CountAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<CouponRedemption>> GetRecentRedemptionsAsync(int couponId, int take, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.get_recent_redemptions")]
+        public virtual async Task<List<CouponRedemption>> GetRecentRedemptionsAsync(int couponId, int take, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (CouponRedemptionRepository == null) return new List<CouponRedemption>();
             return await CouponRedemptionRepository.FindBy(r => r.CouponId == couponId).OrderByDescending(r => r.CreatedDate).Take(take).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<CouponRedemptionDetailDto>> GetRedemptionsWithDetailsAsync(int couponId, int take, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.get_redemptions_with_details")]
+        public virtual async Task<List<CouponRedemptionDetailDto>> GetRedemptionsWithDetailsAsync(int couponId, int take, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (CouponRedemptionRepository == null) return new List<CouponRedemptionDetailDto>();
             var redemptions = await CouponRedemptionRepository.FindBy(r => r.CouponId == couponId).OrderByDescending(r => r.CreatedDate).Take(take).ToListAsync(cancellationToken).ConfigureAwait(false);

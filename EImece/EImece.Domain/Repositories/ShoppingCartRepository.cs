@@ -24,7 +24,8 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public List<ShoppingCart> GetAdminPageList(string search, int currentLanguage)
+        [Timed("repo.shopping_cart.get_admin_page_list_sync")]
+        public virtual List<ShoppingCart> GetAdminPageList(string search, int currentLanguage)
         {
             var items = GetAll().Where(r => r.Lang == currentLanguage);
             if (!string.IsNullOrEmpty(search))
@@ -36,7 +37,8 @@ namespace EImece.Domain.Repositories
             return items.ToList();
         }
 
-        public async Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.shopping_cart.get_admin_page_list")]
+        public virtual async Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             var items = GetAll().Where(r => r.Lang == currentLanguage);
             if (!string.IsNullOrEmpty(search))
@@ -48,21 +50,20 @@ namespace EImece.Domain.Repositories
             return await items.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        [Timed("repo.shopping_cart.get_by_guid_sync")]
-
+        [Timed("repo.shopping_cart.get_by_order_guid_sync")]
         public virtual ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
         {
             return EImeceDbContext.ShoppingCarts.AsNoTracking().FirstOrDefault(r => r.OrderGuid == orderGuid);
         }
 
-        [Timed("repo.shopping_cart.get_by_guid")]
-
+        [Timed("repo.shopping_cart.get_by_order_guid")]
         public virtual async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.ShoppingCarts.AsNoTracking().FirstOrDefaultAsync(r => r.OrderGuid == orderGuid, cancellationToken).ConfigureAwait(false);
         }
 
-        public int DeleteExpiredShoppingCarts(DateTime cutoffDate, int batchSize = 500)
+        [Timed("repo.shopping_cart.delete_expired_sync")]
+        public virtual int DeleteExpiredShoppingCarts(DateTime cutoffDate, int batchSize = 500)
         {
             string connectionString = ConnectionStringProvider.GetConnectionString();
             int totalDeleted = 0;
@@ -90,7 +91,8 @@ namespace EImece.Domain.Repositories
             return totalDeleted;
         }
 
-        public async Task<int> DeleteExpiredShoppingCartsAsync(DateTime cutoffDate, int batchSize = 500, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.shopping_cart.delete_expired")]
+        public virtual async Task<int> DeleteExpiredShoppingCartsAsync(DateTime cutoffDate, int batchSize = 500, CancellationToken cancellationToken = default(CancellationToken))
         {
             string connectionString = ConnectionStringProvider.GetConnectionString();
             int totalDeleted = 0;

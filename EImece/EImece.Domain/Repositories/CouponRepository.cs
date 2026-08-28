@@ -1,6 +1,7 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -19,7 +20,8 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public Coupon GetCouponByCode(string code, int lang)
+        [Timed("repo.coupons.get_by_code_sync")]
+        public virtual Coupon GetCouponByCode(string code, int lang)
         {
             if (String.IsNullOrEmpty(code))
             {
@@ -35,7 +37,8 @@ namespace EImece.Domain.Repositories
             return coupons.FirstOrDefault();
         }
 
-        public async Task<Coupon> GetCouponByCodeAsync(string code, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.coupons.get_by_code")]
+        public virtual async Task<Coupon> GetCouponByCodeAsync(string code, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (String.IsNullOrEmpty(code))
             {
@@ -55,7 +58,8 @@ namespace EImece.Domain.Repositories
         /// Storefront cart coupon read: projects only Code, Name, Discount, DiscountPercentage — the
         /// fields the cart session and checkout views consume. AsNoTracking, no AutoMapper hop.
         /// </summary>
-        public async Task<CouponDto> GetStorefrontCouponByCodeAsync(string code, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.coupons.get_storefront_by_code")]
+        public virtual async Task<CouponDto> GetStorefrontCouponByCodeAsync(string code, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (String.IsNullOrEmpty(code))
             {

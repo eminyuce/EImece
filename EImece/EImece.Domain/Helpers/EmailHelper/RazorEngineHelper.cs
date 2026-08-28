@@ -7,6 +7,7 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Observability.Telemetry;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
@@ -49,7 +50,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             _razorTemplateEngine = razorTemplateEngine ?? throw new ArgumentNullException(nameof(razorTemplateEngine));
         }
 
-        public Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl)
+        [Timed("service.email.confirm_account_sync")]
+        public virtual Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ConfirmYourAccountMailTemplate);
             if (emailTemplate == null)
@@ -77,7 +79,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
-        public async Task<Tuple<string, string>> ConfirmYourAccountEmailBodyAsync(string email, string name, string callbackUrl)
+        [Timed("service.email.confirm_account", "Time taken to render confirmation email body")]
+        public virtual async Task<Tuple<string, string>> ConfirmYourAccountEmailBodyAsync(string email, string name, string callbackUrl)
         {
             // Capture before awaits — ConfigureAwait(false) clears HttpContext.Current.
             string baseurl = GetSiteBaseUrl();
@@ -134,7 +137,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return $"{scheme}://{domain}";
         }
 
-        public Tuple<string, string> ForgotPasswordEmailBody(string email, string callbackUrl)
+        [Timed("service.email.forgot_password_sync")]
+        public virtual Tuple<string, string> ForgotPasswordEmailBody(string email, string callbackUrl)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ForgotPasswordMailTemplate);
             if (emailTemplate == null)
@@ -161,7 +165,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
-        public async Task<Tuple<string, string>> ForgotPasswordEmailBodyAsync(string email, string callbackUrl)
+        [Timed("service.email.forgot_password", "Time taken to render forgot password email body")]
+        public virtual async Task<Tuple<string, string>> ForgotPasswordEmailBodyAsync(string email, string callbackUrl)
         {
             string baseurl = GetSiteBaseUrl();
 
@@ -189,7 +194,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, string>(emailTemplate.Subject, result);
         }
 
-        public Tuple<string, RazorRenderResult, Customer> CompanyGotNewOrderEmail(int orderId)
+        [Timed("service.email.company_new_order_sync")]
+        public virtual Tuple<string, RazorRenderResult, Customer> CompanyGotNewOrderEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.CompanyGotNewOrderEmailMailTemplate);
             if (emailTemplate == null)
@@ -220,7 +226,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
         }
 
-        public async Task<Tuple<string, RazorRenderResult, Customer>> CompanyGotNewOrderEmailAsync(int orderId)
+        [Timed("service.email.company_new_order", "Time taken to render company new order email")]
+        public virtual async Task<Tuple<string, RazorRenderResult, Customer>> CompanyGotNewOrderEmailAsync(int orderId)
         {
             MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.CompanyGotNewOrderEmailMailTemplate).ConfigureAwait(false);
             if (emailTemplate == null)
@@ -245,7 +252,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, RazorRenderResult, Customer>(subject, result, model.FinishedOrder.Customer);
         }
 
-        public Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
+        [Timed("service.email.order_confirmation_sync")]
+        public virtual Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.OrderConfirmationEmailMailTemplate);
             if (emailTemplate == null)
@@ -259,7 +267,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }
 
-        public async Task<Tuple<string, RazorRenderResult, Customer>> OrderConfirmationEmailAsync(int orderId)
+        [Timed("service.email.order_confirmation", "Time taken to render order confirmation email")]
+        public virtual async Task<Tuple<string, RazorRenderResult, Customer>> OrderConfirmationEmailAsync(int orderId)
         {
             MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.OrderConfirmationEmailMailTemplate).ConfigureAwait(false);
             if (emailTemplate == null)
@@ -273,7 +282,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             return new Tuple<string, RazorRenderResult, Customer>(emailTemplate.Subject, result, model.FinishedOrder.Customer);
         }
 
-        public void SendMessageToSeller(ContactUsFormViewModel contact)
+        [Timed("service.email.send_message_to_seller_sync")]
+        public virtual void SendMessageToSeller(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.SendMessageToSellerMailTemplate);
             if (emailTemplate == null)
@@ -306,7 +316,8 @@ namespace EImece.Domain.Helpers.EmailHelper
                 companyname);
         }
 
-        public async Task SendMessageToSellerAsync(ContactUsFormViewModel contact)
+        [Timed("service.email.send_message_to_seller", "Time taken to prepare and send message to seller email")]
+        public virtual async Task SendMessageToSellerAsync(ContactUsFormViewModel contact)
         {
             MailTemplate emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.SendMessageToSellerMailTemplate).ConfigureAwait(false);
             if (emailTemplate == null)
@@ -340,7 +351,8 @@ namespace EImece.Domain.Helpers.EmailHelper
                 companyname);
         }
 
-        public void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
+        [Timed("service.email.send_contact_us_product_detail_sync")]
+        public virtual void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact)
         {
             // E-posta şablonunu al
             var emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsAboutProductInfoMailTemplate);
@@ -389,7 +401,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             );
         }
 
-        public async Task SendContactUsAboutProductDetailEmailAsync(ContactUsFormViewModel contact)
+        [Timed("service.email.send_contact_us_product_detail", "Time taken to prepare and send product detail inquiry email")]
+        public virtual async Task SendContactUsAboutProductDetailEmailAsync(ContactUsFormViewModel contact)
         {
             var emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ContactUsAboutProductInfoMailTemplate).ConfigureAwait(false);
             if (emailTemplate == null)
@@ -431,7 +444,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             );
         }
 
-        public void SendContactUsForCommunication(ContactUsFormViewModel contact)
+        [Timed("service.email.send_contact_us_communication_sync")]
+        public virtual void SendContactUsForCommunication(ContactUsFormViewModel contact)
         {
             // E-posta şablonunu al
             var emailTemplate = MailTemplateService.GetMailTemplateByName(Constants.ContactUsForCommunication);
@@ -481,7 +495,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             );
         }
 
-        public async Task SendContactUsForCommunicationAsync(ContactUsFormViewModel contact)
+        [Timed("service.email.send_contact_us_communication", "Time taken to prepare and send communication inquiry email")]
+        public virtual async Task SendContactUsForCommunicationAsync(ContactUsFormViewModel contact)
         {
             var emailTemplate = await MailTemplateService.GetMailTemplateByNameAsync(Constants.ContactUsForCommunication).ConfigureAwait(false);
             if (emailTemplate == null)
@@ -525,7 +540,8 @@ namespace EImece.Domain.Helpers.EmailHelper
         }
 
 
-        public string GenerateRssEmailTemplate(MailTemplate rssTemplate)
+        [Timed("service.email.generate_rss_template", "Time taken to generate RSS email template")]
+        public virtual string GenerateRssEmailTemplate(MailTemplate rssTemplate)
         {
             if (rssTemplate == null)
             {
@@ -578,14 +594,16 @@ namespace EImece.Domain.Helpers.EmailHelper
             return string.IsNullOrEmpty(result.Result) ? templateBody : result.Result;
         }
 
-        public RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel
+        [Timed("service.razor_engine.render_by_model", "Time taken to render template by RazorEngine model")]
+        public virtual RazorRenderResult GetRenderOutputByRazorEngineModel<T>(String razorTemplate, T razorEngineModel) where T : RazorTemplateModel
         {
             // FIX: delegate to the singleton engine. Templates are compiled once and cached by
             // content hash instead of recompiling (and leaking a dynamic assembly) on every call.
             return RazorTemplateEngine.GetRenderOutputByModel(razorTemplate, razorEngineModel);
         }
 
-        public RazorRenderResult GetRenderOutput(String razorTemplate, RazorEngineModel razorEngineModel = null)
+        [Timed("service.razor_engine.render_output", "Time taken to render template output")]
+        public virtual RazorRenderResult GetRenderOutput(String razorTemplate, RazorEngineModel razorEngineModel = null)
         {
             var result = new RazorRenderResult();
 

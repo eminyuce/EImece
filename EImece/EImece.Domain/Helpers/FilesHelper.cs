@@ -7,6 +7,7 @@ using ImageProcessor;
 using ImageProcessor.Imaging.Formats;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -65,13 +66,15 @@ namespace EImece.Domain.Helpers
             this.ServerMapPath = serverMapPath;
         }
 
-        public SavedImage GetThumbnailImageSize(int mainPageId)
+        [Timed("service.files.get_thumbnail_size_sync")]
+        public virtual SavedImage GetThumbnailImageSize(int mainPageId)
         {
             var mainPage = FileStorageService.GetFileStorage(mainPageId);
             return GetThumbnailImageSize(mainPage);
         }
 
-        public SavedImage GetThumbnailImageSize(FileStorage mainImage)
+        [Timed("service.files.get_thumbnail_size_from_storage_sync")]
+        public virtual SavedImage GetThumbnailImageSize(FileStorage mainImage)
         {
             if (mainImage != null)
             {
@@ -80,12 +83,14 @@ namespace EImece.Domain.Helpers
             return new SavedImage(0, 0, 0, 0, string.Empty);
         }
 
-        public SavedImage GetThumbnailImageSize(String fileName)
+        [Timed("service.files.get_thumbnail_size_from_file_sync")]
+        public virtual SavedImage GetThumbnailImageSize(String fileName)
         {
             return GetThumbnailImageSize(fileName, 0, 0);
         }
 
-        public SavedImage GetThumbnailImageSize(String fileName, int fallbackOriginalWidth, int fallbackOriginalHeight)
+        [Timed("service.files.get_thumbnail_size_fallback_sync")]
+        public virtual SavedImage GetThumbnailImageSize(String fileName, int fallbackOriginalWidth, int fallbackOriginalHeight)
         {
             int thumpBitmapWidth = 0, thumpBitmapHeight = 0;
             int originalWidth = fallbackOriginalWidth, originalHeight = fallbackOriginalHeight;
@@ -192,7 +197,8 @@ namespace EImece.Domain.Helpers
             return false;
         }
 
-        public void DeleteFiles(String pathToDelete)
+        [Timed("service.files.delete_files_sync")]
+        public virtual void DeleteFiles(String pathToDelete)
         {
             string path = HostingEnvironment.MapPath(pathToDelete);
 
@@ -208,7 +214,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public String DeleteFile(String file, HttpContextBase ContentBase)
+        [Timed("service.files.delete_file_context_sync")]
+        public virtual String DeleteFile(String file, HttpContextBase ContentBase)
         {
             var request = ContentBase.Request;
             int contentId = request.QueryString["contentId"].ToInt();
@@ -220,7 +227,8 @@ namespace EImece.Domain.Helpers
             return "OK";
         }
 
-        public string DeleteThumbFile(string file)
+        [Timed("service.files.delete_thumb_file_sync")]
+        public virtual string DeleteThumbFile(string file)
         {
             if (string.IsNullOrWhiteSpace(file))
             {
@@ -238,7 +246,8 @@ namespace EImece.Domain.Helpers
             return "Ok";
         }
 
-        public bool NormalFileExists(String file)
+        [Timed("service.files.normal_file_exists_sync")]
+        public virtual bool NormalFileExists(String file)
         {
             if (string.IsNullOrWhiteSpace(file))
             {
@@ -250,7 +259,8 @@ namespace EImece.Domain.Helpers
             return File.Exists(fullPath);
         }
 
-        public String DeleteNormalFile(String file)
+        [Timed("service.files.delete_normal_file_sync")]
+        public virtual String DeleteNormalFile(String file)
         {
             if (string.IsNullOrWhiteSpace(file) || file.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
             {
@@ -295,7 +305,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public String DeleteFile(String file)
+        [Timed("service.files.delete_file_sync")]
+        public virtual String DeleteFile(String file)
         {
             if (string.IsNullOrWhiteSpace(file) || file.Equals(EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
             {
@@ -380,7 +391,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public JsonFiles GetFileList(HttpContextBase ContentBase)
+        [Timed("service.files.get_file_list_sync")]
+        public virtual JsonFiles GetFileList(HttpContextBase ContentBase)
         {
             var request = ContentBase.Request;
             int Id = request.QueryString["contentId"].ToInt();
@@ -404,7 +416,8 @@ namespace EImece.Domain.Helpers
             return files;
         }
 
-        public void UploadAndShowResults(HttpContextBase ContentBase, List<ViewDataUploadFilesResult> resultList)
+        [Timed("service.files.upload_and_show_results_sync")]
+        public virtual void UploadAndShowResults(HttpContextBase ContentBase, List<ViewDataUploadFilesResult> resultList)
         {
             if (ContentBase?.Request == null || resultList == null)
             {
@@ -436,7 +449,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath, HttpContextBase requestContext)
+        [Timed("service.files.upload_result_sync")]
+        public virtual ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath, HttpContextBase requestContext)
         {
             var request = requestContext.Request;
             int contentId = request.Form["contentId"].ToInt();
@@ -482,7 +496,8 @@ namespace EImece.Domain.Helpers
             return result;
         }
 
-        public String CheckThumb(String type, String FileName)
+        [Timed("service.files.check_thumb_sync")]
+        public virtual String CheckThumb(String type, String FileName)
         {
             var splited = type.Split('/');
             if (splited.Length == 2)
@@ -514,7 +529,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public List<String> FilesList()
+        [Timed("service.files.files_list_sync")]
+        public virtual List<String> FilesList()
         {
             List<String> Filess = new List<String>();
             string path = HostingEnvironment.MapPath(ServerMapPath);
@@ -544,7 +560,8 @@ namespace EImece.Domain.Helpers
             return false;
         }
 
-        public FileStorage SaveFileFromByteArray(byte[] imageByte, String fileName, String contentType,
+        [Timed("service.files.save_from_byte_array_sync")]
+        public virtual FileStorage SaveFileFromByteArray(byte[] imageByte, String fileName, String contentType,
             int height = 0,
             int width = 0,
             EImeceImageType imageType = EImeceImageType.NONE, int? mainImageId = null)
@@ -561,7 +578,8 @@ namespace EImece.Domain.Helpers
             return fileStorage;
         }
 
-        public void SaveFileFromHttpPostedFileBase(HttpPostedFileBase httpPostedFileBase,
+        [Timed("service.files.save_from_posted_file_sync")]
+        public virtual void SaveFileFromHttpPostedFileBase(HttpPostedFileBase httpPostedFileBase,
             int height = 0,
             int width = 0,
             EImeceImageType imageType = EImeceImageType.NONE,
@@ -701,7 +719,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte[] fileByte)
+        [Timed("service.files.save_image_byte_sync")]
+        public virtual SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte[] fileByte)
         {
             String fullPath = "", candidatePathThb = "", newFileName = "";
             int imageSize = 0;
@@ -886,7 +905,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public SavedImage SaveImageByte(int width, int height, HttpPostedFileBase file)
+        [Timed("service.files.save_image_byte_posted_sync")]
+        public virtual SavedImage SaveImageByte(int width, int height, HttpPostedFileBase file)
         {
             var fileByte = GeneralHelper.ReadFully(file.InputStream);
             return SaveImageByte(width, height, file.FileName, file.ContentType, fileByte);
@@ -911,7 +931,8 @@ namespace EImece.Domain.Helpers
             return ImageFormat.Jpeg;
         }
 
-        public SavedImage GetResizedImage(int fileStorageId, int width, int height)
+        [Timed("service.files.get_resized_image_sync")]
+        public virtual SavedImage GetResizedImage(int fileStorageId, int width, int height)
         {
             SavedImage result = null;
             FileStorage fileStorage;
@@ -926,7 +947,8 @@ namespace EImece.Domain.Helpers
             return result;
         }
 
-        public async Task<SavedImage> GetResizedImageAsync(int fileStorageId, int width, int height, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.files.get_resized_image", "Time taken to get and resize image asynchronously")]
+        public virtual async Task<SavedImage> GetResizedImageAsync(int fileStorageId, int width, int height, CancellationToken cancellationToken = default(CancellationToken))
         {
             var loaded = await GetFileStorageFromCacheAsync(fileStorageId, cancellationToken).ConfigureAwait(false);
             if (loaded.Item1 == null || loaded.Item2 == null)
@@ -939,7 +961,8 @@ namespace EImece.Domain.Helpers
             return result;
         }
 
-        public async Task<SavedImage> GetResizedImageAsWebPAsync(int fileStorageId, int width, int height, int quality = 80, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.files.get_resized_image_webp", "Time taken to resize and encode image as WebP asynchronously")]
+        public virtual async Task<SavedImage> GetResizedImageAsWebPAsync(int fileStorageId, int width, int height, int quality = 80, CancellationToken cancellationToken = default(CancellationToken))
         {
             var loaded = await GetFileStorageFromCacheAsync(fileStorageId, cancellationToken).ConfigureAwait(false);
             if (loaded.Item1 == null || loaded.Item2 == null)
@@ -983,7 +1006,8 @@ namespace EImece.Domain.Helpers
         /// Resize and encode as WebP when the client advertises image/webp support.
         /// Falls back to the standard resized image on failure.
         /// </summary>
-        public SavedImage GetResizedImageAsWebP(int fileStorageId, int width, int height, int quality = 80)
+        [Timed("service.files.get_resized_image_webp_sync")]
+        public virtual SavedImage GetResizedImageAsWebP(int fileStorageId, int width, int height, int quality = 80)
         {
             FileStorage fileStorage;
             byte[] imageBytes = GetFileStorageFromCache(fileStorageId, out fileStorage);
@@ -1024,7 +1048,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public Tuple<string, string> GetImageSrcPath(int fileStorageId)
+        [Timed("service.files.get_image_src_path_sync")]
+        public virtual Tuple<string, string> GetImageSrcPath(int fileStorageId)
         {
             var fileStorage = FileStorageService.GetFileStorage(fileStorageId);
             return GetFileStorageSrcPath(fileStorage);
@@ -1145,7 +1170,8 @@ namespace EImece.Domain.Helpers
             return Math.Max(requestWidth, requestHeight) <= unknownThumbMaxSide;
         }
 
-        public byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
+        [Timed("service.files.get_file_storage_from_cache_sync")]
+        public virtual byte[] GetFileStorageFromCache(int fileStorageId, out FileStorage fileStorage)
         {
             byte[] imageBytes = null;
             fileStorage = FileStorageService.GetFileStorage(fileStorageId);
@@ -1173,7 +1199,8 @@ namespace EImece.Domain.Helpers
         /// Async twin of <see cref="GetFileStorageFromCache"/>. Item1 is the file bytes; Item2 is the
         /// FileStorage row. Disk read stays synchronous after the metadata await (local media folder).
         /// </summary>
-        public async Task<Tuple<byte[], FileStorage>> GetFileStorageFromCacheAsync(int fileStorageId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.files.get_file_storage_from_cache", "Time taken to get file storage bytes from cache asynchronously")]
+        public virtual async Task<Tuple<byte[], FileStorage>> GetFileStorageFromCacheAsync(int fileStorageId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var fileStorage = await FileStorageService.GetFileStorageAsync(fileStorageId, cancellationToken).ConfigureAwait(false);
             if (fileStorage == null)
@@ -1449,7 +1476,8 @@ namespace EImece.Domain.Helpers
         /// <param name="maxHeight">resize height.</param>
         /// <param name="quality">quality setting value.</param>
         /// <param name="filePath">file path.</param>
-        public void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath, ImageFormat format)
+        [Timed("service.files.save_bitmap_sync")]
+        public virtual void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath, ImageFormat format)
         {
             // Get the image's original width and height
             int originalWidth = image.Width;
@@ -1559,7 +1587,8 @@ namespace EImece.Domain.Helpers
             return new Size((int)(originalWidth * factor), (int)(originalHeight * factor));
         }
 
-        public Byte[] GenerateDefaultImg(string text = "", int width = 200, int height = 200)
+        [Timed("service.files.generate_default_img_sync")]
+        public virtual Byte[] GenerateDefaultImg(string text = "", int width = 200, int height = 200)
         {
             // Ignore legacy text overlays (e.g. "X") — never dump filenames into placeholders.
             return GenerateAbstractPlaceholder(0, width > 0 ? width : 200, height > 0 ? height : 200);
@@ -1616,7 +1645,8 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        public Byte[] GenerateCaptchaImg(string captcha = "", bool includenoise = true)
+        [Timed("service.files.generate_captcha_img_sync")]
+        public virtual Byte[] GenerateCaptchaImg(string captcha = "", bool includenoise = true)
         {
             using (var mem = new MemoryStream())
             using (var bmp = new Bitmap(130, 30))

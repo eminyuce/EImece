@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;

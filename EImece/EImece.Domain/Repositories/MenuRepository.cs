@@ -101,7 +101,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public StorefrontPageDto GetStorefrontPageById(int menuId)
+        [Timed("repo.menu.get_page_by_id_sync")]
+        public virtual StorefrontPageDto GetStorefrontPageById(int menuId)
         {
             return EImeceDbContext.Menus.AsNoTracking()
                 .Where(m => m.Id == menuId && m.IsActive)
@@ -127,7 +128,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public StorefrontPageDto GetStorefrontPageByMenuLink(string menuLink, int? language)
+        [Timed("repo.menu.get_page_by_link_sync")]
+        public virtual StorefrontPageDto GetStorefrontPageByMenuLink(string menuLink, int? language)
         {
             var query = EImeceDbContext.Menus.AsNoTracking()
                 .Where(m => m.MenuLink == menuLink && m.IsActive);
@@ -155,7 +157,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontMenuDto> GetStorefrontActiveMenus(int language)
+        [Timed("repo.menu.get_active_sync")]
+        public virtual List<StorefrontMenuDto> GetStorefrontActiveMenus(int language)
         {
             return EImeceDbContext.Menus.AsNoTracking()
                 .Where(m => m.Lang == language && m.IsActive)
@@ -186,13 +189,15 @@ namespace EImece.Domain.Repositories
             return BuildMenuHierarchy(allMenus);
         }
 
-        public List<StorefrontMenuDto> BuildStorefrontMenuTree(int language)
+        [Timed("repo.menu.build_tree_sync")]
+        public virtual List<StorefrontMenuDto> BuildStorefrontMenuTree(int language)
         {
             var allMenus = GetStorefrontActiveMenus(language);
             return BuildMenuHierarchy(allMenus);
         }
 
-        public async Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.menu.get_navigation", "Time taken to get storefront menu navigation from DB")]
+        public virtual async Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Menus.AsNoTracking()
                 .Where(m => m.Lang == language && m.IsActive)
@@ -203,7 +208,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language)
+        [Timed("repo.menu.get_navigation_sync")]
+        public virtual List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language)
         {
             return EImeceDbContext.Menus.AsNoTracking()
                 .Where(m => m.Lang == language && m.IsActive)
@@ -213,13 +219,15 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.menu.build_nav_tree", "Time taken to build storefront menu navigation tree from DB")]
+        public virtual async Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var allMenus = await GetStorefrontMenuNavigationAsync(language, cancellationToken).ConfigureAwait(false);
             return BuildMenuNavigationHierarchy(allMenus);
         }
 
-        public List<StorefrontMenuNavigationDto> BuildStorefrontMenuNavigationTree(int language)
+        [Timed("repo.menu.build_nav_tree_sync")]
+        public virtual List<StorefrontMenuNavigationDto> BuildStorefrontMenuNavigationTree(int language)
         {
             var allMenus = GetStorefrontMenuNavigation(language);
             return BuildMenuNavigationHierarchy(allMenus);
@@ -273,7 +281,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<List<StorefrontMenuFileDto>> GetStorefrontMenuFilesAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.menus.get_storefront_menu_files")]
+        public virtual async Task<List<StorefrontMenuFileDto>> GetStorefrontMenuFilesAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.MenuFiles.AsNoTracking()
                 .Where(f => f.MenuId == menuId && f.FileStorage != null && f.FileStorage.IsActive)
@@ -292,7 +301,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontMenuFileDto> GetStorefrontMenuFiles(int menuId)
+        [Timed("repo.menus.get_storefront_menu_files_sync")]
+        public virtual List<StorefrontMenuFileDto> GetStorefrontMenuFiles(int menuId)
         {
             return EImeceDbContext.MenuFiles.AsNoTracking()
                 .Where(f => f.MenuId == menuId && f.FileStorage != null && f.FileStorage.IsActive)

@@ -1,6 +1,7 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs.Storefront;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -38,7 +39,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<List<StorefrontBannerDto>> GetStorefrontMainPageBannersAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.main_page_image.get_banners", "Time taken to get storefront main page banners from DB")]
+        public virtual async Task<List<StorefrontBannerDto>> GetStorefrontMainPageBannersAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.MainPageImages.AsNoTracking()
                 .Where(r => r.Lang == language && r.IsActive)
@@ -49,7 +51,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontBannerDto> GetStorefrontMainPageBanners(int language)
+        [Timed("repo.main_page_image.get_banners_sync")]
+        public virtual List<StorefrontBannerDto> GetStorefrontMainPageBanners(int language)
         {
             return EImeceDbContext.MainPageImages.AsNoTracking()
                 .Where(r => r.Lang == language && r.IsActive)

@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
@@ -65,7 +66,8 @@ namespace EImece.Domain.Services
         [Inject]
         public IMailTemplateService MailTemplateService { get; set; }
 
-        public List<SitemapItem> GenerateSiteMap()
+        [Timed("service.sitemap.generate_sync")]
+        public virtual List<SitemapItem> GenerateSiteMap()
         {
             List<EImeceLanguage> eImeceLanguages = EnumHelper.GetLanguageEnumListFromWebConfig();
 
@@ -86,7 +88,8 @@ namespace EImece.Domain.Services
             return sitemapItems;
         }
 
-        public async Task<List<SitemapItem>> GenerateSiteMapAsync(CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.sitemap.generate")]
+        public virtual async Task<List<SitemapItem>> GenerateSiteMapAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             List<EImeceLanguage> eImeceLanguages = EnumHelper.GetLanguageEnumListFromWebConfig();
             var requestContext = HttpContext.Current?.Request?.RequestContext;

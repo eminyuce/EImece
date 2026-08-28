@@ -87,7 +87,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.product_category.get_main_page", "Time taken to get storefront main page categories")]
+        public virtual async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.CategoryMainPageAsync(language);
             return await DataCachingProvider.GetOrAddAsync(
@@ -96,7 +97,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
+        [Timed("service.product_category.get_main_page_sync")]
+        public virtual List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
         {
             var cacheKey = CacheKeys.CategoryMainPage(language);
             return DataCachingProvider.GetOrAdd(
@@ -105,7 +107,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentCategoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.product_category.get_children", "Time taken to get storefront children categories")]
+        public virtual async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentCategoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await DataCachingProvider.GetOrAddAsync(
                 CacheKeys.CategoryPrefix + "children:id" + parentCategoryId + AsyncCacheKeySuffix,
@@ -113,7 +116,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentCategoryId)
+        [Timed("service.product_category.get_children_sync")]
+        public virtual List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentCategoryId)
         {
             return DataCachingProvider.GetOrAdd(
                 CacheKeys.CategoryPrefix + "children:id" + parentCategoryId,
@@ -303,24 +307,28 @@ namespace EImece.Domain.Services
             return await ProductCategoryRepository.BuildTreeAsync(isActive, language).ConfigureAwait(false);
         }
 
-        public ProductCategory GetProductCategory(int categoryId)
+        [Timed("service.product_categories.get_by_id_sync")]
+        public virtual ProductCategory GetProductCategory(int categoryId)
         {
             ProductCategory result = ProductCategoryRepository.GetProductCategory(categoryId);
             return EntityFilterHelper.FilterProductCategory(result);
         }
 
-        public async Task<ProductCategory> GetProductCategoryAsync(int categoryId)
+        [Timed("service.product_categories.get_by_id")]
+        public virtual async Task<ProductCategory> GetProductCategoryAsync(int categoryId)
         {
             ProductCategory result = await ProductCategoryRepository.GetProductCategoryAsync(categoryId).ConfigureAwait(false);
             return EntityFilterHelper.FilterProductCategory(result);
         }
 
-        public List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
+        [Timed("service.product_categories.get_leaves_sync")]
+        public virtual List<ProductCategory> GetProductCategoryLeaves(bool? isActive, int language)
         {
             return ProductCategoryRepository.GetProductCategoryLeaves(isActive, language);
         }
 
-        public async Task<List<ProductCategory>> GetProductCategoryLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.product_categories.get_leaves")]
+        public virtual async Task<List<ProductCategory>> GetProductCategoryLeavesAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductCategoryRepository.GetProductCategoryLeavesAsync(isActive, language, cancellationToken).ConfigureAwait(false);
         }
@@ -538,18 +546,22 @@ namespace EImece.Domain.Services
             return null;
         }
 
-        public async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int categoryId)
+        [Timed("service.product_categories.get_category_view_model")]
+        public virtual async Task<ProductCategoryViewModel> GetProductCategoryViewModelAsync(int categoryId)
         {
             var categoryDto = await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId).ConfigureAwait(false);
             if (categoryDto == null) return null;
             return await GetStorefrontCategoryPageViewModelAsync(categoryId, 1, Models.Enums.SortingType.Default, null, null, null, 20, categoryDto.Lang).ConfigureAwait(false);
         }
-        public ProductCategoryDto GetProductCategoryDto(int productCategoryId)
+
+        [Timed("service.product_categories.get_dto_sync")]
+        public virtual ProductCategoryDto GetProductCategoryDto(int productCategoryId)
         {
             return ProductCategoryRepository.GetProductCategoryDto(productCategoryId);
         }
 
-        public async Task<ProductCategoryDto> GetProductCategoryDtoAsync(int productCategoryId)
+        [Timed("service.product_categories.get_dto")]
+        public virtual async Task<ProductCategoryDto> GetProductCategoryDtoAsync(int productCategoryId)
         {
             return await ProductCategoryRepository.GetProductCategoryDtoAsync(productCategoryId).ConfigureAwait(false);
         }

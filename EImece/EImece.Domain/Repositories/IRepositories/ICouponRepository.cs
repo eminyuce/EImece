@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
 using System.Threading;
 using System.Threading.Tasks;

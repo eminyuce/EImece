@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Caching;
+using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -48,7 +48,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public StorefrontPageDto GetStorefrontPageById(int menuId)
+        [Timed("service.menu.get_page_by_id_sync")]
+        public virtual StorefrontPageDto GetStorefrontPageById(int menuId)
         {
             var cacheKey = CacheKeys.MenuDetail(menuId);
             return DataCachingProvider.GetOrAdd(
@@ -70,7 +71,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public StorefrontPageDto GetStorefrontPageByMenuLink(string menuLink, int? language)
+        [Timed("service.menu.get_page_by_link_sync")]
+        public virtual StorefrontPageDto GetStorefrontPageByMenuLink(string menuLink, int? language)
         {
             var cacheKey = CacheKeys.MenuPrefix + "link:" + menuLink + ":lang" + (language.HasValue ? language.Value.ToString(CultureInfo.InvariantCulture) : "all");
             return DataCachingProvider.GetOrAdd(
@@ -79,7 +81,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.menu.get_active_menus", "Time taken to get active storefront menus")]
+        public virtual async Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await GetStorefrontActiveMenusCachedAsync(language).ConfigureAwait(false);
         }
@@ -103,7 +106,8 @@ namespace EImece.Domain.Services
             return await MenuRepository.GetActiveMenuIdNamesAsync().ConfigureAwait(false);
         }
 
-        public List<StorefrontMenuDto> GetStorefrontActiveMenus(int language)
+        [Timed("service.menu.get_active_menus_sync")]
+        public virtual List<StorefrontMenuDto> GetStorefrontActiveMenus(int language)
         {
             var cacheKey = CacheKeys.MenuPrefix + "activemenus:lang" + language;
             return DataCachingProvider.GetOrAdd(
@@ -123,7 +127,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontMenuDto> BuildStorefrontMenuTree(int language)
+        [Timed("service.menu.build_tree_sync")]
+        public virtual List<StorefrontMenuDto> BuildStorefrontMenuTree(int language)
         {
             var cacheKey = CacheKeys.MenuTree(language);
             return DataCachingProvider.GetOrAdd(
@@ -132,7 +137,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.menu.get_navigation", "Time taken to get storefront menu navigation")]
+        public virtual async Task<List<StorefrontMenuNavigationDto>> GetStorefrontMenuNavigationAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.MenuPrefix + "nav:lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
@@ -141,7 +147,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language)
+        [Timed("service.menu.get_navigation_sync")]
+        public virtual List<StorefrontMenuNavigationDto> GetStorefrontMenuNavigation(int language)
         {
             var cacheKey = CacheKeys.MenuPrefix + "nav:lang" + language;
             return DataCachingProvider.GetOrAdd(
@@ -150,7 +157,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.menu.build_nav_tree", "Time taken to build storefront menu navigation tree")]
+        public virtual async Task<List<StorefrontMenuNavigationDto>> BuildStorefrontMenuNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             // menu: family so InvalidateMenuCaches drops it (the former MenuNavTree-{lang}
             // key escaped every menu invalidation call).
@@ -161,7 +169,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontMenuNavigationDto> BuildStorefrontMenuNavigationTree(int language)
+        [Timed("service.menu.build_nav_tree_sync")]
+        public virtual List<StorefrontMenuNavigationDto> BuildStorefrontMenuNavigationTree(int language)
         {
             var cacheKey = CacheKeys.MenuPrefix + "navtree:lang" + language;
             return DataCachingProvider.GetOrAdd(
@@ -207,7 +216,8 @@ namespace EImece.Domain.Services
 
         #region Storefront Page ViewModels
 
-        public MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
+        [Timed("service.menus.get_page_by_link_sync")]
+        public virtual MenuPageViewModel GetPageByMenuLink(string menuLink, int? language)
         {
             var pageDto = MenuRepository.GetStorefrontPageByMenuLink(menuLink, language);
             if (pageDto == null)
@@ -217,7 +227,8 @@ namespace EImece.Domain.Services
             return GetPageById(pageDto.Id);
         }
 
-        public async Task<MenuPageViewModel> GetPageByMenuLinkAsync(string menuLink, int? language)
+        [Timed("service.menus.get_page_by_link")]
+        public virtual async Task<MenuPageViewModel> GetPageByMenuLinkAsync(string menuLink, int? language)
         {
             var pageDto = await MenuRepository.GetStorefrontPageByMenuLinkAsync(menuLink, language).ConfigureAwait(false);
             if (pageDto == null)
@@ -227,7 +238,8 @@ namespace EImece.Domain.Services
             return await GetPageByIdAsync(pageDto.Id).ConfigureAwait(false);
         }
 
-        public MenuPageViewModel GetPageById(int pageId)
+        [Timed("service.menus.get_page_by_id_sync")]
+        public virtual MenuPageViewModel GetPageById(int pageId)
         {
             var pageDto = GetStorefrontPageById(pageId);
             if (pageDto == null) return null;
@@ -264,7 +276,8 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<MenuPageViewModel> GetPageByIdAsync(int pageId)
+        [Timed("service.menus.get_page_by_id")]
+        public virtual async Task<MenuPageViewModel> GetPageByIdAsync(int pageId)
         {
             var pageDto = await GetStorefrontPageByIdAsync(pageId).ConfigureAwait(false);
             if (pageDto == null) return null;

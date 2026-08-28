@@ -1,4 +1,5 @@
 using EImece.Domain.Entities;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using System;
 using System.Security.Cryptography;
@@ -20,7 +21,8 @@ namespace EImece.Domain.Services
             _tokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
         }
 
-        public async Task<string> CreateTokenAsync(string userId)
+        [Timed("service.two_factor_token.create")]
+        public virtual async Task<string> CreateTokenAsync(string userId)
         {
             await _tokenRepository.RemoveUnusedByUserIdAsync(userId).ConfigureAwait(false);
 
@@ -51,7 +53,8 @@ namespace EImece.Domain.Services
         /// <summary>
         /// Validates and consumes the token. Returns userId if valid; otherwise null.
         /// </summary>
-        public async Task<string> ValidateAndConsumeTokenAsync(string token)
+        [Timed("service.two_factor_token.validate_and_consume")]
+        public virtual async Task<string> ValidateAndConsumeTokenAsync(string token)
         {
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -77,7 +80,8 @@ namespace EImece.Domain.Services
             return entity.UserId;
         }
 
-        public async Task CleanupExpiredTokensAsync()
+        [Timed("service.two_factor_token.cleanup_expired")]
+        public virtual async Task CleanupExpiredTokensAsync()
         {
             await _tokenRepository.DeleteExpiredAndUsedAsync().ConfigureAwait(false);
         }

@@ -397,7 +397,6 @@ namespace EImece.Domain.Repositories
         }
 
         [Timed("repo.story.get_detail_sync")]
-
         public virtual StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
         {
             return EImeceDbContext.Stories.AsNoTracking()
@@ -467,7 +466,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
+        [Timed("repo.story.get_featured_sync")]
+        public virtual List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
         {
             return EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId &&
@@ -479,7 +479,8 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.story.get_latest", "Time taken to get storefront latest stories from DB")]
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
@@ -491,7 +492,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
+        [Timed("repo.story.get_latest_sync")]
+        public virtual List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
         {
             return EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
@@ -518,7 +520,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
+        [Timed("repo.story.get_main_page_sync")]
+        public virtual PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
@@ -532,7 +535,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int language, int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.story.get_by_category", "Time taken to get storefront stories by category from DB")]
+        public virtual async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int language, int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.Lang == language &&
@@ -546,7 +550,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)
+        [Timed("repo.story.get_by_category_sync")]
+        public virtual PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int language, int pageIndex, int pageSize)
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.StoryCategoryId == storyCategoryId && s.Lang == language &&
@@ -610,7 +615,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontStoryCardDto> GetStorefrontRelatedStories(int[] tagIdList, int take, int language, int excludedStoryId)
+        [Timed("repo.story.get_related_sync")]
+        public virtual List<StorefrontStoryCardDto> GetStorefrontRelatedStories(int[] tagIdList, int take, int language, int excludedStoryId)
         {
             if (tagIdList == null || tagIdList.Length == 0) return new List<StorefrontStoryCardDto>();
 

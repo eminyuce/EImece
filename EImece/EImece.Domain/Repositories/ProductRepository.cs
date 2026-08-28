@@ -855,7 +855,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<StorefrontProductCardDto> GetStorefrontProductCardByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_product_card", "Time taken to get storefront product card from DB")]
+        public virtual async Task<StorefrontProductCardDto> GetStorefrontProductCardByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.Id == id && p.IsActive)
@@ -864,7 +865,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public StorefrontProductCardDto GetStorefrontProductCardById(int id)
+        [Timed("repo.products.get_product_card_sync")]
+        public virtual StorefrontProductCardDto GetStorefrontProductCardById(int id)
         {
             return EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.Id == id && p.IsActive)
@@ -1089,7 +1091,8 @@ namespace EImece.Domain.Repositories
             return dto;
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_main_page_products", "Time taken to get storefront main page products from DB")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1105,7 +1108,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontMainPageProducts(int take, int language)
+        [Timed("repo.products.get_main_page_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontMainPageProducts(int take, int language)
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1120,7 +1124,8 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontLatestProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_latest_products", "Time taken to get storefront latest products from DB")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontLatestProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1136,7 +1141,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontLatestProducts(int take, int language)
+        [Timed("repo.products.get_latest_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontLatestProducts(int take, int language)
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1151,7 +1157,8 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontCampaignProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_campaign_products", "Time taken to get storefront campaign products from DB")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontCampaignProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1167,7 +1174,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontCampaignProducts(int take, int language)
+        [Timed("repo.products.get_campaign_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontCampaignProducts(int take, int language)
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1182,7 +1190,8 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_active_async", "Time taken to get active products from DB")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && (!language.HasValue || p.Lang == language.Value) && (p.ProductCategory == null || p.ProductCategory.IsActive))
@@ -1192,7 +1201,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
+        [Timed("repo.products.get_active_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
         {
             return EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.IsActive && (!language.HasValue || p.Lang == language.Value) && (p.ProductCategory == null || p.ProductCategory.IsActive))
@@ -1201,7 +1211,8 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontActiveProductsPagedAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_active_paged", "Time taken to get active products paged from DB")]
+        public virtual async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontActiveProductsPagedAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1218,7 +1229,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, totalCount);
         }
 
-        public PaginatedList<StorefrontProductCardDto> GetStorefrontActiveProductsPaged(int pageIndex, int pageSize, int language)
+        [Timed("repo.products.get_active_paged_sync")]
+        public virtual PaginatedList<StorefrontProductCardDto> GetStorefrontActiveProductsPaged(int pageIndex, int pageSize, int language)
         {
             var inStock = ProductState.ProductInStock.ToString();
             var limitedStock = ProductState.LimitedStock.ToString();
@@ -1235,7 +1247,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, totalCount);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_category_products", "Time taken to get storefront category products from DB")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language &&
@@ -1246,7 +1259,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language)
+        [Timed("repo.products.get_category_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language)
         {
             return EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.ProductCategoryId == categoryId && p.IsActive && p.Lang == language &&
@@ -1369,7 +1383,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIdList, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_related", "Time taken to get storefront related products from DB")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIdList, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (tagIdList == null || tagIdList.Length == 0)
             {
@@ -1386,7 +1401,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIdList, int take, int language, int excludedProductId)
+        [Timed("repo.products.get_related_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIdList, int take, int language, int excludedProductId)
         {
             if (tagIdList == null || tagIdList.Length == 0)
             {
@@ -1423,7 +1439,8 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.search_storefront")]
+        public virtual async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             var term = (search ?? string.Empty).Trim();
             var query = EImeceDbContext.Products.AsNoTracking()
@@ -1457,7 +1474,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int language, SortingType sorting)
+        [Timed("repo.products.search_storefront_sync")]
+        public virtual PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int language, SortingType sorting)
         {
             var term = (search ?? string.Empty).Trim();
             var query = EImeceDbContext.Products.AsNoTracking()
@@ -1491,7 +1509,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_by_tag", "Time taken to get storefront products by tag from DB")]
+        public virtual async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int language, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Main Entity Activation: Product.IsActive, Tag.IsActive and ProductCategory.IsActive
             var query = EImeceDbContext.ProductTags.AsNoTracking()
@@ -1549,7 +1568,8 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontProductCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int language, SortingType sorting)
+        [Timed("repo.products.get_by_tag_sync")]
+        public virtual PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int language, SortingType sorting)
         {
             var query = EImeceDbContext.ProductTags.AsNoTracking()
                 .Where(pt => pt.TagId == tagId && pt.Tag.IsActive && pt.Tag.Lang == language && pt.Product != null && pt.Product.IsActive &&

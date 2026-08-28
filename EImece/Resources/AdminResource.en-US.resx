@@ -4862,4 +4862,130 @@
   <data name="EmptyTable" xml:space="preserve">
     <value>No records found.</value>
   </data>
+  <data name="PerfStatsRetentionHours" xml:space="preserve">
+    <value>Performance Stats Retention (Hours)</value>
+  </data>
+  <data name="PerfStatsRetentionHoursHelp" xml:space="preserve">
+    <value>In-memory retention period for [Timed] performance statistics. Set to 0 to disable collection, or set hours (e.g. 4 for last 4 hours, 24 for 24 hours).</value>
+  </data>
+  <data name="Range0To720ErrorMessage" xml:space="preserve">
+    <value>Retention must be between 0 (disabled) and 720 hours (30 days).</value>
+  </data>
+  <data name="PerformanceStatistics" xml:space="preserve">
+    <value>Performance Statistics</value>
+  </data>
+  <data name="PerfStatsSubtitle" xml:space="preserve">
+    <value>In-memory local performance measurements from [Timed] attributes and action filters.</value>
+  </data>
+  <data name="PerfStatsRetentionConfigTitle" xml:space="preserve">
+    <value>Configure retention period in System Settings</value>
+  </data>
+  <data name="PerfStatsRetentionBadge" xml:space="preserve">
+    <value>Retention</value>
+  </data>
+  <data name="PerfStatsDisabledBadge" xml:space="preserve">
+    <value>Disabled (0h)</value>
+  </data>
+  <data name="PerfStatsHoursSuffix" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="ClearStats" xml:space="preserve">
+    <value>Clear Stats</value>
+  </data>
+  <data name="PerfStatsDisabledAlertTitle" xml:space="preserve">
+    <value>Collection Disabled:</value>
+  </data>
+  <data name="PerfStatsDisabledAlertText" xml:space="preserve">
+    <value>Performance statistics collection is currently disabled because retention is set to 0 hours in System Settings.</value>
+  </data>
+  <data name="PerfStatsDisabledAlertAction" xml:space="preserve">
+    <value>Set retention to 1 or more hours (e.g. 4, 24) to begin collecting metrics.</value>
+  </data>
+  <data name="PerfStatsInfoAlertTitle" xml:space="preserve">
+    <value>In-Memory Timing Store:</value>
+  </data>
+  <data name="PerfStatsInfoAlertText" xml:space="preserve">
+    <value>These statistics represent live in-memory execution durations. Entries idle for more than the configured retention period are automatically evicted. Clearing these performance statistics affects only timer metrics and does not clear application caches.</value>
+  </data>
+  <data name="ActiveMetrics" xml:space="preserve">
+    <value>Active Metrics</value>
+  </data>
+  <data name="DistinctMonitoredMethods" xml:space="preserve">
+    <value>Distinct monitored methods</value>
+  </data>
+  <data name="TotalInvocations" xml:space="preserve">
+    <value>Total Invocations</value>
+  </data>
+  <data name="RecordedWithinWindow" xml:space="preserve">
+    <value>recorded within window</value>
+  </data>
+  <data name="SlowestAvgLatency" xml:space="preserve">
+    <value>Slowest Avg Latency</value>
+  </data>
+  <data name="FastestAvgLatency" xml:space="preserve">
+    <value>Fastest Avg Latency</value>
+  </data>
+  <data name="PerfSearchPlaceholder" xml:space="preserve">
+    <value>Filter by metric name (e.g. service.products, repo, app)...</value>
+  </data>
+  <data name="PerfShowingMetrics" xml:space="preserve">
+    <value>metrics (sorted by Avg Duration descending)</value>
+  </data>
+  <data name="PerfMetricType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="PerfCalls" xml:space="preserve">
+    <value>Calls</value>
+  </data>
+  <data name="PerfAvgMs" xml:space="preserve">
+    <value>Avg (ms)</value>
+  </data>
+  <data name="PerfMinMs" xml:space="preserve">
+    <value>Min (ms)</value>
+  </data>
+  <data name="PerfMaxMs" xml:space="preserve">
+    <value>Max (ms)</value>
+  </data>
+  <data name="PerfLastMs" xml:space="preserve">
+    <value>Last (ms)</value>
+  </data>
+  <data name="PerfTotalSum" xml:space="preserve">
+    <value>Total Sum</value>
+  </data>
+  <data name="PerfLastInvokedUtc" xml:space="preserve">
+    <value>Last Invoked (UTC)</value>
+  </data>
+  <data name="NoPerfStatsRecorded" xml:space="preserve">
+    <value>No performance statistics recorded yet (or matching search criteria).</value>
+  </data>
+  <data name="TypeController" xml:space="preserve">
+    <value>Controller</value>
+  </data>
+  <data name="TypeService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="TypeRepository" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="TypeOther" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="ClearPerfStatsTitle" xml:space="preserve">
+    <value>Clear Performance Statistics</value>
+  </data>
+  <data name="ClearPerfStatsConfirm" xml:space="preserve">
+    <value>Are you sure you want to clear all in-memory performance statistics?</value>
+  </data>
+  <data name="ClearPerfStatsWarning" xml:space="preserve">
+    <value>This resets the in-memory timer counters immediately. It does not clear application caching.</value>
+  </data>
+  <data name="ClearStatsNow" xml:space="preserve">
+    <value>Clear Stats Now</value>
+  </data>
+  <data name="PerfFilterAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="PerfFilterTypeLabel" xml:space="preserve">
+    <value>Type Filter</value>
+  </data>
 </root>

@@ -1,5 +1,6 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -32,18 +33,21 @@ namespace EImece.Domain.Services
             MailTemplateRepository = repository;
         }
 
-        public MailTemplate GetMailTemplateByName(string templatename)
+        [Timed("service.mail_template.get_by_name_sync")]
+        public virtual MailTemplate GetMailTemplateByName(string templatename)
         {
             return GetAllMailTemplatesWithCache().FirstOrDefault(r => r.Name.Equals(templatename, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public async Task<MailTemplate> GetMailTemplateByNameAsync(string templatename)
+        [Timed("service.mail_template.get_by_name")]
+        public virtual async Task<MailTemplate> GetMailTemplateByNameAsync(string templatename)
         {
             var templates = await GetAllMailTemplatesWithCacheAsync().ConfigureAwait(false);
             return templates.FirstOrDefault(r => r.Name.Equals(templatename, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public List<MailTemplate> GetAllMailTemplatesWithCache()
+        [Timed("service.mail_template.get_all_with_cache_sync")]
+        public virtual List<MailTemplate> GetAllMailTemplatesWithCache()
         {
             var cacheKey = "GetAllMailTemplatesWithCache";
             return DataCachingProvider.GetOrAdd(
@@ -52,7 +56,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<MailTemplate>> GetAllMailTemplatesWithCacheAsync()
+        [Timed("service.mail_template.get_all_with_cache")]
+        public virtual async Task<List<MailTemplate>> GetAllMailTemplatesWithCacheAsync()
         {
             var cacheKey = "GetAllMailTemplatesWithCache" + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
@@ -61,7 +66,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)
+        [Timed("service.mail_template.generate_company_new_order_sync")]
+        public virtual CompanyGotNewOrderEmailRazorTemplate GenerateCompanyGotNewOrderEmailRazorTemplate(int orderId)
         {
             var cOrder = OrderService.GetOrderById(orderId);
             var pp = new CompanyGotNewOrderEmailRazorTemplate();
@@ -84,7 +90,8 @@ namespace EImece.Domain.Services
             return pp;
         }
 
-        public async Task<CompanyGotNewOrderEmailRazorTemplate> GenerateCompanyGotNewOrderEmailRazorTemplateAsync(int orderId)
+        [Timed("service.mail_template.generate_company_new_order")]
+        public virtual async Task<CompanyGotNewOrderEmailRazorTemplate> GenerateCompanyGotNewOrderEmailRazorTemplateAsync(int orderId)
         {
             var cOrder = await OrderService.GetOrderByIdAsync(orderId).ConfigureAwait(false);
             var pp = new CompanyGotNewOrderEmailRazorTemplate();
@@ -114,7 +121,8 @@ namespace EImece.Domain.Services
             return baseurl;
         }
 
-        public OrderConfirmationEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId)
+        [Timed("service.mail_template.generate_order_confirmation_sync")]
+        public virtual OrderConfirmationEmailRazorTemplate GenerateOrderConfirmationEmailRazorTemplate(int orderId)
         {
             var cOrder = OrderService.GetOrderById(orderId);
             var pp = new OrderConfirmationEmailRazorTemplate();
@@ -136,7 +144,8 @@ namespace EImece.Domain.Services
             return pp;
         }
 
-        public async Task<OrderConfirmationEmailRazorTemplate> GenerateOrderConfirmationEmailRazorTemplateAsync(int orderId)
+        [Timed("service.mail_template.generate_order_confirmation")]
+        public virtual async Task<OrderConfirmationEmailRazorTemplate> GenerateOrderConfirmationEmailRazorTemplateAsync(int orderId)
         {
             var cOrder = await OrderService.GetOrderByIdAsync(orderId).ConfigureAwait(false);
             var pp = new OrderConfirmationEmailRazorTemplate();

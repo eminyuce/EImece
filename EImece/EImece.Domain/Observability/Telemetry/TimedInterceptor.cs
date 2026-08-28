@@ -1,5 +1,5 @@
 using Castle.DynamicProxy;
-using NLog;
+using EImece.Domain.Observability.Metrics;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -15,14 +15,13 @@ namespace EImece.Domain.Observability.Telemetry
     /// Metric naming convention:
     ///   Service    → service.{entity}.{operation}  e.g. service.conversations.get_by_user
     ///   Repository → repo.{entity}.{operation}     e.g. repo.conversations.get_by_user
-    /// Duration is recorded in milliseconds to OpenTelemetry Histogram via <see cref="Telemetry"/>.
+    /// Duration is recorded in milliseconds to OpenTelemetry Histogram via <see cref="Telemetry"/> (Meter: "EImece")
+    /// and to the in-memory <see cref="PerfStats"/> store for local visibility.
     /// Also tags <see cref="Activity.Current"/> with timed.metric / timed.duration_ms when present.
     /// Works with sync and async (Task / Task&lt;T&gt;) methods on .NET Framework 4.8.
     /// </summary>
     public sealed class TimedInterceptor : IInterceptor
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public void Intercept(IInvocation invocation)
         {
             // Fast path: no attribute -> just proceed (no timing overhead).
@@ -57,7 +56,6 @@ namespace EImece.Domain.Observability.Telemetry
                     if (task == null)
                     {
                         // Task was null (e.g., async method that synchronously returned null) — record now.
-                        // Do not replace ReturnValue; just record.
                         stopwatch.Stop();
                         Record(timed, stopwatch, invocation);
                         return;
@@ -80,7 +78,7 @@ namespace EImece.Domain.Observability.Telemetry
                     }
                     else
                     {
-                        // Unexpected Task subtype (e.g., ValueTask not used on net48) — treat as sync.
+                        // Unexpected Task subtype — treat as sync.
                         stopwatch.Stop();
                         Record(timed, stopwatch, invocation);
                     }
@@ -96,7 +94,6 @@ namespace EImece.Domain.Observability.Telemetry
             catch (Exception)
             {
                 // Synchronous exception from Proceed() — still record duration before rethrowing.
-                // Use separate try so telemetry failure never hides business exception.
                 try
                 {
                     if (stopwatch.IsRunning)
@@ -145,37 +142,26 @@ namespace EImece.Domain.Observability.Telemetry
             }
         }
 
-        // Central recording: OTel histogram + Activity tags + NLog. Never throws.
+        // Central recording: OTel histogram + PerfStats + Activity tags. Never throws.
         private static void Record(TimedAttribute timed, Stopwatch stopwatch, IInvocation invocation)
         {
             try
             {
                 var elapsedMs = stopwatch.Elapsed.TotalMilliseconds;
 
-                // OTel Histogram (cached via Telemetry — thread-safe).
+                // 1. OTel Histogram (Meter: "EImece", cached via Telemetry — thread-safe).
                 var histogram = Telemetry.GetOrCreateHistogram(timed.Name, timed.Description);
                 histogram.Record(elapsedMs);
 
-                // Enrich current Activity if any (created by AspNet instrumentation or TelemetryActionFilter).
+                // 2. In-memory PerfStats store (1-day retention).
+                PerfStats.Record(timed.Name, elapsedMs);
+
+                // 3. Enrich current Activity if any (created by AspNet instrumentation or TelemetryActionFilter).
                 var activity = Activity.Current;
                 if (activity != null)
                 {
                     activity.SetTag("timed.metric", timed.Name);
                     activity.SetTag("timed.duration_ms", elapsedMs);
-                }
-
-                // NLog duration — visible in file/console targets, low-cardinality tags included.
-                // Wrapped so logging failure never breaks business flow.
-                try
-                {
-                    var targetType = invocation?.TargetType?.Name ?? invocation?.InvocationTarget?.GetType().Name ?? "unknown";
-                    var methodName = invocation?.Method?.Name ?? invocation?.MethodInvocationTarget?.Name ?? "unknown";
-                    Logger.Info("Timed metric={Metric} duration={DurationMs:F2}ms target={TargetType} method={Method}",
-                        timed.Name, elapsedMs, targetType, methodName);
-                }
-                catch (Exception logEx)
-                {
-                    Debug.WriteLine($"TimedInterceptor NLog failed for '{timed?.Name ?? "unknown"}': {logEx}");
                 }
             }
             catch (Exception ex)
@@ -185,7 +171,6 @@ namespace EImece.Domain.Observability.Telemetry
         }
 
         // Best-effort attribute lookup preferring the concrete target method.
-        // Uses MethodInvocationTarget (concrete) first, then Message.
         private static TimedAttribute GetTimedAttribute(IInvocation invocation)
         {
             try
@@ -207,7 +192,6 @@ namespace EImece.Domain.Observability.Telemetry
                         return attr;
                 }
 
-                // Fallback: check invocation target type for method by signature (defensive).
                 return null;
             }
             catch (Exception ex)

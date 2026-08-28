@@ -67,7 +67,8 @@ namespace EImece.Domain.Services
             this.ProductService = productService;
         }
 
-        public void SaveOrEditShoppingCart(ShoppingCart item)
+        [Timed("service.shopping_cart.save_or_edit_sync")]
+        public virtual void SaveOrEditShoppingCart(ShoppingCart item)
         {
             Logger.Info($"SaveOrEditShoppingCart called with OrderGuid: {item.OrderGuid}");
             var shoppingCart = ShoppingCartRepository.GetShoppingCartByOrderGuid(item.OrderGuid);
@@ -85,7 +86,8 @@ namespace EImece.Domain.Services
             Logger.Info($"Shopping cart saved successfully for OrderGuid: {item.OrderGuid}");
         }
 
-        public async Task SaveOrEditShoppingCartAsync(ShoppingCart item)
+        [Timed("service.shopping_cart.save_or_edit")]
+        public virtual async Task SaveOrEditShoppingCartAsync(ShoppingCart item)
         {
             Logger.Info($"SaveOrEditShoppingCartAsync called with OrderGuid: {item.OrderGuid}");
             var shoppingCart = await ShoppingCartRepository.GetShoppingCartByOrderGuidAsync(item.OrderGuid).ConfigureAwait(false);
@@ -103,7 +105,8 @@ namespace EImece.Domain.Services
             Logger.Info($"Shopping cart saved successfully for OrderGuid: {item.OrderGuid}");
         }
 
-        public ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
+        [Timed("service.shopping_cart.get_by_order_guid_sync")]
+        public virtual ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
         {
             Logger.Info($"GetShoppingCartByOrderGuid called with OrderGuid: {orderGuid}");
             var cart = ShoppingCartRepository.GetShoppingCartByOrderGuid(orderGuid);
@@ -111,8 +114,7 @@ namespace EImece.Domain.Services
             return cart;
         }
 
-        [Timed("service.shopping_cart.get_by_guid")]
-
+        [Timed("service.shopping_cart.get_by_order_guid")]
         public virtual async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid)
         {
             Logger.Info($"GetShoppingCartByOrderGuidAsync called with OrderGuid: {orderGuid}");
@@ -121,14 +123,16 @@ namespace EImece.Domain.Services
             return cart;
         }
 
-        public void DeleteByOrderGuid(string orderGuid)
+        [Timed("service.shopping_cart.delete_by_order_guid_sync")]
+        public virtual void DeleteByOrderGuid(string orderGuid)
         {
             Logger.Info($"DeleteByOrderGuid called with OrderGuid: {orderGuid}");
             ShoppingCartRepository.DeleteByWhereCondition(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase));
             Logger.Info($"Shopping cart deleted for OrderGuid: {orderGuid}");
         }
 
-        public async Task DeleteByOrderGuidAsync(string orderGuid)
+        [Timed("service.shopping_cart.delete_by_order_guid")]
+        public virtual async Task DeleteByOrderGuidAsync(string orderGuid)
         {
             Logger.Info($"DeleteByOrderGuidAsync called with OrderGuid: {orderGuid}");
             var carts = await ShoppingCartRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).ToListAsync().ConfigureAwait(false);
@@ -143,8 +147,7 @@ namespace EImece.Domain.Services
             Logger.Info($"Shopping cart deleted for OrderGuid: {orderGuid}");
         }
 
-        [Timed("service.shopping_cart.save_sync")]
-
+        [Timed("service.shopping_cart.save_cart_sync")]
         public virtual Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
             Logger.Info($"SaveShoppingCart started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
@@ -236,8 +239,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        [Timed("service.shopping_cart.save")]
-
+        [Timed("service.shopping_cart.save_cart")]
         public virtual async Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
             Logger.Info($"SaveShoppingCartAsync started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
@@ -786,7 +788,8 @@ namespace EImece.Domain.Services
             return savedOrder;
         }
 
-        public Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
+        [Timed("service.shopping_cart.save_buy_with_no_account_sync")]
+        public virtual Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyWithNoAccountCreation started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
@@ -893,7 +896,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Order SaveBuyNow(BuyNowModel buyNowSession, PaymentResult paymentResult)
+        [Timed("service.shopping_cart.save_buy_now_sync")]
+        public virtual Order SaveBuyNow(BuyNowModel buyNowSession, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyNow started - OrderGuid: {buyNowSession?.OrderGuid}");
 
@@ -960,7 +964,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
+        [Timed("service.shopping_cart.save_buy_with_no_account")]
+        public virtual async Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyWithNoAccountCreationAsync started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
@@ -1060,7 +1065,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, PaymentResult paymentResult)
+        [Timed("service.shopping_cart.save_buy_now")]
+        public virtual async Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, PaymentResult paymentResult)
         {
             Logger.Info($"SaveBuyNowAsync started - OrderGuid: {buyNowSession?.OrderGuid}");
 
@@ -1258,17 +1264,20 @@ namespace EImece.Domain.Services
             Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
 
-        public List<ShoppingCart> GetAdminPageList(string search, int currentLanguage)
+        [Timed("service.shopping_cart.get_admin_page_list_sync")]
+        public virtual List<ShoppingCart> GetAdminPageList(string search, int currentLanguage)
         {
             return ShoppingCartRepository.GetAdminPageList(search, currentLanguage);
         }
 
-        public async Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.shopping_cart.get_admin_page_list")]
+        public virtual async Task<List<ShoppingCart>> GetAdminPageListAsync(string search, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ShoppingCartRepository.GetAdminPageListAsync(search, currentLanguage, cancellationToken).ConfigureAwait(false);
         }
 
-        public int ClearExpiredShoppingCarts(int olderThanDays = 30)
+        [Timed("service.shopping_cart.clear_expired_sync")]
+        public virtual int ClearExpiredShoppingCarts(int olderThanDays = 30)
         {
             if (olderThanDays < 1)
             {
@@ -1282,7 +1291,8 @@ namespace EImece.Domain.Services
             return count;
         }
 
-        public async Task<int> ClearExpiredShoppingCartsAsync(int olderThanDays = 30, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.shopping_cart.clear_expired")]
+        public virtual async Task<int> ClearExpiredShoppingCartsAsync(int olderThanDays = 30, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (olderThanDays < 1)
             {

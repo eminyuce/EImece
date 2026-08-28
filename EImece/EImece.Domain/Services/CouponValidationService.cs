@@ -3,6 +3,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Models;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -44,7 +45,8 @@ namespace EImece.Domain.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task<CouponValidationResult> ValidateCouponAsync(string couponCode, ShoppingCartSession cart, CouponValidationContext context, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.validate")]
+        public virtual async Task<CouponValidationResult> ValidateCouponAsync(string couponCode, ShoppingCartSession cart, CouponValidationContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrWhiteSpace(couponCode))
                 return CouponValidationResult.Fail(CouponValidationReason.CouponNotFound, "Coupon code required.", couponCode);
@@ -67,7 +69,8 @@ namespace EImece.Domain.Services
             return await ValidateCouponInternalAsync(coupon, cart.ShoppingCartItems.Select(i => new CartItemInfo { ProductId = i.Product.Id, Quantity = i.Quantity, UnitPrice = i.Product.Price }).ToList(), cart.TotalPrice, context, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<CouponValidationResult> ValidateCouponAsync(string couponCode, BuyWithNoAccountCreation cart, CouponValidationContext context, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.validate_guest")]
+        public virtual async Task<CouponValidationResult> ValidateCouponAsync(string couponCode, BuyWithNoAccountCreation cart, CouponValidationContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (string.IsNullOrWhiteSpace(couponCode))
                 return CouponValidationResult.Fail(CouponValidationReason.CouponNotFound, "Coupon code required.", couponCode);
@@ -82,7 +85,8 @@ namespace EImece.Domain.Services
             return await ValidateCouponInternalAsync(coupon, items, cart.TotalPrice, context, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<CouponValidationResult> RevalidateActiveCouponAsync(ShoppingCartSession cart, CouponValidationContext context, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.coupons.revalidate")]
+        public virtual async Task<CouponValidationResult> RevalidateActiveCouponAsync(ShoppingCartSession cart, CouponValidationContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (cart?.Coupon == null || string.IsNullOrWhiteSpace(cart.Coupon.Code))
                 return CouponValidationResult.Fail(CouponValidationReason.CouponNotFound, "No active coupon.", null);

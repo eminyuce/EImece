@@ -4862,4 +4862,130 @@
   <data name="EmptyTable" xml:space="preserve">
     <value>Kayıt bulunamadı.</value>
   </data>
+  <data name="PerfStatsRetentionHours" xml:space="preserve">
+    <value>Performans İstatistikleri Saklama Süresi (Saat)</value>
+  </data>
+  <data name="PerfStatsRetentionHoursHelp" xml:space="preserve">
+    <value>[Timed] performans istatistikleri için bellek içi saklama süresi. Toplamayı devre dışı bırakmak için 0 yapın veya saat belirtin (örn. son 4 saat için 4, 24 saat için 24).</value>
+  </data>
+  <data name="Range0To720ErrorMessage" xml:space="preserve">
+    <value>Saklama süresi 0 (devre dışı) ile 720 saat (30 gün) arasında olmalıdır.</value>
+  </data>
+  <data name="PerformanceStatistics" xml:space="preserve">
+    <value>Performans İstatistikleri</value>
+  </data>
+  <data name="PerfStatsSubtitle" xml:space="preserve">
+    <value>[Timed] öznitelikleri ve eylem filtrelerinden toplanan bellek içi yerel performans ölçümleri.</value>
+  </data>
+  <data name="PerfStatsRetentionConfigTitle" xml:space="preserve">
+    <value>Sistem Ayarları'nda saklama süresini yapılandır</value>
+  </data>
+  <data name="PerfStatsRetentionBadge" xml:space="preserve">
+    <value>Saklama Süresi</value>
+  </data>
+  <data name="PerfStatsDisabledBadge" xml:space="preserve">
+    <value>Devre Dışı (0 sa)</value>
+  </data>
+  <data name="PerfStatsHoursSuffix" xml:space="preserve">
+    <value>sa</value>
+  </data>
+  <data name="ClearStats" xml:space="preserve">
+    <value>İstatistikleri Temizle</value>
+  </data>
+  <data name="PerfStatsDisabledAlertTitle" xml:space="preserve">
+    <value>Toplama Devre Dışı:</value>
+  </data>
+  <data name="PerfStatsDisabledAlertText" xml:space="preserve">
+    <value>Performans istatistikleri toplama şu anda devre dışı çünkü saklama süresi Sistem Ayarları'nda 0 saat olarak ayarlanmış.</value>
+  </data>
+  <data name="PerfStatsDisabledAlertAction" xml:space="preserve">
+    <value>Metrik toplamaya başlamak için saklama süresini 1 veya daha fazla saat (örn. 4, 24) olarak ayarlayın.</value>
+  </data>
+  <data name="PerfStatsInfoAlertTitle" xml:space="preserve">
+    <value>Bellek İçi Zamanlama Deposu:</value>
+  </data>
+  <data name="PerfStatsInfoAlertText" xml:space="preserve">
+    <value>Bu istatistikler canlı bellek içi çalışma sürelerini gösterir. Belirlenen süreden daha uzun süre işlem görmeyen kayıtlar otomatik olarak temizlenir. Bu istatistikleri temizlemek yalnızca zamanlayıcı sayaçlarını sıfırlar; uygulama önbelleğini veya HttpRuntime.Cache'i etkilemez.</value>
+  </data>
+  <data name="ActiveMetrics" xml:space="preserve">
+    <value>Aktif Metrikler</value>
+  </data>
+  <data name="DistinctMonitoredMethods" xml:space="preserve">
+    <value>İzlenen farklı metot</value>
+  </data>
+  <data name="TotalInvocations" xml:space="preserve">
+    <value>Toplam Çağrı</value>
+  </data>
+  <data name="RecordedWithinWindow" xml:space="preserve">
+    <value>penceresinde kaydedilen</value>
+  </data>
+  <data name="SlowestAvgLatency" xml:space="preserve">
+    <value>En Yavaş Ortalama Süre</value>
+  </data>
+  <data name="FastestAvgLatency" xml:space="preserve">
+    <value>En Hızlı Ortalama Süre</value>
+  </data>
+  <data name="PerfSearchPlaceholder" xml:space="preserve">
+    <value>Metrik adına göre filtrele (örn. service.products, repo, app)...</value>
+  </data>
+  <data name="PerfShowingMetrics" xml:space="preserve">
+    <value>metrik gösteriliyor (Ortalama Süreye göre azalan)</value>
+  </data>
+  <data name="PerfMetricType" xml:space="preserve">
+    <value>Tür</value>
+  </data>
+  <data name="PerfCalls" xml:space="preserve">
+    <value>Çağrı</value>
+  </data>
+  <data name="PerfAvgMs" xml:space="preserve">
+    <value>Ort. (ms)</value>
+  </data>
+  <data name="PerfMinMs" xml:space="preserve">
+    <value>Min (ms)</value>
+  </data>
+  <data name="PerfMaxMs" xml:space="preserve">
+    <value>Maks (ms)</value>
+  </data>
+  <data name="PerfLastMs" xml:space="preserve">
+    <value>Son (ms)</value>
+  </data>
+  <data name="PerfTotalSum" xml:space="preserve">
+    <value>Toplam Süre</value>
+  </data>
+  <data name="PerfLastInvokedUtc" xml:space="preserve">
+    <value>Son Çağrı (UTC)</value>
+  </data>
+  <data name="NoPerfStatsRecorded" xml:space="preserve">
+    <value>Henüz kaydedilmiş performans istatistiği bulunmuyor (veya arama kriterine uymuyor).</value>
+  </data>
+  <data name="TypeController" xml:space="preserve">
+    <value>Controller</value>
+  </data>
+  <data name="TypeService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="TypeRepository" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="TypeOther" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="ClearPerfStatsTitle" xml:space="preserve">
+    <value>Performans İstatistiklerini Temizle</value>
+  </data>
+  <data name="ClearPerfStatsConfirm" xml:space="preserve">
+    <value>Bellekteki tüm performans istatistiklerini temizlemek istediğinizden emin misiniz?</value>
+  </data>
+  <data name="ClearPerfStatsWarning" xml:space="preserve">
+    <value>Bu işlem bellek içi sayaçları derhal sıfırlar. Uygulama önbelleğini temizlemez.</value>
+  </data>
+  <data name="ClearStatsNow" xml:space="preserve">
+    <value>İstatistikleri Şimdi Temizle</value>
+  </data>
+  <data name="PerfFilterAll" xml:space="preserve">
+    <value>Tümü</value>
+  </data>
+  <data name="PerfFilterTypeLabel" xml:space="preserve">
+    <value>Tür Filtresi</value>
+  </data>
 </root>

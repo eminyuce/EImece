@@ -112,7 +112,8 @@ namespace EImece.Domain.Services
             return await OrderRepository.GetStorefrontOrderConfirmationByOrderNumberAsync(orderNumber, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.orders.get_stats_by_user", "Time taken to get order stats by user")]
+        public virtual async Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await OrderRepository.GetStorefrontOrderStatsByUserIdAsync(userId, cancellationToken).ConfigureAwait(false);
         }

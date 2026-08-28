@@ -11386,5 +11386,266 @@ namespace Resources {
                 return ResourceManager.GetString("EmptyTable", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Performance Stats Retention (Hours).
+        /// </summary>
+        public static string PerfStatsRetentionHours {
+            get {
+                return ResourceManager.GetString("PerfStatsRetentionHours", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In-memory retention period for [Timed] performance statistics. Set to 0 to disable collection, or set hours (e.g. 4 for last 4 hours, 24 for 24 hours)..
+        /// </summary>
+        public static string PerfStatsRetentionHoursHelp {
+            get {
+                return ResourceManager.GetString("PerfStatsRetentionHoursHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Retention must be between 0 (disabled) and 720 hours (30 days)..
+        /// </summary>
+        public static string Range0To720ErrorMessage {
+            get {
+                return ResourceManager.GetString("Range0To720ErrorMessage", resourceCulture);
+            }
+        }
+
+        public static string PerformanceStatistics {
+            get {
+                return ResourceManager.GetString("PerformanceStatistics", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsSubtitle {
+            get {
+                return ResourceManager.GetString("PerfStatsSubtitle", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsRetentionConfigTitle {
+            get {
+                return ResourceManager.GetString("PerfStatsRetentionConfigTitle", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsRetentionBadge {
+            get {
+                return ResourceManager.GetString("PerfStatsRetentionBadge", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsDisabledBadge {
+            get {
+                return ResourceManager.GetString("PerfStatsDisabledBadge", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsHoursSuffix {
+            get {
+                return ResourceManager.GetString("PerfStatsHoursSuffix", resourceCulture);
+            }
+        }
+
+        public static string ClearStats {
+            get {
+                return ResourceManager.GetString("ClearStats", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsDisabledAlertTitle {
+            get {
+                return ResourceManager.GetString("PerfStatsDisabledAlertTitle", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsDisabledAlertText {
+            get {
+                return ResourceManager.GetString("PerfStatsDisabledAlertText", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsDisabledAlertAction {
+            get {
+                return ResourceManager.GetString("PerfStatsDisabledAlertAction", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsInfoAlertTitle {
+            get {
+                return ResourceManager.GetString("PerfStatsInfoAlertTitle", resourceCulture);
+            }
+        }
+
+        public static string PerfStatsInfoAlertText {
+            get {
+                return ResourceManager.GetString("PerfStatsInfoAlertText", resourceCulture);
+            }
+        }
+
+        public static string ActiveMetrics {
+            get {
+                return ResourceManager.GetString("ActiveMetrics", resourceCulture);
+            }
+        }
+
+        public static string DistinctMonitoredMethods {
+            get {
+                return ResourceManager.GetString("DistinctMonitoredMethods", resourceCulture);
+            }
+        }
+
+        public static string TotalInvocations {
+            get {
+                return ResourceManager.GetString("TotalInvocations", resourceCulture);
+            }
+        }
+
+        public static string RecordedWithinWindow {
+            get {
+                return ResourceManager.GetString("RecordedWithinWindow", resourceCulture);
+            }
+        }
+
+        public static string SlowestAvgLatency {
+            get {
+                return ResourceManager.GetString("SlowestAvgLatency", resourceCulture);
+            }
+        }
+
+        public static string FastestAvgLatency {
+            get {
+                return ResourceManager.GetString("FastestAvgLatency", resourceCulture);
+            }
+        }
+
+        public static string PerfSearchPlaceholder {
+            get {
+                return ResourceManager.GetString("PerfSearchPlaceholder", resourceCulture);
+            }
+        }
+
+        public static string PerfShowingMetrics {
+            get {
+                return ResourceManager.GetString("PerfShowingMetrics", resourceCulture);
+            }
+        }
+
+        public static string PerfMetricType {
+            get {
+                return ResourceManager.GetString("PerfMetricType", resourceCulture);
+            }
+        }
+
+        public static string PerfCalls {
+            get {
+                return ResourceManager.GetString("PerfCalls", resourceCulture);
+            }
+        }
+
+        public static string PerfAvgMs {
+            get {
+                return ResourceManager.GetString("PerfAvgMs", resourceCulture);
+            }
+        }
+
+        public static string PerfMinMs {
+            get {
+                return ResourceManager.GetString("PerfMinMs", resourceCulture);
+            }
+        }
+
+        public static string PerfMaxMs {
+            get {
+                return ResourceManager.GetString("PerfMaxMs", resourceCulture);
+            }
+        }
+
+        public static string PerfLastMs {
+            get {
+                return ResourceManager.GetString("PerfLastMs", resourceCulture);
+            }
+        }
+
+        public static string PerfTotalSum {
+            get {
+                return ResourceManager.GetString("PerfTotalSum", resourceCulture);
+            }
+        }
+
+        public static string PerfLastInvokedUtc {
+            get {
+                return ResourceManager.GetString("PerfLastInvokedUtc", resourceCulture);
+            }
+        }
+
+        public static string NoPerfStatsRecorded {
+            get {
+                return ResourceManager.GetString("NoPerfStatsRecorded", resourceCulture);
+            }
+        }
+
+        public static string TypeController {
+            get {
+                return ResourceManager.GetString("TypeController", resourceCulture);
+            }
+        }
+
+        public static string TypeService {
+            get {
+                return ResourceManager.GetString("TypeService", resourceCulture);
+            }
+        }
+
+        public static string TypeRepository {
+            get {
+                return ResourceManager.GetString("TypeRepository", resourceCulture);
+            }
+        }
+
+        public static string TypeOther {
+            get {
+                return ResourceManager.GetString("TypeOther", resourceCulture);
+            }
+        }
+
+        public static string ClearPerfStatsTitle {
+            get {
+                return ResourceManager.GetString("ClearPerfStatsTitle", resourceCulture);
+            }
+        }
+
+        public static string ClearPerfStatsConfirm {
+            get {
+                return ResourceManager.GetString("ClearPerfStatsConfirm", resourceCulture);
+            }
+        }
+
+        public static string ClearPerfStatsWarning {
+            get {
+                return ResourceManager.GetString("ClearPerfStatsWarning", resourceCulture);
+            }
+        }
+
+        public static string ClearStatsNow {
+            get {
+                return ResourceManager.GetString("ClearStatsNow", resourceCulture);
+            }
+        }
+
+        public static string PerfFilterAll {
+            get {
+                return ResourceManager.GetString("PerfFilterAll", resourceCulture);
+            }
+        }
+
+        public static string PerfFilterTypeLabel {
+            get {
+                return ResourceManager.GetString("PerfFilterTypeLabel", resourceCulture);
+            }
+        }
     }
 }

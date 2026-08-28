@@ -1,4 +1,4 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
@@ -454,7 +454,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.product_category.get_main_page", "Time taken to get storefront main page categories from DB")]
+        public virtual async Task<List<StorefrontCategoryDto>> GetStorefrontMainPageCategoriesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
@@ -464,7 +465,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
+        [Timed("repo.product_category.get_main_page_sync")]
+        public virtual List<StorefrontCategoryDto> GetStorefrontMainPageCategories(int language)
         {
             return EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.MainPage && c.IsActive && c.Lang == language && c.Products.Any(p => p.IsActive))
@@ -473,7 +475,8 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.product_category.get_children", "Time taken to get storefront children categories from DB")]
+        public virtual async Task<List<StorefrontCategoryDto>> GetStorefrontChildrenCategoriesAsync(int parentId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.ParentId == parentId && c.IsActive)
@@ -483,7 +486,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentId)
+        [Timed("repo.product_category.get_children_sync")]
+        public virtual List<StorefrontCategoryDto> GetStorefrontChildrenCategories(int parentId)
         {
             return EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.ParentId == parentId && c.IsActive)

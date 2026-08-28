@@ -1,5 +1,6 @@
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using System;
 using System.Data.Entity;
@@ -14,12 +15,14 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public Subscriber GetSubscriberByEmail(string email)
+        [Timed("repo.subscribers.get_by_email_sync")]
+        public virtual Subscriber GetSubscriberByEmail(string email)
         {
             return this.FindBy(r => r.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
         }
 
-        public async Task<Subscriber> GetSubscriberByEmailAsync(string email)
+        [Timed("repo.subscribers.get_by_email", "Time taken to get subscriber by email from DB")]
+        public virtual async Task<Subscriber> GetSubscriberByEmailAsync(string email)
         {
             return await this.FindBy(r => r.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync().ConfigureAwait(false);
         }
@@ -27,7 +30,8 @@ namespace EImece.Domain.Repositories
         /// <summary>
         /// Existence check without materializing the subscriber row.
         /// </summary>
-        public async Task<bool> SubscriberExistsByEmailAsync(string email)
+        [Timed("repo.subscribers.exists_by_email", "Time taken to check if subscriber exists by email in DB")]
+        public virtual async Task<bool> SubscriberExistsByEmailAsync(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -41,7 +45,8 @@ namespace EImece.Domain.Repositories
         /// <summary>
         /// Single-column projection used by the thank-you page.
         /// </summary>
-        public async Task<string> GetSubscriberEmailByIdAsync(int id)
+        [Timed("repo.subscribers.get_email_by_id", "Time taken to get subscriber email by id from DB")]
+        public virtual async Task<string> GetSubscriberEmailByIdAsync(int id)
         {
             return await EImeceDbContext.Subscribers.AsNoTracking()
                 .Where(r => r.Id == id)

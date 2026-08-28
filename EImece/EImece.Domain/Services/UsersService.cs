@@ -1,5 +1,6 @@
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -38,7 +39,8 @@ namespace EImece.Domain.Services
         [Inject]
         public IOrderService OrderService { get; set; }
 
-        public ApplicationUser GetUser(string id)
+        [Timed("service.users.get_by_id_sync")]
+        public virtual ApplicationUser GetUser(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -53,7 +55,8 @@ namespace EImece.Domain.Services
             return user;
         }
 
-        public async Task<ApplicationUser> GetUserAsync(string id)
+        [Timed("service.users.get_by_id")]
+        public virtual async Task<ApplicationUser> GetUserAsync(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -68,7 +71,8 @@ namespace EImece.Domain.Services
             return user;
         }
 
-        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        [Timed("service.users.get_by_email")]
+        public virtual async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -78,7 +82,8 @@ namespace EImece.Domain.Services
             return await _userRepository.GetByEmailOrUserNameAsync(email).ConfigureAwait(false);
         }
 
-        public async Task<ApplicationUser> GetUserByEmailOrUserNameAsync(string emailOrUserName)
+        [Timed("service.users.get_by_email_or_user_name")]
+        public virtual async Task<ApplicationUser> GetUserByEmailOrUserNameAsync(string emailOrUserName)
         {
             if (string.IsNullOrWhiteSpace(emailOrUserName))
             {
@@ -88,19 +93,22 @@ namespace EImece.Domain.Services
             return await _userRepository.GetByEmailOrUserNameAsync(emailOrUserName).ConfigureAwait(false);
         }
 
-        public async Task<ApplicationUser> GetUserByIdAsync(string id)
+        [Timed("service.users.get_by_id")]
+        public virtual async Task<ApplicationUser> GetUserByIdAsync(string id)
         {
             var user = await _userRepository.GetByIdAsync(id).ConfigureAwait(false);
             return user;
         }
 
-        public ApplicationUser GetUserById(string id)
+        [Timed("service.users.get_by_id_sync")]
+        public virtual ApplicationUser GetUserById(string id)
         {
             var user = _userRepository.GetById(id);
             return user;
         }
 
-        public Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
+        [Timed("service.users.is_in_role")]
+        public virtual Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
         {
             if (string.IsNullOrWhiteSpace(emailOrUserName) || string.IsNullOrWhiteSpace(roleName))
             {
@@ -110,7 +118,8 @@ namespace EImece.Domain.Services
             return _userRepository.IsUserInRoleAsync(emailOrUserName, roleName);
         }
 
-        public bool IsUserInRole(string emailOrUserName, string roleName)
+        [Timed("service.users.is_in_role_sync")]
+        public virtual bool IsUserInRole(string emailOrUserName, string roleName)
         {
             if (string.IsNullOrWhiteSpace(emailOrUserName) || string.IsNullOrWhiteSpace(roleName))
             {
@@ -120,14 +129,16 @@ namespace EImece.Domain.Services
             return _userRepository.IsUserInRole(emailOrUserName, roleName);
         }
 
-        public List<EditUserViewModel> GetUsers(string search)
+        [Timed("service.users.get_users_sync")]
+        public virtual List<EditUserViewModel> GetUsers(string search)
         {
             var users = _userRepository.GetUsersFiltered(search);
             var roleNameByUserId = _userRepository.GetFirstRoleNameByUserId();
             return BuildEditUserViewModels(users, roleNameByUserId);
         }
 
-        public async Task<List<EditUserViewModel>> GetUsersAsync(string search)
+        [Timed("service.users.get_users")]
+        public virtual async Task<List<EditUserViewModel>> GetUsersAsync(string search)
         {
             var users = await _userRepository.GetUsersFilteredAsync(search).ConfigureAwait(false);
             var roleNameByUserId = await _userRepository.GetFirstRoleNameByUserIdAsync().ConfigureAwait(false);
@@ -153,12 +164,14 @@ namespace EImece.Domain.Services
             return model;
         }
 
-        public Task<List<string>> SearchUserEmailsAsync(string searchKey)
+        [Timed("service.users.search_emails")]
+        public virtual Task<List<string>> SearchUserEmailsAsync(string searchKey)
         {
             return _userRepository.SearchUserEmailsAsync(searchKey);
         }
 
-        public void DeleteUser(string id)
+        [Timed("service.users.delete_sync")]
+        public virtual void DeleteUser(string id)
         {
             var user = GetUser(id);
             if (user != null)
@@ -167,7 +180,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task DeleteUserAsync(string id)
+        [Timed("service.users.delete")]
+        public virtual async Task DeleteUserAsync(string id)
         {
             var user = await GetUserAsync(id).ConfigureAwait(false);
             if (user != null)
@@ -176,7 +190,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<List<string>> DeleteUsersAsync(List<string> userIds, string currentUserId = null)
+        [Timed("service.users.delete_bulk")]
+        public virtual async Task<List<string>> DeleteUsersAsync(List<string> userIds, string currentUserId = null)
         {
             var deleted = new List<string>();
             if (userIds == null || userIds.Count == 0)
@@ -224,7 +239,8 @@ namespace EImece.Domain.Services
             return deleted;
         }
 
-        public async Task UpdateUserAsync(EditUserViewModel model)
+        [Timed("service.users.update")]
+        public virtual async Task UpdateUserAsync(EditUserViewModel model)
         {
             if (model == null)
             {
@@ -245,7 +261,8 @@ namespace EImece.Domain.Services
             await _userRepository.UpdateAsync(user).ConfigureAwait(false);
         }
 
-        public async Task<SelectUserRolesViewModel> GetAdminUserRolesViewModelAsync(string userId)
+        [Timed("service.users.get_admin_roles_vm")]
+        public virtual async Task<SelectUserRolesViewModel> GetAdminUserRolesViewModelAsync(string userId)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -264,7 +281,8 @@ namespace EImece.Domain.Services
             return model;
         }
 
-        public async Task<SelectUserRolesViewModel> GetUserRolesViewModelAsync(string userId)
+        [Timed("service.users.get_user_roles_vm")]
+        public virtual async Task<SelectUserRolesViewModel> GetUserRolesViewModelAsync(string userId)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -283,17 +301,20 @@ namespace EImece.Domain.Services
             return model;
         }
 
-        public Task<int> GetUsersCountAsync(System.Threading.CancellationToken ct = default(CancellationToken))
+        [Timed("service.users.get_users_count")]
+        public virtual Task<int> GetUsersCountAsync(System.Threading.CancellationToken ct = default(CancellationToken))
         {
             return _userRepository.GetUsersCountAsync(ct);
         }
 
-        public Task<int> GetRolesCountAsync(System.Threading.CancellationToken ct = default(CancellationToken))
+        [Timed("service.users.get_roles_count")]
+        public virtual Task<int> GetRolesCountAsync(System.Threading.CancellationToken ct = default(CancellationToken))
         {
             return _userRepository.GetRolesCountAsync(ct);
         }
 
-        public async Task<List<EImece.Domain.Services.ExportImport.UserExportDto>> GetUsersForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default(CancellationToken))
+        [Timed("service.users.get_users_for_export")]
+        public virtual async Task<List<EImece.Domain.Services.ExportImport.UserExportDto>> GetUsersForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default(CancellationToken))
         {
             var items = await _userRepository.GetUsersPagedAsync(skip, take, ct).ConfigureAwait(false);
 
@@ -327,7 +348,8 @@ namespace EImece.Domain.Services
             return userDtos;
         }
 
-        public async Task<List<EImece.Domain.Services.ExportImport.RoleExportDto>> GetRolesForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default(CancellationToken))
+        [Timed("service.users.get_roles_for_export")]
+        public virtual async Task<List<EImece.Domain.Services.ExportImport.RoleExportDto>> GetRolesForExportAsync(int skip, int take, System.Threading.CancellationToken ct = default(CancellationToken))
         {
             var items = await _userRepository.GetRolesPagedAsync(skip, take, ct).ConfigureAwait(false);
             return items.Select(x => new EImece.Domain.Services.ExportImport.RoleExportDto

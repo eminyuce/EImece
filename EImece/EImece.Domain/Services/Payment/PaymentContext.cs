@@ -1,5 +1,6 @@
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.Payment;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
 using System;
 using System.Threading.Tasks;
@@ -35,12 +36,13 @@ namespace EImece.Domain.Services.Payment
         /// <summary>
         /// Replace the strategy at runtime (e.g. tests or multi-tenant overrides).
         /// </summary>
-        public void SetStrategy(IPaymentStrategy strategy)
+        public virtual void SetStrategy(IPaymentStrategy strategy)
         {
             _strategy = strategy ?? throw new ArgumentNullException(nameof(strategy));
         }
 
-        public Task<PaymentInitializeResult> InitializeCheckoutAsync(
+        [Timed("service.payment_context.initialize_checkout")]
+        public virtual Task<PaymentInitializeResult> InitializeCheckoutAsync(
             ShoppingCartSession cart,
             string userId,
             string callbackAction = "PaymentResult")
@@ -48,12 +50,14 @@ namespace EImece.Domain.Services.Payment
             return _strategy.InitializeCheckoutAsync(cart, userId, callbackAction);
         }
 
-        public Task<PaymentInitializeResult> InitializeBuyNowAsync(BuyNowModel model)
+        [Timed("service.payment_context.initialize_buy_now")]
+        public virtual Task<PaymentInitializeResult> InitializeBuyNowAsync(BuyNowModel model)
         {
             return _strategy.InitializeBuyNowAsync(model);
         }
 
-        public Task<PaymentResult> RetrievePaymentResultAsync(string token)
+        [Timed("service.payment_context.retrieve_payment_result")]
+        public virtual Task<PaymentResult> RetrievePaymentResultAsync(string token)
         {
             return _strategy.RetrievePaymentResultAsync(token);
         }

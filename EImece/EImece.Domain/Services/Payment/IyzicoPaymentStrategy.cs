@@ -1,6 +1,7 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.Payment;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
 using Iyzipay.Model;
 using Iyzipay.Request;
@@ -27,7 +28,8 @@ namespace EImece.Domain.Services.Payment
             get { return "Iyzico"; }
         }
 
-        public async Task<PaymentInitializeResult> InitializeCheckoutAsync(
+        [Timed("service.iyzico.initialize_checkout")]
+        public virtual async Task<PaymentInitializeResult> InitializeCheckoutAsync(
             ShoppingCartSession cart,
             string userId,
             string callbackAction = "PaymentResult")
@@ -40,7 +42,8 @@ namespace EImece.Domain.Services.Payment
             return MapInitialize(sdkResult);
         }
 
-        public async Task<PaymentInitializeResult> InitializeBuyNowAsync(BuyNowModel model)
+        [Timed("service.iyzico.initialize_buy_now")]
+        public virtual async Task<PaymentInitializeResult> InitializeBuyNowAsync(BuyNowModel model)
         {
             CheckoutFormInitialize sdkResult = await _iyzicoService
                 .CreateCheckoutFormInitializeBuyNowAsync(model)
@@ -49,7 +52,8 @@ namespace EImece.Domain.Services.Payment
             return MapInitialize(sdkResult);
         }
 
-        public async Task<PaymentResult> RetrievePaymentResultAsync(string token)
+        [Timed("service.iyzico.retrieve_payment_result")]
+        public virtual async Task<PaymentResult> RetrievePaymentResultAsync(string token)
         {
             // Same retrieve call as before: pass token through to IyzicoService (no extra validation).
             var request = new RetrieveCheckoutFormRequest { Token = token };
