@@ -414,7 +414,7 @@ namespace EImece.App_Start
 
     }
 
-    internal static class ServiceCollectionPropertyInjectionExtensions
+    public static class ServiceCollectionPropertyInjectionExtensions
     {
         public static void AddSingletonWithProps<TService, TImplementation>(this IServiceCollection services)
             where TService : class
@@ -427,7 +427,11 @@ namespace EImece.App_Start
         public static void AddSingletonWithProps<TImplementation>(this IServiceCollection services)
             where TImplementation : class
         {
-            services.AddSingleton(sp => PropertyInjector.Create<TImplementation>(sp));
+            services.AddSingleton<TImplementation>(sp =>
+            {
+                var instance = PropertyInjector.Create<TImplementation>(sp);
+                return MaybeWrapConcreteWithTimedInterceptor(instance);
+            });
         }
 
         public static void AddScopedWithProps<TService, TImplementation>(this IServiceCollection services)
@@ -441,7 +445,11 @@ namespace EImece.App_Start
         public static void AddScopedWithProps<TImplementation>(this IServiceCollection services)
             where TImplementation : class
         {
-            services.AddScoped(sp => PropertyInjector.Create<TImplementation>(sp));
+            services.AddScoped<TImplementation>(sp =>
+            {
+                var instance = PropertyInjector.Create<TImplementation>(sp);
+                return MaybeWrapConcreteWithTimedInterceptor(instance);
+            });
         }
 
         public static void AddTransientWithProps<TService, TImplementation>(this IServiceCollection services)
@@ -452,13 +460,23 @@ namespace EImece.App_Start
             services.AddTransient<TService>(ResolveImplementationOrUnderConstruction<TService, TImplementation>);
         }
 
+        public static void AddTransientWithProps<TImplementation>(this IServiceCollection services)
+            where TImplementation : class
+        {
+            services.AddTransient<TImplementation>(sp =>
+            {
+                var instance = PropertyInjector.Create<TImplementation>(sp);
+                return MaybeWrapConcreteWithTimedInterceptor(instance);
+            });
+        }
+
         /// <summary>
         /// Shares the concrete scoped/singleton instance for the interface registration.
         /// When the concrete is mid-construction (circular [Inject] graph), returns that
         /// in-flight instance instead of re-entering MS.DI's scope cache.
-        /// After construction, interface resolutions are wrapped with <see cref="MeasuredServiceProxy"/>
-        /// when service-method metrics are enabled, and with <see cref="TimedInterceptor"/>
-        /// when any method carries [TimedAttribute] (service.{entity}.{operation} / repo.{entity}.{operation}).
+        /// After construction, interface resolutions are wrapped with <see cref="TimedInterceptor"/>
+        /// when any method carries [TimedAttribute] (service.{entity}.{operation} / repo.{entity}.{operation}),
+        /// and with <see cref="MeasuredServiceProxy"/> when service-method metrics are enabled.
         /// </summary>
         private static TService ResolveImplementationOrUnderConstruction<TService, TImplementation>(IServiceProvider sp)
             where TService : class
@@ -473,8 +491,8 @@ namespace EImece.App_Start
             }
 
             var implementation = sp.GetRequiredService<TImplementation>();
-            var proxied = MaybeWrapWithMetricsProxy<TService>(implementation, sp);
-            return MaybeWrapWithTimedInterceptor<TService, TImplementation>(proxied, sp);
+            var timed = MaybeWrapWithTimedInterceptor<TService, TImplementation>(implementation, sp);
+            return MaybeWrapWithMetricsProxy<TService>(timed, sp);
         }
 
         private static TService MaybeWrapWithMetricsProxy<TService>(TService implementation, IServiceProvider sp)
@@ -546,6 +564,26 @@ namespace EImece.App_Start
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"MaybeWrapWithTimedInterceptor failed for {typeof(TService).Name}: {ex}");
+                return instance;
+            }
+        }
+
+        private static TImplementation MaybeWrapConcreteWithTimedInterceptor<TImplementation>(TImplementation instance)
+            where TImplementation : class
+        {
+            if (instance == null)
+                return instance;
+
+            if (!HasTimedAttribute(typeof(TImplementation)))
+                return instance;
+
+            try
+            {
+                return ProxyFactory.Create<TImplementation>(instance);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"MaybeWrapConcreteWithTimedInterceptor failed for {typeof(TImplementation).Name}: {ex}");
                 return instance;
             }
         }

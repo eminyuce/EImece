@@ -440,6 +440,7 @@
     <Compile Include="Observability\Telemetry\ProxyFactory.cs" />
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Entities\Coupon.cs" />
+    <Compile Include="Models\DTOs\Storefront\StorefrontCustomerCheckoutDto.cs" />
     <Compile Include="GenericRepository.EntityFramework\DbContextFactory.cs" />
     <Compile Include="GenericRepository.EntityFramework\EntitiesContext.cs" />
     <Compile Include="GenericRepository.EntityFramework\EntityRepository'1.cs" />

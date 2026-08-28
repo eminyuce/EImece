@@ -1,5 +1,8 @@
+using EImece.App_Start;
+using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Metrics;
 using EImece.Domain.Observability.Telemetry;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -151,6 +154,52 @@ namespace EImece.Tests.Helpers
             Assert.AreEqual(1, snapshots.Count);
             Assert.AreEqual(42.0, snapshots[0].AvgMs, 0.001);
         }
+
+        [TestMethod]
+        public void DependencyInjection_InterfaceService_RecordsBothPerfStatsAndMetrics()
+        {
+            var services = new ServiceCollection();
+            var metrics = new ApplicationMetrics();
+            var options = new ObservabilityOptions { EnableMetrics = true, EnableServiceMethodMetrics = true };
+            services.AddSingleton<IApplicationMetrics>(metrics);
+            services.AddSingleton(options);
+            services.AddScopedWithProps<ITestOrderService, TestOrderService>();
+
+            using (var sp = services.BuildServiceProvider())
+            {
+                var service = sp.GetRequiredService<ITestOrderService>();
+                service.PlaceOrder();
+                var result = service.PlaceOrderAsync().GetAwaiter().GetResult();
+                Assert.AreEqual(123, result);
+            }
+
+            var snapshots = PerfStats.Snapshot();
+            var syncStat = snapshots.FirstOrDefault(s => s.Name == "service.orders.place");
+            var asyncStat = snapshots.FirstOrDefault(s => s.Name == "service.orders.place_async");
+
+            Assert.IsNotNull(syncStat, "service.orders.place should be recorded in PerfStats");
+            Assert.IsNotNull(asyncStat, "service.orders.place_async should be recorded in PerfStats");
+            Assert.AreEqual(1, syncStat.Count);
+            Assert.AreEqual(1, asyncStat.Count);
+        }
+
+        [TestMethod]
+        public void DependencyInjection_ConcreteService_RecordsPerfStats()
+        {
+            var services = new ServiceCollection();
+            services.AddScopedWithProps<TestConcreteService>();
+
+            using (var sp = services.BuildServiceProvider())
+            {
+                var service = sp.GetRequiredService<TestConcreteService>();
+                service.DoWork();
+            }
+
+            var snapshots = PerfStats.Snapshot();
+            var stat = snapshots.FirstOrDefault(s => s.Name == "service.concrete.action");
+            Assert.IsNotNull(stat, "service.concrete.action should be recorded in PerfStats");
+            Assert.AreEqual(1, stat.Count);
+        }
     }
 
     public class DummyTimedService
@@ -165,6 +214,35 @@ namespace EImece.Tests.Helpers
         public virtual void ExecuteSlow()
         {
             System.Threading.Thread.Sleep(5);
+        }
+    }
+
+    public interface ITestOrderService
+    {
+        void PlaceOrder();
+        Task<int> PlaceOrderAsync();
+    }
+
+    public class TestOrderService : ITestOrderService
+    {
+        [Timed("service.orders.place")]
+        public virtual void PlaceOrder()
+        {
+        }
+
+        [Timed("service.orders.place_async")]
+        public virtual async Task<int> PlaceOrderAsync()
+        {
+            await Task.Yield();
+            return 123;
+        }
+    }
+
+    public class TestConcreteService
+    {
+        [Timed("service.concrete.action")]
+        public virtual void DoWork()
+        {
         }
     }
 }

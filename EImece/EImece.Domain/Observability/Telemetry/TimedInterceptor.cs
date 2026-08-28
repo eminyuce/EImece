@@ -175,7 +175,7 @@ namespace EImece.Domain.Observability.Telemetry
         {
             try
             {
-                // MethodInvocationTarget is the concrete implementation; Method is the proxy/interface method.
+                // 1. MethodInvocationTarget is the concrete implementation when target is concrete.
                 var targetMethod = invocation.MethodInvocationTarget;
                 if (targetMethod != null)
                 {
@@ -184,12 +184,33 @@ namespace EImece.Domain.Observability.Telemetry
                         return attr;
                 }
 
+                // 2. Method is the proxy/interface method (in case [Timed] is declared on interface or proxy method).
                 var method = invocation.Method;
                 if (method != null && method != targetMethod)
                 {
                     var attr = (TimedAttribute)Attribute.GetCustomAttribute(method, typeof(TimedAttribute), true);
                     if (attr != null)
                         return attr;
+                }
+
+                // 3. Fallback: Lookup concrete method on TargetType if targetMethod was interface or null.
+                var targetType = invocation.TargetType ?? invocation.InvocationTarget?.GetType();
+                if (targetType != null && method != null)
+                {
+                    var paramTypes = Array.ConvertAll(method.GetParameters(), p => p.ParameterType);
+                    var matchedMethod = targetType.GetMethod(
+                        method.Name,
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+                        null,
+                        paramTypes,
+                        null);
+
+                    if (matchedMethod != null)
+                    {
+                        var attr = (TimedAttribute)Attribute.GetCustomAttribute(matchedMethod, typeof(TimedAttribute), true);
+                        if (attr != null)
+                            return attr;
+                    }
                 }
 
                 return null;
