@@ -196,6 +196,18 @@
                             @if (isWebPActive) { <span class="badge bg-info-subtle text-info border border-info-subtle small">WebP</span> }
                         </a>
 
+                        <!-- PRODUCT Domain — new dedicated section -->
+                        <div class="settings-nav-domain-header text-uppercase">
+                            <i class="fa fa-cubes text-muted me-1"></i> Ürün &amp; Katalog
+                        </div>
+                        <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-products" role="tab" id="nav-tab-products">
+                            <span><i class="fa fa-tags text-secondary me-2"></i> Ürün &amp; Fiyatlandırma</span>
+                            <span class="d-flex align-items-center gap-1">
+                                <span class="badge bg-light text-dark border small">@(Model.ProductPriceFilterSetting?.Split(new[]{'|',';'}, StringSplitOptions.RemoveEmptyEntries).Length ?? 0) filtre</span>
+                                @if (!isPriceActive) { <span class="badge bg-warning text-dark small">Katalog</span> }
+                            </span>
+                        </a>
+
                         <!-- BUSINESS Domain -->
                         <div class="settings-nav-domain-header text-uppercase">
                             <i class="fa fa-briefcase text-muted me-1"></i> @AdminResource.DomainBusiness
@@ -450,101 +462,15 @@
                             </div>
                         </div>
 
-                        <!-- Section: Mağaza & Ürün Davranışları -->
-                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Mağaza Davranışı">
+                                                <!-- Section: Genel Listeleme Tercihleri (Slimmed — product settings moved to Ürün & Fiyatlandırma) -->
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Genel Listeleme Tercihleri">
                             <div class="card-header bg-white py-3 border-bottom">
-                                <h5 class="mb-0 fw-bold"><i class="fa fa-shopping-bag text-primary me-2"></i>@AdminResource.StorefrontBehaviorAndCatalogPreferences</h5>
-                                <small class="text-muted">Ürün fiyatlandırması, yorumlar ve liste sayfalarının işleyişi.</small>
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-table text-primary me-2"></i>Genel Listeleme Tercihleri</h5>
+                                <small class="text-muted">Yönetim listeleri ve arayüz dili — ürün fiyat/katalog ayarları artık <a href="#tab-products" data-bs-toggle="pill" class="fw-bold">Ürün &amp; Fiyatlandırma</a> sekmesinde.</small>
                             </div>
                             <div class="card-body">
-                                <!-- Product Prices & Catalog Mode -->
-                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="IsProductPriceEnable" data-setting-label="Ürün Fiyatları ve Sepet" data-setting-desc="Ürün fiyatlarını gösterir ve sepete ekleme/satın alma fonksiyonlarını aktif eder" data-keywords="fiyat katalog modu sepete ekleme sipariş product price">
-                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
-                                        <div>
-                                            <label class="fw-bold mb-1 d-block" for="IsProductPriceEnable">
-                                                <i class="fa fa-tag text-primary me-1"></i> @AdminResource.ProductPricesAndAddToCart
-                                            </label>
-                                            <p class="text-muted small mb-0">@AdminResource.CatalogShowcaseModeDesc</p>
-                                        </div>
-                                        <div class="form-check form-switch fs-5 mb-0">
-                                            @Html.CheckBoxFor(model => model.IsProductPriceEnable, new { @class = "form-check-input", role = "switch" })
-                                        </div>
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.IsProductPriceEnable, "", new { @class = "text-danger small mt-1 d-block" })
-                                </div>
-
-                                <!-- Suitable For Sale Product States -->
-                                <div class="setting-item p-3 mb-3 rounded border bg-light price-dependent-setting" data-setting-name="SuitableForSaleProductStates" data-setting-label="@AdminResource.SuitableForSaleProductStates" data-setting-desc="@AdminResource.SuitableForSaleProductStatesDesc" data-keywords="satışa uygun durumlar product state in sale buyable ön sipariş stokta pre-order">
-                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2">
-                                        <div>
-                                            <label class="fw-bold mb-1 d-block">
-                                                <i class="fa fa-shopping-cart text-success me-1"></i> @AdminResource.SuitableForSaleProductStates
-                                                @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SuitableForSaleProductStatesHelp } })
-                                            </label>
-                                            <p class="text-muted small mb-0">@AdminResource.SuitableForSaleProductStatesDesc</p>
-                                        </div>
-                                        <div class="btn-group btn-group-sm">
-                                            <button type="button" class="btn btn-outline-secondary" id="btnSelectDefaultSaleStates" title="Varsayılanları Seç (Stokta, Ön Sipariş, Sınırlı Stok)">
-                                                <i class="fa fa-undo me-1"></i> Varsayılan
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" id="btnSelectAllSaleStates" title="Tümünü Seç">
-                                                <i class="fa fa-check-square-o me-1"></i> Tümünü Seç
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" id="btnClearAllSaleStates" title="Tümünü Temizle">
-                                                <i class="fa fa-square-o me-1"></i> Temizle
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    @Html.HiddenFor(model => model.SuitableForSaleProductStates, new { id = "SuitableForSaleProductStates" })
-
-                                    @{
-                                        var activeSaleStates = ProductStateHelper.ParseSuitableForSaleStates(Model.SuitableForSaleProductStates);
-                                        var allSelectableStates = ProductStateHelper.GetAllSelectableStates();
-                                    }
-
-                                    <div class="row g-2 mt-1" id="saleProductStatesCheckboxGroup">
-                                        @foreach (var pState in allSelectableStates)
-                                        {
-                                            var isChecked = activeSaleStates.Contains(pState);
-                                            var stateName = pState.ToString();
-                                            var stateDisplayName = ProductStateHelper.GetStateDisplayName(pState);
-                                            var badgeClass = (pState == EImece.Domain.Models.Enums.ProductState.ProductInStock || pState == EImece.Domain.Models.Enums.ProductState.LimitedStock) ? "border-success" :
-                                                             (pState == EImece.Domain.Models.Enums.ProductState.PreOrder || pState == EImece.Domain.Models.Enums.ProductState.Backorder) ? "border-info" :
-                                                             (pState == EImece.Domain.Models.Enums.ProductState.ComingSoon || pState == EImece.Domain.Models.Enums.ProductState.AwaitingRestock) ? "border-warning" : "border-secondary";
-                                            <div class="col-sm-6 col-lg-4">
-                                                <div class="form-check p-2 bg-white rounded border @badgeClass h-100 d-flex align-items-center">
-                                                    <input class="form-check-input ms-1 me-2 sale-state-chk" type="checkbox" id="chk_state_@stateName" value="@stateName" @(isChecked ? "checked=\"checked\"" : "") />
-                                                    <label class="form-check-label small fw-semibold text-dark mb-0 cursor-pointer w-100" for="chk_state_@stateName">
-                                                        @stateDisplayName
-                                                        <span class="text-muted d-block font-monospace" style="font-size: 0.75rem;">(@stateName)</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.SuitableForSaleProductStates, "", new { @class = "text-danger small mt-1 d-block" })
-                                </div>
-
-                                <!-- Product Reviews -->
-                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="IsProductReviewEnable" data-setting-label="Ürün Yorumları" data-setting-desc="Kullanıcıların ürünlere yorum yapmasını ve puan vermesini sağlar" data-keywords="yorum puan review rating değerlendirme">
-                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
-                                        <div>
-                                            <label class="fw-bold mb-1 d-block" for="IsProductReviewEnable">
-                                                <i class="fa fa-comments-o text-info me-1"></i> @AdminResource.ProductReviewsAndRatingsTitle
-                                            </label>
-                                            <p class="text-muted small mb-0">@AdminResource.ProductReviewsAndRatingsDesc</p>
-                                        </div>
-                                        <div class="form-check form-switch fs-5 mb-0">
-                                            @Html.CheckBoxFor(model => model.IsProductReviewEnable, new { @class = "form-check-input", role = "switch" })
-                                        </div>
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.IsProductReviewEnable, "", new { @class = "text-danger small mt-1 d-block" })
-                                </div>
-
-                                <!-- Admin Grid Page Size & Description Length -->
                                 <div class="row g-3 mb-3">
-                                    <div class="col-md-6 setting-item" data-setting-name="GridPageSizeNumber" data-setting-label="Admin Liste Satır Sayısı" data-setting-desc="Yönetim panelinde sayfa başına gösterilecek satır sayısı" data-keywords="grid sayfa boyutu satır sayısı pagination page size">
+                                    <div class="col-md-12 setting-item" data-setting-name="GridPageSizeNumber" data-setting-label="Admin Liste Satır Sayısı" data-setting-desc="Yönetim panelinde sayfa başına gösterilecek satır sayısı" data-keywords="grid sayfa boyutu satır sayısı pagination page size">
                                         <label class="form-label fw-bold small" for="GridPageSizeNumber">
                                             @Html.DisplayNameFor(model => model.GridPageSizeNumber)
                                         </label>
@@ -552,17 +478,7 @@
                                         <div class="form-text small">@AdminResource.AdminGridPageSizeDesc</div>
                                         @Html.ValidationMessageFor(model => model.GridPageSizeNumber, "", new { @class = "text-danger small" })
                                     </div>
-
-                                    <div class="col-md-6 setting-item" data-setting-name="ProductShortDescriptionPreviewLength" data-setting-label="Ürün Kısa Açıklama Karakter Limiti" data-setting-desc="Ürün detayında Devamını Gör butonundan önce gösterilecek karakter sayısı" data-keywords="kısa açıklama önizleme karakter sınırı preview length description">
-                                        <label class="form-label fw-bold small" for="ProductShortDescriptionPreviewLength">
-                                            @Html.DisplayNameFor(model => model.ProductShortDescriptionPreviewLength)
-                                        </label>
-                                        @Html.EditorFor(model => model.ProductShortDescriptionPreviewLength, new { htmlAttributes = new { @class = "form-control", type = "number", min = "10", max = "5000", placeholder = "180" } })
-                                        <div class="form-text small">@AdminResource.ProductShortDescLengthDesc</div>
-                                        @Html.ValidationMessageFor(model => model.ProductShortDescriptionPreviewLength, "", new { @class = "text-danger small" })
-                                    </div>
                                 </div>
-
                                 <!-- Admin Panel UI Language -->
                                 <div class="setting-item mb-3 p-3 border rounded bg-light" data-setting-name="AdminPanelLanguage" data-setting-label="@AdminResource.AdminPanelUILanguageTitle" data-setting-desc="@AdminResource.AdminPanelUILanguageHelp" data-keywords="yönetim paneli dil arayüz language ui tr en">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
@@ -587,8 +503,137 @@
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
                                 </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                <!-- Price Filter Setting Editor Partial — progressive disclosure -->
+                    <!-- ========================================================================= -->
+                    <!-- 1.5 ÜRÜN & FİYATLANDIRMA — NEW DEDICATED SECTION (entire page as /admin/adminsettings) -->
+                    <!-- ========================================================================= -->
+                    <div id="tab-products" class="tab-pane fade" role="tabpanel">
+                        <!-- Section: Katalog Modu & Satış Davranışı -->
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Katalog & Satış Davranışı">
+                            <div class="card-header bg-white py-3 border-bottom">
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-shopping-bag text-primary me-2"></i>Katalog &amp; Satış Davranışı</h5>
+                                <small class="text-muted">Mağaza vitrininde fiyat gösterimi, sepete ekleme ve satışa uygunluk — tüm ürün fiyat/katalog ayarları burada.</small>
+                            </div>
+                            <div class="card-body">
+                                <!-- Product Prices & Catalog Mode -->
+                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="IsProductPriceEnable" data-setting-label="Ürün Fiyatları ve Sepet" data-setting-desc="Ürün fiyatlarını gösterir ve sepete ekleme/satın alma fonksiyonlarını aktif eder" data-keywords="fiyat katalog modu sepete ekleme sipariş product price">
+                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                                        <div>
+                                            <label class="fw-bold mb-1 d-block" for="IsProductPriceEnable">
+                                                <i class="fa fa-tag text-primary me-1"></i> @AdminResource.ProductPricesAndAddToCart
+                                            </label>
+                                            <p class="text-muted small mb-0">@AdminResource.CatalogShowcaseModeDesc</p>
+                                        </div>
+                                        <div class="form-check form-switch fs-5 mb-0">
+                                            @Html.CheckBoxFor(model => model.IsProductPriceEnable, new { @class = "form-check-input", role = "switch" })
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.IsProductPriceEnable, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                                <!-- Suitable For Sale Product States -->
+                                <div class="setting-item p-3 mb-3 rounded border bg-light price-dependent-setting" data-setting-name="SuitableForSaleProductStates" data-setting-label="@AdminResource.SuitableForSaleProductStates" data-setting-desc="@AdminResource.SuitableForSaleProductStatesDesc" data-keywords="satışa uygun durumlar product state in sale buyable ön sipariş stokta pre-order">
+                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2">
+                                        <div>
+                                            <label class="fw-bold mb-1 d-block">
+                                                <i class="fa fa-shopping-cart text-success me-1"></i> @AdminResource.SuitableForSaleProductStates
+                                                @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SuitableForSaleProductStatesHelp } })
+                                            </label>
+                                            <p class="text-muted small mb-0">@AdminResource.SuitableForSaleProductStatesDesc</p>
+                                        </div>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-secondary" id="btnSelectDefaultSaleStates" title="Varsayılanları Seç (Stokta, Ön Sipariş, Sınırlı Stok)">
+                                                <i class="fa fa-undo me-1"></i> Varsayılan
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" id="btnSelectAllSaleStates" title="Tümünü Seç">
+                                                <i class="fa fa-check-square-o me-1"></i> Tümünü Seç
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" id="btnClearAllSaleStates" title="Tümünü Temizle">
+                                                <i class="fa fa-square-o me-1"></i> Temizle
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @Html.HiddenFor(model => model.SuitableForSaleProductStates, new { id = "SuitableForSaleProductStates" })
+                                    @{
+                                        var activeSaleStates = ProductStateHelper.ParseSuitableForSaleStates(Model.SuitableForSaleProductStates);
+                                        var allSelectableStates = ProductStateHelper.GetAllSelectableStates();
+                                    }
+                                    <div class="row g-2 mt-1" id="saleProductStatesCheckboxGroup">
+                                        @foreach (var pState in allSelectableStates)
+                                        {
+                                            var isChecked = activeSaleStates.Contains(pState);
+                                            var stateName = pState.ToString();
+                                            var stateDisplayName = ProductStateHelper.GetStateDisplayName(pState);
+                                            var badgeClass = (pState == EImece.Domain.Models.Enums.ProductState.ProductInStock || pState == EImece.Domain.Models.Enums.ProductState.LimitedStock) ? "border-success" :
+                                                             (pState == EImece.Domain.Models.Enums.ProductState.PreOrder || pState == EImece.Domain.Models.Enums.ProductState.Backorder) ? "border-info" :
+                                                             (pState == EImece.Domain.Models.Enums.ProductState.ComingSoon || pState == EImece.Domain.Models.Enums.ProductState.AwaitingRestock) ? "border-warning" : "border-secondary";
+                                            <div class="col-sm-6 col-lg-4">
+                                                <div class="form-check p-2 bg-white rounded border @badgeClass h-100 d-flex align-items-center">
+                                                    <input class="form-check-input ms-1 me-2 sale-state-chk" type="checkbox" id="chk_state_@stateName" value="@stateName" @(isChecked ? "checked=\"checked\"" : null) />
+                                                    <label class="form-check-label small fw-semibold text-dark mb-0 cursor-pointer w-100" for="chk_state_@stateName">
+                                                        @stateDisplayName
+                                                        <span class="text-muted d-block font-monospace" style="font-size: 0.75rem;">(@stateName)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SuitableForSaleProductStates, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                                <!-- Product Reviews -->
+                                <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="IsProductReviewEnable" data-setting-label="Ürün Yorumları" data-setting-desc="Kullanıcıların ürünlere yorum yapmasını ve puan vermesini sağlar" data-keywords="yorum puan review rating değerlendirme">
+                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                                        <div>
+                                            <label class="fw-bold mb-1 d-block" for="IsProductReviewEnable">
+                                                <i class="fa fa-comments-o text-info me-1"></i> @AdminResource.ProductReviewsAndRatingsTitle
+                                            </label>
+                                            <p class="text-muted small mb-0">@AdminResource.ProductReviewsAndRatingsDesc</p>
+                                        </div>
+                                        <div class="form-check form-switch fs-5 mb-0">
+                                            @Html.CheckBoxFor(model => model.IsProductReviewEnable, new { @class = "form-check-input", role = "switch" })
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.IsProductReviewEnable, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                                <div class="alert alert-info py-2 px-3 mb-0 small">
+                                    <i class="fa fa-info-circle me-1"></i> <strong>İpucu:</strong> Fiyatlar kapalı iken mağaza <em>Katalog / Tanıtım Modu</em>nda çalışır, sepete ekleme ve ödeme adımları devre dışı kalır. <a href="#tab-payments" data-bs-toggle="pill" class="fw-bold">Satış &amp; Ödemeler</a> sekmesindeki ayarlar da kilitlenir.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Section: Liste & Önizleme -->
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Liste & Önizleme">
+                            <div class="card-header bg-white py-3 border-bottom">
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-list text-primary me-2"></i>Liste &amp; Önizleme Ayarları</h5>
+                                <small class="text-muted">Ürün liste sayfaları ve kısa açıklama önizleme uzunluğu.</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6 setting-item" data-setting-name="ProductShortDescriptionPreviewLength" data-setting-label="Ürün Kısa Açıklama Karakter Limiti" data-setting-desc="Ürün detayında Devamını Gör butonundan önce gösterilecek karakter sayısı" data-keywords="kısa açıklama önizleme karakter sınırı preview length description">
+                                        <label class="form-label fw-bold small" for="ProductShortDescriptionPreviewLength">
+                                            @Html.DisplayNameFor(model => model.ProductShortDescriptionPreviewLength)
+                                        </label>
+                                        @Html.EditorFor(model => model.ProductShortDescriptionPreviewLength, new { htmlAttributes = new { @class = "form-control", type = "number", min = "10", max = "5000", placeholder = "180" } })
+                                        <div class="form-text small">@AdminResource.ProductShortDescLengthDesc</div>
+                                        @Html.ValidationMessageFor(model => model.ProductShortDescriptionPreviewLength, "", new { @class = "text-danger small" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded border h-100">
+                                            <div class="d-flex align-items-center gap-2 mb-1"><span class="badge bg-primary-subtle text-primary border border-primary-subtle">Önizleme</span><strong class="small">Kısa Açıklama Önizleme</strong></div>
+                                            <p class="small text-muted mb-0">Bu değer ürün detay sayfasındaki kısa açıklamanın kaç karakter sonra “Devamını Gör” ile kesileceğini belirler. Tam metin her zaman SEO ve detay sekmesinde korunur.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Section: Fiyat Filtresi & Ödeme Detayı — entire page as requested -->
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Fiyat Filtresi &amp; Ödeme Detayı">
+                            <div class="card-header bg-white py-3 border-bottom">
+                                <h5 class="mb-0 fw-bold"><i class="fa fa-sliders text-primary me-2"></i>Fiyat Filtresi &amp; Ürün Detay Ödeme Sekmesi</h5>
+                                <small class="text-muted">Kategori slider aralıkları ve ürün detayındaki ödeme bilgisi HTML’i — vitrin deneyimini doğrudan etkiler.</small>
+                            </div>
+                            <div class="card-body">
                                 <details class="sc-advanced-panel mb-3" data-setting-name="ProductPriceFilterSetting" data-setting-label="Fiyat Filtresi Aralıkları" data-setting-desc="Kategori ve arama sayfalarında gösterilen dinamik fiyat filtre aralıkları" data-keywords="fiyat aralığı filtre kategori slider range price filter">
                                     <summary>
                                         <span><i class="fa fa-sliders me-2 text-primary"></i> Fiyat Filtresi Aralıkları <span class="badge bg-light text-secondary border ms-2">Gelişmiş</span></span>
@@ -604,8 +649,6 @@
                                         </div>
                                     </div>
                                 </details>
-
-                                <!-- Payment Detail Tab HTML -->
                                 <div class="setting-item price-dependent-setting" data-setting-name="PaymentDetailHtml" data-setting-label="Ürün Detay Ödeme Sekmesi HTML" data-setting-desc="Ürün detay sayfasındaki Ödeme Bilgisi sekmesinde gösterilecek özel HTML veya metin" data-keywords="ödeme sekmesi html taksit detay payment detail">
                                     <label class="form-label fw-bold small" for="PaymentDetailHtml">
                                         @Html.DisplayNameFor(model => model.PaymentDetailHtml)
@@ -618,6 +661,8 @@
                         </div>
                     </div>
 
+                    <!-- ========================================================================= -->
+                    <!-- 2. APPEARANCE & PWA TAB -->
                     <!-- ========================================================================= -->
                     <!-- 2. APPEARANCE & PWA TAB -->
                     <!-- ========================================================================= -->
@@ -2176,6 +2221,7 @@
   var sectionMap = {
     '#overview': null,
     '#tab-general': ['#tab-general'],
+    '#tab-products': ['#tab-products'],
     '#tab-appearance': ['#tab-appearance'],
     '#tab-media': ['#tab-media'],
     '#tab-payments': ['#tab-payments'],
