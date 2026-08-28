@@ -6,6 +6,7 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -280,7 +281,8 @@ namespace EImece.Domain.Repositories
             return await GetSingleIncludingAsync(id, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
         }
 
-        public PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
+        [Timed("repo.products.search")]
+        public virtual PaginatedList<Product> SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             // Eager-load category/image/tags in one round-trip (Paginate uses AsNoTracking) so the
             // view never triggers N+1 lazy loads under concurrent search traffic.
@@ -319,7 +321,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<PaginatedList<Product>> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.search_async")]
+        public virtual async Task<PaginatedList<Product>> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             var includeProperties = GetIncludePropertyExpressionList();
             includeProperties.Add(r => r.MainImage);
@@ -869,7 +872,8 @@ namespace EImece.Domain.Repositories
                 .FirstOrDefault();
         }
 
-        public async Task<StorefrontProductDetailDto> GetStorefrontProductDetailByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.products.get_storefront_detail", "Time taken to get storefront product detail from DB")]
+        public virtual async Task<StorefrontProductDetailDto> GetStorefrontProductDetailByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dto = await EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.Id == id && p.IsActive)
@@ -977,7 +981,8 @@ namespace EImece.Domain.Repositories
             return dto;
         }
 
-        public StorefrontProductDetailDto GetStorefrontProductDetailById(int id)
+        [Timed("repo.products.get_storefront_detail_sync")]
+        public virtual StorefrontProductDetailDto GetStorefrontProductDetailById(int id)
         {
             var dto = EImeceDbContext.Products.AsNoTracking()
                 .Where(p => p.Id == id && p.IsActive)

@@ -8,6 +8,7 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -83,9 +84,9 @@ namespace EImece.Domain.Services
         /// approved comments). Cached under <c>product:detail:</c> so authenticated users and
         /// OutputCache misses stop rebuilding the ~10-query projection on every view. Dropped by
         /// InvalidateProductListCaches on any product mutation and by comment moderation.
-        /// Not-found/inactive products are not cached (repository returns null).
         /// </summary>
-        public async Task<StorefrontProductDetailDto> GetStorefrontProductDetailAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_storefront_detail", "Time taken to get storefront product detail")]
+        public virtual async Task<StorefrontProductDetailDto> GetStorefrontProductDetailAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (DataCachingProvider == null)
             {
@@ -97,7 +98,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public StorefrontProductDetailDto GetStorefrontProductDetail(int id)
+        [Timed("service.products.get_storefront_detail_sync", "Time taken to get storefront product detail (sync)")]
+        public virtual StorefrontProductDetailDto GetStorefrontProductDetail(int id)
         {
             // Null provider (manual construction / unit tests) bypasses the cache, matching
             // the SettingService convention.
@@ -111,12 +113,14 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_active_async", "Time taken to get active products")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontActiveProductsAsync(language, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
+        [Timed("service.products.get_active_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
         {
             return ProductRepository.GetStorefrontActiveProducts(language);
         }
@@ -141,12 +145,14 @@ namespace EImece.Domain.Services
             return ProductRepository.GetStorefrontActiveProductsPaged(pageIndex, pageSize, lang);
         }
 
-        public async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.search_storefront_async", "Time taken to search storefront products")]
+        public virtual async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.SearchStorefrontProductsAsync(pageIndex, pageSize, search, lang, sorting, cancellationToken).ConfigureAwait(false);
         }
 
-        public PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
+        [Timed("service.products.search_storefront_sync")]
+        public virtual PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             return ProductRepository.SearchStorefrontProducts(pageIndex, pageSize, search, lang, sorting);
         }
@@ -263,7 +269,8 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
+        [Timed("service.products.get_main_page", "Time taken to build main page view model")]
+        public virtual ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
         {
             var cacheKey = CacheKeys.MainPageProducts(pageIndex, lang);
 
@@ -300,7 +307,8 @@ namespace EImece.Domain.Services
         /// (CustomOutputCache) rather than a shared view-model cache entry, because a shared entry
         /// cannot honour a per-request token.
         /// </summary>
-        public async Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_main_page_async")]
+        public virtual async Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new ProductIndexViewModel();
             int pageSize = AppConfig.RecordPerPage;

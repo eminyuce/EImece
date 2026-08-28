@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.DependencyInjection;
 using NLog;
@@ -208,7 +209,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<OrderDto> GetStorefrontOrderByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.orders.get_by_id", "Time taken to get order by id from DB")]
+        public virtual async Task<OrderDto> GetStorefrontOrderByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dto = await EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.Id == id)
@@ -219,7 +221,8 @@ namespace EImece.Domain.Repositories
             return dto;
         }
 
-        public OrderDto GetStorefrontOrderById(int id)
+        [Timed("repo.orders.get_by_id_sync")]
+        public virtual OrderDto GetStorefrontOrderById(int id)
         {
             var dto = EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.Id == id)

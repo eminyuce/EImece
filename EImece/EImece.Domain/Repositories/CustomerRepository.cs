@@ -2,6 +2,7 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -20,12 +21,14 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public Customer GetUserId(string userId)
+        [Timed("repo.customers.get_by_user_sync")]
+        public virtual Customer GetUserId(string userId)
         {
             return EImeceDbContext.Customers.AsNoTracking().FirstOrDefault(r => r.UserId == userId);
         }
 
-        public async Task<Customer> GetUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.customers.get_by_user", "Time taken to get customer by user")]
+        public virtual async Task<Customer> GetUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Customers.AsNoTracking().FirstOrDefaultAsync(r => r.UserId == userId, cancellationToken).ConfigureAwait(false);
         }
@@ -59,7 +62,8 @@ namespace EImece.Domain.Repositories
         /// <summary>
         /// 5-column projection (Id, Name, Surname, Email, CreatedDate) feeding CustomerSummaryDto.
         /// </summary>
-        public async Task<Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.customers.get_summary_by_user")]
+        public virtual async Task<Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Customers.AsNoTracking()
                 .Where(r => r.UserId == userId)
@@ -80,7 +84,8 @@ namespace EImece.Domain.Repositories
         /// <summary>
         /// Profile-form projection: only the columns the account form binds/displays, straight into CustomerDto.
         /// </summary>
-        public async Task<CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.customers.get_profile_by_user")]
+        public virtual async Task<CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Customers.AsNoTracking()
                 .Where(r => r.UserId == userId)

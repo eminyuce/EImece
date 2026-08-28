@@ -4,6 +4,7 @@ using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -47,12 +48,14 @@ namespace EImece.Domain.Services
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking)
 
-        public async Task<OrderDto> GetStorefrontOrderByIdAsync(int orderId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.orders.get_by_id", "Time taken to get order by id")]
+        public virtual async Task<OrderDto> GetStorefrontOrderByIdAsync(int orderId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await OrderRepository.GetStorefrontOrderByIdAsync(orderId, cancellationToken).ConfigureAwait(false);
         }
 
-        public OrderDto GetStorefrontOrderById(int orderId)
+        [Timed("service.orders.get_by_id_sync")]
+        public virtual OrderDto GetStorefrontOrderById(int orderId)
         {
             return OrderRepository.GetStorefrontOrderById(orderId);
         }
@@ -87,12 +90,14 @@ namespace EImece.Domain.Services
             return OrderRepository.GetStorefrontOrdersByUserId(userId, search);
         }
 
-        public async Task<List<Models.DTOs.Storefront.OrderListItemDto>> GetStorefrontOrderListByUserIdAsync(string userId, string search = "", CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.orders.get_list_by_user", "Time taken to get order list by user")]
+        public virtual async Task<List<Models.DTOs.Storefront.OrderListItemDto>> GetStorefrontOrderListByUserIdAsync(string userId, string search = "", CancellationToken cancellationToken = default(CancellationToken))
         {
             return await OrderRepository.GetStorefrontOrderListByUserIdAsync(userId, search, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<Models.DTOs.Storefront.OrderListItemDto> GetStorefrontOrderListByUserId(string userId, string search = "")
+        [Timed("service.orders.get_list_by_user_sync")]
+        public virtual List<Models.DTOs.Storefront.OrderListItemDto> GetStorefrontOrderListByUserId(string userId, string search = "")
         {
             return OrderRepository.GetStorefrontOrderListByUserId(userId, search);
         }

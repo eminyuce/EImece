@@ -2,6 +2,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -109,7 +110,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public Customer GetUserId(string userId)
+        [Timed("service.customers.get_by_user_sync")]
+        public virtual Customer GetUserId(string userId)
         {
             Logger.Info($"Retrieving customer by userId: {userId}");
             var item = CustomerRepository.GetUserId(userId);
@@ -117,7 +119,8 @@ namespace EImece.Domain.Services
             return item;
         }
 
-        public async Task<Customer> GetUserIdAsync(string userId)
+        [Timed("service.customers.get_by_user")]
+        public virtual async Task<Customer> GetUserIdAsync(string userId)
         {
             Logger.Info($"Retrieving customer by userId: {userId}");
             var item = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
@@ -125,12 +128,14 @@ namespace EImece.Domain.Services
             return item;
         }
 
-        public async Task<Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId)
+        [Timed("service.customers.get_summary_by_user", "Time taken to get customer summary by user")]
+        public virtual async Task<Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId)
         {
             return await CustomerRepository.GetStorefrontCustomerSummaryByUserIdAsync(userId).ConfigureAwait(false);
         }
 
-        public async Task<Models.DTOs.CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId)
+        [Timed("service.customers.get_profile_by_user")]
+        public virtual async Task<Models.DTOs.CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId)
         {
             return await CustomerRepository.GetStorefrontCustomerProfileByUserIdAsync(userId).ConfigureAwait(false);
         }
