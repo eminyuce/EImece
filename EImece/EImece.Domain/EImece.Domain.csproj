@@ -429,6 +429,7 @@
     <Compile Include="Observability\Metrics\OpenTelemetryMetrics.cs" />
     <Compile Include="Observability\OpenTelemetryBootstrap.cs" />
     <Compile Include="Observability\Telemetry\ActivityTags.cs" />
+    <Compile Include="Observability\Telemetry\Telemetry.cs" />
     <Compile Include="Entities\AppLog.cs" />
     <Compile Include="Entities\Coupon.cs" />
     <Compile Include="GenericRepository.EntityFramework\DbContextFactory.cs" />

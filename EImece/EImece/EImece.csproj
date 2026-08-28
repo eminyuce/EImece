@@ -468,6 +468,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ConversationsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -487,6 +488,7 @@
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Filters\MetricsActionFilter.cs" />
     <Compile Include="Filters\TelemetryActionFilter.cs" />
+    <Compile Include="Filters\TimedAttribute.cs" />
     <Compile Include="Filters\RequestLoggingActionFilter.cs" />
     <Compile Include="Filters\RobotsNoIndexAttribute.cs" />
     <Compile Include="Filters\InMemoryRateLimiter.cs" />
