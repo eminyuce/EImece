@@ -33,6 +33,7 @@ namespace EImece.Domain.Services
     public class ProductService : BaseContentService<Product>, IProductService
     {
         private static readonly Logger ProductServiceLogger = LogManager.GetCurrentClassLogger();
+        private const int RelatedProductListSize = 20;
 
         [Inject]
         public IProductCategoryService ProductCategoryService { get; set; }
@@ -179,6 +180,84 @@ namespace EImece.Domain.Services
         public virtual List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIds, int take, int language, int excludedProductId)
         {
             return ProductRepository.GetStorefrontRelatedProducts(tagIds, take, language, excludedProductId);
+        }
+
+        [Timed("service.products.get_related_products", "Time taken to build related products for a product detail page")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetRelatedProductsAsync(StorefrontProductDetailDto productDto, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var related = new List<StorefrontProductCardDto>();
+            if (productDto == null)
+            {
+                return related;
+            }
+
+            int excludedProductId = productDto.Id;
+            if (productDto.ProductTags != null && productDto.ProductTags.Any())
+            {
+                var tagIdList = productDto.ProductTags.Select(t => t.Id).ToArray();
+                related = await GetStorefrontRelatedProductsAsync(tagIdList, RelatedProductListSize, productDto.Lang, excludedProductId, cancellationToken).ConfigureAwait(false)
+                    ?? new List<StorefrontProductCardDto>();
+            }
+
+            if (related.Count < RelatedProductListSize)
+            {
+                var remaining = RelatedProductListSize - related.Count;
+                AppendUniqueRelatedProducts(
+                    related,
+                    await ProductRepository.GetStorefrontRandomProductsByCategoryIdAsync(productDto.ProductCategoryId, remaining, productDto.Lang, excludedProductId, cancellationToken).ConfigureAwait(false),
+                    excludedProductId);
+            }
+
+            if (related.Count < RelatedProductListSize)
+            {
+                // Categories with a single product (and no shared tags) would otherwise render no similar products.
+                var remaining = RelatedProductListSize - related.Count;
+                AppendUniqueRelatedProducts(
+                    related,
+                    await GetStorefrontLatestProductsAsync(remaining + related.Count + 1, productDto.Lang, cancellationToken).ConfigureAwait(false),
+                    excludedProductId);
+            }
+
+            return related.GroupBy(p => p.Id).Select(g => g.First()).Take(RelatedProductListSize).ToList();
+        }
+
+        [Timed("service.products.get_related_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetRelatedProducts(StorefrontProductDetailDto productDto)
+        {
+            var related = new List<StorefrontProductCardDto>();
+            if (productDto == null)
+            {
+                return related;
+            }
+
+            int excludedProductId = productDto.Id;
+            if (productDto.ProductTags != null && productDto.ProductTags.Any())
+            {
+                var tagIdList = productDto.ProductTags.Select(t => t.Id).ToArray();
+                related = GetStorefrontRelatedProducts(tagIdList, RelatedProductListSize, productDto.Lang, excludedProductId)
+                    ?? new List<StorefrontProductCardDto>();
+            }
+
+            if (related.Count < RelatedProductListSize)
+            {
+                var remaining = RelatedProductListSize - related.Count;
+                AppendUniqueRelatedProducts(
+                    related,
+                    ProductRepository.GetStorefrontRandomProductsByCategoryId(productDto.ProductCategoryId, remaining, productDto.Lang, excludedProductId),
+                    excludedProductId);
+            }
+
+            if (related.Count < RelatedProductListSize)
+            {
+                // Categories with a single product (and no shared tags) would otherwise render no similar products.
+                var remaining = RelatedProductListSize - related.Count;
+                AppendUniqueRelatedProducts(
+                    related,
+                    GetStorefrontLatestProducts(remaining + related.Count + 1, productDto.Lang),
+                    excludedProductId);
+            }
+
+            return related.GroupBy(p => p.Id).Select(g => g.First()).Take(RelatedProductListSize).ToList();
         }
 
         [Timed("service.products.get_category_products", "Time taken to get storefront category products")]
@@ -433,22 +512,7 @@ namespace EImece.Domain.Services
             }
             result.BreadCrumb = ProductCategoryService.GetBreadCrumb(productDto.ProductCategoryId, productDto.Lang);
             result.RelatedStories = new List<StorefrontStoryCardDto>();
-            int relatedProductTake = 20;
-            result.RelatedProducts = new List<StorefrontProductCardDto>();
-            if (productDto.ProductTags != null && productDto.ProductTags.Any())
-            {
-                var tagIdList = productDto.ProductTags.Select(t => t.Id).ToArray();
-                result.RelatedProducts = ProductRepository.GetStorefrontRelatedProducts(tagIdList, relatedProductTake, productDto.Lang, id);
-            }
-
-            if (result.RelatedProducts.Count < 20)
-            {
-                relatedProductTake -= result.RelatedProducts.Count;
-                result.RelatedProducts.AddRange(
-                    ProductRepository.GetStorefrontRandomProductsByCategoryId(productDto.ProductCategoryId, relatedProductTake, productDto.Lang, id));
-            }
-
-            result.RelatedProducts = result.RelatedProducts.GroupBy(p => p.Id).Select(g => g.First()).Take(20).ToList();
+            result.RelatedProducts = GetRelatedProducts(productDto);
 
             return result;
         }
@@ -497,24 +561,36 @@ namespace EImece.Domain.Services
             }
             result.BreadCrumb = await ProductCategoryService.GetBreadCrumbAsync(productDto.ProductCategoryId, productDto.Lang).ConfigureAwait(false);
             result.RelatedStories = new List<StorefrontStoryCardDto>();
-            int relatedProductTake = 20;
-            result.RelatedProducts = new List<StorefrontProductCardDto>();
-            if (productDto.ProductTags != null && productDto.ProductTags.Any())
-            {
-                var tagIdList = productDto.ProductTags.Select(t => t.Id).ToArray();
-                result.RelatedProducts = await GetStorefrontRelatedProductsAsync(tagIdList, relatedProductTake, productDto.Lang, id, cancellationToken).ConfigureAwait(false);
-            }
-
-            if (result.RelatedProducts.Count < 20)
-            {
-                relatedProductTake -= result.RelatedProducts.Count;
-                result.RelatedProducts.AddRange(
-                    await ProductRepository.GetStorefrontRandomProductsByCategoryIdAsync(productDto.ProductCategoryId, relatedProductTake, productDto.Lang, id, cancellationToken).ConfigureAwait(false));
-            }
-
-            result.RelatedProducts = result.RelatedProducts.GroupBy(p => p.Id).Select(g => g.First()).Take(20).ToList();
+            result.RelatedProducts = await GetRelatedProductsAsync(productDto, cancellationToken).ConfigureAwait(false);
 
             return result;
+        }
+
+        private static void AppendUniqueRelatedProducts(
+            List<StorefrontProductCardDto> related,
+            IList<StorefrontProductCardDto> extra,
+            int excludedProductId)
+        {
+            if (related == null || extra == null || extra.Count == 0 || related.Count >= RelatedProductListSize)
+            {
+                return;
+            }
+
+            var existingIds = new HashSet<int>(related.Select(p => p.Id)) { excludedProductId };
+            foreach (var product in extra)
+            {
+                if (product == null || existingIds.Contains(product.Id))
+                {
+                    continue;
+                }
+
+                related.Add(product);
+                existingIds.Add(product.Id);
+                if (related.Count >= RelatedProductListSize)
+                {
+                    break;
+                }
+            }
         }
 
         private List<Product> GetRandomProductsByCategoryId(int productCategoryId, int relatedProductTake, int lang, int id)
@@ -529,20 +605,6 @@ namespace EImece.Domain.Services
         private async Task<List<Product>> GetRandomProductsByCategoryIdAsync(int productCategoryId, int relatedProductTake, int lang, int id, CancellationToken cancellationToken)
         {
             return await ProductRepository.GetRandomProductsByCategoryIdAsync(productCategoryId, relatedProductTake * 3, lang, id, cancellationToken).ConfigureAwait(false);
-        }
-
-        private List<Product> GetRelatedProducts(int[] tagIdList, int relatedProductTake, int lang, int id)
-        {
-            List<Product> result = null;
-
-            result = ProductRepository.GetRelatedProducts(tagIdList, relatedProductTake * 3, lang, id);
-
-            return result;
-        }
-
-        private async Task<List<Product>> GetRelatedProductsAsync(int[] tagIdList, int relatedProductTake, int lang, int id, CancellationToken cancellationToken)
-        {
-            return await ProductRepository.GetRelatedProductsAsync(tagIdList, relatedProductTake * 3, lang, id, cancellationToken).ConfigureAwait(false);
         }
 
         public virtual new void DeleteBaseEntity(List<string> values)

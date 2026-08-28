@@ -31,6 +31,8 @@ namespace EImece.Domain.Services.IServices
         PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting);
         Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIds, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken));
         List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIds, int take, int language, int excludedProductId);
+        Task<List<StorefrontProductCardDto>> GetRelatedProductsAsync(StorefrontProductDetailDto productDto, CancellationToken cancellationToken = default(CancellationToken));
+        List<StorefrontProductCardDto> GetRelatedProducts(StorefrontProductDetailDto productDto);
         Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken));
         List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language);
         Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken));
