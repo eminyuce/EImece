@@ -6,10 +6,13 @@ using System.Web.Mvc;
 namespace EImece.Filters
 {
     /// <summary>
-    /// Opt-in business-metric filter for ASP.NET MVC 5 / .NET Framework 4.8.
+    /// Business-metric filter for ASP.NET MVC 5 / .NET Framework 4.8.
     /// Records action duration in milliseconds to an OpenTelemetry Histogram.
     /// Overall HTTP request duration is already covered by OpenTelemetry.Instrumentation.AspNet;
-    /// apply [Timed] only where you want a distinct business-oriented metric name.
+    /// this filter adds a per-action business metric.
+    /// When used without arguments (e.g. [Timed] on BaseController) the metric name is
+    /// auto-derived as "app.{controller}.{action}" so every storefront action is measured
+    /// without manual per-method decoration. Pass an explicit name for a custom business metric.
     /// Safe for concurrent requests — Stopwatch is stored per-request in HttpContext.Items,
     /// not in a shared instance field (filter attributes are cached and shared across requests).
     /// </summary>
@@ -19,32 +22,34 @@ namespace EImece.Filters
         private readonly string _name;
         private readonly string _description;
 
-        // Per-request key. Includes metric name so two [Timed] attributes with different names
-        // on the same request (e.g. class + method) do not collide.
-        private string ItemKey => "__Timed_Stopwatch_" + _name;
-
         /// <summary>
         /// Creates a Timed filter.
         /// </summary>
-        /// <param name="name">Histogram / metric name, e.g. "service.conversations.getConversations". Must be non-empty.</param>
+        /// <param name="name">Histogram / metric name, e.g. "service.conversations.getConversations". When null/empty, auto-derived as "app.{controller}.{action}".</param>
         /// <param name="description">Optional description exported to OTLP / Azure Monitor.</param>
-        public TimedAttribute(string name, string description = null)
+        public TimedAttribute(string name = null, string description = null)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            // Allow null for auto-derived name (used on BaseController to cover all actions).
+            // Explicit empty string is treated as invalid.
+            if (name != null && string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Timed metric name must not be empty.", nameof(name));
             }
 
-            _name = name.Trim();
+            _name = string.IsNullOrWhiteSpace(name) ? null : name.Trim();
             _description = description;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Store per-request Stopwatch in HttpContext.Items — never in an instance field.
             if (filterContext?.HttpContext != null)
             {
-                filterContext.HttpContext.Items[ItemKey] = Stopwatch.StartNew();
+                var effectiveName = GetEffectiveName(filterContext);
+                var key = GetItemKey(effectiveName);
+                filterContext.HttpContext.Items[key] = Stopwatch.StartNew();
+                // Store effective name alongside so OnActionExecuted can retrieve it even if
+                // ActionDescriptor differs slightly after execution (e.g. exception filters).
+                filterContext.HttpContext.Items[key + "_name"] = effectiveName;
             }
 
             base.OnActionExecuting(filterContext);
@@ -56,7 +61,17 @@ namespace EImece.Filters
             {
                 if (filterContext?.HttpContext != null)
                 {
-                    var stopwatch = filterContext.HttpContext.Items[ItemKey] as Stopwatch;
+                    // Re-derive name; fallback to stored name if available.
+                    var derivedName = GetEffectiveName(filterContext);
+                    var key = GetItemKey(derivedName);
+                    var storedName = filterContext.HttpContext.Items[key + "_name"] as string;
+                    var effectiveName = !string.IsNullOrWhiteSpace(storedName) ? storedName : derivedName;
+
+                    var stopwatch = filterContext.HttpContext.Items[key] as Stopwatch;
+                    // Clean up both entries early.
+                    filterContext.HttpContext.Items.Remove(key);
+                    filterContext.HttpContext.Items.Remove(key + "_name");
+
                     if (stopwatch != null)
                     {
                         if (stopwatch.IsRunning)
@@ -66,19 +81,16 @@ namespace EImece.Filters
 
                         var elapsedMs = stopwatch.Elapsed.TotalMilliseconds;
 
-                        // Clean up to avoid leaking into later pipeline stages.
-                        filterContext.HttpContext.Items.Remove(ItemKey);
-
                         // Record to OTel Histogram (ms). Cached via Telemetry helper.
-                        var histogram = Telemetry.GetOrCreateHistogram(_name, _description);
+                        var histogram = Telemetry.GetOrCreateHistogram(effectiveName, _description);
                         histogram.Record(elapsedMs);
 
-                        // Optional: also annotate the current Activity (created by TelemetryActionFilter
+                        // Annotate the current Activity (created by TelemetryActionFilter
                         // or AspNet instrumentation) so traces show business duration.
                         var activity = Activity.Current;
                         if (activity != null)
                         {
-                            activity.SetTag("timed.metric", _name);
+                            activity.SetTag("timed.metric", effectiveName);
                             activity.SetTag("timed.duration_ms", elapsedMs);
                         }
                     }
@@ -87,12 +99,42 @@ namespace EImece.Filters
             catch (Exception ex)
             {
                 // Never throw from telemetry — swallow and log to debug.
-                Debug.WriteLine("TimedAttribute failed to record metric '" + _name + "': " + ex);
+                var logName = _name ?? "(auto)";
+                Debug.WriteLine("TimedAttribute failed to record metric '" + logName + "': " + ex);
             }
             finally
             {
                 base.OnActionExecuted(filterContext);
             }
+        }
+
+        private string GetEffectiveName(ActionExecutingContext ctx)
+        {
+            if (!string.IsNullOrWhiteSpace(_name))
+            {
+                return _name;
+            }
+
+            var controller = ctx.ActionDescriptor?.ControllerDescriptor?.ControllerName ?? "unknown";
+            var action = ctx.ActionDescriptor?.ActionName ?? "unknown";
+            return $"app.{controller}.{action}".ToLowerInvariant();
+        }
+
+        private string GetEffectiveName(ActionExecutedContext ctx)
+        {
+            if (!string.IsNullOrWhiteSpace(_name))
+            {
+                return _name;
+            }
+
+            var controller = ctx.ActionDescriptor?.ControllerDescriptor?.ControllerName ?? "unknown";
+            var action = ctx.ActionDescriptor?.ActionName ?? "unknown";
+            return $"app.{controller}.{action}".ToLowerInvariant();
+        }
+
+        private static string GetItemKey(string effectiveName)
+        {
+            return "__Timed_Stopwatch_" + effectiveName;
         }
     }
 }
