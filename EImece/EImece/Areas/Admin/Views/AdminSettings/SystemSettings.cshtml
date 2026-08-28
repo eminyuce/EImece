@@ -53,7 +53,9 @@
     if (isRateLimitActive) { securityScore += 35; }
     if (isCaptchaActive) { securityScore += 30; }
 }
-
+@section Styles {
+    <link href="~/Content/adminSettingsCenter.css?v=20260828r2" rel="stylesheet" />
+}
 <div class="settings-center-container" id="settingsCenterApp">
     <!-- Header Banner -->
     <div class="settings-header-banner mb-4">
@@ -150,10 +152,23 @@
             </div>
         </div>
 
+        <!-- Mobile drawer trigger & scrollable tabs -->
+        <div class="d-lg-none mb-3">
+            <button type="button" class="btn btn-outline-primary w-100 settings-mobile-trigger d-flex align-items-center justify-content-between" id="btnOpenSettingsNav" aria-expanded="false" aria-controls="settingsNavCard">
+                <span><i class="fa fa-sliders me-2"></i> Ayar Kategorileri</span>
+                <span class="d-flex align-items-center gap-2">
+                    <span class="badge bg-primary" id="mobileActiveCategoryLabel">Genel Bakış</span>
+                    <i class="fa fa-chevron-down small"></i>
+                </span>
+            </button>
+            <div class="settings-mobile-tabs mt-2" id="settingsMobileTabs" role="tablist" aria-label="Ayar kategorileri"></div>
+        </div>
+        <div class="settings-nav-overlay" id="settingsNavOverlay" aria-hidden="true"></div>
+
         <div class="row g-3">
             <!-- Left Information Architecture Navigation -->
             <div class="col-lg-3 col-md-4">
-                <div class="settings-nav-card card shadow-sm sticky-lg-top" style="top: 20px; z-index: 10;">
+                <div class="settings-nav-card card shadow-sm sticky-lg-top" id="settingsNavCard" style="top: 20px; z-index: 10;">
                     <div class="card-header bg-light py-2 px-3 border-bottom">
                         <span class="fw-bold text-uppercase small text-muted"><i class="fa fa-compass me-1"></i> @AdminResource.SettingCategories</span>
                     </div>
@@ -573,14 +588,22 @@
                                     @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
                                 </div>
 
-                                <!-- Price Filter Setting Editor Partial -->
-                                <div class="setting-item mb-3 price-dependent-setting" data-setting-name="ProductPriceFilterSetting" data-setting-label="Fiyat Filtresi Aralıkları" data-setting-desc="Kategori ve arama sayfalarında gösterilen dinamik fiyat filtre aralıkları" data-keywords="fiyat aralığı filtre kategori slider range price filter">
-                                    <label class="form-label fw-bold small">
-                                        @Html.DisplayNameFor(model => model.ProductPriceFilterSetting)
-                                    </label>
-                                    @Html.Partial("_ProductPriceFilterEditor", Model.ProductPriceFilterSetting ?? string.Empty)
-                                    @Html.ValidationMessageFor(model => model.ProductPriceFilterSetting, "", new { @class = "text-danger small" })
-                                </div>
+                                <!-- Price Filter Setting Editor Partial — progressive disclosure -->
+                                <details class="sc-advanced-panel mb-3" data-setting-name="ProductPriceFilterSetting" data-setting-label="Fiyat Filtresi Aralıkları" data-setting-desc="Kategori ve arama sayfalarında gösterilen dinamik fiyat filtre aralıkları" data-keywords="fiyat aralığı filtre kategori slider range price filter">
+                                    <summary>
+                                        <span><i class="fa fa-sliders me-2 text-primary"></i> Fiyat Filtresi Aralıkları <span class="badge bg-light text-secondary border ms-2">Gelişmiş</span></span>
+                                        <span class="small text-muted">8 aralık • kategori slider</span>
+                                    </summary>
+                                    <div class="sc-advanced-body">
+                                        <div class="setting-item price-dependent-setting" data-setting-name="ProductPriceFilterSetting" data-setting-label="Fiyat Filtresi Aralıkları" data-setting-desc="Kategori ve arama sayfalarında gösterilen dinamik fiyat filtre aralıkları" data-keywords="fiyat aralığı filtre kategori slider range price filter">
+                                            <label class="form-label fw-bold small">
+                                                @Html.DisplayNameFor(model => model.ProductPriceFilterSetting)
+                                            </label>
+                                            @Html.Partial("_ProductPriceFilterEditor", Model.ProductPriceFilterSetting ?? string.Empty)
+                                            @Html.ValidationMessageFor(model => model.ProductPriceFilterSetting, "", new { @class = "text-danger small" })
+                                        </div>
+                                    </div>
+                                </details>
 
                                 <!-- Payment Detail Tab HTML -->
                                 <div class="setting-item price-dependent-setting" data-setting-name="PaymentDetailHtml" data-setting-label="Ürün Detay Ödeme Sekmesi HTML" data-setting-desc="Ürün detay sayfasındaki Ödeme Bilgisi sekmesinde gösterilecek özel HTML veya metin" data-keywords="ödeme sekmesi html taksit detay payment detail">
@@ -2098,5 +2121,126 @@
         });
     })();
 </script>
+<script>
+(function(){
+  // Mobile drawer & scrollable tabs
+  var $navCard = $('#settingsNavCard');
+  var $overlay = $('#settingsNavOverlay');
+  var $trigger = $('#btnOpenSettingsNav');
+  var $mobileTabs = $('#settingsMobileTabs');
+  var $tabLinks = $('#settingsTabs a[data-bs-toggle="pill"]');
+  function syncMobileLabel(){
+    var $active = $('#settingsTabs a.active');
+    var txt = $active.text().trim().split('\n')[0].trim() || 'Genel Bakış';
+    $('#mobileActiveCategoryLabel').text(txt.replace(/\s+/g,' ').slice(0,24));
+  }
+  function buildMobileTabs(){
+    if(!$mobileTabs.length) return;
+    $mobileTabs.empty();
+    $tabLinks.each(function(){
+      var $a = $(this);
+      var href = $a.attr('href');
+      var txt = $a.find('span').first().text().trim() || $a.text().trim();
+      var icon = $a.find('i').first().attr('class') || 'fa fa-circle';
+      var $btn = $('<button type="button" class="btn btn-sm"></button>').text(txt).attr('data-href', href);
+      $btn.prepend('<i class="'+icon+' me-1"></i>');
+      if($a.hasClass('active')) $btn.addClass('btn-primary').removeClass('btn-outline-secondary');
+      else $btn.addClass('btn-outline-secondary');
+      $mobileTabs.append($btn);
+    });
+  }
+  buildMobileTabs();
+  syncMobileLabel();
+  $(document).on('shown.bs.tab', '#settingsTabs a[data-bs-toggle="pill"]', function(){ syncMobileLabel(); buildMobileTabs(); });
+  if($trigger.length){
+    $trigger.on('click', function(){
+      var open = $navCard.hasClass('is-open');
+      $navCard.toggleClass('is-open', !open);
+      $overlay.toggleClass('is-visible', !open);
+      $trigger.attr('aria-expanded', String(!open));
+      $('body').toggleClass('overflow-hidden', !open);
+    });
+  }
+  $overlay.on('click', function(){ $navCard.removeClass('is-open'); $overlay.removeClass('is-visible'); $trigger.attr('aria-expanded','false'); $('body').removeClass('overflow-hidden'); });
+  $mobileTabs.on('click','button', function(){
+    var href = $(this).data('href');
+    var $target = $('#settingsTabs a[href="'+href+'"]');
+    if($target.length) $target.tab('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+  $(document).on('click', '#settingsTabs a', function(){
+    if(window.innerWidth < 992){ $navCard.removeClass('is-open'); $overlay.removeClass('is-visible'); $trigger.attr('aria-expanded','false'); $('body').removeClass('overflow-hidden'); }
+  });
 
+  // Per-section unsaved indicator
+  var sectionMap = {
+    '#overview': null,
+    '#tab-general': ['#tab-general'],
+    '#tab-appearance': ['#tab-appearance'],
+    '#tab-media': ['#tab-media'],
+    '#tab-payments': ['#tab-payments'],
+    '#tab-security': ['#tab-security'],
+    '#tab-smtp': ['#tab-smtp'],
+    '#tab-integrations': ['#tab-integrations'],
+    '#tab-tools': ['#tab-tools']
+  };
+  var initialData = $('#systemSettingsForm').serialize();
+  function updateSectionBadges(){
+    var current = $('#systemSettingsForm').serialize();
+    var isDirty = current !== initialData;
+    $('#stickySaveBar').toggleClass('is-dirty', isDirty).toggleClass('is-clean', !isDirty);
+    $('#saveStatusIndicator').toggleClass('d-none', isDirty);
+    $('#unsavedChangesBadge').toggleClass('d-none', !isDirty);
+    $('#btnDiscardChanges').prop('disabled', !isDirty);
+    // mark nav items with unsaved
+    $('#settingsTabs a').each(function(){
+      var href = $(this).attr('href');
+      var pane = $(href);
+      if(!pane.length) return;
+      var hasChanges = pane.find('input, select, textarea').filter(function(){ return $(this).val() !== $(this).prop('defaultValue') && !$(this).is('[data-unchanged]'); }).length > 0;
+      // fallback: compare serialized slices
+      // simple: if dirty and pane contains any dirty input, mark
+      var paneIsDirty = isDirty && pane.find('.is-highlight, .has-error').length===0 ? false : false;
+      // use heuristic: if form is dirty, check if pane has any input that changed from default
+      var dirtyInPane = false;
+      pane.find('input, select, textarea').each(function(){
+        var $el = $(this);
+        var def = $el.prop('defaultValue');
+        var cur = $el.val();
+        if($el.is(':checkbox') || $el.is(':radio')){ if($el.prop('checked') !== $el.prop('defaultChecked')) dirtyInPane = true; }
+        else if(cur !== def) dirtyInPane = true;
+      });
+      $(this).toggleClass('has-unsaved', dirtyInPane);
+    });
+  }
+  $('#systemSettingsForm').on('input change', 'input, select, textarea', function(){ setTimeout(updateSectionBadges, 60); });
+  setTimeout(updateSectionBadges, 400);
+
+  // Search polish — keyboard nav + elegant pulse
+  var $search = $('#globalSettingsSearch');
+  var $results = $('#settingsSearchResults');
+  var $list = $('#searchResultsList');
+  var selectedIdx = -1;
+  $search.on('keydown', function(e){
+    var $items = $list.find('.list-group-item');
+    if(!$items.length) return;
+    if(e.key === 'ArrowDown'){ e.preventDefault(); selectedIdx = Math.min(selectedIdx+1, $items.length-1); $items.removeClass('is-highlighted').eq(selectedIdx).addClass('is-highlighted').focus(); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); selectedIdx = Math.max(selectedIdx-1, 0); $items.removeClass('is-highlighted').eq(selectedIdx).addClass('is-highlighted'); }
+    else if(e.key === 'Enter' && selectedIdx >=0){ e.preventDefault(); $items.eq(selectedIdx).trigger('click'); }
+    else if(e.key === 'Escape'){ $results.hide(); selectedIdx=-1; }
+  });
+  // Pulse highlight elegant — override existing highlight to use is-highlight + pulse
+  var origHighlight = window.highlightSettingItem || function(){};
+  // Enhance pulse: add smooth scroll and soft pulse
+  $(document).on('click', '#searchResultsList .list-group-item', function(){
+    setTimeout(function(){
+      var $target = $('.setting-item.is-highlight').first();
+      if($target.length){
+        $target.addClass('pulse');
+        setTimeout(function(){ $target.removeClass('pulse'); }, 1400);
+      }
+    }, 320);
+  });
+})();
+</script>
 @Html.Partial("_AdminInitTooltips")

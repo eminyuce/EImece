@@ -539,6 +539,7 @@
     <Content Include="Content\adminShell.css" />
     <Content Include="Content\adminGridModern.css" />
     <Content Include="Content\adminGriddlyCompat.css" />
+    <Content Include="Content\adminSettingsCenter.css" />
     <Content Include="Content\adminReports.css" />
     <Content Include="Content\filepond\filepond.min.css" />
     <Content Include="Content\filepond\filepond-plugin-image-preview.min.css" />
