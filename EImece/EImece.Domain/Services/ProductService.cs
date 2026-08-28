@@ -8,6 +8,7 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -83,9 +84,9 @@ namespace EImece.Domain.Services
         /// approved comments). Cached under <c>product:detail:</c> so authenticated users and
         /// OutputCache misses stop rebuilding the ~10-query projection on every view. Dropped by
         /// InvalidateProductListCaches on any product mutation and by comment moderation.
-        /// Not-found/inactive products are not cached (repository returns null).
         /// </summary>
-        public async Task<StorefrontProductDetailDto> GetStorefrontProductDetailAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_storefront_detail", "Time taken to get storefront product detail")]
+        public virtual async Task<StorefrontProductDetailDto> GetStorefrontProductDetailAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (DataCachingProvider == null)
             {
@@ -97,7 +98,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public StorefrontProductDetailDto GetStorefrontProductDetail(int id)
+        [Timed("service.products.get_storefront_detail_sync", "Time taken to get storefront product detail (sync)")]
+        public virtual StorefrontProductDetailDto GetStorefrontProductDetail(int id)
         {
             // Null provider (manual construction / unit tests) bypasses the cache, matching
             // the SettingService convention.
@@ -111,12 +113,14 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_active_async", "Time taken to get active products")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontActiveProductsAsync(int? language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontActiveProductsAsync(language, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
+        [Timed("service.products.get_active_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontActiveProducts(int? language)
         {
             return ProductRepository.GetStorefrontActiveProducts(language);
         }
@@ -141,72 +145,86 @@ namespace EImece.Domain.Services
             return ProductRepository.GetStorefrontActiveProductsPaged(pageIndex, pageSize, lang);
         }
 
-        public async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.search_storefront_async", "Time taken to search storefront products")]
+        public virtual async Task<PaginatedList<StorefrontProductCardDto>> SearchStorefrontProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.SearchStorefrontProductsAsync(pageIndex, pageSize, search, lang, sorting, cancellationToken).ConfigureAwait(false);
         }
 
-        public PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
+        [Timed("service.products.search_storefront_sync")]
+        public virtual PaginatedList<StorefrontProductCardDto> SearchStorefrontProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             return ProductRepository.SearchStorefrontProducts(pageIndex, pageSize, search, lang, sorting);
         }
 
-        public async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_by_tag", "Time taken to get storefront products by tag id")]
+        public virtual async Task<PaginatedList<StorefrontProductCardDto>> GetStorefrontProductsByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontProductsByTagIdAsync(tagId, pageIndex, pageSize, lang, sorting, cancellationToken).ConfigureAwait(false);
         }
 
-        public PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
+        [Timed("service.products.get_by_tag_sync")]
+        public virtual PaginatedList<StorefrontProductCardDto> GetStorefrontProductsByTagId(int tagId, int pageIndex, int pageSize, int lang, SortingType sorting)
         {
             return ProductRepository.GetStorefrontProductsByTagId(tagId, pageIndex, pageSize, lang, sorting);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIds, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_related", "Time taken to get storefront related products")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontRelatedProductsAsync(int[] tagIds, int take, int language, int excludedProductId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontRelatedProductsAsync(tagIds, take, language, excludedProductId, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIds, int take, int language, int excludedProductId)
+        [Timed("service.products.get_related_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontRelatedProducts(int[] tagIds, int take, int language, int excludedProductId)
         {
             return ProductRepository.GetStorefrontRelatedProducts(tagIds, take, language, excludedProductId);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_category_products", "Time taken to get storefront category products")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontCategoryProductsAsync(int categoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontCategoryProductsAsync(categoryId, language, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language)
+        [Timed("service.products.get_category_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontCategoryProducts(int categoryId, int language)
         {
             return ProductRepository.GetStorefrontCategoryProducts(categoryId, language);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_main_page_products", "Time taken to get storefront main page products")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontMainPageProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontMainPageProductsAsync(take, language, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontMainPageProducts(int take, int language)
+        [Timed("service.products.get_main_page_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontMainPageProducts(int take, int language)
         {
             return ProductRepository.GetStorefrontMainPageProducts(take, language);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontLatestProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_latest_products", "Time taken to get storefront latest products")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontLatestProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontLatestProductsAsync(take, language, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontLatestProducts(int take, int language)
+        [Timed("service.products.get_latest_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontLatestProducts(int take, int language)
         {
             return ProductRepository.GetStorefrontLatestProducts(take, language);
         }
 
-        public async Task<List<StorefrontProductCardDto>> GetStorefrontCampaignProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_campaign_products", "Time taken to get storefront campaign products")]
+        public virtual async Task<List<StorefrontProductCardDto>> GetStorefrontCampaignProductsAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await ProductRepository.GetStorefrontCampaignProductsAsync(take, language, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontProductCardDto> GetStorefrontCampaignProducts(int take, int language)
+        [Timed("service.products.get_campaign_products_sync")]
+        public virtual List<StorefrontProductCardDto> GetStorefrontCampaignProducts(int take, int language)
         {
             return ProductRepository.GetStorefrontCampaignProducts(take, language);
         }
@@ -263,7 +281,8 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
+        [Timed("service.products.get_main_page", "Time taken to build main page view model")]
+        public virtual ProductIndexViewModel GetMainPageProducts(int pageIndex, int lang)
         {
             var cacheKey = CacheKeys.MainPageProducts(pageIndex, lang);
 
@@ -300,7 +319,8 @@ namespace EImece.Domain.Services
         /// (CustomOutputCache) rather than a shared view-model cache entry, because a shared entry
         /// cannot honour a per-request token.
         /// </summary>
-        public async Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_main_page_async")]
+        public virtual async Task<ProductIndexViewModel> GetMainPageProductsAsync(int pageIndex, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new ProductIndexViewModel();
             int pageSize = AppConfig.RecordPerPage;
@@ -368,7 +388,8 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public ProductDetailViewModel GetProductDetailViewModelById(int id)
+        [Timed("service.products.get_detail_view_model_sync")]
+        public virtual ProductDetailViewModel GetProductDetailViewModelById(int id)
         {
             var result = new ProductDetailViewModel();
             var productDto = GetStorefrontProductDetail(id);
@@ -668,7 +689,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
+        [Timed("service.products.search_sync")]
+        public virtual ProductsSearchViewModel SearchProducts(int pageIndex, int pageSize, string search, int lang, SortingType sorting)
         {
             // Absolute + short TTL: search cardinality is high; keep entries brief and invalidate
             // the whole search prefix when any product changes (see InvalidateProductListCaches).
@@ -679,7 +701,8 @@ namespace EImece.Domain.Services
                 CachePolicy.Absolute(AppConfig.CacheShortSeconds));
         }
 
-        public async Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.search")]
+        public virtual async Task<ProductsSearchViewModel> SearchProductsAsync(int pageIndex, int pageSize, string search, int lang, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.ProductSearchAsync(search, pageIndex, pageSize, lang, sorting);
             // CancellationToken.None inside the factory: the cached result is shared across requests,
@@ -1214,7 +1237,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
+        [Timed("service.products.get_by_tag_id_simple_sync")]
+        public virtual SimiliarProductTagsViewModel GetProductByTagId(int tagId, int pageIndex, int pageSize, int lang)
         {
             var r = new SimiliarProductTagsViewModel();
             r.Tag = TagService.GetStorefrontTagById(tagId);
@@ -1223,7 +1247,8 @@ namespace EImece.Domain.Services
             return r;
         }
 
-        public SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting)
+        [Timed("service.products.get_by_tag_id_sync")]
+        public virtual SimiliarProductTagsViewModel GetProductByTagId(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting)
         {
             var r = new SimiliarProductTagsViewModel();
             r.Tag = TagService.GetStorefrontTagById(tagId);
@@ -1232,7 +1257,8 @@ namespace EImece.Domain.Services
             return r;
         }
 
-        public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_by_tag_id_simple")]
+        public virtual async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int pageIndex, int pageSize, int lang, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
             r.Tag = await TagService.GetStorefrontTagByIdAsync(tagId, cancellationToken).ConfigureAwait(false);
@@ -1241,7 +1267,8 @@ namespace EImece.Domain.Services
             return r;
         }
 
-        public async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.products.get_by_tag_id")]
+        public virtual async Task<SimiliarProductTagsViewModel> GetProductByTagIdAsync(int tagId, int page, int pageSize, int currentLanguage, SortingType sorting, CancellationToken cancellationToken = default(CancellationToken))
         {
             var r = new SimiliarProductTagsViewModel();
             r.Tag = await TagService.GetStorefrontTagByIdAsync(tagId, cancellationToken).ConfigureAwait(false);

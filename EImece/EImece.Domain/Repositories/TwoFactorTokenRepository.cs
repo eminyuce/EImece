@@ -1,5 +1,6 @@
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using System;
 using System.Data.Entity;
@@ -21,7 +22,8 @@ namespace EImece.Domain.Repositories
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public async Task RemoveUnusedByUserIdAsync(string userId)
+        [Timed("repo.two_factor_token.remove_unused_by_user")]
+        public virtual async Task RemoveUnusedByUserIdAsync(string userId)
         {
             var oldTokens = _db.TwoFactorTokens
                 .Where(t => t.UserId == userId && !t.IsUsed);
@@ -29,7 +31,8 @@ namespace EImece.Domain.Repositories
             await _db.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task AddAsync(TwoFactorToken token)
+        [Timed("repo.two_factor_token.add")]
+        public virtual async Task AddAsync(TwoFactorToken token)
         {
             if (token == null)
             {
@@ -40,13 +43,15 @@ namespace EImece.Domain.Repositories
             await _db.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public Task<TwoFactorToken> FindUnusedByTokenAsync(string token)
+        [Timed("repo.two_factor_token.find_unused_by_token")]
+        public virtual Task<TwoFactorToken> FindUnusedByTokenAsync(string token)
         {
             return _db.TwoFactorTokens
                 .FirstOrDefaultAsync(t => t.Token == token && !t.IsUsed);
         }
 
-        public async Task DeleteAsync(TwoFactorToken token)
+        [Timed("repo.two_factor_token.delete")]
+        public virtual async Task DeleteAsync(TwoFactorToken token)
         {
             if (token == null)
             {
@@ -57,7 +62,8 @@ namespace EImece.Domain.Repositories
             await _db.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteExpiredAndUsedAsync()
+        [Timed("repo.two_factor_token.delete_expired_and_used")]
+        public virtual async Task DeleteExpiredAndUsedAsync()
         {
             var expired = _db.TwoFactorTokens
                 .Where(t => t.ExpiresUtc < DateTime.UtcNow || t.IsUsed);
@@ -65,7 +71,8 @@ namespace EImece.Domain.Repositories
             await _db.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public Task<int> SaveChangesAsync()
+        [Timed("repo.two_factor_token.save_changes")]
+        public virtual Task<int> SaveChangesAsync()
         {
             return _db.SaveChangesAsync();
         }

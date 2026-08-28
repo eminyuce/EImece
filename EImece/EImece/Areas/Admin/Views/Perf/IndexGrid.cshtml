@@ -1,0 +1,81 @@
+@using Resources
+@using EImece.Domain.Observability.Metrics
+@using EImece.Domain
+@using EImece.Domain.Helpers
+@using Griddly.Mvc
+
+@{
+    Layout = null;
+    var gridName = "PerfGrid";
+    int pageSizeNumber = ViewBag.GridPageSizeNumber != null ? (int)ViewBag.GridPageSizeNumber : AdminSettings.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+
+    var settings = new GriddlySettings<PerfStatSnapshot>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        DefaultSort = new[] { new SortField() { Field = "AvgMs", Direction = SortDirection.Descending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="card-header grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
+                <span class="grid-record-count-label">@AdminResource.PerformanceStatistics</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="@AdminResource.ScrollTableLeftRight">
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="@AdminResource.ScrollLeft" aria-label="@AdminResource.ScrollLeft">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="@AdminResource.ScrollRight" aria-label="@AdminResource.ScrollRight">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(x => x.Name, caption: AdminResource.MetricName, template: @<text><code class="fw-bold text-dark">@item.Name</code></text>, className: "eg-col-name", width: "300px")
+        .Column(caption: AdminResource.PerfMetricType, template: @<text>
+            @{
+                string badgeClass = "bg-secondary";
+                string typeLabel = "Other";
+                if (item.Name != null && item.Name.StartsWith("app.", StringComparison.OrdinalIgnoreCase))
+                {
+                    badgeClass = "bg-primary";
+                    typeLabel = "Controller";
+                }
+                else if (item.Name != null && item.Name.StartsWith("service.", StringComparison.OrdinalIgnoreCase))
+                {
+                    badgeClass = "bg-success";
+                    typeLabel = "Service";
+                }
+                else if (item.Name != null && item.Name.StartsWith("repo.", StringComparison.OrdinalIgnoreCase))
+                {
+                    badgeClass = "bg-warning text-dark";
+                    typeLabel = "Repository";
+                }
+            }
+            <span class="badge @badgeClass">@typeLabel</span>
+        </text>, width: "100px")
+        .Column(x => x.Count, caption: AdminResource.PerfCalls, template: @<text><span class="badge bg-light text-dark border">@item.Count.ToString("N0")</span></text>, width: "90px")
+        .Column(x => x.AvgMs, caption: AdminResource.PerfAvgMs, template: @<text>
+            @{
+                string avgColor = item.AvgMs > 500 ? "text-danger fw-bold" : (item.AvgMs > 100 ? "text-warning fw-semibold" : "text-dark");
+            }
+            <span class="@avgColor">@item.AvgMs.ToString("F2") ms</span>
+        </text>, width: "120px")
+        .Column(x => x.MinMs, caption: AdminResource.PerfMinMs, template: @<text><span class="text-muted">@item.MinMs.ToString("F2") ms</span></text>, width: "95px")
+        .Column(x => x.MaxMs, caption: AdminResource.PerfMaxMs, template: @<text><span class="text-muted">@item.MaxMs.ToString("F2") ms</span></text>, width: "95px")
+        .Column(x => x.LastMs, caption: AdminResource.PerfLastMs, template: @<text><span>@item.LastMs.ToString("F2") ms</span></text>, width: "95px")
+        .Column(x => x.SumMs, caption: AdminResource.PerfTotalSum, template: @<text><span class="text-muted">@((item.SumMs / 1000.0).ToString("F2")) s</span></text>, width: "100px")
+        .Column(x => x.LastUtc, caption: AdminResource.PerfLastInvokedUtc, template: @<text><span class="text-muted small">@item.LastUtc.ToString("yyyy-MM-dd HH:mm:ss")</span></text>, width: "150px");
+}
+
+@Html.Griddly(settings)

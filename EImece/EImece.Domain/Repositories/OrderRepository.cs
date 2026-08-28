@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.DependencyInjection;
 using NLog;
@@ -208,7 +209,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<OrderDto> GetStorefrontOrderByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.orders.get_by_id", "Time taken to get order by id from DB")]
+        public virtual async Task<OrderDto> GetStorefrontOrderByIdAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dto = await EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.Id == id)
@@ -219,7 +221,8 @@ namespace EImece.Domain.Repositories
             return dto;
         }
 
-        public OrderDto GetStorefrontOrderById(int id)
+        [Timed("repo.orders.get_by_id_sync")]
+        public virtual OrderDto GetStorefrontOrderById(int id)
         {
             var dto = EImeceDbContext.Orders.AsNoTracking()
                 .Where(o => o.Id == id)
@@ -488,7 +491,8 @@ namespace EImece.Domain.Repositories
         /// Aggregated order stats (COUNT + total paid) for a user. PaidPrice is stored as string,
         /// so the rounding/parse happens in memory over that single projected column only.
         /// </summary>
-        public async Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.orders.get_stats_by_user", "Time taken to get order stats by user from DB")]
+        public virtual async Task<Models.DTOs.Storefront.OrderStatsDto> GetStorefrontOrderStatsByUserIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = EImeceDbContext.Orders.AsNoTracking().Where(o => o.UserId == userId);
             var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);

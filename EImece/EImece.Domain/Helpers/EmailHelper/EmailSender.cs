@@ -1,5 +1,6 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;
@@ -39,7 +40,8 @@ namespace EImece.Domain.Helpers.EmailHelper
         /// <param name="cc">CC addresses list</param>
         /// <param name="attachmentFilePath">Attachment file path</param>
         /// <param name="attachmentFileName">Attachment file name. If specified, then this file name will be sent to a recipient. Otherwise, "AttachmentFilePath" name will be used.</param>
-        public void SendEmail(EmailAccount emailAccount, string subject, string body,
+        [Timed("service.email_sender.send_email")]
+        public virtual void SendEmail(EmailAccount emailAccount, string subject, string body,
             string fromAddress, string fromName, string toAddress, string toName,
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
@@ -61,6 +63,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         /// <param name="cc">CC addresses list</param>
         /// <param name="attachmentFilePath">Attachment file path</param>
         /// <param name="attachmentFileName">Attachment file name. If specified, then this file name will be sent to a recipient. Otherwise, "AttachmentFilePath" name will be used.</param>
+        [Timed("service.email_sender.send_email_address")]
         public virtual void SendEmail(EmailAccount emailAccount, string subject, string body,
             MailAddress from, MailAddress to,
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
@@ -99,37 +102,31 @@ namespace EImece.Domain.Helpers.EmailHelper
                     File.Exists(attachmentFilePath))
                 {
                     var attachment = new Attachment(attachmentFilePath);
-                    attachment.ContentDisposition.CreationDate = File.GetCreationTime(attachmentFilePath);
-                    attachment.ContentDisposition.ModificationDate = File.GetLastWriteTime(attachmentFilePath);
-                    attachment.ContentDisposition.ReadDate = File.GetLastAccessTime(attachmentFilePath);
-                    if (!String.IsNullOrEmpty(attachmentFileName))
-                    {
-                        attachment.Name = attachmentFileName;
-                    }
+                    attachment.Name = attachmentFileName ?? Path.GetFileName(attachmentFilePath);
                     message.Attachments.Add(attachment);
                 }
-                if (AppConfig.IsSmtpClientEnabled)
+                using (var smtpClient = new SmtpClient())
                 {
-                    using (var smtpClient = new SmtpClient())
-                    {
-                        smtpClient.Host = emailAccount.Host;
-                        smtpClient.Port = emailAccount.Port;
-                        smtpClient.EnableSsl = emailAccount.EnableSsl;
-                        smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                        smtpClient.Send(message);
-                    }
+                    smtpClient.UseDefaultCredentials = emailAccount.UseDefaultCredentials;
+                    smtpClient.Host = emailAccount.Host;
+                    smtpClient.Port = emailAccount.Port;
+                    smtpClient.EnableSsl = emailAccount.EnableSsl;
+                    smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
+                    Logger.Info($"Sending email. Subject: '{subject}', To: '{to.Address}', Host: '{emailAccount.Host}:{emailAccount.Port}', SSL: {emailAccount.EnableSsl}");
+                    smtpClient.Send(message);
+                    Logger.Info($"Email sent successfully. Subject: '{subject}', To: '{to.Address}'");
                 }
             }
         }
 
         /// <summary>
-        /// Fire-and-forget variant of <see cref="SendEmail(EmailAccount, string, string, string, string, string, string, IEnumerable{string}, IEnumerable{string}, string, string)"/>.
-        /// The <see cref="MailAddress"/> instances are built on the calling (request) thread so
-        /// configuration errors still surface synchronously; only the slow SMTP round-trip is
-        /// deferred. Callers must have already rendered the body and resolved every argument to a
+        /// Fire-and-forget send. Builds the addresses synchronously (so configuration errors
+        /// surface to the caller) but defers the SMTP round-trip to a background work item when
+        /// hosted under ASP.NET. The body must already be rendered and all arguments must be
         /// DbContext-free value before invoking this method.
         /// </summary>
-        public void SendEmailInBackground(EmailAccount emailAccount, string subject, string body,
+        [Timed("service.email_sender.send_in_background")]
+        public virtual void SendEmailInBackground(EmailAccount emailAccount, string subject, string body,
             string fromAddress, string fromName, string toAddress, string toName,
             IEnumerable<string> bcc = null, IEnumerable<string> cc = null,
             string attachmentFilePath = null, string attachmentFileName = null)
@@ -150,7 +147,8 @@ namespace EImece.Domain.Helpers.EmailHelper
         /// account is resolved on the calling (request) thread while the DbContext is still alive;
         /// only the SMTP send is deferred to a background work item.
         /// </summary>
-        public void SendEmailInBackground(string destination, string subject, string body)
+        [Timed("service.email_sender.send_in_background_destination")]
+        public virtual void SendEmailInBackground(string destination, string subject, string body)
         {
             var emailAccount = SettingService.GetEmailAccount();
             var fromAddress = emailAccount.Email;
@@ -205,13 +203,15 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
         }
 
-        public void SendEmail(string destination, string subject, string body)
+        [Timed("service.email_sender.send_email_destination")]
+        public virtual void SendEmail(string destination, string subject, string body)
         {
             var emailAccount = SettingService.GetEmailAccount();
             SendEmail(destination, subject, body, emailAccount);
         }
 
-        public void SendEmail(string destination, string subject, string body, EmailAccount emailAccount)
+        [Timed("service.email_sender.send_email_destination_account")]
+        public virtual void SendEmail(string destination, string subject, string body, EmailAccount emailAccount)
         {
             var fromAddress = emailAccount.Email;
             if (string.IsNullOrEmpty(fromAddress))
@@ -228,7 +228,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             SendEmail(emailAccount, subject, body, from, to);
         }
 
-        public void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate, bool sendInBackground = false)
+        [Timed("service.email_sender.send_rendered_to_customer")]
+        public virtual void SendRenderedEmailTemplateToCustomer(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate, bool sendInBackground = false)
         {
             if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {
@@ -281,7 +282,8 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
         }
 
-        public void SendRenderedEmailTemplateToAdminUsers(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate, bool sendInBackground = false)
+        [Timed("service.email_sender.send_rendered_to_admin")]
+        public virtual void SendRenderedEmailTemplateToAdminUsers(EmailAccount emailAccount, Tuple<string, RazorRenderResult, Customer> renderedEmailTemplate, bool sendInBackground = false)
         {
             if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {

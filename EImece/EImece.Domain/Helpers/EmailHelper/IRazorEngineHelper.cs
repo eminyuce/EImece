@@ -10,24 +10,31 @@ namespace EImece.Domain.Helpers.EmailHelper
     public interface IRazorEngineHelper
     {
         Tuple<string, string> ConfirmYourAccountEmailBody(string email, string name, string callbackUrl);
+
         Task<Tuple<string, string>> ConfirmYourAccountEmailBodyAsync(string email, string name, string callbackUrl);
 
         Tuple<string, string> ForgotPasswordEmailBody(string email, string callbackUrl);
+
         Task<Tuple<string, string>> ForgotPasswordEmailBodyAsync(string email, string callbackUrl);
 
         Tuple<string, RazorRenderResult, Customer> CompanyGotNewOrderEmail(int orderId);
+
         Task<Tuple<string, RazorRenderResult, Customer>> CompanyGotNewOrderEmailAsync(int orderId);
 
         Tuple<string, RazorRenderResult, Customer> OrderConfirmationEmail(int orderId);
+
         Task<Tuple<string, RazorRenderResult, Customer>> OrderConfirmationEmailAsync(int orderId);
 
         void SendMessageToSeller(ContactUsFormViewModel contact);
+
         Task SendMessageToSellerAsync(ContactUsFormViewModel contact);
 
         void SendContactUsAboutProductDetailEmail(ContactUsFormViewModel contact);
+
         Task SendContactUsAboutProductDetailEmailAsync(ContactUsFormViewModel contact);
 
         void SendContactUsForCommunication(ContactUsFormViewModel contact);
+
         Task SendContactUsForCommunicationAsync(ContactUsFormViewModel contact);
 
         string GenerateRssEmailTemplate(MailTemplate rssTemplate);

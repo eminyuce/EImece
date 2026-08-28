@@ -2,6 +2,7 @@ using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
@@ -24,7 +25,8 @@ namespace EImece.Domain.Services
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking)
 
-        public async Task<List<FaqDto>> GetStorefrontFaqsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.faq.get_storefront_faqs")]
+        public virtual async Task<List<FaqDto>> GetStorefrontFaqsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.FaqListAsync(language);
             return await DataCachingProvider.GetOrAddAsync(
@@ -33,7 +35,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public List<FaqDto> GetStorefrontFaqs(int language)
+        [Timed("service.faq.get_storefront_faqs_sync")]
+        public virtual List<FaqDto> GetStorefrontFaqs(int language)
         {
             var cacheKey = CacheKeys.FaqList(language);
             return DataCachingProvider.GetOrAdd(
@@ -42,7 +45,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<Models.DTOs.Storefront.FaqSummaryDto>> GetStorefrontFaqSummariesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.faq.get_storefront_faq_summaries")]
+        public virtual async Task<List<Models.DTOs.Storefront.FaqSummaryDto>> GetStorefrontFaqSummariesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.FaqListAsync(language) + "-Summary";
             return await DataCachingProvider.GetOrAddAsync(
@@ -51,7 +55,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public List<Models.DTOs.Storefront.FaqSummaryDto> GetStorefrontFaqSummaries(int language)
+        [Timed("service.faq.get_storefront_faq_summaries_sync")]
+        public virtual List<Models.DTOs.Storefront.FaqSummaryDto> GetStorefrontFaqSummaries(int language)
         {
             var cacheKey = CacheKeys.FaqList(language) + "-Summary";
             return DataCachingProvider.GetOrAdd(

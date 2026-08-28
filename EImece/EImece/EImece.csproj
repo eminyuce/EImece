@@ -434,6 +434,7 @@
     <Compile Include="Areas\Admin\Controllers\BrandsController.cs" />
     <Compile Include="Areas\Admin\Controllers\MetricsController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PerfController.cs" />
     <Compile Include="Areas\Admin\Controllers\CustomersController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
@@ -462,6 +463,7 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Controllers\RssFeedsController.cs" />
     <Compile Include="Areas\Admin\Models\MetricsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\PerfViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RssFeedViewModels.cs" />
     <Compile Include="Areas\Customers\Controllers\HomeController.cs" />
     <Compile Include="Areas\Customers\CustomersAreaRegistration.cs" />
@@ -487,6 +489,7 @@
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Filters\MetricsActionFilter.cs" />
     <Compile Include="Filters\TelemetryActionFilter.cs" />
+    <Compile Include="Filters\TimedActionFilterAttribute.cs" />
     <Compile Include="Filters\RequestLoggingActionFilter.cs" />
     <Compile Include="Filters\RobotsNoIndexAttribute.cs" />
     <Compile Include="Filters\InMemoryRateLimiter.cs" />

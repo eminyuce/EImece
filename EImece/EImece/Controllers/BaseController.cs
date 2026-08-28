@@ -5,6 +5,7 @@ using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Filters;
 using NLog;
 using Resources;
 using System;
@@ -16,6 +17,12 @@ using System.Web.Mvc;
 
 namespace EImece.Controllers
 {
+    /// <summary>
+    /// Storefront base controller. [TimedActionFilter] auto-derives a per-action histogram
+    /// "app.{controller}.{action}" (ms) so all storefront actions are measured.
+    /// Overall HTTP duration remains via OpenTelemetry.Instrumentation.AspNet.
+    /// </summary>
+    [TimedActionFilter]
     [UnderConst]
     public abstract class BaseController : Controller
     {

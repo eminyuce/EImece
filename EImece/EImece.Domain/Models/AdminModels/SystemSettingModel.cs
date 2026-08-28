@@ -246,5 +246,10 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.RateLimit_Search_WindowMinutes))]
         [Range(1, 1440, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.Range1To1440ErrorMessage))]
         public int RateLimit_Search_WindowMinutes { get; set; }
+
+        // ========== 7. Observability & Performance Metrics ==========
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.PerfStatsRetentionHours))]
+        [Range(0, 720, ErrorMessageResourceType = typeof(AdminResource), ErrorMessageResourceName = nameof(AdminResource.Range0To720ErrorMessage))]
+        public int PerfStatsRetentionHours { get; set; } = 1;
     }
 }

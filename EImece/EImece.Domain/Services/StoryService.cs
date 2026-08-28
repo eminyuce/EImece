@@ -9,6 +9,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,9 @@ namespace EImece.Domain.Services
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
-        public async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_detail")]
+
+        public virtual async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.StoryDetailAsync(storyId);
             return await DataCachingProvider.GetOrAddAsync(
@@ -58,7 +61,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
+        [Timed("service.story.get_detail_sync")]
+
+        public virtual StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
         {
             var cacheKey = CacheKeys.StoryDetail(storyId);
             return DataCachingProvider.GetOrAdd(
@@ -67,7 +72,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_featured")]
+
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.StoryPrefix + $"featured:t{take}:lang{language}:ex{excludedStoryId}:async";
             return await DataCachingProvider.GetOrAddAsync(
@@ -76,7 +83,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
+        [Timed("service.story.get_featured_sync")]
+        public virtual List<StorefrontStoryCardDto> GetStorefrontFeaturedStories(int take, int language, int excludedStoryId)
         {
             var cacheKey = CacheKeys.StoryPrefix + $"featured:t{take}:lang{language}:ex{excludedStoryId}";
             return DataCachingProvider.GetOrAdd(
@@ -85,7 +93,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_latest", "Time taken to get storefront latest stories")]
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontLatestStoriesAsync(int take, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.StoryPrefix + $"latest:t{take}:lang{language}:async";
             return await DataCachingProvider.GetOrAddAsync(
@@ -94,7 +103,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
+        [Timed("service.story.get_latest_sync")]
+        public virtual List<StorefrontStoryCardDto> GetStorefrontLatestStories(int take, int language)
         {
             var cacheKey = CacheKeys.StoryPrefix + $"latest:t{take}:lang{language}";
             return DataCachingProvider.GetOrAdd(
@@ -103,7 +113,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_main_page")]
+
+        public virtual async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.MainPageStoriesAsync(language) + $":p{pageIndex}:ps{pageSize}";
             return await DataCachingProvider.GetOrAddAsync(
@@ -112,7 +124,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
+        [Timed("service.story.get_main_page_sync")]
+        public virtual PaginatedList<StorefrontStoryCardDto> GetStorefrontMainPageStories(int pageIndex, int pageSize, int language)
         {
             var cacheKey = CacheKeys.MainPageStories(language) + $":p{pageIndex}:ps{pageSize}";
             return DataCachingProvider.GetOrAdd(
@@ -121,7 +134,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_by_category", "Time taken to get storefront stories by category")]
+        public virtual async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontStoriesByCategoryIdAsync(int storyCategoryId, int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.StoriesByCategoryAsync(storyCategoryId, pageIndex, pageSize, language);
             return await DataCachingProvider.GetOrAddAsync(
@@ -130,7 +144,8 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int pageIndex, int pageSize, int language)
+        [Timed("service.story.get_by_category_sync")]
+        public virtual PaginatedList<StorefrontStoryCardDto> GetStorefrontStoriesByCategoryId(int storyCategoryId, int pageIndex, int pageSize, int language)
         {
             var cacheKey = CacheKeys.StoriesByCategory(storyCategoryId, pageIndex, pageSize, language);
             return DataCachingProvider.GetOrAdd(
@@ -139,32 +154,39 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIds, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_related")]
+
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIds, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await StoryRepository.GetStorefrontRelatedStoriesAsync(tagIds, take, language, excludedStoryId, cancellationToken).ConfigureAwait(false);
         }
 
-        public List<StorefrontStoryCardDto> GetStorefrontRelatedStories(int[] tagIds, int take, int language, int excludedStoryId)
+        [Timed("service.story.get_related_sync")]
+        public virtual List<StorefrontStoryCardDto> GetStorefrontRelatedStories(int[] tagIds, int take, int language, int excludedStoryId)
         {
             return StoryRepository.GetStorefrontRelatedStories(tagIds, take, language, excludedStoryId);
         }
 
-        public async Task<StorefrontStoryCardDto> GetStorefrontNextStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_next", "Time taken to get storefront next story")]
+        public virtual async Task<StorefrontStoryCardDto> GetStorefrontNextStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await StoryRepository.GetStorefrontNextStoryAsync(currentStoryId, language, cancellationToken).ConfigureAwait(false);
         }
 
-        public StorefrontStoryCardDto GetStorefrontNextStory(int currentStoryId, int language)
+        [Timed("service.story.get_next_sync")]
+        public virtual StorefrontStoryCardDto GetStorefrontNextStory(int currentStoryId, int language)
         {
             return StoryRepository.GetStorefrontNextStory(currentStoryId, language);
         }
 
-        public async Task<StorefrontStoryCardDto> GetStorefrontPreviousStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_previous", "Time taken to get storefront previous story")]
+        public virtual async Task<StorefrontStoryCardDto> GetStorefrontPreviousStoryAsync(int currentStoryId, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await StoryRepository.GetStorefrontPreviousStoryAsync(currentStoryId, language, cancellationToken).ConfigureAwait(false);
         }
 
-        public StorefrontStoryCardDto GetStorefrontPreviousStory(int currentStoryId, int language)
+        [Timed("service.story.get_previous_sync")]
+        public virtual StorefrontStoryCardDto GetStorefrontPreviousStory(int currentStoryId, int language)
         {
             return StoryRepository.GetStorefrontPreviousStory(currentStoryId, language);
         }
@@ -283,7 +305,8 @@ namespace EImece.Domain.Services
 
         #region Storefront ViewModels
 
-        public StoryDetailViewModel GetStoryDetailViewModel(int storyId)
+        [Timed("service.story.get_detail_view_model_sync")]
+        public virtual StoryDetailViewModel GetStoryDetailViewModel(int storyId)
         {
             var result = new StoryDetailViewModel();
             var storyDetail = GetStorefrontStoryDetailById(storyId);
@@ -327,7 +350,9 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<StoryDetailViewModel> GetStoryDetailViewModelAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_detail_view_model")]
+
+        public virtual async Task<StoryDetailViewModel> GetStoryDetailViewModelAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new StoryDetailViewModel();
             var storyDetail = await GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken).ConfigureAwait(false);
@@ -404,7 +429,8 @@ namespace EImece.Domain.Services
             return SettingService.CreateShareableSocialMediaLinks(storyDetail.DetailPageUrl, storyDetail.Name, imageUrl);
         }
 
-        public async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_main_page_stories")]
+        public virtual async Task<StoryIndexViewModel> GetMainPageStoriesAsync(int page, int currentLanguage, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, currentLanguage) + AsyncCacheKeySuffix;
 
@@ -418,7 +444,8 @@ namespace EImece.Domain.Services
             }, AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public StoryIndexViewModel GetMainPageStories(int page, int language)
+        [Timed("service.story.get_main_page_stories_sync")]
+        public virtual StoryIndexViewModel GetMainPageStories(int page, int language)
         {
             var cacheKey = String.Format("GetMainPageStories-{0}-{1}", page, language);
 
@@ -475,7 +502,8 @@ namespace EImece.Domain.Services
             }
         }
 
-        public StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page)
+        [Timed("service.story.get_categories_view_model_sync")]
+        public virtual StoryCategoryViewModel GetStoryCategoriesViewModel(int storyCategoryId, int page)
         {
             var result = new StoryCategoryViewModel();
             int pageSize = AppConfig.RecordPerPage;
@@ -498,7 +526,8 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<StoryCategoryViewModel> GetStoryCategoriesViewModelAsync(int storyCategoryId, int page, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_categories_view_model")]
+        public virtual async Task<StoryCategoryViewModel> GetStoryCategoriesViewModelAsync(int storyCategoryId, int page, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new StoryCategoryViewModel();
             int pageSize = AppConfig.RecordPerPage;

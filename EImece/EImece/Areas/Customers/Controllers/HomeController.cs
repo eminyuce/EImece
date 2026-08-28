@@ -12,6 +12,7 @@ using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using EImece.Domain.DependencyInjection;
+using EImece.Filters;
 using NLog;
 using Resources;
 using System;
@@ -25,6 +26,11 @@ using System.Globalization;
 
 namespace EImece.Areas.Customers.Controllers
 {
+    /// <summary>
+    /// Customer portal controller. [TimedActionFilter] auto-derives "app.{controller}.{action}" histograms
+    /// so customer actions are measured alongside storefront (BaseController) metrics.
+    /// </summary>
+    [TimedActionFilter]
     [AuthorizationAttribute(Roles = Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {

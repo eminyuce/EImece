@@ -1,6 +1,7 @@
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
 using System;
@@ -15,7 +16,7 @@ namespace EImece.Domain.Repositories
 {
     public class FaqRepository : BaseEntityRepository<Faq>, IFaqRepository
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public FaqRepository(IEImeceContext dbContext) : base(dbContext)
         {
@@ -44,7 +45,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<List<FaqDto>> GetStorefrontFaqsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.faq.get_storefront_faqs")]
+        public virtual async Task<List<FaqDto>> GetStorefrontFaqsAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Faqs.AsNoTracking()
                 .Where(f => f.Lang == language && f.IsActive)
@@ -55,7 +57,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<FaqDto> GetStorefrontFaqs(int language)
+        [Timed("repo.faq.get_storefront_faqs_sync")]
+        public virtual List<FaqDto> GetStorefrontFaqs(int language)
         {
             return EImeceDbContext.Faqs.AsNoTracking()
                 .Where(f => f.Lang == language && f.IsActive)
@@ -78,7 +81,8 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<List<Models.DTOs.Storefront.FaqSummaryDto>> GetStorefrontFaqSummariesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.faq.get_storefront_faq_summaries")]
+        public virtual async Task<List<Models.DTOs.Storefront.FaqSummaryDto>> GetStorefrontFaqSummariesAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Faqs.AsNoTracking()
                 .Where(f => f.Lang == language && f.IsActive)
@@ -89,7 +93,8 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public List<Models.DTOs.Storefront.FaqSummaryDto> GetStorefrontFaqSummaries(int language)
+        [Timed("repo.faq.get_storefront_faq_summaries_sync")]
+        public virtual List<Models.DTOs.Storefront.FaqSummaryDto> GetStorefrontFaqSummaries(int language)
         {
             return EImeceDbContext.Faqs.AsNoTracking()
                 .Where(f => f.Lang == language && f.IsActive)

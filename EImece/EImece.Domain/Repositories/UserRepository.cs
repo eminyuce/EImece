@@ -1,5 +1,6 @@
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -24,23 +25,27 @@ namespace EImece.Domain.Repositories
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public ApplicationUser GetById(string id)
+        [Timed("repo.users.get_by_id_sync")]
+        public virtual ApplicationUser GetById(string id)
         {
             return _db.Users.FirstOrDefault(u => u.Id == id);
         }
 
-        public Task<ApplicationUser> GetByIdAsync(string id)
+        [Timed("repo.users.get_by_id")]
+        public virtual Task<ApplicationUser> GetByIdAsync(string id)
         {
             return _db.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public Task<ApplicationUser> GetByEmailOrUserNameAsync(string emailOrUserName)
+        [Timed("repo.users.get_by_email_or_user_name")]
+        public virtual Task<ApplicationUser> GetByEmailOrUserNameAsync(string emailOrUserName)
         {
             var key = emailOrUserName.Trim();
             return _db.Users.FirstOrDefaultAsync(u => u.UserName == key || u.Email == key);
         }
 
-        public bool IsUserInRole(string emailOrUserName, string roleName)
+        [Timed("repo.users.is_in_role_sync")]
+        public virtual bool IsUserInRole(string emailOrUserName, string roleName)
         {
             var login = emailOrUserName.Trim();
             var query = from u in _db.Users
@@ -53,7 +58,8 @@ namespace EImece.Domain.Repositories
             return query.Any();
         }
 
-        public async Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
+        [Timed("repo.users.is_in_role")]
+        public virtual async Task<bool> IsUserInRoleAsync(string emailOrUserName, string roleName)
         {
             var login = emailOrUserName.Trim();
             var query = from u in _db.Users
@@ -66,7 +72,8 @@ namespace EImece.Domain.Repositories
             return await query.AnyAsync().ConfigureAwait(false);
         }
 
-        public List<ApplicationUser> GetUsersFiltered(string search)
+        [Timed("repo.users.get_users_filtered_sync")]
+        public virtual List<ApplicationUser> GetUsersFiltered(string search)
         {
             var users = _db.Users.AsQueryable();
 
@@ -81,7 +88,8 @@ namespace EImece.Domain.Repositories
             return users.ToList();
         }
 
-        public async Task<List<ApplicationUser>> GetUsersFilteredAsync(string search)
+        [Timed("repo.users.get_users_filtered")]
+        public virtual async Task<List<ApplicationUser>> GetUsersFilteredAsync(string search)
         {
             var users = _db.Users.AsQueryable();
 
@@ -96,19 +104,22 @@ namespace EImece.Domain.Repositories
             return await users.ToListAsync().ConfigureAwait(false);
         }
 
-        public Dictionary<string, string> GetFirstRoleNameByUserId()
+        [Timed("repo.users.get_first_role_name_by_user_id_sync")]
+        public virtual Dictionary<string, string> GetFirstRoleNameByUserId()
         {
             var pairs = BuildUserRolePairsQuery().ToList();
             return ToFirstRoleNameMap(pairs);
         }
 
-        public async Task<Dictionary<string, string>> GetFirstRoleNameByUserIdAsync()
+        [Timed("repo.users.get_first_role_name_by_user_id")]
+        public virtual async Task<Dictionary<string, string>> GetFirstRoleNameByUserIdAsync()
         {
             var pairs = await BuildUserRolePairsQuery().ToListAsync().ConfigureAwait(false);
             return ToFirstRoleNameMap(pairs);
         }
 
-        public async Task<List<string>> SearchUserEmailsAsync(string searchKey)
+        [Timed("repo.users.search_emails")]
+        public virtual async Task<List<string>> SearchUserEmailsAsync(string searchKey)
         {
             var users = _db.Users.AsQueryable();
             if (!string.IsNullOrWhiteSpace(searchKey))
@@ -122,7 +133,8 @@ namespace EImece.Domain.Repositories
             return await users.Select(r => r.Email).ToListAsync().ConfigureAwait(false);
         }
 
-        public void Delete(ApplicationUser user)
+        [Timed("repo.users.delete_sync")]
+        public virtual void Delete(ApplicationUser user)
         {
             if (user == null)
             {
@@ -133,7 +145,8 @@ namespace EImece.Domain.Repositories
             _db.SaveChanges();
         }
 
-        public async Task DeleteAsync(ApplicationUser user)
+        [Timed("repo.users.delete")]
+        public virtual async Task DeleteAsync(ApplicationUser user)
         {
             if (user == null)
             {
@@ -144,7 +157,8 @@ namespace EImece.Domain.Repositories
             await _db.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task UpdateAsync(ApplicationUser user)
+        [Timed("repo.users.update")]
+        public virtual async Task UpdateAsync(ApplicationUser user)
         {
             if (user == null)
             {
@@ -155,22 +169,26 @@ namespace EImece.Domain.Repositories
             await _db.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public Task<List<IdentityRole>> GetAllRolesAsync()
+        [Timed("repo.users.get_all_roles")]
+        public virtual Task<List<IdentityRole>> GetAllRolesAsync()
         {
             return _db.Roles.ToListAsync();
         }
 
-        public Task<int> GetUsersCountAsync(CancellationToken ct)
+        [Timed("repo.users.get_users_count")]
+        public virtual Task<int> GetUsersCountAsync(CancellationToken ct)
         {
             return _db.Users.CountAsync(ct);
         }
 
-        public Task<int> GetRolesCountAsync(CancellationToken ct)
+        [Timed("repo.users.get_roles_count")]
+        public virtual Task<int> GetRolesCountAsync(CancellationToken ct)
         {
             return _db.Roles.CountAsync(ct);
         }
 
-        public Task<List<ApplicationUser>> GetUsersPagedAsync(int skip, int take, CancellationToken ct)
+        [Timed("repo.users.get_users_paged")]
+        public virtual Task<List<ApplicationUser>> GetUsersPagedAsync(int skip, int take, CancellationToken ct)
         {
             return _db.Users
                 .AsNoTracking()
@@ -180,7 +198,8 @@ namespace EImece.Domain.Repositories
                 .ToListAsync(ct);
         }
 
-        public Task<List<IdentityRole>> GetRolesPagedAsync(int skip, int take, CancellationToken ct)
+        [Timed("repo.users.get_roles_paged")]
+        public virtual Task<List<IdentityRole>> GetRolesPagedAsync(int skip, int take, CancellationToken ct)
         {
             return _db.Roles
                 .AsNoTracking()
@@ -190,7 +209,8 @@ namespace EImece.Domain.Repositories
                 .ToListAsync(ct);
         }
 
-        public Task<List<string>> GetRoleNamesByIdsAsync(List<string> roleIds, CancellationToken ct)
+        [Timed("repo.users.get_role_names_by_ids")]
+        public virtual Task<List<string>> GetRoleNamesByIdsAsync(List<string> roleIds, CancellationToken ct)
         {
             return _db.Roles
                 .Where(r => roleIds.Contains(r.Id))

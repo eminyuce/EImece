@@ -14,6 +14,7 @@ using EImece.Domain.Observability.HealthChecks;
 using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Metrics;
 using EImece.Filters;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
@@ -456,7 +457,8 @@ namespace EImece.App_Start
         /// When the concrete is mid-construction (circular [Inject] graph), returns that
         /// in-flight instance instead of re-entering MS.DI's scope cache.
         /// After construction, interface resolutions are wrapped with <see cref="MeasuredServiceProxy"/>
-        /// when service-method metrics are enabled.
+        /// when service-method metrics are enabled, and with <see cref="TimedInterceptor"/>
+        /// when any method carries [TimedAttribute] (service.{entity}.{operation} / repo.{entity}.{operation}).
         /// </summary>
         private static TService ResolveImplementationOrUnderConstruction<TService, TImplementation>(IServiceProvider sp)
             where TService : class
@@ -471,7 +473,8 @@ namespace EImece.App_Start
             }
 
             var implementation = sp.GetRequiredService<TImplementation>();
-            return MaybeWrapWithMetricsProxy<TService>(implementation, sp);
+            var proxied = MaybeWrapWithMetricsProxy<TService>(implementation, sp);
+            return MaybeWrapWithTimedInterceptor<TService, TImplementation>(proxied, sp);
         }
 
         private static TService MaybeWrapWithMetricsProxy<TService>(TService implementation, IServiceProvider sp)
@@ -517,6 +520,71 @@ namespace EImece.App_Start
             var name = serviceType.Name;
             return name.EndsWith("Service", StringComparison.Ordinal)
                 && name.IndexOf("Repository", StringComparison.OrdinalIgnoreCase) < 0;
+        }
+
+        private static TService MaybeWrapWithTimedInterceptor<TService, TImplementation>(TService instance, IServiceProvider sp)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            if (instance == null)
+                return instance;
+
+            // Only wrap when any method on the interface or implementation carries [TimedAttribute].
+            // Covers both service.{entity}.{operation} and repo.{entity}.{operation}.
+            var hasTimed = HasTimedAttribute(typeof(TImplementation)) || HasTimedAttribute(typeof(TService));
+            if (!hasTimed)
+                return instance;
+
+            try
+            {
+                // Prefer interface proxy (no virtual requirement); class proxy fallback.
+                if (typeof(TService).IsInterface)
+                    return ProxyFactory.CreateInterface<TService>(instance);
+
+                return ProxyFactory.Create<TService>(instance);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"MaybeWrapWithTimedInterceptor failed for {typeof(TService).Name}: {ex}");
+                return instance;
+            }
+        }
+
+        private static bool HasTimedAttribute(Type type)
+        {
+            if (type == null)
+                return false;
+            try
+            {
+                var methods = type.GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+                for (int i = 0; i < methods.Length; i++)
+                {
+                    var m = methods[i];
+                    // Check method itself and its base definition (handles interface mapping).
+                    if (Attribute.IsDefined(m, typeof(TimedAttribute), true))
+                        return true;
+                    var baseDef = m.GetBaseDefinition();
+                    if (baseDef != null && baseDef != m && Attribute.IsDefined(baseDef, typeof(TimedAttribute), true))
+                        return true;
+                }
+
+                // Also check interfaces implemented by the type for Timed attributes.
+                var interfaces = type.GetInterfaces();
+                for (int i = 0; i < interfaces.Length; i++)
+                {
+                    var ifaceMethods = interfaces[i].GetMethods();
+                    for (int j = 0; j < ifaceMethods.Length; j++)
+                    {
+                        if (Attribute.IsDefined(ifaceMethods[j], typeof(TimedAttribute), true))
+                            return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"HasTimedAttribute check failed for {type.Name}: {ex}");
+            }
+            return false;
         }
     }
 }

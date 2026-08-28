@@ -143,8 +143,10 @@ namespace EImece.Domain
         public const string RateLimit_Checkout_WindowMinutes = "RateLimit:Checkout:WindowMinutes";
         public const string RateLimit_Search_Limit = "RateLimit:Search:Limit";
         public const string RateLimit_Search_WindowMinutes = "RateLimit:Search:WindowMinutes";
+        public const string PerfStatsRetentionHours = "PerfStatsRetentionHours";
 
         // Default Fallback Values for Admin System Settings
+        public const int DefaultPerfStatsRetentionHours = 1;
         public const string DefaultActiveDesign = "Crizal";
         public const bool DefaultAllowSearchEngineIndexing = false;
         public const string DefaultThemeColor = "#067a36";
