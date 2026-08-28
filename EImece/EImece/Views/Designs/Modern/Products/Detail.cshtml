@@ -17,6 +17,7 @@
     Enum.TryParse(product.State, out productState);
     var ProductSizeOptions = Regex.Split(product.ProductSizeOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
     var ProductColorOptions = Regex.Split(product.ProductColorOptions.ToStr(), @",").Select(r => r.Trim()).Where(s => !String.IsNullOrEmpty(s)).ToList();
+    var isOnSale = ProductStateHelper.IsSuitableForSale(productState, product.Price);
 
     var isUserAuthenticated = User.Identity.IsAuthenticated && AppConfig.IsEditLinkEnable;
     string seoTitle = !string.IsNullOrEmpty(product.NameLong) ? product.NameLong : product.Name;
@@ -249,32 +250,74 @@
                     }
                 </div>
 
+                <style>
+                    .product-spec-enhanced .product-spec-select { border-radius:.6rem; border:1.5px solid #dee2e6; padding:.65rem 2.2rem .65rem 1rem; font-weight:500; background-color:#fff; transition:border-color .15s ease, box-shadow .15s ease; }
+                    .product-spec-enhanced .product-spec-select:focus { border-color:#0d6efd; box-shadow:0 0 0 .2rem rgba(13,110,253,.15); }
+                    .product-spec-info { background:#f8f9fa; }
+                </style>
                 @if (ProductSizeOptions.IsNotEmpty())
                 {
-                    <div class="form-group">
-                        <label class="pb-2 d-block" for="productSize">@Resource.ProductSize</label>
-                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="productSize" name="@Resource.ProductSize" required>
-                            @foreach (var pSize in ProductSizeOptions)
-                            {
-                                <option value="@pSize">@pSize</option>
-                            }
-                        </select>
-                    </div>
+                    if (isOnSale)
+                    {
+                        <div class="form-group product-spec-enhanced mb-3">
+                            <label class="d-flex align-items-center font-weight-semibold mb-2" for="productSize">
+                                <i class="fas fa-ruler-combined mr-2 text-primary" aria-hidden="true"></i>@Resource.ProductSize <span class="text-danger ml-1">*</span>
+                            </label>
+                            <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select product-spec-select shadow-sm" id="productSize" name="@Resource.ProductSize" required aria-label="@Resource.ProductSize">
+                                <option value="" disabled selected>@Resource.Select @Resource.ProductSize</option>
+                                @foreach (var pSize in ProductSizeOptions)
+                                {
+                                    <option value="@pSize">@pSize</option>
+                                }
+                            </select>
+                            <small class="form-text text-muted">@ProductSizeOptions.Count seçenek mevcut</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="product-spec-info mb-3 p-3 rounded border">
+                            <div class="d-flex align-items-center mb-2 text-muted small font-weight-bold text-uppercase" style="letter-spacing:.04em;"><i class="fas fa-ruler-combined mr-2" aria-hidden="true"></i>@Resource.ProductSize</div>
+                            <div class="d-flex flex-wrap" style="gap:.5rem;">
+                                @foreach (var pSize in ProductSizeOptions)
+                                {
+                                    <span class="badge badge-light border px-3 py-2" style="font-size:.95rem; font-weight:600; background:#fff;">@pSize</span>
+                                }
+                            </div>
+                        </div>
+                    }
                 }
                 @if (ProductColorOptions.IsNotEmpty())
                 {
-                    <div class="form-group">
-                        <label class="pb-2 d-block" for="productColor">@Resource.ProductColor</label>
-                        <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select" id="productColor" name="@Resource.ProductColor" required>
-                            @foreach (var pColor in ProductColorOptions)
-                            {
-                                <option value="@pColor">@pColor</option>
-                            }
-                        </select>
-                    </div>
+                    if (isOnSale)
+                    {
+                        <div class="form-group product-spec-enhanced mb-3">
+                            <label class="d-flex align-items-center font-weight-semibold mb-2" for="productColor">
+                                <i class="fas fa-palette mr-2 text-primary" aria-hidden="true"></i>@Resource.ProductColor <span class="text-danger ml-1">*</span>
+                            </label>
+                            <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select product-spec-select shadow-sm" id="productColor" name="@Resource.ProductColor" required aria-label="@Resource.ProductColor">
+                                <option value="" disabled selected>@Resource.Select @Resource.ProductColor</option>
+                                @foreach (var pColor in ProductColorOptions)
+                                {
+                                    <option value="@pColor">@pColor</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="product-spec-info mb-3 p-3 rounded border">
+                            <div class="d-flex align-items-center mb-2 text-muted small font-weight-bold text-uppercase" style="letter-spacing:.04em;"><i class="fas fa-palette mr-2" aria-hidden="true"></i>@Resource.ProductColor</div>
+                            <div class="d-flex flex-wrap" style="gap:.5rem;">
+                                @foreach (var pColor in ProductColorOptions)
+                                {
+                                    <span class="badge badge-light border px-3 py-2" style="font-size:.95rem; font-weight:600; background:#fff;">@pColor</span>
+                                }
+                            </div>
+                        </div>
+                    }
                 }
 
-                @if (productPriceEnabled && ProductStateHelper.IsSuitableForSale(productState, product.Price))
+                @if (productPriceEnabled && isOnSale)
                 {
                     <div class="d-flex align-items-end pt-2">
                         <div class="form-group mb-0 mr-3 flex-shrink-0">
