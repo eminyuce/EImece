@@ -8,6 +8,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -63,7 +64,9 @@ namespace EImece.Domain.Services
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
-        public async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.product_category.get_storefront_by_id")]
+
+        public virtual async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Category pages request the category plus its parent chain on every view; cache each
             // node briefly (medium TTL bounds product-count staleness). Invalidated by prefix in
@@ -74,7 +77,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
+        [Timed("service.product_category.get_storefront_by_id_sync")]
+
+        public virtual StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
         {
             return DataCachingProvider.GetOrAdd(
                 CacheKeys.CategoryDetail(categoryId),
@@ -116,7 +121,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.product_category.build_nav_tree")]
+
+        public virtual async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.CategoryPrefix + "navtree:lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
@@ -125,7 +132,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
-        public List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
+        [Timed("service.product_category.build_nav_tree_sync")]
+
+        public virtual List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
         {
             var cacheKey = CacheKeys.CategoryPrefix + "navtree:lang" + language;
             return DataCachingProvider.GetOrAdd(
@@ -134,7 +143,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<ProductCategoryViewModel> GetStorefrontCategoryPageViewModelAsync(
+        [Timed("service.product_category.get_page_view_model")]
+
+        public virtual async Task<ProductCategoryViewModel> GetStorefrontCategoryPageViewModelAsync(
             int categoryId,
             int page,
             EImece.Domain.Models.Enums.SortingType sorting,
@@ -255,7 +266,9 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
+        [Timed("service.product_category.build_tree")]
+
+        public virtual List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             List<ProductCategoryTreeModel> result;
             if (IsCachingActivated)
@@ -274,7 +287,9 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
+        [Timed("service.product_category.build_tree_async")]
+
+        public virtual async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
         {
             if (IsCachingActivated)
             {
@@ -474,7 +489,9 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<List<ProductCategoryTreeModel>> GetBreadCrumbAsync(int productCategoryId, int language)
+        [Timed("service.product_category.get_breadcrumb")]
+
+        public virtual async Task<List<ProductCategoryTreeModel>> GetBreadCrumbAsync(int productCategoryId, int language)
         {
             List<ProductCategoryTreeModel> result = new List<ProductCategoryTreeModel>();
 

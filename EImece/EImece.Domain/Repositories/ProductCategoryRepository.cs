@@ -9,6 +9,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Observability.Telemetry;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -92,7 +93,9 @@ namespace EImece.Domain.Repositories
             return AssembleTreeModels(pcList);
         }
 
-        public List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
+        [Timed("repo.product_category.build_tree")]
+
+        public virtual List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
             var pcList = GetProjectedNavigationCategories(isActive, language);
             bool isActived = isActive != null && isActive.HasValue;
@@ -110,7 +113,9 @@ namespace EImece.Domain.Repositories
             return AssembleTreeModels(pcList);
         }
 
-        public async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
+        [Timed("repo.product_category.build_tree_async")]
+
+        public virtual async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
         {
             var query = EImeceDbContext.ProductCategories.AsNoTracking().Where(c => c.Lang == language);
             if (isActive.HasValue)
@@ -336,7 +341,9 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.product_category.get_storefront_by_id")]
+
+        public virtual async Task<StorefrontCategoryDto> GetStorefrontCategoryByIdAsync(int categoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.Id == categoryId && c.IsActive)
@@ -345,7 +352,9 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
+        [Timed("repo.product_category.get_storefront_by_id_sync")]
+
+        public virtual StorefrontCategoryDto GetStorefrontCategoryById(int categoryId)
         {
             return EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.Id == categoryId && c.IsActive)
@@ -483,7 +492,9 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.product_category.build_nav_tree")]
+
+        public virtual async Task<List<StorefrontCategoryDto>> BuildStorefrontNavigationTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var allCategories = await EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.IsActive && c.Lang == language)
@@ -495,7 +506,9 @@ namespace EImece.Domain.Repositories
             return AssembleCategoryTree(allCategories);
         }
 
-        public List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
+        [Timed("repo.product_category.build_nav_tree_sync")]
+
+        public virtual List<StorefrontCategoryDto> BuildStorefrontNavigationTree(int language)
         {
             var allCategories = EImeceDbContext.ProductCategories.AsNoTracking()
                 .Where(c => c.IsActive && c.Lang == language)

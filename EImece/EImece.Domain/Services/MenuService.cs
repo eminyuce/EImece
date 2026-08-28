@@ -9,6 +9,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,9 @@ namespace EImece.Domain.Services
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
-        public async Task<StorefrontPageDto> GetStorefrontPageByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.menu.get_page_by_id")]
+
+        public virtual async Task<StorefrontPageDto> GetStorefrontPageByIdAsync(int menuId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.MenuDetailAsync(menuId);
             return await DataCachingProvider.GetOrAddAsync(
@@ -54,7 +57,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<StorefrontPageDto> GetStorefrontPageByMenuLinkAsync(string menuLink, int? language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.menu.get_page_by_link")]
+
+        public virtual async Task<StorefrontPageDto> GetStorefrontPageByMenuLinkAsync(string menuLink, int? language, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Fixed links ("home-index", "products-index") are read on every product/category/story
             // page — cache under the menu: prefix so InvalidateMenuCaches drops them on save.
@@ -82,7 +87,9 @@ namespace EImece.Domain.Services
         /// <summary>
         /// Single-flight cached projected menu list (no entity materialization).
         /// </summary>
-        public async Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusCachedAsync(int language)
+        [Timed("service.menu.get_active_cached")]
+
+        public virtual async Task<List<StorefrontMenuDto>> GetStorefrontActiveMenusCachedAsync(int language)
         {
             var cacheKey = CacheKeys.MenuPrefix + "activemenus:lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
@@ -105,7 +112,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.menu.build_tree")]
+
+        public virtual async Task<List<StorefrontMenuDto>> BuildStorefrontMenuTreeAsync(int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.MenuTreeAsync(language);
             return await DataCachingProvider.GetOrAddAsync(

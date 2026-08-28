@@ -11,6 +11,7 @@ using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using Resources;
 using System;
@@ -110,7 +111,9 @@ namespace EImece.Domain.Services
             return cart;
         }
 
-        public async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid)
+        [Timed("service.shopping_cart.get_by_guid")]
+
+        public virtual async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid)
         {
             Logger.Info($"GetShoppingCartByOrderGuidAsync called with OrderGuid: {orderGuid}");
             var cart = await ShoppingCartRepository.GetShoppingCartByOrderGuidAsync(orderGuid).ConfigureAwait(false);
@@ -140,7 +143,9 @@ namespace EImece.Domain.Services
             Logger.Info($"Shopping cart deleted for OrderGuid: {orderGuid}");
         }
 
-        public Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
+        [Timed("service.shopping_cart.save_sync")]
+
+        public virtual Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
             Logger.Info($"SaveShoppingCart started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
 
@@ -231,7 +236,9 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
+        [Timed("service.shopping_cart.save")]
+
+        public virtual async Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
             Logger.Info($"SaveShoppingCartAsync started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
 

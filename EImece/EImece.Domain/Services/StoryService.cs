@@ -9,6 +9,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,9 @@ namespace EImece.Domain.Services
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
 
-        public async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_detail")]
+
+        public virtual async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.StoryDetailAsync(storyId);
             return await DataCachingProvider.GetOrAddAsync(
@@ -58,7 +61,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds).ConfigureAwait(false);
         }
 
-        public StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
+        [Timed("service.story.get_detail_sync")]
+
+        public virtual StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
         {
             var cacheKey = CacheKeys.StoryDetail(storyId);
             return DataCachingProvider.GetOrAdd(
@@ -67,7 +72,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheLongSeconds);
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_featured")]
+
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.StoryPrefix + $"featured:t{take}:lang{language}:ex{excludedStoryId}:async";
             return await DataCachingProvider.GetOrAddAsync(
@@ -103,7 +110,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_main_page")]
+
+        public virtual async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var cacheKey = CacheKeys.MainPageStoriesAsync(language) + $":p{pageIndex}:ps{pageSize}";
             return await DataCachingProvider.GetOrAddAsync(
@@ -139,7 +148,9 @@ namespace EImece.Domain.Services
                 AppConfig.CacheMediumSeconds);
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIds, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_related")]
+
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIds, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await StoryRepository.GetStorefrontRelatedStoriesAsync(tagIds, take, language, excludedStoryId, cancellationToken).ConfigureAwait(false);
         }
@@ -327,7 +338,9 @@ namespace EImece.Domain.Services
             return result;
         }
 
-        public async Task<StoryDetailViewModel> GetStoryDetailViewModelAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("service.story.get_detail_view_model")]
+
+        public virtual async Task<StoryDetailViewModel> GetStoryDetailViewModelAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = new StoryDetailViewModel();
             var storyDetail = await GetStorefrontStoryDetailByIdAsync(storyId, cancellationToken).ConfigureAwait(false);

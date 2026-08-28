@@ -4,6 +4,7 @@ using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -338,7 +339,9 @@ namespace EImece.Domain.Repositories
             }
         }
 
-        public async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.story.get_detail")]
+
+        public virtual async Task<StorefrontStoryDetailDto> GetStorefrontStoryDetailByIdAsync(int storyId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.Id == storyId && s.IsActive)
@@ -393,7 +396,9 @@ namespace EImece.Domain.Repositories
                 .ConfigureAwait(false);
         }
 
-        public StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
+        [Timed("repo.story.get_detail_sync")]
+
+        public virtual StorefrontStoryDetailDto GetStorefrontStoryDetailById(int storyId)
         {
             return EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.Id == storyId && s.IsActive)
@@ -447,7 +452,9 @@ namespace EImece.Domain.Repositories
                 .FirstOrDefault();
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.story.get_featured")]
+
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontFeaturedStoriesAsync(int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.Lang == language && s.IsFeaturedStory && s.Id != excludedStoryId &&
@@ -495,7 +502,9 @@ namespace EImece.Domain.Repositories
                 .ToList();
         }
 
-        public async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.story.get_main_page")]
+
+        public virtual async Task<PaginatedList<StorefrontStoryCardDto>> GetStorefrontMainPageStoriesAsync(int pageIndex, int pageSize, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = EImeceDbContext.Stories.AsNoTracking()
                 .Where(s => s.IsActive && s.MainPage && s.Lang == language &&
@@ -584,7 +593,9 @@ namespace EImece.Domain.Repositories
             return new PaginatedList<StorefrontStoryCardDto>(items, pageIndex, pageSize, total);
         }
 
-        public async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIdList, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.story.get_related")]
+
+        public virtual async Task<List<StorefrontStoryCardDto>> GetStorefrontRelatedStoriesAsync(int[] tagIdList, int take, int language, int excludedStoryId, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (tagIdList == null || tagIdList.Length == 0) return new List<StorefrontStoryCardDto>();
 

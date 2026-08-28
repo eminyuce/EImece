@@ -2,6 +2,7 @@ using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
+using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -47,12 +48,16 @@ namespace EImece.Domain.Repositories
             return await items.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
+        [Timed("repo.shopping_cart.get_by_guid_sync")]
+
+        public virtual ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
         {
             return EImeceDbContext.ShoppingCarts.AsNoTracking().FirstOrDefault(r => r.OrderGuid == orderGuid);
         }
 
-        public async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken))
+        [Timed("repo.shopping_cart.get_by_guid")]
+
+        public virtual async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await EImeceDbContext.ShoppingCarts.AsNoTracking().FirstOrDefaultAsync(r => r.OrderGuid == orderGuid, cancellationToken).ConfigureAwait(false);
         }
