@@ -263,26 +263,30 @@
                 </div>
 
                 <style>
-                    .product-spec-enhanced .product-spec-select { border-radius:.6rem; border:1.5px solid #dee2e6; padding:.65rem 2.2rem .65rem 1rem; font-weight:500; background-color:#fff; transition:border-color .15s ease, box-shadow .15s ease; }
-                    .product-spec-enhanced .product-spec-select:focus { border-color:#0d6efd; box-shadow:0 0 0 .2rem rgba(13,110,253,.15); }
+                    .spec-chip { border:1.5px solid #dee2e6; border-radius:999px; padding:.5rem 1.15rem; background:#fff; font-weight:600; font-size:.95rem; cursor:pointer; transition:all .15s ease; }
+                    .spec-chip:hover { border-color:#0d6efd; transform:translateY(-1px); box-shadow:0 2px 8px rgba(0,0,0,.08); }
+                    .spec-chip.is-selected { background:#0d6efd; color:#fff; border-color:#0d6efd; box-shadow:0 4px 12px rgba(13,110,253,.25); }
+                    .spec-chip:focus-visible { outline:2px solid #0d6efd; outline-offset:2px; }
                     .product-spec-info { background:#f8f9fa; }
+                    .product-spec-chip-group.has-error .spec-chip { border-color:#dc3545; }
                 </style>
                 @if (ProductSizeOptions.IsNotEmpty())
                 {
                     if (isOnSale)
                     {
-                        <div class="form-group product-spec-enhanced mb-3">
-                            <label class="d-flex align-items-center font-weight-semibold mb-2" for="productSize">
-                                <i class="fas fa-ruler-combined mr-2 text-primary" aria-hidden="true"></i>@Resource.ProductSize <span class="text-danger ml-1">*</span>
-                            </label>
-                            <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select product-spec-select shadow-sm" id="productSize" name="@Resource.ProductSize" required aria-label="@Resource.ProductSize">
-                                <option value="" disabled selected>@Resource.Select @Resource.ProductSize</option>
+                        <div class="product-spec-chip-group mb-3" data-spec-name="@Resource.ProductSize">
+                            <label class="d-flex align-items-center font-weight-semibold mb-2"><i class="fas fa-ruler-combined mr-2 text-primary" aria-hidden="true"></i>@Resource.ProductSize <span class="text-danger ml-1">*</span></label>
+                            <div class="d-flex flex-wrap" style="gap:.5rem;" role="radiogroup" aria-label="@Resource.ProductSize">
                                 @foreach (var pSize in ProductSizeOptions)
                                 {
-                                    <option value="@pSize">@pSize</option>
+                                    <button type="button" class="spec-chip" data-chip-value="@pSize" data-chip-target="productSize" role="radio" aria-checked="false">@pSize</button>
                                 }
+                            </div>
+                            <select data-product-selected-specs="@product.ModifiedId" id="productSize" name="@Resource.ProductSize" hidden>
+                                <option value=""></option>
+                                @foreach (var pSize in ProductSizeOptions) { <option value="@pSize">@pSize</option> }
                             </select>
-                            <small class="form-text text-muted">@ProductSizeOptions.Count seçenek mevcut</small>
+                            <small class="form-text text-danger d-none spec-chip-hint">Lütfen @Resource.ProductSize seçin</small>
                         </div>
                     }
                     else
@@ -302,17 +306,19 @@
                 {
                     if (isOnSale)
                     {
-                        <div class="form-group product-spec-enhanced mb-3">
-                            <label class="d-flex align-items-center font-weight-semibold mb-2" for="productColor">
-                                <i class="fas fa-palette mr-2 text-primary" aria-hidden="true"></i>@Resource.ProductColor <span class="text-danger ml-1">*</span>
-                            </label>
-                            <select data-product-selected-specs="@product.ModifiedId" class="form-control custom-select product-spec-select shadow-sm" id="productColor" name="@Resource.ProductColor" required aria-label="@Resource.ProductColor">
-                                <option value="" disabled selected>@Resource.Select @Resource.ProductColor</option>
+                        <div class="product-spec-chip-group mb-3" data-spec-name="@Resource.ProductColor">
+                            <label class="d-flex align-items-center font-weight-semibold mb-2"><i class="fas fa-palette mr-2 text-primary" aria-hidden="true"></i>@Resource.ProductColor <span class="text-danger ml-1">*</span></label>
+                            <div class="d-flex flex-wrap" style="gap:.5rem;" role="radiogroup" aria-label="@Resource.ProductColor">
                                 @foreach (var pColor in ProductColorOptions)
                                 {
-                                    <option value="@pColor">@pColor</option>
+                                    <button type="button" class="spec-chip spec-chip--color" data-chip-value="@pColor" data-chip-target="productColor" role="radio" aria-checked="false">@pColor</button>
                                 }
+                            </div>
+                            <select data-product-selected-specs="@product.ModifiedId" id="productColor" name="@Resource.ProductColor" hidden>
+                                <option value=""></option>
+                                @foreach (var pColor in ProductColorOptions) { <option value="@pColor">@pColor</option> }
                             </select>
+                            <small class="form-text text-danger d-none spec-chip-hint">Lütfen @Resource.ProductColor seçin</small>
                         </div>
                     }
                     else

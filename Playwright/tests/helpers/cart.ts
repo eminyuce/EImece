@@ -31,7 +31,24 @@ export async function navigateToProduct(page: Page, productUrl = DEFAULT_PRODUCT
 }
 
 export async function selectVariantIfPresent(page: Page): Promise<void> {
-  // ProductSizeOptions / ProductColorOptions render as <select data-product-selected-specs>
+  // On-sale PDP now renders chips + hidden select; off-sale renders static badges; legacy fallback is visible select
+  const chipGroups = page.locator('.product-spec-chip-group');
+  const chipGroupCount = await chipGroups.count().catch(() => 0);
+  if (chipGroupCount > 0) {
+    for (let i = 0; i < chipGroupCount; i++) {
+      const group = chipGroups.nth(i);
+      const chips = group.locator('.spec-chip[data-chip-value]');
+      if ((await chips.count()) === 0) continue;
+      const first = chips.first();
+      if (await first.isVisible().catch(() => false)) {
+        await first.click().catch(() => {});
+        // wait for hidden select to sync
+        await page.waitForTimeout(150);
+      }
+    }
+    return;
+  }
+  // Legacy dropdown path
   const specSelects = page.locator('select[data-product-selected-specs]');
   const count = await specSelects.count();
   for (let i = 0; i < count; i++) {

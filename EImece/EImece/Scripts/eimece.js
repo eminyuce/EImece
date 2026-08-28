@@ -33,11 +33,36 @@ function getOrderGuid() {
     return orderGuid;
 }
 
+// Chip selector for on-sale PDP (replaces dropdown) – click to select
+$(document).off("click.eimeceSpecChip", ".spec-chip[data-chip-value]").on("click.eimeceSpecChip", ".spec-chip[data-chip-value]", function (e) {
+    var $chip = $(e.currentTarget);
+    var $group = $chip.closest('.product-spec-chip-group');
+    var $select = $group.find('select[data-product-selected-specs]');
+    var val = $chip.data('chip-value');
+    $group.find('.spec-chip').removeClass('is-selected').attr('aria-checked', 'false');
+    $chip.addClass('is-selected').attr('aria-checked', 'true');
+    if ($select.length) {
+        $select.val(val).trigger('change');
+    }
+    $group.removeClass('has-error').find('.spec-chip-hint').addClass('d-none');
+});
+
 // Primary PDP button (#AddToCart). Delegated so it still works if the control is rendered after script load.
 $(document).off("click.eimeceAddToCart", "#AddToCart").on("click.eimeceAddToCart", "#AddToCart", function () {
     var nProductId = $("#productId").val();
     if (!nProductId) {
         console.warn("#AddToCart clicked but #productId is missing");
+        return;
+    }
+
+    var hasMissingSpec = false;
+    $('[data-product-selected-specs=' + nProductId + ']').each(function () {
+        if (!$(this).val()) {
+            hasMissingSpec = true;
+            $(this).closest('.product-spec-chip-group').addClass('has-error').find('.spec-chip-hint').removeClass('d-none');
+        }
+    });
+    if (hasMissingSpec) {
         return;
     }
 
