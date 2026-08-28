@@ -458,6 +458,59 @@
                                     @Html.ValidationMessageFor(model => model.IsProductPriceEnable, "", new { @class = "text-danger small mt-1 d-block" })
                                 </div>
 
+                                <!-- Suitable For Sale Product States -->
+                                <div class="setting-item p-3 mb-3 rounded border bg-light price-dependent-setting" data-setting-name="SuitableForSaleProductStates" data-setting-label="@AdminResource.SuitableForSaleProductStates" data-setting-desc="@AdminResource.SuitableForSaleProductStatesDesc" data-keywords="satışa uygun durumlar product state in sale buyable ön sipariş stokta pre-order">
+                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2">
+                                        <div>
+                                            <label class="fw-bold mb-1 d-block">
+                                                <i class="fa fa-shopping-cart text-success me-1"></i> @AdminResource.SuitableForSaleProductStates
+                                                @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.SuitableForSaleProductStatesHelp } })
+                                            </label>
+                                            <p class="text-muted small mb-0">@AdminResource.SuitableForSaleProductStatesDesc</p>
+                                        </div>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-secondary" id="btnSelectDefaultSaleStates" title="Varsayılanları Seç (Stokta, Ön Sipariş, Sınırlı Stok)">
+                                                <i class="fa fa-undo me-1"></i> Varsayılan
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" id="btnSelectAllSaleStates" title="Tümünü Seç">
+                                                <i class="fa fa-check-square-o me-1"></i> Tümünü Seç
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" id="btnClearAllSaleStates" title="Tümünü Temizle">
+                                                <i class="fa fa-square-o me-1"></i> Temizle
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    @Html.HiddenFor(model => model.SuitableForSaleProductStates, new { id = "SuitableForSaleProductStates" })
+
+                                    @{
+                                        var activeSaleStates = ProductStateHelper.ParseSuitableForSaleStates(Model.SuitableForSaleProductStates);
+                                        var allSelectableStates = ProductStateHelper.GetAllSelectableStates();
+                                    }
+
+                                    <div class="row g-2 mt-1" id="saleProductStatesCheckboxGroup">
+                                        @foreach (var pState in allSelectableStates)
+                                        {
+                                            var isChecked = activeSaleStates.Contains(pState);
+                                            var stateName = pState.ToString();
+                                            var stateDisplayName = ProductStateHelper.GetStateDisplayName(pState);
+                                            var badgeClass = (pState == EImece.Domain.Models.Enums.ProductState.ProductInStock || pState == EImece.Domain.Models.Enums.ProductState.LimitedStock) ? "border-success" :
+                                                             (pState == EImece.Domain.Models.Enums.ProductState.PreOrder || pState == EImece.Domain.Models.Enums.ProductState.Backorder) ? "border-info" :
+                                                             (pState == EImece.Domain.Models.Enums.ProductState.ComingSoon || pState == EImece.Domain.Models.Enums.ProductState.AwaitingRestock) ? "border-warning" : "border-secondary";
+                                            <div class="col-sm-6 col-lg-4">
+                                                <div class="form-check p-2 bg-white rounded border @badgeClass h-100 d-flex align-items-center">
+                                                    <input class="form-check-input ms-1 me-2 sale-state-chk" type="checkbox" id="chk_state_@stateName" value="@stateName" @(isChecked ? "checked=\"checked\"" : "") />
+                                                    <label class="form-check-label small fw-semibold text-dark mb-0 cursor-pointer w-100" for="chk_state_@stateName">
+                                                        @stateDisplayName
+                                                        <span class="text-muted d-block font-monospace" style="font-size: 0.75rem;">(@stateName)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SuitableForSaleProductStates, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+
                                 <!-- Product Reviews -->
                                 <div class="setting-item p-3 mb-3 rounded border bg-light" data-setting-name="IsProductReviewEnable" data-setting-label="Ürün Yorumları" data-setting-desc="Kullanıcıların ürünlere yorum yapmasını ve puan vermesini sağlar" data-keywords="yorum puan review rating değerlendirme">
                                     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
@@ -525,7 +578,7 @@
                                     <label class="form-label fw-bold small">
                                         @Html.DisplayNameFor(model => model.ProductPriceFilterSetting)
                                     </label>
-                                    @Html.Partial("_ProductPriceFilterEditor", Model.ProductPriceFilterSetting)
+                                    @Html.Partial("_ProductPriceFilterEditor", Model.ProductPriceFilterSetting ?? string.Empty)
                                     @Html.ValidationMessageFor(model => model.ProductPriceFilterSetting, "", new { @class = "text-danger small" })
                                 </div>
 
@@ -1927,6 +1980,39 @@
             $('#RateLimit_Enabled').on('change', function () {
                 syncRateLimitState();
                 updateDirtyState();
+            });
+
+            // Suitable for sale product states sync
+            function syncSaleStatesString() {
+                var selected = [];
+                $('.sale-state-chk:checked').each(function () {
+                    selected.push($(this).val());
+                });
+                $('#SuitableForSaleProductStates').val(selected.join(',')).trigger('input');
+                updateDirtyState();
+            }
+
+            $('.sale-state-chk').on('change', function () {
+                syncSaleStatesString();
+            });
+
+            $('#btnSelectDefaultSaleStates').on('click', function () {
+                var defaultStates = ['ProductInStock', 'PreOrder', 'LimitedStock'];
+                $('.sale-state-chk').each(function () {
+                    var val = $(this).val();
+                    $(this).prop('checked', defaultStates.indexOf(val) !== -1);
+                });
+                syncSaleStatesString();
+            });
+
+            $('#btnSelectAllSaleStates').on('click', function () {
+                $('.sale-state-chk').prop('checked', true);
+                syncSaleStatesString();
+            });
+
+            $('#btnClearAllSaleStates').on('click', function () {
+                $('.sale-state-chk').prop('checked', false);
+                syncSaleStatesString();
             });
 
             syncPaymentState();

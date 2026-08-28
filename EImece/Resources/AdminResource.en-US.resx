@@ -4988,4 +4988,13 @@
   <data name="PerfFilterTypeLabel" xml:space="preserve">
     <value>Type Filter</value>
   </data>
+  <data name="SuitableForSaleProductStates" xml:space="preserve">
+    <value>Product States Suitable for Sale</value>
+  </data>
+  <data name="SuitableForSaleProductStatesDesc" xml:space="preserve">
+    <value>Products with the selected product states will be treated as eligible for sale, receive the 'In Sale' badge across storefront listings/similar products, and display the active 'Add to Cart' button on product detail pages.</value>
+  </data>
+  <data name="SuitableForSaleProductStatesHelp" xml:space="preserve">
+    <value>Select product states eligible for customer purchasing and cart additions (e.g. In Stock, Pre-Order, Limited Stock, etc.).</value>
+  </data>
 </root>

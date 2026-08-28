@@ -2366,4 +2366,7 @@
   <data name="SubjectLabel" xml:space="preserve">
     <value>Subject</value>
   </data>
+  <data name="SuitableForSaleProductStates" xml:space="preserve">
+    <value>Product States Suitable for Sale</value>
+  </data>
 </root>

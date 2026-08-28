@@ -34,17 +34,15 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
-        public void ProductDto_IsOnSale_ReturnsTrue_WhenPriceGreaterThanZero_AndStateInStockOrPreOrderOrLimitedOrComingSoon()
+        public void ProductDto_IsOnSale_ReturnsTrue_WhenPriceGreaterThanZero_AndStateInStockOrPreOrderOrLimited()
         {
             var p1 = new ProductDto { Price = 50, State = "ProductInStock" };
             var p2 = new ProductDto { Price = 50, State = "PreOrder" };
             var p3 = new ProductDto { Price = 50, State = "LimitedStock" };
-            var p4 = new ProductDto { Price = 50, State = "ComingSoon" };
 
             Assert.IsTrue(p1.IsOnSale);
             Assert.IsTrue(p2.IsOnSale);
             Assert.IsTrue(p3.IsOnSale);
-            Assert.IsTrue(p4.IsOnSale);
         }
 
         [TestMethod]

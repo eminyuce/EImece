@@ -89,6 +89,7 @@ namespace EImece.Domain
         public const string PrivacyPolicy = "PrivacyPolicy";
         public const string ELanguage = "ELanguage";
         public const string ProductPriceFilterSetting = "ProductPriceFilterSetting";
+        public const string SuitableForSaleProductStates = "SuitableForSaleProductStates";
 
         // Site Maintenance & SEO Setting Keys
         public const string IsSiteUnderConstruction = "IsSiteUnderConstruction";
@@ -174,6 +175,7 @@ namespace EImece.Domain
         public const bool DefaultRequireAdminAuthenticator = true;
         public const string DefaultCaptchaProvider = "Legacy";
         public const string DefaultAdminPanelLanguage = "tr-TR";
+        public const string DefaultSuitableForSaleProductStates = "ProductInStock,PreOrder,LimitedStock";
 
         public const string DbConnectionKey = "EImeceDbConnection";
         public const string DbConnectionEnvironmentVariable = "EIMECE_DB_CONNECTION_STRING";

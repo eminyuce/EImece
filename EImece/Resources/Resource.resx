@@ -2470,4 +2470,7 @@
   <data name="SubjectLabel" xml:space="preserve">
     <value>Konu</value>
   </data>
+  <data name="SuitableForSaleProductStates" xml:space="preserve">
+    <value>Satışa Uygun Ürün Durumları</value>
+  </data>
 </root>

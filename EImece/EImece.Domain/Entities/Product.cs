@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using Resources;
@@ -233,25 +233,14 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public bool IsBuyableState
         {
-            get { return this.StateEnum == ProductState.ProductInStock && this.Price > 0; }
+            get { return ProductStateHelper.IsSuitableForSale(this.StateEnum, this.Price); }
         }
 
         // Kept for Razor view compatibility — canonical storefront logic lives in StorefrontProductCardDto.IsOnSale
         [NotMapped]
         public bool IsOnSale
         {
-            get
-            {
-                if (Price <= 0) return false;
-                switch (StateEnum)
-                {
-                    case ProductState.ProductInStock:
-                    case ProductState.PreOrder:
-                    case ProductState.LimitedStock:
-                    case ProductState.ComingSoon: return true;
-                    default: return false;
-                }
-            }
+            get { return ProductStateHelper.IsSuitableForSale(this.StateEnum, this.Price); }
         }
     }
 }

@@ -99,60 +99,16 @@ namespace EImece.Domain.Models.DTOs.Storefront
 
         public bool IsBuyableState
         {
-            get
-            {
-                if (Price <= 0)
-                {
-                    return false;
-                }
-
-                if (Enum.TryParse(State, out ProductState stateEnum))
-                {
-                    switch (stateEnum)
-                    {
-                        case ProductState.ProductInStock:
-                        case ProductState.PreOrder:
-                        case ProductState.LimitedStock:
-                            return true;
-                        default:
-                            return false;
-                    }
-                }
-
-                return false;
-            }
+            get => ProductStateHelper.IsSuitableForSale(StateEnum, Price);
         }
 
         /// <summary>
-        /// True when the product has a price and is available for sale
-        /// (in stock, pre-order, limited stock, or coming soon).
-        /// Used for the "Satışta" listing badge.
+        /// True when the product has a price and its state is configured as suitable for sale.
+        /// Used for the "Satışta" / "In Sale" listing badge.
         /// </summary>
         public bool IsOnSale
         {
-            get
-            {
-                if (Price <= 0)
-                {
-                    return false;
-                }
-
-                if (Enum.TryParse(State, out ProductState stateEnum))
-                {
-                    switch (stateEnum)
-                    {
-                        case ProductState.ProductInStock:
-                        case ProductState.PreOrder:
-                        case ProductState.LimitedStock:
-                        case ProductState.ComingSoon:
-                            return true;
-                        default:
-                            return false;
-                    }
-                }
-
-                return false;
-            }
+            get => ProductStateHelper.IsSuitableForSale(StateEnum, Price);
         }
 
         public ProductState StateEnum

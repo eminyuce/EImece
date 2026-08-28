@@ -1,3 +1,4 @@
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -91,29 +92,13 @@ namespace EImece.Domain.Models.DTOs
         }
         public bool IsBuyableState
         {
-            get => StateEnum == ProductState.ProductInStock && Price > 0;
+            get => ProductStateHelper.IsSuitableForSale(StateEnum, Price);
             set { }
         }
         public bool IsOnSale
         {
-            get
-            {
-                if (Price <= 0)
-                {
-                    return false;
-                }
-
-                switch (StateEnum)
-                {
-                    case ProductState.ProductInStock:
-                    case ProductState.PreOrder:
-                    case ProductState.LimitedStock:
-                    case ProductState.ComingSoon:
-                        return true;
-                    default:
-                        return false;
-                }
-            }
+            get => ProductStateHelper.IsSuitableForSale(StateEnum, Price);
+            set { }
         }
     }
 }

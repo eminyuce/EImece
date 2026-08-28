@@ -4988,4 +4988,13 @@
   <data name="PerfFilterTypeLabel" xml:space="preserve">
     <value>Tür Filtresi</value>
   </data>
+  <data name="SuitableForSaleProductStates" xml:space="preserve">
+    <value>Satışa Uygun Ürün Durumları</value>
+  </data>
+  <data name="SuitableForSaleProductStatesDesc" xml:space="preserve">
+    <value>Seçilen ürün durumlarına sahip ürünler mağaza vitrininde 'Satışta' olarak değerlendirilir, liste sayfalarında ve benzer ürünlerde 'Satışta' rozeti alır ve ürün detay sayfasında 'Sepete Ekle' butonu aktif olur.</value>
+  </data>
+  <data name="SuitableForSaleProductStatesHelp" xml:space="preserve">
+    <value>Müşterilerin sepete ekleyebileceği ve satın alabileceği ürün durumlarını belirleyiniz (Örn: Ürün Stokta, Ön Sipariş, Sınırlı Stok vb.).</value>
+  </data>
 </root>

@@ -96,6 +96,9 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductPriceFilterSetting))]
         public string ProductPriceFilterSetting { get; set; }
 
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.SuitableForSaleProductStates))]
+        public string SuitableForSaleProductStates { get; set; }
+
         // ========== 1. Site Maintenance & SEO ==========
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsSiteUnderConstruction))]
         public bool IsSiteUnderConstruction { get; set; }

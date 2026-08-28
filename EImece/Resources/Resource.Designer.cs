@@ -6647,5 +6647,11 @@ namespace Resources {
                 return ResourceManager.GetString("SubjectLabel", resourceCulture);
             }
         }
+
+        public static string SuitableForSaleProductStates {
+            get {
+                return ResourceManager.GetString("SuitableForSaleProductStates", resourceCulture);
+            }
+        }
     }
 }

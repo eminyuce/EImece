@@ -274,71 +274,17 @@
                     </div>
                 }
 
-                <!-- Conditional Add to Cart / Action Buttons Based on Product State -->
-                @if (productPriceEnabled)
+                @if (productPriceEnabled && ProductStateHelper.IsSuitableForSale(productState, product.Price))
                 {
-                    switch (productState)
-                    {
-                        case ProductState.ProductInStock:
-                        case ProductState.LimitedStock:
-                            <div class="d-flex align-items-end pt-2">
-                                <div class="form-group mb-0 mr-3 flex-shrink-0">
-                                    <label class="d-block mb-1" for="quantity">@Resource.Quantity</label>
-                                    <input class="px-2 form-control" min="1" id="quantity" type="number" name="quantity" style="width: 5.5rem;" value="1" required aria-label="@Resource.Quantity">
-                                </div>
-                                <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-bs-toggle="toast" data-bs-target="#cart-toast">
-                                    <i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart
-                                </button>
-                            </div>
-                            break;
-                        case ProductState.PreOrder:
-                            <div class="d-flex align-items-center pt-2">
-                                <button id="PreOrder" class="btn btn-info btn-block" type="button">
-                                    <i class="mr-2" data-feather="clock"></i>@Resource.PreOrder
-                                </button>
-                            </div>
-                            break;
-                        case ProductState.Backorder:
-                            <div class="d-flex align-items-center pt-2">
-                                <button id="Backorder" class="btn btn-warning btn-block" type="button">
-                                    <i class="mr-2" data-feather="truck"></i>@Resource.Backorder
-                                </button>
-                            </div>
-                            break;
-                        case ProductState.ProductOutOfStock:
-                        case ProductState.Discontinued:
-                        case ProductState.NotForSale:
-                            <div class="d-flex align-items-center pt-2">
-                                <button class="btn btn-secondary btn-block" type="button" disabled>
-                                    <i class="mr-2" data-feather="x-circle"></i>@Resource.Unavailable
-                                </button>
-                            </div>
-                            break;
-                        case ProductState.ComingSoon:
-                        case ProductState.AwaitingRestock:
-                            <div class="d-flex align-items-center pt-2">
-                                <button class="btn btn-primary btn-block" type="button" disabled>
-                                    <i class="mr-2" data-feather="clock"></i>@Resource.ComingSoon
-                                </button>
-                            </div>
-                            break;
-                        case ProductState.Reserved:
-                            <div class="d-flex align-items-center pt-2">
-                                <button class="btn btn-secondary btn-block" type="button" disabled>
-                                    <i class="mr-2" data-feather="lock"></i>@Resource.Reserved
-                                </button>
-                            </div>
-                            break;
-                        default:
-                            <div class="d-flex align-items-center pt-2">
-                                <button class="btn btn-secondary btn-block" type="button" disabled>
-                                    <i class="mr-2" data-feather="info"></i>@Resource.UnknownState
-                                </button>
-                            </div>
-                            break;
-                    }
-
-                    <!-- WhatsApp Order Option -->
+                    <div class="d-flex align-items-end pt-2">
+                        <div class="form-group mb-0 mr-3 flex-shrink-0">
+                            <label class="d-block mb-1" for="quantity">@Resource.Quantity</label>
+                            <input class="px-2 form-control" min="1" id="quantity" type="number" name="quantity" style="width: 5.5rem;" value="1" required aria-label="@Resource.Quantity">
+                        </div>
+                        <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-bs-toggle="toast" data-bs-target="#cart-toast">
+                            <i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart
+                        </button>
+                    </div>
                     <div class="d-flex align-items-center pt-2">
                         <a href="@Model.WhatsAppCommunicationLinkGenerateScript"
                            target="_blank"

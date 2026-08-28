@@ -11647,5 +11647,23 @@ namespace Resources {
                 return ResourceManager.GetString("PerfFilterTypeLabel", resourceCulture);
             }
         }
+
+        public static string SuitableForSaleProductStates {
+            get {
+                return ResourceManager.GetString("SuitableForSaleProductStates", resourceCulture);
+            }
+        }
+
+        public static string SuitableForSaleProductStatesDesc {
+            get {
+                return ResourceManager.GetString("SuitableForSaleProductStatesDesc", resourceCulture);
+            }
+        }
+
+        public static string SuitableForSaleProductStatesHelp {
+            get {
+                return ResourceManager.GetString("SuitableForSaleProductStatesHelp", resourceCulture);
+            }
+        }
     }
 }
