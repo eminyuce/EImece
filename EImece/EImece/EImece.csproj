@@ -487,7 +487,7 @@
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Filters\MetricsActionFilter.cs" />
     <Compile Include="Filters\TelemetryActionFilter.cs" />
-    <Compile Include="Filters\TimedAttribute.cs" />
+    <Compile Include="Filters\TimedActionFilterAttribute.cs" />
     <Compile Include="Filters\RequestLoggingActionFilter.cs" />
     <Compile Include="Filters\RobotsNoIndexAttribute.cs" />
     <Compile Include="Filters\InMemoryRateLimiter.cs" />

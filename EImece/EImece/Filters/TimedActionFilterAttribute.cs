@@ -10,14 +10,14 @@ namespace EImece.Filters
     /// Records action duration in milliseconds to an OpenTelemetry Histogram.
     /// Overall HTTP request duration is already covered by OpenTelemetry.Instrumentation.AspNet;
     /// this filter adds a per-action business metric.
-    /// When used without arguments (e.g. [Timed] on BaseController) the metric name is
+    /// When used without arguments (e.g. [TimedActionFilter] on BaseController) the metric name is
     /// auto-derived as "app.{controller}.{action}" so every storefront action is measured
     /// without manual per-method decoration. Pass an explicit name for a custom business metric.
     /// Safe for concurrent requests — Stopwatch is stored per-request in HttpContext.Items,
     /// not in a shared instance field (filter attributes are cached and shared across requests).
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public class TimedAttribute : ActionFilterAttribute
+    public class TimedActionFilterAttribute : ActionFilterAttribute
     {
         private readonly string _name;
         private readonly string _description;
@@ -27,7 +27,7 @@ namespace EImece.Filters
         /// </summary>
         /// <param name="name">Histogram / metric name, e.g. "service.conversations.getConversations". When null/empty, auto-derived as "app.{controller}.{action}".</param>
         /// <param name="description">Optional description exported to OTLP / Azure Monitor.</param>
-        public TimedAttribute(string name = null, string description = null)
+        public TimedActionFilterAttribute(string name = null, string description = null)
         {
             // Allow null for auto-derived name (used on BaseController to cover all actions).
             // Explicit empty string is treated as invalid.
@@ -100,7 +100,7 @@ namespace EImece.Filters
             {
                 // Never throw from telemetry — swallow and log to debug.
                 var logName = _name ?? "(auto)";
-                Debug.WriteLine("TimedAttribute failed to record metric '" + logName + "': " + ex);
+                Debug.WriteLine("TimedActionFilterAttribute failed to record metric '" + logName + "': " + ex);
             }
             finally
             {
@@ -135,6 +135,18 @@ namespace EImece.Filters
         private static string GetItemKey(string effectiveName)
         {
             return "__Timed_Stopwatch_" + effectiveName;
+        }
+    }
+
+    /// <summary>
+    /// Backwards-compatibility alias. Prefer <see cref="TimedActionFilterAttribute"/>.
+    /// </summary>
+    [Obsolete("Use TimedActionFilterAttribute. TimedAttribute will be removed in a future release.")]
+    public sealed class TimedAttribute : TimedActionFilterAttribute
+    {
+        public TimedAttribute(string name = null, string description = null)
+            : base(name, description)
+        {
         }
     }
 }

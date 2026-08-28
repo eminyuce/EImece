@@ -18,11 +18,11 @@ using System.Web.Mvc;
 namespace EImece.Controllers
 {
     /// <summary>
-    /// Storefront base controller. [Timed] auto-derives a per-action histogram
+    /// Storefront base controller. [TimedActionFilter] auto-derives a per-action histogram
     /// "app.{controller}.{action}" (ms) so all storefront actions are measured.
     /// Overall HTTP duration remains via OpenTelemetry.Instrumentation.AspNet.
     /// </summary>
-    [Timed]
+    [TimedActionFilter]
     [UnderConst]
     public abstract class BaseController : Controller
     {

@@ -27,10 +27,10 @@ using System.Globalization;
 namespace EImece.Areas.Customers.Controllers
 {
     /// <summary>
-    /// Customer portal controller. [Timed] auto-derives "app.{controller}.{action}" histograms
+    /// Customer portal controller. [TimedActionFilter] auto-derives "app.{controller}.{action}" histograms
     /// so customer actions are measured alongside storefront (BaseController) metrics.
     /// </summary>
-    [Timed]
+    [TimedActionFilter]
     [AuthorizationAttribute(Roles = Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
