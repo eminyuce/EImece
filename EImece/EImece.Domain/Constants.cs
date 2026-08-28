@@ -184,6 +184,13 @@ namespace EImece.Domain
         public const string CustomerRole = "Customer";
         public const string ImageActionName = "Index";
         public const int PartialViewOutputCachingDuration = 86400;
+        public const int RelatedProductListSize = 20;
+        public const int RelatedStoryListSize = 10;
+        public const int DefaultCategoryPageSize = 20;
+        public const string MediaThumbsUrlBase = "/media/images/thumbs/";
+        public const string UserIdSqlParam = "@UserId";
+        public const string TableNameSqlParam = "@TableName";
+        public const string ActionTypeSqlParam = "@ActionType";
         public const string SelectedLanguage = "SelectedLanguage";
 
         public const string CargoCompany = "CargoCompany";

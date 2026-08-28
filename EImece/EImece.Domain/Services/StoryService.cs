@@ -322,16 +322,16 @@ namespace EImece.Domain.Services
                 : new int[0];
 
             result.StorefrontRelatedStories = tagIdList.Length > 0
-                ? StoryRepository.GetStorefrontRelatedStories(tagIdList, 10, language, storyId)
+                ? StoryRepository.GetStorefrontRelatedStories(tagIdList, Constants.RelatedStoryListSize, language, storyId)
                 : new List<Models.DTOs.Storefront.StorefrontStoryCardDto>();
 
-            result.StorefrontFeaturedStories = StoryRepository.GetStorefrontFeaturedStories(10, language, storyId);
+            result.StorefrontFeaturedStories = StoryRepository.GetStorefrontFeaturedStories(Constants.RelatedStoryListSize, language, storyId);
             result.StorefrontNextStory = StoryRepository.GetStorefrontNextStory(storyId, language);
             result.StorefrontPreviousStory = StoryRepository.GetStorefrontPreviousStory(storyId, language);
             result.RelatedProducts = new List<Models.DTOs.Storefront.StorefrontProductCardDto>();
             if (tagIdList.Length > 0)
             {
-                result.RelatedProducts = ProductRepository.GetStorefrontRelatedProducts(tagIdList, 10, language, 0);
+                result.RelatedProducts = ProductRepository.GetStorefrontRelatedProducts(tagIdList, Constants.RelatedStoryListSize, language, 0);
             }
             var mainPageDto = MenuService.GetStorefrontPageByMenuLink(Constants.HomeIndexMenuLink, language);
             if (mainPageDto != null)
@@ -368,16 +368,16 @@ namespace EImece.Domain.Services
                 : new int[0];
 
             result.StorefrontRelatedStories = tagIdList.Length > 0
-                ? await StoryRepository.GetStorefrontRelatedStoriesAsync(tagIdList, 10, language, storyId, cancellationToken).ConfigureAwait(false)
+                ? await StoryRepository.GetStorefrontRelatedStoriesAsync(tagIdList, Constants.RelatedStoryListSize, language, storyId, cancellationToken).ConfigureAwait(false)
                 : new List<Models.DTOs.Storefront.StorefrontStoryCardDto>();
 
-            result.StorefrontFeaturedStories = await StoryRepository.GetStorefrontFeaturedStoriesAsync(10, language, storyId, cancellationToken).ConfigureAwait(false);
+            result.StorefrontFeaturedStories = await StoryRepository.GetStorefrontFeaturedStoriesAsync(Constants.RelatedStoryListSize, language, storyId, cancellationToken).ConfigureAwait(false);
             result.StorefrontNextStory = await StoryRepository.GetStorefrontNextStoryAsync(storyId, language, cancellationToken).ConfigureAwait(false);
             result.StorefrontPreviousStory = await StoryRepository.GetStorefrontPreviousStoryAsync(storyId, language, cancellationToken).ConfigureAwait(false);
             result.RelatedProducts = new List<Models.DTOs.Storefront.StorefrontProductCardDto>();
             if (tagIdList.Length > 0)
             {
-                result.RelatedProducts = await ProductRepository.GetStorefrontRelatedProductsAsync(tagIdList, 10, language, 0, cancellationToken).ConfigureAwait(false);
+                result.RelatedProducts = await ProductRepository.GetStorefrontRelatedProductsAsync(tagIdList, Constants.RelatedStoryListSize, language, 0, cancellationToken).ConfigureAwait(false);
             }
             var mainPageDto = await MenuService.GetStorefrontPageByMenuLinkAsync(Constants.HomeIndexMenuLink, language, cancellationToken).ConfigureAwait(false);
             if (mainPageDto != null)

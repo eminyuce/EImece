@@ -5,8 +5,6 @@ namespace EImece.Domain.Helpers
 {
     public static class CurrencyHelper
     {
-        private const string CulturaInfoName = "tr-TR";
-
         // Method to convert Price to Google Product Schema format (price with currency)
         public static string GoogleProductSchema(this decimal price)
         {
@@ -23,7 +21,7 @@ namespace EImece.Domain.Helpers
         public static string CurrencySign(this decimal price)
         {
             decimal v = RoundPriceNumber(price);
-            var culture = new CultureInfo(CulturaInfoName);
+            var culture = new CultureInfo(Constants.TR);
 
             if (v > 0)
             {
@@ -40,7 +38,7 @@ namespace EImece.Domain.Helpers
         {
             var item = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
             //  var culture = Thread.CurrentThread.CurrentUICulture.ToString();
-            var culture = CultureInfo.CreateSpecificCulture(CulturaInfoName).ToString();
+            var culture = CultureInfo.CreateSpecificCulture(Constants.TR).ToString();
             return item.ToString("#,##", new CultureInfo(culture));
         }
 
@@ -52,7 +50,7 @@ namespace EImece.Domain.Helpers
 
         public static string CurrencySign(this double price)
         {
-            var cultureInfo = new CultureInfo(CulturaInfoName);
+            var cultureInfo = new CultureInfo(Constants.TR);
             decimal v = System.Convert.ToDecimal(price);
             if (v > 0)
                 return string.Format("{0} TL", v.ToString("#,##", cultureInfo));
@@ -62,7 +60,7 @@ namespace EImece.Domain.Helpers
 
         public static string CurrencySign(this int price)
         {
-            var cultureInfo = new CultureInfo(CulturaInfoName);
+            var cultureInfo = new CultureInfo(Constants.TR);
             decimal v = System.Convert.ToDecimal(price);
             if (v > 0)
                 return string.Format("{0} TL", v.ToString("#,##", cultureInfo));

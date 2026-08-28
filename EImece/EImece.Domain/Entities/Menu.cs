@@ -13,8 +13,6 @@ namespace EImece.Domain.Entities
 {
     public class Menu : BaseContent
     {
-        private const string UrlPathSeparator = "/";
-
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MenuParentId))]
         public int ParentId { get; set; }
 
@@ -297,13 +295,13 @@ namespace EImece.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(path))
             {
-                return UrlPathSeparator;
+                return Constants.UrlPathSeparator;
             }
 
             path = path.Trim().Replace('\\', '/');
-            if (!path.StartsWith(UrlPathSeparator, StringComparison.Ordinal))
+            if (!path.StartsWith(Constants.UrlPathSeparator, StringComparison.Ordinal))
             {
-                path = UrlPathSeparator + path;
+                path = Constants.UrlPathSeparator + path;
             }
 
             // Collapse duplicate slashes and trim trailing slash (except root)

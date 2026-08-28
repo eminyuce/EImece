@@ -32,8 +32,6 @@ namespace EImece.Domain.Helpers
         private const string THUMBS = "thumbs";
         private const string THB = "thb";
         public const string EXTERNAL_IMAGE = "external-image";
-        private const string MEDIA_FILE_LOCATION = "/media/images/";
-        private const string MEDIA_FILE_LOCATION_THUMBS = "/media/images/thumbs/";
         private static Logger Logger = LogManager.GetCurrentClassLogger();
 
         public int CurrentLanguage { get; set; }
@@ -1095,8 +1093,8 @@ namespace EImece.Domain.Helpers
                 String fullPath = Path.Combine(AppConfig.StorageRoot, fileName);
                 if (File.Exists(fullPath))
                 {
-                    var fullPathImgSrc = MEDIA_FILE_LOCATION + fileName;
-                    var candidatePathThb = MEDIA_FILE_LOCATION_THUMBS + fileName;
+                    var fullPathImgSrc = Constants.UrlBase + fileName;
+                    var candidatePathThb = Constants.MediaThumbsUrlBase + fileName;
                     return new Tuple<string, string>(fullPathImgSrc, candidatePathThb);
                 }
             }
@@ -1144,7 +1142,7 @@ namespace EImece.Domain.Helpers
                 return null;
             }
 
-            return MEDIA_FILE_LOCATION_THUMBS + THB + safeName;
+            return Constants.MediaThumbsUrlBase + THB + safeName;
         }
 
         /// <summary>

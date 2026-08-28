@@ -551,7 +551,7 @@ namespace EImece.Domain.Services
         {
             var categoryDto = await ProductCategoryRepository.GetStorefrontCategoryByIdAsync(categoryId).ConfigureAwait(false);
             if (categoryDto == null) return null;
-            return await GetStorefrontCategoryPageViewModelAsync(categoryId, 1, Models.Enums.SortingType.Default, null, null, null, 20, categoryDto.Lang).ConfigureAwait(false);
+            return await GetStorefrontCategoryPageViewModelAsync(categoryId, 1, Models.Enums.SortingType.Default, null, null, null, Constants.DefaultCategoryPageSize, categoryDto.Lang).ConfigureAwait(false);
         }
 
         [Timed("service.product_categories.get_dto_sync")]

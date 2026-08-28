@@ -46,8 +46,6 @@ namespace EImece.Domain.Models.DTOs.Storefront
             set => Children = value;
         }
 
-        private const string UrlPathSeparator = "/";
-
         /// <summary>
         /// Request-aware active-state detection, identical to Menu.IsPageActived, evaluated
         /// on the projected DTO so navigation trees do not need entity materialization.
@@ -301,13 +299,13 @@ namespace EImece.Domain.Models.DTOs.Storefront
         {
             if (string.IsNullOrWhiteSpace(path))
             {
-                return UrlPathSeparator;
+                return Constants.UrlPathSeparator;
             }
 
             path = path.Trim().Replace('\\', '/');
-            if (!path.StartsWith(UrlPathSeparator, StringComparison.Ordinal))
+            if (!path.StartsWith(Constants.UrlPathSeparator, StringComparison.Ordinal))
             {
-                path = UrlPathSeparator + path;
+                path = Constants.UrlPathSeparator + path;
             }
 
             while (path.Contains("//"))
