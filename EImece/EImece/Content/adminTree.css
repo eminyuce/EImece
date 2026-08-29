@@ -2,8 +2,8 @@
    Overrides .eg-category-tree / .eg-tree without changing Razor class names. */
 
 .eg-category-tree {
-    --eg-tree-surface: #ffffff;
-    --eg-tree-muted: #f8fafc;
+    --eg-tree-surface: #f8fafc;
+    --eg-tree-muted: #f1f5f9;
     --eg-tree-border: #e2e8f0;
     --eg-tree-text: #0f172a;
     --eg-tree-text-soft: #64748b;
@@ -172,12 +172,17 @@
     display: none;
 }
 
+.eg-category-tree-panel {
+    background: #fff;
+}
+
 .eg-category-tree .treeProducts.eg-tree,
 .eg-category-tree .eg-tree-children {
     margin: 0 !important;
     padding: 8px !important;
     list-style: none !important;
     position: static !important;
+    background: #fff;
 }
 
 .eg-category-tree .eg-tree-children {
@@ -453,48 +458,5 @@
     .eg-tree-search,
     .eg-category-all {
         min-height: 44px;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    .eg-category-tree {
-        --eg-tree-surface: #0f172a;
-        --eg-tree-muted: #1e293b;
-        --eg-tree-border: #334155;
-        --eg-tree-text: #e2e8f0;
-        --eg-tree-text-soft: #94a3b8;
-        --eg-tree-accent-soft: #1e1b4b;
-        --eg-tree-accent-hover: #312e81;
-        --eg-tree-selected: #f87171;
-        --eg-tree-selected-soft: #450a0a;
-        --eg-tree-selected-text: #fecaca;
-        --eg-tree-line: #475569;
-        --eg-tree-row-hover: #1e293b;
-        --eg-tree-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-    }
-
-    .eg-tree-search {
-        background: #1e293b;
-        color: #e2e8f0;
-    }
-
-    .eg-category-tree .eg-tree-node.is-leaf > .eg-tree-row > .eg-tree-link .eg-tree-name {
-        color: #cbd5e1;
-    }
-
-    .eg-category-tree .eg-tree-count {
-        background: #334155;
-        color: #cbd5e1;
-    }
-
-    .eg-category-tree .eg-tree-link.is-active .eg-tree-count,
-    .eg-category-tree .eg-tree-node.is-active > .eg-tree-row > .eg-tree-link .eg-tree-count {
-        background: #7f1d1d;
-        color: #fecaca;
-    }
-
-    .eg-category-tree .eg-tree-node.is-search-match > .eg-tree-row > .eg-tree-link .eg-tree-name {
-        background: #713f12;
-        color: #fef3c7;
     }
 }

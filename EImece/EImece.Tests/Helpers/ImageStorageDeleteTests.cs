@@ -1,3 +1,4 @@
+using EImece.Domain;
 using EImece.Domain.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
@@ -96,6 +97,26 @@ namespace EImece.Tests.Helpers
             string fullPath;
             Assert.IsTrue(FilesHelper.TryCombineStorageFilePath(@"C:\media", @"..\secret\photo.jpg", out fullPath));
             Assert.AreEqual(Path.Combine(@"C:\media", "photo.jpg"), fullPath);
+        }
+
+        [TestMethod]
+        public void GetFileNames2_InitializesStorageRootWhenEmpty()
+        {
+            var helper = new FilesHelper();
+            Assert.IsTrue(string.IsNullOrWhiteSpace(helper.StorageRoot));
+
+            var names = helper.GetFileNames2("photo.jpg");
+
+            Assert.IsFalse(string.IsNullOrWhiteSpace(helper.StorageRoot));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(names.Item1));
+            Assert.AreEqual("photo.jpg", names.Item3);
+            StringAssert.EndsWith(names.Item1, "photo.jpg");
+        }
+
+        [TestMethod]
+        public void AppConfigStorageRoot_IsNeverNullOrEmpty()
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(AppConfig.StorageRoot));
         }
 
         private static void WriteDummy(string path)

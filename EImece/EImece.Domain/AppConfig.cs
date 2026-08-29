@@ -2,6 +2,8 @@ using EImece.Domain.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Configuration;
+using System.IO;
+using System.Web;
 using System.Web.Hosting;
 
 namespace EImece.Domain
@@ -323,8 +325,36 @@ namespace EImece.Domain
         {
             get
             {
-                var mapped = HostingEnvironment.MapPath(Constants.ServerMapPath);
-                return string.IsNullOrEmpty(mapped) ? null : mapped;
+                try
+                {
+                    var mapped = HostingEnvironment.MapPath(Constants.ServerMapPath);
+                    if (!string.IsNullOrEmpty(mapped))
+                    {
+                        return mapped;
+                    }
+                }
+                catch (Exception)
+                {
+                    // Hosting context is not always available (unit tests, background jobs).
+                }
+
+                try
+                {
+                    var context = HttpContext.Current;
+                    if (context != null)
+                    {
+                        var mapped = context.Server.MapPath(Constants.ServerMapPath);
+                        if (!string.IsNullOrEmpty(mapped))
+                        {
+                            return mapped;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "media", "images");
             }
         }
 
@@ -388,6 +418,14 @@ namespace EImece.Domain
             StringCache.Clear();
             BoolCache.Clear();
             IntCache.Clear();
+        }
+
+        /// <summary>
+        /// Compatibility shim for older web binaries that still call this from Application_Start.
+        /// </summary>
+        public static void LogStartupSnapshot()
+        {
+            WarmCache();
         }
 
         /// <summary>

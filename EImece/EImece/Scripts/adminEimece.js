@@ -1235,6 +1235,15 @@ $(document).on("click", "[data-tree-root-btn]", function () {
         return document.getElementById("adminMegaMenuOpen") || document.getElementById("adminSidebarToggle");
     }
 
+    var megaAnimTimer = null;
+
+    function megaAnimMs() {
+        if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            return 0;
+        }
+        return 220;
+    }
+
     function setMegaMenuOpen(isOpen, options) {
         var body = document.body;
         var panel = document.getElementById("adminMegaMenu");
@@ -1246,13 +1255,33 @@ $(document).on("click", "[data-tree-root-btn]", function () {
         var focusGroup = options.focusGroup || "";
         var focusSearch = !!options.focusSearch;
 
+        if (megaAnimTimer) {
+            window.clearTimeout(megaAnimTimer);
+            megaAnimTimer = null;
+        }
+
+        if (!isOpen && !body.classList.contains("admin-mega-open") && !panel.classList.contains("is-open")) {
+            panel.setAttribute("hidden", "hidden");
+            body.classList.remove("admin-mega-backdrop");
+            panel.setAttribute("aria-hidden", "true");
+            if (overlay && !body.classList.contains("sidebar-open")) {
+                overlay.setAttribute("aria-hidden", "true");
+            }
+            syncToggleAria();
+            return;
+        }
+
         if (isOpen) {
-            body.classList.add("admin-mega-open");
             panel.removeAttribute("hidden");
-            panel.setAttribute("aria-hidden", "false");
+            body.classList.add("admin-mega-backdrop");
             if (overlay) {
                 overlay.setAttribute("aria-hidden", "false");
             }
+            // Force closed styles to paint before adding .is-open so the transition runs.
+            void panel.offsetWidth;
+            body.classList.add("admin-mega-open");
+            panel.classList.add("is-open");
+            panel.setAttribute("aria-hidden", "false");
             if (!isDesktop()) {
                 setMobileDrawerOpen(false);
             }
@@ -1271,12 +1300,20 @@ $(document).on("click", "[data-tree-root-btn]", function () {
             }, 40);
         } else {
             body.classList.remove("admin-mega-open");
-            panel.setAttribute("hidden", "hidden");
+            panel.classList.remove("is-open");
             panel.setAttribute("aria-hidden", "true");
-            if (overlay && !body.classList.contains("sidebar-open")) {
-                overlay.setAttribute("aria-hidden", "true");
-            }
-            unlockBodyScroll();
+            megaAnimTimer = window.setTimeout(function () {
+                megaAnimTimer = null;
+                if (isMegaOpen()) {
+                    return;
+                }
+                panel.setAttribute("hidden", "hidden");
+                body.classList.remove("admin-mega-backdrop");
+                if (overlay && !body.classList.contains("sidebar-open")) {
+                    overlay.setAttribute("aria-hidden", "true");
+                }
+                unlockBodyScroll();
+            }, megaAnimMs());
         }
         syncToggleAria();
     }

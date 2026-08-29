@@ -638,8 +638,9 @@ namespace EImece.Domain.Helpers
                     int mainImageWidth = imageSize.ThumpBitmapWidth;
                     if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
                     {
-                        String fullPath = Path.Combine(StorageRoot, mainImage.FileName);
-                        String candidatePathThb = Path.Combine(Path.Combine(StorageRoot, THUMBS), THB + mainImage.FileName);
+                        var root = GetRequiredStorageRoot();
+                        String fullPath = Path.Combine(root, mainImage.FileName);
+                        String candidatePathThb = Path.Combine(Path.Combine(root, THUMBS), THB + mainImage.FileName);
                         try
                         {
                             var fileByte = File.ReadAllBytes(fullPath);
@@ -695,14 +696,15 @@ namespace EImece.Domain.Helpers
 
         private Tuple<string, string, string> GetFileNames(String fileName)
         {
+            var root = GetRequiredStorageRoot();
             var ext = Path.GetExtension(fileName);
             var fileBase = Path.GetFileNameWithoutExtension(fileName).Replace(" ", "_");
             Random random = new Random();
             var randomNumber = random.Next(0, int.MaxValue).ToString();
             var newFileName = string.Format(@"{0}_{1}{2}", fileBase, randomNumber, ext);
 
-            String fullPath = Path.Combine(StorageRoot, newFileName);
-            String partThumb1 = Path.Combine(StorageRoot, THUMBS);
+            String fullPath = Path.Combine(root, newFileName);
+            String partThumb1 = Path.Combine(root, THUMBS);
             String candidatePathThb = Path.Combine(partThumb1, THB + newFileName);
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, newFileName);
@@ -710,11 +712,24 @@ namespace EImece.Domain.Helpers
 
         public Tuple<string, string, string> GetFileNames2(String fileName)
         {
-            String fullPath = Path.Combine(StorageRoot, fileName);
-            String partThumb1 = Path.Combine(StorageRoot, THUMBS);
+            var root = GetRequiredStorageRoot();
+            String fullPath = Path.Combine(root, fileName);
+            String partThumb1 = Path.Combine(root, THUMBS);
             String candidatePathThb = Path.Combine(partThumb1, THB + fileName);
 
             return new Tuple<string, string, string>(fullPath, candidatePathThb, fileName);
+        }
+
+        private string GetRequiredStorageRoot()
+        {
+            EnsureStorageInitialized();
+            if (string.IsNullOrWhiteSpace(StorageRoot))
+            {
+                Logger.Error("StorageRoot is empty after initialization. ServerMapPath={0}", Constants.ServerMapPath);
+                throw new InvalidOperationException("Media storage folder could not be resolved.");
+            }
+
+            return StorageRoot;
         }
 
         private static void EnsureDirectoryExists(string filePath)
@@ -753,6 +768,7 @@ namespace EImece.Domain.Helpers
         [Timed("service.files.save_image_byte_sync")]
         public virtual SavedImage SaveImageByte(int width, int height, String fileName, String contentType, byte[] fileByte)
         {
+            EnsureStorageInitialized();
             String fullPath = "", candidatePathThb = "", newFileName = "";
             int imageSize = 0;
             String fileHash = "";

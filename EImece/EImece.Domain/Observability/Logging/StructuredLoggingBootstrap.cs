@@ -37,17 +37,11 @@ namespace EImece.Domain.Observability.Logging
             var enableEfSqlLogging = options != null && options.EnableEfSqlLogging;
             EfSqlLogger.Configure(enableEfSqlLogging, options != null && options.EnableEfTelemetry);
 
-            // Configure Serilog with no file sinks so application-level logs are effectively disabled.
-            // Entity Framework SQL will still be routed to NLog (and from there to the database) via EfSqlLogger.
             var loggerConfiguration = new LoggerConfiguration()
-                .MinimumLevel.Warning()
+                .MinimumLevel.Information()
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty("Application", "EImece")
                 .Enrich.WithMachineName();
-
-            // Do not write to any file sinks here — keep Serilog active but silent. EF SQL logging is handled
-            // by EfSqlLogger which writes to NLog (database target) and also to Serilog context; leaving Serilog
-            // without sinks ensures no file logs are produced.
 
             Log.Logger = loggerConfiguration.CreateLogger();
 
