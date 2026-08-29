@@ -6,7 +6,11 @@ namespace EImece.Domain.Entities
 {
     public class ProductComment : BaseEntity
     {
+        [ForeignKey("Product")]
         public int ProductId { get; set; }
+
+        public Product Product { get; set; }
+
         public string UserId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
@@ -30,5 +34,12 @@ namespace EImece.Domain.Entities
         // Needed for Admin panel — admin product-comment moderation links back to the storefront SEO URL.
         [NotMapped]
         public string SeoUrl { get; set; }
+
+        // Needed for Admin panel — all-comments grid sort/display without null Product navigation.
+        [NotMapped]
+        public string ProductName
+        {
+            get { return Product != null ? Product.Name : ""; }
+        }
     }
 }

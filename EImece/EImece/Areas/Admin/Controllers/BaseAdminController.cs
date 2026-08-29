@@ -106,8 +106,16 @@ namespace EImece.Areas.Admin.Controllers
             "Report"
         };
 
+        private static readonly HashSet<string> ReviewRelatedAdminControllers = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "ProductComments"
+        };
+
         protected bool IsProductPriceEnabled =>
             SettingService.GetSettingByKey(DomainConstants.IsProductPriceEnable).ToBool(true);
+
+        protected bool IsProductReviewEnabled =>
+            SettingService.GetSettingByKey(DomainConstants.IsProductReviewEnable).ToBool(true);
 
         private static void SetGriddlyDefaultPageSize(int pageSize)
         {
@@ -132,6 +140,7 @@ namespace EImece.Areas.Admin.Controllers
             Resource.Culture = culture;
 
             ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
+            ViewBag.IsProductReviewEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductReviewEnable);
             int gridPageSize = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
             ViewBag.GridPageSizeNumber = gridPageSize;
             SetGriddlyDefaultPageSize(gridPageSize);
@@ -141,6 +150,17 @@ namespace EImece.Areas.Admin.Controllers
             {
                 var controllerName = filterContext.RouteData.Values["controller"] as string ?? string.Empty;
                 if (PriceRelatedAdminControllers.Contains(controllerName))
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                        new RouteValueDictionary(new { area = "Admin", controller = "Dashboard", action = "Index" }));
+                    return;
+                }
+            }
+
+            if (!IsProductReviewEnabled)
+            {
+                var controllerName = filterContext.RouteData.Values["controller"] as string ?? string.Empty;
+                if (ReviewRelatedAdminControllers.Contains(controllerName))
                 {
                     filterContext.Result = new RedirectToRouteResult(
                         new RouteValueDictionary(new { area = "Admin", controller = "Dashboard", action = "Index" }));

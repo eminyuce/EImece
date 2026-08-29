@@ -33,7 +33,13 @@
         && product.ProductCategory != null
         && product.ProductCategory.TemplateId.HasValue
         && product.ProductCategory.TemplateId > 0;
-    var hasComments = product != null && product.ProductComments.IsNotEmpty();
+    var productReviewEnabled = true;
+    var reviewSetting = ViewBag.IsProductReviewEnable as Setting;
+    if (reviewSetting != null)
+    {
+        productReviewEnabled = reviewSetting.SettingValue.ToBool(true);
+    }
+    var hasComments = productReviewEnabled && product != null && product.ProductComments.IsNotEmpty();
     var hasDelete = showDelete && UserRoleHelper.IsDeletedEnableRoles();
     var hasEdit = showEdit && !string.IsNullOrEmpty(editUrl);
     var actionCount = 0;

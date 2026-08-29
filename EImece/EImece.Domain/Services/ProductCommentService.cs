@@ -3,6 +3,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,14 +20,14 @@ namespace EImece.Domain.Services
             ProductCommentRepository = repository;
         }
 
-        public List<ProductComment> GetAdminPageList(int productId, string search, int lang)
+        public List<ProductComment> GetAdminPageList(int? productId, string search, int lang, IList<int> ratings = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            return ProductCommentRepository.GetAdminPageList(productId, search, lang);
+            return ProductCommentRepository.GetAdminPageList(productId, search, lang, ratings, startDate, endDate);
         }
 
-        public async Task<List<ProductComment>> GetAdminPageListAsync(int productId, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<ProductComment>> GetAdminPageListAsync(int? productId, string search, int lang, IList<int> ratings = null, DateTime? startDate = null, DateTime? endDate = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await ProductCommentRepository.GetAdminPageListAsync(productId, search, lang, cancellationToken).ConfigureAwait(false);
+            return await ProductCommentRepository.GetAdminPageListAsync(productId, search, lang, ratings, startDate, endDate, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

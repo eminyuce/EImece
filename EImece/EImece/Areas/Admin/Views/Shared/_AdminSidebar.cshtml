@@ -7,6 +7,8 @@
     var currentAction = ((string)ViewContext.RouteData.Values["action"] ?? "").ToLowerInvariant();
     Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
     var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
+    Setting isProductReviewEnable = ViewBag.IsProductReviewEnable;
+    var productReviewEnabled = isProductReviewEnable == null || isProductReviewEnable.SettingValue.ToBool(true);
     var isAdminRole = UserRoleHelper.IsAdminManagementRoles();
 
     var userName = User.Identity.GetUserName() ?? "";
@@ -39,7 +41,7 @@
             ? "active" : "";
 
     var overviewCount = 3;
-    var catalogCount = productPriceEnabled ? 6 : 5;
+    var catalogCount = 5 + (productPriceEnabled ? 1 : 0) + (productReviewEnabled ? 1 : 0);
     var salesCount = 4;
     var contentCount = 9;
     var systemCount = 8;
@@ -166,6 +168,10 @@
                         @MegaItem(Url.Action("Index", "Products", new { area = "admin" }), AdminResource.Products, "fa-cube", controllerActive("products"))
                         @MegaItem(Url.Action("Index", "ProductCategories", new { area = "admin" }), AdminResource.ProductCategories, "fa-sitemap", controllerActive("productcategories"))
                         @MegaItem(Url.Action("Index", "Brands", new { area = "admin" }), AdminResource.Brands, "fa-tags", controllerActive("brands"))
+                        @if (productReviewEnabled)
+                        {
+                            @MegaItem(Url.Action("Index", "ProductComments", new { area = "admin" }), AdminResource.ProductComments, "fa-comments", controllerActive("productcomments"))
+                        }
                         @MegaItem(Url.Action("Index", "Templates", new { area = "admin" }), AdminResource.ProductDynamicTemplates, "fa-file-code-o", controllerActive("templates"))
                         @MegaItem(Url.Action("Index", "Lists", new { area = "admin" }), AdminResource.ProductSpecTemplateItemList, "fa-list-alt", controllerActive("lists"))
                         @if (productPriceEnabled)

@@ -21,32 +21,21 @@ namespace EImece.Domain.Repositories
         {
         }
 
-        public List<ProductComment> GetAdminPageList(int productId, string search, int lang)
+        public List<ProductComment> GetAdminPageList(int? productId, string search, int lang, IList<int> ratings = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var productComments = FindBy(r => r.Lang == lang && r.ProductId == productId);
-            search = search.ToStr().Trim();
-            if (!string.IsNullOrEmpty(search))
-            {
-                Expression<Func<ProductComment, bool>> whereLamba = r =>
-                r.Name.Contains(search) || r.Subject.Contains(search) || r.Review.Contains(search);
-                productComments = productComments.Where(whereLamba);
-            }
-            productComments = productComments.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
-            return productComments.ToList();
+            return BuildAdminQuery(productId, search, lang, ratings, startDate, endDate).ToList();
         }
 
-        public async Task<List<ProductComment>> GetAdminPageListAsync(int productId, string search, int lang, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<ProductComment>> GetAdminPageListAsync(int? productId, string search, int lang, IList<int> ratings = null, DateTime? startDate = null, DateTime? endDate = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var productComments = FindBy(r => r.Lang == lang && r.ProductId == productId);
-            search = search.ToStr().Trim();
-            if (!string.IsNullOrEmpty(search))
-            {
-                Expression<Func<ProductComment, bool>> whereLamba = r =>
-                r.Name.Contains(search) || r.Subject.Contains(search) || r.Review.Contains(search);
-                productComments = productComments.Where(whereLamba);
-            }
-            productComments = productComments.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
-            return await productComments.ToListAsync(cancellationToken).ConfigureAwait(false);
+            return await BuildAdminQuery(productId, search, lang, ratings, startDate, endDate).ToListAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        private IQueryable<ProductComment> BuildAdminQuery(int? productId, string search, int lang, IList<int> ratings, DateTime? startDate, DateTime? endDate)
+        {
+            Expression<Func<ProductComment, object>> includeProduct = r => r.Product;
+            var comments = GetAllIncluding(includeProduct);
+            return ProductCommentAdminListHelper.ApplyAdminFilters(comments, lang, productId, search, ratings, startDate, endDate);
         }
     }
 }

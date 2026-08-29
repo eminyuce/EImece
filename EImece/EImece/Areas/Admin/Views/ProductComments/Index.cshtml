@@ -1,5 +1,6 @@
 @model List<ProductComment>
 @using System.Linq
+@using System.Collections.Generic
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using EImece.Domain.Models.Enums;
@@ -16,11 +17,47 @@
     Product product = ViewBag.Product as Product;
     var productName = product != null ? product.Name : "";
     var productId = product != null ? product.Id : 0;
+    var isAllProducts = product == null;
     var commentCount = contents.Count;
     var ratedComments = contents.Where(c => c.Rating > 0).ToList();
     var averageRating = ratedComments.Count > 0 ? Math.Round(ratedComments.Average(c => (double)c.Rating), 1) : 0;
     var pendingCount = contents.Count(c => !c.IsActive);
     var storefrontUrl = product != null ? product.DetailPageRelativeUrl : "";
+    var selectedRatings = (ViewBag.SelectedRatings as IList<int>) ?? new List<int>();
+    var startDate = (ViewBag.StartDate as string) ?? "";
+    var endDate = (ViewBag.EndDate as string) ?? "";
+    var ratingsCsv = selectedRatings.Count > 0 ? string.Join(",", selectedRatings) : "";
+    var preserveQuery = new Dictionary<string, string>();
+    if (!string.IsNullOrEmpty(ratingsCsv))
+    {
+        preserveQuery["ratings"] = ratingsCsv;
+    }
+    if (!string.IsNullOrEmpty(startDate))
+    {
+        preserveQuery["startDate"] = startDate;
+    }
+    if (!string.IsNullOrEmpty(endDate))
+    {
+        preserveQuery["endDate"] = endDate;
+    }
+
+    var hasDateFilter = !string.IsNullOrEmpty(startDate) || !string.IsNullOrEmpty(endDate);
+    var hasStarFilter = selectedRatings.Count > 0;
+    var hasAdvancedFilter = hasDateFilter || hasStarFilter;
+
+    var activeFilterChips = new List<Tuple<string, string>>();
+    foreach (var star in selectedRatings)
+    {
+        activeFilterChips.Add(Tuple.Create(AdminResource.Rating, star + " ★"));
+    }
+    if (hasDateFilter)
+    {
+        var fromLabel = !string.IsNullOrEmpty(startDate) ? startDate : "…";
+        var toLabel = !string.IsNullOrEmpty(endDate) ? endDate : "…";
+        activeFilterChips.Add(Tuple.Create(AdminResource.UpdatedDate, fromLabel + " – " + toLabel));
+    }
+
+    var clearFiltersUrl = Url.Action("Index", "ProductComments", new { id = isAllProducts ? (int?)null : productId, search = search });
 }
 
 <div class="product-comments-admin-page">
@@ -28,27 +65,35 @@
         <div class="product-comments-admin-header-main">
             @Html.AdminBreadcrumb(AdminResource.ProductComments)
 <h2 class="admin-page-title">@AdminResource.ProductComments</h2>
-            @if (product != null)
-            {
-                <p class="product-comments-admin-lead">
+            <p class="product-comments-admin-lead">
+                @if (!isAllProducts)
+                {
                     <strong>@productName</strong>
-                    <span class="product-comments-admin-meta">
-                        @commentCount yorum
-                        @if (ratedComments.Count > 0)
-                        {
-                            <span>· ortalama @averageRating / 5</span>
-                        }
-                        @if (pendingCount > 0)
-                        {
-                            <span class="product-comments-admin-pending">· @pendingCount onay bekliyor</span>
-                        }
-                    </span>
-                </p>
-            }
+                }
+                else
+                {
+                    <strong>@AdminResource.ShowAll</strong>
+                }
+                <span class="product-comments-admin-meta">
+                    @commentCount yorum
+                    @if (ratedComments.Count > 0)
+                    {
+                        <span>· ortalama @averageRating / 5</span>
+                    }
+                    @if (pendingCount > 0)
+                    {
+                        <span class="product-comments-admin-pending">· @pendingCount onay bekliyor</span>
+                    }
+                </span>
+            </p>
         </div>
         <div class="product-comments-admin-header-actions">
-            @if (product != null)
+            @if (!isAllProducts)
             {
+                <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "ProductComments")">
+                    <i class="fa fa-comments" aria-hidden="true"></i>
+                    @AdminResource.ShowAll
+                </a>
                 <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "Products", new { search = productName })">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     @AdminResource.BackToList
@@ -69,74 +114,147 @@
     </div>
     <hr class="adminLine" />
 
+    <div class="card product-admin-filters @(hasAdvancedFilter ? "is-open" : "is-collapsed")" id="commentAdminFilters">
+        <button type="button" class="card-header product-admin-filters-heading"
+                data-bs-toggle="collapse" data-bs-target="#commentAdminFiltersBody"
+                aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="commentAdminFiltersBody">
+            <div class="product-admin-filters-heading-main">
+                <span class="product-admin-filters-title">
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    Filtreler
+                </span>
+                @if (activeFilterChips.Count > 0)
+                {
+                    <span class="badge product-admin-filters-count">@activeFilterChips.Count</span>
+                }
+                else
+                {
+                    <span class="product-admin-filters-hint">@AdminResource.Rating, @AdminResource.UpdatedDate…</span>
+                }
+            </div>
+            <span class="product-admin-filters-chevron fa @(hasAdvancedFilter ? "fa fa-chevron-up" : "fa fa-chevron-down")" aria-hidden="true"></span>
+        </button>
+
+        @if (activeFilterChips.Count > 0)
+        {
+            <div class="product-admin-filters-summary">
+                @foreach (var chip in activeFilterChips)
+                {
+                    var chipText = string.IsNullOrEmpty(chip.Item2) ? chip.Item1 : chip.Item1 + ": " + chip.Item2;
+                    <span class="label text-bg-info product-admin-filter-chip">@chipText</span>
+                }
+                <a class="product-admin-filters-clear-link" href="@clearFiltersUrl" title="@AdminResource.Clear">
+                    <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                </a>
+            </div>
+        }
+
+        <div id="commentAdminFiltersBody" class="collapse @(hasAdvancedFilter ? "show" : "")">
+            <div class="card-body">
+                @using (Html.BeginForm("Index", "ProductComments", FormMethod.Get, new { @class = "product-admin-filter-form", id = "commentAdminFilterForm" }))
+                {
+                    if (productId > 0)
+                    {
+                        <input type="hidden" name="id" value="@productId" />
+                    }
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        <input type="hidden" name="search" value="@search" />
+                    }
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row mb-3">
+                                <label for="startDate">@AdminResource.UpdatedDate</label>
+                                <div class="product-admin-price-range">
+                                    <input type="date"
+                                           class="form-control form-control-sm"
+                                           id="startDate"
+                                           name="startDate"
+                                           value="@startDate"
+                                           aria-label="@AdminResource.StartDate"
+                                           title="@AdminResource.StartDate" />
+                                    <span class="product-admin-price-sep">–</span>
+                                    <label class="visually-hidden" for="endDate">@AdminResource.EndDate</label>
+                                    <input type="date"
+                                           class="form-control form-control-sm"
+                                           id="endDate"
+                                           name="endDate"
+                                           value="@endDate"
+                                           aria-label="@AdminResource.EndDate"
+                                           title="@AdminResource.EndDate" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-admin-filter-flags">
+                        <span class="product-admin-filter-flags-label">@AdminResource.Rating</span>
+                        <div class="product-admin-filter-toggles" role="group" aria-label="@AdminResource.Rating">
+                            @for (var star = 1; star <= 5; star++)
+                            {
+                                var isChecked = selectedRatings.Contains(star);
+                                <label class="product-admin-toggle @(isChecked ? "is-on" : "")">
+                                    <input type="checkbox"
+                                           name="rating"
+                                           value="@star"
+                                           @(isChecked ? "checked=\"checked\"" : null)
+                                           aria-label="@star ★" />
+                                    <span>@star ★</span>
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="product-admin-filter-actions">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-check" aria-hidden="true"></i> @AdminResource.Filtrele
+                        </button>
+                        <a class="btn btn-secondary btn-sm" href="@clearFiltersUrl">
+                            <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
     @Html.Partial("pGridOperations", new ViewDataDictionary(ViewData){
         {"controllerName",controllerName}
         ,{"StateTypes","State"}
        ,{"orderingButton",false}
        ,{"selectAll",true}
-       ,{"deleteAll",true}  ,{"IdValueExists",true}
-        ,{"SetStateOnOrOff",true},
-{ "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true}})
+       ,{"deleteAll",true}  ,{"IdValueExists", !isAllProducts}
+       ,{"SetStateOnOrOff",true},
+{ "IsNewRecordButtonEnabled",false},{"IsExcelButtonEnabled",true},
+{"PreserveQuery", preserveQuery}})
 
-    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { id = product.Id, search = Request.QueryString["search"] })"></div>
+    @Html.Partial("Grid/_GridChrome")
+
+    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { id = isAllProducts ? (int?)null : productId, search = search, ratings = string.IsNullOrEmpty(ratingsCsv) ? null : ratingsCsv, startDate = string.IsNullOrEmpty(startDate) ? null : startDate, endDate = string.IsNullOrEmpty(endDate) ? null : endDate })"></div>
 </div>
 
-@helper RatingCell(int rating)
-{
-    var r = rating < 0 ? 0 : (rating > 5 ? 5 : rating);
-    <span class="eg-rating" title="@r / 5">
-        <span class="eg-rating-stars" aria-hidden="true">
-            @for (var i = 1; i <= 5; i++)
-            {
-                <span class="eg-rating-star@(i <= r ? " is-on" : "")">★</span>
-            }
-        </span>
-        <span class="visually-hidden">@r yıldız</span>
-    </span>
-}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var $panel = $('#commentAdminFilters');
+            var $body = $('#commentAdminFiltersBody');
+            var $chevron = $panel.find('.product-admin-filters-chevron');
+            var $heading = $panel.find('.product-admin-filters-heading');
 
-@helper EmailCell(string email)
-{
-    if (string.IsNullOrWhiteSpace(email))
-    {
-        <span class="text-muted">—</span>
-    }
-    else
-    {
-        <a class="eg-email-link" href="mailto:@email">@email</a>
-    }
-}
+            $body.on('show.bs.collapse', function () {
+                $panel.removeClass('is-collapsed').addClass('is-open');
+                $chevron.removeClass('fa fa-chevron-down').addClass('fa fa-chevron-up');
+                $heading.attr('aria-expanded', 'true');
+            }).on('hide.bs.collapse', function () {
+                $panel.removeClass('is-open').addClass('is-collapsed');
+                $chevron.removeClass('fa fa-chevron-up').addClass('fa fa-chevron-down');
+                $heading.attr('aria-expanded', 'false');
+            });
 
-@helper ReviewNoteCell(ProductComment comment)
-{
-    var text = (comment.Review ?? "").Trim();
-    var len = text.Length;
-    var sizeClass = len == 0 ? "is-empty" : (len <= 48 ? "is-short" : (len <= 140 ? "is-medium" : "is-long"));
-    var lineCount = string.IsNullOrEmpty(text) ? 2 : text.Split(new[] { '\n' }, StringSplitOptions.None).Length;
-    var rows = Math.Max(2, Math.Min(lineCount, 8));
-    <label class="visually-hidden" for="pcomment-@comment.Id">Yorum</label>
-    if (len == 0)
-    {
-        <span class="eg-review-empty">—</span>
-    }
-    else
-    {
-        <textarea id="pcomment-@comment.Id" class="eg-review-note @sizeClass" readonly rows="@rows" cols="1">@text</textarea>
-    }
-}
-
-@functions {
-    public static string ReviewerSubName(ProductComment comment)
-    {
-        if (comment == null)
-        {
-            return null;
-        }
-        var name = (comment.Name ?? "").Trim();
-        if (string.IsNullOrEmpty(name) || string.Equals(name, comment.Subject, StringComparison.OrdinalIgnoreCase))
-        {
-            return null;
-        }
-        return name;
-    }
+            $panel.on('change', '.product-admin-toggle input[type=checkbox]', function () {
+                $(this).closest('.product-admin-toggle').toggleClass('is-on', this.checked);
+            });
+        });
+    </script>
 }

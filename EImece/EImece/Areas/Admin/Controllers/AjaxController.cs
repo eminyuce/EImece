@@ -444,8 +444,20 @@ namespace EImece.Areas.Admin.Controllers
         [DeleteAuthorize()]
         public async Task<JsonResult> DeleteProductCommentGridItem(List<String> values)
         {
+            if (!IsProductReviewEnabled)
+            {
+                return Json(new { success = false, message = "Ürün yorumları devre dışı." }, JsonRequestBehavior.AllowGet);
+            }
+
             await ProductCommentService.DeleteBaseEntityAsync(values);
             return Json(values, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [DeleteAuthorize()]
+        public async Task<JsonResult> DeleteProductCommentsGridItem(List<String> values)
+        {
+            return await DeleteProductCommentGridItem(values);
         }
 
         [HttpPost]
@@ -727,8 +739,19 @@ namespace EImece.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> ChangeProductCommentGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
         {
+            if (!IsProductReviewEnabled)
+            {
+                return Json(new { success = false, message = "Ürün yorumları devre dışı." }, JsonRequestBehavior.AllowGet);
+            }
+
             await ProductCommentService.ChangeGridBaseEntityOrderingOrStateAsync(values, checkbox);
             return Json(new { values, checkbox }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeProductCommentsGridOrderingOrState(List<OrderingItem> values, String checkbox = "")
+        {
+            return await ChangeProductCommentGridOrderingOrState(values, checkbox);
         }
 
         [HttpPost]

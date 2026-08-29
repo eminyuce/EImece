@@ -1,6 +1,8 @@
 @using EImece.Domain.Helpers;
 @using Resources;
 @using EImece.Domain.Models.Enums;
+@using System.Collections.Generic;
+@using System.Web.Routing;
 @{
     var controllerName = ViewData["controllerName"].ToStr();
 
@@ -32,6 +34,12 @@
 
     var hasBulkActions = selectAll || deleteAll || SetStateOnOrOff || orderingButton || ProductState;
     var currentSearch = Request.QueryString["search"].ToStr();
+    var preserveQuery = ViewData["PreserveQuery"] as IDictionary<string, string>;
+    var exportId = "";
+    if (IdValueExists)
+    {
+        exportId = ViewContext.RouteData.Values["id"].ToStr();
+    }
 }
 
 <div class="card border-info admin-grid-ops eg-bulk-bar">
@@ -59,13 +67,32 @@
                 }
                 @if (IsExcelButtonEnabled)
                 {
+                    var excelRoute = new RouteValueDictionary();
+                    excelRoute["format"] = "excel";
+                    excelRoute["search"] = currentSearch;
+                    if (!string.IsNullOrEmpty(exportId))
+                    {
+                        excelRoute["id"] = exportId;
+                    }
+                    if (preserveQuery != null)
+                    {
+                        foreach (var kv in preserveQuery)
+                        {
+                            if (!string.IsNullOrEmpty(kv.Key) && kv.Value != null)
+                            {
+                                excelRoute[kv.Key] = kv.Value;
+                            }
+                        }
+                    }
+                    var csvRoute = new RouteValueDictionary(excelRoute);
+                    csvRoute["format"] = "csv";
                     <fieldset class="eg-ops-export" style="border:0;padding:0;margin:0;min-width:0">
                         <legend class="visually-hidden">@AdminResource.Excel</legend>
-                        <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "excel", search = currentSearch })" title="@AdminResource.Excel">
+                        <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, excelRoute)" title="@AdminResource.Excel">
                             <i class="fa fa-upload" aria-hidden="true"></i>
                             <span>@AdminResource.Excel</span>
                         </a>
-                        <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, new { format = "csv", search = currentSearch })" title="@AdminResource.Csv">
+                        <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", controllerName, csvRoute)" title="@AdminResource.Csv">
                             <i class="fa fa-download" aria-hidden="true"></i>
                             <span>@AdminResource.Csv</span>
                         </a>
