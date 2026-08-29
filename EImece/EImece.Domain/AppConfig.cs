@@ -373,20 +373,11 @@ namespace EImece.Domain
             }
         }
 
-        private static void WriteLog(string configName, object defaultValue)
-        {
-            if (!ConfigurationManager.AppSettings.AllKeys.Any(r => r.Equals(configName, StringComparison.InvariantCultureIgnoreCase)) && defaultValue != null)
-            {
-                Logger.Info(string.Format("Config Name {0} is using default value {1}      <add key=\"{0}\" value=\"{1}\" />", configName, defaultValue));
-            }
-        }
-
         public static string GetConfigString(string configName, string defaultValue = "")
         {
             var appValue = ConfigurationManager.AppSettings[configName];
             if (string.IsNullOrEmpty(appValue))
             {
-                WriteLog(configName, defaultValue);
                 return defaultValue;
             }
             else
@@ -402,10 +393,6 @@ namespace EImece.Domain
             {
                 configValue = ConfigurationManager.AppSettings[configName].ToBool();
             }
-            else
-            {
-                WriteLog(configName, defaultValue);
-            }
             return configValue;
         }
 
@@ -415,10 +402,6 @@ namespace EImece.Domain
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[configName]))
             {
                 configValue = ConfigurationManager.AppSettings[configName].ToInt();
-            }
-            else
-            {
-                WriteLog(configName, defaultValue);
             }
             return configValue == -1 ? defaultValue : configValue;
         }
